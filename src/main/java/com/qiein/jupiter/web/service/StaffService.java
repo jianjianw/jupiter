@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface StaffService<T> {
 
-    public Page<T> get();
+    Page<T> get();
+
 }
