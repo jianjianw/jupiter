@@ -8,3 +8,11 @@
 3. util 存放项目util类
 
 
+###启动规则
+项目启动支持多环境，默认启动环境在application.properties中配置
+spring.profiles.active=dev
+其中 
+application.properties 存放共同环境的配置
+application_dev.properties 存放开发环境的配置
+application_pro.properties 存放正式环境的配置
+
