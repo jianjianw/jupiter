@@ -16,3 +16,7 @@ application.properties 存放共同环境的配置
 application_dev.properties 存放开发环境的配置
 application_pro.properties 存放正式环境的配置
 
+###vo po
+vo-业务对象
+po-数据库对象
+
