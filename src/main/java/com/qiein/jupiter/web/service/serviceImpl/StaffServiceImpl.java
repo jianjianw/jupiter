@@ -16,7 +16,7 @@ public class StaffServiceImpl implements StaffService<Staff> {
     private StaffDao staffDao;
 
     @Override
-    public Page<Staff> get() {
+    public Page<Staff> get() throws Exception{
         return PageHelper.startPage(1, 5).doSelectPage(new ISelect() {
             @Override
             public void doSelect() {

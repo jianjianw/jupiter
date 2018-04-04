@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface StaffService<T> {
 
-    Page<T> get();
+    Page<T> get() throws Exception;
 
 }
