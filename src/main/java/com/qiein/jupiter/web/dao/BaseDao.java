@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * DAO支持类实现
  */
-public interface CrudDao<T> {
+public interface BaseDao<T> {
 
 	/**
 	 * 获取单条数据

@@ -1,14 +1,12 @@
 package com.qiein.jupiter.web.dao;
 
-import com.qiein.jupiter.web.entity.vo.Staff;
+import com.qiein.jupiter.web.entity.po.StaffPO;
 
 import java.util.List;
 
-public interface StaffDao {
+/**
+ * 员工Dao
+ */
+public interface StaffDao extends BaseDao<StaffPO> {
 
-    /**
-     * 获取
-     * @return
-     */
-    List<Staff> getAll();
 }

@@ -1,5 +1,8 @@
-package com.qiein.jupiter.util;
+package com.qiein.jupiter.exception;
 
+/**
+ * 异常枚举类
+ */
 public enum ExceptionEnum {
     UNKNOW_ERROR(-1, "未知错误"),
     USER_NOT_FIND(-101, "用户不存在"),;

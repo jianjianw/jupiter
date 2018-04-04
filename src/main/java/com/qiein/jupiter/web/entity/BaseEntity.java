@@ -1,4 +1,4 @@
-package com.qiein.jupiter.web.entity.vo;
+package com.qiein.jupiter.web.entity;
 
 import java.io.Serializable;
 
@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @author JZL 2018-04-03 17:25
  *
  */
-public class BaseObject implements Serializable {
+public class BaseEntity implements Serializable {
 
 	private int id;
 

@@ -1,5 +1,7 @@
 package com.qiein.jupiter.util;
 
+import com.qiein.jupiter.exception.ExceptionEnum;
+
 public class ResultInfoUtil {
 
     /**
