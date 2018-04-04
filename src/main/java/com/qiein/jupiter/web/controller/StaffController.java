@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/staff")
-public class StaffController {
+public class StaffController extends BaseController {
 
     @Autowired
     private StaffService staffService;
