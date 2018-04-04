@@ -2,19 +2,17 @@ package com.qiein.jupiter;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.impl.crypto.MacProvider;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.security.Key;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class JwtTest {
-    @Value("${jwt.token}")
+    @Value("${jwt-token}")
     private String key;
 
     @Test
@@ -30,8 +28,7 @@ public class JwtTest {
     }
 
     @Test
-    public  void t(){
-        Key key = MacProvider.generateKey();
+    public  void parse(){
         String compactJws="eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKb2UifQ.SjYwBMIgUdaMwtL5Y1MT_2EwDhEDwS9dybMh6NGzxtGypf1jzeZCnnwHtT8O7G541WsEmiuhjs0-retHvpdDjQ";
         Jwts.parser().setSigningKey(key).parseClaimsJws(compactJws).getBody().getSubject().equals("Joe");
     }
