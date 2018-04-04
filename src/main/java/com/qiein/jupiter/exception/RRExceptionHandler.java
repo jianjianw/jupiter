@@ -4,6 +4,7 @@ import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.annotation.Order;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  * 异常处理器
  *
  */
+@Order(-1)
 @RestControllerAdvice
 public class RRExceptionHandler {
     private Logger logger = LoggerFactory.getLogger(getClass());
