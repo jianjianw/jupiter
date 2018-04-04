@@ -1,32 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qiein.jupiter.web.dao.StaffDao">
-    <resultMap id="BaseResultMap" type="com.qiein.jupiter.web.entity.po.StaffPO">
-        <id column="id" property="id" jdbcType="BIGINT"/>
-        <result column="id" property="id" jdbcType="VARCHAR"/>
-        <result column="name" property="name" jdbcType="VARCHAR"/>
-        <result column="phone" property="phone" jdbcType="VARCHAR"/>
-        <result column="company_id" property="companyId" jdbcType="VARCHAR"/>
-        <result column="headImg" property="headImg" jdbcType="VARCHAR"/>
-        <result column="isShow" property="haveShow" jdbcType="VARCHAR"/>
+    <resultMap id="StaffPO" type="com.qiein.jupiter.web.entity.po.StaffPO">
+        <id column="ID" property="id" jdbcType="INTEGER"/>
+        <result column="NICKNAME" property="nickName" jdbcType="VARCHAR"/>
+        <result column="PHONE" property="phone" jdbcType="VARCHAR"/>
+        <result column="USERNAME" property="username" jdbcType="VARCHAR"/>
+        <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
+        <result column="CORPID" property="corpId" jdbcType="VARCHAR"/>
+        <result column="DINGUSERID" property="dingUserId" jdbcType="VARCHAR"/>
+        <result column="HEADIMG" property="headImg" jdbcType="VARCHAR"/>
+        <result column="TOKEN" property="token" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, name, phone, company_id, headImg, isShow
+        ID, NICKNAME, PHONE, USERNAME, COMPANYID, CORPID, DINGUSERID, HEADIMG, TOKEN
     </sql>
 
-    <select id="getAll" resultMap="BaseResultMap">
+    <sql id="table_name">
+        hm_pub_staff
+    </sql>
+
+    <select id="getById" parameterType="java.lang.Integer" resultMap="StaffPO">
         SELECT
         <include refid="Base_Column_List"/>
-        FROM hm_pub_staff
+        FROM <include refid="table_name"/>
+        WHERE ID = #{id}
     </select>
 
-    <select id="getOne" parameterType="java.lang.Long" resultMap="BaseResultMap">
-        SELECT
-        <include refid="Base_Column_List"/>
-        FROM users
-        WHERE id = #{id}
-    </select>
-
+    <insert id="insert" parameterType="com.qiein.jupiter.web.entity.po.StaffPO" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO <include refid="table_name"/>
+        {NICKNAME, GROUPNAME, PARENTID, PRIORITY, GROUPTYPE, COMPANYID}
+        VALUES (#{groupId}, #{groupName}, #{parentId}, #{priority}, #{groupType}, #{companyId})
+    </insert>
 
 </mapper>
