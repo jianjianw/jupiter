@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * 员工 Controller
+ */
 @RestController
 @RequestMapping("/staff")
 public class StaffController extends BaseController {
@@ -17,6 +20,6 @@ public class StaffController extends BaseController {
 
     @GetMapping("/all")
     public ResultInfo getAll() {
-        return ResultInfoUtil.success(staffService.get());
+        return ResultInfoUtil.success(staffService.findList(null));
     }
 }

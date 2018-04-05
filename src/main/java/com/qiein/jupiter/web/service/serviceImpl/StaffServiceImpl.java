@@ -11,24 +11,80 @@ import com.qiein.jupiter.web.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
+
 @Service
 public class StaffServiceImpl implements StaffService<StaffPO> {
 
     @Autowired
     private StaffDao staffDao;
 
+    /**
+     * 保存员工
+     *
+     * @param staffPO
+     * @return
+     */
     @Override
-    public Page<StaffPO> get()  {
+    public int insert(StaffPO staffPO) {
+        return 0;
+    }
+
+    /**
+     * 删除员工
+     *
+     * @param staffPO
+     * @return
+     */
+    @Override
+    public int delete(StaffPO staffPO) {
+        return 0;
+    }
+
+    /**
+     * 根据id获取
+     *
+     * @return
+     */
+    @Override
+    public StaffPO getById() {
+        return null;
+    }
+
+    /**
+     * 根据条件获取集合
+     *
+     * @param map 查询条件
+     * @return
+     */
+    @Override
+    public List<StaffPO> findList(final Map map) {
         try {
             return PageHelper.startPage(1, 5).doSelectPage(new ISelect() {
                 @Override
                 public void doSelect() {
-                    staffDao.findList(null);
+                    staffDao.findList(map);
                 }
             });
         } catch (Exception e) {
             throw new RRException(ExceptionEnum.USER_NOT_FIND);
         }
+    }
 
+    /**
+     * 登录
+     *
+     * @param userName  用户名
+     * @param password  密码
+     * @param companyId 公司id
+     * @return
+     */
+    @Override
+    public StaffPO Login(String userName, String password, int companyId) {
+        //TODO 未完成
+        StaffPO staff = staffDao.login(userName, password, companyId);
+        //用户不存在
+        return null;
     }
 }

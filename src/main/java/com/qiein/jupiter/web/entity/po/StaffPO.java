@@ -9,16 +9,58 @@ public class StaffPO extends BaseEntity {
 
     private static final long serialVersionUID = 3690836371907136145L;
 
+    /**
+     * 昵称
+     */
     private String nickName;
+    /**
+     * 手机号码
+     */
     private String phone;
+    /**
+     * 全名
+     */
     private String userName;
+    /**
+     * 密码
+     */
     private String password;
+    /**
+     *企业ID
+     */
     private int companyId;
+    /**
+     * 钉钉企业ID
+     */
     private String corpId;
+    /**
+     * 钉钉用户ID
+     */
     private String dingUserId;
+    /**
+     * 微信
+     */
     private String openId;
+    /**
+     * 头像
+     */
     private String headImg;
+    /**
+     * token
+     */
     private String token;
+    /**
+     * 是否在线
+     */
+    private int showFlag;
+    /**
+     * 是否锁定
+     */
+    private boolean lockFlag;
+    /**
+     * 是否删除
+     */
+    private boolean delFlag;
 
     public String getNickName() {
         return nickName;
@@ -98,5 +140,29 @@ public class StaffPO extends BaseEntity {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public int getShowFlag() {
+        return showFlag;
+    }
+
+    public void setShowFlag(int showFlag) {
+        this.showFlag = showFlag;
+    }
+
+    public boolean isLockFlag() {
+        return lockFlag;
+    }
+
+    public void setLockFlag(boolean lockFlag) {
+        this.lockFlag = lockFlag;
+    }
+
+    public boolean isDelFlag() {
+        return delFlag;
+    }
+
+    public void setDelFlag(boolean delFlag) {
+        this.delFlag = delFlag;
     }
 }

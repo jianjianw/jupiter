@@ -11,4 +11,13 @@ import java.util.List;
  */
 public interface StaffDao extends BaseDao<StaffPO> {
 
+    /**
+     * 登录
+     *
+     * @param userName
+     * @param password
+     * @param companyId
+     * @return
+     */
+    StaffPO login(String userName, String password, int companyId);
 }
