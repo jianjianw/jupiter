@@ -57,9 +57,11 @@ public class StaffPO extends BaseEntity {
      * 是否锁定
      */
     private boolean lockFlag;
+
     /**
      * 是否删除
      */
+
     private boolean delFlag;
 
     public String getNickName() {

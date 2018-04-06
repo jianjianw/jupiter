@@ -1,8 +1,6 @@
 package com.qiein.jupiter.web.service;
 
-import com.github.pagehelper.Page;
-import com.qiein.jupiter.web.dao.BaseDao;
-import com.qiein.jupiter.web.dao.StaffDao;
+import com.qiein.jupiter.web.entity.po.StaffPO;
 
 import java.util.List;
 import java.util.Map;
@@ -10,31 +8,31 @@ import java.util.Map;
 /**
  * 员工
  */
-public interface StaffService<T> {
+public interface StaffService {
 
 
     /**
      * 员工新增
      *
-     * @param t
+     * @param
      * @return
      */
-    int insert(T t);
+    int insert(StaffPO staffPO);
 
     /**
      * 员工删除（物理删除）
      *
-     * @param t
+     * @param
      * @return
      */
-    int delete(T t);
+    int delete(StaffPO staffPO);
 
     /**
      * 根据ID获取员工
      *
      * @return
      */
-    T getById();
+    StaffPO getById();
 
     /**
      * 根据条件查询
@@ -42,7 +40,7 @@ public interface StaffService<T> {
      * @param map 查询条件
      * @return
      */
-    List<T> findList(Map map);
+    List<StaffPO> findList(Map map);
 
     /**
      * 登录
@@ -52,6 +50,6 @@ public interface StaffService<T> {
      * @param companyId 公司id
      * @return
      */
-    T Login(String userName, String password, int companyId);
+    StaffPO Login(String userName, String password, int companyId);
 
 }

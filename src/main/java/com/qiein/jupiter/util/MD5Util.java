@@ -1,39 +1,58 @@
 package com.qiein.jupiter.util;
 
+import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * MD5加密类（封装jdk自带的md5加密方法）
- *
- * @author fengshuonan
- * @date 2016年12月2日 下午4:14:22
+ * MD5加密类
  */
 public class MD5Util {
 
-    public static String encrypt(String source) {
-        return encodeMd5(source.getBytes());
-    }
+    private final static String SALT = "qiemW61rAUV5Ot3q1zOin";
 
-    private static String encodeMd5(byte[] source) {
+    /**
+     * md5加密
+     *
+     * @param str 要加密的字符串
+     * @return
+     */
+    public static String getMD5(String str) {
         try {
-            return encodeHex(MessageDigest.getInstance("MD5").digest(source));
-        } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException(e.getMessage(), e);
+            // 生成一个MD5加密计算摘要
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            // 计算md5函数
+            md.update(str.getBytes());
+            // digest()最后确定返回md5 hash值，返回值为8为字符串。因为md5 hash值是16位的hex值，实际上就是8位的字符
+            // BigInteger函数则将8位的字符串转换成16位hex值，用字符串来表示；得到字符串形式的hash值
+            return new BigInteger(1, md.digest()).toString(16);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return str;
         }
     }
 
-    private static String encodeHex(byte[] bytes) {
-        StringBuffer buffer = new StringBuffer(bytes.length * 2);
-        for (int i = 0; i < bytes.length; i++) {
-            if (((int) bytes[i] & 0xff) < 0x10)
-                buffer.append("0");
-            buffer.append(Long.toString((int) bytes[i] & 0xff, 16));
+    /**
+     * 循环加密md5
+     *
+     * @param loop 循环次数
+     * @param str  要加密的字符串
+     * @return
+     */
+    public String getMD5ByLoop(int loop, String str) {
+        while (loop > 0) {
+            str = getMD5(str);
+            loop -= 1;
         }
-        return buffer.toString();
+        return str;
     }
 
-    public static void main(String[] args) {
-        System.out.println(encrypt("123456"));
+    /**
+     * 对字符串返回加盐后的md5
+     */
+    public static String getSaltMd5(String str) {
+        str = str + SALT;
+        return getMD5(str);
     }
+
 }

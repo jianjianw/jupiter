@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class StaffServiceImpl implements StaffService<StaffPO> {
+public class StaffServiceImpl implements StaffService {
 
     @Autowired
     private StaffDao staffDao;
@@ -84,7 +84,13 @@ public class StaffServiceImpl implements StaffService<StaffPO> {
     public StaffPO Login(String userName, String password, int companyId) {
         //TODO 未完成
         StaffPO staff = staffDao.login(userName, password, companyId);
-        //用户不存在
-        return null;
+        if (null == staff) {
+            //用户不存在
+            throw new RRException(ExceptionEnum.USER_NOT_FIND);
+        } else if (staff.isLockFlag()) {
+            //用户已锁定
+            throw new RRException(ExceptionEnum.USER_IS_LOCK);
+        }
+        return staff;
     }
 }

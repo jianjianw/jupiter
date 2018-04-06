@@ -42,12 +42,12 @@
         VALUES (#{groupId}, #{groupName}, #{parentId}, #{priority}, #{groupType}, #{companyId})
     </insert>
 
-    <select id="login" parameterType="java.lang.Integer" resultType="com.qiein.jupiter.web.entity.po.StaffPO">
+    <select id="login" resultType="com.qiein.jupiter.web.entity.po.StaffPO">
         SELECT
         <include refid="Base_Column_List"/>
         FROM
         <include refid="table_name"/>
-        WHERE userName=#{userName}
+        WHERE PHONE=#{userName}
         AND PASSWORD=#{password}
         AND COMPANYID=#{companyId}
     </select>
