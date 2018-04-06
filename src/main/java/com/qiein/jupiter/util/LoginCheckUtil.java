@@ -5,16 +5,19 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * 检查密码工具类
+ * 登录校验工具类
  */
-public class PasswordUtil {
+public class LoginCheckUtil {
 
     /**
      * 简单密码集合
      */
     private static Set<String> simplePasswordSet;
 
-    static {
+    /**
+     * 初始化简单密码集合
+     */
+    private static void initSimplePasswordSet() {
         simplePasswordSet = new HashSet<>();
         simplePasswordSet.add(MD5Util.getMD5("000000"));
         simplePasswordSet.add(MD5Util.getMD5("111111"));
