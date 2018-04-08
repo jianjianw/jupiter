@@ -6,6 +6,7 @@ import com.github.pagehelper.PageHelper;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RRException;
 import com.qiein.jupiter.web.dao.StaffDao;
+import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,7 +82,7 @@ public class StaffServiceImpl implements StaffService {
      * @return
      */
     @Override
-    public StaffPO Login(String userName, String password, int companyId) {
+    public List<CompanyPO> Login(String userName, String password, int companyId) {
         //TODO 未完成
         StaffPO staff = staffDao.login(userName, password, companyId);
         if (null == staff) {
@@ -91,6 +92,6 @@ public class StaffServiceImpl implements StaffService {
             //用户已锁定
             throw new RRException(ExceptionEnum.USER_IS_LOCK);
         }
-        return staff;
+        return null;
     }
 }

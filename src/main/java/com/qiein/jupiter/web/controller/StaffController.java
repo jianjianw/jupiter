@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 员工 Controller
@@ -61,12 +62,12 @@ public class StaffController extends BaseController {
             password = StringUtil.nullToStrTrim(password);
         }
         //判断是否需要验证码以及验证码正确性
-        if (needVerityCode(request, userName)) {
+        if (needVerityCode(userName)) {
             //验证码为空
             if (null == verifyCode) {
                 throw new RRException(ExceptionEnum.VERIFY_NULL);
             } else {
-                String verifyCodeTrue = (String) getSessionAttr(request, CommonConstants.USER_VERIFY_CODE);
+                String verifyCodeTrue = RedisConstants.getVerifyCode(userName);
                 if (!verifyCode.trim().equals(verifyCodeTrue)) {
                     //验证码错误
                     throw new RRException(ExceptionEnum.VERIFY_ERROR);
@@ -77,9 +78,8 @@ public class StaffController extends BaseController {
         try {
             return ResultInfoUtil.success(staffService.Login(userName, password, 1));
         } catch (RRException e) {
-            //将session中的错误次数+1
-            Integer errNum = (Integer) getSessionAttr(request, CommonConstants.USER_LOGIN_ERR_NUM);
-            setSessionAttr(request, CommonConstants.USER_LOGIN_ERR_NUM, errNum + 1);
+            //将错误次数+1
+            valueOperations.increment(RedisConstants.getUserLoginErrNum(userName), 1);
             return ResultInfoUtil.error(e.getCode(), e.getMsg());
         }
     }
@@ -90,15 +90,18 @@ public class StaffController extends BaseController {
      * @param userName 用户名
      */
     @GetMapping("/need_verity_code")
-    public boolean needVerityCode(HttpServletRequest request, String userName) {
+    public boolean needVerityCode(String userName) {
         //判断是否需要验证码
-        Integer errNum = (Integer) getSessionAttr(request, CommonConstants.USER_LOGIN_ERR_NUM);
-//        String userLoginErrNum =valueOperations.get(RedisConstants.getVerifyCode(userName));
-        if (null == errNum) {
-            //如果没有查询到，说明是第一次，设置默认值
-            setSessionAttr(request, CommonConstants.USER_LOGIN_ERR_NUM, 0);
+        String userLoginErrNum = valueOperations.get(RedisConstants.getUserLoginErrNum(userName));
+        if (null == userLoginErrNum) {
+            //如果没有查询到，说明是第一次，设置默认值0,过期时间为1小时
+            valueOperations.set(RedisConstants.getUserLoginErrNum(userName), "0", 1, TimeUnit.HOURS);
             return false;
-        } else return errNum >= CommonConstants.ALLOW_USER_LOGIN_ERR_NUM;
+        } else {
+            //是否大于允许的错误最大值
+            int errNum = Integer.valueOf(userLoginErrNum);
+            return errNum >= CommonConstants.ALLOW_USER_LOGIN_ERR_NUM;
+        }
     }
 
 
@@ -110,6 +113,6 @@ public class StaffController extends BaseController {
     @GetMapping("/verify_code")
     public void loginCode(HttpServletResponse response, String userName) {
         String code = VerifyCodeUtil.execute(response);
-        valueOperations.set(userName, code);
+        valueOperations.set(RedisConstants.getVerifyCode(userName), code);
     }
 }
