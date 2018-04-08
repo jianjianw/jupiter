@@ -9,6 +9,7 @@
 3. util 存放项目util类
 4. exception 存放异常相关处理
 5. web 存放项目
+6. constant 存放常量
 
 
 ###启动规则
