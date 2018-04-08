@@ -3,13 +3,13 @@ package com.qiein.jupiter.exception;
 /**
  * 自定义异常
  */
-public class RRException extends RuntimeException {
+public class RException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
     private String msg;
     private int code;
 
-    public RRException(ExceptionEnum exceptionEnum) {
+    public RException(ExceptionEnum exceptionEnum) {
         super(exceptionEnum.getMsg());
         this.msg = exceptionEnum.getMsg();
         this.code = exceptionEnum.getCode();

@@ -3,12 +3,8 @@ package com.qiein.jupiter.web.controller;
 import com.qiein.jupiter.constant.CommonConstants;
 import com.qiein.jupiter.constant.RedisConstants;
 import com.qiein.jupiter.exception.ExceptionEnum;
-import com.qiein.jupiter.exception.RRException;
-import com.qiein.jupiter.util.ResultInfo;
-import com.qiein.jupiter.util.ResultInfoUtil;
-import com.qiein.jupiter.util.StringUtil;
-import com.qiein.jupiter.util.VerifyCodeUtil;
-import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.exception.RException;
+import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.entity.vo.LoginUserVO;
 import com.qiein.jupiter.web.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,17 +43,24 @@ public class StaffController extends BaseController {
      */
     @PostMapping("/login")
     public ResultInfo login(HttpServletRequest request, @RequestBody LoginUserVO loginUserVO) {
-        //校验用户名密码
         String userName = loginUserVO.getUserName();
         String password = loginUserVO.getPassword();
         String verifyCode = loginUserVO.getVerifyCode();
+        //校验用户名
         if (null == userName) {
-            throw new RRException(ExceptionEnum.USERNAME_NULL);
+            //用户名空
+            throw new RException(ExceptionEnum.USERNAME_NULL);
         } else {
             userName = StringUtil.nullToStrTrim(userName);
+            //手机号码格式错误
+            if (!RegexUtils.checkMobile(userName)) {
+                throw new RException(ExceptionEnum.PHONE_FOMAT_ERROR);
+            }
         }
+        //校验密码
         if (null == password) {
-            throw new RRException(ExceptionEnum.PASSWORD_NULL);
+            //密码空
+            throw new RException(ExceptionEnum.PASSWORD_NULL);
         } else {
             password = StringUtil.nullToStrTrim(password);
         }
@@ -65,19 +68,19 @@ public class StaffController extends BaseController {
         if (needVerityCode(userName)) {
             //验证码为空
             if (null == verifyCode) {
-                throw new RRException(ExceptionEnum.VERIFY_NULL);
+                throw new RException(ExceptionEnum.VERIFY_NULL);
             } else {
                 String verifyCodeTrue = RedisConstants.getVerifyCode(userName);
                 if (!verifyCode.trim().equals(verifyCodeTrue)) {
                     //验证码错误
-                    throw new RRException(ExceptionEnum.VERIFY_ERROR);
+                    throw new RException(ExceptionEnum.VERIFY_ERROR);
                 }
             }
         }
         //返回结果
         try {
             return ResultInfoUtil.success(staffService.Login(userName, password, 1));
-        } catch (RRException e) {
+        } catch (RException e) {
             //将错误次数+1
             valueOperations.increment(RedisConstants.getUserLoginErrNum(userName), 1);
             return ResultInfoUtil.error(e.getCode(), e.getMsg());
@@ -112,6 +115,9 @@ public class StaffController extends BaseController {
      */
     @GetMapping("/verify_code")
     public void loginCode(HttpServletResponse response, String userName) {
+        if (null == userName || !RegexUtils.checkMobile(userName)) {
+            return;
+        }
         String code = VerifyCodeUtil.execute(response);
         valueOperations.set(RedisConstants.getVerifyCode(userName), code);
     }

@@ -1,10 +1,9 @@
 package com.qiein.jupiter.web.service.serviceImpl;
 
 import com.github.pagehelper.ISelect;
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.qiein.jupiter.exception.ExceptionEnum;
-import com.qiein.jupiter.exception.RRException;
+import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.web.dao.StaffDao;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
@@ -69,7 +68,7 @@ public class StaffServiceImpl implements StaffService {
                 }
             });
         } catch (Exception e) {
-            throw new RRException(ExceptionEnum.USER_NOT_FIND);
+            throw new RException(ExceptionEnum.USER_NOT_FIND);
         }
     }
 
@@ -87,10 +86,10 @@ public class StaffServiceImpl implements StaffService {
         StaffPO staff = staffDao.login(userName, password, companyId);
         if (null == staff) {
             //用户不存在
-            throw new RRException(ExceptionEnum.USER_NOT_FIND);
+            throw new RException(ExceptionEnum.USER_NOT_FIND);
         } else if (staff.isLockFlag()) {
             //用户已锁定
-            throw new RRException(ExceptionEnum.USER_IS_LOCK);
+            throw new RException(ExceptionEnum.USER_IS_LOCK);
         }
         return null;
     }
