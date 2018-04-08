@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.entity.po;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.qiein.jupiter.web.entity.BaseEntity;
 
 /**
@@ -24,6 +25,7 @@ public class StaffPO extends BaseEntity {
     /**
      * 密码
      */
+    @JSONField(serialize=false)
     private String password;
     /**
      *企业ID

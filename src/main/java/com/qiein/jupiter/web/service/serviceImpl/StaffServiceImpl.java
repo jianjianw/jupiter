@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.service.serviceImpl;
 
+import com.fasterxml.jackson.annotation.JacksonAnnotation;
 import com.github.pagehelper.ISelect;
 import com.github.pagehelper.PageHelper;
 import com.qiein.jupiter.exception.ExceptionEnum;
@@ -10,6 +11,7 @@ import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -20,35 +22,39 @@ public class StaffServiceImpl implements StaffService {
     @Autowired
     private StaffDao staffDao;
 
-    /**
-     * 保存员工
-     *
-     * @param staffPO
-     * @return
-     */
+
     @Override
-    public int insert(StaffPO staffPO) {
-        return 0;
+    public StaffPO insert(StaffPO staffPO) {
+        return null;
     }
 
-    /**
-     * 删除员工
-     *
-     * @param staffPO
-     * @return
-     */
     @Override
-    public int delete(StaffPO staffPO) {
-        return 0;
+    public void setLockState(int id, int companyId, boolean lockFlag) {
+
     }
 
-    /**
-     * 根据id获取
-     *
-     * @return
-     */
     @Override
-    public StaffPO getById() {
+    public void setOnlineState(int id, int companyId, boolean showFlag) {
+
+    }
+
+    @Override
+    public void delete(int id, int companyId) {
+
+    }
+
+    @Override
+    public void logicDelete(int id, int companyId) {
+
+    }
+
+    @Override
+    public StaffPO update(StaffPO staffPO) {
+        return null;
+    }
+
+    @Override
+    public StaffPO getById(int id, int companyId) {
         return null;
     }
 
@@ -75,22 +81,38 @@ public class StaffServiceImpl implements StaffService {
     /**
      * 登录
      *
-     * @param userName  用户名
-     * @param password  密码
-     * @param companyId 公司id
+     * @param userName 用户名
+     * @param password 密码
      * @return
      */
     @Override
-    public List<CompanyPO> Login(String userName, String password, int companyId) {
-        //TODO 未完成
-        StaffPO staff = staffDao.login(userName, password, companyId);
-        if (null == staff) {
+    public List<CompanyPO> getCompanyList(String userName, String password) {
+        List<CompanyPO> companyList = staffDao.getCompanyList(userName, password);
+        if (null == companyList || companyList.isEmpty()) {
             //用户不存在
             throw new RException(ExceptionEnum.USER_NOT_FIND);
-        } else if (staff.isLockFlag()) {
-            //用户已锁定
-            throw new RException(ExceptionEnum.USER_IS_LOCK);
         }
-        return null;
+        return companyList;
     }
+
+    @Override
+    public StaffPO loginWithCompanyId(String userName, String password, int companyId) {
+        StaffPO staffPO = staffDao.loginWithCompanyId(userName, password, companyId);
+        if (null == staffPO) {
+            //用户不存在
+            throw new RException(ExceptionEnum.USERNAME_OR_PASSWORD_ERROR);
+        } else if (staffPO.isLockFlag()) {
+            throw new RException(ExceptionEnum.USER_IS_LOCK);
+        } else if (staffPO.isDelFlag()) {
+            throw new RException(ExceptionEnum.USER_IS_DEL);
+        }
+        return staffPO;
+    }
+
+    @Override
+    public void heartBeatUpdate(int id, int companyId) {
+
+    }
+
+
 }

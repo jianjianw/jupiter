@@ -18,7 +18,24 @@ public interface StaffService {
      * @param
      * @return
      */
-    int insert(StaffPO staffPO);
+    StaffPO insert(StaffPO staffPO);
+
+    /**
+     * 设置员工锁定状态
+     *
+     * @param id
+     * @param lockFlag
+     */
+    void setLockState(int id, int companyId, boolean lockFlag);
+
+
+    /**
+     * 设置在线状态
+     *
+     * @param id
+     * @param showFlag
+     */
+    void setOnlineState(int id, int companyId, boolean showFlag);
 
     /**
      * 员工删除（物理删除）
@@ -26,14 +43,29 @@ public interface StaffService {
      * @param
      * @return
      */
-    int delete(StaffPO staffPO);
+    void delete(int id, int companyId);
+
+    /**
+     * 员工删除(逻辑删除)
+     *
+     * @param id
+     */
+    void logicDelete(int id, int companyId);
+
+    /**
+     * 修改
+     *
+     * @param staffPO
+     * @return
+     */
+    StaffPO update(StaffPO staffPO);
 
     /**
      * 根据ID获取员工
      *
      * @return
      */
-    StaffPO getById();
+    StaffPO getById(int id, int companyId);
 
     /**
      * 根据条件查询
@@ -44,13 +76,27 @@ public interface StaffService {
     List<StaffPO> findList(Map map);
 
     /**
-     * 登录
+     * 获取员工所在的所有的公司集合
      *
-     * @param userName  用户名
-     * @param password  密码
-     * @param companyId 公司id
+     * @param userName 用户名
+     * @param password 密码
+     * @return 用户所在公司集合
+     */
+    List<CompanyPO> getCompanyList(String userName, String password);
+
+    /**
+     * 根据用户名及密码和公司Id进行登录
+     *
+     * @param userName
+     * @param password
+     * @param companyId
      * @return
      */
-    List<CompanyPO> Login(String userName, String password, int companyId);
+    StaffPO loginWithCompanyId(String userName, String password, int companyId);
+
+    /**
+     * 心跳更新
+     */
+    void heartBeatUpdate(int id, int companyId);
 
 }

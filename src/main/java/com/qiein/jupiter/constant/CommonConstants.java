@@ -27,4 +27,14 @@ public class CommonConstants {
      * 密码不能为空
      */
     public final static String PASS_WORD_NOT_NULL = "密码不能为空";
+
+    /**
+     * 用户登录错误次数过期时间，1小时
+     */
+    public final static int LOGIN_ERROR_NUM_EXPIRE_TIME = 1;
+
+    /**
+     * token过期时间，12小时
+     */
+    public final static int TOKEN_EXPIRE_TIME = 12;
 }

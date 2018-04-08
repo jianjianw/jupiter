@@ -21,6 +21,11 @@ public class RedisConstants {
     private final static String userLoginErrNum = "user_login_err_num";
 
     /**
+     * 用户token
+     */
+    private final static String userToken = "user_token";
+
+    /**
      * 用户验证码
      *
      * @param userName
@@ -38,5 +43,15 @@ public class RedisConstants {
      */
     public static String getUserLoginErrNum(String userName) {
         return userLoginErrNum + splitChar + userName;
+    }
+
+    /**
+     * 获取用户token key
+     *
+     * @param userName
+     * @return
+     */
+    public static String getUserToken(String userName) {
+        return userToken + splitChar + userName;
     }
 }

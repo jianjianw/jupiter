@@ -1,5 +1,7 @@
 package com.qiein.jupiter.exception;
 
+import org.omg.CORBA.PUBLIC_MEMBER;
+
 /**
  * 自定义异常
  */
@@ -13,6 +15,17 @@ public class RException extends RuntimeException {
         super(exceptionEnum.getMsg());
         this.msg = exceptionEnum.getMsg();
         this.code = exceptionEnum.getCode();
+    }
+
+    public RException(String msg, Throwable e) {
+        super(msg, e);
+        this.msg = msg;
+    }
+
+    public RException(String msg, int code) {
+        super(msg);
+        this.msg = msg;
+        this.code = code;
     }
 
     public String getMsg() {

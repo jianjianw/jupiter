@@ -33,8 +33,5 @@ public class StaffServiceImplTest {
     public void findList() {
     }
 
-    @Test
-    public void login() {
-        staffService.Login("17630506860", "123456", 0);
-    }
+
 }

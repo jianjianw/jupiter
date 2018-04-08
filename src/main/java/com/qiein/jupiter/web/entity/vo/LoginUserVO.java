@@ -21,6 +21,8 @@ public class LoginUserVO {
     @NotEmpty(message = CommonConstants.PASS_WORD_NOT_NULL)
     private String password;
 
+    private int companyId;
+
     /**
      * 验证码
      */
@@ -48,5 +50,13 @@ public class LoginUserVO {
 
     public void setVerifyCode(String verifyCode) {
         this.verifyCode = verifyCode;
+    }
+
+    public int getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(int companyId) {
+        this.companyId = companyId;
     }
 }

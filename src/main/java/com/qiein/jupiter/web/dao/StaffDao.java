@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.dao;
 
+import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -17,10 +18,19 @@ public interface StaffDao extends BaseDao<StaffPO> {
      *
      * @param userName
      * @param password
-     * @param companyId
      * @return
      */
-    StaffPO login(@Param("userName") String userName,
-                  @Param("password") String password,
-                  @Param("companyId") int companyId);
+    List<CompanyPO> getCompanyList(@Param("userName") String userName,
+                                   @Param("password") String password);
+
+    /**
+     * 根据公司Id登录
+     *
+     * @param userName
+     * @param password
+     * @return
+     */
+    StaffPO loginWithCompanyId(@Param("userName") String userName,
+                               @Param("password") String password,
+                               @Param("companyId") int companyId);
 }

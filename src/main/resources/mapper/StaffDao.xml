@@ -13,8 +13,8 @@
         <result column="HEADIMG" property="headImg" jdbcType="VARCHAR"/>
         <result column="TOKEN" property="token" jdbcType="VARCHAR"/>
         <result column="ISSHOW" property="showFlag" jdbcType="INTEGER"/>
-        <result column="ISLOCK" property="lockFlag" jdbcType="BIT"/>
-        <result column="ISDEL" property="delFlag" jdbcType="BIT"/>
+        <result column="ISLOCK" property="lockFlag" jdbcType="BOOLEAN"/>
+        <result column="ISDEL" property="delFlag" jdbcType="BOOLEAN"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -42,7 +42,18 @@
         VALUES (#{groupId}, #{groupName}, #{parentId}, #{priority}, #{groupType}, #{companyId})
     </insert>
 
-    <select id="login" resultType="com.qiein.jupiter.web.entity.po.StaffPO">
+    <select id="getCompanyList" resultType="com.qiein.jupiter.web.entity.po.CompanyPO">
+       SELECT company.ID,company.COMPNAME,
+         company.LOGO
+        FROM hm_pub_staff as staff
+        LEFT JOIN
+          hm_pub_company as company
+          ON staff.COMPANYID=company.ID
+        WHERE staff.PHONE=#{userName}
+        AND staff.PASSWORD=#{password}
+    </select>
+
+    <select id="loginWithCompanyId" resultMap="baseMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM

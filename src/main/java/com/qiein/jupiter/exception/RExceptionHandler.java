@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  */
 @Order(-1)
 @RestControllerAdvice
-public class RRExceptionHandler {
+public class RExceptionHandler {
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
