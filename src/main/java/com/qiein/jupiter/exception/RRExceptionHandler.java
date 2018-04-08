@@ -4,8 +4,11 @@ import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.Order;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -48,5 +51,15 @@ public class RRExceptionHandler {
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResultInfo handleMethodNotException() {
         return ResultInfoUtil.error(ExceptionEnum.HTTP_METHOD_NOT_SUPPORT);
+    }
+
+    /**
+     * 参数校验失败的异常
+     *
+     * @return
+     */
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResultInfo handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        return ResultInfoUtil.error(-100000, e.getMessage());
     }
 }

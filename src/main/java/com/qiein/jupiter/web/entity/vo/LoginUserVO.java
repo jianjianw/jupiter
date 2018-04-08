@@ -1,5 +1,9 @@
 package com.qiein.jupiter.web.entity.vo;
 
+import com.qiein.jupiter.constant.CommonConstants;
+import org.hibernate.validator.constraints.NotEmpty;
+
+
 /**
  * 登录用户业务对象
  */
@@ -8,11 +12,13 @@ public class LoginUserVO {
     /**
      * 用户名
      */
+    @NotEmpty(message = CommonConstants.USER_NAME_NOT_NULL)
     private String userName;
 
     /**
      * 密码
      */
+    @NotEmpty(message = CommonConstants.PASS_WORD_NOT_NULL)
     private String password;
 
     /**

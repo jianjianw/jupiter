@@ -9,6 +9,7 @@ import com.qiein.jupiter.web.entity.vo.LoginUserVO;
 import com.qiein.jupiter.web.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,12 +38,11 @@ public class StaffController extends BaseController {
     /**
      * 用户登录
      *
-     * @param request
      * @param loginUserVO
      * @return
      */
     @PostMapping("/login")
-    public ResultInfo login(HttpServletRequest request, @RequestBody LoginUserVO loginUserVO) {
+    public ResultInfo login(@RequestBody LoginUserVO loginUserVO) {
         String userName = loginUserVO.getUserName();
         String password = loginUserVO.getPassword();
         String verifyCode = loginUserVO.getVerifyCode();

@@ -1,7 +1,5 @@
 package com.qiein.jupiter.util;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
