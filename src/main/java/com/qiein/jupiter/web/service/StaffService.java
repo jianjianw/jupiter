@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.service;
 
+import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 
 import java.util.List;
@@ -50,6 +51,6 @@ public interface StaffService {
      * @param companyId 公司id
      * @return
      */
-    StaffPO Login(String userName, String password, int companyId);
+    List<CompanyPO> Login(String userName, String password, int companyId);
 
 }

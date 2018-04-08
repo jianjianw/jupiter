@@ -5,10 +5,15 @@ package com.qiein.jupiter.exception;
  */
 public enum ExceptionEnum {
     UNKNOW_ERROR(-1, "未知错误"),
-    USER_NOT_FIND(-100001, "用户不存在"),
-    USER_IS_DEL(-100001, "用户已离职"),
-    USER_IS_LOCK(-100002, "用户已锁定"),
-    PASSWORD_ERROR(-100003, "密码错误"),;
+    USER_NOT_FIND(100001, "用户不存在"),
+    USER_IS_DEL(100001, "用户已离职"),
+    USER_IS_LOCK(100002, "用户已锁定"),
+    PASSWORD_ERROR(100003, "密码错误"),
+    USERNAME_NULL(100004, "用户名不能为空"),
+    PASSWORD_NULL(100005, "密码不能为空"),
+    VERIFY_NULL(100006, "验证码不能为空"),
+    PHONE_NULL(100007, "手机号码不能为空"),
+    VERIFY_ERROR(100008, "验证码错误");
 
     private Integer code;
 
