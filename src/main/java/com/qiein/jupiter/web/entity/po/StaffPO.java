@@ -63,7 +63,6 @@ public class StaffPO extends BaseEntity {
     /**
      * 是否删除
      */
-
     private boolean delFlag;
 
     public String getNickName() {

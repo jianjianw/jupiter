@@ -48,10 +48,11 @@ public class RedisConstants {
     /**
      * 获取用户token key
      *
-     * @param userName
+     * @param uid 用户id
+     * @param cid 公司id
      * @return
      */
-    public static String getUserToken(String userName) {
-        return userToken + splitChar + userName;
+    public static String getUserToken(int uid, int cid) {
+        return userToken + splitChar + uid + splitChar + cid;
     }
 }

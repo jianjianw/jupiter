@@ -28,4 +28,33 @@ public class CommonConstants {
      * token过期时间，12小时
      */
     public final static int TOKEN_EXPIRE_TIME = 12;
+
+    /**
+     * jwt body
+     */
+    public final static String JWT_BODY = "jwtBody";
+
+    /**
+     * 保存成功
+     */
+    public final static String SAVE_SUCCESS = "保存成功";
+    /**
+     * 开发环境
+     */
+    public final static String DEV = "dev";
+
+    /**
+     * token
+     */
+    public final static String TOKEN = "token";
+
+    /**
+     * uid
+     */
+    public final static String UID = "uid";
+
+    /**
+     * cid
+     */
+    public final static String CID = "cid";
 }

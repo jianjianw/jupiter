@@ -88,17 +88,25 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public List<CompanyPO> getCompanyList(String userName, String password) {
         List<CompanyPO> companyList = staffDao.getCompanyList(userName, password);
-        if (null == companyList || companyList.isEmpty()) {
+        if (companyList == null || companyList.isEmpty()) {
             //用户不存在
             throw new RException(ExceptionEnum.USER_NOT_FIND);
         }
         return companyList;
     }
 
+    /**
+     * 根据公司id登录
+     *
+     * @param userName
+     * @param password
+     * @param companyId
+     * @return
+     */
     @Override
     public StaffPO loginWithCompanyId(String userName, String password, int companyId) {
         StaffPO staffPO = staffDao.loginWithCompanyId(userName, password, companyId);
-        if (null == staffPO) {
+        if (staffPO == null) {
             //用户不存在
             throw new RException(ExceptionEnum.USERNAME_OR_PASSWORD_ERROR);
         } else if (staffPO.isLockFlag()) {
@@ -109,9 +117,29 @@ public class StaffServiceImpl implements StaffService {
         return staffPO;
     }
 
+    /**
+     * 更新心跳
+     *
+     * @param id
+     * @param companyId
+     */
     @Override
     public void heartBeatUpdate(int id, int companyId) {
 
+    }
+
+    /**
+     * 更新token
+     *
+     * @param staffPO
+     */
+    @Override
+    public void updateToken(StaffPO staffPO) {
+        StaffPO tokenStaff = new StaffPO();
+        tokenStaff.setId(staffPO.getId());
+        tokenStaff.setToken(staffPO.getToken());
+        tokenStaff.setCompanyId(staffPO.getCompanyId());
+        staffDao.update(tokenStaff);
     }
 
 

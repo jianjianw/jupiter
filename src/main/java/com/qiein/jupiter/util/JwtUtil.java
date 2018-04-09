@@ -6,8 +6,11 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 import java.util.UUID;
 
+/**
+ * jwt 工具类
+ */
 public class JwtUtil {
-    private final static String key = "";
+    private final static String key = "qieK4cua9YHNs98mztRin";
 
     /**
      * 加密

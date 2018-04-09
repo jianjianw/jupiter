@@ -42,6 +42,52 @@
         VALUES (#{groupId}, #{groupName}, #{parentId}, #{priority}, #{groupType}, #{companyId})
     </insert>
 
+    <update id="update" parameterType="com.qiein.jupiter.web.entity.po.StaffPO">
+        UPDATE
+        <include refid="table_name"/>
+        <set>
+            <if test="nickName != null">
+                NICKNAME = #{nickName},
+            </if>
+            <if test="phone != null">
+                PHONE = #{phone},
+            </if>
+            <if test="userName != null">
+                USERNAME = #{userName},
+            </if>
+            <if test="password != null">
+                PASSWORD = #{password},
+            </if>
+            <if test="companyId != null">
+                COMPANYID = #{companyId},
+            </if>
+            <if test="corpId != null">
+                CORPID = #{corpId},
+            </if>
+            <if test="dingUserId != null">
+                DINGUSERID = #{dingUserId},
+            </if>
+            <if test="openId != null">
+                OPENID = #{openId},
+            </if>
+            <if test="headImg != null">
+                HEADIMG = #{headImg},
+            </if>
+            <if test="token != null">
+                TOKEN = #{token},
+            </if>
+            <if test="showFlag != null">
+                ISSHOW = #{showFlag},
+            </if>
+            <if test="lockFlag != null">
+                ISLOCK = #{lockFlag},
+            </if>
+            <if test="delFlag != null">
+                ISDEL = #{delFlag},
+            </if>
+        </set>
+    </update>
+
     <select id="getCompanyList" resultType="com.qiein.jupiter.web.entity.po.CompanyPO">
        SELECT company.ID,company.COMPNAME,
          company.LOGO

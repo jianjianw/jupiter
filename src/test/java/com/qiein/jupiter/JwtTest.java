@@ -1,5 +1,6 @@
 package com.qiein.jupiter;
 
+import com.alibaba.fastjson.JSONObject;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.junit.Test;
@@ -12,14 +13,19 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class JwtTest {
-    @Value("${jwt-token}")
-    private String key;
+    private String key = "qieK4cua9YHNs98mztRin";
 
     @Test
-    public void compact(){
+    public void compact() {
 //        Key key = MacProvider.generateKey();
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("id", 1);
+        jsonObject.put("phone", "131000000000");
+        jsonObject.put("uid", 1);
+        jsonObject.put("cid", 1);
+
         String compactJws = Jwts.builder()
-                .setSubject("Joe")
+                .setSubject(jsonObject.toString())
                 .signWith(SignatureAlgorithm.HS512, key)
                 .compact();
         System.out.println(compactJws);
@@ -28,8 +34,9 @@ public class JwtTest {
     }
 
     @Test
-    public  void parse(){
-        String compactJws="eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKb2UifQ.SjYwBMIgUdaMwtL5Y1MT_2EwDhEDwS9dybMh6NGzxtGypf1jzeZCnnwHtT8O7G541WsEmiuhjs0-retHvpdDjQ";
-        Jwts.parser().setSigningKey(key).parseClaimsJws(compactJws).getBody().getSubject().equals("Joe");
+    public void parse() {
+        String j = "eyJhbGciOiJIUzUxMiJ9.1eyJzdWIiOiJ7XCJ1aWRcIjoxLFwiaWRcIjoxLFwicGhvbmVcIjpcIjEzMTAwMDAwMDAwMFwiLFwiY2lkXCI6MX0ifQ.SV-60W1_E2Kr1RbKgyFtMs3fUDFrPyMgoCRPRy3C3SoiDhAiDbrdEYF6sSQuOl86lODhnuaApq3JUDoHrct3OA";
+        String subject = Jwts.parser().setSigningKey(key).parseClaimsJws(j).getBody().getSubject();
+        System.out.println(subject);
     }
 }

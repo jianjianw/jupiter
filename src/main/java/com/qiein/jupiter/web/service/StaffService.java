@@ -99,4 +99,10 @@ public interface StaffService {
      */
     void heartBeatUpdate(int id, int companyId);
 
+    /**
+     * 更新token
+     * @param staffPO
+     */
+    void updateToken(StaffPO staffPO);
+
 }

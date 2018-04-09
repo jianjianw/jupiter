@@ -6,6 +6,10 @@ package com.qiein.jupiter.exception;
 public enum ExceptionEnum {
     UNKNOW_ERROR(-1, "未知错误"),
     HTTP_METHOD_NOT_SUPPORT(-2, "不支持的请求方法类型"),
+    TOKEN_NULL(-3, "token不存在"),
+    TOKEN_INVALID(-4, "token失效"),
+    TOKEN_VERIFY_FAIL(-5, "token验证失败"),
+    VERIFY_PARAM_INCOMPLETE(-6, "验证参数不全"),
     USER_NOT_FIND(100000, "用户不存在"),
     USER_IS_DEL(100001, "用户已被删除"),
     USER_IS_LOCK(100002, "用户已锁定"),

@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.constant.CommonConstants;
 import com.qiein.jupiter.constant.RedisConstants;
 import com.qiein.jupiter.exception.ExceptionEnum;
@@ -52,8 +53,10 @@ public class StaffController extends BaseController {
         String userLoginErrNum = RedisConstants.getUserLoginErrNum(loginUserVO.getUserName());
         try {
             List<CompanyPO> companyList = staffService.getCompanyList(loginUserVO.getUserName(), loginUserVO.getPassword());
-            //登录成功，移除错误次数
-            valueOperations.getOperations().delete(userLoginErrNum);
+            if (companyList != null && !companyList.isEmpty()) {
+                //登录成功，移除错误次数
+                valueOperations.getOperations().delete(userLoginErrNum);
+            }
             return ResultInfoUtil.success(companyList);
         } catch (RException e) {
             //将错误次数+1
@@ -77,17 +80,15 @@ public class StaffController extends BaseController {
         //返回结果
         String userLoginErrNum = RedisConstants.getUserLoginErrNum(userName);
         try {
-            //登录成功，移除错误次数
-            valueOperations.getOperations().delete(userLoginErrNum);
             StaffPO staffPO = staffService.loginWithCompanyId(userName, password, loginUserVO.getCompanyId());
-            //生成token
-            staffPO.setToken(JwtUtil.generatorToken());
-            //token放入缓存,设置过期时间
-            valueOperations.set(
-                    RedisConstants.getUserToken(userName),
-                    staffPO.getToken(),
-                    CommonConstants.TOKEN_EXPIRE_TIME,
-                    TimeUnit.HOURS);
+            if (staffPO != null) {
+                //登录成功，移除错误次数
+                valueOperations.getOperations().delete(userLoginErrNum);
+                //生成token 并更新到数据库
+                String token = executeRedisToken(staffPO);
+                staffPO.setToken(token);
+                staffService.updateToken(staffPO);
+            }
             return ResultInfoUtil.success(staffPO);
         } catch (RException e) {
             //将错误次数+1
@@ -105,7 +106,7 @@ public class StaffController extends BaseController {
     public boolean needVerityCode(String userName) {
         //判断是否需要验证码
         String userLoginErrNum = valueOperations.get(RedisConstants.getUserLoginErrNum(userName));
-        if (null == userLoginErrNum) {
+        if (userLoginErrNum == null) {
             //如果没有查询到，说明是第一次，设置默认值0,过期时间为1小时
             valueOperations.set(
                     RedisConstants.getUserLoginErrNum(userName),
@@ -145,7 +146,7 @@ public class StaffController extends BaseController {
         String password = loginUserVO.getPassword();
         String verifyCode = loginUserVO.getVerifyCode();
         //校验用户名
-        if (null == userName) {
+        if (userName == null) {
             //用户名空
             throw new RException(ExceptionEnum.USERNAME_NULL);
         } else {
@@ -156,7 +157,7 @@ public class StaffController extends BaseController {
             }
         }
         //校验密码
-        if (null == password) {
+        if (password == null) {
             //密码空
             throw new RException(ExceptionEnum.PASSWORD_NULL);
         } else {
@@ -165,7 +166,7 @@ public class StaffController extends BaseController {
         //判断是否需要验证码以及验证码正确性
         if (needVerityCode(userName)) {
             //验证码为空
-            if (null == verifyCode) {
+            if (verifyCode == null) {
                 throw new RException(ExceptionEnum.VERIFY_NULL);
             } else {
                 String verifyCodeTrue = RedisConstants.getVerifyCode(userName);
@@ -175,5 +176,37 @@ public class StaffController extends BaseController {
                 }
             }
         }
+    }
+
+    /**
+     * 生成redis token
+     *
+     * @param staffPO
+     */
+    private String executeRedisToken(StaffPO staffPO) {
+        //生成token
+        String token = JwtUtil.generatorToken();
+        staffPO.setToken(token);
+        //token放入缓存,设置过期时间
+        valueOperations.set(
+                RedisConstants.getUserToken(staffPO.getId(), staffPO.getCompanyId()),
+                staffPO.getToken(),
+                CommonConstants.TOKEN_EXPIRE_TIME,
+                TimeUnit.HOURS);
+        return token;
+    }
+
+    /**
+     * 生成Jwt
+     *
+     * @param staffPO
+     * @return
+     */
+    private String executeJwtToken(StaffPO staffPO) {
+        StaffPO jwtStaff = new StaffPO();
+        jwtStaff.setId(staffPO.getId());
+        jwtStaff.setCompanyId(staffPO.getCompanyId());
+        jwtStaff.setPhone(staffPO.getPhone());
+        return JwtUtil.encrypt(JSONObject.toJSONString(jwtStaff));
     }
 }
