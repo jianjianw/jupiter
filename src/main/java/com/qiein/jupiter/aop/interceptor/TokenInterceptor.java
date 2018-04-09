@@ -45,10 +45,11 @@ public class TokenInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) {
         //如果是dev环境，不拦截
         if (CommonConstants.DEV.equalsIgnoreCase(active)) {
+            httpServletRequest.setAttribute(CommonConstants.VERIFY_PARAM, HttpUtil.getRequestToken(httpServletRequest));
             return true;
         }
         //获取请求token
-        VerifyParamDTO token = getRequestToken(httpServletRequest);
+        VerifyParamDTO token = HttpUtil.getRequestToken(httpServletRequest);
         //从redis中获取token并检测
         checkRedisToken(token, httpServletRequest);
         return true;
@@ -64,30 +65,11 @@ public class TokenInterceptor implements HandlerInterceptor {
             httpServletResponse, Object o, Exception e) {
     }
 
-    /**
-     * 获取请求的 验证参数
-     */
-    private VerifyParamDTO getRequestToken(HttpServletRequest request) {
-        String token = HttpUtil.getRequestParam(request, CommonConstants.TOKEN);
-        String uid = HttpUtil.getRequestParam(request, CommonConstants.UID);
-        String cid = HttpUtil.getRequestParam(request, CommonConstants.CID);
-        //验证参数不全
-        if (StringUtil.isNullStr(token) || StringUtil.isNullStr(uid) || StringUtil.isNullStr(cid)) {
-            throw new RException(ExceptionEnum.VERIFY_PARAM_INCOMPLETE);
-        }
-        //封装验证参数
-        VerifyParamDTO verifyParamDTO = new VerifyParamDTO();
-        verifyParamDTO.setToken(token);
-        verifyParamDTO.setCid(Integer.valueOf(cid));
-        verifyParamDTO.setUid(Integer.valueOf(uid));
-        return verifyParamDTO;
-    }
-
 
     /**
      * 检测redis token方案
      *
-     * @param verifyParamDTO        token
+     * @param verifyParamDTO     token
      * @param httpServletRequest request
      */
     private void checkRedisToken(VerifyParamDTO verifyParamDTO, HttpServletRequest httpServletRequest) {
@@ -101,13 +83,13 @@ public class TokenInterceptor implements HandlerInterceptor {
             throw new RException(ExceptionEnum.TOKEN_VERIFY_FAIL);
         }
         //将uid 和 cid 放入request
-        httpServletRequest.setAttribute(CommonConstants.UID, verifyParamDTO);
+        httpServletRequest.setAttribute(CommonConstants.VERIFY_PARAM, verifyParamDTO);
     }
 
     /**
      * 检测jwt方案
      *
-     * @param verifyParamDTO        参数
+     * @param verifyParamDTO     参数
      * @param httpServletRequest request
      */
     private void checkJwt(VerifyParamDTO verifyParamDTO, HttpServletRequest httpServletRequest) {

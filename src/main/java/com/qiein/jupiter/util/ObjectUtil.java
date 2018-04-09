@@ -11,7 +11,7 @@ import java.lang.reflect.Type;
  */
 public class ObjectUtil {
 
-    public static void reflect(Object obj) throws Exception {
+    private static void reflect(Object obj) throws Exception {
         Class cls = obj.getClass();
         Field[] fields = cls.getDeclaredFields();
         for (Field f : fields) {

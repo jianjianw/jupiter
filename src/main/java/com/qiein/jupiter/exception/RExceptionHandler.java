@@ -10,10 +10,15 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 全局方法异常处理器
@@ -63,7 +68,13 @@ public class RExceptionHandler {
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResultInfo handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        return ResultInfoUtil.error(-100000, e.getMessage());
+        List<ObjectError> allErrors = e.getBindingResult().getAllErrors();
+        StringBuilder stringBuffer = new StringBuilder();
+        for (ObjectError allError : allErrors) {
+            stringBuffer.append(allError.getDefaultMessage()).append(";");
+
+        }
+        return ResultInfoUtil.error(-100000, stringBuffer.toString());
     }
 
     /**

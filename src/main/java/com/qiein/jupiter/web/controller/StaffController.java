@@ -1,12 +1,14 @@
 package com.qiein.jupiter.web.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.qiein.jupiter.aop.annotation.ObjParamTrim;
+import com.qiein.jupiter.aop.annotation.LoginLog;
+import com.qiein.jupiter.aop.annotation.NotEmpty;
 import com.qiein.jupiter.constant.CommonConstants;
 import com.qiein.jupiter.constant.RedisConstants;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.*;
+import com.qiein.jupiter.web.entity.dto.VerifyParamDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.LoginUserVO;
@@ -41,23 +43,13 @@ public class StaffController extends BaseController {
 
 
     @PostMapping("/insert")
-    public ResultInfo insert(HttpServletRequest request, @ObjParamTrim @RequestBody StaffPO staffPO) {
-        //手机号空
-        if (StringUtil.isNullStr(staffPO.getPhone())) {
-            throw new RException(ExceptionEnum.PHONE_NULL);
-        }
-        //密码空
-        if (StringUtil.isNullStr(staffPO.getPassword())) {
-            throw new RException(ExceptionEnum.PASSWORD_NULL);
-        }
-        //用户名空
-        if (StringUtil.isNullStr(staffPO.getUserName())) {
-            throw new RException(ExceptionEnum.USERNAME_NULL);
-        }
-        //艺名
-        if (StringUtil.isNullStr(staffPO.getNickName())) {
-            throw new RException(ExceptionEnum.NICKNAME_NULL);
-        }
+    @LoginLog
+    public ResultInfo insert(HttpServletRequest request, @RequestBody @Validated StaffPO staffPO) {
+        //设置cid
+        VerifyParamDTO verifyParam = getVerifyParam(request);
+        staffPO.setCompanyId(verifyParam.getCid());
+        //对象参数trim
+        ObjectUtil.objectStrParamTrim(staffPO);
         staffService.insert(staffPO);
         return ResultInfoUtil.success();
     }
@@ -70,8 +62,10 @@ public class StaffController extends BaseController {
      * @return
      */
     @PostMapping("/get_company_list")
-    public ResultInfo getCompanyList(@RequestBody LoginUserVO loginUserVO) {
-        //校验用户
+    public ResultInfo getCompanyList(@RequestBody @Validated LoginUserVO loginUserVO) {
+        //对象参数trim
+        ObjectUtil.objectStrParamTrim(loginUserVO);
+        //校验用户验证码
         checkLoginUser(loginUserVO);
         //返回结果
         String userLoginErrNum = RedisConstants.getUserLoginErrNum(loginUserVO.getUserName());
@@ -96,14 +90,21 @@ public class StaffController extends BaseController {
      * @return
      */
     @PostMapping("/login_with_company_id")
-    public ResultInfo loginWithCompanyId(@RequestBody LoginUserVO loginUserVO) {
-        //校验用户
+    public ResultInfo loginWithCompanyId(@RequestBody @Validated LoginUserVO loginUserVO) {
+        //对象参数trim
+        ObjectUtil.objectStrParamTrim(loginUserVO);
+        //校验用户验证码
         checkLoginUser(loginUserVO);
         String userName = loginUserVO.getUserName();
         String password = loginUserVO.getPassword();
-        //返回结果
+        //校验公司Id
+        if (loginUserVO.getCompanyId() == 0) {
+            throw new RException(ExceptionEnum.COMPANYID_NULL);
+        }
+        //错误次数
         String userLoginErrNum = RedisConstants.getUserLoginErrNum(userName);
         try {
+            //返回结果
             StaffPO staffPO = staffService.loginWithCompanyId(userName, password, loginUserVO.getCompanyId());
             if (staffPO != null) {
                 //登录成功，移除错误次数
@@ -127,7 +128,7 @@ public class StaffController extends BaseController {
      * @param userName 用户名
      */
     @GetMapping("/need_verity_code")
-    public boolean needVerityCode(String userName) {
+    public boolean needVerityCode(@NotEmpty String userName) {
         //判断是否需要验证码
         String userLoginErrNum = valueOperations.get(RedisConstants.getUserLoginErrNum(userName));
         if (userLoginErrNum == null) {
@@ -152,7 +153,7 @@ public class StaffController extends BaseController {
      * @param response
      */
     @GetMapping("/verify_code")
-    public void loginCode(HttpServletResponse response, String userName) {
+    public void loginCode(HttpServletResponse response, @RequestParam("phone") String userName) {
         if (null == userName || !RegexUtils.checkMobile(userName)) {
             return;
         }
@@ -161,32 +162,15 @@ public class StaffController extends BaseController {
     }
 
     /**
-     * 校验用户
+     * 校验用户验证码
      *
      * @param loginUserVO
      */
     private void checkLoginUser(LoginUserVO loginUserVO) {
+        //对象参数trim
+        ObjectUtil.objectStrParamTrim(loginUserVO);
         String userName = loginUserVO.getUserName();
-        String password = loginUserVO.getPassword();
         String verifyCode = loginUserVO.getVerifyCode();
-        //校验用户名
-        if (userName == null) {
-            //用户名空
-            throw new RException(ExceptionEnum.USERNAME_NULL);
-        } else {
-            loginUserVO.setUserName(StringUtil.nullToStrTrim(userName));
-            //手机号码格式错误
-            if (!RegexUtils.checkMobile(userName)) {
-                throw new RException(ExceptionEnum.PHONE_FOMAT_ERROR);
-            }
-        }
-        //校验密码
-        if (password == null) {
-            //密码空
-            throw new RException(ExceptionEnum.PASSWORD_NULL);
-        } else {
-            loginUserVO.setPassword(StringUtil.nullToStrTrim(password));
-        }
         //判断是否需要验证码以及验证码正确性
         if (needVerityCode(userName)) {
             //验证码为空

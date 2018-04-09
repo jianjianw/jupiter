@@ -1,6 +1,9 @@
 package com.qiein.jupiter.web.entity.po;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.qiein.jupiter.aop.annotation.NotEmpty;
+import com.qiein.jupiter.constant.ValidatorConstants;
+import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.web.entity.BaseEntity;
 
 /**
@@ -13,22 +16,26 @@ public class StaffPO extends BaseEntity {
     /**
      * 昵称
      */
+    @NotEmpty(message = "{staff.name.null}")
     private String nickName;
     /**
      * 手机号码
      */
+    @NotEmpty(message = "{staff.phone.null}")
     private String phone;
     /**
      * 全名
      */
+    @NotEmpty(message = "{staff.userName.null}")
     private String userName;
     /**
      * 密码
      */
-    @JSONField(serialize=false)
+    @NotEmpty(message = "{staff.password.null}")
+    @JSONField(serialize = false)
     private String password;
     /**
-     *企业ID
+     * 企业ID
      */
     private int companyId;
     /**

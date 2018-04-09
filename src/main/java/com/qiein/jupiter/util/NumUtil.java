@@ -7,9 +7,6 @@ import java.text.NumberFormat;
 
 /**
  * 数字格式化的类
- *
- * @author fengshuonan
- * @date 2016年11月30日 下午5:58:40
  */
 public class NumUtil {
 

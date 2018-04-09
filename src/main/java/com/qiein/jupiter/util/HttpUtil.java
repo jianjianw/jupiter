@@ -1,6 +1,10 @@
 package com.qiein.jupiter.util;
 
 import com.github.pagehelper.util.StringUtil;
+import com.qiein.jupiter.constant.CommonConstants;
+import com.qiein.jupiter.exception.ExceptionEnum;
+import com.qiein.jupiter.exception.RException;
+import com.qiein.jupiter.web.entity.dto.VerifyParamDTO;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,5 +27,26 @@ public class HttpUtil {
             rParam = httpRequest.getParameter(param);
         }
         return rParam;
+    }
+
+    /**
+     * 获取请求的 验证参数
+     */
+    public static VerifyParamDTO getRequestToken(HttpServletRequest request) {
+        String token = HttpUtil.getRequestParam(request, CommonConstants.TOKEN);
+        String uid = HttpUtil.getRequestParam(request, CommonConstants.UID);
+        String cid = HttpUtil.getRequestParam(request, CommonConstants.CID);
+        //验证参数不全
+        if (com.qiein.jupiter.util.StringUtil.isNullStr(token)
+                || com.qiein.jupiter.util.StringUtil.isNullStr(uid)
+                || com.qiein.jupiter.util.StringUtil.isNullStr(cid)) {
+            throw new RException(ExceptionEnum.VERIFY_PARAM_INCOMPLETE);
+        }
+        //封装验证参数
+        VerifyParamDTO verifyParamDTO = new VerifyParamDTO();
+        verifyParamDTO.setToken(token);
+        verifyParamDTO.setCid(Integer.valueOf(cid));
+        verifyParamDTO.setUid(Integer.valueOf(uid));
+        return verifyParamDTO;
     }
 }
