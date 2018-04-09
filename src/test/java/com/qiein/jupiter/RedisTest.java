@@ -9,6 +9,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Set;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class RedisTest {
@@ -19,5 +21,12 @@ public class RedisTest {
     @Test
     public void testValueOperation(){
         redisTemplate.opsForValue().set("hello","123" );
+    }
+
+    @Test
+    public void test(){
+        Set<String> keys = redisTemplate.keys("*");
+        System.out.println(keys);
+
     }
 }

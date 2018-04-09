@@ -3,7 +3,7 @@ package com.qiein.jupiter.web.entity.dto;
 /**
  * 验证token uid cid 数据传输对象
  */
-public class VerifyParam {
+public class VerifyParamDTO {
     /**
      * token
      */
