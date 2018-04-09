@@ -101,8 +101,7 @@ public class TokenInterceptor implements HandlerInterceptor {
             throw new RException(ExceptionEnum.TOKEN_VERIFY_FAIL);
         }
         //将uid 和 cid 放入request
-        httpServletRequest.setAttribute(CommonConstants.UID, verifyParamDTO.getUid());
-        httpServletRequest.setAttribute(CommonConstants.CID, verifyParamDTO.getCid());
+        httpServletRequest.setAttribute(CommonConstants.UID, verifyParamDTO);
     }
 
     /**

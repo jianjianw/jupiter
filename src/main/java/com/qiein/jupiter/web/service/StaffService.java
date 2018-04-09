@@ -11,7 +11,6 @@ import java.util.Map;
  */
 public interface StaffService {
 
-
     /**
      * 员工新增
      *
@@ -26,7 +25,7 @@ public interface StaffService {
      * @param id
      * @param lockFlag
      */
-    void setLockState(int id, int companyId, boolean lockFlag);
+    int setLockState(int id, int companyId, boolean lockFlag);
 
 
     /**
@@ -35,7 +34,7 @@ public interface StaffService {
      * @param id
      * @param showFlag
      */
-    void setOnlineState(int id, int companyId, boolean showFlag);
+    int setOnlineState(int id, int companyId, int showFlag);
 
     /**
      * 员工删除（物理删除）
@@ -43,14 +42,14 @@ public interface StaffService {
      * @param
      * @return
      */
-    void delete(int id, int companyId);
+    int delete(int id, int companyId);
 
     /**
      * 员工删除(逻辑删除)
      *
      * @param id
      */
-    void logicDelete(int id, int companyId);
+    int logicDelete(int id, int companyId);
 
     /**
      * 修改
@@ -58,7 +57,7 @@ public interface StaffService {
      * @param staffPO
      * @return
      */
-    StaffPO update(StaffPO staffPO);
+    int update(StaffPO staffPO);
 
     /**
      * 根据ID获取员工
@@ -101,8 +100,9 @@ public interface StaffService {
 
     /**
      * 更新token
+     *
      * @param staffPO
      */
-    void updateToken(StaffPO staffPO);
+    int updateToken(StaffPO staffPO);
 
 }

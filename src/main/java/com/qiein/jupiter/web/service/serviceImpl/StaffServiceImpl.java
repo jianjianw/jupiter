@@ -1,6 +1,5 @@
 package com.qiein.jupiter.web.service.serviceImpl;
 
-import com.fasterxml.jackson.annotation.JacksonAnnotation;
 import com.github.pagehelper.ISelect;
 import com.github.pagehelper.PageHelper;
 import com.qiein.jupiter.exception.ExceptionEnum;
@@ -11,7 +10,6 @@ import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -22,40 +20,98 @@ public class StaffServiceImpl implements StaffService {
     @Autowired
     private StaffDao staffDao;
 
-
+    /**
+     * 员工新增
+     *
+     * @param staffPO
+     * @return
+     */
     @Override
     public StaffPO insert(StaffPO staffPO) {
-        return null;
+        staffDao.insert(staffPO);
+        return staffPO;
     }
 
+    /**
+     * 员工锁定与解锁
+     *
+     * @param id
+     * @param companyId
+     * @param lockFlag
+     */
     @Override
-    public void setLockState(int id, int companyId, boolean lockFlag) {
-
+    public int setLockState(int id, int companyId, boolean lockFlag) {
+        StaffPO staffPO = new StaffPO();
+        staffPO.setId(id);
+        staffPO.setCompanyId(companyId);
+        staffPO.setLockFlag(lockFlag);
+        return staffDao.update(staffPO);
     }
 
+    /**
+     * 设置在线状态
+     *
+     * @param id
+     * @param companyId
+     * @param showFlag
+     * @return
+     */
     @Override
-    public void setOnlineState(int id, int companyId, boolean showFlag) {
-
+    public int setOnlineState(int id, int companyId, int showFlag) {
+        StaffPO staffPO = new StaffPO();
+        staffPO.setId(id);
+        staffPO.setCompanyId(companyId);
+        staffPO.setShowFlag(showFlag);
+        return staffDao.update(staffPO);
     }
 
+    /**
+     * 物理删除
+     *
+     * @param id
+     * @param companyId
+     */
     @Override
-    public void delete(int id, int companyId) {
-
+    public int delete(int id, int companyId) {
+        return staffDao.deleteByIdAndCid(id, companyId);
     }
 
+    /**
+     * 逻辑删除，即设置isdel 1
+     *
+     * @param id
+     * @param companyId
+     */
     @Override
-    public void logicDelete(int id, int companyId) {
-
+    public int logicDelete(int id, int companyId) {
+        StaffPO staffPO = new StaffPO();
+        staffPO.setId(id);
+        staffPO.setCompanyId(companyId);
+        staffPO.setDelFlag(true);
+        return staffDao.update(staffPO);
     }
 
+    /**
+     * 更新
+     *
+     * @param staffPO
+     * @return
+     */
     @Override
-    public StaffPO update(StaffPO staffPO) {
-        return null;
+    public int update(StaffPO staffPO) {
+        return staffDao.update(staffPO);
     }
 
+    /**
+     * 根据Id获取
+     *
+     * @param id
+     * @param companyId
+     * @return
+     */
     @Override
     public StaffPO getById(int id, int companyId) {
-        return null;
+        return staffDao.getByIdAndCid(id, companyId);
     }
 
     /**
@@ -110,8 +166,10 @@ public class StaffServiceImpl implements StaffService {
             //用户不存在
             throw new RException(ExceptionEnum.USERNAME_OR_PASSWORD_ERROR);
         } else if (staffPO.isLockFlag()) {
+            //锁定
             throw new RException(ExceptionEnum.USER_IS_LOCK);
         } else if (staffPO.isDelFlag()) {
+            //删除
             throw new RException(ExceptionEnum.USER_IS_DEL);
         }
         return staffPO;
@@ -134,12 +192,12 @@ public class StaffServiceImpl implements StaffService {
      * @param staffPO
      */
     @Override
-    public void updateToken(StaffPO staffPO) {
+    public int updateToken(StaffPO staffPO) {
         StaffPO tokenStaff = new StaffPO();
         tokenStaff.setId(staffPO.getId());
         tokenStaff.setToken(staffPO.getToken());
         tokenStaff.setCompanyId(staffPO.getCompanyId());
-        staffDao.update(tokenStaff);
+        return staffDao.update(tokenStaff);
     }
 
 

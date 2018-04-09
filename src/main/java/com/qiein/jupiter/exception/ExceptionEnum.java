@@ -9,7 +9,10 @@ public enum ExceptionEnum {
     TOKEN_NULL(-3, "token不存在"),
     TOKEN_INVALID(-4, "token失效"),
     TOKEN_VERIFY_FAIL(-5, "token验证失败"),
-    VERIFY_PARAM_INCOMPLETE(-6, "验证参数不全"),
+    VERIFY_PARAM_INCOMPLETE(-6, "token验证参数不全"),
+    HTTP_BODY_NOT_READABLE(-7, "http请求体无法读取"),
+    MYSQL_SQL_GRAMMAR_ERROR(-8, "sql语法错误"),
+    MYBATIS_REFLECTOR_ERROR(-9,"mybatis反射异常"),
     USER_NOT_FIND(100000, "用户不存在"),
     USER_IS_DEL(100001, "用户已被删除"),
     USER_IS_LOCK(100002, "用户已锁定"),
@@ -23,7 +26,8 @@ public enum ExceptionEnum {
     USERNAME_OR_PASSWORD_ERROR(1000010, "用户名或密码错误"),
     INSERT_FAIL(1000011, "添加失败"),
     UPDATE_FAIL(1000012, "修改失败"),
-    DELETE_FAIL(1000013, "删除失败"),;
+    DELETE_FAIL(1000013, "删除失败"),
+    NICKNAME_NULL(1000014,"艺名不能为空");
 
     private Integer code;
 

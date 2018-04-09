@@ -59,4 +59,21 @@ public interface BaseDao<T> {
      */
     int flagDelete(@Param("id") Integer id);
 
+    /**
+     * 根据id和cid删除
+     *
+     * @param id
+     * @param companyId
+     * @return
+     */
+    int deleteByIdAndCid(@Param("id") int id, @Param("companyId") int companyId);
+
+    /**
+     * 根据id和cid获取
+     *
+     * @param id
+     * @param companyId
+     */
+    T getByIdAndCid(@Param("id") int id, @Param("companyId") int companyId);
+
 }

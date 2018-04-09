@@ -1,4 +1,4 @@
-package com.qiein.jupiter.aop;
+package com.qiein.jupiter.aop.aspect;
 
 
 import org.aspectj.lang.annotation.Aspect;

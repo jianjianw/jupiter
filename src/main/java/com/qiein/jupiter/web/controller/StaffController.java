@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.qiein.jupiter.aop.annotation.ObjParamTrim;
 import com.qiein.jupiter.constant.CommonConstants;
 import com.qiein.jupiter.constant.RedisConstants;
 import com.qiein.jupiter.exception.ExceptionEnum;
@@ -36,6 +37,29 @@ public class StaffController extends BaseController {
     @GetMapping("/all")
     public ResultInfo getAll() {
         return ResultInfoUtil.success(staffService.findList(null));
+    }
+
+
+    @PostMapping("/insert")
+    public ResultInfo insert(HttpServletRequest request, @ObjParamTrim @RequestBody StaffPO staffPO) {
+        //手机号空
+        if (StringUtil.isNullStr(staffPO.getPhone())) {
+            throw new RException(ExceptionEnum.PHONE_NULL);
+        }
+        //密码空
+        if (StringUtil.isNullStr(staffPO.getPassword())) {
+            throw new RException(ExceptionEnum.PASSWORD_NULL);
+        }
+        //用户名空
+        if (StringUtil.isNullStr(staffPO.getUserName())) {
+            throw new RException(ExceptionEnum.USERNAME_NULL);
+        }
+        //艺名
+        if (StringUtil.isNullStr(staffPO.getNickName())) {
+            throw new RException(ExceptionEnum.NICKNAME_NULL);
+        }
+        staffService.insert(staffPO);
+        return ResultInfoUtil.success();
     }
 
 

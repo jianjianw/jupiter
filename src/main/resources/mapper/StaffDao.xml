@@ -10,6 +10,7 @@
         <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
         <result column="CORPID" property="corpId" jdbcType="VARCHAR"/>
         <result column="DINGUSERID" property="dingUserId" jdbcType="VARCHAR"/>
+        <result column="OPENID" property="openId" jdbcType="VARCHAR"/>
         <result column="HEADIMG" property="headImg" jdbcType="VARCHAR"/>
         <result column="TOKEN" property="token" jdbcType="VARCHAR"/>
         <result column="ISSHOW" property="showFlag" jdbcType="INTEGER"/>
@@ -18,7 +19,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        ID, NICKNAME, PHONE, USERNAME, PASSWORD,COMPANYID, CORPID, DINGUSERID, HEADIMG,
+        ID, NICKNAME, PHONE, USERNAME, PASSWORD,COMPANYID, CORPID, DINGUSERID, OPENID,HEADIMG,
         TOKEN,ISSHOW,ISLOCK,ISDEL
     </sql>
 
@@ -38,8 +39,13 @@
             keyProperty="id">
         INSERT INTO
         <include refid="table_name"/>
-        {NICKNAME, GROUPNAME, PARENTID, PRIORITY, GROUPTYPE, COMPANYID}
-        VALUES (#{groupId}, #{groupName}, #{parentId}, #{priority}, #{groupType}, #{companyId})
+        (NICKNAME, PHONE, USERNAME, PASSWORD,COMPANYID, CORPID, DINGUSERID, OPENID,HEADIMG,
+        TOKEN,ISSHOW,ISLOCK,ISDEL)
+        VALUES (
+        #{nickName}, #{phone}, #{userName}, #{password},
+        #{companyId}, #{corpId},#{dingUserId},#{openId},
+        #{headImg},#{token},#{showFlag},#{lockFlag},#{delFlag}
+        )
     </insert>
 
     <update id="update" parameterType="com.qiein.jupiter.web.entity.po.StaffPO">
@@ -94,9 +100,9 @@
         FROM hm_pub_staff as staff
         LEFT JOIN
           hm_pub_company as company
-          ON staff.COMPANYID=company.ID
-        WHERE staff.PHONE=#{userName}
-        AND staff.PASSWORD=#{password}
+          ON staff.COMPANYID = company.ID
+        WHERE staff.PHONE = #{userName}
+        AND staff.PASSWORD = #{password}
     </select>
 
     <select id="loginWithCompanyId" resultMap="baseMap">
@@ -104,9 +110,16 @@
         <include refid="Base_Column_List"/>
         FROM
         <include refid="table_name"/>
-        WHERE PHONE=#{userName}
-        AND PASSWORD=#{password}
-        AND COMPANYID=#{companyId}
+        WHERE PHONE = #{userName}
+        AND PASSWORD = #{password}
+        AND COMPANYID = #{companyId}
     </select>
+
+    <delete id="deleteByIdAndCid">
+        DELETE FROM
+        <include refid="table_name"/>
+        WHERE ID = #{id}
+        AND COMPANYID = #{companyId}
+    </delete>
 
 </mapper>

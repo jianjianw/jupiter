@@ -34,4 +34,51 @@ public class StaffServiceImplTest {
     }
 
 
+    @Test
+    public void insert1() {
+    }
+
+    @Test
+    public void setLockState() {
+    }
+
+    @Test
+    public void setOnlineState() {
+    }
+
+    @Test
+    public void delete1() {
+    }
+
+    @Test
+    public void logicDelete() {
+    }
+
+    @Test
+    public void update() {
+    }
+
+    @Test
+    public void getById1() {
+    }
+
+    @Test
+    public void findList1() {
+    }
+
+    @Test
+    public void getCompanyList() {
+    }
+
+    @Test
+    public void loginWithCompanyId() {
+    }
+
+    @Test
+    public void heartBeatUpdate() {
+    }
+
+    @Test
+    public void updateToken() {
+    }
 }

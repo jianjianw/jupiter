@@ -2,10 +2,13 @@ package com.qiein.jupiter.exception;
 
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
+import org.apache.ibatis.reflection.ReflectionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -62,4 +65,23 @@ public class RExceptionHandler {
     public ResultInfo handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         return ResultInfoUtil.error(-100000, e.getMessage());
     }
+
+    /**
+     * http body参数无法读取转换
+     */
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResultInfo handleHttpMessageNotReadableException() {
+        return ResultInfoUtil.error(ExceptionEnum.HTTP_BODY_NOT_READABLE);
+    }
+
+    /**
+     * mysql语法错误
+     *
+     * @return
+     */
+    @ExceptionHandler(BadSqlGrammarException.class)
+    public ResultInfo handleBadSqlGrammarException() {
+        return ResultInfoUtil.error(ExceptionEnum.MYSQL_SQL_GRAMMAR_ERROR);
+    }
+
 }

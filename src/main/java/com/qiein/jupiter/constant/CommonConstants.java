@@ -44,6 +44,11 @@ public class CommonConstants {
     public final static String DEV = "dev";
 
     /**
+     * 验证参数。包含token uid cid
+     */
+    public final static String VERIFY_PARAM = "verifyParam";
+
+    /**
      * token
      */
     public final static String TOKEN = "token";
@@ -57,4 +62,19 @@ public class CommonConstants {
      * cid
      */
     public final static String CID = "cid";
+
+    /**
+     * 成功
+     */
+    public final static String SUCCESS = "成功";
+
+    /**
+     * 失败
+     */
+    public final static String FAIL = "失败";
+
+    /**
+     * 错误
+     */
+    public final static String ERROR = "错误";
 }

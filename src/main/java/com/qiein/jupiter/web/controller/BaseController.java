@@ -1,5 +1,7 @@
 package com.qiein.jupiter.web.controller;
 
+import com.qiein.jupiter.constant.CommonConstants;
+import com.qiein.jupiter.web.entity.dto.VerifyParamDTO;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +32,16 @@ public class BaseController {
      */
     void setSessionAttr(HttpServletRequest request, String attrName, Object obj) {
         request.getSession().setAttribute(attrName, obj);
+    }
+
+    /**
+     * 获取用户验证参数
+     *
+     * @param request
+     * @return
+     */
+    VerifyParamDTO getVerifyParam(HttpServletRequest request) {
+        return (VerifyParamDTO) request.getAttribute(CommonConstants.VERIFY_PARAM);
     }
 
 }
