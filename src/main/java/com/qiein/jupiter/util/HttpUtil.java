@@ -1,7 +1,7 @@
 package com.qiein.jupiter.util;
 
 import com.github.pagehelper.util.StringUtil;
-import com.qiein.jupiter.constant.CommonConstants;
+import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.web.entity.dto.VerifyParamDTO;
@@ -33,9 +33,9 @@ public class HttpUtil {
      * 获取请求的 验证参数
      */
     public static VerifyParamDTO getRequestToken(HttpServletRequest request) {
-        String token = HttpUtil.getRequestParam(request, CommonConstants.TOKEN);
-        String uid = HttpUtil.getRequestParam(request, CommonConstants.UID);
-        String cid = HttpUtil.getRequestParam(request, CommonConstants.CID);
+        String token = HttpUtil.getRequestParam(request, CommonConstant.TOKEN);
+        String uid = HttpUtil.getRequestParam(request, CommonConstant.UID);
+        String cid = HttpUtil.getRequestParam(request, CommonConstant.CID);
         //验证参数不全
         if (com.qiein.jupiter.util.StringUtil.isNullStr(token)
                 || com.qiein.jupiter.util.StringUtil.isNullStr(uid)

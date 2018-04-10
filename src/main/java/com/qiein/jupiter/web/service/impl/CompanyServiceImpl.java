@@ -1,13 +1,9 @@
 package com.qiein.jupiter.web.service.impl;
 
-import com.qiein.jupiter.constant.CommonConstants;
-import com.qiein.jupiter.constant.RedisConstants;
 import com.qiein.jupiter.web.dao.CompanyDao;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

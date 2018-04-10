@@ -1,8 +1,9 @@
 package com.qiein.jupiter.aop.interceptor;
 
 import com.alibaba.fastjson.JSONObject;
-import com.qiein.jupiter.constant.CommonConstants;
-import com.qiein.jupiter.constant.RedisConstants;
+import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.constant.NumberConstant;
+import com.qiein.jupiter.constant.RedisConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.HttpUtil;
@@ -13,7 +14,6 @@ import com.qiein.jupiter.web.entity.po.StaffPO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -49,8 +49,8 @@ public class TokenInterceptor implements HandlerInterceptor {
         //获取校验参数
         VerifyParamDTO requestToken = HttpUtil.getRequestToken(httpServletRequest);
         //如果是dev环境，不验证
-//        if (CommonConstants.DEV.equalsIgnoreCase(active)) {
-//            httpServletRequest.setAttribute(CommonConstants.VERIFY_PARAM, requestToken);
+//        if (CommonConstant.DEV.equalsIgnoreCase(active)) {
+//            httpServletRequest.setAttribute(CommonConstant.VERIFY_PARAM, requestToken);
 //            return true;
 //        }
         //从redis中获取token并验证
@@ -76,7 +76,7 @@ public class TokenInterceptor implements HandlerInterceptor {
      */
     private boolean checkRedisToken(VerifyParamDTO verifyParamDTO, HttpServletRequest httpServletRequest) {
         //根据uid cid 从缓存中获取当前登录用户
-        String userTokenKey = RedisConstants.getStaffKey(verifyParamDTO.getUid(), verifyParamDTO.getCid());
+        String userTokenKey = RedisConstant.getStaffKey(verifyParamDTO.getUid(), verifyParamDTO.getCid());
         StaffPO staffPO = (StaffPO) redisTemplate.opsForValue().get(userTokenKey);
         //如果缓存中命中失败
         if (staffPO == null) {
@@ -87,9 +87,9 @@ public class TokenInterceptor implements HandlerInterceptor {
             throw new RException(ExceptionEnum.TOKEN_VERIFY_FAIL);
         }
         //验证成功，更新过期时间
-        redisTemplate.opsForValue().set(userTokenKey, staffPO, CommonConstants.DEFAULT_EXPIRE_TIME, TimeUnit.HOURS);
+        redisTemplate.opsForValue().set(userTokenKey, staffPO, NumberConstant.DEFAULT_EXPIRE_TIME, TimeUnit.HOURS);
         //将 当前登录用户 放入request
-        httpServletRequest.setAttribute(CommonConstants.CURRENT_LOGIN_STAFF, staffPO);
+        httpServletRequest.setAttribute(CommonConstant.CURRENT_LOGIN_STAFF, staffPO);
         return true;
     }
 
@@ -113,6 +113,6 @@ public class TokenInterceptor implements HandlerInterceptor {
             throw new RException(ExceptionEnum.TOKEN_INVALID);
         }
         //将jwt body放入request
-        httpServletRequest.setAttribute(CommonConstants.JWT_BODY, jsonObject);
+        httpServletRequest.setAttribute(CommonConstant.JWT_BODY, jsonObject);
     }
 }

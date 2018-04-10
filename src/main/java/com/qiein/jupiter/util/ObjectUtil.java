@@ -1,7 +1,6 @@
 package com.qiein.jupiter.util;
 
-import com.qiein.jupiter.constant.CommonConstants;
-import com.qiein.jupiter.constant.ObjectConstants;
+import com.qiein.jupiter.constant.ObjectTypeConstant;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
@@ -27,13 +26,15 @@ public class ObjectUtil {
     public static void objectStrParamTrim(Object obj) {
         Class cls = obj.getClass();
         Field[] fields = cls.getDeclaredFields();
+        //遍历对象
         for (Field f : fields) {
             f.setAccessible(true);
             Type genericType = f.getGenericType();
             //如果为空，或者不是String 类型，跳出
-            if (genericType == null || !genericType.toString().equals(ObjectConstants.CLASS_TYPE_STRING)) {
+            if (genericType == null || !genericType.toString().equals(ObjectTypeConstant.CLASS_TYPE_STRING)) {
                 continue;
             }
+            //获取对象属性，如果不为空，则trim
             try {
                 Object paramObj = f.get(obj);
                 if (paramObj != null) {

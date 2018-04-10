@@ -3,8 +3,9 @@ package com.qiein.jupiter.web.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.qiein.jupiter.constant.CommonConstants;
-import com.qiein.jupiter.constant.RedisConstants;
+import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.constant.NumberConstant;
+import com.qiein.jupiter.constant.RedisConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.JwtUtil;
@@ -220,10 +221,10 @@ public class StaffServiceImpl implements StaffService {
      */
     private void removeUserErrorNumber(String phone) {
         //错误次数
-        String userLoginErrNum = RedisConstants.getUserLoginErrNumKey(phone);
+        String userLoginErrNum = RedisConstant.getUserLoginErrNumKey(phone);
         redisTemplate.delete(userLoginErrNum);
         //验证码
-        redisTemplate.delete(RedisConstants.getVerifyCodeKey(phone));
+        redisTemplate.delete(RedisConstant.getVerifyCodeKey(phone));
     }
 
 
@@ -237,8 +238,8 @@ public class StaffServiceImpl implements StaffService {
         String token = JwtUtil.generatorToken();
         staffPO.setToken(token);
         redisTemplate.opsForValue().set(
-                RedisConstants.getStaffKey(staffPO.getId(), staffPO.getCompanyId()),
-                staffPO, CommonConstants.DEFAULT_EXPIRE_TIME, TimeUnit.HOURS);
+                RedisConstant.getStaffKey(staffPO.getId(), staffPO.getCompanyId()),
+                staffPO, NumberConstant.DEFAULT_EXPIRE_TIME, TimeUnit.HOURS);
         //并更新到数据库
         staffDao.update(staffPO);
     }

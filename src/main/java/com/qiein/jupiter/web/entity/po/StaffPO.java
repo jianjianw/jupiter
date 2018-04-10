@@ -2,8 +2,6 @@ package com.qiein.jupiter.web.entity.po;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.qiein.jupiter.aop.annotation.NotEmpty;
-import com.qiein.jupiter.constant.ValidatorConstants;
-import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.web.entity.BaseEntity;
 
 /**

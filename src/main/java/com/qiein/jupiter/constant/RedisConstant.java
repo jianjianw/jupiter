@@ -3,7 +3,7 @@ package com.qiein.jupiter.constant;
 /**
  * redis常量
  */
-public class RedisConstants {
+public class RedisConstant {
 
     /**
      * 分隔符

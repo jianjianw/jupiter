@@ -1,7 +1,6 @@
 package com.qiein.jupiter.web.entity.vo;
 
 import com.qiein.jupiter.aop.annotation.NotEmpty;
-import com.qiein.jupiter.constant.ValidatorConstants;
 
 
 /**

@@ -1,9 +1,9 @@
 package com.qiein.jupiter.constant;
 
 /**
- * 对象常量
+ * 对象类型常量
  */
-public class ObjectConstants {
+public class ObjectTypeConstant {
     /**
      * String类型
      */

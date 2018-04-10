@@ -1,27 +1,23 @@
 package com.qiein.jupiter.web.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.aop.annotation.LoginLog;
 import com.qiein.jupiter.aop.annotation.NotEmpty;
-import com.qiein.jupiter.constant.CommonConstants;
-import com.qiein.jupiter.constant.RedisConstants;
+import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.constant.NumberConstant;
+import com.qiein.jupiter.constant.RedisConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
-import com.qiein.jupiter.web.entity.dto.VerifyParamDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.LoginUserVO;
-import com.qiein.jupiter.web.service.CompanyService;
 import com.qiein.jupiter.web.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -76,7 +72,8 @@ public class StaffController extends BaseController {
             return ResultInfoUtil.success(companyList);
         } catch (RException e) {
             //将错误次数+1
-            valueOperations.increment(RedisConstants.getUserLoginErrNumKey(loginUserVO.getUserName()), 1);
+            valueOperations.increment(RedisConstant.getUserLoginErrNumKey(loginUserVO.getUserName()),
+                    NumberConstant.LOGIN_ERROR_ADD_NUM);
             return ResultInfoUtil.error(e.getCode(), e.getMsg());
         }
     }
@@ -105,7 +102,7 @@ public class StaffController extends BaseController {
             return ResultInfoUtil.success(staffPO);
         } catch (RException e) {
             //登录失败，将错误次数+1
-            valueOperations.increment(RedisConstants.getUserLoginErrNumKey(userName), 1);
+            valueOperations.increment(RedisConstant.getUserLoginErrNumKey(userName), 1);
             return ResultInfoUtil.error(e.getCode(), e.getMsg());
         }
     }
@@ -118,19 +115,19 @@ public class StaffController extends BaseController {
     @GetMapping("/need_verity_code")
     public boolean needVerityCode(@NotEmpty String userName) {
         //判断是否需要验证码
-        String userLoginErrNum = valueOperations.get(RedisConstants.getUserLoginErrNumKey(userName));
+        String userLoginErrNum = valueOperations.get(RedisConstant.getUserLoginErrNumKey(userName));
         if (userLoginErrNum == null) {
             //如果没有查询到，说明是第一次，设置默认值0,过期时间为1小时
             valueOperations.set(
-                    RedisConstants.getUserLoginErrNumKey(userName),
-                    "0",
-                    CommonConstants.LOGIN_ERROR_NUM_EXPIRE_TIME,
+                    RedisConstant.getUserLoginErrNumKey(userName),
+                    String.valueOf(NumberConstant.DEFAULT_ZERO),
+                    NumberConstant.LOGIN_ERROR_NUM_EXPIRE_TIME,
                     TimeUnit.HOURS);
             return false;
         } else {
             //是否大于允许的错误最大值
             int errNum = Integer.valueOf(userLoginErrNum);
-            return errNum >= CommonConstants.ALLOW_USER_LOGIN_ERR_NUM;
+            return errNum >= NumberConstant.ALLOW_USER_LOGIN_ERR_NUM;
         }
     }
 
@@ -142,12 +139,12 @@ public class StaffController extends BaseController {
      */
     @GetMapping("/verify_code")
     public void loginCode(HttpServletResponse response, @RequestParam("phone") String userName) {
-        if (null == userName || !RegexUtils.checkMobile(userName)) {
+        if (StringUtil.isNullStr(userName) || !RegexUtils.checkMobile(userName)) {
             return;
         }
         //生成验证码并放入缓存
         String code = VerifyCodeUtil.execute(response);
-        valueOperations.set(RedisConstants.getVerifyCodeKey(userName), code);
+        valueOperations.set(RedisConstant.getVerifyCodeKey(userName), code);
     }
 
     /**
@@ -163,11 +160,12 @@ public class StaffController extends BaseController {
         //判断是否需要验证码以及验证码正确性
         if (needVerityCode(userName)) {
             //验证码为空
-            if (verifyCode == null) {
+            if (StringUtil.isNullStr(verifyCode)) {
                 throw new RException(ExceptionEnum.VERIFY_NULL);
             } else {
-                String verifyCodeTrue = RedisConstants.getVerifyCodeKey(userName);
-                if (!verifyCode.trim().equals(verifyCodeTrue)) {
+                //从缓存获取key并判断
+                String verifyCodeTrue = valueOperations.get(RedisConstant.getVerifyCodeKey(userName));
+                if (!verifyCode.equals(verifyCodeTrue)) {
                     //验证码错误
                     throw new RException(ExceptionEnum.VERIFY_ERROR);
                 }
