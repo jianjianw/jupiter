@@ -32,7 +32,7 @@ public class ResultInfoUtil {
      */
     public static ResultInfo success(String msg, Object object) {
         ResultInfo resultInfo = new ResultInfo();
-        resultInfo.setCode(0);
+        resultInfo.setCode(1);
         resultInfo.setMsg(msg);
         resultInfo.setData(object);
         return resultInfo;

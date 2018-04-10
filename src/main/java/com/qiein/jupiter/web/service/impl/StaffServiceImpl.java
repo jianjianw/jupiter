@@ -1,24 +1,42 @@
 package com.qiein.jupiter.web.service.impl;
 
-import com.github.pagehelper.ISelect;
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.qiein.jupiter.constant.CommonConstants;
+import com.qiein.jupiter.constant.RedisConstants;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
+import com.qiein.jupiter.util.JwtUtil;
+import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.StaffDao;
+import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.service.CompanyService;
 import com.qiein.jupiter.web.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class StaffServiceImpl implements StaffService {
 
     @Autowired
     private StaffDao staffDao;
+
+    @Autowired
+    private CompanyService companyService;
+
+    @Autowired
+    private ValueOperations<String, String> valueOperations;
+
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
 
     /**
      * 员工新增
@@ -117,25 +135,18 @@ public class StaffServiceImpl implements StaffService {
     /**
      * 根据条件获取集合
      *
-     * @param map 查询条件
+     * @param queryMapDTO 查询条件
      * @return
      */
     @Override
-    public List<StaffPO> findList(final Map map) {
-        try {
-            return PageHelper.startPage(1, 5).doSelectPage(new ISelect() {
-                @Override
-                public void doSelect() {
-                    staffDao.findList(map);
-                }
-            });
-        } catch (Exception e) {
-            throw new RException(ExceptionEnum.USER_NOT_FIND);
-        }
+    public PageInfo findList(QueryMapDTO queryMapDTO) {
+        PageHelper.startPage(queryMapDTO.getPageNum(), queryMapDTO.getPageSize());
+        List<StaffPO> list = staffDao.findList(queryMapDTO.getCondition());
+        return new PageInfo<>(list);
     }
 
     /**
-     * 登录
+     * 登录时获取员工公司集合
      *
      * @param userName 用户名
      * @param password 密码
@@ -148,6 +159,8 @@ public class StaffServiceImpl implements StaffService {
             //用户不存在
             throw new RException(ExceptionEnum.USER_NOT_FIND);
         }
+        //移除错误次数
+        removeUserErrorNumber(userName);
         return companyList;
     }
 
@@ -172,6 +185,19 @@ public class StaffServiceImpl implements StaffService {
             //删除
             throw new RException(ExceptionEnum.USER_IS_DEL);
         }
+        //验证公司属性
+        CompanyPO companyPO = companyService.getById(staffPO.getCompanyId());
+        //如果公司开启单地点登录,则不生成新token
+        if (companyPO.isSsoLimit()) {
+            //如果员工没有token，重新生成
+            if (StringUtil.isNullStr(staffPO.getToken())) {
+                updateStaffToken(staffPO);
+            }
+        } else {
+            updateStaffToken(staffPO);
+        }
+        //移除错误次数
+        removeUserErrorNumber(userName);
         return staffPO;
     }
 
@@ -186,19 +212,49 @@ public class StaffServiceImpl implements StaffService {
 
     }
 
+
     /**
-     * 更新token
+     * 删除缓存中的用户错误次数和验证码
+     *
+     * @param phone
+     */
+    private void removeUserErrorNumber(String phone) {
+        //错误次数
+        String userLoginErrNum = RedisConstants.getUserLoginErrNumKey(phone);
+        redisTemplate.delete(userLoginErrNum);
+        //验证码
+        redisTemplate.delete(RedisConstants.getVerifyCodeKey(phone));
+    }
+
+
+    /**
+     * 将更新的staff放入redis 并更新到数据库
      *
      * @param staffPO
      */
-    @Override
-    public int updateToken(StaffPO staffPO) {
-        StaffPO tokenStaff = new StaffPO();
-        tokenStaff.setId(staffPO.getId());
-        tokenStaff.setToken(staffPO.getToken());
-        tokenStaff.setCompanyId(staffPO.getCompanyId());
-        return staffDao.update(tokenStaff);
+    private void updateStaffToken(StaffPO staffPO) {
+        //生成token
+        String token = JwtUtil.generatorToken();
+        staffPO.setToken(token);
+        redisTemplate.opsForValue().set(
+                RedisConstants.getStaffKey(staffPO.getId(), staffPO.getCompanyId()),
+                staffPO, CommonConstants.DEFAULT_EXPIRE_TIME, TimeUnit.HOURS);
+        //并更新到数据库
+        staffDao.update(staffPO);
     }
 
+    /**
+     * 生成Jwt
+     *
+     * @param staffPO
+     * @return
+     */
+    private String executeJwtToken(StaffPO staffPO) {
+        StaffPO jwtStaff = new StaffPO();
+        jwtStaff.setId(staffPO.getId());
+        jwtStaff.setCompanyId(staffPO.getCompanyId());
+        jwtStaff.setPhone(staffPO.getPhone());
+        return JwtUtil.encrypt(JSONObject.toJSONString(jwtStaff));
+    }
 
 }

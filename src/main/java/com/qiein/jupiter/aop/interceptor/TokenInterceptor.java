@@ -9,8 +9,10 @@ import com.qiein.jupiter.util.HttpUtil;
 import com.qiein.jupiter.util.JwtUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.dto.VerifyParamDTO;
+import com.qiein.jupiter.web.entity.po.StaffPO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -18,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.concurrent.TimeUnit;
 
 /**
  * token拦截器
@@ -31,7 +34,7 @@ public class TokenInterceptor implements HandlerInterceptor {
     private String active;
 
     @Autowired
-    private ValueOperations<String, String> valueOperations;
+    private RedisTemplate<String, Object> redisTemplate;
 
     /**
      * 前置拦截器
@@ -43,16 +46,15 @@ public class TokenInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) {
-        //如果是dev环境，不拦截
-        if (CommonConstants.DEV.equalsIgnoreCase(active)) {
-            httpServletRequest.setAttribute(CommonConstants.VERIFY_PARAM, HttpUtil.getRequestToken(httpServletRequest));
-            return true;
-        }
-        //获取请求token
-        VerifyParamDTO token = HttpUtil.getRequestToken(httpServletRequest);
-        //从redis中获取token并检测
-        checkRedisToken(token, httpServletRequest);
-        return true;
+        //获取校验参数
+        VerifyParamDTO requestToken = HttpUtil.getRequestToken(httpServletRequest);
+        //如果是dev环境，不验证
+//        if (CommonConstants.DEV.equalsIgnoreCase(active)) {
+//            httpServletRequest.setAttribute(CommonConstants.VERIFY_PARAM, requestToken);
+//            return true;
+//        }
+        //从redis中获取token并验证
+        return checkRedisToken(requestToken, httpServletRequest);
     }
 
     @Override
@@ -72,22 +74,27 @@ public class TokenInterceptor implements HandlerInterceptor {
      * @param verifyParamDTO     token
      * @param httpServletRequest request
      */
-    private void checkRedisToken(VerifyParamDTO verifyParamDTO, HttpServletRequest httpServletRequest) {
-        String tokenCache = valueOperations.get(RedisConstants.getUserToken(verifyParamDTO.getUid(), verifyParamDTO.getCid()));
-        //如果缓存中不存在
-        if (StringUtil.isNullStr(tokenCache)) {
+    private boolean checkRedisToken(VerifyParamDTO verifyParamDTO, HttpServletRequest httpServletRequest) {
+        //根据uid cid 从缓存中获取当前登录用户
+        String userTokenKey = RedisConstants.getStaffKey(verifyParamDTO.getUid(), verifyParamDTO.getCid());
+        StaffPO staffPO = (StaffPO) redisTemplate.opsForValue().get(userTokenKey);
+        //如果缓存中命中失败
+        if (staffPO == null) {
             throw new RException(ExceptionEnum.TOKEN_INVALID);
         }
         //验证token是否相等
-        if (!StringUtil.ignoreCaseEqual(verifyParamDTO.getToken(), tokenCache)) {
+        if (!StringUtil.ignoreCaseEqual(verifyParamDTO.getToken(), staffPO.getToken())) {
             throw new RException(ExceptionEnum.TOKEN_VERIFY_FAIL);
         }
-        //将uid 和 cid 放入request
-        httpServletRequest.setAttribute(CommonConstants.VERIFY_PARAM, verifyParamDTO);
+        //验证成功，更新过期时间
+        redisTemplate.opsForValue().set(userTokenKey, staffPO, CommonConstants.DEFAULT_EXPIRE_TIME, TimeUnit.HOURS);
+        //将 当前登录用户 放入request
+        httpServletRequest.setAttribute(CommonConstants.CURRENT_LOGIN_STAFF, staffPO);
+        return true;
     }
 
     /**
-     * 检测jwt方案
+     * 检测jwt方案  不完整
      *
      * @param verifyParamDTO     参数
      * @param httpServletRequest request

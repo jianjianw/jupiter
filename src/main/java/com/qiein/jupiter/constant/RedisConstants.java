@@ -11,28 +11,13 @@ public class RedisConstants {
     private final static String splitChar = ":";
 
     /**
-     * 验证码
-     */
-    private final static String verifyCode = "verify_code";
-
-    /**
-     * 用户登录错误次数
-     */
-    private final static String userLoginErrNum = "user_login_err_num";
-
-    /**
-     * 用户token
-     */
-    private final static String userToken = "user_token";
-
-    /**
      * 用户验证码
      *
      * @param userName
      * @return
      */
-    public static String getVerifyCode(String userName) {
-        return verifyCode + splitChar + userName;
+    public static String getVerifyCodeKey(String userName) {
+        return "verify_code" + splitChar + userName;
     }
 
     /**
@@ -41,8 +26,8 @@ public class RedisConstants {
      * @param userName
      * @return
      */
-    public static String getUserLoginErrNum(String userName) {
-        return userLoginErrNum + splitChar + userName;
+    public static String getUserLoginErrNumKey(String userName) {
+        return "user_login_err_num" + splitChar + userName;
     }
 
     /**
@@ -52,7 +37,7 @@ public class RedisConstants {
      * @param cid 公司id
      * @return
      */
-    public static String getUserToken(int uid, int cid) {
-        return userToken + splitChar + uid + splitChar + cid;
+    public static String getStaffKey(int uid, int cid) {
+        return "staff" + splitChar + uid + splitChar + cid;
     }
 }

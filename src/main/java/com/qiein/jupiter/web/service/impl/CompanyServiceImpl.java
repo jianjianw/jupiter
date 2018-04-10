@@ -1,7 +1,14 @@
 package com.qiein.jupiter.web.service.impl;
 
+import com.qiein.jupiter.constant.CommonConstants;
+import com.qiein.jupiter.constant.RedisConstants;
+import com.qiein.jupiter.web.dao.CompanyDao;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.service.CompanyService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
@@ -9,7 +16,11 @@ import java.util.Map;
 /**
  * 公司实现类
  */
+@Service
 public class CompanyServiceImpl implements CompanyService {
+    @Autowired
+    private CompanyDao companyDao;
+
     /**
      * 根据Id获取
      *
@@ -18,7 +29,7 @@ public class CompanyServiceImpl implements CompanyService {
      */
     @Override
     public CompanyPO getById(int companyId) {
-        return null;
+        return companyDao.getById(companyId);
     }
 
     /**

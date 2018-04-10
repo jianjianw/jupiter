@@ -15,6 +15,11 @@ public class CommonConstants {
     public final static String USER_LOGIN_ERR_NUM = "userLoginErrNum";
 
     /**
+     * 当前登录用户
+     */
+    public final static String CURRENT_LOGIN_STAFF = "currentLoginStaff";
+
+    /**
      * 用户登录错误多少次出现验证码
      */
     public final static int ALLOW_USER_LOGIN_ERR_NUM = 3;
@@ -27,7 +32,7 @@ public class CommonConstants {
     /**
      * token过期时间，12小时
      */
-    public final static int TOKEN_EXPIRE_TIME = 12;
+    public final static int DEFAULT_EXPIRE_TIME = 12;
 
     /**
      * jwt body

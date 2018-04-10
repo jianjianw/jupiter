@@ -1,5 +1,6 @@
 package com.qiein.jupiter.config;
 
+import com.alibaba.fastjson.support.spring.GenericFastJsonRedisSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.*;
@@ -23,7 +24,7 @@ import java.lang.reflect.Method;
 public class RedisConfig extends CachingConfigurerSupport {
 
     @Autowired
-    private RedisConnectionFactory factory;
+    private RedisConnectionFactory redisConnectionFactory;
 
     @Bean
     public KeyGenerator keyGenerator() {
@@ -62,12 +63,19 @@ public class RedisConfig extends CachingConfigurerSupport {
 
     @Bean
     public RedisTemplate<String, Object> redisTemplate() {
+//        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+//        redisTemplate.setKeySerializer(new StringRedisSerializer());
+//        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+//        redisTemplate.setHashValueSerializer(new StringRedisSerializer());
+//        redisTemplate.setValueSerializer(new StringRedisSerializer());
+//        redisTemplate.setConnectionFactory(factory);
+//        return redisTemplate;
+        //默认采用fastjson的序列化
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setKeySerializer(new StringRedisSerializer());
-        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
-        redisTemplate.setHashValueSerializer(new StringRedisSerializer());
-        redisTemplate.setValueSerializer(new StringRedisSerializer());
-        redisTemplate.setConnectionFactory(factory);
+        redisTemplate.setConnectionFactory(redisConnectionFactory);
+        redisTemplate.setDefaultSerializer(new GenericFastJsonRedisSerializer());//设置默认的Serialize，包含 keySerializer & valueSerializer
+        redisTemplate.setKeySerializer(new StringRedisSerializer());//单独设置keySerializer
+//        redisTemplate.setValueSerializer(new GenericFastJsonRedisSerializer());//单独设置valueSerializer
         return redisTemplate;
     }
 

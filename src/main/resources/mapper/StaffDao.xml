@@ -18,27 +18,75 @@
         <result column="ISDEL" property="delFlag" jdbcType="BOOLEAN"/>
     </resultMap>
 
-    <sql id="Base_Column_List">
+    <sql id="baseColumn">
         ID, NICKNAME, PHONE, USERNAME, PASSWORD,COMPANYID, CORPID, DINGUSERID, OPENID,HEADIMG,
         TOKEN,ISSHOW,ISLOCK,ISDEL
     </sql>
 
-    <sql id="table_name">
+    <sql id="tableName">
         hm_pub_staff
     </sql>
 
     <select id="getById" parameterType="java.lang.Integer" resultMap="baseMap">
         SELECT
-        <include refid="Base_Column_List"/>
+        <include refid="baseColumn"/>
         FROM
-        <include refid="table_name"/>
+        <include refid="tableName"/>
         WHERE ID = #{id}
+    </select>
+
+    <select id="findList" resultMap="baseMap">
+        SELECT
+        <include refid="baseColumn"/>
+        FROM
+        <include refid="tableName"/>
+        <where>
+            <if test="nickName != null and nickName != ''">
+                NICKNAME = #{nickName},
+            </if>
+            <if test="phone != null and phone != ''">
+                PHONE = #{phone},
+            </if>
+            <if test="userName != null and userName != ''">
+                USERNAME = #{userName},
+            </if>
+            <if test="password != null and password != ''">
+                PASSWORD = #{password},
+            </if>
+            <if test="companyId != null and companyId != ''">
+                COMPANYID = #{companyId},
+            </if>
+            <if test="corpId != null and corpId != ''">
+                CORPID = #{corpId},
+            </if>
+            <if test="dingUserId != null and dingUserId != ''">
+                DINGUSERID = #{dingUserId},
+            </if>
+            <if test="openId != null and openId != ''">
+                OPENID = #{openId},
+            </if>
+            <if test="headImg != null and headImg != ''">
+                HEADIMG = #{headImg},
+            </if>
+            <if test="token != null and token != ''">
+                TOKEN = #{token},
+            </if>
+            <if test="showFlag != null">
+                ISSHOW = #{showFlag},
+            </if>
+            <if test="lockFlag != null">
+                ISLOCK = #{lockFlag},
+            </if>
+            <if test="delFlag != null">
+                ISDEL = #{delFlag},
+            </if>
+        </where>
     </select>
 
     <insert id="insert" parameterType="com.qiein.jupiter.web.entity.po.StaffPO" useGeneratedKeys="true"
             keyProperty="id">
         INSERT INTO
-        <include refid="table_name"/>
+        <include refid="tableName"/>
         (NICKNAME, PHONE, USERNAME, PASSWORD,COMPANYID, CORPID, DINGUSERID, OPENID,HEADIMG,
         TOKEN,ISSHOW,ISLOCK,ISDEL)
         VALUES (
@@ -50,7 +98,7 @@
 
     <update id="update" parameterType="com.qiein.jupiter.web.entity.po.StaffPO">
         UPDATE
-        <include refid="table_name"/>
+        <include refid="tableName"/>
         <set>
             <if test="nickName != null">
                 NICKNAME = #{nickName},
@@ -92,24 +140,28 @@
                 ISDEL = #{delFlag},
             </if>
         </set>
+        WHERE ID = #{id}
+        AND COMPANYID = #{companyId}
     </update>
 
     <select id="getCompanyList" resultType="com.qiein.jupiter.web.entity.po.CompanyPO">
-       SELECT company.ID,company.COMPNAME,
-         company.LOGO
-        FROM hm_pub_staff as staff
+        SELECT company.ID,company.COMPNAME,
+        company.LOGO
+        FROM
+        <include refid="tableName"/>
+        as staff
         LEFT JOIN
-          hm_pub_company as company
-          ON staff.COMPANYID = company.ID
+        hm_pub_company as company
+        ON staff.COMPANYID = company.ID
         WHERE staff.PHONE = #{userName}
         AND staff.PASSWORD = #{password}
     </select>
 
     <select id="loginWithCompanyId" resultMap="baseMap">
         SELECT
-        <include refid="Base_Column_List"/>
+        <include refid="baseColumn"/>
         FROM
-        <include refid="table_name"/>
+        <include refid="tableName"/>
         WHERE PHONE = #{userName}
         AND PASSWORD = #{password}
         AND COMPANYID = #{companyId}
@@ -117,7 +169,7 @@
 
     <delete id="deleteByIdAndCid">
         DELETE FROM
-        <include refid="table_name"/>
+        <include refid="tableName"/>
         WHERE ID = #{id}
         AND COMPANYID = #{companyId}
     </delete>

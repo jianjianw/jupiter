@@ -1,10 +1,11 @@
 package com.qiein.jupiter.web.service;
 
+import com.github.pagehelper.PageInfo;
+import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 员工
@@ -69,10 +70,10 @@ public interface StaffService {
     /**
      * 根据条件查询
      *
-     * @param map 查询条件
+     * @param queryMapDTO 查询条件
      * @return
      */
-    List<StaffPO> findList(Map map);
+    PageInfo findList(QueryMapDTO queryMapDTO);
 
     /**
      * 获取员工所在的所有的公司集合
@@ -97,12 +98,5 @@ public interface StaffService {
      * 心跳更新
      */
     void heartBeatUpdate(int id, int companyId);
-
-    /**
-     * 更新token
-     *
-     * @param staffPO
-     */
-    int updateToken(StaffPO staffPO);
 
 }

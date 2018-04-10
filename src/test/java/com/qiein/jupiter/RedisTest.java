@@ -1,6 +1,8 @@
 package com.qiein.jupiter;
 
 
+import com.alibaba.fastjson.JSONObject;
+import com.qiein.jupiter.web.entity.po.StaffPO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +18,14 @@ import java.util.Set;
 public class RedisTest {
 
     @Autowired
-    private RedisTemplate<String ,String> redisTemplate;
+    private RedisTemplate<String ,Object> redisTemplate;
 
     @Test
     public void testValueOperation(){
-        redisTemplate.opsForValue().set("hello","123" );
+        StaffPO staffPO=new StaffPO();
+        staffPO.setCompanyId(1);
+        staffPO.setPhone("12345678");
+        redisTemplate.opsForValue().set("hello",staffPO );
     }
 
     @Test
