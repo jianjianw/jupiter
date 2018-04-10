@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiein.jupiter.web.dao.CompanyDao">
+    <resultMap id="baseMap" type="com.qiein.jupiter.web.entity.po.CompanyPO">
+        <id column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="COMPANYNAME" property="compName" jdbcType="VARCHAR"/>
+        <result column="TYPEID" property="typeId" jdbcType="INTEGER"/>
+        <result column="LOGO" property="logo" jdbcType="VARCHAR"/>
+        <result column="CORPID" property="corpId" jdbcType="VARCHAR"/>
+        <result column="CONFIG" property="config" jdbcType="VARCHAR"/>
+        <result column="IPLIMIT" property="ipLimit" jdbcType="BOOLEAN"/>
+        <result column="SSOLIMIT" property="ssoLimit" jdbcType="BOOLEAN"/>
+        <result column="OVERTIME" property="overtime" jdbcType="INTEGER"/>
+        <result column="LIMITDEFAULT" property="limitDefault" jdbcType="INTEGER"/>
+        <result column="KZINTERVAL" property="kzInterval" jdbcType="INTEGER"/>
+        <result column="ISDEL" property="delFalg" jdbcType="BOOLEAN"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ID, COMPANYNAME, TYPEID, LOGO, CORPID, CONFIG, IPLIMIT,
+        SSOLIMIT,OVERTIME,LIMITDEFAULT,KZINTERVAL,ISDEL
+    </sql>
+
+    <sql id="table_name">
+        hm_pub_company
+    </sql>
+
+    <select id="getById" parameterType="java.lang.Integer" resultMap="baseMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="Base_Column_List"/>
+        WHERE ID = #{id}
+    </select>
+
+    <insert id="insert" parameterType="com.qiein.jupiter.web.entity.po.CompanyPO" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO
+        <include refid="table_name"/>
+        (COMPANYNAME, TYPEID, LOGO, CORPID, CONFIG, IPLIMIT,
+        SSOLIMIT,OVERTIME,LIMITDEFAULT,KZINTERVAL,ISDEL)
+        VALUES (
+        #{companyName}, #{typeId}, #{logo}, #{corpId}, #{config}, #{ipLimit},
+        #{ssoLimit}, #{overTime}, #{limitDefault}, #{kzInterval}, #{delFlag}
+        )
+    </insert>
+
+
+</mapper>

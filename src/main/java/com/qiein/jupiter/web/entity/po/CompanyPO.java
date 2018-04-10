@@ -4,29 +4,62 @@ import com.qiein.jupiter.web.entity.BaseEntity;
 
 /**
  * 公司数据库对象
- *
  */
 public class CompanyPO extends BaseEntity {
 
     private static final long serialVersionUID = -6524936685705376975L;
-
-    private String compName;
+    /**
+     * 公司名称
+     */
+    private String companyName;
+    /**
+     * 公司类型
+     */
     private int typeId;
+    /**
+     * logo
+     */
     private String logo;
+    /**
+     * 钉钉关联ID
+     */
     private String corpId;
+    /**
+     * 自定义配置
+     */
     private String config;
+    /**
+     * 是否开启IP校验
+     */
     private boolean ipLimit;
+    /**
+     * 是否开启单点登录
+     */
     private boolean ssoLimit;
+    /**
+     * 领取客资超时时间
+     */
     private int overtime;
+    /**
+     * 默认每日接单限额
+     */
     private int limitDefault;
+    /**
+     * 客资领取后多少时间不能领取下一个
+     */
     private int kzInterval;
+    /**
+     * 是否删除
+     */
+    private boolean delFlag;
 
-    public String getCompName() {
-        return compName;
+
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setCompName(String compName) {
-        this.compName = compName;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     public int getTypeId() {
@@ -99,5 +132,13 @@ public class CompanyPO extends BaseEntity {
 
     public void setKzInterval(int kzInterval) {
         this.kzInterval = kzInterval;
+    }
+
+    public boolean isDelFlag() {
+        return delFlag;
+    }
+
+    public void setDelFlag(boolean delFlag) {
+        this.delFlag = delFlag;
     }
 }

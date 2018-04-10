@@ -1,4 +1,4 @@
-package com.qiein.jupiter.web.service.serviceImpl;
+package com.qiein.jupiter.web.service.impl;
 
 import com.github.pagehelper.ISelect;
 import com.github.pagehelper.PageHelper;
