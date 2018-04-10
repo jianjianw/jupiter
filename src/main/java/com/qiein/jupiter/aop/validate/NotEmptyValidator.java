@@ -6,7 +6,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 /**
- * 空验证
+ * 空值及空字符串验证
  */
 public class NotEmptyValidator implements ConstraintValidator<NotEmpty, String> {
     @Override

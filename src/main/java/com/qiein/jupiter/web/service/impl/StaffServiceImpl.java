@@ -9,6 +9,7 @@ import com.qiein.jupiter.constant.RedisConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.JwtUtil;
+import com.qiein.jupiter.util.MD5Util;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.StaffDao;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
@@ -47,6 +48,8 @@ public class StaffServiceImpl implements StaffService {
      */
     @Override
     public StaffPO insert(StaffPO staffPO) {
+        //加密码加密
+        staffPO.setPassword(MD5Util.getSaltMd5(staffPO.getPassword()));
         staffDao.insert(staffPO);
         return staffPO;
     }
@@ -175,6 +178,8 @@ public class StaffServiceImpl implements StaffService {
      */
     @Override
     public StaffPO loginWithCompanyId(String userName, String password, int companyId) {
+        //加密码加密
+        password = MD5Util.getSaltMd5(password);
         StaffPO staffPO = staffDao.loginWithCompanyId(userName, password, companyId);
         if (staffPO == null) {
             //用户不存在

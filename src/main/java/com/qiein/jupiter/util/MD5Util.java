@@ -9,7 +9,7 @@ import java.security.NoSuchAlgorithmException;
  */
 public class MD5Util {
 
-    private final static String SALT = "qiemW61rAUV5Ot3q1zOin";
+    private final static String SALT = "qieinmW61rAUV5Ot3q1zOin";
 
     /**
      * md5加密

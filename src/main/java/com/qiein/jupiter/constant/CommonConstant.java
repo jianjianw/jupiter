@@ -31,6 +31,11 @@ public class CommonConstant {
     public final static String JWT_BODY = "jwtBody";
 
     /**
+     * 测试环境
+     */
+    public final static String TEST = "test";
+
+    /**
      * 开发环境
      */
     public final static String DEV = "dev";
