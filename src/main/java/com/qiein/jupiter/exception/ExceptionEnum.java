@@ -18,7 +18,8 @@ public enum ExceptionEnum {
     USERNAME_OR_PASSWORD_ERROR(100003, "用户名或密码错误"),
     VERIFY_NULL(100004, "验证码不能为空"),
     VERIFY_ERROR(100005, "验证码错误"),
-    COMPANYID_NULL(100006,"公司ID不能为空");
+    COMPANYID_NULL(100006,"公司ID不能为空"),
+    ID_NULL(100007,"id不能为空");
 
     private Integer code;
 

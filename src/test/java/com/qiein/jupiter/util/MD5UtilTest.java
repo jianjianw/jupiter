@@ -20,5 +20,6 @@ public class MD5UtilTest {
 
     @Test
     public void getSaltMd5() {
+        System.out.println(MD5Util.getSaltMd5("123456"));
     }
 }

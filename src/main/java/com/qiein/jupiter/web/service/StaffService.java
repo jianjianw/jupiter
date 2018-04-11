@@ -26,7 +26,7 @@ public interface StaffService {
      * @param id
      * @param lockFlag
      */
-    int setLockState(int id, int companyId, boolean lockFlag);
+    StaffPO setLockState(int id, int companyId, boolean lockFlag);
 
 
     /**
@@ -35,7 +35,7 @@ public interface StaffService {
      * @param id
      * @param showFlag
      */
-    int setOnlineState(int id, int companyId, int showFlag);
+    StaffPO setOnlineState(int id, int companyId, int showFlag);
 
     /**
      * 员工删除（物理删除）
@@ -58,7 +58,7 @@ public interface StaffService {
      * @param staffPO
      * @return
      */
-    int update(StaffPO staffPO);
+    StaffPO update(StaffPO staffPO);
 
     /**
      * 根据ID获取员工

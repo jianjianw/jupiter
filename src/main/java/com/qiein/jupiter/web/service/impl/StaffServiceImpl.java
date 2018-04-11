@@ -3,7 +3,6 @@ package com.qiein.jupiter.web.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.constant.NumberConstant;
 import com.qiein.jupiter.constant.RedisConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
@@ -17,7 +16,12 @@ import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.service.CompanyService;
 import com.qiein.jupiter.web.service.StaffService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
@@ -27,6 +31,8 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 public class StaffServiceImpl implements StaffService {
+
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private StaffDao staffDao;
@@ -46,8 +52,10 @@ public class StaffServiceImpl implements StaffService {
      * @param staffPO
      * @return
      */
+    @CachePut(value = "staff", key = "'staff'+':'+#staffPO.id+':'+#staffPO.companyId")
     @Override
     public StaffPO insert(StaffPO staffPO) {
+        log.debug("未使用缓存");
         //加密码加密
         staffPO.setPassword(MD5Util.getSaltMd5(staffPO.getPassword()));
         staffDao.insert(staffPO);
@@ -61,13 +69,16 @@ public class StaffServiceImpl implements StaffService {
      * @param companyId
      * @param lockFlag
      */
+    @CachePut(value = "staff", key = "'staff'+':'+#id+':'+#companyId")
     @Override
-    public int setLockState(int id, int companyId, boolean lockFlag) {
+    public StaffPO setLockState(int id, int companyId, boolean lockFlag) {
+        log.debug("未使用缓存");
         StaffPO staffPO = new StaffPO();
         staffPO.setId(id);
         staffPO.setCompanyId(companyId);
         staffPO.setLockFlag(lockFlag);
-        return staffDao.update(staffPO);
+        staffDao.update(staffPO);
+        return staffPO;
     }
 
     /**
@@ -78,13 +89,16 @@ public class StaffServiceImpl implements StaffService {
      * @param showFlag
      * @return
      */
+    @CachePut(value = "staff", key = "'staff'+':'+#id+':'+#companyId")
     @Override
-    public int setOnlineState(int id, int companyId, int showFlag) {
+    public StaffPO setOnlineState(int id, int companyId, int showFlag) {
+        log.debug("未使用缓存");
         StaffPO staffPO = new StaffPO();
         staffPO.setId(id);
         staffPO.setCompanyId(companyId);
         staffPO.setShowFlag(showFlag);
-        return staffDao.update(staffPO);
+        staffDao.update(staffPO);
+        return staffPO;
     }
 
     /**
@@ -93,6 +107,7 @@ public class StaffServiceImpl implements StaffService {
      * @param id
      * @param companyId
      */
+    @CacheEvict(value = "staff", key = "'staff'+':'+#id+':'+#companyId")
     @Override
     public int delete(int id, int companyId) {
         return staffDao.deleteByIdAndCid(id, companyId);
@@ -104,6 +119,7 @@ public class StaffServiceImpl implements StaffService {
      * @param id
      * @param companyId
      */
+    @CachePut(value = "staff", key = "'staff'+':'+#id+':'+#companyId")
     @Override
     public int logicDelete(int id, int companyId) {
         StaffPO staffPO = new StaffPO();
@@ -119,9 +135,12 @@ public class StaffServiceImpl implements StaffService {
      * @param staffPO
      * @return
      */
+    @CachePut(value = "staff", key = "'staff'+':'+#staffPO.id+':'+#staffPO.companyId")
     @Override
-    public int update(StaffPO staffPO) {
-        return staffDao.update(staffPO);
+    public StaffPO update(StaffPO staffPO) {
+        log.debug("未使用缓存");
+        staffDao.update(staffPO);
+        return staffPO;
     }
 
     /**
@@ -131,8 +150,10 @@ public class StaffServiceImpl implements StaffService {
      * @param companyId
      * @return
      */
+    @Cacheable(value = "staff", key = "'staff'+':'+#id+':'+#companyId")
     @Override
     public StaffPO getById(int id, int companyId) {
+        log.debug("未使用缓存");
         return staffDao.getByIdAndCid(id, companyId);
     }
 

@@ -53,6 +53,33 @@ public class StaffController extends BaseController {
         return ResultInfoUtil.success();
     }
 
+    @PostMapping("/update")
+    @LoginLog
+    public ResultInfo update(@RequestBody @Validated StaffPO staffPO) {
+        //对象参数trim
+        ObjectUtil.objectStrParamTrim(staffPO);
+        staffService.update(staffPO);
+        return ResultInfoUtil.success();
+    }
+
+    /**
+     * 删除标记
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("/delete_flag")
+    @LoginLog
+    public ResultInfo deleteFlag(int id) {
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        if (id == 0) {
+         throw new RException(ExceptionEnum.ID_NULL);
+        }
+        staffService.logicDelete(id,currentLoginStaff.getCompanyId());
+        return ResultInfoUtil.success();
+    }
+
 
     /**
      * 获取用户所在所有企业信息
@@ -165,7 +192,7 @@ public class StaffController extends BaseController {
             } else {
                 //从缓存获取key并判断
                 String verifyCodeTrue = valueOperations.get(RedisConstant.getVerifyCodeKey(userName));
-                if (!verifyCode.equals(verifyCodeTrue)) {
+                if (!StringUtil.ignoreCaseEqual(verifyCode, verifyCodeTrue)) {
                     //验证码错误
                     throw new RException(ExceptionEnum.VERIFY_ERROR);
                 }
