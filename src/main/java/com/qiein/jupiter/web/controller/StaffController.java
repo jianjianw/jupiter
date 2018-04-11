@@ -35,15 +35,27 @@ public class StaffController extends BaseController {
     @Autowired
     private ValueOperations<String, String> valueOperations;
 
+    /**
+     * 获取列表
+     *
+     * @param queryMapDTO
+     * @return
+     */
     @PostMapping("/findList")
     public ResultInfo getAll(@RequestBody QueryMapDTO queryMapDTO) {
         return ResultInfoUtil.success(staffService.findList(queryMapDTO));
     }
 
-
+    /**
+     * 插入
+     *
+     * @param staffPO
+     * @return
+     */
     @PostMapping("/insert")
     @LoginLog
     public ResultInfo insert(@RequestBody @Validated StaffPO staffPO) {
+        //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         //设置cid
         staffPO.setCompanyId(currentLoginStaff.getCompanyId());
@@ -53,6 +65,12 @@ public class StaffController extends BaseController {
         return ResultInfoUtil.success();
     }
 
+    /**
+     * 更新员工信息
+     *
+     * @param staffPO
+     * @return
+     */
     @PostMapping("/update")
     @LoginLog
     public ResultInfo update(@RequestBody @Validated StaffPO staffPO) {
@@ -74,9 +92,9 @@ public class StaffController extends BaseController {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         if (id == 0) {
-         throw new RException(ExceptionEnum.ID_NULL);
+            throw new RException(ExceptionEnum.ID_NULL);
         }
-        staffService.logicDelete(id,currentLoginStaff.getCompanyId());
+        staffService.logicDelete(id, currentLoginStaff.getCompanyId());
         return ResultInfoUtil.success();
     }
 
@@ -140,7 +158,7 @@ public class StaffController extends BaseController {
      * @param userName 用户名
      */
     @GetMapping("/need_verity_code")
-    public boolean needVerityCode(@NotEmpty String userName) {
+    public boolean needVerityCode(@NotEmpty @RequestParam("phone") String userName) {
         //判断是否需要验证码
         String userLoginErrNum = valueOperations.get(RedisConstant.getUserLoginErrNumKey(userName));
         if (userLoginErrNum == null) {

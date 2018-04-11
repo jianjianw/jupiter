@@ -3,6 +3,7 @@ package com.qiein.jupiter.web.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.qiein.jupiter.aop.annotation.LoginLog;
 import com.qiein.jupiter.constant.NumberConstant;
 import com.qiein.jupiter.constant.RedisConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
@@ -198,6 +199,7 @@ public class StaffServiceImpl implements StaffService {
      * @return
      */
     @Override
+    @LoginLog
     public StaffPO loginWithCompanyId(String userName, String password, int companyId) {
         //加密码加密
         password = MD5Util.getSaltMd5(password);
