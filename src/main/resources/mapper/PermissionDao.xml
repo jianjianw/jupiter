@@ -3,15 +3,16 @@
 <mapper namespace="com.qiein.jupiter.web.dao.PermissionDao">
     <resultMap id="baseMap" type="com.qiein.jupiter.web.entity.po.PermissionPO">
         <id column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="PERMISSIONNAME" property="permissionName" jdbcType="VARCHAR"/>
+        <result column="TYPEID" property="typeId" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="baseColumn">
-        ID, COMPANYNAME, TYPEID, LOGO, CORPID, CONFIG, IPLIMIT,
-        SSOLIMIT,OVERTIME,LIMITDEFAULT,KZINTERVAL,ISDEL
+        ID,PERMISSIONNAME,TYPEID
     </sql>
 
     <sql id="tableName">
-        hm_pub_company
+        hm_pub_permission
     </sql>
 
 

@@ -1,11 +1,12 @@
 package com.qiein.jupiter.web.entity.po;
 
-import com.qiein.jupiter.web.entity.BaseEntity;
+
+import java.io.Serializable;
 
 /**
  * 员工角色表
  */
-public class StaffRolePO extends BaseEntity {
+public class StaffRolePO implements Serializable {
     private static final long serialVersionUID = 5878036122040487447L;
     /**
      * 员工id
@@ -16,4 +17,20 @@ public class StaffRolePO extends BaseEntity {
      * 角色id
      */
     private int roleId;
+
+    public int getStaffId() {
+        return staffId;
+    }
+
+    public void setStaffId(int staffId) {
+        this.staffId = staffId;
+    }
+
+    public int getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
+    }
 }

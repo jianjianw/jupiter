@@ -1,11 +1,12 @@
 package com.qiein.jupiter.web.entity.po;
 
-import com.qiein.jupiter.web.entity.BaseEntity;
+
+import java.io.Serializable;
 
 /**
  * 角色权限数据库对象
  */
-public class RolePermissionPO extends BaseEntity {
+public class RolePermissionPO implements Serializable {
 
     private static final long serialVersionUID = -333964837331076921L;
     /**

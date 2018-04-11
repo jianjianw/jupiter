@@ -37,6 +37,16 @@ public class GroupPO extends BaseEntity {
      */
     private int companyId;
 
+    /**
+     * 主管Id
+     */
+    private String chiefIds;
+
+    /**
+     * 主管名称
+     */
+    private String chiefNames;
+
     public String getGroupId() {
         return groupId;
     }

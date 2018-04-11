@@ -1,11 +1,11 @@
 package com.qiein.jupiter.web.entity.po;
 
-import com.qiein.jupiter.web.entity.BaseEntity;
+import java.io.Serializable;
 
 /**
  * 组与员工表
  */
-public class GroupStaffPO extends BaseEntity {
+public class GroupStaffPO implements Serializable {
 
     private static final long serialVersionUID = -5321892693922336980L;
     /**

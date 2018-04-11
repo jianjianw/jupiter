@@ -2,16 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qiein.jupiter.web.dao.StaffRoleDao">
     <resultMap id="baseMap" type="com.qiein.jupiter.web.entity.po.StaffRolePO">
-        <id column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="STAFFID" property="staffId" jdbcType="INTEGER"/>
+        <result column="ROLEID" property="roleId" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="baseColumn">
-        ID, COMPANYNAME, TYPEID, LOGO, CORPID, CONFIG, IPLIMIT,
-        SSOLIMIT,OVERTIME,LIMITDEFAULT,KZINTERVAL,ISDEL
+        STAFFID,ROLEID
     </sql>
 
     <sql id="tableName">
-        hm_pub_company
+       hm_pub_staff_role
     </sql>
 
 
