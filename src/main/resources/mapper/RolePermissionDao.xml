@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiein.jupiter.web.dao.RolePermissionDao">
+    <resultMap id="baseMap" type="com.qiein.jupiter.web.entity.po.RolePermissionPO">
+        <id column="ID" property="id" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <sql id="baseColumn">
+        ID, COMPANYNAME, TYPEID, LOGO, CORPID, CONFIG, IPLIMIT,
+        SSOLIMIT,OVERTIME,LIMITDEFAULT,KZINTERVAL,ISDEL
+    </sql>
+
+    <sql id="tableName">
+        hm_pub_company
+    </sql>
+
+
+</mapper>

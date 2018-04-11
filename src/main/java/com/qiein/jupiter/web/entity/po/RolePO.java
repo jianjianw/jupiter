@@ -9,11 +9,18 @@ public class RolePO extends BaseEntity {
 
     private static final long serialVersionUID = 6090149708646334672L;
 
+    /**
+     * 角色名称
+     */
     private String roleName;
-    private String mome;
+    /**
+     * 公司id
+     */
     private int companyId;
+    /**
+     * 排序
+     */
     private int priority;
-    private int applicationId;
 
     public String getRoleName() {
         return roleName;
@@ -21,14 +28,6 @@ public class RolePO extends BaseEntity {
 
     public void setRoleName(String roleName) {
         this.roleName = roleName;
-    }
-
-    public String getMome() {
-        return mome;
-    }
-
-    public void setMome(String mome) {
-        this.mome = mome;
     }
 
     public int getCompanyId() {
@@ -47,11 +46,4 @@ public class RolePO extends BaseEntity {
         this.priority = priority;
     }
 
-    public int getApplicationId() {
-        return applicationId;
-    }
-
-    public void setApplicationId(int applicationId) {
-        this.applicationId = applicationId;
-    }
 }

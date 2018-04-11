@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.entity.po;
 
+import com.qiein.jupiter.aop.annotation.NotEmpty;
 import com.qiein.jupiter.web.entity.BaseEntity;
 
 /**
@@ -8,12 +9,32 @@ import com.qiein.jupiter.web.entity.BaseEntity;
 public class GroupPO extends BaseEntity {
 
     private static final long serialVersionUID = -3838894504630445398L;
-
+    /**
+     * 组id
+     */
+    @NotEmpty(message = "{group.id.null}")
     private String groupId;
+    /**
+     * 组名称
+     */
+    @NotEmpty(message = "{group.name.null}")
     private String groupName;
+    /**
+     * 父级id
+     */
+    @NotEmpty(message = "{group.parentId.null}")
     private String parentId;
+    /**
+     * 排序
+     */
     private int priority;
+    /**
+     * 组类型
+     */
     private String groupType;
+    /**
+     * 公司ID
+     */
     private int companyId;
 
     public String getGroupId() {

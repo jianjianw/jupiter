@@ -6,18 +6,21 @@ import com.qiein.jupiter.web.entity.BaseEntity;
 /**
  * 权限数据库对象
  */
-public class PermissionPO extends BaseEntity{
+public class PermissionPO extends BaseEntity {
 
     private static final long serialVersionUID = -8520233999874945394L;
-
+    /**
+     * 权限id
+     */
     private int permissionId;
-    private String pmsName;
-    private String method;
-    private String description;
-    private int applicationId;
-    private int dingAppId;
-    private int priority;
-    private String pmsType;
+    /**
+     *权限名称
+     */
+    private String permissionName;
+    /**
+     * 类型Id
+     */
+    private int typeId;
 
     public int getPermissionId() {
         return permissionId;
@@ -27,59 +30,19 @@ public class PermissionPO extends BaseEntity{
         this.permissionId = permissionId;
     }
 
-    public String getPmsName() {
-        return pmsName;
+    public String getPermissionName() {
+        return permissionName;
     }
 
-    public void setPmsName(String pmsName) {
-        this.pmsName = pmsName;
+    public void setPermissionName(String permissionName) {
+        this.permissionName = permissionName;
     }
 
-    public String getMethod() {
-        return method;
+    public int getTypeId() {
+        return typeId;
     }
 
-    public void setMethod(String method) {
-        this.method = method;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getApplicationId() {
-        return applicationId;
-    }
-
-    public void setApplicationId(int applicationId) {
-        this.applicationId = applicationId;
-    }
-
-    public int getDingAppId() {
-        return dingAppId;
-    }
-
-    public void setDingAppId(int dingAppId) {
-        this.dingAppId = dingAppId;
-    }
-
-    public int getPriority() {
-        return priority;
-    }
-
-    public void setPriority(int priority) {
-        this.priority = priority;
-    }
-
-    public String getPmsType() {
-        return pmsType;
-    }
-
-    public void setPmsType(String pmsType) {
-        this.pmsType = pmsType;
+    public void setTypeId(int typeId) {
+        this.typeId = typeId;
     }
 }
