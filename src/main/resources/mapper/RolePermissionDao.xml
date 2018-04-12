@@ -34,7 +34,8 @@
           hm_pub_role role
         LEFT JOIN hm_pub_role_permission rela ON role.ID = rela.ROLEID AND role.COMPANYID = rela.COMPANYID
         LEFT JOIN hm_pub_permission pms ON rela.PERMISSIONID = pms.ID
-        WHERE role.COMPANYID = #{companyId};
+        WHERE role.COMPANYID = #{companyId}
+        ORDER BY role.PRIORITY, role.id, pms.ID;
     </select>
 
 
