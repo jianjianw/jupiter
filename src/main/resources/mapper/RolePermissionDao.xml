@@ -7,6 +7,18 @@
         <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
     </resultMap>
 
+    <resultMap id="VOMap" type="com.qiein.jupiter.web.entity.vo.RolePermissionVO">
+        <result column="ID" property="roleId" jdbcType="INTEGER"/>
+        <result column="ROLENAME" property="roleName" jdbcType="VARCHAR"/>
+        <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
+        <collection property="pmsList" ofType="com.qiein.jupiter.web.entity.po.PermissionPO" resultMap="pmsPO"/>
+    </resultMap>
+    <resultMap id="pmsPO" type="com.qiein.jupiter.web.entity.po.PermissionPO">
+        <result column="PMSID" property="permissionId" jdbcType="INTEGER"/>
+        <result column="PERMISSIONNAME" property="permissionName" jdbcType="VARCHAR"/>
+        <result column="TYPEID" property="typeId" jdbcType="INTEGER"/>
+    </resultMap>
+
     <sql id="baseColumn">
         ROLEID,PERMISSIONID,COMPANYID
     </sql>
@@ -15,14 +27,14 @@
        hm_pub_role_permission
     </sql>
     <!--获取当前公司下的所有角色及对应的权限-->
-    <select id="getAll">
-      SELECT
-	 role.ID ROLEID,role.ROLENAME,role.PRIORITY,permission.ID PERMISSIONID,permission.PERMISSIONNAME,permission.TYPEID
-      FROM
-	hm_pub_role role
-	LEFT JOIN hm_pub_role_permission role_permission ON role.ID = role_permission.ROLEID
-	LEFT JOIN hm_pub_permission permission ON role_permission.PERMISSIONID=permission.ID
-	WHERE role.COMPANYID=#{companyId}
+    <select id="getCompanyAllRole" parameterType="map" resultMap="VOMap">
+        SELECT
+          role.ID,role.ROLENAME,role.COMPANYID,pms.ID AS PMSID,pms.PERMISSIONNAME,pms.TYPEID
+        FROM
+          hm_pub_role role
+        LEFT JOIN hm_pub_role_permission rela ON role.ID = rela.ROLEID AND role.COMPANYID = rela.COMPANYID
+        LEFT JOIN hm_pub_permission pms ON rela.PERMISSIONID = pms.ID
+        WHERE role.COMPANYID = #{companyId};
     </select>
 
 

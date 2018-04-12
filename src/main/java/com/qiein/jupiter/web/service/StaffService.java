@@ -99,4 +99,30 @@ public interface StaffService {
      */
     void heartBeatUpdate(int id, int companyId);
 
+    /**
+     * 角色管理
+     */
+    interface RoleService {
+
+        /**
+         * 新增角色
+         *
+         * @return
+         */
+        int insert();
+
+        /**
+         * 删除角色
+         *
+         * @return
+         */
+        int delete();
+
+        /**
+         * 修改角色
+         */
+        int update();
+
+
+    }
 }

@@ -1,6 +1,9 @@
 package com.qiein.jupiter.web.entity.vo;
 
 import com.qiein.jupiter.web.entity.BaseEntity;
+import com.qiein.jupiter.web.entity.po.PermissionPO;
+
+import java.util.List;
 
 /**
  * 角色权限VO对象
@@ -18,24 +21,18 @@ public class RolePermissionVO extends BaseEntity {
      */
     private String roleName;
     /**
+     * 企业ID
+     */
+    private Integer companyId;
+    /**
      * 排序
      */
     private int priority;
-
     /**
-     * 权限id
+     * 权限集合
      */
-    private int permissionId;
+    private List<PermissionPO> pmsList;
 
-    /**
-     * 权限名称
-     */
-    private String permissionName;
-
-    /**
-     * 权限类型
-     */
-    private String typeId;
 
     public int getRoleId() {
         return roleId;
@@ -61,27 +58,19 @@ public class RolePermissionVO extends BaseEntity {
         this.priority = priority;
     }
 
-    public int getPermissionId() {
-        return permissionId;
+    public List<PermissionPO> getPmsList() {
+        return pmsList;
     }
 
-    public void setPermissionId(int permissionId) {
-        this.permissionId = permissionId;
+    public void setPmsList(List<PermissionPO> pmsList) {
+        this.pmsList = pmsList;
     }
 
-    public String getPermissionName() {
-        return permissionName;
+    public Integer getCompanyId() {
+        return companyId;
     }
 
-    public void setPermissionName(String permissionName) {
-        this.permissionName = permissionName;
-    }
-
-    public String getTypeId() {
-        return typeId;
-    }
-
-    public void setTypeId(String typeId) {
-        this.typeId = typeId;
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
     }
 }
