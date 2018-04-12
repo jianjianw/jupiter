@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 角色权限VO对象
  */
-public class RolePermissionVO extends BaseEntity {
+public class RolePermissionVO {
     private static final long serialVersionUID = -9006130668581698213L;
 
     /**

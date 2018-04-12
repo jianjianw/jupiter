@@ -174,4 +174,14 @@
         AND COMPANYID = #{companyId}
     </delete>
 
+
+    <select id="getByIdAndCid" parameterType="map" resultMap="baseMap">
+        SELECT
+        <include refid="baseColumn"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE ID = #{id}
+        AND COMPANYID = #{companyId}
+    </select>
+
 </mapper>
