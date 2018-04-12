@@ -11,11 +11,12 @@
         GROUPID,STAFFID,COMPANYID
     </sql>
 
-    <sql id="tableName">
-        hm_pub_group_staff
-    </sql>
-
-    <select id="findList">
+    <!--获取公司全部的组及下属员工-->
+    <select id="getAllGroupAndStaff">
+  hm_pub_group_staff
+    </select>
+    <!--获取某个组及下属员工-->
+    <select id="getGroupAndStaffById">
 
     </select>
 

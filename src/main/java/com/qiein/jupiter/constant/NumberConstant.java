@@ -10,6 +10,10 @@ public class NumberConstant {
      */
     public final static int DEFAULT_ZERO = 0;
     /**
+     * 默认成功返回值
+     */
+    public final static int DEFAULT_SUCCESS_CODE = 100000;
+    /**
      * 登录错误时，增加
      */
     public final static int LOGIN_ERROR_ADD_NUM = 1;
