@@ -3,9 +3,9 @@
 <mapper namespace="com.qiein.jupiter.web.dao.RoleDao">
     <resultMap id="baseMap" type="com.qiein.jupiter.web.entity.po.RolePO">
         <id column="ID" property="id" jdbcType="BIGINT"/>
-        <result column="ROLENAME" property="permissionName" jdbcType="VARCHAR"/>
-        <result column="COMPANYID" property="typeId" jdbcType="INTEGER"/>
-        <result column="PRIORITY" property="permissionName" jdbcType="INTEGER"/>
+        <result column="ROLENAME" property="roleName" jdbcType="VARCHAR"/>
+        <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
+        <result column="PRIORITY" property="priority" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="baseColumn">

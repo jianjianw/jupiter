@@ -14,6 +14,16 @@
     <sql id="tableName">
        hm_pub_role_permission
     </sql>
+    <!--获取当前公司下的所有角色及对应的权限-->
+    <select id="getAll">
+      SELECT
+	 role.ID ROLEID,role.ROLENAME,role.PRIORITY,permission.ID PERMISSIONID,permission.PERMISSIONNAME,permission.TYPEID
+      FROM
+	hm_pub_role role
+	LEFT JOIN hm_pub_role_permission role_permission ON role.ID = role_permission.ROLEID
+	LEFT JOIN hm_pub_permission permission ON role_permission.PERMISSIONID=permission.ID
+	WHERE role.COMPANYID=#{companyId}
+    </select>
 
 
 </mapper>

@@ -15,5 +15,41 @@
         hm_pub_permission
     </sql>
 
+    <select id="getById">
+        SELECT
+        <include refid="baseColumn"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE ID = #{id}
+    </select>
+
+    <select id="findList">
+        SELECT
+        <include refid="baseColumn"/>
+        FROM
+        <include refid="tableName"/>
+    </select>
+
+    <insert id="insert">
+        <include refid="tableName"/>
+        (ID,PERMISSIONNAME,TYPEID)
+        VALUES (
+        #{id}, #{permissionName}, #{typeId}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE
+        <include refid="tableName"/>
+        <set>
+            <if test="permissionName != null">
+                PERMISSIONNAME = #{permissionName},
+            </if>
+            <if test="typeId != null">
+                TYPEID = #{typeId},
+            </if>
+        </set>
+        WHERE ID = #{id}
+    </update>
 
 </mapper>
