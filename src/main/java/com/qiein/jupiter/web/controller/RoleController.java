@@ -37,4 +37,12 @@ public class RoleController extends BaseController {
         roleService.insert(roleName, priority, pmsIds, currentLoginStaff.getCompanyId());
         return ResultInfoUtil.success(TipMsgConstant.ADD_ROLE_SUCCESS);
     }
+
+    @PostMapping("delete_role")
+    public ResultInfo deleteRole(@NotEmpty @RequestParam("roleId") Integer roleId) {
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        roleService.delete(roleId,currentLoginStaff.getCompanyId());
+        return ResultInfoUtil.success(TipMsgConstant.DELETE_ROLE_SUCCESS);
+    }
 }

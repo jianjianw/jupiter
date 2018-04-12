@@ -168,7 +168,7 @@
         SELECT
         <include refid="baseColumn"/>
         FROM
-        <include refid="tableName"/>
+        hm_pub_staff
         WHERE ID = #{id}
         AND COMPANYID = #{companyId}
     </select>

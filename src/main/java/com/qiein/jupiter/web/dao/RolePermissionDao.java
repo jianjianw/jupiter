@@ -3,7 +3,6 @@ package com.qiein.jupiter.web.dao;
 import com.qiein.jupiter.web.entity.vo.RolePermissionVO;
 import org.apache.ibatis.annotations.Param;
 
-import javax.annotation.security.PermitAll;
 import java.util.List;
 
 /**
@@ -20,5 +19,10 @@ public interface RolePermissionDao {
      * 批量添加角色权限关联表
      */
     public void batchAddRolePmsRela(@Param("roleId") Integer roleId, @Param("companyId") Integer companyId, @Param("pmsIdArr") String[] pmsIdArr);
+
+    /**
+     * 根据角色ID删除关联表
+     */
+    public void deleteByRoleId(@Param("roleId") Integer roleId, @Param("companyId") Integer companyId);
 
 }

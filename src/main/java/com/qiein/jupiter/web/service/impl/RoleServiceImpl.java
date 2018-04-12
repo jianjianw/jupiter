@@ -31,8 +31,8 @@ public class RoleServiceImpl implements RoleService {
     public void insert(String roleName, Integer priority, String pmsIds, Integer companyId) {
         //1.查是否已存在
         RolePO exist = roleDao.getRoleByName(roleName, companyId);
-        if (exist!=null){
-            throw  new RException(ExceptionEnum.ROLE_EXIST);
+        if (exist != null) {
+            throw new RException(ExceptionEnum.ROLE_EXIST);
         }
         //2.添加角色表
         RolePO rolePO = new RolePO(roleName, companyId, priority);
@@ -44,9 +44,18 @@ public class RoleServiceImpl implements RoleService {
         }
     }
 
-    @Override
-    public int delete() {
-        return 0;
+    /**
+     * 删除角色
+     *
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void delete(Integer roleId, Integer companyId) {
+        int i = roleDao.delete(roleId);
+        if (i != 1) {
+            throw new RException(ExceptionEnum.DELETE_FAIL);
+        }
+        rolePmsDao.deleteByRoleId(roleId, companyId);
     }
 
     @Override

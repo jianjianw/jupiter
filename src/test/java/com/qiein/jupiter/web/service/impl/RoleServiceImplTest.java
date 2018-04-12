@@ -23,7 +23,7 @@ import static org.junit.Assert.*;
 public class RoleServiceImplTest {
 
     @Autowired
-    private RolePermissionDao rolePermissionDao;
+    private RolePermissionDao rolePmsDao;
     @Autowired
     private RoleDao roleDao;
 
@@ -42,12 +42,17 @@ public class RoleServiceImplTest {
         //3.添加角色权限关联表
         if (StringUtil.isNotNullStr(pmsIds)) {
             String[] pmsIdArr = pmsIds.split(CommonConstant.STR_SEPARATOR);
-            rolePermissionDao.batchAddRolePmsRela(rolePO.getId(), 1, pmsIdArr);
+            rolePmsDao.batchAddRolePmsRela(rolePO.getId(), 1, pmsIdArr);
         }
     }
 
     @Test
     public void delete() {
+        int i = roleDao.delete(16);
+        if (i != 1) {
+            throw new RException(ExceptionEnum.DELETE_FAIL);
+        }
+        rolePmsDao.deleteByRoleId(16, 1);
     }
 
     @Test
@@ -56,7 +61,7 @@ public class RoleServiceImplTest {
 
     @Test
     public void getCompanyAllRole() {
-        List<RolePermissionVO> companyAllRole = rolePermissionDao.getCompanyAllRole(1);
+        List<RolePermissionVO> companyAllRole = rolePmsDao.getCompanyAllRole(1);
         System.out.println(companyAllRole);
     }
 

@@ -33,7 +33,11 @@
             AND role.COMPANYID = #{companyId}
     </select>
 
-
+    <!--删除角色-->
+    <delete id="delete" parameterType="map">
+        DELETE FROM hm_pub_role
+        WHERE ID = #{id}
+    </delete>
 
 
 </mapper>

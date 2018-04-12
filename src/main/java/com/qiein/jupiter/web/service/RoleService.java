@@ -19,7 +19,7 @@ public interface RoleService {
      *
      * @return
      */
-    int delete();
+    void delete(Integer roleId, Integer companyId);
 
     /**
      * 修改角色
