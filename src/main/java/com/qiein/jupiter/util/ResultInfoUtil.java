@@ -1,6 +1,7 @@
 package com.qiein.jupiter.util;
 
 import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.constant.NumberConstant;
 import com.qiein.jupiter.constant.TipMsgConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 
@@ -46,7 +47,7 @@ public class ResultInfoUtil {
      */
     public static ResultInfo success(String msg, Object object) {
         ResultInfo resultInfo = new ResultInfo();
-        resultInfo.setCode(1);
+        resultInfo.setCode(NumberConstant.DEFAULT_SUCCESS_CODE);
         resultInfo.setMsg(msg);
         resultInfo.setData(object);
         return resultInfo;

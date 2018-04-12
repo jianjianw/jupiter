@@ -16,30 +16,31 @@
         ID, GROUPID, GROUPNAME, PARENTID, GROUPTYPE, COMPANYID,CHIEFIDS,CHIEFNAMES
     </sql>
 
-    <sql id="tableName">
-        hm_pub_group
-    </sql>
-
     <select id="getById" parameterType="java.lang.Integer" resultMap="baseMap">
         SELECT
         <include refid="baseColumn"/>
-        FROM <include refid="tableName"/>
+        hm_pub_group
         WHERE ID = #{id}
     </select>
 
-    <select id="findList" resultMap="baseMap">
+    <select id="findAllByCompanyId" resultMap="baseMap">
         SELECT
         <include refid="baseColumn"/>
-        FROM <include refid="tableName"/>
-        WHERE  COMPANYID= #{companyId}
+        FROM hm_pub_group
+        WHERE COMPANYID= #{companyId}
     </select>
 
-    <insert id="insert" parameterType="com.qiein.jupiter.web.entity.po.GroupPO"  useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO <include refid="tableName"/>
-        {GROUPID, GROUPNAME, PARENTID, GROUPTYPE, COMPANYID,CHIEFIDS,CHIEFNAMES}
+    <insert id="insert" parameterType="com.qiein.jupiter.web.entity.po.GroupPO" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO hm_pub_group
+        (GROUPID, GROUPNAME, PARENTID, GROUPTYPE, COMPANYID,CHIEFIDS,CHIEFNAMES)
         VALUES (#{groupId}, #{groupName}, #{priority}, #{groupType}, #{companyId},
         #{chiefIds},#{chiefNames})
     </insert>
+
+    <update id="update">
+        UPDATE hm_pub_group
+    </update>
 
 
 </mapper>

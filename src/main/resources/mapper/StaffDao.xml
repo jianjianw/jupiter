@@ -23,23 +23,17 @@
         TOKEN,ISSHOW,ISLOCK,ISDEL
     </sql>
 
-    <sql id="tableName">
-        hm_pub_staff
-    </sql>
-
     <select id="getById" parameterType="java.lang.Integer" resultMap="baseMap">
         SELECT
         <include refid="baseColumn"/>
-        FROM
-        <include refid="tableName"/>
+        FROM hm_pub_staff
         WHERE ID = #{id}
     </select>
 
     <select id="findList" resultMap="baseMap">
         SELECT
         <include refid="baseColumn"/>
-        FROM
-        <include refid="tableName"/>
+        FROM hm_pub_staff
         <where>
             <if test="nickName != null and nickName != ''">
                 NICKNAME = #{nickName},
@@ -85,8 +79,7 @@
 
     <insert id="insert" parameterType="com.qiein.jupiter.web.entity.po.StaffPO" useGeneratedKeys="true"
             keyProperty="id">
-        INSERT INTO
-        <include refid="tableName"/>
+        INSERT INTO  hm_pub_staff
         (NICKNAME, PHONE, USERNAME, PASSWORD,COMPANYID, CORPID, DINGUSERID, OPENID,HEADIMG,
         TOKEN,ISSHOW,ISLOCK,ISDEL)
         VALUES (
@@ -97,8 +90,7 @@
     </insert>
 
     <update id="update" parameterType="com.qiein.jupiter.web.entity.po.StaffPO">
-        UPDATE
-        <include refid="tableName"/>
+        UPDATE  hm_pub_staff
         <set>
             <if test="nickName != null">
                 NICKNAME = #{nickName},
@@ -147,8 +139,7 @@
     <select id="getCompanyList" resultType="com.qiein.jupiter.web.entity.po.CompanyPO">
         SELECT company.ID,company.COMPNAME,
         company.LOGO
-        FROM
-        <include refid="tableName"/>
+        FROM hm_pub_staff
         as staff
         LEFT JOIN
         hm_pub_company as company
@@ -160,16 +151,14 @@
     <select id="loginWithCompanyId" resultMap="baseMap">
         SELECT
         <include refid="baseColumn"/>
-        FROM
-        <include refid="tableName"/>
+        FROM hm_pub_staff
         WHERE PHONE = #{userName}
         AND PASSWORD = #{password}
         AND COMPANYID = #{companyId}
     </select>
 
     <delete id="deleteByIdAndCid">
-        DELETE FROM
-        <include refid="tableName"/>
+        DELETE FROM hm_pub_staff
         WHERE ID = #{id}
         AND COMPANYID = #{companyId}
     </delete>
