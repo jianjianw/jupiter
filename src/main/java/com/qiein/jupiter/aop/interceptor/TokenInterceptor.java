@@ -11,6 +11,7 @@ import com.qiein.jupiter.util.JwtUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.dto.VerifyParamDTO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -35,6 +36,9 @@ public class TokenInterceptor implements HandlerInterceptor {
 
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
+
+    @Autowired
+    private StaffService staffService;
 
     /**
      * 前置拦截器
@@ -78,9 +82,20 @@ public class TokenInterceptor implements HandlerInterceptor {
         //根据uid cid 从缓存中获取当前登录用户
         String userTokenKey = RedisConstant.getStaffKey(verifyParamDTO.getUid(), verifyParamDTO.getCid());
         StaffPO staffPO = (StaffPO) redisTemplate.opsForValue().get(userTokenKey);
-        //如果缓存中命中失败
+        //如果缓存中命中失败,从数据库获取用户信息
         if (staffPO == null) {
-            throw new RException(ExceptionEnum.TOKEN_INVALID);
+            staffPO = staffService.getById(verifyParamDTO.getCid(), verifyParamDTO.getUid());
+            if (staffPO == null) {
+                //验证用户不存在
+                throw new RException(ExceptionEnum.VERIFY_USER_NOT_FOUND);
+            }else if(StringUtil.isNullStr(staffPO.getToken())){
+                //如果用户当前没有token，说明没有登录或token过期
+                throw new RException(ExceptionEnum.TOKEN_INVALID);
+            }
+        }
+        //验证是否被锁定
+        if(staffPO.isLockFlag()){
+            throw new RException(ExceptionEnum.USER_IS_LOCK);
         }
         //验证token是否相等
         if (!StringUtil.ignoreCaseEqual(verifyParamDTO.getToken(), staffPO.getToken())) {

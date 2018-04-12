@@ -6,7 +6,6 @@
         <result column="GROUPID" property="groupId" jdbcType="VARCHAR"/>
         <result column="GROUPNAME" property="groupName" jdbcType="VARCHAR"/>
         <result column="PARENTID" property="parentId" jdbcType="VARCHAR"/>
-        <result column="PRIORITY" property="priority" jdbcType="VARCHAR"/>
         <result column="GROUPTYPE" property="groupType" jdbcType="VARCHAR"/>
         <result column="COMPANYID" property="companyId" jdbcType="VARCHAR"/>
         <result column="CHIEFIDS" property="chiefIds" jdbcType="VARCHAR"/>
@@ -14,7 +13,7 @@
     </resultMap>
 
     <sql id="baseColumn">
-        ID, GROUPID, GROUPNAME, PARENTID, PRIORITY, GROUPTYPE, COMPANYID,CHIEFIDS,CHIEFNAMES
+        ID, GROUPID, GROUPNAME, PARENTID, GROUPTYPE, COMPANYID,CHIEFIDS,CHIEFNAMES
     </sql>
 
     <sql id="tableName">
@@ -30,8 +29,8 @@
 
     <insert id="insert" parameterType="com.qiein.jupiter.web.entity.po.GroupPO"  useGeneratedKeys="true" keyProperty="id">
         INSERT INTO <include refid="tableName"/>
-        {GROUPID, GROUPNAME, PARENTID, PRIORITY, GROUPTYPE, COMPANYID,CHIEFIDS,CHIEFNAMES}
-        VALUES (#{groupId}, #{groupName}, #{parentId}, #{priority}, #{groupType}, #{companyId},
+        {GROUPID, GROUPNAME, PARENTID, GROUPTYPE, COMPANYID,CHIEFIDS,CHIEFNAMES}
+        VALUES (#{groupId}, #{groupName}, #{priority}, #{groupType}, #{companyId},
         #{chiefIds},#{chiefNames})
     </insert>
 

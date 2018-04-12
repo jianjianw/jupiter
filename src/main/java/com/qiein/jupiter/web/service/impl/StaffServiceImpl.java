@@ -183,7 +183,7 @@ public class StaffServiceImpl implements StaffService {
         List<CompanyPO> companyList = staffDao.getCompanyList(userName, password);
         if (companyList == null || companyList.isEmpty()) {
             //用户不存在
-            throw new RException(ExceptionEnum.USER_NOT_FIND);
+            throw new RException(ExceptionEnum.USER_NOT_FOUND);
         }
         //移除错误次数
         removeUserErrorNumber(userName);

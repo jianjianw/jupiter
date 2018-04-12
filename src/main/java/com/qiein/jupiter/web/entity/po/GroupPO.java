@@ -25,10 +25,6 @@ public class GroupPO extends BaseEntity {
     @NotEmpty(message = "{group.parentId.null}")
     private String parentId;
     /**
-     * 排序
-     */
-    private int priority;
-    /**
      * 组类型
      */
     private String groupType;
@@ -69,14 +65,6 @@ public class GroupPO extends BaseEntity {
 
     public void setParentId(String parentId) {
         this.parentId = parentId;
-    }
-
-    public int getPriority() {
-        return priority;
-    }
-
-    public void setPriority(int priority) {
-        this.priority = priority;
     }
 
     public String getGroupType() {
