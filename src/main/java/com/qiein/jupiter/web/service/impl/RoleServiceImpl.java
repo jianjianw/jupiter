@@ -58,9 +58,23 @@ public class RoleServiceImpl implements RoleService {
         rolePmsDao.deleteByRoleId(roleId, companyId);
     }
 
-    @Override
-    public int update() {
-        return 0;
+    /**
+     * 修改角色
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void update(RolePO rolePO, String pmsIds) {
+        //1.修改角色表
+        int i = roleDao.editRole(rolePO);
+        if (i!=1){
+            throw  new RException(ExceptionEnum.ROLE_EDIT_FAIL);
+        }
+        //2.删除角色权限关联表
+        rolePmsDao.deleteByRoleId(rolePO.getId(),rolePO.getCompanyId());
+        //3.插入角色权限关联表
+        if (StringUtil.isNotNullStr(pmsIds)){
+            String[] pmsIdArr = pmsIds.split(CommonConstant.STR_SEPARATOR);
+            rolePmsDao.batchAddRolePmsRela(rolePO.getId(), rolePO.getCompanyId(), pmsIdArr);
+        }
     }
 
     /**

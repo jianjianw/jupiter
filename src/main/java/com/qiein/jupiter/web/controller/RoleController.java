@@ -4,6 +4,7 @@ import com.qiein.jupiter.aop.annotation.NotEmpty;
 import com.qiein.jupiter.constant.TipMsgConstant;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
+import com.qiein.jupiter.web.entity.po.RolePO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.RolePermissionVO;
 import com.qiein.jupiter.web.service.RoleService;
@@ -42,7 +43,16 @@ public class RoleController extends BaseController {
     public ResultInfo deleteRole(@NotEmpty @RequestParam("roleId") Integer roleId) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        roleService.delete(roleId,currentLoginStaff.getCompanyId());
+        roleService.delete(roleId, currentLoginStaff.getCompanyId());
         return ResultInfoUtil.success(TipMsgConstant.DELETE_ROLE_SUCCESS);
+    }
+
+    @PostMapping("edit_role")
+    public ResultInfo editRole(@RequestBody RolePO rolePO, @RequestParam("pmsIds") String pmsIds) {
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        rolePO.setCompanyId(currentLoginStaff.getCompanyId());
+        roleService.update(rolePO,pmsIds);
+        return ResultInfoUtil.success(TipMsgConstant.EDIT_ROLE_SUCCESS);
     }
 }

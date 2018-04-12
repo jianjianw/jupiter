@@ -26,7 +26,8 @@ public enum ExceptionEnum {
     COMPANYID_NULL(306, "公司ID不能为空"),
     ID_NULL(307, "id不能为空"),
     ROLE_EXIST(308, "该角色已存在"),
-    DELETE_FAIL(309, "删除失败");
+    DELETE_FAIL(309, "删除失败"),
+    ROLE_EDIT_FAIL(340, "角色修改失败");
 
     private Integer code;
 

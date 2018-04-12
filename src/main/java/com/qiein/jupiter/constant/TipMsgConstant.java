@@ -46,4 +46,9 @@ public class TipMsgConstant {
      * 删除角色成功
      */
     public final static String DELETE_ROLE_SUCCESS = "删除角色成功";
+
+    /**
+     * 修改角色成功
+     */
+    public final static String EDIT_ROLE_SUCCESS = "修改角色成功";
 }

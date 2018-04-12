@@ -57,6 +57,24 @@ public class RoleServiceImplTest {
 
     @Test
     public void update() {
+        RolePO rolePO = new RolePO();
+        rolePO.setId(1);
+        rolePO.setCompanyId(1);
+        rolePO.setRoleName("松松2");
+        rolePO.setPriority(3);
+        String pmsIds = "5,6,7";
+        //1.修改角色表
+        int i = roleDao.editRole(rolePO);
+        if (i!=1){
+            throw  new RException(ExceptionEnum.ROLE_EDIT_FAIL);
+        }
+        //2.删除角色权限关联表
+        rolePmsDao.deleteByRoleId(rolePO.getId(),rolePO.getCompanyId());
+        //3.插入角色权限关联表
+        if (StringUtil.isNotNullStr(pmsIds)){
+            String[] pmsIdArr = pmsIds.split(CommonConstant.STR_SEPARATOR);
+            rolePmsDao.batchAddRolePmsRela(rolePO.getId(), rolePO.getCompanyId(), pmsIdArr);
+        }
     }
 
     @Test
