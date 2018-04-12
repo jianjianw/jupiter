@@ -28,6 +28,19 @@ public class ResultInfoUtil {
     /**
      * 返回成功的结果
      *
+     * @param msg
+     * @return
+     */
+    public static ResultInfo success(String msg) {
+        ResultInfo resultInfo = new ResultInfo();
+        resultInfo.setCode(1);
+        resultInfo.setMsg(msg);
+        return resultInfo;
+    }
+
+    /**
+     * 返回成功的结果
+     *
      * @param object
      * @return
      */
