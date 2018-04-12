@@ -15,5 +15,8 @@
         hm_pub_group_staff
     </sql>
 
+    <select id="findList">
+
+    </select>
 
 </mapper>

@@ -1,12 +1,10 @@
 package com.qiein.jupiter.web.entity.po;
 
-import com.qiein.jupiter.web.entity.BaseEntity;
-
 
 /**
  * 权限数据库对象
  */
-public class PermissionPO extends BaseEntity {
+public class PermissionPO {
 
     private static final long serialVersionUID = -8520233999874945394L;
     /**
@@ -14,7 +12,7 @@ public class PermissionPO extends BaseEntity {
      */
     private int permissionId;
     /**
-     *权限名称
+     * 权限名称
      */
     private String permissionName;
     /**
