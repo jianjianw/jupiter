@@ -34,4 +34,5 @@ public interface StaffDao extends BaseDao<StaffPO> {
                                @Param("password") String password,
                                @Param("companyId") int companyId);
 
+
 }
