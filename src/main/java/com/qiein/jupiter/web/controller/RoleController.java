@@ -1,15 +1,14 @@
 package com.qiein.jupiter.web.controller;
 
-import com.qiein.jupiter.aop.annotation.LoginLog;
+import com.qiein.jupiter.aop.annotation.NotEmpty;
+import com.qiein.jupiter.constant.TipMsgConstant;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.RolePermissionVO;
 import com.qiein.jupiter.web.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,11 +23,18 @@ public class RoleController extends BaseController {
     private RoleService roleService;//角色业务层
 
     @GetMapping("get_company_role_list")
-    @LoginLog
-    public ResultInfo getCompanyRolelist(){
+    public ResultInfo getCompanyRolelist() {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        List<RolePermissionVO> roleList =  roleService.getCompanyAllRole(currentLoginStaff.getCompanyId());
+        List<RolePermissionVO> roleList = roleService.getCompanyAllRole(currentLoginStaff.getCompanyId());
         return ResultInfoUtil.success(roleList);
+    }
+
+    @PostMapping("add_role")
+    public ResultInfo addRole(@NotEmpty @RequestParam("roleName") String roleName, @NotEmpty @RequestParam("priority") Integer priority, @RequestParam("pmsIds") String pmsIds) {
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        roleService.insert(roleName, priority, pmsIds, currentLoginStaff.getCompanyId());
+        return ResultInfoUtil.success(TipMsgConstant.ADD_ROLE_SUCCESS);
     }
 }

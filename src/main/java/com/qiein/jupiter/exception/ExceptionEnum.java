@@ -12,7 +12,7 @@ public enum ExceptionEnum {
     TOKEN_INVALID(101, "token失效"),
     TOKEN_VERIFY_FAIL(102, "token验证失败"),
     VERIFY_PARAM_INCOMPLETE(103, "token验证参数不全"),
-    VERIFY_USER_NOT_FOUND(104,"未找到验证用户信息"),
+    VERIFY_USER_NOT_FOUND(104, "未找到验证用户信息"),
     //http请求相关
     HTTP_METHOD_NOT_SUPPORT(200, "不支持的请求方法类型"),
     HTTP_BODY_NOT_READABLE(201, "http请求体无法读取"),
@@ -23,8 +23,9 @@ public enum ExceptionEnum {
     USERNAME_OR_PASSWORD_ERROR(303, "用户名或密码错误"),
     VERIFY_NULL(304, "验证码不能为空"),
     VERIFY_ERROR(305, "验证码错误"),
-    COMPANYID_NULL(306,"公司ID不能为空"),
-    ID_NULL(307,"id不能为空");
+    COMPANYID_NULL(306, "公司ID不能为空"),
+    ID_NULL(307, "id不能为空"),
+    ROLE_EXIST(308, "该角色已存在");
 
     private Integer code;
 

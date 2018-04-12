@@ -16,5 +16,24 @@
         hm_pub_role
     </sql>
 
+    <insert id="insert" parameterType="com.qiein.jupiter.web.entity.po.RolePO" useGeneratedKeys="true" keyProperty="id">
+      INSERT INTO hm_pub_role
+        ( ROLENAME, COMPANYID, PRIORITY )
+      VALUES
+	    (#{roleName},#{companyId},#{priority} );
+    </insert>
+
+    <!--根据角色名获取角色信息-->
+    <select id="getRoleByName" parameterType="map" resultMap="baseMap">
+        SELECT role.ID, role.ROLENAME, role.COMPANYID, role.PRIORITY
+        FROM
+            hm_pub_role role
+        WHERE
+            role.ROLENAME = #{roleName}
+            AND role.COMPANYID = #{companyId}
+    </select>
+
+
+
 
 </mapper>

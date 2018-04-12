@@ -1,6 +1,12 @@
 package com.qiein.jupiter.web.service.impl;
 
+import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.exception.ExceptionEnum;
+import com.qiein.jupiter.exception.RException;
+import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.web.dao.RoleDao;
 import com.qiein.jupiter.web.dao.RolePermissionDao;
+import com.qiein.jupiter.web.entity.po.RolePO;
 import com.qiein.jupiter.web.entity.vo.RolePermissionVO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,9 +24,26 @@ public class RoleServiceImplTest {
 
     @Autowired
     private RolePermissionDao rolePermissionDao;
+    @Autowired
+    private RoleDao roleDao;
 
     @Test
     public void insert() {
+        String pmsIds = "1,2,3";
+        RolePO exist = roleDao.getRoleByName("admin1", 1);
+        if (exist!=null){
+            throw  new RException(ExceptionEnum.ROLE_EXIST);
+        }
+        //1.添加角色表
+        RolePO rolePO = new RolePO("admin1", 1, 1);
+        roleDao.insert(rolePO);
+        System.out.println(rolePO.getId());
+        //2.添加角色权限关联表
+        //3.添加角色权限关联表
+        if (StringUtil.isNotNullStr(pmsIds)) {
+            String[] pmsIdArr = pmsIds.split(CommonConstant.STR_SEPARATOR);
+            rolePermissionDao.batchAddRolePmsRela(rolePO.getId(), 1, pmsIdArr);
+        }
     }
 
     @Test
@@ -36,4 +59,6 @@ public class RoleServiceImplTest {
         List<RolePermissionVO> companyAllRole = rolePermissionDao.getCompanyAllRole(1);
         System.out.println(companyAllRole);
     }
+
+
 }
