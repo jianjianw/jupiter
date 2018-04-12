@@ -60,9 +60,14 @@ public class RoleServiceImplTest {
         RolePO rolePO = new RolePO();
         rolePO.setId(1);
         rolePO.setCompanyId(1);
-        rolePO.setRoleName("松松2");
+        rolePO.setRoleName("admin1");
         rolePO.setPriority(3);
         String pmsIds = "5,6,7";
+        //1.查重
+        RolePO exist = roleDao.getRoleByName(rolePO.getRoleName(), rolePO.getCompanyId());
+        if (exist != null && exist.getId() != rolePO.getId()){
+            throw new RException(ExceptionEnum.ROLE_EXIST);
+        }
         //1.修改角色表
         int i = roleDao.editRole(rolePO);
         if (i!=1){

@@ -63,15 +63,20 @@ public class RoleServiceImpl implements RoleService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void update(RolePO rolePO, String pmsIds) {
-        //1.修改角色表
-        int i = roleDao.editRole(rolePO);
-        if (i!=1){
-            throw  new RException(ExceptionEnum.ROLE_EDIT_FAIL);
+        //1.查重
+        RolePO exist = roleDao.getRoleByName(rolePO.getRoleName(), rolePO.getCompanyId());
+        if (exist != null && exist.getId() != rolePO.getId()){
+            throw new RException(ExceptionEnum.ROLE_EXIST);
         }
-        //2.删除角色权限关联表
-        rolePmsDao.deleteByRoleId(rolePO.getId(),rolePO.getCompanyId());
-        //3.插入角色权限关联表
-        if (StringUtil.isNotNullStr(pmsIds)){
+        //2.修改角色表
+        int i = roleDao.editRole(rolePO);
+        if (i != 1) {
+            throw new RException(ExceptionEnum.ROLE_EDIT_FAIL);
+        }
+        //3.删除角色权限关联表
+        rolePmsDao.deleteByRoleId(rolePO.getId(), rolePO.getCompanyId());
+        //4.插入角色权限关联表
+        if (StringUtil.isNotNullStr(pmsIds)) {
             String[] pmsIdArr = pmsIds.split(CommonConstant.STR_SEPARATOR);
             rolePmsDao.batchAddRolePmsRela(rolePO.getId(), rolePO.getCompanyId(), pmsIdArr);
         }
