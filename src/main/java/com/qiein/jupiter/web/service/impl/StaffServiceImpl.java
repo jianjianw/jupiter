@@ -59,6 +59,7 @@ public class StaffServiceImpl implements StaffService {
         log.debug("未使用缓存");
         //加密码加密
         staffPO.setPassword(MD5Util.getSaltMd5(staffPO.getPassword()));
+        //TODO 数据库重复性校验
         staffDao.insert(staffPO);
         return staffPO;
     }

@@ -11,13 +11,73 @@
         GROUPID,STAFFID,COMPANYID
     </sql>
 
-    <!--获取公司全部的组及下属员工-->
-    <select id="getAllGroupAndStaff">
-  hm_pub_group_staff
-    </select>
-    <!--获取某个组及下属员工-->
-    <select id="getGroupAndStaffById">
+    <resultMap id="groupMap" type="com.qiein.jupiter.web.entity.vo.GroupStaffVO">
+        <result column="GROUPID" property="groupId" jdbcType="VARCHAR"/>
+        <result column="GROUPNAME" property="groupName" jdbcType="VARCHAR"/>
+        <result column="PARENTID" property="parentId" jdbcType="VARCHAR"/>
+        <result column="GROUPTYPE" property="groupType" jdbcType="VARCHAR"/>
+        <result column="COMPANYID" property="companyId" jdbcType="VARCHAR"/>
+        <result column="CHIEFIDS" property="chiefIds" jdbcType="VARCHAR"/>
+        <result column="CHIEFNAMES" property="chiefNames" jdbcType="VARCHAR"/>
+        <collection property="staffList" ofType="com.qiein.jupiter.web.entity.po.StaffPO" resultMap="staffMap"/>
+        <collection property="groupList" ofType="com.qiein.jupiter.web.entity.po.GroupStaffVO" column="id"
+                    select="getGroupStaffListByParentIdAndCid"/>
+    </resultMap>
 
+    <resultMap id="staffMap" type="com.qiein.jupiter.web.entity.po.StaffPO">
+        <id column="ID" property="id" jdbcType="INTEGER"/>
+        <result column="NICKNAME" property="nickName" jdbcType="VARCHAR"/>
+        <result column="PHONE" property="phone" jdbcType="VARCHAR"/>
+        <result column="USERNAME" property="userName" jdbcType="VARCHAR"/>
+        <result column="PASSWORD" property="password" jdbcType="VARCHAR"/>
+        <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
+        <result column="CORPID" property="corpId" jdbcType="VARCHAR"/>
+        <result column="DINGUSERID" property="dingUserId" jdbcType="VARCHAR"/>
+        <result column="OPENID" property="openId" jdbcType="VARCHAR"/>
+        <result column="HEADIMG" property="headImg" jdbcType="VARCHAR"/>
+        <result column="TOKEN" property="token" jdbcType="VARCHAR"/>
+        <result column="ISSHOW" property="showFlag" jdbcType="INTEGER"/>
+        <result column="ISLOCK" property="lockFlag" jdbcType="BOOLEAN"/>
+        <result column="ISDEL" property="delFlag" jdbcType="BOOLEAN"/>
+    </resultMap>
+
+
+    <!--获取公司全部的组及下属员工-->
+    <select id="getAllGroupAndStaff" resultMap="groupMap">
+		SELECT  ID, GROUPID, GROUPNAME, PARENTID, GROUPTYPE, COMPANYID,CHIEFIDS,CHIEFNAMES
+		FROM hm_pub_group WHERE COMPANYID = #{companyId} AND PARENTID = '0'
+    </select>
+
+    <!--获取某个组及下属员工-->
+    <select id="getGroupStaffListByParentIdAndCid" resultMap="groupMap">
+ 		SELECT
+			hm_pub_group.GROUPID,
+			hm_pub_group.GROUPNAME,
+			hm_pub_group.PARENTID,
+			hm_pub_group.GROUPTYPE,
+			hm_pub_group.COMPANYID,
+			hm_pub_group.CHIEFIDS,
+			hm_pub_group.CHIEFNAMES,
+			staff.ID STAFFID,
+			staff.NICKNAME,
+			staff.PHONE,
+			staff.USERNAME,
+			staff.PASSWORD,
+			staff.COMPANYID,
+			staff.CORPID,
+			staff.DINGUSERID,
+			staff.OPENID,
+			staff.HEADIMG,
+			staff.TOKEN,
+			staff.ISSHOW,
+			staff.ISLOCK,
+			staff.ISDEL
+		FROM
+			hm_pub_group
+			LEFT JOIN hm_pub_group_staff rela ON hm_pub_group.GROUPID = rela.GROUPID
+			LEFT JOIN hm_pub_staff staff ON rela.STAFFID = staff.ID
+		WHERE hm_pub_group.COMPANYID = #{companyId}
+		AND hm_pub_group.PARENTID = #{parentId}
     </select>
 
 </mapper>
