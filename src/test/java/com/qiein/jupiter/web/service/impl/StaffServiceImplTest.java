@@ -1,5 +1,7 @@
 package com.qiein.jupiter.web.service.impl;
 
+import com.qiein.jupiter.web.dao.StaffDao;
+import com.qiein.jupiter.web.entity.vo.StaffVO;
 import com.qiein.jupiter.web.service.StaffService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,12 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class StaffServiceImplTest {
 
     @Autowired
     private StaffService staffService;
+    @Autowired
+    private StaffDao staffDao;
 
     @Test
     public void insert() {
@@ -77,5 +83,11 @@ public class StaffServiceImplTest {
 
     @Test
     public void updateToken() {
+    }
+
+    @Test
+    public void getGroupStaffs() {
+        List<StaffVO> list = staffDao.getGroupStaffs(1, "0-1-1");
+        System.out.println(list.size());
     }
 }

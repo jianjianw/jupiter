@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.dao;
 
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.entity.vo.StaffVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.mybatis.spring.annotation.MapperScan;
@@ -33,6 +34,14 @@ public interface StaffDao extends BaseDao<StaffPO> {
     StaffPO loginWithCompanyId(@Param("userName") String userName,
                                @Param("password") String password,
                                @Param("companyId") int companyId);
+
+    /**
+     * 获取小组人员
+     * @param companyId
+     * @param groupId
+     * @return
+     */
+    public List<StaffVO> getGroupStaffs(@Param("companyId") int companyId, @Param("groupId") String groupId);
 
 
 }

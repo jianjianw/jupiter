@@ -9,12 +9,14 @@ import com.qiein.jupiter.constant.RedisConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.JwtUtil;
+import com.qiein.jupiter.util.ListUtil;
 import com.qiein.jupiter.util.MD5Util;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.StaffDao;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.entity.vo.StaffVO;
 import com.qiein.jupiter.web.service.CompanyService;
 import com.qiein.jupiter.web.service.StaffService;
 import org.slf4j.Logger;
@@ -285,6 +287,20 @@ public class StaffServiceImpl implements StaffService {
         jwtStaff.setCompanyId(staffPO.getCompanyId());
         jwtStaff.setPhone(staffPO.getPhone());
         return JwtUtil.encrypt(JSONObject.toJSONString(jwtStaff));
+    }
+
+    /**
+     * 获取小组人员
+     */
+    //@Cacheable(value = "groupStaff", key = "'groupStaff'+':'+#companyId+':'+#groupId")
+    public List<StaffVO> getGroupStaffs(int companyId, String groupId) {
+        List<StaffVO> list = staffDao.getGroupStaffs(companyId, groupId);
+        if (ListUtil.isNotNullList(list)) {
+            for (StaffVO vo : list) {
+                vo.getStaffPwdFlag();
+            }
+        }
+        return list;
     }
 
 }

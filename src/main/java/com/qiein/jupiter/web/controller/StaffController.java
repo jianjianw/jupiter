@@ -5,13 +5,16 @@ import com.qiein.jupiter.aop.annotation.NotEmpty;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.constant.NumberConstant;
 import com.qiein.jupiter.constant.RedisConstant;
+import com.qiein.jupiter.constant.TipMsgConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
+import com.qiein.jupiter.web.entity.po.RolePO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.LoginUserVO;
+import com.qiein.jupiter.web.entity.vo.StaffVO;
 import com.qiein.jupiter.web.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ValueOperations;
@@ -190,6 +193,14 @@ public class StaffController extends BaseController {
         //生成验证码并放入缓存
         String code = VerifyCodeUtil.execute(response);
         valueOperations.set(RedisConstant.getVerifyCodeKey(userName), code);
+    }
+
+    @PostMapping("get_group_staff_list")
+    public ResultInfo getGroupStaffList(@NotEmpty @RequestParam("groupId") String groupId) {
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        List<StaffVO> staffList = staffService.getGroupStaffs(currentLoginStaff.getCompanyId(), groupId);
+        return ResultInfoUtil.success(staffList);
     }
 
     /**

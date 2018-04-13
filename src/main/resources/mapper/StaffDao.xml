@@ -18,6 +18,20 @@
         <result column="ISDEL" property="delFlag" jdbcType="BOOLEAN"/>
     </resultMap>
 
+    <resultMap id="VOMap" type="com.qiein.jupiter.web.entity.vo.StaffVO">
+        <id column="ID" property="id" jdbcType="INTEGER"/>
+        <result column="NICKNAME" property="nickName" jdbcType="VARCHAR"/>
+        <result column="PHONE" property="phone" jdbcType="VARCHAR"/>
+        <result column="USERNAME" property="userName" jdbcType="VARCHAR"/>
+        <result column="PASSWORD" property="passWord" jdbcType="VARCHAR"/>
+        <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
+        <result column="HEADIMG" property="headImg" jdbcType="VARCHAR"/>
+        <result column="ISLOCK" property="lockFlag" jdbcType="BOOLEAN"/>
+        <result column="ROLENAME" property="roleName" jdbcType="VARCHAR"/>
+        <result column="ROLEID" property="roleId" jdbcType="VARCHAR"/>
+        <result column="GROUPID" property="groupId" jdbcType="VARCHAR"/>
+    </resultMap>
+
     <sql id="baseColumn">
         ID, NICKNAME, PHONE, USERNAME, PASSWORD,COMPANYID, CORPID, DINGUSERID, OPENID,HEADIMG,
         TOKEN,ISSHOW,ISLOCK,ISDEL
@@ -171,6 +185,21 @@
         hm_pub_staff
         WHERE ID = #{id}
         AND COMPANYID = #{companyId}
+    </select>
+
+    <!--获取小组人员-->
+    <select id="getGroupStaffs" parameterType="map" resultMap="VOMap">
+        SELECT
+            rela.GROUPID, sf.ID, sf.NICKNAME, sf.PHONE, sf.USERNAME, sf.HEADIMG, sf.ISLOCK, sf.`PASSWORD`, role_rela.ROLEID,  role.ROLENAME
+        FROM
+            hm_pub_group_staff rela
+            INNER JOIN hm_pub_staff sf ON sf.COMPANYID = rela.COMPANYID AND rela.STAFFID = sf.ID
+            LEFT JOIN hm_pub_staff_role role_rela ON sf.ID = role_rela.STAFFID AND sf.COMPANYID = role_rela.COMPANYID
+            LEFT JOIN hm_pub_role role ON role_rela.ROLEID = role.ID AND role_rela.COMPANYID = role.COMPANYID
+        WHERE
+            rela.GROUPID = #{groupId}
+            AND rela.COMPANYID = #{companyId}
+            AND sf.ISDEL = 0
     </select>
 
 </mapper>

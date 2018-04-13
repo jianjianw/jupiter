@@ -4,6 +4,8 @@ import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.entity.vo.StaffVO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -100,29 +102,7 @@ public interface StaffService {
     void heartBeatUpdate(int id, int companyId);
 
     /**
-     * 角色管理
+     * 获取小组人员
      */
-    interface RoleService {
-
-        /**
-         * 新增角色
-         *
-         * @return
-         */
-        int insert();
-
-        /**
-         * 删除角色
-         *
-         * @return
-         */
-        int delete();
-
-        /**
-         * 修改角色
-         */
-        int update();
-
-
-    }
+    public List<StaffVO> getGroupStaffs(int companyId, String groupId);
 }
