@@ -103,6 +103,19 @@
         )
     </insert>
 
+    <!--新增员工-->
+    <insert id="addStaffVo" parameterType="com.qiein.jupiter.web.entity.vo.StaffVO" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO  hm_pub_staff
+        (NICKNAME, PHONE, USERNAME, PASSWORD,COMPANYID, ISSHOW,ISLOCK,ISDEL)
+        VALUES (
+        #{nickName}, #{phone}, #{userName}, #{password},
+        #{companyId}, #{showFlag},#{lockFlag},#{delFlag}
+        )
+    </insert>
+
+
+
     <update id="update" parameterType="com.qiein.jupiter.web.entity.po.StaffPO">
         UPDATE  hm_pub_staff
         <set>

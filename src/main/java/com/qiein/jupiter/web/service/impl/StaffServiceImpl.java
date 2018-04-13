@@ -66,14 +66,13 @@ public class StaffServiceImpl implements StaffService {
      * @param staffPO
      * @return
      */
-    @CachePut(value = "staff", key = "'staff'+':'+#staffPO.id+':'+#staffPO.companyId")
     @Transactional(rollbackFor = Exception.class)
-    public StaffPO insert(StaffPO staffPO, String groupId, String roIds) {
+    public StaffVO insert(StaffVO staffVO) {
         log.debug("未使用缓存");
         //加密码加密
-        staffPO.setPassword(MD5Util.getSaltMd5(staffPO.getPassword()));
+        staffVO.setPassword(MD5Util.getSaltMd5(staffVO.getPassword()));
         //1.根据手机号，全名，艺名查重，手机号全公司不重复，全名，艺名，在职员工中不能重复
-        StaffPO phoneExist = staffDao.getStaffByPhone(staffPO.getCompanyId(), staffPO.getPhone());
+        StaffPO phoneExist = staffDao.getStaffByPhone(staffVO.getCompanyId(), staffVO.getPhone());
         if (phoneExist != null && phoneExist.isDelFlag()) {
             throw new RException(ExceptionEnum.STAFF_EXIST_DEL);
         }
@@ -81,22 +80,23 @@ public class StaffServiceImpl implements StaffService {
             throw new RException(ExceptionEnum.PHONE_EXIST);
         }
         //艺名查重
-        if (staffDao.getStaffByNames(staffPO.getCompanyId(), staffPO.getNickName()) != null) {
+        if (staffDao.getStaffByNames(staffVO.getCompanyId(), staffVO.getNickName()) != null) {
             throw new RException(ExceptionEnum.NICKNAME_EXIST);
         }
-        if (staffDao.getStaffByNames(staffPO.getCompanyId(), staffPO.getUserName()) != null) {
+        if (staffDao.getStaffByNames(staffVO.getCompanyId(), staffVO.getUserName()) != null) {
             throw new RException(ExceptionEnum.USERNAME_EXIST);
         }
         //2.插入人员
-        staffDao.insert(staffPO);
+        staffDao.addStaffVo(staffVO);
         //3.添加小组人员关联表
-        groupDao.insertGroupStaff(staffPO.getCompanyId(), groupId, staffPO.getId());
+        groupDao.insertGroupStaff(staffVO.getCompanyId(), staffVO.getGroupId(), staffVO.getId());
         //4.添加人员角色关联表
-        if (StringUtil.isNullStr(roIds)) {
-            String[] roleArr = roIds.split(CommonConstant.STR_SEPARATOR);
-            staffRoleDao.batchInsertStaffRole(staffPO.getId(), staffPO.getCompanyId(), roleArr);
+        if (StringUtil.isNotNullStr(staffVO.getRoleIds())) {
+            String[] roleArr = staffVO.getRoleIds().split(CommonConstant.STR_SEPARATOR);
+            staffRoleDao.batchInsertStaffRole(staffVO.getId(), staffVO.getCompanyId(), roleArr);
         }
-        return staffPO;
+        redisTemplate.opsForValue().set(RedisConstant.getStaffKey(staffVO.getId(), staffVO.getCompanyId()), staffVO);
+        return staffVO;
     }
 
     /**

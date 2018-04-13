@@ -49,4 +49,6 @@ public class StringUtil {
         return str != null && !str.trim().equals("");
     }
 
+
+
 }

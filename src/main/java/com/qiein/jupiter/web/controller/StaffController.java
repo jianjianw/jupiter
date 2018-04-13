@@ -57,16 +57,15 @@ public class StaffController extends BaseController {
      */
     @PostMapping("/insert")
     @LoginLog
-    public ResultInfo insert(@RequestBody @Validated StaffPO staffPO, @NotEmpty @RequestParam("groupId") String groupId,
-                             @RequestParam("roleIds") String roleIds) {
+    public ResultInfo insert(@RequestBody @Validated StaffVO staffVO) {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         //设置cid
-        staffPO.setCompanyId(currentLoginStaff.getCompanyId());
+        staffVO.setCompanyId(currentLoginStaff.getCompanyId());
         //对象参数trim
-        ObjectUtil.objectStrParamTrim(staffPO);
-        staffService.insert(staffPO, groupId, roleIds);
-        return ResultInfoUtil.success();
+        ObjectUtil.objectStrParamTrim(staffVO);
+        staffService.insert(staffVO);
+        return ResultInfoUtil.success(TipMsgConstant.SAVE_SUCCESS);
     }
 
     /**

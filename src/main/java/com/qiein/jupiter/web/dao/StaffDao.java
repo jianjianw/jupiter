@@ -55,10 +55,17 @@ public interface StaffDao extends BaseDao<StaffPO> {
 
     /**
      * 根据艺名，全名获取员工信息
+     *
      * @param companyId
      * @param name
      * @return
      */
     public StaffPO getStaffByNames(@Param("companyId") int companyId, @Param("name") String name);
+
+    /**
+     * 添加员工
+     * @param staffVO
+     */
+    public void addStaffVo(StaffVO staffVO);
 
 }

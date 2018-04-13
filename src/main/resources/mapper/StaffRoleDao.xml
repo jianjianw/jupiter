@@ -17,7 +17,7 @@
 
     <!--批量添加员工角色-->
     <insert id="batchInsertStaffRole" parameterType="map">
-        INSERT TO hm_pub_staff_role
+        INSERT INTO hm_pub_staff_role
         (STAFFID,ROLEID,COMPANYID)
         VALUES
         <foreach collection="roleIdArr" item="roleId" index="index" separator=",">

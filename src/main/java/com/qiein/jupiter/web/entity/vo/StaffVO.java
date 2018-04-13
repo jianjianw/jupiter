@@ -4,48 +4,89 @@ import com.qiein.jupiter.util.MD5Util;
 import com.qiein.jupiter.util.StringUtil;
 
 public class StaffVO {
-    private String id;
 
-    private int compandyId;
+    private int id;
+
+    private int companyId;
 
     private String nickName;
 
     private boolean lockFlag;
+    /**
+     * 小组ID
+     */
+    private String groupId;
+    /**
+     * 手机号
+     */
+    private String phone;
+    /**
+     * 全名
+     */
+    private String userName;
+    /**
+     * 头像
+     */
+    private String headImg;
+    /**
+     * 密码
+     */
+    private String password;
+    /**
+     * 角色ID
+     */
+    private int roleId;
+    /**
+     * 角色名
+     */
+    private String roleName;
+    /**
+     * 密码是否默认密码
+     */
+    private boolean pwdFlag;
+    /**
+     * 角色ID，逗号拼接
+     */
+    private String roleIds;
 
-    private String groupId;//小组ID
-    private String phone;//手机号
-    private String userName;//全名
-    private String headImg;//头像
-    private String passWord;//密码
-    private int roleId;//角色ID
-    private String roleName;//角色名
-    private boolean pwdFlag;//密码是否默认密码
+    /**
+     * 是否在线
+     */
+    private int showFlag;
 
-    /*获取员工是否初始密码标识，并置空密码*/
+    /**
+     * 是否删除
+     */
+    private boolean delFlag;
+
+
+    /**
+     * 获取员工是否初始密码标识，并置空密码
+     */
     public void getStaffPwdFlag() {
-        if (StringUtil.isNotNullStr(this.phone) && StringUtil.isNotNullStr(this.passWord) && this.passWord.equals(MD5Util.getSaltMd5(this.phone))) {
+        if (StringUtil.isNotNullStr(this.phone) && StringUtil.isNotNullStr(this.password) && this.password.equals(MD5Util.getSaltMd5(this.phone))) {
             this.pwdFlag = true;
         } else {
             this.pwdFlag = false;
         }
-        this.passWord = null;
+        this.password = null;
     }
 
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public int getCompandyId() {
-        return compandyId;
+    public int getCompanyId() {
+        return companyId;
     }
 
-    public void setCompandyId(int compandyId) {
-        this.compandyId = compandyId;
+    public void setCompanyId(int companyId) {
+        this.companyId = companyId;
     }
 
     public String getNickName() {
@@ -96,13 +137,14 @@ public class StaffVO {
         this.headImg = headImg;
     }
 
-    public String getPassWord() {
-        return passWord;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPassWord(String passWord) {
-        this.passWord = passWord;
+    public void setPassword(String password) {
+        this.password = password;
     }
+
 
     public int getRoleId() {
         return roleId;
@@ -126,5 +168,29 @@ public class StaffVO {
 
     public void setPwdFlag(boolean pwdFlag) {
         this.pwdFlag = pwdFlag;
+    }
+
+    public String getRoleIds() {
+        return roleIds;
+    }
+
+    public void setRoleIds(String roleIds) {
+        this.roleIds = roleIds;
+    }
+
+    public int getShowFlag() {
+        return showFlag;
+    }
+
+    public void setShowFlag(int showFlag) {
+        this.showFlag = showFlag;
+    }
+
+    public boolean isDelFlag() {
+        return delFlag;
+    }
+
+    public void setDelFlag(boolean delFlag) {
+        this.delFlag = delFlag;
     }
 }
