@@ -12,16 +12,19 @@
     </sql>
 
     <resultMap id="groupMap" type="com.qiein.jupiter.web.entity.vo.GroupStaffVO">
-        <result column="GROUPID" property="groupId" jdbcType="VARCHAR"/>
+        <id column="GROUPID" property="groupId" jdbcType="VARCHAR"/>
         <result column="GROUPNAME" property="groupName" jdbcType="VARCHAR"/>
         <result column="PARENTID" property="parentId" jdbcType="VARCHAR"/>
         <result column="GROUPTYPE" property="groupType" jdbcType="VARCHAR"/>
         <result column="COMPANYID" property="companyId" jdbcType="VARCHAR"/>
         <result column="CHIEFIDS" property="chiefIds" jdbcType="VARCHAR"/>
         <result column="CHIEFNAMES" property="chiefNames" jdbcType="VARCHAR"/>
-        <collection property="staffList" ofType="com.qiein.jupiter.web.entity.po.StaffPO" resultMap="staffMap"/>
-        <collection property="groupList" ofType="com.qiein.jupiter.web.entity.po.GroupStaffVO" column="id"
+        <collection property="staffList" ofType="com.qiein.jupiter.web.entity.po.StaffPO"
+                    column=""
                     select="getGroupStaffListByParentIdAndCid"/>
+        <!--<collection property="groupList" ofType="com.qiein.jupiter.web.entity.po.GroupStaffVO"-->
+                    <!--column="{parentId=PARENTID,companyId=COMPANYID}"-->
+                    <!--select="getGroupStaffListByParentIdAndCid"/>-->
     </resultMap>
 
     <resultMap id="staffMap" type="com.qiein.jupiter.web.entity.po.StaffPO">
@@ -76,8 +79,8 @@
 			hm_pub_group
 			LEFT JOIN hm_pub_group_staff rela ON hm_pub_group.GROUPID = rela.GROUPID
 			LEFT JOIN hm_pub_staff staff ON rela.STAFFID = staff.ID
-		WHERE hm_pub_group.COMPANYID = #{companyId}
-		AND hm_pub_group.PARENTID = #{parentId}
+		WHERE hm_pub_group.PARENTID = #{parentId}
+		AND hm_pub_group.COMPANYID = #{companyId}
     </select>
 
 </mapper>
