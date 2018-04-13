@@ -7,6 +7,7 @@ import com.qiein.jupiter.web.entity.po.GroupPO;
 import com.qiein.jupiter.web.entity.vo.GroupVO;
 import com.qiein.jupiter.web.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Iterator;
@@ -21,6 +22,7 @@ public class GroupServiceImpl implements GroupService {
     private GroupDao groupDao;//部门持久层
 
     /*获取公司所有部门和小组*/
+    @Cacheable(value = "dept", key = "'dept'+':'+#companyId")
     public List<GroupVO> getCompanyAllDeptList(Integer companyId) {
         List<GroupVO> grouplist = groupDao.getCompanyAllDeptList(companyId);
         return removeNullDataFromList(grouplist);

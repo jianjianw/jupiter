@@ -292,7 +292,7 @@ public class StaffServiceImpl implements StaffService {
     /**
      * 获取小组人员
      */
-    //@Cacheable(value = "groupStaff", key = "'groupStaff'+':'+#companyId+':'+#groupId")
+    @Cacheable(value = "groupStaff", key = "'groupStaff'+':'+#companyId+':'+#groupId")
     public List<StaffVO> getGroupStaffs(int companyId, String groupId) {
         List<StaffVO> list = staffDao.getGroupStaffs(companyId, groupId);
         if (ListUtil.isNotNullList(list)) {
