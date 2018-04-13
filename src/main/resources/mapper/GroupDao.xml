@@ -12,6 +12,21 @@
         <result column="CHIEFNAMES" property="chiefNames" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <resultMap id="GroupVOMap" type="com.qiein.jupiter.web.entity.vo.GroupVO" extends="baseMap">
+
+        <collection  property="groupList" ofType="com.qiein.jupiter.web.entity.po.GroupPO" resultMap="sonMap"/>
+    </resultMap>
+
+    <resultMap id="sonMap" type="com.qiein.jupiter.web.entity.po.GroupPO">
+        <result column="GRPID" property="groupId" jdbcType="INTEGER"/>
+        <result column="GRPNAME" property="groupName" jdbcType="VARCHAR"/>
+        <result column="PARID" property="parentId" jdbcType="VARCHAR"/>
+        <result column="TYPE" property="groupType" jdbcType="VARCHAR"/>
+        <result column="COMPID" property="companyId" jdbcType="VARCHAR"/>
+        <result column="CIDS" property="chiefIds" jdbcType="VARCHAR"/>
+        <result column="CNAMES" property="chiefNames" jdbcType="VARCHAR"/>
+    </resultMap>
+
     <sql id="baseColumn">
         ID, GROUPID, GROUPNAME, PARENTID, GROUPTYPE, COMPANYID,CHIEFIDS,CHIEFNAMES
     </sql>
@@ -41,6 +56,20 @@
     <update id="update">
         UPDATE hm_pub_group
     </update>
+
+    <!--获取公司所有部门和小组-->
+    <select id="getCompanyAllDeptList" parameterType="map" resultMap="GroupVOMap">
+        SELECT
+            par.ID, par.GROUPID, par.GROUPNAME, par.PARENTID, par.GROUPTYPE, par.COMPANYID,par.CHIEFIDS,par.CHIEFNAMES,
+             grp.GROUPID AS GRPID, grp.GROUPNAME AS GRPNAME,grp.PARENTID AS PARID,grp.GROUPTYPE AS TYPE, grp.COMPANYID AS CMPID, grp.CHIEFIDS AS CIDS, grp.CHIEFNAMES AS CNAMES
+        FROM
+            hm_pub_group par
+            LEFT JOIN hm_pub_group grp ON grp.PARENTID = par.GROUPID
+            AND grp.COMPANYID = par.COMPANYID
+        WHERE
+            par.COMPANYID = #{companyId}
+            AND par.PARENTID = '0'
+    </select>
 
 
 </mapper>
