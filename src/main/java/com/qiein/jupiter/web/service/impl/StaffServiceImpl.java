@@ -1,9 +1,11 @@
 package com.qiein.jupiter.web.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.Constant;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.aop.annotation.LoginLog;
+import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.constant.NumberConstant;
 import com.qiein.jupiter.constant.RedisConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
@@ -12,7 +14,9 @@ import com.qiein.jupiter.util.JwtUtil;
 import com.qiein.jupiter.util.ListUtil;
 import com.qiein.jupiter.util.MD5Util;
 import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.web.dao.GroupDao;
 import com.qiein.jupiter.web.dao.StaffDao;
+import com.qiein.jupiter.web.dao.StaffRoleDao;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
@@ -28,6 +32,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -49,6 +54,12 @@ public class StaffServiceImpl implements StaffService {
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
+    @Autowired
+    private GroupDao groupDao;//小组部门持久层
+
+    @Autowired
+    private StaffRoleDao staffRoleDao;//人员角色关联持久层
+
     /**
      * 员工新增
      *
@@ -56,13 +67,35 @@ public class StaffServiceImpl implements StaffService {
      * @return
      */
     @CachePut(value = "staff", key = "'staff'+':'+#staffPO.id+':'+#staffPO.companyId")
-    @Override
-    public StaffPO insert(StaffPO staffPO) {
+    @Transactional(rollbackFor = Exception.class)
+    public StaffPO insert(StaffPO staffPO, String groupId, String roIds) {
         log.debug("未使用缓存");
         //加密码加密
         staffPO.setPassword(MD5Util.getSaltMd5(staffPO.getPassword()));
-        //TODO 数据库重复性校验
+        //1.根据手机号，全名，艺名查重，手机号全公司不重复，全名，艺名，在职员工中不能重复
+        StaffPO phoneExist = staffDao.getStaffByPhone(staffPO.getCompanyId(), staffPO.getPhone());
+        if (phoneExist != null && phoneExist.isDelFlag()) {
+            throw new RException(ExceptionEnum.STAFF_EXIST_DEL);
+        }
+        if (phoneExist != null && !phoneExist.isDelFlag()) {
+            throw new RException(ExceptionEnum.PHONE_EXIST);
+        }
+        //艺名查重
+        if (staffDao.getStaffByNames(staffPO.getCompanyId(), staffPO.getNickName()) != null) {
+            throw new RException(ExceptionEnum.NICKNAME_EXIST);
+        }
+        if (staffDao.getStaffByNames(staffPO.getCompanyId(), staffPO.getUserName()) != null) {
+            throw new RException(ExceptionEnum.USERNAME_EXIST);
+        }
+        //2.插入人员
         staffDao.insert(staffPO);
+        //3.添加小组人员关联表
+        groupDao.insertGroupStaff(staffPO.getCompanyId(), groupId, staffPO.getId());
+        //4.添加人员角色关联表
+        if (StringUtil.isNullStr(roIds)) {
+            String[] roleArr = roIds.split(CommonConstant.STR_SEPARATOR);
+            staffRoleDao.batchInsertStaffRole(staffPO.getId(), staffPO.getCompanyId(), roleArr);
+        }
         return staffPO;
     }
 

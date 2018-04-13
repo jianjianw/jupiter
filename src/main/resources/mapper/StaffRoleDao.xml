@@ -4,6 +4,7 @@
     <resultMap id="baseMap" type="com.qiein.jupiter.web.entity.po.StaffRolePO">
         <result column="STAFFID" property="staffId" jdbcType="INTEGER"/>
         <result column="ROLEID" property="roleId" jdbcType="INTEGER"/>
+        <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="baseColumn">
@@ -14,5 +15,16 @@
        hm_pub_staff_role
     </sql>
 
+    <!--批量添加员工角色-->
+    <insert id="batchInsertStaffRole" parameterType="map">
+        INSERT TO hm_pub_staff_role
+        (STAFFID,ROLEID,COMPANYID)
+        VALUES
+        <foreach collection="roleIdArr" item="roleId" index="index" separator=",">
+            (#{staffId},#{roleId},#{companyId})
+        </foreach>
+
+
+    </insert>
 
 </mapper>

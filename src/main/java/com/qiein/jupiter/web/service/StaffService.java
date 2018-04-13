@@ -20,7 +20,7 @@ public interface StaffService {
      * @param
      * @return
      */
-    StaffPO insert(StaffPO staffPO);
+    StaffPO insert(StaffPO staffPO, String groupId, String roIds);
 
     /**
      * 设置员工锁定状态

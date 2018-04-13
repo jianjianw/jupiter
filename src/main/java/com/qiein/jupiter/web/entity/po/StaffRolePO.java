@@ -18,6 +18,11 @@ public class StaffRolePO implements Serializable {
      */
     private int roleId;
 
+    /**
+     * 企业ID
+     */
+    private int companyId;
+
     public int getStaffId() {
         return staffId;
     }
@@ -32,5 +37,13 @@ public class StaffRolePO implements Serializable {
 
     public void setRoleId(int roleId) {
         this.roleId = roleId;
+    }
+
+    public int getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(int companyId) {
+        this.companyId = companyId;
     }
 }

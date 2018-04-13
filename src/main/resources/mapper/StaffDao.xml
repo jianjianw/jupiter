@@ -202,4 +202,25 @@
             AND sf.ISDEL = 0
     </select>
 
+    <!--根据手机号获取员工，包含已被删除的-->
+    <select id="getStaffByPhone" parameterType="map" resultMap="baseMap">
+        SELECT
+        <include refid="baseColumn"/>
+        FROM
+        hm_pub_staff
+        WHERE PHONE = #{phone}
+        AND COMPANYID = #{companyId}
+    </select>
+
+    <!--根据艺名，全名获取员工信息-->
+    <select id="getStaffByNames" parameterType="map" resultMap="baseMap">
+        SELECT
+        <include refid="baseColumn"/>
+        FROM
+        hm_pub_staff
+        WHERE
+           COMPANYID = #{companyId}
+        AND ( NICKNAME = #{name} OR USERNAME = #{name} )
+    </select>
+
 </mapper>
