@@ -39,4 +39,14 @@ public class StringUtil {
         return str == null || str.trim().equals("");
     }
 
+    /**
+     * 判断一个字符是否是null 或者空字符串
+     *
+     * @param str
+     * @return
+     */
+    public static boolean isNotNullStr(String str) {
+        return str != null && !str.trim().equals("");
+    }
+
 }

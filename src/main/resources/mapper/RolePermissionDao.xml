@@ -38,5 +38,29 @@
         ORDER BY role.PRIORITY, role.id, pms.ID;
     </select>
 
+    <!--批量添加角色权限关联表-->
+    <insert id="batchAddRolePmsRela" parameterType="map">
+        INSERT INTO hm_pub_role_permission
+        ( ROLEID, PERMISSIONID, COMPANYID )
+        VALUES
+        <foreach collection="pmsIdArr" item="pmsId" index="index" separator=",">
+            (
+            #{roleId},
+            #{pmsId},
+            #{companyId}
+            )
+        </foreach>
+    </insert>
+
+    <!--根据角色ID删除关联表-->
+    <delete id="deleteByRoleId" parameterType="map">
+        DELETE
+        FROM
+            hm_pub_role_permission
+        WHERE
+            ROLEID = #{roleId}
+            AND COMPANYID = #{companyId}
+    </delete>
+
 
 </mapper>

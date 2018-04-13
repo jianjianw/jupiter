@@ -38,4 +38,17 @@ public class TipMsgConstant {
      * 艺名不能为空
      */
     public final static String NICK_NAME_NULL = "艺名不能为空";
+    /**
+     * 添加角色成功
+     */
+    public final static String ADD_ROLE_SUCCESS = "添加角色成功";
+    /**
+     * 删除角色成功
+     */
+    public final static String DELETE_ROLE_SUCCESS = "删除角色成功";
+
+    /**
+     * 修改角色成功
+     */
+    public final static String EDIT_ROLE_SUCCESS = "修改角色成功";
 }

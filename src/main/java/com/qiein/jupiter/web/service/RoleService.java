@@ -1,6 +1,8 @@
 package com.qiein.jupiter.web.service;
 
+import com.qiein.jupiter.web.entity.po.RolePO;
 import com.qiein.jupiter.web.entity.vo.RolePermissionVO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -11,22 +13,20 @@ public interface RoleService {
 
     /**
      * 新增角色
-     *
-     * @return
      */
-    int insert();
+    void insert(String roleName, Integer priority, String pmsIds, Integer companyId);
 
     /**
      * 删除角色
      *
      * @return
      */
-    int delete();
+    void delete(Integer roleId, Integer companyId);
 
     /**
      * 修改角色
      */
-    int update();
+    void update(RolePO rolePO, String pmsIds);
 
     /**
      * 获取企业所有角色，以及角色对应的权限集合
