@@ -84,17 +84,17 @@ public class TokenInterceptor implements HandlerInterceptor {
         StaffPO staffPO = (StaffPO) redisTemplate.opsForValue().get(userTokenKey);
         //如果缓存中命中失败,从数据库获取用户信息
         if (staffPO == null) {
-            staffPO = staffService.getById(verifyParamDTO.getCid(), verifyParamDTO.getUid());
+            staffPO = staffService.getById(verifyParamDTO.getUid(), verifyParamDTO.getCid());
             if (staffPO == null) {
                 //验证用户不存在
                 throw new RException(ExceptionEnum.VERIFY_USER_NOT_FOUND);
-            }else if(StringUtil.isNullStr(staffPO.getToken())){
+            } else if (StringUtil.isNullStr(staffPO.getToken())) {
                 //如果用户当前没有token，说明没有登录或token过期
                 throw new RException(ExceptionEnum.TOKEN_INVALID);
             }
         }
         //验证是否被锁定
-        if(staffPO.isLockFlag()){
+        if (staffPO.isLockFlag()) {
             throw new RException(ExceptionEnum.USER_IS_LOCK);
         }
         //验证token是否相等
