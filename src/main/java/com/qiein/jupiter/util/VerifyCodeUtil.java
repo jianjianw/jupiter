@@ -64,9 +64,10 @@ public class VerifyCodeUtil {
             // 将产生的四个随机数组合在一起。
             randomCode.append(code);
         }
-        // 将四位数字的验证码加密后保存到缓存中。
-        //todo
+        //todo  Linux系统下 乱码
         // 禁止图像缓存。
+//        response.setHeader("Content-type", "charset=UTF-8");
+//        response.setCharacterEncoding("utf-8");
         response.setHeader("Pragma", "no-cache");
         response.setHeader("Cache-Control", "no-cache");
         response.setDateHeader("Expires", 0);
