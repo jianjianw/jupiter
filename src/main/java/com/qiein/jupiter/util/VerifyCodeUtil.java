@@ -32,7 +32,7 @@ public class VerifyCodeUtil {
         gd.setColor(Color.WHITE);
         gd.fillRect(0, 0, width, height);
         // 创建字体，字体的大小应该根据图片的高度来定。
-        Font font = new Font("Fixedsys", Font.BOLD, fontHeight);
+        Font font = new Font("Arial", Font.BOLD, fontHeight);
         // 设置字体。
         gd.setFont(font);
         // 画边框。
