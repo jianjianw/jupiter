@@ -79,8 +79,8 @@ public class StaffController extends BaseController {
      * @param staffVO
      * @return
      */
-    @PostMapping("/update")
-    public ResultInfo update(@RequestBody @Validated StaffVO staffVO) {
+    @PostMapping("/update_staff")
+    public ResultInfo updateStaff(@RequestBody @Validated StaffVO staffVO) {
         //对象参数trim
         ObjectUtil.objectStrParamTrim(staffVO);
         if (staffVO.getId() == 0) {
