@@ -3,6 +3,7 @@ package com.qiein.jupiter.web.controller;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,14 @@ public class BaseController {
 
     @Autowired
     private HttpServletRequest request;
+
+    /**
+     * @return
+     */
+    @GetMapping("/")
+    public String init() {
+        return "jupiter is running success!";
+    }
 
 
     /**

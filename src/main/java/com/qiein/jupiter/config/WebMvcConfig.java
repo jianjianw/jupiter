@@ -22,9 +22,11 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
                 //要拦截的url
                 .addPathPatterns("/**")
                 //要排除的url
+                .excludePathPatterns("/")
                 .excludePathPatterns("/staff/get_company_list")
                 .excludePathPatterns("/staff/login_with_company_id")
-                .excludePathPatterns("/staff/verify_code");
+                .excludePathPatterns("/staff/verify_code")
+                .excludePathPatterns("/staff/need_verity_code");
     }
 
 }
