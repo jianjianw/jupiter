@@ -40,4 +40,20 @@ public interface GroupStaffDao {
 
     /*添加小组员工关联表*/
     public int insertGroupStaff(@Param("companyId") Integer companyId, @Param("groupId") String groupId, @Param("staffId") Integer staffId);
+
+    /**
+     * 批量删除员工小组关联
+     *
+     * @param companyId
+     * @param staffIdArr
+     */
+    public void batchDeleteByStaffArr(@Param("companyId") Integer companyId, @Param("staffIdArr") String[] staffIdArr);
+
+    /**
+     * 批量编辑员工小组关联
+     * @param companyId
+     * @param staffIdArr
+     * @param groupId
+     */
+    public void batchEditStaffGroup(@Param("companyId") Integer companyId, @Param("staffIdArr") String[] staffIdArr, @Param("groupId") String groupId);
 }
