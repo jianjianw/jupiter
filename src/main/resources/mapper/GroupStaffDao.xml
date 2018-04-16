@@ -83,4 +83,19 @@
 		AND hm_pub_group.COMPANYID = #{companyId}
     </select>
 
+    <!--删除员工小组-->
+    <delete id="deleteByStaffId" parameterType="map">
+        DELETE FROM  hm_pub_group_staff
+        WHERE STAFFID = #{staffId}
+        AND COMPANYID = #{companyId}
+    </delete>
+
+    <!--添加小组人员关联表-->
+    <insert id="insertGroupStaff" parameterType="map">
+        INSERT INTO hm_pub_group_staff
+        (GROUPID,STAFFID,COMPANYID)
+        VALUES
+        (#{groupId},#{staffId},#{companyId})
+    </insert>
+
 </mapper>

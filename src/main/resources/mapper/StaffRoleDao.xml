@@ -23,8 +23,13 @@
         <foreach collection="roleIdArr" item="roleId" index="index" separator=",">
             (#{staffId},#{roleId},#{companyId})
         </foreach>
-
-
     </insert>
+
+    <!--删除员工角色-->
+    <delete id="deleteByStaffId" parameterType="map">
+        DELETE FROM hm_pub_staff_role
+        WHERE STAFFID = #{staffId}
+        AND COMPANYID = #{companyId}
+    </delete>
 
 </mapper>

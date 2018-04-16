@@ -57,10 +57,10 @@ public interface StaffService {
     /**
      * 修改
      *
-     * @param staffPO
+     * @param staffVO
      * @return
      */
-    StaffPO update(StaffPO staffPO);
+    StaffVO update(StaffVO staffVO);
 
     /**
      * 根据ID获取员工

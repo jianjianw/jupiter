@@ -76,11 +76,18 @@ public class StaffController extends BaseController {
      */
     @PostMapping("/update")
     @LoginLog
-    public ResultInfo update(@RequestBody @Validated StaffPO staffPO) {
+    public ResultInfo update(@RequestBody @Validated StaffVO staffVO) {
         //对象参数trim
-        ObjectUtil.objectStrParamTrim(staffPO);
-        staffService.update(staffPO);
-        return ResultInfoUtil.success();
+        ObjectUtil.objectStrParamTrim(staffVO);
+        if (staffVO.getId() == 0) {
+            return ResultInfoUtil.error(ExceptionEnum.STAFF_ID_NULL);
+        }
+        //获取当前登录用户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        //设置cid
+        staffVO.setCompanyId(currentLoginStaff.getCompanyId());
+        staffService.update(staffVO);
+        return ResultInfoUtil.success(TipMsgConstant.SAVE_SUCCESS);
     }
 
     /**
@@ -195,7 +202,7 @@ public class StaffController extends BaseController {
         valueOperations.set(RedisConstant.getVerifyCodeKey(userName), code);
     }
 
-    @PostMapping("get_group_staff_list")
+    @GetMapping("get_group_staff_list")
     public ResultInfo getGroupStaffList(@NotEmpty @RequestParam("groupId") String groupId) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();

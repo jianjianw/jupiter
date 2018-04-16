@@ -9,4 +9,12 @@ public interface StaffRoleDao {
 
     /*批量添加员工角色*/
     public void batchInsertStaffRole(@Param("staffId") Integer staffId, @Param("companyId") Integer companyId, @Param("roleIdArr") String[] roleIdArr);
+
+    /**
+     * 删除员工角色
+     *
+     * @param staffId
+     * @param companyId
+     */
+    public void deleteByStaffId(@Param("staffId") Integer staffId, @Param("companyId") Integer companyId);
 }

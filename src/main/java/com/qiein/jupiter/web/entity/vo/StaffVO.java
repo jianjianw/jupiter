@@ -1,5 +1,7 @@
 package com.qiein.jupiter.web.entity.vo;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.qiein.jupiter.aop.annotation.NotEmpty;
 import com.qiein.jupiter.util.MD5Util;
 import com.qiein.jupiter.util.StringUtil;
 
@@ -9,29 +11,36 @@ public class StaffVO {
 
     private int companyId;
 
+    @NotEmpty(message = "{staff.name.null}")
     private String nickName;
+
+
+    /**
+     * 手机号码
+     */
+    @NotEmpty(message = "{staff.phone.null}")
+    private String phone;
+    /**
+     * 全名
+     */
+    @NotEmpty(message = "{staff.userName.null}")
+    private String userName;
+    /**
+     * 密码
+     */
+    private String password;
 
     private boolean lockFlag;
     /**
      * 小组ID
      */
     private String groupId;
-    /**
-     * 手机号
-     */
-    private String phone;
-    /**
-     * 全名
-     */
-    private String userName;
+
     /**
      * 头像
      */
     private String headImg;
-    /**
-     * 密码
-     */
-    private String password;
+
     /**
      * 角色ID
      */

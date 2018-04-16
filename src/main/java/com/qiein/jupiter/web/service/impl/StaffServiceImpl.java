@@ -15,6 +15,7 @@ import com.qiein.jupiter.util.ListUtil;
 import com.qiein.jupiter.util.MD5Util;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.GroupDao;
+import com.qiein.jupiter.web.dao.GroupStaffDao;
 import com.qiein.jupiter.web.dao.StaffDao;
 import com.qiein.jupiter.web.dao.StaffRoleDao;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
@@ -60,6 +61,9 @@ public class StaffServiceImpl implements StaffService {
     @Autowired
     private StaffRoleDao staffRoleDao;//人员角色关联持久层
 
+    @Autowired
+    private GroupStaffDao groupStaffDao;
+
     /**
      * 员工新增
      *
@@ -69,8 +73,8 @@ public class StaffServiceImpl implements StaffService {
     @Transactional(rollbackFor = Exception.class)
     public StaffVO insert(StaffVO staffVO) {
         log.debug("未使用缓存");
-        //加密码加密
-        staffVO.setPassword(MD5Util.getSaltMd5(staffVO.getPassword()));
+        //加密码加密,密码为空则默认手机号
+        staffVO.setPassword(MD5Util.getSaltMd5(StringUtil.isNullStr(staffVO.getPassword()) ? staffVO.getPhone() : staffVO.getPassword()));
         //1.根据手机号，全名，艺名查重，手机号全公司不重复，全名，艺名，在职员工中不能重复
         StaffPO phoneExist = staffDao.getStaffByPhone(staffVO.getCompanyId(), staffVO.getPhone());
         if (phoneExist != null && phoneExist.isDelFlag()) {
@@ -83,13 +87,14 @@ public class StaffServiceImpl implements StaffService {
         if (staffDao.getStaffByNames(staffVO.getCompanyId(), staffVO.getNickName()) != null) {
             throw new RException(ExceptionEnum.NICKNAME_EXIST);
         }
+        //全名查重
         if (staffDao.getStaffByNames(staffVO.getCompanyId(), staffVO.getUserName()) != null) {
             throw new RException(ExceptionEnum.USERNAME_EXIST);
         }
         //2.插入人员
         staffDao.addStaffVo(staffVO);
         //3.添加小组人员关联表
-        groupDao.insertGroupStaff(staffVO.getCompanyId(), staffVO.getGroupId(), staffVO.getId());
+        groupStaffDao.insertGroupStaff(staffVO.getCompanyId(), staffVO.getGroupId(), staffVO.getId());
         //4.添加人员角色关联表
         if (StringUtil.isNotNullStr(staffVO.getRoleIds())) {
             String[] roleArr = staffVO.getRoleIds().split(CommonConstant.STR_SEPARATOR);
@@ -172,12 +177,48 @@ public class StaffServiceImpl implements StaffService {
      * @param staffPO
      * @return
      */
-    @CachePut(value = "staff", key = "'staff'+':'+#staffPO.id+':'+#staffPO.companyId")
-    @Override
-    public StaffPO update(StaffPO staffPO) {
+    @CachePut(value = "staff", key = "'staff'+':'+#staffVO.id+':'+#staffVO.companyId")
+    @Transactional(rollbackFor = Exception.class)
+    public StaffVO update(StaffVO staffVO) {
         log.debug("未使用缓存");
-        staffDao.update(staffPO);
-        return staffPO;
+        //TODO
+        //加密码加密,密码为空则默认手机号
+        if (StringUtil.isNotNullStr(staffVO.getPassword())) {
+            staffVO.setPassword(MD5Util.getSaltMd5(staffVO.getPassword()));
+        }
+        //1.根据手机号，全名，艺名查重，手机号全公司不重复，全名，艺名，在职员工中不能重复
+        StaffPO phoneExist = staffDao.getStaffByPhone(staffVO.getCompanyId(), staffVO.getPhone());
+        if (phoneExist != null && phoneExist.getId() != staffVO.getId() && phoneExist.isDelFlag()) {
+            throw new RException(ExceptionEnum.STAFF_EXIST_DEL);
+        }
+        if (phoneExist != null && phoneExist.getId() != staffVO.getId() && !phoneExist.isDelFlag()) {
+            throw new RException(ExceptionEnum.PHONE_EXIST);
+        }
+        //艺名查重
+        StaffPO nickNameStaff = staffDao.getStaffByNames(staffVO.getCompanyId(), staffVO.getNickName());
+        if (nickNameStaff != null && nickNameStaff.getId() != staffVO.getId()) {
+            throw new RException(ExceptionEnum.NICKNAME_EXIST);
+        }
+        //全名查重
+        StaffPO userNameStaff = staffDao.getStaffByNames(staffVO.getCompanyId(), staffVO.getUserName());
+        if (userNameStaff != null && userNameStaff.getId() != staffVO.getId()) {
+            throw new RException(ExceptionEnum.USERNAME_EXIST);
+        }
+        //2.修改员工信息
+        staffDao.updateStaff(staffVO);
+        //3.更新小组关联表
+        groupStaffDao.deleteByStaffId(staffVO.getCompanyId(), staffVO.getId());
+        groupStaffDao.insertGroupStaff(staffVO.getCompanyId(), staffVO.getGroupId(), staffVO.getId());
+        //4.删除权限关联表
+        staffRoleDao.deleteByStaffId(staffVO.getId(), staffVO.getCompanyId());
+        //5.插入人员角色关联表
+        if (StringUtil.isNotNullStr(staffVO.getRoleIds())) {
+            String[] roleArr = staffVO.getRoleIds().split(CommonConstant.STR_SEPARATOR);
+            staffRoleDao.batchInsertStaffRole(staffVO.getId(), staffVO.getCompanyId(), roleArr);
+        }
+        //6.清缓存
+        redisTemplate.opsForValue().getAndSet(RedisConstant.getStaffKey(staffVO.getId(), staffVO.getCompanyId()), staffVO);
+        return staffVO;
     }
 
     /**
