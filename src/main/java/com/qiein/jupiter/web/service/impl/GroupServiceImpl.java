@@ -21,11 +21,15 @@ public class GroupServiceImpl implements GroupService {
     @Autowired
     private GroupDao groupDao;//部门持久层
 
-    /*获取公司所有部门和小组*/
+    /**
+     *
+     * @param companyId
+     * @return
+     */
     @Cacheable(value = "dept", key = "'dept'+':'+#companyId")
-    public List<GroupVO> getCompanyAllDeptList(Integer companyId) {
-        List<GroupVO> grouplist = groupDao.getCompanyAllDeptList(companyId);
-        return removeNullDataFromList(grouplist);
+    public List<GroupVO> getCompanyAllDeptList(int companyId) {
+        List<GroupVO> groupList = groupDao.getCompanyAllDeptList(companyId);
+        return removeNullDataFromList(groupList);
     }
 
     /*去掉集合里的空对象*/
@@ -47,5 +51,21 @@ public class GroupServiceImpl implements GroupService {
 
         }
         return list;
+    }
+
+
+    @Override
+    public int update(GroupPO groupPO) {
+        return 0;
+    }
+
+    @Override
+    public int delete(int companyId) {
+        return 0;
+    }
+
+    @Override
+    public int insert(GroupPO groupPO) {
+        return 0;
     }
 }
