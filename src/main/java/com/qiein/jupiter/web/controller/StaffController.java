@@ -193,7 +193,6 @@ public class StaffController extends BaseController {
         }
     }
 
-
     /**
      * 请求验证码
      *
@@ -296,4 +295,98 @@ public class StaffController extends BaseController {
 
     }
 
+    /**
+     * 删除指定员工
+     * @param staffId
+     * @return
+     */
+    @GetMapping("del_staff")
+    public ResultInfo deleteStaff(@NotEmpty @RequestParam("staffId") String staffId){
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+
+        //获取操作用户所属公司
+        Integer companyId = currentLoginStaff.getCompanyId();
+
+        try{
+            //检查是否可删除
+            //先检查是否为客服
+            //是客服则检查是否存在未邀约客资
+            //TODO 等待客资内容写完继续写删除
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return ResultInfoUtil.success("删除成功");
+    }
+
+    /**
+     * 检查员工是否可删除。
+     * 如果员工剩余未邀约客资为0则可删除，不为零则不可删除，需要交接
+     * @return
+     */
+    @GetMapping("del_staff_check")
+    public ResultInfo DelStaffCheck(@NotEmpty @RequestParam("staffId") Integer staffId){
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+
+        //获取操作用户所属公司
+        Integer companyId = currentLoginStaff.getCompanyId();
+
+        //检查是否可删除
+        //先检查是否为客服
+        if(true){
+            //TODO 等待客资内容写完继续写删除
+        }else {
+            staffService.delete(staffId,companyId);
+        }
+        //是客服则检查是否存在未邀约客资
+        return ResultInfoUtil.success("可删除");
+    }
+
+    /**
+     * 锁定员工
+     * @param staffId 被锁定的员工编号
+     * @return
+     */
+    @GetMapping("lock_staff")
+    public ResultInfo LockStaff(@NotEmpty @RequestParam("staffId") Integer staffId){
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        //获取操作用户所属公司
+        Integer companyId = currentLoginStaff.getCompanyId();
+
+        try{
+            //锁定状态
+            staffService.setLockState(staffId,companyId,true);
+        }catch (Exception e){
+            e.printStackTrace();
+            ResultInfoUtil.error(ExceptionEnum.UNKNOW_ERROR);
+        }
+
+        return ResultInfoUtil.success("锁定成功");
+    }
+
+    /**
+     * 交接接口
+     * @param staffId   交接的员工id
+     * @param beStaffId 被转移的员工id
+     * @return
+     */
+    @GetMapping("change_staff")
+    public ResultInfo ChangeStaff(@NotEmpty @RequestParam("staffId") Integer staffId ,
+                                  @NotEmpty @RequestParam("beStaffId") Integer beStaffId){
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        //获取操作用户所属公司
+        Integer companyId = currentLoginStaff.getCompanyId();
+
+        try{
+            //TODO 等待客资内容写完继续写删除
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultInfoUtil.error(ExceptionEnum.UNKNOW_ERROR);
+        }
+        return ResultInfoUtil.success("交接成功");
+    }
 }
