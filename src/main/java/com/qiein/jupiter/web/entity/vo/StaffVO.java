@@ -5,6 +5,8 @@ import com.qiein.jupiter.aop.annotation.NotEmpty;
 import com.qiein.jupiter.util.MD5Util;
 import com.qiein.jupiter.util.StringUtil;
 
+import java.util.List;
+
 public class StaffVO {
 
     private int id;
@@ -67,6 +69,11 @@ public class StaffVO {
      * 是否删除
      */
     private boolean delFlag;
+
+    /**
+     * 角色集合
+     */
+    private List<RoleVO> roleList;
 
 
     /**
@@ -209,5 +216,13 @@ public class StaffVO {
 
     public void setDelFlag(boolean delFlag) {
         this.delFlag = delFlag;
+    }
+
+    public List<RoleVO> getRoleList() {
+        return roleList;
+    }
+
+    public void setRoleList(List<RoleVO> roleList) {
+        this.roleList = roleList;
     }
 }

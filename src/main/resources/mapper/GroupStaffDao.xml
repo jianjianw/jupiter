@@ -53,9 +53,13 @@
         <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
         <result column="HEADIMG" property="headImg" jdbcType="VARCHAR"/>
         <result column="ISLOCK" property="lockFlag" jdbcType="BOOLEAN"/>
+        <result column="GROUPID" property="groupId" jdbcType="VARCHAR"/>
+        <collection property="roleList" ofType="com.qiein.jupiter.web.entity.vo.RoleVO" resultMap="RoleMap"/>
+    </resultMap>
+
+    <resultMap id="RoleMap" type="com.qiein.jupiter.web.entity.vo.RoleVO">
         <result column="ROLENAME" property="roleName" jdbcType="VARCHAR"/>
         <result column="ROLEID" property="roleId" jdbcType="VARCHAR"/>
-        <result column="GROUPID" property="groupId" jdbcType="VARCHAR"/>
     </resultMap>
 
 
