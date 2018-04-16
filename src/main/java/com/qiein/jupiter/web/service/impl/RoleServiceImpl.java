@@ -88,4 +88,14 @@ public class RoleServiceImpl implements RoleService {
     public List<RolePermissionVO> getCompanyAllRole(Integer companyId) {
         return rolePmsDao.getCompanyAllRole(companyId);
     }
+
+    /**
+     * 获取角色下拉框选项
+     *
+     * @param companyId
+     * @return
+     */
+    public List<RolePO> getRoleSelect(Integer companyId){
+        return roleDao.getRoleSelect(companyId);
+    }
 }

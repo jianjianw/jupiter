@@ -61,6 +61,9 @@ public class StaffController extends BaseController {
     public ResultInfo insert(@RequestBody @Validated StaffVO staffVO) {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
+        if (RegexUtils.checkMobile(staffVO.getPhone())) {
+            return ResultInfoUtil.error(ExceptionEnum.PHONE_ERROR);
+        }
         //设置cid
         staffVO.setCompanyId(currentLoginStaff.getCompanyId());
         //对象参数trim
@@ -81,6 +84,9 @@ public class StaffController extends BaseController {
         ObjectUtil.objectStrParamTrim(staffVO);
         if (staffVO.getId() == 0) {
             return ResultInfoUtil.error(ExceptionEnum.STAFF_ID_NULL);
+        }
+        if (RegexUtils.checkMobile(staffVO.getPhone())) {
+            return ResultInfoUtil.error(ExceptionEnum.PHONE_ERROR);
         }
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();

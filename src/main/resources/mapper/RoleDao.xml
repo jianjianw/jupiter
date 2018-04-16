@@ -41,7 +41,7 @@
 
     <!--修改角色-->
     <update id="editRole" parameterType="com.qiein.jupiter.web.entity.po.RolePO">
-        UPDATE  hm_pub_role
+        UPDATE hm_pub_role
         <set>
             <if test="roleName != null and roleName != '' ">
                 ROLENAME = #{roleName},
@@ -53,6 +53,19 @@
         WHERE ID = #{id}
         AND COMPANYID = #{companyId}
     </update>
+
+    <!--获取角色-->
+    <select id="getRoleSelect" parameterType="map" resultMap="baseMap">
+        SELECT
+            role.ID, role.ROLENAME, role.COMPANYID
+        FROM
+            hm_pub_role role
+        WHERE
+            role.COMPANYID = #{companyId}
+        ORDER BY
+            role.PRIORITY,
+            role.id;
+    </select>
 
 
 </mapper>

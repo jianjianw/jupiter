@@ -33,5 +33,13 @@ public interface RoleService {
      */
     public List<RolePermissionVO> getCompanyAllRole(Integer companyId);
 
+    /**
+     * 获取角色下拉框选项
+     *
+     * @param companyId
+     * @return
+     */
+    public List<RolePO> getRoleSelect(Integer companyId);
+
 
 }
