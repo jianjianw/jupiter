@@ -219,7 +219,7 @@ public class StaffServiceImpl implements StaffService {
             staffRoleDao.batchInsertStaffRole(staffVO.getId(), staffVO.getCompanyId(), roleArr);
         }
         //6.清缓存
-       // redisTemplate.opsForValue().getAndSet(RedisConstant.getStaffKey(staffVO.getId(), staffVO.getCompanyId()), staffVO);
+        // redisTemplate.opsForValue().getAndSet(RedisConstant.getStaffKey(staffVO.getId(), staffVO.getCompanyId()), staffVO);
         return staffVO;
     }
 
@@ -234,6 +234,7 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public StaffPO getById(int id, int companyId) {
         log.debug("未使用缓存");
+        //TODO  获取详细的一些信息 还是 单一的信息？
         return staffDao.getByIdAndCid(id, companyId);
     }
 

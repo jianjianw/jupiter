@@ -10,6 +10,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,6 +18,8 @@ import java.util.regex.Pattern;
  * http工具类
  */
 public class HttpUtil {
+
+    private final Logger logger = Logger.getLogger(getClass().getName());
 
     /**
      * 从request中获取参数
@@ -50,8 +53,14 @@ public class HttpUtil {
         //封装验证参数
         VerifyParamDTO verifyParamDTO = new VerifyParamDTO();
         verifyParamDTO.setToken(token);
-        verifyParamDTO.setCid(Integer.valueOf(cid));
-        verifyParamDTO.setUid(Integer.valueOf(uid));
+        //参数转换失败时
+        try {
+            verifyParamDTO.setCid(Integer.valueOf(cid));
+            verifyParamDTO.setUid(Integer.valueOf(uid));
+        } catch (NumberFormatException ignored) {
+            ignored.printStackTrace();
+            throw new RException(ExceptionEnum.TOKEN_VERIFY_FAIL);
+        }
         return verifyParamDTO;
     }
 
@@ -105,6 +114,7 @@ public class HttpUtil {
 
     /**
      * 校验是否是合格IP地址
+     *
      * @param ip
      * @return
      */

@@ -67,4 +67,72 @@ public class StaffVO extends StaffPO {
         this.setCompanyId(companyId);
         this.roleId = roleId;
     }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
+
+    public int getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
+    public boolean isPwdFlag() {
+        return pwdFlag;
+    }
+
+    public void setPwdFlag(boolean pwdFlag) {
+        this.pwdFlag = pwdFlag;
+    }
+
+    public String getRoleIds() {
+        return roleIds;
+    }
+
+    public void setRoleIds(String roleIds) {
+        this.roleIds = roleIds;
+    }
+
+    @Override
+    public int getShowFlag() {
+        return showFlag;
+    }
+
+    @Override
+    public void setShowFlag(int showFlag) {
+        this.showFlag = showFlag;
+    }
+
+    @Override
+    public boolean isDelFlag() {
+        return delFlag;
+    }
+
+    @Override
+    public void setDelFlag(boolean delFlag) {
+        this.delFlag = delFlag;
+    }
+
+    public List<RoleVO> getRoleList() {
+        return roleList;
+    }
+
+    public void setRoleList(List<RoleVO> roleList) {
+        this.roleList = roleList;
+    }
 }

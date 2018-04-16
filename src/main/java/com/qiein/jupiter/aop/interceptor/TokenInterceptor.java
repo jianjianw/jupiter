@@ -12,6 +12,8 @@ import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.dto.VerifyParamDTO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.service.StaffService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -28,6 +30,8 @@ import java.util.concurrent.TimeUnit;
  */
 @Component
 public class TokenInterceptor implements HandlerInterceptor {
+    private Logger logger = LoggerFactory.getLogger(getClass());
+
     /**
      * 当前运行环境
      */
@@ -129,5 +133,11 @@ public class TokenInterceptor implements HandlerInterceptor {
         }
         //将jwt body放入request
         httpServletRequest.setAttribute(CommonConstant.JWT_BODY, jsonObject);
+    }
+
+    //校验Ip
+    private void chckIp(HttpServletRequest request) {
+        String ipAddr = HttpUtil.getIpAddr(request);
+        logger.info("访问ip:" + ipAddr);
     }
 }
