@@ -10,6 +10,8 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * http工具类
@@ -99,5 +101,15 @@ public class HttpUtil {
 //		}
 
         return ip;
+    }
+
+    /**
+     * 校验是否是合格IP地址
+     * @param ip
+     * @return
+     */
+    public static boolean isIp(String ip) {
+        Pattern p = Pattern.compile("^((25[0-5]|2[0-4]\\d|[1]\\d\\d|[1-9]\\d|\\d)($|(?!\\.$)\\.)){4}$");
+        return p.matcher(ip).matches();
     }
 }
