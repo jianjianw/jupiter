@@ -152,6 +152,7 @@ public class StaffServiceImpl implements StaffService {
     @CacheEvict(value = "staff", key = "'staff'+':'+#id+':'+#companyId")
     @Override
     public int delete(int id, int companyId) {
+        //TODO 删除前验证各种  如员工是否有客资等情况
         return staffDao.deleteByIdAndCid(id, companyId);
     }
 
@@ -164,6 +165,7 @@ public class StaffServiceImpl implements StaffService {
     @CachePut(value = "staff", key = "'staff'+':'+#id+':'+#companyId")
     @Override
     public int logicDelete(int id, int companyId) {
+        //TODO 删除前验证各种  如员工是否有客资等情况
         StaffPO staffPO = new StaffPO();
         staffPO.setId(id);
         staffPO.setCompanyId(companyId);
