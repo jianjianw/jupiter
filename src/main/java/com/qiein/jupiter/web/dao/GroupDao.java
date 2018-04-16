@@ -17,11 +17,31 @@ public interface GroupDao extends BaseDao<GroupPO> {
      * @param groupName
      * @return
      */
-    GroupPO getByName(@Param("groupName") String groupName,@Param("companyId") int companyId);
+    GroupPO getByName(@Param("groupName") String groupName, @Param("companyId") int companyId);
 
+    /**
+     * 根据公司获取所有的组
+     *
+     * @param companyId
+     * @return
+     */
     List<GroupPO> findAllByCompanyId(int companyId);
 
-    /*获取公司所有部门和小组*/
-    public List<GroupVO> getCompanyAllDeptList(@Param("companyId") Integer companyId);
+    /**
+     * 获取公司所有部门和小组
+     *
+     * @param companyId
+     * @return
+     */
+    List<GroupVO> getCompanyAllDeptList(@Param("companyId") int companyId);
+
+    /**
+     * 根据父级id获取所有下级组
+     *
+     * @param parentId
+     * @param companyId
+     * @return
+     */
+    List<GroupPO> getByParentId(@Param("companyId") String parentId, @Param("companyId") int companyId);
 
 }

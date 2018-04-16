@@ -30,9 +30,10 @@ public interface GroupService {
      * 部门删除
      *
      * @param companyId
+     * @param groupId
      * @return
      */
-    int delete(int companyId);
+    int delete(String groupId, int companyId);
 
     /**
      * 部门新增

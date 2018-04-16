@@ -25,7 +25,6 @@ public class BaseController {
         return "jupiter is running success!";
     }
 
-
     /**
      * 获取session参数
      *

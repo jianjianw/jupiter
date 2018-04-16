@@ -224,7 +224,7 @@ public class StaffServiceImpl implements StaffService {
     }
 
     /**
-     * 根据Id获取
+     * 根据Id获取员工基础信息
      *
      * @param id
      * @param companyId

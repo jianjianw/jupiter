@@ -54,7 +54,12 @@ public class GroupServiceImpl implements GroupService {
         return list;
     }
 
-
+    /**
+     * 修改部门信息
+     *
+     * @param groupPO
+     * @return
+     */
     @Override
     public GroupPO update(GroupPO groupPO) {
         GroupPO groupDB = groupDao.getByName(groupPO.getGroupName(), groupPO.getCompanyId());
@@ -66,13 +71,30 @@ public class GroupServiceImpl implements GroupService {
         return groupPO;
     }
 
+    /**
+     * 删除部门信息
+     *
+     * @param companyId
+     * @return
+     */
     @Override
-    public int delete(int companyId) {
+    public int delete(String groupId, int companyId) {
         //先判断是否有下属部门
-        //
+        List<GroupPO> byParentId = groupDao.getByParentId(groupId, companyId);
+        if (ListUtil.isNullList(byParentId)){
+            throw new RException(ExceptionEnum.GROUP_HAVE_CHILD_GROUP);
+        }
+        //是否有下属员工
+
         return 0;
     }
 
+    /**
+     * 新增部门信息
+     *
+     * @param groupPO
+     * @return
+     */
     @Override
     public GroupPO insert(GroupPO groupPO) {
         GroupPO groupDB = groupDao.getByName(groupPO.getGroupName(), groupPO.getCompanyId());

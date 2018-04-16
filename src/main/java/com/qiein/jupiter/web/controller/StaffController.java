@@ -54,7 +54,7 @@ public class StaffController extends BaseController {
     /**
      * 插入
      *
-     * @param staffPO
+     * @param staffVO
      * @return
      */
     @PostMapping("/insert")
@@ -76,7 +76,7 @@ public class StaffController extends BaseController {
     /**
      * 更新员工信息
      *
-     * @param staffPO
+     * @param staffVO
      * @return
      */
     @PostMapping("/update")
@@ -220,7 +220,6 @@ public class StaffController extends BaseController {
     /**
      * 批量编辑员工信息
      *
-     * @param staffPO
      * @return
      */
     @GetMapping("/batch_edit_staff")
@@ -283,6 +282,18 @@ public class StaffController extends BaseController {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         return ResultInfoUtil.success(staffService.getById(currentLoginStaff.getId(),
                 currentLoginStaff.getCompanyId()));
+    }
+
+    /**
+     * 首页获取基础信息
+     */
+    @GetMapping("/base_info")
+    public void getBaseInfo() {
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        StaffPO staffPOById = staffService.getById(currentLoginStaff.getId(),
+                currentLoginStaff.getCompanyId());
+
+
     }
 
 }

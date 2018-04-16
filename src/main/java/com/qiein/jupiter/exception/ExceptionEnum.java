@@ -33,9 +33,12 @@ public enum ExceptionEnum {
     NICKNAME_EXIST(343, "该艺名已存在"),
     USERNAME_EXIST(344, "该全名已存在"),
     STAFF_ID_NULL(345, "员工ID不能为空"),
+    PHONE_ERROR(346, "手机号格式错误"),
     //部门
-    GROUP_NAME_REPEAT(401, "部门名称重复"),
-    PHONE_ERROR(402, "手机号格式错误");
+    GROUP_NAME_REPEAT(401,"部门名称重复"),
+    GROUP_HAVE_CHILD_GROUP(402,"该部门存在小组，请删除下属小组再进行操作"),
+    GROUP_HAVE_STAFF(403,"该部门存在员工，请删除下属员工再进行操作");
+   ;
 
     private Integer code;
 

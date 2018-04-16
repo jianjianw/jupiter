@@ -38,6 +38,14 @@
         WHERE ID = #{id}
     </select>
 
+    <select id="getByParentId" parameterType="java.lang.Integer" resultMap="baseMap">
+        SELECT
+        <include refid="baseColumn"/>
+        hm_pub_group
+        WHERE PARENTID = #{parentId}
+        AND COMPANYID = #{companyId}
+    </select>
+
     <select id="findAllByCompanyId" resultMap="baseMap">
         SELECT
         <include refid="baseColumn"/>
@@ -55,7 +63,30 @@
 
     <update id="update">
         UPDATE hm_pub_group
+        <set>
+            <if test="groupName != null">
+                GROUPNAME = #{groupName},
+            </if>
+            <if test="groupType != null">
+                GROUPTYPE = #{groupType},
+            </if>
+            <if test="chiefIds != null">
+                CHIEFIDS = #{chiefIds},
+            </if>
+            <if test="chiefNames != null">
+                CHIEFNAMES = #{chiefNames},
+            </if>
+        </set>
+        WHERE GROUPID = #{groupId}
+        AND COMPANYID = #{companyId}
     </update>
+
+    <!--删除组信息-->
+    <delete id="delete">
+        DELETE FROM hm_pub_group
+        WHERE GROUPID = #{groupId}
+        AND COMPANYID = #{companyId}
+    </delete>
 
     <!--获取公司所有部门和小组-->
     <select id="getCompanyAllDeptList" parameterType="map" resultMap="GroupVOMap">
