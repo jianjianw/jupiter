@@ -219,7 +219,7 @@ public class StaffServiceImpl implements StaffService {
             staffRoleDao.batchInsertStaffRole(staffVO.getId(), staffVO.getCompanyId(), roleArr);
         }
         //6.清缓存
-        redisTemplate.opsForValue().getAndSet(RedisConstant.getStaffKey(staffVO.getId(), staffVO.getCompanyId()), staffVO);
+       // redisTemplate.opsForValue().getAndSet(RedisConstant.getStaffKey(staffVO.getId(), staffVO.getCompanyId()), staffVO);
         return staffVO;
     }
 
@@ -368,9 +368,9 @@ public class StaffServiceImpl implements StaffService {
     /**
      * 获取小组人员
      */
-    @Cacheable(value = "groupStaff", key = "'groupStaff'+':'+#companyId+':'+#groupId")
+    //@Cacheable(value = "groupStaff", key = "'groupStaff'+':'+#companyId+':'+#groupId")
     public List<StaffVO> getGroupStaffs(int companyId, String groupId) {
-        List<StaffVO> list = staffDao.getGroupStaffs(companyId, groupId);
+        List<StaffVO> list = groupStaffDao.getGroupStaffs(companyId, groupId);
         if (ListUtil.isNotNullList(list)) {
             for (StaffVO vo : list) {
                 vo.getStaffPwdFlag();

@@ -1,5 +1,7 @@
 package com.qiein.jupiter.util;
 
+import sun.applet.Main;
+
 import java.util.regex.Pattern;
 
 public class RegexUtils {
@@ -42,6 +44,7 @@ public class RegexUtils {
         String regex = "(\\+\\d+)?1[3456789]\\d{9}$";
         return Pattern.matches(regex, mobile);
     }
+
 
     public static boolean checkNickname(String name) {
         String regex = "^[a-zA-Z0-9\u4E00-\u9FA5]+$";

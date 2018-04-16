@@ -36,15 +36,6 @@ public interface StaffDao extends BaseDao<StaffPO> {
                                @Param("companyId") int companyId);
 
     /**
-     * 获取小组人员
-     *
-     * @param companyId
-     * @param groupId
-     * @return
-     */
-    public List<StaffVO> getGroupStaffs(@Param("companyId") int companyId, @Param("groupId") String groupId);
-
-    /**
      * 根据手机号获取员工信息
      *
      * @param companyId
