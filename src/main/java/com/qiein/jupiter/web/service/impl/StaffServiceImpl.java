@@ -413,4 +413,14 @@ public class StaffServiceImpl implements StaffService {
 
     }
 
+    /**
+     * 搜索员工
+     *
+     * @param companyId
+     * @param searchKey
+     * @return
+     */
+    public List<StaffVO> getStaffListBySearchKey(int companyId, String searchKey) {
+        return staffDao.getStaffListBySearchKey(companyId, searchKey);
+    }
 }

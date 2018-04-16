@@ -108,6 +108,7 @@ public interface StaffService {
 
     /**
      * 批量编辑员工信息
+     *
      * @param companyId
      * @param staffIds
      * @param roleIds
@@ -115,4 +116,13 @@ public interface StaffService {
      * @param groupId
      */
     public void batchEditStaff(int companyId, String staffIds, String roleIds, String password, String groupId);
+
+    /**
+     * 搜索员工
+     *
+     * @param companyId
+     * @param searchKey
+     * @return
+     */
+    public List<StaffVO> getStaffListBySearchKey(int companyId, String searchKey);
 }

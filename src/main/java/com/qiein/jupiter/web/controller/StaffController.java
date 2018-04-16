@@ -61,6 +61,9 @@ public class StaffController extends BaseController {
     public ResultInfo insert(@RequestBody @Validated StaffVO staffVO) {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
+        if (RegexUtils.checkMobile(staffVO.getPhone())) {
+            return ResultInfoUtil.error(ExceptionEnum.PHONE_ERROR);
+        }
         //设置cid
         staffVO.setCompanyId(currentLoginStaff.getCompanyId());
         //对象参数trim
@@ -81,6 +84,9 @@ public class StaffController extends BaseController {
         ObjectUtil.objectStrParamTrim(staffVO);
         if (staffVO.getId() == 0) {
             return ResultInfoUtil.error(ExceptionEnum.STAFF_ID_NULL);
+        }
+        if (RegexUtils.checkMobile(staffVO.getPhone())) {
+            return ResultInfoUtil.error(ExceptionEnum.PHONE_ERROR);
         }
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
@@ -221,6 +227,20 @@ public class StaffController extends BaseController {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         staffService.batchEditStaff(currentLoginStaff.getCompanyId(), staffIds, roleIds, password, groupId);
         return ResultInfoUtil.success(TipMsgConstant.SAVE_SUCCESS);
+    }
+
+    /**
+     * 搜索员工信息
+     *
+     * @param staffPO
+     * @return
+     */
+    @GetMapping("/search_staff")
+    public ResultInfo searchStaff(@NotEmpty @RequestParam("searchKey") String searchKey) {
+        //获取当前登录用户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        List<StaffVO> staffList = staffService.getStaffListBySearchKey(currentLoginStaff.getCompanyId(), searchKey);
+        return ResultInfoUtil.success(staffList);
     }
 
     /**

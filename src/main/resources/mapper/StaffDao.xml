@@ -284,4 +284,23 @@
         </foreach>
     </update>
 
+    <!--搜索员工-->
+    <select id="getStaffListBySearchKey" parameterType="map" resultMap="VOMap">
+        SELECT
+	        rela.GROUPID, sf.ID, sf.NICKNAME, sf.PHONE, sf.USERNAME, sf.HEADIMG, sf.ISLOCK, sf.`PASSWORD`, role_rela.ROLEID, role.ROLENAME,  grp.GROUPNAME
+        FROM
+            hm_pub_group_staff rela
+            INNER JOIN hm_pub_staff sf ON sf.COMPANYID = rela.COMPANYID AND rela.STAFFID = sf.ID
+            LEFT JOIN hm_pub_staff_role role_rela ON sf.ID = role_rela.STAFFID  AND sf.COMPANYID = role_rela.COMPANYID
+            LEFT JOIN hm_pub_role role ON role_rela.ROLEID = role.ID  AND role_rela.COMPANYID = role.COMPANYID
+            LEFT JOIN hm_pub_group grp ON grp.GROUPID = rela.GROUPID AND rela.COMPANYID = grp.COMPANYID
+        WHERE
+            rela.COMPANYID = #{companyId}
+            AND sf.ISDEL = 0
+            AND  ( sf.PHONE LIKE CONCAT('%',#{searchKey},'%')
+                OR sf.USERNAME LIKE CONCAT('%',#{searchKey},'%')
+                OR sf.NICKNAME LIKE CONCAT('%',#{searchKey},'%')
+	        )
+    </select>
+
 </mapper>

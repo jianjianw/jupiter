@@ -31,7 +31,7 @@ public class RoleController extends BaseController {
         return ResultInfoUtil.success(roleList);
     }
 
-    @PostMapping("add_role")
+    @GetMapping("add_role")
     public ResultInfo addRole(@NotEmpty @RequestParam("roleName") String roleName, @NotEmpty @RequestParam("priority") Integer priority, @RequestParam("pmsIds") String pmsIds) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
@@ -39,10 +39,11 @@ public class RoleController extends BaseController {
         return ResultInfoUtil.success(TipMsgConstant.ADD_ROLE_SUCCESS);
     }
 
-    @PostMapping("delete_role")
+    @GetMapping("delete_role")
     public ResultInfo deleteRole(@NotEmpty @RequestParam("roleId") Integer roleId) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
+        //TODO 检查该角色是否绑定人员，如果有提示不能删除
         roleService.delete(roleId, currentLoginStaff.getCompanyId());
         return ResultInfoUtil.success(TipMsgConstant.DELETE_ROLE_SUCCESS);
     }
@@ -52,7 +53,17 @@ public class RoleController extends BaseController {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         rolePO.setCompanyId(currentLoginStaff.getCompanyId());
-        roleService.update(rolePO,pmsIds);
+        roleService.update(rolePO, pmsIds);
         return ResultInfoUtil.success(TipMsgConstant.EDIT_ROLE_SUCCESS);
     }
+
+    @GetMapping("get_role_select")
+    public ResultInfo getRoleSelect() {
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        List<RolePO> roleList = roleService.getRoleSelect(currentLoginStaff.getCompanyId());
+        return ResultInfoUtil.success(roleList);
+    }
+
+
 }
