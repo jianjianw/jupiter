@@ -1,5 +1,7 @@
 package com.qiein.jupiter.web.service.impl;
 
+import com.qiein.jupiter.exception.ExceptionEnum;
+import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.ListUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.GroupDao;
@@ -19,10 +21,9 @@ import java.util.List;
 @Service
 public class GroupServiceImpl implements GroupService {
     @Autowired
-    private GroupDao groupDao;//部门持久层
+    private GroupDao groupDao;
 
     /**
-     *
      * @param companyId
      * @return
      */
@@ -55,17 +56,31 @@ public class GroupServiceImpl implements GroupService {
 
 
     @Override
-    public int update(GroupPO groupPO) {
-        return 0;
+    public GroupPO update(GroupPO groupPO) {
+        GroupPO groupDB = groupDao.getByName(groupPO.getGroupName(), groupPO.getCompanyId());
+        //验证是否存在相同的部门名称
+        if (StringUtil.ignoreCaseEqual(groupPO.getGroupName(), groupDB.getGroupName())) {
+            throw new RException(ExceptionEnum.GROUP_NAME_REPEAT);
+        }
+        groupDao.update(groupDB);
+        return groupPO;
     }
 
     @Override
     public int delete(int companyId) {
+        //先判断是否有下属部门
+        //
         return 0;
     }
 
     @Override
-    public int insert(GroupPO groupPO) {
-        return 0;
+    public GroupPO insert(GroupPO groupPO) {
+        GroupPO groupDB = groupDao.getByName(groupPO.getGroupName(), groupPO.getCompanyId());
+        //验证是否存在相同的部门名称
+        if (StringUtil.ignoreCaseEqual(groupPO.getGroupName(), groupDB.getGroupName())) {
+            throw new RException(ExceptionEnum.GROUP_NAME_REPEAT);
+        }
+        groupDao.insert(groupPO);
+        return groupPO;
     }
 }

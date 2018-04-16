@@ -24,7 +24,7 @@ public interface GroupService {
      * @param groupPO
      * @return
      */
-    int update(GroupPO groupPO);
+    GroupPO update(GroupPO groupPO);
 
     /**
      * 部门删除
@@ -39,6 +39,6 @@ public interface GroupService {
      *
      * @param groupPO
      */
-    int insert(GroupPO groupPO);
+    GroupPO insert(GroupPO groupPO);
 
 }

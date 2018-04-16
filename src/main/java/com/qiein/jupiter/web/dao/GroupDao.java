@@ -11,6 +11,14 @@ import java.util.List;
  */
 public interface GroupDao extends BaseDao<GroupPO> {
 
+    /**
+     * 根据部门名称获取
+     *
+     * @param groupName
+     * @return
+     */
+    GroupPO getByName(@Param("groupName") String groupName,@Param("companyId") int companyId);
+
     List<GroupPO> findAllByCompanyId(int companyId);
 
     /*获取公司所有部门和小组*/

@@ -14,7 +14,7 @@
 
     <resultMap id="GroupVOMap" type="com.qiein.jupiter.web.entity.vo.GroupVO" extends="baseMap">
 
-        <collection  property="groupList" ofType="com.qiein.jupiter.web.entity.po.GroupPO" resultMap="sonMap"/>
+        <collection property="groupList" ofType="com.qiein.jupiter.web.entity.po.GroupPO" resultMap="sonMap"/>
     </resultMap>
 
     <resultMap id="sonMap" type="com.qiein.jupiter.web.entity.po.GroupPO">
@@ -78,5 +78,14 @@
         VALUES
         (#{groupId},#{staffId},#{companyId})
     </insert>
+
+    <!--根据名称获取-->
+    <select id="getByName">
+        SELECT
+        <include refid="baseColumn"/>
+        FROM hm_pub_group
+        WHERE COMPANYID = #{companyId}
+        AND GROUPNAME = #{groupName}
+    </select>
 
 </mapper>

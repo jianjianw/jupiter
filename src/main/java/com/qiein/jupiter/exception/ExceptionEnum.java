@@ -31,7 +31,9 @@ public enum ExceptionEnum {
     STAFF_EXIST_DEL(341, "该员工在离职员工中"),
     PHONE_EXIST(342, "该手机号已存在"),
     NICKNAME_EXIST(343, "该艺名已存在"),
-    USERNAME_EXIST(344, "该全名已存在");
+    USERNAME_EXIST(344, "该全名已存在"),
+    //部门
+    GROUP_NAME_REPEAT(401,"部门名称重复");
 
     private Integer code;
 

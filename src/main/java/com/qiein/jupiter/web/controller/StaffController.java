@@ -229,4 +229,14 @@ public class StaffController extends BaseController {
         }
     }
 
+    /**
+     * 获取员工详情
+     * @return
+     */
+    @GetMapping("/detail")
+    public ResultInfo getDetailInfo(){
+        //获取当前登录账户
+         return ResultInfoUtil.success(getCurrentLoginStaff());
+    }
+
 }
