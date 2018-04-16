@@ -61,6 +61,8 @@ public class TokenInterceptor implements HandlerInterceptor {
 //            httpServletRequest.setAttribute(CommonConstant.VERIFY_PARAM, requestToken);
 //            return true;
 //        }
+        //检测ip
+        chckIp(httpServletRequest);
         //从redis中获取token并验证
         return checkRedisToken(requestToken, httpServletRequest);
     }
