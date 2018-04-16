@@ -87,8 +87,7 @@ public class StaffServiceImplTest {
 
     @Test
     public void getGroupStaffs() {
-        List<StaffVO> list = staffDao.getGroupStaffs(1, "0-1-1");
-        System.out.println(list.size());
+
     }
 
     @Test
