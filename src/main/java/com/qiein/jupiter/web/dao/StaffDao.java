@@ -42,7 +42,7 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @param phone
      * @return
      */
-    public StaffPO getStaffByPhone(@Param("companyId") int companyId, @Param("phone") String phone);
+    StaffPO getStaffByPhone(@Param("companyId") int companyId, @Param("phone") String phone);
 
     /**
      * 根据艺名，全名获取员工信息
@@ -51,21 +51,21 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @param name
      * @return
      */
-    public StaffPO getStaffByNames(@Param("companyId") int companyId, @Param("name") String name);
+    StaffPO getStaffByNames(@Param("companyId") int companyId, @Param("name") String name);
 
     /**
      * 添加员工
      *
      * @param staffVO
      */
-    public void addStaffVo(StaffVO staffVO);
+    void addStaffVo(StaffVO staffVO);
 
     /**
      * 编辑员工信息
      *
      * @param staffVO
      */
-    public void updateStaff(StaffVO staffVO);
+    void updateStaff(StaffVO staffVO);
 
     /**
      * 批量编辑员工密码
@@ -74,14 +74,15 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @param staffIdArr
      * @param password
      */
-    public void batchEditStafPwd(@Param("companyId") int companyId, @Param("staffIdArr") String[] staffIdArr, @Param("password") String password);
+    void batchEditStafPwd(@Param("companyId") int companyId, @Param("staffIdArr") String[] staffIdArr, @Param("password") String password);
 
     /**
      * 搜索员工
+     *
      * @param companyId
      * @param searchKey
      * @return
      */
-    public List<StaffVO> getStaffListBySearchKey(@Param("companyId") int companyId,@Param("searchKey") String searchKey);
+    List<StaffVO> getStaffListBySearchKey(@Param("companyId") int companyId, @Param("searchKey") String searchKey);
 
 }

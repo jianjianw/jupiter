@@ -31,7 +31,7 @@ public interface RoleService {
     /**
      * 获取企业所有角色，以及角色对应的权限集合
      */
-    public List<RolePermissionVO> getCompanyAllRole(Integer companyId);
+    List<RolePermissionVO> getCompanyAllRole(Integer companyId);
 
     /**
      * 获取角色下拉框选项
@@ -39,7 +39,6 @@ public interface RoleService {
      * @param companyId
      * @return
      */
-    public List<RolePO> getRoleSelect(Integer companyId);
-
+    List<RolePO> getRoleSelect(Integer companyId);
 
 }

@@ -13,14 +13,6 @@ import java.util.List;
 public interface GroupStaffDao {
 
     /**
-     * 根据公司id获取所有小组及下属员工
-     *
-     * @param companyId
-     * @return
-     */
-//    List<GroupStaffVO> getAllGroupAndStaff(int companyId);
-
-    /**
      * 根据parentId获取某个组下的所有员工
      *
      * @param parentId
@@ -36,11 +28,18 @@ public interface GroupStaffDao {
      * @param companyId
      * @param staffId
      */
-    public void deleteByStaffId(@Param("companyId") int companyId, @Param("staffId") int staffId);
+    void deleteByStaffId(@Param("companyId") int companyId, @Param("staffId") int staffId);
 
 
-    /*添加小组员工关联表*/
-    public int insertGroupStaff(@Param("companyId") Integer companyId, @Param("groupId") String groupId, @Param("staffId") Integer staffId);
+    /**
+     * 添加小组员工关联表
+     *
+     * @param companyId
+     * @param groupId
+     * @param staffId
+     * @return
+     */
+    int insertGroupStaff(@Param("companyId") Integer companyId, @Param("groupId") String groupId, @Param("staffId") Integer staffId);
 
     /**
      * 批量删除员工小组关联
@@ -48,7 +47,7 @@ public interface GroupStaffDao {
      * @param companyId
      * @param staffIdArr
      */
-    public void batchDeleteByStaffArr(@Param("companyId") Integer companyId, @Param("staffIdArr") String[] staffIdArr);
+    void batchDeleteByStaffArr(@Param("companyId") Integer companyId, @Param("staffIdArr") String[] staffIdArr);
 
     /**
      * 批量编辑员工小组关联
@@ -57,7 +56,7 @@ public interface GroupStaffDao {
      * @param staffIdArr
      * @param groupId
      */
-    public void batchEditStaffGroup(@Param("companyId") Integer companyId, @Param("staffIdArr") String[] staffIdArr, @Param("groupId") String groupId);
+    void batchEditStaffGroup(@Param("companyId") Integer companyId, @Param("staffIdArr") String[] staffIdArr, @Param("groupId") String groupId);
 
     /**
      * 获取小组人员
@@ -66,5 +65,5 @@ public interface GroupStaffDao {
      * @param groupId
      * @return
      */
-    public List<StaffVO> getGroupStaffs(@Param("companyId") int companyId, @Param("groupId") String groupId);
+    List<StaffVO> getGroupStaffs(@Param("companyId") int companyId, @Param("groupId") String groupId);
 }

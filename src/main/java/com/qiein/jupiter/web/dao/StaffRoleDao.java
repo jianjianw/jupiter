@@ -48,5 +48,5 @@ public interface StaffRoleDao {
      *
      * @return
      */
-    StaffRolePO getStaffPermission();
+    StaffRolePO getStaffPermission(@Param("staffId") Integer staffId, @Param("companyId") Integer companyId);
 }

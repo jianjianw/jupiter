@@ -13,12 +13,12 @@ public interface RoleDao extends BaseDao<RolePO> {
     /*
      * 根据角色名获取角色信息
      */
-    public RolePO getRoleByName(@Param("roleName") String roleName, @Param("companyId") Integer companyId);
+    RolePO getRoleByName(@Param("roleName") String roleName, @Param("companyId") Integer companyId);
 
     /*
      * 修改角色
      */
-    public int editRole(RolePO rolePO);
+    int editRole(RolePO rolePO);
 
     /**
      * 获取角色下拉框选项
@@ -26,5 +26,5 @@ public interface RoleDao extends BaseDao<RolePO> {
      * @param companyId
      * @return
      */
-    public List<RolePO> getRoleSelect(@Param("companyId") Integer companyId);
+    List<RolePO> getRoleSelect(@Param("companyId") Integer companyId);
 }
