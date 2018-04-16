@@ -177,7 +177,7 @@ public class StaffServiceImpl implements StaffService {
     /**
      * 更新
      *
-     * @param staffPO
+     * @param staffVO
      * @return
      */
     @CachePut(value = "staff", key = "'staff'+':'+#staffVO.id+':'+#staffVO.companyId")
@@ -385,7 +385,7 @@ public class StaffServiceImpl implements StaffService {
      * @param companyId
      * @param staffIds
      * @param roleIds
-     * @param passWord
+     * @param password
      * @param groupId
      */
     public void batchEditStaff(int companyId, String staffIds, String roleIds, String password, String groupId) {
@@ -422,5 +422,10 @@ public class StaffServiceImpl implements StaffService {
      */
     public List<StaffVO> getStaffListBySearchKey(int companyId, String searchKey) {
         return staffDao.getStaffListBySearchKey(companyId, searchKey);
+    }
+
+    @Override
+    public void getStaffPermissionById(int staffId, int companyId) {
+
     }
 }

@@ -11,10 +11,6 @@
         STAFFID,ROLEID
     </sql>
 
-    <sql id="tableName">
-       hm_pub_staff_role
-    </sql>
-
     <!--批量添加员工多角色-->
     <insert id="batchInsertStaffRole" parameterType="map">
         INSERT INTO hm_pub_staff_role
@@ -34,7 +30,7 @@
 
     <!--批量删除员工角色关联-->
     <delete id="batchDeleteByStaffIdArr" parameterType="map">
-        DELETE FROM  hm_pub_staff_role
+        DELETE FROM hm_pub_staff_role
         WHERE COMPANYID = #{companyId}
         AND STAFFID IN
         <foreach collection="staffIdArr" item="id" index="index" open="("
@@ -52,4 +48,31 @@
             (#{vo.id},#{vo.roleId},#{vo.companyId})
         </foreach>
     </insert>
+
+    <!--获取员工权限信息-->
+    <select id="getStaffPermission">
+       SELECT
+            staff.ID,
+            staff.NICKNAME,
+            staff.PHONE,
+            staff.USERNAME,
+            staff.COMPANYID,
+            staff.CORPID,
+            staff.DINGUSERID,
+            staff.OPENID,
+            staff.HEADIMG,
+            staff.TOKEN,
+            staff.ISSHOW,
+            staff.ISLOCK,
+            staff.ISDEL,
+            permission.PERMISSIONID,
+            permission.ABBREVIATE
+        FROM
+            hm_pub_staff staff
+            LEFT JOIN hm_pub_staff_role staff_role ON staff.ID = staff_role.STAFFID
+            LEFT JOIN hm_pub_role_permission permission ON staff_role.ROLEID = permission.ROLEID
+        WHERE
+            staff.id = 30
+            AND COMPANYID = #{companyId}
+    </select>
 </mapper>

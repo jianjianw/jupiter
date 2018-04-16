@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.dao;
 
+import com.qiein.jupiter.web.entity.po.StaffRolePO;
 import com.qiein.jupiter.web.entity.vo.StaffVO;
 import org.apache.ibatis.annotations.Param;
 
@@ -17,7 +18,7 @@ public interface StaffRoleDao {
      * @param companyId
      * @param roleIdArr
      */
-    public void batchInsertStaffRole(@Param("staffId") Integer staffId, @Param("companyId") Integer companyId, @Param("roleIdArr") String[] roleIdArr);
+    void batchInsertStaffRole(@Param("staffId") Integer staffId, @Param("companyId") Integer companyId, @Param("roleIdArr") String[] roleIdArr);
 
     /**
      * 删除员工角色
@@ -25,7 +26,7 @@ public interface StaffRoleDao {
      * @param staffId
      * @param companyId
      */
-    public void deleteByStaffId(@Param("staffId") Integer staffId, @Param("companyId") Integer companyId);
+    void deleteByStaffId(@Param("staffId") Integer staffId, @Param("companyId") Integer companyId);
 
     /**
      * 批量删除员工角色关联
@@ -33,11 +34,19 @@ public interface StaffRoleDao {
      * @param companyId
      * @param staffIdArr
      */
-    public void batchDeleteByStaffIdArr(@Param("companyId") Integer companyId, @Param("staffIdArr") String[] staffIdArr);
+    void batchDeleteByStaffIdArr(@Param("companyId") Integer companyId, @Param("staffIdArr") String[] staffIdArr);
 
     /**
      * 批量添加多员工多角色
+     *
      * @param list
      */
-    public void batchInsertStaffRoleByVO(@Param("list") List<StaffVO> list);
+    void batchInsertStaffRoleByVO(@Param("list") List<StaffVO> list);
+
+    /**
+     * 获取员工信息及角色权限信息
+     *
+     * @return
+     */
+    StaffRolePO getStaffPermission();
 }

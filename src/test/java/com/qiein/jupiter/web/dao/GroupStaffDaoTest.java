@@ -25,6 +25,5 @@ public class GroupStaffDaoTest {
 
     @Test
     public void getAllGroupAndStaff() {
-        List<GroupStaffVO> list = groupStaffDao.getAllGroupAndStaff(1);
     }
 }

@@ -104,7 +104,7 @@ public interface StaffService {
     /**
      * 获取小组人员
      */
-    public List<StaffVO> getGroupStaffs(int companyId, String groupId);
+    List<StaffVO> getGroupStaffs(int companyId, String groupId);
 
     /**
      * 批量编辑员工信息
@@ -115,7 +115,7 @@ public interface StaffService {
      * @param password
      * @param groupId
      */
-    public void batchEditStaff(int companyId, String staffIds, String roleIds, String password, String groupId);
+    void batchEditStaff(int companyId, String staffIds, String roleIds, String password, String groupId);
 
     /**
      * 搜索员工
@@ -124,5 +124,13 @@ public interface StaffService {
      * @param searchKey
      * @return
      */
-    public List<StaffVO> getStaffListBySearchKey(int companyId, String searchKey);
+    List<StaffVO> getStaffListBySearchKey(int companyId, String searchKey);
+
+    /**
+     * 根据员工id获取员工信息及权限信息
+     *
+     * @param staffId
+     * @param companyId
+     */
+    void getStaffPermissionById(int staffId, int companyId);
 }
