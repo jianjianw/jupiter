@@ -64,8 +64,15 @@ public interface StaffDao extends BaseDao<StaffPO> {
 
     /**
      * 添加员工
+     *
      * @param staffVO
      */
     public void addStaffVo(StaffVO staffVO);
+
+    /**
+     * 编辑员工信息
+     * @param staffVO
+     */
+    public void updateStaff(StaffVO staffVO);
 
 }

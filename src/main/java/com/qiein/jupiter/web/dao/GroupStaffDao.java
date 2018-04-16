@@ -28,4 +28,16 @@ public interface GroupStaffDao {
     List<GroupStaffVO> getGroupStaffListByParentIdAndCid(
             @Param("companyId") int companyId,
             @Param("parentId") String parentId);
+
+    /**
+     * 删除员工小组关联
+     *
+     * @param companyId
+     * @param staffId
+     */
+    public void deleteByStaffId(@Param("companyId") int companyId, @Param("staffId") int staffId);
+
+
+    /*添加小组员工关联表*/
+    public int insertGroupStaff(@Param("companyId") Integer companyId, @Param("groupId") String groupId, @Param("staffId") Integer staffId);
 }

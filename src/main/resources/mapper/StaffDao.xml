@@ -23,7 +23,7 @@
         <result column="NICKNAME" property="nickName" jdbcType="VARCHAR"/>
         <result column="PHONE" property="phone" jdbcType="VARCHAR"/>
         <result column="USERNAME" property="userName" jdbcType="VARCHAR"/>
-        <result column="PASSWORD" property="passWord" jdbcType="VARCHAR"/>
+        <result column="PASSWORD" property="password" jdbcType="VARCHAR"/>
         <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
         <result column="HEADIMG" property="headImg" jdbcType="VARCHAR"/>
         <result column="ISLOCK" property="lockFlag" jdbcType="BOOLEAN"/>
@@ -115,8 +115,9 @@
     </insert>
 
 
-    <update id="update" parameterType="com.qiein.jupiter.web.entity.po.StaffPO">
-        UPDATE hm_pub_staff
+
+    <update id="update" parameterType="com.qiein.jupiter.web.entity.vo.StaffVO">
+        UPDATE  hm_pub_staff
         <set>
             <if test="nickName != null">
                 NICKNAME = #{nickName},
@@ -147,6 +148,42 @@
             </if>
             <if test="token != null">
                 TOKEN = #{token},
+            </if>
+            <if test="showFlag != null">
+                ISSHOW = #{showFlag},
+            </if>
+            <if test="lockFlag != null">
+                ISLOCK = #{lockFlag},
+            </if>
+            <if test="delFlag != null">
+                ISDEL = #{delFlag},
+            </if>
+        </set>
+        WHERE ID = #{id}
+        AND COMPANYID = #{companyId}
+    </update>
+
+    <!--编辑员工信息-->
+    <update id="updateStaff" parameterType="com.qiein.jupiter.web.entity.vo.StaffVO">
+        UPDATE  hm_pub_staff
+        <set>
+            <if test="nickName != null">
+                NICKNAME = #{nickName},
+            </if>
+            <if test="phone != null">
+                PHONE = #{phone},
+            </if>
+            <if test="userName != null">
+                USERNAME = #{userName},
+            </if>
+            <if test="password != null">
+                PASSWORD = #{password},
+            </if>
+            <if test="companyId != null">
+                COMPANYID = #{companyId},
+            </if>
+            <if test="headImg != null">
+                HEADIMG = #{headImg},
             </if>
             <if test="showFlag != null">
                 ISSHOW = #{showFlag},

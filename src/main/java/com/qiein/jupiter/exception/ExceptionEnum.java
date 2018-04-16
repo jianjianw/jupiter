@@ -32,6 +32,7 @@ public enum ExceptionEnum {
     PHONE_EXIST(342, "该手机号已存在"),
     NICKNAME_EXIST(343, "该艺名已存在"),
     USERNAME_EXIST(344, "该全名已存在"),
+    STAFF_ID_NULL(345, "员工ID不能为空"),
     //部门
     GROUP_NAME_REPEAT(401,"部门名称重复");
 
