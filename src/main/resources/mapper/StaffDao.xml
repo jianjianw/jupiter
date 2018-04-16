@@ -115,9 +115,8 @@
     </insert>
 
 
-
     <update id="update" parameterType="com.qiein.jupiter.web.entity.po.StaffPO">
-        UPDATE  hm_pub_staff
+        UPDATE hm_pub_staff
         <set>
             <if test="nickName != null">
                 NICKNAME = #{nickName},
@@ -164,7 +163,7 @@
     </update>
 
     <select id="getCompanyList" resultType="com.qiein.jupiter.web.entity.po.CompanyPO">
-        SELECT company.ID,company.COMPNAME,
+        SELECT company.ID,company.COMPANYNAME,
         company.LOGO
         FROM hm_pub_staff
         as staff
@@ -232,7 +231,7 @@
         FROM
         hm_pub_staff
         WHERE
-           COMPANYID = #{companyId}
+        COMPANYID = #{companyId}
         AND ( NICKNAME = #{name} OR USERNAME = #{name} )
     </select>
 

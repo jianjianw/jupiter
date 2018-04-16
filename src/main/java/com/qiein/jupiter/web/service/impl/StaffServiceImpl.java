@@ -63,7 +63,7 @@ public class StaffServiceImpl implements StaffService {
     /**
      * 员工新增
      *
-     * @param staffPO
+     * @param staffVO
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
@@ -216,7 +216,7 @@ public class StaffServiceImpl implements StaffService {
      */
     @Override
     public List<CompanyPO> getCompanyList(String userName, String password) {
-        List<CompanyPO> companyList = staffDao.getCompanyList(userName, password);
+        List<CompanyPO> companyList = staffDao.getCompanyList(userName, MD5Util.getSaltMd5(password));
         if (companyList == null || companyList.isEmpty()) {
             //用户不存在
             throw new RException(ExceptionEnum.USER_NOT_FOUND);
