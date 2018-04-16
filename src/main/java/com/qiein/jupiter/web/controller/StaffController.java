@@ -225,6 +225,20 @@ public class StaffController extends BaseController {
     }
 
     /**
+     * 搜索员工信息
+     *
+     * @param staffPO
+     * @return
+     */
+    @GetMapping("/search_staff")
+    public ResultInfo searchStaff(@NotEmpty @RequestParam("searchKey") String searchKey) {
+        //获取当前登录用户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        List<StaffVO> staffList = staffService.getStaffListBySearchKey(currentLoginStaff.getCompanyId(), searchKey);
+        return ResultInfoUtil.success(staffList);
+    }
+
+    /**
      * 校验用户验证码
      *
      * @param loginUserVO

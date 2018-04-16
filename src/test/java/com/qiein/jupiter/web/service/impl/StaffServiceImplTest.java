@@ -90,4 +90,13 @@ public class StaffServiceImplTest {
         List<StaffVO> list = staffDao.getGroupStaffs(1, "0-1-1");
         System.out.println(list.size());
     }
+
+    @Test
+    public void getStaffListBySearchKey() {
+
+        List<StaffVO> list = staffDao.getStaffListBySearchKey(1, "大");
+        for (StaffVO vo : list) {
+            System.out.println(vo.getNickName());
+        }
+    }
 }
