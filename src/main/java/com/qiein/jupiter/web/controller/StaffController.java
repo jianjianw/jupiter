@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import sun.applet.Main;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -61,7 +62,7 @@ public class StaffController extends BaseController {
     public ResultInfo insert(@RequestBody @Validated StaffVO staffVO) {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        if (RegexUtils.checkMobile(staffVO.getPhone())) {
+        if (!RegexUtils.checkMobile(staffVO.getPhone())) {
             return ResultInfoUtil.error(ExceptionEnum.PHONE_ERROR);
         }
         //设置cid
@@ -78,14 +79,14 @@ public class StaffController extends BaseController {
      * @param staffVO
      * @return
      */
-    @PostMapping("/update")
-    public ResultInfo update(@RequestBody @Validated StaffVO staffVO) {
+    @PostMapping("/update_staff")
+    public ResultInfo updateStaff(@RequestBody @Validated StaffVO staffVO) {
         //对象参数trim
         ObjectUtil.objectStrParamTrim(staffVO);
         if (staffVO.getId() == 0) {
             return ResultInfoUtil.error(ExceptionEnum.STAFF_ID_NULL);
         }
-        if (RegexUtils.checkMobile(staffVO.getPhone())) {
+        if (!RegexUtils.checkMobile(staffVO.getPhone())) {
             return ResultInfoUtil.error(ExceptionEnum.PHONE_ERROR);
         }
         //获取当前登录用户
@@ -137,6 +138,7 @@ public class StaffController extends BaseController {
             return ResultInfoUtil.error(e.getCode(), e.getMsg());
         }
     }
+
 
     /**
      * 根据公司ID登录

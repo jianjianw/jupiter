@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.dao;
 
 
 import com.qiein.jupiter.web.entity.vo.GroupStaffVO;
+import com.qiein.jupiter.web.entity.vo.StaffVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -51,9 +52,19 @@ public interface GroupStaffDao {
 
     /**
      * 批量编辑员工小组关联
+     *
      * @param companyId
      * @param staffIdArr
      * @param groupId
      */
     public void batchEditStaffGroup(@Param("companyId") Integer companyId, @Param("staffIdArr") String[] staffIdArr, @Param("groupId") String groupId);
+
+    /**
+     * 获取小组人员
+     *
+     * @param companyId
+     * @param groupId
+     * @return
+     */
+    public List<StaffVO> getGroupStaffs(@Param("companyId") int companyId, @Param("groupId") String groupId);
 }
