@@ -34,7 +34,9 @@ public enum ExceptionEnum {
     USERNAME_EXIST(344, "该全名已存在"),
     STAFF_ID_NULL(345, "员工ID不能为空"),
     //部门
-    GROUP_NAME_REPEAT(401,"部门名称重复");
+    GROUP_NAME_REPEAT(401,"部门名称重复"),
+    GROUP_HAVE_CHILD_GROUP(402,"该部门存在小组，请删除下属小组再进行操作"),
+    GROUP_HAVE_STAFF(403,"该部门存在员工，请删除下属员工再进行操作");
 
     private Integer code;
 

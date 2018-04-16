@@ -12,12 +12,12 @@ import java.util.List;
 public interface GroupStaffDao {
 
     /**
-     * 公司id
+     * 根据公司id获取所有小组及下属员工
      *
      * @param companyId
      * @return
      */
-    List<GroupStaffVO> getAllGroupAndStaff(int companyId);
+//    List<GroupStaffVO> getAllGroupAndStaff(int companyId);
 
     /**
      * 根据parentId获取某个组下的所有员工
