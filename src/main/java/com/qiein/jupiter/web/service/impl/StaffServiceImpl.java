@@ -35,6 +35,7 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -183,7 +184,6 @@ public class StaffServiceImpl implements StaffService {
     @Transactional(rollbackFor = Exception.class)
     public StaffVO update(StaffVO staffVO) {
         log.debug("未使用缓存");
-        //TODO
         //加密码加密,密码为空则默认手机号
         if (StringUtil.isNotNullStr(staffVO.getPassword())) {
             staffVO.setPassword(MD5Util.getSaltMd5(staffVO.getPassword()));
@@ -377,6 +377,40 @@ public class StaffServiceImpl implements StaffService {
             }
         }
         return list;
+    }
+
+    /**
+     * 批量编辑员工信息
+     *
+     * @param companyId
+     * @param staffIds
+     * @param roleIds
+     * @param passWord
+     * @param groupId
+     */
+    public void batchEditStaff(int companyId, String staffIds, String roleIds, String password, String groupId) {
+        String[] staffIdArr = staffIds.split(CommonConstant.STR_SEPARATOR);
+        //1.修改密码
+        if (StringUtil.isNotNullStr(password)) {
+            staffDao.batchEditStafPwd(companyId, staffIdArr, MD5Util.getMD5(password));
+        }
+        //2.修改小组
+        groupStaffDao.batchEditStaffGroup(companyId, staffIdArr, groupId);
+        //3.修改角色
+        if (StringUtil.isNotNullStr(roleIds)) {
+            String[] roleIdArr = roleIds.split(CommonConstant.STR_SEPARATOR);
+            staffRoleDao.batchDeleteByStaffIdArr(companyId, staffIdArr);
+            List<StaffVO> list = new LinkedList<>();
+            for (String staffId : staffIdArr) {
+                for (String roleId : roleIdArr) {
+                    StaffVO vo = new StaffVO(Integer.parseInt(staffId), companyId, Integer.parseInt(roleId));
+                    list.add(vo);
+                }
+            }
+            staffRoleDao.batchInsertStaffRoleByVO(list);
+        }
+        //4.TODO 清缓存
+
     }
 
 }

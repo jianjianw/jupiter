@@ -90,6 +90,17 @@
         AND COMPANYID = #{companyId}
     </delete>
 
+    <!--批量删除员工小组-->
+    <delete id="batchDeleteByStaffArr" parameterType="map">
+        DELETE FROM  hm_pub_group_staff
+        WHERE COMPANYID = #{companyId}
+        AND STAFFID IN
+        <foreach collection="staffIdArr" item="id" index="index" open="("
+                 close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
     <!--添加小组人员关联表-->
     <insert id="insertGroupStaff" parameterType="map">
         INSERT INTO hm_pub_group_staff
@@ -97,5 +108,17 @@
         VALUES
         (#{groupId},#{staffId},#{companyId})
     </insert>
+
+    <!--批量编辑员工小组关联-->
+    <update id="batchEditStaffGroup" parameterType="map">
+        UPDATE hm_pub_group_staff
+        SET GROUPID = #{groupId}
+        WHERE COMPANYID = #{companyId}
+        AND STAFFID IN
+        <foreach collection="staffIdArr" item="id" index="index" open="("
+                 close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
 
 </mapper>

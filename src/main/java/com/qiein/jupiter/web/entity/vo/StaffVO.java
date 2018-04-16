@@ -81,6 +81,14 @@ public class StaffVO {
         this.password = null;
     }
 
+    public StaffVO() {
+    }
+
+    public StaffVO(int id, int companyId, int roleId) {
+        this.id = id;
+        this.companyId = companyId;
+        this.roleId = roleId;
+    }
 
     public int getId() {
         return id;

@@ -16,6 +16,7 @@ import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.LoginUserVO;
 import com.qiein.jupiter.web.entity.vo.StaffVO;
 import com.qiein.jupiter.web.service.StaffService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.validation.annotation.Validated;
@@ -75,7 +76,6 @@ public class StaffController extends BaseController {
      * @return
      */
     @PostMapping("/update")
-    @LoginLog
     public ResultInfo update(@RequestBody @Validated StaffVO staffVO) {
         //对象参数trim
         ObjectUtil.objectStrParamTrim(staffVO);
@@ -97,7 +97,6 @@ public class StaffController extends BaseController {
      * @return
      */
     @GetMapping("/delete_flag")
-    @LoginLog
     public ResultInfo deleteFlag(int id) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
@@ -208,6 +207,21 @@ public class StaffController extends BaseController {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         List<StaffVO> staffList = staffService.getGroupStaffs(currentLoginStaff.getCompanyId(), groupId);
         return ResultInfoUtil.success(staffList);
+    }
+
+    /**
+     * 批量编辑员工信息
+     *
+     * @param staffPO
+     * @return
+     */
+    @GetMapping("/batch_edit_staff")
+    public ResultInfo batchEditStaff(@NotEmpty @RequestParam("staffIds") String staffIds, @RequestParam("roleIds") String roleIds,
+                                     @RequestParam("password") String password, @NotEmpty @RequestParam("groupId") String groupId) {
+        //获取当前登录用户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        staffService.batchEditStaff(currentLoginStaff.getCompanyId(), staffIds, roleIds, password, groupId);
+        return ResultInfoUtil.success(TipMsgConstant.SAVE_SUCCESS);
     }
 
     /**

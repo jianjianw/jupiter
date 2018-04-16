@@ -105,4 +105,14 @@ public interface StaffService {
      * 获取小组人员
      */
     public List<StaffVO> getGroupStaffs(int companyId, String groupId);
+
+    /**
+     * 批量编辑员工信息
+     * @param companyId
+     * @param staffIds
+     * @param roleIds
+     * @param password
+     * @param groupId
+     */
+    public void batchEditStaff(int companyId, String staffIds, String roleIds, String password, String groupId);
 }
