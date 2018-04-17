@@ -18,7 +18,7 @@
         <result column="ISDEL" property="delFlag" jdbcType="BOOLEAN"/>
     </resultMap>
 
-    <resultMap id="StaffVOMap" type="com.qiein.jupiter.web.entity.vo.StaffVO">
+    <resultMap id="StaffVOMap" type="staffVO">
         <id column="ID" property="id" jdbcType="INTEGER"/>
         <result column="NICKNAME" property="nickName" jdbcType="VARCHAR"/>
         <result column="PHONE" property="phone" jdbcType="VARCHAR"/>
@@ -121,9 +121,8 @@
     </insert>
 
 
-
     <update id="update" parameterType="com.qiein.jupiter.web.entity.vo.StaffVO">
-        UPDATE  hm_pub_staff
+        UPDATE hm_pub_staff
         <set>
             <if test="nickName != null">
                 NICKNAME = #{nickName},
@@ -171,7 +170,7 @@
 
     <!--编辑员工信息-->
     <update id="updateStaff" parameterType="com.qiein.jupiter.web.entity.vo.StaffVO">
-        UPDATE  hm_pub_staff
+        UPDATE hm_pub_staff
         <set>
             <if test="nickName != null">
                 NICKNAME = #{nickName},
@@ -265,18 +264,18 @@
 
     <!--批量编辑员工密码-->
     <update id="batchEditStaffPwd" parameterType="map">
-        UPDATE  hm_pub_staff
+        UPDATE hm_pub_staff
         SET PASSWORD = #{password}
         WHERE COMPANYID = #{companyId}
         AND STAFFID IN
         <foreach collection="staffIdArr" item="id" index="index" open="("
                  close=")" separator=",">
-              #{id}
+            #{id}
         </foreach>
     </update>
 
     <!--搜索员工-->
-    <select id="getStaffListBySearchKey" parameterType="map" resultMap="StaffVOMap">
+    <select id="getStaffListBySearchKey" resultMap="StaffVOMap">
         SELECT
 	        rela.GROUPID, sf.ID, sf.NICKNAME, sf.PHONE, sf.USERNAME, sf.HEADIMG, sf.ISLOCK, sf.`PASSWORD`, role_rela.ROLEID, role.ROLENAME,  grp.GROUPNAME
         FROM
