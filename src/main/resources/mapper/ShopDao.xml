@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiein.jupiter.web.dao.RoleDao">
+    <resultMap id="baseMap" type="com.qiein.jupiter.web.entity.po.RolePO">
+        <id column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="ROLENAME" property="roleName" jdbcType="VARCHAR"/>
+        <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
+        <result column="PRIORITY" property="priority" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="baseColumn">
+        ID,ROLENAME,COMPANYID,PRIORITY
+    </sql>
+
+    <sql id="tableName">
+        hm_pub_role
+    </sql>
+
+    <insert id="insert" parameterType="com.qiein.jupiter.web.entity.po.RolePO" useGeneratedKeys="true" keyProperty="id">
+      INSERT INTO hm_pub_role
+        ( ROLENAME, COMPANYID, PRIORITY )
+      VALUES
+	    (#{roleName},#{companyId},#{priority} );
+    </insert>
+
+    <!--根据角色名获取角色信息-->
+    <select id="getRoleByName" parameterType="map" resultMap="baseMap">
+        SELECT role.ID, role.ROLENAME, role.COMPANYID, role.PRIORITY
+        FROM
+            hm_pub_role role
+        WHERE
+            role.ROLENAME = #{roleName}
+            AND role.COMPANYID = #{companyId}
+    </select>
+
+    <!--删除角色-->
+    <delete id="delete" parameterType="map">
+        DELETE FROM hm_pub_role
+        WHERE ID = #{id}
+    </delete>
+
+    <!--修改角色-->
+    <update id="editRole" parameterType="com.qiein.jupiter.web.entity.po.RolePO">
+        UPDATE hm_pub_role
+        <set>
+            <if test="roleName != null and roleName != '' ">
+                ROLENAME = #{roleName},
+            </if>
+            <if test="priority != null">
+                PRIORITY = #{priority},
+            </if>
+        </set>
+        WHERE ID = #{id}
+        AND COMPANYID = #{companyId}
+    </update>
+
+    <!--获取角色-->
+    <select id="getRoleSelect" parameterType="map" resultMap="baseMap">
+        SELECT
+            role.ID, role.ROLENAME, role.COMPANYID
+        FROM
+            hm_pub_role role
+        WHERE
+            role.COMPANYID = #{companyId}
+        ORDER BY
+            role.PRIORITY,
+            role.id;
+    </select>
+
+
+</mapper>
