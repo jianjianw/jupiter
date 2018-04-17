@@ -269,7 +269,7 @@ public class StaffServiceImpl implements StaffService {
         List<CompanyPO> companyList = staffDao.getCompanyList(userName, MD5Util.getSaltMd5(password));
         if (companyList == null || companyList.isEmpty()) {
             //用户不存在
-            throw new RException(ExceptionEnum.USER_NOT_FOUND);
+            throw new RException(ExceptionEnum.USERNAME_OR_PASSWORD_ERROR);
         }
         //移除错误次数
         removeUserErrorNumber(userName);
