@@ -29,7 +29,6 @@ public class StaffPO extends BaseEntity {
     /**
      * 密码
      */
-    @NotEmpty(message = "{staff.password.null}")
     @JSONField(serialize = false)
     private String password;
     /**
