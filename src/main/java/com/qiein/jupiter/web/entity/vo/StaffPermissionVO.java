@@ -9,6 +9,8 @@ import java.util.List;
  * 员工权限vo
  */
 public class StaffPermissionVO extends StaffPO {
+    private static final long serialVersionUID = 4651773244566507603L;
+    
     /**
      * 权限集合
      */

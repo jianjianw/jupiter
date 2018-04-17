@@ -4,6 +4,8 @@ import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.entity.vo.StaffBaseInfoVO;
+import com.qiein.jupiter.web.entity.vo.StaffPermissionVO;
 import com.qiein.jupiter.web.entity.vo.StaffVO;
 import org.apache.ibatis.annotations.Param;
 
@@ -132,5 +134,14 @@ public interface StaffService {
      * @param staffId
      * @param companyId
      */
-    void getStaffPermissionById(int staffId, int companyId);
+    StaffPermissionVO getStaffPermissionById(int staffId, int companyId);
+
+    /**
+     * 根据id获取员工基础信息
+     *
+     * @param staffId
+     * @param companyId
+     * @return
+     */
+    StaffBaseInfoVO getStaffBaseInfo(int staffId, int companyId);
 }

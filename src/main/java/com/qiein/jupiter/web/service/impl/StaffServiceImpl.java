@@ -20,7 +20,11 @@ import com.qiein.jupiter.web.dao.StaffDao;
 import com.qiein.jupiter.web.dao.StaffRoleDao;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
+import com.qiein.jupiter.web.entity.po.PermissionPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.entity.po.StaffRolePO;
+import com.qiein.jupiter.web.entity.vo.StaffBaseInfoVO;
+import com.qiein.jupiter.web.entity.vo.StaffPermissionVO;
 import com.qiein.jupiter.web.entity.vo.StaffVO;
 import com.qiein.jupiter.web.service.CompanyService;
 import com.qiein.jupiter.web.service.StaffService;
@@ -35,8 +39,10 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -393,7 +399,7 @@ public class StaffServiceImpl implements StaffService {
         String[] staffIdArr = staffIds.split(CommonConstant.STR_SEPARATOR);
         //1.修改密码
         if (StringUtil.isNotNullStr(password)) {
-            staffDao.batchEditStafPwd(companyId, staffIdArr, MD5Util.getMD5(password));
+            staffDao.batchEditStaffPwd(companyId, staffIdArr, MD5Util.getMD5(password));
         }
         //2.修改小组
         groupStaffDao.batchEditStaffGroup(companyId, staffIdArr, groupId);
@@ -425,8 +431,42 @@ public class StaffServiceImpl implements StaffService {
         return staffDao.getStaffListBySearchKey(companyId, searchKey);
     }
 
+    /**
+     * 获取员工权限信息
+     *
+     * @param staffId
+     * @param companyId
+     * @return
+     */
     @Override
-    public void getStaffPermissionById(int staffId, int companyId) {
+    public StaffPermissionVO getStaffPermissionById(int staffId, int companyId) {
+        return staffRoleDao.getStaffPermission(staffId, companyId);
+    }
 
+    /**
+     * 获取员工的基础信息
+     *
+     * @param staffId
+     * @param companyId
+     * @return
+     */
+    @Override
+    public StaffBaseInfoVO getStaffBaseInfo(int staffId, int companyId) {
+        StaffBaseInfoVO staffBaseInfoVO = new StaffBaseInfoVO();
+        //员工对象
+        StaffPermissionVO staffPermission = staffRoleDao.getStaffPermission(staffId, companyId);
+        staffBaseInfoVO.setStaffPermissionVO(staffPermission);
+        //遍历权限集合生成Map
+        Map<String, Integer> permissionMap = new HashMap<>();
+        if (staffPermission != null && !ListUtil.isNullList(staffPermission.getPermissionList())) {
+            for (PermissionPO permissionPO : staffPermission.getPermissionList()) {
+                permissionMap.put(permissionPO.getAbbreviate(), permissionPO.getPermissionId());
+            }
+        }
+        //放入权限对象
+        staffBaseInfoVO.setPermissionMap(permissionMap);
+        //放入公司对象
+        staffBaseInfoVO.setCompanyPO(companyService.getById(companyId));
+        return staffBaseInfoVO;
     }
 }

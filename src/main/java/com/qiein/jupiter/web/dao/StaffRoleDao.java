@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.dao;
 
 import com.qiein.jupiter.web.entity.po.StaffRolePO;
+import com.qiein.jupiter.web.entity.vo.StaffPermissionVO;
 import com.qiein.jupiter.web.entity.vo.StaffVO;
 import org.apache.ibatis.annotations.Param;
 
@@ -48,5 +49,5 @@ public interface StaffRoleDao {
      *
      * @return
      */
-    StaffRolePO getStaffPermission(@Param("staffId") Integer staffId, @Param("companyId") Integer companyId);
+    StaffPermissionVO getStaffPermission(@Param("staffId") Integer staffId, @Param("companyId") Integer companyId);
 }

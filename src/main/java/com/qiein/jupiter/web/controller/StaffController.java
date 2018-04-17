@@ -209,7 +209,7 @@ public class StaffController extends BaseController {
         valueOperations.set(RedisConstant.getVerifyCodeKey(userName), code);
     }
 
-    @GetMapping("get_group_staff_list")
+    @GetMapping("/get_group_staff_list")
     public ResultInfo getGroupStaffList(@NotEmpty @RequestParam("groupId") String groupId) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
@@ -234,7 +234,7 @@ public class StaffController extends BaseController {
     /**
      * 搜索员工信息
      *
-     * @param staffPO
+     * @param searchKey
      * @return
      */
     @GetMapping("/search_staff")
@@ -288,12 +288,11 @@ public class StaffController extends BaseController {
      * 首页获取基础信息
      */
     @GetMapping("/base_info")
-    public void getBaseInfo() {
+    public ResultInfo getBaseInfo() {
+        //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        StaffPO staffPOById = staffService.getById(currentLoginStaff.getId(),
-                currentLoginStaff.getCompanyId());
-
-
+        return ResultInfoUtil.success(staffService.getStaffBaseInfo(currentLoginStaff.getId(),
+                currentLoginStaff.getCompanyId()));
     }
 
 }

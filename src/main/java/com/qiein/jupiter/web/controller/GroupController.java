@@ -18,7 +18,7 @@ public class GroupController extends BaseController {
     @Autowired
     private GroupService groupService;
 
-    @GetMapping("get_company_all_dept_list")
+    @GetMapping("/get_company_all_dept_list")
     public ResultInfo getCompanyAllDeptlist() {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();

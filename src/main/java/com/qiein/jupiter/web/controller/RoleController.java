@@ -23,7 +23,7 @@ public class RoleController extends BaseController {
     @Autowired
     private RoleService roleService;//角色业务层
 
-    @GetMapping("get_company_role_list")
+    @GetMapping("/get_company_role_list")
     public ResultInfo getCompanyRolelist() {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
@@ -31,7 +31,7 @@ public class RoleController extends BaseController {
         return ResultInfoUtil.success(roleList);
     }
 
-    @GetMapping("add_role")
+    @GetMapping("/add_role")
     public ResultInfo addRole(@NotEmpty @RequestParam("roleName") String roleName, @NotEmpty @RequestParam("priority") Integer priority, @RequestParam("pmsIds") String pmsIds) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
@@ -39,7 +39,7 @@ public class RoleController extends BaseController {
         return ResultInfoUtil.success(TipMsgConstant.ADD_ROLE_SUCCESS);
     }
 
-    @GetMapping("delete_role")
+    @GetMapping("/delete_role")
     public ResultInfo deleteRole(@NotEmpty @RequestParam("roleId") Integer roleId) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
@@ -48,7 +48,7 @@ public class RoleController extends BaseController {
         return ResultInfoUtil.success(TipMsgConstant.DELETE_ROLE_SUCCESS);
     }
 
-    @PostMapping("edit_role")
+    @PostMapping("/edit_role")
     public ResultInfo editRole(@RequestBody RolePO rolePO, @RequestParam("pmsIds") String pmsIds) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
@@ -57,7 +57,7 @@ public class RoleController extends BaseController {
         return ResultInfoUtil.success(TipMsgConstant.EDIT_ROLE_SUCCESS);
     }
 
-    @GetMapping("get_role_select")
+    @GetMapping("/get_role_select")
     public ResultInfo getRoleSelect() {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();

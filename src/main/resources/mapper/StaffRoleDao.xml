@@ -7,6 +7,33 @@
         <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
     </resultMap>
 
+    <resultMap id="staffPermissionMap" type="com.qiein.jupiter.web.entity.vo.StaffPermissionVO">
+        <id column="ID" property="id" jdbcType="INTEGER"/>
+        <result column="NICKNAME" property="nickName" jdbcType="VARCHAR"/>
+        <result column="PHONE" property="phone" jdbcType="VARCHAR"/>
+        <result column="USERNAME" property="userName" jdbcType="VARCHAR"/>
+        <result column="PASSWORD" property="password" jdbcType="VARCHAR"/>
+        <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
+        <result column="CORPID" property="corpId" jdbcType="VARCHAR"/>
+        <result column="DINGUSERID" property="dingUserId" jdbcType="VARCHAR"/>
+        <result column="OPENID" property="openId" jdbcType="VARCHAR"/>
+        <result column="HEADIMG" property="headImg" jdbcType="VARCHAR"/>
+        <result column="TOKEN" property="token" jdbcType="VARCHAR"/>
+        <result column="ISSHOW" property="showFlag" jdbcType="INTEGER"/>
+        <result column="ISLOCK" property="lockFlag" jdbcType="BOOLEAN"/>
+        <result column="ISDEL" property="delFlag" jdbcType="BOOLEAN"/>
+        <collection property="permissionList" ofType="com.qiein.jupiter.web.entity.po.PermissionPO" resultMap="permissionMap"/>
+    </resultMap>
+
+    <resultMap id="permissionMap" type="com.qiein.jupiter.web.entity.po.PermissionPO">
+        <id column="PERMISSIONID" property="permissionId" jdbcType="INTEGER"/>
+        <result column="PERMISSIONNAME" property="permissionName" jdbcType="VARCHAR"/>
+        <result column="ABBREVIATE" property="abbreviate" jdbcType="VARCHAR"/>
+        <result column="TYPEID" property="typeId" jdbcType="INTEGER"/>
+    </resultMap>
+
+
+
     <sql id="baseColumn">
         STAFFID,ROLEID
     </sql>
@@ -50,8 +77,8 @@
     </insert>
 
     <!--获取员工权限信息-->
-    <select id="getStaffPermission">
-       SELECT
+    <select id="getStaffPermission" resultMap="staffPermissionMap">
+          SELECT
             staff.ID,
             staff.NICKNAME,
             staff.PHONE,
@@ -65,14 +92,17 @@
             staff.ISSHOW,
             staff.ISLOCK,
             staff.ISDEL,
-            permission.PERMISSIONID,
-            permission.ABBREVIATE
+            permission.PERMISSIONNAME,
+            permission.ID PERMISSIONID,
+            permission.ABBREVIATE,
+            permission.TYPEID
         FROM
             hm_pub_staff staff
             LEFT JOIN hm_pub_staff_role staff_role ON staff.ID = staff_role.STAFFID
-            LEFT JOIN hm_pub_role_permission permission ON staff_role.ROLEID = permission.ROLEID
+            LEFT JOIN hm_pub_role_permission role_permission ON staff_role.ROLEID = role_permission.ROLEID
+            LEFT JOIN hm_pub_permission permission ON role_permission.PERMISSIONID=permission.ID
         WHERE
-            staff.id = 30
-            AND COMPANYID = #{companyId}
+            staff.ID = #{staffId}
+            AND staff.COMPANYID = #{companyId}
     </select>
 </mapper>
