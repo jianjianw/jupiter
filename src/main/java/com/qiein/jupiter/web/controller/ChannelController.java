@@ -2,7 +2,7 @@ package com.qiein.jupiter.web.controller;
 
 import com.qiein.jupiter.util.ObjectUtil;
 import com.qiein.jupiter.util.ResultInfo;
-import com.qiein.jupiter.web.entity.po.ChannelPo;
+import com.qiein.jupiter.web.entity.po.ChannelPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.service.ChannelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,18 +23,18 @@ public class ChannelController extends BaseController{
 
     /**
      * 新增渠道
-     * @param channelPo
+     * @param channelPO
      * @return
      */
-    public ResultInfo insert(@RequestBody @Validated ChannelPo channelPo){
+    public ResultInfo insert(@RequestBody @Validated ChannelPO channelPO){
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         //设置cid
-        channelPo.setCompanyId(currentLoginStaff.getCompanyId());
+        channelPO.setCompanyId(currentLoginStaff.getCompanyId());
         //对象参数去空
-        ObjectUtil.objectStrParamTrim(channelPo);
+        ObjectUtil.objectStrParamTrim(channelPO);
 
-        channelService.createChannel(channelPo);
+        channelService.createChannel(channelPO);
         return null;
     }
 

@@ -6,7 +6,7 @@ import com.qiein.jupiter.web.entity.BaseEntity;
 /**
  * 渠道数据库对象
  */
-public class ChannelPo extends BaseEntity {
+public class ChannelPO extends BaseEntity {
 
     /**
      * 渠道名称
