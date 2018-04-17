@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiein.jupiter.web.dao.ShopChannelGroupDao">
+    <resultMap id="baseMap" type="com.qiein.jupiter.web.entity.po.ShopChannelGroupPO">
+        <id column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="SHOPID" property="shopId" jdbcType="INTEGER"/>
+        <result column="CHANNELID" property="channleId" jdbcType="INTEGER"/>
+        <result column="GROUPID" property="groupId" jdbcType="VARCHAR"/>
+        <result column="WEIGHT" property="weight" jdbcType="INTEGER"/>
+        <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <resultMap id="VOMap" type="com.qiein.jupiter.web.entity.vo.ShopChannelGroupVO">
+        <result column="CHANNELID" property="channelId" jdbcType="INTEGER"/>
+        <result column="CHANNELNAME" property="channelName" jdbcType="VARCHAR"/>
+        <result column="CHANNELIMG" property="channelImg" jdbcType="VARCHAR"/>
+        <collection property="groupList" resultMap="groupMap" ofType="com.qiein.jupiter.web.entity.vo.ChannelGroupVO"/>
+    </resultMap>
+
+    <resultMap id="groupMap" type="com.qiein.jupiter.web.entity.vo.ChannelGroupVO">
+        <result column="ID" property="relaId" jdbcType="INTEGER"/>
+        <result column="GROUPNAME" property="groupName" jdbcType="VARCHAR"/>
+        <result column="WEIGHT" property="weight" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--获取拍摄地，渠道，小组关联-->
+    <select id="getShopChannelGroupList" parameterType="map" resultMap="VOMap">
+        SELECT
+            rela.CHANNELID, channel.CHANNELNAME, channel.CHANNELIMG, grp.GROUPNAME, rela.WEIGHT, rela.COMPANYID, rela.ID
+        FROM
+            hm_crm_shop_channel_group_rela rela
+            LEFT JOIN hm_crm_channel channel ON channel.COMPANYID = rela.COMPANYID
+            AND rela.CHANNELID = channel.ID
+            LEFT JOIN hm_pub_group grp ON grp.COMPANYID = rela.COMPANYID
+            AND grp.GROUPID = rela.GROUPID
+        WHERE
+            rela.COMPANYID = #{companyId}
+            AND rela.SHOPID = #{shopId}
+    </select>
+
+
+
+</mapper>

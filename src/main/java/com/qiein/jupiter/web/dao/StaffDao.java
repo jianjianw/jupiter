@@ -76,6 +76,15 @@ public interface StaffDao extends BaseDao<StaffPO> {
      */
     void batchEditStaffPwd(@Param("companyId") int companyId, @Param("staffIdArr") String[] staffIdArr, @Param("password") String password);
 
+
+    /**
+     * 根据id数组批量删除所属公司的员工
+     * @param ids
+     * @param companyId
+     * @return
+     */
+    void batDelByIdsAndCid(@Param("ids") String[] ids , @Param("companyId") int companyId);
+
     /**
      * 搜索员工
      *

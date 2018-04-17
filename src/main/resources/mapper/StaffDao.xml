@@ -293,4 +293,16 @@
 	        )
     </select>
 
+    <!--删除批量员工-->
+    <delete id="batDelByIdsAndCid" parameterType="map" >
+        DELETE
+        FROM
+          hm_pub_staff
+        WHERE
+          COMPANYID = #{companyId} AND
+          ID IN 
+          <foreach collection="ids" item="id" index="index" open="(" separator="," close=")">
+              #{id}
+          </foreach>
+    </delete>
 </mapper>

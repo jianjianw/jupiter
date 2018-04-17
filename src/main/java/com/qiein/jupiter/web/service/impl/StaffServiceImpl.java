@@ -164,6 +164,33 @@ public class StaffServiceImpl implements StaffService {
     }
 
     /**
+     * 批量物理删除员工
+     *
+     * @param ids
+     * @param companyId
+     * @return
+     */
+    @Override
+    public void batDelete(String[] ids, int companyId) {
+        //TODO 删除前验证各种  如员工是否有客资等情况
+        staffDao.batDelByIdsAndCid(ids, companyId);
+    }
+
+    /**
+     * 批量检查员工是否可删
+     *
+     * @param ids
+     * @param companyId
+     * @return
+     */
+    @Override
+    public String checkBatDelete(String[] ids, int companyId) {
+        //TODO 检查员工是否可删除
+
+        return "可删除";
+    }
+
+    /**
      * 逻辑删除，即设置isdel 1
      *
      * @param id
@@ -302,13 +329,8 @@ public class StaffServiceImpl implements StaffService {
         }
         //验证公司属性
         CompanyPO companyPO = companyService.getById(staffPO.getCompanyId());
-        //如果公司开启单地点登录,则不生成新token
-        if (companyPO.isSsoLimit()) {
-            //如果员工没有token，重新生成
-            if (StringUtil.isNullStr(staffPO.getToken())) {
-                updateStaffToken(staffPO);
-            }
-        } else {
+        //如果员工没有token，重新生成
+        if (StringUtil.isNullStr(staffPO.getToken()) || companyPO.isSsoLimit()) {
             updateStaffToken(staffPO);
         }
         //移除错误次数

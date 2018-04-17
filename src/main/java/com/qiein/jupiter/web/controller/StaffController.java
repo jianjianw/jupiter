@@ -2,7 +2,6 @@ package com.qiein.jupiter.web.controller;
 
 import com.qiein.jupiter.aop.annotation.LoginLog;
 import com.qiein.jupiter.aop.annotation.NotEmpty;
-import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.constant.NumberConstant;
 import com.qiein.jupiter.constant.RedisConstant;
 import com.qiein.jupiter.constant.TipMsgConstant;
@@ -11,17 +10,14 @@ import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
-import com.qiein.jupiter.web.entity.po.RolePO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.LoginUserVO;
 import com.qiein.jupiter.web.entity.vo.StaffVO;
 import com.qiein.jupiter.web.service.StaffService;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import sun.applet.Main;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -297,25 +293,25 @@ public class StaffController extends BaseController {
     /**
      * 删除指定员工
      *
-     * @param staffId
+     * @param ids
      * @return
      */
     @GetMapping("/del_staff")
-    public ResultInfo deleteStaff(@NotEmpty @RequestParam("staffId") String staffId) {
+    public ResultInfo deleteStaff(@NotEmpty @RequestParam("staffId") String ids) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
 
         //获取操作用户所属公司
         Integer companyId = currentLoginStaff.getCompanyId();
 
-        try {
-            //检查是否可删除
-            //先检查是否为客服
-            //是客服则检查是否存在未邀约客资
-            //TODO 等待客资内容写完继续写删除
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        //待被删除的员工数组
+        String[] array = ids.split(",");
+
+        //检查是否可删除
+        //先检查是否为客服
+        //是客服则检查是否存在未邀约客资
+        //TODO 等待客资内容写完继续写删除
+        staffService.batDelete(array,companyId);
 
         return ResultInfoUtil.success("删除成功");
     }
@@ -327,32 +323,37 @@ public class StaffController extends BaseController {
      * @return
      */
     @GetMapping("/del_staff_check")
-    public ResultInfo DelStaffCheck(@NotEmpty @RequestParam("staffId") Integer staffId) {
+    public ResultInfo DelStaffCheck(@NotEmpty @RequestParam("staffId") String ids) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
 
         //获取操作用户所属公司
         Integer companyId = currentLoginStaff.getCompanyId();
 
+        //待被检查是否可删除的员工数组
+        String[] array = ids.split(",");
+
         //检查是否可删除
         //先检查是否为客服
+        String msg ;
         if (true) {
             //TODO 等待客资内容写完继续写删除
+            msg = staffService.checkBatDelete(array,companyId);
         } else {
-            staffService.delete(staffId, companyId);
         }
         //是客服则检查是否存在未邀约客资
-        return ResultInfoUtil.success("可删除");
+        return ResultInfoUtil.success(msg,true);
     }
+
 
     /**
      * 锁定员工
-     *
-     * @param staffId 被锁定的员工编号
+     * @param staffId   staffId 被锁定的员工编号
+     * @param isLock    锁定标识
      * @return
      */
     @GetMapping("/lock_staff")
-    public ResultInfo LockStaff(@NotEmpty @RequestParam("staffId") Integer staffId) {
+    public ResultInfo LockStaff(@NotEmpty @RequestParam("staffId") Integer staffId,@NotEmpty @RequestParam("isLock") Boolean isLock) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         //获取操作用户所属公司
@@ -360,13 +361,13 @@ public class StaffController extends BaseController {
 
         try {
             //锁定状态
-            staffService.setLockState(staffId, companyId, true);
+            staffService.setLockState(staffId, companyId, isLock);
         } catch (Exception e) {
             e.printStackTrace();
             ResultInfoUtil.error(ExceptionEnum.UNKNOW_ERROR);
         }
 
-        return ResultInfoUtil.success("锁定成功");
+        return ResultInfoUtil.success("操作成功");
     }
 
     /**

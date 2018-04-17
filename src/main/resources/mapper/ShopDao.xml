@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiein.jupiter.web.dao.ShopDao">
+    <resultMap id="baseMap" type="com.qiein.jupiter.web.entity.po.ShopPO">
+        <id column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="SHOPNAME" property="shopName" jdbcType="VARCHAR"/>
+        <result column="TYPE" property="type" jdbcType="INTEGER"/>
+        <result column="ISSHOW" property="showFlag" jdbcType="BOOLEAN"/>
+        <result column="PRIORITY" property="priority" jdbcType="INTEGER"/>
+        <result column="ADDRESS" property="address" jdbcType="INTEGER"/>
+        <result column="SERVICEPHONE" property="servicePhone" jdbcType="VARCHAR"/>
+        <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <resultMap id="VOMap" type="com.qiein.jupiter.web.entity.vo.ShopVO">
+        <id column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="SHOPNAME" property="shopName" jdbcType="VARCHAR"/>
+        <result column="ISSHOW" property="showFlag" jdbcType="BOOLEAN"/>
+        <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="baseColumn">
+        ID,SHOPNAME,TYPE,ISSHOW,PRIORITY,ADDRESS,SERVICEPHONE,COMPANYID
+    </sql>
+
+    <!--获取企业所有拍摄地-->
+    <select id="getCompanyShopList" parameterType="map" resultMap="VOMap">
+        SELECT
+            shop.ID,shop.SHOPNAME,shop.ISSHOW,shop.COMPANYID
+        FROM
+            hm_pub_shop shop
+        WHERE
+            shop.COMPANYID = #{companyId}
+    </select>
+
+
+
+</mapper>
