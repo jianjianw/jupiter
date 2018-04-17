@@ -2,13 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qiein.jupiter.web.dao.PermissionDao">
     <resultMap id="baseMap" type="com.qiein.jupiter.web.entity.po.PermissionPO">
-        <id column="ID" property="id" jdbcType="BIGINT"/>
+        <id column="ID" property="permissionId" jdbcType="BIGINT"/>
         <result column="PERMISSIONNAME" property="permissionName" jdbcType="VARCHAR"/>
+        <result column="ABBREVIATE" property="abbreviate" jdbcType="VARCHAR"/>
         <result column="TYPEID" property="typeId" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="baseColumn">
-        ID,PERMISSIONNAME,TYPEID
+        ID,PERMISSIONNAME,TYPEID,ABBREVIATE
     </sql>
 
     <sql id="tableName">
@@ -32,9 +33,9 @@
 
     <insert id="insert">
         <include refid="tableName"/>
-        (ID,PERMISSIONNAME,TYPEID)
+        (ID,PERMISSIONNAME,ABBREVIATE,TYPEID)
         VALUES (
-        #{id}, #{permissionName}, #{typeId}
+        #{id}, #{permissionName},#{abbreviate}, #{typeId}
         )
     </insert>
 
@@ -44,6 +45,9 @@
         <set>
             <if test="permissionName != null">
                 PERMISSIONNAME = #{permissionName},
+            </if>
+            <if test="abbreviate != null">
+                abbreviate = #{abbreviate},
             </if>
             <if test="typeId != null">
                 TYPEID = #{typeId},

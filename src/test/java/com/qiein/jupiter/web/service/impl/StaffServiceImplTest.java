@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.service.impl;
 
 import com.qiein.jupiter.web.dao.StaffDao;
+import com.qiein.jupiter.web.entity.vo.StaffPermissionVO;
 import com.qiein.jupiter.web.entity.vo.StaffVO;
 import com.qiein.jupiter.web.service.StaffService;
 import org.junit.Test;
@@ -92,10 +93,15 @@ public class StaffServiceImplTest {
 
     @Test
     public void getStaffListBySearchKey() {
-
         List<StaffVO> list = staffDao.getStaffListBySearchKey(1, "大");
         for (StaffVO vo : list) {
             System.out.println(vo.getNickName());
         }
+    }
+
+    @Test
+    public void getStaffPermissionById() {
+        StaffPermissionVO staffPermissionById = staffService.getStaffPermissionById(2, 1);
+        System.out.println(staffPermissionById);
     }
 }

@@ -208,7 +208,7 @@ public class StaffController extends BaseController {
         valueOperations.set(RedisConstant.getVerifyCodeKey(userName), code);
     }
 
-    @GetMapping("get_group_staff_list")
+    @GetMapping("/get_group_staff_list")
     public ResultInfo getGroupStaffList(@NotEmpty @RequestParam("groupId") String groupId) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
@@ -233,7 +233,7 @@ public class StaffController extends BaseController {
     /**
      * 搜索员工信息
      *
-     * @param staffPO
+     * @param searchKey
      * @return
      */
     @GetMapping("/search_staff")
@@ -287,33 +287,33 @@ public class StaffController extends BaseController {
      * 首页获取基础信息
      */
     @GetMapping("/base_info")
-    public void getBaseInfo() {
+    public ResultInfo getBaseInfo() {
+        //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        StaffPO staffPOById = staffService.getById(currentLoginStaff.getId(),
-                currentLoginStaff.getCompanyId());
-
-
+        return ResultInfoUtil.success(staffService.getStaffBaseInfo(currentLoginStaff.getId(),
+                currentLoginStaff.getCompanyId()));
     }
 
     /**
      * 删除指定员工
+     *
      * @param staffId
      * @return
      */
-    @GetMapping("del_staff")
-    public ResultInfo deleteStaff(@NotEmpty @RequestParam("staffId") String staffId){
+    @GetMapping("/del_staff")
+    public ResultInfo deleteStaff(@NotEmpty @RequestParam("staffId") String staffId) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
 
         //获取操作用户所属公司
         Integer companyId = currentLoginStaff.getCompanyId();
 
-        try{
+        try {
             //检查是否可删除
             //先检查是否为客服
             //是客服则检查是否存在未邀约客资
             //TODO 等待客资内容写完继续写删除
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -323,10 +323,11 @@ public class StaffController extends BaseController {
     /**
      * 检查员工是否可删除。
      * 如果员工剩余未邀约客资为0则可删除，不为零则不可删除，需要交接
+     *
      * @return
      */
-    @GetMapping("del_staff_check")
-    public ResultInfo DelStaffCheck(@NotEmpty @RequestParam("staffId") Integer staffId){
+    @GetMapping("/del_staff_check")
+    public ResultInfo DelStaffCheck(@NotEmpty @RequestParam("staffId") Integer staffId) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
 
@@ -335,10 +336,10 @@ public class StaffController extends BaseController {
 
         //检查是否可删除
         //先检查是否为客服
-        if(true){
+        if (true) {
             //TODO 等待客资内容写完继续写删除
-        }else {
-            staffService.delete(staffId,companyId);
+        } else {
+            staffService.delete(staffId, companyId);
         }
         //是客服则检查是否存在未邀约客资
         return ResultInfoUtil.success("可删除");
@@ -346,20 +347,21 @@ public class StaffController extends BaseController {
 
     /**
      * 锁定员工
+     *
      * @param staffId 被锁定的员工编号
      * @return
      */
-    @GetMapping("lock_staff")
-    public ResultInfo LockStaff(@NotEmpty @RequestParam("staffId") Integer staffId){
+    @GetMapping("/lock_staff")
+    public ResultInfo LockStaff(@NotEmpty @RequestParam("staffId") Integer staffId) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         //获取操作用户所属公司
         Integer companyId = currentLoginStaff.getCompanyId();
 
-        try{
+        try {
             //锁定状态
-            staffService.setLockState(staffId,companyId,true);
-        }catch (Exception e){
+            staffService.setLockState(staffId, companyId, true);
+        } catch (Exception e) {
             e.printStackTrace();
             ResultInfoUtil.error(ExceptionEnum.UNKNOW_ERROR);
         }
@@ -369,21 +371,22 @@ public class StaffController extends BaseController {
 
     /**
      * 交接接口
+     *
      * @param staffId   交接的员工id
      * @param beStaffId 被转移的员工id
      * @return
      */
-    @GetMapping("change_staff")
-    public ResultInfo ChangeStaff(@NotEmpty @RequestParam("staffId") Integer staffId ,
-                                  @NotEmpty @RequestParam("beStaffId") Integer beStaffId){
+    @GetMapping("/change_staff")
+    public ResultInfo ChangeStaff(@NotEmpty @RequestParam("staffId") Integer staffId,
+                                  @NotEmpty @RequestParam("beStaffId") Integer beStaffId) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         //获取操作用户所属公司
         Integer companyId = currentLoginStaff.getCompanyId();
 
-        try{
+        try {
             //TODO 等待客资内容写完继续写删除
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return ResultInfoUtil.error(ExceptionEnum.UNKNOW_ERROR);
         }

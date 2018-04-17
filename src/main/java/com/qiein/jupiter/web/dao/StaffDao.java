@@ -74,7 +74,7 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @param staffIdArr
      * @param password
      */
-    void batchEditStafPwd(@Param("companyId") int companyId, @Param("staffIdArr") String[] staffIdArr, @Param("password") String password);
+    void batchEditStaffPwd(@Param("companyId") int companyId, @Param("staffIdArr") String[] staffIdArr, @Param("password") String password);
 
     /**
      * 搜索员工

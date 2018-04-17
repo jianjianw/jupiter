@@ -264,7 +264,7 @@
     </select>
 
     <!--批量编辑员工密码-->
-    <update id="batchEditStafPwd" parameterType="map">
+    <update id="batchEditStaffPwd" parameterType="map">
         UPDATE  hm_pub_staff
         SET PASSWORD = #{password}
         WHERE COMPANYID = #{companyId}

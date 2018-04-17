@@ -7,14 +7,22 @@ package com.qiein.jupiter.web.entity.po;
 public class PermissionPO {
 
     private static final long serialVersionUID = -8520233999874945394L;
+
     /**
      * 权限id
      */
     private int permissionId;
+
     /**
      * 权限名称
      */
     private String permissionName;
+
+    /**
+     * 权限缩写
+     */
+    private String abbreviate;
+
     /**
      * 类型Id
      */
@@ -42,5 +50,13 @@ public class PermissionPO {
 
     public void setTypeId(int typeId) {
         this.typeId = typeId;
+    }
+
+    public String getAbbreviate() {
+        return abbreviate;
+    }
+
+    public void setAbbreviate(String abbreviate) {
+        this.abbreviate = abbreviate;
     }
 }
