@@ -165,6 +165,7 @@ public class StaffServiceImpl implements StaffService {
 
     /**
      * 批量物理删除员工
+     *
      * @param ids
      * @param companyId
      * @return
@@ -177,6 +178,7 @@ public class StaffServiceImpl implements StaffService {
 
     /**
      * 批量检查员工是否可删
+     *
      * @param ids
      * @param companyId
      * @return
@@ -327,13 +329,8 @@ public class StaffServiceImpl implements StaffService {
         }
         //验证公司属性
         CompanyPO companyPO = companyService.getById(staffPO.getCompanyId());
-        //如果公司开启单地点登录,则不生成新token
-        if (companyPO.isSsoLimit()) {
-            //如果员工没有token，重新生成
-            if (StringUtil.isNullStr(staffPO.getToken())) {
-                updateStaffToken(staffPO);
-            }
-        } else {
+        //如果员工没有token，重新生成
+        if (StringUtil.isNullStr(staffPO.getToken()) || companyPO.isSsoLimit()) {
             updateStaffToken(staffPO);
         }
         //移除错误次数
