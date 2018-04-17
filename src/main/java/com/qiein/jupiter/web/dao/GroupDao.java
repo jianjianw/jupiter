@@ -17,7 +17,7 @@ public interface GroupDao extends BaseDao<GroupPO> {
      * @param groupName
      * @return
      */
-    GroupPO getByName(@Param("groupName") String groupName, @Param("companyId") int companyId);
+    List<GroupPO> getByName(@Param("groupName") String groupName, @Param("companyId") int companyId);
 
     /**
      * 根据公司获取所有的组
@@ -42,6 +42,13 @@ public interface GroupDao extends BaseDao<GroupPO> {
      * @param companyId
      * @return
      */
-    List<GroupPO> getByParentId(@Param("companyId") String parentId, @Param("companyId") int companyId);
+    List<GroupPO> getByParentId(@Param("parentId") String parentId, @Param("companyId") int companyId);
+
+    /**
+     * 删除group
+     *
+     * @return
+     */
+    int deleteByGroupId(@Param("id") int id, @Param("companyId") int companyId);
 
 }

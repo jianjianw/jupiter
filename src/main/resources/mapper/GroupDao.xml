@@ -13,7 +13,6 @@
     </resultMap>
 
     <resultMap id="GroupVOMap" type="com.qiein.jupiter.web.entity.vo.GroupVO" extends="baseMap">
-
         <collection property="groupList" ofType="com.qiein.jupiter.web.entity.po.GroupPO" resultMap="sonMap"/>
     </resultMap>
 
@@ -34,14 +33,14 @@
     <select id="getById" parameterType="java.lang.Integer" resultMap="baseMap">
         SELECT
         <include refid="baseColumn"/>
-        hm_pub_group
+        FROM hm_pub_group
         WHERE ID = #{id}
     </select>
 
-    <select id="getByParentId" parameterType="java.lang.Integer" resultMap="baseMap">
+    <select id="getByParentId" resultMap="baseMap">
         SELECT
         <include refid="baseColumn"/>
-        hm_pub_group
+        FROM   hm_pub_group
         WHERE PARENTID = #{parentId}
         AND COMPANYID = #{companyId}
     </select>
@@ -57,15 +56,21 @@
             keyProperty="id">
         INSERT INTO hm_pub_group
         (GROUPID, GROUPNAME, PARENTID, GROUPTYPE, COMPANYID,CHIEFIDS,CHIEFNAMES)
-        VALUES (#{groupId}, #{groupName}, #{priority}, #{groupType}, #{companyId},
+        VALUES (#{groupId}, #{groupName}, #{parentId}, #{groupType}, #{companyId},
         #{chiefIds},#{chiefNames})
     </insert>
 
     <update id="update">
         UPDATE hm_pub_group
         <set>
+            <if test="groupId != null">
+                GROUPID = #{groupId},
+            </if>
             <if test="groupName != null">
                 GROUPNAME = #{groupName},
+            </if>
+            <if test="parentId != null">
+                PARENTID = #{parentId},
             </if>
             <if test="groupType != null">
                 GROUPTYPE = #{groupType},
@@ -77,15 +82,14 @@
                 CHIEFNAMES = #{chiefNames},
             </if>
         </set>
-        WHERE GROUPID = #{groupId}
+        WHERE ID = #{id}
         AND COMPANYID = #{companyId}
     </update>
 
     <!--删除组信息-->
     <delete id="delete">
         DELETE FROM hm_pub_group
-        WHERE GROUPID = #{groupId}
-        AND COMPANYID = #{companyId}
+        WHERE id = #{id}
     </delete>
 
     <!--获取公司所有部门和小组-->
@@ -111,12 +115,19 @@
     </insert>
 
     <!--根据名称获取-->
-    <select id="getByName">
+    <select id="getByName" resultMap="baseMap">
         SELECT
         <include refid="baseColumn"/>
         FROM hm_pub_group
         WHERE COMPANYID = #{companyId}
         AND GROUPNAME = #{groupName}
     </select>
+
+    <!--根据组id删除-->
+    <delete id="deleteByGroupId">
+        DELETE FROM hm_pub_group
+          WHERE COMPANYID = #{companyId}
+        AND GROUPID = #{groupId}
+    </delete>
 
 </mapper>

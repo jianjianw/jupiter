@@ -72,6 +72,7 @@ public class RExceptionHandler {
         return ResultInfoUtil.error(-100000, stringBuffer.toString());
     }
 
+
     /**
      * http body参数无法读取转换
      */

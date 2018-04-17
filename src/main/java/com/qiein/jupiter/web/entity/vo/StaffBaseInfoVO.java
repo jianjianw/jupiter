@@ -11,7 +11,7 @@ public class StaffBaseInfoVO {
     /**
      * 员工基础信息
      */
-    private StaffPermissionVO staffPermissionVO;
+    private StaffPermissionVO staffPermission;
 
     /**
      * 权限集合
@@ -21,14 +21,14 @@ public class StaffBaseInfoVO {
     /**
      * 公司
      */
-    private CompanyPO companyPO;
+    private CompanyPO company;
 
-    public StaffPermissionVO getStaffPermissionVO() {
-        return staffPermissionVO;
+    public StaffPermissionVO getStaffPermission() {
+        return staffPermission;
     }
 
-    public void setStaffPermissionVO(StaffPermissionVO staffPermissionVO) {
-        this.staffPermissionVO = staffPermissionVO;
+    public void setStaffPermission(StaffPermissionVO staffPermission) {
+        this.staffPermission = staffPermission;
     }
 
     public Map<String, Integer> getPermissionMap() {
@@ -39,11 +39,11 @@ public class StaffBaseInfoVO {
         this.permissionMap = permissionMap;
     }
 
-    public CompanyPO getCompanyPO() {
-        return companyPO;
+    public CompanyPO getCompany() {
+        return company;
     }
 
-    public void setCompanyPO(CompanyPO companyPO) {
-        this.companyPO = companyPO;
+    public void setCompany(CompanyPO company) {
+        this.company = company;
     }
 }
