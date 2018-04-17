@@ -27,6 +27,17 @@ public class ShopChannelGroupPO extends BaseEntity {
      */
     private int companyId;
 
+    public ShopChannelGroupPO() {
+    }
+
+    public ShopChannelGroupPO(int shopId, int channleId, String groupId, int weight, int companyId) {
+        this.shopId = shopId;
+        this.channleId = channleId;
+        this.groupId = groupId;
+        this.weight = weight;
+        this.companyId = companyId;
+    }
+
     public int getShopId() {
         return shopId;
     }
