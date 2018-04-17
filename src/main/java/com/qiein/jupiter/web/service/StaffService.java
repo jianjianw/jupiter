@@ -7,7 +7,6 @@ import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.StaffBaseInfoVO;
 import com.qiein.jupiter.web.entity.vo.StaffPermissionVO;
 import com.qiein.jupiter.web.entity.vo.StaffVO;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -48,6 +47,20 @@ public interface StaffService {
      * @return
      */
     int delete(int id, int companyId);
+
+    /**
+     * 批量删除员工（物理删除）
+     * @return
+     */
+    void batDelete(String[] ids,int companyId);
+
+    /**
+     * 批量检查是否可删除
+     * @param ids
+     * @param companyId
+     * @return
+     */
+    String checkBatDelete(String[] ids , int companyId);
 
     /**
      * 员工删除(逻辑删除)
