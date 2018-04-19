@@ -11,6 +11,7 @@
         GROUPID,STAFFID,COMPANYID
     </sql>
 
+
     <resultMap id="groupMap" type="com.qiein.jupiter.web.entity.vo.GroupStaffVO">
         <id column="GROUPID" property="groupId" jdbcType="VARCHAR"/>
         <result column="GROUPNAME" property="groupName" jdbcType="VARCHAR"/>
@@ -19,29 +20,16 @@
         <result column="COMPANYID" property="companyId" jdbcType="VARCHAR"/>
         <result column="CHIEFIDS" property="chiefIds" jdbcType="VARCHAR"/>
         <result column="CHIEFNAMES" property="chiefNames" jdbcType="VARCHAR"/>
-        <collection property="staffList" ofType="com.qiein.jupiter.web.entity.po.StaffPO"
-                    column=""
-                    select="getGroupStaffListByParentIdAndCid"/>
-        <!--<collection property="groupList" ofType="com.qiein.jupiter.web.entity.po.GroupStaffVO"-->
-                    <!--column="{parentId=PARENTID,companyId=COMPANYID}"-->
-                    <!--select="getGroupStaffListByParentIdAndCid"/>-->
+        <collection property="staffList" ofType="com.qiein.jupiter.web.entity.po.StaffPO" resultMap="staffPOMap"/>
     </resultMap>
-
-    <resultMap id="staffMap" type="com.qiein.jupiter.web.entity.po.StaffPO">
+    <resultMap id="staffPOMap" type="com.qiein.jupiter.web.entity.po.StaffPO">
         <id column="ID" property="id" jdbcType="INTEGER"/>
         <result column="NICKNAME" property="nickName" jdbcType="VARCHAR"/>
         <result column="PHONE" property="phone" jdbcType="VARCHAR"/>
         <result column="USERNAME" property="userName" jdbcType="VARCHAR"/>
-        <result column="PASSWORD" property="password" jdbcType="VARCHAR"/>
         <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
-        <result column="CORPID" property="corpId" jdbcType="VARCHAR"/>
-        <result column="DINGUSERID" property="dingUserId" jdbcType="VARCHAR"/>
-        <result column="OPENID" property="openId" jdbcType="VARCHAR"/>
         <result column="HEADIMG" property="headImg" jdbcType="VARCHAR"/>
-        <result column="TOKEN" property="token" jdbcType="VARCHAR"/>
-        <result column="ISSHOW" property="showFlag" jdbcType="INTEGER"/>
         <result column="ISLOCK" property="lockFlag" jdbcType="BOOLEAN"/>
-        <result column="ISDEL" property="delFlag" jdbcType="BOOLEAN"/>
     </resultMap>
 
     <resultMap id="StaffVOMap" type="com.qiein.jupiter.web.entity.vo.StaffVO">
@@ -110,7 +98,7 @@
 
     <!--批量删除员工小组-->
     <delete id="batchDeleteByStaffArr" parameterType="map">
-        DELETE FROM  hm_pub_group_staff
+        DELETE FROM hm_pub_group_staff
         WHERE COMPANYID = #{companyId}
         AND STAFFID IN
         <foreach collection="staffIdArr" item="id" index="index" open="("
@@ -152,6 +140,22 @@
             rela.GROUPID = #{groupId}
             AND rela.COMPANYID = #{companyId}
             AND sf.ISDEL = 0
+    </select>
+
+    <!--获取公司下所有的部门及员工-->
+    <select id="getAllDeptAndStaff" resultMap="groupMap">
+       SELECT
+            group_down.GROUPNAME,group_down.GROUPID,group_down.PARENTID,
+            staff.id,staff.NICKNAME
+        FROM
+            hm_pub_group group_up
+            LEFT JOIN hm_pub_group group_down ON group_up.COMPANYID = group_down.COMPANYID
+            AND group_up.GROUPID = group_down.PARENTID
+            LEFT JOIN hm_pub_group_staff group_staff ON group_down.GROUPID = group_staff.GROUPID
+            LEFT JOIN hm_pub_staff staff on group_staff.STAFFID=staff.ID
+          WHERE group_up.COMPANYID = #{companyId}
+          AND group_up.PARENTID = '0'
+          AND staff.ISLOCK = 0 AND staff.ISDEL = 0
     </select>
 
 </mapper>

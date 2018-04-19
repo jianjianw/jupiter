@@ -8,6 +8,7 @@ import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.GroupDao;
 import com.qiein.jupiter.web.dao.GroupStaffDao;
 import com.qiein.jupiter.web.entity.po.GroupPO;
+import com.qiein.jupiter.web.entity.vo.GroupStaffVO;
 import com.qiein.jupiter.web.entity.vo.GroupVO;
 import com.qiein.jupiter.web.entity.vo.StaffVO;
 import com.qiein.jupiter.web.service.GroupService;
@@ -118,5 +119,10 @@ public class GroupServiceImpl implements GroupService {
         groupPO.setGroupId(groupPO.getParentId() + CommonConstant.ROD_SEPARATOR + groupPO.getId());
         groupDao.update(groupPO);
         return groupPO;
+    }
+
+    @Override
+    public List<GroupStaffVO> getAllDeptAndStaff(int companyId) {
+        return groupStaffDao.getAllDeptAndStaff(companyId);
     }
 }

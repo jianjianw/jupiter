@@ -1,5 +1,7 @@
 package com.qiein.jupiter.web.entity.vo;
 
+import com.qiein.jupiter.web.entity.po.StaffPO;
+
 import java.util.List;
 
 /**
@@ -9,7 +11,7 @@ public class GroupStaffVO {
     /**
      * 组id
      */
-    private int groupId;
+    private String groupId;
     /**
      * 组名称
      */
@@ -38,18 +40,18 @@ public class GroupStaffVO {
     /**
      * 员工集合
      */
-    private List<StaffVO> staffList;
+    private List<StaffPO> staffList;
 
     /**
      * 组集合
      */
     private List<GroupStaffVO> groupList;
 
-    public int getGroupId() {
+    public String getGroupId() {
         return groupId;
     }
 
-    public void setGroupId(int groupId) {
+    public void setGroupId(String groupId) {
         this.groupId = groupId;
     }
 
@@ -101,11 +103,11 @@ public class GroupStaffVO {
         this.chiefNames = chiefNames;
     }
 
-    public List<StaffVO> getStaffList() {
+    public List<StaffPO> getStaffList() {
         return staffList;
     }
 
-    public void setStaffList(List<StaffVO> staffList) {
+    public void setStaffList(List<StaffPO> staffList) {
         this.staffList = staffList;
     }
 
