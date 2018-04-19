@@ -34,31 +34,10 @@ public class GroupServiceImpl implements GroupService {
      * @param companyId
      * @return
      */
-    @Cacheable(value = "dept", key = "'dept'+':'+#companyId")
+    //@Cacheable(value = "dept", key = "'dept'+':'+#companyId")
     public List<GroupVO> getCompanyAllDeptList(int companyId) {
         List<GroupVO> groupList = groupDao.getCompanyAllDeptList(companyId);
-        return removeNullDataFromList(groupList);
-    }
-
-    /*去掉集合里的空对象*/
-    public List<GroupVO> removeNullDataFromList(List<GroupVO> list) {
-        if (ListUtil.isNullList(list)) {
-            return null;
-        }
-        for (GroupVO dept : list) {
-            List<GroupPO> groupList = dept.getGroupList();
-            if (ListUtil.isNotNullList(groupList)) {
-                Iterator<GroupPO> it = groupList.iterator();
-                while (it.hasNext()) {
-                    GroupPO po = it.next();
-                    if (StringUtil.isNullStr(po.getGroupId())) {
-                        it.remove();
-                    }
-                }
-            }
-
-        }
-        return list;
+        return groupList;
     }
 
     /**

@@ -60,4 +60,10 @@ public class TipMsgConstant {
      */
     public final static String EDIT_ROLE_SUCCESS = "修改角色成功";
 
+    /**
+     * 修改成功
+     */
+    public final static String EDIT_SUCCESS = "修改成功";
+
+
 }

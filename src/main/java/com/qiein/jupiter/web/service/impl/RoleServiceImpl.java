@@ -9,6 +9,7 @@ import com.qiein.jupiter.web.dao.RoleDao;
 import com.qiein.jupiter.web.dao.RolePermissionDao;
 import com.qiein.jupiter.web.entity.po.RolePO;
 import com.qiein.jupiter.web.entity.vo.RolePermissionVO;
+import com.qiein.jupiter.web.entity.vo.RoleVO;
 import com.qiein.jupiter.web.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,7 @@ public class RoleServiceImpl implements RoleService {
      * 新增角色
      */
     @Transactional(rollbackFor = Exception.class)
-    public void insert(String roleName, Integer priority, String pmsIds, Integer companyId) {
+    public void insert(String roleName, int priority, String pmsIds, Integer companyId) {
         //1.查是否已存在
         RolePO exist = roleDao.getRoleByName(roleName, companyId);
         if (exist != null) {
@@ -62,23 +63,23 @@ public class RoleServiceImpl implements RoleService {
      * 修改角色
      */
     @Transactional(rollbackFor = Exception.class)
-    public void update(RolePO rolePO, String pmsIds) {
+    public void update(RoleVO roleVO) {
         //1.查重
-        RolePO exist = roleDao.getRoleByName(rolePO.getRoleName(), rolePO.getCompanyId());
-        if (exist != null && exist.getId() != rolePO.getId()){
+        RolePO exist = roleDao.getRoleByName(roleVO.getRoleName(), roleVO.getCompanyId());
+        if (exist != null && exist.getId() != roleVO.getRoleId()) {
             throw new RException(ExceptionEnum.ROLE_EXIST);
         }
         //2.修改角色表
-        int i = roleDao.editRole(rolePO);
+        int i = roleDao.editRole(roleVO);
         if (i != 1) {
             throw new RException(ExceptionEnum.ROLE_EDIT_FAIL);
         }
         //3.删除角色权限关联表
-        rolePmsDao.deleteByRoleId(rolePO.getId(), rolePO.getCompanyId());
+        rolePmsDao.deleteByRoleId(roleVO.getRoleId(), roleVO.getCompanyId());
         //4.插入角色权限关联表
-        if (StringUtil.isNotNullStr(pmsIds)) {
-            String[] pmsIdArr = pmsIds.split(CommonConstant.STR_SEPARATOR);
-            rolePmsDao.batchAddRolePmsRela(rolePO.getId(), rolePO.getCompanyId(), pmsIdArr);
+        if (StringUtil.isNotNullStr(roleVO.getPmsIds())) {
+            String[] pmsIdArr = roleVO.getPmsIds().split(CommonConstant.STR_SEPARATOR);
+            rolePmsDao.batchAddRolePmsRela(roleVO.getRoleId(), roleVO.getCompanyId(), pmsIdArr);
         }
     }
 
@@ -95,7 +96,7 @@ public class RoleServiceImpl implements RoleService {
      * @param companyId
      * @return
      */
-    public List<RolePO> getRoleSelect(Integer companyId){
+    public List<RolePO> getRoleSelect(Integer companyId) {
         return roleDao.getRoleSelect(companyId);
     }
 }

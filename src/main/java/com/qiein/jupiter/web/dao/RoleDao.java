@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.dao;
 
 import com.qiein.jupiter.web.entity.po.RolePO;
 import com.qiein.jupiter.web.entity.vo.RolePermissionVO;
+import com.qiein.jupiter.web.entity.vo.RoleVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public interface RoleDao extends BaseDao<RolePO> {
     /*
      * 修改角色
      */
-    int editRole(RolePO rolePO);
+    int editRole(RoleVO roleVO);
 
     /**
      * 获取角色下拉框选项

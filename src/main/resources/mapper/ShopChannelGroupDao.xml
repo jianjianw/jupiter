@@ -38,6 +38,69 @@
             AND rela.SHOPID = #{shopId}
     </select>
 
+    <!--编辑小组权重-->
+    <update id="editGroupWeight" parameterType="map">
+        UPDATE hm_crm_shop_channel_group_rela
+        SET WEIGHT = #{weight}
+        WHERE ID = #{relaId}
+        AND COMPANYID = #{companyId}
+    </update>
+
+    <!--批量删除拍摄地渠道小组关联-->
+    <delete id="batchDeleteGroup" parameterType="map" >
+        DELETE FROM hm_crm_shop_channel_group_rela
+        WHERE  COMPANYID = #{companyId}
+        AND ID IN
+        <foreach collection="relaIdArr" item="id" index="index" open="("
+                 close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--根据渠道拍摄地，删除记录-->
+    <delete id="deleteByChannelAndShopId" parameterType="map">
+        DELETE FROM hm_crm_shop_channel_group_rela
+        WHERE  COMPANYID = #{companyId}
+        AND SHOPID = #{shopId}
+        AND CHANNELID = #{channelId}
+    </delete>
+
+    <!-- 批量添加拍摄地渠道关联-->
+    <insert id="batchAddShopChannel" parameterType="com.qiein.jupiter.web.entity.po.ShopChannelGroupPO">
+        INSERT INTO hm_crm_shop_channel_group_rela
+        (SHOPID,CHANNELID,GROUPID,WEIGHT,COMPANYID)
+        VALUES
+        <foreach collection="list" item="po" index="index" separator=",">
+            (
+            #{po.shopId},
+            #{po.channelId},
+            #{po.groupId},
+            #{po.weight}
+            #{po.companyId}
+            )
+        </foreach>
+    </insert>
+
+    <!--根据拍摄地，渠道，小组查询关联-->
+    <select id="getByShopAndChannelAndGroup" parameterType="map" resultMap="baseMap">
+        SELECT
+            rela.ID,rela.SHOPID,rela.CHANNELID,rela.GROUPID,rela.WEIGHT,rela.COMPANYID
+        FROM
+            hm_crm_shop_channel_group_rela rela
+        WHERE
+            rela.COMPANYID = #{companyId}
+            AND rela.SHOPID = #{shopId}
+            AND rela.CHANNELID = #{channelId}
+            AND rela.GROUPID = #{groupId}
+    </select>
+
+    <!--编辑客服小组-->
+    <update id="editChannelGroup" parameterType="map">
+        UPDATE hm_crm_shop_channel_group_rela
+        SET GROUPID= #{groupId}
+        WHERE ID = #{relaId}
+        AND COMPANYID = #{companyId}
+    </update>
 
 
 </mapper>

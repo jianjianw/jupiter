@@ -2,11 +2,14 @@ package com.qiein.jupiter.web.controller;
 
 import com.qiein.jupiter.aop.annotation.NotEmpty;
 import com.qiein.jupiter.constant.TipMsgConstant;
+import com.qiein.jupiter.exception.ExceptionEnum;
+import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.web.entity.po.RolePO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.RolePermissionVO;
+import com.qiein.jupiter.web.entity.vo.RoleVO;
 import com.qiein.jupiter.web.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +35,7 @@ public class RoleController extends BaseController {
     }
 
     @GetMapping("/add_role")
-    public ResultInfo addRole(@NotEmpty @RequestParam("roleName") String roleName, @NotEmpty @RequestParam("priority") Integer priority, @RequestParam("pmsIds") String pmsIds) {
+    public ResultInfo addRole(@NotEmpty @RequestParam("roleName") String roleName, @RequestParam("priority") int priority, @RequestParam("pmsIds") String pmsIds) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         roleService.insert(roleName, priority, pmsIds, currentLoginStaff.getCompanyId());
@@ -49,11 +52,14 @@ public class RoleController extends BaseController {
     }
 
     @PostMapping("/edit_role")
-    public ResultInfo editRole(@RequestBody RolePO rolePO, @RequestParam("pmsIds") String pmsIds) {
+    public ResultInfo editRole(@RequestBody RoleVO roleVO) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        rolePO.setCompanyId(currentLoginStaff.getCompanyId());
-        roleService.update(rolePO, pmsIds);
+        if (NumUtil.isNull(roleVO.getRoleId())) {
+            return ResultInfoUtil.error(ExceptionEnum.ID_IS_NULL);
+        }
+        roleVO.setCompanyId(currentLoginStaff.getCompanyId());
+        roleService.update(roleVO);
         return ResultInfoUtil.success(TipMsgConstant.EDIT_ROLE_SUCCESS);
     }
 
