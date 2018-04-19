@@ -79,7 +79,7 @@ public class ChannelController extends BaseController{
      * 根据渠道细分类型获取渠道列表
      * @return
      */
-    @GetMapping("/get_auth_list")
+    @GetMapping("/get_list_by_type")
     public ResultInfo getAuthList(@NotEmpty int typeId){
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
