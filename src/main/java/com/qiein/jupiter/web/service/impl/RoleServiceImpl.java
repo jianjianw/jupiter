@@ -28,7 +28,7 @@ public class RoleServiceImpl implements RoleService {
      * 新增角色
      */
     @Transactional(rollbackFor = Exception.class)
-    public void insert(String roleName, Integer priority, String pmsIds, Integer companyId) {
+    public void insert(String roleName, int priority, String pmsIds, Integer companyId) {
         //1.查是否已存在
         RolePO exist = roleDao.getRoleByName(roleName, companyId);
         if (exist != null) {

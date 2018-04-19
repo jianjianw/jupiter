@@ -32,7 +32,7 @@ public class RoleController extends BaseController {
     }
 
     @GetMapping("/add_role")
-    public ResultInfo addRole(@NotEmpty @RequestParam("roleName") String roleName, @NotEmpty @RequestParam("priority") Integer priority, @RequestParam("pmsIds") String pmsIds) {
+    public ResultInfo addRole(@NotEmpty @RequestParam("roleName") String roleName, @NotEmpty @RequestParam("priority") int priority, @RequestParam("pmsIds") String pmsIds) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         roleService.insert(roleName, priority, pmsIds, currentLoginStaff.getCompanyId());
