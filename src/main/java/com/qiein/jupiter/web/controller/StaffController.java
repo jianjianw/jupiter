@@ -395,7 +395,7 @@ public class StaffController extends BaseController {
     }
 
     /**
-     * 获取可交接人员下拉名单
+     * 获取电商邀约小组人员列表
      * @return
      */
     @GetMapping("/change_list")
@@ -406,6 +406,6 @@ public class StaffController extends BaseController {
         Integer companyId = currentLoginStaff.getCompanyId();
 
 
-        return ResultInfoUtil.success(staffService.getChangeList(companyId));
+        return ResultInfoUtil.success(TipMsgConstant.SUCCESS,staffService.getChangeList(companyId));
     }
 }

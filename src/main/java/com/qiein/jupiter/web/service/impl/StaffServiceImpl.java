@@ -504,7 +504,7 @@ public class StaffServiceImpl implements StaffService {
     }
 
     /**
-     * 获取邀约小组人员列表
+     * 获取电商邀约小组人员列表
      * @param companyId
      * @return
      */

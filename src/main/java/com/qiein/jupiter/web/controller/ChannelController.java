@@ -75,8 +75,15 @@ public class ChannelController extends BaseController{
         return ResultInfoUtil.success(TipMsgConstant.DEL_CHANNEL_SUCCESS);
     }
 
+    @GetMapping("/sel_channel")
+    public ResultInfo queryChannel(){
+
+        return null;
+    }
+
     /**
      * 根据渠道细分类型获取渠道列表
+     * 1:纯电商，2:电商转介绍，3:员工转介绍，4:指名转介绍，5:外部转介绍，6:自然入客，7:门店外展
      * @return
      */
     @GetMapping("/get_list_by_type")
@@ -91,7 +98,8 @@ public class ChannelController extends BaseController{
 
     /**
      * 获取渠道列表接口
-     * @param type_id
+     * 1:纯电商，2:电商转介绍，3:员工转介绍，4:指名转介绍，5:外部转介绍，6:自然入客，7:门店外展
+     * @param type_id 0：全部渠道 1：电商 2：转介绍 3：自然入客
      * @return
      */
     @GetMapping("/get_list")
