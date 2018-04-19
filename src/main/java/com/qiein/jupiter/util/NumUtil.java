@@ -83,4 +83,14 @@ public class NumUtil {
         return keepRandomPoint(value, 3);
     }
 
+    /**
+     * 判断是否为空
+     *
+     * @param n
+     * @return
+     */
+    public static boolean isNull(int n) {
+        return n == 0;
+    }
+
 }

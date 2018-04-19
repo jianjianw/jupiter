@@ -65,9 +65,5 @@ public class TipMsgConstant {
      */
     public final static String EDIT_SUCCESS = "修改成功";
 
-    /**
-     * 删除成功
-     */
-    public final static String DELETE_SUCCESS = "删除成功";
 
 }

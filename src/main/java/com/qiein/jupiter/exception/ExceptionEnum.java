@@ -38,7 +38,8 @@ public enum ExceptionEnum {
     GROUP_NAME_REPEAT(401, "部门名称重复"),
     GROUP_HAVE_CHILD_GROUP(402, "该部门存在小组，请删除下属小组再进行操作"),
     GROUP_HAVE_STAFF(403, "该部门存在员工，请删除下属员工再进行操作"),
-    WEIGHT_ERROR(404, "权重需在[1,20]之间");;
+    WEIGHT_ERROR(404, "权重需在[1,20]之间"),
+    ID_IS_NULL(405, "ID不能为空");
 
     private Integer code;
 

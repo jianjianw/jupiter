@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.entity.po;
 
+import com.qiein.jupiter.aop.annotation.NotEmpty;
 import com.qiein.jupiter.web.entity.BaseEntity;
 
 /**
@@ -12,6 +13,7 @@ public class RolePO extends BaseEntity {
     /**
      * 角色名称
      */
+    @NotEmpty(message = "{role.roleName.null}")
     private String roleName;
     /**
      * 公司id

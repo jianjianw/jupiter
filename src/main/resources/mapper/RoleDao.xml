@@ -40,17 +40,14 @@
     </delete>
 
     <!--修改角色-->
-    <update id="editRole" parameterType="com.qiein.jupiter.web.entity.po.RolePO">
+    <update id="editRole" parameterType="com.qiein.jupiter.web.entity.vo.RoleVO">
         UPDATE hm_pub_role
         <set>
             <if test="roleName != null and roleName != '' ">
                 ROLENAME = #{roleName},
             </if>
-            <if test="priority != null">
-                PRIORITY = #{priority},
-            </if>
         </set>
-        WHERE ID = #{id}
+        WHERE ID = #{roleId}
         AND COMPANYID = #{companyId}
     </update>
 
