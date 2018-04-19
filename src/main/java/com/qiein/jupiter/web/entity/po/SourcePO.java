@@ -5,7 +5,7 @@ import com.qiein.jupiter.web.entity.BaseEntity;
 /**
  * 来源数据库对象
  */
-public class SourcePo extends BaseEntity {
+public class SourcePO extends BaseEntity {
 
     /**
      * 来源编号
@@ -71,7 +71,7 @@ public class SourcePo extends BaseEntity {
     /**
      * 无参构造
      */
-    public SourcePo() {
+    public SourcePO() {
 
     }
 
