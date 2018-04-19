@@ -65,10 +65,18 @@ public class CommonConstant {
      */
     public final static String CID = "cid";
 
-    /*-- 文件分隔符 --*/
+    /**
+     * 文件分隔符
+     */
     public static final String FILE_SEPARATOR = "/";
-    /*-- 多个参数字符串分隔符 --*/
+    
+    /**
+     * 多个参数字符串分隔符
+     */
     public static final String STR_SEPARATOR = ",";
 
-
+    /**
+     * 横杠分割
+     */
+    public static final String ROD_SEPARATOR = "-";
 }

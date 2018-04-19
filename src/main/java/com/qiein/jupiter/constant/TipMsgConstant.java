@@ -23,6 +23,14 @@ public class TipMsgConstant {
      * 保存成功
      */
     public final static String SAVE_SUCCESS = "保存成功";
+    /**
+     * 修改成功
+     */
+    public final static String UPDATE_SUCCESS = "修改成功";
+    /**
+     * 删除成功
+     */
+    public final static String DELETE_SUCCESS = "删除成功";
 
     /**
      * 用户名不能为空

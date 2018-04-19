@@ -12,7 +12,7 @@ public class GroupPO extends BaseEntity {
     /**
      * 组id
      */
-    @NotEmpty(message = "{group.id.null}")
+//    @NotEmpty(message = "{group.id.null}")
     private String groupId;
     /**
      * 组名称
