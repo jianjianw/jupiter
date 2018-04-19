@@ -50,7 +50,7 @@ public class GroupServiceImpl implements GroupService {
     public GroupPO update(GroupPO groupPO) {
         List<GroupPO> groupDB = groupDao.getByName(groupPO.getGroupName(), groupPO.getCompanyId());
         //验证是否存在相同的部门名称
-        if (ListUtil.isNotNullList(groupDB)) {
+        if (ListUtil.isNotNullList(groupDB)&&groupDB.size()>1) {
             throw new RException(ExceptionEnum.GROUP_NAME_REPEAT);
         }
         groupDao.update(groupPO);
