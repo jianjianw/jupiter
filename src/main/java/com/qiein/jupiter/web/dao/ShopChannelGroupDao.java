@@ -51,4 +51,26 @@ public interface ShopChannelGroupDao {
      * @param list
      */
     public void batchAddShopChannel(List<ShopChannelGroupPO> list);
+
+    /**
+     * 根据拍摄地，渠道，小组查询关联
+     *
+     * @param companyId
+     * @param channelId
+     * @param shopId
+     * @param groupId
+     * @return
+     */
+    public ShopChannelGroupPO getByShopAndChannelAndGroup(@Param("companyId") int companyId, @Param("channelId") int channelId,
+                                                          @Param("shopId") int shopId, @Param("groupId") String groupId);
+
+    /**
+     * 编辑客服小组
+     *
+     * @param companyId
+     * @param relaId
+     * @param groupId
+     * @return
+     */
+    public int editChannelGroup(@Param("companyId") int companyId, @Param("relaId") int relaId, @Param("groupId") String groupId);
 }

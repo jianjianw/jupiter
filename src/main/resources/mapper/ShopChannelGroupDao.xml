@@ -79,8 +79,28 @@
             #{po.companyId}
             )
         </foreach>
-
     </insert>
+
+    <!--根据拍摄地，渠道，小组查询关联-->
+    <select id="getByShopAndChannelAndGroup" parameterType="map" resultMap="baseMap">
+        SELECT
+            rela.ID,rela.SHOPID,rela.CHANNELID,rela.GROUPID,rela.WEIGHT,rela.COMPANYID
+        FROM
+            hm_crm_shop_channel_group_rela rela
+        WHERE
+            rela.COMPANYID = #{companyId}
+            AND rela.SHOPID = #{shopId}
+            AND rela.CHANNELID = #{channelId}
+            AND rela.GROUPID = #{groupId}
+    </select>
+
+    <!--编辑客服小组-->
+    <update id="editChannelGroup" parameterType="map">
+        UPDATE hm_crm_shop_channel_group_rela
+        SET GROUPID= #{groupId}
+        WHERE ID = #{relaId}
+        AND COMPANYID = #{companyId}
+    </update>
 
 
 </mapper>

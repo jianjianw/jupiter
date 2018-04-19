@@ -66,5 +66,13 @@ public class ShopChannelGroupController extends BaseController {
         return ResultInfoUtil.success(TipMsgConstant.SAVE_SUCCESS);
     }
 
+    @GetMapping("/edit_channel_group")
+    public ResultInfo editChannelGroup(@NotEmpty @RequestParam("relaId") int relaId, @NotEmpty @RequestParam("groupId") String groupId,
+                                       @NotEmpty @RequestParam("shopId") int shopId, @NotEmpty @RequestParam("channelId") int channelId) {
+        //获取当前登录用户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        shopChannelGroupService.editChannelGroup(relaId, currentLoginStaff.getCompanyId(), channelId, shopId, groupId);
+        return ResultInfoUtil.success(TipMsgConstant.EDIT_SUCCESS);
+    }
 
 }

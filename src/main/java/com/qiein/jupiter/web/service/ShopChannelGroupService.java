@@ -53,4 +53,13 @@ public interface ShopChannelGroupService {
      * @param groupIds
      */
     public void batchAddChannelList(int companyId, int shopId, int weight, String channelIds, String groupIds);
+
+    /**
+     * 编辑关联客服小组
+     *
+     * @param companyId
+     * @param relaId
+     * @param groupId
+     */
+    public void editChannelGroup(int relaId, int companyId, int channelId, int shopId, String groupId);
 }

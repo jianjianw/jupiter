@@ -1,6 +1,8 @@
 package com.qiein.jupiter.web.service.impl;
 
 import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.exception.ExceptionEnum;
+import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.web.dao.ShopChannelGroupDao;
 import com.qiein.jupiter.web.entity.po.ShopChannelGroupPO;
 import com.qiein.jupiter.web.entity.vo.ShopChannelGroupVO;
@@ -81,5 +83,22 @@ public class ShopChannelGroupServiceImpl implements ShopChannelGroupService {
         }
         //批量添加
         shopChannelGroupDao.batchAddShopChannel(list);
+    }
+
+    /**
+     * 编辑关联客服小组
+     *
+     * @param companyId
+     * @param relaId
+     * @param groupId
+     */
+    public void editChannelGroup(int relaId, int companyId, int channelId, int shopId, String groupId) {
+        //1.查重
+        ShopChannelGroupPO exist = shopChannelGroupDao.getByShopAndChannelAndGroup(companyId, channelId, shopId, groupId);
+        if (exist != null && exist.getId() != relaId) {
+            throw new RException(ExceptionEnum.CHANNEL_GROUP_EXIST);
+        }
+        //2.修改groupId
+        shopChannelGroupDao.editChannelGroup(companyId, relaId, groupId);
     }
 }
