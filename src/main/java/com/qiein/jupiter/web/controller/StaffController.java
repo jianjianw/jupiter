@@ -393,4 +393,19 @@ public class StaffController extends BaseController {
         }
         return ResultInfoUtil.success("交接成功");
     }
+
+    /**
+     * 获取可交接人员下拉名单
+     * @return
+     */
+    @GetMapping("/change_list")
+    public ResultInfo getChangeList(){
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        //获取操作用户所属公司
+        Integer companyId = currentLoginStaff.getCompanyId();
+
+
+        return ResultInfoUtil.success(staffService.getChangeList(companyId));
+    }
 }

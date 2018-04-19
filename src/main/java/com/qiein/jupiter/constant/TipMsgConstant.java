@@ -65,5 +65,25 @@ public class TipMsgConstant {
      */
     public final static String EDIT_SUCCESS = "修改成功";
 
+    /**
+     * 添加渠道成功
+     */
+    public final static String ADD_CHANNEL_SUCCESS = "添加渠道成功";
+
+    /**
+     * 删除渠道成功
+     */
+    public final static String DEL_CHANNEL_SUCCESS = "删除渠道成功";
+
+    /**
+     * 编辑渠道成功
+     */
+    public final static String EDIT_CHANNEL_SUCCESS = "编辑渠道成功";
+
+    /**
+     * 渠道重名
+     */
+    public final static String CHANNEL_NAME_ERROR = "渠道重名";
+
 
 }

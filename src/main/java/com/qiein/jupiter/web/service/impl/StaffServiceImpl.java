@@ -1,7 +1,6 @@
 package com.qiein.jupiter.web.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.github.pagehelper.Constant;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.aop.annotation.LoginLog;
@@ -22,7 +21,7 @@ import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.PermissionPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
-import com.qiein.jupiter.web.entity.po.StaffRolePO;
+import com.qiein.jupiter.web.entity.vo.GroupStaffVO;
 import com.qiein.jupiter.web.entity.vo.StaffBaseInfoVO;
 import com.qiein.jupiter.web.entity.vo.StaffPermissionVO;
 import com.qiein.jupiter.web.entity.vo.StaffVO;
@@ -38,6 +37,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sun.applet.Main;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -174,6 +174,7 @@ public class StaffServiceImpl implements StaffService {
     public void batDelete(String[] ids, int companyId) {
         //TODO 删除前验证各种  如员工是否有客资等情况
         staffDao.batDelByIdsAndCid(ids, companyId);
+        //TODO 删除相关连接表
     }
 
     /**
@@ -491,4 +492,25 @@ public class StaffServiceImpl implements StaffService {
         staffBaseInfoVO.setCompany(companyService.getById(companyId));
         return staffBaseInfoVO;
     }
+
+    /**
+     * 交接客资
+     * @param staffId   交接客服编号
+     * @param beStaffId 被转移客资客服编号
+     */
+    @Override
+    public void changeStaff(int staffId, int beStaffId) {
+        //TODO 交接客资
+    }
+
+    /**
+     * 获取邀约小组人员列表
+     * @param companyId
+     * @return
+     */
+    @Override
+    public List<GroupStaffVO> getChangeList(int companyId) {
+        return groupStaffDao.getListByGroupType("dsyy",companyId);
+    }
+
 }

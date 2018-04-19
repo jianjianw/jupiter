@@ -60,8 +60,13 @@ public interface GroupStaffDao {
     List<StaffVO> getGroupStaffs(@Param("companyId") int companyId, @Param("groupId") String groupId);
 
     /**
-     *
+     * 根据小组类型获取组内人员列表
+     * @param type
+     * @param companyid
+     * @return
      */
+    List<GroupStaffVO> getListByGroupType(@Param("type") String type , @Param("companyId") int companyid);
+
     /**
      * 获取公司所有的部门及下属员工
      *

@@ -77,6 +77,23 @@
         <result column="ROLEID" property="roleId" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <!--根据小组类型获取指定小组及组内人员-->
+    <resultMap id="GroupTypeMap" type="com.qiein.jupiter.web.entity.vo.GroupStaffVO">
+        <id column="GROUPID" property="groupId" jdbcType="VARCHAR"/>
+        <result column="GROUPNAME" property="groupName" jdbcType="VARCHAR"/>
+        <result column="PARENTID" property="parentId" jdbcType="VARCHAR"/>
+        <result column="GROUPTYPE" property="groupType" jdbcType="VARCHAR"/>
+        <result column="COMPANYID" property="companyId" jdbcType="VARCHAR"/>
+        <result column="CHIEFIDS" property="chiefIds" jdbcType="VARCHAR"/>
+        <result column="CHIEFNAMES" property="chiefNames" jdbcType="VARCHAR"/>
+
+        <collection property="staffList" ofType="com.qiein.jupiter.web.entity.po.StaffPO" column="STAFFLIST">
+            <id property="id" column="STAFFID" javaType="int" jdbcType="INTEGER"/>
+            <result property="nickName" column="NICKNAME" javaType="String" jdbcType="VARCHAR"/>
+            <result property="phone" column="PHONE" javaType="String" jdbcType="VARCHAR"/>
+            <result property="userName" column="USERNAME" javaType="String" jdbcType="VARCHAR"/>
+        </collection>
+    </resultMap>
 
     <!--获取公司全部的组及下属员工-->
     <select id="getAllGroupAndStaff" resultMap="groupMap">
@@ -186,4 +203,21 @@
           WHERE group_up.COMPANYID = #{companyId}
           AND group_up.PARENTID = '0'
     </select>
+    
+    <!--根据组类型获取所有小组及组内人员信息-->
+    <select id="getListByGroupType" parameterType="map" resultMap="GroupTypeMap">
+        SELECT
+	        g.GROUPID , g.GROUPNAME , g.PARENTID , g.GROUPTYPE , g.COMPANYID , g.CHIEFIDS , g.CHIEFNAMES ,
+			s.ID STAFFID,s.NICKNAME nickName,s.PHONE phone,s.USERNAME userName
+        FROM
+	        hm_pub_group g
+        LEFT JOIN
+	        hm_pub_group_staff gs ON gs.GROUPID = g.GROUPID
+        LEFT JOIN
+	        hm_pub_staff s ON gs.STAFFID = s.ID
+        WHERE
+	        s.COMPANYID = #{companyId} AND g.GROUPTYPE = #{type}
+
+    </select>
+
 </mapper>
