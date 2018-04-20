@@ -7,6 +7,7 @@ public enum ExceptionEnum {
     //系统级错误
     UNKNOW_ERROR(-1, "未知错误"),
     MYSQL_SQL_GRAMMAR_ERROR(-8, "sql语法错误"),
+    DB_SPLIT_ERROR(-9,"系统表分割错误"),
     //token验证相关
     TOKEN_NULL(100, "token不存在"),
     TOKEN_INVALID(101, "token失效"),

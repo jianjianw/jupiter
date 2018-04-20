@@ -118,7 +118,7 @@ public class StaffServiceImpl implements StaffService {
      * @param companyId
      * @param lockFlag
      */
-    @CachePut(value = "staff", key = "'staff'+':'+#id+':'+#companyId")
+    @CacheEvict(value = "staff", key = "'staff'+':'+#id+':'+#companyId")
     @Override
     public StaffPO setLockState(int id, int companyId, boolean lockFlag) {
         log.debug("未使用缓存");
@@ -138,7 +138,7 @@ public class StaffServiceImpl implements StaffService {
      * @param showFlag
      * @return
      */
-    @CachePut(value = "staff", key = "'staff'+':'+#id+':'+#companyId")
+    @CacheEvict(value = "staff", key = "'staff'+':'+#id+':'+#companyId")
     @Override
     public StaffPO setOnlineState(int id, int companyId, int showFlag) {
         log.debug("未使用缓存");
@@ -197,7 +197,7 @@ public class StaffServiceImpl implements StaffService {
      * @param id
      * @param companyId
      */
-    @CachePut(value = "staff", key = "'staff'+':'+#id+':'+#companyId")
+    @CacheEvict(value = "staff", key = "'staff'+':'+#id+':'+#companyId")
     @Override
     public int logicDelete(int id, int companyId) {
         //TODO 删除前验证各种  如员工是否有客资等情况
@@ -214,7 +214,7 @@ public class StaffServiceImpl implements StaffService {
      * @param staffVO
      * @return
      */
-    @CachePut(value = "staff", key = "'staff'+':'+#staffVO.id+':'+#staffVO.companyId")
+    @CacheEvict(value = "staff", key = "'staff'+':'+#staffVO.id+':'+#staffVO.companyId")
     @Transactional(rollbackFor = Exception.class)
     public StaffVO update(StaffVO staffVO) {
         log.debug("未使用缓存");

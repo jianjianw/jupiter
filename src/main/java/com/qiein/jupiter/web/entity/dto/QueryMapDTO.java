@@ -19,6 +19,8 @@ public class QueryMapDTO {
     private Map condition;
 
     public int getPageNum() {
+        //设置默认值
+        if (pageNum == 0) pageNum = 1;
         return pageNum;
     }
 
@@ -27,6 +29,8 @@ public class QueryMapDTO {
     }
 
     public int getPageSize() {
+        //设置默认值
+        if (pageSize == 0) pageSize = 30;
         return pageSize;
     }
 

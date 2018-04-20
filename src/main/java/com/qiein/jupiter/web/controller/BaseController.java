@@ -1,10 +1,11 @@
 package com.qiein.jupiter.web.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.web.entity.po.NewsPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -20,8 +21,9 @@ public class BaseController {
     /**
      * @return
      */
-    @GetMapping("/")
-    public String init() {
+    @RequestMapping("/")
+    public String init(NewsPO newsPO) {
+        System.out.println(JSONObject.toJSONString(newsPO));
         return "jupiter is running success!";
     }
 
