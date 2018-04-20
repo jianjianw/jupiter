@@ -42,7 +42,8 @@ public enum ExceptionEnum {
     ID_IS_NULL(405, "ID不能为空"),
     CHANNEL_GROUP_EXIST(406, "该渠道下客服小组已存在"),
     //渠道
-    CHANNEL_NAME_REPEAT(501,"渠道名称重复");
+    CHANNEL_NAME_REPEAT(501, "渠道名称重复"),
+    ROLE_DELETE_ERROR(502, "该权限有绑定人员，无法删除");
 
     private Integer code;
 
