@@ -47,4 +47,32 @@ public class ShopServiceImpl implements ShopService {
         shopPO.setShowFlag(true);
         shopDao.insert(shopPO);
     }
+
+    /**
+     * 编辑拍摄地
+     *
+     * @param shopPO
+     */
+    public void editShop(ShopPO shopPO) {
+        //1.查重
+        ShopPO exist = shopDao.getShopByName(shopPO.getCompanyId(), shopPO.getShopName());
+        if (exist != null && exist.getId() != shopPO.getId()) {
+            throw new RException(ExceptionEnum.SHOP_EXIST);
+        }
+        //2.修改
+        shopDao.update(shopPO);
+    }
+
+    /**
+     * 编辑拍摄地开关
+     *
+     * @param companyId
+     * @param id
+     * @param showFlag
+     * @return
+     */
+    public void editShopShowFlag(int companyId, int id, boolean showFlag) {
+        shopDao.editShopShowFlag(companyId, id, showFlag);
+    }
+
 }

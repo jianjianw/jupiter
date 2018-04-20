@@ -7,7 +7,7 @@ public enum ExceptionEnum {
     //系统级错误
     UNKNOW_ERROR(-1, "未知错误"),
     MYSQL_SQL_GRAMMAR_ERROR(-8, "sql语法错误"),
-    DB_SPLIT_ERROR(-9,"系统表分割错误"),
+    DB_SPLIT_ERROR(-9, "系统表分割错误"),
     //token验证相关
     TOKEN_NULL(100, "token不存在"),
     TOKEN_INVALID(101, "token失效"),
@@ -44,6 +44,7 @@ public enum ExceptionEnum {
     CHANNEL_NAME_REPEAT(501, "渠道名称重复"),
     //拍摄地
     SHOP_EXIST(601, "拍摄地已存在"),
+    SHOP_ID_NULL(602, "拍摄地ID不能为空"),
     //权限
     ROLE_EXIST(701, "该角色已存在"),
     ROLE_EDIT_FAIL(702, "角色修改失败"),

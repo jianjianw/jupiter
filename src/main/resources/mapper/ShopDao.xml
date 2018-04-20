@@ -31,6 +31,7 @@
             hm_pub_shop shop
         WHERE
             shop.COMPANYID = #{companyId}
+        ORDER BY shop.PRIORITY,shop.ID
     </select>
 
     <!--新增拍摄地-->
@@ -51,6 +52,23 @@
             shop.COMPANYID = #{companyId}
         AND shop.SHOPNAME = #{shopName}
     </select>
+
+    <!--编辑拍摄地-->
+    <update id="update" parameterType="com.qiein.jupiter.web.entity.po.ShopPO">
+        UPDATE hm_pub_shop
+        SET SHOPNAME = #{shopName},
+            PRIORITY = #{priority}
+        WHERE COMPANYID = #{companyId}
+        AND ID = #{id}
+    </update>
+
+    <!--编辑拍摄地开关-->
+    <update id="editShopShowFlag" parameterType="map" >
+        UPDATE hm_pub_shop
+        SET ISSHOW = #{showFlag}
+        WHERE COMPANYID = #{companyId}
+        AND ID = #{id}
+    </update>
 
 
 

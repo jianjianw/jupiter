@@ -19,7 +19,25 @@ public interface ShopService {
 
     /**
      * 新增拍摄地
+     *
      * @param shopPO
      */
     public void addShop(ShopPO shopPO);
+
+    /**
+     * 编辑拍摄地
+     *
+     * @param shopPO
+     */
+    public void editShop(ShopPO shopPO);
+
+    /**
+     * 编辑拍摄地开关
+     *
+     * @param companyId
+     * @param id
+     * @param showFlag
+     * @return
+     */
+    public void editShopShowFlag(int companyId, int id, boolean showFlag);
 }
