@@ -47,6 +47,7 @@ public class RoleController extends BaseController {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         //TODO 检查该角色是否绑定人员，如果有提示不能删除
+
         roleService.delete(roleId, currentLoginStaff.getCompanyId());
         return ResultInfoUtil.success(TipMsgConstant.DELETE_ROLE_SUCCESS);
     }
