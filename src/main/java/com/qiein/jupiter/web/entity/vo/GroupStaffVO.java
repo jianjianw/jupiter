@@ -8,6 +8,8 @@ import java.util.List;
  * 组-员工  对象
  */
 public class GroupStaffVO {
+
+    private int id;
     /**
      * 组id
      */
@@ -46,6 +48,14 @@ public class GroupStaffVO {
      * 组集合
      */
     private List<GroupStaffVO> groupList;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getGroupId() {
         return groupId;
