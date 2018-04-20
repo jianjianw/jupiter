@@ -72,7 +72,7 @@ public class GroupController extends BaseController {
      * @return
      */
     @GetMapping("/delete")
-    public ResultInfo delete(int id) {
+    public ResultInfo delete(@RequestParam int id) {
         if (id == 0) {
             throw new RException(ExceptionEnum.ID_NULL);
         }
