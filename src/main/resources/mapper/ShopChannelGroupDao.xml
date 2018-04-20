@@ -75,7 +75,7 @@
             #{po.shopId},
             #{po.channelId},
             #{po.groupId},
-            #{po.weight}
+            #{po.weight},
             #{po.companyId}
             )
         </foreach>

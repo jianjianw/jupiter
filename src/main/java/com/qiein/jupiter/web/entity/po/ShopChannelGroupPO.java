@@ -13,7 +13,7 @@ public class ShopChannelGroupPO extends BaseEntity {
     /**
      * 渠道名
      */
-    private int channleId;
+    private int channelId;
     /**
      * 小组ID
      */
@@ -30,9 +30,9 @@ public class ShopChannelGroupPO extends BaseEntity {
     public ShopChannelGroupPO() {
     }
 
-    public ShopChannelGroupPO(int shopId, int channleId, String groupId, int weight, int companyId) {
+    public ShopChannelGroupPO(int shopId, int channelId, String groupId, int weight, int companyId) {
         this.shopId = shopId;
-        this.channleId = channleId;
+        this.channelId = channelId;
         this.groupId = groupId;
         this.weight = weight;
         this.companyId = companyId;
@@ -46,12 +46,12 @@ public class ShopChannelGroupPO extends BaseEntity {
         this.shopId = shopId;
     }
 
-    public int getChannleId() {
-        return channleId;
+    public int getChannelId() {
+        return channelId;
     }
 
-    public void setChannleId(int channleId) {
-        this.channleId = channleId;
+    public void setChannelId(int channelId) {
+        this.channelId = channelId;
     }
 
     public String getGroupId() {
