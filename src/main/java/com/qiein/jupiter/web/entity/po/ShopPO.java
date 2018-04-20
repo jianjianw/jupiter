@@ -1,6 +1,9 @@
 package com.qiein.jupiter.web.entity.po;
 
+import com.qiein.jupiter.aop.annotation.NotEmpty;
 import com.qiein.jupiter.web.entity.BaseEntity;
+
+import javax.validation.constraints.DecimalMin;
 
 /**
  * 拍摄地（门店）
@@ -10,11 +13,12 @@ public class ShopPO extends BaseEntity {
     /**
      * 拍摄地名称
      */
+    @NotEmpty(message = "{shop.shopName.null}")
     private String shopName;
     /**
      * 类型；1：可接单门店；2：拍摄基地；3：外展
      */
-    private int type;
+    private int typeId;
     /**
      * 是否开启
      */
@@ -22,6 +26,7 @@ public class ShopPO extends BaseEntity {
     /**
      * 优先级
      */
+    @DecimalMin(value = "0", message = "{shop.priority.null}")
     private int priority;
     /**
      * 地址
@@ -44,12 +49,12 @@ public class ShopPO extends BaseEntity {
         this.shopName = shopName;
     }
 
-    public int getType() {
-        return type;
+    public int getTypeId() {
+        return typeId;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public void setTypeId(int typeId) {
+        this.typeId = typeId;
     }
 
     public boolean isShowFlag() {

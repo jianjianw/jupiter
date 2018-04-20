@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.dao;
 
 import com.qiein.jupiter.web.entity.po.ShopChannelGroupPO;
+import com.qiein.jupiter.web.entity.vo.ChannelGroupVO;
 import com.qiein.jupiter.web.entity.vo.ShopChannelGroupVO;
 import org.apache.ibatis.annotations.Param;
 
@@ -73,4 +74,16 @@ public interface ShopChannelGroupDao {
      * @return
      */
     public int editChannelGroup(@Param("companyId") int companyId, @Param("relaId") int relaId, @Param("groupId") String groupId);
+
+    /**
+     * 模糊查询渠道小组关联
+     *
+     * @param companyId
+     * @param shopId
+     * @param channelId
+     * @param searchKey
+     * @return
+     */
+    public List<ChannelGroupVO> searchChannelGroup(@Param("companyId") int companyId, @Param("shopId") int shopId,
+                                             @Param("channelId") int channelId, @Param("searchKey") String searchKey);
 }

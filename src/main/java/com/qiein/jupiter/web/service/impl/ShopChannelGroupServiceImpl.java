@@ -5,6 +5,7 @@ import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.web.dao.ShopChannelGroupDao;
 import com.qiein.jupiter.web.entity.po.ShopChannelGroupPO;
+import com.qiein.jupiter.web.entity.vo.ChannelGroupVO;
 import com.qiein.jupiter.web.entity.vo.ShopChannelGroupVO;
 import com.qiein.jupiter.web.service.ShopChannelGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,5 +101,18 @@ public class ShopChannelGroupServiceImpl implements ShopChannelGroupService {
         }
         //2.修改groupId
         shopChannelGroupDao.editChannelGroup(companyId, relaId, groupId);
+    }
+
+    /**
+     * 模糊查询渠道小组关联
+     *
+     * @param companyId
+     * @param shopId
+     * @param channelId
+     * @param searchKey
+     * @return
+     */
+    public List<ChannelGroupVO> searchChannelGroup(int companyId, int shopId, int channelId, String searchKey) {
+        return shopChannelGroupDao.searchChannelGroup(companyId, shopId, channelId, searchKey);
     }
 }

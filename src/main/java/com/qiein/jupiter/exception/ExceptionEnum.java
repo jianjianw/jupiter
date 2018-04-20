@@ -25,9 +25,7 @@ public enum ExceptionEnum {
     VERIFY_ERROR(305, "验证码错误"),
     COMPANYID_NULL(306, "公司ID不能为空"),
     ID_NULL(307, "id不能为空"),
-    ROLE_EXIST(308, "该角色已存在"),
     DELETE_FAIL(309, "删除失败"),
-    ROLE_EDIT_FAIL(340, "角色修改失败"),
     STAFF_EXIST_DEL(341, "该员工在离职员工中"),
     PHONE_EXIST(342, "该手机号已存在"),
     NICKNAME_EXIST(343, "该艺名已存在"),
@@ -43,7 +41,12 @@ public enum ExceptionEnum {
     CHANNEL_GROUP_EXIST(406, "该渠道下客服小组已存在"),
     //渠道
     CHANNEL_NAME_REPEAT(501, "渠道名称重复"),
-    ROLE_DELETE_ERROR(502, "该权限有绑定人员，无法删除");
+    //拍摄地
+    SHOP_EXIST(601, "拍摄地已存在"),
+    //权限
+    ROLE_EXIST(701, "该角色已存在"),
+    ROLE_EDIT_FAIL(702, "角色修改失败"),
+    ROLE_DELETE_ERROR(703, "该权限有绑定人员，无法删除");
 
     private Integer code;
 

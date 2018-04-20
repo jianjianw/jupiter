@@ -102,5 +102,19 @@
         AND COMPANYID = #{companyId}
     </update>
 
+    <!--模糊查询渠道小组关联-->
+    <select id="searchChannelGroup" parameterType="map" resultMap="groupMap">
+        SELECT
+             rela.ID,rela.WEIGHT, grp.GROUPNAME
+        FROM
+            hm_crm_shop_channel_group_rela rela
+            LEFT JOIN hm_pub_group grp ON rela.GROUPID = grp.GROUPID AND rela.COMPANYID = grp.COMPANYID
+        WHERE
+            rela.COMPANYID = #{companyId}
+            AND rela.SHOPID = #{shopId}
+            AND rela.CHANNELID = #{channelId}
+            AND grp.GROUPNAME LIKE CONCAT('%',#{searchKey},'%')
+    </select>
+
 
 </mapper>

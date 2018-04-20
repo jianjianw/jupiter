@@ -4,7 +4,7 @@
     <resultMap id="baseMap" type="com.qiein.jupiter.web.entity.po.ShopPO">
         <id column="ID" property="id" jdbcType="BIGINT"/>
         <result column="SHOPNAME" property="shopName" jdbcType="VARCHAR"/>
-        <result column="TYPE" property="type" jdbcType="INTEGER"/>
+        <result column="TYPEID" property="typeId" jdbcType="INTEGER"/>
         <result column="ISSHOW" property="showFlag" jdbcType="BOOLEAN"/>
         <result column="PRIORITY" property="priority" jdbcType="INTEGER"/>
         <result column="ADDRESS" property="address" jdbcType="INTEGER"/>
@@ -20,7 +20,7 @@
     </resultMap>
 
     <sql id="baseColumn">
-        ID,SHOPNAME,TYPE,ISSHOW,PRIORITY,ADDRESS,SERVICEPHONE,COMPANYID
+        ID,SHOPNAME,TYPEID,ISSHOW,PRIORITY,ADDRESS,SERVICEPHONE,COMPANYID
     </sql>
 
     <!--获取企业所有拍摄地-->
@@ -31,6 +31,25 @@
             hm_pub_shop shop
         WHERE
             shop.COMPANYID = #{companyId}
+    </select>
+
+    <!--新增拍摄地-->
+    <insert id="insert" parameterType="com.qiein.jupiter.web.entity.po.ShopPO">
+        INSERT INTO hm_pub_shop
+        (SHOPNAME,TYPEID,ISSHOW,PRIORITY,ADDRESS,SERVICEPHONE,COMPANYID)
+        VALUES
+        (#{shopName},#{typeId},#{showFlag},#{priority},#{address},#{servicePhone},#{companyId})
+    </insert>
+
+    <!--根绝拍摄地名称查找拍摄地-->
+    <select id="getShopByName" parameterType="map" resultMap="baseMap">
+        SELECT
+            shop.ID,shop.SHOPNAME,shop.TYPEID,shop.ISSHOW,shop.PRIORITY,shop.ADDRESS,shop.SERVICEPHONE,shop.COMPANYID
+        FROM
+            hm_pub_shop shop
+        WHERE
+            shop.COMPANYID = #{companyId}
+        AND shop.SHOPNAME = #{shopName}
     </select>
 
 

@@ -1,13 +1,14 @@
 package com.qiein.jupiter.web.controller;
 
+import com.qiein.jupiter.constant.TipMsgConstant;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
+import com.qiein.jupiter.web.entity.po.ShopPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/shop")
@@ -22,4 +23,14 @@ public class ShopController extends BaseController {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         return ResultInfoUtil.success(shopService.getCompanyShopList(currentLoginStaff.getCompanyId()));
     }
+
+    @PostMapping("/add_shop")
+    public ResultInfo addShop(@RequestBody  @Validated ShopPO shopPO) {
+        //获取当前登录用户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        shopPO.setCompanyId(currentLoginStaff.getCompanyId());
+        shopService.addShop(shopPO);
+        return ResultInfoUtil.success(TipMsgConstant.SAVE_SUCCESS);
+    }
+
 }

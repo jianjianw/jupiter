@@ -75,4 +75,12 @@ public class ShopChannelGroupController extends BaseController {
         return ResultInfoUtil.success(TipMsgConstant.EDIT_SUCCESS);
     }
 
+    @GetMapping("/search_channel_group")
+    public ResultInfo searchChannelGroup(@NotEmpty @RequestParam("shopId") int shopId, @NotEmpty @RequestParam("channelId") int channelId,
+                                         @NotEmpty @RequestParam("searchKey") String searchKey) {
+        //获取当前登录用户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        return ResultInfoUtil.success(shopChannelGroupService.searchChannelGroup(currentLoginStaff.getCompanyId(), shopId, channelId, searchKey));
+    }
+
 }

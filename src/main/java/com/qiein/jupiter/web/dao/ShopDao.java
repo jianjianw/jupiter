@@ -12,8 +12,18 @@ import java.util.List;
 public interface ShopDao extends BaseDao<ShopPO> {
     /**
      * 获取企业所有拍摄地列表
+     *
      * @param companyId
      * @return
      */
     public List<ShopVO> getCompanyShopList(@Param("companyId") int companyId);
+
+    /**
+     * 拍摄地名称
+     *
+     * @param companyId
+     * @param shopName
+     * @return
+     */
+    public ShopPO getShopByName(@Param("companyId") int companyId, @Param("shopName") String shopName);
 }
