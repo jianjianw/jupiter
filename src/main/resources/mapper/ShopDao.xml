@@ -56,8 +56,7 @@
     <!--编辑拍摄地-->
     <update id="update" parameterType="com.qiein.jupiter.web.entity.po.ShopPO">
         UPDATE hm_pub_shop
-        SET SHOPNAME = #{shopName},
-            PRIORITY = #{priority}
+        SET SHOPNAME = #{shopName}
         WHERE COMPANYID = #{companyId}
         AND ID = #{id}
     </update>

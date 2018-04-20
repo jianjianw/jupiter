@@ -186,6 +186,7 @@
             rela.GROUPID = #{groupId}
             AND rela.COMPANYID = #{companyId}
             AND sf.ISDEL = 0
+        ORDER BY sf.ISLOCK,sf.NICKNAME
     </select>
 
     <!--获取公司下所有的部门及员工-->

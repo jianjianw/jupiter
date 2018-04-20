@@ -59,4 +59,10 @@ public class ShopController extends BaseController {
         return ResultInfoUtil.success(TipMsgConstant.SAVE_SUCCESS);
     }
 
+    @GetMapping()
+    public ResultInfo deleteShop(){
+
+        return ResultInfoUtil.success();
+    }
+
 }

@@ -26,7 +26,6 @@ public class ShopPO extends BaseEntity {
     /**
      * 优先级
      */
-    @DecimalMin(value = "0", message = "{shop.priority.null}")
     private int priority;
     /**
      * 地址
