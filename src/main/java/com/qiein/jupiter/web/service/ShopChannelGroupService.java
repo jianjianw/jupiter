@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.service;
 
+import com.qiein.jupiter.web.entity.vo.ChannelGroupVO;
 import com.qiein.jupiter.web.entity.vo.ShopChannelGroupVO;
 
 import java.util.List;
@@ -62,4 +63,15 @@ public interface ShopChannelGroupService {
      * @param groupId
      */
     public void editChannelGroup(int relaId, int companyId, int channelId, int shopId, String groupId);
+
+    /**
+     * 模糊查询渠道小组关联
+     *
+     * @param companyId
+     * @param shopId
+     * @param channelId
+     * @param searchKey
+     * @return
+     */
+    public List<ChannelGroupVO> searchChannelGroup(int companyId, int shopId, int channelId, String searchKey);
 }

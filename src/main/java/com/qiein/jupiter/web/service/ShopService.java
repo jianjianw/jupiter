@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.service;
 
+import com.qiein.jupiter.web.entity.po.ShopPO;
 import com.qiein.jupiter.web.entity.vo.ShopVO;
 
 import java.util.List;
@@ -15,4 +16,10 @@ public interface ShopService {
      * @return
      */
     public List<ShopVO> getCompanyShopList(int companyId);
+
+    /**
+     * 新增拍摄地
+     * @param shopPO
+     */
+    public void addShop(ShopPO shopPO);
 }

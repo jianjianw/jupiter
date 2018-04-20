@@ -17,6 +17,7 @@
     </resultMap>
 
     <resultMap id="sonMap" type="com.qiein.jupiter.web.entity.po.GroupPO">
+        <result column="GID" property="id" jdbcType="INTEGER"/>
         <result column="GRPID" property="groupId" jdbcType="INTEGER"/>
         <result column="GRPNAME" property="groupName" jdbcType="VARCHAR"/>
         <result column="PARID" property="parentId" jdbcType="VARCHAR"/>
@@ -96,7 +97,7 @@
     <select id="getCompanyAllDeptList" parameterType="map" resultMap="GroupVOMap">
         SELECT
             par.ID, par.GROUPID, par.GROUPNAME, par.PARENTID, par.GROUPTYPE, par.COMPANYID,par.CHIEFIDS,par.CHIEFNAMES,
-             grp.GROUPID AS GRPID, grp.GROUPNAME AS GRPNAME,grp.PARENTID AS PARID,grp.GROUPTYPE AS TYPE, grp.COMPANYID AS CMPID, grp.CHIEFIDS AS CIDS, grp.CHIEFNAMES AS CNAMES
+             grp.ID AS GID,grp.GROUPID AS GRPID, grp.GROUPNAME AS GRPNAME,grp.PARENTID AS PARID,grp.GROUPTYPE AS TYPE, grp.COMPANYID AS CMPID, grp.CHIEFIDS AS CIDS, grp.CHIEFNAMES AS CNAMES
         FROM
             hm_pub_group par
             LEFT JOIN hm_pub_group grp ON grp.PARENTID = par.GROUPID
