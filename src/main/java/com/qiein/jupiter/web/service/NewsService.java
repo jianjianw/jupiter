@@ -2,8 +2,18 @@ package com.qiein.jupiter.web.service;
 
 import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
+import com.qiein.jupiter.web.entity.vo.NewsTotalAmountAndFlag;
 
 public interface NewsService {
+    /**
+     * 设置单条消息的已读状态
+     *
+     * @param id  消息Id
+     * @param cid 公司id
+     * @return
+     */
+    int updateNewsReadFlag(int id, int cid);
+
     /**
      * 获取所有消息列表
      *
@@ -26,5 +36,10 @@ public interface NewsService {
      * @param msgIds
      */
     int batchUpdateNewsReadFlag(String msgIds, int cid);
+
+    /**
+     * 获取各种类型未读消息的数量及是否存在未读
+     */
+    NewsTotalAmountAndFlag getNewsTotalAmountAndFlag(int uid, int cid);
 
 }

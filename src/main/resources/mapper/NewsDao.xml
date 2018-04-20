@@ -16,6 +16,7 @@
     <sql id="baseColumn">
         ID,TYPE,HEAD,MSG,KZID,STAFFID,CREATETIME,COMPANYID,ISREAD
     </sql>
+
     <!--获取所有的消息-->
     <select id="getAllByStaffIdAndCid" resultMap="baseMap">
         SELECT
@@ -35,6 +36,7 @@
         ORDER BY
         CREATETIME DESC
     </select>
+
     <!--获取未读的消息-->
     <select id="getNotReadByStaffIdAndCid" resultMap="baseMap">
         SELECT
@@ -55,6 +57,7 @@
         ORDER BY
         CREATETIME DESC
     </select>
+
     <!--批量新增消息-->
     <insert id="insert">
         INSERT INTO ${tableName}
@@ -64,13 +67,17 @@
         )
     </insert>
 
+    <!--批量插入-->
     <insert id="batchInsertNews">
---         INSERT INTO ${tableName}
---         (TYPE,HEAD,MSG,KZID,STAFFID,CREATETIME,COMPANYID,ISREAD)
---         VALUES (
---         #{type}, #{head}, #{msg}, #{kzid}, #{staffId}, UNIX_TIMESTAMP(now()), #{companyId},0
---         )
+        INSERT INTO ${tableName}
+        (TYPE,HEAD,MSG,KZID,STAFFID,CREATETIME,COMPANYID,ISREAD)
+        VALUES
+        <foreach item="item" collection="list" separator=",">
+            (#{item.type}, #{item.head}, #{item.msg},
+            #{item.kzid}, #{item.staffId}, UNIX_TIMESTAMP(now()), #{item.companyId},0)
+        </foreach>
     </insert>
+
     <!--批量更新消息为已读-->
     <update id="updateNewsReadFlag">
         UPDATE ${tabName}
@@ -81,4 +88,25 @@
             #{id}
         </foreach>
     </update>
+
+    <!--获取不同的消息的数量-->
+    <select id="getDiffTypeMsgAmount" resultType="int">
+        SELECT
+        count(*)
+        FROM ${tableName}
+        WHERE STAFFID = #{staffId}
+        AND COMPANYID = #{companyId}
+        AND ISREAD = #{readFlag}
+        <if test="type != null and type == 1">
+            AND TYPE NOT IN ('notice', 'system')
+        </if>
+        <if test="type != null and type == 2">
+            AND TYPE = 'notice'
+        </if>
+        <if test="type != null and type == 3">
+            AND TYPE = 'system'
+        </if>
+        ORDER BY
+        CREATETIME DESC
+    </select>
 </mapper>

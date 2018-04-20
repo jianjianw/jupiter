@@ -6,6 +6,7 @@ import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.entity.vo.NewsTotalAmountAndFlag;
 import com.qiein.jupiter.web.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -62,5 +63,19 @@ public class NewsController extends BaseController {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         newsService.batchUpdateNewsReadFlag(ids, currentLoginStaff.getCompanyId());
         return ResultInfoUtil.success(TipMsgConstant.UPDATE_SUCCESS);
+    }
+
+    /**
+     * 获取全部类型的消息数量 及是否存在未读
+     *
+     * @return
+     */
+    @GetMapping("/get_news_total_amount_and_flag")
+    public ResultInfo getNewsTotalAmountAndFlag() {
+        //获取当前登录用户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        NewsTotalAmountAndFlag newsTotalAmountAndFlag = newsService.getNewsTotalAmountAndFlag(currentLoginStaff.getId(),
+                currentLoginStaff.getCompanyId());
+        return ResultInfoUtil.success(newsTotalAmountAndFlag);
     }
 }
