@@ -122,13 +122,14 @@ public class GroupServiceImpl implements GroupService {
         //如果id不为空
         if (StringUtil.isNotNullStr(chiefIds)) {
             //根据ids获取员工数组
-            List<StaffPO> staffPOS = staffDao.batchGetByIds(chiefIds.split(","), groupPO.getCompanyId());
+            String[] split = chiefIds.split(CommonConstant.STR_SEPARATOR);
+            List<StaffPO> staffPOS = staffDao.batchGetByIds(split, groupPO.getCompanyId());
             StringBuilder chiefNames = new StringBuilder();
             //遍历追加姓名
             for (int i = 0; i < staffPOS.size(); i++) {
                 chiefNames.append(staffPOS.get(i).getNickName());
                 if (i < (staffPOS.size() - 1)) {
-                    chiefNames.append(",");
+                    chiefNames.append(CommonConstant.STR_SEPARATOR);
                 }
             }
             //设置
