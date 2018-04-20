@@ -60,6 +60,7 @@ public class GroupServiceImpl implements GroupService {
         }
         //判断是否需要设置主管姓名
         checkSetChiefsName(groupPO);
+        //todo 更新类型时 把下属小组类型同样更新
         groupDao.update(groupPO);
         return groupPO;
     }
@@ -79,7 +80,7 @@ public class GroupServiceImpl implements GroupService {
             throw new RException(ExceptionEnum.GROUP_HAVE_CHILD_GROUP);
         }
         //是否有下属员工
-        List<StaffVO> groupStaffs = groupStaffDao.getGroupStaffs(companyId, groupPO.getParentId());
+        List<StaffVO> groupStaffs = groupStaffDao.getGroupStaffs(companyId, groupPO.getGroupId());
         if (ListUtil.isNotNullList(groupStaffs)) {
             throw new RException(ExceptionEnum.GROUP_HAVE_STAFF);
         }
