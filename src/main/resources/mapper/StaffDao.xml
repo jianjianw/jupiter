@@ -305,4 +305,16 @@
               #{id}
           </foreach>
     </delete>
+
+    <select id="batchGetByIds"  resultMap="baseMap">
+        SELECT
+        <include refid="baseColumn"/>
+        FROM hm_pub_staff
+        WHERE
+        COMPANYID = #{companyId} AND
+        ID IN
+        <foreach collection="ids" item="id" index="index" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
 </mapper>

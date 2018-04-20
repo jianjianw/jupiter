@@ -27,7 +27,7 @@ public class RoleController extends BaseController {
     private RoleService roleService;//角色业务层
 
     @GetMapping("/get_company_role_list")
-    public ResultInfo getCompanyRolelist() {
+    public ResultInfo getCompanyRoleList() {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         List<RolePermissionVO> roleList = roleService.getCompanyAllRole(currentLoginStaff.getCompanyId());

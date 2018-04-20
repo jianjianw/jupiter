@@ -81,19 +81,21 @@ public interface StaffDao extends BaseDao<StaffPO> {
 
     /**
      * 根据id数组批量删除所属公司的员工
+     *
      * @param ids
      * @param companyId
      * @return
      */
-    void batDelByIdsAndCid(@Param("ids") String[] ids , @Param("companyId") int companyId);
+    void batchDelByIdsAndCid(@Param("ids") String[] ids, @Param("companyId") int companyId);
 
     /**
      * 根据小组类型获取小组人员列表
+     *
      * @param type
-     * @param companyid
+     * @param companyId
      * @return
      */
-    List<GroupStaffVO> getListByType(@Param("type") String type , @Param("companyId") int companyid);
+    List<GroupStaffVO> getListByType(@Param("type") String type, @Param("companyId") int companyId);
 
     /**
      * 搜索员工
@@ -103,5 +105,12 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @return
      */
     List<StaffVO> getStaffListBySearchKey(@Param("companyId") int companyId, @Param("searchKey") String searchKey);
+
+    /**
+     * 根据id 数组批量获取员工信息
+     *
+     * @return
+     */
+    List<StaffPO> batchGetByIds(@Param("ids") String[] ids, @Param("companyId") int companyId);
 
 }

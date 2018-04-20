@@ -7,7 +7,9 @@ import com.qiein.jupiter.util.ListUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.GroupDao;
 import com.qiein.jupiter.web.dao.GroupStaffDao;
+import com.qiein.jupiter.web.dao.StaffDao;
 import com.qiein.jupiter.web.entity.po.GroupPO;
+import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.GroupStaffVO;
 import com.qiein.jupiter.web.entity.vo.GroupVO;
 import com.qiein.jupiter.web.entity.vo.StaffVO;
@@ -20,7 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * 部门小组
+ * 部门小组实现类
  */
 @Service
 public class GroupServiceImpl implements GroupService {
@@ -29,6 +31,9 @@ public class GroupServiceImpl implements GroupService {
 
     @Autowired
     private GroupStaffDao groupStaffDao;
+
+    @Autowired
+    private StaffDao staffDao;
 
     /**
      * @param companyId
@@ -50,9 +55,11 @@ public class GroupServiceImpl implements GroupService {
     public GroupPO update(GroupPO groupPO) {
         List<GroupPO> groupDB = groupDao.getByName(groupPO.getGroupName(), groupPO.getCompanyId());
         //验证是否存在相同的部门名称
-        if (ListUtil.isNotNullList(groupDB)&&groupDB.size()>1) {
+        if (ListUtil.isNotNullList(groupDB) && groupDB.size() > 1) {
             throw new RException(ExceptionEnum.GROUP_NAME_REPEAT);
         }
+        //判断是否需要设置主管姓名
+        checkSetChiefsName(groupPO);
         groupDao.update(groupPO);
         return groupPO;
     }
@@ -92,6 +99,8 @@ public class GroupServiceImpl implements GroupService {
         if (ListUtil.isNotNullList(groupDB)) {
             throw new RException(ExceptionEnum.GROUP_NAME_REPEAT);
         }
+        //判断是否需要设置主管姓名
+        checkSetChiefsName(groupPO);
         //新增
         groupDao.insert(groupPO);
         //把组id 设置为父类Id+  分隔符  + 新增的id
@@ -103,5 +112,27 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public List<GroupStaffVO> getAllDeptAndStaff(int companyId) {
         return groupStaffDao.getAllDeptAndStaff(companyId);
+    }
+
+    /**
+     * 设置主管姓名
+     */
+    private void checkSetChiefsName(GroupPO groupPO) {
+        String chiefIds = groupPO.getChiefIds();
+        //如果id不为空
+        if (StringUtil.isNotNullStr(chiefIds)) {
+            //根据ids获取员工数组
+            List<StaffPO> staffPOS = staffDao.batchGetByIds(chiefIds.split(","), groupPO.getCompanyId());
+            StringBuilder chiefNames = new StringBuilder();
+            //遍历追加姓名
+            for (int i = 0; i < staffPOS.size(); i++) {
+                chiefNames.append(staffPOS.get(i).getNickName());
+                if (i < (staffPOS.size() - 1)) {
+                    chiefNames.append(",");
+                }
+            }
+            //设置
+            groupPO.setChiefNames(chiefNames.toString());
+        }
     }
 }
