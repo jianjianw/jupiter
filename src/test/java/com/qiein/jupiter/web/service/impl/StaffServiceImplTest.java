@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -100,8 +101,9 @@ public class StaffServiceImplTest {
     }
 
     @Test
+    @Transactional
     public void getStaffPermissionById() {
-        StaffPermissionVO staffPermissionById = staffService.getStaffPermissionById(2, 1);
+        StaffPermissionVO staffPermissionById = staffService.getStaffPermissionById(1, 1);
         System.out.println(staffPermissionById);
     }
 }

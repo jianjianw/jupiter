@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.service;
 
 import com.qiein.jupiter.web.entity.po.GroupPO;
+import com.qiein.jupiter.web.entity.vo.GroupStaffVO;
 import com.qiein.jupiter.web.entity.vo.GroupVO;
 
 import java.util.List;
@@ -41,5 +42,13 @@ public interface GroupService {
      * @param groupPO
      */
     GroupPO insert(GroupPO groupPO);
+
+    /**
+     * 获取公司所有的部门及下属员工
+     *
+     * @param companyId
+     * @return
+     */
+    List<GroupStaffVO> getAllDeptAndStaff(int companyId);
 
 }

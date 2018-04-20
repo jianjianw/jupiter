@@ -12,36 +12,51 @@
     </sql>
 
     <resultMap id="groupMap" type="com.qiein.jupiter.web.entity.vo.GroupStaffVO">
-        <id column="GROUPID" property="groupId" jdbcType="VARCHAR"/>
-        <result column="GROUPNAME" property="groupName" jdbcType="VARCHAR"/>
-        <result column="PARENTID" property="parentId" jdbcType="VARCHAR"/>
-        <result column="GROUPTYPE" property="groupType" jdbcType="VARCHAR"/>
-        <result column="COMPANYID" property="companyId" jdbcType="VARCHAR"/>
-        <result column="CHIEFIDS" property="chiefIds" jdbcType="VARCHAR"/>
-        <result column="CHIEFNAMES" property="chiefNames" jdbcType="VARCHAR"/>
-        <collection property="staffList" ofType="com.qiein.jupiter.web.entity.po.StaffPO"
-                    column=""
-                    select="getGroupStaffListByParentIdAndCid"/>
-        <!--<collection property="groupList" ofType="com.qiein.jupiter.web.entity.po.GroupStaffVO"-->
-                    <!--column="{parentId=PARENTID,companyId=COMPANYID}"-->
-                    <!--select="getGroupStaffListByParentIdAndCid"/>-->
+        <id column="UPGROUPID" property="groupId" jdbcType="VARCHAR"/>
+        <result column="UPGROUPNAME" property="groupName" jdbcType="VARCHAR"/>
+        <result column="UPPARENTID" property="parentId" jdbcType="VARCHAR"/>
+        <result column="UPGROUPTYPE" property="groupType" jdbcType="VARCHAR"/>
+        <result column="UPCOMPANYID" property="companyId" jdbcType="VARCHAR"/>
+        <result column="UPCHIEFIDS" property="chiefIds" jdbcType="VARCHAR"/>
+        <result column="UPCHIEFNAMES" property="chiefNames" jdbcType="VARCHAR"/>
+        <collection property="groupList" ofType="com.qiein.jupiter.web.entity.vo.GroupStaffVO">
+            <id column="GROUPID" property="groupId" jdbcType="VARCHAR"/>
+            <result column="GROUPNAME" property="groupName" jdbcType="VARCHAR"/>
+            <result column="PARENTID" property="parentId" jdbcType="VARCHAR"/>
+            <result column="GROUPTYPE" property="groupType" jdbcType="VARCHAR"/>
+            <result column="COMPANYID" property="companyId" jdbcType="VARCHAR"/>
+            <result column="CHIEFIDS" property="chiefIds" jdbcType="VARCHAR"/>
+            <result column="CHIEFNAMES" property="chiefNames" jdbcType="VARCHAR"/>
+            <collection property="staffList" ofType="com.qiein.jupiter.web.entity.po.StaffPO">
+                <id column="ID" property="id" jdbcType="INTEGER"/>
+                <result column="NICKNAME" property="nickName" jdbcType="VARCHAR"/>
+                <result column="PHONE" property="phone" jdbcType="VARCHAR"/>
+                <result column="USERNAME" property="userName" jdbcType="VARCHAR"/>
+                <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
+                <result column="HEADIMG" property="headImg" jdbcType="VARCHAR"/>
+            </collection>
+        </collection>
     </resultMap>
 
-    <resultMap id="staffMap" type="com.qiein.jupiter.web.entity.po.StaffPO">
+    <!--<resultMap id="groupMap" type="com.qiein.jupiter.web.entity.vo.GroupStaffVO">-->
+        <!--<id column="GROUPID" property="groupId" jdbcType="VARCHAR"/>-->
+        <!--<result column="GROUPNAME" property="groupName" jdbcType="VARCHAR"/>-->
+        <!--<result column="PARENTID" property="parentId" jdbcType="VARCHAR"/>-->
+        <!--<result column="GROUPTYPE" property="groupType" jdbcType="VARCHAR"/>-->
+        <!--<result column="COMPANYID" property="companyId" jdbcType="VARCHAR"/>-->
+        <!--<result column="CHIEFIDS" property="chiefIds" jdbcType="VARCHAR"/>-->
+        <!--<result column="CHIEFNAMES" property="chiefNames" jdbcType="VARCHAR"/>-->
+        <!--<collection property="groupList" ofType="com.qiein.jupiter.web.entity.vo.GroupStaffVO" resultMap="groupMap"/>-->
+        <!--<collection property="staffList" ofType="com.qiein.jupiter.web.entity.po.StaffPO" resultMap="staffPOMap"/>-->
+    <!--</resultMap>-->
+    <resultMap id="staffPOMap" type="com.qiein.jupiter.web.entity.po.StaffPO">
         <id column="ID" property="id" jdbcType="INTEGER"/>
         <result column="NICKNAME" property="nickName" jdbcType="VARCHAR"/>
         <result column="PHONE" property="phone" jdbcType="VARCHAR"/>
         <result column="USERNAME" property="userName" jdbcType="VARCHAR"/>
-        <result column="PASSWORD" property="password" jdbcType="VARCHAR"/>
         <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
-        <result column="CORPID" property="corpId" jdbcType="VARCHAR"/>
-        <result column="DINGUSERID" property="dingUserId" jdbcType="VARCHAR"/>
-        <result column="OPENID" property="openId" jdbcType="VARCHAR"/>
         <result column="HEADIMG" property="headImg" jdbcType="VARCHAR"/>
-        <result column="TOKEN" property="token" jdbcType="VARCHAR"/>
-        <result column="ISSHOW" property="showFlag" jdbcType="INTEGER"/>
         <result column="ISLOCK" property="lockFlag" jdbcType="BOOLEAN"/>
-        <result column="ISDEL" property="delFlag" jdbcType="BOOLEAN"/>
     </resultMap>
 
     <resultMap id="StaffVOMap" type="com.qiein.jupiter.web.entity.vo.StaffVO">
@@ -62,6 +77,23 @@
         <result column="ROLEID" property="roleId" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <!--根据小组类型获取指定小组及组内人员-->
+    <resultMap id="GroupTypeMap" type="com.qiein.jupiter.web.entity.vo.GroupStaffVO">
+        <id column="GROUPID" property="groupId" jdbcType="VARCHAR"/>
+        <result column="GROUPNAME" property="groupName" jdbcType="VARCHAR"/>
+        <result column="PARENTID" property="parentId" jdbcType="VARCHAR"/>
+        <result column="GROUPTYPE" property="groupType" jdbcType="VARCHAR"/>
+        <result column="COMPANYID" property="companyId" jdbcType="VARCHAR"/>
+        <result column="CHIEFIDS" property="chiefIds" jdbcType="VARCHAR"/>
+        <result column="CHIEFNAMES" property="chiefNames" jdbcType="VARCHAR"/>
+
+        <collection property="staffList" ofType="com.qiein.jupiter.web.entity.po.StaffPO" column="STAFFLIST">
+            <id property="id" column="STAFFID" javaType="int" jdbcType="INTEGER"/>
+            <result property="nickName" column="NICKNAME" javaType="String" jdbcType="VARCHAR"/>
+            <result property="phone" column="PHONE" javaType="String" jdbcType="VARCHAR"/>
+            <result property="userName" column="USERNAME" javaType="String" jdbcType="VARCHAR"/>
+        </collection>
+    </resultMap>
 
     <!--获取公司全部的组及下属员工-->
     <select id="getAllGroupAndStaff" resultMap="groupMap">
@@ -110,7 +142,7 @@
 
     <!--批量删除员工小组-->
     <delete id="batchDeleteByStaffArr" parameterType="map">
-        DELETE FROM  hm_pub_group_staff
+        DELETE FROM hm_pub_group_staff
         WHERE COMPANYID = #{companyId}
         AND STAFFID IN
         <foreach collection="staffIdArr" item="id" index="index" open="("
@@ -152,6 +184,40 @@
             rela.GROUPID = #{groupId}
             AND rela.COMPANYID = #{companyId}
             AND sf.ISDEL = 0
+    </select>
+
+    <!--获取公司下所有的部门及员工-->
+    <select id="getAllDeptAndStaff" resultMap="groupMap">
+       SELECT
+            group_up.GROUPNAME UPGROUPNAME,group_up.GROUPID UPGROUPID,group_up.PARENTID UPPARENTID,
+            group_down.GROUPNAME,group_down.GROUPID,group_down.PARENTID,
+            staff.id,staff.NICKNAME
+        FROM
+            hm_pub_group group_up
+            LEFT JOIN hm_pub_group group_down ON group_up.COMPANYID = group_down.COMPANYID
+            AND group_up.GROUPID = group_down.PARENTID
+            LEFT JOIN hm_pub_group_staff group_staff ON group_down.GROUPID = group_staff.GROUPID
+            LEFT JOIN hm_pub_staff staff on group_staff.STAFFID=staff.ID
+            AND staff.ISLOCK = 0
+	        AND staff.ISDEL = 0
+          WHERE group_up.COMPANYID = #{companyId}
+          AND group_up.PARENTID = '0'
+    </select>
+    
+    <!--根据组类型获取所有小组及组内人员信息-->
+    <select id="getListByGroupType" parameterType="map" resultMap="GroupTypeMap">
+        SELECT
+	        g.GROUPID , g.GROUPNAME , g.PARENTID , g.GROUPTYPE , g.COMPANYID , g.CHIEFIDS , g.CHIEFNAMES ,
+			s.ID STAFFID,s.NICKNAME nickName,s.PHONE phone,s.USERNAME userName
+        FROM
+	        hm_pub_group g
+        LEFT JOIN
+	        hm_pub_group_staff gs ON gs.GROUPID = g.GROUPID
+        LEFT JOIN
+	        hm_pub_staff s ON gs.STAFFID = s.ID
+        WHERE
+	        s.COMPANYID = #{companyId} AND g.GROUPTYPE = #{type}
+
     </select>
 
 </mapper>

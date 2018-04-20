@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.entity.vo.GroupStaffVO;
 import com.qiein.jupiter.web.entity.vo.StaffBaseInfoVO;
 import com.qiein.jupiter.web.entity.vo.StaffPermissionVO;
 import com.qiein.jupiter.web.entity.vo.StaffVO;
@@ -157,4 +158,18 @@ public interface StaffService {
      * @return
      */
     StaffBaseInfoVO getStaffBaseInfo(int staffId, int companyId);
+
+    /**
+     * 交接客资
+     * @param staffId   交接客服编号
+     * @param beStaffId 被转移客资客服编号
+     */
+    void changeStaff(int staffId , int beStaffId);
+
+    /**
+     * 获取可交接邀约客服人员列表
+     * @param companyId
+     * @return
+     */
+    List<GroupStaffVO> getChangeList(int companyId);
 }

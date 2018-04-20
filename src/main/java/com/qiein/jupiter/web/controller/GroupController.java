@@ -2,6 +2,8 @@ package com.qiein.jupiter.web.controller;
 
 import com.qiein.jupiter.aop.annotation.NotEmpty;
 import com.qiein.jupiter.constant.TipMsgConstant;
+import com.qiein.jupiter.exception.ExceptionEnum;
+import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.ObjectUtil;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
@@ -38,7 +40,7 @@ public class GroupController extends BaseController {
      * @return
      */
     @PostMapping("/update")
-    public ResultInfo update(@Validated  @RequestBody GroupPO groupPO) {
+    public ResultInfo update(@Validated @RequestBody GroupPO groupPO) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         groupPO.setCompanyId(currentLoginStaff.getCompanyId());
@@ -70,10 +72,23 @@ public class GroupController extends BaseController {
      * @return
      */
     @GetMapping("/delete")
-    public ResultInfo delete(@NotEmpty int id) {
+    public ResultInfo delete(int id) {
+        if (id == 0) {
+            throw new RException(ExceptionEnum.ID_NULL);
+        }
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         groupService.delete(id, currentLoginStaff.getCompanyId());
         return ResultInfoUtil.success(TipMsgConstant.DELETE_SUCCESS);
+    }
+
+    /**
+     * 获取当前公司所有的下属部门及员工
+     */
+    @GetMapping("/get_all_dept_and_staff")
+    public ResultInfo getAllDeptAndStaff() {
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        return ResultInfoUtil.success(groupService.getAllDeptAndStaff(currentLoginStaff.getCompanyId()));
     }
 }

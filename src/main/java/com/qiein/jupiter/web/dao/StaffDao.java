@@ -2,12 +2,14 @@ package com.qiein.jupiter.web.dao;
 
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.entity.vo.GroupStaffVO;
 import com.qiein.jupiter.web.entity.vo.StaffVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.mybatis.spring.annotation.MapperScan;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 员工Dao
@@ -79,11 +81,21 @@ public interface StaffDao extends BaseDao<StaffPO> {
 
     /**
      * 根据id数组批量删除所属公司的员工
+     *
      * @param ids
      * @param companyId
      * @return
      */
-    void batDelByIdsAndCid(@Param("ids") String[] ids , @Param("companyId") int companyId);
+    void batchDelByIdsAndCid(@Param("ids") String[] ids, @Param("companyId") int companyId);
+
+    /**
+     * 根据小组类型获取小组人员列表
+     *
+     * @param type
+     * @param companyId
+     * @return
+     */
+    List<GroupStaffVO> getListByType(@Param("type") String type, @Param("companyId") int companyId);
 
     /**
      * 搜索员工
@@ -93,5 +105,12 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @return
      */
     List<StaffVO> getStaffListBySearchKey(@Param("companyId") int companyId, @Param("searchKey") String searchKey);
+
+    /**
+     * 根据id 数组批量获取员工信息
+     *
+     * @return
+     */
+    List<StaffPO> batchGetByIds(@Param("ids") String[] ids, @Param("companyId") int companyId);
 
 }

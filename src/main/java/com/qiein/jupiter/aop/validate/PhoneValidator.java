@@ -1,7 +1,7 @@
 package com.qiein.jupiter.aop.validate;
 
 import com.qiein.jupiter.aop.annotation.Phone;
-import com.qiein.jupiter.util.RegexUtils;
+import com.qiein.jupiter.util.RegexUtil;
 import com.qiein.jupiter.util.StringUtil;
 
 import javax.validation.ConstraintValidator;
@@ -17,6 +17,6 @@ public class PhoneValidator implements ConstraintValidator<Phone, String> {
 
     @Override
     public boolean isValid(String phone, ConstraintValidatorContext constraintValidatorContext) {
-        return !RegexUtils.checkMobile(StringUtil.nullToStrTrim(phone));
+        return !RegexUtil.checkMobile(StringUtil.nullToStrTrim(phone));
     }
 }

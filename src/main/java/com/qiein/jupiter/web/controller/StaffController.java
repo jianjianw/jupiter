@@ -58,7 +58,7 @@ public class StaffController extends BaseController {
     public ResultInfo insert(@RequestBody @Validated StaffVO staffVO) {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        if (!RegexUtils.checkMobile(staffVO.getPhone())) {
+        if (!RegexUtil.checkMobile(staffVO.getPhone())) {
             return ResultInfoUtil.error(ExceptionEnum.PHONE_ERROR);
         }
         //设置cid
@@ -82,7 +82,7 @@ public class StaffController extends BaseController {
         if (staffVO.getId() == 0) {
             return ResultInfoUtil.error(ExceptionEnum.STAFF_ID_NULL);
         }
-        if (!RegexUtils.checkMobile(staffVO.getPhone())) {
+        if (!RegexUtil.checkMobile(staffVO.getPhone())) {
             return ResultInfoUtil.error(ExceptionEnum.PHONE_ERROR);
         }
         //获取当前登录用户
@@ -196,7 +196,7 @@ public class StaffController extends BaseController {
      */
     @GetMapping("/verify_code")
     public void loginCode(HttpServletResponse response, @RequestParam("phone") String userName) {
-        if (StringUtil.isNullStr(userName) || !RegexUtils.checkMobile(userName)) {
+        if (StringUtil.isNullStr(userName) || !RegexUtil.checkMobile(userName)) {
             return;
         }
         //生成验证码并放入缓存
@@ -392,5 +392,20 @@ public class StaffController extends BaseController {
             return ResultInfoUtil.error(ExceptionEnum.UNKNOW_ERROR);
         }
         return ResultInfoUtil.success("交接成功");
+    }
+
+    /**
+     * 获取电商邀约小组人员列表
+     * @return
+     */
+    @GetMapping("/change_list")
+    public ResultInfo getChangeList(){
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        //获取操作用户所属公司
+        Integer companyId = currentLoginStaff.getCompanyId();
+
+
+        return ResultInfoUtil.success(TipMsgConstant.SUCCESS,staffService.getChangeList(companyId));
     }
 }

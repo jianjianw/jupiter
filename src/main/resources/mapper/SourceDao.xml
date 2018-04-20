@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiein.jupiter.web.dao.SourceDao">
+
+    <resultMap id="baseMap" type="com.qiein.jupiter.web.entity.po.SourcePO">
+        <id column="ID" jdbcType="INTEGER" property="id"/>
+        <result column="SRCNAME" jdbcType="VARCHAR" property="srcName"/>
+        <result column="SRCIMG" jdbcType="VARCHAR" property="srcImg"/>
+        <result column="TYPEID" jdbcType="INTEGER" property="typeId"/>
+        <result column="CHANNELID" jdbcType="INTEGER" property="channelId"/>
+        <result column="CHANNELNAME" jdbcType="VARCHAR" property="channelName"/>
+        <result column="BRANDID" jdbcType="INTEGER" property="brandId"/>
+        <result column="BRANDNAME" jdbcType="VARCHAR" property="brandName"/>
+        <result column="COMPANYID" jdbcType="INTEGER" property="companyId"/>
+        <result column="PRIORITY" jdbcType="INTEGER" property="priority"/>
+        <result column="ISFILTER" jdbcType="BOOLEAN" property="isFilter"/>
+        <result column="ISSHOW" jdbcType="BOOLEAN" property="isShow"/>
+    </resultMap>
+
+    <sql id="baseColumn">
+        *
+    </sql>
+
+    <select id="getById" parameterType="Integer" resultMap="baseMap">
+        <include refid="baseColumn"/>
+        FROM
+        hm_crm_source
+        WHERE
+        COMPANYID = #{companyId} AND ID = #{id}
+    </select>
+
+    <insert id="insert" parameterType="com.qiein.jupiter.web.entity.po.ChannelPO" useGeneratedKeys="true"
+            keyProperty="grpId">
+        INSERT INTO hm_crm_source
+        (CHANNELNAME,CHANNELIMG,TYPEID,BRANDID,BRANDNAME,PUSHRULE,COMPANYID,ISSHOW)
+        VALUES (
+        #{channelName},#{channelImg},#{typeId},#{brandId},#{brandName},#{pushRule},#{companyId},#{isShow}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.qiein.jupiter.web.entity.po.SourcePO">
+        UPDATE
+        hm_crm_source
+        <set>
+            <if test="srcName != null and srcName != '' ">
+                SRCNAME = #{srcName},
+            </if>
+            <if test="srcImg != null and srcImg != '' ">
+                SRCIMG = #{srcImg},
+            </if>
+            <if test="typeId != null">
+                TYPEID = #{typeId},
+            </if>
+            <if test="channelId != null">
+                CHANNELID = #{channelId},
+            </if>
+            <if test="channelName != null and channelName != '' ">
+                CHANNELNAME = #{channelName},
+            </if>
+            <if test="brandId != null">
+                BRANDID = #{brandId},
+            </if>
+            <if test="brandName != null and brandName != '' ">
+                BRANDNAME = #{brandName},
+            </if>
+            <if test="companyId != null">
+                COMPANYID = #{companyId},
+            </if>
+            <if test="priority != null">
+                PRIORITY = #{priority},
+            </if>
+            <if test="isFilter != null">
+                ISFILTER = #{isFilter},
+            </if>
+            <if test="isShow != null">
+                ISSHOW = #{isShow},
+            </if>
+        </set>
+        WHERE
+        COMPANYID = #{companyId} AND SRCID = #{srcId}
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+        DELETE
+        FROM
+        hm_crm_source
+        WHERE
+        COMPANYID = #{companyId} AND ID = #{id}
+
+    </delete>
+
+    <!--同名校验-->
+    <select id="checkSource" parameterType="map" resultType="Integer">
+        SELECT
+        COUNT(1)
+        FROM
+        hm_crm_source
+        WHERE
+        COMPANYID = #{companyId} AND SRCNAME = #{srcName} AND CHANNELID = #{channelId}
+    </select>
+
+    <delete id="deleteByIdAndCid" parameterType="Integer">
+        DELETE
+        FROM
+        hm_crm_source
+        WHERE
+        COMPANYID = #{companyId} AND ID = #{id}
+    </delete>
+
+    <select id="getSourceListByChannelId" parameterType="Integer" resultMap="baseMap">
+        SELECT
+		  ID,SRCNAME,SRCIMG,TYPEID,CHANNELID,CHANNELNAME,BRANDID,BRANDNAME,COMPANYID,PRIORITY,ISFILTER,ISSHOW
+        FROM
+          hm_crm_source
+        WHERE
+          COMPANYID = #{companyId} AND CHANNELID = #{channelId}
+		ORDER BY ISSHOW DESC,TYPEID ,PRIORITY ,ID
+    </select>
+</mapper>

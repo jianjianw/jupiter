@@ -4,7 +4,7 @@ import sun.applet.Main;
 
 import java.util.regex.Pattern;
 
-public class RegexUtils {
+public class RegexUtil {
     /**
      * @创建时间： 2016年1月20日 @相关参数： @param email
      * email地址，格式：qq@zuidaima.com，LinkinPark@xxx.com.cn，

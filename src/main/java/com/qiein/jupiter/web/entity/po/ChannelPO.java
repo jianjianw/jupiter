@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.entity.po;
 
+import com.qiein.jupiter.aop.annotation.NotEmpty;
 import com.qiein.jupiter.web.entity.BaseEntity;
 
 
@@ -11,6 +12,7 @@ public class ChannelPO extends BaseEntity {
     /**
      * 渠道名称
      */
+    @NotEmpty(message = "{Channel.chanelName.null}")
     private String channelName;
 
     /**
@@ -22,22 +24,26 @@ public class ChannelPO extends BaseEntity {
      * 渠道类型
      * 1:纯电商，2:电商转介绍，3:员工转介绍，4:指名转介绍，5:外部转介绍，6:自然入客，7:门店外展
      */
+    @NotEmpty(message = "{Channel.typeId.null}")
     private Integer typeId;
 
     /**
      * 渠道所属品牌编号
      */
+    @NotEmpty(message = "{Channel.brandId.null}")
     private Integer brandId;
 
     /**
      * 渠道所属品牌名
      */
+    @NotEmpty(message = "{Channel.brandName.null}")
     private String brandName;
 
     /**
      * 渠道推送规则：
      * 0:不推送，1:自由领取，2:全员平均，3:小组平均，4:部门平均，5:...
      */
+    @NotEmpty(message = "{Channel.pushRule.null}")
     private Integer pushRule;
 
     /**

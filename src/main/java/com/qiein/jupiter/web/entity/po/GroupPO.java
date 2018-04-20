@@ -82,4 +82,20 @@ public class GroupPO extends BaseEntity {
     public void setCompanyId(int companyId) {
         this.companyId = companyId;
     }
+
+    public String getChiefIds() {
+        return chiefIds;
+    }
+
+    public void setChiefIds(String chiefIds) {
+        this.chiefIds = chiefIds;
+    }
+
+    public String getChiefNames() {
+        return chiefNames;
+    }
+
+    public void setChiefNames(String chiefNames) {
+        this.chiefNames = chiefNames;
+    }
 }
