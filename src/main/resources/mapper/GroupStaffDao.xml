@@ -30,7 +30,7 @@
             <result column="CHIEFIDS" property="chiefIds" jdbcType="VARCHAR"/>
             <result column="CHIEFNAMES" property="chiefNames" jdbcType="VARCHAR"/>
             <collection property="staffList" ofType="com.qiein.jupiter.web.entity.po.StaffPO">
-                <id column="ID" property="id" jdbcType="INTEGER"/>
+                <id column="STAFFID" property="id" jdbcType="INTEGER"/>
                 <result column="NICKNAME" property="nickName" jdbcType="VARCHAR"/>
                 <result column="PHONE" property="phone" jdbcType="VARCHAR"/>
                 <result column="USERNAME" property="userName" jdbcType="VARCHAR"/>
@@ -193,7 +193,7 @@
        SELECT
           group_up.ID UPID,group_up.GROUPNAME UPGROUPNAME,group_up.GROUPID UPGROUPID,group_up.PARENTID UPPARENTID,
            group_down.ID, group_down.GROUPNAME,group_down.GROUPID,group_down.PARENTID,
-            staff.id,staff.NICKNAME
+            staff.id STAFFID,staff.NICKNAME
         FROM
             hm_pub_group group_up
             LEFT JOIN hm_pub_group group_down ON group_up.COMPANYID = group_down.COMPANYID
