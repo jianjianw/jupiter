@@ -21,7 +21,7 @@
         ID,SRCNAME,TYPEID,CHANNELID,CHANNELNAME,SRCIMG,BRANDID,BRANDNAME,PRIORITY,ISSHOW,ISFILTER,COMPANYID
     </sql>
 
-    <select id="getById" parameterType="Integer" resultMap="baseMap">
+    <select id="getByIdAndCid" parameterType="Integer" resultMap="baseMap">
         <include refid="baseColumn"/>
         FROM
         hm_crm_source
