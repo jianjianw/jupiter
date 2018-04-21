@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
  * 基础Controller
  */
 @RestController
-@Validated
 public class BaseController {
 
     @Autowired
@@ -25,7 +24,7 @@ public class BaseController {
      * @return
      */
     @RequestMapping("/")
-    public String init(@NotEmptyStr String id) {
+    public String init() {
         return "jupiter is running success!";
     }
 
