@@ -39,6 +39,13 @@ public interface SourceService {
     void delSourceById(Integer id, Integer companyId);
 
     /**
+     * 根据来源编号批量删除来源
+     * @param ids
+     * @param companyId
+     */
+    void datDelSrc(String ids ,Integer companyId);
+
+    /**
      * 根据渠道编号获取归属来源列表
      *
      * @param channelId

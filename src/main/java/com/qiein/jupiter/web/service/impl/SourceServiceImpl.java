@@ -101,6 +101,19 @@ public class SourceServiceImpl implements SourceService {
     }
 
     /**
+     * 根据来源编号批量删除来源
+     * @param ids
+     * @param companyId
+     */
+    @Override
+    public void datDelSrc(String ids, Integer companyId) {
+        //删除前需要检查来源下是否存在客资,为空才可删除
+        //TODO
+        String[] idArr = ids.split(",");
+        sourceDao.datDelete(idArr,companyId);
+    }
+
+    /**
      * 根据渠道编号获取下属来源列表
      *
      * @param channelId

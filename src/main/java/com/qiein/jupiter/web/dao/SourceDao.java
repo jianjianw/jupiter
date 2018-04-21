@@ -33,4 +33,12 @@ public interface SourceDao extends BaseDao<SourcePO>{
      * @return
      */
     Integer datUpdate(@Param("sv") SourceVO sourceVO ,@Param("ids") String[] ids);
+
+    /**
+     * 批量删除来源
+     * @param ids
+     * @param companyId
+     * @return
+     */
+    Integer datDelete(@Param("ids")String[] ids ,@Param("companyId") Integer companyId );
 }

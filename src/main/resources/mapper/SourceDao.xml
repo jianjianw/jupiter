@@ -84,32 +84,32 @@
         UPDATE
         hm_crm_source
         <set>
-            <if test="srcImg != null and srcImg != '' ">
-                SRCIMG = #{srcImg},
+            <if test="sv.srcImg != null and sv.srcImg != '' ">
+                SRCIMG = #{sv.srcImg},
             </if>
-            <if test="typeId != null">
-                TYPEID = #{typeId},
+            <if test="sv.typeId != null">
+                TYPEID = #{sv.typeId},
             </if>
-            <if test="channelId != null">
-                CHANNELID = #{channelId},
+            <if test="sv.channelId != null">
+                CHANNELID = #{sv.channelId},
             </if>
-            <if test="channelName != null and channelName != '' ">
-                CHANNELNAME = #{channelName},
+            <if test="sv.channelName != null and sv.channelName != '' ">
+                CHANNELNAME = #{sv.channelName},
             </if>
-            <if test="brandId != null">
-                BRANDID = #{brandId},
+            <if test="sv.brandId != null">
+                BRANDID = #{sv.brandId},
             </if>
-            <if test="brandName != null and brandName != '' ">
-                BRANDNAME = #{brandName},
+            <if test="sv.brandName != null and sv.brandName != '' ">
+                BRANDNAME = #{sv.brandName},
             </if>
-            <if test="priority != null">
-                PRIORITY = #{priority},
+            <if test="sv.priority != null">
+                PRIORITY = #{sv.priority},
             </if>
-            <if test="isFilter != null">
-                ISFILTER = #{isFilter},
+            <if test="sv.isFilter != null">
+                ISFILTER = #{sv.isFilter},
             </if>
-            <if test="isShow != null">
-                ISSHOW = #{isShow},
+            <if test="sv.isShow != null">
+                ISSHOW = #{sv.isShow},
             </if>
         </set>
         WHERE
@@ -126,6 +126,17 @@
         WHERE
         COMPANYID = #{companyId} AND ID = #{id}
 
+    </delete>
+
+    <delete id="datDelete" parameterType="map">
+        DELETE
+        FROM
+        hm_crm_source
+        WHERE
+        COMPANYID = #{companyId} AND ID IN
+        <foreach collection="ids" item="id" index="index" open="(" separator="," close=")">
+            #{id}
+        </foreach>
     </delete>
 
     <!--同名校验-->

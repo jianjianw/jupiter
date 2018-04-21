@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.controller;
 
 import com.qiein.jupiter.aop.validate.annotation.Id;
+import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.constant.TipMsgConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
@@ -22,18 +23,19 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/source")
 @Validated
-public class SourceController extends BaseController{
+public class SourceController extends BaseController {
 
     @Autowired
     private SourceService sourceService;
 
     /**
-     *  新增来源
+     * 新增来源
+     *
      * @param sourcePO
      * @return
      */
     @PostMapping("/add")
-    public ResultInfo addSource(@RequestBody @Validated SourcePO sourcePO){
+    public ResultInfo addSource(@RequestBody @Validated SourcePO sourcePO) {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         //设置cid
@@ -47,11 +49,12 @@ public class SourceController extends BaseController{
 
     /**
      * 编辑来源
+     *
      * @param sourceVO
      * @return
      */
     @PostMapping("/edit")
-    public ResultInfo editSource(@RequestBody SourceVO sourceVO){
+    public ResultInfo editSource(@RequestBody SourceVO sourceVO) {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         //设置cid
@@ -66,16 +69,17 @@ public class SourceController extends BaseController{
 
     /**
      * 删除来源
-     * @param id
+     *
+     * @param ids
      * @return
      */
     @GetMapping("/del")
-    public ResultInfo delSource(@Id int id){
+    public ResultInfo delSource(@NotEmptyStr String ids) {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         //获取所属公司编号
         Integer companyId = currentLoginStaff.getCompanyId();
-        sourceService.delSourceById(id,companyId);
+        sourceService.datDelSrc(ids, companyId);
 
         return ResultInfoUtil.success(TipMsgConstant.DEL_SOURCE_SUCCESS);
     }
