@@ -40,8 +40,10 @@ public enum ExceptionEnum {
     WEIGHT_ERROR(404, "权重需在[1,20]之间"),
     ID_IS_NULL(405, "ID不能为空"),
     CHANNEL_GROUP_EXIST(406, "该渠道下客服小组已存在"),
-    //渠道
-    CHANNEL_NAME_REPEAT(501, "渠道名称重复"),
+    //渠道&来源
+    CHANNEL_NAME_REPEAT(501,"渠道名称重复"),
+    CHANNEL_ID_NULL(502,"渠道编号不能为空"),
+    SOURCE_ID_NULL(503,"来源编号不能为空"),
     //拍摄地
     SHOP_EXIST(601, "拍摄地已存在"),
     SHOP_ID_NULL(602, "拍摄地ID不能为空"),

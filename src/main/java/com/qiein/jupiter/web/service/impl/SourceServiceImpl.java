@@ -14,7 +14,6 @@ import java.util.List;
 public class SourceServiceImpl implements SourceService {
     @Autowired
     private SourceDao sourceDao;
-    //TODO 改hm_crm_source表的ID和渠道编号渠道名
 
     /**
      * 新增来源
@@ -24,7 +23,7 @@ public class SourceServiceImpl implements SourceService {
     @Override
     public void createSource(SourcePO sourcePO) {
         //先检查是否重名
-        if (sourceDao.checkSource(sourcePO.getSrcName(), sourcePO.getGrpId(), sourcePO.getCompanyId()) >= 1)
+        if(sourceDao.checkSource(sourcePO.getSrcName(),sourcePO.getChannelId(),sourcePO.getCompanyId())>=1)
             throw new RException(ExceptionEnum.CHANNEL_NAME_REPEAT);
         sourceDao.insert(sourcePO);
     }
@@ -37,7 +36,7 @@ public class SourceServiceImpl implements SourceService {
     @Override
     public void editSource(SourcePO sourcePO) {
         //先检查是否重名
-        if (sourceDao.checkSource(sourcePO.getSrcName(), sourcePO.getGrpId(), sourcePO.getCompanyId()) >= 1)
+        if(sourceDao.checkSource(sourcePO.getSrcName(),sourcePO.getChannelId(),sourcePO.getCompanyId())>=1)
             throw new RException(ExceptionEnum.CHANNEL_NAME_REPEAT);
         sourceDao.update(sourcePO);
     }

@@ -15,7 +15,7 @@ public interface SourceDao extends BaseDao<SourcePO>{
      * @param companyId
      * @return
      */
-    Integer checkSource(@Param("srcName") String srcName,@Param("grpId") Integer grpId, @Param("companyId") Integer companyId);
+    Integer checkSource(@Param("srcName") String srcName,@Param("channelId") Integer channelId, @Param("companyId") Integer companyId);
 
     /**
      * 根据渠道编号获取旗下的来源列表
