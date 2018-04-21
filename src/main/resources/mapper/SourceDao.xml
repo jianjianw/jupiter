@@ -22,6 +22,7 @@
     </sql>
 
     <select id="getByIdAndCid" parameterType="Integer" resultMap="baseMap">
+        SELECT 
         <include refid="baseColumn"/>
         FROM
         hm_crm_source
