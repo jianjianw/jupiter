@@ -19,7 +19,7 @@ import java.util.List;
 public class ShopServiceImpl implements ShopService {
 
     @Autowired
-    private ShopDao shopDao;//拍摄地持久层
+    private ShopDao shopDao;
 
     /**
      * 获取企业所有拍摄地列表

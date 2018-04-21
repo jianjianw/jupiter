@@ -42,8 +42,7 @@ public class GroupServiceImpl implements GroupService {
      */
     //@Cacheable(value = "dept", key = "'dept'+':'+#companyId")
     public List<GroupVO> getCompanyAllDeptList(int companyId) {
-        List<GroupVO> groupList = groupDao.getCompanyAllDeptList(companyId);
-        return groupList;
+        return groupDao.getCompanyAllDeptList(companyId);
     }
 
     /**
@@ -120,6 +119,12 @@ public class GroupServiceImpl implements GroupService {
         return groupPO;
     }
 
+    /**
+     * 获取所有部门和员工
+     *
+     * @param companyId
+     * @return
+     */
     @Override
     public List<GroupStaffVO> getAllDeptAndStaff(int companyId) {
         return groupStaffDao.getAllDeptAndStaff(companyId);

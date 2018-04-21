@@ -22,8 +22,7 @@ public class BaseController {
      * @return
      */
     @RequestMapping("/")
-    public String init(NewsPO newsPO) {
-        System.out.println(JSONObject.toJSONString(newsPO));
+    public String init() {
         return "jupiter is running success!";
     }
 

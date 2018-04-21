@@ -1,6 +1,5 @@
 package com.qiein.jupiter.web.service.impl;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
@@ -21,9 +20,10 @@ import java.util.List;
 public class RoleServiceImpl implements RoleService {
 
     @Autowired
-    private RolePermissionDao rolePmsDao;//角色权限关联持久化
+    private RolePermissionDao rolePmsDao;
+
     @Autowired
-    private RoleDao roleDao;//角色持久化
+    private RoleDao roleDao;
 
     /**
      * 新增角色

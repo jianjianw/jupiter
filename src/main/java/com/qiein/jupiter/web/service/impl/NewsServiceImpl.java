@@ -101,6 +101,13 @@ public class NewsServiceImpl implements NewsService {
         return newsDao.batchUpdateNewsReadFlag(tableName, msgIds.split(CommonConstant.STR_SEPARATOR), cid);
     }
 
+    /**
+     * 首页获取总消息数量和各个消息是否存在未读
+     *
+     * @param uid
+     * @param cid
+     * @return
+     */
     @Override
     public NewsTotalAmountAndFlag getNewsTotalAmountAndFlag(final int uid, final int cid) {
         //根据公司获取表名

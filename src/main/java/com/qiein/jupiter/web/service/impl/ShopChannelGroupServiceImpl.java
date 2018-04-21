@@ -18,7 +18,7 @@ import java.util.List;
 public class ShopChannelGroupServiceImpl implements ShopChannelGroupService {
 
     @Autowired
-    private ShopChannelGroupDao shopChannelGroupDao;//拍摄地，渠道，小组关联
+    private ShopChannelGroupDao shopChannelGroupDao;
 
     /**
      * 获取拍摄地，渠道，小组关联集合

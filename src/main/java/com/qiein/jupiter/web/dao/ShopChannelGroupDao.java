@@ -18,7 +18,7 @@ public interface ShopChannelGroupDao {
      * @param shopId
      * @return
      */
-    public List<ShopChannelGroupVO> getShopChannelGroupList(@Param("companyId") int companyId, @Param("shopId") int shopId);
+    List<ShopChannelGroupVO> getShopChannelGroupList(@Param("companyId") int companyId, @Param("shopId") int shopId);
 
     /**
      * 编辑小组权重
@@ -27,7 +27,7 @@ public interface ShopChannelGroupDao {
      * @param relaId
      * @return
      */
-    public int editGroupWeight(@Param("companyId") int companyId, @Param("relaId") int relaId, @Param("weight") int weight);
+    int editGroupWeight(@Param("companyId") int companyId, @Param("relaId") int relaId, @Param("weight") int weight);
 
     /**
      * 批量删除拍摄地渠道小组关联
@@ -35,7 +35,7 @@ public interface ShopChannelGroupDao {
      * @param companyId
      * @param relaIdArr
      */
-    public void batchDeleteGroup(@Param("companyId") int companyId, @Param("relaIdArr") String[] relaIdArr);
+    void batchDeleteGroup(@Param("companyId") int companyId, @Param("relaIdArr") String[] relaIdArr);
 
     /**
      * 根据渠道拍摄地，删除记录
@@ -44,14 +44,14 @@ public interface ShopChannelGroupDao {
      * @param shopId
      * @param channelId
      */
-    public void deleteByChannelAndShopId(@Param("companyId") int companyId, @Param("channelId") int channelId, @Param("shopId") int shopId);
+    void deleteByChannelAndShopId(@Param("companyId") int companyId, @Param("channelId") int channelId, @Param("shopId") int shopId);
 
     /**
      * 批量添加拍摄地渠道关联
      *
      * @param list
      */
-    public void batchAddShopChannel(List<ShopChannelGroupPO> list);
+    void batchAddShopChannel(List<ShopChannelGroupPO> list);
 
     /**
      * 根据拍摄地，渠道，小组查询关联
@@ -62,8 +62,8 @@ public interface ShopChannelGroupDao {
      * @param groupId
      * @return
      */
-    public ShopChannelGroupPO getByShopAndChannelAndGroup(@Param("companyId") int companyId, @Param("channelId") int channelId,
-                                                          @Param("shopId") int shopId, @Param("groupId") String groupId);
+    ShopChannelGroupPO getByShopAndChannelAndGroup(@Param("companyId") int companyId, @Param("channelId") int channelId,
+                                                   @Param("shopId") int shopId, @Param("groupId") String groupId);
 
     /**
      * 编辑客服小组
@@ -73,7 +73,7 @@ public interface ShopChannelGroupDao {
      * @param groupId
      * @return
      */
-    public int editChannelGroup(@Param("companyId") int companyId, @Param("relaId") int relaId, @Param("groupId") String groupId);
+    int editChannelGroup(@Param("companyId") int companyId, @Param("relaId") int relaId, @Param("groupId") String groupId);
 
     /**
      * 模糊查询渠道小组关联
@@ -84,6 +84,6 @@ public interface ShopChannelGroupDao {
      * @param searchKey
      * @return
      */
-    public List<ChannelGroupVO> searchChannelGroup(@Param("companyId") int companyId, @Param("shopId") int shopId,
-                                             @Param("channelId") int channelId, @Param("searchKey") String searchKey);
+    List<ChannelGroupVO> searchChannelGroup(@Param("companyId") int companyId, @Param("shopId") int shopId,
+                                            @Param("channelId") int channelId, @Param("searchKey") String searchKey);
 }

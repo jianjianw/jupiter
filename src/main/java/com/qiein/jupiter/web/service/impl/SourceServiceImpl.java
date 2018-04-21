@@ -18,30 +18,33 @@ public class SourceServiceImpl implements SourceService {
 
     /**
      * 新增来源
+     *
      * @param sourcePO
      */
     @Override
     public void createSource(SourcePO sourcePO) {
         //先检查是否重名
-        if(sourceDao.checkSource(sourcePO.getSrcName(),sourcePO.getGrpId(),sourcePO.getCompanyId())>=1)
+        if (sourceDao.checkSource(sourcePO.getSrcName(), sourcePO.getGrpId(), sourcePO.getCompanyId()) >= 1)
             throw new RException(ExceptionEnum.CHANNEL_NAME_REPEAT);
         sourceDao.insert(sourcePO);
     }
 
     /**
      * 编辑来源
+     *
      * @param sourcePO
      */
     @Override
     public void editSource(SourcePO sourcePO) {
         //先检查是否重名
-        if(sourceDao.checkSource(sourcePO.getSrcName(),sourcePO.getGrpId(),sourcePO.getCompanyId())>=1)
+        if (sourceDao.checkSource(sourcePO.getSrcName(), sourcePO.getGrpId(), sourcePO.getCompanyId()) >= 1)
             throw new RException(ExceptionEnum.CHANNEL_NAME_REPEAT);
         sourceDao.update(sourcePO);
     }
 
     /**
      * 删除来源
+     *
      * @param id
      * @param companyId
      */
@@ -49,11 +52,12 @@ public class SourceServiceImpl implements SourceService {
     public void delSourceById(Integer id, Integer companyId) {
         //删除前需要检查来源下是否存在客资,为空才可删除
         //TODO
-        sourceDao.deleteByIdAndCid(id,companyId);
+        sourceDao.deleteByIdAndCid(id, companyId);
     }
 
     /**
-     *  根据渠道编号获取下属来源列表
+     * 根据渠道编号获取下属来源列表
+     *
      * @param channelId
      * @param companyId
      * @return

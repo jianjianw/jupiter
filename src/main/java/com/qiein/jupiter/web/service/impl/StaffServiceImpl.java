@@ -57,16 +57,10 @@ public class StaffServiceImpl implements StaffService {
     private CompanyService companyService;
 
     @Autowired
-    private ValueOperations<String, String> valueOperations;
-
-    @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
     @Autowired
-    private GroupDao groupDao;//小组部门持久层
-
-    @Autowired
-    private StaffRoleDao staffRoleDao;//人员角色关联持久层
+    private StaffRoleDao staffRoleDao;
 
     @Autowired
     private GroupStaffDao groupStaffDao;
@@ -495,6 +489,7 @@ public class StaffServiceImpl implements StaffService {
 
     /**
      * 交接客资
+     *
      * @param staffId   交接客服编号
      * @param beStaffId 被转移客资客服编号
      */
@@ -505,12 +500,13 @@ public class StaffServiceImpl implements StaffService {
 
     /**
      * 获取电商邀约小组人员列表
+     *
      * @param companyId
      * @return
      */
     @Override
     public List<GroupStaffVO> getChangeList(int companyId) {
-        return groupStaffDao.getListByGroupType("dsyy",companyId);
+        return groupStaffDao.getListByGroupType("dsyy", companyId);
     }
 
 }
