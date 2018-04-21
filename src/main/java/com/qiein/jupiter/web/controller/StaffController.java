@@ -1,7 +1,8 @@
 package com.qiein.jupiter.web.controller;
 
+import com.qiein.jupiter.aop.annotation.Id;
 import com.qiein.jupiter.aop.annotation.LoginLog;
-import com.qiein.jupiter.aop.annotation.NotEmpty;
+import com.qiein.jupiter.aop.annotation.NotEmptyStr;
 import com.qiein.jupiter.constant.NumberConstant;
 import com.qiein.jupiter.constant.RedisConstant;
 import com.qiein.jupiter.constant.TipMsgConstant;
@@ -28,6 +29,7 @@ import java.util.concurrent.TimeUnit;
  */
 @RestController
 @RequestMapping("/staff")
+@Validated
 public class StaffController extends BaseController {
 
     @Autowired
@@ -100,12 +102,9 @@ public class StaffController extends BaseController {
      * @return
      */
     @GetMapping("/delete_flag")
-    public ResultInfo deleteFlag(int id) {
+    public ResultInfo deleteFlag(@Id int id) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        if (id == 0) {
-            throw new RException(ExceptionEnum.ID_NULL);
-        }
         staffService.logicDelete(id, currentLoginStaff.getCompanyId());
         return ResultInfoUtil.success();
     }
@@ -171,7 +170,7 @@ public class StaffController extends BaseController {
      * @param userName 用户名
      */
     @GetMapping("/need_verity_code")
-    public boolean needVerityCode(@NotEmpty @RequestParam("phone") String userName) {
+    public boolean needVerityCode(@NotEmptyStr @RequestParam("phone") String userName) {
         //判断是否需要验证码
         String userLoginErrNum = valueOperations.get(RedisConstant.getUserLoginErrNumKey(userName));
         if (userLoginErrNum == null) {
@@ -205,7 +204,7 @@ public class StaffController extends BaseController {
     }
 
     @GetMapping("/get_group_staff_list")
-    public ResultInfo getGroupStaffList(@NotEmpty @RequestParam("groupId") String groupId) {
+    public ResultInfo getGroupStaffList(@NotEmptyStr @RequestParam("groupId") String groupId) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         List<StaffVO> staffList = staffService.getGroupStaffs(currentLoginStaff.getCompanyId(), groupId);
@@ -218,8 +217,8 @@ public class StaffController extends BaseController {
      * @return
      */
     @GetMapping("/batch_edit_staff")
-    public ResultInfo batchEditStaff(@NotEmpty @RequestParam("staffIds") String staffIds, @RequestParam("roleIds") String roleIds,
-                                     @RequestParam("password") String password, @NotEmpty @RequestParam("groupId") String groupId) {
+    public ResultInfo batchEditStaff(@NotEmptyStr @RequestParam("staffIds") String staffIds, @RequestParam("roleIds") String roleIds,
+                                     @RequestParam("password") String password, @NotEmptyStr @RequestParam("groupId") String groupId) {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         staffService.batchEditStaff(currentLoginStaff.getCompanyId(), staffIds, roleIds, password, groupId);
@@ -233,7 +232,7 @@ public class StaffController extends BaseController {
      * @return
      */
     @GetMapping("/search_staff")
-    public ResultInfo searchStaff(@NotEmpty @RequestParam("searchKey") String searchKey) {
+    public ResultInfo searchStaff(@NotEmptyStr @RequestParam("searchKey") String searchKey) {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         List<StaffVO> staffList = staffService.getStaffListBySearchKey(currentLoginStaff.getCompanyId(), searchKey);
@@ -297,7 +296,7 @@ public class StaffController extends BaseController {
      * @return
      */
     @GetMapping("/del_staff")
-    public ResultInfo deleteStaff(@NotEmpty @RequestParam("staffId") String ids) {
+    public ResultInfo deleteStaff(@NotEmptyStr @RequestParam("staffId") String ids) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
 
@@ -323,7 +322,7 @@ public class StaffController extends BaseController {
      * @return
      */
     @GetMapping("/del_staff_check")
-    public ResultInfo DelStaffCheck(@NotEmpty @RequestParam("staffId") String ids) {
+    public ResultInfo DelStaffCheck(@NotEmptyStr @RequestParam("staffId") String ids) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
 
@@ -353,7 +352,7 @@ public class StaffController extends BaseController {
      * @return
      */
     @GetMapping("/lock_staff")
-    public ResultInfo LockStaff(@NotEmpty @RequestParam("staffId") Integer staffId,@NotEmpty @RequestParam("isLock") Boolean isLock) {
+    public ResultInfo LockStaff(@NotEmptyStr @RequestParam("staffId") Integer staffId, @NotEmptyStr @RequestParam("isLock") Boolean isLock) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         //获取操作用户所属公司
@@ -378,8 +377,8 @@ public class StaffController extends BaseController {
      * @return
      */
     @GetMapping("/change_staff")
-    public ResultInfo ChangeStaff(@NotEmpty @RequestParam("staffId") Integer staffId,
-                                  @NotEmpty @RequestParam("beStaffId") Integer beStaffId) {
+    public ResultInfo ChangeStaff(@NotEmptyStr @RequestParam("staffId") Integer staffId,
+                                  @NotEmptyStr @RequestParam("beStaffId") Integer beStaffId) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         //获取操作用户所属公司

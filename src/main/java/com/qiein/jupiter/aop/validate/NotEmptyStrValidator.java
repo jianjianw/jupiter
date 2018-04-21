@@ -1,6 +1,6 @@
 package com.qiein.jupiter.aop.validate;
 
-import com.qiein.jupiter.aop.annotation.NotEmpty;
+import com.qiein.jupiter.aop.annotation.NotEmptyStr;
 import com.qiein.jupiter.util.StringUtil;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -8,9 +8,9 @@ import javax.validation.ConstraintValidatorContext;
 /**
  * 空值及空字符串验证
  */
-public class NotEmptyValidator implements ConstraintValidator<NotEmpty, String> {
+public class NotEmptyStrValidator implements ConstraintValidator<NotEmptyStr, String> {
     @Override
-    public void initialize(NotEmpty notNull) {
+    public void initialize(NotEmptyStr notNull) {
 
     }
 

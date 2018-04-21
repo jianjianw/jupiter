@@ -1,10 +1,12 @@
 package com.qiein.jupiter.web.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.qiein.jupiter.aop.annotation.NotEmptyStr;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.web.entity.po.NewsPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
  * 基础Controller
  */
 @RestController
+@Validated
 public class BaseController {
 
     @Autowired
@@ -22,7 +25,7 @@ public class BaseController {
      * @return
      */
     @RequestMapping("/")
-    public String init() {
+    public String init(@NotEmptyStr String id) {
         return "jupiter is running success!";
     }
 

@@ -10,9 +10,12 @@ import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 /**
@@ -69,7 +72,7 @@ public class RExceptionHandler {
             stringBuffer.append(allError.getDefaultMessage()).append(";");
 
         }
-        return ResultInfoUtil.error(-100000, stringBuffer.toString());
+        return ResultInfoUtil.error(-100, stringBuffer.toString());
     }
 
 
@@ -91,4 +94,28 @@ public class RExceptionHandler {
         return ResultInfoUtil.error(ExceptionEnum.MYSQL_SQL_GRAMMAR_ERROR);
     }
 
+    /**
+     * 服务器参数异常，一般是因为少传了参数导致
+     *
+     * @return
+     */
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResultInfo handleMissingServletRequestParameterException() {
+        return ResultInfoUtil.error(ExceptionEnum.HTTP_PARAMETER_ERROR);
+    }
+
+    /**
+     * 方法级别的参数校验异常
+     *
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResultInfo handleConstraintViolationException(ConstraintViolationException e) {
+        StringBuilder eMsg = new StringBuilder();
+        for (ConstraintViolation<?> constraintViolation : e.getConstraintViolations()) {
+            eMsg.append(constraintViolation.getMessage());
+        }
+        return ResultInfoUtil.error(-100, eMsg.toString());
+    }
 }

@@ -16,7 +16,8 @@ public enum ExceptionEnum {
     VERIFY_USER_NOT_FOUND(104, "未找到验证用户信息"),
     //http请求相关
     HTTP_METHOD_NOT_SUPPORT(200, "不支持的请求方法类型"),
-    HTTP_BODY_NOT_READABLE(201, "http请求体无法读取"),
+    HTTP_BODY_NOT_READABLE(201, "HTTP请求体无法读取"),
+    HTTP_PARAMETER_ERROR(202,"HTTP请求参数无法对应"),
     //用户登录验证
     USER_NOT_FOUND(300, "用户不存在"),
     USER_IS_DEL(301, "用户已被删除"),

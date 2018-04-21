@@ -1,6 +1,6 @@
 package com.qiein.jupiter.web.entity.vo;
 
-import com.qiein.jupiter.aop.annotation.NotEmpty;
+import com.qiein.jupiter.aop.annotation.NotEmptyStr;
 
 
 /**
@@ -11,13 +11,13 @@ public class LoginUserVO {
     /**
      * 用户名
      */
-    @NotEmpty(message = "{loginUser.phone.null}")
+    @NotEmptyStr(message = "{loginUser.phone.null}")
     private String userName;
 
     /**
      * 密码
      */
-    @NotEmpty(message = "{loginUser.password.null}")
+    @NotEmptyStr(message = "{loginUser.password.null}")
     private String password;
 
     /**
