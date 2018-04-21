@@ -64,7 +64,6 @@ public class VerifyCodeUtil {
             // 将产生的四个随机数组合在一起。
             randomCode.append(code);
         }
-        //todo  Linux系统下 乱码
         // 禁止图像缓存。
         response.setHeader("Content-type", "charset=UTF-8");
         response.setCharacterEncoding("utf-8");

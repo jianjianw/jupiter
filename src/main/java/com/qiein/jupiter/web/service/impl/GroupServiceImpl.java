@@ -17,6 +17,7 @@ import com.qiein.jupiter.web.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Iterator;
 import java.util.List;
@@ -52,6 +53,7 @@ public class GroupServiceImpl implements GroupService {
      * @return
      */
     @Override
+    @Transactional
     public GroupPO update(GroupPO groupPO) {
         List<GroupPO> groupDB = groupDao.getByName(groupPO.getGroupName(), groupPO.getCompanyId());
         //验证是否存在相同的部门名称
@@ -60,8 +62,15 @@ public class GroupServiceImpl implements GroupService {
         }
         //判断是否需要设置主管姓名
         checkSetChiefsName(groupPO);
-        //todo 更新类型时 把下属小组类型同样更新
         groupDao.update(groupPO);
+        //把下属的组的类别也更新
+        List<GroupPO> byParentId = groupDao.getByParentId(groupPO.getGroupId(), groupPO.getCompanyId());
+        if (ListUtil.isNotNullList(byParentId)) {
+            for (GroupPO po : byParentId) {
+                po.setGroupType(groupPO.getGroupType());
+            }
+            groupDao.batchUpdateGroupType(byParentId);
+        }
         return groupPO;
     }
 
@@ -94,6 +103,7 @@ public class GroupServiceImpl implements GroupService {
      * @return
      */
     @Override
+    @Transactional
     public GroupPO insert(GroupPO groupPO) {
         List<GroupPO> groupDB = groupDao.getByName(groupPO.getGroupName(), groupPO.getCompanyId());
         //验证是否存在相同的部门名称
