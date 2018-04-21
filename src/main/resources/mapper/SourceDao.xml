@@ -113,7 +113,7 @@
             </if>
         </set>
         WHERE
-        COMPANYID = #{companyId} AND ID IN 
+        COMPANYID = #{sv.companyId} AND ID IN
         <foreach collection="ids" item="id" index="index" open="(" separator="," close=")">
             #{id}
         </foreach>

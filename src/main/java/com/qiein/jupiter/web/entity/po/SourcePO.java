@@ -151,19 +151,19 @@ public class SourcePO extends BaseEntity {
         this.priority = priority;
     }
 
-    public Boolean getFilter() {
+    public Boolean getIsFilter() {
         return isFilter;
     }
 
-    public void setFilter(Boolean filter) {
+    public void setIsFilter(Boolean filter) {
         isFilter = filter;
     }
 
-    public Boolean getShow() {
+    public Boolean getIsShow() {
         return isShow;
     }
 
-    public void setShow(Boolean show) {
+    public void setIsShow(Boolean show) {
         isShow = show;
     }
 
