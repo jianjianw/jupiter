@@ -32,10 +32,10 @@
         <include refid="baseColumn"/>
         <where>
             COMPANYID = #{companyId} ,
-            <if test="grpName != null and grpName !=''">
+            <if test="channelName != null and channelName !=''">
                 CHANNELNAME = #{channelName},
             </if>
-            <if test="srcGrpImg != null and srcGrpImg !=''">
+            <if test="channelImg != null and channelImg !=''">
                 CHANNELIMG = #{channelImg},
             </if>
             <if test="typeId != null and typeId !=''">
@@ -54,11 +54,11 @@
                 ISSHOW = #{isShow},
             </if>
         </where>
-        ORDER BY ISSHOW DESC, TYPEID ,GRPID
+        ORDER BY ISSHOW DESC, TYPEID ,ID
     </select>
 
     <insert id="insert" parameterType="com.qiein.jupiter.web.entity.po.ChannelPO" useGeneratedKeys="true"
-            keyProperty="grpId">
+            keyProperty="id">
         INSERT INTO hm_crm_channel
         (CHANNELNAME,CHANNELIMG,TYPEID,BRANDID,BRANDNAME,PUSHRULE,COMPANYID,ISSHOW)
         VALUES (
@@ -93,7 +93,7 @@
             </if>
         </set>
         WHERE
-        COMPANYID = #{companyId} AND GRPID = #{grpId}
+        COMPANYID = #{companyId} AND ID = #{id}
     </update>
 
     <delete id="delete" parameterType="Integer">
@@ -101,7 +101,7 @@
         FROM
         hm_crm_channel
         WHERE
-        COMPANYID = #{companyId} AND ID = #{idd}
+        COMPANYID = #{companyId} AND ID = #{id}
 
     </delete>
 

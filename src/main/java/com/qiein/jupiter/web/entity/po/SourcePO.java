@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.entity.po;
 
+import com.qiein.jupiter.aop.annotation.NotEmptyStr;
 import com.qiein.jupiter.web.entity.BaseEntity;
 
 /**
@@ -8,13 +9,9 @@ import com.qiein.jupiter.web.entity.BaseEntity;
 public class SourcePO extends BaseEntity {
 
     /**
-     * 来源编号
-     */
-    private Integer srcId;
-
-    /**
      * 来源名称
      */
+    @NotEmptyStr(message = "{Source.srcName.null}")
     private String srcName;
 
     /**
@@ -26,26 +23,31 @@ public class SourcePO extends BaseEntity {
      * 来源类型：
      * 1:纯电商，2:电商转介绍，3:员工转介绍，4:指名转介绍，5:外部转介绍，6:自然入客，7:门店外展
      */
+//    @NotEmpty(message = "{Source.typeId.null}")
     private Integer typeId;
 
     /**
      * 来源所属渠道编号
      */
-    private Integer grpId;
+//    @NotEmpty(message = "{Source.channelId.null}")
+    private Integer channelId;
 
     /**
      * 来源所属渠道名称
      */
-    private String srcGrpName;
+//    @NotEmptyStr(message = "{Source.channelName.null}")
+    private String channelName;
 
     /**
      * 来源所属品牌编号
      */
+//    @NotEmpty(message = "{Source.brandId.null}")
     private Integer brandId;
 
     /**
      * 来源所属品牌名称
      */
+//    @NotEmptyStr(message = "{Source.brandName.null}")
     private String brandName;
 
     /**
@@ -54,18 +56,20 @@ public class SourcePO extends BaseEntity {
     private Integer companyId;
 
     /**
-     *  排序优先级
+     * 排序优先级
      */
     private Integer priority;
 
     /**
      * 是否开启筛选
      */
+//    @NotEmpty(message = "{Source.isFilter.null}")
     private Boolean isFilter;
 
     /**
      * 是否启用
      */
+//    @NotEmpty(message = "{Source.isShow.null}")
     private Boolean isShow;
 
     /**
@@ -73,14 +77,6 @@ public class SourcePO extends BaseEntity {
      */
     public SourcePO() {
 
-    }
-
-    public Integer getSrcId() {
-        return srcId;
-    }
-
-    public void setSrcId(Integer srcId) {
-        this.srcId = srcId;
     }
 
     public String getSrcName() {
@@ -107,20 +103,20 @@ public class SourcePO extends BaseEntity {
         this.typeId = typeId;
     }
 
-    public Integer getGrpId() {
-        return grpId;
+    public Integer getChannelId() {
+        return channelId;
     }
 
-    public void setGrpId(Integer grpId) {
-        this.grpId = grpId;
+    public void setChannelId(Integer channelId) {
+        this.channelId = channelId;
     }
 
-    public String getSrcGrpName() {
-        return srcGrpName;
+    public String getChannelName() {
+        return channelName;
     }
 
-    public void setSrcGrpName(String srcGrpName) {
-        this.srcGrpName = srcGrpName;
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
     }
 
     public Integer getBrandId() {
@@ -147,6 +143,14 @@ public class SourcePO extends BaseEntity {
         this.companyId = companyId;
     }
 
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Integer priority) {
+        this.priority = priority;
+    }
+
     public Boolean getFilter() {
         return isFilter;
     }
@@ -163,7 +167,4 @@ public class SourcePO extends BaseEntity {
         isShow = show;
     }
 
-    public Integer getPriority() { return priority; }
-
-    public void setPriority(Integer priority) { this.priority = priority; }
 }

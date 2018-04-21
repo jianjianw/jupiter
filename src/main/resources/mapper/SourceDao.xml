@@ -18,7 +18,7 @@
     </resultMap>
 
     <sql id="baseColumn">
-        *
+        ID,SRCNAME,TYPEID,CHANNELID,CHANNELNAME,SRCIMG,BRANDID,BRANDNAME,PRIORITY,ISSHOW,ISFILTER,COMPANYID
     </sql>
 
     <select id="getById" parameterType="Integer" resultMap="baseMap">
@@ -29,12 +29,13 @@
         COMPANYID = #{companyId} AND ID = #{id}
     </select>
 
-    <insert id="insert" parameterType="com.qiein.jupiter.web.entity.po.ChannelPO" useGeneratedKeys="true"
-            keyProperty="grpId">
+    <insert id="insert" parameterType="com.qiein.jupiter.web.entity.po.SourcePO" useGeneratedKeys="true"
+            keyProperty="id">
         INSERT INTO hm_crm_source
-        (CHANNELNAME,CHANNELIMG,TYPEID,BRANDID,BRANDNAME,PUSHRULE,COMPANYID,ISSHOW)
+        (SRCNAME,SRCIMG,TYPEID,CHANNELID,CHANNELNAME,BRANDID,BRANDNAME,PRIORITY,COMPANYID,ISFILTER,ISSHOW)
         VALUES (
-        #{channelName},#{channelImg},#{typeId},#{brandId},#{brandName},#{pushRule},#{companyId},#{isShow}
+        #{srcName},#{srcImg},#{typeId},#{channelId},#{channelName},#{brandId},
+        #{brandName},#{priority},#{companyId},#{isFilter},#{isShow}
         )
     </insert>
 
@@ -77,7 +78,7 @@
             </if>
         </set>
         WHERE
-        COMPANYID = #{companyId} AND SRCID = #{srcId}
+        COMPANYID = #{companyId} AND ID = #{id}
     </update>
 
     <delete id="delete" parameterType="Integer">
@@ -99,6 +100,7 @@
         COMPANYID = #{companyId} AND SRCNAME = #{srcName} AND CHANNELID = #{channelId}
     </select>
 
+    <!--根据来源编号和公司编号删除制定记录-->
     <delete id="deleteByIdAndCid" parameterType="Integer">
         DELETE
         FROM
@@ -107,6 +109,7 @@
         COMPANYID = #{companyId} AND ID = #{id}
     </delete>
 
+    <!--根据渠道编号获取来源列表-->
     <select id="getSourceListByChannelId" parameterType="Integer" resultMap="baseMap">
         SELECT
 		  ID,SRCNAME,SRCIMG,TYPEID,CHANNELID,CHANNELNAME,BRANDID,BRANDNAME,COMPANYID,PRIORITY,ISFILTER,ISSHOW

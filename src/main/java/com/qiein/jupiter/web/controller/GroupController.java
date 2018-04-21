@@ -91,4 +91,5 @@ public class GroupController extends BaseController {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         return ResultInfoUtil.success(groupService.getAllDeptAndStaff(currentLoginStaff.getCompanyId()));
     }
+
 }

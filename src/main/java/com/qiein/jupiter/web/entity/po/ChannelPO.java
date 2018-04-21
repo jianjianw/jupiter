@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.entity.po;
 
+import com.qiein.jupiter.aop.annotation.Id;
 import com.qiein.jupiter.aop.annotation.NotEmptyStr;
 import com.qiein.jupiter.web.entity.BaseEntity;
 
@@ -9,6 +10,7 @@ import com.qiein.jupiter.web.entity.BaseEntity;
  */
 public class ChannelPO extends BaseEntity {
 
+    private static final long serialVersionUID = -1L;
     /**
      * 渠道名称
      */
@@ -24,26 +26,26 @@ public class ChannelPO extends BaseEntity {
      * 渠道类型
      * 1:纯电商，2:电商转介绍，3:员工转介绍，4:指名转介绍，5:外部转介绍，6:自然入客，7:门店外展
      */
-    @NotEmptyStr(message = "{Channel.typeId.null}")
+//    @Id(message = "{Channel.typeId.null}")
     private Integer typeId;
 
     /**
      * 渠道所属品牌编号
      */
-    @NotEmptyStr(message = "{Channel.brandId.null}")
+//    @Id(message = "{Channel.brandId.null}")
     private Integer brandId;
 
     /**
      * 渠道所属品牌名
      */
-    @NotEmptyStr(message = "{Channel.brandName.null}")
+//    @NotEmptyStr(message = "{Channel.brandName.null}")
     private String brandName;
 
     /**
      * 渠道推送规则：
      * 0:不推送，1:自由领取，2:全员平均，3:小组平均，4:部门平均，5:...
      */
-    @NotEmptyStr(message = "{Channel.pushRule.null}")
+//    @Id(message = "{Channel.pushRule.null}")
     private Integer pushRule;
 
     /**
@@ -132,5 +134,20 @@ public class ChannelPO extends BaseEntity {
 
     public void setShow(Boolean show) {
         isShow = show;
+    }
+
+    @Override
+    public String toString() {
+        return "ChannelPO{" +
+                "channelName='" + channelName + '\'' +
+                ", channelImg='" + channelImg + '\'' +
+                ", typeId=" + typeId +
+                ", brandId=" + brandId +
+                ", brandName='" + brandName + '\'' +
+                ", pushRule=" + pushRule +
+                ", companyId=" + companyId +
+                ", priority=" + priority +
+                ", isShow=" + isShow +
+                '}';
     }
 }
