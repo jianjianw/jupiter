@@ -98,7 +98,7 @@ public class ChannelController extends BaseController {
      * @return
      */
     @GetMapping("/sel_channel")
-    public ResultInfo queryChannel(@NotEmptyStr int id) {
+    public ResultInfo queryChannel(int id) {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         //获取所属公司编号
