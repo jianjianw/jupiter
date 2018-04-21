@@ -10,6 +10,7 @@ import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.po.SourcePO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.entity.vo.SourceVO;
 import com.qiein.jupiter.web.service.SourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -46,20 +47,20 @@ public class SourceController extends BaseController{
 
     /**
      * 编辑来源
-     * @param sourcePO
+     * @param sourceVO
      * @return
      */
     @PostMapping("/edit")
-    public ResultInfo editSource(@RequestBody SourcePO sourcePO){
+    public ResultInfo editSource(@RequestBody SourceVO sourceVO){
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         //设置cid
-        sourcePO.setCompanyId(currentLoginStaff.getCompanyId());
+        sourceVO.setCompanyId(currentLoginStaff.getCompanyId());
         //对象参数去空
-        ObjectUtil.objectStrParamTrim(sourcePO);
-        if (StringUtil.isNullStr(String.valueOf(sourcePO.getId())))
+        ObjectUtil.objectStrParamTrim(sourceVO);
+        if (StringUtil.isNullStr(String.valueOf(sourceVO.getId())))
             throw new RException(ExceptionEnum.SOURCE_ID_NULL);
-        sourceService.editSource(sourcePO);
+        sourceService.editSource(sourceVO);
         return ResultInfoUtil.success(TipMsgConstant.EDIT_SOURCE_SUCCESS);
     }
 

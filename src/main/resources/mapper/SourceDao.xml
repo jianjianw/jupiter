@@ -65,9 +65,6 @@
             <if test="brandName != null and brandName != '' ">
                 BRANDNAME = #{brandName},
             </if>
-            <if test="companyId != null">
-                COMPANYID = #{companyId},
-            </if>
             <if test="priority != null">
                 PRIORITY = #{priority},
             </if>
@@ -80,6 +77,46 @@
         </set>
         WHERE
         COMPANYID = #{companyId} AND ID = #{id}
+    </update>
+
+    <!--批量编辑-->
+    <update id="datUpdate" parameterType="map">
+        UPDATE
+        hm_crm_source
+        <set>
+            <if test="srcImg != null and srcImg != '' ">
+                SRCIMG = #{srcImg},
+            </if>
+            <if test="typeId != null">
+                TYPEID = #{typeId},
+            </if>
+            <if test="channelId != null">
+                CHANNELID = #{channelId},
+            </if>
+            <if test="channelName != null and channelName != '' ">
+                CHANNELNAME = #{channelName},
+            </if>
+            <if test="brandId != null">
+                BRANDID = #{brandId},
+            </if>
+            <if test="brandName != null and brandName != '' ">
+                BRANDNAME = #{brandName},
+            </if>
+            <if test="priority != null">
+                PRIORITY = #{priority},
+            </if>
+            <if test="isFilter != null">
+                ISFILTER = #{isFilter},
+            </if>
+            <if test="isShow != null">
+                ISSHOW = #{isShow},
+            </if>
+        </set>
+        WHERE
+        COMPANYID = #{companyId} AND ID IN 
+        <foreach collection="ids" item="id" index="index" open="(" separator="," close=")">
+            #{id}
+        </foreach>
     </update>
 
     <delete id="delete" parameterType="Integer">

@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.service;
 
 import com.qiein.jupiter.web.entity.po.SourcePO;
+import com.qiein.jupiter.web.entity.vo.SourceVO;
 
 import java.util.List;
 
@@ -21,6 +22,13 @@ public interface SourceService {
      * @param sourcePO
      */
     void editSource(SourcePO sourcePO);
+
+    /**
+     * 编辑来源
+     *
+     * @param sourceVO
+     */
+    void editSource(SourceVO sourceVO);
 
     /**
      * 根据来源编号删除来源

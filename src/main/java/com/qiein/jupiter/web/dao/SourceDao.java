@@ -1,12 +1,13 @@
 package com.qiein.jupiter.web.dao;
 
 import com.qiein.jupiter.web.entity.po.SourcePO;
+import com.qiein.jupiter.web.entity.vo.SourceVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 /**
- * 渠道Dao
+ * 来源Dao
  */
 public interface SourceDao extends BaseDao<SourcePO>{
     /**
@@ -24,4 +25,12 @@ public interface SourceDao extends BaseDao<SourcePO>{
      * @return
      */
     List<SourcePO> getSourceListByChannelId(@Param("channelId")Integer channelId ,@Param("companyId") Integer companyId);
+
+    /**
+     * 批量编辑来源
+     * @param sourceVO
+     * @param ids
+     * @return
+     */
+    Integer datUpdate(@Param("sv") SourceVO sourceVO ,@Param("ids") String[] ids);
 }
