@@ -15,18 +15,19 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/image")
-public class ImageController extends BaseController{
+public class ImageController extends BaseController {
 
     @Autowired
     private ImageService imageService;
 
     /**
      * 根据图片类型获取图片信息
+     *
      * @param type
      * @return
      */
     @GetMapping("/get_by_type")
-    public ResultInfo getSrcImgList(@NotEmpty String type){
-        return ResultInfoUtil.success(TipMsgConstant.SUCCESS,imageService.getSrcImgList(type));
+    public ResultInfo getSrcImgList(@NotEmpty String type) {
+        return ResultInfoUtil.success(TipMsgConstant.SUCCESS, imageService.getSrcImgList(type));
     }
 }
