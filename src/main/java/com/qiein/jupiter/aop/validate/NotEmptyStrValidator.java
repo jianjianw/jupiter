@@ -1,6 +1,6 @@
 package com.qiein.jupiter.aop.validate;
 
-import com.qiein.jupiter.aop.annotation.NotEmptyStr;
+import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.util.StringUtil;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

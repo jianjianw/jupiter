@@ -1,7 +1,6 @@
 package com.qiein.jupiter.web.entity.po;
 
-import com.qiein.jupiter.aop.annotation.Id;
-import com.qiein.jupiter.aop.annotation.NotEmptyStr;
+import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.web.entity.BaseEntity;
 
 

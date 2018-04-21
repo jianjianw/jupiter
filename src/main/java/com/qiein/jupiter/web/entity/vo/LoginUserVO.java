@@ -1,6 +1,6 @@
 package com.qiein.jupiter.web.entity.vo;
 
-import com.qiein.jupiter.aop.annotation.NotEmptyStr;
+import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 
 
 /**

@@ -1,7 +1,7 @@
 package com.qiein.jupiter.web.entity.po;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.qiein.jupiter.aop.annotation.NotEmptyStr;
+import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.web.entity.BaseEntity;
 
 /**

@@ -1,6 +1,6 @@
 package com.qiein.jupiter.aop.validate;
 
-import com.qiein.jupiter.aop.annotation.Id;
+import com.qiein.jupiter.aop.validate.annotation.Id;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

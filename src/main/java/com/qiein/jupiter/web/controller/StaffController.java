@@ -1,8 +1,8 @@
 package com.qiein.jupiter.web.controller;
 
-import com.qiein.jupiter.aop.annotation.Id;
-import com.qiein.jupiter.aop.annotation.LoginLog;
-import com.qiein.jupiter.aop.annotation.NotEmptyStr;
+import com.qiein.jupiter.aop.validate.annotation.Id;
+import com.qiein.jupiter.aop.aspect.annotation.LoginLog;
+import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.constant.NumberConstant;
 import com.qiein.jupiter.constant.RedisConstant;
 import com.qiein.jupiter.constant.TipMsgConstant;

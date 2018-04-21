@@ -1,6 +1,7 @@
-package com.qiein.jupiter.aop.annotation;
+package com.qiein.jupiter.aop.validate.annotation;
 
-import com.qiein.jupiter.aop.validate.PhoneValidator;
+
+import com.qiein.jupiter.aop.validate.IdValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -11,11 +12,11 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.FIELD, ElementType.ANNOTATION_TYPE, ElementType.CONSTRUCTOR, ElementType.PARAMETER})
-@Constraint(validatedBy = {PhoneValidator.class})
-public @interface Phone {
+@Constraint(validatedBy = {IdValidator.class})
+public @interface Id {
     String field() default "";
 
-    String message() default "手机号码格式错误";
+    String message() default "Id不能为空或者0";
 
     Class<?>[] groups() default {};
 

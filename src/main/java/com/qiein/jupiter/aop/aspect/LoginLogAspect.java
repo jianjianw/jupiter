@@ -19,7 +19,7 @@ import java.lang.reflect.Method;
 @Component
 public class LoginLogAspect {
 
-    @Pointcut("@annotation(com.qiein.jupiter.aop.annotation.LoginLog)")
+    @Pointcut("@annotation(com.qiein.jupiter.aop.aspect.annotation.LoginLog)")
     public void loginLogPointCut() {
 
     }
