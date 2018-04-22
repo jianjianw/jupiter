@@ -39,9 +39,17 @@ public class ChannelServiceImpl implements ChannelService {
      */
     @Override
     public void editChannel(ChannelPO channelPO) {
-        //检查是否存在同名渠道
-        if (channelDao.checkChannel(channelPO.getChannelName(), channelPO.getCompanyId()) >= 1) {
-            throw new RException(ExceptionEnum.CHANNEL_NAME_REPEAT);
+        //检查是否存在
+        ChannelPO cp = channelDao.getByIdAndCid(channelPO.getId(), channelPO.getCompanyId());
+        if (cp == null) {  //如果为空，则该编辑的渠道不存在
+            throw new RException(ExceptionEnum.SOURCE_NOT_FOUND);
+        } else { //如果存在，则继续判断
+            if (!cp.getChannelName().equals(channelPO.getChannelName())) {    //如果得到的名字和编辑的名字不相同则校验同名
+                //检查是否存在同名渠道
+                if (channelDao.checkChannel(channelPO.getChannelName(), channelPO.getCompanyId()) >= 1) {
+                    throw new RException(ExceptionEnum.CHANNEL_NAME_REPEAT);
+                }
+            }
         }
         channelDao.update(channelPO);
     }
@@ -55,7 +63,8 @@ public class ChannelServiceImpl implements ChannelService {
     @Override
     public void delChannel(Integer id, Integer companyId) {
         //删除前需要检查渠道下属是否还存在来源
-        //TODO
+        if (channelDao.checkSrcNumById(id, companyId) > 0)
+            throw new RException(ExceptionEnum.CHANNEL_HAVE_SOURCE);
         channelDao.deleteByIdAndCid(id, companyId);
     }
 

@@ -29,29 +29,29 @@ public class SourceServiceImpl implements SourceService {
         sourceDao.insert(sourcePO);
     }
 
-    /**
-     * 编辑来源
-     *
-     * @param sourcePO
-     */
-    @Override
-    public void editSource(SourcePO sourcePO) {
-        //先检查是否重名
-        //先根据id去获取来源信息
-        SourcePO s = sourceDao.getByIdAndCid(sourcePO.getId(), sourcePO.getCompanyId());
-
-        if (s != null) {   //如果不为空说明存在
-            if (!s.getSrcName().equals(sourcePO.getSrcName())) { //名字是否改过
-                int i = sourceDao.checkSource(sourcePO.getSrcName(), s.getChannelId(), sourcePO.getCompanyId());
-                System.out.println(i);
-                if (i >= 1)
-                    throw new RException(ExceptionEnum.SOURCE_NAME_REPEAT);
-            }
-        } else {
-            throw new RException(ExceptionEnum.SOURCE_NOT_FOUND);
-        }
-        sourceDao.update(sourcePO);
-    }
+//    /**
+//     * 编辑来源
+//     *
+//     * @param sourcePO
+//     */
+//    @Override
+//    public void editSource(SourcePO sourcePO) {
+//        //先检查是否重名
+//        //先根据id去获取来源信息
+//        SourcePO s = sourceDao.getByIdAndCid(sourcePO.getId(), sourcePO.getCompanyId());
+//
+//        if (s != null) {   //如果不为空说明存在
+//            if (!s.getSrcName().equals(sourcePO.getSrcName())) { //名字是否改过
+//                int i = sourceDao.checkSource(sourcePO.getSrcName(), s.getChannelId(), sourcePO.getCompanyId());
+//                System.out.println(i);
+//                if (i >= 1)
+//                    throw new RException(ExceptionEnum.SOURCE_NAME_REPEAT);
+//            }
+//        } else {
+//            throw new RException(ExceptionEnum.SOURCE_NOT_FOUND);
+//        }
+//        sourceDao.update(sourcePO);
+//    }
 
     /**
      * 批量编辑来源
@@ -70,19 +70,15 @@ public class SourceServiceImpl implements SourceService {
 
             if (s != null) {   //如果不为空说明存在
                 if (!s.getSrcName().equals(sourceVO.getSrcName())) { //名字是否改过
-                    int i = sourceDao.checkSource(sourceVO.getSrcName(), s.getChannelId(), sourceVO.getCompanyId());
-                    System.out.println(i);
-                    if (i >= 1)
+                    if (sourceDao.checkSource(sourceVO.getSrcName(), s.getChannelId(), sourceVO.getCompanyId()) >= 1)
                         throw new RException(ExceptionEnum.SOURCE_NAME_REPEAT);
                 }
             } else {
                 throw new RException(ExceptionEnum.SOURCE_NOT_FOUND);
             }
-        }else{  //  批量编辑
-            sourceDao.datUpdate(sourceVO,ids);
+        } else {  //  批量编辑
+            sourceDao.datUpdate(sourceVO, ids);
         }
-
-
 
         sourceDao.update(sourceVO);
     }
@@ -102,6 +98,7 @@ public class SourceServiceImpl implements SourceService {
 
     /**
      * 根据来源编号批量删除来源
+     *
      * @param ids
      * @param companyId
      */
@@ -110,7 +107,7 @@ public class SourceServiceImpl implements SourceService {
         //删除前需要检查来源下是否存在客资,为空才可删除
         //TODO
         String[] idArr = ids.split(",");
-        sourceDao.datDelete(idArr,companyId);
+        sourceDao.datDelete(idArr, companyId);
     }
 
     /**

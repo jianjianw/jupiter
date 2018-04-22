@@ -16,12 +16,12 @@ public interface SourceService {
      */
     void createSource(SourcePO sourcePO);
 
-    /**
-     * 编辑来源
-     *
-     * @param sourcePO
-     */
-    void editSource(SourcePO sourcePO);
+//    /**
+//     * 编辑来源
+//     *
+//     * @param sourcePO
+//     */
+//    void editSource(SourcePO sourcePO);
 
     /**
      * 编辑来源
@@ -40,10 +40,11 @@ public interface SourceService {
 
     /**
      * 根据来源编号批量删除来源
+     *
      * @param ids
      * @param companyId
      */
-    void datDelSrc(String ids ,Integer companyId);
+    void datDelSrc(String ids, Integer companyId);
 
     /**
      * 根据渠道编号获取归属来源列表

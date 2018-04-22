@@ -19,7 +19,8 @@
         ID,CHANNELNAME,CHANNELIMG,TYPEID,BRANDID,BRANDNAME,PUSHRULE,COMPANYID,ISSHOW
     </sql>
 
-    <select id="getById" parameterType="Integer" resultMap="baseMap">
+    <select id="getByIdAndCid" parameterType="Integer" resultMap="baseMap">
+        SELECT
         <include refid="baseColumn"/>
         FROM
         hm_crm_channel
@@ -139,7 +140,7 @@
     </select>
 
     <!--根据细分类型获取渠道列表-->
-    <select id="getListByType" parameterType="java.lang.Integer" resultMap="baseMap">
+    <select id="getListByType" parameterType="Integer" resultMap="baseMap">
         SELECT
           ID,CHANNELNAME,CHANNELIMG,TYPEID,BRANDID,BRANDNAME,PUSHRULE,COMPANYID,PRIORITY,ISSHOW
         FROM
@@ -147,5 +148,13 @@
         WHERE
           COMPANYID = #{companyId} AND TYPEID = #{typeId}
         ORDER BY ISSHOW DESC, TYPEID, PRIORITY ,ID
+    </select>
+
+    <select id="checkSrcNumById" parameterType="Integer" resultType="Integer">
+        SELECT
+          COUNT(1)
+        FROM
+          hm_crm_channel c
+        JOIN hm_crm_source s ON s.CHANNELID = c.ID AND s.CHANNELID = #{channelId} AND s.COMPANYID = #{companyId}
     </select>
 </mapper>

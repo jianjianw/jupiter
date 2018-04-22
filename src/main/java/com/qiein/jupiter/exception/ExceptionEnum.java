@@ -48,6 +48,7 @@ public enum ExceptionEnum {
     SOURCE_NAME_REPEAT(504,"来源名称重复"),
     CHANNEL_NOT_FOUND(505,"该渠道不存在"),
     SOURCE_NOT_FOUND(506,"该来源不存在"),
+    CHANNEL_HAVE_SOURCE(507,"该渠道下存在来源，请先删除下属所有来源再继续操作"),
     //拍摄地
     SHOP_EXIST(601, "拍摄地已存在"),
     SHOP_ID_NULL(602, "拍摄地ID不能为空"),
