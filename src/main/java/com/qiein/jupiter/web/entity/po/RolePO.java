@@ -27,10 +27,9 @@ public class RolePO extends BaseEntity {
     public RolePO() {
     }
 
-    public RolePO(String roleName, int companyId, int priority) {
+    public RolePO(String roleName, int companyId) {
         this.roleName = roleName;
         this.companyId = companyId;
-        this.priority = priority;
     }
 
     public String getRoleName() {
