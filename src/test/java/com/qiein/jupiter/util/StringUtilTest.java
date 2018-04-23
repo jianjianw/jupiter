@@ -15,8 +15,8 @@ public class StringUtilTest {
     }
 
     @Test
-    public void isNullStr() {
-        boolean nullStr = StringUtil.isNullStr("");
+    public void  isEmpty() {
+        boolean nullStr = StringUtil. isEmpty("");
         System.out.println(nullStr);
     }
 }

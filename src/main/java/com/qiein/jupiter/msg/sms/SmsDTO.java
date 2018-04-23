@@ -65,6 +65,6 @@ public class SmsDTO implements Serializable {
 	}
 
 	public boolean isNotEmpty() {
-		return (StringUtil.isNullStr(this.sign) && StringUtil.isNullStr(this.templateId) && this.content != null);
+		return (StringUtil.isEmpty(this.sign) && StringUtil.isEmpty(this.templateId) && this.content != null);
 	}
 }

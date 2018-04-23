@@ -94,7 +94,7 @@ public class NewsServiceImpl implements NewsService {
     public int batchUpdateNewsReadFlag(String msgIds, int cid) {
         //根据公司获取表名
         String tableName = DBSplitUtil.getTableName(DBSplitUtil.NEWS_, cid);
-        if (StringUtil.isNullStr(msgIds)) {
+        if (StringUtil. isEmpty(msgIds)) {
             //todo
             return 0;
         }

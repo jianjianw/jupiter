@@ -71,7 +71,7 @@ public class StaffServiceImpl implements StaffService {
     public StaffVO insert(StaffVO staffVO) {
         log.debug("未使用缓存");
         //加密码加密,密码为空则默认手机号
-        staffVO.setPassword(MD5Util.getSaltMd5(StringUtil.isNullStr(staffVO.getPassword()) ? staffVO.getPhone() : staffVO.getPassword()));
+        staffVO.setPassword(MD5Util.getSaltMd5(StringUtil. isEmpty(staffVO.getPassword()) ? staffVO.getPhone() : staffVO.getPassword()));
         //1.根据手机号，全名，艺名查重，手机号全公司不重复，全名，艺名，在职员工中不能重复
         StaffPO phoneExist = staffDao.getStaffByPhone(staffVO.getCompanyId(), staffVO.getPhone());
         if (phoneExist != null && phoneExist.isDelFlag()) {
@@ -93,7 +93,7 @@ public class StaffServiceImpl implements StaffService {
         //3.添加小组人员关联表
         groupStaffDao.insertGroupStaff(staffVO.getCompanyId(), staffVO.getGroupId(), staffVO.getId());
         //4.添加人员角色关联表
-        if (StringUtil.isNotNullStr(staffVO.getRoleIds())) {
+        if (StringUtil. isEmpty(staffVO.getRoleIds())) {
             String[] roleArr = staffVO.getRoleIds().split(CommonConstant.STR_SEPARATOR);
             staffRoleDao.batchInsertStaffRole(staffVO.getId(), staffVO.getCompanyId(), roleArr);
         }
@@ -209,7 +209,7 @@ public class StaffServiceImpl implements StaffService {
     public StaffVO update(StaffVO staffVO) {
         log.debug("未使用缓存");
         //加密码加密,密码为空则默认手机号
-        if (StringUtil.isNotNullStr(staffVO.getPassword())) {
+        if (StringUtil. isEmpty(staffVO.getPassword())) {
             staffVO.setPassword(MD5Util.getSaltMd5(staffVO.getPassword()));
         }
         //1.根据手机号，全名，艺名查重，手机号全公司不重复，全名，艺名，在职员工中不能重复
@@ -238,7 +238,7 @@ public class StaffServiceImpl implements StaffService {
         //4.删除权限关联表
         staffRoleDao.deleteByStaffId(staffVO.getId(), staffVO.getCompanyId());
         //5.插入人员角色关联表
-        if (StringUtil.isNotNullStr(staffVO.getRoleIds())) {
+        if (StringUtil. isEmpty(staffVO.getRoleIds())) {
             String[] roleArr = staffVO.getRoleIds().split(CommonConstant.STR_SEPARATOR);
             staffRoleDao.batchInsertStaffRole(staffVO.getId(), staffVO.getCompanyId(), roleArr);
         }
@@ -321,7 +321,7 @@ public class StaffServiceImpl implements StaffService {
         //验证公司属性
         CompanyPO companyPO = companyService.getById(staffPO.getCompanyId());
         //如果员工没有token，重新生成
-        if (StringUtil.isNullStr(staffPO.getToken()) || companyPO.isSsoLimit()) {
+        if (StringUtil. isEmpty(staffPO.getToken()) || companyPO.isSsoLimit()) {
             updateStaffToken(staffPO);
         }
         //移除错误次数
@@ -411,13 +411,13 @@ public class StaffServiceImpl implements StaffService {
     public void batchEditStaff(int companyId, String staffIds, String roleIds, String password, String groupId) {
         String[] staffIdArr = staffIds.split(CommonConstant.STR_SEPARATOR);
         //1.修改密码
-        if (StringUtil.isNotNullStr(password)) {
+        if (StringUtil. isEmpty(password)) {
             staffDao.batchEditStaffPwd(companyId, staffIdArr, MD5Util.getMD5(password));
         }
         //2.修改小组
         groupStaffDao.batchEditStaffGroup(companyId, staffIdArr, groupId);
         //3.修改角色
-        if (StringUtil.isNotNullStr(roleIds)) {
+        if (StringUtil. isEmpty(roleIds)) {
             String[] roleIdArr = roleIds.split(CommonConstant.STR_SEPARATOR);
             staffRoleDao.batchDeleteByStaffIdArr(companyId, staffIdArr);
             List<StaffVO> list = new LinkedList<>();
@@ -575,7 +575,7 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public StaffPO update(StaffPO staffPO) {
         //加密码加密,密码为空则默认手机号
-        if (StringUtil.isNotNullStr(staffPO.getPassword())) {
+        if (StringUtil. isEmpty(staffPO.getPassword())) {
             staffPO.setPassword(MD5Util.getSaltMd5(staffPO.getPassword()));
         }
         //1.根据手机号，全名，艺名查重，手机号全公司不重复，全名，艺名，在职员工中不能重复

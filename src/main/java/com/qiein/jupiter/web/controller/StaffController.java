@@ -197,7 +197,7 @@ public class StaffController extends BaseController {
      */
     @GetMapping("/verify_code")
     public void loginCode(HttpServletResponse response, @RequestParam("phone") String userName) {
-        if (StringUtil.isNullStr(userName) || !RegexUtil.checkMobile(userName)) {
+        if (StringUtil. isEmpty(userName) || !RegexUtil.checkMobile(userName)) {
             return;
         }
         //生成验证码并放入缓存
@@ -254,7 +254,7 @@ public class StaffController extends BaseController {
         //判断是否需要验证码以及验证码正确性
         if (needVerityCode(userName)) {
             //验证码为空
-            if (StringUtil.isNullStr(verifyCode)) {
+            if (StringUtil. isEmpty(verifyCode)) {
                 throw new RException(ExceptionEnum.VERIFY_NULL);
             } else {
                 //从缓存获取key并判断
