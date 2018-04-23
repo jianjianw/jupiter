@@ -202,4 +202,13 @@ public interface StaffService {
      * @return
      */
     int updatePassword(StaffPasswordDTO staffPasswordDTO);
+
+    /**
+     * 根据类型获取小组及人员信息
+     *
+     * @param companyId
+     * @param type
+     * @return
+     */
+    List<GroupStaffVO> getGroupStaffByType(int companyId, String type);
 }

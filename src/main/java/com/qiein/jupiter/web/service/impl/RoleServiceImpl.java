@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.service.impl;
 
 import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.constant.PmsConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.StringUtil;
@@ -29,20 +30,18 @@ public class RoleServiceImpl implements RoleService {
      * 新增角色
      */
     @Transactional(rollbackFor = Exception.class)
-    public void insert(String roleName, int priority, String pmsIds, Integer companyId) {
+    public int insert(String roleName, Integer companyId) {
         //1.查是否已存在
         RolePO exist = roleDao.getRoleByName(roleName, companyId);
         if (exist != null) {
             throw new RException(ExceptionEnum.ROLE_EXIST);
         }
         //2.添加角色表
-        RolePO rolePO = new RolePO(roleName, companyId, priority);
+        RolePO rolePO = new RolePO(roleName, companyId);
         roleDao.insert(rolePO);
-        //3.添加角色权限关联表
-        if (StringUtil.isNotNullStr(pmsIds)) {
-            String[] pmsIdArr = pmsIds.split(CommonConstant.STR_SEPARATOR);
-            rolePmsDao.batchAddRolePmsRela(rolePO.getId(), companyId, pmsIdArr);
-        }
+        //3.添加默认权限，查看个人，编辑个人
+        rolePmsDao.batchAddRolePmsRela(rolePO.getId(), companyId, PmsConstant.DEFAULT_PMS_ARR);
+        return rolePO.getId();
     }
 
     /**

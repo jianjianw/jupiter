@@ -4,7 +4,7 @@
     <resultMap id="baseMap" type="com.qiein.jupiter.web.entity.po.ShopChannelGroupPO">
         <id column="ID" property="id" jdbcType="BIGINT"/>
         <result column="SHOPID" property="shopId" jdbcType="INTEGER"/>
-        <result column="CHANNELID" property="channleId" jdbcType="INTEGER"/>
+        <result column="CHANNELID" property="channelId" jdbcType="INTEGER"/>
         <result column="GROUPID" property="groupId" jdbcType="VARCHAR"/>
         <result column="WEIGHT" property="weight" jdbcType="INTEGER"/>
         <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
@@ -21,12 +21,13 @@
         <result column="ID" property="relaId" jdbcType="INTEGER"/>
         <result column="GROUPNAME" property="groupName" jdbcType="VARCHAR"/>
         <result column="WEIGHT" property="weight" jdbcType="INTEGER"/>
+        <result column="GROUPID" property="groupId" jdbcType="VARCHAR"/>
     </resultMap>
 
     <!--获取拍摄地，渠道，小组关联-->
     <select id="getShopChannelGroupList" parameterType="map" resultMap="VOMap">
         SELECT
-            rela.CHANNELID, channel.CHANNELNAME, channel.CHANNELIMG, grp.GROUPNAME, rela.WEIGHT, rela.COMPANYID, rela.ID
+            rela.CHANNELID, channel.CHANNELNAME, channel.CHANNELIMG, grp.GROUPNAME, rela.WEIGHT, rela.COMPANYID, rela.ID, rela.GROUPID
         FROM
             hm_crm_shop_channel_group_rela rela
             LEFT JOIN hm_crm_channel channel ON channel.COMPANYID = rela.COMPANYID

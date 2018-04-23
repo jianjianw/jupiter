@@ -78,6 +78,11 @@ public class ShopChannelGroupServiceImpl implements ShopChannelGroupService {
         List<ShopChannelGroupPO> list = new LinkedList<>();
         for (String channel : channelIdArr) {
             for (String groupId : groupIdArr) {
+                //查重
+                ShopChannelGroupPO exist = shopChannelGroupDao.getByShopAndChannelAndGroup(companyId, Integer.parseInt(channel), shopId, groupId);
+                if (exist != null) {
+                    throw new RException(ExceptionEnum.CHANNEL_GROUP_EXIST);
+                }
                 ShopChannelGroupPO po = new ShopChannelGroupPO(shopId, Integer.parseInt(channel), groupId, weight, companyId);
                 list.add(po);
             }

@@ -16,6 +16,10 @@ public class ChannelGroupVO implements Serializable {
      * 权重
      */
     private int weight;
+    /**
+     * 小组ID
+     */
+    private String groupId;
 
     public int getRelaId() {
         return relaId;
@@ -39,5 +43,13 @@ public class ChannelGroupVO implements Serializable {
 
     public void setWeight(int weight) {
         this.weight = weight;
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 }

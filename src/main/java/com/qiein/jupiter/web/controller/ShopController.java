@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.controller;
 
+import com.qiein.jupiter.aop.validate.annotation.Bool;
 import com.qiein.jupiter.aop.validate.annotation.Id;
 import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.constant.TipMsgConstant;
@@ -51,8 +52,8 @@ public class ShopController extends BaseController {
     }
 
     @GetMapping("/edit_shop_show")
-    public ResultInfo editShopShow(@Id @RequestParam("id") int id,
-                                   @NotEmptyStr @RequestParam("showFlag") boolean showFlag) {
+    public ResultInfo editShopShow(@Id @RequestParam("id") Integer id,
+                                   @Bool @RequestParam("showFlag") Boolean showFlag) {
         if (NumUtil.isNull(id)) {
             return ResultInfoUtil.error(ExceptionEnum.SHOP_ID_NULL);
         }

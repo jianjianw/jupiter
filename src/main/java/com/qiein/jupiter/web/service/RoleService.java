@@ -15,7 +15,7 @@ public interface RoleService {
     /**
      * 新增角色
      */
-    void insert(String roleName, int priority, String pmsIds, Integer companyId);
+    int insert(String roleName, Integer companyId);
 
     /**
      * 删除角色

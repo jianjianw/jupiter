@@ -35,7 +35,7 @@ public class RoleServiceImplTest {
             throw  new RException(ExceptionEnum.ROLE_EXIST);
         }
         //1.添加角色表
-        RolePO rolePO = new RolePO("admin1", 1, 1);
+        RolePO rolePO = new RolePO("admin1", 1);
         roleDao.insert(rolePO);
         System.out.println(rolePO.getId());
         //2.添加角色权限关联表

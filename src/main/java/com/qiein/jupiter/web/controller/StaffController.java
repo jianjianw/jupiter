@@ -457,4 +457,19 @@ public class StaffController extends BaseController {
         return staffService.isRightPassword(currentLoginStaff.getId(),
                 oldPassword, currentLoginStaff.getCompanyId());
     }
+
+    /**
+     * 根据类型获取小组及人员信息
+     * @param type
+     * @return
+     */
+    @GetMapping("/get_group_staff_by_type")
+    public ResultInfo getGroupStaffByType(@NotEmptyStr String type){
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        //获取操作用户所属公司
+        Integer companyId = currentLoginStaff.getCompanyId();
+
+        return ResultInfoUtil.success(TipMsgConstant.SUCCESS,staffService.getGroupStaffByType(companyId,type));
+    }
 }
