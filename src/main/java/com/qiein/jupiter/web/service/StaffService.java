@@ -176,4 +176,12 @@ public interface StaffService {
      * @return
      */
     List<GroupStaffVO> getChangeList(int companyId);
+
+    /**
+     * 根据类型获取小组及人员信息
+     * @param companyId
+     * @param type
+     * @return
+     */
+    List<GroupStaffVO> getGroupStaffByType(int companyId , String type);
 }

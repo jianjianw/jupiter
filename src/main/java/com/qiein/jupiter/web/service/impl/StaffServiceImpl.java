@@ -505,4 +505,15 @@ public class StaffServiceImpl implements StaffService {
         return groupStaffDao.getListByGroupType("dsyy", companyId);
     }
 
+    /**
+     * 根据小组类型获取小组及组内人员信息
+     * @param companyId
+     * @param type
+     * @return
+     */
+    @Override
+    public List<GroupStaffVO> getGroupStaffByType(int companyId, String type) {
+        return groupStaffDao.getListByGroupType(type, companyId);
+    }
+
 }
