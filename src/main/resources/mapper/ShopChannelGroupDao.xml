@@ -4,7 +4,7 @@
     <resultMap id="baseMap" type="com.qiein.jupiter.web.entity.po.ShopChannelGroupPO">
         <id column="ID" property="id" jdbcType="BIGINT"/>
         <result column="SHOPID" property="shopId" jdbcType="INTEGER"/>
-        <result column="CHANNELID" property="channleId" jdbcType="INTEGER"/>
+        <result column="CHANNELID" property="channelId" jdbcType="INTEGER"/>
         <result column="GROUPID" property="groupId" jdbcType="VARCHAR"/>
         <result column="WEIGHT" property="weight" jdbcType="INTEGER"/>
         <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
