@@ -54,9 +54,9 @@ public class GroupServiceImpl implements GroupService {
     @Override
     @Transactional
     public GroupPO update(GroupPO groupPO) {
-        List<GroupPO> groupDB = groupDao.getByName(groupPO.getGroupName(), groupPO.getCompanyId());
+        GroupPO groupDB = groupDao.getByName(groupPO.getGroupName(), groupPO.getCompanyId());
         //验证是否存在相同的部门名称
-        if (ListUtil.isNotNullList(groupDB) && groupDB.size() > 1) {
+        if(groupDB.getId()!=groupPO.getId()){
             throw new RException(ExceptionEnum.GROUP_NAME_REPEAT);
         }
         //判断是否需要设置主管姓名
@@ -104,9 +104,9 @@ public class GroupServiceImpl implements GroupService {
     @Override
     @Transactional
     public GroupPO insert(GroupPO groupPO) {
-        List<GroupPO> groupDB = groupDao.getByName(groupPO.getGroupName(), groupPO.getCompanyId());
+        GroupPO groupDB = groupDao.getByName(groupPO.getGroupName(), groupPO.getCompanyId());
         //验证是否存在相同的部门名称
-        if (ListUtil.isNotNullList(groupDB)) {
+        if(groupDB.getId()!=groupPO.getId()){
             throw new RException(ExceptionEnum.GROUP_NAME_REPEAT);
         }
         //判断是否需要设置主管姓名

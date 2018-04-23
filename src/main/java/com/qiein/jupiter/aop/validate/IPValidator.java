@@ -17,6 +17,6 @@ public class IPValidator implements ConstraintValidator<Phone, String> {
 
     @Override
     public boolean isValid(String ip, ConstraintValidatorContext constraintValidatorContext) {
-        return !HttpUtil.isIp(ip);
+        return HttpUtil.isIp(ip);
     }
 }

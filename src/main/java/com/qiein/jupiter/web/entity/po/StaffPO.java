@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.entity.po;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
+import com.qiein.jupiter.aop.validate.annotation.Phone;
 import com.qiein.jupiter.web.entity.BaseEntity;
 
 /**
@@ -20,6 +21,7 @@ public class StaffPO extends BaseEntity {
      * 手机号码
      */
     @NotEmptyStr(message = "{staff.phone.null}")
+    @Phone
     private String phone;
     /**
      * 全名

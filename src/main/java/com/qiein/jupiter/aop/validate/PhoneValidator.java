@@ -17,6 +17,6 @@ public class PhoneValidator implements ConstraintValidator<Phone, String> {
 
     @Override
     public boolean isValid(String phone, ConstraintValidatorContext constraintValidatorContext) {
-        return !RegexUtil.checkMobile(StringUtil.nullToStrTrim(phone));
+        return RegexUtil.checkMobile(StringUtil.nullToStrTrim(phone));
     }
 }

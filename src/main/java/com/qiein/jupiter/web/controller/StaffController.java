@@ -10,6 +10,7 @@ import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
+import com.qiein.jupiter.web.entity.dto.StaffPasswordDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.LoginUserVO;
@@ -21,6 +22,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -310,7 +312,7 @@ public class StaffController extends BaseController {
         //先检查是否为客服
         //是客服则检查是否存在未邀约客资
         //TODO 等待客资内容写完继续写删除
-        staffService.batDelete(array,companyId);
+        staffService.batDelete(array, companyId);
 
         return ResultInfoUtil.success("删除成功");
     }
@@ -334,21 +336,22 @@ public class StaffController extends BaseController {
 
         //检查是否可删除
         //先检查是否为客服
-        String msg ;
+        String msg;
         if (true) {
             //TODO 等待客资内容写完继续写删除
-            msg = staffService.checkBatDelete(array,companyId);
+            msg = staffService.checkBatDelete(array, companyId);
         } else {
         }
         //是客服则检查是否存在未邀约客资
-        return ResultInfoUtil.success(msg,true);
+        return ResultInfoUtil.success(msg, true);
     }
 
 
     /**
      * 锁定员工
-     * @param staffId   staffId 被锁定的员工编号
-     * @param isLock    锁定标识
+     *
+     * @param staffId staffId 被锁定的员工编号
+     * @param isLock  锁定标识
      * @return
      */
     @GetMapping("/lock_staff")
@@ -395,16 +398,63 @@ public class StaffController extends BaseController {
 
     /**
      * 获取电商邀约小组人员列表
+     *
      * @return
      */
     @GetMapping("/change_list")
-    public ResultInfo getChangeList(){
+    public ResultInfo getChangeList() {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         //获取操作用户所属公司
         Integer companyId = currentLoginStaff.getCompanyId();
 
 
-        return ResultInfoUtil.success(TipMsgConstant.SUCCESS,staffService.getChangeList(companyId));
+        return ResultInfoUtil.success(TipMsgConstant.SUCCESS, staffService.getChangeList(companyId));
+    }
+
+    /**
+     * 更新员工基础信息，不包含权限等
+     *
+     * @param staffPO
+     * @return
+     */
+    @PostMapping("/update_base_info")
+    public ResultInfo updateBaseInfo(@RequestBody @Valid StaffPO staffPO) {
+        //对象参数trim
+        ObjectUtil.objectStrParamTrim(staffPO);
+        if (staffPO.getId() == 0) {
+            return ResultInfoUtil.error(ExceptionEnum.STAFF_ID_NULL);
+        }
+        //获取当前登录用户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        //设置cid
+        staffPO.setCompanyId(currentLoginStaff.getCompanyId());
+        staffService.update(staffPO);
+        return ResultInfoUtil.success(TipMsgConstant.SAVE_SUCCESS);
+    }
+
+    @PostMapping("/update_password")
+    //todo 增加密码安全度校验
+    public ResultInfo updatePassword(@Validated @RequestBody StaffPasswordDTO staffPasswordDTO) {
+        //获取当前登录用户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        staffPasswordDTO.setId(currentLoginStaff.getId());
+        staffPasswordDTO.setCompanyId(currentLoginStaff.getCompanyId());
+        staffService.updatePassword(staffPasswordDTO);
+        return ResultInfoUtil.success(TipMsgConstant.UPDATE_SUCCESS);
+    }
+
+    /**
+     * 是否是原来正确的密码
+     *
+     * @param oldPassword
+     * @return
+     */
+    @GetMapping("/right_password")
+    public boolean rightPassword(@RequestParam("password") String oldPassword) {
+        //获取当前登录用户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        return staffService.isRightPassword(currentLoginStaff.getId(),
+                oldPassword, currentLoginStaff.getCompanyId());
     }
 }
