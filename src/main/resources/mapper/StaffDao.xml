@@ -124,16 +124,16 @@
     <update id="update" parameterType="com.qiein.jupiter.web.entity.vo.StaffVO">
         UPDATE hm_pub_staff
         <set>
-            <if test="nickName != null">
+            <if test="nickName != null and nickName != ''">
                 NICKNAME = #{nickName},
             </if>
-            <if test="phone != null">
+            <if test="phone != null and phone != ''">
                 PHONE = #{phone},
             </if>
-            <if test="userName != null">
+            <if test="userName != null and userName != ''">
                 USERNAME = #{userName},
             </if>
-            <if test="password != null">
+            <if test="password != null and password != ''">
                 PASSWORD = #{password},
             </if>
             <if test="companyId != null">

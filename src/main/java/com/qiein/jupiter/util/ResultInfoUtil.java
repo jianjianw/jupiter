@@ -34,7 +34,7 @@ public class ResultInfoUtil {
      */
     public static ResultInfo success(String msg) {
         ResultInfo resultInfo = new ResultInfo();
-        resultInfo.setCode(1);
+        resultInfo.setCode(NumberConstant.DEFAULT_SUCCESS_CODE);
         resultInfo.setMsg(msg);
         return resultInfo;
     }
