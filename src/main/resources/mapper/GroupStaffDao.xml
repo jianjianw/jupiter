@@ -220,7 +220,18 @@
 	        hm_pub_staff s ON gs.STAFFID = s.ID
         WHERE
 	        s.COMPANYID = #{companyId} AND g.GROUPTYPE = #{type}
+    </select>
 
+    <!--获取员工所属角色-->
+    <select id="getStaffRoleList" parameterType="map" resultType="java.lang.String">
+        SELECT
+            grp.GROUPTYPE
+        FROM
+            hm_pub_group_staff rela
+        LEFT JOIN hm_pub_group grp on grp.COMPANYID =rela.COMPANYID and rela.GROUPID = grp.GROUPID
+        WHERE
+            rela.STAFFID = #{staffId}
+        AND rela.COMPANYID = #{companyId}
     </select>
 
 </mapper>

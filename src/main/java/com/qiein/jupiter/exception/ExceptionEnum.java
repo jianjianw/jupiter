@@ -56,7 +56,9 @@ public enum ExceptionEnum {
     //权限
     ROLE_EXIST(701, "该角色已存在"),
     ROLE_EDIT_FAIL(702, "角色修改失败"),
-    ROLE_DELETE_ERROR(703, "该权限有绑定人员，无法删除");
+    ROLE_DELETE_ERROR(703, "该权限有绑定人员，无法删除"),
+    //企业配置
+    MENU_NULL(801, "企业菜单为空");
 
     private Integer code;
 

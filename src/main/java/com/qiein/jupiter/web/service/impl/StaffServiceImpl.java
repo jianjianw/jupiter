@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.aop.aspect.annotation.LoginLog;
-import com.qiein.jupiter.constant.CommonConstant;
-import com.qiein.jupiter.constant.DictionaryConstant;
-import com.qiein.jupiter.constant.NumberConstant;
-import com.qiein.jupiter.constant.RedisConstant;
+import com.qiein.jupiter.constant.*;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.JwtUtil;
@@ -483,14 +480,54 @@ public class StaffServiceImpl implements StaffService {
         staffBaseInfoVO.setPermissionMap(permissionMap);
         //放入公司对象
         CompanyVO companyVO = companyDao.getVOById(companyId);
+
+        companyVO.setMenuList(getCompanyMenuList(companyId, staffId));
+        staffBaseInfoVO.setCompany(companyVO);
+        return staffBaseInfoVO;
+    }
+
+    public List<MenuVO> getCompanyMenuList(int companyId, int staffId) {
         //企业左上角菜单栏
         List<MenuVO> menuList = dictionaryDao.getCompanyMemu(companyId, DictionaryConstant.MENU_TYPE);
         if (ListUtil.isNullList(menuList)) {
             menuList = dictionaryDao.getCompanyMemu(DictionaryConstant.COMMON_COMPANYID, DictionaryConstant.MENU_TYPE);
         }
-        companyVO.setMenuList(menuList);
-        staffBaseInfoVO.setCompany(companyVO);
-        return staffBaseInfoVO;
+        //获取员工角色
+        List<String> roleList = groupStaffDao.getStaffRoleList(companyId, staffId);
+        if (ListUtil.isNullList(menuList)) {
+            throw new RException(ExceptionEnum.MENU_NULL);
+        }
+        if (ListUtil.isNullList(roleList)) {
+            return menuList;
+        }
+
+        for (String role : roleList) {
+            //1.如果是管理中心，全部开放
+            if (RoleConstant.GLZX.equals(role)) {
+                for (MenuVO menu : menuList) {
+                    menu.setSelectFlag(true);
+                }
+                return menuList;
+            }
+            //2.如果是财务中心，除管理中心，全部开放
+            if (RoleConstant.CWZX.equals(role)) {
+                for (MenuVO menu : menuList) {
+                    if (RoleConstant.GLZX.equals(menu.getType())) {
+                        menu.setSelectFlag(false);
+                    } else {
+                        menu.setSelectFlag(true);
+                    }
+                }
+                return menuList;
+            }
+            //都不是，则一一对应
+            for (MenuVO menu : menuList) {
+                if (role.equals(menu.getType())) {
+                    menu.setSelectFlag(true);
+                }
+            }
+        }
+        return menuList;
     }
 
     /**
