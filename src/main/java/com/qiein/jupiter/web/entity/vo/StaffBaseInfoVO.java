@@ -16,12 +16,12 @@ public class StaffBaseInfoVO {
     /**
      * 权限集合
      */
-    private Map<String,Integer> permissionMap;
+    private Map<String, Integer> permissionMap;
 
     /**
      * 公司
      */
-    private CompanyPO company;
+    private CompanyVO company;
 
     public StaffPermissionVO getStaffPermission() {
         return staffPermission;
@@ -39,11 +39,11 @@ public class StaffBaseInfoVO {
         this.permissionMap = permissionMap;
     }
 
-    public CompanyPO getCompany() {
+    public CompanyVO getCompany() {
         return company;
     }
 
-    public void setCompany(CompanyPO company) {
+    public void setCompany(CompanyVO company) {
         this.company = company;
     }
 }

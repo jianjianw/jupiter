@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiein.jupiter.web.dao.DictionaryDao">
+
+    <resultMap id="baseMap" type="com.qiein.jupiter.web.entity.po.DictionaryPO">
+        <id column="ID" jdbcType="INTEGER" property="id"/>
+        <result column="DICTYPE" jdbcType="VARCHAR" property="dicType"/>
+        <result column="DICCODE" jdbcType="VARCHAR" property="dicCode"/>
+        <result column="DICNAME" jdbcType="INTEGER" property="dicName"/>
+        <result column="MEMO" jdbcType="INTEGER" property="memo"/>
+        <result column="PRIORITY" jdbcType="VARCHAR" property="priority"/>
+        <result column="SPARE" jdbcType="INTEGER" property="spare"/>
+        <result column="COMPANYID" jdbcType="INTEGER" property="companyId"/>
+    </resultMap>
+
+    <resultMap id="VOMap" type="com.qiein.jupiter.web.entity.vo.MenuVO">
+        <result column="SPARE" jdbcType="VARCHAR" property="type"/>
+        <result column="DICNAME" jdbcType="INTEGER" property="dicName"/>
+    </resultMap>
+
+    <sql id="baseColumn">
+        ID,DICTYPE, DICCODE, DICNAME, MEMO, PRIORITY, SPARE, COMPANYID
+    </sql>
+
+    <!--获取企业左上角菜单栏-->
+    <select id="getCompanyMemu" parameterType="map" resultMap="VOMap">
+        SELECT
+            dic.DICNAME, dic.SPARE
+        FROM
+            hm_crm_dictionary dic
+        WHERE
+            dic.COMPANYID = #{companyId} AND dic.DICTYPE = #{dicType}
+    </select>
+
+
+</mapper>

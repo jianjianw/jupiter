@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.aop.aspect.annotation.LoginLog;
 import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.constant.DictionaryConstant;
 import com.qiein.jupiter.constant.NumberConstant;
 import com.qiein.jupiter.constant.RedisConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
@@ -13,17 +14,12 @@ import com.qiein.jupiter.util.JwtUtil;
 import com.qiein.jupiter.util.ListUtil;
 import com.qiein.jupiter.util.MD5Util;
 import com.qiein.jupiter.util.StringUtil;
-import com.qiein.jupiter.web.dao.GroupStaffDao;
-import com.qiein.jupiter.web.dao.StaffDao;
-import com.qiein.jupiter.web.dao.StaffRoleDao;
+import com.qiein.jupiter.web.dao.*;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.PermissionPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
-import com.qiein.jupiter.web.entity.vo.GroupStaffVO;
-import com.qiein.jupiter.web.entity.vo.StaffBaseInfoVO;
-import com.qiein.jupiter.web.entity.vo.StaffPermissionVO;
-import com.qiein.jupiter.web.entity.vo.StaffVO;
+import com.qiein.jupiter.web.entity.vo.*;
 import com.qiein.jupiter.web.service.CompanyService;
 import com.qiein.jupiter.web.service.StaffService;
 import org.slf4j.Logger;
@@ -60,6 +56,12 @@ public class StaffServiceImpl implements StaffService {
 
     @Autowired
     private GroupStaffDao groupStaffDao;
+
+    @Autowired
+    private CompanyDao companyDao;
+
+    @Autowired
+    private DictionaryDao dictionaryDao;
 
     /**
      * 员工新增
@@ -479,7 +481,14 @@ public class StaffServiceImpl implements StaffService {
         //放入权限对象
         staffBaseInfoVO.setPermissionMap(permissionMap);
         //放入公司对象
-        staffBaseInfoVO.setCompany(companyService.getById(companyId));
+        CompanyVO companyVO = companyDao.getVOById(companyId);
+        //企业左上角菜单栏
+        List<MenuVO> menuList = dictionaryDao.getCompanyMemu(companyId, DictionaryConstant.MENU_TYPE);
+        if (ListUtil.isNullList(menuList)) {
+            menuList = dictionaryDao.getCompanyMemu(DictionaryConstant.COMMON_COMPANYID, DictionaryConstant.MENU_TYPE);
+        }
+        companyVO.setMenuList(menuList);
+        staffBaseInfoVO.setCompany(companyVO);
         return staffBaseInfoVO;
     }
 
@@ -507,6 +516,7 @@ public class StaffServiceImpl implements StaffService {
 
     /**
      * 根据小组类型获取小组及组内人员信息
+     *
      * @param companyId
      * @param type
      * @return
