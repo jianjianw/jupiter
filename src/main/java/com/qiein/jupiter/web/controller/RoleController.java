@@ -39,8 +39,8 @@ public class RoleController extends BaseController {
     public ResultInfo addRole(@NotEmptyStr @RequestParam("roleName") String roleName) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        roleService.insert(roleName, currentLoginStaff.getCompanyId());
-        return ResultInfoUtil.success(TipMsgConstant.ADD_ROLE_SUCCESS);
+        int id = roleService.insert(roleName, currentLoginStaff.getCompanyId());
+        return ResultInfoUtil.success(TipMsgConstant.ADD_ROLE_SUCCESS, id);
     }
 
     @GetMapping("/delete_role")

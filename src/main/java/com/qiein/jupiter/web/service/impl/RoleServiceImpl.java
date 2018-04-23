@@ -30,7 +30,7 @@ public class RoleServiceImpl implements RoleService {
      * 新增角色
      */
     @Transactional(rollbackFor = Exception.class)
-    public void insert(String roleName, Integer companyId) {
+    public int insert(String roleName, Integer companyId) {
         //1.查是否已存在
         RolePO exist = roleDao.getRoleByName(roleName, companyId);
         if (exist != null) {
@@ -41,6 +41,7 @@ public class RoleServiceImpl implements RoleService {
         roleDao.insert(rolePO);
         //3.添加默认权限，查看个人，编辑个人
         rolePmsDao.batchAddRolePmsRela(rolePO.getId(), companyId, PmsConstant.DEFAULT_PMS_ARR);
+        return rolePO.getId();
     }
 
     /**
