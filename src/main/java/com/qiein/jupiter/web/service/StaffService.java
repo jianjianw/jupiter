@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.service;
 
 import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
+import com.qiein.jupiter.web.entity.dto.StaffPasswordDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.GroupStaffVO;
@@ -73,7 +74,7 @@ public interface StaffService {
     int logicDelete(int id, int companyId);
 
     /**
-     * 修改
+     * 修改员工的详细信息
      *
      * @param staffVO
      * @return
@@ -178,10 +179,36 @@ public interface StaffService {
     List<GroupStaffVO> getChangeList(int companyId);
 
     /**
+     * 校验用户的密码是否正确
+     *
+     * @param id
+     * @param password
+     * @param companyId
+     * @return
+     */
+    boolean isRightPassword(int id, String password, int companyId);
+
+    /**
+     * 修改员工的基础信息
+     *
+     * @param staffPO
+     * @return
+     */
+    StaffPO update(StaffPO staffPO);
+
+    /**
+     * 更新密码
+     *
+     * @return
+     */
+    int updatePassword(StaffPasswordDTO staffPasswordDTO);
+
+    /**
      * 根据类型获取小组及人员信息
+     *
      * @param companyId
      * @param type
      * @return
      */
-    List<GroupStaffVO> getGroupStaffByType(int companyId , String type);
+    List<GroupStaffVO> getGroupStaffByType(int companyId, String type);
 }

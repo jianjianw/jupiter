@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.jdbc.BadSqlGrammarException;
+import org.springframework.validation.BindException;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -114,8 +116,24 @@ public class RExceptionHandler {
     public ResultInfo handleConstraintViolationException(ConstraintViolationException e) {
         StringBuilder eMsg = new StringBuilder();
         for (ConstraintViolation<?> constraintViolation : e.getConstraintViolations()) {
-            eMsg.append(constraintViolation.getMessage());
+            eMsg.append(constraintViolation.getMessage()).append(";");
         }
         return ResultInfoUtil.error(-100, eMsg.toString());
+    }
+
+    /**
+     * 绑定的方法参数异常
+     *
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(BindException.class)
+    public ResultInfo handleBindException(BindException e) {
+        List<ObjectError> allErrors = e.getBindingResult().getAllErrors();
+        StringBuilder stringBuffer = new StringBuilder();
+        for (ObjectError allError : allErrors) {
+            stringBuffer.append(allError.getDefaultMessage()).append(";");
+        }
+        return ResultInfoUtil.error(-100, stringBuffer.toString());
     }
 }

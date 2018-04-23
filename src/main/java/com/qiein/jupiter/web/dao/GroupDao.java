@@ -17,7 +17,7 @@ public interface GroupDao extends BaseDao<GroupPO> {
      * @param groupName
      * @return
      */
-    List<GroupPO> getByName(@Param("groupName") String groupName, @Param("companyId") int companyId);
+    GroupPO getByName(@Param("groupName") String groupName, @Param("companyId") int companyId);
 
     /**
      * 根据公司获取所有的组

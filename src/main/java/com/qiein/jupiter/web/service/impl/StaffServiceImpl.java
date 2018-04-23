@@ -16,6 +16,7 @@ import com.qiein.jupiter.util.MD5Util;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.*;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
+import com.qiein.jupiter.web.entity.dto.StaffPasswordDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.PermissionPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
@@ -512,6 +513,74 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public List<GroupStaffVO> getChangeList(int companyId) {
         return groupStaffDao.getListByGroupType("dsyy", companyId);
+    }
+
+    /**
+     * 修改密码时的验证
+     *
+     * @param id
+     * @param password
+     * @param companyId
+     * @return
+     */
+    @Override
+    public boolean isRightPassword(int id, String password, int companyId) {
+        StaffPO staff = staffDao.getByIdAndCid(id, companyId);
+        return StringUtil.ignoreCaseEqual(staff.getPassword(), MD5Util.getSaltMd5(password));
+    }
+
+    /**
+     * 更新基础的信息
+     *
+     * @param staffPO
+     * @return
+     */
+    @Override
+    public StaffPO update(StaffPO staffPO) {
+        //加密码加密,密码为空则默认手机号
+        if (StringUtil.isNotNullStr(staffPO.getPassword())) {
+            staffPO.setPassword(MD5Util.getSaltMd5(staffPO.getPassword()));
+        }
+        //1.根据手机号，全名，艺名查重，手机号全公司不重复，全名，艺名，在职员工中不能重复
+        StaffPO phoneExist = staffDao.getStaffByPhone(staffPO.getCompanyId(), staffPO.getPhone());
+        if (phoneExist != null && phoneExist.getId() != staffPO.getId() && phoneExist.isDelFlag()) {
+            throw new RException(ExceptionEnum.STAFF_EXIST_DEL);
+        }
+        if (phoneExist != null && phoneExist.getId() != staffPO.getId() && !phoneExist.isDelFlag()) {
+            throw new RException(ExceptionEnum.PHONE_EXIST);
+        }
+        //艺名查重
+        StaffPO nickNameStaff = staffDao.getStaffByNames(staffPO.getCompanyId(), staffPO.getNickName());
+        if (nickNameStaff != null && nickNameStaff.getId() != staffPO.getId()) {
+            throw new RException(ExceptionEnum.NICKNAME_EXIST);
+        }
+        //全名查重
+        StaffPO userNameStaff = staffDao.getStaffByNames(staffPO.getCompanyId(), staffPO.getUserName());
+        if (userNameStaff != null && userNameStaff.getId() != staffPO.getId()) {
+            throw new RException(ExceptionEnum.USERNAME_EXIST);
+        }
+        staffDao.update(staffPO);
+        return staffPO;
+    }
+
+
+    /**
+     * 更新密码
+     *
+     * @return
+     */
+    @Override
+    public int updatePassword(StaffPasswordDTO staffPasswordDTO) {
+        //如果原始密码不对
+        if (!isRightPassword(staffPasswordDTO.getId(),
+                staffPasswordDTO.getOldPassword(), staffPasswordDTO.getCompanyId())) {
+            throw new RException(ExceptionEnum.OLD_PASSWORD_ERROR);
+        }
+        StaffPO staffPO = new StaffPO();
+        staffPO.setCompanyId(staffPasswordDTO.getCompanyId());
+        staffPO.setId(staffPasswordDTO.getId());
+        staffPO.setPassword(MD5Util.getSaltMd5(staffPasswordDTO.getNewPassword()));
+        return staffDao.update(staffPO);
     }
 
     /**
