@@ -31,7 +31,7 @@
             hm_pub_shop shop
         WHERE
             shop.COMPANYID = #{companyId}
-        ORDER BY shop.PRIORITY,shop.ISSHOW DESC,shop.ID
+        ORDER BY shop.ISSHOW DESC,shop.PRIORITY,shop.ID
     </select>
 
     <!--新增拍摄地-->
