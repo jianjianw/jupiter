@@ -45,7 +45,7 @@ public class TimeUtils {
 	/*-- 格式化客资对应时间 --*/
 	public static String formatClientTime(String time) {
 
-		if (StringUtil.isNullStr(time)) {
+		if (StringUtil. isEmpty(time)) {
 			return "";
 		}
 		if (!validTime(time, "yyyy-MM-dd HH:mm:ss")) {
@@ -64,7 +64,7 @@ public class TimeUtils {
 	/*-- 格式化客资显示对应时间 --*/
 	public static String formatClientAllTime(String time) {
 
-		if (StringUtil.isNullStr(time)) {
+		if (StringUtil. isEmpty(time)) {
 			return "";
 		}
 		if (!validTime(time, "yyyy-MM-dd HH:mm:ss")) {
@@ -83,7 +83,7 @@ public class TimeUtils {
 	/** -- 格式化时间 -- **/
 	public static String formatTime(String time, String pattern) {
 
-		if (StringUtil.isNullStr(time) || StringUtil.isNullStr(pattern)) {
+		if (StringUtil. isEmpty(time) || StringUtil. isEmpty(pattern)) {
 			return "";
 		}
 
@@ -102,7 +102,7 @@ public class TimeUtils {
 	/*-- 钉钉端格式化客资对应时间"01-01 11：11" --*/
 	public static String formatDingClientTime(String time) {
 
-		if (StringUtil.isNullStr(time)) {
+		if (StringUtil. isEmpty(time)) {
 			return "&nbsp;";
 		}
 		if (!validTime(time, "yyyy-MM-dd HH:mm:ss")) {
@@ -119,7 +119,7 @@ public class TimeUtils {
 
 	/*-- 格式化客资婚期对应时间 --*/
 	public static String formatMarryTime(String time) {
-		if (StringUtil.isNullStr(time)) {
+		if (StringUtil. isEmpty(time)) {
 			return "";
 		}
 		if (!validTime(time, "yyyy-MM-dd HH:mm:ss")) {
@@ -835,7 +835,7 @@ public class TimeUtils {
 
 		String result = "";
 		result = second / 60 > 0 ? second / 60 + "分" : "";
-		result = result + (second % 60 > 0 ? (second % 60 + "秒") : (StringUtil.isNullStr(result) ? "钟" : "0分钟"));
+		result = result + (second % 60 > 0 ? (second % 60 + "秒") : (StringUtil. isEmpty(result) ? "钟" : "0分钟"));
 
 		return result;
 	}
@@ -886,7 +886,7 @@ public class TimeUtils {
 
 	/*-- 可以获取N天后的时间 --*/
 	public static String getFutureTime(String futureDay) {
-		if (StringUtil.isNullStr(futureDay)) {
+		if (StringUtil. isEmpty(futureDay)) {
 			return "";
 		}
 		Calendar calendar = Calendar.getInstance();
@@ -896,7 +896,7 @@ public class TimeUtils {
 
 	/*-- 可以婚期时间，预拍时间 --*/
 	public static String getMarryAndYpTime(String futureDay) {
-		if (StringUtil.isNullStr(futureDay)) {
+		if (StringUtil. isEmpty(futureDay)) {
 			return "";
 		}
 		int num = Integer.parseInt(futureDay);
@@ -1531,7 +1531,7 @@ public class TimeUtils {
 	 * 将时间转换为时间戳
 	 */
 	public static long dateToStamp(String s) throws ParseException {
-		if (StringUtil.isNullStr(s)) {
+		if (StringUtil. isEmpty(s)) {
 			return 0;
 		}
 		Date date;

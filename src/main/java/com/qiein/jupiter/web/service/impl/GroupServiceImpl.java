@@ -136,7 +136,7 @@ public class GroupServiceImpl implements GroupService {
     private void checkSetChiefsName(GroupPO groupPO) {
         String chiefIds = groupPO.getChiefIds();
         //如果id不为空
-        if (StringUtil.isNotNullStr(chiefIds)) {
+        if (StringUtil. isEmpty(chiefIds)) {
             //根据ids获取员工数组
             String[] split = chiefIds.split(CommonConstant.STR_SEPARATOR);
             List<StaffPO> staffPOS = staffDao.batchGetByIds(split, groupPO.getCompanyId());

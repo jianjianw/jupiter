@@ -164,14 +164,14 @@ public class ClientDTO implements Serializable {
 	 * @return
 	 */
 	public String getChannelSource() {
-		if (StringUtil.isNotNullStr(this.channelName)) {
-			if (StringUtil.isNotNullStr(this.srcName)) {
+		if (StringUtil. isEmpty(this.channelName)) {
+			if (StringUtil. isEmpty(this.srcName)) {
 				return (this.channelName + " - " + this.srcName);
 			} else {
 				return this.channelName;
 			}
 		} else {
-			if (StringUtil.isNotNullStr(this.srcName)) {
+			if (StringUtil. isEmpty(this.srcName)) {
 				return this.srcName;
 			} else {
 				return "";

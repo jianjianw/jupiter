@@ -40,7 +40,7 @@ public class RoleServiceImplTest {
         System.out.println(rolePO.getId());
         //2.添加角色权限关联表
         //3.添加角色权限关联表
-        if (StringUtil.isNotNullStr(pmsIds)) {
+        if (StringUtil. isEmpty(pmsIds)) {
             String[] pmsIdArr = pmsIds.split(CommonConstant.STR_SEPARATOR);
             rolePmsDao.batchAddRolePmsRela(rolePO.getId(), 1, pmsIdArr);
         }
