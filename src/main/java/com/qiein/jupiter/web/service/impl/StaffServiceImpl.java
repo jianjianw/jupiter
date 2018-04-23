@@ -569,10 +569,6 @@ public class StaffServiceImpl implements StaffService {
      */
     @Override
     public StaffPO update(StaffPO staffPO) {
-        //加密码加密,密码为空则默认手机号
-        if (StringUtil.isEmpty(staffPO.getPassword())) {
-            staffPO.setPassword(MD5Util.getSaltMd5(staffPO.getPassword()));
-        }
         //1.根据手机号，全名，艺名查重，手机号全公司不重复，全名，艺名，在职员工中不能重复
         StaffPO phoneExist = staffDao.getStaffByPhone(staffPO.getCompanyId(), staffPO.getPhone());
         if (phoneExist != null && phoneExist.getId() != staffPO.getId() && phoneExist.isDelFlag()) {
