@@ -470,14 +470,12 @@ public class StaffServiceImpl implements StaffService {
         StaffPermissionVO staffPermission = staffRoleDao.getStaffPermission(staffId, companyId);
         staffBaseInfoVO.setStaffPermission(staffPermission);
         //遍历权限集合生成Map
-        Map<String, Integer> permissionMap = new HashMap<>();
-        if (staffPermission != null && !ListUtil.isNullList(staffPermission.getPermissionList())) {
-            for (PermissionPO permissionPO : staffPermission.getPermissionList()) {
-                permissionMap.put(permissionPO.getAbbreviate(), permissionPO.getPermissionId());
-            }
-        }
-        //放入权限对象
-        staffBaseInfoVO.setPermissionMap(permissionMap);
+//        Map<String, Integer> permissionMap = new HashMap<>();
+//        if (staffPermission != null && !ListUtil.isNullList(staffPermission.getPermissionList())) {
+//            for (PermissionPO permissionPO : staffPermission.getPermissionList()) {
+//                permissionMap.put(permissionPO.getAbbreviate(), permissionPO.getPermissionId());
+//            }
+//        }
         //放入公司对象
         CompanyVO companyVO = companyDao.getVOById(companyId);
 

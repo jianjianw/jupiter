@@ -1,22 +1,17 @@
 package com.qiein.jupiter.web.entity.vo;
 
-import com.qiein.jupiter.web.entity.po.CompanyPO;
 
-import java.util.Map;
-
+import java.io.Serializable;
 /**
  * 员工基础信息
  */
-public class StaffBaseInfoVO {
+public class StaffBaseInfoVO implements Serializable {
+
+    private static final long serialVersionUID = 9076352385052021856L;
     /**
      * 员工基础信息
      */
     private StaffPermissionVO staffPermission;
-
-    /**
-     * 权限集合
-     */
-    private Map<String, Integer> permissionMap;
 
     /**
      * 公司
@@ -29,14 +24,6 @@ public class StaffBaseInfoVO {
 
     public void setStaffPermission(StaffPermissionVO staffPermission) {
         this.staffPermission = staffPermission;
-    }
-
-    public Map<String, Integer> getPermissionMap() {
-        return permissionMap;
-    }
-
-    public void setPermissionMap(Map<String, Integer> permissionMap) {
-        this.permissionMap = permissionMap;
     }
 
     public CompanyVO getCompany() {
