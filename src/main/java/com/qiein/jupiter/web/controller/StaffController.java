@@ -287,9 +287,8 @@ public class StaffController extends BaseController {
     public ResultInfo getBaseInfo() {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        return ResultInfoUtil.success(currentLoginStaff);
-//        return ResultInfoUtil.success(staffService.getStaffBaseInfo(currentLoginStaff.getId(),
-//                currentLoginStaff.getCompanyId()));
+        return ResultInfoUtil.success(staffService.getStaffBaseInfo(currentLoginStaff.getId(),
+                currentLoginStaff.getCompanyId()));
     }
 
     /**
