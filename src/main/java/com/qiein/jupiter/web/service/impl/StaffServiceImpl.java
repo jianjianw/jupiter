@@ -3,7 +3,7 @@ package com.qiein.jupiter.web.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.qiein.jupiter.aop.annotation.LoginLog;
+import com.qiein.jupiter.aop.aspect.annotation.LoginLog;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.constant.NumberConstant;
 import com.qiein.jupiter.constant.RedisConstant;
@@ -13,7 +13,6 @@ import com.qiein.jupiter.util.JwtUtil;
 import com.qiein.jupiter.util.ListUtil;
 import com.qiein.jupiter.util.MD5Util;
 import com.qiein.jupiter.util.StringUtil;
-import com.qiein.jupiter.web.dao.GroupDao;
 import com.qiein.jupiter.web.dao.GroupStaffDao;
 import com.qiein.jupiter.web.dao.StaffDao;
 import com.qiein.jupiter.web.dao.StaffRoleDao;
@@ -31,13 +30,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sun.applet.Main;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -57,16 +53,10 @@ public class StaffServiceImpl implements StaffService {
     private CompanyService companyService;
 
     @Autowired
-    private ValueOperations<String, String> valueOperations;
-
-    @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
     @Autowired
-    private GroupDao groupDao;//小组部门持久层
-
-    @Autowired
-    private StaffRoleDao staffRoleDao;//人员角色关联持久层
+    private StaffRoleDao staffRoleDao;
 
     @Autowired
     private GroupStaffDao groupStaffDao;
@@ -495,6 +485,7 @@ public class StaffServiceImpl implements StaffService {
 
     /**
      * 交接客资
+     *
      * @param staffId   交接客服编号
      * @param beStaffId 被转移客资客服编号
      */
@@ -505,12 +496,24 @@ public class StaffServiceImpl implements StaffService {
 
     /**
      * 获取电商邀约小组人员列表
+     *
      * @param companyId
      * @return
      */
     @Override
     public List<GroupStaffVO> getChangeList(int companyId) {
-        return groupStaffDao.getListByGroupType("dsyy",companyId);
+        return groupStaffDao.getListByGroupType("dsyy", companyId);
+    }
+
+    /**
+     * 根据小组类型获取小组及组内人员信息
+     * @param companyId
+     * @param type
+     * @return
+     */
+    @Override
+    public List<GroupStaffVO> getGroupStaffByType(int companyId, String type) {
+        return groupStaffDao.getListByGroupType(type, companyId);
     }
 
 }

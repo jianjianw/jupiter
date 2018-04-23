@@ -19,7 +19,8 @@
         ID,CHANNELNAME,CHANNELIMG,TYPEID,BRANDID,BRANDNAME,PUSHRULE,COMPANYID,ISSHOW
     </sql>
 
-    <select id="getById" parameterType="Integer" resultMap="baseMap">
+    <select id="getByIdAndCid" parameterType="Integer" resultMap="baseMap">
+        SELECT
         <include refid="baseColumn"/>
         FROM
         hm_crm_channel
@@ -32,10 +33,10 @@
         <include refid="baseColumn"/>
         <where>
             COMPANYID = #{companyId} ,
-            <if test="grpName != null and grpName !=''">
+            <if test="channelName != null and channelName !=''">
                 CHANNELNAME = #{channelName},
             </if>
-            <if test="srcGrpImg != null and srcGrpImg !=''">
+            <if test="channelImg != null and channelImg !=''">
                 CHANNELIMG = #{channelImg},
             </if>
             <if test="typeId != null and typeId !=''">
@@ -54,11 +55,11 @@
                 ISSHOW = #{isShow},
             </if>
         </where>
-        ORDER BY ISSHOW DESC, TYPEID ,GRPID
+        ORDER BY ISSHOW DESC, TYPEID ,ID
     </select>
 
     <insert id="insert" parameterType="com.qiein.jupiter.web.entity.po.ChannelPO" useGeneratedKeys="true"
-            keyProperty="grpId">
+            keyProperty="id">
         INSERT INTO hm_crm_channel
         (CHANNELNAME,CHANNELIMG,TYPEID,BRANDID,BRANDNAME,PUSHRULE,COMPANYID,ISSHOW)
         VALUES (
@@ -93,7 +94,7 @@
             </if>
         </set>
         WHERE
-        COMPANYID = #{companyId} AND GRPID = #{grpId}
+        COMPANYID = #{companyId} AND ID = #{id}
     </update>
 
     <delete id="delete" parameterType="Integer">
@@ -101,7 +102,7 @@
         FROM
         hm_crm_channel
         WHERE
-        COMPANYID = #{companyId} AND ID = #{idd}
+        COMPANYID = #{companyId} AND ID = #{id}
 
     </delete>
 
@@ -139,7 +140,7 @@
     </select>
 
     <!--根据细分类型获取渠道列表-->
-    <select id="getListByType" parameterType="java.lang.Integer" resultMap="baseMap">
+    <select id="getListByType" parameterType="Integer" resultMap="baseMap">
         SELECT
           ID,CHANNELNAME,CHANNELIMG,TYPEID,BRANDID,BRANDNAME,PUSHRULE,COMPANYID,PRIORITY,ISSHOW
         FROM
@@ -147,5 +148,13 @@
         WHERE
           COMPANYID = #{companyId} AND TYPEID = #{typeId}
         ORDER BY ISSHOW DESC, TYPEID, PRIORITY ,ID
+    </select>
+
+    <select id="checkSrcNumById" parameterType="Integer" resultType="Integer">
+        SELECT
+          COUNT(1)
+        FROM
+          hm_crm_channel c
+        JOIN hm_crm_source s ON s.CHANNELID = c.ID AND s.CHANNELID = #{channelId} AND s.COMPANYID = #{companyId}
     </select>
 </mapper>

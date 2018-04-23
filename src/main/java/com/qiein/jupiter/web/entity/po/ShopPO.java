@@ -1,9 +1,7 @@
 package com.qiein.jupiter.web.entity.po;
 
-import com.qiein.jupiter.aop.annotation.NotEmpty;
+import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.web.entity.BaseEntity;
-
-import javax.validation.constraints.DecimalMin;
 
 /**
  * 拍摄地（门店）
@@ -13,7 +11,7 @@ public class ShopPO extends BaseEntity {
     /**
      * 拍摄地名称
      */
-    @NotEmpty(message = "{shop.shopName.null}")
+    @NotEmptyStr(message = "{shop.shopName.null}")
     private String shopName;
     /**
      * 类型；1：可接单门店；2：拍摄基地；3：外展

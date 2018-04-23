@@ -1,6 +1,6 @@
 package com.qiein.jupiter.web.entity.po;
 
-import com.qiein.jupiter.aop.annotation.NotEmpty;
+import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.web.entity.BaseEntity;
 
 /**
@@ -12,17 +12,17 @@ public class GroupPO extends BaseEntity {
     /**
      * 组id
      */
-//    @NotEmpty(message = "{group.id.null}")
+//    @NotEmptyStr(message = "{group.id.null}")
     private String groupId;
     /**
      * 组名称
      */
-    @NotEmpty(message = "{group.name.null}")
+    @NotEmptyStr(message = "{group.name.null}")
     private String groupName;
     /**
      * 父级id
      */
-    @NotEmpty(message = "{group.parentId.null}")
+    @NotEmptyStr(message = "{group.parentId.null}")
     private String parentId;
     /**
      * 组类型

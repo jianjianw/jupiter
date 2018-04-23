@@ -51,17 +51,19 @@ public interface StaffService {
 
     /**
      * 批量删除员工（物理删除）
+     *
      * @return
      */
-    void batDelete(String[] ids,int companyId);
+    void batDelete(String[] ids, int companyId);
 
     /**
      * 批量检查是否可删除
+     *
      * @param ids
      * @param companyId
      * @return
      */
-    String checkBatDelete(String[] ids , int companyId);
+    String checkBatDelete(String[] ids, int companyId);
 
     /**
      * 员工删除(逻辑删除)
@@ -161,15 +163,25 @@ public interface StaffService {
 
     /**
      * 交接客资
+     *
      * @param staffId   交接客服编号
      * @param beStaffId 被转移客资客服编号
      */
-    void changeStaff(int staffId , int beStaffId);
+    void changeStaff(int staffId, int beStaffId);
 
     /**
      * 获取可交接邀约客服人员列表
+     *
      * @param companyId
      * @return
      */
     List<GroupStaffVO> getChangeList(int companyId);
+
+    /**
+     * 根据类型获取小组及人员信息
+     * @param companyId
+     * @param type
+     * @return
+     */
+    List<GroupStaffVO> getGroupStaffByType(int companyId , String type);
 }

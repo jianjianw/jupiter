@@ -1,12 +1,13 @@
 package com.qiein.jupiter.web.dao;
 
 import com.qiein.jupiter.web.entity.po.SourcePO;
+import com.qiein.jupiter.web.entity.vo.SourceVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 /**
- * 渠道Dao
+ * 来源Dao
  */
 public interface SourceDao extends BaseDao<SourcePO>{
     /**
@@ -15,7 +16,7 @@ public interface SourceDao extends BaseDao<SourcePO>{
      * @param companyId
      * @return
      */
-    Integer checkSource(@Param("srcName") String srcName,@Param("grpId") Integer grpId, @Param("companyId") Integer companyId);
+    Integer checkSource(@Param("srcName") String srcName,@Param("channelId") Integer channelId, @Param("companyId") Integer companyId);
 
     /**
      * 根据渠道编号获取旗下的来源列表
@@ -24,4 +25,20 @@ public interface SourceDao extends BaseDao<SourcePO>{
      * @return
      */
     List<SourcePO> getSourceListByChannelId(@Param("channelId")Integer channelId ,@Param("companyId") Integer companyId);
+
+    /**
+     * 批量编辑来源
+     * @param sourceVO
+     * @param ids
+     * @return
+     */
+    Integer datUpdate(@Param("sv") SourceVO sourceVO ,@Param("ids") String[] ids);
+
+    /**
+     * 批量删除来源
+     * @param ids
+     * @param companyId
+     * @return
+     */
+    Integer datDelete(@Param("ids")String[] ids ,@Param("companyId") Integer companyId );
 }

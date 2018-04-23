@@ -16,7 +16,8 @@ public enum ExceptionEnum {
     VERIFY_USER_NOT_FOUND(104, "未找到验证用户信息"),
     //http请求相关
     HTTP_METHOD_NOT_SUPPORT(200, "不支持的请求方法类型"),
-    HTTP_BODY_NOT_READABLE(201, "http请求体无法读取"),
+    HTTP_BODY_NOT_READABLE(201, "HTTP请求体无法读取"),
+    HTTP_PARAMETER_ERROR(202,"HTTP请求参数无法对应"),
     //用户登录验证
     USER_NOT_FOUND(300, "用户不存在"),
     USER_IS_DEL(301, "用户已被删除"),
@@ -40,8 +41,14 @@ public enum ExceptionEnum {
     WEIGHT_ERROR(404, "权重需在[1,20]之间"),
     ID_IS_NULL(405, "ID不能为空"),
     CHANNEL_GROUP_EXIST(406, "该渠道下客服小组已存在"),
-    //渠道
-    CHANNEL_NAME_REPEAT(501, "渠道名称重复"),
+    //渠道&来源
+    CHANNEL_NAME_REPEAT(501,"渠道名称重复"),
+    CHANNEL_ID_NULL(502,"渠道编号不能为空"),
+    SOURCE_ID_NULL(503,"来源编号不能为空"),
+    SOURCE_NAME_REPEAT(504,"来源名称重复"),
+    CHANNEL_NOT_FOUND(505,"该渠道不存在"),
+    SOURCE_NOT_FOUND(506,"该来源不存在"),
+    CHANNEL_HAVE_SOURCE(507,"该渠道下存在来源，请先删除下属所有来源再继续操作"),
     //拍摄地
     SHOP_EXIST(601, "拍摄地已存在"),
     SHOP_ID_NULL(602, "拍摄地ID不能为空"),

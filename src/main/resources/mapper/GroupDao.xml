@@ -41,7 +41,7 @@
     <select id="getByParentId" resultMap="baseMap">
         SELECT
         <include refid="baseColumn"/>
-        FROM   hm_pub_group
+        FROM hm_pub_group
         WHERE PARENTID = #{parentId}
         AND COMPANYID = #{companyId}
     </select>
@@ -131,5 +131,14 @@
           WHERE COMPANYID = #{companyId}
         AND GROUPID = #{groupId}
     </delete>
+
+    <update id="batchUpdateGroupType">
+        <foreach item="item" collection="list" separator=";">
+            UPDATE hm_pub_group
+            SET GROUPTYPE = #{item.groupType}
+            WHERE ID = #{item.id}
+            AND COMPANYID = #{item.companyId}
+        </foreach>
+    </update>
 
 </mapper>

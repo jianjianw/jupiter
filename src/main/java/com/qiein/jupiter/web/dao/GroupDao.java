@@ -51,4 +51,12 @@ public interface GroupDao extends BaseDao<GroupPO> {
      */
     int deleteByGroupId(@Param("id") int id, @Param("companyId") int companyId);
 
+    /**
+     * 批量更新部门
+     *
+     * @param groupPOList
+     * @return
+     */
+    int batchUpdateGroupType(List<GroupPO> groupPOList);
+
 }

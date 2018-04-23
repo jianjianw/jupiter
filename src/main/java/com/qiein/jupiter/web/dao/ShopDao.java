@@ -16,7 +16,7 @@ public interface ShopDao extends BaseDao<ShopPO> {
      * @param companyId
      * @return
      */
-    public List<ShopVO> getCompanyShopList(@Param("companyId") int companyId);
+    List<ShopVO> getCompanyShopList(@Param("companyId") int companyId);
 
     /**
      * 拍摄地名称
@@ -25,14 +25,15 @@ public interface ShopDao extends BaseDao<ShopPO> {
      * @param shopName
      * @return
      */
-    public ShopPO getShopByName(@Param("companyId") int companyId, @Param("shopName") String shopName);
+    ShopPO getShopByName(@Param("companyId") int companyId, @Param("shopName") String shopName);
 
     /**
      * 编辑拍摄地开关
+     *
      * @param companyId
      * @param id
      * @param showFlag
      * @return
      */
-    public int editShopShowFlag(@Param("companyId") int companyId, @Param("id") int id, @Param("showFlag") boolean showFlag);
+    int editShopShowFlag(@Param("companyId") int companyId, @Param("id") int id, @Param("showFlag") boolean showFlag);
 }

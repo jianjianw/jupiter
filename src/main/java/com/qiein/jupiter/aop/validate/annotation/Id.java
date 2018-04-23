@@ -1,8 +1,7 @@
-package com.qiein.jupiter.aop.annotation;
+package com.qiein.jupiter.aop.validate.annotation;
 
 
-import com.qiein.jupiter.exception.ExceptionEnum;
-import com.qiein.jupiter.aop.validate.NotEmptyValidator;
+import com.qiein.jupiter.aop.validate.IdValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -13,12 +12,11 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.FIELD, ElementType.ANNOTATION_TYPE, ElementType.CONSTRUCTOR, ElementType.PARAMETER})
-@Constraint(validatedBy = {NotEmptyValidator.class})
-public @interface NotEmpty {
-
+@Constraint(validatedBy = {IdValidator.class})
+public @interface Id {
     String field() default "";
 
-    String message() default "字段不能为空";
+    String message() default "Id不能为空或者0";
 
     Class<?>[] groups() default {};
 

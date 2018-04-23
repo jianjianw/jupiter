@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.controller;
 
-import com.qiein.jupiter.aop.annotation.NotEmpty;
+import com.qiein.jupiter.aop.validate.annotation.Id;
+import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.constant.TipMsgConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.util.NumUtil;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/shop")
+@Validated
 public class ShopController extends BaseController {
 
     @Autowired
@@ -49,7 +51,8 @@ public class ShopController extends BaseController {
     }
 
     @GetMapping("/edit_shop_show")
-    public ResultInfo editShopShow(@NotEmpty @RequestParam("id") int id, @NotEmpty @RequestParam("showFlag") boolean showFlag) {
+    public ResultInfo editShopShow(@Id @RequestParam("id") int id,
+                                   @NotEmptyStr @RequestParam("showFlag") boolean showFlag) {
         if (NumUtil.isNull(id)) {
             return ResultInfoUtil.error(ExceptionEnum.SHOP_ID_NULL);
         }
@@ -60,7 +63,7 @@ public class ShopController extends BaseController {
     }
 
     @GetMapping()
-    public ResultInfo deleteShop(){
+    public ResultInfo deleteShop() {
 
         return ResultInfoUtil.success();
     }

@@ -1,6 +1,5 @@
 package com.qiein.jupiter.web.entity.vo;
 
-import com.qiein.jupiter.web.entity.BaseEntity;
 import com.qiein.jupiter.web.entity.po.PermissionPO;
 
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.qiein.jupiter.aop.validate;
 
-import com.qiein.jupiter.aop.annotation.Phone;
+import com.qiein.jupiter.aop.validate.annotation.Phone;
 import com.qiein.jupiter.util.HttpUtil;
 
 import javax.validation.ConstraintValidator;

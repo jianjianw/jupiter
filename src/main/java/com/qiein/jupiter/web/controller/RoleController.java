@@ -1,8 +1,9 @@
 package com.qiein.jupiter.web.controller;
 
-import com.qiein.jupiter.aop.annotation.NotEmpty;
+import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.constant.TipMsgConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
+import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
@@ -35,7 +36,9 @@ public class RoleController extends BaseController {
     }
 
     @GetMapping("/add_role")
-    public ResultInfo addRole(@NotEmpty @RequestParam("roleName") String roleName, @RequestParam(value = "priority", defaultValue = "0") int priority, @RequestParam("pmsIds") String pmsIds) {
+    public ResultInfo addRole(@NotEmptyStr @RequestParam("roleName") String roleName,
+                              @RequestParam(value = "priority", defaultValue = "0") int priority,
+                              @RequestParam("pmsIds") String pmsIds) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         roleService.insert(roleName, priority, pmsIds, currentLoginStaff.getCompanyId());
@@ -43,7 +46,10 @@ public class RoleController extends BaseController {
     }
 
     @GetMapping("/delete_role")
-    public ResultInfo deleteRole(@NotEmpty @RequestParam("roleId") Integer roleId) {
+    public ResultInfo deleteRole(@RequestParam("roleId") Integer roleId) {
+        if (roleId == 0) {
+            throw new RException(ExceptionEnum.ID_NULL);
+        }
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         roleService.delete(roleId, currentLoginStaff.getCompanyId());
