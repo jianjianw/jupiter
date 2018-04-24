@@ -245,7 +245,7 @@ public class StaffServiceImpl implements StaffService {
         //4.删除权限关联表
         staffRoleDao.deleteByStaffId(staffVO.getId(), staffVO.getCompanyId());
         //5.插入人员角色关联表
-        if (StringUtil.isEmpty(staffVO.getRoleIds())) {
+        if (StringUtil.isNotEmpty(staffVO.getRoleIds())) {
             String[] roleArr = staffVO.getRoleIds().split(CommonConstant.STR_SEPARATOR);
             staffRoleDao.batchInsertStaffRole(staffVO.getId(), staffVO.getCompanyId(), roleArr);
         }
