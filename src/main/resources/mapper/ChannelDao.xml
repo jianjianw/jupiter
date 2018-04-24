@@ -15,6 +15,15 @@
         <result column="PRIORITY" jdbcType="INTEGER" property="priority"/>
     </resultMap>
 
+    <resultMap id="ChannelVOMap" type="com.qiein.jupiter.web.entity.vo.ChannelVO">
+        <result column="ID" jdbcType="INTEGER" property="channelId"/>
+        <result column="CHANNELNAME" jdbcType="VARCHAR" property="channelName"/>
+        <collection property="srcList" ofType="com.qiein.jupiter.web.entity.vo.SrcListVO" >
+            <result column="SRCID" jdbcType="INTEGER" property="srcId"/>
+            <result column="SRCNAME" jdbcType="VARCHAR" property="srcName"/>
+        </collection>
+    </resultMap>
+
     <sql id="baseColumn">
         ID,CHANNELNAME,CHANNELIMG,TYPEID,BRANDID,BRANDNAME,PUSHRULE,COMPANYID,ISSHOW
     </sql>
@@ -156,5 +165,23 @@
         FROM
           hm_crm_channel c
         JOIN hm_crm_source s ON s.CHANNELID = c.ID AND s.CHANNELID = #{channelId} AND s.COMPANYID = #{companyId}
+    </select>
+
+    <!--获取各角色渠道组及渠道-->
+    <select id="getChannelSourceListByType" parameterType="map" resultMap="ChannelVOMap">
+        SELECT
+            channel.ID, channel.CHANNELNAME, src.ID AS SRCID, src.SRCNAME
+        FROM
+            hm_crm_channel channel
+        LEFT JOIN hm_crm_source src ON src.COMPANYID = channel.COMPANYID AND src.CHANNELID = channel.ID
+        WHERE
+            channel.COMPANYID = #{companyId}
+            AND channel.ISSHOW = 1
+            AND src.ISSHOW = 1
+            AND channel.TYPEID IN
+            <foreach collection="typeList" item="typeId" index="index" open="(" close=")" separator=",">
+                #{typeId}
+            </foreach>
+        ORDER BY channel.TYPEID, channel.PRIORITY ,channel.ID,src.PRIORITY, src.ID
     </select>
 </mapper>

@@ -6,7 +6,7 @@ package com.qiein.jupiter.exception;
 public enum ExceptionEnum {
     //系统级错误
     UNKNOW_ERROR(-1, "未知错误"),
-    RPC_ERROR(-2,"远程调用错误"),
+    RPC_ERROR(-2, "远程调用错误"),
     MYSQL_SQL_GRAMMAR_ERROR(-8, "sql语法错误"),
     DB_SPLIT_ERROR(-9, "系统表分割错误"),
     //token验证相关
@@ -55,11 +55,13 @@ public enum ExceptionEnum {
     SHOP_EXIST(601, "拍摄地已存在"),
     SHOP_ID_NULL(602, "拍摄地ID不能为空"),
     //权限
-    ROLE_EXIST(701, "该角色已存在"),
-    ROLE_EDIT_FAIL(702, "角色修改失败"),
+    ROLE_EXIST(701, "该角权限已存在"),
+    ROLE_EDIT_FAIL(702, "权限修改失败"),
     ROLE_DELETE_ERROR(703, "该权限有绑定人员，无法删除"),
     //企业配置
-    MENU_NULL(801, "企业菜单为空");
+    MENU_NULL(801, "企业菜单为空"),
+    //角色
+    ROLE_ERROR(901, "角色错误");
 
     private Integer code;
 

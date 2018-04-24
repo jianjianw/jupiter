@@ -21,6 +21,11 @@ public class RoleConstant {
      */
     public static final String ZJSYY = "zjsyy";
     /**
+     * 门市中心
+     */
+    public static final String MSZX = "mszx";
+
+    /**
      * 财务中心
      */
     public static final String CWZX = "cwzx";

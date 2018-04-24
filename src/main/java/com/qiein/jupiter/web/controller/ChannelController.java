@@ -69,7 +69,7 @@ public class ChannelController extends BaseController {
         channelPO.setCompanyId(currentLoginStaff.getCompanyId());
         //对象参数去空
         ObjectUtil.objectStrParamTrim(channelPO);
-        if (StringUtil. isEmpty(String.valueOf(channelPO.getId())))
+        if (StringUtil.isEmpty(String.valueOf(channelPO.getId())))
             throw new RException(ExceptionEnum.CHANNEL_ID_NULL);
         channelService.editChannel(channelPO);
         return ResultInfoUtil.success(TipMsgConstant.EDIT_CHANNEL_SUCCESS);
@@ -169,6 +169,13 @@ public class ChannelController extends BaseController {
                 break;
         }
         return list;
+    }
+
+    @GetMapping("/get_channel_source_select_by_role")
+    public ResultInfo getChannelSourceSelectByRole(@NotEmptyStr @RequestParam("role") String role) {
+        //获取当前登录用户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        return ResultInfoUtil.success(channelService.getChannelSourceListByType(currentLoginStaff.getCompanyId(), role));
     }
 
 }

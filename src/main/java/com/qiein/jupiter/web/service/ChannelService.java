@@ -1,7 +1,7 @@
 package com.qiein.jupiter.web.service;
 
 import com.qiein.jupiter.web.entity.po.ChannelPO;
-
+import com.qiein.jupiter.web.entity.vo.ChannelVO;
 import java.util.List;
 
 /**
@@ -48,5 +48,14 @@ public interface ChannelService {
      * @return
      */
     List<ChannelPO> getListByType(Integer typeId, Integer companyId);
+
+    /**
+     * 获取各角色渠道组及渠道
+     *
+     * @param companyId
+     * @param role
+     * @return
+     */
+    public List<ChannelVO> getChannelSourceListByType(Integer companyId, String role);
 
 }

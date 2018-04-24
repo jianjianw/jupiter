@@ -1,9 +1,11 @@
 package com.qiein.jupiter.web.service.impl;
 
+import com.qiein.jupiter.enums.RoleChannelEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.web.dao.ChannelDao;
 import com.qiein.jupiter.web.entity.po.ChannelPO;
+import com.qiein.jupiter.web.entity.vo.ChannelVO;
 import com.qiein.jupiter.web.service.ChannelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -91,6 +93,17 @@ public class ChannelServiceImpl implements ChannelService {
     @Override
     public List<ChannelPO> getListByType(Integer typeId, Integer companyId) {
         return channelDao.getListByType(companyId, typeId);
+    }
+
+    /**
+     * 获取各角色渠道组及渠道
+     *
+     * @param companyId
+     * @param role
+     * @return
+     */
+    public List<ChannelVO> getChannelSourceListByType(Integer companyId, String role) {
+        return channelDao.getChannelSourceListByType(companyId, RoleChannelEnum.getTypeListByRole(role));
     }
 
 }
