@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.controller;
 
+import com.qiein.jupiter.aop.validate.annotation.Bool;
 import com.qiein.jupiter.aop.validate.annotation.Id;
 import com.qiein.jupiter.aop.aspect.annotation.LoginLog;
 import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
@@ -357,7 +358,7 @@ public class StaffController extends BaseController {
      * @return
      */
     @GetMapping("/lock_staff")
-    public ResultInfo LockStaff(@NotEmptyStr @RequestParam("staffId") Integer staffId, @NotEmptyStr @RequestParam("isLock") Boolean isLock) {
+    public ResultInfo LockStaff(@NotEmptyStr @RequestParam("staffId") Integer staffId, @Bool @RequestParam("isLock") Boolean isLock) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         //获取操作用户所属公司
