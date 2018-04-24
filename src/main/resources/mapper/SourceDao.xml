@@ -168,4 +168,14 @@
           COMPANYID = #{companyId} AND CHANNELID = #{channelId}
 		ORDER BY ISSHOW DESC,TYPEID ,PRIORITY ,ID
     </select>
+
+    <!--渠道名变更时下属所有来源的记录也要相应变更-->
+    <update id="updateChannelName" parameterType="map">
+        UPDATE
+          hm_crm_source
+        SET
+          CHANNELNAME = #{channelName}
+        WHERE
+          COMPANYID = #{companyId} AND CHANNELID = #{channelId}
+    </update>
 </mapper>

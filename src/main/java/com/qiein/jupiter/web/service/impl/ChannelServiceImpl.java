@@ -4,11 +4,13 @@ import com.qiein.jupiter.enums.RoleChannelEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.web.dao.ChannelDao;
+import com.qiein.jupiter.web.dao.SourceDao;
 import com.qiein.jupiter.web.entity.po.ChannelPO;
 import com.qiein.jupiter.web.entity.vo.ChannelVO;
 import com.qiein.jupiter.web.service.ChannelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,6 +19,9 @@ public class ChannelServiceImpl implements ChannelService {
 
     @Autowired
     private ChannelDao channelDao;
+
+    @Autowired
+    private SourceDao sourceDao;
 
     /**
      * 新增渠道
@@ -40,6 +45,7 @@ public class ChannelServiceImpl implements ChannelService {
      * @param channelPO
      */
     @Override
+    @Transactional
     public void editChannel(ChannelPO channelPO) {
         //检查是否存在
         ChannelPO cp = channelDao.getByIdAndCid(channelPO.getId(), channelPO.getCompanyId());
@@ -51,6 +57,7 @@ public class ChannelServiceImpl implements ChannelService {
                 if (channelDao.checkChannel(channelPO.getChannelName(), channelPO.getCompanyId()) >= 1) {
                     throw new RException(ExceptionEnum.CHANNEL_NAME_REPEAT);
                 }
+                sourceDao.updateChannelName(channelPO.getId(),channelPO.getChannelName(),channelPO.getCompanyId());
             }
         }
         channelDao.update(channelPO);

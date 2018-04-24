@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiein.jupiter.web.dao.BrandDao">
+
+    <resultMap id="baseMap" type="com.qiein.jupiter.web.entity.po.BrandPO">
+        <id column="ID" jdbcType="INTEGER" property="id"/>
+        <result column="BRANDNAME" jdbcType="VARCHAR" property="brandName"/>
+        <result column="COMPANYID" jdbcType="INTEGER" property="companyId"/>
+    </resultMap>
+
+    <sql id="baseColumn">
+        ID,BRANDNAME,COMPANYID
+    </sql>
+
+    <!--检查是否存在同名品牌-->
+    <select id="checkBrandName" parameterType="map" >
+        SELECT
+          COUNT(1)
+        FROM
+          hm_crm_brand
+        WHERE
+          COMPANYID = #{companyId} AND BRANDNAME = #{brandName}
+    </select>
+
+    <!--添加品牌-->
+    <insert id="insert" parameterType="brandPO"  useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO hm_crm_brand
+        (BRANDNAME , COMPANYID)
+        VALUES
+        (#{brandName} , #{companyId})
+    </insert>
+
+    <!--删除品牌-->
+    <delete id="deleteByIdAndCid">
+        DELETE
+        FROM
+          hm_crm_brand
+        WHERE
+          ID = #{id} AND COMPANYID = #{companyId}
+    </delete>
+
+    <!--编辑品牌-->
+    <update id="update" parameterType="brandPO">
+        UPDATE
+          hm_crm_brand
+        <set>
+            <if test="brandName!=null and brandName !=''">
+                BRANDNAME = #{brandName}
+            </if>
+        </set>
+        WHERE
+          COMPANYID = #{companyId} AND ID = #{id}
+    </update>
+
+    <!--获取品牌列表-->
+    <select id="getBrandList" parameterType="Integer" resultMap="baseMap">
+        SELECT
+          <include refid="baseColumn"/>
+        FROM
+          hm_crm_brand
+        WHERE
+          COMPANYID = #{companyId}
+    </select>
+</mapper>

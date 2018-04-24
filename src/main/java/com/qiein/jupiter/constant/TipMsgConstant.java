@@ -100,5 +100,8 @@ public class TipMsgConstant {
      */
     public final static String EDIT_SOURCE_SUCCESS = "编辑来源成功";
 
-
+    /**
+     * 添加品牌成功
+     */
+    public final static String ADD_BRAND_SUCCESS = "添加品牌成功";
 }
