@@ -20,10 +20,26 @@ public interface BrandDao extends BaseDao<BrandPO>{
     int checkBrandName(@Param("brandName") String brandName , @Param("companyId") Integer companyId);
 
     /**
+     * 检查品牌下属是否存在渠道
+     * @param brandId
+     * @param companyId
+     * @return
+     */
+    int checkBrandHaveChannel(@Param("brandId")Integer brandId,@Param("companyId") Integer companyId);
+
+    /**
      * 获取品牌列表
      * @param companyId
      * @return
      */
     List<BrandPO> getBrandList(@Param("companyId") Integer companyId);
+
+    /**
+     * 更新品牌下属的渠道来源信息
+     * @param brandPO
+     * @return
+     */
+    int updateBrandInfo(BrandPO brandPO);
+
 
 }

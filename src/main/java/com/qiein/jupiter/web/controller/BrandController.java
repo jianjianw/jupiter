@@ -10,9 +10,7 @@ import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 /**
@@ -33,7 +31,7 @@ public class BrandController extends BaseController {
      * @param brandPO
      * @return
      */
-    @RequestMapping("/add")
+    @PostMapping("/add")
     public ResultInfo addBrand(@RequestBody @Validated BrandPO brandPO) {
 
         //获取当前登录用户
@@ -51,7 +49,7 @@ public class BrandController extends BaseController {
      * @param id
      * @return
      */
-    @RequestMapping("/del")
+    @GetMapping("del")
     public ResultInfo delBrand(@Id int id){
 
         //获取当前登录用户
@@ -65,7 +63,7 @@ public class BrandController extends BaseController {
      * @param brandPO
      * @return
      */
-    @RequestMapping("/edit")
+    @PostMapping("/edit")
     public ResultInfo editBrand(@RequestBody BrandPO brandPO){
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
@@ -83,7 +81,7 @@ public class BrandController extends BaseController {
      *
      * @return
      */
-    @RequestMapping("/get_list")
+    @GetMapping("/get_list")
     public ResultInfo getBrandList() {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
