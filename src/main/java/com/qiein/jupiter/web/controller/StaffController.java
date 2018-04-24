@@ -358,7 +358,7 @@ public class StaffController extends BaseController {
      * @return
      */
     @GetMapping("/lock_staff")
-    public ResultInfo LockStaff(@NotEmptyStr @RequestParam("staffId") Integer staffId, @Bool @RequestParam("isLock") Boolean isLock) {
+    public ResultInfo LockStaff(@Id @RequestParam("staffId") Integer staffId, @Bool @RequestParam("isLock") Boolean isLock) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         //获取操作用户所属公司
@@ -383,8 +383,8 @@ public class StaffController extends BaseController {
      * @return
      */
     @GetMapping("/change_staff")
-    public ResultInfo ChangeStaff(@NotEmptyStr @RequestParam("staffId") Integer staffId,
-                                  @NotEmptyStr @RequestParam("beStaffId") Integer beStaffId) {
+    public ResultInfo ChangeStaff(@Id @RequestParam("staffId") Integer staffId,
+                                  @Id @RequestParam("beStaffId") Integer beStaffId) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         //获取操作用户所属公司
