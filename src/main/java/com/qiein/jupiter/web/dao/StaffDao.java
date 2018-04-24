@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.dao;
 
 import com.qiein.jupiter.web.entity.po.CompanyPO;
+import com.qiein.jupiter.web.entity.po.StaffDetailPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.GroupStaffVO;
 import com.qiein.jupiter.web.entity.vo.StaffVO;
@@ -112,5 +113,26 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @return
      */
     List<StaffPO> batchGetByIds(@Param("ids") String[] ids, @Param("companyId") int companyId);
+
+    /**
+     * 插入员工详细细信息
+     *
+     * @return
+     */
+    int insertStaffDetail(StaffDetailPO staffDetailPO);
+
+    /**
+     * 修改员工详细信息
+     */
+    int updateStaffDetail(StaffDetailPO staffDetailPO);
+
+    /**
+     * 删除员工详细信息
+     *
+     * @param id
+     * @param companyId
+     * @return
+     */
+    int deleteStaffDetail(@Param("id") int id, @Param("companyId") int companyId);
 
 }

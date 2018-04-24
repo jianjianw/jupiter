@@ -15,6 +15,7 @@ import com.qiein.jupiter.web.dao.*;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.dto.StaffPasswordDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
+import com.qiein.jupiter.web.entity.po.StaffDetailPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.*;
 import com.qiein.jupiter.web.service.CompanyService;
@@ -94,6 +95,11 @@ public class StaffServiceImpl implements StaffService {
             String[] roleArr = staffVO.getRoleIds().split(CommonConstant.STR_SEPARATOR);
             staffRoleDao.batchInsertStaffRole(staffVO.getId(), staffVO.getCompanyId(), roleArr);
         }
+        //5.新增员工详细信息
+        StaffDetailPO staffDetailPO = new StaffDetailPO();
+        staffDetailPO.setId(staffVO.getId());
+        staffDetailPO.setCompanyId(staffVO.getCompanyId());
+        staffDao.insertStaffDetail(staffDetailPO);
         redisTemplate.opsForValue().set(RedisConstant.getStaffKey(staffVO.getId(), staffVO.getCompanyId()), staffVO);
         return staffVO;
     }
@@ -146,7 +152,7 @@ public class StaffServiceImpl implements StaffService {
     @CacheEvict(value = "staff", key = "'staff'+':'+#id+':'+#companyId")
     @Override
     public int delete(int id, int companyId) {
-        //TODO 删除前验证各种  如员工是否有客资等情况
+        //TODO 删除前验证各种  如员工是否有客资等情况 同时删除员工的详细信息
         return staffDao.deleteByIdAndCid(id, companyId);
     }
 
@@ -564,31 +570,34 @@ public class StaffServiceImpl implements StaffService {
     /**
      * 更新基础的信息
      *
-     * @param staffPO
+     * @param staffDetailVO
      * @return
      */
     @Override
-    public StaffPO update(StaffPO staffPO) {
+    public StaffDetailVO update(StaffDetailVO staffDetailVO) {
         //1.根据手机号，全名，艺名查重，手机号全公司不重复，全名，艺名，在职员工中不能重复
-        StaffPO phoneExist = staffDao.getStaffByPhone(staffPO.getCompanyId(), staffPO.getPhone());
-        if (phoneExist != null && phoneExist.getId() != staffPO.getId() && phoneExist.isDelFlag()) {
+        StaffPO phoneExist = staffDao.getStaffByPhone(staffDetailVO.getCompanyId(), staffDetailVO.getPhone());
+        if (phoneExist != null && phoneExist.getId() != staffDetailVO.getId() && phoneExist.isDelFlag()) {
             throw new RException(ExceptionEnum.STAFF_EXIST_DEL);
         }
-        if (phoneExist != null && phoneExist.getId() != staffPO.getId() && !phoneExist.isDelFlag()) {
+        if (phoneExist != null && phoneExist.getId() != staffDetailVO.getId() && !phoneExist.isDelFlag()) {
             throw new RException(ExceptionEnum.PHONE_EXIST);
         }
         //艺名查重
-        StaffPO nickNameStaff = staffDao.getStaffByNames(staffPO.getCompanyId(), staffPO.getNickName());
-        if (nickNameStaff != null && nickNameStaff.getId() != staffPO.getId()) {
+        StaffPO nickNameStaff = staffDao.getStaffByNames(staffDetailVO.getCompanyId(), staffDetailVO.getNickName());
+        if (nickNameStaff != null && nickNameStaff.getId() != staffDetailVO.getId()) {
             throw new RException(ExceptionEnum.NICKNAME_EXIST);
         }
         //全名查重
-        StaffPO userNameStaff = staffDao.getStaffByNames(staffPO.getCompanyId(), staffPO.getUserName());
-        if (userNameStaff != null && userNameStaff.getId() != staffPO.getId()) {
+        StaffPO userNameStaff = staffDao.getStaffByNames(staffDetailVO.getCompanyId(), staffDetailVO.getUserName());
+        if (userNameStaff != null && userNameStaff.getId() != staffDetailVO.getId()) {
             throw new RException(ExceptionEnum.USERNAME_EXIST);
         }
-        staffDao.update(staffPO);
-        return staffPO;
+        //更新详细信息
+        StaffDetailPO staffDetailPO=new StaffDetailPO();
+//        staffDao.update(staffDetailPO);
+//        return staffPO;
+        return null;
     }
 
 

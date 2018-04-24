@@ -10,7 +10,6 @@
         <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
         <result column="CORPID" property="corpId" jdbcType="VARCHAR"/>
         <result column="DINGUSERID" property="dingUserId" jdbcType="VARCHAR"/>
-        <result column="OPENID" property="openId" jdbcType="VARCHAR"/>
         <result column="HEADIMG" property="headImg" jdbcType="VARCHAR"/>
         <result column="TOKEN" property="token" jdbcType="VARCHAR"/>
         <result column="ISSHOW" property="showFlag" jdbcType="INTEGER"/>
@@ -38,8 +37,19 @@
         <result column="ROLEID" property="roleId" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <resultMap id="staffDetailMap" type="com.qiein.jupiter.web.entity.po.StaffDetailPO">
+        <id column="ID" property="id" jdbcType="INTEGER"/>
+        <result column="WECHATNAME" property="weChatName" jdbcType="VARCHAR"/>
+        <result column="WECHATIMG" property="weChatImg" jdbcType="VARCHAR"/>
+        <result column="LASTLOGINTIME" property="lastLoginTime" jdbcType="INTEGER"/>
+        <result column="LASTLOGINIP" property="lastLoginIp" jdbcType="VARCHAR"/>
+        <result column="OPENID" property="openId" jdbcType="VARCHAR"/>
+        <result column="CREATETIME" property="createTime" jdbcType="INTEGER"/>
+        <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
+    </resultMap>
+
     <sql id="baseColumn">
-        ID, NICKNAME, PHONE, USERNAME, PASSWORD,COMPANYID, CORPID, DINGUSERID, OPENID,HEADIMG,
+        ID, NICKNAME, PHONE, USERNAME, PASSWORD,COMPANYID, CORPID, DINGUSERID, HEADIMG,
         TOKEN,ISSHOW,ISLOCK,ISDEL
     </sql>
 
@@ -76,9 +86,6 @@
             <if test="dingUserId != null and dingUserId != ''">
                 DINGUSERID = #{dingUserId},
             </if>
-            <if test="openId != null and openId != ''">
-                OPENID = #{openId},
-            </if>
             <if test="headImg != null and headImg != ''">
                 HEADIMG = #{headImg},
             </if>
@@ -100,11 +107,11 @@
     <insert id="insert" parameterType="com.qiein.jupiter.web.entity.po.StaffPO" useGeneratedKeys="true"
             keyProperty="id">
         INSERT INTO  hm_pub_staff
-        (NICKNAME, PHONE, USERNAME, PASSWORD,COMPANYID, CORPID, DINGUSERID, OPENID,HEADIMG,
+        (NICKNAME, PHONE, USERNAME, PASSWORD,COMPANYID, CORPID, DINGUSERID, HEADIMG,
         TOKEN,ISSHOW,ISLOCK,ISDEL)
         VALUES (
         #{nickName}, #{phone}, #{userName}, #{password},
-        #{companyId}, #{corpId},#{dingUserId},#{openId},
+        #{companyId}, #{corpId},#{dingUserId},
         #{headImg},#{token},#{showFlag},#{lockFlag},#{delFlag}
         )
     </insert>
@@ -144,9 +151,6 @@
             </if>
             <if test="dingUserId != null">
                 DINGUSERID = #{dingUserId},
-            </if>
-            <if test="openId != null">
-                OPENID = #{openId},
             </if>
             <if test="headImg != null">
                 HEADIMG = #{headImg},
@@ -294,19 +298,19 @@
     </select>
 
     <!--删除批量员工-->
-    <delete id="batDelByIdsAndCid" parameterType="map" >
+    <delete id="batDelByIdsAndCid" parameterType="map">
         DELETE
         FROM
-          hm_pub_staff
+        hm_pub_staff
         WHERE
-          COMPANYID = #{companyId} AND
-          ID IN 
-          <foreach collection="ids" item="id" index="index" open="(" separator="," close=")">
-              #{id}
-          </foreach>
+        COMPANYID = #{companyId} AND
+        ID IN
+        <foreach collection="ids" item="id" index="index" open="(" separator="," close=")">
+            #{id}
+        </foreach>
     </delete>
 
-    <select id="batchGetByIds"  resultMap="baseMap">
+    <select id="batchGetByIds" resultMap="baseMap">
         SELECT
         <include refid="baseColumn"/>
         FROM hm_pub_staff
@@ -317,4 +321,53 @@
             #{id}
         </foreach>
     </select>
+    <!--插入员工详细信息-->
+    <insert id="insertStaffDetail" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO hm_pub_staff_detail
+         (WECHATNAME, WECHATIMG, LASTLOGINTIME, LASTLOGINIP,OPENID, CREATETIME,COMPANYID)
+        VALUES (
+        #{weChatName}, #{weChatImg}, #{lastLoginTime}, #{lastLoginIp},
+        #{openId},UNIX_TIMESTAMP(now()),#{companyId}
+        )
+    </insert>
+    <!--更新员工详细信息-->
+    <update id="updateStaffDetail">
+        UPDATE hm_pub_staff_detail
+        <set>
+            <if test="weChatName != null and weChatName != ''">
+                WECHATNAME = #{weChatName},
+            </if>
+            <if test="weChatImg != null and weChatImg != ''">
+                WECHATIMG = #{weChatImg},
+            </if>
+            <if test="lastLoginTime != null and lastLoginTime != ''">
+                LASTLOGINTIME = UNIX_TIMESTAMP(now()),
+            </if>
+            <if test="lastLoginIp != null and lastLoginIp != ''">
+                LASTLOGINIP = #{lastLoginIp},
+            </if>
+            <if test="openId != null and openId != ''">
+                OPENID = #{openId},
+            </if>
+        </set>
+        WHERE ID = #{id}
+        AND COMPANYID = #{companyId}
+    </update>
+    <!--删除员工详细信息-->
+    <delete id="deleteStaffDetail">
+      DELETE FROM hm_pub_staff_detail
+         WHERE ID = #{id}
+        AND COMPANYID = #{companyId}
+    </delete>
+
+    <!--获取员工详细信息-->
+    <select id="getStaffDetail">
+        SELECT   staff.ID,  staff.NICKNAME,  staff.PHONE,  staff.USERNAME,  staff.PASSWORD,
+         staff.COMPANYID,  staff.CORPID,  staff.DINGUSERID, staff.HEADIMG,
+        staff.TOKEN,staff.ISSHOW,staff.ISLOCK,staff.ISDEL,detail.WECHATNAME, detail.WECHATIMG, detail.LASTLOGINTIME,
+        detail.OPENID,LASTLOGINIP,OPENID, CREATETIME
+        FROM  hm_pub_staff staff LEFT JOIN
+        hm_pub_staff_detail detail ON staff.ID = detail.ID
+    </select>
+
 </mapper>
