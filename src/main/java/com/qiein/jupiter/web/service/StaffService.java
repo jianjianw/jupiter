@@ -5,10 +5,7 @@ import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.dto.StaffPasswordDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
-import com.qiein.jupiter.web.entity.vo.GroupStaffVO;
-import com.qiein.jupiter.web.entity.vo.StaffBaseInfoVO;
-import com.qiein.jupiter.web.entity.vo.StaffPermissionVO;
-import com.qiein.jupiter.web.entity.vo.StaffVO;
+import com.qiein.jupiter.web.entity.vo.*;
 
 import java.util.List;
 
@@ -194,7 +191,7 @@ public interface StaffService {
      * @param staffPO
      * @return
      */
-    StaffPO update(StaffPO staffPO);
+    StaffDetailVO update(StaffDetailVO staffPO);
 
     /**
      * 更新密码

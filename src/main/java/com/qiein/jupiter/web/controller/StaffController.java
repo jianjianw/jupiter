@@ -429,7 +429,7 @@ public class StaffController extends BaseController {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         //设置cid
         staffPO.setCompanyId(currentLoginStaff.getCompanyId());
-        staffService.update(staffPO);
+//        staffService.update(staffPO);
         return ResultInfoUtil.success(TipMsgConstant.SAVE_SUCCESS);
     }
 

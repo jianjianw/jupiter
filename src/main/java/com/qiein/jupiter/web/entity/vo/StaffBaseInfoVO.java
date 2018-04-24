@@ -14,6 +14,11 @@ public class StaffBaseInfoVO implements Serializable {
     private StaffPermissionVO staffPermission;
 
     /**
+     * 员工详细信息
+     */
+    private StaffDetailVO staffDetail;
+
+    /**
      * 公司
      */
     private CompanyVO company;
@@ -32,5 +37,17 @@ public class StaffBaseInfoVO implements Serializable {
 
     public void setCompany(CompanyVO company) {
         this.company = company;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public StaffDetailVO getStaffDetail() {
+        return staffDetail;
+    }
+
+    public void setStaffDetail(StaffDetailVO staffDetail) {
+        this.staffDetail = staffDetail;
     }
 }
