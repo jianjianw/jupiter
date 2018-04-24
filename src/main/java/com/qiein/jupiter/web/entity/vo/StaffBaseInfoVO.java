@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.entity.vo;
 
 
+import com.qiein.jupiter.web.entity.po.GroupPO;
 import com.qiein.jupiter.web.entity.po.PermissionPO;
 
 import java.io.Serializable;
@@ -21,9 +22,21 @@ public class StaffBaseInfoVO implements Serializable {
      */
     private StaffDetailVO staffDetail;
     /**
+     * 员工所在小组的信息
+     */
+    private List<GroupPO> group;
+    /**
      * 公司
      */
     private CompanyVO company;
+
+    public List<GroupPO> getGroup() {
+        return group;
+    }
+
+    public void setGroup(List<GroupPO> group) {
+        this.group = group;
+    }
 
     public static long getSerialVersionUID() {
         return serialVersionUID;

@@ -67,7 +67,7 @@ public interface GroupDao extends BaseDao<GroupPO> {
      * @param type
      * @return
      */
-    public List<String> getGroupByStaffAndType(@Param("companyId") int companyId, @Param("staffId") int staffId, @Param("type") String type);
+    List<String> getGroupByStaffAndType(@Param("companyId") int companyId, @Param("staffId") int staffId, @Param("type") String type);
 
     /**
      * 获取员工所在部门
@@ -77,6 +77,14 @@ public interface GroupDao extends BaseDao<GroupPO> {
      * @param type
      * @return
      */
-    public List<String> getDeptByStaffAndType(@Param("companyId") int companyId, @Param("staffId") int staffId, @Param("type") String type);
+    List<String> getDeptByStaffAndType(@Param("companyId") int companyId, @Param("staffId") int staffId, @Param("type") String type);
 
+    /**
+     * 获取员工所在小组的信息
+     *
+     * @param staffId
+     * @param companyId
+     * @return
+     */
+    List<GroupPO> getGroupByStaffId(@Param("staffId") int staffId, @Param("companyId") int companyId);
 }

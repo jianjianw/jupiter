@@ -155,6 +155,22 @@
             AND rela.STAFFID = #{staffId}
     </select>
 
+    <!--获取员工所在组-->
+    <select id="getGroupByStaffId" parameterType="map" resultMap="baseMap">
+        SELECT
+        grp.id ID,
+        grp.GROUPID GROUPID,
+        grp.GROUPNAME GROUPNAME,
+        grp.GROUPTYPE GROUPTYPE
+        FROM
+        hm_pub_group grp
+        LEFT JOIN hm_pub_group_staff rela ON rela.COMPANYID = grp.COMPANYID AND grp.GROUPID = rela.GROUPID
+        WHERE
+        grp.COMPANYID = #{companyId}
+        AND grp.PARENTID != '0'
+        AND rela.STAFFID = #{staffId}
+    </select>
+
     <!--获取员工所在部门-->
     <select id="getDeptByStaffAndType" parameterType="map" resultType="java.lang.String">
         SELECT

@@ -63,6 +63,9 @@ public class StaffServiceImpl implements StaffService {
     @Autowired
     private PermissionDao permissionDao;
 
+    @Autowired
+    private GroupDao groupDao;
+
     /**
      * 员工新增
      *
@@ -487,6 +490,8 @@ public class StaffServiceImpl implements StaffService {
         companyVO.setMenuList(getCompanyMenuList(companyId, staffId));
         staffBaseInfoVO.setCompany(companyVO);
         staffBaseInfoVO.setStaffDetail(staffDao.getStaffDetail(staffId, companyId));
+        //员工小组信息
+        staffBaseInfoVO.setGroup(groupDao.getGroupByStaffId(staffId, companyId));
         return staffBaseInfoVO;
     }
 
