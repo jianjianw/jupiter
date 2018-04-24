@@ -13,7 +13,7 @@
     </sql>
 
     <!--检查是否存在同名品牌-->
-    <select id="checkBrandName" parameterType="Map" >
+    <select id="checkBrandName" parameterType="map" resultType="Integer">
         SELECT
           COUNT(1)
         FROM
@@ -41,7 +41,7 @@
     </insert>
 
     <!--删除品牌-->
-    <delete id="deleteByIdAndCid">
+    <delete id="deleteByIdAndCid" parameterType="Integer">
         DELETE
         FROM
           hm_crm_brand
