@@ -54,11 +54,15 @@ public class BrandServiceImpl implements BrandService {
     @Transactional
     public void editBrand(BrandPO brandPO) {
         BrandPO old = brandDao.getByIdAndCid(brandPO.getId(), brandPO.getCompanyId());
-        if (!old.getBrandName().equals(brandPO.getBrandName())) {
-            if (brandDao.checkBrandName(brandPO.getBrandName(), brandPO.getCompanyId()) > 0)
-                throw new RException(ExceptionEnum.BRAND_NAME_REPEAT);
-            //TODO  更改下属渠道和来源的品牌
-            brandDao.update(brandPO);
+        if (old != null){
+            if (!old.getBrandName().equals(brandPO.getBrandName())) {
+                if (brandDao.checkBrandName(brandPO.getBrandName(), brandPO.getCompanyId()) > 0)
+                    throw new RException(ExceptionEnum.BRAND_NAME_REPEAT);
+                //TODO  更改下属渠道和来源的品牌
+                brandDao.update(brandPO);
+            }
+        }else {
+            throw new RException(ExceptionEnum.BRAND_NOT_FOUND);
         }
     }
 
