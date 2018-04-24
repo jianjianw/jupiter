@@ -32,6 +32,16 @@
           COMPANYID = #{companyId} AND  BRANDID = #{brandId}
     </select>
 
+    <!--根据id获取品牌信息-->
+    <select id="getByIdAndCid" parameterType="Integer" resultMap="baseMap">
+        SELECT
+          <include refid="baseColumn"/>
+        FROM
+          hm_crm_brand
+        WHERE
+          COMPANYID = #{companyId} AND ID = #{id}
+    </select>
+
     <!--添加品牌-->
     <insert id="insert" parameterType="brandPO"  useGeneratedKeys="true" keyProperty="id">
         INSERT INTO hm_crm_brand
