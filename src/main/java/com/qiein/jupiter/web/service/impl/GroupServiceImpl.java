@@ -1,18 +1,18 @@
 package com.qiein.jupiter.web.service.impl;
 
 import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.constant.PmsConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.ListUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.GroupDao;
 import com.qiein.jupiter.web.dao.GroupStaffDao;
+import com.qiein.jupiter.web.dao.RolePermissionDao;
 import com.qiein.jupiter.web.dao.StaffDao;
 import com.qiein.jupiter.web.entity.po.GroupPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
-import com.qiein.jupiter.web.entity.vo.GroupStaffVO;
-import com.qiein.jupiter.web.entity.vo.GroupVO;
-import com.qiein.jupiter.web.entity.vo.StaffVO;
+import com.qiein.jupiter.web.entity.vo.*;
 import com.qiein.jupiter.web.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -36,6 +36,9 @@ public class GroupServiceImpl implements GroupService {
     @Autowired
     private StaffDao staffDao;
 
+    @Autowired
+    private RolePermissionDao rolePermissionDao;
+
     /**
      * @param companyId
      * @return
@@ -56,7 +59,7 @@ public class GroupServiceImpl implements GroupService {
     public GroupPO update(GroupPO groupPO) {
         GroupPO groupDB = groupDao.getByName(groupPO.getGroupName(), groupPO.getCompanyId());
         //验证是否存在相同的部门名称
-        if(groupDB.getId()!=groupPO.getId()){
+        if (groupDB.getId() != groupPO.getId()) {
             throw new RException(ExceptionEnum.GROUP_NAME_REPEAT);
         }
         //判断是否需要设置主管姓名
@@ -106,7 +109,7 @@ public class GroupServiceImpl implements GroupService {
     public GroupPO insert(GroupPO groupPO) {
         GroupPO groupDB = groupDao.getByName(groupPO.getGroupName(), groupPO.getCompanyId());
         //验证是否存在相同的部门名称
-        if(groupDB.getId()!=groupPO.getId()){
+        if (groupDB.getId() != groupPO.getId()) {
             throw new RException(ExceptionEnum.GROUP_NAME_REPEAT);
         }
         //判断是否需要设置主管姓名
@@ -136,7 +139,7 @@ public class GroupServiceImpl implements GroupService {
     private void checkSetChiefsName(GroupPO groupPO) {
         String chiefIds = groupPO.getChiefIds();
         //如果id不为空
-        if (StringUtil. isEmpty(chiefIds)) {
+        if (StringUtil.isEmpty(chiefIds)) {
             //根据ids获取员工数组
             String[] split = chiefIds.split(CommonConstant.STR_SEPARATOR);
             List<StaffPO> staffPOS = staffDao.batchGetByIds(split, groupPO.getCompanyId());
@@ -151,5 +154,66 @@ public class GroupServiceImpl implements GroupService {
             //设置
             groupPO.setChiefNames(chiefNames.toString());
         }
+    }
+
+    /**
+     * 根据不同角色，获取对应小组人员
+     *
+     * @param companyId
+     * @param staffId
+     * @param type
+     * @return
+     */
+    public List<GroupBaseStaffVO> getGroupStaffByType(int companyId, int staffId, String role) {
+        //1、查询所有小组人员
+        List<GroupBaseStaffVO> groupList = groupStaffDao.getGroupStaffByRole(companyId, role);
+        //2.查询员工权限
+        List<Integer> pmsList = rolePermissionDao.getStaffPmsList(companyId, staffId);
+
+        List<String> groupIdList = null;
+        Integer id = null;
+        boolean all = false;
+        if (pmsList.contains(PmsConstant.SEE_MYSELF)) {
+            // 只看自己
+            id = staffId;
+        } else if (pmsList.contains(PmsConstant.SEE_MY_GROUP)) {
+            // 只看本组
+            groupIdList = groupDao.getGroupByStaffAndType(companyId, staffId, role);
+        } else if (pmsList.contains(PmsConstant.SEE_MY_DEPT)) {
+            // 查看部门
+            groupIdList = groupDao.getDeptByStaffAndType(companyId, staffId, role);
+        } else if (pmsList.contains(PmsConstant.SEE_ALL)) {
+            //查看所有
+            all = true;
+        }
+        for (GroupBaseStaffVO grp : groupList) {
+            //只看自己
+            if (id != null && ListUtil.isNotNullList(grp.getStaffList())) {
+                for (BaseStaffVO staff : grp.getStaffList()) {
+                    if (staff.getStaffId() == id.intValue()) {
+                        staff.setSelectFlag(true);
+                    }
+                }
+                continue;
+            }
+            //只看本组或只看部门
+            if (ListUtil.isNotNullList(groupIdList) && groupIdList.contains(grp.getGroupId()) && ListUtil.isNotNullList(grp.getStaffList())) {
+                grp.setSelectFlag(true);
+                for (BaseStaffVO staff : grp.getStaffList()) {
+                    staff.setSelectFlag(true);
+                }
+                continue;
+            }
+            //查看所有
+            if (all && ListUtil.isNotNullList(grp.getStaffList())) {
+                grp.setSelectFlag(true);
+                for (BaseStaffVO staff : grp.getStaffList()) {
+                    staff.setSelectFlag(true);
+                }
+                continue;
+            }
+
+        }
+        return groupList;
     }
 }

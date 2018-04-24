@@ -59,4 +59,24 @@ public interface GroupDao extends BaseDao<GroupPO> {
      */
     int batchUpdateGroupType(List<GroupPO> groupPOList);
 
+    /**
+     * 获取员工所在组
+     *
+     * @param companyId
+     * @param staffId
+     * @param type
+     * @return
+     */
+    public List<String> getGroupByStaffAndType(@Param("companyId") int companyId, @Param("staffId") int staffId, @Param("type") String type);
+
+    /**
+     * 获取员工所在部门
+     *
+     * @param companyId
+     * @param staffId
+     * @param type
+     * @return
+     */
+    public List<String> getDeptByStaffAndType(@Param("companyId") int companyId, @Param("staffId") int staffId, @Param("type") String type);
+
 }

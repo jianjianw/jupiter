@@ -141,4 +141,33 @@
         </foreach>
     </update>
 
+    <!--获取员工所在组-->
+    <select id="getGroupByStaffAndType" parameterType="map" resultType="java.lang.String">
+        SELECT
+            grp.GROUPID
+        FROM
+            hm_pub_group grp
+            LEFT JOIN hm_pub_group_staff rela ON rela.COMPANYID = grp.COMPANYID AND grp.GROUPID = rela.GROUPID
+        WHERE
+            grp.COMPANYID = #{companyId}
+            AND grp.GROUPTYPE = #{type}
+            AND grp.PARENTID != '0'
+            AND rela.STAFFID = #{staffId}
+    </select>
+
+    <!--获取员工所在部门-->
+    <select id="getDeptByStaffAndType" parameterType="map" resultType="java.lang.String">
+        SELECT
+            son.GROUPID
+        FROM
+            hm_pub_group grp
+            LEFT JOIN hm_pub_group_staff rela ON rela.COMPANYID = grp.COMPANYID AND grp.GROUPID = rela.GROUPID
+            LEFT JOIN hm_pub_group son on grp.COMPANYID = son.COMPANYID and grp.PARENTID = son.PARENTID
+        WHERE
+            grp.COMPANYID = #{companyId}
+            AND grp.GROUPTYPE = #{type}
+            AND grp.PARENTID != '0'
+            AND rela.STAFFID =#{staffId}
+    </select>
+
 </mapper>

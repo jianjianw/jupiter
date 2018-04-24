@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.dao;
 
 
+import com.qiein.jupiter.web.entity.vo.GroupBaseStaffVO;
 import com.qiein.jupiter.web.entity.vo.GroupStaffVO;
 import com.qiein.jupiter.web.entity.vo.StaffVO;
 import org.apache.ibatis.annotations.Param;
@@ -84,4 +85,13 @@ public interface GroupStaffDao {
      * @return
      */
     public List<String> getStaffRoleList(@Param("companyId") int companyId, @Param("staffId") Integer staffId);
+
+    /**
+     * 根据不同类型，获取小组及人员
+     *
+     * @param companyId
+     * @param type
+     * @return
+     */
+    public List<GroupBaseStaffVO> getGroupStaffByRole(@Param("companyId") int companyId, @Param("type") String type);
 }

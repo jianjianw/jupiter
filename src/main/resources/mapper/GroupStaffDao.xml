@@ -97,6 +97,15 @@
         </collection>
     </resultMap>
 
+    <resultMap id="GroupStaffMap" type="com.qiein.jupiter.web.entity.vo.GroupBaseStaffVO">
+        <result column="GROUPID" property="groupId" jdbcType="VARCHAR"/>
+        <result column="GROUPNAME" property="groupName" jdbcType="VARCHAR"/>
+        <collection property="staffList" ofType="com.qiein.jupiter.web.entity.vo.BaseStaffVO">
+            <result column="STAFFID" property="staffId" jdbcType="INTEGER"/>
+            <result column="NICKNAME" property="staffName" jdbcType="VARCHAR"/>
+        </collection>
+    </resultMap>
+
     <!--获取公司全部的组及下属员工-->
     <select id="getAllGroupAndStaff" resultMap="groupMap">
 		SELECT  ID, GROUPID, GROUPNAME, PARENTID, GROUPTYPE, COMPANYID,CHIEFIDS,CHIEFNAMES
@@ -232,6 +241,22 @@
         WHERE
             rela.STAFFID = #{staffId}
         AND rela.COMPANYID = #{companyId}
+    </select>
+
+    <!--根据不同类型，获取小组及人员-->
+    <select id="getGroupStaffByRole" parameterType="map" resultMap="GroupStaffMap">
+        SELECT
+            grp.GROUPID, grp.GROUPNAME, rela.STAFFID, sf.NICKNAME
+        FROM
+            hm_pub_group grp
+        LEFT JOIN hm_pub_group_staff rela ON rela.COMPANYID = grp.COMPANYID AND grp.GROUPID = rela.GROUPID
+        LEFT JOIN hm_pub_staff sf ON sf.COMPANYID = rela.COMPANYID AND rela.STAFFID = sf.ID
+        WHERE
+            grp.COMPANYID = #{companyId}
+            AND grp.GROUPTYPE = #{type}
+            AND grp.PARENTID != '0'
+            AND sf.ISDEL = 0
+        ORDER BY grp.GROUPNAME, grp.ID
     </select>
 
 </mapper>

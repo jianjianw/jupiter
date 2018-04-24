@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.service;
 
 import com.qiein.jupiter.web.entity.po.GroupPO;
+import com.qiein.jupiter.web.entity.vo.GroupBaseStaffVO;
 import com.qiein.jupiter.web.entity.vo.GroupStaffVO;
 import com.qiein.jupiter.web.entity.vo.GroupVO;
 
@@ -50,5 +51,15 @@ public interface GroupService {
      * @return
      */
     List<GroupStaffVO> getAllDeptAndStaff(int companyId);
+
+    /**
+     * 根据不同角色，获取对应小组人员
+     *
+     * @param companyId
+     * @param staffId
+     * @param type
+     * @return
+     */
+    public List<GroupBaseStaffVO> getGroupStaffByType(int companyId, int staffId, String role);
 
 }
