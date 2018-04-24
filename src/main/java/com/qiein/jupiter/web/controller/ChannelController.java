@@ -82,7 +82,7 @@ public class ChannelController extends BaseController {
      * @return
      */
     @GetMapping("/del")
-    public ResultInfo delChannel(@Id int id) {
+    public ResultInfo delChannel(@Id Integer id) {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         //获取所属公司编号
@@ -113,7 +113,7 @@ public class ChannelController extends BaseController {
      * @return
      */
     @GetMapping("/get_list_by_type")
-    public ResultInfo getAuthList(@Id int typeId) {
+    public ResultInfo getAuthList(@Id Integer typeId) {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         //获取所属公司编号
@@ -130,7 +130,7 @@ public class ChannelController extends BaseController {
      * @return
      */
     @GetMapping("/get_list")
-    public ResultInfo getChannelList(@Id int typeId) {
+    public ResultInfo getChannelList(@Id Integer typeId) {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         //获取所属公司编号

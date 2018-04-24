@@ -104,7 +104,7 @@ public class StaffController extends BaseController {
      * @return
      */
     @GetMapping("/delete_flag")
-    public ResultInfo deleteFlag(@Id int id) {
+    public ResultInfo deleteFlag(@Id Integer id) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         staffService.logicDelete(id, currentLoginStaff.getCompanyId());
