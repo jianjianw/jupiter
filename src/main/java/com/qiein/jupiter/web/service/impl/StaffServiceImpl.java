@@ -15,6 +15,7 @@ import com.qiein.jupiter.web.dao.*;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.dto.StaffPasswordDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
+import com.qiein.jupiter.web.entity.po.PermissionPO;
 import com.qiein.jupiter.web.entity.po.StaffDetailPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.*;
@@ -58,6 +59,9 @@ public class StaffServiceImpl implements StaffService {
 
     @Autowired
     private DictionaryDao dictionaryDao;
+
+    @Autowired
+    private PermissionDao permissionDao;
 
     /**
      * 员工新增
@@ -119,7 +123,7 @@ public class StaffServiceImpl implements StaffService {
         staffPO.setId(id);
         staffPO.setCompanyId(companyId);
         staffPO.setLockFlag(lockFlag);
-        staffDao.update(staffPO);
+        staffDao.updateLockFlag(staffPO);
         return staffPO;
     }
 
@@ -139,7 +143,7 @@ public class StaffServiceImpl implements StaffService {
         staffPO.setId(id);
         staffPO.setCompanyId(companyId);
         staffPO.setShowFlag(showFlag);
-        staffDao.update(staffPO);
+        staffDao.updateShowFlag(staffPO);
         return staffPO;
     }
 
@@ -198,7 +202,7 @@ public class StaffServiceImpl implements StaffService {
         staffPO.setId(id);
         staffPO.setCompanyId(companyId);
         staffPO.setDelFlag(true);
-        return staffDao.update(staffPO);
+        return staffDao.updateDelFlag(staffPO);
     }
 
     /**
@@ -307,7 +311,7 @@ public class StaffServiceImpl implements StaffService {
      */
     @Override
     @LoginLog
-    public StaffPO loginWithCompanyId(String userName, String password, int companyId) {
+    public StaffPO loginWithCompanyId(String userName, String password, int companyId, String ip) {
         //加密码加密
         password = MD5Util.getSaltMd5(password);
         StaffPO staffPO = staffDao.loginWithCompanyId(userName, password, companyId);
@@ -329,6 +333,12 @@ public class StaffServiceImpl implements StaffService {
         }
         //移除错误次数
         removeUserErrorNumber(userName);
+        //更新登录时间和IP
+        StaffDetailPO staffDetailPO = new StaffDetailPO();
+        staffDetailPO.setId(staffPO.getId());
+        staffDetailPO.setCompanyId(staffPO.getCompanyId());
+        staffDetailPO.setLastLoginIp(ip);
+        staffDao.updateStaffLoginInfo(staffDetailPO);
         return staffPO;
     }
 
@@ -371,7 +381,7 @@ public class StaffServiceImpl implements StaffService {
                 RedisConstant.getStaffKey(staffPO.getId(), staffPO.getCompanyId()),
                 staffPO, NumberConstant.DEFAULT_EXPIRE_TIME, TimeUnit.HOURS);
         //并更新到数据库
-        staffDao.update(staffPO);
+        staffDao.updateToken(staffPO);
     }
 
     /**
@@ -455,8 +465,8 @@ public class StaffServiceImpl implements StaffService {
      * @return
      */
     @Override
-    public StaffPermissionVO getStaffPermissionById(int staffId, int companyId) {
-        return staffRoleDao.getStaffPermission(staffId, companyId);
+    public List<PermissionPO> getStaffPermissionById(int staffId, int companyId) {
+        return permissionDao.getStaffPermission(staffId, companyId);
     }
 
     /**
@@ -470,20 +480,13 @@ public class StaffServiceImpl implements StaffService {
     public StaffBaseInfoVO getStaffBaseInfo(int staffId, int companyId) {
         StaffBaseInfoVO staffBaseInfoVO = new StaffBaseInfoVO();
         //员工对象
-        StaffPermissionVO staffPermission = staffRoleDao.getStaffPermission(staffId, companyId);
-        staffBaseInfoVO.setStaffPermission(staffPermission);
-        //遍历权限集合生成Map
-//        Map<String, Integer> permissionMap = new HashMap<>();
-//        if (staffPermission != null && !ListUtil.isNullList(staffPermission.getPermissionList())) {
-//            for (PermissionPO permissionPO : staffPermission.getPermissionList()) {
-//                permissionMap.put(permissionPO.getAbbreviate(), permissionPO.getPermissionId());
-//            }
-//        }
+        List<PermissionPO> permissionPOList = permissionDao.getStaffPermission(staffId, companyId);
+        staffBaseInfoVO.setPermission(permissionPOList);
         //放入公司对象
         CompanyVO companyVO = companyDao.getVOById(companyId);
-
         companyVO.setMenuList(getCompanyMenuList(companyId, staffId));
         staffBaseInfoVO.setCompany(companyVO);
+        staffBaseInfoVO.setStaffDetail(staffDao.getStaffDetail(staffId, companyId));
         return staffBaseInfoVO;
     }
 
@@ -568,12 +571,13 @@ public class StaffServiceImpl implements StaffService {
     }
 
     /**
-     * 更新基础的信息
+     * 更新详细的信息
      *
      * @param staffDetailVO
      * @return
      */
     @Override
+    @Transactional
     public StaffDetailVO update(StaffDetailVO staffDetailVO) {
         //1.根据手机号，全名，艺名查重，手机号全公司不重复，全名，艺名，在职员工中不能重复
         StaffPO phoneExist = staffDao.getStaffByPhone(staffDetailVO.getCompanyId(), staffDetailVO.getPhone());
@@ -593,11 +597,13 @@ public class StaffServiceImpl implements StaffService {
         if (userNameStaff != null && userNameStaff.getId() != staffDetailVO.getId()) {
             throw new RException(ExceptionEnum.USERNAME_EXIST);
         }
+        //更新基础信息
+        StaffPO staffPO = new StaffPO(staffDetailVO);
+        staffDao.update(staffPO);
         //更新详细信息
-        StaffDetailPO staffDetailPO=new StaffDetailPO();
-//        staffDao.update(staffDetailPO);
-//        return staffPO;
-        return null;
+        StaffDetailPO staffDetailPO = new StaffDetailPO(staffDetailVO);
+        staffDao.updateStaffDetail(staffDetailPO);
+        return staffDetailVO;
     }
 
 

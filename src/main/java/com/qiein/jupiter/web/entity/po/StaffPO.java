@@ -4,6 +4,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.aop.validate.annotation.Phone;
 import com.qiein.jupiter.web.entity.BaseEntity;
+import com.qiein.jupiter.web.entity.vo.StaffDetailVO;
 
 /**
  * 员工数据库对象
@@ -69,6 +70,31 @@ public class StaffPO extends BaseEntity {
      * 是否删除
      */
     private boolean delFlag;
+
+    public StaffPO() {
+
+    }
+
+    /**
+     * 根据员工详细信息初始化一个类
+     *
+     * @param staffDetailVO
+     */
+    public StaffPO(StaffDetailVO staffDetailVO) {
+        this.setId(staffDetailVO.getId());
+        this.nickName = staffDetailVO.getNickName();
+        this.phone = staffDetailVO.getPhone();
+        this.userName = staffDetailVO.getUserName();
+        this.password = staffDetailVO.getPassword();
+        this.companyId = staffDetailVO.getCompanyId();
+        this.corpId = staffDetailVO.getCorpId();
+        this.dingUserId = staffDetailVO.getDingUserId();
+        this.headImg = staffDetailVO.getHeadImg();
+        this.token = staffDetailVO.getToken();
+        this.showFlag = staffDetailVO.getShowFlag();
+        this.lockFlag = staffDetailVO.isLockFlag();
+        this.delFlag = staffDetailVO.isDelFlag();
+    }
 
     public String getNickName() {
         return nickName;

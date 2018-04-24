@@ -100,10 +100,5 @@ public class StaffServiceImplTest {
         }
     }
 
-    @Test
-    @Transactional
-    public void getStaffPermissionById() {
-        StaffPermissionVO staffPermissionById = staffService.getStaffPermissionById(1, 1);
-        System.out.println(staffPermissionById);
-    }
+
 }

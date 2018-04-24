@@ -44,10 +44,4 @@ public interface StaffRoleDao {
      */
     void batchInsertStaffRoleByVO(@Param("list") List<StaffVO> list);
 
-    /**
-     * 获取员工信息及角色权限信息
-     *
-     * @return
-     */
-    StaffPermissionVO getStaffPermission(@Param("staffId") Integer staffId, @Param("companyId") Integer companyId);
 }

@@ -14,6 +14,7 @@ import com.qiein.jupiter.web.entity.dto.StaffPasswordDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.LoginUserVO;
+import com.qiein.jupiter.web.entity.vo.StaffDetailVO;
 import com.qiein.jupiter.web.entity.vo.StaffVO;
 import com.qiein.jupiter.web.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -157,7 +158,8 @@ public class StaffController extends BaseController {
         }
         try {
             //返回结果
-            StaffPO staffPO = staffService.loginWithCompanyId(userName, password, loginUserVO.getCompanyId());
+            StaffPO staffPO = staffService.loginWithCompanyId(userName, password,
+                    loginUserVO.getCompanyId(), getIp());
             return ResultInfoUtil.success(staffPO);
         } catch (RException e) {
             //登录失败，将错误次数+1
@@ -197,7 +199,7 @@ public class StaffController extends BaseController {
      */
     @GetMapping("/verify_code")
     public void loginCode(HttpServletResponse response, @RequestParam("phone") String userName) {
-        if (StringUtil. isEmpty(userName) || !RegexUtil.checkMobile(userName)) {
+        if (StringUtil.isEmpty(userName) || !RegexUtil.checkMobile(userName)) {
             return;
         }
         //生成验证码并放入缓存
@@ -254,7 +256,7 @@ public class StaffController extends BaseController {
         //判断是否需要验证码以及验证码正确性
         if (needVerityCode(userName)) {
             //验证码为空
-            if (StringUtil. isEmpty(verifyCode)) {
+            if (StringUtil.isEmpty(verifyCode)) {
                 throw new RException(ExceptionEnum.VERIFY_NULL);
             } else {
                 //从缓存获取key并判断
@@ -415,21 +417,21 @@ public class StaffController extends BaseController {
     /**
      * 更新员工基础信息，不包含权限等
      *
-     * @param staffPO
+     * @param staffDetailVO
      * @return
      */
     @PostMapping("/update_base_info")
-    public ResultInfo updateBaseInfo(@RequestBody @Valid StaffPO staffPO) {
+    public ResultInfo updateBaseInfo(@RequestBody @Valid StaffDetailVO staffDetailVO) {
         //对象参数trim
-        ObjectUtil.objectStrParamTrim(staffPO);
-        if (staffPO.getId() == 0) {
+        ObjectUtil.objectStrParamTrim(staffDetailVO);
+        if (staffDetailVO.getId() == 0) {
             return ResultInfoUtil.error(ExceptionEnum.STAFF_ID_NULL);
         }
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         //设置cid
-        staffPO.setCompanyId(currentLoginStaff.getCompanyId());
-//        staffService.update(staffPO);
+        staffDetailVO.setCompanyId(currentLoginStaff.getCompanyId());
+        staffService.update(staffDetailVO);
         return ResultInfoUtil.success(TipMsgConstant.SAVE_SUCCESS);
     }
 
@@ -460,16 +462,17 @@ public class StaffController extends BaseController {
 
     /**
      * 根据类型获取小组及人员信息
+     *
      * @param type
      * @return
      */
     @GetMapping("/get_group_staff_by_type")
-    public ResultInfo getGroupStaffByType(@NotEmptyStr String type){
+    public ResultInfo getGroupStaffByType(@NotEmptyStr String type) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         //获取操作用户所属公司
         Integer companyId = currentLoginStaff.getCompanyId();
 
-        return ResultInfoUtil.success(TipMsgConstant.SUCCESS,staffService.getGroupStaffByType(companyId,type));
+        return ResultInfoUtil.success(TipMsgConstant.SUCCESS, staffService.getGroupStaffByType(companyId, type));
     }
 }

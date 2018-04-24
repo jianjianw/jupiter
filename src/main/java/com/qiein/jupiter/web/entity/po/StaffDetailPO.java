@@ -1,11 +1,13 @@
 package com.qiein.jupiter.web.entity.po;
 
 import com.qiein.jupiter.web.entity.BaseEntity;
+import com.qiein.jupiter.web.entity.vo.StaffDetailVO;
 
 /**
  * 员工详细信息
  */
 public class StaffDetailPO extends BaseEntity {
+
 
     private static final long serialVersionUID = 1627067701096255485L;
     /**
@@ -16,6 +18,10 @@ public class StaffDetailPO extends BaseEntity {
      * 微信头像
      */
     private String weChatImg;
+    /**
+     * qq
+     */
+    private String qq;
     /**
      * 上次登录时间
      */
@@ -37,8 +43,38 @@ public class StaffDetailPO extends BaseEntity {
      */
     private int companyId;
 
+    public StaffDetailPO() {
+
+    }
+
+    /**
+     * 根据员工信息生成的
+     *
+     * @param staffDetailVO
+     */
+    public StaffDetailPO(StaffDetailVO staffDetailVO) {
+        this.setId(staffDetailVO.getId());
+        this.companyId = staffDetailVO.getCompanyId();
+        this.weChatName = staffDetailVO.getWeChatName();
+        this.weChatImg = staffDetailVO.getWeChatImg();
+        this.lastLoginTime = staffDetailVO.getLastLoginTime();
+        this.lastLoginIp = staffDetailVO.getLastLoginIp();
+        this.openId = staffDetailVO.getOpenId();
+        this.createTime = staffDetailVO.getCreateTime();
+        this.qq = staffDetailVO.getQq();
+    }
+
+
     public static long getSerialVersionUID() {
         return serialVersionUID;
+    }
+
+    public String getQq() {
+        return qq;
+    }
+
+    public void setQq(String qq) {
+        this.qq = qq;
     }
 
     public String getWeChatName() {

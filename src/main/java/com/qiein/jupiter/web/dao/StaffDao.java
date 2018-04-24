@@ -4,6 +4,7 @@ import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.StaffDetailPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.GroupStaffVO;
+import com.qiein.jupiter.web.entity.vo.StaffDetailVO;
 import com.qiein.jupiter.web.entity.vo.StaffVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -134,5 +135,54 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @return
      */
     int deleteStaffDetail(@Param("id") int id, @Param("companyId") int companyId);
+
+    /**
+     * 获取员工详细信息
+     *
+     * @param id
+     * @param companyId
+     * @return
+     */
+    StaffDetailVO getStaffDetail(@Param("id") int id, @Param("companyId") int companyId);
+
+    /**
+     * 更新token
+     *
+     * @param staffPO
+     * @return
+     */
+    int updateToken(StaffPO staffPO);
+
+    /**
+     * 更新在线状态
+     *
+     * @param staffPO
+     * @return
+     */
+    int updateShowFlag(StaffPO staffPO);
+
+    /**
+     * 更新锁定状态
+     *
+     * @param staffPO
+     * @return
+     */
+    int updateLockFlag(StaffPO staffPO);
+
+    /**
+     * 更新删除标志
+     *
+     * @param staffPO
+     * @return
+     */
+    int updateDelFlag(StaffPO staffPO);
+
+    /**
+     * 更新员工的上线情况 Ip 时间
+     *
+     * @param staffDetailPO
+     * @return
+     */
+    int updateStaffLoginInfo(StaffDetailPO staffDetailPO);
 
 }

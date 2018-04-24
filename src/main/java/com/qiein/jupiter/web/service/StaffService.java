@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.dto.StaffPasswordDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
+import com.qiein.jupiter.web.entity.po.PermissionPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.*;
 
@@ -110,7 +111,7 @@ public interface StaffService {
      * @param companyId
      * @return
      */
-    StaffPO loginWithCompanyId(String userName, String password, int companyId);
+    StaffPO loginWithCompanyId(String userName, String password, int companyId, String ip);
 
     /**
      * 心跳更新
@@ -148,7 +149,7 @@ public interface StaffService {
      * @param staffId
      * @param companyId
      */
-    StaffPermissionVO getStaffPermissionById(int staffId, int companyId);
+    List<PermissionPO> getStaffPermissionById(int staffId, int companyId);
 
     /**
      * 根据id获取员工基础信息
@@ -191,7 +192,7 @@ public interface StaffService {
      * @param staffPO
      * @return
      */
-    StaffDetailVO update(StaffDetailVO staffPO);
+    StaffPO update(StaffDetailVO staffPO);
 
     /**
      * 更新密码

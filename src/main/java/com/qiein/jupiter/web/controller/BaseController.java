@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.controller;
 
 import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.util.HttpUtil;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -51,6 +52,13 @@ public class BaseController {
      */
     StaffPO getCurrentLoginStaff() {
         return (StaffPO) request.getAttribute(CommonConstant.CURRENT_LOGIN_STAFF);
+    }
+
+    /**
+     * 获取当前登录IP
+     */
+    String getIp() {
+        return HttpUtil.getIpAddr(request);
     }
 
 }
