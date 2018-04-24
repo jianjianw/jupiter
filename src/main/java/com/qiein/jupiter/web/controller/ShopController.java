@@ -63,10 +63,12 @@ public class ShopController extends BaseController {
         return ResultInfoUtil.success(TipMsgConstant.SAVE_SUCCESS);
     }
 
-    @GetMapping()
-    public ResultInfo deleteShop() {
-
-        return ResultInfoUtil.success();
+    @GetMapping("/delete_shop")
+    public ResultInfo deleteShop(@Id @RequestParam("id") Integer id) {
+        //获取当前登录用户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        shopService.deleteShop(currentLoginStaff.getCompanyId(), id);
+        return ResultInfoUtil.success(TipMsgConstant.DELETE_SUCCESS);
     }
 
 }

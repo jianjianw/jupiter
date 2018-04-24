@@ -75,4 +75,15 @@ public class ShopServiceImpl implements ShopService {
         shopDao.editShopShowFlag(companyId, id, showFlag);
     }
 
+    /**
+     * 删除拍摄地
+     *
+     * @param companyId
+     * @param id
+     */
+    public void deleteShop(int companyId, int id){
+        //TODO 校验是否有该拍摄地的客资
+        shopDao.deleteShop(companyId,id);
+    }
+
 }
