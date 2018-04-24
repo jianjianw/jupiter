@@ -59,7 +59,7 @@ public class GroupServiceImpl implements GroupService {
     public GroupPO update(GroupPO groupPO) {
         GroupPO groupDB = groupDao.getByName(groupPO.getGroupName(), groupPO.getCompanyId());
         //验证是否存在相同的部门名称
-        if (groupDB.getId() != groupPO.getId()) {
+        if (groupDB != null && groupDB.getId() != groupPO.getId()) {
             throw new RException(ExceptionEnum.GROUP_NAME_REPEAT);
         }
         //判断是否需要设置主管姓名
@@ -109,7 +109,7 @@ public class GroupServiceImpl implements GroupService {
     public GroupPO insert(GroupPO groupPO) {
         GroupPO groupDB = groupDao.getByName(groupPO.getGroupName(), groupPO.getCompanyId());
         //验证是否存在相同的部门名称
-        if (groupDB.getId() != groupPO.getId()) {
+        if (groupDB != null) {
             throw new RException(ExceptionEnum.GROUP_NAME_REPEAT);
         }
         //判断是否需要设置主管姓名
