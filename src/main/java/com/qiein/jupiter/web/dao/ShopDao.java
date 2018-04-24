@@ -36,4 +36,13 @@ public interface ShopDao extends BaseDao<ShopPO> {
      * @return
      */
     int editShopShowFlag(@Param("companyId") int companyId, @Param("id") int id, @Param("showFlag") boolean showFlag);
+
+    /**
+     * 删除拍摄地
+     *
+     * @param companyId
+     * @param id
+     * @return
+     */
+    int deleteShop(@Param("companyId") int companyId, @Param("id") int id);
 }

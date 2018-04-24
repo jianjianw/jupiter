@@ -69,6 +69,13 @@
         AND ID = #{id}
     </update>
 
+    <!--删除拍摄地-->
+    <delete id="deleteShop" parameterType="map">
+        DELETE FROM hm_pub_shop
+        WHERE COMPANYID = #{companyId}
+        AND ID = #{id}
+    </delete>
+
 
 
 </mapper>

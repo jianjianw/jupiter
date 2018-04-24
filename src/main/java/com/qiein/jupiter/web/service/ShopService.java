@@ -40,4 +40,12 @@ public interface ShopService {
      * @return
      */
     public void editShopShowFlag(int companyId, int id, boolean showFlag);
+
+    /**
+     * 删除拍摄地
+     *
+     * @param companyId
+     * @param id
+     */
+    public void deleteShop(int companyId, int id);
 }
