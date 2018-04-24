@@ -48,4 +48,12 @@ public interface ShopService {
      * @param id
      */
     public void deleteShop(int companyId, int id);
+
+    /**
+     * 获取企业显示的拍摄地列表
+     *
+     * @param companyId
+     * @return
+     */
+    List<ShopVO> getShowShopList(int companyId);
 }

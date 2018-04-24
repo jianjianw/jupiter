@@ -71,4 +71,11 @@ public class ShopController extends BaseController {
         return ResultInfoUtil.success(TipMsgConstant.DELETE_SUCCESS);
     }
 
+    @GetMapping("/get_show_shop_list")
+    public ResultInfo getShowShopList() {
+        //获取当前登录用户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        return ResultInfoUtil.success(shopService.getShowShopList(currentLoginStaff.getCompanyId()));
+    }
+
 }

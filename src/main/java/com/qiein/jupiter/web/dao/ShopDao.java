@@ -45,4 +45,12 @@ public interface ShopDao extends BaseDao<ShopPO> {
      * @return
      */
     int deleteShop(@Param("companyId") int companyId, @Param("id") int id);
+
+    /**
+     * 获取企业显示的拍摄地列表
+     *
+     * @param companyId
+     * @return
+     */
+    List<ShopVO> getShowShopList(@Param("companyId") int companyId);
 }

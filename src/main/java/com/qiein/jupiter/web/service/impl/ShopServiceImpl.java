@@ -81,9 +81,19 @@ public class ShopServiceImpl implements ShopService {
      * @param companyId
      * @param id
      */
-    public void deleteShop(int companyId, int id){
+    public void deleteShop(int companyId, int id) {
         //TODO 校验是否有该拍摄地的客资
-        shopDao.deleteShop(companyId,id);
+        shopDao.deleteShop(companyId, id);
+    }
+
+    /**
+     * 获取企业显示的拍摄地列表
+     *
+     * @param companyId
+     * @return
+     */
+    public List<ShopVO> getShowShopList(int companyId) {
+        return shopDao.getShowShopList(companyId);
     }
 
 }
