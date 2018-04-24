@@ -54,8 +54,8 @@ public class ShopChannelGroupController extends BaseController {
     }
 
     @GetMapping("/delete_channel_rela_list")
-    public ResultInfo deleteChannelRelaList(@RequestParam("channelId") int channelId,
-                                            @RequestParam("shopId") int shopId) {
+    public ResultInfo deleteChannelRelaList(@Id @RequestParam("channelId") int channelId,
+                                           @Id @RequestParam("shopId") int shopId) {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         shopChannelGroupService.deleteChannelList(currentLoginStaff.getCompanyId(), channelId, shopId);
@@ -63,7 +63,7 @@ public class ShopChannelGroupController extends BaseController {
     }
 
     @GetMapping("/add_channel_rela_list")
-    public ResultInfo addChannelRelaList(@RequestParam("shopId") int shopId,
+    public ResultInfo addChannelRelaList(@Id @RequestParam("shopId") int shopId,
                                          @RequestParam("weight") int weight,
                                          @NotEmptyStr @RequestParam("channelIds") String channelIds,
                                          @NotEmptyStr @RequestParam("groupIds") String groupIds) {
@@ -74,10 +74,10 @@ public class ShopChannelGroupController extends BaseController {
     }
 
     @GetMapping("/edit_channel_group")
-    public ResultInfo editChannelGroup(@RequestParam("relaId") int relaId,
+    public ResultInfo editChannelGroup(@Id @RequestParam("relaId") int relaId,
                                        @NotEmptyStr @RequestParam("groupId") String groupId,
-                                       @RequestParam("shopId") int shopId,
-                                       @RequestParam("channelId") int channelId) {
+                                       @Id @RequestParam("shopId") int shopId,
+                                       @Id @RequestParam("channelId") int channelId) {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         shopChannelGroupService.editChannelGroup(relaId, currentLoginStaff.getCompanyId(), channelId, shopId, groupId);
@@ -85,8 +85,8 @@ public class ShopChannelGroupController extends BaseController {
     }
 
     @GetMapping("/search_channel_group")
-    public ResultInfo searchChannelGroup(@RequestParam("shopId") int shopId,
-                                         @RequestParam("channelId") int channelId,
+    public ResultInfo searchChannelGroup(@Id @RequestParam("shopId") int shopId,
+                                         @Id @RequestParam("channelId") int channelId,
                                          @NotEmptyStr @RequestParam("searchKey") String searchKey) {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();

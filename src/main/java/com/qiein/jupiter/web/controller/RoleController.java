@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.controller;
 
+import com.qiein.jupiter.aop.validate.annotation.Id;
 import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.constant.TipMsgConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
@@ -44,7 +45,7 @@ public class RoleController extends BaseController {
     }
 
     @GetMapping("/delete_role")
-    public ResultInfo deleteRole(@RequestParam("roleId") Integer roleId) {
+    public ResultInfo deleteRole(@Id @RequestParam("roleId") Integer roleId) {
         if (roleId == 0) {
             throw new RException(ExceptionEnum.ID_NULL);
         }
