@@ -61,7 +61,12 @@ public enum ExceptionEnum {
     //企业配置
     MENU_NULL(801, "企业菜单为空"),
     //角色
-    ROLE_ERROR(901, "角色错误");
+    ROLE_ERROR(901, "角色错误"),
+	//品牌
+    BRAND_NAME_REPEAT(1001,"该品牌已存在"),
+    BRAND_NOT_FOUND(1002,"该品牌不存在"),
+    BRAND_ID_NULL(1003,"品牌编号不能为空"),
+    BRAND_HAVE_CHANNEL(1004,"该品牌下存在渠道，请先删除下属渠道再继续操作");
 
     private Integer code;
 

@@ -9,36 +9,50 @@ import java.util.List;
 /**
  * 来源Dao
  */
-public interface SourceDao extends BaseDao<SourcePO>{
+public interface SourceDao extends BaseDao<SourcePO> {
     /**
      * 来源同名校验，检查同一渠道下是否存在同名来源，存在返回大于等于1，不存在返回0
+     *
      * @param srcName
      * @param companyId
      * @return
      */
-    Integer checkSource(@Param("srcName") String srcName,@Param("channelId") Integer channelId, @Param("companyId") Integer companyId);
+    Integer checkSource(@Param("srcName") String srcName, @Param("channelId") Integer channelId, @Param("companyId") Integer companyId);
 
     /**
      * 根据渠道编号获取旗下的来源列表
+     *
      * @param channelId 渠道编号
      * @param companyId 所属公司编号
      * @return
      */
-    List<SourcePO> getSourceListByChannelId(@Param("channelId")Integer channelId ,@Param("companyId") Integer companyId);
+    List<SourcePO> getSourceListByChannelId(@Param("channelId") Integer channelId, @Param("companyId") Integer companyId);
 
     /**
      * 批量编辑来源
+     *
      * @param sourceVO
      * @param ids
      * @return
      */
-    Integer datUpdate(@Param("sv") SourceVO sourceVO ,@Param("ids") String[] ids);
+    Integer datUpdate(@Param("sv") SourceVO sourceVO, @Param("ids") String[] ids);
 
     /**
      * 批量删除来源
+     *
      * @param ids
      * @param companyId
      * @return
      */
-    Integer datDelete(@Param("ids")String[] ids ,@Param("companyId") Integer companyId );
+    Integer datDelete(@Param("ids") String[] ids, @Param("companyId") Integer companyId);
+
+    /**
+     * 渠道名变更时下属所有来源的记录也要相应变更
+     *
+     * @param channelId
+     * @param channelName
+     * @param companyId
+     * @return
+     */
+    Integer updateChannelName(@Param("channelId") Integer channelId, @Param("channelName") String channelName, @Param("companyId") Integer companyId);
 }
