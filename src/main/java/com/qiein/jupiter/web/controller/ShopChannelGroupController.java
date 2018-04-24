@@ -27,14 +27,14 @@ public class ShopChannelGroupController extends BaseController {
     private ShopChannelGroupService shopChannelGroupService;//拍摄地，渠道，小组关联业务层
 
     @GetMapping("/get_channel_group_list")
-    public ResultInfo getChannelGroupList(@Id @RequestParam("shopId") int shopId) {
+    public ResultInfo getChannelGroupList(@Id @RequestParam("shopId") Integer shopId) {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         return ResultInfoUtil.success(shopChannelGroupService.getShopChannelGroupList(currentLoginStaff.getCompanyId(), shopId));
     }
 
     @GetMapping("/edit_group_weight")
-    public ResultInfo editGroupWeight(@Id @RequestParam("relaId") int relaId,
+    public ResultInfo editGroupWeight(@Id @RequestParam("relaId") Integer relaId,
                                       @RequestParam("weight") int weight) {
         if (weight > 20 || weight < 0) {
             ResultInfoUtil.error(ExceptionEnum.WEIGHT_ERROR);

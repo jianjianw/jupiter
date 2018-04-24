@@ -78,7 +78,7 @@ public class RoleServiceImpl implements RoleService {
         //3.删除角色权限关联表
         rolePmsDao.deleteByRoleId(roleVO.getRoleId(), roleVO.getCompanyId());
         //4.插入角色权限关联表
-        if (StringUtil. isEmpty(roleVO.getPmsIds())) {
+        if (StringUtil.isNotEmpty(roleVO.getPmsIds())) {
             String[] pmsIdArr = roleVO.getPmsIds().split(CommonConstant.STR_SEPARATOR);
             rolePmsDao.batchAddRolePmsRela(roleVO.getRoleId(), roleVO.getCompanyId(), pmsIdArr);
         }
