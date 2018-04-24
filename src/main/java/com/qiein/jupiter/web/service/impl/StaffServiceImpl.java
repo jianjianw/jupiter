@@ -95,7 +95,7 @@ public class StaffServiceImpl implements StaffService {
         //3.添加小组人员关联表
         groupStaffDao.insertGroupStaff(staffVO.getCompanyId(), staffVO.getGroupId(), staffVO.getId());
         //4.添加人员角色关联表
-        if (StringUtil.isEmpty(staffVO.getRoleIds())) {
+        if (StringUtil.isNotEmpty(staffVO.getRoleIds())) {
             String[] roleArr = staffVO.getRoleIds().split(CommonConstant.STR_SEPARATOR);
             staffRoleDao.batchInsertStaffRole(staffVO.getId(), staffVO.getCompanyId(), roleArr);
         }
@@ -215,8 +215,8 @@ public class StaffServiceImpl implements StaffService {
     @Transactional(rollbackFor = Exception.class)
     public StaffVO update(StaffVO staffVO) {
         log.debug("未使用缓存");
-        //加密码加密,密码为空则默认手机号
-        if (StringUtil.isEmpty(staffVO.getPassword())) {
+        //加密码加密
+        if (StringUtil.isNotEmpty(staffVO.getPassword())) {
             staffVO.setPassword(MD5Util.getSaltMd5(staffVO.getPassword()));
         }
         //1.根据手机号，全名，艺名查重，手机号全公司不重复，全名，艺名，在职员工中不能重复
@@ -424,13 +424,13 @@ public class StaffServiceImpl implements StaffService {
     public void batchEditStaff(int companyId, String staffIds, String roleIds, String password, String groupId) {
         String[] staffIdArr = staffIds.split(CommonConstant.STR_SEPARATOR);
         //1.修改密码
-        if (StringUtil.isEmpty(password)) {
+        if (StringUtil.isNotEmpty(password)) {
             staffDao.batchEditStaffPwd(companyId, staffIdArr, MD5Util.getMD5(password));
         }
         //2.修改小组
         groupStaffDao.batchEditStaffGroup(companyId, staffIdArr, groupId);
         //3.修改角色
-        if (StringUtil.isEmpty(roleIds)) {
+        if (StringUtil.isNotEmpty(roleIds)) {
             String[] roleIdArr = roleIds.split(CommonConstant.STR_SEPARATOR);
             staffRoleDao.batchDeleteByStaffIdArr(companyId, staffIdArr);
             List<StaffVO> list = new LinkedList<>();
