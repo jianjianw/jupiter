@@ -255,7 +255,7 @@
         UPDATE hm_pub_staff
         SET PASSWORD = #{password}
         WHERE COMPANYID = #{companyId}
-        AND STAFFID IN
+        AND ID IN
         <foreach collection="staffIdArr" item="id" index="index" open="("
                  close=")" separator=",">
             #{id}
