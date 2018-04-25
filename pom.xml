@@ -111,13 +111,19 @@
             <artifactId>httpclient</artifactId>
             <version>4.5.5</version>
         </dependency>
-        
+
         <!-- https://mvnrepository.com/artifact/org.wiztools.commons/wiztools-commons-lib -->
-		<dependency>
-		    <groupId>org.wiztools.commons</groupId>
-		    <artifactId>wiztools-commons-lib</artifactId>
-		    <version>0.4.1</version>
-		</dependency>
+        <dependency>
+            <groupId>org.wiztools.commons</groupId>
+            <artifactId>wiztools-commons-lib</artifactId>
+            <version>0.4.1</version>
+        </dependency>
+        <!--easy-http-->
+        <dependency>
+            <groupId>com.mzlion</groupId>
+            <artifactId>easy-okhttp</artifactId>
+            <version>1.1.0</version>
+        </dependency>
 
     </dependencies>
 
