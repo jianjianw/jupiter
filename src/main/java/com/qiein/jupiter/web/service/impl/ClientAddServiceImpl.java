@@ -5,6 +5,7 @@ import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.http.CrmBaseApi;
 import com.qiein.jupiter.util.JsonFmtUtil;
+import com.qiein.jupiter.util.MobileLocationUtil;
 import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.*;
@@ -39,7 +40,12 @@ public class ClientAddServiceImpl implements ClientAddService {
     private CrmBaseApi crmBaseApi;
     private static Map<String, Object> reqContent;
 
-    @Override
+    /**
+     * 添加电商客资
+     *
+     * @param clientVO
+     * @param staffPO
+     */
     public void addDsClient(ClientVO clientVO, StaffPO staffPO) {
         reqContent = new HashMap<String, Object>();
         reqContent.put("companyid", staffPO.getCompanyId());
@@ -95,17 +101,14 @@ public class ClientAddServiceImpl implements ClientAddService {
         reqContent.put("adaddress", clientVO.getAdAddress());
         reqContent.put("adid", clientVO.getAdId());
         reqContent.put("typeid", clientVO.getTypeId());
-
-//TODO 如果地址为空，获取手机号地址
-        reqContent.put("address", clientVO.getAddress());
-
-
+        reqContent.put("address", StringUtil.isNotEmpty(clientVO.getAddress()) ? clientVO.getAddress() :
+                MobileLocationUtil.getAddressByContactInfo(clientVO.getKzPhone(), clientVO.getKzWechat(), clientVO.getKzQq()));
         reqContent.put("remark", clientVO.getRemark());
         reqContent.put("appointid", clientVO.getAppointId());
         reqContent.put("groupid", clientVO.getGroupId());
 
 
-        String addRstStr = crmBaseApi.doService(reqContent, "clientAddDs");
+        String addRstStr = crmBaseApi.doService(reqContent, "addClientInfoPcDsLp");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if ("100000".equals(jsInfo.getString("code"))) {
             System.out.println("录入成功");

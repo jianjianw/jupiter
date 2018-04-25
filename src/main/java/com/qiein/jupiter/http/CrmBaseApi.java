@@ -23,7 +23,7 @@ public class CrmBaseApi extends BaseApi {
 	private String key = "NzRhNDhkZGExNjFkZDBiNTRkMjI3Mjg4ODc1NDU2MzU=";// 签名
 
 	public void setPurl(String purl) {
-		this.url = "http://127.0.0.1:8888/hmcrm/http/HttpService";
+		this.url = "http://114.55.249.156:8080/hmcrm/http/HttpService";
 	}
 
 	// 签名类型(1 md5签名 ,2 hmacsh1 签名)

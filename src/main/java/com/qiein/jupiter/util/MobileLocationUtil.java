@@ -1,6 +1,8 @@
 package com.qiein.jupiter.util;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.mzlion.easyokhttp.HttpClient;
 
 import java.io.IOException;
 
@@ -11,6 +13,8 @@ import java.io.IOException;
  */
 public class MobileLocationUtil {
 
+    private static final String key = "0332415596ab60d21168ba02d059fdbb";
+
     /**
      * -- 获取省市信息逗号分隔 --
      **/
@@ -19,41 +23,31 @@ public class MobileLocationUtil {
         JSONObject json = null;
         String location = null;
         try {
-            json = OkHttpUtil
-                    .doGet("http://apis.juhe.cn/mobile/get?phone=" + phone + "&key=0332415596ab60d21168ba02d059fdbb");
-
+            String responseData = HttpClient
+                    // 请求方式和请求url
+                    .get("http://apis.juhe.cn/mobile/get")
+                    //设置请求参数
+                    .queryString("phone", phone)
+                    .queryString("key", key)
+                    .asString();
+            json = JSON.parseObject(responseData);
             if (json.getString("resultcode").equals("200")) {
                 String province = json.getJSONObject("result").getString("province");
                 String city = json.getJSONObject("result").getString("city");
-                location = province + "," + city + ",,";
+                location = province + "," + city;
             } else {
                 location = "";
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             return "";
         }
         return location;
     }
 
-    public static String getPhonePostcode(String phone) {
-
-        JSONObject json = null;
-        try {
-            json = OkHttpUtil
-                    .doGet("http://apis.juhe.cn/mobile/get?phone=" + phone + "&key=0332415596ab60d21168ba02d059fdbb");
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "";
-        }
-        String postcode = "";
-        if (json.getString("resultcode").equals("200")) {
-            postcode = json.getJSONObject("result").getString("zip");
-        }
-        return postcode;
-    }
 
     public static void main(String[] args) throws IOException {
-        System.out.println(getPhoneLocation("13221009948"));
+
+        System.out.println(getPhoneLocation("13567112749"));
     }
 
     /**
