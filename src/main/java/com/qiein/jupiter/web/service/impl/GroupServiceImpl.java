@@ -86,6 +86,9 @@ public class GroupServiceImpl implements GroupService {
     public int delete(int id, int companyId) {
         //先判断是否有下属部门
         GroupPO groupPO = groupDao.getById(id);
+        if (groupPO == null) {
+            throw new RException(ExceptionEnum.GROUP_NOT_EXIT);
+        }
         List<GroupPO> byParentId = groupDao.getByParentId(groupPO.getGroupId(), companyId);
         if (ListUtil.isNotNullList(byParentId)) {
             throw new RException(ExceptionEnum.GROUP_HAVE_CHILD_GROUP);
@@ -161,7 +164,6 @@ public class GroupServiceImpl implements GroupService {
      *
      * @param companyId
      * @param staffId
-     * @param type
      * @return
      */
     public List<GroupBaseStaffVO> getGroupStaffByType(int companyId, int staffId, String role) {

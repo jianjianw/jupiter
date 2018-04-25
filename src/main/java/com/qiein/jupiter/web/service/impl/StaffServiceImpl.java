@@ -295,7 +295,7 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public List<CompanyPO> getCompanyList(String userName, String password) {
         List<CompanyPO> companyList = staffDao.getCompanyList(userName, MD5Util.getSaltMd5(password));
-        if (companyList == null || companyList.isEmpty()) {
+        if (ListUtil.isNullList(companyList)) {
             //用户不存在
             throw new RException(ExceptionEnum.USERNAME_OR_PASSWORD_ERROR);
         }

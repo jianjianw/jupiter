@@ -21,7 +21,7 @@ public class MobileLocationUtil {
         try {
             json = OkHttpUtil
                     .doGet("http://apis.juhe.cn/mobile/get?phone=" + phone + "&key=0332415596ab60d21168ba02d059fdbb");
-            
+
             if (json.getString("resultcode").equals("200")) {
                 String province = json.getJSONObject("result").getString("province");
                 String city = json.getJSONObject("result").getString("city");

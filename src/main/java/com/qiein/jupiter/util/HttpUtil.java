@@ -45,9 +45,7 @@ public class HttpUtil {
         String uid = HttpUtil.getRequestParam(request, CommonConstant.UID);
         String cid = HttpUtil.getRequestParam(request, CommonConstant.CID);
         //验证参数不全
-        if (com.qiein.jupiter.util.StringUtil. isEmpty(token)
-                || com.qiein.jupiter.util.StringUtil. isEmpty(uid)
-                || com.qiein.jupiter.util.StringUtil. isEmpty(cid)) {
+        if (StringUtil.isEmpty(token) || StringUtil.isEmpty(uid) || StringUtil.isEmpty(cid)) {
             throw new RException(ExceptionEnum.VERIFY_PARAM_INCOMPLETE);
         }
         //封装验证参数
