@@ -36,12 +36,13 @@ public class BrandServiceImpl implements BrandService {
     /**
      * 删除品牌
      *
-     * @param id
+     * @param ids
      */
     @Override
-    public void delBrand(Integer id, Integer companyId) {
+    public void datDelBrand(String ids, Integer companyId) {
+        String[] idArr = ids.split(",");
         if (true) { //TODO 如果存在下属渠道则不能删除
-            brandDao.deleteByIdAndCid(id,companyId);
+            brandDao.datDelBrand(idArr, companyId);
         }
     }
 
@@ -54,14 +55,14 @@ public class BrandServiceImpl implements BrandService {
     @Transactional
     public void editBrand(BrandPO brandPO) {
         BrandPO old = brandDao.getByIdAndCid(brandPO.getId(), brandPO.getCompanyId());
-        if (old != null){
+        if (old != null) {
             if (!old.getBrandName().equals(brandPO.getBrandName())) {
                 if (brandDao.checkBrandName(brandPO.getBrandName(), brandPO.getCompanyId()) > 0)
                     throw new RException(ExceptionEnum.BRAND_NAME_REPEAT);
                 //TODO  更改下属渠道和来源的品牌
                 brandDao.update(brandPO);
             }
-        }else {
+        } else {
             throw new RException(ExceptionEnum.BRAND_NOT_FOUND);
         }
     }

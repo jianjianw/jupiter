@@ -9,26 +9,29 @@ import java.util.List;
  * 品牌Dao
  * Created by Administrator on 2018/4/24 0024.
  */
-public interface BrandDao extends BaseDao<BrandPO>{
+public interface BrandDao extends BaseDao<BrandPO> {
 
     /**
      * 检查是否存在同名品牌，如果有则返回大于等于1，如果没有返回0
+     *
      * @param brandName
      * @param companyId
      * @return
      */
-    int checkBrandName(@Param("brandName") String brandName , @Param("companyId") Integer companyId);
+    int checkBrandName(@Param("brandName") String brandName, @Param("companyId") Integer companyId);
 
     /**
      * 检查品牌下属是否存在渠道
+     *
      * @param brandId
      * @param companyId
      * @return
      */
-    int checkBrandHaveChannel(@Param("brandId")Integer brandId,@Param("companyId") Integer companyId);
+    int checkBrandHaveChannel(@Param("brandId") Integer brandId, @Param("companyId") Integer companyId);
 
     /**
      * 获取品牌列表
+     *
      * @param companyId
      * @return
      */
@@ -36,10 +39,20 @@ public interface BrandDao extends BaseDao<BrandPO>{
 
     /**
      * 更新品牌下属的渠道来源信息
+     *
      * @param brandPO
      * @return
      */
     int updateBrandInfo(BrandPO brandPO);
+
+    /**
+     * 批量删除品牌
+     *
+     * @param ids
+     * @param companyId
+     * @return
+     */
+    int datDelBrand(@Param("ids") String[] ids, @Param("companyId") Integer companyId);
 
 
 }

@@ -69,6 +69,14 @@ public interface BaseDao<T> {
     int deleteByIdAndCid(@Param("id") int id, @Param("companyId") int companyId);
 
     /**
+     * 批量删除品牌
+     * @param ids
+     * @param companyId
+     * @return
+     */
+    int datDelBrand(@Param("ids")String ids , @Param("companyId") int companyId);
+
+    /**
      * 根据id和cid获取
      *
      * @param id
