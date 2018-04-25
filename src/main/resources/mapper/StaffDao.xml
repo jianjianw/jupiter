@@ -308,9 +308,9 @@
     <!--插入员工详细信息-->
     <insert id="insertStaffDetail" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO hm_pub_staff_detail
-         (WECHATNAME, WECHATIMG, LASTLOGINTIME, LASTLOGINIP,OPENID, CREATETIME,COMPANYID)
+         (ID,WECHATNAME, WECHATIMG, LASTLOGINTIME, LASTLOGINIP,OPENID, CREATETIME,COMPANYID)
         VALUES (
-        #{weChatName}, #{weChatImg}, #{lastLoginTime}, #{lastLoginIp},
+        #{id},#{weChatName}, #{weChatImg}, #{lastLoginTime}, #{lastLoginIp},
         #{openId},UNIX_TIMESTAMP(now()),#{companyId}
         )
     </insert>
