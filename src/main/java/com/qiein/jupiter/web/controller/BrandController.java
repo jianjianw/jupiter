@@ -51,7 +51,7 @@ public class BrandController extends BaseController {
      * @param ids
      * @return
      */
-    @GetMapping("del")
+    @GetMapping("/del")
     public ResultInfo delBrand(@NotEmptyStr String ids) {
 
         //获取当前登录用户

@@ -178,6 +178,15 @@ public class StaffServiceImpl implements StaffService {
     }
 
     /**
+     * 批量编辑员工状态 显示、锁定、删除
+     * @param staffStateVO
+     */
+    @Override
+    public void batUpdateStaffState(StaffStateVO staffStateVO) {
+        staffDao.batUpdateStaffState(staffStateVO,staffStateVO.getIds().split(","));
+    }
+
+    /**
      * 批量检查员工是否可删
      *
      * @param ids
@@ -190,6 +199,7 @@ public class StaffServiceImpl implements StaffService {
 
         return "可删除";
     }
+
 
     /**
      * 逻辑删除，即设置isdel 1

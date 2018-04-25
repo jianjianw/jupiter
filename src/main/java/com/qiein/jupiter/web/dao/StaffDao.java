@@ -5,6 +5,7 @@ import com.qiein.jupiter.web.entity.po.StaffDetailPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.GroupStaffVO;
 import com.qiein.jupiter.web.entity.vo.StaffDetailVO;
+import com.qiein.jupiter.web.entity.vo.StaffStateVO;
 import com.qiein.jupiter.web.entity.vo.StaffVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -80,6 +81,11 @@ public interface StaffDao extends BaseDao<StaffPO> {
      */
     void batchEditStaffPwd(@Param("companyId") int companyId, @Param("staffIdArr") String[] staffIdArr, @Param("password") String password);
 
+    /**
+     * 批量编辑员工状态 显示 锁定 删除
+     * @param staffStateVO
+     */
+    void batUpdateStaffState(@Param("ssv") StaffStateVO staffStateVO,@Param("ids") String[] ids);
 
     /**
      * 根据id数组批量删除所属公司的员工

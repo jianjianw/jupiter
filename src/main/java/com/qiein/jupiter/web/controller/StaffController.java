@@ -16,6 +16,7 @@ import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.LoginUserVO;
 import com.qiein.jupiter.web.entity.vo.StaffDetailVO;
+import com.qiein.jupiter.web.entity.vo.StaffStateVO;
 import com.qiein.jupiter.web.entity.vo.StaffVO;
 import com.qiein.jupiter.web.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -305,17 +306,15 @@ public class StaffController extends BaseController {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
 
-        //获取操作用户所属公司
-        Integer companyId = currentLoginStaff.getCompanyId();
-
-        //待被删除的员工数组
-        String[] array = ids.split(",");
-
         //检查是否可删除
         //先检查是否为客服
         //是客服则检查是否存在未邀约客资
         //TODO 等待客资内容写完继续写删除
-        staffService.batDelete(array, companyId);
+        StaffStateVO staffStateVO = new StaffStateVO();
+        staffStateVO.setCompanyId(currentLoginStaff.getCompanyId());
+        staffStateVO.setIds(ids);
+        staffStateVO.setDel(true);
+        staffService.batUpdateStaffState(staffStateVO);
 
         return ResultInfoUtil.success("删除成功");
     }

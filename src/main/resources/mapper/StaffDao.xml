@@ -281,7 +281,7 @@
 	        )
     </select>
 
-    <!--删除批量员工-->
+    <!--批量硬删除员工-->
     <delete id="batDelByIdsAndCid" parameterType="map">
         DELETE
         s,d
@@ -294,6 +294,28 @@
            #{id}
         </foreach>
     </delete>
+
+    <!--批量编辑员工状态,显示，锁定，删除-->
+    <update id="batUpdateStaffState" parameterType="map">
+      UPDATE
+        hm_pub_staff
+      <set>
+          <if test="ssv.show != null">
+              ISSHOW= #{ssv.show},
+          </if>
+          <if test="ssv.lock != null">
+              ISLOCK = #{ssv.lock} ,
+          </if>
+          <if test="ssv.del != null">
+              ISDEL = #{ssv.del}
+          </if>
+      </set>
+      WHERE
+        COMPANYID = #{ssv.companyId} AND ID IN
+        <foreach collection="ids" item="id" index="index" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
 
     <select id="batchGetByIds" resultMap="baseMap">
         SELECT
