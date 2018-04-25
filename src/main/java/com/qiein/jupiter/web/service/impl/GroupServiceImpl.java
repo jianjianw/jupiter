@@ -161,7 +161,6 @@ public class GroupServiceImpl implements GroupService {
      *
      * @param companyId
      * @param staffId
-     * @param type
      * @return
      */
     public List<GroupBaseStaffVO> getGroupStaffByType(int companyId, int staffId, String role) {
