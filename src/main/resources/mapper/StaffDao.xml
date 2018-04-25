@@ -284,13 +284,14 @@
     <!--删除批量员工-->
     <delete id="batDelByIdsAndCid" parameterType="map">
         DELETE
+        s,d
         FROM
-        hm_pub_staff
+        hm_pub_staff s, hm_pub_staff_detail d
         WHERE
-        COMPANYID = #{companyId} AND
-        ID IN
+        s.ID=d.ID AND s.COMPANYID = #{companyId} AND
+        s.ID IN
         <foreach collection="ids" item="id" index="index" open="(" separator="," close=")">
-            #{id}
+           #{id}
         </foreach>
     </delete>
 
