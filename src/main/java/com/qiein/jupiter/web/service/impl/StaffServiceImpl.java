@@ -491,7 +491,6 @@ public class StaffServiceImpl implements StaffService {
         staffBaseInfoVO.setCompany(companyVO);
         staffBaseInfoVO.setStaffDetail(staffDao.getStaffDetail(staffId, companyId));
         //员工小组信息
-        staffBaseInfoVO.setGroup(groupDao.getGroupByStaffId(staffId, companyId));
         return staffBaseInfoVO;
     }
 
