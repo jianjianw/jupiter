@@ -432,10 +432,11 @@ public class StaffServiceImpl implements StaffService {
         }
         //2.修改小组
         groupStaffDao.batchEditStaffGroup(companyId, staffIdArr, groupId);
-        //3.修改角色
+        //3.删除角色关联
+        staffRoleDao.batchDeleteByStaffIdArr(companyId, staffIdArr);
+        //4.修改角色
         if (StringUtil.isNotEmpty(roleIds)) {
             String[] roleIdArr = roleIds.split(CommonConstant.STR_SEPARATOR);
-            staffRoleDao.batchDeleteByStaffIdArr(companyId, staffIdArr);
             List<StaffVO> list = new LinkedList<>();
             for (String staffId : staffIdArr) {
                 for (String roleId : roleIdArr) {
