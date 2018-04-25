@@ -173,7 +173,7 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public void batDelete(String[] ids, int companyId) {
         //TODO 删除前验证各种  如员工是否有客资等情况
-        staffDao.batchDelByIdsAndCid(ids, companyId);
+        staffDao.batDelByIdsAndCid(ids, companyId);
         //TODO 删除相关连接表
     }
 
