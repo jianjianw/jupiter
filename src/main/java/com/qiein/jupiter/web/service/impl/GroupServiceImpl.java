@@ -151,7 +151,7 @@ public class GroupServiceImpl implements GroupService {
             for (int i = 0; i < staffPOS.size(); i++) {
                 chiefNames.append(staffPOS.get(i).getNickName());
                 if (i < (staffPOS.size() - 1)) {
-                    chiefNames.append(CommonConstant.STR_SEPARATOR);
+                    chiefNames.append(CommonConstant.STR_SEPARATOR + " ");
                 }
             }
             //设置
