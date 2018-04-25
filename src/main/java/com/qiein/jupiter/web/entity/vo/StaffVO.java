@@ -54,8 +54,8 @@ public class StaffVO extends StaffPO {
      * 获取员工是否初始密码标识，并置空密码
      */
     public void getStaffPwdFlag() {
-        this.pwdFlag = StringUtil.isEmpty(this.getPhone())
-                && StringUtil.isEmpty(this.getPassword())
+        this.pwdFlag = StringUtil.isNotEmpty(this.getPhone())
+                && StringUtil.isNotEmpty(this.getPassword())
                 && this.getPassword().equals(MD5Util.getSaltMd5(this.getPhone()));
     }
 
