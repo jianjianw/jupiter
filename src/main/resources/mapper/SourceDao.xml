@@ -178,4 +178,16 @@
         WHERE
           COMPANYID = #{companyId} AND CHANNELID = #{channelId}
     </update>
+
+    <!--根据来源ID获取显示可用的来源信息-->
+    <select id="getShowSourceById" parameterType="Integer" resultMap="baseMap">
+        SELECT
+            <include refid="baseColumn"/>
+        FROM
+            hm_crm_source
+        WHERE
+            COMPANYID = #{companyId}
+        AND ID = #{id}
+        AND ISSHOW = 1
+    </select>
 </mapper>

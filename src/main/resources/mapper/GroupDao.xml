@@ -186,4 +186,13 @@
             AND rela.STAFFID =#{staffId}
     </select>
 
+    <!--根据小组ID获取小组信息-->
+    <select id="getGroupById" parameterType="map" resultMap="baseMap">
+        SELECT
+            <include refid="baseColumn"/>
+        FROM hm_pub_group
+        WHERE COMPANYID = #{companyId}
+        AND GROUPID = #{groupId}
+    </select>
+
 </mapper>

@@ -36,6 +36,7 @@ public enum ExceptionEnum {
     USERNAME_EXIST(344, "该全名已存在"),
     STAFF_ID_NULL(345, "员工ID不能为空"),
     PHONE_ERROR(346, "手机号格式错误"),
+    APPOINT_NOT_FOUND(347, "邀约客服不存在"),
     //部门
     GROUP_NAME_REPEAT(401, "部门名称重复"),
     GROUP_HAVE_CHILD_GROUP(402, "该部门存在小组，请删除下属小组再进行操作"),
@@ -43,6 +44,7 @@ public enum ExceptionEnum {
     WEIGHT_ERROR(404, "权重需在[1,20]之间"),
     ID_IS_NULL(405, "ID不能为空"),
     CHANNEL_GROUP_EXIST(406, "该渠道下客服小组已存在"),
+    APPOINT_GROUP_NOT_FOUND(407, "邀约小组不存在"),
     //渠道&来源
     CHANNEL_NAME_REPEAT(501, "渠道名称重复"),
     CHANNEL_ID_NULL(502, "渠道编号不能为空"),
@@ -54,6 +56,7 @@ public enum ExceptionEnum {
     //拍摄地
     SHOP_EXIST(601, "拍摄地已存在"),
     SHOP_ID_NULL(602, "拍摄地ID不能为空"),
+    SHOP_NOT_FOUND(603, "拍摄地不存在"),
     //权限
     ROLE_EXIST(701, "该角权限已存在"),
     ROLE_EDIT_FAIL(702, "权限修改失败"),
@@ -62,11 +65,11 @@ public enum ExceptionEnum {
     MENU_NULL(801, "企业菜单为空"),
     //角色
     ROLE_ERROR(901, "角色错误"),
-	//品牌
-    BRAND_NAME_REPEAT(1001,"该品牌已存在"),
-    BRAND_NOT_FOUND(1002,"该品牌不存在"),
-    BRAND_ID_NULL(1003,"品牌编号不能为空"),
-    BRAND_HAVE_CHANNEL(1004,"该品牌下存在渠道，请先删除下属渠道再继续操作");
+    //品牌
+    BRAND_NAME_REPEAT(1001, "该品牌已存在"),
+    BRAND_NOT_FOUND(1002, "该品牌不存在"),
+    BRAND_ID_NULL(1003, "品牌编号不能为空"),
+    BRAND_HAVE_CHANNEL(1004, "该品牌下存在渠道，请先删除下属渠道再继续操作");
 
     private Integer code;
 

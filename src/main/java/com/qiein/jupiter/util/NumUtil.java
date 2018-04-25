@@ -93,4 +93,14 @@ public class NumUtil {
         return n == 0;
     }
 
+    /**
+     * 判断不为空
+     *
+     * @param n
+     * @return
+     */
+    public static boolean isNotNull(int n) {
+        return n != 0;
+    }
+
 }

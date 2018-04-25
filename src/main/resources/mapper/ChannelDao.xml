@@ -184,4 +184,16 @@
             </foreach>
         ORDER BY channel.TYPEID, channel.PRIORITY ,channel.ID,src.PRIORITY, src.ID
     </select>
+
+    <!--根据ID获取显示可用的渠道-->
+    <select id="getShowChannelById" parameterType="Integer" resultMap="baseMap">
+        SELECT
+            <include refid="baseColumn"/>
+        FROM
+            hm_crm_channel
+        WHERE
+            COMPANYID = #{companyId}
+        AND ID = #{id}
+        AND ISSHOW = 1
+    </select>
 </mapper>
