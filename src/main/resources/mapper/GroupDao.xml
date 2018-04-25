@@ -105,7 +105,7 @@
         WHERE
             par.COMPANYID = #{companyId}
             AND par.PARENTID = '0'
-        ORDER BY par.GROUPNAME,par.ID,grp.GROUPNAME,grp.ID
+        ORDER BY par.ID,grp.ID
     </select>
 
     <!--添加小组人员关联表-->
