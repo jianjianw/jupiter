@@ -92,7 +92,7 @@
     <select id="getStaffPermission" resultMap="baseMap">
         SELECT
         permission.PERMISSIONNAME,
-        permission.ID PERMISSIONID,
+        permission.ID,
         permission.ABBREVIATE,
         permission.TYPEID
         FROM
