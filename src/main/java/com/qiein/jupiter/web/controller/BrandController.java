@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.controller;
 
 import com.qiein.jupiter.aop.validate.annotation.Id;
+import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.constant.TipMsgConstant;
 import com.qiein.jupiter.util.ObjectUtil;
 import com.qiein.jupiter.util.ResultInfo;
@@ -45,26 +46,28 @@ public class BrandController extends BaseController {
     }
 
     /**
-     *  删除品牌
-     * @param id
+     * 删除品牌
+     *
+     * @param ids
      * @return
      */
-    @GetMapping("del")
-    public ResultInfo delBrand(@Id int id){
+    @GetMapping("/del")
+    public ResultInfo delBrand(@NotEmptyStr String ids) {
 
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        brandService.delBrand(id,currentLoginStaff.getCompanyId());
+        brandService.datDelBrand(ids, currentLoginStaff.getCompanyId());
         return ResultInfoUtil.success(TipMsgConstant.SUCCESS);
     }
 
     /**
      * 编辑品牌
+     *
      * @param brandPO
      * @return
      */
     @PostMapping("/edit")
-    public ResultInfo editBrand(@RequestBody BrandPO brandPO){
+    public ResultInfo editBrand(@RequestBody BrandPO brandPO) {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         //设置cid

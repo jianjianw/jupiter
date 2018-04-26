@@ -18,9 +18,9 @@ public interface BrandService {
     /**
      * 删除品牌
      *
-     * @param id
+     * @param ids
      */
-    void delBrand(Integer id, Integer companyId);
+    void datDelBrand(String ids, Integer companyId);
 
     /**
      * 编辑品牌

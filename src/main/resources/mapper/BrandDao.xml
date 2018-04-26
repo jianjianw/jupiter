@@ -59,6 +59,19 @@
           ID = #{id} AND COMPANYID = #{companyId}
     </delete>
 
+    <!--批量删除品牌-->
+    <delete id="datDelBrand" parameterType="map">
+        DELETE
+        FROM
+          hm_crm_brand
+        WHERE
+          COMPANYID = #{companyId}
+          AND ID IN
+          <foreach collection="ids" item="id" separator="," open="(" close=")" index="index">
+              #{id}
+          </foreach>
+    </delete>
+
     <!--编辑品牌-->
     <update id="update" parameterType="brandPO">
         UPDATE
@@ -75,14 +88,14 @@
     <!--编辑品牌下属渠道来源中的品牌信息-->
     <update id="updateBrandInfo" parameterType="brandPO">
       UPDATE
-        hm_crm_channel,hm_crm_source
+        hm_crm_channel c,hm_crm_source s
       <set>
           <if test="brandName != null AND brandName != ''">
-              BRANDNAME = #{brandName}
+              c.BRANDNAME = #{brandName} , s.BRANDNAME = #{brandName}
           </if>
       </set>
       WHERE
-        COMPANYID = #{companyId} AND BRANDID = #{brandId}
+        c.COMPANYID = #{companyId} AND c.BRANDID = #{brandId}
     </update>
 
     <!--获取品牌列表-->

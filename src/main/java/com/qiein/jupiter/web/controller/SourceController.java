@@ -61,7 +61,7 @@ public class SourceController extends BaseController {
         sourceVO.setCompanyId(currentLoginStaff.getCompanyId());
         //对象参数去空
         ObjectUtil.objectStrParamTrim(sourceVO);
-        if (StringUtil. isEmpty(String.valueOf(sourceVO.getId())))
+        if (StringUtil.isEmpty(String.valueOf(sourceVO.getId())))
             throw new RException(ExceptionEnum.SOURCE_ID_NULL);
         sourceService.editSource(sourceVO);
         return ResultInfoUtil.success(TipMsgConstant.EDIT_SOURCE_SUCCESS);
