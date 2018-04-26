@@ -178,6 +178,21 @@ public class StaffServiceImpl implements StaffService {
     }
 
     /**
+     * 批量删除员工，将isShow字段改为true，然后硬删除员工对应的角色和员工所属小组
+     * @param staffStateVO
+     */
+    @Override
+    @Transactional
+    public void batDelStaff(StaffStateVO staffStateVO) {
+        //修改删除标识
+        staffDao.batUpdateStaffState(staffStateVO, staffStateVO.getIds().split(","));
+        //硬删除员工角色
+        staffRoleDao.batchDeleteByStaffIdArr(staffStateVO.getCompanyId(),staffStateVO.getIds().split(","));
+        //硬删除员工小组
+        groupStaffDao.batchDeleteByStaffArr(staffStateVO.getCompanyId(),staffStateVO.getIds().split(","));
+    }
+
+    /**
      * 批量编辑员工状态 显示、锁定、删除
      *
      * @param staffStateVO

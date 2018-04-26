@@ -314,8 +314,8 @@ public class StaffController extends BaseController {
         staffStateVO.setCompanyId(currentLoginStaff.getCompanyId());
         staffStateVO.setIds(ids);
         staffStateVO.setDel(true);
-        staffService.batUpdateStaffState(staffStateVO);
-
+//        staffService.batUpdateStaffState(staffStateVO);
+        staffService.batDelStaff(staffStateVO);
         return ResultInfoUtil.success("删除成功");
     }
 

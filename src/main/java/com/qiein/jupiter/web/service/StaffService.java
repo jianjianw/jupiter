@@ -56,6 +56,12 @@ public interface StaffService {
     void batDelete(String[] ids, int companyId);
 
     /**
+     * 批量删除员工，将isShow字段改为true，然后硬删除员工对应的角色和员工所属小组
+     * @param staffStateVO
+     */
+    void batDelStaff(StaffStateVO staffStateVO);
+
+    /**
      * 批量编辑员工状态
      * @param staffStateVO
      */

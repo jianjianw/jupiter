@@ -39,11 +39,12 @@ public class BrandServiceImpl implements BrandService {
      * @param ids
      */
     @Override
-    @Transactional
     public void datDelBrand(String ids, Integer companyId) {
         String[] idArr = ids.split(",");
-        if (true) { //TODO 如果存在下属渠道则不能删除
+        if (brandDao.checkBrandHaveChannel(idArr, companyId) == 0) { //TODO 如果存在下属渠道则不能删除
             brandDao.datDelBrand(idArr, companyId);
+        } else {
+            throw new RException(ExceptionEnum.BRAND_HAVE_CHANNEL);
         }
     }
 

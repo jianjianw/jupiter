@@ -23,11 +23,11 @@ public interface BrandDao extends BaseDao<BrandPO> {
     /**
      * 检查品牌下属是否存在渠道
      *
-     * @param brandId
+     * @param ids
      * @param companyId
      * @return
      */
-    int checkBrandHaveChannel(@Param("brandId") Integer brandId, @Param("companyId") Integer companyId);
+    int checkBrandHaveChannel(@Param("ids") String[] ids, @Param("companyId") Integer companyId);
 
     /**
      * 获取品牌列表
