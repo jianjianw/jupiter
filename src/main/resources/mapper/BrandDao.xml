@@ -23,13 +23,16 @@
     </select>
 
     <!--检查品牌下属存在多少渠道-->
-    <select id="checkBrandHaveChannel" parameterType="Integer">
+    <select id="checkBrandHaveChannel" parameterType="map">
         SELECT
-          COUNT(1)
+          COUNT(1)/* AS count , BRANDNAME*/
         FROM
           hm_crm_channel
         WHERE
-          COMPANYID = #{companyId} AND  BRANDID = #{brandId}
+          COMPANYID = #{companyId} AND  BRANDID IN
+          <foreach collection="ids" item="id" index="index" open="(" separator="," close=")">
+              #{id}
+          </foreach>
     </select>
 
     <!--根据id获取品牌信息-->
@@ -90,12 +93,12 @@
       UPDATE
         hm_crm_channel c,hm_crm_source s
       <set>
-          <if test="brandName != null AND brandName != ''">
+          <if test="brandName != null and brandName != ''">
               c.BRANDNAME = #{brandName} , s.BRANDNAME = #{brandName}
           </if>
       </set>
       WHERE
-        c.COMPANYID = #{companyId} AND c.BRANDID = #{brandId}
+        c.COMPANYID = #{companyId} AND c.BRANDID = #{id} AND s.COMPANYID = #{companyId} AND s.BRANDID = #{id}
     </update>
 
     <!--获取品牌列表-->

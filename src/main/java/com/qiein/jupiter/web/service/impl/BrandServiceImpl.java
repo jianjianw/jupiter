@@ -39,6 +39,7 @@ public class BrandServiceImpl implements BrandService {
      * @param ids
      */
     @Override
+    @Transactional
     public void datDelBrand(String ids, Integer companyId) {
         String[] idArr = ids.split(",");
         if (true) { //TODO 如果存在下属渠道则不能删除
@@ -59,7 +60,8 @@ public class BrandServiceImpl implements BrandService {
             if (!old.getBrandName().equals(brandPO.getBrandName())) {
                 if (brandDao.checkBrandName(brandPO.getBrandName(), brandPO.getCompanyId()) > 0)
                     throw new RException(ExceptionEnum.BRAND_NAME_REPEAT);
-                //TODO  更改下属渠道和来源的品牌
+                //更改下属渠道和来源的品牌
+                brandDao.updateBrandInfo(brandPO);
                 brandDao.update(brandPO);
             }
         } else {
