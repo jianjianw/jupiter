@@ -179,11 +179,12 @@ public class StaffServiceImpl implements StaffService {
 
     /**
      * 批量编辑员工状态 显示、锁定、删除
+     *
      * @param staffStateVO
      */
     @Override
     public void batUpdateStaffState(StaffStateVO staffStateVO) {
-        staffDao.batUpdateStaffState(staffStateVO,staffStateVO.getIds().split(","));
+        staffDao.batUpdateStaffState(staffStateVO, staffStateVO.getIds().split(","));
     }
 
     /**
@@ -438,7 +439,7 @@ public class StaffServiceImpl implements StaffService {
         String[] staffIdArr = staffIds.split(CommonConstant.STR_SEPARATOR);
         //1.修改密码
         if (StringUtil.isNotEmpty(password)) {
-            staffDao.batchEditStaffPwd(companyId, staffIdArr, MD5Util.getMD5(password));
+            staffDao.batchEditStaffPwd(companyId, staffIdArr, MD5Util.getSaltMd5(password));
         }
         //2.修改小组
         groupStaffDao.batchEditStaffGroup(companyId, staffIdArr, groupId);
