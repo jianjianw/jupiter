@@ -21,11 +21,6 @@ public class LoginLogAspect {
 
 	}
 
-	// @Before("loginLogPointCut()")
-	// public void objTrim(JoinPoint joinPoint){
-	// Object target = joinPoint.getTarget();
-	// }
-
 	@Around("loginLogPointCut()")
 	public Object around(ProceedingJoinPoint point) throws Throwable {
 		long beginTime = System.currentTimeMillis();
