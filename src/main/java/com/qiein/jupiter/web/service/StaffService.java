@@ -250,4 +250,13 @@ public interface StaffService {
      * @param groupId
      */
     void batchRestoreStaff(int companyId, String staffIds, String roleIds, String password, String groupId);
+
+    /**
+     * 搜索离职员工
+     *
+     * @param companyId
+     * @param searchKey
+     * @return
+     */
+    List<StaffPO> getDelStafflistBySearchKey(int companyId, String searchKey);
 }

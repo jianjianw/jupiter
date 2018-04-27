@@ -201,4 +201,13 @@ public interface StaffDao extends BaseDao<StaffPO> {
      */
     void batchRestoreStaff(@Param("companyId") int companyId, @Param("staffIdArr") String[] staffIdArr, @Param("password") String password);
 
+    /**
+     * 搜索离职员工
+     *
+     * @param companyId
+     * @param searchKey
+     * @return
+     */
+    List<StaffPO> getDelStaffListBySearchKey(@Param("companyId") int companyId, @Param("searchKey") String searchKey);
+
 }

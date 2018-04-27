@@ -694,7 +694,6 @@ public class StaffServiceImpl implements StaffService {
      */
     public PageInfo getDelStaffList(QueryMapDTO queryMapDTO) {
         PageHelper.startPage(queryMapDTO.getPageNum(), queryMapDTO.getPageSize());
-
         List<StaffPO> list = staffDao.findList(queryMapDTO.getCondition());
         return new PageInfo<>(list);
     }
@@ -764,6 +763,17 @@ public class StaffServiceImpl implements StaffService {
             staffRoleDao.batchInsertStaffRoleByVO(list);
         }
         // 4.TODO 清缓存
+    }
+
+    /**
+     * 搜索离职员工
+     *
+     * @param companyId
+     * @param searchKey
+     * @return
+     */
+    public List<StaffPO> getDelStafflistBySearchKey(int companyId, String searchKey) {
+        return staffDao.getDelStaffListBySearchKey(companyId, searchKey);
     }
 
 }

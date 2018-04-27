@@ -535,11 +535,24 @@ public class StaffController extends BaseController {
      * @return
      */
     @GetMapping("/batch_restore_staff")
-    public ResultInfo batchRestoreStaff(@NotEmptyStr @RequestParam("staffIds") String staffIds,@NotEmptyStr @RequestParam("roleIds") String roleIds,
-                                     @RequestParam("password") String password, @NotEmptyStr @RequestParam("groupId") String groupId) {
+    public ResultInfo batchRestoreStaff(@NotEmptyStr @RequestParam("staffIds") String staffIds, @NotEmptyStr @RequestParam("roleIds") String roleIds,
+                                        @RequestParam("password") String password, @NotEmptyStr @RequestParam("groupId") String groupId) {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         staffService.batchRestoreStaff(currentLoginStaff.getCompanyId(), staffIds, roleIds, password, groupId);
         return ResultInfoUtil.success(TipMsgConstant.RESOTRE_SUCCESS);
+    }
+
+    /**
+     * 搜索离职员工
+     *
+     * @param searchKey
+     * @return
+     */
+    @GetMapping("/search_del_staff_list")
+    public ResultInfo searchDelStaffList(@NotEmptyStr @RequestParam("searchKey") String searchKey) {
+        //获取当前登录用户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        return ResultInfoUtil.success(staffService.getDelStafflistBySearchKey(currentLoginStaff.getCompanyId(), searchKey));
     }
 }

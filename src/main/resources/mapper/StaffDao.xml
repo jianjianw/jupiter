@@ -434,5 +434,19 @@
         AND COMPANYID = #{companyId}
     </update>
 
+    <!--搜索离职员工-->
+    <select id="getDelStaffListBySearchKey" resultMap="baseMap">
+        SELECT
+	        sf.ID, sf.NICKNAME, sf.PHONE, sf.USERNAME
+        FROM hm_pub_staff sf
+        WHERE
+            sf.COMPANYID = #{companyId}
+            AND sf.ISDEL = 1
+            AND  ( sf.PHONE LIKE CONCAT('%',#{searchKey},'%')
+                OR sf.USERNAME LIKE CONCAT('%',#{searchKey},'%')
+                OR sf.NICKNAME LIKE CONCAT('%',#{searchKey},'%')
+	        )
+    </select>
+
 
 </mapper>
