@@ -30,14 +30,14 @@
         COMPANYID = #{companyId} AND ID = #{id}
     </select>
 
+    <!--新增来源-->
     <insert id="insert" parameterType="com.qiein.jupiter.web.entity.po.SourcePO" useGeneratedKeys="true"
             keyProperty="id">
         INSERT INTO hm_crm_source
-        (SRCNAME,SRCIMG,TYPEID,CHANNELID,CHANNELNAME,BRANDID,BRANDNAME,PRIORITY,COMPANYID,ISFILTER,ISSHOW)
-        VALUES (
+        (SRCNAME,SRCIMG,TYPEID,CHANNELID,CHANNELNAME,BRANDID,BRANDNAME,COMPANYID,ISFILTER,ISSHOW,PRIORITY)
+        SELECT
         #{srcName},#{srcImg},#{typeId},#{channelId},#{channelName},#{brandId},
-        #{brandName},#{priority},#{companyId},#{isFilter},#{isShow}
-        )
+        #{brandName},#{companyId},#{isFilter},#{isShow},(SELECT IFNULL(MAX(PRIORITY),0)+1 FROM hm_crm_source)
     </insert>
 
     <update id="update" parameterType="com.qiein.jupiter.web.entity.po.SourcePO">

@@ -62,7 +62,6 @@ public class ChannelController extends BaseController {
      */
     @PostMapping("/edit")
     public ResultInfo editChannel(@RequestBody ChannelPO channelPO) {
-        System.out.println(channelPO);
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         //设置cid
@@ -73,6 +72,21 @@ public class ChannelController extends BaseController {
             throw new RException(ExceptionEnum.CHANNEL_ID_NULL);
         channelService.editChannel(channelPO);
         return ResultInfoUtil.success(TipMsgConstant.EDIT_CHANNEL_SUCCESS);
+    }
+
+    /**
+     * 编辑渠道排序
+     * @param fId
+     * @param fPriority
+     * @param sId
+     * @param sPriority
+     * @return
+     */
+    @GetMapping("/proiority")
+    public ResultInfo editProiority(@Id Integer fId, @Id Integer fPriority,
+                                  @Id Integer sId, @Id Integer sPriority) {
+        channelService.editProiority(fId,fPriority,sId,sPriority,getCurrentLoginStaff().getCompanyId());
+        return ResultInfoUtil.success(TipMsgConstant.EDIT_SUCCESS);
     }
 
     /**

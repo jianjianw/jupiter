@@ -11,6 +11,7 @@ import java.util.List;
  * Created by Administrator on 2018/4/19 0019.
  */
 public interface ChannelDao extends BaseDao<ChannelPO> {
+
     /**
      * 检查所属公司下是否有重复渠道，
      * 返回值为同名的渠道组数，

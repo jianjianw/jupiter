@@ -43,6 +43,14 @@ public interface BaseDao<T> {
     int update(T entity);
 
     /**
+     * 修改排序
+     * @param id
+     * @param proiority
+     * @return
+     */
+    Integer updateProiority(@Param("id")Integer id,@Param("proiority")Integer proiority,@Param("companyId") Integer companyId);
+
+    /**
      * 删除数据（一般为物理删除）
      *
      * @param id

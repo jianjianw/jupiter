@@ -25,33 +25,9 @@ public class SourceServiceImpl implements SourceService {
     public void createSource(SourcePO sourcePO) {
         //先检查是否重名
         if (sourceDao.checkSource(sourcePO.getSrcName(), sourcePO.getChannelId(), sourcePO.getCompanyId()) >= 1)
-            throw new RException(ExceptionEnum.CHANNEL_NAME_REPEAT);
+            throw new RException(ExceptionEnum.SOURCE_NAME_REPEAT);
         sourceDao.insert(sourcePO);
     }
-
-//    /**
-//     * 编辑来源
-//     *
-//     * @param sourcePO
-//     */
-//    @Override
-//    public void editSource(SourcePO sourcePO) {
-//        //先检查是否重名
-//        //先根据id去获取来源信息
-//        SourcePO s = sourceDao.getByIdAndCid(sourcePO.getId(), sourcePO.getCompanyId());
-//
-//        if (s != null) {   //如果不为空说明存在
-//            if (!s.getSrcName().equals(sourcePO.getSrcName())) { //名字是否改过
-//                int i = sourceDao.checkSource(sourcePO.getSrcName(), s.getChannelId(), sourcePO.getCompanyId());
-//                System.out.println(i);
-//                if (i >= 1)
-//                    throw new RException(ExceptionEnum.SOURCE_NAME_REPEAT);
-//            }
-//        } else {
-//            throw new RException(ExceptionEnum.SOURCE_NOT_FOUND);
-//        }
-//        sourceDao.update(sourcePO);
-//    }
 
     /**
      * 批量编辑来源
