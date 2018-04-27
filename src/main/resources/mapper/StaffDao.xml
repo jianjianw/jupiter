@@ -77,40 +77,40 @@
         FROM hm_pub_staff
         <where>
             <if test="nickName != null and nickName != ''">
-                NICKNAME = #{nickName},
+                AND NICKNAME = #{nickName}
             </if>
             <if test="phone != null and phone != ''">
-                PHONE = #{phone},
+                AND PHONE = #{phone}
             </if>
             <if test="userName != null and userName != ''">
-                USERNAME = #{userName},
+                AND USERNAME = #{userName}
             </if>
             <if test="password != null and password != ''">
-                PASSWORD = #{password},
+                AND PASSWORD = #{password}
             </if>
             <if test="companyId != null and companyId != ''">
-                COMPANYID = #{companyId},
+               AND COMPANYID = #{companyId}
             </if>
             <if test="corpId != null and corpId != ''">
-                CORPID = #{corpId},
+                AND CORPID = #{corpId}
             </if>
             <if test="dingUserId != null and dingUserId != ''">
-                DINGUSERID = #{dingUserId},
+                AND DINGUSERID = #{dingUserId}
             </if>
             <if test="headImg != null and headImg != ''">
-                HEADIMG = #{headImg},
+                AND HEADIMG = #{headImg}
             </if>
             <if test="token != null and token != ''">
-                TOKEN = #{token},
+                AND TOKEN = #{token}
             </if>
             <if test="showFlag != null">
-                ISSHOW = #{showFlag},
+                AND ISSHOW = #{showFlag}
             </if>
             <if test="lockFlag != null">
-                ISLOCK = #{lockFlag},
+                AND ISLOCK = #{lockFlag}
             </if>
             <if test="delFlag != null">
-                ISDEL = #{delFlag},
+               AND ISDEL = #{delFlag}
             </if>
         </where>
     </select>

@@ -26,7 +26,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -474,5 +476,22 @@ public class StaffController extends BaseController {
         Integer companyId = currentLoginStaff.getCompanyId();
 
         return ResultInfoUtil.success(TipMsgConstant.SUCCESS, staffService.getGroupStaffByType(companyId, type));
+    }
+
+    /**
+     * 获取已离职的员工列表
+     *
+     * @param type
+     * @return
+     */
+    @GetMapping("/get_del_staff_list")
+    public ResultInfo getDelStaffList(QueryMapDTO queryMapDTO) {
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        HashMap<String, Object> condition = new HashMap<>();
+        condition.put("companyId", currentLoginStaff.getCompanyId());
+        condition.put("delFlag", true);
+        queryMapDTO.setCondition(condition);
+        return ResultInfoUtil.success(TipMsgConstant.SUCCESS, staffService.getDelStaffList(queryMapDTO));
     }
 }

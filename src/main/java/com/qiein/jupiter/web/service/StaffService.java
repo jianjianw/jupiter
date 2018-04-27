@@ -57,12 +57,14 @@ public interface StaffService {
 
     /**
      * 批量删除员工，将isShow字段改为true，然后硬删除员工对应的角色和员工所属小组
+     *
      * @param staffStateVO
      */
     void batDelStaff(StaffStateVO staffStateVO);
 
     /**
      * 批量编辑员工状态
+     *
      * @param staffStateVO
      */
     void batUpdateStaffState(StaffStateVO staffStateVO);
@@ -221,4 +223,13 @@ public interface StaffService {
      * @return
      */
     List<GroupStaffVO> getGroupStaffByType(int companyId, String type);
+
+    /**
+     * 获取离职员工列表
+     *
+     * @param queryMapDTO
+     * @return
+     */
+
+    PageInfo getDelStaffList(QueryMapDTO queryMapDTO);
 }
