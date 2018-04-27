@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.entity.po;
 
+import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.web.entity.BaseEntity;
 
 import java.io.Serializable;
@@ -16,6 +17,7 @@ public class DictionaryPO extends BaseEntity {
     /**
      * 名称
      */
+    @NotEmptyStr(message = "{invalid.reason.name.null}")
     private String dicName;
 
     /**

@@ -4,12 +4,16 @@ import com.fasterxml.jackson.databind.ser.Serializers;
 import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.constant.DictionaryConstant;
 import com.qiein.jupiter.constant.TipMsgConstant;
+import com.qiein.jupiter.exception.ExceptionEnum;
+import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
+import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.po.DictionaryPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.service.DictionaryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/dictionary")
+@Validated
 public class DictionaryController extends BaseController {
 
     @Autowired
@@ -31,6 +36,9 @@ public class DictionaryController extends BaseController {
 
     @PostMapping("/add_invalid_reason")
     public ResultInfo addInvalidReason(@RequestBody DictionaryPO dictionaryPO) {
+        if (StringUtil.isEmpty(dictionaryPO.getSpare())) {
+            return ResultInfoUtil.error(ExceptionEnum.INVALID_REASON_TYPE_NULL);
+        }
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         dictionaryPO.setCompanyId(currentLoginStaff.getCompanyId());
@@ -40,6 +48,12 @@ public class DictionaryController extends BaseController {
 
     @PostMapping("/edit_invalid_reason")
     public ResultInfo editInvalidReason(@RequestBody DictionaryPO dictionaryPO) {
+        if (StringUtil.isEmpty(dictionaryPO.getSpare())) {
+            return ResultInfoUtil.error(ExceptionEnum.INVALID_REASON_TYPE_NULL);
+        }
+        if (NumUtil.isNull(dictionaryPO.getId())) {
+            return ResultInfoUtil.error(ExceptionEnum.ID_IS_NULL);
+        }
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         dictionaryPO.setCompanyId(currentLoginStaff.getCompanyId());
