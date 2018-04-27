@@ -23,9 +23,9 @@
     </select>
 
     <!--检查品牌下属存在多少渠道-->
-    <select id="checkBrandHaveChannel" parameterType="map">
+    <select id="checkBrandHaveChannel" parameterType="map" resultType="Integer">
         SELECT
-          COUNT(1)/* AS count , BRANDNAME*/
+          COUNT(1)
         FROM
           hm_crm_channel
         WHERE
