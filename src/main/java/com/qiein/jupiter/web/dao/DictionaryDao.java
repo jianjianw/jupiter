@@ -13,9 +13,19 @@ public interface DictionaryDao extends BaseDao<DictionaryPO> {
 
     /**
      * 获取企业左上角菜单栏
+     *
      * @param companyId
      * @param dicType
      * @return
      */
     public List<MenuVO> getCompanyMemu(@Param("companyId") int companyId, @Param("dicType") String dicType);
+
+    /**
+     * 根绝类型获取字典数据
+     *
+     * @param companyId
+     * @param dicType
+     * @return
+     */
+    public List<DictionaryPO> getDicByType(@Param("companyId") int companyId, @Param("dicType") String dicType);
 }

@@ -17,10 +17,7 @@ public class DictionaryPO extends BaseEntity {
      * 名称
      */
     private String dicName;
-    /**
-     * 备注
-     */
-    private String memo;
+
     /**
      * 顺序
      */
@@ -58,13 +55,6 @@ public class DictionaryPO extends BaseEntity {
         this.dicName = dicName;
     }
 
-    public String getMemo() {
-        return memo;
-    }
-
-    public void setMemo(String memo) {
-        this.memo = memo;
-    }
 
     public int getPriority() {
         return priority;

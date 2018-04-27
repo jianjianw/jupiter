@@ -7,7 +7,6 @@
         <result column="DICTYPE" jdbcType="VARCHAR" property="dicType"/>
         <result column="DICCODE" jdbcType="VARCHAR" property="dicCode"/>
         <result column="DICNAME" jdbcType="INTEGER" property="dicName"/>
-        <result column="MEMO" jdbcType="INTEGER" property="memo"/>
         <result column="PRIORITY" jdbcType="VARCHAR" property="priority"/>
         <result column="SPARE" jdbcType="INTEGER" property="spare"/>
         <result column="COMPANYID" jdbcType="INTEGER" property="companyId"/>
@@ -19,13 +18,23 @@
     </resultMap>
 
     <sql id="baseColumn">
-        ID,DICTYPE, DICCODE, DICNAME, MEMO, PRIORITY, SPARE, COMPANYID
+        ID,DICTYPE, DICCODE, DICNAME,PRIORITY, SPARE, COMPANYID
     </sql>
 
     <!--获取企业左上角菜单栏-->
     <select id="getCompanyMemu" parameterType="map" resultMap="VOMap">
         SELECT
             dic.DICNAME, dic.SPARE
+        FROM
+            hm_crm_dictionary dic
+        WHERE
+            dic.COMPANYID = #{companyId} AND dic.DICTYPE = #{dicType}
+    </select>
+
+    <!--获取企业左上角菜单栏-->
+    <select id="getDicByType" parameterType="map" resultMap="baseMap">
+        SELECT
+           <include refid="baseColumn" />
         FROM
             hm_crm_dictionary dic
         WHERE

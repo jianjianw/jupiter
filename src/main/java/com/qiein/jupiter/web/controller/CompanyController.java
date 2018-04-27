@@ -8,5 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/company")
-public class CompanyController {
+public class CompanyController extends BaseController {
+
+
 }
