@@ -63,5 +63,14 @@
         (#{dicType},#{dicCode},#{dicName},#{priority},#{spare},#{companyId})
     </insert>
 
+    <!--编辑数据字典-->
+    <update id="update" parameterType="com.qiein.jupiter.web.entity.po.DictionaryPO">
+        UPDATE hm_crm_dictionary
+        SET DICNAME = #{dicName}, SPARE = #{spare}
+        WHERE
+            COMPANYID = #{companyId}
+        AND ID = #{id}
+    </update>
+
 
 </mapper>

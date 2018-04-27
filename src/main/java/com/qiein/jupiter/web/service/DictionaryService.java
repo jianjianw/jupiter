@@ -23,4 +23,11 @@ public interface DictionaryService {
      * @param dictionaryPO
      */
     public void addInvalidReason(DictionaryPO dictionaryPO);
+
+    /**
+     * 编辑流失原因
+     *
+     * @param dictionaryPO
+     */
+    public void editInvalidReason(DictionaryPO dictionaryPO);
 }

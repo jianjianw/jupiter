@@ -55,4 +55,19 @@ public class DictionaryServiceImpl implements DictionaryService {
         dictionaryDao.insert(dictionaryPO);
     }
 
+    /**
+     * 编辑流失原因
+     *
+     * @param dictionaryPO
+     */
+    public void editInvalidReason(DictionaryPO dictionaryPO) {
+        //1.去重
+        DictionaryPO exist = dictionaryDao.getDicByTypeAndName(dictionaryPO.getCompanyId(), DictionaryConstant.INVALID_REASON, dictionaryPO.getDicName());
+        if (exist != null && exist.getId() != dictionaryPO.getId()) {
+            throw new RException(ExceptionEnum.INVALID_REASON_EXIST);
+        }
+        //2.修改
+        dictionaryDao.update(dictionaryPO);
+    }
+
 }

@@ -36,4 +36,13 @@ public class DictionaryController extends BaseController {
         dictionaryService.addInvalidReason(dictionaryPO);
         return ResultInfoUtil.success(TipMsgConstant.SAVE_SUCCESS);
     }
+
+    @PostMapping("/edit_invalid_reason")
+    public ResultInfo editInvalidReason(@RequestBody DictionaryPO dictionaryPO) {
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        dictionaryPO.setCompanyId(currentLoginStaff.getCompanyId());
+        dictionaryService.editInvalidReason(dictionaryPO);
+        return ResultInfoUtil.success(TipMsgConstant.EDIT_SUCCESS);
+    }
 }
