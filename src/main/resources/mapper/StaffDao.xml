@@ -187,6 +187,9 @@
             <if test="headImg != null and headImg != ''">
                 HEADIMG = #{headImg},
             </if>
+            <if test="delFlag != null">
+                ISDEL = #{delFlag}
+            </if>
         </set>
         WHERE ID = #{id}
         AND COMPANYID = #{companyId}

@@ -724,6 +724,7 @@ public class StaffServiceImpl implements StaffService {
         if (StringUtil.isNotEmpty(staffVO.getPassword())) {
             staffVO.setPassword(MD5Util.getSaltMd5(staffVO.getPassword()));
         }
+        staffVO.setDelFlag(false);
         staffDao.updateStaff(staffVO);
         //3.添加小组关联
         groupStaffDao.insertGroupStaff(staffVO.getCompanyId(), staffVO.getGroupId(), staffVO.getId());
