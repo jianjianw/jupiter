@@ -74,7 +74,7 @@
         (CHANNELNAME,CHANNELIMG,TYPEID,BRANDID,BRANDNAME,PUSHRULE,COMPANYID,ISSHOW,PRIORITY)
         SELECT
         #{channelName},#{channelImg},#{typeId},#{brandId},#{brandName},#{pushRule},#{companyId},#{isShow},(
-        SELECT IFNULL(MAX(PRIORITY),0)+1 FROM hm_crm_channel)
+        SELECT IFNULL(MAX(PRIORITY),0)+1 FROM hm_crm_channel WHERE COMPANYID = #{companyId})
     </insert>
 
     <update id="update" parameterType="com.qiein.jupiter.web.entity.po.ChannelPO">

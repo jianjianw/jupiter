@@ -37,7 +37,8 @@
         (SRCNAME,SRCIMG,TYPEID,CHANNELID,CHANNELNAME,BRANDID,BRANDNAME,COMPANYID,ISFILTER,ISSHOW,PRIORITY)
         SELECT
         #{srcName},#{srcImg},#{typeId},#{channelId},#{channelName},#{brandId},
-        #{brandName},#{companyId},#{isFilter},#{isShow},(SELECT IFNULL(MAX(PRIORITY),0)+1 FROM hm_crm_source)
+        #{brandName},#{companyId},#{isFilter},#{isShow},(
+        SELECT IFNULL(MAX(PRIORITY),0)+1 FROM hm_crm_source WHERE COMPANYID = #{companyId})
     </insert>
 
     <update id="update" parameterType="com.qiein.jupiter.web.entity.po.SourcePO">
