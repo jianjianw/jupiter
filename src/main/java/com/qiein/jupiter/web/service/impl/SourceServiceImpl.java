@@ -8,6 +8,7 @@ import com.qiein.jupiter.web.entity.vo.SourceVO;
 import com.qiein.jupiter.web.service.SourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -57,6 +58,21 @@ public class SourceServiceImpl implements SourceService {
         }
 
         sourceDao.update(sourceVO);
+    }
+
+    /**
+     * 来源拖拽排序
+     *
+     * @param fPriority
+     * @param sPriority
+     * @param id
+     * @param companyId
+     */
+    @Override
+    @Transactional
+    public void editSourcePriority(Integer fPriority, Integer sPriority, Integer id, Integer companyId) {
+        sourceDao.updateSourcePriority(fPriority,sPriority,companyId);
+        sourceDao.updatePriority(id, fPriority, companyId);
     }
 
     /**
