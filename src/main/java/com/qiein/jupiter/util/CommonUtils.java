@@ -7,11 +7,12 @@ package com.qiein.jupiter.util;
  *
  */
 public class CommonUtils {
+
 	public static String getTraceInfo() {
+
 		StringBuffer sb = new StringBuffer();
 
 		StackTraceElement stackTraceElement = new java.lang.Throwable().getStackTrace()[1];
-
 		sb.append("(");
 		sb.append("className:").append(stackTraceElement.getClassName());
 		sb.append(";fieldName:").append(stackTraceElement.getFileName());

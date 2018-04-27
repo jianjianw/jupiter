@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * 集合操作工具类
  * 
- * @author JingChenglong 2017/12/24 20:14
+ * @author JingChenglong 2018/04/27 11:11
  *
  */
 public class CollectionUtils {
