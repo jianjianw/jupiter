@@ -39,7 +39,7 @@ public class NewsServiceImplTest {
         newsPO2.setStaffId(131);
         newsPO2.setType("22");
         list.add(newsPO2);
-        newsDao.batchInsertNews(DBSplitUtil.getTableName(DBSplitUtil.NEWS_,1 ), list);
+        newsDao.batchInsertNews(DBSplitUtil.getNewsTabName(1), list);
     }
 
     @Test
