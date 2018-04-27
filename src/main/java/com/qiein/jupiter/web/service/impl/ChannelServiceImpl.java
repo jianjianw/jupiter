@@ -74,8 +74,8 @@ public class ChannelServiceImpl implements ChannelService {
     @Override
     @Transactional
     public void editProiority(Integer fId, Integer fPriority, Integer sId, Integer sPriority, Integer companyId) {
-        channelDao.updateProiority(fId, fPriority, companyId);
-        channelDao.updateProiority(sId, sPriority, companyId);
+            channelDao.updatePriority(fId, fPriority, companyId);
+            channelDao.updatePriority(sId, sPriority, companyId);
     }
 
     /**

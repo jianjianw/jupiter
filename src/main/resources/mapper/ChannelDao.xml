@@ -108,12 +108,12 @@
     </update>
 
     <!--修改排序-->
-    <update id="updateProiority" parameterType="Integer">
+    <update id="updatePriority" parameterType="Integer">
         UPDATE
           hm_crm_channel
         <set>
-            <if test="proiority != null and proiority !=''">
-                PROIORITY = #{proiority}
+            <if test="priority != null and priority !=''">
+                PRIORITY = #{priority}
             </if>
         </set>
         WHERE

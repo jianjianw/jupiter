@@ -45,10 +45,10 @@ public interface BaseDao<T> {
     /**
      * 修改排序
      * @param id
-     * @param proiority
+     * @param priority
      * @return
      */
-    Integer updateProiority(@Param("id")Integer id,@Param("proiority")Integer proiority,@Param("companyId") Integer companyId);
+    Integer updatePriority(@Param("id")Integer id,@Param("priority")Integer priority,@Param("companyId") Integer companyId);
 
     /**
      * 删除数据（一般为物理删除）
