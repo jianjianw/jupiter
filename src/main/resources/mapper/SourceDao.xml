@@ -119,6 +119,29 @@
         </foreach>
     </update>
 
+    <!--修改拖拽排序时波及的来源的排序-->
+    <update id="updateSourcePriority" parameterType="Integer">
+        UPDATE
+          hm_crm_source
+        SET
+          PRIORITY = PRIORITY+1
+        WHERE
+          COMPANYID = #{companyId} AND PRIORITY &gt;= #{fPriority} AND PRIORITY &lt; #{sPriority}
+    </update>
+
+    <!--修改指定来源排序-->
+    <update id="updatePriority" parameterType="Integer">
+        UPDATE
+          hm_crm_source
+        <set>
+            <if test="priority != null and priority !=''">
+                PRIORITY = #{priority}
+            </if>
+        </set>
+        WHERE
+          COMPANYID = #{companyId} AND ID = #{id}
+    </update>
+
     <delete id="delete" parameterType="Integer">
         DELETE
         FROM

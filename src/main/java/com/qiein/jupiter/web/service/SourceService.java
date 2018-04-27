@@ -16,19 +16,21 @@ public interface SourceService {
      */
     void createSource(SourcePO sourcePO);
 
-//    /**
-//     * 编辑来源
-//     *
-//     * @param sourcePO
-//     */
-//    void editSource(SourcePO sourcePO);
-
     /**
      * 编辑来源
      *
      * @param sourceVO
      */
     void editSource(SourceVO sourceVO);
+
+    /**
+     * 拖拽排序来源
+     * @param fPriority
+     * @param sPriority
+     * @param id
+     * @param companyId
+     */
+    void editSourcePriority(Integer fPriority, Integer sPriority, Integer id, Integer companyId);
 
     /**
      * 根据来源编号删除来源
