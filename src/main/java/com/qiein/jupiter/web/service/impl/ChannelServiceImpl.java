@@ -57,10 +57,25 @@ public class ChannelServiceImpl implements ChannelService {
                 if (channelDao.checkChannel(channelPO.getChannelName(), channelPO.getCompanyId()) >= 1) {
                     throw new RException(ExceptionEnum.CHANNEL_NAME_REPEAT);
                 }
-                sourceDao.updateChannelName(channelPO.getId(),channelPO.getChannelName(),channelPO.getCompanyId());
+                sourceDao.updateChannelName(channelPO.getId(), channelPO.getChannelName(), channelPO.getCompanyId());
             }
         }
         channelDao.update(channelPO);
+    }
+
+    /**
+     * 交换排序
+     *
+     * @param fId
+     * @param fPriority
+     * @param sId
+     * @param sPriority
+     */
+    @Override
+    @Transactional
+    public void editProiority(Integer fId, Integer fPriority, Integer sId, Integer sPriority, Integer companyId) {
+        channelDao.updateProiority(fId, fPriority, companyId);
+        channelDao.updateProiority(sId, sPriority, companyId);
     }
 
     /**

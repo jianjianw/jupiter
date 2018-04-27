@@ -67,13 +67,14 @@
         ORDER BY ISSHOW DESC, TYPEID ,ID
     </select>
 
+    <!--新增渠道-->
     <insert id="insert" parameterType="com.qiein.jupiter.web.entity.po.ChannelPO" useGeneratedKeys="true"
             keyProperty="id">
         INSERT INTO hm_crm_channel
-        (CHANNELNAME,CHANNELIMG,TYPEID,BRANDID,BRANDNAME,PUSHRULE,COMPANYID,ISSHOW)
-        VALUES (
-        #{channelName},#{channelImg},#{typeId},#{brandId},#{brandName},#{pushRule},#{companyId},#{isShow}
-        )
+        (CHANNELNAME,CHANNELIMG,TYPEID,BRANDID,BRANDNAME,PUSHRULE,COMPANYID,ISSHOW,PRIORITY)
+        SELECT
+        #{channelName},#{channelImg},#{typeId},#{brandId},#{brandName},#{pushRule},#{companyId},#{isShow},(
+        SELECT IFNULL(MAX(PRIORITY),0)+1 FROM hm_crm_channel)
     </insert>
 
     <update id="update" parameterType="com.qiein.jupiter.web.entity.po.ChannelPO">
@@ -104,6 +105,19 @@
         </set>
         WHERE
         COMPANYID = #{companyId} AND ID = #{id}
+    </update>
+
+    <!--修改排序-->
+    <update id="updateProiority" parameterType="Integer">
+        UPDATE
+          hm_crm_channel
+        <set>
+            <if test="proiority != null and proiority !=''">
+                PROIORITY = #{proiority}
+            </if>
+        </set>
+        WHERE
+          COMPANYID = #{companyId} AND ID = #{id}
     </update>
 
     <delete id="delete" parameterType="Integer">

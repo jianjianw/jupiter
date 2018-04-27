@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.service;
 
 import com.qiein.jupiter.web.entity.po.ChannelPO;
 import com.qiein.jupiter.web.entity.vo.ChannelVO;
+
 import java.util.List;
 
 /**
@@ -21,6 +22,16 @@ public interface ChannelService {
      * @param channelPO
      */
     void editChannel(ChannelPO channelPO);
+
+    /**
+     * 修改排序
+     *
+     * @param fId
+     * @param fPriority
+     * @param sId
+     * @param sPriority
+     */
+    void editProiority(Integer fId, Integer fPriority, Integer sId, Integer sPriority, Integer companyId);
 
     /**
      * 删除渠道

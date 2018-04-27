@@ -56,6 +56,7 @@ public interface SourceDao extends BaseDao<SourcePO> {
      */
     Integer updateChannelName(@Param("channelId") Integer channelId, @Param("channelName") String channelName, @Param("companyId") Integer companyId);
 
+
     /**
      * 根据来源ID获取显示可用的来源信息
      *
