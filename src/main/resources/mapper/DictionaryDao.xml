@@ -28,18 +28,40 @@
         FROM
             hm_crm_dictionary dic
         WHERE
-            dic.COMPANYID = #{companyId} AND dic.DICTYPE = #{dicType}
+            dic.COMPANYID = #{companyId}
+        AND dic.DICTYPE = #{dicType}
     </select>
 
     <!--获取企业左上角菜单栏-->
     <select id="getDicByType" parameterType="map" resultMap="baseMap">
         SELECT
-           <include refid="baseColumn" />
+            <include refid="baseColumn" />
+        FROM
+           hm_crm_dictionary dic
+        WHERE
+            dic.COMPANYID = #{companyId}
+        AND dic.DICTYPE = #{dicType}
+    </select>
+
+    <!--获取企业左上角菜单栏-->
+    <select id="getDicByTypeAndName" parameterType="map" resultMap="baseMap">
+        SELECT
+            <include refid="baseColumn" />
         FROM
             hm_crm_dictionary dic
         WHERE
-            dic.COMPANYID = #{companyId} AND dic.DICTYPE = #{dicType}
+            dic.COMPANYID = #{companyId}
+        AND dic.DICTYPE = #{dicType}
+        AND dic.DICNAME = #{dicName}
     </select>
+
+    <!--新增字典数据-->
+    <insert id="insert" parameterType="com.qiein.jupiter.web.entity.po.DictionaryPO">
+        INSERT INTO hm_crm_dictionary
+        (DICTYPE, DICCODE, DICNAME, PRIORITY, SPARE, COMPANYID)
+        VALUES
+        (#{dicType},#{dicCode},#{dicName},#{priority},#{spare},#{companyId})
+    </insert>
 
 
 </mapper>

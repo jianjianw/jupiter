@@ -74,7 +74,9 @@ public enum ExceptionEnum {
     BRAND_NAME_REPEAT(1001, "该品牌已存在"),
     BRAND_NOT_FOUND(1002, "该品牌不存在"),
     BRAND_ID_NULL(1003, "品牌编号不能为空"),
-    BRAND_HAVE_CHANNEL(1004, "该品牌下存在渠道，请先删除下属渠道再继续操作");
+    BRAND_HAVE_CHANNEL(1004, "该品牌下存在渠道，请先删除下属渠道再继续操作"),
+    //无效原因
+    INVALID_REASON_EXIST(1101, "无效原因已存在");
 
     private Integer code;
 

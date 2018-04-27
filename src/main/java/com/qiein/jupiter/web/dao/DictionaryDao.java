@@ -28,4 +28,14 @@ public interface DictionaryDao extends BaseDao<DictionaryPO> {
      * @return
      */
     public List<DictionaryPO> getDicByType(@Param("companyId") int companyId, @Param("dicType") String dicType);
+
+    /**
+     * 根据类型，名称，获取字典数据
+     *
+     * @param companyId
+     * @param dicType
+     * @param dicName
+     * @return
+     */
+    public DictionaryPO getDicByTypeAndName(@Param("companyId") int companyId, @Param("dicType") String dicType, @Param("dicName") String dicName);
 }

@@ -12,7 +12,7 @@ public class DictionaryPO extends BaseEntity {
     /**
      * 编码
      */
-    private String dicCode;
+    private int dicCode;
     /**
      * 名称
      */
@@ -39,11 +39,11 @@ public class DictionaryPO extends BaseEntity {
         this.dicType = dicType;
     }
 
-    public String getDicCode() {
+    public int getDicCode() {
         return dicCode;
     }
 
-    public void setDicCode(String dicCode) {
+    public void setDicCode(int dicCode) {
         this.dicCode = dicCode;
     }
 

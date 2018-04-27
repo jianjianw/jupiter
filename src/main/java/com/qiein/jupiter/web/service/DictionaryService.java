@@ -16,4 +16,11 @@ public interface DictionaryService {
      * @return
      */
     public List<DictionaryPO> getDicByType(int companyId, String dicType);
+
+    /**
+     * 新增流失原因
+     *
+     * @param dictionaryPO
+     */
+    public void addInvalidReason(DictionaryPO dictionaryPO);
 }
