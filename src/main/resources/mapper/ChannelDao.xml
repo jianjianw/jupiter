@@ -159,7 +159,7 @@
                  open="(" separator="," close=")">
             #{typeId}
         </foreach>
-        ORDER BY ISSHOW DESC, TYPEID, PRIORITY ,ID
+        ORDER BY ISSHOW DESC,PRIORITY , TYPEID, ID
     </select>
 
     <!--根据细分类型获取渠道列表-->
@@ -170,7 +170,7 @@
           hm_crm_channel
         WHERE
           COMPANYID = #{companyId} AND TYPEID = #{typeId}
-        ORDER BY ISSHOW DESC, TYPEID, PRIORITY ,ID
+        ORDER BY ISSHOW DESC, PRIORITY ,TYPEID, ID
     </select>
 
     <select id="checkSrcNumById" parameterType="Integer" resultType="Integer">
