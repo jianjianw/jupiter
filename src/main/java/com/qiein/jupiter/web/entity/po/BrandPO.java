@@ -8,6 +8,7 @@ import com.qiein.jupiter.web.entity.BaseEntity;
  */
 public class BrandPO extends BaseEntity {
 
+    private static final long serialVersionUID = 1122380831784695084L;
     /**
      * 品牌名
      */

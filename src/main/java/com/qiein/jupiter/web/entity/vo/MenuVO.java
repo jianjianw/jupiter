@@ -3,6 +3,7 @@ package com.qiein.jupiter.web.entity.vo;
 import java.io.Serializable;
 
 public class MenuVO implements Serializable {
+    private static final long serialVersionUID = 3837914969310969408L;
     /**
      * 类型
      */

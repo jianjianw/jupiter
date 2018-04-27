@@ -2,12 +2,13 @@ package com.qiein.jupiter.web.entity.vo;
 
 import com.qiein.jupiter.web.entity.po.StaffPO;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * 组-员工  对象
  */
-public class GroupStaffVO {
+public class GroupStaffVO implements Serializable {
 
     private int id;
     /**

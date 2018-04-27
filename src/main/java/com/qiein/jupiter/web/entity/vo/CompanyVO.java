@@ -6,6 +6,7 @@ import java.util.List;
 
 public class CompanyVO extends BaseEntity {
 
+    private static final long serialVersionUID = 4068121917474419086L;
     /**
      * 公司名称
      */

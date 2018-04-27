@@ -7,6 +7,7 @@ import java.util.List;
  * 小组人员实体类
  */
 public class GroupBaseStaffVO implements Serializable {
+    private static final long serialVersionUID = 7839425393326519046L;
     /**
      * 小组ID
      */

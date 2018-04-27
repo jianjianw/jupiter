@@ -3,6 +3,7 @@ package com.qiein.jupiter.web.entity.vo;
 import java.io.Serializable;
 
 public class BaseStaffVO implements Serializable {
+    private static final long serialVersionUID = -5144309307374290131L;
     /**
      * 员工ID
      */

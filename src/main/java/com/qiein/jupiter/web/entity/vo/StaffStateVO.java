@@ -7,6 +7,7 @@ import java.io.Serializable;
  * Created by Administrator on 2018/4/25 0025.
  */
 public class StaffStateVO implements Serializable {
+    private static final long serialVersionUID = -7122419973591307115L;
     /**
      * 批量id字符串，由,分隔
      */

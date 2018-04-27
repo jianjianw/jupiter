@@ -3,6 +3,7 @@ package com.qiein.jupiter.web.entity.vo;
 import java.io.Serializable;
 
 public class ChannelGroupVO implements Serializable {
+    private static final long serialVersionUID = -4468909903389314083L;
     /**
      * 拍摄地，渠道，小组关联ID
      */

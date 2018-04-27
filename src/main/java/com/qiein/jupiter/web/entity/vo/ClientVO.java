@@ -9,6 +9,7 @@ import java.io.Serializable;
  * 客资实体类
  */
 public class ClientVO implements Serializable {
+    private static final long serialVersionUID = 2657896097650380311L;
     /**
      * 性别（0-未知，1-男，2-女）
      */
