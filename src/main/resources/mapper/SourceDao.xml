@@ -119,14 +119,24 @@
         </foreach>
     </update>
 
-    <!--修改拖拽排序时波及的来源的排序-->
-    <update id="updateSourcePriority" parameterType="Integer">
+    <!--修改向下拖拽排序时波及的来源的排序-->
+    <update id="updateDownPriority" parameterType="Integer">
         UPDATE
           hm_crm_source
         SET
-          PRIORITY = PRIORITY+1
+          PRIORITY = PRIORITY -1
         WHERE
-          COMPANYID = #{companyId} AND PRIORITY &gt;= #{fPriority} AND PRIORITY &lt; #{sPriority}
+          COMPANYID = #{companyId} AND PRIORITY &gt; #{xPriority} AND PRIORITY &lt;= #{dPriority}
+    </update>
+
+    <!--修改向上拖拽排序时波及的来源的排序-->
+    <update id="updateUpPriority" parameterType="Integer">
+        UPDATE
+        hm_crm_source
+        SET
+        PRIORITY = PRIORITY + 1
+        WHERE
+        COMPANYID = #{companyId} AND PRIORITY &gt;= #{xPriority} AND PRIORITY &lt; #{dPriority}
     </update>
 
     <!--修改指定来源排序-->

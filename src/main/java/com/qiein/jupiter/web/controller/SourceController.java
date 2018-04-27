@@ -69,8 +69,8 @@ public class SourceController extends BaseController {
 
     /**
      * 拖拽排序
-     * @param fPriority 前一个排序号
-     * @param sPriority 后一个排序号
+     * @param fPriority 拖拽前的来源排序编号
+     * @param sPriority 拖拽后的来源排序编号
      * @param id        拖拽的来源编号
      * @return
      */
