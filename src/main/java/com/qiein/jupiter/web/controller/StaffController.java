@@ -94,6 +94,9 @@ public class StaffController extends BaseController {
         if (!RegexUtil.checkMobile(staffVO.getPhone())) {
             return ResultInfoUtil.error(ExceptionEnum.PHONE_ERROR);
         }
+        if (StringUtil.isEmpty(staffVO.getGroupId())) {
+            return ResultInfoUtil.error(ExceptionEnum.GROUP_IS_NULL);
+        }
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         //设置cid
