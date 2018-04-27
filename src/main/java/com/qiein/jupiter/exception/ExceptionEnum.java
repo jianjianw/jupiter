@@ -27,7 +27,7 @@ public enum ExceptionEnum {
     VERIFY_NULL(304, "验证码不能为空"),
     VERIFY_ERROR(305, "验证码错误"),
     COMPANYID_NULL(306, "公司ID不能为空"),
-    ID_NULL(307, "id不能为空"),
+    ID_NULL(307, "ID不能为空"),
     DELETE_FAIL(309, "删除失败"),
     OLD_PASSWORD_ERROR(310, "原始密码错误"),
     STAFF_EXIST_DEL(341, "该员工在离职员工中"),
