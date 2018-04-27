@@ -37,6 +37,9 @@ public enum ExceptionEnum {
     STAFF_ID_NULL(345, "员工ID不能为空"),
     PHONE_ERROR(346, "手机号格式错误"),
     APPOINT_NOT_FOUND(347, "邀约客服不存在"),
+    NICKNAME_IS_NULL(348, "艺名不能为空"),
+    USERNAME_IS_NULL(349, "全名不能为空"),
+    PHONE_IS_NULL(350, "手机号不能为空"),
     //部门
     GROUP_NAME_REPEAT(401, "部门名称重复"),
     GROUP_HAVE_CHILD_GROUP(402, "该部门存在小组，请删除下属小组再进行操作"),
@@ -62,6 +65,7 @@ public enum ExceptionEnum {
     ROLE_EXIST(701, "该角权限已存在"),
     ROLE_EDIT_FAIL(702, "权限修改失败"),
     ROLE_DELETE_ERROR(703, "该权限有绑定人员，无法删除"),
+    ROLE_IS_NULL(704, "权限不能为空"),
     //企业配置
     MENU_NULL(801, "企业菜单为空"),
     //角色

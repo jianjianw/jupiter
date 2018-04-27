@@ -104,4 +104,9 @@ public class TipMsgConstant {
      * 添加品牌成功
      */
     public final static String ADD_BRAND_SUCCESS = "添加品牌成功";
+
+    /**
+     * 恢复离职员工成功
+     */
+    public final static String RESOTRE_SUCCESS = "恢复成功";
 }

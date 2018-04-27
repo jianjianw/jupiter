@@ -481,7 +481,7 @@ public class StaffController extends BaseController {
     /**
      * 获取已离职的员工列表
      *
-     * @param type
+     * @param queryMapDTO
      * @return
      */
     @GetMapping("/get_del_staff_list")
@@ -493,5 +493,39 @@ public class StaffController extends BaseController {
         condition.put("delFlag", true);
         queryMapDTO.setCondition(condition);
         return ResultInfoUtil.success(TipMsgConstant.SUCCESS, staffService.getDelStaffList(queryMapDTO));
+    }
+
+
+    /**
+     * 恢复离职员工
+     *
+     * @param staffVO
+     * @return
+     */
+    @PostMapping("/restore_del_staff")
+    public ResultInfo restoreDelStaff(@RequestBody StaffVO staffVO) {
+        if (NumUtil.isNull(staffVO.getId())) {
+            return ResultInfoUtil.error(ExceptionEnum.STAFF_ID_NULL);
+        }
+        if (StringUtil.isEmpty(staffVO.getRoleIds())) {
+            return ResultInfoUtil.error(ExceptionEnum.ROLE_IS_NULL);
+        }
+        if (StringUtil.isEmpty(staffVO.getNickName())) {
+            return ResultInfoUtil.error(ExceptionEnum.NICKNAME_IS_NULL);
+        }
+        if (StringUtil.isEmpty(staffVO.getPhone())) {
+            return ResultInfoUtil.error(ExceptionEnum.PHONE_IS_NULL);
+        }
+        if (!RegexUtil.checkMobile(staffVO.getPhone())) {
+            return ResultInfoUtil.error(ExceptionEnum.PHONE_ERROR);
+        }
+        if (StringUtil.isEmpty(staffVO.getUserName())) {
+            return ResultInfoUtil.error(ExceptionEnum.USERNAME_IS_NULL);
+        }
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        staffVO.setCompanyId(currentLoginStaff.getCompanyId());
+        staffService.restoreDelStaff(staffVO);
+        return ResultInfoUtil.success(TipMsgConstant.RESOTRE_SUCCESS);
     }
 }

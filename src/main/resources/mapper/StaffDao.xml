@@ -248,6 +248,7 @@
         WHERE
         COMPANYID = #{companyId}
         AND ( NICKNAME = #{name} OR USERNAME = #{name} )
+        AND ISDEL = 0
     </select>
 
     <!--批量编辑员工密码-->

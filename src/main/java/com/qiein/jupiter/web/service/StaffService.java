@@ -232,4 +232,11 @@ public interface StaffService {
      */
 
     PageInfo getDelStaffList(QueryMapDTO queryMapDTO);
+
+    /**
+     * 恢复离职员工
+     *
+     * @param staffVO
+     */
+    void restoreDelStaff(StaffVO staffVO);
 }

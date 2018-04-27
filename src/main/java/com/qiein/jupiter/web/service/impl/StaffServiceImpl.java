@@ -699,4 +699,40 @@ public class StaffServiceImpl implements StaffService {
         return new PageInfo<>(list);
     }
 
+    /**
+     * 恢复离职员工
+     *
+     * @param staffVO
+     */
+    public void restoreDelStaff(StaffVO staffVO) {
+        // 1.根据手机号，全名，艺名查重，手机号全公司不重复，全名，艺名，在职员工中不能重复
+        StaffPO phoneExist = staffDao.getStaffByPhone(staffVO.getCompanyId(), staffVO.getPhone());
+        if (phoneExist != null && phoneExist.getId() != staffVO.getId()) {
+            throw new RException(ExceptionEnum.PHONE_EXIST);
+        }
+        // 艺名查重
+        StaffPO nickNameStaff = staffDao.getStaffByNames(staffVO.getCompanyId(), staffVO.getNickName());
+        if (nickNameStaff != null && nickNameStaff.getId() != staffVO.getId()) {
+            throw new RException(ExceptionEnum.NICKNAME_EXIST);
+        }
+        // 全名查重
+        StaffPO userNameStaff = staffDao.getStaffByNames(staffVO.getCompanyId(), staffVO.getUserName());
+        if (userNameStaff != null && userNameStaff.getId() != staffVO.getId()) {
+            throw new RException(ExceptionEnum.USERNAME_EXIST);
+        }
+        //2.修改员工基础信息
+        if (StringUtil.isNotEmpty(staffVO.getPassword())) {
+            staffVO.setPassword(MD5Util.getSaltMd5(staffVO.getPassword()));
+        }
+        staffDao.updateStaff(staffVO);
+        //3.添加小组关联
+        groupStaffDao.insertGroupStaff(staffVO.getCompanyId(), staffVO.getGroupId(), staffVO.getId());
+        //4.添加权限关联
+        if (StringUtil.isNotEmpty(staffVO.getRoleIds())) {
+            String[] roleArr = staffVO.getRoleIds().split(CommonConstant.STR_SEPARATOR);
+            staffRoleDao.batchInsertStaffRole(staffVO.getId(), staffVO.getCompanyId(), roleArr);
+        }
+
+    }
+
 }
