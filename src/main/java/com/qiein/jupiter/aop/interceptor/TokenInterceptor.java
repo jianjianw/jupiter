@@ -32,7 +32,7 @@ import com.qiein.jupiter.web.service.StaffService;
  */
 @Component
 public class TokenInterceptor implements HandlerInterceptor {
-	private Logger logger = LoggerFactory.getLogger(getClass());
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 
 	/**
 	 * 当前运行环境

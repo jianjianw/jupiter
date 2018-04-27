@@ -1,9 +1,8 @@
 package com.qiein.jupiter.msg.goeasy;
 
 import com.alibaba.fastjson.JSONObject;
-
 import com.qiein.jupiter.util.StringUtil;
-import com.qiein.jupiter.util.TimeUtils;
+
 import io.goeasy.GoEasy;
 import io.goeasy.publish.GoEasyError;
 import io.goeasy.publish.PublishListener;
@@ -277,7 +276,7 @@ public class GoEasyUtil {
 		sb.append("<br/>微信：" + StringUtil.nullToStrTrim(info.getKzWeChat()));
 		sb.append("<br/><br/>接待门店：" + StringUtil.nullToStrTrim(shopName));
 		sb.append("<br/>接待门市：" + StringUtil.nullToStrTrim(receptorName));
-		sb.append("<br/><br/>到店时间：" + StringUtil.nullToStrTrim(TimeUtils.formatClientTime(comeShopTime)));
+		sb.append("<br/><br/>到店时间：" + StringUtil.nullToStrTrim(comeShopTime));
 		sb.append("<br/>流失原因：" + reason);
 		String msg = sb.toString();
 		pushCommon(companyId, staffId, header, msg);
@@ -308,7 +307,7 @@ public class GoEasyUtil {
 		sb.append("<br/><br/>推广：" + StringUtil.nullToStrTrim(info.getCollector()));
 		sb.append("<br/>客服：" + StringUtil.nullToStrTrim(info.getAppointor()));
 		sb.append("<br/><br/>成交套系： ¥" + amount);
-		sb.append("<br/>订单时间：" + StringUtil.nullToStrTrim(TimeUtils.formatClientTime(successTime)));
+		sb.append("<br/>订单时间：" + StringUtil.nullToStrTrim(successTime));
 
 		String msg = sb.toString();
 		pushSuccess(companyId, staffId, header, msg);
@@ -343,7 +342,7 @@ public class GoEasyUtil {
 		sb.append("<br/><br/>接待门店：" + StringUtil.nullToStrTrim(shopName));
 		sb.append("<br/>接待门市：" + StringUtil.nullToStrTrim(receptorName));
 		sb.append("<br/><br/>成交套系： ¥" + amount);
-		sb.append("<br/>订单时间：" + StringUtil.nullToStrTrim(TimeUtils.formatClientTime(successTime)));
+		sb.append("<br/>订单时间：" + StringUtil.nullToStrTrim(successTime));
 
 		String msg = sb.toString();
 		pushSuccess(companyId, staffId, header, msg);
