@@ -736,4 +736,34 @@ public class StaffServiceImpl implements StaffService {
 
     }
 
+    /**
+     * 批量恢复员工
+     *
+     * @param companyId
+     * @param staffIds
+     * @param roleIds
+     * @param password
+     * @param groupId
+     */
+    public void batchRestoreStaff(int companyId, String staffIds, String roleIds, String password, String groupId) {
+        String[] staffIdArr = staffIds.split(CommonConstant.STR_SEPARATOR);
+        // 1.恢复员工
+        staffDao.batchRestoreStaff(companyId, staffIdArr, StringUtil.isNotEmpty(password) ? MD5Util.getSaltMd5(password) : null);
+        // 2.修改小组
+        groupStaffDao.batchInsertGroupStaff(companyId, groupId, staffIdArr);
+        // 4.修改角色
+        if (StringUtil.isNotEmpty(roleIds)) {
+            String[] roleIdArr = roleIds.split(CommonConstant.STR_SEPARATOR);
+            List<StaffVO> list = new LinkedList<>();
+            for (String staffId : staffIdArr) {
+                for (String roleId : roleIdArr) {
+                    StaffVO vo = new StaffVO(Integer.parseInt(staffId), companyId, Integer.parseInt(roleId));
+                    list.add(vo);
+                }
+            }
+            staffRoleDao.batchInsertStaffRoleByVO(list);
+        }
+        // 4.TODO 清缓存
+    }
+
 }

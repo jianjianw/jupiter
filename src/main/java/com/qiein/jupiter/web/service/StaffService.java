@@ -239,4 +239,15 @@ public interface StaffService {
      * @param staffVO
      */
     void restoreDelStaff(StaffVO staffVO);
+
+    /**
+     * 批量恢复员工
+     *
+     * @param companyId
+     * @param staffIds
+     * @param roleIds
+     * @param password
+     * @param groupId
+     */
+    void batchRestoreStaff(int companyId, String staffIds, String roleIds, String password, String groupId);
 }

@@ -94,4 +94,13 @@ public interface GroupStaffDao {
      * @return
      */
     public List<GroupBaseStaffVO> getGroupStaffByRole(@Param("companyId") int companyId, @Param("type") String type);
+
+    /**
+     * 批量添加小组人员
+     *
+     * @param companyId
+     * @param groupId
+     * @param staffIdArr
+     */
+    public void batchInsertGroupStaff(@Param("companyId") int companyId, @Param("groupId") String groupId, @Param("staffIdArr") String[] staffIdArr);
 }

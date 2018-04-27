@@ -528,4 +528,18 @@ public class StaffController extends BaseController {
         staffService.restoreDelStaff(staffVO);
         return ResultInfoUtil.success(TipMsgConstant.RESOTRE_SUCCESS);
     }
+
+    /**
+     * 批量恢复员工
+     *
+     * @return
+     */
+    @GetMapping("/batch_restore_staff")
+    public ResultInfo batchRestoreStaff(@NotEmptyStr @RequestParam("staffIds") String staffIds,@NotEmptyStr @RequestParam("roleIds") String roleIds,
+                                     @RequestParam("password") String password, @NotEmptyStr @RequestParam("groupId") String groupId) {
+        //获取当前登录用户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        staffService.batchRestoreStaff(currentLoginStaff.getCompanyId(), staffIds, roleIds, password, groupId);
+        return ResultInfoUtil.success(TipMsgConstant.RESOTRE_SUCCESS);
+    }
 }

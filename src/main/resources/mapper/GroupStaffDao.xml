@@ -170,6 +170,17 @@
         (#{groupId},#{staffId},#{companyId})
     </insert>
 
+    <!--批量添加小组人员关联表-->
+    <insert id="batchInsertGroupStaff" parameterType="map">
+        INSERT INTO hm_pub_group_staff
+        (GROUPID,STAFFID,COMPANYID)
+        VALUES
+        <foreach collection="staffIdArr" item="staffId" index="index" separator=",">
+            (#{groupId},#{staffId},#{companyId})
+        </foreach>
+
+    </insert>
+
     <!--批量编辑员工小组关联-->
     <update id="batchEditStaffGroup" parameterType="map">
         UPDATE hm_pub_group_staff
@@ -258,5 +269,7 @@
             AND sf.ISDEL = 0
         ORDER BY grp.GROUPNAME, grp.ID
     </select>
+
+
 
 </mapper>

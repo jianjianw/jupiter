@@ -266,6 +266,23 @@
         </foreach>
     </update>
 
+    <!--批量编辑员工密码-->
+    <update id="batchRestoreStaff" parameterType="map">
+        UPDATE hm_pub_staff
+        <set>
+            <if test="password != null and password != '' ">
+                PASSWORD = #{password},
+            </if>
+            ISDEL = 0
+        </set>
+        WHERE COMPANYID = #{companyId}
+        AND ID IN
+        <foreach collection="staffIdArr" item="id" index="index" open="("
+                 close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
     <!--搜索员工-->
     <select id="getStaffListBySearchKey" resultMap="StaffVOMap">
         SELECT

@@ -83,9 +83,10 @@ public interface StaffDao extends BaseDao<StaffPO> {
 
     /**
      * 批量编辑员工状态 显示 锁定 删除
+     *
      * @param staffStateVO
      */
-    void batUpdateStaffState(@Param("ssv") StaffStateVO staffStateVO,@Param("ids") String[] ids);
+    void batUpdateStaffState(@Param("ssv") StaffStateVO staffStateVO, @Param("ids") String[] ids);
 
     /**
      * 根据id数组批量删除所属公司的员工
@@ -190,5 +191,14 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @return
      */
     int updateStaffLoginInfo(StaffDetailPO staffDetailPO);
+
+    /**
+     * 批量恢复员工
+     *
+     * @param companyId
+     * @param staffIdArr
+     * @param password
+     */
+    void batchRestoreStaff(@Param("companyId") int companyId, @Param("staffIdArr") String[] staffIdArr, @Param("password") String password);
 
 }
