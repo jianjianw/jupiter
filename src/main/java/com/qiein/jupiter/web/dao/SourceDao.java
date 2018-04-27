@@ -57,13 +57,22 @@ public interface SourceDao extends BaseDao<SourcePO> {
     Integer updateChannelName(@Param("channelId") Integer channelId, @Param("channelName") String channelName, @Param("companyId") Integer companyId);
 
     /**
-     * 修改拖拽排序时波及的来源的排序
-     * @param fPriority
-     * @param sPriority
+     * 修改向下拖拽排序时波及的来源的排序
+     * @param xPriority
+     * @param dPriority
      * @param companyId
      * @return
      */
-    Integer updateSourcePriority(@Param("fPriority") Integer fPriority, @Param("sPriority") Integer sPriority ,@Param("companyId")Integer companyId);
+    Integer updateDownPriority(@Param("xPriority") Integer xPriority, @Param("dPriority") Integer dPriority ,@Param("companyId")Integer companyId);
+
+    /**
+     * 修改向上拖拽排序时波及的来源的排序
+     * @param xPriority 小的排序号
+     * @param dPriority 大的排序号
+     * @param companyId
+     * @return
+     */
+    Integer updateUpPriority(@Param("xPriority") Integer xPriority, @Param("dPriority") Integer dPriority ,@Param("companyId")Integer companyId);
 
     /**
      * 根据来源ID获取显示可用的来源信息

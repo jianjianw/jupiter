@@ -71,8 +71,12 @@ public class SourceServiceImpl implements SourceService {
     @Override
     @Transactional
     public void editSourcePriority(Integer fPriority, Integer sPriority, Integer id, Integer companyId) {
-        sourceDao.updateSourcePriority(fPriority,sPriority,companyId);
-        sourceDao.updatePriority(id, fPriority, companyId);
+        if (fPriority > sPriority) {   //向上拖拽，所有+1
+            sourceDao.updateUpPriority(sPriority, fPriority, companyId);
+        } else { //向下拖拽，所有-1
+            sourceDao.updateDownPriority(fPriority, sPriority, companyId);
+        }
+        sourceDao.updatePriority(id, sPriority, companyId);
     }
 
     /**
