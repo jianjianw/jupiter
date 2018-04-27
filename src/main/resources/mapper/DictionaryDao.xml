@@ -72,5 +72,15 @@
         AND ID = #{id}
     </update>
 
+    <!--批量删除字典数据-->
+    <delete id="batchDeleteByIds" parameterType="map">
+        DELETE FROM hm_crm_dictionary
+        WHERE COMPANYID = #{companyId}
+         AND ID IN
+        <foreach collection="idArr" item="id" index="index" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
 
 </mapper>

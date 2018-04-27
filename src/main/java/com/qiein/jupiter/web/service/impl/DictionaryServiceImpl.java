@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.service.impl;
 
+import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.constant.DictionaryConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
@@ -24,7 +25,7 @@ public class DictionaryServiceImpl implements DictionaryService {
     private DictionaryDao dictionaryDao;
 
     /**
-     * 根绝类型获取字典数据,先获取企业自定义，没有则获取共有的
+     * 根绝类型,企业ID获取字典数据
      *
      * @param companyId
      * @param dicType
@@ -32,9 +33,6 @@ public class DictionaryServiceImpl implements DictionaryService {
      */
     public List<DictionaryPO> getDicByType(int companyId, String dicType) {
         List<DictionaryPO> list = dictionaryDao.getDicByType(companyId, dicType);
-        if (CollectionUtils.isEmpty(list)) {
-            list = dictionaryDao.getDicByType(DictionaryConstant.COMMON_COMPANYID, dicType);
-        }
         return list;
     }
 
@@ -68,6 +66,17 @@ public class DictionaryServiceImpl implements DictionaryService {
         }
         //2.修改
         dictionaryDao.update(dictionaryPO);
+    }
+
+    /**
+     * 批量删除字典数据
+     *
+     * @param companyId
+     * @param ids
+     */
+    public void batchDeleteByIds(int companyId, String ids) {
+        String[] idArr = ids.split(CommonConstant.STR_SEPARATOR);
+        dictionaryDao.batchDeleteByIds(companyId, idArr);
     }
 
 }

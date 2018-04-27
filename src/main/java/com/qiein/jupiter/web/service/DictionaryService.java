@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.service;
 
 import com.qiein.jupiter.web.entity.po.DictionaryPO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -30,4 +31,12 @@ public interface DictionaryService {
      * @param dictionaryPO
      */
     public void editInvalidReason(DictionaryPO dictionaryPO);
+
+    /**
+     * 批量删除字典数据
+     *
+     * @param companyId
+     * @param ids
+     */
+    public void batchDeleteByIds(int companyId, String ids);
 }

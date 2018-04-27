@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.controller;
 
 import com.fasterxml.jackson.databind.ser.Serializers;
+import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.constant.DictionaryConstant;
 import com.qiein.jupiter.constant.TipMsgConstant;
 import com.qiein.jupiter.util.ResultInfo;
@@ -44,5 +45,13 @@ public class DictionaryController extends BaseController {
         dictionaryPO.setCompanyId(currentLoginStaff.getCompanyId());
         dictionaryService.editInvalidReason(dictionaryPO);
         return ResultInfoUtil.success(TipMsgConstant.EDIT_SUCCESS);
+    }
+
+    @GetMapping("/delete_invalid_reason")
+    public ResultInfo deleteInvalidReason(@NotEmptyStr @RequestParam("ids") String ids) {
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        dictionaryService.batchDeleteByIds(currentLoginStaff.getCompanyId(), ids);
+        return ResultInfoUtil.success(TipMsgConstant.DELETE_SUCCESS);
     }
 }
