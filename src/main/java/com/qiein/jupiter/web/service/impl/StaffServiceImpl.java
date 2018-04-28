@@ -379,6 +379,7 @@ public class StaffServiceImpl implements StaffService {
         if (StringUtil.isEmpty(staffPO.getToken()) || companyPO.isSsoLimit()) {
             updateStaffToken(staffPO);
         }
+        //todo 上下线日志
         // 移除错误次数
         removeUserErrorNumber(userName);
         // 更新登录时间和IP
@@ -387,6 +388,12 @@ public class StaffServiceImpl implements StaffService {
         staffDetailPO.setCompanyId(staffPO.getCompanyId());
         staffDetailPO.setLastLoginIp(ip);
         staffDao.updateStaffLoginInfo(staffDetailPO);
+        //上线状态
+        StaffPO staffPO1=new StaffPO();
+        staffPO1.setId(staffPO.getId());
+        staffPO1.setCompanyId(staffPO.getCompanyId());
+        staffPO1.setShowFlag(1);
+        staffDao.updateShowFlag(staffPO1);
         return staffPO;
     }
 
