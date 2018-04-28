@@ -37,7 +37,9 @@ public class DictionaryController extends BaseController {
     public ResultInfo getInvalidReasonList() {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        return ResultInfoUtil.success(dictionaryService.getCompanyDicByType(currentLoginStaff.getCompanyId(), DictionaryConstant.INVALID_REASON));
+        return ResultInfoUtil.success(
+                dictionaryService.getCompanyDicByType(
+                        currentLoginStaff.getCompanyId(), DictionaryConstant.INVALID_REASON));
     }
 
     /**

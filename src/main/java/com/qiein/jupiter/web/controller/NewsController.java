@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * 用户消息API
- *
  */
 @RequestMapping("/news")
 @RestController
@@ -32,7 +31,8 @@ public class NewsController extends BaseController {
     public ResultInfo getAllList(@RequestBody QueryMapDTO queryMapDTO) {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        PageInfo allList = newsService.getAllList(queryMapDTO, currentLoginStaff.getId(), currentLoginStaff.getCompanyId());
+        PageInfo allList = newsService.getAllList(
+                queryMapDTO, currentLoginStaff.getId(), currentLoginStaff.getCompanyId());
         return ResultInfoUtil.success(allList);
     }
 
@@ -46,7 +46,8 @@ public class NewsController extends BaseController {
     public ResultInfo getNotReadList(@RequestBody QueryMapDTO queryMapDTO) {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        PageInfo allList = newsService.getNotReadList(queryMapDTO, currentLoginStaff.getId(), currentLoginStaff.getCompanyId());
+        PageInfo allList = newsService.getNotReadList(
+                queryMapDTO, currentLoginStaff.getId(), currentLoginStaff.getCompanyId());
         return ResultInfoUtil.success(allList);
     }
 

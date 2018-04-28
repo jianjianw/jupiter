@@ -69,13 +69,14 @@ public class SourceController extends BaseController {
 
     /**
      * 拖拽排序
+     *
      * @param fPriority 拖拽前的来源排序编号
      * @param sPriority 拖拽后的来源排序编号
      * @param id        拖拽的来源编号
      * @return
      */
     @GetMapping("/priority")
-    public ResultInfo editPriority(@Id Integer fPriority,@Id Integer sPriority,@Id Integer id) {
+    public ResultInfo editPriority(@Id Integer fPriority, @Id Integer sPriority, @Id Integer id) {
         sourceService.editSourcePriority(fPriority, sPriority, id, getCurrentLoginStaff().getCompanyId());
         return ResultInfoUtil.success(TipMsgConstant.EDIT_SOURCE_SUCCESS);
     }

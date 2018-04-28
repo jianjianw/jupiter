@@ -30,7 +30,8 @@ public class ShopChannelGroupController extends BaseController {
     public ResultInfo getChannelGroupList(@Id @RequestParam("shopId") Integer shopId) {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        return ResultInfoUtil.success(shopChannelGroupService.getShopChannelGroupList(currentLoginStaff.getCompanyId(), shopId));
+        return ResultInfoUtil.success(shopChannelGroupService.
+                getShopChannelGroupList(currentLoginStaff.getCompanyId(), shopId));
     }
 
     @GetMapping("/edit_group_weight")
@@ -55,7 +56,7 @@ public class ShopChannelGroupController extends BaseController {
 
     @GetMapping("/delete_channel_rela_list")
     public ResultInfo deleteChannelRelaList(@Id @RequestParam("channelId") int channelId,
-                                           @Id @RequestParam("shopId") int shopId) {
+                                            @Id @RequestParam("shopId") int shopId) {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         shopChannelGroupService.deleteChannelList(currentLoginStaff.getCompanyId(), channelId, shopId);
@@ -90,7 +91,9 @@ public class ShopChannelGroupController extends BaseController {
                                          @NotEmptyStr @RequestParam("searchKey") String searchKey) {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        return ResultInfoUtil.success(shopChannelGroupService.searchChannelGroup(currentLoginStaff.getCompanyId(), shopId, channelId, searchKey));
+        return ResultInfoUtil.success(
+                shopChannelGroupService.searchChannelGroup(
+                        currentLoginStaff.getCompanyId(), shopId, channelId, searchKey));
     }
 
 }
