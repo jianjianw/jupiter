@@ -39,4 +39,21 @@ public interface DictionaryService {
      * @param ids
      */
     public void batchDeleteByIds(int companyId, String ids);
+
+    /**
+     * 添加流失原因
+     *
+     * @param companyId
+     * @param dicName
+     */
+    public void addRunoffReason(int companyId, String dicName);
+
+    /**
+     * 编辑流失原因
+     *
+     * @param companyId
+     * @param id
+     * @param dicName
+     */
+    public void editRunoffReason(int companyId, int id, String dicName);
 }

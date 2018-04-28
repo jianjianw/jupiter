@@ -4,20 +4,26 @@ import java.io.Serializable;
 
 /**
  * 实体类基类
- * 
- * @author JZL 2018-04-03 17:25
  *
+ * @author JZL 2018-04-03 17:25
  */
 public class BaseEntity implements Serializable {
 
-	private int id;
+    private int id;
 
-	public int getId() {
-		return id;
-	}
+    public BaseEntity() {
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public BaseEntity(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
 }

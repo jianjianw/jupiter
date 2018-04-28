@@ -79,4 +79,39 @@ public class DictionaryServiceImpl implements DictionaryService {
         dictionaryDao.batchDeleteByIds(companyId, idArr);
     }
 
+    /**
+     * 添加流失原因
+     *
+     * @param companyId
+     * @param dicName
+     */
+    public void addRunoffReason(int companyId, String dicName) {
+        DictionaryPO dictionaryPO = new DictionaryPO(DictionaryConstant.RUN_OFF_REASON, DictionaryConstant.COMMON_CODE, dicName, companyId);
+        //1.去重
+        DictionaryPO exist = dictionaryDao.getDicByTypeAndName(dictionaryPO.getCompanyId(), dictionaryPO.getDicType(), dictionaryPO.getDicName());
+        if (exist != null) {
+            throw new RException(ExceptionEnum.INVALID_REASON_EXIST);
+        }
+        //2.新增
+        dictionaryDao.insert(dictionaryPO);
+    }
+
+    /**
+     * 编辑流失原因
+     *
+     * @param companyId
+     * @param id
+     * @param dicName
+     */
+    public void editRunoffReason(int companyId, int id, String dicName) {
+        DictionaryPO dictionaryPO = new DictionaryPO(DictionaryConstant.RUN_OFF_REASON, dicName, companyId, id);
+        //1.去重
+        DictionaryPO exist = dictionaryDao.getDicByTypeAndName(dictionaryPO.getCompanyId(), dictionaryPO.getDicType(), dictionaryPO.getDicName());
+        if (exist != null && exist.getId() != dictionaryPO.getId()) {
+            throw new RException(ExceptionEnum.INVALID_REASON_EXIST);
+        }
+        //2.修改
+        dictionaryDao.update(dictionaryPO);
+    }
+
 }
