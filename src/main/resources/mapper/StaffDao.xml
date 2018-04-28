@@ -321,8 +321,8 @@
       UPDATE
         hm_pub_staff
       <set>
-          <if test="ssv.show != null">
-              STATUSFLAG = #{ssv.show},
+          <if test="ssv.statusFlag != null">
+              STATUSFLAG = #{ssv.statusFlag},
           </if>
           <if test="ssv.lock != null">
               ISLOCK = #{ssv.lock} ,

@@ -16,7 +16,7 @@ public class StaffStateVO implements Serializable {
     /**
      * isShow字段，避免is开头，显示标识
      */
-    private Boolean show;
+    private Integer statusFlag;
 
     /**
      * isLock字段，避免is开头，锁定标识
@@ -41,12 +41,12 @@ public class StaffStateVO implements Serializable {
         this.ids = ids;
     }
 
-    public Boolean getShow() {
-        return show;
+    public Integer getStatusFlag() {
+        return statusFlag;
     }
 
-    public void setShow(Boolean show) {
-        this.show = show;
+    public void setStatusFlag(Integer statusFlag) {
+        this.statusFlag = statusFlag;
     }
 
     public Boolean getLock() {
