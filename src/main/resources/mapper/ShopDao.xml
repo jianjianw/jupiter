@@ -16,6 +16,7 @@
         <id column="ID" property="id" jdbcType="BIGINT"/>
         <result column="SHOPNAME" property="shopName" jdbcType="VARCHAR"/>
         <result column="ISSHOW" property="showFlag" jdbcType="BOOLEAN"/>
+        <result column="PRIORITY" property="priority" jdbcType="INTEGER"/>
         <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
     </resultMap>
 
@@ -26,7 +27,7 @@
     <!--获取企业所有拍摄地-->
     <select id="getCompanyShopList" parameterType="map" resultMap="VOMap">
         SELECT
-            shop.ID,shop.SHOPNAME,shop.ISSHOW,shop.COMPANYID
+            shop.ID,shop.SHOPNAME,shop.ISSHOW,shop.PRIORITY,shop.COMPANYID
         FROM
             hm_pub_shop shop
         WHERE
@@ -38,9 +39,10 @@
     <!--新增拍摄地-->
     <insert id="insert" parameterType="com.qiein.jupiter.web.entity.po.ShopPO">
         INSERT INTO hm_pub_shop
-        (SHOPNAME,TYPEID,ISSHOW,PRIORITY,ADDRESS,SERVICEPHONE,COMPANYID)
-        VALUES
-        (#{shopName},#{typeId},#{showFlag},#{priority},#{address},#{servicePhone},#{companyId})
+        (SHOPNAME,TYPEID,ISSHOW,ADDRESS,SERVICEPHONE,COMPANYID,PRIORITY)
+        SELECT
+        #{shopName},#{typeId},#{showFlag},#{address},#{servicePhone},#{companyId},(
+        SELECT IFNULL(MAX(PRIORITY),0)+1 FROM hm_pub_shop WHERE COMPANYID = #{companyId})
     </insert>
 
     <!--根绝拍摄地名称查找拍摄地-->
@@ -71,6 +73,19 @@
         AND ID = #{id}
     </update>
 
+    <!--修改排序-->
+    <update id="updatePriority" parameterType="Integer">
+        UPDATE
+          hm_pub_shop
+        <set>
+            <if test="priority != null and priority !=''">
+                PRIORITY = #{priority}
+            </if>
+        </set>
+        WHERE
+          COMPANYID = #{companyId} AND ID = #{id}
+    </update>
+
     <!--删除拍摄地-->
     <delete id="deleteShop" parameterType="map">
         DELETE FROM hm_pub_shop
@@ -81,7 +96,7 @@
     <!--获取企业显示的拍摄地列表-->
     <select id="getShowShopList" parameterType="map" resultMap="VOMap">
         SELECT
-            shop.ID,shop.SHOPNAME,shop.ISSHOW,shop.COMPANYID
+            shop.ID,shop.SHOPNAME,shop.ISSHOW,shop.PRIORITY,shop.COMPANYID
         FROM
             hm_pub_shop shop
         WHERE
@@ -94,7 +109,7 @@
     <!--根据ID，获取企业显示拍摄地信息-->
     <select id="getShowShopById" parameterType="map" resultMap="VOMap">
         SELECT
-            shop.ID,shop.SHOPNAME,shop.ISSHOW,shop.COMPANYID
+            shop.ID,shop.SHOPNAME,shop.ISSHOW,shop.PRIORITY,shop.COMPANYID
         FROM
             hm_pub_shop shop
         WHERE

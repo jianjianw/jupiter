@@ -21,6 +21,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * 客户端登录
+ */
 @Service
 public class ClientLoginServiceImpl implements ClientLoginService {
     @Autowired
@@ -79,7 +82,8 @@ public class ClientLoginServiceImpl implements ClientLoginService {
         StaffPO staffPO1=new StaffPO();
         staffPO1.setId(staffPO.getId());
         staffPO1.setCompanyId(staffPO.getCompanyId());
-        staffPO1.setShowFlag(1);
+        //------------------------
+        staffPO1.setShowFlag(true);
         staffDao.updateShowFlag(staffPO1);
         return staffPO;
     }

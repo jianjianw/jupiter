@@ -59,9 +59,9 @@ public class StaffPO extends BaseEntity {
      */
     private String token;
     /**
-     * 是否在线
+     * 在线状态 0 下线 1 在线
      */
-    private int showFlag;
+    private Boolean showFlag;
     /**
      * 是否锁定
      */
@@ -176,11 +176,11 @@ public class StaffPO extends BaseEntity {
         this.token = token;
     }
 
-    public int getShowFlag() {
+    public Boolean getShowFlag() {
         return showFlag;
     }
 
-    public void setShowFlag(int showFlag) {
+    public void setShowFlag(Boolean showFlag) {
         this.showFlag = showFlag;
     }
 

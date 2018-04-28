@@ -109,4 +109,9 @@ public class TipMsgConstant {
      * 恢复离职员工成功
      */
     public final static String RESOTRE_SUCCESS = "恢复成功";
+
+    /**
+     * 操作成功
+     */
+    public final static String OPERATE_SUCCESS = "操作成功";
 }

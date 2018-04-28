@@ -12,7 +12,7 @@
         <result column="DINGUSERID" property="dingUserId" jdbcType="VARCHAR"/>
         <result column="HEADIMG" property="headImg" jdbcType="VARCHAR"/>
         <result column="TOKEN" property="token" jdbcType="VARCHAR"/>
-        <result column="ISSHOW" property="showFlag" jdbcType="INTEGER"/>
+        <result column="ISSHOW" property="showFlag" jdbcType="BOOLEAN"/>
         <result column="ISLOCK" property="lockFlag" jdbcType="BOOLEAN"/>
         <result column="ISDEL" property="delFlag" jdbcType="BOOLEAN"/>
     </resultMap>
@@ -48,7 +48,7 @@
         <result column="DINGUSERID" property="dingUserId" jdbcType="VARCHAR"/>
         <result column="HEADIMG" property="headImg" jdbcType="VARCHAR"/>
         <result column="TOKEN" property="token" jdbcType="VARCHAR"/>
-        <result column="ISSHOW" property="showFlag" jdbcType="INTEGER"/>
+        <result column="ISSHOW" property="showFlag" jdbcType="BOOLEAN"/>
         <result column="ISLOCK" property="lockFlag" jdbcType="BOOLEAN"/>
         <result column="ISDEL" property="delFlag" jdbcType="BOOLEAN"/>
         <result column="WECHATNAME" property="weChatName" jdbcType="VARCHAR"/>
