@@ -39,9 +39,10 @@
     <!--新增拍摄地-->
     <insert id="insert" parameterType="com.qiein.jupiter.web.entity.po.ShopPO">
         INSERT INTO hm_pub_shop
-        (SHOPNAME,TYPEID,ISSHOW,PRIORITY,ADDRESS,SERVICEPHONE,COMPANYID)
-        VALUES
-        (#{shopName},#{typeId},#{showFlag},#{priority},#{address},#{servicePhone},#{companyId})
+        (SHOPNAME,TYPEID,ISSHOW,ADDRESS,SERVICEPHONE,COMPANYID,PRIORITY)
+        SELECT
+        #{shopName},#{typeId},#{showFlag},#{address},#{servicePhone},#{companyId},(
+        SELECT IFNULL(MAX(PRIORITY),0)+1 FROM hm_pub_shop WHERE COMPANYID = #{companyId})
     </insert>
 
     <!--根绝拍摄地名称查找拍摄地-->
