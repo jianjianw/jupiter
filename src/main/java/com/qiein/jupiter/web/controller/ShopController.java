@@ -89,7 +89,7 @@ public class ShopController extends BaseController {
     @GetMapping("/priority")
     public ResultInfo editPriority(@Id Integer fId, @Id Integer fPriority,
                                    @Id Integer sId, @Id Integer sPriority){
-        shopService.addShop();
+        shopService.editPriority(fId,fPriority,sId,sPriority,getCurrentLoginStaff().getCompanyId());
         return ResultInfoUtil.success(TipMsgConstant.EDIT_SUCCESS);
     }
 
