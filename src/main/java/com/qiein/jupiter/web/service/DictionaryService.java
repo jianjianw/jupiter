@@ -16,7 +16,7 @@ public interface DictionaryService {
      * @param dicType
      * @return
      */
-    public List<DictionaryPO> getDicByType(int companyId, String dicType);
+    public List<DictionaryPO> getCompanyDicByType(int companyId, String dicType);
 
     /**
      * 新增流失原因
@@ -56,4 +56,13 @@ public interface DictionaryService {
      * @param dicName
      */
     public void editRunoffReason(int companyId, int id, String dicName);
+
+    /**
+     * 获取自定义地点数据，没有则获取共有的数据
+     *
+     * @param companyId
+     * @param dicType
+     * @return
+     */
+    public List<DictionaryPO> getCommonDicByType(int companyId, String dicType);
 }

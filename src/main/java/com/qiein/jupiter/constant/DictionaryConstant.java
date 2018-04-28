@@ -24,4 +24,12 @@ public class DictionaryConstant {
      * 流失原因
      */
     public final static String RUN_OFF_REASON = "runoff_reason";
+    /**
+     * 拍照类型
+     */
+    public final static String COMMON_TYPE = "common_type";
+    /**
+     * 咨询类型
+     */
+    public final static String ZX_STYLE = "zx_style";
 }

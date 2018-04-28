@@ -41,6 +41,7 @@
         WHERE
             dic.COMPANYID = #{companyId}
         AND dic.DICTYPE = #{dicType}
+        ORDER BY dic.PRIORITY, dic.ID
     </select>
 
     <!--获取企业左上角菜单栏-->
