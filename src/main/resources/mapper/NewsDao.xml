@@ -34,7 +34,8 @@
             AND TYPE = 'system'
         </if>
         ORDER BY
-        CREATETIME DESC
+        CREATETIME DESC,
+        ISREAD ASC
     </select>
 
     <!--获取未读的消息-->
@@ -79,10 +80,11 @@
     </insert>
 
     <!--批量更新消息为已读-->
-    <update id="updateNewsReadFlag">
-        UPDATE ${tabName}
+    <update id="batchUpdateNewsReadFlag">
+        UPDATE ${tableName}
         SET ISREAD = 1
         WHERE COMPANYID = #{companyId}
+        AND STAFFID = #{staffId}
         AND ID IN
         <foreach collection="newIds" item="id" index="index" open="(" close=")" separator=",">
             #{id}
@@ -106,7 +108,12 @@
         <if test="type != null and type == 3">
             AND TYPE = 'system'
         </if>
-        ORDER BY
-        CREATETIME DESC
     </select>
+
+    <update id="setAllNewIsRead">
+      UPDATE ${tableName}
+        SET ISREAD = 1
+        WHERE COMPANYID = #{companyId}
+        AND STAFFID = #{staffId}
+    </update>
 </mapper>

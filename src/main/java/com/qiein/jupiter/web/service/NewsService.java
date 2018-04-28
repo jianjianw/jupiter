@@ -35,11 +35,20 @@ public interface NewsService {
      *
      * @param msgIds
      */
-    int batchUpdateNewsReadFlag(String msgIds, int cid);
+    int batchUpdateNewsReadFlag(String msgIds, int staffId, int cid);
 
     /**
      * 获取各种类型未读消息的数量及是否存在未读
      */
     NewsTotalAmountAndFlag getNewsTotalAmountAndFlag(int uid, int cid);
+
+    /**
+     * 设置所有的消息为已读
+     *
+     * @param uid
+     * @param cid
+     * @return
+     */
+    int setAllNewIsRead(int uid, int cid);
 
 }

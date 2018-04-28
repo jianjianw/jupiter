@@ -5,6 +5,9 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+/**
+ * 消息
+ */
 public interface NewsDao extends BaseDao<NewsPO> {
     /**
      * 批量新增消息
@@ -33,7 +36,7 @@ public interface NewsDao extends BaseDao<NewsPO> {
      *
      * @return
      */
-    int batchUpdateNewsReadFlag(@Param("tableName") String tableName,
+    int batchUpdateNewsReadFlag(@Param("tableName") String tableName, @Param("staffId") int staffId,
                                 @Param("newIds") String[] msgIds, @Param("companyId") int companyId);
 
     /**
@@ -42,4 +45,14 @@ public interface NewsDao extends BaseDao<NewsPO> {
      * @return
      */
     int getDiffTypeMsgAmount(NewsPO newsPO);
+
+    /**
+     * 设置员工所有消息为已读状态
+     *
+     * @param staffId
+     * @param companyId
+     * @return
+     */
+    int setAllNewIsRead(@Param("tableName") String tableName,
+                        @Param("staffId") int staffId, @Param("companyId") int companyId);
 }

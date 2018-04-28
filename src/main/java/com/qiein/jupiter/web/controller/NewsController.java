@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 /**
  * 用户消息API
  *
- * @date 2018-4-20 15:01:06
  */
 @RequestMapping("/news")
 @RestController
@@ -29,8 +28,8 @@ public class NewsController extends BaseController {
      * @param queryMapDTO
      * @return
      */
-    @GetMapping("/get_all_list")
-    public ResultInfo getAllList(QueryMapDTO queryMapDTO) {
+    @PostMapping("/get_all_list")
+    public ResultInfo getAllList(@RequestBody QueryMapDTO queryMapDTO) {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         PageInfo allList = newsService.getAllList(queryMapDTO, currentLoginStaff.getId(), currentLoginStaff.getCompanyId());
@@ -43,8 +42,8 @@ public class NewsController extends BaseController {
      * @param queryMapDTO
      * @return
      */
-    @GetMapping("/get_not_read_list")
-    public ResultInfo getNotReadList(QueryMapDTO queryMapDTO) {
+    @PostMapping("/get_not_read_list")
+    public ResultInfo getNotReadList(@RequestBody QueryMapDTO queryMapDTO) {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         PageInfo allList = newsService.getNotReadList(queryMapDTO, currentLoginStaff.getId(), currentLoginStaff.getCompanyId());
@@ -52,7 +51,7 @@ public class NewsController extends BaseController {
     }
 
     /**
-     * 批量更新消息为已读
+     * 批量更新当前用户消息为已读
      *
      * @param ids
      * @return
@@ -61,7 +60,7 @@ public class NewsController extends BaseController {
     public ResultInfo batchUpdateNewsReadFlag(@RequestParam String ids) {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        newsService.batchUpdateNewsReadFlag(ids, currentLoginStaff.getCompanyId());
+        newsService.batchUpdateNewsReadFlag(ids, currentLoginStaff.getId(), currentLoginStaff.getCompanyId());
         return ResultInfoUtil.success(TipMsgConstant.UPDATE_SUCCESS);
     }
 
@@ -77,5 +76,18 @@ public class NewsController extends BaseController {
         NewsTotalAmountAndFlag newsTotalAmountAndFlag = newsService.getNewsTotalAmountAndFlag(currentLoginStaff.getId(),
                 currentLoginStaff.getCompanyId());
         return ResultInfoUtil.success(newsTotalAmountAndFlag);
+    }
+
+    /**
+     * 设置当前登录用户的所有消息为已读
+     *
+     * @return
+     */
+    @GetMapping("/set_all_news_is_read")
+    public ResultInfo setAllNewsIsRead() {
+        //获取当前登录用户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        newsService.setAllNewIsRead(currentLoginStaff.getId(), currentLoginStaff.getCompanyId());
+        return ResultInfoUtil.success(TipMsgConstant.OPERATE_SUCCESS);
     }
 }
