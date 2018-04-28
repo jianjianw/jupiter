@@ -9,6 +9,7 @@ public enum ExceptionEnum {
     RPC_ERROR(-2, "远程调用错误"),
     MYSQL_SQL_GRAMMAR_ERROR(-8, "sql语法错误"),
     DB_SPLIT_ERROR(-9, "系统表分割错误"),
+    METHOD_ARGUMENT_TYPE_MISMATCH_ERROR(-10,"方法参数无法转换"),
     //token验证相关
     TOKEN_NULL(100, "token不存在"),
     TOKEN_INVALID(101, "token失效"),

@@ -38,7 +38,7 @@ public interface StaffService {
      * @param id
      * @param showFlag
      */
-    StaffPO setOnlineState(int id, int companyId, int showFlag);
+    StaffPO setOnlineState(int id, int companyId, boolean showFlag);
 
     /**
      * 员工删除（物理删除）

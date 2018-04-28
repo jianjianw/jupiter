@@ -37,7 +37,7 @@ public class StaffVO extends StaffPO {
     /**
      * 是否在线
      */
-    private int showFlag;
+    private Boolean showFlag;
 
     /**
      * 是否删除
@@ -109,12 +109,12 @@ public class StaffVO extends StaffPO {
     }
 
     @Override
-    public int getShowFlag() {
+    public Boolean getShowFlag() {
         return showFlag;
     }
 
     @Override
-    public void setShowFlag(int showFlag) {
+    public void setShowFlag(Boolean showFlag) {
         this.showFlag = showFlag;
     }
 

@@ -158,7 +158,7 @@ public class StaffServiceImpl implements StaffService {
      */
     @CacheEvict(value = "staff", key = "'staff'+':'+#id+':'+#companyId")
     @Override
-    public StaffPO setOnlineState(int id, int companyId, int showFlag) {
+    public StaffPO setOnlineState(int id, int companyId, boolean showFlag) {
         log.debug("未使用缓存");
         StaffPO staffPO = new StaffPO();
         staffPO.setId(id);
@@ -392,7 +392,7 @@ public class StaffServiceImpl implements StaffService {
         StaffPO staffPO1=new StaffPO();
         staffPO1.setId(staffPO.getId());
         staffPO1.setCompanyId(staffPO.getCompanyId());
-        staffPO1.setShowFlag(1);
+        staffPO1.setShowFlag(true);
         staffDao.updateShowFlag(staffPO1);
         return staffPO;
     }

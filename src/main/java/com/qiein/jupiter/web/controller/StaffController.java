@@ -214,6 +214,12 @@ public class StaffController extends BaseController {
         valueOperations.set(RedisConstant.getVerifyCodeKey(userName), code);
     }
 
+    /**
+     * 获取组员工列表
+     *
+     * @param groupId
+     * @return
+     */
     @GetMapping("/get_group_staff_list")
     public ResultInfo getGroupStaffList(@NotEmptyStr @RequestParam("groupId") String groupId) {
         //获取当前登录账户
@@ -367,16 +373,9 @@ public class StaffController extends BaseController {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         //获取操作用户所属公司
         Integer companyId = currentLoginStaff.getCompanyId();
-
-        try {
-            //锁定状态
-            staffService.setLockState(staffId, companyId, isLock);
-        } catch (Exception e) {
-            e.printStackTrace();
-            ResultInfoUtil.error(ExceptionEnum.UNKNOW_ERROR);
-        }
-
-        return ResultInfoUtil.success("操作成功");
+        //锁定状态
+        staffService.setLockState(staffId, companyId, isLock);
+        return ResultInfoUtil.success(TipMsgConstant.OPERATE_SUCCESS);
     }
 
     /**
@@ -440,6 +439,12 @@ public class StaffController extends BaseController {
         return ResultInfoUtil.success(TipMsgConstant.SAVE_SUCCESS);
     }
 
+    /**
+     * 更新员工密码
+     *
+     * @param staffPasswordDTO
+     * @return
+     */
     @PostMapping("/update_password")
     //todo 增加密码安全度校验
     public ResultInfo updatePassword(@Validated @RequestBody StaffPasswordDTO staffPasswordDTO) {
@@ -557,5 +562,21 @@ public class StaffController extends BaseController {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         return ResultInfoUtil.success(staffService.getDelStafflistBySearchKey(currentLoginStaff.getCompanyId(), searchKey));
+    }
+
+    /**
+     * 设置员工在线状态
+     *
+     * @param staffId
+     * @param showFlag
+     * @return
+     */
+    @GetMapping("/set_online_state")
+    public ResultInfo setStaffOnlineState(@Id @RequestParam("staffId") Integer staffId,
+                                          @Bool @RequestParam("showFlag") boolean showFlag) {
+        //获取当前登录用户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        staffService.setOnlineState(staffId, currentLoginStaff.getCompanyId(), showFlag);
+        return ResultInfoUtil.success(TipMsgConstant.OPERATE_SUCCESS);
     }
 }
