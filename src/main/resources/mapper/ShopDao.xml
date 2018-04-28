@@ -71,6 +71,19 @@
         AND ID = #{id}
     </update>
 
+    <!--修改排序-->
+    <update id="updatePriority" parameterType="Integer">
+        UPDATE
+          hm_pub_shop
+        <set>
+            <if test="priority != null and priority !=''">
+                PRIORITY = #{priority}
+            </if>
+        </set>
+        WHERE
+          COMPANYID = #{companyId} AND ID = #{id}
+    </update>
+
     <!--删除拍摄地-->
     <delete id="deleteShop" parameterType="map">
         DELETE FROM hm_pub_shop

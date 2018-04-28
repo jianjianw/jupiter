@@ -9,6 +9,7 @@ import com.qiein.jupiter.web.entity.vo.ShopVO;
 import com.qiein.jupiter.web.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -61,6 +62,21 @@ public class ShopServiceImpl implements ShopService {
         }
         //2.修改
         shopDao.update(shopPO);
+    }
+
+    /**
+     * 编辑拍摄地排序
+     * @param fId
+     * @param fPriority
+     * @param sId
+     * @param sPriority
+     * @param companyId
+     */
+    @Override
+    @Transactional
+    public void editPriority(Integer fId, Integer fPriority, Integer sId, Integer sPriority, Integer companyId) {
+        shopDao.updatePriority(fId, fPriority, companyId);
+        shopDao.updatePriority(sId, sPriority, companyId);
     }
 
     /**

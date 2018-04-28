@@ -78,4 +78,19 @@ public class ShopController extends BaseController {
         return ResultInfoUtil.success(shopService.getShowShopList(currentLoginStaff.getCompanyId()));
     }
 
+    /**
+     * 编辑拍摄地排序，实际是交换两个拍摄地的排序
+     * @param fId
+     * @param fPriority
+     * @param sId
+     * @param sPriority
+     * @return
+     */
+    @GetMapping("/priority")
+    public ResultInfo editPriority(@Id Integer fId, @Id Integer fPriority,
+                                   @Id Integer sId, @Id Integer sPriority){
+        shopService.addShop();
+        return ResultInfoUtil.success(TipMsgConstant.EDIT_SUCCESS);
+    }
+
 }

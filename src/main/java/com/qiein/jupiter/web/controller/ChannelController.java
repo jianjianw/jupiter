@@ -85,7 +85,6 @@ public class ChannelController extends BaseController {
     @GetMapping("/priority")
     public ResultInfo editPriority(@Id Integer fId, @Id Integer fPriority,
                                   @Id Integer sId, @Id Integer sPriority) {
-        System.out.println(fId+","+fPriority+","+sId+","+sPriority);
         channelService.editProiority(fId,fPriority,sId,sPriority,getCurrentLoginStaff().getCompanyId());
         return ResultInfoUtil.success(TipMsgConstant.EDIT_SUCCESS);
     }

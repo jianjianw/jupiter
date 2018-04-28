@@ -32,6 +32,16 @@ public interface ShopService {
     public void editShop(ShopPO shopPO);
 
     /**
+     * 修改排序
+     * @param fId
+     * @param fPriority
+     * @param sId
+     * @param sPriority
+     * @param companyId
+     */
+    void editPriority(Integer fId, Integer fPriority, Integer sId, Integer sPriority, Integer companyId);
+
+    /**
      * 编辑拍摄地开关
      *
      * @param companyId
