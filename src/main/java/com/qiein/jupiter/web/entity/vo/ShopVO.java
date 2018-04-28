@@ -18,6 +18,11 @@ public class ShopVO extends BaseEntity {
     private boolean showFlag;
 
     /**
+     * 排序
+     */
+    private int priority;
+
+    /**
      * 企业ID
      */
     private int companyId;
@@ -45,4 +50,8 @@ public class ShopVO extends BaseEntity {
     public void setCompanyId(int companyId) {
         this.companyId = companyId;
     }
+
+    public int getPriority() {return priority; }
+
+    public void setPriority(int priority) { this.priority = priority; }
 }

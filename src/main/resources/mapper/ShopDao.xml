@@ -16,6 +16,7 @@
         <id column="ID" property="id" jdbcType="BIGINT"/>
         <result column="SHOPNAME" property="shopName" jdbcType="VARCHAR"/>
         <result column="ISSHOW" property="showFlag" jdbcType="BOOLEAN"/>
+        <result column="PRIORITY" property="priority" jdbcType="INTEGER"/>
         <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
     </resultMap>
 
@@ -26,7 +27,7 @@
     <!--获取企业所有拍摄地-->
     <select id="getCompanyShopList" parameterType="map" resultMap="VOMap">
         SELECT
-            shop.ID,shop.SHOPNAME,shop.ISSHOW,shop.COMPANYID
+            shop.ID,shop.SHOPNAME,shop.ISSHOW,shop.PRIORITY,shop.COMPANYID
         FROM
             hm_pub_shop shop
         WHERE
