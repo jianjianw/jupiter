@@ -166,7 +166,7 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @param staffPO
      * @return
      */
-    int updateShowFlag(StaffPO staffPO);
+    int updateStatusFlag(StaffPO staffPO);
 
     /**
      * 更新锁定状态

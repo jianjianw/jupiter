@@ -9,7 +9,7 @@ import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.LoginUserVO;
-import com.qiein.jupiter.web.service.ClientLoginService;
+import com.qiein.jupiter.web.service.AppService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.validation.annotation.Validated;
@@ -20,22 +20,22 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @RestController
-@RequestMapping("/app/client/login")
+@RequestMapping("/app")
 @Validated
-public class ClientLoginController extends BaseController{
+public class AppController extends BaseController{
 
     @Autowired
     private ValueOperations<String, String> valueOperations;
 
     @Autowired
-    private ClientLoginService clientLoginService;
+    private AppService clientLoginService;
     /**
      * 获取用户所在所有企业信息
      *
      * @param loginUserVO
      * @return
      */
-    @PostMapping("/get_company_list")
+    @PostMapping("/login/get_company_list")
     public ResultInfo getCompanyList(@RequestBody @Validated LoginUserVO loginUserVO) {
         //对象参数trim
         ObjectUtil.objectStrParamTrim(loginUserVO);
@@ -60,7 +60,7 @@ public class ClientLoginController extends BaseController{
      * @param loginUserVO
      * @return
      */
-    @PostMapping("/login_with_company_id")
+    @PostMapping("/login/login_with_company_id")
     public ResultInfo loginWithCompanyId(@RequestBody @Validated LoginUserVO loginUserVO) {
         //对象参数trim
         ObjectUtil.objectStrParamTrim(loginUserVO);
@@ -89,7 +89,7 @@ public class ClientLoginController extends BaseController{
      *
      * @param userName 用户名
      */
-    @GetMapping("/need_verity_code")
+    @GetMapping("/login/need_verity_code")
     public boolean needVerityCode(@NotEmptyStr @RequestParam("phone") String userName) {
         //判断是否需要验证码
         String userLoginErrNum = valueOperations.get(RedisConstant.getUserLoginErrNumKey(userName));
@@ -113,7 +113,7 @@ public class ClientLoginController extends BaseController{
      *
      * @param response
      */
-    @GetMapping("/verify_code")
+    @GetMapping("/login/verify_code")
     public void loginCode(HttpServletResponse response, @RequestParam("phone") String userName) {
         if (StringUtil.isEmpty(userName) || !RegexUtil.checkMobile(userName)) {
             return;

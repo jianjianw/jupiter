@@ -47,10 +47,6 @@ public class StaffPO extends BaseEntity {
      */
     private String dingUserId;
     /**
-     * 微信
-     */
-    private String openId;
-    /**
      * 头像
      */
     private String headImg;
@@ -61,7 +57,7 @@ public class StaffPO extends BaseEntity {
     /**
      * 在线状态 0 下线 1 在线
      */
-    private Boolean showFlag;
+    private int statusFlag;
     /**
      * 是否锁定
      */
@@ -91,9 +87,9 @@ public class StaffPO extends BaseEntity {
         this.dingUserId = staffDetailVO.getDingUserId();
         this.headImg = staffDetailVO.getHeadImg();
         this.token = staffDetailVO.getToken();
-        this.showFlag = staffDetailVO.getShowFlag();
         this.lockFlag = staffDetailVO.isLockFlag();
         this.delFlag = staffDetailVO.isDelFlag();
+        this.statusFlag=staffDetailVO.getStatusFlag();
     }
 
     public String getNickName() {
@@ -152,14 +148,6 @@ public class StaffPO extends BaseEntity {
         this.dingUserId = dingUserId;
     }
 
-    public String getOpenId() {
-        return openId;
-    }
-
-    public void setOpenId(String openId) {
-        this.openId = openId;
-    }
-
     public String getHeadImg() {
         return headImg;
     }
@@ -176,14 +164,6 @@ public class StaffPO extends BaseEntity {
         this.token = token;
     }
 
-    public Boolean getShowFlag() {
-        return showFlag;
-    }
-
-    public void setShowFlag(Boolean showFlag) {
-        this.showFlag = showFlag;
-    }
-
     public boolean isLockFlag() {
         return lockFlag;
     }
@@ -198,5 +178,17 @@ public class StaffPO extends BaseEntity {
 
     public void setDelFlag(boolean delFlag) {
         this.delFlag = delFlag;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public int getStatusFlag() {
+        return statusFlag;
+    }
+
+    public void setStatusFlag(int statusFlag) {
+        this.statusFlag = statusFlag;
     }
 }

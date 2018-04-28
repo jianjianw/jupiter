@@ -12,7 +12,7 @@ import com.qiein.jupiter.web.dao.StaffDao;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.StaffDetailPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
-import com.qiein.jupiter.web.service.ClientLoginService;
+import com.qiein.jupiter.web.service.AppService;
 import com.qiein.jupiter.web.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -22,10 +22,10 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 客户端登录
+ * 客户端
  */
 @Service
-public class ClientLoginServiceImpl implements ClientLoginService {
+public class AppServiceImpl implements AppService {
     @Autowired
     private StaffDao staffDao;
 
@@ -82,9 +82,8 @@ public class ClientLoginServiceImpl implements ClientLoginService {
         StaffPO staffPO1=new StaffPO();
         staffPO1.setId(staffPO.getId());
         staffPO1.setCompanyId(staffPO.getCompanyId());
-        //------------------------
-        staffPO1.setShowFlag(true);
-        staffDao.updateShowFlag(staffPO1);
+        //todo 设置员工状态，当员工为下线状态时，更新为上线状态
+
         return staffPO;
     }
 

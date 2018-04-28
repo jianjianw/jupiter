@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 客户端登录
  */
-public interface ClientLoginService {
+public interface AppService {
     /**
      * 获取公司的列表
      *

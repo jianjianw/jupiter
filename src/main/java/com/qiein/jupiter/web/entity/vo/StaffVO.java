@@ -37,7 +37,7 @@ public class StaffVO extends StaffPO {
     /**
      * 是否在线
      */
-    private Boolean showFlag;
+    private int statusFlag;
 
     /**
      * 是否删除
@@ -108,14 +108,8 @@ public class StaffVO extends StaffPO {
         this.roleIds = roleIds;
     }
 
-    @Override
-    public Boolean getShowFlag() {
-        return showFlag;
-    }
-
-    @Override
-    public void setShowFlag(Boolean showFlag) {
-        this.showFlag = showFlag;
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
     @Override
@@ -134,5 +128,14 @@ public class StaffVO extends StaffPO {
 
     public void setRoleList(List<RoleVO> roleList) {
         this.roleList = roleList;
+    }
+
+    @Override
+    public int getStatusFlag() {
+        return statusFlag;
+    }
+
+    public void setStatusFlag(int statusFlag) {
+        this.statusFlag = statusFlag;
     }
 }

@@ -36,9 +36,9 @@ public interface StaffService {
      * 设置在线状态
      *
      * @param id
-     * @param showFlag
+     * @param statusFlag
      */
-    StaffPO setOnlineState(int id, int companyId, boolean showFlag);
+    StaffPO setOnlineState(int id, int companyId, int statusFlag);
 
     /**
      * 员工删除（物理删除）

@@ -37,6 +37,10 @@ public class StaffDetailVO extends StaffPO {
      */
     private int createTime;
 
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
     public String getWeChatName() {
         return weChatName;
     }
@@ -51,6 +55,14 @@ public class StaffDetailVO extends StaffPO {
 
     public void setWeChatImg(String weChatImg) {
         this.weChatImg = weChatImg;
+    }
+
+    public String getQq() {
+        return qq;
+    }
+
+    public void setQq(String qq) {
+        this.qq = qq;
     }
 
     public int getLastLoginTime() {
@@ -69,12 +81,10 @@ public class StaffDetailVO extends StaffPO {
         this.lastLoginIp = lastLoginIp;
     }
 
-    @Override
     public String getOpenId() {
         return openId;
     }
 
-    @Override
     public void setOpenId(String openId) {
         this.openId = openId;
     }
@@ -85,17 +95,5 @@ public class StaffDetailVO extends StaffPO {
 
     public void setCreateTime(int createTime) {
         this.createTime = createTime;
-    }
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
-
-    public String getQq() {
-        return qq;
-    }
-
-    public void setQq(String qq) {
-        this.qq = qq;
     }
 }

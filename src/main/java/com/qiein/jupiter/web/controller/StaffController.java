@@ -573,7 +573,7 @@ public class StaffController extends BaseController {
      */
     @GetMapping("/set_online_state")
     public ResultInfo setStaffOnlineState(@Id @RequestParam("staffId") Integer staffId,
-                                          @Bool @RequestParam("showFlag") boolean showFlag) {
+                                          @RequestParam("showFlag") int showFlag) {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         staffService.setOnlineState(staffId, currentLoginStaff.getCompanyId(), showFlag);

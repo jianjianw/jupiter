@@ -12,7 +12,7 @@
         <result column="DINGUSERID" property="dingUserId" jdbcType="VARCHAR"/>
         <result column="HEADIMG" property="headImg" jdbcType="VARCHAR"/>
         <result column="TOKEN" property="token" jdbcType="VARCHAR"/>
-        <result column="ISSHOW" property="showFlag" jdbcType="BOOLEAN"/>
+        <result column="STATUSFLAG" property="statusFlag" jdbcType="BOOLEAN"/>
         <result column="ISLOCK" property="lockFlag" jdbcType="BOOLEAN"/>
         <result column="ISDEL" property="delFlag" jdbcType="BOOLEAN"/>
     </resultMap>
@@ -48,7 +48,7 @@
         <result column="DINGUSERID" property="dingUserId" jdbcType="VARCHAR"/>
         <result column="HEADIMG" property="headImg" jdbcType="VARCHAR"/>
         <result column="TOKEN" property="token" jdbcType="VARCHAR"/>
-        <result column="ISSHOW" property="showFlag" jdbcType="BOOLEAN"/>
+        <result column="STATUSFLAG" property="statusFlag" jdbcType="BOOLEAN"/>
         <result column="ISLOCK" property="lockFlag" jdbcType="BOOLEAN"/>
         <result column="ISDEL" property="delFlag" jdbcType="BOOLEAN"/>
         <result column="WECHATNAME" property="weChatName" jdbcType="VARCHAR"/>
@@ -61,7 +61,7 @@
 
     <sql id="baseColumn">
         ID, NICKNAME, PHONE, USERNAME, PASSWORD,COMPANYID, CORPID, DINGUSERID, HEADIMG,
-        TOKEN,ISSHOW,ISLOCK,ISDEL
+        TOKEN,STATUSFLAG,ISLOCK,ISDEL
     </sql>
 
     <select id="getById" parameterType="java.lang.Integer" resultMap="baseMap">
@@ -103,8 +103,8 @@
             <if test="token != null and token != ''">
                 AND TOKEN = #{token}
             </if>
-            <if test="showFlag != null">
-                AND ISSHOW = #{showFlag}
+            <if test="statusFlag != null">
+                AND STATUSFLAG = #{statusFlag}
             </if>
             <if test="lockFlag != null">
                 AND ISLOCK = #{lockFlag}
@@ -119,11 +119,11 @@
             keyProperty="id">
         INSERT INTO  hm_pub_staff
         (NICKNAME, PHONE, USERNAME, PASSWORD,COMPANYID, CORPID, DINGUSERID, HEADIMG,
-        TOKEN,ISSHOW,ISLOCK,ISDEL)
+        TOKEN,STATUSFLAG,ISLOCK,ISDEL)
         VALUES (
         #{nickName}, #{phone}, #{userName}, #{password},
         #{companyId}, #{corpId},#{dingUserId},
-        #{headImg},#{token},#{showFlag},#{lockFlag},#{delFlag}
+        #{headImg},#{token},#{statusFlag},#{lockFlag},#{delFlag}
         )
     </insert>
 
@@ -131,10 +131,10 @@
     <insert id="addStaffVo" parameterType="com.qiein.jupiter.web.entity.vo.StaffVO" useGeneratedKeys="true"
             keyProperty="id">
         INSERT INTO  hm_pub_staff
-        (NICKNAME, PHONE, USERNAME, PASSWORD,COMPANYID, ISSHOW,ISLOCK,ISDEL)
+        (NICKNAME, PHONE, USERNAME, PASSWORD,COMPANYID, STATUSFLAG,ISLOCK,ISDEL)
         VALUES (
         #{nickName}, #{phone}, #{userName}, #{password},
-        #{companyId}, #{showFlag},#{lockFlag},#{delFlag}
+        #{companyId}, #{statusFlag},#{lockFlag},#{delFlag}
         )
     </insert>
 
@@ -322,7 +322,7 @@
         hm_pub_staff
       <set>
           <if test="ssv.show != null">
-              ISSHOW= #{ssv.show},
+              STATUSFLAG = #{ssv.show},
           </if>
           <if test="ssv.lock != null">
               ISLOCK = #{ssv.lock} ,
@@ -389,7 +389,7 @@
     <select id="getStaffDetail" resultMap="staffDetailMap">
         SELECT   staff.ID,  staff.NICKNAME,  staff.PHONE,  staff.USERNAME,  staff.PASSWORD,
          staff.COMPANYID,  staff.CORPID,  staff.DINGUSERID, staff.HEADIMG,
-        staff.TOKEN,staff.ISSHOW,staff.ISLOCK,staff.ISDEL,detail.WECHATNAME, detail.WECHATIMG, detail.LASTLOGINTIME,
+        staff.TOKEN,staff.STATUSFLAG,staff.ISLOCK,staff.ISDEL,detail.WECHATNAME, detail.WECHATIMG, detail.LASTLOGINTIME,
         detail.OPENID,detail.LASTLOGINIP,detail.OPENID, detail.CREATETIME
         FROM  hm_pub_staff staff LEFT JOIN
         hm_pub_staff_detail detail ON staff.ID = detail.ID
@@ -404,9 +404,9 @@
         AND COMPANYID = #{companyId}
     </update>
     <!--更新员工在线状态-->
-    <update id="updateShowFlag">
+    <update id="updateStatusFlag">
         UPDATE hm_pub_staff
-        SET ISSHOW = #{showFlag}
+        SET STATUSFLAG = #{statusFlag}
         WHERE ID = #{id}
         AND COMPANYID = #{companyId}
     </update>

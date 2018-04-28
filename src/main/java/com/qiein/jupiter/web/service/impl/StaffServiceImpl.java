@@ -158,13 +158,14 @@ public class StaffServiceImpl implements StaffService {
      */
     @CacheEvict(value = "staff", key = "'staff'+':'+#id+':'+#companyId")
     @Override
-    public StaffPO setOnlineState(int id, int companyId, boolean showFlag) {
+    public StaffPO setOnlineState(int id, int companyId, int showFlag) {
         log.debug("未使用缓存");
         StaffPO staffPO = new StaffPO();
         staffPO.setId(id);
         staffPO.setCompanyId(companyId);
-        staffPO.setShowFlag(showFlag);
-        staffDao.updateShowFlag(staffPO);
+        //todo  设置上下线状态时的各种判断
+//        staffPO.setShowFlag(showFlag);
+//        staffDao.updateShowFlag(staffPO);
         return staffPO;
     }
 
@@ -392,8 +393,7 @@ public class StaffServiceImpl implements StaffService {
         StaffPO staffPO1=new StaffPO();
         staffPO1.setId(staffPO.getId());
         staffPO1.setCompanyId(staffPO.getCompanyId());
-        staffPO1.setShowFlag(true);
-        staffDao.updateShowFlag(staffPO1);
+        //todo 设置员工状态，当员工为下线状态时，更新为上线状态
         return staffPO;
     }
 
