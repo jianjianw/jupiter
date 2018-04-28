@@ -68,4 +68,18 @@ public interface ChannelDao extends BaseDao<ChannelPO> {
      * @return
      */
     ChannelPO getShowChannelById(@Param("companyId") int companyId, @Param("id") int id);
+
+    /**
+     * 获取员工上个月录入使用渠道的次数排序
+     *
+     * @param tableName
+     * @param companyId
+     * @param staffId
+     * @param typeList
+     * @return
+     */
+    List<Integer> getLastMonthChannelSort(@Param("tableName") String tableName, @Param("companyId") Integer companyId,
+                                          @Param("staffId") int staffId, @Param("typeList") List<Integer> typeList);
+
+
 }

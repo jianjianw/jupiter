@@ -224,4 +224,26 @@
         AND ID = #{id}
         AND ISSHOW = 1
     </select>
+
+    <!--获取员工上个月录入使用来源的次数排序-->
+    <select id="getLastMonthSrcSort" parameterType="map" resultType="java.lang.Integer">
+        SELECT
+            src.ID
+        FROM
+            ${tableName} info
+        LEFT JOIN hm_crm_source src ON src.COMPANYID = info.COMPANYID AND src.ID = info.SOURCEID
+        WHERE
+            info.ISDEL = 0
+        AND info.COMPANYID = #{companyId}
+        AND info.COLLECTORID = #{staffId}
+        AND DATE_SUB( CURDATE( ), INTERVAL 30 DAY ) &lt;= FROM_UNIXTIME( info.CREATETIME )
+        AND src.ISSHOW = 1
+        AND src.TYPEID IN
+        <foreach collection="typeList" item="typeId" index="index" open="(" close=")" separator=",">
+            #{typeId}
+        </foreach>
+        GROUP BY
+            src.ID
+        ORDER BY COUNT( 1 ) DESC;
+    </select>
 </mapper>

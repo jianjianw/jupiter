@@ -210,4 +210,28 @@
         AND ID = #{id}
         AND ISSHOW = 1
     </select>
+
+    <!--获取员工上个月录入使用渠道的次数排序-->
+    <select id="getLastMonthChannelSort" parameterType="map" resultType="java.lang.Integer">
+        SELECT
+            channel.ID
+        FROM
+            ${tableName} info
+        LEFT JOIN hm_crm_channel channel ON channel.COMPANYID = info.COMPANYID AND channel.ID = info.CHANNELID
+        WHERE
+            info.ISDEL = 0
+        AND info.COMPANYID = #{companyId}
+        AND info.COLLECTORID = #{staffId}
+        AND DATE_SUB( CURDATE(), INTERVAL 30 DAY ) &lt;= FROM_UNIXTIME( info.CREATETIME )
+        AND channel.ISSHOW = 1
+        AND channel.TYPEID IN
+        <foreach collection="typeList" item="typeId" index="index" open="(" close=")" separator=",">
+            #{typeId}
+        </foreach>
+        GROUP BY
+            channel.ID
+        ORDER BY COUNT( 1 ) DESC;
+    </select>
+
+
 </mapper>

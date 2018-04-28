@@ -61,12 +61,21 @@ public interface ChannelService {
     List<ChannelPO> getListByType(Integer typeId, Integer companyId);
 
     /**
-     * 获取各角色渠道组及渠道
+     * 获取企业各角色页面，头部渠道组及渠道下拉框筛选
      *
      * @param companyId
      * @param role
      * @return
      */
     public List<ChannelVO> getChannelSourceListByType(Integer companyId, String role);
+
+    /**
+     * 获取员工各角色录入页面，渠道来源下拉框选项，根据个人上月使用频率排序
+     *
+     * @param companyId
+     * @param role
+     * @return
+     */
+    public List<ChannelVO> getMyChannelSourceByRole(int companyId, int staffId, String role);
 
 }

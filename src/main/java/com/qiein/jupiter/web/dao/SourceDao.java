@@ -58,21 +58,23 @@ public interface SourceDao extends BaseDao<SourcePO> {
 
     /**
      * 修改向下拖拽排序时波及的来源的排序
+     *
      * @param xPriority
      * @param dPriority
      * @param companyId
      * @return
      */
-    Integer updateDownPriority(@Param("xPriority") Integer xPriority, @Param("dPriority") Integer dPriority ,@Param("companyId")Integer companyId);
+    Integer updateDownPriority(@Param("xPriority") Integer xPriority, @Param("dPriority") Integer dPriority, @Param("companyId") Integer companyId);
 
     /**
      * 修改向上拖拽排序时波及的来源的排序
+     *
      * @param xPriority 小的排序号
      * @param dPriority 大的排序号
      * @param companyId
      * @return
      */
-    Integer updateUpPriority(@Param("xPriority") Integer xPriority, @Param("dPriority") Integer dPriority ,@Param("companyId")Integer companyId);
+    Integer updateUpPriority(@Param("xPriority") Integer xPriority, @Param("dPriority") Integer dPriority, @Param("companyId") Integer companyId);
 
     /**
      * 根据来源ID获取显示可用的来源信息
@@ -82,4 +84,16 @@ public interface SourceDao extends BaseDao<SourcePO> {
      * @return
      */
     SourcePO getShowSourceById(@Param("companyId") Integer companyId, @Param("id") int id);
+
+    /**
+     * 获取员工上个月录入使用来源的次数排序
+     *
+     * @param tableName
+     * @param companyId
+     * @param staffId
+     * @param typeList
+     * @return
+     */
+    List<Integer> getLastMonthSrcSort(@Param("tableName") String tableName, @Param("companyId") Integer companyId,
+                                      @Param("staffId") int staffId, @Param("typeList") List<Integer> typeList);
 }

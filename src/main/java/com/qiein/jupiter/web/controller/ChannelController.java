@@ -76,6 +76,7 @@ public class ChannelController extends BaseController {
 
     /**
      * 编辑渠道排序
+     *
      * @param fId
      * @param fPriority
      * @param sId
@@ -84,9 +85,9 @@ public class ChannelController extends BaseController {
      */
     @GetMapping("/priority")
     public ResultInfo editPriority(@Id Integer fId, @Id Integer fPriority,
-                                  @Id Integer sId, @Id Integer sPriority) {
-        System.out.println(fId+","+fPriority+","+sId+","+sPriority);
-        channelService.editProiority(fId,fPriority,sId,sPriority,getCurrentLoginStaff().getCompanyId());
+                                   @Id Integer sId, @Id Integer sPriority) {
+        System.out.println(fId + "," + fPriority + "," + sId + "," + sPriority);
+        channelService.editProiority(fId, fPriority, sId, sPriority, getCurrentLoginStaff().getCompanyId());
         return ResultInfoUtil.success(TipMsgConstant.EDIT_SUCCESS);
     }
 
@@ -186,11 +187,30 @@ public class ChannelController extends BaseController {
         return list;
     }
 
+    /**
+     * 获取企业各角色页面，头部渠道组及渠道下拉框筛选
+     *
+     * @param role
+     * @return
+     */
     @GetMapping("/get_channel_source_select_by_role")
     public ResultInfo getChannelSourceSelectByRole(@NotEmptyStr @RequestParam("role") String role) {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         return ResultInfoUtil.success(channelService.getChannelSourceListByType(currentLoginStaff.getCompanyId(), role));
+    }
+
+    /**
+     * 获取员工各角色录入页面，渠道来源下拉框选项，根据个人上月使用频率排序
+     *
+     * @param role
+     * @return
+     */
+    @GetMapping("/get_my_channel_source_by_role")
+    public ResultInfo getMyChannelSourceByRole(@NotEmptyStr @RequestParam("role") String role) {
+        //获取当前登录用户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        return ResultInfoUtil.success(channelService.getMyChannelSourceByRole(currentLoginStaff.getCompanyId(), currentLoginStaff.getId(), role));
     }
 
 }
