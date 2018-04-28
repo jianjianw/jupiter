@@ -33,6 +33,23 @@ public class DictionaryPO extends BaseEntity {
      */
     private int companyId;
 
+    public DictionaryPO() {
+    }
+
+    public DictionaryPO(String dicType, int dicCode, String dicName, int companyId) {
+        this.dicType = dicType;
+        this.dicCode = dicCode;
+        this.dicName = dicName;
+        this.companyId = companyId;
+    }
+
+    public DictionaryPO(String dicType, String dicName, int companyId, int id) {
+        super(id);
+        this.dicType = dicType;
+        this.dicName = dicName;
+        this.companyId = companyId;
+    }
+
     public String getDicType() {
         return dicType;
     }

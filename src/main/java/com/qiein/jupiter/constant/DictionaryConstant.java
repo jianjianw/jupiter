@@ -19,5 +19,9 @@ public class DictionaryConstant {
     /**
      * 无效原因
      */
-    public final static String INVALID_REASON = "invalidreason";
+    public final static String INVALID_REASON = "invalid_reason";
+    /**
+     * 流失原因
+     */
+    public final static String RUN_OFF_REASON = "runoff_reason";
 }

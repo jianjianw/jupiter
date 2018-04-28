@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.controller;
 
 import com.fasterxml.jackson.databind.ser.Serializers;
+import com.qiein.jupiter.aop.validate.annotation.Id;
 import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.constant.DictionaryConstant;
 import com.qiein.jupiter.constant.TipMsgConstant;
@@ -27,6 +28,11 @@ public class DictionaryController extends BaseController {
     @Autowired
     private DictionaryService dictionaryService;
 
+    /**
+     * 获取企业自己配置的无效原因列表，自定义
+     *
+     * @return
+     */
     @GetMapping("/get_invalid_reason_list")
     public ResultInfo getInvalidReasonList() {
         //获取当前登录账户
@@ -34,6 +40,12 @@ public class DictionaryController extends BaseController {
         return ResultInfoUtil.success(dictionaryService.getDicByType(currentLoginStaff.getCompanyId(), DictionaryConstant.INVALID_REASON));
     }
 
+    /**
+     * 添加无效原因
+     *
+     * @param dictionaryPO
+     * @return
+     */
     @PostMapping("/add_invalid_reason")
     public ResultInfo addInvalidReason(@RequestBody DictionaryPO dictionaryPO) {
         if (StringUtil.isEmpty(dictionaryPO.getSpare())) {
@@ -46,6 +58,12 @@ public class DictionaryController extends BaseController {
         return ResultInfoUtil.success(TipMsgConstant.SAVE_SUCCESS);
     }
 
+    /**
+     * 编辑无效原因
+     *
+     * @param dictionaryPO
+     * @return
+     */
     @PostMapping("/edit_invalid_reason")
     public ResultInfo editInvalidReason(@RequestBody DictionaryPO dictionaryPO) {
         if (StringUtil.isEmpty(dictionaryPO.getSpare())) {
@@ -61,6 +79,12 @@ public class DictionaryController extends BaseController {
         return ResultInfoUtil.success(TipMsgConstant.EDIT_SUCCESS);
     }
 
+    /**
+     * 删除无效原因
+     *
+     * @param ids
+     * @return
+     */
     @GetMapping("/delete_invalid_reason")
     public ResultInfo deleteInvalidReason(@NotEmptyStr @RequestParam("ids") String ids) {
         //获取当前登录账户
@@ -68,4 +92,60 @@ public class DictionaryController extends BaseController {
         dictionaryService.batchDeleteByIds(currentLoginStaff.getCompanyId(), ids);
         return ResultInfoUtil.success(TipMsgConstant.DELETE_SUCCESS);
     }
+
+    /**
+     * 获取企业自己配置的流失原因列表，自定义
+     *
+     * @return
+     */
+    @GetMapping("/get_run_off_reason_list")
+    public ResultInfo getRunOffReasonList() {
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        return ResultInfoUtil.success(dictionaryService.getDicByType(currentLoginStaff.getCompanyId(), DictionaryConstant.RUN_OFF_REASON));
+    }
+
+    /**
+     * 添加流失原因
+     *
+     * @param dicName
+     * @return
+     */
+    @GetMapping("/add_run_off_reason")
+    public ResultInfo addRunoffReason(@NotEmptyStr @RequestParam("dicName") String dicName) {
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        dictionaryService.addRunoffReason(currentLoginStaff.getCompanyId(), dicName);
+        return ResultInfoUtil.success(TipMsgConstant.SAVE_SUCCESS);
+    }
+
+    /**
+     * 编辑流失原因
+     *
+     * @param dicName
+     * @param id
+     * @return
+     */
+    @GetMapping("/edit_run_off_reason")
+    public ResultInfo editRunoffReason(@NotEmptyStr @RequestParam("dicName") String dicName, @Id @RequestParam("id") int id) {
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        dictionaryService.editRunoffReason(currentLoginStaff.getCompanyId(), id, dicName);
+        return ResultInfoUtil.success(TipMsgConstant.EDIT_SUCCESS);
+    }
+
+    /**
+     * 删除流失原因
+     *
+     * @param ids
+     * @return
+     */
+    @GetMapping("/delete_run_off_reason")
+    public ResultInfo deleteRunoffReason(@NotEmptyStr @RequestParam("ids") String ids) {
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        dictionaryService.batchDeleteByIds(currentLoginStaff.getCompanyId(), ids);
+        return ResultInfoUtil.success(TipMsgConstant.DELETE_SUCCESS);
+    }
+
 }
