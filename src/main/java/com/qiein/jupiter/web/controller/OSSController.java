@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.constant.TipMsgConstant;
 import com.qiein.jupiter.util.OSSUtil;
 import com.qiein.jupiter.util.ResultInfo;
@@ -9,16 +10,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
+ * 阿里OSSController
  * Created by Administrator on 2018/4/26 0026.
  */
 @RestController
 @RequestMapping("/oss")
 public class OSSController extends BaseController{
 
-    @GetMapping("/get_info")
+    /**
+     * 获取Web直传Policy
+     * @return
+     */
+    @GetMapping("/get_policy")
     public ResultInfo getPolicyAndCallback(){
-        //TODO 获取Policy和回调设置
-        OSSUtil.getOssUtil();
-        return ResultInfoUtil.success(TipMsgConstant.SUCCESS,null);
+        return ResultInfoUtil.success(TipMsgConstant.SUCCESS,OSSUtil.getPolicy(null,60));
     }
 }
