@@ -27,7 +27,7 @@ public class OSSUtil {
     /**
      * END_POINT是访问OSS的域名
      */
-    private static final String END_POINT = "http://oss-cn-hangzhou.aliyuncs.com/";
+    private static final String END_POINT = "oss-cn-hangzhou.aliyuncs.com";
     /**
      * 访问密钥的id
      */

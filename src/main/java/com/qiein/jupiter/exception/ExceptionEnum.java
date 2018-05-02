@@ -79,7 +79,9 @@ public enum ExceptionEnum {
     BRAND_HAVE_CHANNEL(1004, "品牌下存在渠道，请先删除下属渠道再继续操作"),
     //无效原因
     INVALID_REASON_EXIST(1101, "无效原因已存在"),
-    INVALID_REASON_TYPE_NULL(1102, "类型不能为空");
+    INVALID_REASON_TYPE_NULL(1102, "类型不能为空"),
+    //公司
+    COMPANY_ID_NULL(1201,"该公司编号不能为空");
 
     private Integer code;
 
