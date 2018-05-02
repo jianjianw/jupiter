@@ -1,5 +1,8 @@
 package com.qiein.jupiter.web.service.impl;
 
+import com.qiein.jupiter.constant.TipMsgConstant;
+import com.qiein.jupiter.exception.ExceptionEnum;
+import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.web.dao.CompanyDao;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.service.CompanyService;
@@ -69,6 +72,8 @@ public class CompanyServiceImpl implements CompanyService {
      */
     @Override
     public int update(CompanyPO companyPO) {
-        return 0;
+        if (companyPO.getId()==0)
+            throw new RException(ExceptionEnum.COMPANY_ID_NULL);
+        return companyDao.update(companyPO);
     }
 }
