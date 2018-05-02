@@ -90,8 +90,27 @@ public class OSSUtil {
         return ossUtil;
     }
 
+    //=============================================================前端web直传阿里OSS对象存储
+
     /**
-     * 获取Policy
+     * 获取上传策略Policy，默认授权有效时间30s
+     * @return
+     */
+    public static JSONObject getPolicy(){
+        return getPolicy(null,30);
+    }
+
+    /**
+     * 获取上传策略Policy,默认授权有效时间30s
+     * @param seconds
+     * @return
+     */
+    public static JSONObject getPolicy(int seconds){
+        return getPolicy(null,seconds);
+    }
+
+    /**
+     * 获取上传策略Policy
      * @param callbackUrl   回调地址
      * @param seconds       授权有效持续时间
      * @return
@@ -112,7 +131,8 @@ public class OSSUtil {
         //设置上传文件的大小限制
         policyConds.addConditionItem(PolicyConditions.COND_CONTENT_LENGTH_RANGE, 0, 1048576000);
         //设置此次上传的文件名必须是dir变量的值开头
-        policyConds.addConditionItem(MatchMode.StartWith, PolicyConditions.COND_KEY, dir);
+//        policyConds.addConditionItem(MatchMode.StartWith, PolicyConditions.COND_KEY, dir);
+//        policyConds.addConditionItem(MatchMode.StartWith, PolicyConditions.COND_KEY, dir);
         String postPolicy = client.generatePostPolicy(expiration, policyConds);
 
         //policy
@@ -142,29 +162,6 @@ public class OSSUtil {
     }
 
     /**
-     * 大概是
-     *
-     * @param request
-     * @param response
-     * @param results   签名内容的JSON化之后的字符串
-     * @throws IOException
-     */
-    private void response(HttpServletRequest request, HttpServletResponse response, String results) throws IOException {
-        //获取请求中的回调参数
-        String callbackFunName = request.getParameter("callback");
-
-        if (callbackFunName==null || callbackFunName.equalsIgnoreCase(""))
-            //如果回调参数不为空 字符输出流输出字符串
-            response.getWriter().println(results);
-        else
-            //如果为空
-            response.getWriter().println(callbackFunName + "( "+results+" )");
-        //设置响应状态200，成功
-        response.setStatus(HttpServletResponse.SC_OK);
-        response.flushBuffer();
-    }
-
-    /**
      * 获取过期授权时间
      * @return
      */
@@ -185,6 +182,10 @@ public class OSSUtil {
     public static String getDirectory() {
         return new SimpleDateFormat("yyyy/MM/dd").format(Calendar.getInstance().getTime());
     }
+
+    //============================================================================上传至服务器然后再处理
+
+
 
     public static void main(String[] args) {
         System.out.println(getDirectory());
