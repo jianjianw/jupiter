@@ -11,7 +11,7 @@
         <result column="BRANDNAME" jdbcType="VARCHAR" property="brandName"/>
         <result column="PUSHRULE" jdbcType="INTEGER" property="pushRule"/>
         <result column="COMPANYID" jdbcType="INTEGER" property="companyId"/>
-        <result column="ISSHOW" jdbcType="BOOLEAN" property="isShow"/>
+        <result column="ISSHOW" jdbcType="BOOLEAN" property="showFlag"/>
         <result column="PRIORITY" jdbcType="INTEGER" property="priority"/>
     </resultMap>
 
@@ -60,8 +60,8 @@
             <if test="pushRule != null and pushRule !=''">
                 PUSHRULE = #{pushRule},
             </if>
-            <if test="isShow != null and isShow !=''">
-                ISSHOW = #{isShow},
+            <if test="showFlag != null and showFlag !=''">
+                ISSHOW = #{showFlag},
             </if>
         </where>
         ORDER BY ISSHOW DESC, TYPEID ,ID
@@ -73,7 +73,7 @@
         INSERT INTO hm_crm_channel
         (CHANNELNAME,CHANNELIMG,TYPEID,BRANDID,BRANDNAME,PUSHRULE,COMPANYID,ISSHOW,PRIORITY)
         SELECT
-        #{channelName},#{channelImg},#{typeId},#{brandId},#{brandName},#{pushRule},#{companyId},#{isShow},(
+        #{channelName},#{channelImg},#{typeId},#{brandId},#{brandName},#{pushRule},#{companyId},#{showFlag},(
         SELECT IFNULL(MAX(PRIORITY),0)+1 FROM hm_crm_channel WHERE COMPANYID = #{companyId})
     </insert>
 
@@ -99,8 +99,8 @@
             <if test="pushRule != null">
                 PUSHRULE = #{pushRule},
             </if>
-            <if test="isShow != null">
-                ISSHOW = #{isShow},
+            <if test="showFlag != null">
+                ISSHOW = #{showFlag},
             </if>
         </set>
         WHERE

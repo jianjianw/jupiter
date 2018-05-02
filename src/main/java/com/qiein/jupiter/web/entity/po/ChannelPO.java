@@ -60,17 +60,17 @@ public class ChannelPO extends BaseEntity {
     /**
      * 是否启用 true启用/false停用
      */
-    private Boolean isShow;
+    private Boolean showFlag;
 
     public ChannelPO() {
     }
 
-    public ChannelPO(String channelName, Integer typeId, Integer pushRule, Integer companyId, Boolean isShow) {
+    public ChannelPO(String channelName, Integer typeId, Integer pushRule, Integer companyId, Boolean showFlag) {
         this.channelName = channelName;
         this.typeId = typeId;
         this.pushRule = pushRule;
         this.companyId = companyId;
-        this.isShow = isShow;
+        this.showFlag = showFlag;
     }
 
     public String getChannelName() {
@@ -137,26 +137,11 @@ public class ChannelPO extends BaseEntity {
         this.priority = priority;
     }
 
-    public Boolean getIsShow() {
-        return isShow;
+    public Boolean getShowFlag() {
+        return showFlag;
     }
 
-    public void setIsShow(Boolean show) {
-        isShow = show;
-    }
-
-    @Override
-    public String toString() {
-        return "ChannelPO{" +
-                "channelName='" + channelName + '\'' +
-                ", channelImg='" + channelImg + '\'' +
-                ", typeId=" + typeId +
-                ", brandId=" + brandId +
-                ", brandName='" + brandName + '\'' +
-                ", pushRule=" + pushRule +
-                ", companyId=" + companyId +
-                ", priority=" + priority +
-                ", isShow=" + isShow +
-                '}';
+    public void setShowFlag(Boolean showFlag) {
+        this.showFlag = showFlag;
     }
 }
