@@ -19,8 +19,8 @@
     <insert id="insert" parameterType="com.qiein.jupiter.web.entity.po.RolePO" useGeneratedKeys="true" keyProperty="id">
       INSERT INTO hm_pub_role
         ( ROLENAME, COMPANYID, PRIORITY )
-      VALUES
-	    (#{roleName},#{companyId},#{priority} );
+      SELECT
+	    #{roleName},#{companyId},(SELECT IFNULL(MAX(PRIORITY),0)+1 FROM hm_pub_role WHERE COMPANYID = #{companyId}) ;
     </insert>
 
     <!--根据角色名获取角色信息-->
@@ -49,6 +49,19 @@
         </set>
         WHERE ID = #{roleId}
         AND COMPANYID = #{companyId}
+    </update>
+
+    <!--修改排序-->
+    <update id="updatePriority" parameterType="Integer">
+        UPDATE
+        hm_pub_role
+        <set>
+            <if test="priority != null and priority !=''">
+                PRIORITY = #{priority}
+            </if>
+        </set>
+        WHERE
+        COMPANYID = #{companyId} AND ID = #{id}
     </update>
 
     <!--获取角色-->

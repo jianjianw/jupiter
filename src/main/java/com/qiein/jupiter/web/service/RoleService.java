@@ -30,6 +30,16 @@ public interface RoleService {
     void update(RoleVO roleVO);
 
     /**
+     * 编辑角色排序
+     * @param fId
+     * @param fPriority
+     * @param sId
+     * @param sPriority
+     * @param companyId
+     */
+    void editProiority(Integer fId, Integer fPriority, Integer sId, Integer sPriority, Integer companyId);
+
+    /**
      * 获取企业所有角色，以及角色对应的权限集合
      */
     List<RolePermissionVO> getCompanyAllRole(Integer companyId);

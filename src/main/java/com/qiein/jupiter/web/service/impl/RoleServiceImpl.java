@@ -85,6 +85,21 @@ public class RoleServiceImpl implements RoleService {
     }
 
     /**
+     * 编辑角色排序
+     * @param fId
+     * @param fPriority
+     * @param sId
+     * @param sPriority
+     * @param companyId
+     */
+    @Override
+    @Transactional
+    public void editProiority(Integer fId, Integer fPriority, Integer sId, Integer sPriority, Integer companyId) {
+        roleDao.updatePriority(fId,fPriority,companyId);
+        roleDao.updatePriority(sId,sPriority,companyId);
+    }
+
+    /**
      * 获取企业所有角色，以及角色对应的权限集合
      */
     public List<RolePermissionVO> getCompanyAllRole(Integer companyId) {
