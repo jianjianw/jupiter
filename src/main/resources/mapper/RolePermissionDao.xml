@@ -11,6 +11,7 @@
         <result column="ID" property="roleId" jdbcType="INTEGER"/>
         <result column="ROLENAME" property="roleName" jdbcType="VARCHAR"/>
         <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
+        <result column="PRIORITY" property="priority" jdbcType="INTEGER"/>
         <collection property="pmsList" ofType="com.qiein.jupiter.web.entity.po.PermissionPO" resultMap="pmsPO"/>
     </resultMap>
     <resultMap id="pmsPO" type="com.qiein.jupiter.web.entity.po.PermissionPO">
@@ -29,7 +30,7 @@
     <!--获取当前公司下的所有角色及对应的权限-->
     <select id="getCompanyAllRole" parameterType="map" resultMap="VOMap">
         SELECT
-          role.ID,role.ROLENAME,role.COMPANYID,pms.ID AS PMSID,pms.PERMISSIONNAME,pms.TYPEID
+          role.ID,role.ROLENAME,role.COMPANYID,role.PRIORITY,pms.ID AS PMSID,pms.PERMISSIONNAME,pms.TYPEID
         FROM
           hm_pub_role role
         LEFT JOIN hm_pub_role_permission rela ON role.ID = rela.ROLEID AND role.COMPANYID = rela.COMPANYID
