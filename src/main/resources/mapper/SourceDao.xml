@@ -246,4 +246,16 @@
             src.ID
         ORDER BY COUNT( 1 ) DESC;
     </select>
+
+    <!--根据名字类型，获取来源信息-->
+    <select id="getSourceByNameAndType" parameterType="map" resultMap="baseMap">
+        SELECT
+            <include refid="baseColumn"/>
+        FROM
+            hm_crm_source
+        WHERE
+            COMPANYID = #{companyId}
+        AND TYPEID = #{typeId}
+        AND SRCNAME = #{srcName}
+    </select>
 </mapper>

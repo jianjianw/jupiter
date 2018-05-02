@@ -10,6 +10,10 @@ public class NumberConstant {
      */
     public final static int DEFAULT_ZERO = 0;
     /**
+     * 默认字符串0
+     */
+    public final static String DEFAULT_STRING_ZERO = "0";
+    /**
      * 默认成功返回值
      */
     public final static int DEFAULT_SUCCESS_CODE = 100000;

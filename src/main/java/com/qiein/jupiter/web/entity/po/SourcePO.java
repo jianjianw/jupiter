@@ -79,6 +79,16 @@ public class SourcePO extends BaseEntity {
 
     }
 
+    public SourcePO(String srcName, Integer typeId, Integer channelId, String channelName, Integer companyId, Boolean isShow, boolean isFilter) {
+        this.srcName = srcName;
+        this.typeId = typeId;
+        this.channelId = channelId;
+        this.channelName = channelName;
+        this.companyId = companyId;
+        this.isShow = isShow;
+        this.isFilter = isFilter;
+    }
+
     public String getSrcName() {
         return srcName;
     }

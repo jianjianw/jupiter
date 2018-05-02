@@ -62,6 +62,16 @@ public class ChannelPO extends BaseEntity {
      */
     private Boolean isShow;
 
+    public ChannelPO() {
+    }
+
+    public ChannelPO(String channelName, Integer typeId, Integer pushRule, Integer companyId, Boolean isShow) {
+        this.channelName = channelName;
+        this.typeId = typeId;
+        this.pushRule = pushRule;
+        this.companyId = companyId;
+        this.isShow = isShow;
+    }
 
     public String getChannelName() {
         return channelName;

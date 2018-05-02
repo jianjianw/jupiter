@@ -81,5 +81,21 @@ public interface ChannelDao extends BaseDao<ChannelPO> {
     List<Integer> getLastMonthChannelSort(@Param("tableName") String tableName, @Param("companyId") Integer companyId,
                                           @Param("staffId") int staffId, @Param("typeList") List<Integer> typeList);
 
+    /**
+     * 根据渠道名，获取渠道信息
+     *
+     * @param companyId
+     * @param channelName
+     * @return
+     */
+    ChannelPO getChannelByNameAndType(@Param("companyId") int companyId, @Param("channelName") String channelName, @Param("typeId") int typeId);
 
+    /**
+     * 根据部门ID，获取对应的转介绍渠道ID，和渠道名
+     *
+     * @param companyId
+     * @param groupId
+     * @return
+     */
+    ChannelPO getZjsChannelByDeptId(@Param("companyId") int companyId, @Param("groupId") String groupId);
 }

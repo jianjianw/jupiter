@@ -96,4 +96,14 @@ public interface SourceDao extends BaseDao<SourcePO> {
      */
     List<Integer> getLastMonthSrcSort(@Param("tableName") String tableName, @Param("companyId") Integer companyId,
                                       @Param("staffId") int staffId, @Param("typeList") List<Integer> typeList);
+
+    /**
+     * 根据名字类型，获取来源信息
+     *
+     * @param companyId
+     * @param srcName
+     * @param typeId
+     * @return
+     */
+    SourcePO getSourceByNameAndType(@Param("companyId") int companyId, @Param("srcName") String srcName, @Param("typeId") int typeId);
 }
