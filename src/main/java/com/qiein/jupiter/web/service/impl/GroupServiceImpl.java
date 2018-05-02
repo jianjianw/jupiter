@@ -65,6 +65,10 @@ public class GroupServiceImpl implements GroupService {
     @Override
     @Transactional
     public GroupPO update(GroupPO groupPO) {
+        GroupPO old = groupDao.getGroupById(groupPO.getCompanyId(), groupPO.getGroupId());
+        if (old == null) {
+            throw new RException(ExceptionEnum.GROUP_NOT_EXIT);
+        }
         GroupPO groupDB = groupDao.getByName(groupPO.getGroupName(), groupPO.getCompanyId());
         // 验证是否存在相同的部门名称
         if (groupDB != null && groupDB.getId() != groupPO.getId()) {
@@ -80,6 +84,17 @@ public class GroupServiceImpl implements GroupService {
                 po.setGroupType(groupPO.getGroupType());
             }
             groupDao.batchUpdateGroupType(byParentId);
+        }
+        //更新名字，同步转介绍名字
+        if (NumberConstant.DEFAULT_STRING_ZERO.equals(groupPO.getParentId())) {
+            //获取渠道信息
+            ChannelPO exist = channelDao.getChannelByNameAndType(groupPO.getCompanyId(), old.getGroupName(), ChannelConstant.STAFF_ZJS);
+            exist.setChannelName(groupPO.getGroupName());
+            channelDao.update(exist);
+        } else {
+            SourcePO exist = sourceDao.getSourceByNameAndType(groupPO.getCompanyId(), old.getGroupName(), ChannelConstant.STAFF_ZJS);
+            exist.setSrcName(groupPO.getGroupName());
+            sourceDao.update(exist);
         }
         return groupPO;
     }
