@@ -75,5 +75,19 @@ public class RoleController extends BaseController {
         return ResultInfoUtil.success(roleList);
     }
 
+    /**
+     * 角色排序
+     * @param fId
+     * @param fPriority
+     * @param sId
+     * @param sPriority
+     * @return
+     */
+    @GetMapping("/edit_priority")
+    public ResultInfo editRolePriority (@Id Integer fId, @Id Integer fPriority,
+                                        @Id Integer sId, @Id Integer sPriority){
+        roleService.editProiority(fId,fPriority,sId,sPriority,getCurrentLoginStaff().getCompanyId());
+        return ResultInfoUtil.success(TipMsgConstant.EDIT_SUCCESS);
+    }
 
 }
