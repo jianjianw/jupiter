@@ -80,6 +80,7 @@ public class ShopController extends BaseController {
 
     /**
      * 编辑拍摄地排序，实际是交换两个拍摄地的排序
+     *
      * @param fId
      * @param fPriority
      * @param sId
@@ -88,8 +89,8 @@ public class ShopController extends BaseController {
      */
     @GetMapping("/priority")
     public ResultInfo editPriority(@Id Integer fId, @Id Integer fPriority,
-                                   @Id Integer sId, @Id Integer sPriority){
-        shopService.editPriority(fId,fPriority,sId,sPriority,getCurrentLoginStaff().getCompanyId());
+                                   @Id Integer sId, @Id Integer sPriority) {
+        shopService.editPriority(fId, fPriority, sId, sPriority, getCurrentLoginStaff().getCompanyId());
         return ResultInfoUtil.success(TipMsgConstant.EDIT_SUCCESS);
     }
 

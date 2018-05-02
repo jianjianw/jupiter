@@ -51,7 +51,7 @@ public class CompanyPO extends BaseEntity {
     /**
      * 是否删除
      */
-    private boolean delFlag;
+    private Boolean delFlag;
 
 
     public String getCompanyName() {
@@ -134,7 +134,7 @@ public class CompanyPO extends BaseEntity {
         this.kzInterval = kzInterval;
     }
 
-    public boolean isDelFlag() {
+    public Boolean isDelFlag() {
         return delFlag;
     }
 

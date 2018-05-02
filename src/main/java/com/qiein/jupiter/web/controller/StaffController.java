@@ -234,8 +234,10 @@ public class StaffController extends BaseController {
      * @return
      */
     @GetMapping("/batch_edit_staff")
-    public ResultInfo batchEditStaff(@NotEmptyStr @RequestParam("staffIds") String staffIds, @RequestParam("roleIds") String roleIds,
-                                     @RequestParam("password") String password, @NotEmptyStr @RequestParam("groupId") String groupId) {
+    public ResultInfo batchEditStaff(@NotEmptyStr @RequestParam("staffIds") String staffIds,
+                                     @RequestParam("roleIds") String roleIds,
+                                     @RequestParam("password") String password,
+                                     @NotEmptyStr @RequestParam("groupId") String groupId) {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         staffService.batchEditStaff(currentLoginStaff.getCompanyId(), staffIds, roleIds, password, groupId);
@@ -368,7 +370,8 @@ public class StaffController extends BaseController {
      * @return
      */
     @GetMapping("/lock_staff")
-    public ResultInfo LockStaff(@Id @RequestParam("staffId") Integer staffId, @Bool @RequestParam("isLock") Boolean isLock) {
+    public ResultInfo LockStaff(@Id @RequestParam("staffId") Integer staffId,
+                                @Bool @RequestParam("isLock") Boolean isLock) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         //获取操作用户所属公司
@@ -543,8 +546,10 @@ public class StaffController extends BaseController {
      * @return
      */
     @GetMapping("/batch_restore_staff")
-    public ResultInfo batchRestoreStaff(@NotEmptyStr @RequestParam("staffIds") String staffIds, @NotEmptyStr @RequestParam("roleIds") String roleIds,
-                                        @RequestParam("password") String password, @NotEmptyStr @RequestParam("groupId") String groupId) {
+    public ResultInfo batchRestoreStaff(@NotEmptyStr @RequestParam("staffIds") String staffIds,
+                                        @NotEmptyStr @RequestParam("roleIds") String roleIds,
+                                        @RequestParam("password") String password,
+                                        @NotEmptyStr @RequestParam("groupId") String groupId) {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         staffService.batchRestoreStaff(currentLoginStaff.getCompanyId(), staffIds, roleIds, password, groupId);

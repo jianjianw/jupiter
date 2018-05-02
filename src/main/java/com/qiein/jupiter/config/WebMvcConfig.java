@@ -26,12 +26,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
                 .excludePathPatterns("/staff/get_company_list")
                 .excludePathPatterns("/staff/login_with_company_id")
                 .excludePathPatterns("/staff/verify_code")
-                .excludePathPatterns("/staff/need_verity_code")
-                //客户端登录的不拦截
-                .excludePathPatterns("/app/login/get_company_list")
-                .excludePathPatterns("/app/login/login_with_company_id")
-                .excludePathPatterns("/app/login/verify_code")
-                .excludePathPatterns("/app/login/need_verity_code");
+                .excludePathPatterns("/staff/need_verity_code");
     }
 
 }

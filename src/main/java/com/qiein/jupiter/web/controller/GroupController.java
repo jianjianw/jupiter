@@ -96,7 +96,8 @@ public class GroupController extends BaseController {
     public ResultInfo getGroupStaffByRole(@NotEmptyStr @RequestParam("role") String role) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        return ResultInfoUtil.success(groupService.getGroupStaffByType(currentLoginStaff.getCompanyId(), currentLoginStaff.getId(), role));
+        return ResultInfoUtil.success(
+                groupService.getGroupStaffByType(currentLoginStaff.getCompanyId(), currentLoginStaff.getId(), role));
     }
 
 }

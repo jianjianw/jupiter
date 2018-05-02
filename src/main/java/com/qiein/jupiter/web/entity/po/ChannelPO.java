@@ -137,11 +137,11 @@ public class ChannelPO extends BaseEntity {
         this.priority = priority;
     }
 
-    public Boolean getShow() {
+    public Boolean getIsShow() {
         return isShow;
     }
 
-    public void setShow(Boolean show) {
+    public void setIsShow(Boolean show) {
         isShow = show;
     }
 

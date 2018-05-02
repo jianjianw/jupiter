@@ -29,6 +29,10 @@ public class LoginUserVO {
      * 验证码
      */
     private String verifyCode;
+    /**
+     * 是否是客户端
+     */
+    private boolean clientFlag;
 
     public String getUserName() {
         return userName;
@@ -60,5 +64,13 @@ public class LoginUserVO {
 
     public void setCompanyId(int companyId) {
         this.companyId = companyId;
+    }
+
+    public boolean getClientFlag() {
+        return clientFlag;
+    }
+
+    public void setClientFlag(boolean clientFlag) {
+        this.clientFlag = clientFlag;
     }
 }
