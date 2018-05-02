@@ -133,7 +133,7 @@ public class GroupServiceImpl implements GroupService {
 //            exist.setIsShow(false);
 //            channelDao.update(exist);
             if (exist != null) {
-                channelDao.delete(exist.getId());
+                channelDao.deleteByIdAndCid(exist.getId(),exist.getCompanyId());
             }
         } else {
             //删除小组，同步删除来源
@@ -142,7 +142,7 @@ public class GroupServiceImpl implements GroupService {
 //            exist.setIsShow(false);
 //            sourceDao.update(exist);
             if (exist != null) {
-                sourceDao.delete(exist.getId());
+                sourceDao.deleteByIdAndCid(exist.getId(),exist.getCompanyId());
             }
         }
         return groupDao.delete(id);
