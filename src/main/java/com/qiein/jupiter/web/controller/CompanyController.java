@@ -22,10 +22,23 @@ public class CompanyController extends BaseController {
     @Resource
     private CompanyService companyService;
 
+    /**
+     * 编辑企业信息
+     * @param companyPO
+     * @return
+     */
     @PostMapping("/edit")
     public ResultInfo editCompanyInfo (CompanyPO companyPO){
         companyService.update(companyPO);
         return ResultInfoUtil.success(TipMsgConstant.EDIT_SUCCESS);
     }
 
+    /**
+     * 获取企业信息
+     * @return
+     */
+    @GetMapping("/info")
+    public ResultInfo getCompanyInfo(){
+        return ResultInfoUtil.success(TipMsgConstant.SUCCESS,companyService.getById(getCurrentLoginStaff().getCompanyId()));
+    }
 }
