@@ -180,7 +180,7 @@ public class OSSUtil {
      * @return
      */
     public static String getDirectory() {
-        return new SimpleDateFormat("yyyy/MM/dd").format(Calendar.getInstance().getTime());
+        return new SimpleDateFormat("yyyy/MM/dd/").format(Calendar.getInstance().getTime());
     }
 
     //============================================================================上传至服务器然后再处理
