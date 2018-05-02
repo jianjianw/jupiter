@@ -128,14 +128,18 @@ public class GroupServiceImpl implements GroupService {
             //TODO 查询该渠道下有没有客资
 //            exist.setIsShow(false);
 //            channelDao.update(exist);
-            channelDao.delete(exist.getId());
+            if (exist != null) {
+                channelDao.delete(exist.getId());
+            }
         } else {
             //删除小组，同步删除来源
             SourcePO exist = sourceDao.getSourceByNameAndType(groupPO.getCompanyId(), groupPO.getGroupName(), ChannelConstant.STAFF_ZJS);
             //TODO 查询该来源下有没有客资
 //            exist.setIsShow(false);
 //            sourceDao.update(exist);
-            sourceDao.delete(exist.getId());
+            if (exist != null) {
+                sourceDao.delete(exist.getId());
+            }
         }
         return groupDao.delete(id);
     }
