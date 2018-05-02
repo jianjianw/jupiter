@@ -137,9 +137,9 @@ public class GroupServiceImpl implements GroupService {
                 //新增渠道
                 ChannelPO channelPO = new ChannelPO(groupPO.getGroupName(), ChannelConstant.STAFF_ZJS, 0, groupPO.getCompanyId(), true);
                 channelDao.insert(channelPO);
-            } else if (!exist.getShow()) {
+            } else if (!exist.getIsShow()) {
                 //开启渠道
-                exist.setShow(true);
+                exist.setIsShow(true);
                 channelDao.update(exist);
             }
         } else {
