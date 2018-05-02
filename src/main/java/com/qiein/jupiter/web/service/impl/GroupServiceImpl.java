@@ -89,12 +89,16 @@ public class GroupServiceImpl implements GroupService {
         if (NumberConstant.DEFAULT_STRING_ZERO.equals(groupPO.getParentId())) {
             //获取渠道信息
             ChannelPO exist = channelDao.getChannelByNameAndType(groupPO.getCompanyId(), old.getGroupName(), ChannelConstant.STAFF_ZJS);
-            exist.setChannelName(groupPO.getGroupName());
-            channelDao.update(exist);
+            if (exist != null) {
+                exist.setChannelName(groupPO.getGroupName());
+                channelDao.update(exist);
+            }
         } else {
             SourcePO exist = sourceDao.getSourceByNameAndType(groupPO.getCompanyId(), old.getGroupName(), ChannelConstant.STAFF_ZJS);
-            exist.setSrcName(groupPO.getGroupName());
-            sourceDao.update(exist);
+            if (exist != null) {
+                exist.setSrcName(groupPO.getGroupName());
+                sourceDao.update(exist);
+            }
         }
         return groupPO;
     }
