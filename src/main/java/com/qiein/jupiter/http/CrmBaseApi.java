@@ -19,24 +19,16 @@ import com.qiein.jupiter.util.MD5Util;
 @Controller
 public class CrmBaseApi extends BaseApi {
 
+	@Value("${crmInterface.url}")
 	private String url;// 接口调用地址
 	private String accessid = "819974ff209236630597d53a593e1767";// 通行证编码
 	private String key = "NzRhNDhkZGExNjFkZDBiNTRkMjI3Mjg4ODc1NDU2MzU=";// 签名
 
-//	public void setPurl(String purl) {
-//		this.url = "";
-//	}
+	public void setPurl(String purl) {
+		this.url = "";
+	}
 
-    /**
-     * 从配置文件设置url的值
-     * @param url
-     */
-    @Value("${crmInterface.url}")
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    // 签名类型(1 md5签名 ,2 hmacsh1 签名)
+	// 签名类型(1 md5签名 ,2 hmacsh1 签名)
 	private String signtype = "2";
 
 	public String doService(Map<String, Object> reqcontent, String action) throws RException {
