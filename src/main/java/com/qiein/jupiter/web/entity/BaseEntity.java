@@ -1,5 +1,7 @@
 package com.qiein.jupiter.web.entity;
 
+import com.alibaba.fastjson.JSONObject;
+
 import java.io.Serializable;
 
 /**
@@ -26,4 +28,8 @@ public class BaseEntity implements Serializable {
         this.id = id;
     }
 
+    @Override
+    public String toString() {
+        return JSONObject.toJSONString(this);
+    }
 }

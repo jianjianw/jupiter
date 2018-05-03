@@ -23,6 +23,8 @@ public class OSSController extends BaseController{
      */
     @GetMapping("/get_policy")
     public ResultInfo getPolicyAndCallback(){
-        return ResultInfoUtil.success(TipMsgConstant.SUCCESS,OSSUtil.getPolicy(null,60));
+        return ResultInfoUtil.success(TipMsgConstant.SUCCESS,OSSUtil.getPolicy(60));
     }
+
+
 }

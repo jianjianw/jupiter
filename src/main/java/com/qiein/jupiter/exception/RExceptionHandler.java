@@ -59,7 +59,8 @@ public class RExceptionHandler {
      * @return
      */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public ResultInfo handleMethodNotException() {
+    public ResultInfo handleMethodNotException(HttpRequestMethodNotSupportedException e) {
+        logger.error(e.getMessage(), e);
         return ResultInfoUtil.error(ExceptionEnum.HTTP_METHOD_NOT_SUPPORT);
     }
 
@@ -70,6 +71,7 @@ public class RExceptionHandler {
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResultInfo handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        logger.error(e.getMessage(), e);
         List<ObjectError> allErrors = e.getBindingResult().getAllErrors();
         StringBuilder stringBuffer = new StringBuilder();
         for (ObjectError allError : allErrors) {
@@ -83,7 +85,8 @@ public class RExceptionHandler {
      * http body参数无法读取转换
      */
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResultInfo handleHttpMessageNotReadableException() {
+    public ResultInfo handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
+        logger.error(e.getMessage(), e);
         return ResultInfoUtil.error(ExceptionEnum.HTTP_BODY_NOT_READABLE);
     }
 
@@ -93,7 +96,8 @@ public class RExceptionHandler {
      * @return
      */
     @ExceptionHandler(BadSqlGrammarException.class)
-    public ResultInfo handleBadSqlGrammarException() {
+    public ResultInfo handleBadSqlGrammarException(BadSqlGrammarException e) {
+        logger.error(e.getMessage(), e);
         return ResultInfoUtil.error(ExceptionEnum.MYSQL_SQL_GRAMMAR_ERROR);
     }
 
@@ -103,7 +107,8 @@ public class RExceptionHandler {
      * @return
      */
     @ExceptionHandler(MissingServletRequestParameterException.class)
-    public ResultInfo handleMissingServletRequestParameterException() {
+    public ResultInfo handleMissingServletRequestParameterException(MissingServletRequestParameterException e) {
+        logger.error(e.getMessage(), e);
         return ResultInfoUtil.error(ExceptionEnum.HTTP_PARAMETER_ERROR);
     }
 
@@ -115,6 +120,7 @@ public class RExceptionHandler {
      */
     @ExceptionHandler(ConstraintViolationException.class)
     public ResultInfo handleConstraintViolationException(ConstraintViolationException e) {
+        logger.error(e.getMessage(), e);
         StringBuilder eMsg = new StringBuilder();
         for (ConstraintViolation<?> constraintViolation : e.getConstraintViolations()) {
             eMsg.append(constraintViolation.getMessage()).append(";");
@@ -135,6 +141,7 @@ public class RExceptionHandler {
         for (ObjectError allError : allErrors) {
             stringBuffer.append(allError.getDefaultMessage()).append(";");
         }
+        logger.error(e.getMessage(), e);
         return ResultInfoUtil.error(-100, stringBuffer.toString());
     }
 
@@ -144,7 +151,8 @@ public class RExceptionHandler {
      * @return
      */
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResultInfo handleMethodArgumentTypeMismatchException() {
+    public ResultInfo handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
+        logger.error(e.getMessage(), e);
         return ResultInfoUtil.error(ExceptionEnum.METHOD_ARGUMENT_TYPE_MISMATCH_ERROR);
     }
 }

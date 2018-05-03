@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "websocket.msg.url",
+      "type": "java.lang.String",
+      "description": "Description for websocket.msg.url."
+  }
+] }
