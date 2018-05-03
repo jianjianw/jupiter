@@ -1,6 +1,7 @@
 package com.qiein.jupiter.msg.websocket;
 
 import com.alibaba.fastjson.JSONObject;
+import com.qiein.jupiter.web.entity.dto.CompanyMsgDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +21,15 @@ public class WebSocketMsgUtilTest {
 
     @Test
     public void sendMsg() {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("name", "st");
-        jsonObject.put("age", "123");
-        long time=System.currentTimeMillis();
-        for (int i = 0; i <1000 ; i++) {
-//            webSocketMsgUtil.sendMsgAsync(jsonObject.toJSONString());
+        CompanyMsgDTO companyMsgDTO = new CompanyMsgDTO();
+        companyMsgDTO.setCompanyId(1);
+        companyMsgDTO.setContent("hhhhh");
+        companyMsgDTO.setType("1");
+        long time = System.currentTimeMillis();
+        for (int i = 0; i < 1000; i++) {
+            webSocketMsgUtil.sendMsg(companyMsgDTO);
         }
-        System.out.println(System.currentTimeMillis()-time);
+        System.out.println(System.currentTimeMillis() - time);
     }
 
 
