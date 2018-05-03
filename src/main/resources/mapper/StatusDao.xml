@@ -1,14 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.qiein.jupiter.web.dao.ImageDao">
+<mapper namespace="com.qiein.jupiter.web.dao.StatusDao">
 
-    <!-- 根据指定图片类型获取图片地址列表 -->
-    <select id="getSrcImgList" parameterType="java.lang.String" resultType="java.util.Map">
+    <resultMap id="baseMap" type="com.qiein.jupiter.web.entity.po.StatusPO">
+        <id column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="CLASSID" property="classId" jdbcType="INTEGER"/>
+        <result column="CLASSNAME" property="className" jdbcType="VARCHAR"/>
+        <result column="STATUSID" property="statusId" jdbcType="INTEGER"/>
+        <result column="STATUSNAME" property="statusName" jdbcType="VARCHAR"/>
+        <result column="BACKCOLOR" property="backColor" jdbcType="VARCHAR"/>
+        <result column="FONTCOLOR" property="fontColor" jdbcType="VARCHAR"/>
+        <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!-- 获取企业状态列表 -->
+    <select id="getCompanyStatusList" parameterType="map" resultMap="baseMap">
         SELECT
-          IMGID id, TYPECODE typeCode, TYPENAME typeName, IMGURL imgUrl, IMGNAME imgName,IMGSUFFIX imgSuffix, IMGSIZE imgSize, ISDEL isDel
+          ID, CLASSID, CLASSNAME, STATUSID, STATUSNAME, BACKCOLOR,  FONTCOLOR, COMPANYID
         FROM
-          hm_pub_img
+          hm_crm_client_status
         WHERE
-          TYPECODE = #{type} AND ISDEL = 0;
+          COMPANYID = #{companyId}
     </select>
+
+    <!--编辑状态-->
+    <update id="editStatus" parameterType="com.qiein.jupiter.web.entity.po.StatusPO">
+        UPDATE hm_crm_client_status
+        <set>
+            <if test="statusName != null and statusName != '' ">
+                STATUSNAME = #{statusName}
+            </if>
+            <if test="backColor != null and backColor != '' ">
+                BACKCOLOR = #{backColor}
+            </if>
+            <if test="fontColor != null and fontColor != '' ">
+                FONTCOLOR = #{fontColor}
+            </if>
+        </set>
+        WHERE COMPANYID = #{companyId}
+        AND ID = #{id}
+    </update>
+
+
 </mapper>
