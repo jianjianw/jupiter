@@ -20,7 +20,7 @@ public enum ExceptionEnum {
     HTTP_METHOD_NOT_SUPPORT(200, "不支持的请求方法类型"),
     HTTP_BODY_NOT_READABLE(201, "HTTP请求体无法读取"),
     HTTP_PARAMETER_ERROR(202, "HTTP请求参数无法对应"),
-    //用户登录验证
+    //用户验证
     USER_NOT_FOUND(300, "用户不存在"),
     USER_IS_DEL(301, "用户已被删除"),
     USER_IS_LOCK(302, "用户已锁定"),
@@ -41,6 +41,8 @@ public enum ExceptionEnum {
     NICKNAME_IS_NULL(348, "艺名不能为空"),
     USERNAME_IS_NULL(349, "全名不能为空"),
     PHONE_IS_NULL(350, "手机号不能为空"),
+    STAFF_IS_STOP_RECEIPT(351,"员工已被停单，请联系主管解决"),
+    STAFF_IS_LIMIT(352,"员工已达到接单限额，请联系主管解决"),
     //部门
     GROUP_NAME_REPEAT(401, "部门名称重复"),
     GROUP_HAVE_CHILD_GROUP(402, "该部门存在小组，请删除下属小组再进行操作"),

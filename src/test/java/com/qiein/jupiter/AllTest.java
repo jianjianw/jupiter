@@ -1,15 +1,14 @@
 package com.qiein.jupiter;
 
 
+import com.alibaba.fastjson.JSONObject;
 import org.apache.http.HttpEntity;
+import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.junit.Test;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class AllTest {
 
@@ -64,5 +63,13 @@ public class AllTest {
             a = "3";
         }
         return a;
+    }
+
+    @Test
+    public void testTime(){
+        Long time=43223L;
+        Date date=new Date(time);
+        Date javaDate = HSSFDateUtil.getJavaDate(time);
+        System.out.println(javaDate);
     }
 }

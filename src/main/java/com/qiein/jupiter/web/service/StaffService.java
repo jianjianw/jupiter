@@ -33,12 +33,12 @@ public interface StaffService {
 
 
     /**
-     * 设置在线状态
+     * 设置状态
      *
      * @param id
      * @param statusFlag
      */
-    StaffPO setOnlineState(int id, int companyId, int statusFlag);
+    StaffPO updateStatusFlag(int id, int companyId, int statusFlag);
 
     /**
      * 员工删除（物理删除）
@@ -258,5 +258,5 @@ public interface StaffService {
      * @param searchKey
      * @return
      */
-    List<StaffPO> getDelStafflistBySearchKey(int companyId, String searchKey);
+    List<StaffPO> getDelStaffListBySearchKey(int companyId, String searchKey);
 }
