@@ -107,10 +107,14 @@ public class ClientExcelDTO implements Serializable {
     @Excel(name = "鼠标手备注")
     private String remark;
     /**
-     * 录入时间
+     * 录入时间接收格式
      */
     @Excel(name = "录入时间", databaseFormat = "MM月dd日", format = "yyyy-MM-dd HH:mm:ss")
-    private String createTime;
+    private double time;
+    /**
+     * 录入时间db
+     */
+    private long createTime;
     /**
      * 拍摄地ID
      */
@@ -306,11 +310,19 @@ public class ClientExcelDTO implements Serializable {
         this.remark = remark;
     }
 
-    public String getCreateTime() {
+    public double getTime() {
+        return time;
+    }
+
+    public void setTime(double time) {
+        this.time = time;
+    }
+
+    public long getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(String createTime) {
+    public void setCreateTime(long createTime) {
         this.createTime = createTime;
     }
 
