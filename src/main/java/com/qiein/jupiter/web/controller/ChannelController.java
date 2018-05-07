@@ -160,7 +160,6 @@ public class ChannelController extends BaseController {
      * @param iTypeId
      * @return
      */
-    //todo 公司Id从request中取出
     private List<ChannelPO> getSrcList(Integer companyId, Integer iTypeId) {
         List<ChannelPO> list = null;
         switch (iTypeId) {

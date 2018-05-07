@@ -40,8 +40,6 @@ public class ChannelServiceImpl implements ChannelService {
         if (channelDao.checkChannel(channelPO.getChannelName(), channelPO.getCompanyId()) >= 1) {
             throw new RException(ExceptionEnum.CHANNEL_NAME_REPEAT);
         }
-        //TODO 获取最大排序并且设置
-//        channelPO.setPriority(10);
         channelDao.insert(channelPO);
     }
 
