@@ -87,8 +87,7 @@ public class SourceServiceImpl implements SourceService {
      */
     @Override
     public void delSourceById(Integer id, Integer companyId) {
-        //删除前需要检查来源下是否存在客资,为空才可删除
-        //TODO
+        //TODO  删除前需要检查来源下是否存在客资,为空才可删除
         sourceDao.deleteByIdAndCid(id, companyId);
     }
 
@@ -100,8 +99,7 @@ public class SourceServiceImpl implements SourceService {
      */
     @Override
     public void datDelSrc(String ids, Integer companyId) {
-        //删除前需要检查来源下是否存在客资,为空才可删除
-        //TODO
+        //TODO  删除前需要检查来源下是否存在客资,为空才可删除
         String[] idArr = ids.split(",");
         sourceDao.datDelete(idArr, companyId);
     }
