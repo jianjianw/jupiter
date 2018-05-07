@@ -17,11 +17,9 @@ public class WebSocketMsgUtil {
      * @param msg
      */
     private void sendMsgAsync(String msg) {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("msg", msg);
-        HttpClient.textBody(msgUrl)
+        HttpClient.post(msgUrl)
                 // post提交json
-                .json(jsonObject.toString())
+                .param("msg", msg)
                 .execute();
     }
 
@@ -31,11 +29,9 @@ public class WebSocketMsgUtil {
      * @param msg
      */
     private void sendMsgSync(String msg) {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("msg", msg);
-        HttpClient.textBody(msgUrl)
+        HttpClient.post(msgUrl)
                 // post提交json
-                .json(jsonObject.toString())
+                .param("msg", msg)
                 .asString();
     }
 
