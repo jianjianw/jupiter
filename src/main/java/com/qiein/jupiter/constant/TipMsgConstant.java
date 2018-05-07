@@ -114,4 +114,9 @@ public class TipMsgConstant {
      * 操作成功
      */
     public final static String OPERATE_SUCCESS = "操作成功";
+
+    /**
+     * 导入成功
+     */
+    public final static String IMPORT_SUCCESS = "导入成功";
 }

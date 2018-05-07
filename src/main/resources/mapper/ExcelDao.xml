@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiein.jupiter.web.dao.ExcelDao">
+
+    <resultMap id="baseMap" type="com.qiein.jupiter.web.entity.dto.ClientExcelDTO">
+        <result column="KZID" jdbcType="VARCHAR" property="kzId"/>
+        <result column="TYPEID" jdbcType="INTEGER" property="typeId"/>
+        <result column="TYPENAME" jdbcType="VARCHAR" property="typeName"/>
+        <result column="CLASSID" jdbcType="INTEGER" property="classId"/>
+        <result column="CLASSNAME" jdbcType="VARCHAR" property="className"/>
+        <result column="STATUSID" jdbcType="INTEGER" property="statusId"/>
+        <result column="STATUSNAME" jdbcType="VARCHAR" property="status"/>
+        <result column="SOURCEID" jdbcType="INTEGER" property="sourceId"/>
+        <result column="SOURCENAME" jdbcType="VARCHAR" property="source"/>
+        <result column="ZXSTYLE" jdbcType="VARCHAR" property="zxStyle"/>
+        <result column="KZNAME" jdbcType="VARCHAR" property="kzName"/>
+        <result column="SEXNAME" jdbcType="VARCHAR" property="sex"/>
+        <result column="KZPHONE" jdbcType="VARCHAR" property="kzPhone"/>
+        <result column="WECHAT" jdbcType="VARCHAR" property="kzWechat"/>
+        <result column="KZQQ" jdbcType="VARCHAR" property="kzQq"/>
+        <result column="KZWW" jdbcType="VARCHAR" property="kzWw"/>
+        <result column="COLLECTORID" jdbcType="INTEGER" property="collectorId"/>
+        <result column="COLLECTORNAME" jdbcType="VARCHAR" property="collector"/>
+        <result column="COLLECTORPHONE" jdbcType="VARCHAR" property="collectorPhone"/>
+        <result column="OLDKZNAME" jdbcType="VARCHAR" property="oldKzName"/>
+        <result column="OLDKZPHONE" jdbcType="VARCHAR" property="oldKzPhone"/>
+        <result column="APPOINTID" jdbcType="INTEGER" property="appointId"/>
+        <result column="APPOINTNAME" jdbcType="VARCHAR" property="appoint"/>
+        <result column="APPOINTTIME" jdbcType="VARCHAR" property="appointTime"/>
+        <result column="MEMO" jdbcType="VARCHAR" property="memo"/>
+        <result column="UPDATETIME" jdbcType="VARCHAR" property="updateTime"/>
+        <result column="CREATETIME" jdbcType="VARCHAR" property="createTime"/>
+        <result column="SHOPID" jdbcType="INTEGER" property="shopId"/>
+        <result column="SHOPNAME" jdbcType="VARCHAR" property="shopName"/>
+        <result column="AMOUNT" jdbcType="VARCHAR" property="amount"/>
+        <result column="RECEPTORID" jdbcType="INTEGER" property="receptorId"/>
+        <result column="RECEPTORNAME" jdbcType="VARCHAR" property="receptor"/>
+        <result column="COMPANYID" jdbcType="INTEGER" property="companyId"/>
+        <result column="ISDEL" jdbcType="BOOLEAN" property="isDel"/>
+        <result column="VALIDTIME" jdbcType="VARCHAR" property="validTime"/>
+        <result column="COMESHOPTIME" jdbcType="VARCHAR" property="comeShopTime"/>
+        <result column="SUCCESSTIME" jdbcType="VARCHAR" property="successTime"/>
+        <result column="TRACETIME" jdbcType="VARCHAR" property="traceTime"/>
+        <result column="RECEIVETIME" jdbcType="VARCHAR" property="receiveTime"/>
+        <result column="MATENAME" jdbcType="VARCHAR" property="mateName"/>
+        <result column="MATEPHONE" jdbcType="VARCHAR" property="matePhone"/>
+        <result column="MATEWECHAT" jdbcType="VARCHAR" property="mateWeChat"/>
+        <result column="MATEQQ" jdbcType="VARCHAR" property="mateQq"/>
+        <result column="MARRYTIME" jdbcType="VARCHAR" property="marryTime"/>
+        <result column="YPTIME" jdbcType="VARCHAR" property="ypTime"/>
+        <result column="ADADDRESS" jdbcType="VARCHAR" property="adAddress"/>
+        <result column="ADID" jdbcType="VARCHAR" property="adId"/>
+        <result column="CREATEIP" jdbcType="VARCHAR" property="createIp"/>
+        <result column="OPERAID" jdbcType="INTEGER" property="operaId"/>
+        <result column="INVALIDCODE" jdbcType="INTEGER" property="invalidCode"/>
+        <result column="INVALIDLABEL" jdbcType="VARCHAR" property="invalidLabel"/>
+        <result column="FILMINGAREA" jdbcType="VARCHAR" property="filmingArea"/>
+        <result column="YSRANGE" jdbcType="VARCHAR" property="ysRange"/>
+        <result column="ADDRESS" jdbcType="VARCHAR" property="address"/>
+        <result column="DEPTSORT" jdbcType="VARCHAR" property="deptSort"/>
+        <result column="GROUPID" jdbcType="VARCHAR" property="groupId"/>
+        <result column="KEYWORD" jdbcType="VARCHAR" property="keyWord"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		temp.KZID,temp.TYPEID,temp.CLASSID, temp.TYPENAME, temp.STATUSID,temp.STATUSNAME,temp.SOURCEID, temp.SOURCENAME, temp.ZXSTYLE, temp.KZNAME, temp.SEXNAME, temp.KZPHONE, temp.WECHAT, temp.KZQQ, temp.COLLECTORID,temp.COLLECTORNAME, temp.COLLECTORPHONE,
+		temp.OLDKZNAME, temp.OLDKZPHONE, temp.APPOINTID ,temp.APPOINTNAME, CAST(temp.APPOINTTIME AS CHAR) AS APPOINTTIME , CAST(temp.ACTUALTIME AS CHAR) AS ACTUALTIME, temp.MEMO, CAST(temp.CREATETIME AS CHAR) AS CREATETIME,  CAST(temp.UPDATETIME AS CHAR) AS UPDATETIME,temp.SHOPID, temp.SHOPNAME, temp.AMOUNT, temp.RECEPTORID,temp.RECEPTORNAME, CAST(temp.VALIDTIME AS CHAR) AS VALIDTIME,  CAST(temp.COMESHOPTIME AS CHAR) AS COMESHOPTIME,
+		CAST(temp.SUCCESSTIME AS CHAR) AS SUCCESSTIME, temp.COMPANYID,temp.MATENAME, temp.MATEPHONE, temp.MATEWECHAT, temp.MATEQQ, CAST(temp.MARRYTIME AS CHAR) AS MARRYTIME, CAST(temp.YPTIME AS CHAR) AS YPTIME, temp.ADADDRESS, temp.ADID, temp.CREATEIP, temp.OPERAID, temp.YXLAVEL,
+		temp.INVALIDLABEL, temp.INVALIDCODE, temp.FILMINGAREA, temp.YSRANGE, temp.ADDRESS, temp.GROUPID, temp.DEPTSORT, temp.KEYWORD
+	</sql>
+
+    <!-- 删除员工客资缓存记录 -->
+    <delete id="deleteTempByStaffId" parameterType="map">
+    	DELETE FROM ${tempName}
+    	WHERE OPERAID = ${operaId};
+    </delete>
+
+    <!-- 批量写入客资临时缓存表 -->
+    <insert id="insertExcelClientInfo">
+        INSERT INTO ${tempName}
+        (KZID, TYPENAME, STATUSID, SOURCENAME, KZPHONE, WECHAT, KZQQ, KZWW, COLLECTORNAME,
+        APPOINTNAME, MEMO, CREATETIME, UPDATETIME, SHOPNAME, COMPANYID, CREATEIP, OPERAID, ADDRESS, DEPTSORT,KEYWORD
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.kzId},#{item.typeName}, #{item.statusId},#{item.source},#{item.kzPhone}, #{item.kzWechat},
+            #{item.kzQq}, #{item.kzWw}, #{item.collectorName}, #{item.appoint},
+            #{item.memo}, #{item.createTime},unix_timestamp(now()), #{item.shopName}, #{item.companyId},
+            #{item.createIp},#{item.operaId}, #{item.address}, #{item.deptSort}, #{item.keyWord}
+            )
+        </foreach>
+    </insert>
+
+    <!-- 清空缓存表 -->
+    <update id="truncateTempTable">
+        TRUNCATE TABLE ${tempName};
+    </update>
+
+    <!-- 设置企业ID -->
+    <update id="updateCompanyId" parameterType="map">
+		UPDATE ${tempName} temp SET COMPANYID = #{companyId} WHERE temp.OPERAID = #{staffId};
+	</update>
+
+    <!-- 没有客资ID的，设置UUID -->
+    <update id="updateKzid" parameterType="map">
+		UPDATE ${tempName} temp SET KZID = UUID() WHERE ( KZID IS NULL OR KZID = '' ) AND temp.OPERAID = #{staffId};
+	</update>
+
+    <!-- 设置咨询类型ID -->
+    <update id="updateType" parameterType="map">
+		UPDATE ${tempName} temp SET temp.TYPEID = (SELECT dic.DICCODE FROM hm_crm_dictionary dic WHERE dic.DICTYPE = 'common_kz_type' AND dic.DICNAME = temp.TYPENAME AND dic.ISDEL = 0 AND dic.COMPANYID = temp.COMPANYID)
+		 WHERE temp.OPERAID = #{staffId};
+	</update>
+
+    <!-- 设置状态名称，唯一版 -->
+    <update id="updateStatusName" parameterType="map">
+		UPDATE ${tempName} temp SET temp.STATUSNAME = (SELECT sts.STATUSNAME FROM hm_crm_client_status sts WHERE sts.COMPANYID = temp.COMPANYID AND sts.ISDEL = 0 AND sts.STATUSID = temp.STATUSID )
+		WHERE temp.OPERAID = #{staffId};
+	</update>
+
+    <!-- 设置客资当前分类ID,唯一版 -->
+    <update id="updateClassId" parameterType="map">
+		UPDATE ${tempName} temp SET temp.CLASSID = (SELECT sts.CLASSID FROM hm_crm_client_status sts WHERE sts.COMPANYID = temp.COMPANYID AND sts.ISDEL = 0 AND sts.STATUSID = temp.STATUSID )
+		WHERE temp.OPERAID = #{staffId};
+	</update>
+
+    <!-- 设置渠道ID -->
+    <update id="updateSrcId" parameterType="map">
+		UPDATE ${tempName} temp SET temp.SOURCEID = (SELECT src.SRCID FROM hm_crm_source_jupiter src WHERE src.COMPANYID = temp.COMPANYID AND src.ISSHOW = 1 AND src.SRCNAME = temp.SOURCENAME )
+		WHERE temp.OPERAID = #{staffId};
+	</update>
+
+    <!-- 更新最后跟进时间为当前系统时间 -->
+    <update id="updateUpdateTime" parameterType="map">
+		UPDATE ${tempName} temp SET temp.UPDATETIME = unix_timestamp(now()) WHERE temp.OPERAID = #{staffId};
+	</update>
+
+    <!-- 更新提报人ID -->
+    <update id="updateCollectorId" parameterType="map">
+		UPDATE ${tempName} temp SET temp.COLLECTORID = ( SELECT sf.ID FROM hm_pub_staff sf WHERE sf.COMPANY_ID = temp.COMPANYID AND sf.`NAME` =  temp.COLLECTORNAME AND sf.ISDEL = 0 LIMIT 1 )
+		WHERE temp.OPERAID = #{staffId};
+	</update>
+
+    <!-- 更新提报人id是空的记录 -->
+    <update id="updateEmptyCollector">
+		UPDATE ${tempName} temp
+		SET temp.COLLECTORNAME = CONCAT("- ",temp.COLLECTORNAME)
+		WHERE temp.COLLECTORID IS NULL
+		AND temp.OPERAID = #{operaId}
+		AND  left(APPOINTNAME,1)!='-';
+	</update>
+
+    <!-- 更新邀约员ID -->
+    <update id="updateAppointId" parameterType="map">
+		UPDATE ${tempName} temp SET temp.APPOINTID = ( SELECT sf.ID FROM hm_pub_staff sf WHERE sf.COMPANY_ID = temp.COMPANYID AND sf.`NAME` =  temp.APPOINTNAME AND sf.ISDEL = 0 LIMIT 1 )
+		WHERE temp.OPERAID = #{staffId};
+	</update>
+
+    <!-- 更新邀约客服id是空的记录 -->
+    <update id="updateEmptyAppoint">
+		UPDATE ${tempName} temp
+		SET temp.APPOINTNAME = CONCAT("- ",temp.APPOINTNAME)
+		WHERE temp.APPOINTID IS NULL
+		AND temp.OPERAID = #{operaId}
+		AND  left(APPOINTNAME,1)!='-';
+	</update>
+
+    <!-- 更新拍摄地ID -->
+    <update id="updateShopId" parameterType="map">
+		UPDATE ${tempName} temp SET temp.SHOPID = ( SELECT sp.SHOPID FROM hm_crm_shop sp WHERE sp.COMPANYID = temp.COMPANYID AND sp.ISDEL = 0 AND sp.SHOPNAME = temp.SHOPNAME LIMIT 1 )
+		WHERE temp.OPERAID = #{staffId};
+	</update>
+
+    <!-- 设置邀约小组ID,唯一版 -->
+    <update id="updateGroupId" parameterType="map">
+		UPDATE ${tempName} temp SET temp.GROUPID = (SELECT grp.GROUPID FROM hm_crm_group grp WHERE grp.COMPANYID = temp.COMPANYID AND grp.ISDEL = 0 AND grp.GROUPNAME = temp.DEPTSORT )
+		WHERE temp.OPERAID = #{staffId};
+	</update>
+
+
+</mapper>

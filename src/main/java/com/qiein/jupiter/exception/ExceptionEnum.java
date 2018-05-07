@@ -9,7 +9,7 @@ public enum ExceptionEnum {
     RPC_ERROR(-2, "远程调用错误"),
     MYSQL_SQL_GRAMMAR_ERROR(-8, "sql语法错误"),
     DB_SPLIT_ERROR(-9, "系统表分割错误"),
-    METHOD_ARGUMENT_TYPE_MISMATCH_ERROR(-10,"方法参数无法转换"),
+    METHOD_ARGUMENT_TYPE_MISMATCH_ERROR(-10, "方法参数无法转换"),
     //token验证相关
     TOKEN_NULL(100, "token不存在"),
     TOKEN_INVALID(101, "token失效"),
@@ -81,7 +81,10 @@ public enum ExceptionEnum {
     INVALID_REASON_EXIST(1101, "无效原因已存在"),
     INVALID_REASON_TYPE_NULL(1102, "类型不能为空"),
     //公司
-    COMPANY_ID_NULL(1201,"该公司编号不能为空");
+    COMPANY_ID_NULL(1201, "该公司编号不能为空"),
+    //Excel导入导出
+    EXCEL_IS_NULL(1301, "Excel文件是空的"),
+    EXCEL_ADD_FAIL(1302, "Excele添加数据库失败");
 
     private Integer code;
 
