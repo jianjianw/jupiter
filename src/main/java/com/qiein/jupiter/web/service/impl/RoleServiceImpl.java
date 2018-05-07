@@ -86,6 +86,7 @@ public class RoleServiceImpl implements RoleService {
 
     /**
      * 编辑角色排序
+     *
      * @param fId
      * @param fPriority
      * @param sId
@@ -95,8 +96,8 @@ public class RoleServiceImpl implements RoleService {
     @Override
     @Transactional
     public void editProiority(Integer fId, Integer fPriority, Integer sId, Integer sPriority, Integer companyId) {
-        roleDao.updatePriority(fId,fPriority,companyId);
-        roleDao.updatePriority(sId,sPriority,companyId);
+        roleDao.updatePriority(fId, fPriority, companyId);
+        roleDao.updatePriority(sId, sPriority, companyId);
     }
 
     /**

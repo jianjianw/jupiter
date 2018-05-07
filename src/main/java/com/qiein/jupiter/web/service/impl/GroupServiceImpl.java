@@ -287,7 +287,6 @@ public class GroupServiceImpl implements GroupService {
                 for (BaseStaffVO staff : grp.getStaffList()) {
                     staff.setSelectFlag(true);
                 }
-                continue;
             }
 
         }
