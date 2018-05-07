@@ -26,7 +26,7 @@ public class WebSocketMsgUtilTest {
         companyMsgDTO.setContent("hhhhh");
         companyMsgDTO.setType("1");
         long time = System.currentTimeMillis();
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 10; i++) {
             webSocketMsgUtil.sendMsg(companyMsgDTO);
         }
         System.out.println(System.currentTimeMillis() - time);
