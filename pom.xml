@@ -125,11 +125,17 @@
             <artifactId>wiztools-commons-lib</artifactId>
             <version>0.4.1</version>
         </dependency>
-        <!--easy-http-->
+        <!--easy http-->
         <dependency>
             <groupId>com.mzlion</groupId>
             <artifactId>easy-okhttp</artifactId>
             <version>1.1.0</version>
+        </dependency>
+        <!--easy poi-->
+        <dependency>
+            <groupId>cn.afterturn</groupId>
+            <artifactId>easypoi-spring-boot-starter</artifactId>
+            <version>0.2</version>
         </dependency>
 
     </dependencies>
