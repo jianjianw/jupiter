@@ -79,14 +79,14 @@
     <insert id="insertExcelClientInfo">
         INSERT INTO ${tempName}
         (KZID, TYPENAME, STATUSID, SOURCENAME, KZPHONE, WECHAT, KZQQ, KZWW, COLLECTORNAME,
-        APPOINTNAME, MEMO, CREATETIME, UPDATETIME, SHOPNAME, COMPANYID, CREATEIP, OPERAID, ADDRESS, DEPTSORT,KEYWORD
+        APPOINTNAME, MEMO, CREATETIME, UPDATETIME, SHOPNAME, COMPANYID,  OPERAID, ADDRESS, GROUPNAME,KEYWORD
         )
         VALUES
         <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.kzId},#{item.typeName}, #{item.statusId},#{item.source},#{item.kzPhone}, #{item.kzWechat},
-            #{item.kzQq}, #{item.kzWw}, #{item.collectorName}, #{item.appoint},
+            (#{item.kzId},#{item.typeName}, #{item.statusId},#{item.sourceName},#{item.kzPhone}, #{item.kzWechat},
+            #{item.kzQq}, #{item.kzWw}, #{item.collectorName}, #{item.appointName},
             #{item.memo}, #{item.createTime},unix_timestamp(now()), #{item.shopName}, #{item.companyId},
-            #{item.createIp},#{item.operaId}, #{item.address}, #{item.deptSort}, #{item.keyWord}
+            #{item.operaId}, #{item.address}, #{item.groupName}, #{item.keyWord}
             )
         </foreach>
     </insert>
