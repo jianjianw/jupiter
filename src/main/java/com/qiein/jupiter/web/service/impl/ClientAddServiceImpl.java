@@ -114,7 +114,7 @@ public class ClientAddServiceImpl implements ClientAddService {
         if ("100000".equals(jsInfo.getString("code"))) {
             System.out.println("录入成功");
             CompanyPO companyPO = companyDao.getById(staffPO.getId());
-            clientPushService.pushLp(channelPO.getPushRule(), staffPO.getCompanyId(), jsInfo.getString("kzId"), shopVO.getId(), channelPO.getId()
+            clientPushService.pushLp(channelPO.getPushRule(), staffPO.getCompanyId(), jsInfo.getString("kzid"), shopVO.getId(), channelPO.getId()
                     , channelPO.getTypeId(), companyPO.getOvertime(), companyPO.getKzInterval());
         } else {
             throw new RException(ExceptionEnum.KZ_ADD_FAIL);
