@@ -8,7 +8,7 @@ import java.util.List;
  * 渠道常量 Created by Administrator on 2018/4/19 0019.
  */
 public class ChannelConstant {
-	
+
 	// 全部渠道常量列表
 	public static final List<Integer> ALL_TYPE_LIST = new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4, 5, 6, 7));
 	// 电商渠道常量列表
@@ -32,4 +32,26 @@ public class ChannelConstant {
 	public static final int SHOP_NATURAL = 6;
 	// 门店外展
 	public static final int SHOP_EXHIBITION = 7;
+
+	// 0：不分配-新客资系统不会自动分配，需手动转移给指定客服
+	public static final int PUSH_RULE_NULL = 0;
+	// 1：小组+员工-指定承接小组依据权重比自动分配
+	public static final int PUSH_RULE_GROUP_STAFF_AVG_ALLOT = 1;
+	// 2：全部客服依据权重平均分配
+	public static final int PUSH_RULE_STAFF_AVG_ALLOT = 2;
+	// 3：部门平均+客服依据权重平均分配
+	public static final int PUSH_RULE_DEPT_AVG_ALLOT = 3;
+	// 4：小组平均+客服依据权重平均分配
+	public static final int PUSH_RULE_GROUP_AVG_ALLOT = 4;
+	// 5：录入即邀约，谁录分给谁
+	public static final int PUSH_RULE_SELF = 5;
+
+	// 11：小组+员工-指定承接小组依据权重比-跳单+领取（需客户端）
+	public static final int PUSH_RULE_GROUP_STAFF_AVG_RECEIVE = 11;
+	// 12：全部客服依据权重平均-跳单+领取（需客户端）
+	public static final int PUSH_RULE_STAFF_AVG_receive = 12;
+	// 13：部门平均+客服依据权重平均-跳单+领取（需客户端）
+	public static final int PUSH_RULE_DEPT_AVG_RECEIVE = 13;
+	// 14：小组平均+客服依据权重平均-跳单+领取（需客户端）
+	public static final int PUSH_RULE_GROUP_AVG_RECEIVE = 14;
 }
