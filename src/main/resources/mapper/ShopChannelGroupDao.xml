@@ -117,5 +117,15 @@
             AND grp.GROUPNAME LIKE CONCAT('%',#{searchKey},'%')
     </select>
 
-
+	<!-- 根据渠道和拍摄地获取关联的客服组集合 -->
+	<select id="listShopChannelGroupRela" parameterType="map" resultMap="baseMap">
+        SELECT
+			rela.CHANNELID, rela.SHOPID, rela.GROUPID, rela.COMPANYID
+		FROM
+			hm_crm_shop_channel_group_rela rela
+		WHERE
+			rela.COMPANYID = #{companyId}
+		AND rela.SHOPID = #{shopId}
+		AND rela.CHANNELID = #{channelId};
+    </select>
 </mapper>

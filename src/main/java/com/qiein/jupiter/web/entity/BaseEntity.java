@@ -11,25 +11,27 @@ import java.io.Serializable;
  */
 public class BaseEntity implements Serializable {
 
-    private int id;
+	private static final long serialVersionUID = 1L;
 
-    public BaseEntity() {
-    }
+	private int id;
 
-    public BaseEntity(int id) {
-        this.id = id;
-    }
+	public BaseEntity() {
+	}
 
-    public int getId() {
-        return id;
-    }
+	public BaseEntity(int id) {
+		this.id = id;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public int getId() {
+		return id;
+	}
 
-    @Override
-    public String toString() {
-        return JSONObject.toJSONString(this);
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	@Override
+	public String toString() {
+		return JSONObject.toJSONString(this);
+	}
 }
