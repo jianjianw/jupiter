@@ -118,7 +118,7 @@ public class ClientAddServiceImpl implements ClientAddService {
                     , channelPO.getTypeId(), companyPO.getOvertime(), companyPO.getKzInterval());
         } else if ("130004".equals(jsInfo.getString("code")) || "130005".equals(jsInfo.getString("code"))
                 || "130006".equals(jsInfo.getString("code"))) {
-            throw new RException("录入失败");
+            throw new RException(ExceptionEnum.KZ_ADD_FAIL);
         }
 
     }
