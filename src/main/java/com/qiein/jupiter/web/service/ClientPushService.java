@@ -19,5 +19,6 @@ public interface ClientPushService {
 	 * @param overTime-领单超时时间
 	 * @param interval-领单间隔时间
 	 */
-	public void pushLp(int rule, int companyId, String kzId, int shopId, int channelId, int overTime, int interval);
+	public void pushLp(int rule, int type, int companyId, String kzId, int shopId, int channelId, int overTime,
+			int interval);
 }
