@@ -6,10 +6,24 @@ import com.qiein.jupiter.web.entity.dto.CompanyMsgDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+/**
+ * websocket消息推送工具
+ */
 @Component
 public class WebSocketMsgUtil {
-    @Value("${webSocket.msgUrl}")
-    private String msgUrl;
+    /**
+     * 消息推送地址
+     */
+    private final String msgUrl;
+
+    /**
+     * 构造
+     *
+     * @param msgUrl
+     */
+    public WebSocketMsgUtil(@Value("${webSocket.msgUrl}") String msgUrl) {
+        this.msgUrl = msgUrl;
+    }
 
     /**
      * 异步提交一个post msg

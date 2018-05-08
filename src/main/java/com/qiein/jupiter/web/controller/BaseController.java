@@ -18,10 +18,11 @@ public class BaseController {
     private HttpServletRequest request;
 
     /**
+     * 系统启动
      * @return
      */
     @RequestMapping("/")
-    public String init() {
+    public String initSys() {
         return "jupiter is running success!";
     }
 
