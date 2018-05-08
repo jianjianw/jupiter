@@ -77,6 +77,7 @@ public class ClientAddServiceImpl implements ClientAddService {
             if (appoint == null) {
                 throw new RException(ExceptionEnum.APPOINT_NOT_FOUND);
             }
+            reqContent.put("appointid", clientVO.getAppointId());
             reqContent.put("appointname", appoint.getNickName());
         }
         //获取邀约客服组名称
@@ -85,8 +86,10 @@ public class ClientAddServiceImpl implements ClientAddService {
             if (groupPO == null) {
                 throw new RException(ExceptionEnum.APPOINT_GROUP_NOT_FOUND);
             }
+            reqContent.put("groupid", clientVO.getGroupId());
             reqContent.put("groupname", groupPO.getGroupName());
         }
+
         reqContent.put("sex", clientVO.getSex());
         reqContent.put("kzname", clientVO.getKzName());
         reqContent.put("kzphone", clientVO.getKzPhone());
@@ -105,9 +108,6 @@ public class ClientAddServiceImpl implements ClientAddService {
         reqContent.put("address", StringUtil.isNotEmpty(clientVO.getAddress()) ? clientVO.getAddress() :
                 MobileLocationUtil.getAddressByContactInfo(clientVO.getKzPhone(), clientVO.getKzWechat(), clientVO.getKzQq()));
         reqContent.put("remark", clientVO.getRemark());
-        reqContent.put("appointid", clientVO.getAppointId());
-        reqContent.put("groupid", clientVO.getGroupId());
-
 
         String addRstStr = crmBaseApi.doService(reqContent, "addClientInfoPcDsLp");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
