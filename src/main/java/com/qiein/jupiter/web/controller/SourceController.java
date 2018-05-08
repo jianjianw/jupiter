@@ -2,7 +2,7 @@ package com.qiein.jupiter.web.controller;
 
 import com.qiein.jupiter.aop.validate.annotation.Id;
 import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
-import com.qiein.jupiter.constant.TipMsgConstant;
+import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.ObjectUtil;
@@ -44,7 +44,7 @@ public class SourceController extends BaseController {
         ObjectUtil.objectStrParamTrim(sourcePO);
 
         sourceService.createSource(sourcePO);
-        return ResultInfoUtil.success(TipMsgConstant.ADD_SOURCE_SUCCESS);
+        return ResultInfoUtil.success(TigMsgEnum.ADD_SOURCE_SUCCESS);
     }
 
     /**
@@ -64,7 +64,7 @@ public class SourceController extends BaseController {
         if (StringUtil.isEmpty(String.valueOf(sourceVO.getId())))
             throw new RException(ExceptionEnum.SOURCE_ID_NULL);
         sourceService.editSource(sourceVO);
-        return ResultInfoUtil.success(TipMsgConstant.EDIT_SOURCE_SUCCESS);
+        return ResultInfoUtil.success(TigMsgEnum.EDIT_SOURCE_SUCCESS);
     }
 
     /**
@@ -78,7 +78,7 @@ public class SourceController extends BaseController {
     @GetMapping("/priority")
     public ResultInfo editPriority(@Id Integer fPriority, @Id Integer sPriority, @Id Integer id) {
         sourceService.editSourcePriority(fPriority, sPriority, id, getCurrentLoginStaff().getCompanyId());
-        return ResultInfoUtil.success(TipMsgConstant.EDIT_SOURCE_SUCCESS);
+        return ResultInfoUtil.success(TigMsgEnum.EDIT_SOURCE_SUCCESS);
     }
 
     /**
@@ -95,6 +95,6 @@ public class SourceController extends BaseController {
         Integer companyId = currentLoginStaff.getCompanyId();
         sourceService.datDelSrc(ids, companyId);
 
-        return ResultInfoUtil.success(TipMsgConstant.DEL_SOURCE_SUCCESS);
+        return ResultInfoUtil.success(TigMsgEnum.DEL_SOURCE_SUCCESS);
     }
 }

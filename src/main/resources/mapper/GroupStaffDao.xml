@@ -262,8 +262,8 @@
             grp.GROUPID, grp.GROUPNAME, rela.STAFFID, sf.NICKNAME, sf.STATUSFLAG, sf.ISLOCK
         FROM
             hm_pub_group grp
-        LEFT JOIN hm_pub_group_staff rela ON rela.COMPANYID = grp.COMPANYID AND grp.GROUPID = rela.GROUPID
-        LEFT JOIN hm_pub_staff sf ON sf.COMPANYID = rela.COMPANYID AND rela.STAFFID = sf.ID
+        INNER JOIN hm_pub_group_staff rela ON rela.COMPANYID = grp.COMPANYID AND grp.GROUPID = rela.GROUPID
+        INNER JOIN hm_pub_staff sf ON sf.COMPANYID = rela.COMPANYID AND rela.STAFFID = sf.ID
         WHERE
             grp.COMPANYID = #{companyId}
             AND grp.GROUPTYPE = #{type}

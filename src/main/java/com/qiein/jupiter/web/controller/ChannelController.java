@@ -3,7 +3,7 @@ package com.qiein.jupiter.web.controller;
 import com.qiein.jupiter.aop.validate.annotation.Id;
 import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.constant.ChannelConstant;
-import com.qiein.jupiter.constant.TipMsgConstant;
+import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.ObjectUtil;
@@ -51,7 +51,7 @@ public class ChannelController extends BaseController {
         ObjectUtil.objectStrParamTrim(channelPO);
 
         channelService.createChannel(channelPO);
-        return ResultInfoUtil.success(TipMsgConstant.ADD_CHANNEL_SUCCESS);
+        return ResultInfoUtil.success(TigMsgEnum.ADD_CHANNEL_SUCCESS);
     }
 
     /**
@@ -71,7 +71,7 @@ public class ChannelController extends BaseController {
         if (StringUtil.isEmpty(String.valueOf(channelPO.getId())))
             throw new RException(ExceptionEnum.CHANNEL_ID_NULL);
         channelService.editChannel(channelPO);
-        return ResultInfoUtil.success(TipMsgConstant.EDIT_CHANNEL_SUCCESS);
+        return ResultInfoUtil.success(TigMsgEnum.EDIT_CHANNEL_SUCCESS);
     }
 
     /**
@@ -87,7 +87,7 @@ public class ChannelController extends BaseController {
     public ResultInfo editPriority(@Id Integer fId, @Id Integer fPriority,
                                    @Id Integer sId, @Id Integer sPriority) {
         channelService.editProiority(fId, fPriority, sId, sPriority, getCurrentLoginStaff().getCompanyId());
-        return ResultInfoUtil.success(TipMsgConstant.EDIT_SUCCESS);
+        return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
     }
 
     /**
@@ -103,7 +103,7 @@ public class ChannelController extends BaseController {
         //获取所属公司编号
         Integer companyId = currentLoginStaff.getCompanyId();
         channelService.delChannel(id, companyId);
-        return ResultInfoUtil.success(TipMsgConstant.DEL_CHANNEL_SUCCESS);
+        return ResultInfoUtil.success(TigMsgEnum.DEL_CHANNEL_SUCCESS);
     }
 
     /**
@@ -118,7 +118,7 @@ public class ChannelController extends BaseController {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         //获取所属公司编号
         Integer companyId = currentLoginStaff.getCompanyId();
-        return ResultInfoUtil.success(TipMsgConstant.SUCCESS, sourceService.getSourceListByChannelId(id, companyId));
+        return ResultInfoUtil.success(TigMsgEnum.SUCCESS, sourceService.getSourceListByChannelId(id, companyId));
     }
 
     /**
@@ -134,7 +134,7 @@ public class ChannelController extends BaseController {
         //获取所属公司编号
         Integer companyId = currentLoginStaff.getCompanyId();
 
-        return ResultInfoUtil.success(TipMsgConstant.SUCCESS, channelService.getListByType(typeId, companyId));
+        return ResultInfoUtil.success(TigMsgEnum.SUCCESS, channelService.getListByType(typeId, companyId));
     }
 
     /**
@@ -150,7 +150,7 @@ public class ChannelController extends BaseController {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         //获取所属公司编号
         Integer companyId = currentLoginStaff.getCompanyId();
-        return ResultInfoUtil.success(TipMsgConstant.SUCCESS, getSrcList(companyId, typeId));
+        return ResultInfoUtil.success(TigMsgEnum.SUCCESS, getSrcList(companyId, typeId));
     }
 
     /**

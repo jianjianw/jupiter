@@ -2,14 +2,15 @@ package com.qiein.jupiter;
 
 
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.serializer.SerializeConfig;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.alibaba.fastjson.support.config.FastJsonConfig;
+import com.qiein.jupiter.enums.OrderSuccessTypeEnum;
+import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.enums.WebSocketMsgEnum;
+import com.qiein.jupiter.web.entity.dto.OrderSuccessMsg;
 import com.qiein.jupiter.web.entity.dto.WebSocketMsgDTO;
-import org.apache.http.HttpEntity;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.junit.Test;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 
 import java.util.*;
 
@@ -78,11 +79,24 @@ public class AllTest {
 
     @Test
     public void testEnum(){
-        WebSocketMsgDTO companyMsgDTO = new WebSocketMsgDTO();
-        companyMsgDTO.setCompanyId(1);
-        companyMsgDTO.setContent("hhhhh");
-        companyMsgDTO.setType(WebSocketMsgEnum.OrderSuccess);
-        System.out.println(companyMsgDTO.getType());
-        System.out.println(JSONObject.toJSONString(companyMsgDTO));
+        System.out.println(TigMsgEnum.ADD_BRAND_SUCCESS);
+    }
+
+    @Test
+    public void testMsg(){
+        OrderSuccessMsg orderSuccessMsg=new OrderSuccessMsg();
+        orderSuccessMsg.setCompanyId(1);
+        orderSuccessMsg.setStaffName("张三1");
+        orderSuccessMsg.setShopName("三亚");
+        orderSuccessMsg.setAmount("12000");
+        orderSuccessMsg.setType(OrderSuccessTypeEnum.ArrivalShop);
+        orderSuccessMsg.setSrcImg("https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=156581925,3170808657&fm=27&gp=0.jpg");
+        orderSuccessMsg.setHeadImg("https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=4005596794,992112216&fm=27&gp=0.jpg");
+        WebSocketMsgDTO webSocketMsgDTO=new WebSocketMsgDTO();
+        webSocketMsgDTO.setCompanyId(1);
+        webSocketMsgDTO.setType(WebSocketMsgEnum.OrderSuccess);
+        webSocketMsgDTO.setContent(JSONObject.toJSONString(orderSuccessMsg));
+
+        System.out.println(JSONObject.toJSONString(webSocketMsgDTO));
     }
 }

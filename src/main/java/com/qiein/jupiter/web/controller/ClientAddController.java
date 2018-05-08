@@ -1,8 +1,7 @@
 package com.qiein.jupiter.web.controller;
 
-import com.qiein.jupiter.constant.TipMsgConstant;
+import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
-import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.util.StringUtil;
@@ -35,6 +34,6 @@ public class ClientAddController extends BaseController {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         clientAddService.addDsClient(clientVO, currentLoginStaff);
-        return ResultInfoUtil.success(TipMsgConstant.SAVE_SUCCESS);
+        return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
     }
 }

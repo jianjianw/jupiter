@@ -1,12 +1,10 @@
 package com.qiein.jupiter.web.controller;
 
-import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
-import com.qiein.jupiter.constant.TipMsgConstant;
+import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
-import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.po.StatusPO;
 import com.qiein.jupiter.web.service.StatusService;
@@ -38,6 +36,6 @@ public class StatusController extends BaseController {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         statusPO.setCompanyId(currentLoginStaff.getCompanyId());
         statusService.editStatus(statusPO);
-        return ResultInfoUtil.success(TipMsgConstant.EDIT_SUCCESS);
+        return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
     }
 }

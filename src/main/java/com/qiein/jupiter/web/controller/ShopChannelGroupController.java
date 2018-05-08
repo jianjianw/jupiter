@@ -2,7 +2,7 @@ package com.qiein.jupiter.web.controller;
 
 import com.qiein.jupiter.aop.validate.annotation.Id;
 import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
-import com.qiein.jupiter.constant.TipMsgConstant;
+import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
@@ -43,7 +43,7 @@ public class ShopChannelGroupController extends BaseController {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         shopChannelGroupService.editGroupWeight(currentLoginStaff.getCompanyId(), relaId, weight);
-        return ResultInfoUtil.success(TipMsgConstant.EDIT_SUCCESS);
+        return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
     }
 
     @GetMapping("/delete_group")
@@ -51,7 +51,7 @@ public class ShopChannelGroupController extends BaseController {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         shopChannelGroupService.batchDeleteGroup(currentLoginStaff.getCompanyId(), relaIds);
-        return ResultInfoUtil.success(TipMsgConstant.DELETE_SUCCESS);
+        return ResultInfoUtil.success(TigMsgEnum.DELETE_SUCCESS);
     }
 
     @GetMapping("/delete_channel_rela_list")
@@ -60,7 +60,7 @@ public class ShopChannelGroupController extends BaseController {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         shopChannelGroupService.deleteChannelList(currentLoginStaff.getCompanyId(), channelId, shopId);
-        return ResultInfoUtil.success(TipMsgConstant.DELETE_SUCCESS);
+        return ResultInfoUtil.success(TigMsgEnum.DELETE_SUCCESS);
     }
 
     @GetMapping("/add_channel_rela_list")
@@ -71,7 +71,7 @@ public class ShopChannelGroupController extends BaseController {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         shopChannelGroupService.batchAddChannelList(currentLoginStaff.getCompanyId(), shopId, weight, channelIds, groupIds);
-        return ResultInfoUtil.success(TipMsgConstant.SAVE_SUCCESS);
+        return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
     }
 
     @GetMapping("/edit_channel_group")
@@ -82,7 +82,7 @@ public class ShopChannelGroupController extends BaseController {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         shopChannelGroupService.editChannelGroup(relaId, currentLoginStaff.getCompanyId(), channelId, shopId, groupId);
-        return ResultInfoUtil.success(TipMsgConstant.EDIT_SUCCESS);
+        return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
     }
 
     @GetMapping("/search_channel_group")

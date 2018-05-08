@@ -89,7 +89,12 @@ public enum ExceptionEnum {
     EXCEL_ADD_FAIL(1302, "Excele添加数据库失败"),
     //客资
     KZ_CONTACT_INFORMATION(1401, "客资联系方式不能为空"),
-    KZ_ADD_FAIL(1402, "录入失败");
+    KZ_ADD_FAIL(1402, "录入失败"),
+    //OSS对象存储
+    OSS_UPLOAD_TYPE_ERROR(1501, "上传类型错误"),
+    OSS_UPLOAD_SIZE_ERROR(1502, "图片大小超过3M"),
+    OSS_UPLOAD_FAIL(1503, "图片上传失败"),
+    OSS_NO_FILE(1504, "未选择文件");
 
     private Integer code;
 
