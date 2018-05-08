@@ -62,4 +62,11 @@ public interface GroupService {
      */
     public List<GroupBaseStaffVO> getGroupStaffByType(int companyId, int staffId, String role);
 
+    /**
+     * 获取邀约客服小组及人员
+     *
+     * @param companyId
+     * @return
+     */
+    public List<GroupBaseStaffVO> getDsyyGroupStaffList(int companyId);
 }

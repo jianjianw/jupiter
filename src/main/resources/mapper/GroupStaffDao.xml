@@ -103,6 +103,8 @@
         <collection property="staffList" ofType="com.qiein.jupiter.web.entity.vo.BaseStaffVO">
             <result column="STAFFID" property="staffId" jdbcType="INTEGER"/>
             <result column="NICKNAME" property="staffName" jdbcType="VARCHAR"/>
+            <result column="STATUSFLAG" property="statusFlag" jdbcType="INTEGER"/>
+            <result column="ISLOCK" property="lockFlag" jdbcType="BOOLEAN"/>
         </collection>
     </resultMap>
 
@@ -257,7 +259,7 @@
     <!--根据不同类型，获取小组及人员-->
     <select id="getGroupStaffByRole" parameterType="map" resultMap="GroupStaffMap">
         SELECT
-            grp.GROUPID, grp.GROUPNAME, rela.STAFFID, sf.NICKNAME
+            grp.GROUPID, grp.GROUPNAME, rela.STAFFID, sf.NICKNAME, sf.STATUSFLAG, sf.ISLOCK
         FROM
             hm_pub_group grp
         LEFT JOIN hm_pub_group_staff rela ON rela.COMPANYID = grp.COMPANYID AND grp.GROUPID = rela.GROUPID
@@ -267,9 +269,7 @@
             AND grp.GROUPTYPE = #{type}
             AND grp.PARENTID != '0'
             AND sf.ISDEL = 0
-        ORDER BY grp.GROUPNAME, grp.ID
+        ORDER BY grp.GROUPNAME, grp.ID, sf.STATUSFLAG DESC, sf.ISLOCK, sf.ID
     </select>
-
-
 
 </mapper>
