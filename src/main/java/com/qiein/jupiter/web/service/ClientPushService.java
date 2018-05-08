@@ -16,9 +16,10 @@ public interface ClientPushService {
 	 * @param kzId-客资ID
 	 * @param shopId-拍摄地ID
 	 * @param channelId-渠道ID
+	 * @Param channelTypeId-渠道类型ID
 	 * @param overTime-领单超时时间
 	 * @param interval-领单间隔时间
 	 */
-	public void pushLp(int rule, int type, int companyId, String kzId, int shopId, int channelId, int overTime,
+	public void pushLp(int rule, int companyId, String kzId, int shopId, int channelId, int channelTypeId, int overTime,
 			int interval);
 }

@@ -8,6 +8,7 @@ import java.util.List;
  * 渠道常量 Created by Administrator on 2018/4/19 0019.
  */
 public class ChannelConstant {
+	
 	// 全部渠道常量列表
 	public static final List<Integer> ALL_TYPE_LIST = new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4, 5, 6, 7));
 	// 电商渠道常量列表
