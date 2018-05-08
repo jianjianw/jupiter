@@ -221,4 +221,19 @@ public interface StaffDao extends BaseDao<StaffPO> {
 	List<StaffPushDTO> listStaffPushDTOByShopIdAndChannelId(@Param("companyId") int companyId,
 			@Param("groupId") String groupId, @Param("channelId") int channelId, @Param("shopId") int shopId,
 			@Param("interval") int interval);
+
+	/**
+	 * 获取客服指定时间内渠道和拍摄地客资的领取情况
+	 * 
+	 * @param infoTabName
+	 * @param companyId
+	 * @param channelId
+	 * @param shopId
+	 * @param interval
+	 * @param staffOnlineList
+	 * @return
+	 */
+	List<StaffPushDTO> listStaffPushDTOByAlloted(@Param("infoTabName") String infoTabName,
+			@Param("companyId") int companyId, @Param("channelId") int channelId, @Param("shopId") int shopId,
+			@Param("calcRange") int calcRange, @Param("staffList") List<StaffPushDTO> staffList);
 }

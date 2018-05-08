@@ -95,7 +95,7 @@ public class ClientPushServiceImpl implements ClientPushService {
 		ClientPushDTO clientDTO = clientInfoDao.getClientPushDTOById(kzId, DBSplitUtil.getInfoTabName(companyId));
 
 		// 判断客资当前状态-限定客资最后推送时间已经超过分配间隔
-		if (clientDTO.getPushInterval() != 0 && clientDTO.getPushInterval() < overTime) {
+		if (clientDTO == null || (clientDTO.getPushInterval() != 0 && clientDTO.getPushInterval() < overTime)) {
 			return null;
 		}
 		// 限定客资状态为分配中，可领取，未接入
@@ -133,7 +133,7 @@ public class ClientPushServiceImpl implements ClientPushService {
 
 			// 从当前组找出要可以领取该渠道和拍摄地客资的客服
 			appointor = getAppointorByAllotRule(thisGroup.getGroupId(), companyId, kzId, shopId, channelId,
-					channelTypeId, overTime, interval);
+					channelTypeId, interval);
 
 			// 找不到分配客服就移除改组的分配拣选，重新选组
 			if (appointor == null) {
@@ -160,17 +160,27 @@ public class ClientPushServiceImpl implements ClientPushService {
 	 * @return
 	 */
 	private StaffPushDTO getAppointorByAllotRule(String groupId, int companyId, String kzId, int shopId, int channelId,
-			int channelTypeId, int overTime, int interval) {
+			int channelTypeId, int interval) {
 
 		// 获取可以领取该渠道和拍摄地的在线的客服集合
-		List<StaffPushDTO> staffList = staffDao.listStaffPushDTOByShopIdAndChannelId(companyId, groupId, channelId,
-				shopId, interval);
+		List<StaffPushDTO> staffOnlineList = staffDao.listStaffPushDTOByShopIdAndChannelId(companyId, groupId,
+				channelId, shopId, interval);
 
-		if (CollectionUtils.isEmpty(staffList)) {
+		if (CollectionUtils.isEmpty(staffOnlineList)) {
 			return null;
 		}
 
+		int calcRange = 60;
+
 		// 获取从当前时间往前退一个小时内所有客服对该渠道和拍摄地的客资的领取情况
+		List<StaffPushDTO> staffAllotList = staffDao.listStaffPushDTOByAlloted(DBSplitUtil.getInfoTabName(companyId),
+				companyId, channelId, shopId, calcRange, staffOnlineList);
+
+		while (calcRange < 480 && (staffAllotList == null || staffAllotList.size() != staffOnlineList.size())) {
+			calcRange += 60;
+			staffAllotList = staffDao.listStaffPushDTOByAlloted(DBSplitUtil.getInfoTabName(companyId), companyId,
+					channelId, shopId, calcRange, staffOnlineList);
+		}
 
 		// 差比分析
 

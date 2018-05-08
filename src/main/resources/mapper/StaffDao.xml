@@ -62,6 +62,7 @@
      <resultMap id="pushMap" type="com.qiein.jupiter.web.entity.dto.StaffPushDTO">
         <result column="ID" property="staffId" jdbcType="INTEGER"/>
         <result column="WEIGHT" property="weight" jdbcType="INTEGER"/>
+        <result column="TODAYNUM" property="todayNum" jdbcType="INTEGER"/>
         <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
     </resultMap>
 
@@ -471,6 +472,26 @@
 		AND INSTR(sf.LIMITCHANNELIDS, CONCAT(',',#{channelId},',')) = 0
 		AND INSTR(sf.LIMITSHOPIDS, CONCAT(',',#{shopId},',')) = 0
 		AND ( UNIX_TIMESTAMP(NOW()) - LASTPUSHTIME ) &gt; #{interval}
-		AND sf.TODAYNUM &lt; LIMITDAY
+		AND sf.TODAYNUM &lt; LIMITDAY;
+    </select>
+    
+    <!--获取客服指定时间内渠道和拍摄地客资的领取情况-->
+    <select id="listStaffPushDTOByAlloted" parameterType="map" resultMap="pushMap">
+    	SELECT
+			info.APPOINTORID ID, COUNT(1) KZNUM TODAYNUM
+		FROM
+			${infoTabName} info
+		WHERE
+			info.COMPANYID = #{companyId}
+		AND info.ISDEL = 0
+		AND info.SHOPID = #{shopId}
+		AND info.CHANNELID = #{channelId}
+		AND info.STATUSID != 5
+		AND ( UNIX_TIMESTAMP(NOW()) - info.CREATETIME ) &gt; ${calcRange}
+		AND info.APPOINTORID IN
+        <foreach collection="staffList" item="staff" index="index" open="(" separator="," close=")">
+            #{staff.staffId}
+        </foreach>
+		GROUP BY info.APPOINTORID;
     </select>
 </mapper>
