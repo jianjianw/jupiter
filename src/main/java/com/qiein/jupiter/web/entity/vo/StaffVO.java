@@ -43,6 +43,10 @@ public class StaffVO extends StaffPO {
      * 是否删除
      */
     private boolean delFlag;
+    /**
+     * 每日接单限额
+     */
+    private int limitDay;
 
     /**
      * 角色集合
@@ -137,5 +141,13 @@ public class StaffVO extends StaffPO {
 
     public void setStatusFlag(int statusFlag) {
         this.statusFlag = statusFlag;
+    }
+
+    public int getLimitDay() {
+        return limitDay;
+    }
+
+    public void setLimitDay(int limitDay) {
+        this.limitDay = limitDay;
     }
 }

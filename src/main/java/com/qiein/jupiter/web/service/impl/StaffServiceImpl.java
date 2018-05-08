@@ -111,6 +111,8 @@ public class StaffServiceImpl implements StaffService {
         if (staffDao.getStaffByNames(staffVO.getCompanyId(), staffVO.getUserName()) != null) {
             throw new RException(ExceptionEnum.USERNAME_EXIST);
         }
+        CompanyPO companyPO = companyDao.getById(staffVO.getCompanyId());
+        staffVO.setLimitDay(companyPO.getLimitDefault());
         // 2.插入人员
         staffDao.addStaffVo(staffVO);
         // 3.添加小组人员关联表
