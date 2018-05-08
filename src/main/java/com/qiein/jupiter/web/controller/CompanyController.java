@@ -1,6 +1,6 @@
 package com.qiein.jupiter.web.controller;
 
-import com.qiein.jupiter.constant.TipMsgConstant;
+import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
@@ -27,7 +27,7 @@ public class CompanyController extends BaseController {
     @PostMapping("/edit")
     public ResultInfo editCompanyInfo (@RequestBody CompanyPO companyPO){
         companyService.update(companyPO);
-        return ResultInfoUtil.success(TipMsgConstant.EDIT_SUCCESS);
+        return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
     }
 
     /**
@@ -36,6 +36,6 @@ public class CompanyController extends BaseController {
      */
     @GetMapping("/info")
     public ResultInfo getCompanyInfo(){
-        return ResultInfoUtil.success(TipMsgConstant.SUCCESS,companyService.getById(getCurrentLoginStaff().getCompanyId()));
+        return ResultInfoUtil.success(TigMsgEnum.SUCCESS,companyService.getById(getCurrentLoginStaff().getCompanyId()));
     }
 }

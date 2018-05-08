@@ -2,7 +2,7 @@ package com.qiein.jupiter.web.controller;
 
 import com.qiein.jupiter.aop.validate.annotation.Id;
 import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
-import com.qiein.jupiter.constant.TipMsgConstant;
+import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.util.ObjectUtil;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
@@ -47,7 +47,7 @@ public class GroupController extends BaseController {
         //参数去trim
         ObjectUtil.objectStrParamTrim(groupPO);
         groupService.update(groupPO);
-        return ResultInfoUtil.success(TipMsgConstant.UPDATE_SUCCESS);
+        return ResultInfoUtil.success(TigMsgEnum.UPDATE_SUCCESS);
     }
 
     /**
@@ -63,7 +63,7 @@ public class GroupController extends BaseController {
         //参数去trim
         ObjectUtil.objectStrParamTrim(groupPO);
         groupService.insert(groupPO);
-        return ResultInfoUtil.success(TipMsgConstant.SAVE_SUCCESS);
+        return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
     }
 
     /**
@@ -76,7 +76,7 @@ public class GroupController extends BaseController {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         groupService.delete(id, currentLoginStaff.getCompanyId());
-        return ResultInfoUtil.success(TipMsgConstant.DELETE_SUCCESS);
+        return ResultInfoUtil.success(TigMsgEnum.DELETE_SUCCESS);
     }
 
     /**

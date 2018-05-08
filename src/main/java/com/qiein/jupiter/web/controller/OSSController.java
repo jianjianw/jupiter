@@ -1,16 +1,12 @@
 package com.qiein.jupiter.web.controller;
 
-import com.alibaba.fastjson.JSONObject;
-import com.qiein.jupiter.constant.TipMsgConstant;
+import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.util.OSSUtil;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
-import com.qiein.jupiter.util.StringUtil;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 阿里OSSController
@@ -26,7 +22,7 @@ public class OSSController extends BaseController{
      */
     @GetMapping("/get_policy")
     public ResultInfo getPolicyAndCallback(){
-        return ResultInfoUtil.success(TipMsgConstant.SUCCESS,OSSUtil.getPolicy(60));
+        return ResultInfoUtil.success(TigMsgEnum.SUCCESS,OSSUtil.getPolicy(60));
     }
 
     /**
@@ -38,7 +34,7 @@ public class OSSController extends BaseController{
     public ResultInfo deleteImg(String imgUrl){
         OSSUtil.deleteObject(imgUrl);
         System.out.println(1);
-        return ResultInfoUtil.success(TipMsgConstant.SUCCESS);
+        return ResultInfoUtil.success(TigMsgEnum.SUCCESS);
     }
 
     /**
@@ -48,7 +44,7 @@ public class OSSController extends BaseController{
      */
     @GetMapping("/upload_net_img")
     public ResultInfo uploadNetImg(String imgUrl){
-        return ResultInfoUtil.success(TipMsgConstant.SUCCESS,OSSUtil.uploadWebImage(imgUrl,null));
+        return ResultInfoUtil.success(TigMsgEnum.SUCCESS,OSSUtil.uploadWebImage(imgUrl,null));
     }
 
 //    /**
@@ -60,7 +56,7 @@ public class OSSController extends BaseController{
 //
 //
 //
-//        return ResultInfoUtil.success(TipMsgConstant.SUCCESS);
+//        return ResultInfoUtil.success(TigMsgEnum.SUCCESS);
 //    }
 
 }

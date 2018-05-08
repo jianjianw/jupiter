@@ -2,6 +2,7 @@ package com.qiein.jupiter.util;
 
 import com.qiein.jupiter.constant.NumberConstant;
 import com.qiein.jupiter.constant.TipMsgConstant;
+import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 
 public class ResultInfoUtil {
@@ -12,17 +13,17 @@ public class ResultInfoUtil {
 	 * @return
 	 */
 	public static ResultInfo success() {
-		return success(null);
+		return success(TigMsgEnum.SUCCESS);
 	}
 
 	/**
 	 * 返回成功的结果
 	 *
-	 * @param object
+	 * @param data
 	 * @return
 	 */
-	public static ResultInfo success(Object object) {
-		return success(TipMsgConstant.SUCCESS, object);
+	public static ResultInfo success(Object data) {
+		return success(TigMsgEnum.SUCCESS, data);
 	}
 
 	/**
@@ -31,10 +32,10 @@ public class ResultInfoUtil {
 	 * @param msg
 	 * @return
 	 */
-	public static ResultInfo success(String msg) {
+	public static ResultInfo success(TigMsgEnum msg) {
 		ResultInfo resultInfo = new ResultInfo();
 		resultInfo.setCode(NumberConstant.DEFAULT_SUCCESS_CODE);
-		resultInfo.setMsg(msg);
+		resultInfo.setMsg(msg.toString());
 		return resultInfo;
 	}
 
@@ -44,10 +45,10 @@ public class ResultInfoUtil {
 	 * @param object
 	 * @return
 	 */
-	public static ResultInfo success(String msg, Object object) {
+	public static ResultInfo success(TigMsgEnum msg, Object object) {
 		ResultInfo resultInfo = new ResultInfo();
 		resultInfo.setCode(NumberConstant.DEFAULT_SUCCESS_CODE);
-		resultInfo.setMsg(msg);
+		resultInfo.setMsg(msg.toString());
 		resultInfo.setData(object);
 		return resultInfo;
 	}

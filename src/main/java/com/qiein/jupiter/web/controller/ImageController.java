@@ -1,6 +1,6 @@
 package com.qiein.jupiter.web.controller;
 
-import com.qiein.jupiter.constant.TipMsgConstant;
+import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.web.service.ImageService;
@@ -28,6 +28,6 @@ public class ImageController extends BaseController {
      */
     @GetMapping("/get_by_type")
     public ResultInfo getSrcImgList(@NotEmpty String type) {
-        return ResultInfoUtil.success(TipMsgConstant.SUCCESS, imageService.getSrcImgList(type));
+        return ResultInfoUtil.success(TigMsgEnum.SUCCESS, imageService.getSrcImgList(type));
     }
 }

@@ -1,10 +1,9 @@
 package com.qiein.jupiter.web.controller;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
 import com.qiein.jupiter.aop.validate.annotation.Id;
 import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.constant.DictionaryConstant;
-import com.qiein.jupiter.constant.TipMsgConstant;
+import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.ResultInfo;
@@ -57,7 +56,7 @@ public class DictionaryController extends BaseController {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         dictionaryPO.setCompanyId(currentLoginStaff.getCompanyId());
         dictionaryService.addInvalidReason(dictionaryPO);
-        return ResultInfoUtil.success(TipMsgConstant.SAVE_SUCCESS);
+        return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
     }
 
     /**
@@ -78,7 +77,7 @@ public class DictionaryController extends BaseController {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         dictionaryPO.setCompanyId(currentLoginStaff.getCompanyId());
         dictionaryService.editInvalidReason(dictionaryPO);
-        return ResultInfoUtil.success(TipMsgConstant.EDIT_SUCCESS);
+        return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
     }
 
     /**
@@ -92,7 +91,7 @@ public class DictionaryController extends BaseController {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         dictionaryService.batchDeleteByIds(currentLoginStaff.getCompanyId(), ids);
-        return ResultInfoUtil.success(TipMsgConstant.DELETE_SUCCESS);
+        return ResultInfoUtil.success(TigMsgEnum.DELETE_SUCCESS);
     }
 
     /**
@@ -118,7 +117,7 @@ public class DictionaryController extends BaseController {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         dictionaryService.addRunoffReason(currentLoginStaff.getCompanyId(), dicName);
-        return ResultInfoUtil.success(TipMsgConstant.SAVE_SUCCESS);
+        return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
     }
 
     /**
@@ -133,7 +132,7 @@ public class DictionaryController extends BaseController {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         dictionaryService.editRunoffReason(currentLoginStaff.getCompanyId(), id, dicName);
-        return ResultInfoUtil.success(TipMsgConstant.EDIT_SUCCESS);
+        return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
     }
 
     /**
@@ -147,7 +146,7 @@ public class DictionaryController extends BaseController {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         dictionaryService.batchDeleteByIds(currentLoginStaff.getCompanyId(), ids);
-        return ResultInfoUtil.success(TipMsgConstant.DELETE_SUCCESS);
+        return ResultInfoUtil.success(TigMsgEnum.DELETE_SUCCESS);
     }
 
     /**

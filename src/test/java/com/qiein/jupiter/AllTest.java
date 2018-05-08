@@ -2,7 +2,10 @@ package com.qiein.jupiter;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.qiein.jupiter.enums.OrderSuccessTypeEnum;
+import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.enums.WebSocketMsgEnum;
 import com.qiein.jupiter.web.entity.dto.OrderSuccessMsg;
 import com.qiein.jupiter.web.entity.dto.WebSocketMsgDTO;
@@ -76,6 +79,11 @@ public class AllTest {
 
     @Test
     public void testEnum(){
+        System.out.println(TigMsgEnum.ADD_BRAND_SUCCESS);
+    }
+
+    @Test
+    public void testMsg(){
         OrderSuccessMsg orderSuccessMsg=new OrderSuccessMsg();
         orderSuccessMsg.setCompanyId(1);
         orderSuccessMsg.setStaffName("张三1");
