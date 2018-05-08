@@ -1,5 +1,7 @@
 package com.qiein.jupiter.web.entity.dto;
 
+import com.qiein.jupiter.enums.OrderSuccessTypeEnum;
+
 import java.io.Serializable;
 
 /**
@@ -32,6 +34,18 @@ public class OrderSuccessMsg implements Serializable{
      * 订单金额
      */
     private String amount;
+    /**
+     * 订单类型
+     */
+    private OrderSuccessTypeEnum type;
+
+    public OrderSuccessTypeEnum getType() {
+        return type;
+    }
+
+    public void setType(OrderSuccessTypeEnum type) {
+        this.type = type;
+    }
 
     public int getCompanyId() {
         return companyId;
