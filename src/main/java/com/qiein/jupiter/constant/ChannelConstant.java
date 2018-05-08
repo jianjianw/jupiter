@@ -19,4 +19,6 @@ public class ChannelConstant {
     public static final List<Integer> ZR_TYPE_LIST = new ArrayList<Integer>(Arrays.asList(6, 7));
     //员工转介绍
     public static final int STAFF_ZJS = 3;
+    //纯电商
+    public static final int DS_ONLY = 1;
 }
