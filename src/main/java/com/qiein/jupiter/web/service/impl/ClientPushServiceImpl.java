@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.service.impl;
 
 import com.qiein.jupiter.web.service.ClientPushService;
+import org.springframework.stereotype.Service;
 
 /**
  * 客资推送
@@ -8,6 +9,7 @@ import com.qiein.jupiter.web.service.ClientPushService;
  * @author JingChenglong 2018/05/08 10:58
  *
  */
+@Service
 public class ClientPushServiceImpl implements ClientPushService {
 
 	@Override
