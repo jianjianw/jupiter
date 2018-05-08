@@ -6,45 +6,46 @@ import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
  * 用户密码对象
  */
 public class StaffPasswordDTO {
-    private int id;
 
-    @NotEmptyStr(message = "原密码不能为空")
-    private String oldPassword;
+	private int id;
 
-    @NotEmptyStr(message = "新密码不能为空")
-    private String newPassword;
+	@NotEmptyStr(message = "原密码不能为空")
+	private String oldPassword;
 
-    private int companyId;
+	@NotEmptyStr(message = "新密码不能为空")
+	private String newPassword;
 
-    public int getId() {
-        return id;
-    }
+	private int companyId;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public String getOldPassword() {
-        return oldPassword;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    public void setOldPassword(String oldPassword) {
-        this.oldPassword = oldPassword;
-    }
+	public String getOldPassword() {
+		return oldPassword;
+	}
 
-    public String getNewPassword() {
-        return newPassword;
-    }
+	public void setOldPassword(String oldPassword) {
+		this.oldPassword = oldPassword;
+	}
 
-    public void setNewPassword(String newPassword) {
-        this.newPassword = newPassword;
-    }
+	public String getNewPassword() {
+		return newPassword;
+	}
 
-    public int getCompanyId() {
-        return companyId;
-    }
+	public void setNewPassword(String newPassword) {
+		this.newPassword = newPassword;
+	}
 
-    public void setCompanyId(int companyId) {
-        this.companyId = companyId;
-    }
+	public int getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(int companyId) {
+		this.companyId = companyId;
+	}
 }
