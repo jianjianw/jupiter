@@ -113,7 +113,7 @@ public class ClientAddServiceImpl implements ClientAddService {
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if ("100000".equals(jsInfo.getString("code"))) {
             System.out.println("录入成功");
-            CompanyPO companyPO = companyDao.getById(staffPO.getId());
+            CompanyPO companyPO = companyDao.getById(staffPO.getCompanyId());
             clientPushService.pushLp(channelPO.getPushRule(), staffPO.getCompanyId(), jsInfo.getString("kzid"), clientVO.getShopId(), channelPO.getId()
                     , channelPO.getTypeId(), companyPO.getOvertime(), companyPO.getKzInterval());
         } else {

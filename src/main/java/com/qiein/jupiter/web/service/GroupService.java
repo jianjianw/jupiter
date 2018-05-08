@@ -21,6 +21,14 @@ public interface GroupService {
     List<GroupVO> getCompanyAllDeptList(int companyId);
 
     /**
+     * 根据类型获取公司的部门
+     *
+     * @param type
+     * @return
+     */
+    List<GroupVO> getCompanyDeptListByType(String type, int companyId);
+
+    /**
      * 部门更新
      *
      * @param groupPO
