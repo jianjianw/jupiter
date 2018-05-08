@@ -10,13 +10,11 @@ import com.qiein.jupiter.util.MobileLocationUtil;
 import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.*;
-import com.qiein.jupiter.web.entity.po.ChannelPO;
-import com.qiein.jupiter.web.entity.po.GroupPO;
-import com.qiein.jupiter.web.entity.po.SourcePO;
-import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.entity.po.*;
 import com.qiein.jupiter.web.entity.vo.ClientVO;
 import com.qiein.jupiter.web.entity.vo.ShopVO;
 import com.qiein.jupiter.web.service.ClientAddService;
+import com.qiein.jupiter.web.service.ClientPushService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +37,10 @@ public class ClientAddServiceImpl implements ClientAddService {
     private GroupDao groupDao;
     @Autowired
     private CrmBaseApi crmBaseApi;
+    @Autowired
+    private ClientPushService clientPushService;
+    @Autowired
+    private CompanyDao companyDao;
 
     /**
      * 添加电商客资
@@ -64,13 +66,11 @@ public class ClientAddServiceImpl implements ClientAddService {
         }
         reqContent.put("sourcename", sourcePO.getSrcName());
         //获取拍摄地名
-        if (NumUtil.isNotNull(clientVO.getShopId())) {
-            ShopVO shopVO = shopDao.getShowShopById(sourcePO.getCompanyId(), clientVO.getShopId());
-            if (shopVO == null) {
-                throw new RException(ExceptionEnum.SHOP_NOT_FOUND);
-            }
-            reqContent.put("shopname", shopVO.getShopName());
+        ShopVO shopVO = shopDao.getShowShopById(sourcePO.getCompanyId(), clientVO.getShopId());
+        if (shopVO == null) {
+            throw new RException(ExceptionEnum.SHOP_NOT_FOUND);
         }
+        reqContent.put("shopname", shopVO.getShopName());
         //获取邀约客服名称
         if (NumUtil.isNotNull(clientVO.getAppointId())) {
             StaffPO appoint = staffDao.getById(clientVO.getAppointId());
@@ -113,6 +113,9 @@ public class ClientAddServiceImpl implements ClientAddService {
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if ("100000".equals(jsInfo.getString("code"))) {
             System.out.println("录入成功");
+            CompanyPO companyPO = companyDao.getById(staffPO.getId());
+            clientPushService.pushLp(channelPO.getPushRule(), staffPO.getCompanyId(), jsInfo.getString("kzId"), shopVO.getId(), channelPO.getId()
+                    , channelPO.getTypeId(), companyPO.getOvertime(), companyPO.getKzInterval());
         } else if ("130004".equals(jsInfo.getString("code")) || "130005".equals(jsInfo.getString("code"))
                 || "130006".equals(jsInfo.getString("code"))) {
             throw new RException("录入失败");

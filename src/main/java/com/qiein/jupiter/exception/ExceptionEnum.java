@@ -41,8 +41,8 @@ public enum ExceptionEnum {
     NICKNAME_IS_NULL(348, "艺名不能为空"),
     USERNAME_IS_NULL(349, "全名不能为空"),
     PHONE_IS_NULL(350, "手机号不能为空"),
-    STAFF_IS_STOP_RECEIPT(351,"员工已被停单，请联系主管解决"),
-    STAFF_IS_LIMIT(352,"员工已达到接单限额，请联系主管解决"),
+    STAFF_IS_STOP_RECEIPT(351, "员工已被停单，请联系主管解决"),
+    STAFF_IS_LIMIT(352, "员工已达到接单限额，请联系主管解决"),
     //部门
     GROUP_NAME_REPEAT(401, "部门名称重复"),
     GROUP_HAVE_CHILD_GROUP(402, "该部门存在小组，请删除下属小组再进行操作"),
@@ -86,7 +86,9 @@ public enum ExceptionEnum {
     COMPANY_ID_NULL(1201, "该公司编号不能为空"),
     //Excel导入导出
     EXCEL_IS_NULL(1301, "Excel文件是空的"),
-    EXCEL_ADD_FAIL(1302, "Excele添加数据库失败");
+    EXCEL_ADD_FAIL(1302, "Excele添加数据库失败"),
+    //客资
+    KZ_CONTACT_INFORMATION(1401, "客资联系方式不能为空");
 
     private Integer code;
 

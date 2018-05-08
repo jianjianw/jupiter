@@ -1,8 +1,11 @@
 package com.qiein.jupiter.web.controller;
 
 import com.qiein.jupiter.constant.TipMsgConstant;
+import com.qiein.jupiter.exception.ExceptionEnum;
+import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
+import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.ClientVO;
 import com.qiein.jupiter.web.service.ClientAddService;
@@ -26,6 +29,18 @@ public class ClientAddController extends BaseController {
      */
     @PostMapping("/add_ds_client")
     public ResultInfo addDsClient(@RequestBody ClientVO clientVO) {
+        if (StringUtil.isAllEmpty(clientVO.getKzPhone(), clientVO.getKzWechat(), clientVO.getKzQq(), clientVO.getKzWw())) {
+            return ResultInfoUtil.error(ExceptionEnum.KZ_CONTACT_INFORMATION);
+        }
+        if (NumUtil.isNull(clientVO.getChannelId())) {
+            return ResultInfoUtil.error(ExceptionEnum.CHANNEL_ID_NULL);
+        }
+        if (NumUtil.isNull(clientVO.getSourceId())) {
+            return ResultInfoUtil.error(ExceptionEnum.SOURCE_ID_NULL);
+        }
+        if (NumUtil.isNull(clientVO.getTypeId())) {
+            return ResultInfoUtil.error(ExceptionEnum.INVALID_REASON_TYPE_NULL);
+        }
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         clientAddService.addDsClient(clientVO, currentLoginStaff);
