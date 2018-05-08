@@ -18,6 +18,8 @@ import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -40,7 +42,7 @@ public class ExcelServiceImpl implements ExcelService {
         }
         for (ClientExcelDTO clientExcelDTO : clientList) {
             String status = clientExcelDTO.getStatusName();
-            clientExcelDTO.setStatusId((StringUtil.isNotEmpty(status) && status.indexOf("无") != -1) ? StatusConstant.INVALID : StatusConstant.NOT_SET);
+            clientExcelDTO.setStatusId((StringUtil.isNotEmpty(status) && status.contains("无")) ? StatusConstant.INVALID : StatusConstant.NOT_SET);
             clientExcelDTO.setRemark(StringUtil.isEmpty(clientExcelDTO.getRemark()) ? CommonConstant.EXCEL_DEFAULT_REMARK :
                     CommonConstant.RICH_TEXT_PREFIX + clientExcelDTO.getRemark() + CommonConstant.RICH_TEXT_SUFFIX);
             clientExcelDTO.setCompanyId(currentLoginStaff.getCompanyId());

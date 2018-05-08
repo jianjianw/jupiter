@@ -66,6 +66,7 @@ public class ShopServiceImpl implements ShopService {
 
     /**
      * 编辑拍摄地排序
+     *
      * @param fId
      * @param fPriority
      * @param sId

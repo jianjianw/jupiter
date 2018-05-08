@@ -38,7 +38,6 @@ public class ClientAddServiceImpl implements ClientAddService {
     private GroupDao groupDao;
     @Autowired
     private CrmBaseApi crmBaseApi;
-    private static Map<String, Object> reqContent;
 
     /**
      * 添加电商客资
@@ -47,7 +46,7 @@ public class ClientAddServiceImpl implements ClientAddService {
      * @param staffPO
      */
     public void addDsClient(ClientVO clientVO, StaffPO staffPO) {
-        reqContent = new HashMap<String, Object>();
+        Map<String, Object> reqContent = new HashMap<String, Object>();
         reqContent.put("companyid", staffPO.getCompanyId());
         reqContent.put("collectorid", staffPO.getId());
         reqContent.put("collectorname", staffPO.getNickName());

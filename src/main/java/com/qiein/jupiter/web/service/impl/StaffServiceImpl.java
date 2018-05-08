@@ -149,23 +149,34 @@ public class StaffServiceImpl implements StaffService {
     }
 
     /**
-     * 设置在线状态
+     * 设置状态
      *
      * @param id
      * @param companyId
-     * @param showFlag
+     * @param statusFlag
      * @return
      */
     @CacheEvict(value = "staff", key = "'staff'+':'+#id+':'+#companyId")
     @Override
-    public StaffPO setOnlineState(int id, int companyId, int showFlag) {
+    public StaffPO updateStatusFlag(int id, int companyId, int statusFlag) {
         log.debug("未使用缓存");
         StaffPO staffPO = new StaffPO();
         staffPO.setId(id);
         staffPO.setCompanyId(companyId);
         //todo  设置上下线状态时的各种判断
-//        staffPO.setShowFlag(showFlag);
-//        staffDao.updateShowFlag(staffPO);
+        StaffPO staffNow = staffDao.getByIdAndCid(id, companyId);
+        //当要上下线时，判断状态
+        if (statusFlag == 0 || statusFlag == 1) {
+            if (staffNow.getStatusFlag() == 8) {
+                //停单
+                throw new RException(ExceptionEnum.STAFF_IS_STOP_RECEIPT);
+            } else if (staffNow.getStatusFlag() == 9) {
+                //满限
+                throw new RException(ExceptionEnum.STAFF_IS_LIMIT);
+            }
+        }
+        staffPO.setStatusFlag(statusFlag);
+        staffDao.updateStatusFlag(staffPO);
         return staffPO;
     }
 
@@ -390,10 +401,9 @@ public class StaffServiceImpl implements StaffService {
         staffDetailPO.setLastLoginIp(ip);
         staffDao.updateStaffLoginInfo(staffDetailPO);
         //上线状态
-        StaffPO staffPO1=new StaffPO();
+        StaffPO staffPO1 = new StaffPO();
         staffPO1.setId(staffPO.getId());
         staffPO1.setCompanyId(staffPO.getCompanyId());
-        //todo 设置员工状态，当员工为下线状态时，更新为上线状态
         return staffPO;
     }
 
@@ -546,7 +556,14 @@ public class StaffServiceImpl implements StaffService {
         return staffBaseInfoVO;
     }
 
-    public List<MenuVO> getCompanyMenuList(int companyId, int staffId) {
+    /**
+     * 根据公司ID和个人获取菜单列表
+     *
+     * @param companyId
+     * @param staffId
+     * @return
+     */
+    private List<MenuVO> getCompanyMenuList(int companyId, int staffId) {
         // 企业左上角菜单栏
         List<MenuVO> menuList = dictionaryDao.getCompanyMemu(companyId, DictionaryConstant.MENU_TYPE);
         if (CollectionUtils.isEmpty(menuList)) {
@@ -699,6 +716,7 @@ public class StaffServiceImpl implements StaffService {
      * @param queryMapDTO
      * @return
      */
+    @Override
     public PageInfo getDelStaffList(QueryMapDTO queryMapDTO) {
         PageHelper.startPage(queryMapDTO.getPageNum(), queryMapDTO.getPageSize());
         List<StaffPO> list = staffDao.findList(queryMapDTO.getCondition());
@@ -710,6 +728,7 @@ public class StaffServiceImpl implements StaffService {
      *
      * @param staffVO
      */
+    @Override
     public void restoreDelStaff(StaffVO staffVO) {
         // 1.根据手机号，全名，艺名查重，手机号全公司不重复，全名，艺名，在职员工中不能重复
         StaffPO phoneExist = staffDao.getStaffByPhone(staffVO.getCompanyId(), staffVO.getPhone());
@@ -751,6 +770,7 @@ public class StaffServiceImpl implements StaffService {
      * @param password
      * @param groupId
      */
+    @Override
     public void batchRestoreStaff(int companyId, String staffIds, String roleIds, String password, String groupId) {
         String[] staffIdArr = staffIds.split(CommonConstant.STR_SEPARATOR);
         // 1.恢复员工
@@ -779,7 +799,8 @@ public class StaffServiceImpl implements StaffService {
      * @param searchKey
      * @return
      */
-    public List<StaffPO> getDelStafflistBySearchKey(int companyId, String searchKey) {
+    @Override
+    public List<StaffPO> getDelStaffListBySearchKey(int companyId, String searchKey) {
         return staffDao.getDelStaffListBySearchKey(companyId, searchKey);
     }
 

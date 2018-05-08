@@ -566,22 +566,20 @@ public class StaffController extends BaseController {
     public ResultInfo searchDelStaffList(@NotEmptyStr @RequestParam("searchKey") String searchKey) {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        return ResultInfoUtil.success(staffService.getDelStafflistBySearchKey(currentLoginStaff.getCompanyId(), searchKey));
+        return ResultInfoUtil.success(staffService.getDelStaffListBySearchKey(currentLoginStaff.getCompanyId(), searchKey));
     }
 
     /**
-     * 设置员工在线状态
+     * 员工自己设置在线状态
      *
-     * @param staffId
-     * @param showFlag
+     * @param status
      * @return
      */
-    @GetMapping("/set_online_state")
-    public ResultInfo setStaffOnlineState(@Id @RequestParam("staffId") Integer staffId,
-                                          @RequestParam("showFlag") int showFlag) {
+    @GetMapping("/set_status")
+    public ResultInfo setStaffStatus(@RequestParam("status") int status) {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        staffService.setOnlineState(staffId, currentLoginStaff.getCompanyId(), showFlag);
+        staffService.updateStatusFlag(currentLoginStaff.getId(), currentLoginStaff.getCompanyId(), status);
         return ResultInfoUtil.success(TipMsgConstant.OPERATE_SUCCESS);
     }
 }
