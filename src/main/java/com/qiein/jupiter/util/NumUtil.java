@@ -38,6 +38,15 @@ public class NumUtil {
 		return (num == null || num == 0);
 	}
 
+	public static boolean haveInvalid(Integer... nums) {
+		for (Integer num : nums) {
+			if (isInValid(num)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * @Description 保留指定位数的小数(少的位数不补零)
 	 * @author fengshuonan
