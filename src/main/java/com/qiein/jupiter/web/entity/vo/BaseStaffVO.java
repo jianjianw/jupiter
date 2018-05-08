@@ -16,6 +16,14 @@ public class BaseStaffVO implements Serializable {
      * 是否可勾选
      */
     private boolean selectFlag;
+    /**
+     * 员工状态
+     */
+    private int statusFlag;
+    /**
+     * 是否锁定
+     */
+    private boolean lockFlag;
 
     public int getStaffId() {
         return staffId;
@@ -39,5 +47,25 @@ public class BaseStaffVO implements Serializable {
 
     public void setSelectFlag(boolean selectFlag) {
         this.selectFlag = selectFlag;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public int getStatusFlag() {
+        return statusFlag;
+    }
+
+    public void setStatusFlag(int statusFlag) {
+        this.statusFlag = statusFlag;
+    }
+
+    public boolean getLockFlag() {
+        return lockFlag;
+    }
+
+    public void setLockFlag(boolean lockFlag) {
+        this.lockFlag = lockFlag;
     }
 }

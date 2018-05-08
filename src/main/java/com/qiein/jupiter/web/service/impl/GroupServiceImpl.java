@@ -2,8 +2,7 @@ package com.qiein.jupiter.web.service.impl;
 
 import java.util.List;
 
-import com.qiein.jupiter.constant.ChannelConstant;
-import com.qiein.jupiter.constant.NumberConstant;
+import com.qiein.jupiter.constant.*;
 import com.qiein.jupiter.web.dao.*;
 import com.qiein.jupiter.web.entity.po.ChannelPO;
 import com.qiein.jupiter.web.entity.po.SourcePO;
@@ -11,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.qiein.jupiter.constant.CommonConstant;
-import com.qiein.jupiter.constant.PmsConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.CollectionUtils;
@@ -133,7 +130,7 @@ public class GroupServiceImpl implements GroupService {
 //            exist.setIsShow(false);
 //            channelDao.update(exist);
             if (exist != null) {
-                channelDao.deleteByIdAndCid(exist.getId(),exist.getCompanyId());
+                channelDao.deleteByIdAndCid(exist.getId(), exist.getCompanyId());
             }
         } else {
             //删除小组，同步删除来源
@@ -142,7 +139,7 @@ public class GroupServiceImpl implements GroupService {
 //            exist.setIsShow(false);
 //            sourceDao.update(exist);
             if (exist != null) {
-                sourceDao.deleteByIdAndCid(exist.getId(),exist.getCompanyId());
+                sourceDao.deleteByIdAndCid(exist.getId(), exist.getCompanyId());
             }
         }
         return groupDao.delete(id);
@@ -289,6 +286,28 @@ public class GroupServiceImpl implements GroupService {
                 }
             }
 
+        }
+        return groupList;
+    }
+
+    /**
+     * 获取邀约客服小组及人员
+     *
+     * @param companyId
+     * @return
+     */
+    public List<GroupBaseStaffVO> getDsyyGroupStaffList(int companyId) {
+        List<GroupBaseStaffVO> groupList = groupStaffDao.getGroupStaffByRole(companyId, RoleConstant.DSYY);
+        if (CollectionUtils.isNotEmpty(groupList)) {
+            for (GroupBaseStaffVO group : groupList) {
+                if (CollectionUtils.isNotEmpty(group.getStaffList())) {
+                    for (BaseStaffVO vo : group.getStaffList()) {
+                        if (vo.getStatusFlag() == 1 && !vo.getLockFlag()) {
+                            vo.setSelectFlag(true);
+                        }
+                    }
+                }
+            }
         }
         return groupList;
     }

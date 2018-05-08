@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.qiein.jupiter.constant.ChannelConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.http.CrmBaseApi;
@@ -94,6 +95,7 @@ public class ClientAddServiceImpl implements ClientAddService {
         reqContent.put("kzww", clientVO.getKzWw());
         reqContent.put("channelid", clientVO.getChannelId());
         reqContent.put("sourceid", clientVO.getSourceId());
+        reqContent.put("srctype", ChannelConstant.DS_ONLY);
         reqContent.put("shopid", clientVO.getShopId());
         reqContent.put("zxstyle", clientVO.getZxStyle());
         reqContent.put("keyword", clientVO.getKeyWord());

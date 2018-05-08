@@ -100,4 +100,15 @@ public class GroupController extends BaseController {
                 groupService.getGroupStaffByType(currentLoginStaff.getCompanyId(), currentLoginStaff.getId(), role));
     }
 
+    /**
+     * 获取邀约客服小组及人员
+     */
+    @GetMapping("/get_dsyy_group_staff_list")
+    public ResultInfo getDsyyGroupStaffList() {
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        return ResultInfoUtil.success(
+                groupService.getDsyyGroupStaffList(currentLoginStaff.getCompanyId()));
+    }
+
 }
