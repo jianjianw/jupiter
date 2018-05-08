@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.service.impl;
 
 import com.qiein.jupiter.constant.ChannelConstant;
+import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.dto.ClientPushDTO;
@@ -26,10 +27,10 @@ public class ClientPushServiceImpl implements ClientPushService {
 		}
 
 		if (overTime == 0) {
-			overTime = 120;
+			overTime = CommonConstant.DEFAULT_OVERTIME;
 		}
 		if (interval == 0) {
-			interval = 180;
+			interval = CommonConstant.DEFAULT_INTERVAL;
 		}
 
 		// 客资分配
