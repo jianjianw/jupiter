@@ -96,13 +96,12 @@
         permission.ABBREVIATE,
         permission.TYPEID
         FROM
-        hm_pub_staff staff
-        LEFT JOIN hm_pub_staff_role staff_role ON staff.ID = staff_role.STAFFID
+        hm_pub_staff_role staff_role
         LEFT JOIN hm_pub_role_permission role_permission ON staff_role.ROLEID = role_permission.ROLEID
         INNER JOIN hm_pub_permission permission ON role_permission.PERMISSIONID=permission.ID
         WHERE
-        staff.ID = #{staffId}
-        AND staff.COMPANYID = #{companyId}
+        staff_role.STAFFID = #{staffId}
+        AND staff_role.COMPANYID = #{companyId}
     </select>
 
 </mapper>
