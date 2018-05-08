@@ -1,13 +1,19 @@
 package com.qiein.jupiter.web.entity.dto;
 
+import com.qiein.jupiter.enums.WebSocketMsgEnum;
+
+import java.io.Serializable;
+
 /**
  * 公司全局消息
  */
-public class CompanyMsgDTO {
+public class WebSocketMsgDTO implements Serializable {
+
+	private static final long serialVersionUID = -5853387409903101083L;
 	/**
 	 * 类型
 	 */
-	private String type;
+	private WebSocketMsgEnum type;
 	/**
 	 * 公司ID
 	 */
@@ -17,11 +23,11 @@ public class CompanyMsgDTO {
 	 */
 	private String content;
 
-	public String getType() {
+	public WebSocketMsgEnum getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(WebSocketMsgEnum type) {
 		this.type = type;
 	}
 

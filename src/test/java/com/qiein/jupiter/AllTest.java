@@ -2,6 +2,9 @@ package com.qiein.jupiter;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializeConfig;
+import com.qiein.jupiter.enums.WebSocketMsgEnum;
+import com.qiein.jupiter.web.entity.dto.WebSocketMsgDTO;
 import org.apache.http.HttpEntity;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.junit.Test;
@@ -71,5 +74,15 @@ public class AllTest {
         Date date=new Date(time);
         Date javaDate = HSSFDateUtil.getJavaDate(time);
         System.out.println(javaDate);
+    }
+
+    @Test
+    public void testEnum(){
+        WebSocketMsgDTO companyMsgDTO = new WebSocketMsgDTO();
+        companyMsgDTO.setCompanyId(1);
+        companyMsgDTO.setContent("hhhhh");
+        companyMsgDTO.setType(WebSocketMsgEnum.OrderSuccess);
+        System.out.println(companyMsgDTO.getType());
+        System.out.println(JSONObject.toJSONString(companyMsgDTO));
     }
 }
