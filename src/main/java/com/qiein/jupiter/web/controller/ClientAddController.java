@@ -32,15 +32,6 @@ public class ClientAddController extends BaseController {
         if (StringUtil.isAllEmpty(clientVO.getKzPhone(), clientVO.getKzWechat(), clientVO.getKzQq(), clientVO.getKzWw())) {
             return ResultInfoUtil.error(ExceptionEnum.KZ_CONTACT_INFORMATION);
         }
-        if (NumUtil.isNull(clientVO.getChannelId())) {
-            return ResultInfoUtil.error(ExceptionEnum.CHANNEL_ID_NULL);
-        }
-        if (NumUtil.isNull(clientVO.getSourceId())) {
-            return ResultInfoUtil.error(ExceptionEnum.SOURCE_ID_NULL);
-        }
-        if (NumUtil.isNull(clientVO.getTypeId())) {
-            return ResultInfoUtil.error(ExceptionEnum.INVALID_REASON_TYPE_NULL);
-        }
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         clientAddService.addDsClient(clientVO, currentLoginStaff);
