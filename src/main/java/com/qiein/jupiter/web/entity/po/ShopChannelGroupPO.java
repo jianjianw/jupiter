@@ -27,7 +27,17 @@ public class ShopChannelGroupPO extends BaseEntity {
 	/**
 	 * 权重
 	 */
-	private int weight;
+	private int weight = 1;
+
+	/**
+	 * 今日领取客资数
+	 */
+	private int todayNum;
+
+	/**
+	 * 领取客资差比
+	 */
+	private double diffPid = Double.MAX_VALUE;
 
 	/**
 	 * 企业ID
@@ -43,6 +53,33 @@ public class ShopChannelGroupPO extends BaseEntity {
 		this.groupId = groupId;
 		this.weight = weight;
 		this.companyId = companyId;
+	}
+
+	/**
+	 * 差比计算
+	 */
+	public void doCalculateAllotNumDiffPID() {
+		if (this.weight == 0) {
+			this.weight = 1;
+		}
+		double w = this.weight;
+		this.diffPid = (this.weight - this.todayNum) / w;
+	}
+
+	public int getTodayNum() {
+		return todayNum;
+	}
+
+	public void setTodayNum(int todayNum) {
+		this.todayNum = todayNum;
+	}
+
+	public double getDiffPid() {
+		return diffPid;
+	}
+
+	public void setDiffPid(double diffPid) {
+		this.diffPid = diffPid;
 	}
 
 	public int getShopId() {

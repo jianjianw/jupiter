@@ -4,18 +4,21 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import com.qiein.jupiter.constant.ChannelConstant;
 import com.qiein.jupiter.constant.ClientStatusConst;
 import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.util.CollectionUtils;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.ClientInfoDao;
+import com.qiein.jupiter.web.dao.GroupKzNumTodayDao;
 import com.qiein.jupiter.web.dao.ShopChannelGroupDao;
+import com.qiein.jupiter.web.dao.StaffDao;
 import com.qiein.jupiter.web.entity.dto.ClientPushDTO;
-import com.qiein.jupiter.web.entity.dto.StaffDTO;
+import com.qiein.jupiter.web.entity.dto.GroupKzNumToday;
+import com.qiein.jupiter.web.entity.dto.StaffPushDTO;
 import com.qiein.jupiter.web.entity.po.ShopChannelGroupPO;
 import com.qiein.jupiter.web.service.ClientPushService;
 
@@ -34,6 +37,12 @@ public class ClientPushServiceImpl implements ClientPushService {
 	@Autowired
 	private ShopChannelGroupDao ShopChannelGroupDao;
 
+	@Autowired
+	private GroupKzNumTodayDao groupKzNumTodayDao;
+
+	@Autowired
+	private StaffDao staffDao;
+
 	@Override
 	public void pushLp(int rule, int companyId, String kzId, int shopId, int channelId, int channelTypeId, int overTime,
 			int interval) {
@@ -50,7 +59,7 @@ public class ClientPushServiceImpl implements ClientPushService {
 		}
 
 		// 分配目标客服
-		StaffDTO appointer = null;
+		StaffPushDTO appointer = null;
 
 		// 客资分配
 		switch (rule) {
@@ -79,7 +88,7 @@ public class ClientPushServiceImpl implements ClientPushService {
 	 * @param interval
 	 * @return
 	 */
-	public StaffDTO getStaffGroupStaffAvg(int companyId, String kzId, int shopId, int channelId, int channelTypeId,
+	public StaffPushDTO getStaffGroupStaffAvg(int companyId, String kzId, int shopId, int channelId, int channelTypeId,
 			int overTime, int interval) {
 
 		// 获取客资信息
@@ -103,11 +112,139 @@ public class ClientPushServiceImpl implements ClientPushService {
 			return null;
 		}
 
-		// 统计当天改拍摄地和渠道，每个小组的客资分配情况
+		// 统计当天该拍摄地和渠道，每个小组的客资分配情况
+		List<GroupKzNumToday> groupKzNumTodayList = groupKzNumTodayDao.getGroupKzNumTodayByShopChannelId(shopId,
+				channelId, companyId, DBSplitUtil.getInfoTabName(companyId));
+
+		// 要分配的目标客服
+		StaffPushDTO appointor = null;
 
 		// 值匹配，差比分析
+		double maxDiffPid = doGroupDiffCalc(shopChannelGroupRelaList, groupKzNumTodayList);
 
-		// 拣选客服组
+		while (CollectionUtils.isNotEmpty(shopChannelGroupRelaList)) {
+
+			if (maxDiffPid == -1) {
+				maxDiffPid = doGroupDiffCalc(shopChannelGroupRelaList);
+			}
+
+			// 取出差比分析后差比值最大的小组即为要分配的客服组
+			ShopChannelGroupPO thisGroup = getCurrentGroup(shopChannelGroupRelaList, maxDiffPid);
+
+			// 从当前组找出要可以领取该渠道和拍摄地客资的客服
+			appointor = getAppointorByAllotRule(thisGroup.getGroupId(), companyId, kzId, shopId, channelId,
+					channelTypeId, overTime, interval);
+
+			// 找不到分配客服就移除改组的分配拣选，重新选组
+			if (appointor == null) {
+				shopChannelGroupRelaList.remove(thisGroup);
+				// 差比重置
+				maxDiffPid = -1;
+			}
+		}
+
+		return appointor;
+	}
+
+	/**
+	 * 从当前组找出要可以领取该渠道和拍摄地客资的客服
+	 * 
+	 * @param groupId
+	 * @param companyId
+	 * @param kzId
+	 * @param shopId
+	 * @param channelId
+	 * @param channelTypeId
+	 * @param overTime
+	 * @param interval
+	 * @return
+	 */
+	private StaffPushDTO getAppointorByAllotRule(String groupId, int companyId, String kzId, int shopId, int channelId,
+			int channelTypeId, int overTime, int interval) {
+
+		// 获取可以领取该渠道和拍摄地的在线的客服集合
+		List<StaffPushDTO> staffList = staffDao.listStaffPushDTOByShopIdAndChannelId(companyId, groupId, channelId,
+				shopId, interval);
+
+		if (CollectionUtils.isEmpty(staffList)) {
+			return null;
+		}
+
+		// 获取从当前时间往前退一个小时内所有客服对该渠道和拍摄地的客资的领取情况
+
+		// 差比分析
+
+		// 客服拣选
 		return null;
+	}
+
+	/**
+	 * 取出差比分析后差比值最大的小组即为要分配的客服组
+	 * 
+	 * @param shopChannelGroupRelaList
+	 * @param maxDiffPid
+	 * @return
+	 */
+	private ShopChannelGroupPO getCurrentGroup(List<ShopChannelGroupPO> shopChannelGroupRelaList, double maxDiffPid) {
+
+		for (ShopChannelGroupPO thisGroup : shopChannelGroupRelaList) {
+			if (thisGroup.getDiffPid() == maxDiffPid) {
+				return thisGroup;
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * 客服组值匹配，差比分析
+	 * 
+	 * @param shopChannelGroupRelaList
+	 * @param groupKzNumTodayList
+	 */
+	private double doGroupDiffCalc(List<ShopChannelGroupPO> shopChannelGroupRelaList,
+			List<GroupKzNumToday> groupKzNumTodayList) {
+
+		if (CollectionUtils.isEmpty(groupKzNumTodayList)) {
+			return Double.MAX_VALUE;
+		}
+
+		double maxDiffPid = 0.0;
+
+		// 值匹配
+		for (ShopChannelGroupPO rela : shopChannelGroupRelaList) {
+			for (GroupKzNumToday todayNum : groupKzNumTodayList) {
+				if (rela.getGroupId().equals(todayNum.getGroupId())) {
+					rela.setTodayNum(todayNum.getKzNum());
+					rela.doCalculateAllotNumDiffPID();
+					continue;
+				}
+			}
+			if (rela.getDiffPid() > maxDiffPid) {
+				maxDiffPid = rela.getDiffPid();
+			}
+		}
+
+		return maxDiffPid;
+	}
+
+	/**
+	 * 取差比最大值
+	 * 
+	 * @param shopChannelGroupRelaList
+	 * @return
+	 */
+	private double doGroupDiffCalc(List<ShopChannelGroupPO> shopChannelGroupRelaList) {
+
+		double maxDiffPid = 0.0;
+
+		// 值匹配
+		for (ShopChannelGroupPO rela : shopChannelGroupRelaList) {
+			if (rela.getDiffPid() > maxDiffPid) {
+				maxDiffPid = rela.getDiffPid();
+			}
+		}
+
+		return maxDiffPid;
 	}
 }

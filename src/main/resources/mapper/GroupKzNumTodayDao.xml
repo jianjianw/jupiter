@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiein.jupiter.web.dao.GroupKzNumTodayDao">
+
+    <resultMap id="baseMap" type="com.qiein.jupiter.web.entity.dto.GroupKzNumToday">
+        <result column="GROUPID" jdbcType="VARCHAR" property="groupId"/>
+        <result column="SHOPID" jdbcType="INTEGER" property="shopId"/>
+        <result column="CHANNELID" jdbcType="INTEGER" property="channelId"/>
+        <result column="COMPANYID" jdbcType="INTEGER" property="companyId"/>
+        <result column="KZNUM" jdbcType="INTEGER" property="kzNum"/>
+    </resultMap>
+
+    <!--查询指定渠道和拍摄地当天各客服组客资分配情况-->
+    <select id="getGroupKzNumTodayByShopChannelId" parameterType="map" resultMap="baseMap">
+		SELECT
+			info.GROUPID, COUNT(1) KZNUM
+		FROM
+			${infoTabName} info
+		WHERE
+			info.CREATETIME &gt; UNIX_TIMESTAMP(CAST(SYSDATE() AS DATE))
+		AND info.GROUPID IS NOT NULL
+		AND info.SHOPID = #{shopId}
+		AND info.CHANNELID = #{channelId}
+		AND info.ISDEL = 0
+		AND info.STATUSID != 5
+		GROUP BY
+			info.GROUPID
+    </select>
+</mapper>

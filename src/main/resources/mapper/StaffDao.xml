@@ -58,6 +58,12 @@
         <result column="OPENID" property="openId" jdbcType="VARCHAR"/>
         <result column="CREATETIME" property="createTime" jdbcType="INTEGER"/>
     </resultMap>
+    
+     <resultMap id="pushMap" type="com.qiein.jupiter.web.entity.dto.StaffPushDTO">
+        <result column="ID" property="staffId" jdbcType="INTEGER"/>
+        <result column="WEIGHT" property="weight" jdbcType="INTEGER"/>
+        <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
+    </resultMap>
 
     <sql id="baseColumn">
         ID, NICKNAME, PHONE, USERNAME, PASSWORD,COMPANYID, CORPID, DINGUSERID, HEADIMG,
@@ -448,5 +454,23 @@
 	        )
     </select>
 
-
+	<!--根据客资的渠道ID和拍摄地ID以及小组ID获取可分配的客服集合-->
+    <select id="listStaffPushDTOByShopIdAndChannelId" parameterType="map" resultMap="pushMap">
+    	SELECT
+			DISTINCT sf.ID, sf.WEIGHT, sf.COMPANYID
+		FROM
+			hm_pub_group grp
+		LEFT JOIN hm_pub_group_staff rela ON grp.GROUPID = rela.GROUPID AND rela.COMPANYID = 9999
+		LEFT JOIN hm_pub_staff sf ON rela.STAFFID = sf.ID AND sf.COMPANYID = 9999
+		WHERE
+			grp.COMPANYID = #{companyId}
+		AND grp.GROUPID = #{groupId}
+		AND sf.STATUSFLAG = 1
+		AND sf.ISDEL = 0
+		AND sf.ISLOCK = 0
+		AND INSTR(sf.LIMITCHANNELIDS, CONCAT(',',#{channelId},',')) = 0
+		AND INSTR(sf.LIMITSHOPIDS, CONCAT(',',#{shopId},',')) = 0
+		AND ( UNIX_TIMESTAMP(NOW()) - LASTPUSHTIME ) &gt; #{interval}
+		AND sf.TODAYNUM &lt; LIMITDAY
+    </select>
 </mapper>
