@@ -579,6 +579,10 @@ public class StaffController extends BaseController {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         staffService.updateStatusFlag(currentLoginStaff.getId(), currentLoginStaff.getCompanyId(), status);
-        return ResultInfoUtil.success(TigMsgEnum.OPERATE_SUCCESS);
+        if(status==0){
+            return ResultInfoUtil.success(TigMsgEnum.OFFLINE_SUCCESS);
+        }else{
+            return ResultInfoUtil.success(TigMsgEnum.ONLINE_SUCCESS);
+        }
     }
 }
