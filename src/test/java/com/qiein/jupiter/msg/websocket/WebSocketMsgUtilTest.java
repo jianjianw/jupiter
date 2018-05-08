@@ -1,5 +1,6 @@
 package com.qiein.jupiter.msg.websocket;
 
+import com.qiein.jupiter.enums.OrderSuccessTypeEnum;
 import com.qiein.jupiter.enums.WebSocketMsgEnum;
 import com.qiein.jupiter.web.entity.dto.OrderSuccessMsg;
 import com.qiein.jupiter.web.entity.dto.WebSocketMsgDTO;
@@ -20,10 +21,15 @@ public class WebSocketMsgUtilTest {
     public void sendMsg() {
         OrderSuccessMsg orderSuccessMsg=new OrderSuccessMsg();
         orderSuccessMsg.setCompanyId(1);
-        orderSuccessMsg.setStaffName("张三");
-        orderSuccessMsg.setHeadImg("");
+        orderSuccessMsg.setStaffName("张三1");
         orderSuccessMsg.setShopName("三亚");
         orderSuccessMsg.setAmount("12000");
+        orderSuccessMsg.setType(OrderSuccessTypeEnum.ArrivalShop);
+        orderSuccessMsg.setSrcImg("https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=156581925,3170808657&fm=27&gp=0.jpg");
+        orderSuccessMsg.setHeadImg("https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=4005596794,992112216&fm=27&gp=0.jpg");
+        WebSocketMsgDTO webSocketMsgDTO=new WebSocketMsgDTO();
+        webSocketMsgDTO.setCompanyId(1);
+        webSocketMsgDTO.setType(WebSocketMsgEnum.OrderSuccess);
         long time = System.currentTimeMillis();
         for (int i = 0; i < 1; i++) {
             webSocketMsgUtil.pushOrderSuccessMsg(orderSuccessMsg);
