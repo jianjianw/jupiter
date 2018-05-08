@@ -77,6 +77,7 @@ public class ClientAddServiceImpl implements ClientAddService {
             if (appoint == null) {
                 throw new RException(ExceptionEnum.APPOINT_NOT_FOUND);
             }
+            reqContent.put("appointid", clientVO.getAppointId());
             reqContent.put("appointname", appoint.getNickName());
         }
         //获取邀约客服组名称
@@ -85,8 +86,10 @@ public class ClientAddServiceImpl implements ClientAddService {
             if (groupPO == null) {
                 throw new RException(ExceptionEnum.APPOINT_GROUP_NOT_FOUND);
             }
+            reqContent.put("groupid", clientVO.getGroupId());
             reqContent.put("groupname", groupPO.getGroupName());
         }
+
         reqContent.put("sex", clientVO.getSex());
         reqContent.put("kzname", clientVO.getKzName());
         reqContent.put("kzphone", clientVO.getKzPhone());
@@ -105,9 +108,6 @@ public class ClientAddServiceImpl implements ClientAddService {
         reqContent.put("address", StringUtil.isNotEmpty(clientVO.getAddress()) ? clientVO.getAddress() :
                 MobileLocationUtil.getAddressByContactInfo(clientVO.getKzPhone(), clientVO.getKzWechat(), clientVO.getKzQq()));
         reqContent.put("remark", clientVO.getRemark());
-        reqContent.put("appointid", clientVO.getAppointId());
-        reqContent.put("groupid", clientVO.getGroupId());
-
 
         String addRstStr = crmBaseApi.doService(reqContent, "addClientInfoPcDsLp");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
@@ -116,11 +116,9 @@ public class ClientAddServiceImpl implements ClientAddService {
             CompanyPO companyPO = companyDao.getById(staffPO.getId());
             clientPushService.pushLp(channelPO.getPushRule(), staffPO.getCompanyId(), jsInfo.getString("kzId"), shopVO.getId(), channelPO.getId()
                     , channelPO.getTypeId(), companyPO.getOvertime(), companyPO.getKzInterval());
-        } else if ("130004".equals(jsInfo.getString("code")) || "130005".equals(jsInfo.getString("code"))
-                || "130006".equals(jsInfo.getString("code"))) {
-            throw new RException("录入失败");
+        } else {
+            throw new RException(ExceptionEnum.KZ_ADD_FAIL);
         }
-
     }
 
 

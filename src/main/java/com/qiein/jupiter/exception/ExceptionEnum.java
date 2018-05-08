@@ -88,7 +88,8 @@ public enum ExceptionEnum {
     EXCEL_IS_NULL(1301, "Excel文件是空的"),
     EXCEL_ADD_FAIL(1302, "Excele添加数据库失败"),
     //客资
-    KZ_CONTACT_INFORMATION(1401, "客资联系方式不能为空");
+    KZ_CONTACT_INFORMATION(1401, "客资联系方式不能为空"),
+    KZ_ADD_FAIL(1402, "录入失败");
 
     private Integer code;
 

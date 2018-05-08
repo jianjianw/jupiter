@@ -49,7 +49,7 @@ public class RExceptionHandler {
     public ResultInfo handleRRException(RException e) {
         ResultInfo r = new ResultInfo();
         r.setCode(e.getCode());
-        r.setMsg(e.getMessage());
+        r.setMsg(e.getMsg());
         return r;
     }
 
