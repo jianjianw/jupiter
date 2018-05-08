@@ -108,6 +108,21 @@
         ORDER BY par.ID,grp.ID
     </select>
 
+    <!--根据类型获取公司部门和小组-->
+    <select id="getCompanyDeptListByType" parameterType="map" resultMap="GroupVOMap">
+        SELECT
+            par.ID, par.GROUPID, par.GROUPNAME, par.PARENTID, par.GROUPTYPE, par.COMPANYID,par.CHIEFIDS,par.CHIEFNAMES,
+             grp.ID AS GID,grp.GROUPID AS GRPID, grp.GROUPNAME AS GRPNAME,grp.PARENTID AS PARID,grp.GROUPTYPE AS TYPE, grp.COMPANYID AS CMPID, grp.CHIEFIDS AS CIDS, grp.CHIEFNAMES AS CNAMES
+        FROM
+            hm_pub_group par
+            LEFT JOIN hm_pub_group grp ON grp.PARENTID = par.GROUPID
+            AND grp.COMPANYID = par.COMPANYID
+        WHERE
+            par.COMPANYID = #{companyId}
+            AND par.PARENTID = '0' AND par.GROUPTYPE = #{type}
+        ORDER BY par.ID,grp.ID
+    </select>
+
     <!--添加小组人员关联表-->
     <insert id="insertGroupStaff" parameterType="map">
         INSERT INTO hm_pub_group_staff

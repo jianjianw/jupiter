@@ -36,6 +36,15 @@ public interface GroupDao extends BaseDao<GroupPO> {
     List<GroupVO> getCompanyAllDeptList(@Param("companyId") int companyId);
 
     /**
+     * 根据类型获取所有部门和小组
+     *
+     * @param type
+     * @param companyId
+     * @return
+     */
+    List<GroupVO> getCompanyDeptListByType(@Param("type") String type, @Param("companyId") int companyId);
+
+    /**
      * 根据父级id获取所有下级组
      *
      * @param parentId

@@ -54,6 +54,17 @@ public class GroupServiceImpl implements GroupService {
     }
 
     /**
+     * 根据类型获取公司部门和小组
+     * @param type
+     * @param companyId
+     * @return
+     */
+    @Override
+    public List<GroupVO> getCompanyDeptListByType(String type,int companyId) {
+        return groupDao.getCompanyDeptListByType(type,companyId);
+    }
+
+    /**
      * 修改部门信息
      *
      * @param groupPO
