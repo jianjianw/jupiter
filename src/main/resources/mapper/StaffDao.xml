@@ -478,7 +478,7 @@
     <!--获取客服指定时间内渠道和拍摄地客资的领取情况-->
     <select id="listStaffPushDTOByAlloted" parameterType="map" resultMap="pushMap">
     	SELECT
-			info.APPOINTORID ID, COUNT(1) KZNUM TODAYNUM
+			info.APPOINTORID ID, COUNT(1) TODAYNUM
 		FROM
 			${infoTabName} info
 		WHERE
@@ -487,6 +487,7 @@
 		AND info.SHOPID = #{shopId}
 		AND info.CHANNELID = #{channelId}
 		AND info.STATUSID != 5
+        AND info.CREATETIME &gt;= UNIX_TIMESTAMP(CAST(SYSDATE() AS DATE))
 		AND ( UNIX_TIMESTAMP(NOW()) - info.CREATETIME ) &gt; ${calcRange}
 		AND info.APPOINTORID IN
         <foreach collection="staffList" item="staff" index="index" open="(" separator="," close=")">

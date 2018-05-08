@@ -30,12 +30,23 @@ public class StaffPushDTO implements Serializable {
 	/**
 	 * 差比
 	 */
-	private double diffPid;
+	private double diffPid = Double.MAX_VALUE;
 
 	/**
 	 * 企业ID
 	 */
 	private int companyId;
+
+	/**
+	 * 差比计算
+	 */
+	public void doCalculateAllotNumDiffPID() {
+		if (this.weight == 0) {
+			this.weight = 1;
+		}
+		double w = this.weight;
+		this.diffPid = (this.weight - this.todayNum) / w;
+	}
 
 	public int getStaffId() {
 		return staffId;

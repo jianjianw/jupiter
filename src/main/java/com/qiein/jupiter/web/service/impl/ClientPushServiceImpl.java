@@ -66,6 +66,7 @@ public class ClientPushServiceImpl implements ClientPushService {
 		case ChannelConstant.PUSH_RULE_GROUP_STAFF_AVG_ALLOT:
 			// 1：小组+员工-指定承接小组依据权重比自动分配
 			appointer = getStaffGroupStaffAvg(companyId, kzId, shopId, channelId, channelTypeId, overTime, interval);
+			System.out.println("应分配客服：" + appointer.getStaffId());
 			break;
 		default:
 			break;
@@ -140,6 +141,8 @@ public class ClientPushServiceImpl implements ClientPushService {
 				shopChannelGroupRelaList.remove(thisGroup);
 				// 差比重置
 				maxDiffPid = -1;
+			} else {
+				return appointor;
 			}
 		}
 
@@ -176,16 +179,20 @@ public class ClientPushServiceImpl implements ClientPushService {
 		List<StaffPushDTO> staffAllotList = staffDao.listStaffPushDTOByAlloted(DBSplitUtil.getInfoTabName(companyId),
 				companyId, channelId, shopId, calcRange, staffOnlineList);
 
-		while (calcRange < 480 && (staffAllotList == null || staffAllotList.size() != staffOnlineList.size())) {
-			calcRange += 60;
+		while (calcRange < 540 && (staffAllotList == null || staffAllotList.size() != staffOnlineList.size())) {
+			calcRange += 120;
 			staffAllotList = staffDao.listStaffPushDTOByAlloted(DBSplitUtil.getInfoTabName(companyId), companyId,
 					channelId, shopId, calcRange, staffOnlineList);
 		}
 
-		// 差比分析
+		// 值匹配，差比分析
+		double maxDiffPid = doAppointDiffCalc(staffOnlineList, staffAllotList);
+
+		// 取出差比分析后差比值最大的小组即为要分配的客服组
+		StaffPushDTO thisAppointor = getCurrentAppointor(staffOnlineList, maxDiffPid);
 
 		// 客服拣选
-		return null;
+		return thisAppointor;
 	}
 
 	/**
@@ -204,6 +211,56 @@ public class ClientPushServiceImpl implements ClientPushService {
 		}
 
 		return null;
+	}
+
+	/**
+	 * 取出差比分析后差比值最大的客服即为要分配的客服
+	 * 
+	 * @param shopChannelGroupRelaList
+	 * @param maxDiffPid
+	 * @return
+	 */
+	private StaffPushDTO getCurrentAppointor(List<StaffPushDTO> staffOnlineList, double maxDiffPid) {
+
+		for (StaffPushDTO thisAppointor : staffOnlineList) {
+			if (thisAppointor.getDiffPid() == maxDiffPid) {
+				return thisAppointor;
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * 客服值匹配，差比分析
+	 * 
+	 * @param staffOnlineList
+	 * @param staffAllotList
+	 * @return
+	 */
+	private double doAppointDiffCalc(List<StaffPushDTO> staffOnlineList, List<StaffPushDTO> staffAllotList) {
+
+		if (CollectionUtils.isEmpty(staffAllotList)) {
+			return Double.MAX_VALUE;
+		}
+
+		double maxDiffPid = 0.0;
+
+		// 值匹配
+		for (StaffPushDTO appointor : staffOnlineList) {
+			for (StaffPushDTO todayNum : staffAllotList) {
+				if (appointor.getStaffId() == todayNum.getStaffId()) {
+					appointor.setTodayNum(todayNum.getTodayNum());
+					appointor.doCalculateAllotNumDiffPID();
+					continue;
+				}
+			}
+			if (appointor.getDiffPid() > maxDiffPid) {
+				maxDiffPid = appointor.getDiffPid();
+			}
+		}
+
+		return maxDiffPid;
 	}
 
 	/**
