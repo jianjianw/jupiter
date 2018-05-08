@@ -121,7 +121,16 @@ public enum TigMsgEnum {
     /**
      * 导入成功
      */
-    IMPORT_SUCCESS("导入成功");
+    IMPORT_SUCCESS("导入成功"),
+    /**
+     * 上线成功
+     */
+    ONLINE_SUCCESS("上线成功"),
+    /**
+     * 下线成功
+     */
+    OFFLINE_SUCCESS("下线成功")
+    ;
 
     private String desc;
 
