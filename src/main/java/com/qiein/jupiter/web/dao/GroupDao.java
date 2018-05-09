@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.dao;
 
 import com.qiein.jupiter.web.entity.po.GroupPO;
 import com.qiein.jupiter.web.entity.vo.GroupVO;
+import com.qiein.jupiter.web.entity.vo.GroupsInfoVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -42,7 +43,7 @@ public interface GroupDao extends BaseDao<GroupPO> {
      * @param companyId
      * @return
      */
-    List<GroupVO> getCompanyDeptListByType(@Param("type") String type, @Param("companyId") int companyId);
+    List<GroupsInfoVO> getCompanyDeptListByType(@Param("type") String type, @Param("companyId") int companyId);
 
     /**
      * 根据父级id获取所有下级组

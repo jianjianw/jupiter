@@ -6,6 +6,7 @@ import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.web.entity.vo.GroupVO;
+import com.qiein.jupiter.web.entity.vo.GroupsInfoVO;
 import com.qiein.jupiter.web.service.GroupService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +33,7 @@ public class StaffMarsController extends BaseController{
      */
     @GetMapping("/get_base_info")
     public ResultInfo getStaffMarsInfo(String type){
-        List<GroupVO> list = groupService.getCompanyDeptListByType(type,getCurrentLoginStaff().getCompanyId());
+        List<GroupsInfoVO> list = groupService.getCompanyDeptListByType(type,getCurrentLoginStaff().getId(),getCurrentLoginStaff().getCompanyId());
         return ResultInfoUtil.success(TigMsgEnum.SUCCESS,list);
     }
 }

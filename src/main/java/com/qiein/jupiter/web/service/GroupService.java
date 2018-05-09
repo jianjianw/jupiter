@@ -4,6 +4,7 @@ import com.qiein.jupiter.web.entity.po.GroupPO;
 import com.qiein.jupiter.web.entity.vo.GroupBaseStaffVO;
 import com.qiein.jupiter.web.entity.vo.GroupStaffVO;
 import com.qiein.jupiter.web.entity.vo.GroupVO;
+import com.qiein.jupiter.web.entity.vo.GroupsInfoVO;
 
 import java.util.List;
 
@@ -21,12 +22,12 @@ public interface GroupService {
     List<GroupVO> getCompanyAllDeptList(int companyId);
 
     /**
-     * 根据类型获取公司的部门
+     * 根据当前权限和类型获取公司的部门
      *
      * @param type
      * @return
      */
-    List<GroupVO> getCompanyDeptListByType(String type, int companyId);
+    List<GroupsInfoVO> getCompanyDeptListByType(String type,int staffId, int companyId);
 
     /**
      * 部门更新

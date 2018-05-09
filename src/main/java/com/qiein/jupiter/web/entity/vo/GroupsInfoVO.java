@@ -1,9 +1,14 @@
 package com.qiein.jupiter.web.entity.vo;
 
+import com.qiein.jupiter.web.entity.po.GroupPO;
+import com.qiein.jupiter.web.entity.po.StaffPO;
+
+import java.util.List;
+
 /**
- * Created by Administrator on 2018/5/8 0008.
+ * Created by Administrator on 2018/5/8 008.
  */
-public class GroupsInfoVO extends GroupVO{
+public class GroupsInfoVO extends GroupPO {
 
     /**
      * 在线人数
@@ -19,6 +24,32 @@ public class GroupsInfoVO extends GroupVO{
      * 是否有权限查看
      */
     private boolean showFlag;
+
+    /**
+     * 下属小组列表
+     */
+    private List<GroupsInfoVO> groupList;
+
+    /**
+     * 组内员工信息
+     */
+    private List<StaffPO> staffList;
+
+    public List<GroupsInfoVO> getGroupList() {
+        return groupList;
+    }
+
+    public List<StaffPO> getStaffList() {
+        return staffList;
+    }
+
+    public void setStaffList(List<StaffPO> staffList) {
+        this.staffList = staffList;
+    }
+
+    public void setGroupList(List<GroupsInfoVO> groupList) {
+        this.groupList = groupList;
+    }
 
     public Integer getLineNum() {
         return lineNum;

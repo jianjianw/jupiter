@@ -109,7 +109,7 @@
     </select>
 
     <!--根据类型获取公司部门和小组-->
-    <select id="getCompanyDeptListByType" parameterType="map" resultMap="GroupVOMap">
+    <!--<select id="getCompanyDeptListByType" parameterType="map" resultMap="GroupVOMap">
         SELECT
             par.ID, par.GROUPID, par.GROUPNAME, par.PARENTID, par.GROUPTYPE, par.COMPANYID,par.CHIEFIDS,par.CHIEFNAMES,
              grp.ID AS GID,grp.GROUPID AS GRPID, grp.GROUPNAME AS GRPNAME,grp.PARENTID AS PARID,grp.GROUPTYPE AS TYPE, grp.COMPANYID AS CMPID, grp.CHIEFIDS AS CIDS, grp.CHIEFNAMES AS CNAMES
@@ -121,7 +121,7 @@
             par.COMPANYID = #{companyId}
             AND par.PARENTID = '0' AND par.GROUPTYPE = #{type}
         ORDER BY par.ID,grp.ID
-    </select>
+    </select>-->
 
     <!--添加小组人员关联表-->
     <insert id="insertGroupStaff" parameterType="map">
