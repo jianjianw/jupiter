@@ -116,6 +116,14 @@
             AND grp.GROUPNAME LIKE CONCAT('%',#{searchKey},'%')
     </select>
 
+	<!--客服组修改名字时联动修改关联分配表中的名字-->
+    <update id="updateGroupNameById" parameterType="map">
+        UPDATE hm_crm_shop_channel_group_rela
+        SET GROUPNAME= #{groupName}
+        WHERE GROUPID= #{groupId}
+        AND COMPANYID = #{companyId}
+    </update>
+    
 	<!-- 根据渠道和拍摄地获取关联的客服组集合 -->
 	<select id="listShopChannelGroupRela" parameterType="map" resultMap="baseMap">
         SELECT

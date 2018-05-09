@@ -90,6 +90,16 @@ public interface ShopChannelGroupDao {
 			@Param("channelId") int channelId, @Param("searchKey") String searchKey);
 
 	/**
+	 * 客服组修改名字时联动修改关联分配表中的名字
+	 * 
+	 * @param groupName
+	 * @param groupId
+	 * @param companyId
+	 */
+	void updateGroupNameById(@Param("groupName") String groupName, @Param("groupId") String groupId,
+			@Param("companyId") int companyId);
+
+	/**
 	 * 根据渠道和拍摄地获取关联的客服组集合
 	 * 
 	 * @param companyId

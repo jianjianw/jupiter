@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
+import com.qiein.jupiter.util.NumUtil;
+import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.GroupDao;
 import com.qiein.jupiter.web.dao.ShopChannelGroupDao;
 import com.qiein.jupiter.web.entity.po.GroupPO;
@@ -116,6 +118,16 @@ public class ShopChannelGroupServiceImpl implements ShopChannelGroupService {
 		// 2.修改groupId
 		GroupPO groupPO = groupDao.getGroupById(companyId, groupId);
 		shopChannelGroupDao.editChannelGroup(companyId, relaId, groupId, groupPO.getGroupName());
+	}
+
+	/**
+	 * 客服组修改名字时联动修改关联分配表中的名字
+	 */
+	public void updateGroupNameById(String groupName, String groupId, int companyId) {
+		if (StringUtil.haveEmpty(groupName, groupId) || NumUtil.isInValid(companyId)) {
+			return;
+		}
+		shopChannelGroupDao.updateGroupNameById(groupName, groupId, companyId);
 	}
 
 	/**
