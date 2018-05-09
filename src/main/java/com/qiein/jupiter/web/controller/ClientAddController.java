@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * 客资录入
+ */
 @RestController
 @RequestMapping("/add")
 public class ClientAddController extends BaseController {
