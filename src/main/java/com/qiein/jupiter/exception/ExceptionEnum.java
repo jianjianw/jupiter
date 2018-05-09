@@ -94,7 +94,10 @@ public enum ExceptionEnum {
     OSS_UPLOAD_TYPE_ERROR(1501, "上传类型错误"),
     OSS_UPLOAD_SIZE_ERROR(1502, "图片大小超过3M"),
     OSS_UPLOAD_FAIL(1503, "图片上传失败"),
-    OSS_NO_FILE(1504, "未选择文件");
+    OSS_NO_FILE(1504, "未选择文件"),
+	//客资
+	INFO_ERROR(1601,"客资信息错误"),
+	INFO_OVERTIME_ERROR(1602,"客资领取超时");
 
     private Integer code;
 
