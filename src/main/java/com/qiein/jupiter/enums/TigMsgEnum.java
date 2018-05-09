@@ -134,7 +134,12 @@ public enum TigMsgEnum {
 	/**
 	 * 客资领取成功
 	 */
-	INFO_RECEIVE_SUCCESS("客资领取成功");
+	INFO_RECEIVE_SUCCESS("客资领取成功"),
+
+	/**
+	 * 客资拒接成功
+	 */
+	INFO_REFUSE_SUCCESS("客资拒接成功");
 
 	private String desc;
 
