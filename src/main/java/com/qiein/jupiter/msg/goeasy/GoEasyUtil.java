@@ -151,7 +151,7 @@ public class GoEasyUtil {
 	 * @param logId
 	 * @param overTime
 	 */
-	public static synchronized void pushAppInfoReceive(int companyId, int staffId, int kzNum, String kzId, String logId,
+	public static synchronized void pushAppInfoReceive(int companyId, int staffId, int kzNum, String kzId, Object logId,
 			int overTime) {
 		contentJson = new JSONObject();
 		contentJson.put("kzid", kzId);
@@ -163,8 +163,8 @@ public class GoEasyUtil {
 	}
 
 	public static void main(String[] args) {
-		int cid = 1;
-		int uid = 1;
+		int cid = 9999;
+		int uid = 108;
 		int kzNum = 1;
 		String kzId = "123123123";
 		String logId = "12";

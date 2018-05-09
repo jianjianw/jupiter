@@ -10,6 +10,7 @@ import com.qiein.jupiter.constant.ChannelConstant;
 import com.qiein.jupiter.constant.ClientConst;
 import com.qiein.jupiter.constant.ClientStatusConst;
 import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
 import com.qiein.jupiter.util.CollectionUtils;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.NumUtil;
@@ -67,6 +68,7 @@ public class ClientPushServiceImpl implements ClientPushService {
 
 		// 分配目标客服
 		StaffPushDTO appointer = null;
+		AllotLogPO allotLog = null;
 
 		// 客资分配
 
@@ -78,14 +80,24 @@ public class ClientPushServiceImpl implements ClientPushService {
 				return;
 			}
 			// 生成分配日志
-			AllotLogPO allotLog = addAllotLog(kzId, appointer.getStaffId(), appointer.getStaffName(),
-					appointer.getGroupId(), appointer.getGroupName(), ClientConst.ALLOT_SYSTEM_AUTO, companyId);
+			allotLog = addAllotLog(kzId, appointer.getStaffId(), appointer.getStaffName(), appointer.getGroupId(),
+					appointer.getGroupName(), ClientConst.ALLOT_SYSTEM_AUTO, companyId);
 
 			// 客资分配客服
 			doPushAvgAllot(companyId, kzId, appointer, allotLog.getId(), overTime);
 			break;
 		case ChannelConstant.PUSH_RULE_AVG_RECEIVE:
 			// 11：小组+员工-指定承接小组依据权重比自动分配 - <客户端领取>
+			appointer = getStaffGroupStaffAvg(companyId, kzId, shopId, channelId, channelTypeId, overTime, interval);
+			if (appointer == null) {
+				return;
+			}
+			// 生成分配日志
+			allotLog = addAllotLog(kzId, appointer.getStaffId(), appointer.getStaffName(), appointer.getGroupId(),
+					appointer.getGroupName(), ClientConst.ALLOT_SYSTEM_AUTO, companyId);
+
+			// 客资分配客服
+			doPushAvgReceive(companyId, kzId, appointer, allotLog.getId(), overTime);
 			break;
 		default:
 			break;
@@ -103,7 +115,7 @@ public class ClientPushServiceImpl implements ClientPushService {
 	 */
 	private void doPushAvgAllot(int companyId, String kzId, StaffPushDTO appointer, int allotLogId, int overTime) {
 
-		// 客资绑定客服，修改客资状态，客资客服ID，客服名，客资分类，客资客服组信息，客资最后推送信息
+		// 客资绑定客服，修改客资状态，客资客服ID，客服名，客资分类，客资客服组信息，最后操作时间，客资最后推送时间
 		int updateRstNum = clientInfoDao.updateClientInfoWhenAllot(companyId, DBSplitUtil.getInfoTabName(companyId),
 				kzId, ClientStatusConst.KZ_CLASS_NEW, ClientStatusConst.BE_HAVE_MAKE_ORDER, appointer.getStaffId(),
 				appointer.getGroupId(), ClientConst.ALLOT_SYSTEM_AUTO);
@@ -124,7 +136,7 @@ public class ClientPushServiceImpl implements ClientPushService {
 			System.out.println("修改错误");
 		}
 
-		// 修改客资的最后操作时间，领取时间
+		// 修改客资的领取时间
 		updateRstNum = clientInfoDao.updateClientInfoAfterAllot(companyId, DBSplitUtil.getInfoTabName(companyId), kzId);
 		if (1 != updateRstNum) {
 			System.out.println("修改错误");
@@ -139,6 +151,43 @@ public class ClientPushServiceImpl implements ClientPushService {
 		// 客资日志记录
 
 		// 推送消息
+	}
+
+	/**
+	 * 客资依据权重设置平均分配--领取方式
+	 * 
+	 * @param companyId
+	 * @param kzId
+	 * @param appointer
+	 * @param allotLogId
+	 * @param overTime
+	 */
+	private void doPushAvgReceive(int companyId, String kzId, StaffPushDTO appointer, int allotLogId, int overTime) {
+
+		// 客资绑定客服，修改客资状态，客资客服ID，客服名，客资分类，客资客服组信息，最后操作时间，客资最后推送时间
+		int updateRstNum = clientInfoDao.updateClientInfoWhenAllot(companyId, DBSplitUtil.getInfoTabName(companyId),
+				kzId, ClientStatusConst.KZ_CLASS_NEW, ClientStatusConst.BE_ALLOTING, appointer.getStaffId(),
+				appointer.getGroupId(), ClientConst.ALLOT_SYSTEM_AUTO);
+		if (1 != updateRstNum) {
+			System.out.println("修改错误");
+		}
+
+		updateRstNum = clientInfoDao.updateClientDetailWhenAllot(companyId, DBSplitUtil.getDetailTabName(companyId),
+				kzId, appointer.getStaffName(), appointer.getGroupName());
+		if (1 != updateRstNum) {
+			System.out.println("修改错误");
+		}
+
+		// 修改客服最后推送时间
+		updateRstNum = staffDao.updateStaffLastPushTime(companyId, appointer.getStaffId());
+		if (1 != updateRstNum) {
+			System.out.println("修改错误");
+		}
+
+		// 客资日志记录
+
+		// 推送消息
+		GoEasyUtil.pushAppInfoReceive(companyId, appointer.getStaffId(), 1, kzId, allotLogId, overTime);
 	}
 
 	/**
