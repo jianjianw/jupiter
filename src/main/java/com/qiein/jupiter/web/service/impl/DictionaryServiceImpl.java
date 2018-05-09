@@ -1,5 +1,10 @@
 package com.qiein.jupiter.web.service.impl;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.constant.DictionaryConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
@@ -7,14 +12,7 @@ import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.CollectionUtils;
 import com.qiein.jupiter.web.dao.DictionaryDao;
 import com.qiein.jupiter.web.entity.po.DictionaryPO;
-import com.qiein.jupiter.web.entity.vo.MenuVO;
 import com.qiein.jupiter.web.service.DictionaryService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import javax.swing.plaf.ListUI;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * 字典业务层
