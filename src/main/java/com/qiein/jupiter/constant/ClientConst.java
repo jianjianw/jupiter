@@ -17,24 +17,10 @@ public class ClientConst {
 	public static final int ALLOT_EXCEL = 5; // Excel导入
 
 	/**
-	 * 客资操作日志类型
-	 */
-	public static final int INFO_LOGTYPE_ADD = 1;// 新增
-	public static final int INFO_LOGTYPE_EDIT = 2;// 修改
-	public static final int INFO_LOGTYPE_INVITE = 3;// 客服跟进
-	public static final int INFO_LOGTYPE_APPOINT = 4;// 预约进店
-	public static final int INFO_LOGTYPE_SUCCESS = 5;// 订单
-	public static final int INFO_LOGTYPE_MIX = 6;// 转移
-	public static final int INFO_LOGTYPE_ALLOT = 7;// 分配
-	public static final int INFO_LOGTYPE_REPEAT = 8;// 重复
-	public static final int INFO_LOGTYPE_COMESHOP = 9;// 进店
-	public static final int INFO_LOGTYPE_REMOVE = 10;// 删除
-
-	/**
 	 * 客资分配日志记录状态
 	 */
 	public static final int ALLOT_LOG_STATUS_NO = 0;// 未领取
-	public static final int ALLOT_LOG_STATUS_YES = 1;// 可领取
+	public static final int ALLOT_LOG_STATUS_YES = 1;// 已领取
 	public static final int ALLOT_LOG_STATUS_REFUSE = 2;// 已拒绝
 
 	/**

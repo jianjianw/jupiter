@@ -97,7 +97,9 @@ public enum ExceptionEnum {
     OSS_NO_FILE(1504, "未选择文件"),
 	//客资
 	INFO_ERROR(1601,"客资信息错误"),
-	INFO_OVERTIME_ERROR(1602,"客资领取超时");
+	INFO_OVERTIME_ERROR(1602,"客资领取超时"),
+	INFO_OTHER_APPOINTOR(1603,"该客资已分配给其他客服"),
+	INFO_BE_RECEIVED(1604,"该客资已被领取");
 
     private Integer code;
 

@@ -62,4 +62,17 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
 	 */
 	public int updateClientInfoAfterAllot(@Param("companyId") int companyId, @Param("infoTabName") String infoTabName,
 			@Param("kzId") String kzId);
+
+	/**
+	 * 修改客资状态
+	 * 
+	 * @param companyId
+	 * @param infoTabName
+	 * @param kzId
+	 * @param classId
+	 * @param statusId
+	 * @return
+	 */
+	public int updateClientInfoStatus(@Param("companyId") int companyId, @Param("infoTabName") String infoTabName,
+			@Param("kzId") String kzId, @Param("classId") int classId, @Param("statusId") int statusId);
 }

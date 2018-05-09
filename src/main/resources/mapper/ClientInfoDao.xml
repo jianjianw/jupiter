@@ -58,4 +58,15 @@
 			KZID = #{kzId}
 		AND COMPANYID = #{companyId}
     </update>
+    
+    <!-- 修改客资状态 -->
+    <update id="updateClientInfoStatus" parameterType="map">
+    	UPDATE ${infoTabName}
+		SET STATUSID = #{statusId},
+			CLASSID = #{classId},
+		 	UPDATETIME = UNIX_TIMESTAMP(NOW())
+		WHERE
+			KZID = #{kzId}
+		AND COMPANYID = #{companyId}
+    </update>
 </mapper>

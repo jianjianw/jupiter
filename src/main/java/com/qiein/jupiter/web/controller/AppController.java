@@ -44,7 +44,8 @@ public class AppController extends BaseController {
 			ResultInfoUtil.error(ExceptionEnum.INFO_ERROR);
 		}
 		// 客资领取
-		receiveService.receive(kzId, logId, currentLoginStaff.getCompanyId(), currentLoginStaff.getId());
+		receiveService.receive(kzId, logId, currentLoginStaff.getCompanyId(), currentLoginStaff.getId(),
+				currentLoginStaff.getNickName());
 		return ResultInfoUtil.success(TigMsgEnum.INFO_RECEIVE_SUCCESS);
 	}
 
@@ -63,7 +64,8 @@ public class AppController extends BaseController {
 			ResultInfoUtil.error(ExceptionEnum.INFO_ERROR);
 		}
 		// 客资拒接
-		receiveService.refuse(kzId, logId, currentLoginStaff.getCompanyId(), currentLoginStaff.getId());
+		receiveService.refuse(kzId, logId, currentLoginStaff.getCompanyId(), currentLoginStaff.getId(),
+				currentLoginStaff.getNickName());
 		return ResultInfoUtil.success(TigMsgEnum.INFO_REFUSE_SUCCESS);
 	}
 }

@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.qiein.jupiter.constant.ChannelConstant;
 import com.qiein.jupiter.constant.ClientConst;
+import com.qiein.jupiter.constant.ClientLogConst;
 import com.qiein.jupiter.constant.ClientStatusConst;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
@@ -17,6 +18,7 @@ import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.ClientAllotLogDao;
 import com.qiein.jupiter.web.dao.ClientInfoDao;
+import com.qiein.jupiter.web.dao.ClientLogDao;
 import com.qiein.jupiter.web.dao.GroupKzNumTodayDao;
 import com.qiein.jupiter.web.dao.ShopChannelGroupDao;
 import com.qiein.jupiter.web.dao.StaffDao;
@@ -24,6 +26,7 @@ import com.qiein.jupiter.web.entity.dto.ClientPushDTO;
 import com.qiein.jupiter.web.entity.dto.GroupKzNumToday;
 import com.qiein.jupiter.web.entity.dto.StaffPushDTO;
 import com.qiein.jupiter.web.entity.po.AllotLogPO;
+import com.qiein.jupiter.web.entity.po.ClientLogPO;
 import com.qiein.jupiter.web.entity.po.ShopChannelGroupPO;
 import com.qiein.jupiter.web.service.ClientPushService;
 
@@ -38,6 +41,8 @@ public class ClientPushServiceImpl implements ClientPushService {
 
 	@Autowired
 	private ClientInfoDao clientInfoDao;
+	@Autowired
+	private ClientLogDao clientLogDao;
 	@Autowired
 	private ClientAllotLogDao clientAllotLogDao;
 	@Autowired
@@ -149,12 +154,19 @@ public class ClientPushServiceImpl implements ClientPushService {
 		}
 
 		// 客资日志记录
+		updateRstNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(companyId),
+				new ClientLogPO(kzId,
+						ClientLogConst.getAutoAllotLog(appointer.getGroupName(), appointer.getStaffName()),
+						ClientLogConst.INFO_LOGTYPE_ALLOT, companyId));
+		if (1 != updateRstNum) {
+			System.out.println("更新失败");
+		}
 
 		// 推送消息
 	}
 
 	/**
-	 * 客资依据权重设置平均分配--领取方式
+	 * 客资依据权重设置平均分配--领取
 	 * 
 	 * @param companyId
 	 * @param kzId
@@ -185,6 +197,10 @@ public class ClientPushServiceImpl implements ClientPushService {
 		}
 
 		// 客资日志记录
+		updateRstNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(companyId),
+				new ClientLogPO(kzId,
+						ClientLogConst.getAutoReceiveLog(appointer.getGroupName(), appointer.getStaffName()),
+						ClientLogConst.INFO_LOGTYPE_ALLOT, companyId));
 
 		// 推送消息
 		GoEasyUtil.pushAppInfoReceive(companyId, appointer.getStaffId(), 1, kzId, allotLogId, overTime);

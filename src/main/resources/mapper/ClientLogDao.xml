@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiein.jupiter.web.dao.ClientLogDao">
+
+    <resultMap id="logMap" type="com.qiein.jupiter.web.entity.po.ClientLogPO">
+        <id column="ID" jdbcType="INTEGER" property="id"/>
+        <result column="KZID" jdbcType="VARCHAR" property="kzId"/>
+        <result column="OPERAID" jdbcType="INTEGER" property="operaId"/>
+        <result column="OPERANAME" jdbcType="VARCHAR" property="operaName"/>
+        <result column="MEMO" jdbcType="VARCHAR" property="memo"/>
+        <result column="OPERATIME" jdbcType="INTEGER" property="kzId"/>
+        <result column="LOGTYPE" jdbcType="INTEGER" property="logType"/>
+        <result column="COMPANYID" jdbcType="INTEGER" property="companyId"/>
+    </resultMap>
+
+    <sql id="baseColumn">
+        log.ID, log.KZID, log.OPERAID, log.OPERANAME, log.MEMO, log.OPERATIME, log.LOGTYPE, log.COMPANYID
+    </sql>
+    
+    <!-- 新增客资日志 -->
+    <insert id="addInfoLog" useGeneratedKeys="true" keyProperty="log.id">
+        INSERT INTO ${logTabName} (
+			KZID, OPERAID, OPERANAME, MEMO, OPERATIME, LOGTYPE, COMPANYID
+		)
+		VALUES
+			(#{log.kzId}, #{log.operaId}, #{log.operaName}, #{log.memo}, UNIX_TIMESTAMP(NOW()), #{log.logType}, #{log.companyId}
+		)
+    </insert>
+</mapper>
