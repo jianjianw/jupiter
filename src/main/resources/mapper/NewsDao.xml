@@ -25,7 +25,8 @@
         WHERE STAFFID = #{staffId}
         AND COMPANYID = #{companyId}
         <if test="type != null and type == 1">
-            AND TYPE NOT IN ('notice', 'system')
+            AND TYPE !='notice'
+            AND TYPE !='system'
         </if>
         <if test="type != null and type == 2">
             AND TYPE = 'notice'
@@ -47,7 +48,8 @@
         AND COMPANYID = #{companyId}
         AND ISREAD = 0
         <if test="type != null and type == 1">
-            AND TYPE NOT IN ('notice', 'system')
+            AND TYPE !='notice'
+            AND TYPE !='system'
         </if>
         <if test="type != null and type == 2">
             AND TYPE = 'notice'
@@ -100,7 +102,8 @@
         AND COMPANYID = #{companyId}
         AND ISREAD = #{readFlag}
         <if test="type != null and type == 1">
-            AND TYPE NOT IN ('notice', 'system')
+            AND TYPE !='notice'
+            AND TYPE !='system'
         </if>
         <if test="type != null and type == 2">
             AND TYPE = 'notice'

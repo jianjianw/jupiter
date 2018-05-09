@@ -52,9 +52,9 @@
         FROM
             hm_pub_shop shop
         WHERE
-            shop.COMPANYID = #{companyId}
-        AND shop.SHOPNAME = #{shopName}
+        shop.SHOPNAME = #{shopName}
         AND shop.TYPEID = 2
+         AND shop.COMPANYID = #{companyId}
     </select>
 
     <!--编辑拍摄地-->
@@ -83,14 +83,16 @@
             </if>
         </set>
         WHERE
-          COMPANYID = #{companyId} AND ID = #{id}
+        ID = #{id}
+        AND  COMPANYID = #{companyId}
     </update>
 
     <!--删除拍摄地-->
     <delete id="deleteShop" parameterType="map">
         DELETE FROM hm_pub_shop
-        WHERE COMPANYID = #{companyId}
-        AND ID = #{id}
+        WHERE
+        ID = #{id}
+        AND COMPANYID = #{companyId}
     </delete>
 
     <!--获取企业显示的拍摄地列表-->

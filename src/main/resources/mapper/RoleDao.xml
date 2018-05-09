@@ -61,7 +61,8 @@
             </if>
         </set>
         WHERE
-        COMPANYID = #{companyId} AND ID = #{id}
+        ID = #{id}
+        AND COMPANYID = #{companyId}
     </update>
 
     <!--获取角色-->

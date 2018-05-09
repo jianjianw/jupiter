@@ -34,7 +34,8 @@
         FROM
         hm_crm_channel
         WHERE
-        COMPANYID = #{companyId} AND ID = #{id}
+        ID = #{id}
+        AND  COMPANYID = #{companyId}
     </select>
 
     <select id="findList" resultMap="baseMap">
@@ -136,7 +137,8 @@
         FROM
         hm_crm_channel
         WHERE
-        COMPANYID = #{companyId} AND CHANNELNAME = #{channelName}
+        CHANNELNAME = #{channelName}
+        AND COMPANYID = #{companyId}
     </select>
 
     <delete id="deleteByIdAndCid" parameterType="Integer">

@@ -19,7 +19,8 @@
         FROM
           hm_crm_brand
         WHERE
-          COMPANYID = #{companyId} AND BRANDNAME = #{brandName}
+        BRANDNAME = #{brandName}
+        AND   COMPANYID = #{companyId}
     </select>
 
     <!--检查品牌下属存在多少渠道-->
@@ -42,7 +43,8 @@
         FROM
           hm_crm_brand
         WHERE
-          COMPANYID = #{companyId} AND ID = #{id}
+        ID = #{id}
+        AND COMPANYID = #{companyId}
     </select>
 
     <!--添加品牌-->

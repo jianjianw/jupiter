@@ -28,8 +28,9 @@
         FROM
             hm_crm_dictionary dic
         WHERE
-            dic.COMPANYID = #{companyId}
-        AND dic.DICTYPE = #{dicType}
+        dic.DICTYPE = #{dicType}
+         AND  dic.COMPANYID = #{companyId}
+
     </select>
 
     <!--获取企业左上角菜单栏-->
@@ -39,8 +40,8 @@
         FROM
            hm_crm_dictionary dic
         WHERE
-            dic.COMPANYID = #{companyId}
-        AND dic.DICTYPE = #{dicType}
+        dic.DICTYPE = #{dicType}
+        AND  dic.COMPANYID = #{companyId}
         ORDER BY dic.PRIORITY, dic.ID
     </select>
 
@@ -51,8 +52,8 @@
         FROM
             hm_crm_dictionary dic
         WHERE
-            dic.COMPANYID = #{companyId}
-        AND dic.DICTYPE = #{dicType}
+        dic.DICTYPE = #{dicType}
+        AND  dic.COMPANYID = #{companyId}
         AND dic.DICNAME = #{dicName}
     </select>
 

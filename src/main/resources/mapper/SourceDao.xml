@@ -27,7 +27,8 @@
         FROM
         hm_crm_source
         WHERE
-        COMPANYID = #{companyId} AND ID = #{id}
+        ID = #{id}
+        AND COMPANYID = #{companyId}
     </select>
 
     <!--新增来源-->
@@ -77,7 +78,8 @@
             </if>
         </set>
         WHERE
-        COMPANYID = #{companyId} AND ID = #{id}
+        ID = #{id}
+        AND COMPANYID = #{companyId}
     </update>
 
     <!--批量编辑-->
@@ -254,8 +256,8 @@
         FROM
             hm_crm_source
         WHERE
-            COMPANYID = #{companyId}
+        SRCNAME = #{srcName}
         AND TYPEID = #{typeId}
-        AND SRCNAME = #{srcName}
+        AND   COMPANYID = #{companyId}
     </select>
 </mapper>
