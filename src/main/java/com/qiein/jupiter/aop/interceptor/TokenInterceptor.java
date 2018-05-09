@@ -88,10 +88,9 @@ public class TokenInterceptor implements HandlerInterceptor {
     private boolean checkRedisToken(VerifyParamDTO verifyParamDTO, HttpServletRequest httpServletRequest) {
         // 根据uid cid 从缓存中获取当前登录用户
         String userTokenKey = RedisConstant.getStaffKey(verifyParamDTO.getUid(), verifyParamDTO.getCid());
-        String staffPOStr = (String) redisTemplate.opsForValue().get(userTokenKey);
-        StaffPO staffPO;
+        StaffPO staffPO = (StaffPO) redisTemplate.opsForValue().get(userTokenKey);
         // 如果缓存中命中失败,从数据库获取用户信息
-        if (StringUtil.isEmpty(staffPOStr)) {
+        if (staffPO == null) {
             staffPO = staffService.getById(verifyParamDTO.getUid(), verifyParamDTO.getCid());
             if (staffPO == null) {
                 // 验证用户不存在
@@ -100,8 +99,6 @@ public class TokenInterceptor implements HandlerInterceptor {
                 // 如果用户当前没有token，说明没有登录或token过期
                 throw new RException(ExceptionEnum.TOKEN_INVALID);
             }
-        } else {
-            staffPO = JSONObject.parseObject(staffPOStr, StaffPO.class);
         }
         // 验证是否被锁定
         if (staffPO.isLockFlag()) {
