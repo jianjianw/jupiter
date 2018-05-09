@@ -1,8 +1,10 @@
 package com.qiein.jupiter.web.dao;
 
 
+import com.qiein.jupiter.web.entity.dto.StaffMarsDTO;
 import com.qiein.jupiter.web.entity.vo.GroupBaseStaffVO;
 import com.qiein.jupiter.web.entity.vo.GroupStaffVO;
+import com.qiein.jupiter.web.entity.vo.GroupsInfoVO;
 import com.qiein.jupiter.web.entity.vo.StaffVO;
 import org.apache.ibatis.annotations.Param;
 
@@ -59,6 +61,21 @@ public interface GroupStaffDao {
      * @return
      */
     List<StaffVO> getGroupStaffs(@Param("companyId") int companyId, @Param("groupId") String groupId);
+
+    /**
+     * 获取小组人员详情
+     * @param companyId
+     * @param groupId
+     * @return
+     */
+    List<StaffMarsDTO> getGroupStaffsDetail(@Param("companyId") int companyId, @Param("groupId") String groupId);
+
+    /**
+     * 获取各小组内人员的接单数和在线人数
+     * @param companyId
+     * @return
+     */
+    List<GroupsInfoVO> getStaffMarsInfo(@Param("companyId") int companyId);
 
     /**
      * 根据小组类型获取组内人员列表

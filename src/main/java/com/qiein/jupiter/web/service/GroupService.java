@@ -27,7 +27,7 @@ public interface GroupService {
      * @param type
      * @return
      */
-    List<GroupsInfoVO> getCompanyDeptListByType(String type,int staffId, int companyId);
+    List<GroupsInfoVO> getStaffMarsInfo(String type,int staffId, int companyId);
 
     /**
      * 部门更新

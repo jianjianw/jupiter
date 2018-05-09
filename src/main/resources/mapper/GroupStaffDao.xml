@@ -108,6 +108,30 @@
         </collection>
     </resultMap>
 
+    <!--网销排班员工详情信息-->
+    <resultMap id="GroupStaffDetailMap" type="com.qiein.jupiter.web.entity.dto.StaffMarsDTO">
+        <result column="ID" property="id" jdbcType="INTEGER"/>
+        <result column="NICKNAME" property="nickName" jdbcType="VARCHAR"/>
+        <result column="PHONE" property="phone" jdbcType="VARCHAR"/>
+        <result column="USERNAME" property="userName" jdbcType="VARCHAR"/>
+        <result column="COMPANYID" property="companyId" jdbcType="VARCHAR"/>
+        <result column="HEADIMG" property="headImg" jdbcType="VARCHAR"/>
+        <result column="STATUSFLAG" property="statusFlag" jdbcType="INTEGER"/>
+        <result column="TODAYNUM" property="todayNum" jdbcType="INTEGER"/>
+        <result column="WEIGHT" property="weight" jdbcType="INTEGER"/>
+        <result column="LIMITDAY" property="limitDay" jdbcType="INTEGER"/>
+        <result column="LASTPUSHTIME" property="lastPushTime" jdbcType="INTEGER"/>
+        <result column="LIMITCHANNELIDS" property="limitChannelIds" jdbcType="VARCHAR"/>
+        <result column="LIMITCHANNELNAMES" property="limitChannelNames" jdbcType="VARCHAR"/>
+        <result column="LIMITSHOPIDS" property="limitShopIds" jdbcType="VARCHAR"/>
+        <result column="LIMITSHOPNAMES" property="limitShopNames" jdbcType="VARCHAR"/>
+        <result column="LASTLOGINTIME" property="lastLoginTime" jdbcType="INTEGER"/>
+        <result column="LASTLOGINIP" property="lastLoginIp" jdbcType="VARCHAR"/>
+        <result column="LASTLOGOUTTIME" property="lastLogoutTime" jdbcType="INTEGER"/>
+        <result column="LASTLOGOUTIP" property="getLastLoginIp" jdbcType="VARCHAR"/>
+        <result column="GROUPID" property="groupId" jdbcType="VARCHAR"/>
+    </resultMap>
+
     <!--获取公司全部的组及下属员工-->
     <select id="getAllGroupAndStaff" resultMap="groupMap">
 		SELECT  ID, GROUPID, GROUPNAME, PARENTID, GROUPTYPE, COMPANYID,CHIEFIDS,CHIEFNAMES
@@ -209,6 +233,52 @@
             AND rela.COMPANYID = #{companyId}
             AND sf.ISDEL = 0
         ORDER BY sf.ISLOCK,sf.NICKNAME
+    </select>
+
+    <!--获取各小组内人员的接单数和在线人数-->
+    <select id="getStaffMarsInfo" parameterType="Integer" resultType="com.qiein.jupiter.web.entity.vo.GroupsInfoVO">
+        SELECT
+        base.GROUPID , a.orderNum , b.lineNum
+        FROM
+        hm_pub_group_staff base
+        LEFT JOIN
+        (SELECT
+        gs.GROUPID aid, SUM(stf.TODAYNUM) orderNum
+        FROM
+        hm_pub_staff stf
+        JOIN
+        hm_pub_group_staff gs ON stf.COMPANYID = gs.COMPANYID AND stf.ID = gs.STAFFID
+        WHERE stf.COMPANYID = 1
+        GROUP BY gs.GROUPID) a ON a.aid = base.GROUPID
+        LEFT JOIN
+        (SELECT
+        gs.GROUPID bid, COUNT(stf.STATUSFLAG=1) lineNum
+        FROM
+        hm_pub_staff stf
+        JOIN
+        hm_pub_group_staff gs ON stf.COMPANYID = gs.COMPANYID AND stf.ID = gs.STAFFID
+        WHERE stf.COMPANYID = 1 AND stf.STATUSFLAG = 1
+        GROUP BY gs.GROUPID) b ON b.bid = base.GROUPID
+        WHERE
+        base.COMPANYID = #{companyId}
+        GROUP BY base.GROUPID
+    </select>
+
+    <!--获取网销排班人员信息详情-->
+    <select id="getGroupStaffsDetail" parameterType="map" resultMap="GroupStaffDetailMap">
+        SELECT
+	        stf.ID,NICKNAME,PHONE,USERNAME,stf.COMPANYID,HEADIMG,STATUSFLAG,TODAYNUM,
+	        WEIGHT,LIMITDAY,LASTPUSHTIME,LIMITCHANNELIDS,LIMITCHANNELNAMES,LIMITSHOPIDS,
+	        LIMITSHOPNAMES,LASTLOGINTIME,LASTLOGINIP,LASTLOGOUTTIME,LASTLOGOUTIP,GROUPID
+        FROM
+	        hm_pub_group_staff grpstf
+        JOIN
+	        hm_pub_staff stf ON grpstf.STAFFID = stf.ID AND grpstf.COMPANYID = stf.COMPANYID
+        LEFT JOIN
+	        hm_pub_staff_detail sfdet ON sfdet.ID = stf.ID
+        WHERE
+	        grpstf.GROUPID = #{groupId} AND grpstf.COMPANYID = #{companyId} AND stf.ISDEL = 0
+        ORDER BY stf.ISLOCK,stf.NICKNAME
     </select>
 
     <!--获取公司下所有的部门及员工-->
