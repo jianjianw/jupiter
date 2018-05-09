@@ -19,5 +19,5 @@ public interface PageConfigService {
     List<PageConfig> listPageConfigByCidAndRole(int companyId, String role);
 
 
-    List<>
+//    List<>
 }
