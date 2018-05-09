@@ -22,12 +22,12 @@ public interface GroupService {
     List<GroupVO> getCompanyAllDeptList(int companyId);
 
     /**
-     * 根据类型获取公司的部门
+     * 根据当前权限和类型获取公司的部门
      *
      * @param type
      * @return
      */
-    List<GroupsInfoVO> getCompanyDeptListByType(String type, int companyId);
+    List<GroupsInfoVO> getCompanyDeptListByType(String type,int staffId, int companyId);
 
     /**
      * 部门更新

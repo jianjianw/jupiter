@@ -50,15 +50,25 @@ public class GroupServiceImpl implements GroupService {
     }
 
     /**
-     * 根据类型获取公司部门和小组
+     * 根据当前权限和类型获取公司的部门和小组
      * @param type
      * @param companyId
      * @return
      */
     @Override
-    public List<GroupsInfoVO> getCompanyDeptListByType(String type, int companyId) {
+    public List<GroupsInfoVO> getCompanyDeptListByType(String type,int staffId, int companyId) {
+        List<Integer> roleList = rolePermissionDao.getStaffPmsList(companyId,staffId);
+        List<GroupsInfoVO> list = groupDao.getCompanyDeptListByType(type,companyId);
+        if (roleList.contains(111)){    //查看所有  所有的都显示
 
-        return groupDao.getCompanyDeptListByType(type,companyId);
+        }else if (roleList.contains(124)){  //查看部门
+
+        }else if (roleList.contains(89) || roleList.contains(90)){  //查看部门
+
+        }else {
+            list= null;
+        }
+        return list;
     }
 
     /**
