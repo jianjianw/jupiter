@@ -49,6 +49,15 @@ public class DBSplitUtil {
 		return getTable(TableEnum.info, companyId);
 	}
 
+	public static String getAllotLogTabName(int companyId) throws RException {
+
+		if (NumUtil.isInValid(companyId)) {
+			throw new RException(ExceptionEnum.COMPANYID_NULL);
+		}
+
+		return getTable(TableEnum.allot, companyId);
+	}
+
 	public static String getDetailTabName(int companyId) throws RException {
 
 		if (NumUtil.isInValid(companyId)) {

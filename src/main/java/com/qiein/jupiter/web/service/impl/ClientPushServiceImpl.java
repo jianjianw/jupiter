@@ -13,6 +13,7 @@ import com.qiein.jupiter.util.CollectionUtils;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.web.dao.ClientAllotLogDao;
 import com.qiein.jupiter.web.dao.ClientInfoDao;
 import com.qiein.jupiter.web.dao.GroupKzNumTodayDao;
 import com.qiein.jupiter.web.dao.ShopChannelGroupDao;
@@ -35,13 +36,12 @@ public class ClientPushServiceImpl implements ClientPushService {
 
 	@Autowired
 	private ClientInfoDao clientInfoDao;
-
+	@Autowired
+	private ClientAllotLogDao clientAllotLogDao;
 	@Autowired
 	private ShopChannelGroupDao ShopChannelGroupDao;
-
 	@Autowired
 	private GroupKzNumTodayDao groupKzNumTodayDao;
-
 	@Autowired
 	private StaffDao staffDao;
 
@@ -76,11 +76,22 @@ public class ClientPushServiceImpl implements ClientPushService {
 			}
 
 			// 生成分配日志
-			AllotLogPO allotLog = new AllotLogPO(kzId, appointer.getStaffId(), appointer.getStaffName(),
-					appointer.getGroupId(), appointer.getGroupName(), ClientConst.ALLOT_LOG_STATUS_YES,
-					ClientConst.ALLOT_SYSTEM_AUTO, companyId);
+			int addRstNum = clientAllotLogDao.addClientAllogLog(DBSplitUtil.getAllotLogTabName(companyId),
+					new AllotLogPO(kzId, appointer.getStaffId(), appointer.getStaffName(), appointer.getGroupId(),
+							appointer.getGroupName(), ClientConst.ALLOT_LOG_STATUS_YES, ClientConst.ALLOT_SYSTEM_AUTO,
+							companyId));
+
+			if (1 != addRstNum) {
+				System.out.println("日志记录错误");
+			}
 
 			// 客资绑定客服，修改客资状态，客资客服ID，客服名，客资分类，客资客服组信息，客资最后推送信息
+			addRstNum = clientInfoDao.updateClientInfoWhenAllot(companyId, DBSplitUtil.getInfoTabName(companyId), kzId,
+					ClientStatusConst.KZ_CLASS_NEW, ClientStatusConst.BE_HAVE_MAKE_ORDER, appointer.getStaffId(),
+					appointer.getGroupId());
+
+			addRstNum = clientInfoDao.updateClientDetailWhenAllot(companyId, DBSplitUtil.getDetailTabName(companyId),
+					kzId, appointer.getStaffName(), appointer.getGroupName());
 
 			// 修改客服最后推送时间
 

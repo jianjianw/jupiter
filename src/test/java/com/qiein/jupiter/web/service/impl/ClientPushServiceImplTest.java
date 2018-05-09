@@ -15,6 +15,6 @@ public class ClientPushServiceImplTest {
 
 	@Test
 	public void getAllDeptAndStaff() {
-		clientPushServiceImpl.pushLp(1, 9999, "0139e96d324ed888aca96357eb3f8d00", 52, 61, 1, 0, 0);
+		clientPushServiceImpl.pushLp(1, 9999, "879872063bab73d97557bb279873a60a", 52, 61, 1, 0, 0);
 	}
 }

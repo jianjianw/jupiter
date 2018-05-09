@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiein.jupiter.web.dao.ClientAllotLogDao">
+
+    <resultMap id="logMap" type="com.qiein.jupiter.web.entity.po.AllotLogPO">
+        <id column="ID" jdbcType="INTEGER" property="id"/>
+        <result column="KZID" jdbcType="VARCHAR" property="kzId"/>
+        <result column="STATUSID" jdbcType="INTEGER" property="statusId"/>
+        <result column="APPOINTORID" jdbcType="INTEGER" property="appointorId"/>
+        <result column="COMPANYID" jdbcType="INTEGER" property="companyId"/>
+        <result column="PUSHINTERVAL" jdbcType="INTEGER" property="pushInterval"/>
+    </resultMap>
+
+    <sql id="baseColumn">
+        info.ID, info.KZID, info.STATUSID, info.APPOINTORID, info.COMPANYID
+    </sql>
+    
+    <!-- 新增分配日志 -->
+    <insert id="addClientAllogLog">
+        INSERT INTO ${allotLogTabName} (
+			KZID, ALLOTTIME, STAFFID, STAFFNAME, GROUPID, GROUPNAME, STATUSID, ALLOTTYPE, COMPANYID
+		)
+		VALUES
+			(#{allotLog.kzId}, UNIX_TIMESTAMP(NOW()), #{allotLog.staffId}, #{allotLog.staffName}, #{allotLog.groupId}, #{allotLog.groupName},
+			 #{allotLog.statusId}, #{allotLog.allotType}, #{allotLog.companyId}
+		)
+    </insert>
+</mapper>

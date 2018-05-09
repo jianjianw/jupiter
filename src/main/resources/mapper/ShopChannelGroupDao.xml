@@ -27,13 +27,10 @@
     <!--获取拍摄地，渠道，小组关联-->
     <select id="getShopChannelGroupList" parameterType="map" resultMap="VOMap">
         SELECT
-            rela.CHANNELID, channel.CHANNELNAME, channel.CHANNELIMG, grp.GROUPNAME, rela.WEIGHT, rela.COMPANYID, rela.ID, rela.GROUPID
+            rela.CHANNELID, channel.CHANNELNAME, channel.CHANNELIMG, rela.GROUPNAME, rela.WEIGHT, rela.COMPANYID, rela.ID, rela.GROUPID
         FROM
             hm_crm_shop_channel_group_rela rela
-            LEFT JOIN hm_crm_channel channel ON channel.COMPANYID = rela.COMPANYID
-            AND rela.CHANNELID = channel.ID
-            LEFT JOIN hm_pub_group grp ON grp.COMPANYID = rela.COMPANYID
-            AND grp.GROUPID = rela.GROUPID
+            LEFT JOIN hm_crm_channel channel ON channel.COMPANYID = rela.COMPANYID AND rela.CHANNELID = channel.ID
         WHERE
             rela.COMPANYID = #{companyId}
             AND rela.SHOPID = #{shopId}
