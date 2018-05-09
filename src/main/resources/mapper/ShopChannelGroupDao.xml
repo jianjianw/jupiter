@@ -5,6 +5,7 @@
         <id column="ID" property="id" jdbcType="BIGINT"/>
         <result column="SHOPID" property="shopId" jdbcType="INTEGER"/>
         <result column="CHANNELID" property="channelId" jdbcType="INTEGER"/>
+        <result column="GROUPNAME" property="groupName" jdbcType="VARCHAR"/>
         <result column="GROUPID" property="groupId" jdbcType="VARCHAR"/>
         <result column="WEIGHT" property="weight" jdbcType="INTEGER"/>
         <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
@@ -127,7 +128,7 @@
 	<!-- 根据渠道和拍摄地获取关联的客服组集合 -->
 	<select id="listShopChannelGroupRela" parameterType="map" resultMap="baseMap">
         SELECT
-			rela.CHANNELID, rela.SHOPID, rela.GROUPID, rela.COMPANYID
+			rela.CHANNELID, rela.SHOPID, rela.GROUPID, rela.GROUPNAME, rela.COMPANYID
 		FROM
 			hm_crm_shop_channel_group_rela rela
 		WHERE

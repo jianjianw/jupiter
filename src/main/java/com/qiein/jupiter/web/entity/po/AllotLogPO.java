@@ -2,6 +2,8 @@ package com.qiein.jupiter.web.entity.po;
 
 import java.io.Serializable;
 
+import com.qiein.jupiter.constant.ClientConst;
+
 /**
  * 客资分配日志
  * 
@@ -50,7 +52,7 @@ public class AllotLogPO implements Serializable {
 	/**
 	 * 领取状态ID
 	 */
-	private int statusId;
+	private int statusId = ClientConst.ALLOT_LOG_STATUS_NO;
 
 	/**
 	 * 领取时间
@@ -67,15 +69,14 @@ public class AllotLogPO implements Serializable {
 	 */
 	private int companyId;
 
-	public AllotLogPO(String kzId, int staffId, String staffName, String groupId, String groupName, int statusId,
-			int allotType, int companyId) {
+	public AllotLogPO(String kzId, int staffId, String staffName, String groupId, String groupName, int allotType,
+			int companyId) {
 		super();
 		this.kzId = kzId;
 		this.staffId = staffId;
 		this.staffName = staffName;
 		this.groupId = groupId;
 		this.groupName = groupName;
-		this.statusId = statusId;
 		this.allotType = allotType;
 		this.companyId = companyId;
 	}

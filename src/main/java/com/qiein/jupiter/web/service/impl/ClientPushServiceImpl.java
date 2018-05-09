@@ -67,42 +67,92 @@ public class ClientPushServiceImpl implements ClientPushService {
 		StaffPushDTO appointer = null;
 
 		// 客资分配
-		if (ChannelConstant.PUSH_RULE_AVG_ALLOT == rule) {
-			// 1：小组+员工-指定承接小组依据权重比自动分配
 
+		switch (rule) {
+		case ChannelConstant.PUSH_RULE_AVG_ALLOT:
+			// 1：小组+员工-指定承接小组依据权重比自动分配 - <无需领取>
 			appointer = getStaffGroupStaffAvg(companyId, kzId, shopId, channelId, channelTypeId, overTime, interval);
 			if (appointer == null) {
 				return;
 			}
-
 			// 生成分配日志
-			int addRstNum = clientAllotLogDao.addClientAllogLog(DBSplitUtil.getAllotLogTabName(companyId),
-					new AllotLogPO(kzId, appointer.getStaffId(), appointer.getStaffName(), appointer.getGroupId(),
-							appointer.getGroupName(), ClientConst.ALLOT_LOG_STATUS_YES, ClientConst.ALLOT_SYSTEM_AUTO,
-							companyId));
+			AllotLogPO allotLog = addAllotLog(kzId, appointer.getStaffId(), appointer.getStaffName(),
+					appointer.getGroupId(), appointer.getGroupName(), ClientConst.ALLOT_SYSTEM_AUTO, companyId);
 
-			if (1 != addRstNum) {
-				System.out.println("日志记录错误");
-			}
-
-			// 客资绑定客服，修改客资状态，客资客服ID，客服名，客资分类，客资客服组信息，客资最后推送信息
-			addRstNum = clientInfoDao.updateClientInfoWhenAllot(companyId, DBSplitUtil.getInfoTabName(companyId), kzId,
-					ClientStatusConst.KZ_CLASS_NEW, ClientStatusConst.BE_HAVE_MAKE_ORDER, appointer.getStaffId(),
-					appointer.getGroupId());
-
-			addRstNum = clientInfoDao.updateClientDetailWhenAllot(companyId, DBSplitUtil.getDetailTabName(companyId),
-					kzId, appointer.getStaffName(), appointer.getGroupName());
-
-			// 修改客服最后推送时间
-
-			// 客资日志记录
-		} else if (ChannelConstant.PUSH_RULE_AVG_RECEIVE == rule) {
-			// 11：小组+员工-指定承接小组依据权重比自动分配--领单
-			appointer = getStaffGroupStaffAvg(companyId, kzId, shopId, channelId, channelTypeId, overTime, interval);
-			if (appointer == null) {
-				return;
-			}
+			// 客资分配客服
+			doPushAvgAllot(companyId, kzId, appointer, allotLog.getId(), overTime);
+			break;
+		case ChannelConstant.PUSH_RULE_AVG_RECEIVE:
+			// 11：小组+员工-指定承接小组依据权重比自动分配 - <客户端领取>
+			break;
+		default:
+			break;
 		}
+	}
+
+	/**
+	 * 客资依据权重设置平均分配
+	 * 
+	 * @param companyId
+	 * @param kzId
+	 * @param appointer
+	 * @param allotLogId
+	 * @param overTime
+	 */
+	private void doPushAvgAllot(int companyId, String kzId, StaffPushDTO appointer, int allotLogId, int overTime) {
+		// 客资绑定客服，修改客资状态，客资客服ID，客服名，客资分类，客资客服组信息，客资最后推送信息
+		int updateRstNum = clientInfoDao.updateClientInfoWhenAllot(companyId, DBSplitUtil.getInfoTabName(companyId),
+				kzId, ClientStatusConst.KZ_CLASS_NEW, ClientStatusConst.BE_HAVE_MAKE_ORDER, appointer.getStaffId(),
+				appointer.getGroupId());
+		if (1 != updateRstNum) {
+			System.out.println("修改错误");
+		}
+
+		updateRstNum = clientInfoDao.updateClientDetailWhenAllot(companyId, DBSplitUtil.getDetailTabName(companyId),
+				kzId, appointer.getStaffName(), appointer.getGroupName());
+
+		if (1 != updateRstNum) {
+			System.out.println("修改错误");
+		}
+
+		// 修改客服最后推送时间
+		updateRstNum = staffDao.updateStaffLastPushTime(companyId, appointer.getStaffId());
+		if (1 != updateRstNum) {
+			System.out.println("修改错误");
+		}
+
+		// 客资日志记录
+
+		// 推送消息
+	}
+
+	/**
+	 * 生成客资分配日志
+	 * 
+	 * @param kzId
+	 * @param staffId
+	 * @param staffName
+	 * @param groupId
+	 * @param groupName
+	 * @param statusId
+	 * @param allotType
+	 * @param companyId
+	 * @return
+	 */
+	private AllotLogPO addAllotLog(String kzId, int staffId, String staffName, String groupId, String groupName,
+			int allotType, int companyId) {
+
+		// 生成分配日志
+		AllotLogPO allotLog = new AllotLogPO(kzId, staffId, staffName, groupId, groupName, allotType, companyId);
+
+		// 记录分配日志
+		int addRstNum = clientAllotLogDao.addClientAllogLog(DBSplitUtil.getAllotLogTabName(companyId), allotLog);
+
+		if (1 != addRstNum) {
+			System.out.println("日志记录错误");
+		}
+
+		return allotLog;
 	}
 
 	/**

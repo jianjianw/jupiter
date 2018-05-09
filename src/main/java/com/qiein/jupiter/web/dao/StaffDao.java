@@ -236,4 +236,13 @@ public interface StaffDao extends BaseDao<StaffPO> {
 	List<StaffPushDTO> listStaffPushDTOByAlloted(@Param("infoTabName") String infoTabName,
 			@Param("companyId") int companyId, @Param("channelId") int channelId, @Param("shopId") int shopId,
 			@Param("calcRange") int calcRange, @Param("staffList") List<StaffPushDTO> staffList);
+
+	/**
+	 * 修改员工最后客资推送时间为当前时间
+	 * 
+	 * @param companyId
+	 * @param staffId
+	 * @return
+	 */
+	int updateStaffLastPushTime(@Param("companyId") int companyId, @Param("id") int id);
 }

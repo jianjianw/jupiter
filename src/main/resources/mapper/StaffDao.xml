@@ -433,6 +433,7 @@
         WHERE ID = #{id}
         AND COMPANYID = #{companyId}
     </update>
+    
     <!--更新员工的登录情况-->
     <update id="updateStaffLoginInfo">
         UPDATE hm_pub_staff_detail
@@ -496,4 +497,12 @@
         </foreach>
 		GROUP BY info.APPOINTORID;
     </select>
+    
+    <!-- 修改员工最后客资推送时间为当前时间 -->
+    <update id="updateStaffLastPushTime">
+        UPDATE hm_pub_staff
+        SET LASTPUSHTIME = UNIX_TIMESTAMP(now())
+        WHERE ID = #{id}
+        AND COMPANYID = #{companyId}
+    </update>
 </mapper>
