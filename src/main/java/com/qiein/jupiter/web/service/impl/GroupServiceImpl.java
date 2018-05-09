@@ -6,6 +6,7 @@ import com.qiein.jupiter.constant.*;
 import com.qiein.jupiter.web.dao.*;
 import com.qiein.jupiter.web.entity.po.ChannelPO;
 import com.qiein.jupiter.web.entity.po.SourcePO;
+import com.qiein.jupiter.web.entity.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,11 +17,6 @@ import com.qiein.jupiter.util.CollectionUtils;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.po.GroupPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
-import com.qiein.jupiter.web.entity.vo.BaseStaffVO;
-import com.qiein.jupiter.web.entity.vo.GroupBaseStaffVO;
-import com.qiein.jupiter.web.entity.vo.GroupStaffVO;
-import com.qiein.jupiter.web.entity.vo.GroupVO;
-import com.qiein.jupiter.web.entity.vo.StaffVO;
 import com.qiein.jupiter.web.service.GroupService;
 
 /**
@@ -60,7 +56,8 @@ public class GroupServiceImpl implements GroupService {
      * @return
      */
     @Override
-    public List<GroupVO> getCompanyDeptListByType(String type,int companyId) {
+    public List<GroupsInfoVO> getCompanyDeptListByType(String type, int companyId) {
+
         return groupDao.getCompanyDeptListByType(type,companyId);
     }
 

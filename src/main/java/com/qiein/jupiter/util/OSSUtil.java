@@ -55,7 +55,7 @@ public class OSSUtil {
     /**
      * 缓冲时间是三十秒,即还有三十秒要过期授权就直接废弃重新申请
      */
-    private static long expireTime = 30 * 1000;
+    private static long expireTime = 60 * 1000;
 
     /**
      * 临时授权过期时间

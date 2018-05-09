@@ -4,6 +4,7 @@ import com.qiein.jupiter.web.entity.po.GroupPO;
 import com.qiein.jupiter.web.entity.vo.GroupBaseStaffVO;
 import com.qiein.jupiter.web.entity.vo.GroupStaffVO;
 import com.qiein.jupiter.web.entity.vo.GroupVO;
+import com.qiein.jupiter.web.entity.vo.GroupsInfoVO;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ public interface GroupService {
      * @param type
      * @return
      */
-    List<GroupVO> getCompanyDeptListByType(String type, int companyId);
+    List<GroupsInfoVO> getCompanyDeptListByType(String type, int companyId);
 
     /**
      * 部门更新
