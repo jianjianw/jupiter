@@ -43,6 +43,9 @@ public class ClientPushServiceImpl implements ClientPushService {
 	@Autowired
 	private StaffDao staffDao;
 
+	/**
+	 * 旅拍版本客资推送
+	 */
 	@Override
 	public void pushLp(int rule, int companyId, String kzId, int shopId, int channelId, int channelTypeId, int overTime,
 			int interval) {
@@ -173,14 +176,15 @@ public class ClientPushServiceImpl implements ClientPushService {
 			return null;
 		}
 
-		int calcRange = 60;
+		int calcRange = CommonConstant.ALLOT_RANGE_DEFAULT;
 
 		// 获取从当前时间往前退一个小时内所有客服对该渠道和拍摄地的客资的领取情况
 		List<StaffPushDTO> staffAllotList = staffDao.listStaffPushDTOByAlloted(DBSplitUtil.getInfoTabName(companyId),
 				companyId, channelId, shopId, calcRange, staffOnlineList);
 
-		while (calcRange < 540 && (staffAllotList == null || staffAllotList.size() != staffOnlineList.size())) {
-			calcRange += 120;
+		while (calcRange <= CommonConstant.ALLOT_RANGE_MAX
+				&& (staffAllotList == null || staffAllotList.size() != staffOnlineList.size())) {
+			calcRange += CommonConstant.ALLOT_RANGE_INTERVAL;
 			staffAllotList = staffDao.listStaffPushDTOByAlloted(DBSplitUtil.getInfoTabName(companyId), companyId,
 					channelId, shopId, calcRange, staffOnlineList);
 		}
@@ -189,10 +193,7 @@ public class ClientPushServiceImpl implements ClientPushService {
 		double maxDiffPid = doAppointDiffCalc(staffOnlineList, staffAllotList);
 
 		// 取出差比分析后差比值最大的小组即为要分配的客服组
-		StaffPushDTO thisAppointor = getCurrentAppointor(staffOnlineList, maxDiffPid);
-
-		// 客服拣选
-		return thisAppointor;
+		return getCurrentAppointor(staffOnlineList, maxDiffPid);
 	}
 
 	/**

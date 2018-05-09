@@ -115,4 +115,19 @@ public class CommonConstant {
 	 * 默认客服领取客资时间间隔
 	 */
 	public static final int DEFAULT_INTERVAL = 180;
+
+	/**
+	 * 分配客资时依据历史分配情况的时间范围-分钟
+	 */
+	public static final int ALLOT_RANGE_DEFAULT = 60;
+
+	/**
+	 * 非全量分配情况时对应的时间扩展增额-分钟
+	 */
+	public static final int ALLOT_RANGE_INTERVAL = 120;
+
+	/**
+	 * 分配客资检索时的最大时间范围-分钟
+	 */
+	public static final int ALLOT_RANGE_MAX = 540;
 }
