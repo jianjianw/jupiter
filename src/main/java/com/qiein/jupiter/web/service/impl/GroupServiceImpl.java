@@ -1,6 +1,8 @@
 package com.qiein.jupiter.web.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.qiein.jupiter.constant.*;
 import com.qiein.jupiter.web.dao.*;
@@ -57,18 +59,113 @@ public class GroupServiceImpl implements GroupService {
      */
     @Override
     public List<GroupsInfoVO> getCompanyDeptListByType(String type,int staffId, int companyId) {
+        //获取员工权限
         List<Integer> roleList = rolePermissionDao.getStaffPmsList(companyId,staffId);
+        //根据类型获取公司的部门和小组
         List<GroupsInfoVO> list = groupDao.getCompanyDeptListByType(type,companyId);
+        //获取员工所在小组列表
+        List<String> groupList = groupDao.getGroupByStaffAndType(companyId, staffId, type);
+        //获取员工所在部门列表
+        List<String> deptList = groupDao.getDeptByTypeAndStaff(companyId, staffId, type);
+
+        Map<String,Object> deptMap = new HashMap<>();
+        for (GroupsInfoVO giv : list){  //获得部门map
+            deptMap.put(giv.getGroupId(),giv);
+        }
+
+
         if (roleList.contains(111)){    //查看所有  所有的都显示
-
+            for (GroupsInfoVO giv:list){
+                for (GroupsInfoVO sgiv:giv.getGroupList()){
+                    sgiv.setShowFlag(true);
+                }
+                giv.setShowFlag(true);
+            }
         }else if (roleList.contains(124)){  //查看部门
-
-        }else if (roleList.contains(89) || roleList.contains(90)){  //查看部门
-
+            for (GroupsInfoVO giv :list){
+                if (deptList.contains(giv.getGroupId())){
+                    giv.setShowFlag(true);
+                    for (GroupsInfoVO sgiv:giv.getGroupList()){
+                        sgiv.setShowFlag(true);
+                    }
+                }
+            }
+        }else if (roleList.contains(89) || roleList.contains(90)){  //查看小组
+            boolean flag =false;
+            for (GroupsInfoVO giv:list){    //遍历部门
+                for (GroupsInfoVO sgiv:giv.getGroupList()){ //遍历小组
+                    if (groupList.contains(sgiv.getGroupId())){ //如果是所在的小组  标记为可见
+                        sgiv.setShowFlag(true);
+                        flag=true;
+                    }
+                }
+                giv.setShowFlag(flag);
+                flag=false;
+            }
         }else {
             list= null;
         }
         return list;
+//
+//        //获取员工权限
+//        List<Integer> roleList = rolePermissionDao.getStaffPmsList(companyId,staffId);
+//        //根据当前权限和类型获取公司的部门和小组
+//        List<GroupsInfoVO> list = groupDao.getCompanyDeptListByType(type,companyId);
+//        //获取员工所在小组列表
+//        List<String> groupList = groupDao.getGroupByStaffAndType(companyId, staffId, type);
+//        //获取员工所在部门列表
+//        List<String> deptList = groupDao.getDeptByTypeAndStaff(companyId, staffId, type);
+//        if (roleList.contains(111)){    //查看所有  所有的都显示
+//            for (GroupsInfoVO giv:list){
+//                for (GroupsInfoVO sgiv:giv.getGroupList()){
+//                    sgiv.setShowFlag(true);
+//                }
+//                giv.setShowFlag(true);
+//            }
+//        }else if (roleList.contains(124)){  //查看部门
+//            for (GroupsInfoVO giv :list){
+//                if (deptList.contains(giv.getGroupId())){
+//                    giv.setShowFlag(true);
+//                    for (GroupsInfoVO sgiv:giv.getGroupList()){
+//                        sgiv.setShowFlag(true);
+//                    }
+//                }
+//            }
+//        }else if (roleList.contains(89) || roleList.contains(90)){  //查看小组
+//            boolean flag =false;
+//            for (GroupsInfoVO giv:list){    //遍历部门
+//                for (GroupsInfoVO sgiv:giv.getGroupList()){ //遍历小组
+//                    if (groupList.contains(sgiv.getGroupId())){ //如果是所在的小组  标记为可见
+//                        sgiv.setShowFlag(true);
+//                        flag=true;
+//                    }
+//                }
+//                giv.setShowFlag(flag);
+//                flag=false;
+//            }
+//        }else {
+//            list= null;
+//        }
+//        return list;
+        //TODO
+//        SELECT        未写完的一条sql
+//        dept.*,grp.*,stf.*
+//                FROM
+//        hm_pub_group grp
+//        LEFT JOIN
+//        hm_pub_group dept ON grp.COMPANYID = dept.COMPANYID
+//        AND grp.PARENTID = dept.GROUPID
+//        LEFT JOIN
+//        hm_pub_group_staff grpstf ON grpstf.COMPANYID = grp.COMPANYID
+//        AND grpstf.GROUPID = grp.GROUPID
+//        LEFT JOIN
+//        hm_pub_staff stf ON stf.ID = grpstf.STAFFID
+//        AND stf.COMPANYID = grpstf.COMPANYID
+//        LEFT JOIN
+//        (SELECT COUNT(1) FROM hm_pub_staff WHERE COMPANYID = 1 AND STATUSFLAG = 1) s ON
+//        WHERE
+//        dept.PARENTID = '0' AND dept.COMPANYID = 1 AND dept.GROUPTYPE = 'dsyy'
+
     }
 
     /**

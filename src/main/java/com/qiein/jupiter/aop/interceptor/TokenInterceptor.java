@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +15,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.constant.NumberConstant;
 import com.qiein.jupiter.constant.RedisConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.HttpUtil;
-import com.qiein.jupiter.util.JwtUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.dto.VerifyParamDTO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
@@ -117,29 +116,6 @@ public class TokenInterceptor implements HandlerInterceptor {
         // 将 当前登录用户 放入request
         httpServletRequest.setAttribute(CommonConstant.CURRENT_LOGIN_STAFF, staffPO);
         return true;
-    }
-
-    /**
-     * 检测jwt方案 不完整
-     *
-     * @param verifyParamDTO     参数
-     * @param httpServletRequest request
-     */
-    private void checkJwt(VerifyParamDTO verifyParamDTO, HttpServletRequest httpServletRequest) {
-        String jwt;
-        try {
-            jwt = JwtUtil.decrypt(verifyParamDTO.getToken());
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RException(ExceptionEnum.TOKEN_VERIFY_FAIL);
-        }
-        // token失效
-        JSONObject jsonObject = JSONObject.parseObject(jwt, JSONObject.class);
-        if (jsonObject == null) {
-            throw new RException(ExceptionEnum.TOKEN_INVALID);
-        }
-        // 将jwt body放入request
-        httpServletRequest.setAttribute(CommonConstant.JWT_BODY, jsonObject);
     }
 
     // 校验Ip

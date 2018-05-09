@@ -109,7 +109,7 @@
     </select>
 
     <!--根据类型获取公司部门和小组-->
-    <!--<select id="getCompanyDeptListByType" parameterType="map" resultMap="GroupVOMap">
+    <select id="getCompanyDeptListByType" parameterType="map" resultMap="GroupVOMap">
         SELECT
             par.ID, par.GROUPID, par.GROUPNAME, par.PARENTID, par.GROUPTYPE, par.COMPANYID,par.CHIEFIDS,par.CHIEFNAMES,
              grp.ID AS GID,grp.GROUPID AS GRPID, grp.GROUPNAME AS GRPNAME,grp.PARENTID AS PARID,grp.GROUPTYPE AS TYPE, grp.COMPANYID AS CMPID, grp.CHIEFIDS AS CIDS, grp.CHIEFNAMES AS CNAMES
@@ -121,7 +121,7 @@
             par.COMPANYID = #{companyId}
             AND par.PARENTID = '0' AND par.GROUPTYPE = #{type}
         ORDER BY par.ID,grp.ID
-    </select>-->
+    </select>
 
     <!--添加小组人员关联表-->
     <insert id="insertGroupStaff" parameterType="map">
@@ -190,6 +190,21 @@
     <select id="getDeptByStaffAndType" parameterType="map" resultType="java.lang.String">
         SELECT
             son.GROUPID
+        FROM
+            hm_pub_group grp
+            LEFT JOIN hm_pub_group_staff rela ON rela.COMPANYID = grp.COMPANYID AND grp.GROUPID = rela.GROUPID
+            LEFT JOIN hm_pub_group son on grp.COMPANYID = son.COMPANYID and grp.PARENTID = son.PARENTID
+        WHERE
+            grp.COMPANYID = #{companyId}
+            AND grp.GROUPTYPE = #{type}
+            AND grp.PARENTID != '0'
+            AND rela.STAFFID =#{staffId}
+    </select>
+
+    <!--获取员工所在部门，你上面那个是获取的小组👆👆👆👆👆👆👆👆👆-->
+    <select id="getDeptByTypeAndStaff" parameterType="map" resultType="String">
+        SELECT
+            son.PARENTID
         FROM
             hm_pub_group grp
             LEFT JOIN hm_pub_group_staff rela ON rela.COMPANYID = grp.COMPANYID AND grp.GROUPID = rela.GROUPID

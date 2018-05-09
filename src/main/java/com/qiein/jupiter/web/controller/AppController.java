@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,7 +11,9 @@ import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
+import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.service.ClientReceiveService;
 
 /**
  * 客户端
@@ -23,6 +26,9 @@ import com.qiein.jupiter.web.entity.po.StaffPO;
 @Validated
 public class AppController extends BaseController {
 
+	@Autowired
+	private ClientReceiveService receiveService;
+
 	/**
 	 * 客资领取
 	 * 
@@ -34,14 +40,12 @@ public class AppController extends BaseController {
 	public ResultInfo reveice(@RequestParam String kzId, @RequestParam String logId) {
 		// 获取当前登录用户
 		StaffPO currentLoginStaff = getCurrentLoginStaff();
-		// TODO
-		System.out.println(kzId);
-		System.out.println(logId);
-		System.out.println(currentLoginStaff.getId());
-		System.out.println(currentLoginStaff.getCompanyId());
-		if (kzId.length() < 32) {
-			ResultInfoUtil.error(ExceptionEnum.INFO_OVERTIME_ERROR);
+		if (StringUtil.haveEmpty(kzId, logId)) {
+			ResultInfoUtil.error(ExceptionEnum.INFO_ERROR);
 		}
+		// 客资领取
+		receiveService.receive(kzId, logId, currentLoginStaff.getCompanyId(), currentLoginStaff.getId(),
+				currentLoginStaff.getNickName());
 		return ResultInfoUtil.success(TigMsgEnum.INFO_RECEIVE_SUCCESS);
 	}
 
@@ -56,11 +60,12 @@ public class AppController extends BaseController {
 	public ResultInfo refuse(@RequestParam String kzId, @RequestParam String logId) {
 		// 获取当前登录用户
 		StaffPO currentLoginStaff = getCurrentLoginStaff();
-		// TODO
-		System.out.println(kzId);
-		System.out.println(logId);
-		System.out.println(currentLoginStaff.getId());
-		System.out.println(currentLoginStaff.getCompanyId());
+		if (StringUtil.haveEmpty(kzId, logId)) {
+			ResultInfoUtil.error(ExceptionEnum.INFO_ERROR);
+		}
+		// 客资拒接
+		receiveService.refuse(kzId, logId, currentLoginStaff.getCompanyId(), currentLoginStaff.getId(),
+				currentLoginStaff.getNickName());
 		return ResultInfoUtil.success(TigMsgEnum.INFO_REFUSE_SUCCESS);
 	}
 }
