@@ -36,7 +36,7 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
 	 */
 	public int updateClientInfoWhenAllot(@Param("companyId") int companyId, @Param("infoTabName") String infoTabName,
 			@Param("kzId") String kzId, @Param("classId") int classId, @Param("statusId") int statusId,
-			@Param("appointorId") int appointorId, @Param("groupId") String groupId);
+			@Param("appointorId") int appointorId, @Param("groupId") String groupId, @Param("allotType") int allotType);
 
 	/**
 	 * 客资分配客服后修改客资详情
@@ -51,4 +51,15 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
 	public int updateClientDetailWhenAllot(@Param("companyId") int companyId,
 			@Param("detailTabName") String detailTabName, @Param("kzId") String kzId,
 			@Param("appointorName") String appointorName, @Param("groupName") String groupName);
+
+	/**
+	 * 客资分配后修改客资的领取时间和最后操作时间
+	 * 
+	 * @param companyId
+	 * @param infoTabName
+	 * @param kzId
+	 * @return
+	 */
+	public int updateClientInfoAfterAllot(@Param("companyId") int companyId, @Param("infoTabName") String infoTabName,
+			@Param("kzId") String kzId);
 }

@@ -25,4 +25,37 @@
 			info.ISDEL = 0
 		AND info.KZID = #{kzId};
     </select>
+    
+    <!-- 客资分配给客服后修改客资信息 -->
+    <update id="updateClientInfoWhenAllot" parameterType="map">
+    	UPDATE ${infoTabName}
+		SET CLASSID = #{classId},
+		 STATUSID = #{statusId},
+		 APPOINTORID = #{appointorId},
+		 LASTPUSHTIME = UNIX_TIMESTAMP(NOW()),
+		 GROUPID = #{groupId},
+		 ALLOTTYPE = #{allotType}
+		WHERE
+			KZID = #{kzId}
+		AND COMPANYID = #{companyId}
+    </update>
+    
+    <!-- 客资分配客服后修改客资详情 -->
+    <update id="updateClientDetailWhenAllot" parameterType="map">
+    	UPDATE ${detailTabName}
+		SET APPOINTNAME = #{appointorName}, GROUPNAME = #{groupName}
+		WHERE
+			KZID = #{kzId}
+		AND COMPANYID = #{companyId}
+    </update>
+    
+    <!-- 客资分配后修改客资的领取时间和最后操作时间 -->
+    <update id="updateClientInfoAfterAllot" parameterType="map">
+    	UPDATE ${infoTabName}
+		SET RECEIVETIME = UNIX_TIMESTAMP(NOW()),
+		 	UPDATETIME = UNIX_TIMESTAMP(NOW())
+		WHERE
+			KZID = #{kzId}
+		AND COMPANYID = #{companyId}
+    </update>
 </mapper>

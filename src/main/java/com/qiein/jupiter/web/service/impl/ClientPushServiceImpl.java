@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.qiein.jupiter.constant.ChannelConstant;
 import com.qiein.jupiter.constant.ClientConst;
@@ -48,6 +49,7 @@ public class ClientPushServiceImpl implements ClientPushService {
 	/**
 	 * 旅拍版本客资推送
 	 */
+	@Transactional
 	@Override
 	public void pushLp(int rule, int companyId, String kzId, int shopId, int channelId, int channelTypeId, int overTime,
 			int interval) {
@@ -100,17 +102,30 @@ public class ClientPushServiceImpl implements ClientPushService {
 	 * @param overTime
 	 */
 	private void doPushAvgAllot(int companyId, String kzId, StaffPushDTO appointer, int allotLogId, int overTime) {
+
 		// 客资绑定客服，修改客资状态，客资客服ID，客服名，客资分类，客资客服组信息，客资最后推送信息
 		int updateRstNum = clientInfoDao.updateClientInfoWhenAllot(companyId, DBSplitUtil.getInfoTabName(companyId),
 				kzId, ClientStatusConst.KZ_CLASS_NEW, ClientStatusConst.BE_HAVE_MAKE_ORDER, appointer.getStaffId(),
-				appointer.getGroupId());
+				appointer.getGroupId(), ClientConst.ALLOT_SYSTEM_AUTO);
 		if (1 != updateRstNum) {
 			System.out.println("修改错误");
 		}
 
 		updateRstNum = clientInfoDao.updateClientDetailWhenAllot(companyId, DBSplitUtil.getDetailTabName(companyId),
 				kzId, appointer.getStaffName(), appointer.getGroupName());
+		if (1 != updateRstNum) {
+			System.out.println("修改错误");
+		}
 
+		// 修改指定分配日志状态为已领取
+		updateRstNum = clientAllotLogDao.updateAllogLog(DBSplitUtil.getAllotLogTabName(companyId), companyId, kzId,
+				allotLogId, ClientConst.ALLOT_LOG_STATUS_YES, "now");
+		if (1 != updateRstNum) {
+			System.out.println("修改错误");
+		}
+
+		// 修改客资的最后操作时间，领取时间
+		updateRstNum = clientInfoDao.updateClientInfoAfterAllot(companyId, DBSplitUtil.getInfoTabName(companyId), kzId);
 		if (1 != updateRstNum) {
 			System.out.println("修改错误");
 		}
@@ -146,9 +161,9 @@ public class ClientPushServiceImpl implements ClientPushService {
 		AllotLogPO allotLog = new AllotLogPO(kzId, staffId, staffName, groupId, groupName, allotType, companyId);
 
 		// 记录分配日志
-		int addRstNum = clientAllotLogDao.addClientAllogLog(DBSplitUtil.getAllotLogTabName(companyId), allotLog);
+		clientAllotLogDao.addClientAllogLog(DBSplitUtil.getAllotLogTabName(companyId), allotLog);
 
-		if (1 != addRstNum) {
+		if (NumUtil.isInValid(allotLog.getId())) {
 			System.out.println("日志记录错误");
 		}
 

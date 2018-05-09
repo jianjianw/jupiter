@@ -18,6 +18,19 @@ public interface ClientAllotLogDao extends BaseDao<ClientAllotLogDao> {
 	 * @param allotLog
 	 * @return
 	 */
-	public int addClientAllogLog(@Param("allotLogTabName") String allotLogTabName,
+	public void addClientAllogLog(@Param("allotLogTabName") String allotLogTabName,
 			@Param("allotLog") AllotLogPO allotLog);
+
+	/**
+	 * 修改客资分配日志
+	 * 
+	 * @param allotLogTabName
+	 * @param companyId
+	 * @param statusId
+	 * @param receiveFlag
+	 * @return
+	 */
+	public int updateAllogLog(@Param("allotLogTabName") String allotLogTabName, @Param("companyId") int companyId,
+			@Param("kzId") String kzId, @Param("logId") int logId, @Param("statusId") int statusId,
+			@Param("receiveFlag") String receiveFlag);
 }

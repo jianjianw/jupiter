@@ -16,7 +16,7 @@
     </sql>
     
     <!-- 新增分配日志 -->
-    <insert id="addClientAllogLog">
+    <insert id="addClientAllogLog" useGeneratedKeys="true" keyProperty="allotLog.id">
         INSERT INTO ${allotLogTabName} (
 			KZID, ALLOTTIME, STAFFID, STAFFNAME, GROUPID, GROUPNAME, STATUSID, ALLOTTYPE, COMPANYID
 		)
@@ -25,4 +25,17 @@
 			 #{allotLog.statusId}, #{allotLog.allotType}, #{allotLog.companyId}
 		)
     </insert>
+    
+    <!-- 修改客资分配日志 -->
+    <update id="updateAllogLog" parameterType="map">
+    	UPDATE ${allotLogTabName}
+		SET STATUSID = #{statusId}
+			<if test="receiveFlag != null and receiveFlag != '' ">
+                ,RECEIVETIME = UNIX_TIMESTAMP(NOW())
+            </if>
+		WHERE
+			ID = #{logId}
+		AND	KZID = #{kzId}
+		AND COMPANYID = #{companyId}
+    </update>
 </mapper>
