@@ -33,7 +33,7 @@ public class StaffMarsController extends BaseController{
      */
     @GetMapping("/get_base_info")
     public ResultInfo getStaffMarsInfo(String type){
-        List<GroupVO> list = groupService.getCompanyDeptListByType(type,getCurrentLoginStaff().getCompanyId());
+        List<GroupsInfoVO> list = groupService.getCompanyDeptListByType(type,getCurrentLoginStaff().getId(),getCurrentLoginStaff().getCompanyId());
         return ResultInfoUtil.success(TigMsgEnum.SUCCESS,list);
     }
 }
