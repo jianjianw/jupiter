@@ -1,55 +1,60 @@
 package com.qiein.jupiter.web.entity.vo;
 
+import java.io.Serializable;
+
 /**
  * 消息类型的总数量及是否存在未读类型
  */
-public class NewsTotalAmountAndFlag {
-    /**
-     * 所有的消息数量
-     */
-    private long allAmount;
-    /**
-     * 是否存在客资类型的未读
-     */
-    private boolean kzType;
-    /**
-     * 是否存在定时类型的未读
-     */
-    private boolean noticeType;
-    /**
-     * 是否存在系统类型的未读
-     */
-    private boolean systemType;
+public class NewsTotalAmountAndFlag implements Serializable {
 
-    public long getAllAmount() {
-        return allAmount;
-    }
+	private static final long serialVersionUID = 1L;
 
-    public void setAllAmount(long allAmount) {
-        this.allAmount = allAmount;
-    }
+	/**
+	 * 所有的消息数量
+	 */
+	private long allAmount;
+	/**
+	 * 是否存在客资类型的未读
+	 */
+	private boolean kzType;
+	/**
+	 * 是否存在定时类型的未读
+	 */
+	private boolean noticeType;
+	/**
+	 * 是否存在系统类型的未读
+	 */
+	private boolean systemType;
 
-    public boolean isKzType() {
-        return kzType;
-    }
+	public long getAllAmount() {
+		return allAmount;
+	}
 
-    public void setKzType(boolean kzType) {
-        this.kzType = kzType;
-    }
+	public void setAllAmount(long allAmount) {
+		this.allAmount = allAmount;
+	}
 
-    public boolean isNoticeType() {
-        return noticeType;
-    }
+	public boolean isKzType() {
+		return kzType;
+	}
 
-    public void setNoticeType(boolean noticeType) {
-        this.noticeType = noticeType;
-    }
+	public void setKzType(boolean kzType) {
+		this.kzType = kzType;
+	}
 
-    public boolean isSystemType() {
-        return systemType;
-    }
+	public boolean isNoticeType() {
+		return noticeType;
+	}
 
-    public void setSystemType(boolean systemType) {
-        this.systemType = systemType;
-    }
+	public void setNoticeType(boolean noticeType) {
+		this.noticeType = noticeType;
+	}
+
+	public boolean isSystemType() {
+		return systemType;
+	}
+
+	public void setSystemType(boolean systemType) {
+		this.systemType = systemType;
+	}
 }

@@ -1,8 +1,12 @@
 package com.qiein.jupiter.web.entity.dto;
 
+import java.io.Serializable;
 import java.util.Map;
 
-public class QueryMapDTO {
+public class QueryMapDTO implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * 当前页
 	 */
@@ -16,7 +20,7 @@ public class QueryMapDTO {
 	/**
 	 * 条件
 	 */
-	private Map condition;
+	private Map<String, Object> condition;
 
 	public int getPageNum() {
 		// 设置默认值
@@ -40,11 +44,11 @@ public class QueryMapDTO {
 		this.pageSize = pageSize;
 	}
 
-	public Map getCondition() {
+	public Map<String, Object> getCondition() {
 		return condition;
 	}
 
-	public void setCondition(Map condition) {
+	public void setCondition(Map<String, Object> condition) {
 		this.condition = condition;
 	}
 }

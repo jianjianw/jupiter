@@ -10,68 +10,70 @@ import java.util.List;
  */
 public class GroupsInfoVO extends GroupPO {
 
-    /**
-     * 在线人数
-     */
-    private Integer lineNum;
+	private static final long serialVersionUID = 1L;
 
-    /**
-     * 订单数
-     */
-    private Integer orderNum;
+	/**
+	 * 在线人数
+	 */
+	private Integer lineNum;
 
-    /**
-     * 是否有权限查看
-     */
-    private boolean showFlag;
+	/**
+	 * 订单数
+	 */
+	private Integer orderNum;
 
-    /**
-     * 下属小组列表
-     */
-    private List<GroupsInfoVO> groupList;
+	/**
+	 * 是否有权限查看
+	 */
+	private boolean showFlag;
 
-    /**
-     * 组内员工信息
-     */
-    private List<StaffPO> staffList;
+	/**
+	 * 下属小组列表
+	 */
+	private List<GroupsInfoVO> groupList;
 
-    public List<GroupsInfoVO> getGroupList() {
-        return groupList;
-    }
+	/**
+	 * 组内员工信息
+	 */
+	private List<StaffPO> staffList;
 
-    public List<StaffPO> getStaffList() {
-        return staffList;
-    }
+	public List<GroupsInfoVO> getGroupList() {
+		return groupList;
+	}
 
-    public void setStaffList(List<StaffPO> staffList) {
-        this.staffList = staffList;
-    }
+	public List<StaffPO> getStaffList() {
+		return staffList;
+	}
 
-    public void setGroupList(List<GroupsInfoVO> groupList) {
-        this.groupList = groupList;
-    }
+	public void setStaffList(List<StaffPO> staffList) {
+		this.staffList = staffList;
+	}
 
-    public Integer getLineNum() {
-        return lineNum;
-    }
+	public void setGroupList(List<GroupsInfoVO> groupList) {
+		this.groupList = groupList;
+	}
 
-    public void setLineNum(Integer lineNum) {
-        this.lineNum = lineNum;
-    }
+	public Integer getLineNum() {
+		return lineNum;
+	}
 
-    public Integer getOrderNum() {
-        return orderNum;
-    }
+	public void setLineNum(Integer lineNum) {
+		this.lineNum = lineNum;
+	}
 
-    public void setOrderNum(Integer orderNum) {
-        this.orderNum = orderNum;
-    }
+	public Integer getOrderNum() {
+		return orderNum;
+	}
 
-    public boolean isShowFlag() {
-        return showFlag;
-    }
+	public void setOrderNum(Integer orderNum) {
+		this.orderNum = orderNum;
+	}
 
-    public void setShowFlag(boolean showFlag) {
-        this.showFlag = showFlag;
-    }
+	public boolean isShowFlag() {
+		return showFlag;
+	}
+
+	public void setShowFlag(boolean showFlag) {
+		this.showFlag = showFlag;
+	}
 }

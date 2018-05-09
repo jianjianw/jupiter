@@ -1,49 +1,49 @@
 package com.qiein.jupiter.web.entity.po;
 
-
 import java.io.Serializable;
 
 /**
  * 员工角色表
  */
 public class StaffRolePO implements Serializable {
-    private static final long serialVersionUID = 5878036122040487447L;
-    /**
-     * 员工id
-     */
-    private int staffId;
 
-    /**
-     * 角色id
-     */
-    private int roleId;
+	private static final long serialVersionUID = 5878036122040487447L;
+	/**
+	 * 员工id
+	 */
+	private int staffId;
 
-    /**
-     * 企业ID
-     */
-    private int companyId;
+	/**
+	 * 角色id
+	 */
+	private int roleId;
 
-    public int getStaffId() {
-        return staffId;
-    }
+	/**
+	 * 企业ID
+	 */
+	private int companyId;
 
-    public void setStaffId(int staffId) {
-        this.staffId = staffId;
-    }
+	public int getStaffId() {
+		return staffId;
+	}
 
-    public int getRoleId() {
-        return roleId;
-    }
+	public void setStaffId(int staffId) {
+		this.staffId = staffId;
+	}
 
-    public void setRoleId(int roleId) {
-        this.roleId = roleId;
-    }
+	public int getRoleId() {
+		return roleId;
+	}
 
-    public int getCompanyId() {
-        return companyId;
-    }
+	public void setRoleId(int roleId) {
+		this.roleId = roleId;
+	}
 
-    public void setCompanyId(int companyId) {
-        this.companyId = companyId;
-    }
+	public int getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(int companyId) {
+		this.companyId = companyId;
+	}
 }

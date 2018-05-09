@@ -1,19 +1,18 @@
 package com.qiein.jupiter.web.controller;
 
-import com.alibaba.fastjson.JSONObject;
-import com.qiein.jupiter.constant.TipMsgConstant;
-import com.qiein.jupiter.enums.TigMsgEnum;
-import com.qiein.jupiter.util.ResultInfo;
-import com.qiein.jupiter.util.ResultInfoUtil;
-import com.qiein.jupiter.web.entity.vo.GroupVO;
-import com.qiein.jupiter.web.entity.vo.GroupsInfoVO;
-import com.qiein.jupiter.web.service.GroupService;
+import java.util.List;
+
+import javax.annotation.Resource;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
-import java.util.List;
+import com.qiein.jupiter.enums.TigMsgEnum;
+import com.qiein.jupiter.util.ResultInfo;
+import com.qiein.jupiter.util.ResultInfoUtil;
+import com.qiein.jupiter.web.entity.vo.GroupsInfoVO;
+import com.qiein.jupiter.web.service.GroupService;
 
 /**
  * 网销排班

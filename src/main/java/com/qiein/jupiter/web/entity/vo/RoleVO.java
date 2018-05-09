@@ -1,56 +1,61 @@
 package com.qiein.jupiter.web.entity.vo;
 
+import java.io.Serializable;
+
 /**
  * 角色
  */
-public class RoleVO {
-    /**
-     * 角色ID
-     */
-    private int roleId;
+public class RoleVO implements Serializable {
 
-    /**
-     * 角色名称
-     */
-    private String roleName;
-    /**
-     * 公司id
-     */
-    private int companyId;
-    /**
-     * 公司id
-     */
-    private String pmsIds;
+	private static final long serialVersionUID = 1L;
 
-    public int getRoleId() {
-        return roleId;
-    }
+	/**
+	 * 角色ID
+	 */
+	private int roleId;
 
-    public void setRoleId(int roleId) {
-        this.roleId = roleId;
-    }
+	/**
+	 * 角色名称
+	 */
+	private String roleName;
+	/**
+	 * 公司id
+	 */
+	private int companyId;
+	/**
+	 * 公司id
+	 */
+	private String pmsIds;
 
-    public String getRoleName() {
-        return roleName;
-    }
+	public int getRoleId() {
+		return roleId;
+	}
 
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
-    }
+	public void setRoleId(int roleId) {
+		this.roleId = roleId;
+	}
 
-    public int getCompanyId() {
-        return companyId;
-    }
+	public String getRoleName() {
+		return roleName;
+	}
 
-    public void setCompanyId(int companyId) {
-        this.companyId = companyId;
-    }
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
+	}
 
-    public String getPmsIds() {
-        return pmsIds;
-    }
+	public int getCompanyId() {
+		return companyId;
+	}
 
-    public void setPmsIds(String pmsIds) {
-        this.pmsIds = pmsIds;
-    }
+	public void setCompanyId(int companyId) {
+		this.companyId = companyId;
+	}
+
+	public String getPmsIds() {
+		return pmsIds;
+	}
+
+	public void setPmsIds(String pmsIds) {
+		this.pmsIds = pmsIds;
+	}
 }

@@ -1,76 +1,79 @@
 package com.qiein.jupiter.web.entity.vo;
 
-import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
+import java.io.Serializable;
 
+import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 
 /**
  * 登录用户业务对象
  */
-public class LoginUserVO {
+public class LoginUserVO implements Serializable {
 
-    /**
-     * 用户名
-     */
-    @NotEmptyStr(message = "{loginUser.phone.null}")
-    private String userName;
+	private static final long serialVersionUID = 1L;
 
-    /**
-     * 密码
-     */
-    @NotEmptyStr(message = "{loginUser.password.null}")
-    private String password;
+	/**
+	 * 用户名
+	 */
+	@NotEmptyStr(message = "{loginUser.phone.null}")
+	private String userName;
 
-    /**
-     * 企业ID
-     */
-    private int companyId;
+	/**
+	 * 密码
+	 */
+	@NotEmptyStr(message = "{loginUser.password.null}")
+	private String password;
 
-    /**
-     * 验证码
-     */
-    private String verifyCode;
-    /**
-     * 是否是客户端
-     */
-    private boolean clientFlag;
+	/**
+	 * 企业ID
+	 */
+	private int companyId;
 
-    public String getUserName() {
-        return userName;
-    }
+	/**
+	 * 验证码
+	 */
+	private String verifyCode;
+	/**
+	 * 是否是客户端
+	 */
+	private boolean clientFlag;
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
+	public String getUserName() {
+		return userName;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public String getPassword() {
+		return password;
+	}
 
-    public String getVerifyCode() {
-        return verifyCode;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    public void setVerifyCode(String verifyCode) {
-        this.verifyCode = verifyCode;
-    }
+	public String getVerifyCode() {
+		return verifyCode;
+	}
 
-    public int getCompanyId() {
-        return companyId;
-    }
+	public void setVerifyCode(String verifyCode) {
+		this.verifyCode = verifyCode;
+	}
 
-    public void setCompanyId(int companyId) {
-        this.companyId = companyId;
-    }
+	public int getCompanyId() {
+		return companyId;
+	}
 
-    public boolean getClientFlag() {
-        return clientFlag;
-    }
+	public void setCompanyId(int companyId) {
+		this.companyId = companyId;
+	}
 
-    public void setClientFlag(boolean clientFlag) {
-        this.clientFlag = clientFlag;
-    }
+	public boolean getClientFlag() {
+		return clientFlag;
+	}
+
+	public void setClientFlag(boolean clientFlag) {
+		this.clientFlag = clientFlag;
+	}
 }

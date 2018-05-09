@@ -1,7 +1,6 @@
 package com.qiein.jupiter.util;
 
 import com.qiein.jupiter.constant.NumberConstant;
-import com.qiein.jupiter.constant.TipMsgConstant;
 import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 

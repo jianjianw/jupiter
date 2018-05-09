@@ -1,14 +1,14 @@
 package com.qiein.jupiter.web.entity.dto;
 
-import cn.afterturn.easypoi.excel.annotation.Excel;
-import cn.afterturn.easypoi.excel.annotation.ExcelTarget;
-
 import java.io.Serializable;
+
+import cn.afterturn.easypoi.excel.annotation.Excel;
 
 /**
  * 导入客资实体类
  */
 public class ClientExcelDTO implements Serializable {
+	
     private static final long serialVersionUID = -7350905349670754997L;
     /**
      * 客资编码

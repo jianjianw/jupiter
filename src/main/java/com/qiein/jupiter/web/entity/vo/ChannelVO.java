@@ -7,40 +7,41 @@ import java.util.List;
  * 渠道来源集合
  */
 public class ChannelVO implements Serializable {
-    /**
-     * 渠道ID
-     */
-    private int channelId;
-    /**
-     * 渠道名称
-     */
-    private String channelName;
-    /**
-     * 来源集合
-     */
-    private List<SrcListVO> srcList;
+	private static final long serialVersionUID = 1L;
+	/**
+	 * 渠道ID
+	 */
+	private int channelId;
+	/**
+	 * 渠道名称
+	 */
+	private String channelName;
+	/**
+	 * 来源集合
+	 */
+	private List<SrcListVO> srcList;
 
-    public int getChannelId() {
-        return channelId;
-    }
+	public int getChannelId() {
+		return channelId;
+	}
 
-    public void setChannelId(int channelId) {
-        this.channelId = channelId;
-    }
+	public void setChannelId(int channelId) {
+		this.channelId = channelId;
+	}
 
-    public String getChannelName() {
-        return channelName;
-    }
+	public String getChannelName() {
+		return channelName;
+	}
 
-    public void setChannelName(String channelName) {
-        this.channelName = channelName;
-    }
+	public void setChannelName(String channelName) {
+		this.channelName = channelName;
+	}
 
-    public List<SrcListVO> getSrcList() {
-        return srcList;
-    }
+	public List<SrcListVO> getSrcList() {
+		return srcList;
+	}
 
-    public void setSrcList(List<SrcListVO> srcList) {
-        this.srcList = srcList;
-    }
+	public void setSrcList(List<SrcListVO> srcList) {
+		this.srcList = srcList;
+	}
 }
