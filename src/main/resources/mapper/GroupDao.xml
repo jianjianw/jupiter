@@ -201,7 +201,7 @@
             AND rela.STAFFID =#{staffId}
     </select>
 
-    <!--获取员工所在部门，你上面那个是获取的小组👆👆👆👆👆👆👆👆👆-->
+    <!--获取员工所在部门，你上面那个是获取的小组-->
     <select id="getDeptByTypeAndStaff" parameterType="map" resultType="String">
         SELECT
             son.PARENTID
