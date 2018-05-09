@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiein.jupiter.web.dao.PageConfigDao">
+
+    <resultMap id="baseMap" type="com.qiein.jupiter.web.entity.po.PageConfig">
+        <id column="ID" jdbcType="INTEGER" property="id"/>
+        <result column="ROLE" property="role" jdbcType="VARCHAR"/>
+        <result column="ACTION" property="action" jdbcType="VARCHAR"/>
+        <result column="MEMO" property="memo" jdbcType="VARCHAR"/>
+        <result column="TITLETXT" property="titleTxt" jdbcType="VARCHAR"/>
+        <result column="PRIORITY" property="priority" jdbcType="VARCHAR"/>
+        <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--根据公司ID 和 角色获取页面配置-->
+    <select id="listPageConfigByCidAndRole" resultMap="baseMap">
+        SELECT
+			ID,ROLE,ACTION,MEMO, TITLETXT,
+			PRIORITY,COMPANYID
+		FROM
+			hm_crm_page_conf
+		WHERE
+			COMPANYID = #{companyId}
+			AND ROLE = #{role}
+		  ORDER BY PRIORITY
+    </select>
+
+
+</mapper>
