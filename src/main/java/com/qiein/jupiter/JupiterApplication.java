@@ -10,8 +10,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 @EntityScan("com.qiein.jupiter.web.entity.*")
 public class JupiterApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(JupiterApplication.class, args);
-    }
-
+	public static void main(String[] args) {
+		SpringApplication.run(JupiterApplication.class, args);
+	}
 }

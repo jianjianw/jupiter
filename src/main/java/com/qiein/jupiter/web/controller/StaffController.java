@@ -334,23 +334,23 @@ public class StaffController extends BaseController {
 	 */
 	@GetMapping("/del_staff_check")
 	public ResultInfo DelStaffCheck(@NotEmptyStr @RequestParam("staffId") String ids) {
-		// 获取当前登录账户
-		StaffPO currentLoginStaff = getCurrentLoginStaff();
+		// // 获取当前登录账户
+		// StaffPO currentLoginStaff = getCurrentLoginStaff();
 
-		// 获取操作用户所属公司
-		Integer companyId = currentLoginStaff.getCompanyId();
-
-		// 待被检查是否可删除的员工数组
-		String[] array = ids.split(",");
+		// // 获取操作用户所属公司
+		// Integer companyId = currentLoginStaff.getCompanyId();
+		//
+		// // 待被检查是否可删除的员工数组
+		// String[] array = ids.split(",");
 
 		// 检查是否可删除
 		// 先检查是否为客服
-		String msg = "";
-		if (true) {
-			// TODO 等待客资内容写完继续写删除
-			msg = staffService.checkBatDelete(array, companyId);
-		} else {
-		}
+		// String msg = "";
+		// if (true) {
+		// TODO 等待客资内容写完继续写删除
+		// msg = staffService.checkBatDelete(array, companyId);
+		// } else {
+		// }
 		// 是客服则检查是否存在未邀约客资
 		return ResultInfoUtil.success(TigMsgEnum.SUCCESS, true);
 	}
@@ -388,10 +388,10 @@ public class StaffController extends BaseController {
 	@GetMapping("/change_staff")
 	public ResultInfo ChangeStaff(@Id @RequestParam("staffId") Integer staffId,
 			@Id @RequestParam("beStaffId") Integer beStaffId) {
-		// 获取当前登录账户
-		StaffPO currentLoginStaff = getCurrentLoginStaff();
-		// 获取操作用户所属公司
-		Integer companyId = currentLoginStaff.getCompanyId();
+		// // 获取当前登录账户
+		// StaffPO currentLoginStaff = getCurrentLoginStaff();
+		// // 获取操作用户所属公司
+		// Integer companyId = currentLoginStaff.getCompanyId();
 
 		try {
 			// TODO 等待客资内容写完继续写删除

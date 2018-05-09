@@ -8,7 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
-import com.qiein.jupiter.util.MD5Util;
 import com.qiein.jupiter.util.OSSUtil;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
@@ -79,11 +78,12 @@ public class OSSController extends BaseController {
 				if (imgSize > 3 * 1024 * 1024) {
 					return ResultInfoUtil.error(ExceptionEnum.OSS_UPLOAD_SIZE_ERROR);
 				}
-				// 图片MD5摘要值
-				String md5 = MD5Util.md5file(file.getInputStream());
-
-				String fileName = md5
-						+ file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+				// // 图片MD5摘要值
+				// String md5 = MD5Util.md5file(file.getInputStream());
+				//
+				// String fileName = md5
+				// +
+				// file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
 				// 上传至OSS库
 				// OSSUtil.putOssObject(fileName, file.getInputStream());
 				path = OSSUtil.upload(file.getInputStream(), null,
