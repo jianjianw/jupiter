@@ -1,7 +1,5 @@
 package com.qiein.jupiter.msg.goeasy;
 
-import javax.swing.plaf.synth.SynthColorChooserUI;
-
 import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.util.StringUtil;
 
@@ -165,7 +163,7 @@ public class GoEasyUtil {
 	public static void main(String[] args) {
 		int cid = 9999;
 		int uid = 108;
-		int kzNum = 1;
+		int kzNum = 11;
 		String kzId = "123123123";
 		String logId = "12";
 		int overTime = 120;
