@@ -66,13 +66,14 @@
     <!-- 批量添加拍摄地渠道关联-->
     <insert id="batchAddShopChannel" parameterType="com.qiein.jupiter.web.entity.po.ShopChannelGroupPO">
         INSERT INTO hm_crm_shop_channel_group_rela
-        (SHOPID,CHANNELID,GROUPID,WEIGHT,COMPANYID)
+        (SHOPID,CHANNELID,GROUPID,GROUPNAME,WEIGHT,COMPANYID)
         VALUES
         <foreach collection="list" item="po" index="index" separator=",">
             (
             #{po.shopId},
             #{po.channelId},
             #{po.groupId},
+            #{po.groupName},
             #{po.weight},
             #{po.companyId}
             )
@@ -95,7 +96,8 @@
     <!--编辑客服小组-->
     <update id="editChannelGroup" parameterType="map">
         UPDATE hm_crm_shop_channel_group_rela
-        SET GROUPID= #{groupId}
+        SET GROUPID= #{groupId},
+        	GROUPNAME= #{groupName}
         WHERE ID = #{relaId}
         AND COMPANYID = #{companyId}
     </update>

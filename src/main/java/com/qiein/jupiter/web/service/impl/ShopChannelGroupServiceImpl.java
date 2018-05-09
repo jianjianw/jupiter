@@ -90,8 +90,8 @@ public class ShopChannelGroupServiceImpl implements ShopChannelGroupService {
 					throw new RException(ExceptionEnum.CHANNEL_GROUP_EXIST);
 				}
 				GroupPO groupPO = groupDao.getGroupById(companyId, groupId);
-				ShopChannelGroupPO po = new ShopChannelGroupPO(shopId, Integer.parseInt(channel), groupId, groupPO.getGroupName(),weight,
-						companyId);
+				ShopChannelGroupPO po = new ShopChannelGroupPO(shopId, Integer.parseInt(channel), groupId,
+						groupPO.getGroupName(), weight, companyId);
 				list.add(po);
 			}
 		}
@@ -114,7 +114,8 @@ public class ShopChannelGroupServiceImpl implements ShopChannelGroupService {
 			throw new RException(ExceptionEnum.CHANNEL_GROUP_EXIST);
 		}
 		// 2.修改groupId
-		shopChannelGroupDao.editChannelGroup(companyId, relaId, groupId);
+		GroupPO groupPO = groupDao.getGroupById(companyId, groupId);
+		shopChannelGroupDao.editChannelGroup(companyId, relaId, groupId, groupPO.getGroupName());
 	}
 
 	/**

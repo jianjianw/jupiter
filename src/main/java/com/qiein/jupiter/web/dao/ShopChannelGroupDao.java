@@ -75,7 +75,7 @@ public interface ShopChannelGroupDao {
 	 * @return
 	 */
 	int editChannelGroup(@Param("companyId") int companyId, @Param("relaId") int relaId,
-			@Param("groupId") String groupId);
+			@Param("groupId") String groupId, @Param("groupName") String groupName);
 
 	/**
 	 * 模糊查询渠道小组关联
