@@ -26,7 +26,7 @@ public class StaffMarsController extends BaseController{
     private GroupService groupService;
 
     /**
-     * 根据类型排班信息
+     * 根据当前权限和类型获取公司的部门和小组
      * @param type  ds 电商 zjs 转介绍
      * @return
      */
