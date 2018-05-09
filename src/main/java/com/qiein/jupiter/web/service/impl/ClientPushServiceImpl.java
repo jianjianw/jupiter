@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.qiein.jupiter.constant.ChannelConstant;
+import com.qiein.jupiter.constant.ClientConst;
 import com.qiein.jupiter.constant.ClientStatusConst;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.util.CollectionUtils;
@@ -19,6 +20,7 @@ import com.qiein.jupiter.web.dao.StaffDao;
 import com.qiein.jupiter.web.entity.dto.ClientPushDTO;
 import com.qiein.jupiter.web.entity.dto.GroupKzNumToday;
 import com.qiein.jupiter.web.entity.dto.StaffPushDTO;
+import com.qiein.jupiter.web.entity.po.AllotLogPO;
 import com.qiein.jupiter.web.entity.po.ShopChannelGroupPO;
 import com.qiein.jupiter.web.service.ClientPushService;
 
@@ -65,18 +67,30 @@ public class ClientPushServiceImpl implements ClientPushService {
 		StaffPushDTO appointer = null;
 
 		// 客资分配
-		switch (rule) {
-		case ChannelConstant.PUSH_RULE_GROUP_STAFF_AVG_ALLOT:
+		if (ChannelConstant.PUSH_RULE_AVG_ALLOT == rule) {
 			// 1：小组+员工-指定承接小组依据权重比自动分配
-			appointer = getStaffGroupStaffAvg(companyId, kzId, shopId, channelId, channelTypeId, overTime, interval);
-			System.out.println("应分配客服：" + appointer.getStaffId());
-			break;
-		default:
-			break;
-		}
 
-		if (appointer == null) {
-			return;
+			appointer = getStaffGroupStaffAvg(companyId, kzId, shopId, channelId, channelTypeId, overTime, interval);
+			if (appointer == null) {
+				return;
+			}
+
+			// 生成分配日志
+			AllotLogPO allotLog = new AllotLogPO(kzId, appointer.getStaffId(), appointer.getStaffName(),
+					appointer.getGroupId(), appointer.getGroupName(), ClientConst.ALLOT_LOG_STATUS_YES,
+					ClientConst.ALLOT_SYSTEM_AUTO, companyId);
+
+			// 客资绑定客服，修改客资状态，客资客服ID，客服名，客资分类，客资客服组信息，客资最后推送信息
+
+			// 修改客服最后推送时间
+
+			// 客资日志记录
+		} else if (ChannelConstant.PUSH_RULE_AVG_RECEIVE == rule) {
+			// 11：小组+员工-指定承接小组依据权重比自动分配--领单
+			appointer = getStaffGroupStaffAvg(companyId, kzId, shopId, channelId, channelTypeId, overTime, interval);
+			if (appointer == null) {
+				return;
+			}
 		}
 	}
 
@@ -145,6 +159,8 @@ public class ClientPushServiceImpl implements ClientPushService {
 				// 差比重置
 				maxDiffPid = -1;
 			} else {
+				appointor.setGroupId(thisGroup.getGroupId());
+				appointor.setGroupName(thisGroup.getGroupName());
 				return appointor;
 			}
 		}

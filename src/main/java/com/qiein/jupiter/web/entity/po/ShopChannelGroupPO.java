@@ -25,6 +25,11 @@ public class ShopChannelGroupPO extends BaseEntity {
 	private String groupId;
 
 	/**
+	 * 小组名
+	 */
+	private String groupName;
+
+	/**
 	 * 权重
 	 */
 	private int weight = 1;
@@ -64,6 +69,14 @@ public class ShopChannelGroupPO extends BaseEntity {
 		}
 		double w = this.weight;
 		this.diffPid = (this.weight - this.todayNum) / w;
+	}
+
+	public String getGroupName() {
+		return groupName;
+	}
+
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
 	}
 
 	public int getTodayNum() {

@@ -13,7 +13,7 @@ public class ClientStatusConst {
 	public static final int BE_WAIT_WAITING = 98;// 筛选待定
 	public static final int BE_FILTER_INVALID = 99;// 筛选后无效
 	public static final int BE_WAIT_MAKE_ORDER = 12;// 待接单
-	public static final int BE_HAVE_MAKE_ORDER = 1;// 已接单
+	public static final int BE_HAVE_MAKE_ORDER = 1;// 已接单-未设置
 	public static final int BE_ALLOTING = 999;// 未接入
 
 	public static final int BE_TRACK = 6;// 待追踪-------未联系上
@@ -60,12 +60,4 @@ public class ClientStatusConst {
 
 	/*-- 客资分类 --*/
 	public static final int KZ_CLASS_NEW = 1;// 新客资
-	public static final int KZ_CLASS_TRACE = 2;// 待跟踪
-	public static final int KZ_CLASS_ORDER = 3;// 已预约
-	public static final int KZ_CLASS_COME = 4;// 已进店
-	public static final int KZ_CLASS_SUCCESS = 5;// 已定单
-	public static final int KZ_CLASS_INVALID = 6;// 无效
-	public static final int KZ_CLASS_CUSTOM1 = 7;// 自定义1
-	public static final int KZ_CLASS_CUSTOM2 = 8;// 自定义2
-	public static final int KZ_CLASS_CUSTOM3 = 9;// 自定义3
 }

@@ -18,6 +18,21 @@ public class StaffPushDTO implements Serializable {
 	private int staffId;
 
 	/**
+	 * 员工姓名
+	 */
+	private String staffName;
+
+	/**
+	 * 所属组ID
+	 */
+	private String groupId;
+
+	/**
+	 * 所属组名称
+	 */
+	private String groupName;
+
+	/**
 	 * 今日领取客资数
 	 */
 	private int todayNum;
@@ -46,6 +61,30 @@ public class StaffPushDTO implements Serializable {
 		}
 		double w = this.weight;
 		this.diffPid = (this.weight - this.todayNum) / w;
+	}
+
+	public String getGroupId() {
+		return groupId;
+	}
+
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
+	}
+
+	public String getGroupName() {
+		return groupName;
+	}
+
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
+	}
+
+	public String getStaffName() {
+		return staffName;
+	}
+
+	public void setStaffName(String staffName) {
+		this.staffName = staffName;
 	}
 
 	public int getStaffId() {
