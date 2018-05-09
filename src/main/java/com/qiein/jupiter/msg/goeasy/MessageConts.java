@@ -8,7 +8,7 @@ package com.qiein.jupiter.msg.goeasy;
  */
 public class MessageConts {
 
-	// 消息类型
+	// WEB消息类型
 	public static final String MSG_TYPE_COMMON = "common";// 通用消息
 	public static final String MSG_TYPE_SUCCESS = "success";// 成功类型消息
 	public static final String MSG_TYPE_WARN = "warn";// 警示类型消息
@@ -17,4 +17,7 @@ public class MessageConts {
 	public static final String MSG_TYPE_RECEIVE = "receive";// 客资领取
 	public static final String MSG_TYPE_INFO_REFRESH = "info_refresh";// 客资重载消息
 	public static final String MSG_TYPE_STAFF_REFRESH = "staff_refresh";// 身份重验证消息
+
+	// 客户端消息类型
+	public static final String MSG_APP_INFO_REVEIVE = "receive";// 客资领取
 }
