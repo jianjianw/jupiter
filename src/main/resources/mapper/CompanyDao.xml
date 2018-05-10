@@ -21,6 +21,10 @@
         <result column="COMPANYNAME" property="companyName" jdbcType="VARCHAR"/>
         <result column="TYPEID" property="typeId" jdbcType="INTEGER"/>
         <result column="LOGO" property="logo" jdbcType="VARCHAR"/>
+        <result column="NOTSELFBLIND" property="notSelfBlind" jdbcType="BOOLEAN"/>
+        <result column="UNABLESELFLINE" property="unableSelfLine" jdbcType="BOOLEAN"/>
+        <result column="UNABLEAPPOINTOR" property="unableAppointor" jdbcType="BOOLEAN"/>
+        <result column="UNABLEINVALIDRANGE" property="unableInvalidRange" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="baseColumn">
@@ -91,12 +95,11 @@
     <!--获取企业信息-->
     <select id="getVOById" parameterType="map" resultMap="VOMap">
         SELECT
-            ID, COMPANYNAME, TYPEID, LOGO
+            comp.ID, comp.COMPANYNAME, comp.TYPEID, comp.LOGO, comp.NOTSELFBLIND, comp.UNABLESELFLINE, comp.UNABLEAPPOINTOR, comp.UNABLEINVALIDRANGE
         FROM
-            hm_pub_company
-        WHERE ID = #{companyId}
-        AND ISDEL = 0;
+            hm_pub_company comp
+        WHERE 
+        	comp.ID = #{companyId}
+        AND comp.ISDEL = 0;
     </select>
-
-
 </mapper>
