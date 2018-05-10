@@ -41,6 +41,7 @@ public class GroupsInfoVO extends GroupPO {
 	@Override
 	public String toString() {
 		return "GroupsInfoVO{" +
+				"groupId= "+super.getGroupId()+
 				"lineNum=" + lineNum +
 				", orderNum=" + orderNum +
 				", showFlag=" + showFlag +

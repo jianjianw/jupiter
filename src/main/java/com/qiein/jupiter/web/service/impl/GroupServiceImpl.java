@@ -66,13 +66,20 @@ public class GroupServiceImpl implements GroupService {
         List<String> groupList = groupDao.getGroupByStaffAndType(companyId, staffId, type);
         //获取员工所在部门列表
         List<String> deptList = groupDao.getDeptByTypeAndStaff(companyId, staffId, type);
-        //获取各部门小组内人员的接单数和在线人数
+        //获取各小组内人员的接单数和在线人数
         List<GroupsInfoVO> infoList = groupStaffDao.getStaffMarsInfo(companyId);
+        System.out.println(infoList);
 
         if (roleList.contains(111)){    //查看所有  所有的都显示
             for (GroupsInfoVO giv:list){
                 for (GroupsInfoVO sgiv:giv.getGroupList()){
                     sgiv.setShowFlag(true);
+                    for (GroupsInfoVO svo:infoList){    //给对应的小组附上在线人数和订单数
+                        if (svo.getGroupId().equals(sgiv.getGroupId())){
+                            sgiv.setLineNum(svo.getLineNum()==null?0:svo.getLineNum());
+                            sgiv.setOrderNum(svo.getOrderNum()==null?0:svo.getOrderNum());
+                        }
+                    }
                 }
                 giv.setShowFlag(true);
             }
@@ -80,11 +87,24 @@ public class GroupServiceImpl implements GroupService {
             for (GroupsInfoVO giv :list){
                 if (Arrays.asList(giv.getChiefIds().split(",")).contains(staffId+"")){//如果是该部门的主管
                     for (GroupsInfoVO sgiv:giv.getGroupList()){
+                        for (GroupsInfoVO svo:infoList){    //给对应的小组附上在线人数和订单数
+                            if (svo.getGroupId().equals(sgiv.getGroupId())){
+                                sgiv.setLineNum(svo.getLineNum()==null?0:svo.getLineNum());
+                                sgiv.setOrderNum(svo.getOrderNum()==null?0:svo.getOrderNum());
+                            }
+                        }
                         sgiv.setShowFlag(true);
                     }
+
                 }else if (deptList.contains(giv.getGroupId())){ //如果在该部门，权限为查看本部门
                     giv.setShowFlag(true);
                     for (GroupsInfoVO sgiv:giv.getGroupList()){
+                        for (GroupsInfoVO svo:infoList){    //给对应的小组附上在线人数和订单数
+                            if (svo.getGroupId().equals(sgiv.getGroupId())){
+                                sgiv.setLineNum(svo.getLineNum()==null?0:svo.getLineNum());
+                                sgiv.setOrderNum(svo.getOrderNum()==null?0:svo.getOrderNum());
+                            }
+                        }
                         sgiv.setShowFlag(true);
                     }
                 }
@@ -94,6 +114,12 @@ public class GroupServiceImpl implements GroupService {
             for (GroupsInfoVO giv:list){    //遍历部门
                 if (Arrays.asList(giv.getChiefIds().split(",")).contains(staffId+"")){//如果是该部门的主管
                     for (GroupsInfoVO sgiv:giv.getGroupList()){
+                        for (GroupsInfoVO svo:infoList){    //给对应的小组附上在线人数和订单数
+                            if (svo.getGroupId().equals(sgiv.getGroupId())){
+                                sgiv.setLineNum(svo.getLineNum()==null?0:svo.getLineNum());
+                                sgiv.setOrderNum(svo.getOrderNum()==null?0:svo.getOrderNum());
+                            }
+                        }
                         sgiv.setShowFlag(true);
                     }
                     giv.setShowFlag(true);
@@ -103,6 +129,12 @@ public class GroupServiceImpl implements GroupService {
                             sgiv.setShowFlag(true);
                             flag=true;
                         }
+                        for (GroupsInfoVO svo:infoList){    //给对应的小组附上在线人数和订单数
+                            if (svo.getGroupId().equals(sgiv.getGroupId())){
+                                sgiv.setLineNum(svo.getLineNum()==null?0:svo.getLineNum());
+                                sgiv.setOrderNum(svo.getOrderNum()==null?0:svo.getOrderNum());
+                            }
+                        }
                     }
                     giv.setShowFlag(flag);
                     flag=false;
@@ -110,6 +142,21 @@ public class GroupServiceImpl implements GroupService {
             }
         }else {
             list= null;
+        }
+
+        if (list!=null){    //计算部门总在线人数和今日接单数
+            int lineNum =0;
+            int orderNum = 0;
+            for (GroupsInfoVO giv:list){
+                for (GroupsInfoVO sgiv:giv.getGroupList()){
+                    lineNum+=sgiv.getLineNum()==null?0:sgiv.getLineNum();
+                    orderNum+=sgiv.getOrderNum()==null?0:sgiv.getOrderNum();
+                }
+                giv.setLineNum(lineNum);
+                giv.setOrderNum(orderNum);
+                lineNum=0;
+                orderNum=0;
+            }
         }
         return list;
 
