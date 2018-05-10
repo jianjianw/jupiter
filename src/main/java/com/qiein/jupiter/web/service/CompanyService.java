@@ -49,4 +49,21 @@ public interface CompanyService {
 	 */
 	int update(CompanyPO companyPO);
 
+	/**
+	 * 编辑自定义设置
+	 * 
+	 * @param column
+	 * @param flag
+	 * @return
+	 */
+	int updateFlag(int companyId, String column, boolean flag);
+
+	/**
+	 * 编辑自定义范围
+	 * 
+	 * @param column
+	 * @param num
+	 * @return
+	 */
+	int updateRange(int companyId, String column, int num);
 }

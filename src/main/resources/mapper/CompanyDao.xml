@@ -102,4 +102,14 @@
         	comp.ID = #{companyId}
         AND comp.ISDEL = 0;
     </select>
+    
+    <!-- 编辑自定义设置 -->
+    <update id="updateFlag" parameterType="map">
+        UPDATE hm_pub_company ${column} = #{flag} WHERE ID = #{companyId}
+    </update>
+    
+    <!-- 编辑自定义范围 -->
+    <update id="updateRange" parameterType="map">
+        UPDATE hm_pub_company ${column} = #{num} WHERE ID = #{companyId}
+    </update>
 </mapper>

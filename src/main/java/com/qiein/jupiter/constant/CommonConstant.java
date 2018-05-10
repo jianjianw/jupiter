@@ -6,6 +6,11 @@ package com.qiein.jupiter.constant;
 public class CommonConstant {
 
 	/**
+	 * 参数代表-是
+	 */
+	public final static String FLAG_YES = "1";
+	
+	/**
 	 * 空字符串
 	 */
 	public final static String NULL_STR = "";

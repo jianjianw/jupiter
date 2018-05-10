@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
+import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.web.dao.CompanyDao;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.service.CompanyService;
@@ -75,5 +76,35 @@ public class CompanyServiceImpl implements CompanyService {
 		if (companyPO.getId() == 0)
 			throw new RException(ExceptionEnum.COMPANY_ID_NULL);
 		return companyDao.update(companyPO);
+	}
+
+	/**
+	 * 编辑自定义设置
+	 * 
+	 * @param column
+	 * @param flag
+	 * @return
+	 */
+	@Override
+	public int updateFlag(int companyId, String column, boolean flag) {
+		if (NumUtil.isInValid(companyId)) {
+			throw new RException(ExceptionEnum.COMPANY_ID_NULL);
+		}
+		return companyDao.updateFlag(companyId, column, flag);
+	}
+
+	/**
+	 * 编辑自定义范围
+	 * 
+	 * @param column
+	 * @param num
+	 * @return
+	 */
+	@Override
+	public int updateRange(int companyId, String column, int num) {
+		if (NumUtil.isInValid(companyId)) {
+			throw new RException(ExceptionEnum.COMPANY_ID_NULL);
+		}
+		return companyDao.updateRange(companyId, column, num);
 	}
 }
