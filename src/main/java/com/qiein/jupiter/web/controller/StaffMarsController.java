@@ -60,6 +60,11 @@ public class StaffMarsController extends BaseController{
         return ResultInfoUtil.success(staffList);
     }
 
+    /**
+     * 编辑网销排班人员设置
+     * @param staffMarsDTO
+     * @return
+     */
     @PostMapping("/edit")
     public ResultInfo editStaffMars(@RequestBody StaffMarsDTO staffMarsDTO){
         //获取当前登录用户

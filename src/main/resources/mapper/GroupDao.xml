@@ -27,6 +27,29 @@
         <result column="CNAMES" property="chiefNames" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <!--网销排班部门-->
+    <resultMap id="GroupsInfoVOMap" type="com.qiein.jupiter.web.entity.vo.GroupsInfoVO" extends="baseMap">
+        <result column="LINENUM" property="lineNum" jdbcType="INTEGER"/>
+        <result column="ORDERNUM" property="orderNum" jdbcType="INTEGER"/>
+        <result column="SHOWFLAG" property="showFlag" jdbcType="BOOLEAN"/>
+        <collection property="groupList" ofType="com.qiein.jupiter.web.entity.vo.GroupsInfoVO" resultMap="sonGroupsInfoVOMap"/>
+    </resultMap>
+    <!--网销排班小组-->
+    <resultMap id="sonGroupsInfoVOMap" type="com.qiein.jupiter.web.entity.vo.GroupsInfoVO">
+        <result column="GID" property="id" jdbcType="INTEGER"/>
+        <result column="GRPID" property="groupId" jdbcType="INTEGER"/>
+        <result column="GRPNAME" property="groupName" jdbcType="VARCHAR"/>
+        <result column="PARID" property="parentId" jdbcType="VARCHAR"/>
+        <result column="TYPE" property="groupType" jdbcType="VARCHAR"/>
+        <result column="COMPID" property="companyId" jdbcType="VARCHAR"/>
+        <result column="CIDS" property="chiefIds" jdbcType="VARCHAR"/>
+        <result column="CNAMES" property="chiefNames" jdbcType="VARCHAR"/>
+        <result column="LINENUM" property="lineNum" jdbcType="INTEGER"/>
+        <result column="ORDERNUM" property="orderNum" jdbcType="INTEGER"/>
+        <result column="SHOWFLAG" property="showFlag" jdbcType="BOOLEAN"/>
+    </resultMap>
+
+
     <sql id="baseColumn">
         ID, GROUPID, GROUPNAME, PARENTID, GROUPTYPE, COMPANYID,CHIEFIDS,CHIEFNAMES
     </sql>
@@ -109,7 +132,7 @@
     </select>
 
     <!--根据类型获取公司部门和小组-->
-    <select id="getCompanyDeptListByType" parameterType="map" resultMap="GroupVOMap">
+    <select id="getCompanyDeptListByType" parameterType="map" resultMap="GroupsInfoVOMap">
         SELECT
             par.ID, par.GROUPID, par.GROUPNAME, par.PARENTID, par.GROUPTYPE, par.COMPANYID,par.CHIEFIDS,par.CHIEFNAMES,
              grp.ID AS GID,grp.GROUPID AS GRPID, grp.GROUPNAME AS GRPNAME,grp.PARENTID AS PARID,grp.GROUPTYPE AS TYPE, grp.COMPANYID AS CMPID, grp.CHIEFIDS AS CIDS, grp.CHIEFNAMES AS CNAMES

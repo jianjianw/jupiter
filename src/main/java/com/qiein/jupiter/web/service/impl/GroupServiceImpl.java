@@ -63,48 +63,44 @@ public class GroupServiceImpl implements GroupService {
         List<Integer> roleList = rolePermissionDao.getStaffPmsList(companyId,staffId);
         //根据类型获取公司的部门和小组
         List<GroupsInfoVO> list = groupDao.getCompanyDeptListByType(type,companyId);
-//        for (GroupsInfoVO siv:list){
-//            System.out.println(siv);
-//        }
-//        //获取员工所在小组列表
-//        List<String> groupList = groupDao.getGroupByStaffAndType(companyId, staffId, type);
-//        //获取员工所在部门列表
-//        List<String> deptList = groupDao.getDeptByTypeAndStaff(companyId, staffId, type);
-//        //获取各部门小组内人员的接单数和在线人数
-//        List<GroupsInfoVO> infoList = groupStaffDao.getStaffMarsInfo(companyId);
-//        System.out.println(infoList);
-//
-//        if (roleList.contains(111)){    //查看所有  所有的都显示
-//            for (GroupsInfoVO giv:list){
-//                for (GroupsInfoVO sgiv:giv.getGroupList()){
-//                    sgiv.setShowFlag(true);
-//                }
-//                giv.setShowFlag(true);
-//            }
-//        }else if (roleList.contains(124)){  //查看部门
-//            for (GroupsInfoVO giv :list){
-//                if (deptList.contains(giv.getGroupId())){
-//                    giv.setShowFlag(true);
-//                    for (GroupsInfoVO sgiv:giv.getGroupList()){
-//                        sgiv.setShowFlag(true);
-//                    }
-//                }
-//            }
-//        }else if (roleList.contains(89) || roleList.contains(90)){  //查看小组
-//            boolean flag =false;
-//            for (GroupsInfoVO giv:list){    //遍历部门
-//                for (GroupsInfoVO sgiv:giv.getGroupList()){ //遍历小组
-//                    if (groupList.contains(sgiv.getGroupId())){ //如果是所在的小组  标记为可见
-//                        sgiv.setShowFlag(true);
-//                        flag=true;
-//                    }
-//                }
-//                giv.setShowFlag(flag);
-//                flag=false;
-//            }
-//        }else {
-//            list= null;
-//        }
+        //获取员工所在小组列表
+        List<String> groupList = groupDao.getGroupByStaffAndType(companyId, staffId, type);
+        //获取员工所在部门列表
+        List<String> deptList = groupDao.getDeptByTypeAndStaff(companyId, staffId, type);
+        //获取各部门小组内人员的接单数和在线人数
+        List<GroupsInfoVO> infoList = groupStaffDao.getStaffMarsInfo(companyId);
+
+        if (roleList.contains(111)){    //查看所有  所有的都显示
+            for (GroupsInfoVO giv:list){
+                for (GroupsInfoVO sgiv:giv.getGroupList()){
+                    sgiv.setShowFlag(true);
+                }
+                giv.setShowFlag(true);
+            }
+        }else if (roleList.contains(124)){  //查看部门
+            for (GroupsInfoVO giv :list){
+                if (deptList.contains(giv.getGroupId())){
+                    giv.setShowFlag(true);
+                    for (GroupsInfoVO sgiv:giv.getGroupList()){
+                        sgiv.setShowFlag(true);
+                    }
+                }
+            }
+        }else if (roleList.contains(89) || roleList.contains(90)){  //查看小组
+            boolean flag =false;
+            for (GroupsInfoVO giv:list){    //遍历部门
+                for (GroupsInfoVO sgiv:giv.getGroupList()){ //遍历小组
+                    if (groupList.contains(sgiv.getGroupId())){ //如果是所在的小组  标记为可见
+                        sgiv.setShowFlag(true);
+                        flag=true;
+                    }
+                }
+                giv.setShowFlag(flag);
+                flag=false;
+            }
+        }else {
+            list= null;
+        }
         return list;
 
         /*SELECT
