@@ -41,9 +41,61 @@ public class CompanyVO extends BaseEntity {
 	private int unableInvalidRange;
 
 	/**
+	 * 同一个账号不能在多台电脑上同时操作
+	 */
+	private boolean ssolimit;
+
+	/**
+	 * 客服领取客资的超时时间
+	 */
+	private int overTime;
+
+	/**
+	 * 客服领取客资多少时间内不能再领取下一个
+	 */
+	private int kzInterval;
+
+	/**
+	 * 客服领取客资默认日限额
+	 */
+	private int limitDefault;
+
+	/**
 	 * 企业左上角菜单栏
 	 */
 	private List<MenuVO> menuList;
+
+	public boolean isSsolimit() {
+		return ssolimit;
+	}
+
+	public void setSsolimit(boolean ssolimit) {
+		this.ssolimit = ssolimit;
+	}
+
+	public int getOverTime() {
+		return overTime;
+	}
+
+	public void setOverTime(int overTime) {
+		this.overTime = overTime;
+	}
+
+	public int getKzInterval() {
+		return kzInterval;
+	}
+
+	public void setKzInterval(int kzInterval) {
+		this.kzInterval = kzInterval;
+	}
+
+	public int getLimitDefault() {
+		return limitDefault;
+	}
+
+	public void setLimitDefault(int limitDefault) {
+		this.limitDefault = limitDefault;
+	}
 
 	public boolean isNotSelfBlind() {
 		return notSelfBlind;

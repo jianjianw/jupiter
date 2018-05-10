@@ -25,6 +25,10 @@
         <result column="UNABLESELFLINE" property="unableSelfLine" jdbcType="BOOLEAN"/>
         <result column="UNABLEAPPOINTOR" property="unableAppointor" jdbcType="BOOLEAN"/>
         <result column="UNABLEINVALIDRANGE" property="unableInvalidRange" jdbcType="INTEGER"/>
+        <result column="SSOLIMIT" property="ssolimit" jdbcType="BOOLEAN"/>
+        <result column="OVERTIME" property="overTime" jdbcType="INTEGER"/>
+        <result column="KZINTERVAL" property="kzInterval" jdbcType="INTEGER"/>
+        <result column="LIMITDEFAULT" property="limitDefault" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="baseColumn">
@@ -95,7 +99,8 @@
     <!--获取企业信息-->
     <select id="getVOById" parameterType="map" resultMap="VOMap">
         SELECT
-            comp.ID, comp.COMPANYNAME, comp.TYPEID, comp.LOGO, comp.NOTSELFBLIND, comp.UNABLESELFLINE, comp.UNABLEAPPOINTOR, comp.UNABLEINVALIDRANGE
+            comp.ID, comp.COMPANYNAME, comp.TYPEID, comp.LOGO, comp.NOTSELFBLIND, comp.UNABLESELFLINE, 
+            comp.UNABLEAPPOINTOR, comp.UNABLEINVALIDRANGE,comp.SSOLIMIT, comp.OVERTIME, comp.KZINTERVAL, comp.LIMITDEFAULT
         FROM
             hm_pub_company comp
         WHERE 
