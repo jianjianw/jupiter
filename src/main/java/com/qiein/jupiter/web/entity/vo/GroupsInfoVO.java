@@ -6,6 +6,7 @@ import com.qiein.jupiter.web.entity.po.StaffPO;
 import java.util.List;
 
 /**
+ * 网销排班部门小组实体类
  * Created by Administrator on 2018/5/8 008.
  */
 public class GroupsInfoVO extends GroupPO {

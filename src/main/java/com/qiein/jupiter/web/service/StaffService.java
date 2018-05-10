@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.service;
 
 import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
+import com.qiein.jupiter.web.entity.dto.StaffMarsDTO;
 import com.qiein.jupiter.web.entity.dto.StaffPasswordDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.PermissionPO;
@@ -138,6 +139,21 @@ public interface StaffService {
 	 * 获取小组人员
 	 */
 	List<StaffVO> getGroupStaffs(int companyId, String groupId);
+
+	/**
+	 * 获取小组人员详情
+	 * @param companyId
+	 * @param groupId
+	 * @return
+	 */
+	List<StaffMarsDTO> getGroupStaffsDetail(int companyId, String groupId);
+
+	/**
+	 * 获取各小组内人员的接单数和在线人数
+	 * @param companyId
+	 * @return
+	 */
+	List<GroupsInfoVO> getStaffMarsInfo(int companyId);
 
 	/**
 	 * 批量编辑员工信息

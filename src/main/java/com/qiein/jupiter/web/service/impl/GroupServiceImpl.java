@@ -58,7 +58,7 @@ public class GroupServiceImpl implements GroupService {
      * @return
      */
     @Override
-    public List<GroupsInfoVO> getCompanyDeptListByType(String type,int staffId, int companyId) {
+    public List<GroupsInfoVO> getStaffMarsInfo(String type,int staffId, int companyId) {
         //获取员工权限
         List<Integer> roleList = rolePermissionDao.getStaffPmsList(companyId,staffId);
         //根据类型获取公司的部门和小组
@@ -67,12 +67,9 @@ public class GroupServiceImpl implements GroupService {
         List<String> groupList = groupDao.getGroupByStaffAndType(companyId, staffId, type);
         //获取员工所在部门列表
         List<String> deptList = groupDao.getDeptByTypeAndStaff(companyId, staffId, type);
-
-        Map<String,Object> deptMap = new HashMap<>();
-        for (GroupsInfoVO giv : list){  //获得部门map
-            deptMap.put(giv.getGroupId(),giv);
-        }
-
+        //获取各小组内人员的接单数和在线人数
+        List<GroupsInfoVO> infoList = groupStaffDao.getStaffMarsInfo(companyId);
+        System.out.println(infoList);
 
         if (roleList.contains(111)){    //查看所有  所有的都显示
             for (GroupsInfoVO giv:list){
@@ -106,6 +103,33 @@ public class GroupServiceImpl implements GroupService {
             list= null;
         }
         return list;
+
+        /*SELECT
+        base.GROUPID , a.orderNum , b.lineNum
+        FROM
+        hm_pub_group_staff base
+        LEFT JOIN
+        (SELECT
+        gs.GROUPID aid, SUM(stf.TODAYNUM) orderNum
+        FROM
+        hm_pub_staff stf
+        JOIN
+        hm_pub_group_staff gs ON stf.COMPANYID = gs.COMPANYID AND stf.ID = gs.STAFFID
+        WHERE stf.COMPANYID = 1
+        GROUP BY gs.GROUPID) a ON a.aid = base.GROUPID
+        LEFT JOIN
+        (SELECT
+        gs.GROUPID bid, COUNT(stf.STATUSFLAG=1) lineNum
+                FROM
+        hm_pub_staff stf
+        JOIN
+        hm_pub_group_staff gs ON stf.COMPANYID = gs.COMPANYID AND stf.ID = gs.STAFFID
+        WHERE stf.COMPANYID = 1 AND stf.STATUSFLAG = 1
+        GROUP BY gs.GROUPID) b ON b.bid = base.GROUPID
+        WHERE
+        base.COMPANYID = 1
+        GROUP BY base.GROUPID*/
+
 //
 //        //获取员工权限
 //        List<Integer> roleList = rolePermissionDao.getStaffPmsList(companyId,staffId);

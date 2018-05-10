@@ -4,6 +4,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import com.qiein.jupiter.web.controller.StaffMarsController;
+import com.qiein.jupiter.web.entity.dto.StaffMarsDTO;
+import com.qiein.jupiter.web.entity.vo.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,13 +42,6 @@ import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.PermissionPO;
 import com.qiein.jupiter.web.entity.po.StaffDetailPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
-import com.qiein.jupiter.web.entity.vo.CompanyVO;
-import com.qiein.jupiter.web.entity.vo.GroupStaffVO;
-import com.qiein.jupiter.web.entity.vo.MenuVO;
-import com.qiein.jupiter.web.entity.vo.StaffBaseInfoVO;
-import com.qiein.jupiter.web.entity.vo.StaffDetailVO;
-import com.qiein.jupiter.web.entity.vo.StaffStateVO;
-import com.qiein.jupiter.web.entity.vo.StaffVO;
 import com.qiein.jupiter.web.service.CompanyService;
 import com.qiein.jupiter.web.service.StaffService;
 
@@ -473,6 +469,27 @@ public class StaffServiceImpl implements StaffService {
 			}
 		}
 		return list;
+	}
+
+	/**
+	 * 获取小组人员详情
+	 * @param companyId
+	 * @param groupId
+	 * @return
+	 */
+	public List<StaffMarsDTO> getGroupStaffsDetail(int companyId, String groupId) {
+
+		List<StaffMarsDTO> list = groupStaffDao.getGroupStaffsDetail(companyId, groupId);
+		return list;
+	}
+
+	/**
+	 * 获取各小组内人员的接单数和在线人数
+	 * @param companyId
+	 * @return
+	 */
+	public List<GroupsInfoVO> getStaffMarsInfo(int companyId) {
+		return groupStaffDao.getStaffMarsInfo(companyId);
 	}
 
 	/**
