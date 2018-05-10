@@ -16,7 +16,7 @@ public class StaffMarsDTO extends BaseEntity {
      */
     private String phone;
     private String userName;
-    private String companyId;
+    private int companyId;
     private String headImg;
     private int statusFlag;
     private int todayNum;
@@ -30,7 +30,7 @@ public class StaffMarsDTO extends BaseEntity {
     private int lastLoginTime;
     private String lastLoginIp;
     private int lastLogoutTime;
-    private String getLastLoginIp;
+    private String lastLogoutIp;
     private String groupId;
 
     public String getGroupId() {
@@ -65,11 +65,11 @@ public class StaffMarsDTO extends BaseEntity {
         this.userName = userName;
     }
 
-    public String getCompanyId() {
+    public int getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(String companyId) {
+    public void setCompanyId(int companyId) {
         this.companyId = companyId;
     }
 
@@ -177,11 +177,11 @@ public class StaffMarsDTO extends BaseEntity {
         this.lastLogoutTime = lastLogoutTime;
     }
 
-    public String getGetLastLoginIp() {
-        return getLastLoginIp;
+    public String getLastLogoutIp() {
+        return lastLogoutIp;
     }
 
-    public void setGetLastLoginIp(String getLastLoginIp) {
-        this.getLastLoginIp = getLastLoginIp;
+    public void setLastLogoutIp(String lastLogoutIp) {
+        this.lastLogoutIp = lastLogoutIp;
     }
 }

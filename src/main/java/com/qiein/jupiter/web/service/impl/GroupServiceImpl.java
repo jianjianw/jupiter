@@ -1,8 +1,7 @@
 package com.qiein.jupiter.web.service.impl;
 
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import com.qiein.jupiter.constant.*;
 import com.qiein.jupiter.web.dao.*;
@@ -67,9 +66,8 @@ public class GroupServiceImpl implements GroupService {
         List<String> groupList = groupDao.getGroupByStaffAndType(companyId, staffId, type);
         //获取员工所在部门列表
         List<String> deptList = groupDao.getDeptByTypeAndStaff(companyId, staffId, type);
-        //获取各小组内人员的接单数和在线人数
+        //获取各部门小组内人员的接单数和在线人数
         List<GroupsInfoVO> infoList = groupStaffDao.getStaffMarsInfo(companyId);
-        System.out.println(infoList);
 
         if (roleList.contains(111)){    //查看所有  所有的都显示
             for (GroupsInfoVO giv:list){
@@ -80,7 +78,11 @@ public class GroupServiceImpl implements GroupService {
             }
         }else if (roleList.contains(124)){  //查看部门
             for (GroupsInfoVO giv :list){
-                if (deptList.contains(giv.getGroupId())){
+                if (Arrays.asList(giv.getChiefIds().split(",")).contains(staffId+"")){//如果是该部门的主管
+                    for (GroupsInfoVO sgiv:giv.getGroupList()){
+                        sgiv.setShowFlag(true);
+                    }
+                }else if (deptList.contains(giv.getGroupId())){ //如果在该部门，权限为查看本部门
                     giv.setShowFlag(true);
                     for (GroupsInfoVO sgiv:giv.getGroupList()){
                         sgiv.setShowFlag(true);
@@ -90,14 +92,21 @@ public class GroupServiceImpl implements GroupService {
         }else if (roleList.contains(89) || roleList.contains(90)){  //查看小组
             boolean flag =false;
             for (GroupsInfoVO giv:list){    //遍历部门
-                for (GroupsInfoVO sgiv:giv.getGroupList()){ //遍历小组
-                    if (groupList.contains(sgiv.getGroupId())){ //如果是所在的小组  标记为可见
+                if (Arrays.asList(giv.getChiefIds().split(",")).contains(staffId+"")){//如果是该部门的主管
+                    for (GroupsInfoVO sgiv:giv.getGroupList()){
                         sgiv.setShowFlag(true);
-                        flag=true;
                     }
+                    giv.setShowFlag(true);
+                }else{
+                    for (GroupsInfoVO sgiv:giv.getGroupList()){ //遍历小组
+                        if (groupList.contains(sgiv.getGroupId())){ //如果是所在的小组  标记为可见
+                            sgiv.setShowFlag(true);
+                            flag=true;
+                        }
+                    }
+                    giv.setShowFlag(flag);
+                    flag=false;
                 }
-                giv.setShowFlag(flag);
-                flag=false;
             }
         }else {
             list= null;
