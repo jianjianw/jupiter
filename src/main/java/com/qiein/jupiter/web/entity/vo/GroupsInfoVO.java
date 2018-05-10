@@ -38,6 +38,17 @@ public class GroupsInfoVO extends GroupPO {
 	 */
 	private List<StaffPO> staffList;
 
+	@Override
+	public String toString() {
+		return "GroupsInfoVO{" +
+				"lineNum=" + lineNum +
+				", orderNum=" + orderNum +
+				", showFlag=" + showFlag +
+				", groupList=" + groupList +
+				", staffList=" + staffList +
+				'}';
+	}
+
 	public List<GroupsInfoVO> getGroupList() {
 		return groupList;
 	}
