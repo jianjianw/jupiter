@@ -16,30 +16,22 @@ public class StaffMarsDTO extends BaseEntity {
      */
     private String phone;
     private String userName;
-    private int companyId;
+    private Integer companyId;
     private String headImg;
-    private int statusFlag;
-    private int todayNum;
-    private int weight;
-    private int limitDay;
-    private int lastPushTime;
+    private Integer statusFlag;
+    private Integer todayNum;
+    private Integer weight;
+    private Integer limitDay;
+    private Integer lastPushTime;
     private String limitChannelIds;
     private String limitChannelNames;
     private String limitShopIds;
     private String limitShopNames;
-    private int lastLoginTime;
+    private Integer lastLoginTime;
     private String lastLoginIp;
-    private int lastLogoutTime;
+    private Integer lastLogoutTime;
     private String lastLogoutIp;
     private String groupId;
-
-    public String getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(String groupId) {
-        this.groupId = groupId;
-    }
 
     public String getNickName() {
         return nickName;
@@ -65,11 +57,11 @@ public class StaffMarsDTO extends BaseEntity {
         this.userName = userName;
     }
 
-    public int getCompanyId() {
+    public Integer getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(int companyId) {
+    public void setCompanyId(Integer companyId) {
         this.companyId = companyId;
     }
 
@@ -81,43 +73,43 @@ public class StaffMarsDTO extends BaseEntity {
         this.headImg = headImg;
     }
 
-    public int getStatusFlag() {
+    public Integer getStatusFlag() {
         return statusFlag;
     }
 
-    public void setStatusFlag(int statusFlag) {
+    public void setStatusFlag(Integer statusFlag) {
         this.statusFlag = statusFlag;
     }
 
-    public int getTodayNum() {
+    public Integer getTodayNum() {
         return todayNum;
     }
 
-    public void setTodayNum(int todayNum) {
+    public void setTodayNum(Integer todayNum) {
         this.todayNum = todayNum;
     }
 
-    public int getWeight() {
+    public Integer getWeight() {
         return weight;
     }
 
-    public void setWeight(int weight) {
+    public void setWeight(Integer weight) {
         this.weight = weight;
     }
 
-    public int getLimitDay() {
+    public Integer getLimitDay() {
         return limitDay;
     }
 
-    public void setLimitDay(int limitDay) {
+    public void setLimitDay(Integer limitDay) {
         this.limitDay = limitDay;
     }
 
-    public int getLastPushTime() {
+    public Integer getLastPushTime() {
         return lastPushTime;
     }
 
-    public void setLastPushTime(int lastPushTime) {
+    public void setLastPushTime(Integer lastPushTime) {
         this.lastPushTime = lastPushTime;
     }
 
@@ -153,11 +145,11 @@ public class StaffMarsDTO extends BaseEntity {
         this.limitShopNames = limitShopNames;
     }
 
-    public int getLastLoginTime() {
+    public Integer getLastLoginTime() {
         return lastLoginTime;
     }
 
-    public void setLastLoginTime(int lastLoginTime) {
+    public void setLastLoginTime(Integer lastLoginTime) {
         this.lastLoginTime = lastLoginTime;
     }
 
@@ -169,11 +161,11 @@ public class StaffMarsDTO extends BaseEntity {
         this.lastLoginIp = lastLoginIp;
     }
 
-    public int getLastLogoutTime() {
+    public Integer getLastLogoutTime() {
         return lastLogoutTime;
     }
 
-    public void setLastLogoutTime(int lastLogoutTime) {
+    public void setLastLogoutTime(Integer lastLogoutTime) {
         this.lastLogoutTime = lastLogoutTime;
     }
 
@@ -183,5 +175,13 @@ public class StaffMarsDTO extends BaseEntity {
 
     public void setLastLogoutIp(String lastLogoutIp) {
         this.lastLogoutIp = lastLogoutIp;
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 }

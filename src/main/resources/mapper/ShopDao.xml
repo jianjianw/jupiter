@@ -121,6 +121,20 @@
         AND shop.ID = #{id}
     </select>
 
+    <!--根据批量的拍摄地编号获取拍摄地名称列表-->
+    <select id="getLimitShopNamesByIds" parameterType="map" resultType="String">
+        SELECT
+          shop.SHOPNAME
+        FROM
+          hm_pub_shop shop
+        WHERE
+          COMPANYID = #{companyId} AND
+          ID IN
+        <foreach collection="ids" item="id" index="index" open="(" separator="," close=")">
+          #{id}
+        </foreach>
+    </select>
+
 
 
 </mapper>

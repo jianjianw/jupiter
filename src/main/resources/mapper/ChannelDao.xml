@@ -175,6 +175,19 @@
         ORDER BY ISSHOW DESC, PRIORITY ,TYPEID, ID
     </select>
 
+    <!--根据批量渠道编号获取渠道名称列表-->
+    <select id="getChannelNamesByIds" parameterType="map" resultType="String">
+        SELECT
+          CHANNELNAME
+        FROM
+          hm_crm_channel
+        WHERE
+          COMPANYID = #{companyId} AND ID IN
+          <foreach collection="ids" item="id" index="index" open="(" separator="," close=")">
+              #{id}
+          </foreach>
+    </select>
+
     <select id="checkSrcNumById" parameterType="Integer" resultType="Integer">
         SELECT
           COUNT(1)

@@ -51,6 +51,12 @@
         <result column="STATUSFLAG" property="statusFlag" jdbcType="BOOLEAN"/>
         <result column="ISLOCK" property="lockFlag" jdbcType="BOOLEAN"/>
         <result column="ISDEL" property="delFlag" jdbcType="BOOLEAN"/>
+        <result column="TODAYNUM" property="todayNum" jdbcType="INTEGER"/>
+        <result column="WEIGHT" property="weight" jdbcType="INTEGER"/>
+        <result column="LIMITDAY" property="limitDay" jdbcType="INTEGER"/>
+        <result column="LASTPUSHTIME" property="lastPushTime" jdbcType="INTEGER"/>
+        <result column="LIMITCHANNELIDS" property="limitChannelIds" jdbcType="VARCHAR"/>
+        <result column="LIMITSHOPIDS" property="limitShopIds" jdbcType="VARCHAR"/>
         <result column="WECHATNAME" property="weChatName" jdbcType="VARCHAR"/>
         <result column="WECHATIMG" property="weChatImg" jdbcType="VARCHAR"/>
         <result column="LASTLOGINTIME" property="lastLoginTime" jdbcType="INTEGER"/>
@@ -397,7 +403,9 @@
     <select id="getStaffDetail" resultMap="staffDetailMap">
         SELECT   staff.ID,  staff.NICKNAME,  staff.PHONE,  staff.USERNAME,  staff.PASSWORD,
          staff.COMPANYID,  staff.CORPID,  staff.DINGUSERID, staff.HEADIMG,
-        staff.TOKEN,staff.STATUSFLAG,staff.ISLOCK,staff.ISDEL,detail.WECHATNAME, detail.WECHATIMG, detail.LASTLOGINTIME,
+        staff.TOKEN,staff.STATUSFLAG,staff.ISLOCK,staff.ISDEL,
+        staff.TODAYNUM , staff.WEIGHT,staff.LIMITDAY,staff.LASTPUSHTIME,staff.LIMITCHANNELIDS,staff.LIMITSHOPIDS,
+        detail.WECHATNAME, detail.WECHATIMG, detail.LASTLOGINTIME,
         detail.OPENID,detail.LASTLOGINIP,detail.OPENID, detail.CREATETIME
         FROM  hm_pub_staff staff LEFT JOIN
         hm_pub_staff_detail detail ON staff.ID = detail.ID

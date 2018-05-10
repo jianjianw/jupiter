@@ -67,6 +67,66 @@ public class StaffPO extends BaseEntity {
      */
     private boolean delFlag;
 
+    private int todayNum;
+
+    private int weight;
+
+    private int limitDay;
+
+    private int lastPushTime;
+
+    private String limitChannelIds;
+
+    private String limitShopIds;
+
+    public int getTodayNum() {
+        return todayNum;
+    }
+
+    public void setTodayNum(int todayNum) {
+        this.todayNum = todayNum;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
+    public int getLimitDay() {
+        return limitDay;
+    }
+
+    public void setLimitDay(int limitDay) {
+        this.limitDay = limitDay;
+    }
+
+    public int getLastPushTime() {
+        return lastPushTime;
+    }
+
+    public void setLastPushTime(int lastPushTime) {
+        this.lastPushTime = lastPushTime;
+    }
+
+    public String getLimitChannelIds() {
+        return limitChannelIds;
+    }
+
+    public void setLimitChannelIds(String limitChannelIds) {
+        this.limitChannelIds = limitChannelIds;
+    }
+
+    public String getLimitShopIds() {
+        return limitShopIds;
+    }
+
+    public void setLimitShopIds(String limitShopIds) {
+        this.limitShopIds = limitShopIds;
+    }
+
     public StaffPO() {
 
     }
