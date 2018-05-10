@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiein.jupiter.web.dao.StaffMarsDao">
+
+    <!--UPDATE
+    hm_pub_staff s , hm_pub_staff_detail sd
+    SET
+    s.STATUSFLAG = 0,s.TODAYNUM = 1 , s.WEIGHT =10 , sd.LIMITCHANNELNAMES='aa'
+    WHERE
+    sd.ID=s.ID AND s.ID = 112 AND s.COMPANYID=1 AND s.COMPANYID=sd.COMPANYID-->
+
+    <update id="update" parameterType="staffMarsDTO">
+        UPDATE
+	      hm_pub_staff s , hm_pub_staff_detail sd
+        <set>
+            <if test="nickName != null and nickName != ''">
+                s.NICKNAME = #{nicakName},
+            </if>
+            <if test="phone != null and phone != ''">
+                s.PHONE = #{phone},
+            </if>
+            <if test="userName != null and userName != ''">
+                s.USERNAME = #{userName},
+            </if>
+            <if test="headImg != null and headImg != ''">
+                s.HEADIMG = #{headImg},
+            </if>
+            <if test="statusFlag != null">
+                s.STATUSFLAG = #{statusFlag},
+            </if>
+            <if test="todayNum != null">
+                s.TODAYNUM = #{todayNum},
+            </if>
+            <if test="weight != null">
+                s.WEIGHT = #{weight},
+            </if>
+            <if test="limitDay != null">
+                s.LIMITDAY = #{limitDay},
+            </if>
+            <if test="lastPushTime != null">
+                s.LASTPUSHTIME = #{lastPushTime},
+            </if>
+            <if test="limitChannelIds != null and limitChannelIds != ''">
+                s.LIMITCHANNELIDS = #{limitChannelIds},
+            </if>
+            <if test="limitShopIds != null and limitShopIds != ''">
+                s.LIMITSHOPIDS = #{limitShopIds},
+            </if>
+            <if test="limitChannelNames != null and limitChannelNames != ''">
+                sd.LIMITCHANNELNAMES = #{limitChannelNames},
+            </if>
+            <if test="limitShopNames != null and limitShopNames != ''">
+                sd.LIMITSHOPNAMES = #{limitShopNames},
+            </if>
+            <if test="lastLoginTime != null">
+                sd.LASTLOGINTIME = #{lastLoginTime},
+            </if>
+            <if test="lastLoginIp != null and lastLoginIp != ''">
+                sd.LASTLOGINIP = #{lastLoginIp},
+            </if>
+            <if test="lastLogoutTime != null">
+                sd.LASTLOGOUTTIME = #{lastLogoutTime},
+            </if>
+            <if test="lastLogoutIp != null and lastLogoutIp != ''">
+                sd.LASTLOGOUTIP = #{lastLogoutIp},
+            </if>
+        </set>
+        WHERE
+	      sd.ID=s.ID AND s.ID = #{id} AND s.COMPANYID=#{companyId} AND s.COMPANYID=sd.COMPANYID
+    </update>
+
+
+</mapper>
