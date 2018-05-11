@@ -30,5 +30,12 @@ public interface StatusDao extends BaseDao<StatusPO> {
 	 * 
 	 * @return
 	 */
-	StatusPO getStatusById(@Param("companyId") int companyId, @Param("statusId") int statusId);
+	StatusPO getStatusById(@Param("companyId") int companyId, @Param("id") int id);
+
+	/**
+	 * 获取状态信息
+	 * 
+	 * @return
+	 */
+	StatusPO getStatusByStatusId(@Param("companyId") int companyId, @Param("statusId") int statusId);
 }

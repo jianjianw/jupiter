@@ -102,7 +102,8 @@ public enum ExceptionEnum {
 	INFO_BE_RECEIVED(1604,"该客资已被领取"),
 	//状态
 	STS_COLUMN_ERROR(1701,"状态颜色表示错误"),
-	STS_DEFAULT_ERROR(1702,"默认颜色信息缺失");
+	STS_DEFAULT_ERROR(1702,"默认颜色信息缺失"),
+	STS_GET_ERROR(1703,"企业状态信息获取错误");
 	
 	private Integer code;
     private String msg;

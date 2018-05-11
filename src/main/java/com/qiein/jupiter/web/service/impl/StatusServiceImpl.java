@@ -49,7 +49,13 @@ public class StatusServiceImpl implements StatusService {
 	@Override
 	public void editColorToDefault(int companyId, int statusId, String column) {
 
-		StatusPO defaultColor = statusDao.getStatusById(CommonConstant.DEFAULT_COMPID, statusId);
+		StatusPO statusColor = statusDao.getStatusById(companyId, statusId);
+
+		if (statusColor == null) {
+			throw new RException(ExceptionEnum.STS_GET_ERROR);
+		}
+
+		StatusPO defaultColor = statusDao.getStatusByStatusId(CommonConstant.DEFAULT_COMPID, statusColor.getStatusId());
 
 		if (defaultColor == null) {
 			throw new RException(ExceptionEnum.STS_DEFAULT_ERROR);

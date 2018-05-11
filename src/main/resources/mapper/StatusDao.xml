@@ -54,6 +54,17 @@
           hm_crm_client_status sts
         WHERE
           sts.COMPANYID = #{companyId}
-        AND sts.ID = #{statusId}
+        AND sts.ID = #{Id}
+    </select>
+    
+    <!-- 获取状态信息 -->
+    <select id="getStatusByStatusId" parameterType="map" resultMap="baseMap">
+        SELECT
+           <include refid="baseColumn" />
+        FROM
+          hm_crm_client_status sts
+        WHERE
+          sts.COMPANYID = #{companyId}
+        AND sts.STATUSID = #{statusId}
     </select>
 </mapper>
