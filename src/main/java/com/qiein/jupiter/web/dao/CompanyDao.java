@@ -9,24 +9,24 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface CompanyDao extends BaseDao<CompanyPO> {
 
-	public CompanyVO getVOById(@Param("companyId") int companyId);
+    CompanyVO getVOById(@Param("companyId") int companyId);
 
-	/**
-	 * 编辑自定义设置
-	 * 
-	 * @param column
-	 * @param flag
-	 * @return
-	 */
-	public int updateFlag(@Param("companyId") int companyId, @Param("column") String column,
-			@Param("flag") boolean flag);
+    /**
+     * 编辑自定义设置
+     *
+     * @param column
+     * @param flag
+     * @return
+     */
+    int updateFlag(@Param("companyId") int companyId, @Param("column") String column,
+                   @Param("flag") boolean flag);
 
-	/**
-	 * 编辑自定义范围
-	 * 
-	 * @param column
-	 * @param num
-	 * @return
-	 */
-	public int updateRange(@Param("companyId") int companyId, @Param("column") String column, @Param("num") int num);
+    /**
+     * 编辑自定义范围
+     *
+     * @param column
+     * @param num
+     * @return
+     */
+    int updateRange(@Param("companyId") int companyId, @Param("column") String column, @Param("num") int num);
 }

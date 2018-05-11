@@ -64,6 +64,7 @@ public interface GroupStaffDao {
 
     /**
      * 获取小组人员详情
+     *
      * @param companyId
      * @param groupId
      * @return
@@ -72,6 +73,7 @@ public interface GroupStaffDao {
 
     /**
      * 获取各小组内人员的接单数和在线人数
+     *
      * @param companyId
      * @return
      */
@@ -101,7 +103,7 @@ public interface GroupStaffDao {
      * @param staffId
      * @return
      */
-    public List<String> getStaffRoleList(@Param("companyId") int companyId, @Param("staffId") Integer staffId);
+    List<String> getStaffRoleList(@Param("companyId") int companyId, @Param("staffId") Integer staffId);
 
     /**
      * 根据不同类型，获取小组及人员
@@ -110,7 +112,7 @@ public interface GroupStaffDao {
      * @param type
      * @return
      */
-    public List<GroupBaseStaffVO> getGroupStaffByRole(@Param("companyId") int companyId, @Param("type") String type);
+    List<GroupBaseStaffVO> getGroupStaffByRole(@Param("companyId") int companyId, @Param("type") String type);
 
     /**
      * 批量添加小组人员
@@ -119,5 +121,5 @@ public interface GroupStaffDao {
      * @param groupId
      * @param staffIdArr
      */
-    public void batchInsertGroupStaff(@Param("companyId") int companyId, @Param("groupId") String groupId, @Param("staffIdArr") String[] staffIdArr);
+    void batchInsertGroupStaff(@Param("companyId") int companyId, @Param("groupId") String groupId, @Param("staffIdArr") String[] staffIdArr);
 }

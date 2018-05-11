@@ -15,24 +15,25 @@ public interface ShopService {
      * @param companyId
      * @return
      */
-    public List<ShopVO> getCompanyShopList(int companyId);
+    List<ShopVO> getCompanyShopList(int companyId);
 
     /**
      * 新增拍摄地
      *
      * @param shopPO
      */
-    public void addShop(ShopPO shopPO);
+    void addShop(ShopPO shopPO);
 
     /**
      * 编辑拍摄地
      *
      * @param shopPO
      */
-    public void editShop(ShopPO shopPO);
+    void editShop(ShopPO shopPO);
 
     /**
      * 修改排序
+     *
      * @param fId
      * @param fPriority
      * @param sId
@@ -49,7 +50,7 @@ public interface ShopService {
      * @param showFlag
      * @return
      */
-    public void editShopShowFlag(int companyId, int id, boolean showFlag);
+    void editShopShowFlag(int companyId, int id, boolean showFlag);
 
     /**
      * 删除拍摄地
@@ -57,7 +58,7 @@ public interface ShopService {
      * @param companyId
      * @param id
      */
-    public void deleteShop(int companyId, int id);
+    void deleteShop(int companyId, int id);
 
     /**
      * 获取企业显示的拍摄地列表

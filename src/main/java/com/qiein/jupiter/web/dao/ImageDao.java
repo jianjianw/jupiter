@@ -10,5 +10,5 @@ import java.util.Map;
  * Created by Administrator on 2018/4/21 0021.
  */
 public interface ImageDao {
-    List<Map<String,Object>> getSrcImgList(@Param("type") String type);
+    List<Map<String, Object>> getSrcImgList(@Param("type") String type);
 }

@@ -10,7 +10,7 @@ import com.qiein.jupiter.web.entity.po.PermissionPO;
  * 权限Dao
  */
 public interface PermissionDao extends BaseDao<PermissionPO> {
-	
+
     /**
      * 获取员工信息及角色权限信息
      *

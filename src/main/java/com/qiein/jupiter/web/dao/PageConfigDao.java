@@ -11,6 +11,7 @@ import java.util.List;
 public interface PageConfigDao {
     /**
      * 根据公司ID 获取配置
+     *
      * @param cid
      * @return
      */

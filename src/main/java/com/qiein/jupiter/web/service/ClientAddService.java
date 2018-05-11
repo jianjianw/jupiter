@@ -11,5 +11,5 @@ public interface ClientAddService {
      * @param clientVO
      * @param staffPO
      */
-    public void addDsClient(ClientVO clientVO, StaffPO staffPO);
+    void addDsClient(ClientVO clientVO, StaffPO staffPO);
 }

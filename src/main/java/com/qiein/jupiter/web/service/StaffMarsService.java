@@ -9,6 +9,7 @@ import com.qiein.jupiter.web.entity.dto.StaffMarsDTO;
 public interface StaffMarsService {
     /**
      * 编辑员工状态
+     *
      * @param staffMarsDTO
      */
     void editStaffMars(StaffMarsDTO staffMarsDTO);

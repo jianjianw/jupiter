@@ -27,7 +27,7 @@ public interface GroupService {
      * @param type
      * @return
      */
-    List<GroupsInfoVO> getStaffMarsInfo(String type,int staffId, int companyId);
+    List<GroupsInfoVO> getStaffMarsInfo(String type, int staffId, int companyId);
 
     /**
      * 部门更新
@@ -66,10 +66,9 @@ public interface GroupService {
      *
      * @param companyId
      * @param staffId
-     * @param type
      * @return
      */
-    public List<GroupBaseStaffVO> getGroupStaffByType(int companyId, int staffId, String role);
+    List<GroupBaseStaffVO> getGroupStaffByType(int companyId, int staffId, String role);
 
     /**
      * 获取邀约客服小组及人员
@@ -77,5 +76,5 @@ public interface GroupService {
      * @param companyId
      * @return
      */
-    public List<GroupBaseStaffVO> getDsyyGroupStaffList(int companyId);
+    List<GroupBaseStaffVO> getDsyyGroupStaffList(int companyId);
 }

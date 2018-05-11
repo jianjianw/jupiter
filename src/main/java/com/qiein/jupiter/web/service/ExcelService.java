@@ -9,5 +9,5 @@ import com.qiein.jupiter.web.entity.po.StaffPO;
  */
 public interface ExcelService {
 
-	public void importExcel(MultipartFile file, StaffPO currentLoginStaff) throws Exception;
+    void importExcel(MultipartFile file, StaffPO currentLoginStaff) throws Exception;
 }

@@ -11,7 +11,7 @@ import com.qiein.jupiter.web.entity.vo.RoleVO;
  * 角色dao
  */
 public interface RoleDao extends BaseDao<RolePO> {
-	
+
     /*
      * 根据角色名获取角色信息
      */

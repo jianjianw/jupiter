@@ -25,6 +25,7 @@ public interface ChannelService {
 
     /**
      * 修改排序
+     *
      * @param fId
      * @param fPriority
      * @param sId
@@ -67,7 +68,7 @@ public interface ChannelService {
      * @param role
      * @return
      */
-    public List<ChannelVO> getChannelSourceListByType(Integer companyId, String role);
+    List<ChannelVO> getChannelSourceListByType(Integer companyId, String role);
 
     /**
      * 获取员工各角色录入页面，渠道来源下拉框选项，根据个人上月使用频率排序
@@ -76,6 +77,6 @@ public interface ChannelService {
      * @param role
      * @return
      */
-    public List<ChannelVO> getMyChannelSourceByRole(int companyId, int staffId, String role);
+    List<ChannelVO> getMyChannelSourceByRole(int companyId, int staffId, String role);
 
 }

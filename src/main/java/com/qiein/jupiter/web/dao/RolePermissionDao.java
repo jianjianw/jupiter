@@ -42,6 +42,6 @@ public interface RolePermissionDao {
      * @param staffId
      * @return
      */
-    public List<Integer> getStaffPmsList(@Param("companyId") Integer companyId, @Param("staffId") int staffId);
+    List<Integer> getStaffPmsList(@Param("companyId") Integer companyId, @Param("staffId") int staffId);
 
 }

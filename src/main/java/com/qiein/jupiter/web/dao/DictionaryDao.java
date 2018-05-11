@@ -18,7 +18,7 @@ public interface DictionaryDao extends BaseDao<DictionaryPO> {
      * @param dicType
      * @return
      */
-    public List<MenuVO> getCompanyMemu(@Param("companyId") int companyId, @Param("dicType") String dicType);
+    List<MenuVO> getCompanyMemu(@Param("companyId") int companyId, @Param("dicType") String dicType);
 
     /**
      * 根绝类型获取字典数据
@@ -27,7 +27,7 @@ public interface DictionaryDao extends BaseDao<DictionaryPO> {
      * @param dicType
      * @return
      */
-    public List<DictionaryPO> getDicByType(@Param("companyId") int companyId, @Param("dicType") String dicType);
+    List<DictionaryPO> getDicByType(@Param("companyId") int companyId, @Param("dicType") String dicType);
 
     /**
      * 根据类型，名称，获取字典数据
@@ -37,7 +37,7 @@ public interface DictionaryDao extends BaseDao<DictionaryPO> {
      * @param dicName
      * @return
      */
-    public DictionaryPO getDicByTypeAndName(@Param("companyId") int companyId, @Param("dicType") String dicType, @Param("dicName") String dicName);
+    DictionaryPO getDicByTypeAndName(@Param("companyId") int companyId, @Param("dicType") String dicType, @Param("dicName") String dicName);
 
     /**
      * 批量删除字典数据
@@ -45,5 +45,5 @@ public interface DictionaryDao extends BaseDao<DictionaryPO> {
      * @param companyId
      * @param idArr
      */
-    public void batchDeleteByIds(@Param("companyId") int companyId, @Param("idArr") String[] idArr);
+    void batchDeleteByIds(@Param("companyId") int companyId, @Param("idArr") String[] idArr);
 }

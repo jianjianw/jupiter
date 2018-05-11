@@ -10,8 +10,9 @@ import java.util.Map;
 public interface ImageService {
     /**
      * 根据图片类型获取图片信息
+     *
      * @param type
      * @return
      */
-    List<Map<String,Object>> getSrcImgList(String type);
+    List<Map<String, Object>> getSrcImgList(String type);
 }
