@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
-import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
@@ -48,7 +47,7 @@ public class CompanyController extends BaseController {
 	@GetMapping("/ssolimit")
 	public ResultInfo editCompanySsolimit(@NotEmptyStr @RequestParam("flag") String flag) {
 		companyService.updateFlag(getCurrentLoginStaff().getCompanyId(), CompanyPO.COLUMN_SSOLIMIT,
-				CommonConstant.FLAG_YES.equals(flag));
+				Boolean.valueOf(flag));
 		return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
 	}
 
