@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.service.impl;
 
+import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.web.dao.StatusDao;
@@ -47,9 +48,9 @@ public class StatusServiceImpl implements StatusService {
 	 */
 	@Override
 	public void editColorToDefault(int companyId, int statusId, String column) {
-		
-		StatusPO defaultColor = statusDao.getStatusById(companyId, statusId);
-		
+
+		StatusPO defaultColor = statusDao.getStatusById(CommonConstant.DEFAULT_COMPID, statusId);
+
 		if (defaultColor == null) {
 			throw new RException(ExceptionEnum.STS_DEFAULT_ERROR);
 		}

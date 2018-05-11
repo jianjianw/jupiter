@@ -6,6 +6,11 @@ package com.qiein.jupiter.constant;
 public class CommonConstant {
 
 	/**
+	 * 默认企业ID
+	 */
+	public final static int DEFAULT_COMPID = 0;
+	
+	/**
 	 * 参数代表-是
 	 */
 	public final static String FLAG_YES = "1";

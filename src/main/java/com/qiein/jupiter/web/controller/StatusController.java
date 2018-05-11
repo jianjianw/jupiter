@@ -73,7 +73,7 @@ public class StatusController extends BaseController {
 		}
 		// 获取当前登录用户
 		StaffPO currentLoginStaff = getCurrentLoginStaff();
-		statusService.editColorToDefault(currentLoginStaff.getId(), statusPO.getId(), statusPO.getColumn());
+		statusService.editColorToDefault(currentLoginStaff.getCompanyId(), statusPO.getId(), statusPO.getColumn());
 		return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
 	}
 }
