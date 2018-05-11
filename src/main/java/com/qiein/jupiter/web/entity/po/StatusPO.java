@@ -32,7 +32,7 @@ public class StatusPO extends BaseEntity {
 	 * 字段表示
 	 */
 	private String column;
-	
+
 	/**
 	 * 状态ID
 	 */
@@ -54,24 +54,20 @@ public class StatusPO extends BaseEntity {
 	 */
 	private int companyId;
 
-	public StatusPO(int statusId, String backColor, String fontColor, int companyId) {
-		super();
-		this.statusId = statusId;
+	public StatusPO(int id, String backColor, String fontColor, int companyId) {
+		super(id);
 		this.backColor = backColor;
 		this.fontColor = fontColor;
 		this.companyId = companyId;
 	}
 
-	
 	public String getColumn() {
 		return column;
 	}
 
-
 	public void setColumn(String column) {
 		this.column = column;
 	}
-
 
 	public StatusPO() {
 		super();

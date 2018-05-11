@@ -47,9 +47,9 @@ public class StatusServiceImpl implements StatusService {
 	 * 修改状态颜色为默认值
 	 */
 	@Override
-	public void editColorToDefault(int companyId, int statusId, String column) {
+	public void editColorToDefault(int companyId, int id, String column) {
 
-		StatusPO statusColor = statusDao.getStatusById(companyId, statusId);
+		StatusPO statusColor = statusDao.getStatusById(companyId, id);
 
 		if (statusColor == null) {
 			throw new RException(ExceptionEnum.STS_GET_ERROR);
@@ -62,7 +62,7 @@ public class StatusServiceImpl implements StatusService {
 		}
 
 		statusDao.editStatus(
-				new StatusPO(statusId, StatusPO.STS_BGCOLOR.equals(column) ? defaultColor.getBackColor() : "",
+				new StatusPO(id, StatusPO.STS_BGCOLOR.equals(column) ? defaultColor.getBackColor() : "",
 						StatusPO.STS_FONTCOLOR.equals(column) ? defaultColor.getFontColor() : "", companyId));
 	}
 }
