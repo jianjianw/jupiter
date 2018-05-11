@@ -29,7 +29,27 @@ public class DictionaryConstant {
      */
     public final static String COMMON_TYPE = "common_type";
     /**
+     * 咨询方式
+     */
+    public final static String ZX_MODE = "zx_mode";
+    /**
      * 咨询类型
      */
-    public final static String ZX_STYLE = "zx_style";
+    public final static String ZX_TYPE = "zx_type";
+    /**
+     * 意向等级
+     */
+    public final static String YX_RANK = "yx_rank";
+    /**
+     * 婚期时间
+     */
+    public final static String MARRY_RANGE = "marry_range";
+    /**
+     * 预拍时间
+     */
+    public final static String YP_RANGE = "yp_range";
+    /**
+     * 预算范围
+     */
+    public final static String YS_RANGE = "ys_range";
 }

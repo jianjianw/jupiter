@@ -170,7 +170,7 @@ public class DictionaryController extends BaseController {
     public ResultInfo getZxStyleList() {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        return ResultInfoUtil.success(dictionaryService.getCommonDicByType(currentLoginStaff.getCompanyId(), DictionaryConstant.ZX_STYLE));
+        return ResultInfoUtil.success(dictionaryService.getCommonDicByType(currentLoginStaff.getCompanyId(), DictionaryConstant.ZX_TYPE));
     }
 
 }
