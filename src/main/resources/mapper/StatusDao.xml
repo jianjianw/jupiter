@@ -45,6 +45,16 @@
         WHERE COMPANYID = #{companyId}
         AND ID = #{id}
     </update>
+    
+    <!--恢复默认状态-->
+    <update id="editStatusDefault" parameterType="com.qiein.jupiter.web.entity.po.StatusPO">
+        UPDATE hm_crm_client_status SET
+        STATUSNAME = #{statusName},
+        BACKCOLOR = #{backColor},
+        FONTCOLOR = #{fontColor}
+        WHERE COMPANYID = #{companyId}
+        AND ID = #{id}
+    </update>
 
 	<!-- 获取状态信息 -->
     <select id="getStatusById" parameterType="map" resultMap="baseMap">

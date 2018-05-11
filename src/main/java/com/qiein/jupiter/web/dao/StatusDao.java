@@ -26,6 +26,14 @@ public interface StatusDao extends BaseDao<StatusPO> {
 	int editStatus(StatusPO statusPO);
 
 	/**
+	 * 恢复默认状态
+	 *
+	 * @param statusPO
+	 * @return
+	 */
+	int editStatusDefault(StatusPO statusPO);
+
+	/**
 	 * 获取状态信息
 	 * 
 	 * @return
