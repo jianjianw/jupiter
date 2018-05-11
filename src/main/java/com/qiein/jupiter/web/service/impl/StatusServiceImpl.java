@@ -61,8 +61,9 @@ public class StatusServiceImpl implements StatusService {
 			throw new RException(ExceptionEnum.STS_DEFAULT_ERROR);
 		}
 
-		statusDao.editStatusDefault(
-				new StatusPO(id, StatusPO.STS_BGCOLOR.equals(column) ? defaultColor.getBackColor() : "",
-						StatusPO.STS_FONTCOLOR.equals(column) ? defaultColor.getFontColor() : "", companyId));
+		statusDao.editStatusDefault(new StatusPO(id,
+				StatusPO.STS_BGCOLOR.equals(column) ? defaultColor.getBackColor() : statusColor.getBackColor(),
+				StatusPO.STS_FONTCOLOR.equals(column) ? defaultColor.getFontColor() : statusColor.getFontColor(),
+				companyId));
 	}
 }
