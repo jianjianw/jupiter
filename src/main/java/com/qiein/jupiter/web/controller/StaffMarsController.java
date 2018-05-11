@@ -64,6 +64,7 @@ public class StaffMarsController extends BaseController {
         StaffPO staffPO = getCurrentLoginStaff();
         //获取该员工权限所能查看的该类型的所有部门
         List<GroupsInfoVO> list = staffMarsService.getDeptListByType(type,staffPO.getCompanyId(),staffPO.getId());
+        //过滤当前在线人数和接单数
 		list=staffMarsService.filterDeptList(list,staffPO.getCompanyId(),staffPO.getId());
         return ResultInfoUtil.success(list);
     }
@@ -78,7 +79,8 @@ public class StaffMarsController extends BaseController {
 
     	StaffPO staffPO = getCurrentLoginStaff();
         List<GroupsInfoVO> list = staffMarsService.getGroupListByDept(groupId,staffPO.getCompanyId(),staffPO.getId());
-        //
+        //过滤当前在线人数和接单数
+		list =staffMarsService.filterGroupList(list,groupId,staffPO.getCompanyId());
         return ResultInfoUtil.success(list);
     }
 

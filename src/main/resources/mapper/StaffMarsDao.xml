@@ -136,5 +136,31 @@ HAVING
 
     </select>
 
+    <select id="getGroupLineNumAndOrderNum" parameterType="Integer" resultType="groupsInfoVO">
+        SELECT
+	gs.GROUPID ,SUM(stf.TODAYNUM) orderNum , b.lineNum
+FROM
+	hm_pub_staff stf
+JOIN hm_pub_group_staff gs ON stf.COMPANYID = gs.COMPANYID
+AND stf.ID = gs.STAFFID
+LEFT JOIN (
+	SELECT
+		gs.GROUPID bid,
+		COUNT(stf.STATUSFLAG = 1) lineNum
+	FROM
+		hm_pub_staff stf
+	JOIN hm_pub_group_staff gs ON stf.COMPANYID = gs.COMPANYID
+	AND stf.ID = gs.STAFFID
+	WHERE
+		stf.COMPANYID = #{companyId} AND stf.STATUSFLAG = 1
+	GROUP BY
+		gs.GROUPID
+) b ON b.bid = gs.GROUPID
+WHERE
+	stf.COMPANYID = #{companyId}
+GROUP BY
+	gs.GROUPID,b.lineNum
+    </select>
+
 
 </mapper>
