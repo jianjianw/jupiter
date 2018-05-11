@@ -40,8 +40,11 @@ public class PageConfigController extends BaseController {
      *
      * @return
      */
-    @GetMapping("/get_all_page_filter_map")
-    public ResultInfo getAllPageFilterMap() {
-        return null;
+    @GetMapping("/get_page_filter_map")
+    public ResultInfo getAllPageFilterMap(@RequestParam String role) {
+        StaffPO curStaff = getCurrentLoginStaff();
+        return ResultInfoUtil.success(
+                pageConfigService.getPageFilterMap(curStaff.getCompanyId(), role)
+        );
     }
 }

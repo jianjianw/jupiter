@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.qiein.jupiter.web.entity.po.DictionaryPO;
 
@@ -64,4 +65,12 @@ public interface DictionaryService {
      * @return
      */
     List<DictionaryPO> getCommonDicByType(int companyId, String dicType);
+
+    /**
+     * 获取一个公司下的所有字典Map
+     *
+     * @param companyId
+     * @return
+     */
+    Map<String, List<DictionaryPO>> getDictMapByCid(int companyId);
 }

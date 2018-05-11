@@ -1,6 +1,9 @@
 package com.qiein.jupiter.web.service.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -125,6 +128,33 @@ public class DictionaryServiceImpl implements DictionaryService {
             list = dictionaryDao.getDicByType(DictionaryConstant.COMMON_COMPANYID, dicType);
         }
         return list;
+    }
+
+    /**
+     * 将一个公司的字典遍历成map
+     * key 为type  value为集合
+     *
+     * @param companyId
+     * @return
+     */
+    @Override
+    public Map<String, List<DictionaryPO>> getDictMapByCid(int companyId) {
+        List<DictionaryPO> dictByCompanyId = dictionaryDao.getDictByCompanyId(companyId);
+        Map<String, List<DictionaryPO>> map = new HashMap<>();
+        //遍历
+        for (DictionaryPO dictionaryPO : dictByCompanyId) {
+            List<DictionaryPO> dictList;
+            //判断是否存在该key
+            if (map.get(dictionaryPO.getDicType()) == null) {
+                dictList = new ArrayList<>();
+                dictList.add(dictionaryPO);
+                map.put(dictionaryPO.getDicType(), dictList);
+            } else {
+                dictList = map.get(dictionaryPO.getDicType());
+                dictList.add(dictionaryPO);
+            }
+        }
+        return map;
     }
 
 }

@@ -23,8 +23,10 @@ public class JsonConvertConfig extends WebMvcConfigurerAdapter {
         fastJsonConfig.setSerializerFeatures(
                 //配置美观的输出格式
 //                SerializerFeature.PrettyFormat,
-                //配置输出空值
+                //map输出空值
                 SerializerFeature.WriteMapNullValue,
+                //空集合输出为[]
+                SerializerFeature.WriteNullListAsEmpty,
                 //将字符串类型字段的空值输出为空字符串 ""
                 SerializerFeature.WriteNullStringAsEmpty,
                 //使用enum的toString方法序列化

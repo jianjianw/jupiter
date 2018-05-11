@@ -1,10 +1,9 @@
 package com.qiein.jupiter.web.service;
 
-import com.qiein.jupiter.web.entity.dto.PageFilterDTO;
 import com.qiein.jupiter.web.entity.po.PageConfig;
+import com.qiein.jupiter.web.entity.vo.FilterMapVO;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 页面配置
@@ -26,5 +25,5 @@ public interface PageConfigService {
      * @param companyId
      * @return
      */
-    Map<String, List<PageFilterDTO>> getAllPageFilterMap(int companyId);
+    FilterMapVO getPageFilterMap(int companyId, String role);
 }
