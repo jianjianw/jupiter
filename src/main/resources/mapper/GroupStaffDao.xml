@@ -128,7 +128,7 @@
         <result column="LASTLOGINTIME" property="lastLoginTime" jdbcType="INTEGER"/>
         <result column="LASTLOGINIP" property="lastLoginIp" jdbcType="VARCHAR"/>
         <result column="LASTLOGOUTTIME" property="lastLogoutTime" jdbcType="INTEGER"/>
-        <result column="LASTLOGOUTIP" property="getLastLoginIp" jdbcType="VARCHAR"/>
+        <result column="LASTLOGOUTIP" property="lastLogoutIp" jdbcType="VARCHAR"/>
         <result column="GROUPID" property="groupId" jdbcType="VARCHAR"/>
     </resultMap>
 
