@@ -1,14 +1,16 @@
 package com.qiein.jupiter.web.service.impl;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.constant.DictionaryConstant;
-import com.qiein.jupiter.constant.NumberConstant;
 import com.qiein.jupiter.enums.DictEnum;
-import com.qiein.jupiter.enums.RoleEnum;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.qiein.jupiter.util.CollectionUtils;
-import com.qiein.jupiter.util.StringUtil;
-import com.qiein.jupiter.web.dao.DictionaryDao;
 import com.qiein.jupiter.web.dao.GroupDao;
 import com.qiein.jupiter.web.dao.PageConfigDao;
 import com.qiein.jupiter.web.entity.dto.PageFilterDTO;
@@ -18,14 +20,8 @@ import com.qiein.jupiter.web.entity.vo.FilterMapVO;
 import com.qiein.jupiter.web.entity.vo.GroupsInfoVO;
 import com.qiein.jupiter.web.service.DictionaryService;
 import com.qiein.jupiter.web.service.PageConfigService;
-import org.apache.commons.collections4.ListUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 页面配置
@@ -146,8 +142,6 @@ public class PageConfigServiceImpl implements PageConfigService {
                 json.get("filterKey");
             }
         }
-
-
     }
 
     /**
@@ -173,3 +167,5 @@ public class PageConfigServiceImpl implements PageConfigService {
         return list;
     }
 }
+
+

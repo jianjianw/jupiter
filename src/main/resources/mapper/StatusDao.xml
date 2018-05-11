@@ -13,14 +13,18 @@
         <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
     </resultMap>
 
+	<sql id="baseColumn">
+        sts.ID, sts.CLASSID, sts.CLASSNAME, sts.STATUSID, sts.STATUSNAME, sts.BACKCOLOR, sts.FONTCOLOR, sts.COMPANYID
+    </sql>
+    
     <!-- 获取企业状态列表 -->
     <select id="getCompanyStatusList" parameterType="map" resultMap="baseMap">
         SELECT
-          ID, CLASSID, CLASSNAME, STATUSID, STATUSNAME, BACKCOLOR,  FONTCOLOR, COMPANYID
+           <include refid="baseColumn" />
         FROM
-          hm_crm_client_status
+          hm_crm_client_status sts
         WHERE
-          COMPANYID = #{companyId}
+          sts.COMPANYID = #{companyId}
     </select>
 
     <!--编辑状态-->
@@ -41,5 +45,14 @@
         AND ID = #{id}
     </update>
 
-
+	<!-- 获取状态信息 -->
+    <select id="getStatusById" parameterType="map" resultMap="baseMap">
+        SELECT
+           <include refid="baseColumn" />
+        FROM
+          hm_crm_client_status sts
+        WHERE
+          sts.COMPANYID = #{companyId}
+        AND sts.ID = #{statusId}
+    </select>
 </mapper>

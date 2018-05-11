@@ -10,6 +10,16 @@ public class StatusPO extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 
 	/**
+	 * 背景色
+	 */
+	public static final String STS_BGCOLOR = "bgcolor";
+
+	/**
+	 * 前景色
+	 */
+	public static final String STS_FONTCOLOR = "fontcolor";
+
+	/**
 	 * 分类ID
 	 */
 	private int classId;
@@ -37,6 +47,27 @@ public class StatusPO extends BaseEntity {
 	 * 企业ID
 	 */
 	private int companyId;
+
+	
+	public StatusPO(int statusId, String backColor, String fontColor, int companyId) {
+		super();
+		this.statusId = statusId;
+		this.backColor = backColor;
+		this.fontColor = fontColor;
+		this.companyId = companyId;
+	}
+
+	
+	public StatusPO() {
+		super();
+	}
+
+
+	public StatusPO(int id) {
+		super(id);
+		// TODO Auto-generated constructor stub
+	}
+
 
 	public int getClassId() {
 		return classId;

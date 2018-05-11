@@ -1,5 +1,15 @@
 package com.qiein.jupiter.web.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.util.NumUtil;
@@ -8,34 +18,64 @@ import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.po.StatusPO;
 import com.qiein.jupiter.web.service.StatusService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/status")
 @Validated
 public class StatusController extends BaseController {
 
-    @Autowired
-    private StatusService statusService;
+	@Autowired
+	private StatusService statusService;
 
-    @GetMapping("/get_company_status_list")
-    public ResultInfo getCompanyStatusList() {
-        //获取当前登录用户
-        StaffPO currentLoginStaff = getCurrentLoginStaff();
-        return ResultInfoUtil.success(statusService.getCompanyStatusList(currentLoginStaff.getCompanyId()));
-    }
+	/**
+	 * 获取企业状态信息
+	 * 
+	 * @return
+	 */
+	@GetMapping("/get_company_status_list")
+	public ResultInfo getCompanyStatusList() {
+		// 获取当前登录用户
+		StaffPO currentLoginStaff = getCurrentLoginStaff();
+		return ResultInfoUtil.success(statusService.getCompanyStatusList(currentLoginStaff.getCompanyId()));
+	}
 
-    @PostMapping("/edit_status")
-    public ResultInfo editStatus(@RequestBody StatusPO statusPO) {
-        if (NumUtil.isNull(statusPO.getId())) {
-            return ResultInfoUtil.error(ExceptionEnum.ID_IS_NULL);
-        }
-        //获取当前登录用户
-        StaffPO currentLoginStaff = getCurrentLoginStaff();
-        statusPO.setCompanyId(currentLoginStaff.getCompanyId());
-        statusService.editStatus(statusPO);
-        return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
-    }
+	/**
+	 * 修改状态
+	 * 
+	 * @param statusPO
+	 * @return
+	 */
+	@PostMapping("/edit_status")
+	public ResultInfo editStatus(@RequestBody StatusPO statusPO) {
+		if (NumUtil.isInValid(statusPO.getId())) {
+			return ResultInfoUtil.error(ExceptionEnum.ID_IS_NULL);
+		}
+		// 获取当前登录用户
+		StaffPO currentLoginStaff = getCurrentLoginStaff();
+		statusPO.setCompanyId(currentLoginStaff.getCompanyId());
+		statusService.editStatus(statusPO);
+		return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
+	}
+
+	/**
+	 * 修改状态前景色，背景色为默认颜色
+	 * 
+	 * @param id
+	 * @param column
+	 * @return
+	 */
+	@PostMapping("edit_color_to_default")
+	public ResultInfo editColorToDefault(@NotEmptyStr @RequestParam("id") int id,
+			@NotEmptyStr @RequestParam("column") String column) {
+		if (NumUtil.isInValid(id)) {
+			return ResultInfoUtil.error(ExceptionEnum.ID_IS_NULL);
+		}
+		if (!StatusPO.STS_BGCOLOR.equals(column) && !StatusPO.STS_FONTCOLOR.equals(column)) {
+			return ResultInfoUtil.error(ExceptionEnum.STS_COLUMN_ERROR);
+		}
+		// 获取当前登录用户
+		StaffPO currentLoginStaff = getCurrentLoginStaff();
+		statusService.editColorToDefault(currentLoginStaff.getId(), id, column);
+		return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
+	}
 }

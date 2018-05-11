@@ -3,185 +3,187 @@ package com.qiein.jupiter.web.entity.dto;
 import com.qiein.jupiter.web.entity.BaseEntity;
 
 /**
- * 网销排班员工实体类
- * Created by Administrator on 2018/5/10 0010.
+ * 网销排班员工实体类 Created by Administrator on 2018/5/10 0010.
  */
 public class StaffMarsDTO extends BaseEntity {
-    /**
-     * 昵称
-     */
-    private String nickName;
-    /**
-     * 手机号
-     */
-    private String phone;
-    private String userName;
-    private Integer companyId;
-    private String headImg;
-    private Integer statusFlag;
-    private Integer todayNum;
-    private Integer weight;
-    private Integer limitDay;
-    private Integer lastPushTime;
-    private String limitChannelIds;
-    private String limitChannelNames;
-    private String limitShopIds;
-    private String limitShopNames;
-    private Integer lastLoginTime;
-    private String lastLoginIp;
-    private Integer lastLogoutTime;
-    private String lastLogoutIp;
-    private String groupId;
 
-    public String getNickName() {
-        return nickName;
-    }
+	private static final long serialVersionUID = 1L;
 
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
-    }
+	/**
+	 * 昵称
+	 */
+	private String nickName;
+	/**
+	 * 手机号
+	 */
+	private String phone;
+	private String userName;
+	private Integer companyId;
+	private String headImg;
+	private Integer statusFlag;
+	private Integer todayNum;
+	private Integer weight;
+	private Integer limitDay;
+	private Integer lastPushTime;
+	private String limitChannelIds;
+	private String limitChannelNames;
+	private String limitShopIds;
+	private String limitShopNames;
+	private Integer lastLoginTime;
+	private String lastLoginIp;
+	private Integer lastLogoutTime;
+	private String lastLogoutIp;
+	private String groupId;
 
-    public String getPhone() {
-        return phone;
-    }
+	public String getNickName() {
+		return nickName;
+	}
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
 
-    public String getUserName() {
-        return userName;
-    }
+	public String getPhone() {
+		return phone;
+	}
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
 
-    public Integer getCompanyId() {
-        return companyId;
-    }
+	public String getUserName() {
+		return userName;
+	}
 
-    public void setCompanyId(Integer companyId) {
-        this.companyId = companyId;
-    }
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 
-    public String getHeadImg() {
-        return headImg;
-    }
+	public Integer getCompanyId() {
+		return companyId;
+	}
 
-    public void setHeadImg(String headImg) {
-        this.headImg = headImg;
-    }
+	public void setCompanyId(Integer companyId) {
+		this.companyId = companyId;
+	}
 
-    public Integer getStatusFlag() {
-        return statusFlag;
-    }
+	public String getHeadImg() {
+		return headImg;
+	}
 
-    public void setStatusFlag(Integer statusFlag) {
-        this.statusFlag = statusFlag;
-    }
+	public void setHeadImg(String headImg) {
+		this.headImg = headImg;
+	}
 
-    public Integer getTodayNum() {
-        return todayNum;
-    }
+	public Integer getStatusFlag() {
+		return statusFlag;
+	}
 
-    public void setTodayNum(Integer todayNum) {
-        this.todayNum = todayNum;
-    }
+	public void setStatusFlag(Integer statusFlag) {
+		this.statusFlag = statusFlag;
+	}
 
-    public Integer getWeight() {
-        return weight;
-    }
+	public Integer getTodayNum() {
+		return todayNum;
+	}
 
-    public void setWeight(Integer weight) {
-        this.weight = weight;
-    }
+	public void setTodayNum(Integer todayNum) {
+		this.todayNum = todayNum;
+	}
 
-    public Integer getLimitDay() {
-        return limitDay;
-    }
+	public Integer getWeight() {
+		return weight;
+	}
 
-    public void setLimitDay(Integer limitDay) {
-        this.limitDay = limitDay;
-    }
+	public void setWeight(Integer weight) {
+		this.weight = weight;
+	}
 
-    public Integer getLastPushTime() {
-        return lastPushTime;
-    }
+	public Integer getLimitDay() {
+		return limitDay;
+	}
 
-    public void setLastPushTime(Integer lastPushTime) {
-        this.lastPushTime = lastPushTime;
-    }
+	public void setLimitDay(Integer limitDay) {
+		this.limitDay = limitDay;
+	}
 
-    public String getLimitChannelIds() {
-        return limitChannelIds;
-    }
+	public Integer getLastPushTime() {
+		return lastPushTime;
+	}
 
-    public void setLimitChannelIds(String limitChannelIds) {
-        this.limitChannelIds = limitChannelIds;
-    }
+	public void setLastPushTime(Integer lastPushTime) {
+		this.lastPushTime = lastPushTime;
+	}
 
-    public String getLimitChannelNames() {
-        return limitChannelNames;
-    }
+	public String getLimitChannelIds() {
+		return limitChannelIds;
+	}
 
-    public void setLimitChannelNames(String limitChannelNames) {
-        this.limitChannelNames = limitChannelNames;
-    }
+	public void setLimitChannelIds(String limitChannelIds) {
+		this.limitChannelIds = limitChannelIds;
+	}
 
-    public String getLimitShopIds() {
-        return limitShopIds;
-    }
+	public String getLimitChannelNames() {
+		return limitChannelNames;
+	}
 
-    public void setLimitShopIds(String limitShopIds) {
-        this.limitShopIds = limitShopIds;
-    }
+	public void setLimitChannelNames(String limitChannelNames) {
+		this.limitChannelNames = limitChannelNames;
+	}
 
-    public String getLimitShopNames() {
-        return limitShopNames;
-    }
+	public String getLimitShopIds() {
+		return limitShopIds;
+	}
 
-    public void setLimitShopNames(String limitShopNames) {
-        this.limitShopNames = limitShopNames;
-    }
+	public void setLimitShopIds(String limitShopIds) {
+		this.limitShopIds = limitShopIds;
+	}
 
-    public Integer getLastLoginTime() {
-        return lastLoginTime;
-    }
+	public String getLimitShopNames() {
+		return limitShopNames;
+	}
 
-    public void setLastLoginTime(Integer lastLoginTime) {
-        this.lastLoginTime = lastLoginTime;
-    }
+	public void setLimitShopNames(String limitShopNames) {
+		this.limitShopNames = limitShopNames;
+	}
 
-    public String getLastLoginIp() {
-        return lastLoginIp;
-    }
+	public Integer getLastLoginTime() {
+		return lastLoginTime;
+	}
 
-    public void setLastLoginIp(String lastLoginIp) {
-        this.lastLoginIp = lastLoginIp;
-    }
+	public void setLastLoginTime(Integer lastLoginTime) {
+		this.lastLoginTime = lastLoginTime;
+	}
 
-    public Integer getLastLogoutTime() {
-        return lastLogoutTime;
-    }
+	public String getLastLoginIp() {
+		return lastLoginIp;
+	}
 
-    public void setLastLogoutTime(Integer lastLogoutTime) {
-        this.lastLogoutTime = lastLogoutTime;
-    }
+	public void setLastLoginIp(String lastLoginIp) {
+		this.lastLoginIp = lastLoginIp;
+	}
 
-    public String getLastLogoutIp() {
-        return lastLogoutIp;
-    }
+	public Integer getLastLogoutTime() {
+		return lastLogoutTime;
+	}
 
-    public void setLastLogoutIp(String lastLogoutIp) {
-        this.lastLogoutIp = lastLogoutIp;
-    }
+	public void setLastLogoutTime(Integer lastLogoutTime) {
+		this.lastLogoutTime = lastLogoutTime;
+	}
 
-    public String getGroupId() {
-        return groupId;
-    }
+	public String getLastLogoutIp() {
+		return lastLogoutIp;
+	}
 
-    public void setGroupId(String groupId) {
-        this.groupId = groupId;
-    }
+	public void setLastLogoutIp(String lastLogoutIp) {
+		this.lastLogoutIp = lastLogoutIp;
+	}
+
+	public String getGroupId() {
+		return groupId;
+	}
+
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
+	}
 }
