@@ -1,15 +1,16 @@
 package com.qiein.jupiter.web.service.impl;
 
-import com.qiein.jupiter.web.dao.ChannelDao;
-import com.qiein.jupiter.web.dao.ShopDao;
-import com.qiein.jupiter.web.dao.StaffDao;
-import com.qiein.jupiter.web.dao.StaffMarsDao;
+import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.web.dao.*;
 import com.qiein.jupiter.web.entity.dto.StaffMarsDTO;
+import com.qiein.jupiter.web.entity.vo.GroupsInfoVO;
 import com.qiein.jupiter.web.entity.vo.StaffDetailVO;
 import com.qiein.jupiter.web.service.StaffMarsService;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -29,6 +30,118 @@ public class StaffMarsServiceImpl implements StaffMarsService {
 
     @Autowired
     private ChannelDao channelDao;
+
+    @Autowired
+    private RolePermissionDao rolePermissionDao;
+
+    @Autowired
+    private GroupDao groupDao;
+
+    @Autowired
+    private GroupStaffDao groupStaffDao;
+    /**
+     * 根据类型获取部门列表
+     * @param type
+     * @param companyId
+     * @return
+     */
+    @Override
+    public List<GroupsInfoVO> getDeptListByType(String type, int companyId, int staffId) {
+        //TODO 加入缓存
+        //获取了全部符合类型的部门
+        List<GroupsInfoVO> list = staffMarsDao.getDeptListByType(type, companyId);
+        //根据权限过滤显示标记
+        //获取员工权限
+        List<Integer> roleList = rolePermissionDao.getStaffPmsList(companyId,staffId);
+        //获取员工所在部门列表
+        List<String> deptList = groupDao.getDeptByTypeAndStaff(companyId, staffId, type);
+
+        if (roleList.contains(111)){    //查看所有  所有的都显示
+            for (GroupsInfoVO giv:list){
+                giv.setShowFlag(true);
+            }
+        }else if (roleList.contains(124)||roleList.contains(89)||roleList.contains(90)){  //查看部门
+            for (GroupsInfoVO giv:list){
+                if (deptList.contains(giv.getGroupId())|| (StringUtil.isEmpty(giv.getChiefIds())?false:Arrays.asList(giv.getChiefIds().split(",")).contains(String.valueOf(staffId)))){
+                    giv.setShowFlag(true);
+                }
+            }
+        }
+        /*else if (roleList.contains(89)||roleList.contains(90)){    //  查看小组
+            for (GroupsInfoVO giv:list){
+                if (deptList.contains(giv.getGroupId())|| Arrays.asList(giv.getChiefIds().split(",")).contains(String.valueOf(staffId))){
+                    giv.setShowFlag(true);
+                }
+            }
+        }*/
+        return list;
+    }
+
+    /**
+     * 过滤部门列表,基于在线人数和接单数
+     * @param list
+     * @param companyId
+     * @param staffId
+     * @return
+     */
+    @Override
+    public List<GroupsInfoVO> filterDeptList(List<GroupsInfoVO> list, int companyId,int staffId) {
+        List<GroupsInfoVO> qxList = staffMarsDao.getDeptLineNumAndOrderNum(companyId);
+        for(GroupsInfoVO siv:list){
+            for (GroupsInfoVO qxsiv:qxList){
+                if (qxsiv.getGroupId().equals(siv.getGroupId())){
+                    siv.setLineNum(qxsiv.getLineNum());
+                    siv.setOrderNum(qxsiv.getOrderNum());
+                }
+            }
+        }
+        return list;
+    }
+
+
+    /**
+     * 根据部门编号获取部门下所有小组
+     * @param deptId
+     * @param companyId
+     * @return
+     */
+    @Override
+    public List<GroupsInfoVO> getGroupListByDept(String deptId, int companyId, int staffId) {
+        //TODO 加入缓存
+        //获取了全部符合类型的部门
+        List<GroupsInfoVO> list = staffMarsDao.getGroupListByDept(deptId, companyId);
+        //根据权限过滤显示标记
+        //获取员工权限
+        List<Integer> roleList = rolePermissionDao.getStaffPmsList(companyId,staffId);
+        //获取员工所在小组列表
+        List<String> groupList = groupDao.getGroupByStaffAndType(companyId, staffId,null);
+        //获取各小组内人员的接单数和在线人数
+        List<GroupsInfoVO> infoList = groupStaffDao.getStaffMarsInfo(companyId);
+
+        if (roleList.contains(111) || roleList.contains(124)){    //查看所有  所有的都显示
+            forShowFlag(list,true);
+        }else if (roleList.contains(89)||roleList.contains(90)){  //查看小组
+            for (GroupsInfoVO giv:list){
+                if (groupList.contains(giv.getGroupId())|| (StringUtil.isEmpty(giv.getChiefIds())?false:Arrays.asList(giv.getChiefIds().split(",")).contains(String.valueOf(staffId)))){
+                    giv.setShowFlag(true);
+                }
+            }
+        }else {
+            list=null;
+        }
+        return list;
+    }
+
+    /**
+     * 给查看全部修改显示标记
+     * @param list
+     * @param flag
+     */
+    private static void forShowFlag(List<GroupsInfoVO> list,boolean flag){
+        for (GroupsInfoVO giv:list){
+            giv.setShowFlag(true);
+        }
+    }
 
     /**
      * 编辑网销排班员工

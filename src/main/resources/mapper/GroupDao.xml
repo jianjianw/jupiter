@@ -188,7 +188,6 @@
             LEFT JOIN hm_pub_group_staff rela ON rela.COMPANYID = grp.COMPANYID AND grp.GROUPID = rela.GROUPID
         WHERE
             grp.COMPANYID = #{companyId}
-            AND grp.GROUPTYPE = #{type}
             AND grp.PARENTID != '0'
             AND rela.STAFFID = #{staffId}
     </select>
