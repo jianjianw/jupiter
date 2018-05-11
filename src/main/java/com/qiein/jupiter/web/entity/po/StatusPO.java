@@ -27,6 +27,12 @@ public class StatusPO extends BaseEntity {
 	 * 分类名称
 	 */
 	private String className;
+
+	/**
+	 * 字段表示
+	 */
+	private String column;
+	
 	/**
 	 * 状态ID
 	 */
@@ -48,7 +54,6 @@ public class StatusPO extends BaseEntity {
 	 */
 	private int companyId;
 
-	
 	public StatusPO(int statusId, String backColor, String fontColor, int companyId) {
 		super();
 		this.statusId = statusId;
@@ -58,16 +63,23 @@ public class StatusPO extends BaseEntity {
 	}
 
 	
+	public String getColumn() {
+		return column;
+	}
+
+
+	public void setColumn(String column) {
+		this.column = column;
+	}
+
+
 	public StatusPO() {
 		super();
 	}
 
-
 	public StatusPO(int id) {
 		super(id);
-		// TODO Auto-generated constructor stub
 	}
-
 
 	public int getClassId() {
 		return classId;

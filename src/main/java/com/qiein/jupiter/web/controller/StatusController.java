@@ -6,10 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.util.NumUtil;
@@ -65,17 +63,17 @@ public class StatusController extends BaseController {
 	 * @return
 	 */
 	@PostMapping("edit_color_to_default")
-	public ResultInfo editColorToDefault(@NotEmptyStr @RequestParam("id") int id,
-			@NotEmptyStr @RequestParam("column") String column) {
-		if (NumUtil.isInValid(id)) {
+	public ResultInfo editColorToDefault(@RequestBody StatusPO statusPO) {
+		if (NumUtil.isInValid(statusPO.getId())) {
 			return ResultInfoUtil.error(ExceptionEnum.ID_IS_NULL);
 		}
-		if (!StatusPO.STS_BGCOLOR.equals(column) && !StatusPO.STS_FONTCOLOR.equals(column)) {
+		if (!StatusPO.STS_BGCOLOR.equals(statusPO.getColumn())
+				&& !StatusPO.STS_FONTCOLOR.equals(statusPO.getColumn())) {
 			return ResultInfoUtil.error(ExceptionEnum.STS_COLUMN_ERROR);
 		}
 		// 获取当前登录用户
 		StaffPO currentLoginStaff = getCurrentLoginStaff();
-		statusService.editColorToDefault(currentLoginStaff.getId(), id, column);
+		statusService.editColorToDefault(currentLoginStaff.getId(), statusPO.getId(), statusPO.getColumn());
 		return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
 	}
 }
