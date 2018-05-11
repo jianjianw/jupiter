@@ -49,7 +49,6 @@
     <!--恢复默认状态-->
     <update id="editStatusDefault" parameterType="com.qiein.jupiter.web.entity.po.StatusPO">
         UPDATE hm_crm_client_status SET
-        STATUSNAME = #{statusName},
         BACKCOLOR = #{backColor},
         FONTCOLOR = #{fontColor}
         WHERE COMPANYID = #{companyId}
