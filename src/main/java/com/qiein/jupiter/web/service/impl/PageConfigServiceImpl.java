@@ -2,14 +2,10 @@ package com.qiein.jupiter.web.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.constant.DictionaryConstant;
-import com.qiein.jupiter.enums.DictEnum;
-
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.qiein.jupiter.util.CollectionUtils;
 import com.qiein.jupiter.web.dao.GroupDao;
 import com.qiein.jupiter.web.dao.PageConfigDao;
@@ -81,28 +77,28 @@ public class PageConfigServiceImpl implements PageConfigService {
         //品牌
 
         //咨询方式
-        List<PageFilterDTO> zxModeFilters = getDictFilter(DictEnum.zx_mode, dictMapByCid);
+        List<PageFilterDTO> zxModeFilters = getDictFilter(DictionaryConstant.ZX_MODE, dictMapByCid);
         pageFilterMap.setZxMode(zxModeFilters);
         //意向等级
-        List<PageFilterDTO> yxRankFilters = getDictFilter(DictEnum.yx_rank, dictMapByCid);
+        List<PageFilterDTO> yxRankFilters = getDictFilter(DictionaryConstant.YX_RANK, dictMapByCid);
         pageFilterMap.setYsRange(yxRankFilters);
         //婚期简述
-        List<PageFilterDTO> marryRangeFilters = getDictFilter(DictEnum.marry_range, dictMapByCid);
+        List<PageFilterDTO> marryRangeFilters = getDictFilter(DictionaryConstant.MARRY_RANGE, dictMapByCid);
         pageFilterMap.setMarryRange(marryRangeFilters);
         //咨询类型
-        List<PageFilterDTO> zxTypeFilters = getDictFilter(DictEnum.zx_type, dictMapByCid);
+        List<PageFilterDTO> zxTypeFilters = getDictFilter(DictionaryConstant.ZX_TYPE, dictMapByCid);
         pageFilterMap.setZxType(zxTypeFilters);
         //预拍时间简述
-        List<PageFilterDTO> ypRangeFilters = getDictFilter(DictEnum.yp_range, dictMapByCid);
+        List<PageFilterDTO> ypRangeFilters = getDictFilter(DictionaryConstant.YP_RANGE, dictMapByCid);
         pageFilterMap.setYpRange(ypRangeFilters);
         //预算范围
-        List<PageFilterDTO> ysRangeFilters = getDictFilter(DictEnum.ys_range, dictMapByCid);
+        List<PageFilterDTO> ysRangeFilters = getDictFilter(DictionaryConstant.YS_RANGE, dictMapByCid);
         pageFilterMap.setYsRange(ysRangeFilters);
         //无效原因
-        List<PageFilterDTO> invalidReasonFilters = getDictFilter(DictEnum.invalid_reason, dictMapByCid);
+        List<PageFilterDTO> invalidReasonFilters = getDictFilter(DictionaryConstant.INVALID_REASON, dictMapByCid);
         pageFilterMap.setInvalidReason(invalidReasonFilters);
         //流失原因
-        List<PageFilterDTO> runoffReasonFilters = getDictFilter(DictEnum.runoff_reason, dictMapByCid);
+        List<PageFilterDTO> runoffReasonFilters = getDictFilter(DictionaryConstant.RUN_OFF_REASON, dictMapByCid);
         pageFilterMap.setRunoffReason(runoffReasonFilters);
         //客服小组，根据不同的角色
         List<GroupsInfoVO> companyDeptListByType = groupDao.getCompanyDeptListByType(role, companyId);
@@ -151,10 +147,10 @@ public class PageConfigServiceImpl implements PageConfigService {
      * @param dictMapByCid
      * @return
      */
-    private List<PageFilterDTO> getDictFilter(DictEnum type, Map<String, List<DictionaryPO>> dictMapByCid) {
+    private List<PageFilterDTO> getDictFilter(String type, Map<String, List<DictionaryPO>> dictMapByCid) {
         //遍历生成
         List<PageFilterDTO> list = new ArrayList<>();
-        List<DictionaryPO> dictionaryPOS = dictMapByCid.get(type.name());
+        List<DictionaryPO> dictionaryPOS = dictMapByCid.get(type);
         //空判断
         if (CollectionUtils.isNotEmpty(dictionaryPOS)) {
             for (DictionaryPO dictionaryPO : dictionaryPOS) {
