@@ -47,7 +47,7 @@ public class CompanyController extends BaseController {
 	 */
 	@GetMapping("/ssolimit")
 	public ResultInfo editCompanySsolimit(@NotEmptyStr @RequestParam("flag") String flag) {
-		companyService.updateFlag(getCurrentLoginStaff().getId(), CompanyPO.COLUMN_SSOLIMIT,
+		companyService.updateFlag(getCurrentLoginStaff().getCompanyId(), CompanyPO.COLUMN_SSOLIMIT,
 				CommonConstant.FLAG_YES.equals(flag));
 		return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
 	}
@@ -60,7 +60,7 @@ public class CompanyController extends BaseController {
 	 */
 	@GetMapping("/overtime")
 	public ResultInfo editCompanyOvertime(@NotEmptyStr @RequestParam("num") Integer num) {
-		companyService.updateRange(getCurrentLoginStaff().getId(), CompanyPO.COLUMN_OVERTIME, num);
+		companyService.updateRange(getCurrentLoginStaff().getCompanyId(), CompanyPO.COLUMN_OVERTIME, num);
 		return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
 	}
 
@@ -72,7 +72,7 @@ public class CompanyController extends BaseController {
 	 */
 	@GetMapping("/limitdefault")
 	public ResultInfo editCompanyLimitdefault(@NotEmptyStr @RequestParam("num") Integer num) {
-		companyService.updateRange(getCurrentLoginStaff().getId(), CompanyPO.COLUMN_LIMITDEFAULT, num);
+		companyService.updateRange(getCurrentLoginStaff().getCompanyId(), CompanyPO.COLUMN_LIMITDEFAULT, num);
 		return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
 	}
 
@@ -84,7 +84,7 @@ public class CompanyController extends BaseController {
 	 */
 	@GetMapping("/kzinterval")
 	public ResultInfo editCompanyKzinterval(@NotEmptyStr @RequestParam("num") Integer num) {
-		companyService.updateRange(getCurrentLoginStaff().getId(), CompanyPO.COLUMN_KZINTERVAL, num);
+		companyService.updateRange(getCurrentLoginStaff().getCompanyId(), CompanyPO.COLUMN_KZINTERVAL, num);
 		return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
 	}
 
@@ -96,7 +96,8 @@ public class CompanyController extends BaseController {
 	 */
 	@GetMapping("/notselfblind")
 	public ResultInfo editCompanyNotselfblind(@NotEmptyStr @RequestParam("flag") String flag) {
-		companyService.updateFlag(getCurrentLoginStaff().getId(), CompanyPO.COLUMN_NOTSELFBLIND, Boolean.valueOf(flag));
+		companyService.updateFlag(getCurrentLoginStaff().getCompanyId(), CompanyPO.COLUMN_NOTSELFBLIND,
+				Boolean.valueOf(flag));
 		return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
 	}
 
@@ -108,7 +109,7 @@ public class CompanyController extends BaseController {
 	 */
 	@GetMapping("/unableselfline")
 	public ResultInfo editCompanyUnableselfline(@NotEmptyStr @RequestParam("flag") String flag) {
-		companyService.updateFlag(getCurrentLoginStaff().getId(), CompanyPO.COLUMN_UNABLESELFLINE,
+		companyService.updateFlag(getCurrentLoginStaff().getCompanyId(), CompanyPO.COLUMN_UNABLESELFLINE,
 				Boolean.valueOf(flag));
 		return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
 	}
@@ -120,7 +121,7 @@ public class CompanyController extends BaseController {
 	 */
 	@GetMapping("/unableappointor")
 	public ResultInfo editCompanyUnableappointor(@NotEmptyStr @RequestParam("flag") String flag) {
-		companyService.updateFlag(getCurrentLoginStaff().getId(), CompanyPO.COLUMN_UNABLEAPPOINTOR,
+		companyService.updateFlag(getCurrentLoginStaff().getCompanyId(), CompanyPO.COLUMN_UNABLEAPPOINTOR,
 				Boolean.valueOf(flag));
 		return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
 	}
@@ -132,7 +133,7 @@ public class CompanyController extends BaseController {
 	 */
 	@GetMapping("/unableinvalidrange")
 	public ResultInfo editCompanyUnableinvalidrange(@NotEmptyStr @RequestParam("num") Integer num) {
-		companyService.updateRange(getCurrentLoginStaff().getId(), CompanyPO.COLUMN_UNABLEINVALIDRANGE, num);
+		companyService.updateRange(getCurrentLoginStaff().getCompanyId(), CompanyPO.COLUMN_UNABLEINVALIDRANGE, num);
 		return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
 	}
 
