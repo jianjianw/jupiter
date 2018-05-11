@@ -46,4 +46,9 @@ public interface DictionaryDao extends BaseDao<DictionaryPO> {
      * @param idArr
      */
     void batchDeleteByIds(@Param("companyId") int companyId, @Param("idArr") String[] idArr);
+
+    /**
+     * 获取一个公司下面所有的字典信息
+     */
+    List<DictionaryPO> getDictByCompanyId(@Param("companyId") int companyId);
 }

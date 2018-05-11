@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import com.qiein.jupiter.web.controller.StaffMarsController;
 import com.qiein.jupiter.web.entity.dto.StaffMarsDTO;
 import com.qiein.jupiter.web.entity.vo.*;
 import org.slf4j.Logger;
@@ -822,6 +821,11 @@ public class StaffServiceImpl implements StaffService {
 	@Override
 	public List<StaffPO> getDelStaffListBySearchKey(int companyId, String searchKey) {
 		return staffDao.getDelStaffListBySearchKey(companyId, searchKey);
+	}
+
+	@Override
+	public List<StaffPO> exportStaff() {
+        return staffDao.findList(null);
 	}
 
 }
