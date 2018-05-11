@@ -32,9 +32,7 @@ public class StatusController extends BaseController {
 	 */
 	@GetMapping("/get_company_status_list")
 	public ResultInfo getCompanyStatusList() {
-		// 获取当前登录用户
-		StaffPO currentLoginStaff = getCurrentLoginStaff();
-		return ResultInfoUtil.success(statusService.getCompanyStatusList(currentLoginStaff.getCompanyId()));
+		return ResultInfoUtil.success(statusService.getCompanyStatusList(getCurrentLoginStaff().getCompanyId()));
 	}
 
 	/**
@@ -71,9 +69,7 @@ public class StatusController extends BaseController {
 				&& !StatusPO.STS_FONTCOLOR.equals(statusPO.getColumn())) {
 			return ResultInfoUtil.error(ExceptionEnum.STS_COLUMN_ERROR);
 		}
-		// 获取当前登录用户
-		StaffPO currentLoginStaff = getCurrentLoginStaff();
-		statusService.editColorToDefault(currentLoginStaff.getCompanyId(), statusPO.getId(), statusPO.getColumn());
+		statusService.editColorToDefault(getCurrentLoginStaff().getCompanyId(), statusPO.getId(), statusPO.getColumn());
 		return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
 	}
 }

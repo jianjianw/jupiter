@@ -25,6 +25,7 @@
           hm_crm_client_status sts
         WHERE
           sts.COMPANYID = #{companyId}
+         ORDER BY sts.CLASSID ASC, sts.STATUSNAME ASC 
     </select>
 
     <!--编辑状态-->
