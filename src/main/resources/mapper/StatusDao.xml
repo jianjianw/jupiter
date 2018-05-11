@@ -54,7 +54,7 @@
           hm_crm_client_status sts
         WHERE
           sts.COMPANYID = #{companyId}
-        AND sts.ID = #{Id}
+        AND sts.ID = #{id}
     </select>
     
     <!-- 获取状态信息 -->
