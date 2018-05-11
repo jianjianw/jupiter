@@ -34,4 +34,11 @@ public interface StaffMarsDao extends BaseDao<StaffMarsDTO> {
      */
     List<GroupsInfoVO> getDeptLineNumAndOrderNum(@Param("companyId") int companyId);
 
+    /**
+     * 获取小组的今日接单数和当前在线人数
+     * @param companyId
+     * @return
+     */
+    List<GroupsInfoVO> getGroupLineNumAndOrderNum(@Param("companyId") int companyId,@Param("groupId") String groupId);
+
 }

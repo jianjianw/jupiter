@@ -37,6 +37,14 @@ public interface StaffMarsService {
     List<GroupsInfoVO> getGroupListByDept(String deptId,int companyId, int staffId);
 
     /**
+     * 过滤员工权限和小组今日接单和当前在线人数
+     * @param list
+     * @param companyId
+     * @return
+     */
+    List<GroupsInfoVO> filterGroupList(List<GroupsInfoVO> list,String deptId,int companyId);
+
+    /**
      * 编辑员工状态
      *
      * @param staffMarsDTO

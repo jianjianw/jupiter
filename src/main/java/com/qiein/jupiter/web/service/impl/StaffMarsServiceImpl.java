@@ -133,6 +133,28 @@ public class StaffMarsServiceImpl implements StaffMarsService {
     }
 
     /**
+     * 过滤小组列表,基于在线人数和接单数
+     * @param list
+     * @param companyId
+     * @return
+     */
+    @Override
+    public List<GroupsInfoVO> filterGroupList(List<GroupsInfoVO> list,String deptId, int companyId) {
+
+        List<GroupsInfoVO> qxList = staffMarsDao.getGroupLineNumAndOrderNum(companyId,deptId);
+        for(GroupsInfoVO siv:list){
+            for (GroupsInfoVO qxsiv:qxList){
+                if (qxsiv.getGroupId().equals(siv.getGroupId())){
+                    siv.setLineNum(qxsiv.getLineNum());
+                    siv.setOrderNum(qxsiv.getOrderNum());
+                }
+            }
+            System.out.println();
+        }
+        return list;
+    }
+
+    /**
      * 给查看全部修改显示标记
      * @param list
      * @param flag
