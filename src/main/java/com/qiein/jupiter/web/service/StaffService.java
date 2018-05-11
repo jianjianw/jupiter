@@ -276,4 +276,10 @@ public interface StaffService {
      * @return
      */
     List<StaffPO> getDelStaffListBySearchKey(int companyId, String searchKey);
+
+    /**
+     * 导出
+     * @return
+     */
+    List<StaffPO> exportStaff();
 }

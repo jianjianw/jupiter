@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.entity.po;
 
+import cn.afterturn.easypoi.excel.annotation.Excel;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.aop.validate.annotation.Phone;
@@ -17,17 +18,20 @@ public class StaffPO extends BaseEntity {
      * 昵称
      */
     @NotEmptyStr(message = "{staff.name.null}")
+    @Excel(name="艺名")
     private String nickName;
     /**
      * 手机号码
      */
     @NotEmptyStr(message = "{staff.phone.null}")
     @Phone
+    @Excel(name="手机")
     private String phone;
     /**
      * 全名
      */
     @NotEmptyStr(message = "{staff.userName.null}")
+    @Excel(name="全名")
     private String userName;
     /**
      * 密码
