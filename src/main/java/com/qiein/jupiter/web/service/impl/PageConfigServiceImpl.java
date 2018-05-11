@@ -36,9 +36,11 @@ public class PageConfigServiceImpl implements PageConfigService {
         //TODO 有没有一种好的思路解决过滤问题
         List<PageConfig> pageConfigs = pageConfigDao.listPageConfigByCidAndRole(companyId, role);
         //判断是否为空
-        if (CollectionUtils.isNotEmpty(pageConfigs)) {
+        if (CollectionUtils.isEmpty(pageConfigs)) {
             //取默认公司
             pageConfigs = pageConfigDao.listPageConfigByCidAndRole(DictionaryConstant.COMMON_COMPANYID, role);
+        }
+        if (CollectionUtils.isNotEmpty(pageConfigs)) {
             for (PageConfig pageConfig : pageConfigs) {
 
             }
