@@ -9,19 +9,28 @@ import java.util.List;
  */
 public interface StatusService {
 
-    /**
-     * 获取企业状态列表
-     *
-     * @param companyId
-     * @return
-     */
-    List<StatusPO> getCompanyStatusList(int companyId);
+	/**
+	 * 获取企业状态列表
+	 *
+	 * @param companyId
+	 * @return
+	 */
+	List<StatusPO> getCompanyStatusList(int companyId);
 
-    /**
-     * 编辑状态
-     *
-     * @param statusPO
-     * @return
-     */
-    void editStatus(StatusPO statusPO);
+	/**
+	 * 编辑状态
+	 *
+	 * @param statusPO
+	 * @return
+	 */
+	void editStatus(StatusPO statusPO);
+
+	/**
+	 * 修改状态颜色为默认值
+	 * 
+	 * @param companyId
+	 * @param statusId
+	 * @param column
+	 */
+	void editColorToDefault(int companyId, int statusId, String column);
 }
