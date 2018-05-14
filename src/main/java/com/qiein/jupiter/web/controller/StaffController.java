@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.web.entity.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.validation.annotation.Validated;
@@ -37,10 +38,6 @@ import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.dto.StaffPasswordDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
-import com.qiein.jupiter.web.entity.vo.LoginUserVO;
-import com.qiein.jupiter.web.entity.vo.StaffDetailVO;
-import com.qiein.jupiter.web.entity.vo.StaffStateVO;
-import com.qiein.jupiter.web.entity.vo.StaffVO;
 import com.qiein.jupiter.web.service.StaffService;
 
 /**
@@ -261,7 +258,7 @@ public class StaffController extends BaseController {
     public ResultInfo searchStaff(@NotEmptyStr @RequestParam("searchKey") String searchKey) {
         // 获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        List<StaffVO> staffList = staffService.getStaffListBySearchKey(currentLoginStaff.getCompanyId(), searchKey);
+        List<SearchStaffVO> staffList = staffService.getStaffListBySearchKey(currentLoginStaff.getCompanyId(), searchKey);
         return ResultInfoUtil.success(staffList);
     }
 

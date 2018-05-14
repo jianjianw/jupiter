@@ -39,6 +39,7 @@ import com.qiein.jupiter.web.service.StaffService;
 @Service
 public class StaffServiceImpl implements StaffService {
 
+<<<<<<< HEAD
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
@@ -827,4 +828,267 @@ public class StaffServiceImpl implements StaffService {
         return staffStatusLogDao.insert(staffStatusLog);
     }
 
+=======
+     * @param staffChangeVO   交接客服基本信息
+     */
+    @Override
+    public void changeStaff(StaffChangeVO staffChangeVO) {
+        //TODO 调用平台接口
+//        clientInfoDao.changeStaff(staffChangeVO);
+	}
+
+	/**
+	 * 根据公司ID和个人获取菜单列表
+	 *
+	 * @param companyId
+	 * @param staffId
+	 * @return
+	 */
+	private List<MenuVO> getCompanyMenuList(int companyId, int staffId) {
+		// 企业左上角菜单栏
+		List<MenuVO> menuList = dictionaryDao.getCompanyMemu(companyId, DictionaryConstant.MENU_TYPE);
+		if (CollectionUtils.isEmpty(menuList)) {
+			menuList = dictionaryDao.getCompanyMemu(DictionaryConstant.COMMON_COMPANYID, DictionaryConstant.MENU_TYPE);
+		}
+		// 获取员工角色
+		List<String> roleList = groupStaffDao.getStaffRoleList(companyId, staffId);
+		if (CollectionUtils.isEmpty(menuList)) {
+			throw new RException(ExceptionEnum.MENU_NULL);
+		}
+		if (CollectionUtils.isEmpty(roleList)) {
+			return menuList;
+		}
+
+		for (String role : roleList) {
+			// 1.如果是管理中心，全部开放
+			if (RoleConstant.GLZX.equals(role)) {
+				for (MenuVO menu : menuList) {
+					menu.setSelectFlag(true);
+				}
+				return menuList;
+			}
+			// 2.如果是财务中心，除管理中心，全部开放
+			if (RoleConstant.CWZX.equals(role)) {
+				for (MenuVO menu : menuList) {
+					if (RoleConstant.GLZX.equals(menu.getType())) {
+						menu.setSelectFlag(false);
+					} else {
+						menu.setSelectFlag(true);
+					}
+				}
+				return menuList;
+			}
+			// 都不是，则一一对应
+			for (MenuVO menu : menuList) {
+				if (role.equals(menu.getType())) {
+					menu.setSelectFlag(true);
+				}
+			}
+		}
+		return menuList;
+	}
+
+	/**
+	 * 获取电商邀约小组人员列表
+	 *
+	 * @param companyId
+	 * @return
+	 */
+	@Override
+	public List<GroupStaffVO> getChangeList(int companyId) {
+		return groupStaffDao.getListByGroupType("dsyy", companyId);
+	}
+
+	/**
+	 * 修改密码时的验证
+	 *
+	 * @param id
+	 * @param password
+	 * @param companyId
+	 * @return
+	 */
+	@Override
+	public boolean isRightPassword(int id, String password, int companyId) {
+		StaffPO staff = staffDao.getByIdAndCid(id, companyId);
+		return StringUtil.ignoreCaseEqual(staff.getPassword(), MD5Util.getSaltMd5(password));
+	}
+
+	/**
+	 * 更新详细的信息
+	 *
+	 * @param staffDetailVO
+	 * @return
+	 */
+	@Override
+	@Transactional
+	public StaffDetailVO update(StaffDetailVO staffDetailVO) {
+		// 1.根据手机号，全名，艺名查重，手机号全公司不重复，全名，艺名，在职员工中不能重复
+		StaffPO phoneExist = staffDao.getStaffByPhone(staffDetailVO.getCompanyId(), staffDetailVO.getPhone());
+		if (phoneExist != null && phoneExist.getId() != staffDetailVO.getId() && phoneExist.isDelFlag()) {
+			throw new RException(ExceptionEnum.STAFF_EXIST_DEL);
+		}
+		if (phoneExist != null && phoneExist.getId() != staffDetailVO.getId() && !phoneExist.isDelFlag()) {
+			throw new RException(ExceptionEnum.PHONE_EXIST);
+		}
+		// 艺名查重
+		StaffPO nickNameStaff = staffDao.getStaffByNames(staffDetailVO.getCompanyId(), staffDetailVO.getNickName());
+		if (nickNameStaff != null && nickNameStaff.getId() != staffDetailVO.getId()) {
+			throw new RException(ExceptionEnum.NICKNAME_EXIST);
+		}
+		// 全名查重
+		StaffPO userNameStaff = staffDao.getStaffByNames(staffDetailVO.getCompanyId(), staffDetailVO.getUserName());
+		if (userNameStaff != null && userNameStaff.getId() != staffDetailVO.getId()) {
+			throw new RException(ExceptionEnum.USERNAME_EXIST);
+		}
+		// 更新基础信息
+		StaffPO staffPO = new StaffPO(staffDetailVO);
+		staffDao.update(staffPO);
+		// 更新详细信息
+		StaffDetailPO staffDetailPO = new StaffDetailPO(staffDetailVO);
+		staffDao.updateStaffDetail(staffDetailPO);
+		return staffDetailVO;
+	}
+
+	/**
+	 * 更新密码
+	 *
+	 * @return
+	 */
+	@Override
+	public int updatePassword(StaffPasswordDTO staffPasswordDTO) {
+		// 如果原始密码不对
+		if (!isRightPassword(staffPasswordDTO.getId(), staffPasswordDTO.getOldPassword(),
+				staffPasswordDTO.getCompanyId())) {
+			throw new RException(ExceptionEnum.OLD_PASSWORD_ERROR);
+		}
+		StaffPO staffPO = new StaffPO();
+		staffPO.setCompanyId(staffPasswordDTO.getCompanyId());
+		staffPO.setId(staffPasswordDTO.getId());
+		staffPO.setPassword(MD5Util.getSaltMd5(staffPasswordDTO.getNewPassword()));
+		return staffDao.update(staffPO);
+	}
+
+	/**
+	 * 根据小组类型获取小组及组内人员信息
+	 *
+	 * @param companyId
+	 * @param type
+	 * @return
+	 */
+	@Override
+	public List<GroupStaffVO> getGroupStaffByType(int companyId, String type) {
+		return groupStaffDao.getListByGroupType(type, companyId);
+	}
+
+	/**
+	 * 获取离职员工列表
+	 *
+	 * @param queryMapDTO
+	 * @return
+	 */
+	@Override
+	public PageInfo<StaffPO> getDelStaffList(QueryMapDTO queryMapDTO) {
+		PageHelper.startPage(queryMapDTO.getPageNum(), queryMapDTO.getPageSize());
+		List<StaffPO> list = staffDao.findList(queryMapDTO.getCondition());
+		return new PageInfo<>(list);
+	}
+
+	/**
+	 * 恢复离职员工
+	 *
+	 * @param staffVO
+	 */
+	@Override
+	public void restoreDelStaff(StaffVO staffVO) {
+		// 1.根据手机号，全名，艺名查重，手机号全公司不重复，全名，艺名，在职员工中不能重复
+		StaffPO phoneExist = staffDao.getStaffByPhone(staffVO.getCompanyId(), staffVO.getPhone());
+		if (phoneExist != null && phoneExist.getId() != staffVO.getId()) {
+			throw new RException(ExceptionEnum.PHONE_EXIST);
+		}
+		// 艺名查重
+		StaffPO nickNameStaff = staffDao.getStaffByNames(staffVO.getCompanyId(), staffVO.getNickName());
+		if (nickNameStaff != null && nickNameStaff.getId() != staffVO.getId()) {
+			throw new RException(ExceptionEnum.NICKNAME_EXIST);
+		}
+		// 全名查重
+		StaffPO userNameStaff = staffDao.getStaffByNames(staffVO.getCompanyId(), staffVO.getUserName());
+		if (userNameStaff != null && userNameStaff.getId() != staffVO.getId()) {
+			throw new RException(ExceptionEnum.USERNAME_EXIST);
+		}
+		// 2.修改员工基础信息
+		if (StringUtil.isNotEmpty(staffVO.getPassword())) {
+			staffVO.setPassword(MD5Util.getSaltMd5(staffVO.getPassword()));
+		}
+		staffVO.setDelFlag(false);
+		staffDao.updateStaff(staffVO);
+		// 3.添加小组关联
+		groupStaffDao.insertGroupStaff(staffVO.getCompanyId(), staffVO.getGroupId(), staffVO.getId());
+		// 4.添加权限关联
+		if (StringUtil.isNotEmpty(staffVO.getRoleIds())) {
+			String[] roleArr = staffVO.getRoleIds().split(CommonConstant.STR_SEPARATOR);
+			staffRoleDao.batchInsertStaffRole(staffVO.getId(), staffVO.getCompanyId(), roleArr);
+		}
+
+	}
+
+	/**
+	 * 批量恢复员工
+	 *
+	 * @param companyId
+	 * @param staffIds
+	 * @param roleIds
+	 * @param password
+	 * @param groupId
+	 */
+	@Override
+	public void batchRestoreStaff(int companyId, String staffIds, String roleIds, String password, String groupId) {
+		String[] staffIdArr = staffIds.split(CommonConstant.STR_SEPARATOR);
+		// 1.恢复员工
+		staffDao.batchRestoreStaff(companyId, staffIdArr,
+				StringUtil.isNotEmpty(password) ? MD5Util.getSaltMd5(password) : null);
+		// 2.修改小组
+		groupStaffDao.batchInsertGroupStaff(companyId, groupId, staffIdArr);
+		// 4.修改角色
+		if (StringUtil.isNotEmpty(roleIds)) {
+			String[] roleIdArr = roleIds.split(CommonConstant.STR_SEPARATOR);
+			List<StaffVO> list = new LinkedList<>();
+			for (String staffId : staffIdArr) {
+				for (String roleId : roleIdArr) {
+					StaffVO vo = new StaffVO(Integer.parseInt(staffId), companyId, Integer.parseInt(roleId));
+					list.add(vo);
+				}
+			}
+			staffRoleDao.batchInsertStaffRoleByVO(list);
+		}
+		// 4.TODO 清缓存
+	}
+
+	/**
+	 * 搜索离职员工
+	 *
+	 * @param companyId
+	 * @param searchKey
+	 * @return
+	 */
+	@Override
+	public List<StaffPO> getDelStaffListBySearchKey(int companyId, String searchKey) {
+		return staffDao.getDelStaffListBySearchKey(companyId, searchKey);
+	}
+
+	@Override
+	public List<StaffPO> exportStaff() {
+		return staffDao.findList(null);
+	}
+
+	/**
+	 * 根据员工ID，获取小组员工信息
+	 *
+	 * @param companyId
+	 * @param staffId
+	 * @return
+	 */
+	public List<StaffVO> getGroupStaffById(int companyId, int staffId) {
+		return staffDao.getGroupStaffById(companyId, staffId);
+	}
+>>>>>>> d5d9440b8596d30119dc50bf18be4876fa2c33d5
 }

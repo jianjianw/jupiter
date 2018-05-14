@@ -92,6 +92,8 @@ public interface StaffDao extends BaseDao<StaffPO> {
      */
     void batDelByIdsAndCid(@Param("ids") String[] ids, @Param("companyId") int companyId);
 
+    void checkBatDelete();
+
     /**
      * 根据小组类型获取小组人员列表
      *
