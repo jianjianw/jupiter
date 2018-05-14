@@ -44,11 +44,15 @@ public class RoleController extends BaseController {
         return ResultInfoUtil.success(TigMsgEnum.ADD_ROLE_SUCCESS, id);
     }
 
+    @GetMapping("/role_used")
+    public ResultInfo roleUsed(@Id @RequestParam("roleId") int roleId) {
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        return ResultInfoUtil.success(roleService.roleUsed(currentLoginStaff.getCompanyId(), roleId));
+    }
+
     @GetMapping("/delete_role")
     public ResultInfo deleteRole(@Id @RequestParam("roleId") Integer roleId) {
-        if (roleId == 0) {
-            throw new RException(ExceptionEnum.ID_NULL);
-        }
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         roleService.delete(roleId, currentLoginStaff.getCompanyId());
@@ -77,6 +81,7 @@ public class RoleController extends BaseController {
 
     /**
      * 角色排序
+     *
      * @param fId
      * @param fPriority
      * @param sId
@@ -84,9 +89,9 @@ public class RoleController extends BaseController {
      * @return
      */
     @GetMapping("/edit_priority")
-    public ResultInfo editRolePriority (@Id Integer fId, @Id Integer fPriority,
-                                        @Id Integer sId, @Id Integer sPriority){
-        roleService.editProiority(fId,fPriority,sId,sPriority,getCurrentLoginStaff().getCompanyId());
+    public ResultInfo editRolePriority(@Id Integer fId, @Id Integer fPriority,
+                                       @Id Integer sId, @Id Integer sPriority) {
+        roleService.editProiority(fId, fPriority, sId, sPriority, getCurrentLoginStaff().getCompanyId());
         return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
     }
 

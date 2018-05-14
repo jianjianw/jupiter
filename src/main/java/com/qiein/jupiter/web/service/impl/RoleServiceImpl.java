@@ -7,6 +7,7 @@ import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.RoleDao;
 import com.qiein.jupiter.web.dao.RolePermissionDao;
+import com.qiein.jupiter.web.dao.StaffRoleDao;
 import com.qiein.jupiter.web.entity.po.RolePO;
 import com.qiein.jupiter.web.entity.vo.RolePermissionVO;
 import com.qiein.jupiter.web.entity.vo.RoleVO;
@@ -25,6 +26,9 @@ public class RoleServiceImpl implements RoleService {
 
     @Autowired
     private RoleDao roleDao;
+
+    @Autowired
+    private StaffRoleDao staffRoleDao;
 
     /**
      * 新增角色
@@ -115,5 +119,16 @@ public class RoleServiceImpl implements RoleService {
      */
     public List<RolePO> getRoleSelect(Integer companyId) {
         return roleDao.getRoleSelect(companyId);
+    }
+
+    /**
+     * 查询权限是否有员工使用
+     *
+     * @param companyId
+     * @param roleId
+     * @return
+     */
+    public boolean roleUsed(int companyId, int roleId) {
+        return staffRoleDao.getCountByRole(companyId, roleId) > 0;
     }
 }

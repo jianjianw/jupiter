@@ -52,4 +52,13 @@ public interface RoleService {
      */
     List<RolePO> getRoleSelect(Integer companyId);
 
+    /**
+     * 查询权限是否有员工使用
+     *
+     * @param companyId
+     * @param roleId
+     * @return
+     */
+    boolean roleUsed(int companyId, int roleId);
+
 }
