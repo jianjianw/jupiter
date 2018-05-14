@@ -266,7 +266,7 @@ public class StaffController extends BaseController {
     /**
      * 查询小组员工详情
      *
-     * @param searchKey
+     * @param staffId
      * @return
      */
     @GetMapping("/get_group_staff_by_id")
@@ -595,10 +595,38 @@ public class StaffController extends BaseController {
         staffService.updateStatusFlag(currentLoginStaff.getId(), currentLoginStaff.getCompanyId()
                 , status, currentLoginStaff.getId(), currentLoginStaff.getNickName());
         if (status == 0) {
+            //上线
             return ResultInfoUtil.success(TigMsgEnum.OFFLINE_SUCCESS);
         } else {
+            //下线
             return ResultInfoUtil.success(TigMsgEnum.ONLINE_SUCCESS);
         }
+    }
+
+    /**
+     * 修改别人的在线状态
+     *
+     * @param status
+     * @return
+     */
+    @GetMapping("/set_other_staff_status")
+    public ResultInfo setOtherStaffStatus(@RequestParam("status") int staffId,
+                                          @RequestParam("status") int status) {
+        // 获取当前登录用户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        staffService.updateStatusFlag(staffId, currentLoginStaff.getCompanyId()
+                , status, currentLoginStaff.getId(), currentLoginStaff.getNickName());
+        if (status == 0) {
+            //下线
+            return ResultInfoUtil.success(TigMsgEnum.OFFLINE_SUCCESS);
+        } else if (status == 1) {
+            //上线
+            return ResultInfoUtil.success(TigMsgEnum.ONLINE_SUCCESS);
+        } else if (status == 8) {
+            //停单
+            return ResultInfoUtil.success(TigMsgEnum.STOP_ORDER_SUCCESS);
+        }
+        return ResultInfoUtil.error(ExceptionEnum.STAFF_STATUS_UPDATE_FAIL);
     }
 
 }
