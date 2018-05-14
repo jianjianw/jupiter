@@ -49,5 +49,13 @@
         </foreach>
     </insert>
 
+    <!--根据权限查询员工人数-->
+    <select id="getCountByRole" parameterType="map" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM hm_pub_staff_role
+        WHERE ROLEID = #{roleId}
+        AND COMPANYID = #{companyId}
+    </select>
+
 
 </mapper>

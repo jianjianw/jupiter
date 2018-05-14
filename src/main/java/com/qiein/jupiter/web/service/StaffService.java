@@ -172,7 +172,7 @@ public interface StaffService {
      * @param searchKey
      * @return
      */
-    List<StaffVO> getStaffListBySearchKey(int companyId, String searchKey);
+    List<SearchStaffVO> getStaffListBySearchKey(int companyId, String searchKey);
 
     /**
      * 根据员工id获取员工信息及权限信息
@@ -279,7 +279,17 @@ public interface StaffService {
 
     /**
      * 导出
+     *
      * @return
      */
     List<StaffPO> exportStaff();
+
+    /**
+     * 根据员工ID，获取小组员工信息
+     *
+     * @param companyId
+     * @param staffId
+     * @return
+     */
+    List<StaffVO> getGroupStaffById(int companyId, int staffId);
 }

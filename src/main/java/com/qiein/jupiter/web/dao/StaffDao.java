@@ -2,16 +2,13 @@ package com.qiein.jupiter.web.dao;
 
 import java.util.List;
 
+import com.qiein.jupiter.web.entity.vo.*;
 import org.apache.ibatis.annotations.Param;
 
 import com.qiein.jupiter.web.entity.dto.StaffPushDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.StaffDetailPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
-import com.qiein.jupiter.web.entity.vo.GroupStaffVO;
-import com.qiein.jupiter.web.entity.vo.StaffDetailVO;
-import com.qiein.jupiter.web.entity.vo.StaffStateVO;
-import com.qiein.jupiter.web.entity.vo.StaffVO;
 
 /**
  * 员工Dao
@@ -111,7 +108,7 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @param searchKey
      * @return
      */
-    List<StaffVO> getStaffListBySearchKey(@Param("companyId") int companyId, @Param("searchKey") String searchKey);
+    List<SearchStaffVO> getStaffListBySearchKey(@Param("companyId") int companyId, @Param("searchKey") String searchKey);
 
     /**
      * 根据id 数组批量获取员工信息
@@ -233,4 +230,13 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * 修改员工最后客资推送时间为当前时间
      */
     int updateStaffLastPushTime(@Param("companyId") int companyId, @Param("id") int id);
+
+    /**
+     * 根据员工ID，获取小组员工信息
+     *
+     * @param companyId
+     * @param staffId
+     * @return
+     */
+    List<StaffVO> getGroupStaffById(@Param("companyId") int companyId, @Param("staffId") int staffId);
 }
