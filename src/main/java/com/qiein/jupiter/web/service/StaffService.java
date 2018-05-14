@@ -194,10 +194,9 @@ public interface StaffService {
     /**
      * 交接客资
      *
-     * @param staffId   交接客服编号
-     * @param beStaffId 被转移客资客服编号
+     * @param staffChangeVO   交接客服基本信息
      */
-    void changeStaff(int staffId, int beStaffId);
+    void changeStaff(StaffChangeVO staffChangeVO);
 
     /**
      * 获取可交接邀约客服人员列表

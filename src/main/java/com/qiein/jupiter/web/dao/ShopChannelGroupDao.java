@@ -48,6 +48,14 @@ public interface ShopChannelGroupDao {
 			@Param("shopId") int shopId);
 
 	/**
+	 * 根据渠道编号，删除渠道下所有拍摄地关联信息记录
+	 * @param companyId
+	 * @param channelId
+	 * @return
+	 */
+	int delByChannelId(@Param("companyId") int companyId , @Param("channelId") int channelId);
+
+	/**
 	 * 批量添加拍摄地渠道关联
 	 *
 	 * @param list
