@@ -2,6 +2,8 @@ package com.qiein.jupiter.web.entity.po;
 
 import java.io.Serializable;
 
+import com.qiein.jupiter.util.WebUtil;
+
 /**
  * 系统日志
  * 
@@ -71,6 +73,7 @@ public class SystemLog implements Serializable {
 		super();
 		this.typeId = typeId;
 		this.ip = ip;
+		this.address = WebUtil.getIpLocation(ip);
 		this.url = url;
 		this.staffId = staffId;
 		this.staffName = staffName;
