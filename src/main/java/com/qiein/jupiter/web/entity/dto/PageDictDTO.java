@@ -1,5 +1,7 @@
 package com.qiein.jupiter.web.entity.dto;
 
+import com.qiein.jupiter.web.entity.po.StatusPO;
+
 import java.util.Map;
 
 /**
@@ -17,7 +19,7 @@ public class PageDictDTO {
     /**
      * 状态字典
      */
-    private Map<String, Object> statusMap;
+    private Map<String, StatusPO> statusMap;
 
     public Map<String, String> getSourceMap() {
         return sourceMap;
@@ -27,11 +29,11 @@ public class PageDictDTO {
         this.sourceMap = sourceMap;
     }
 
-    public Map<String, Object> getStatusMap() {
+    public Map<String, StatusPO> getStatusMap() {
         return statusMap;
     }
 
-    public void setStatusMap(Map<String, Object> statusMap) {
+    public void setStatusMap(Map<String, StatusPO> statusMap) {
         this.statusMap = statusMap;
     }
 }

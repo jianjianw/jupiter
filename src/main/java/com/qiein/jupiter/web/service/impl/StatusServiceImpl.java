@@ -76,16 +76,11 @@ public class StatusServiceImpl implements StatusService {
      * @return
      */
     @Override
-    public Map<String, Object> getStatusDictMap(int companyId) {
+    public Map<String, StatusPO> getStatusDictMap(int companyId) {
         List<StatusPO> companyStatusList = statusDao.getCompanyStatusList(companyId);
-        Map<String, Object> map = new HashMap<>();
+        Map<String, StatusPO> map = new HashMap<>();
         for (StatusPO statusPO : companyStatusList) {
-            Map<String, String> colorMap = new HashMap<>();
-            //背景色
-            colorMap.put("backColor", statusPO.getBackColor());
-            //文字颜色
-            colorMap.put("fontColor", statusPO.getFontColor());
-            map.put(String.valueOf(statusPO.getStatusId()), colorMap);
+            map.put(String.valueOf(statusPO.getStatusId()), statusPO);
         }
         return map;
     }

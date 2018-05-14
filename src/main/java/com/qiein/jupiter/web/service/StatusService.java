@@ -38,5 +38,5 @@ public interface StatusService {
     /**
      * 获取企业状态字典
      */
-    Map<String, Object> getStatusDictMap(int companyId);
+    Map<String, StatusPO> getStatusDictMap(int companyId);
 }
