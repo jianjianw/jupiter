@@ -100,7 +100,12 @@ public class GroupController extends BaseController {
 	public ResultInfo delete(@Id Integer id) {
 		// 获取当前登录账户
 		StaffPO currentLoginStaff = getCurrentLoginStaff();
-		groupService.delete(id, currentLoginStaff.getCompanyId());
+		GroupPO groupPO = groupService.delete(id, currentLoginStaff.getCompanyId());
+		// 日志记录
+		logService.addLog(new SystemLog(SysLogUtil.LOG_TYPE_GROUP, currentLoginStaff.getIp(),
+				currentLoginStaff.getUrl(), currentLoginStaff.getId(), currentLoginStaff.getUserName(),
+				SysLogUtil.getRemoveLog(SysLogUtil.LOG_SUP_GROUP, groupPO.getGroupName()),
+				currentLoginStaff.getCompanyId()));
 		return ResultInfoUtil.success(TigMsgEnum.DELETE_SUCCESS);
 	}
 

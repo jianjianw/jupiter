@@ -310,7 +310,7 @@ public class GroupServiceImpl implements GroupService {
 	 * @return
 	 */
 	@Override
-	public int delete(int id, int companyId) {
+	public GroupPO delete(int id, int companyId) {
 		// 先判断是否有下属部门
 		GroupPO groupPO = groupDao.getById(id);
 		if (groupPO == null) {
@@ -347,7 +347,12 @@ public class GroupServiceImpl implements GroupService {
 				sourceDao.deleteByIdAndCid(exist.getId(), exist.getCompanyId());
 			}
 		}
-		return groupDao.delete(id);
+
+		if (1 != groupDao.delete(id)) {
+			throw new RException(ExceptionEnum.UNKNOW_ERROR);
+		}
+
+		return groupPO;
 	}
 
 	/**
