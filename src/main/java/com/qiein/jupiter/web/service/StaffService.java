@@ -38,7 +38,7 @@ public interface StaffService {
      * @param id
      * @param statusFlag
      */
-    StaffPO updateStatusFlag(int id, int companyId, int statusFlag);
+    StaffPO updateStatusFlag(int id, int companyId, int statusFlag, Integer operatorId, String operatorName);
 
     /**
      * 员工删除（物理删除）
@@ -277,9 +277,4 @@ public interface StaffService {
      */
     List<StaffPO> getDelStaffListBySearchKey(int companyId, String searchKey);
 
-    /**
-     * 导出
-     * @return
-     */
-    List<StaffPO> exportStaff();
 }
