@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiein.jupiter.web.dao.SystemLogDao">
+
+    <resultMap id="logMap" type="com.qiein.jupiter.web.entity.po.SystemLog">
+        <id column="ID" jdbcType="INTEGER" property="id"/>
+        <result column="TYPEID" jdbcType="VARCHAR" property="typeId"/>
+        <result column="IP" jdbcType="INTEGER" property="ip"/>
+        <result column="ADDRESS" jdbcType="INTEGER" property="address"/>
+        <result column="URL" jdbcType="INTEGER" property="url"/>
+        <result column="STAFFID" jdbcType="INTEGER" property="staffId"/>
+        <result column="STAFFNAME" jdbcType="INTEGER" property="staffName"/>
+        <result column="MEMO" jdbcType="INTEGER" property="memo"/>
+        <result column="LOGTIME" jdbcType="INTEGER" property="logTime"/>
+        <result column="MAC" jdbcType="INTEGER" property="mac"/>
+        <result column="COMPANYID" jdbcType="INTEGER" property="companyId"/>
+    </resultMap>
+    
+    <sql id="baseColumn">
+    </sql>
+    
+    <!-- 新增操作日志 -->
+    <insert id="addSystemLog" useGeneratedKeys="true" keyProperty="log.id">
+        INSERT INTO ${logTabName} (
+			TYPEID, IP, ADDRESS, URL, STAFFID, STAFFNAME, MEMO, LOGTIME, MAC, COMPANYID
+		)
+		VALUES
+			(#{log.typeId}, #{log.ip}, #{log.address}, #{log.url}, #{log.staffId},
+			 #{log.staffName}, #{log.memo}, UNIX_TIMESTAMP(NOW()), #{log.mac}, #{log.companyId}
+		)
+    </insert>
+</mapper>

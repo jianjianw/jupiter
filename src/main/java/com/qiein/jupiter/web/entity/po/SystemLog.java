@@ -12,25 +12,91 @@ public class SystemLog implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * 主键
+	 */
 	private int id;
 
+	/**
+	 * 业务类型ID
+	 */
 	private int typeId;
 
+	/**
+	 * 请求点IP
+	 */
 	private String ip;
 
+	/**
+	 * IP归属
+	 */
 	private String address;
 
+	/**
+	 * 请求路径
+	 */
 	private String url;
 
+	/**
+	 * 人员ID
+	 */
 	private int staffId;
 
+	/**
+	 * 人员名称
+	 */
 	private String staffName;
 
+	/**
+	 * 操作描述
+	 */
 	private String memo;
 
+	/**
+	 * 操作时间
+	 */
 	private int logTime;
 
-	private String params;
+	/**
+	 * mac地址
+	 */
+	private String mac;
+
+	/**
+	 * 企业ID
+	 */
+	private int companyId;
+
+	public SystemLog(int typeId, String ip, String url, int staffId, String staffName, String memo, int companyId) {
+		super();
+		this.typeId = typeId;
+		this.ip = ip;
+		this.url = url;
+		this.staffId = staffId;
+		this.staffName = staffName;
+		this.memo = memo;
+		this.companyId = companyId;
+	}
+
+	public SystemLog() {
+		super();
+	}
+
+	public String getMac() {
+		return mac;
+	}
+
+	public void setMac(String mac) {
+		this.mac = mac;
+	}
+
+	public int getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(int companyId) {
+		this.companyId = companyId;
+	}
 
 	public int getId() {
 		return id;
@@ -102,13 +168,5 @@ public class SystemLog implements Serializable {
 
 	public void setLogTime(int logTime) {
 		this.logTime = logTime;
-	}
-
-	public String getParams() {
-		return params;
-	}
-
-	public void setParams(String params) {
-		this.params = params;
 	}
 }
