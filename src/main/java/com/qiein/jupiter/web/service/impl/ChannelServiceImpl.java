@@ -7,6 +7,7 @@ import com.qiein.jupiter.util.CollectionUtils;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.ChannelDao;
+import com.qiein.jupiter.web.dao.ShopChannelGroupDao;
 import com.qiein.jupiter.web.dao.SourceDao;
 import com.qiein.jupiter.web.entity.po.ChannelPO;
 import com.qiein.jupiter.web.entity.vo.ChannelVO;
@@ -28,6 +29,9 @@ public class ChannelServiceImpl implements ChannelService {
 
     @Autowired
     private SourceDao sourceDao;
+
+    @Autowired
+    private ShopChannelGroupDao shopChannelGroupDao;
 
     /**
      * 新增渠道
@@ -91,11 +95,14 @@ public class ChannelServiceImpl implements ChannelService {
      * @param companyId 所属公司编号
      */
     @Override
+    @Transactional
     public void delChannel(Integer id, Integer companyId) {
         //删除前需要检查渠道下属是否还存在来源
         if (channelDao.checkSrcNumById(id, companyId) > 0)
             throw new RException(ExceptionEnum.CHANNEL_HAVE_SOURCE);
+        //hm_crm_shop_channel_group_rela删除时关联删除该表信息
         channelDao.deleteByIdAndCid(id, companyId);
+        shopChannelGroupDao.delByChannelId(companyId,id);
     }
 
     /**
