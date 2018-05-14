@@ -15,6 +15,36 @@ public class BaseEntity implements Serializable {
 
 	private int id;
 
+	private String url;
+
+	private String params;
+
+	private String ip;
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getParams() {
+		return params;
+	}
+
+	public void setParams(String params) {
+		this.params = params;
+	}
+
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
+
 	public BaseEntity() {
 	}
 
