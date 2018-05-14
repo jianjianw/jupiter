@@ -64,6 +64,15 @@
         AND CHANNELID = #{channelId}
     </delete>
 
+    <!--根据渠道编号删除所有和拍摄地关联记录-->
+    <delete id="delByChannelId" parameterType="Integer" >
+        DELETE
+        FROM
+          hm_crm_shop_channel_group_rela
+        WHERE
+          COMPANYID = #{companyId} AND CHANNELID = #{channelId}
+    </delete>
+
     <!-- 批量添加拍摄地渠道关联-->
     <insert id="batchAddShopChannel" parameterType="com.qiein.jupiter.web.entity.po.ShopChannelGroupPO">
         INSERT INTO hm_crm_shop_channel_group_rela

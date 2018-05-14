@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.dao;
 
+import com.qiein.jupiter.web.entity.vo.StaffChangeVO;
 import org.apache.ibatis.annotations.Param;
 
 import com.qiein.jupiter.web.entity.dto.ClientPushDTO;
@@ -74,4 +75,11 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
      */
     int updateClientInfoStatus(@Param("companyId") int companyId, @Param("infoTabName") String infoTabName,
                                @Param("kzId") String kzId, @Param("classId") int classId, @Param("statusId") int statusId);
+
+    /**
+     * 将未交接的客资转移到指定员工
+     * @param staffChangeVO
+     * @return
+     */
+    int changeStaff(StaffChangeVO staffChangeVO);
 }

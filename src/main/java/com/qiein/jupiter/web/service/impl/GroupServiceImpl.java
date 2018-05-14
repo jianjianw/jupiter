@@ -14,7 +14,6 @@ import com.qiein.jupiter.constant.RoleConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.CollectionUtils;
-import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.ChannelDao;
 import com.qiein.jupiter.web.dao.GroupDao;
@@ -22,12 +21,10 @@ import com.qiein.jupiter.web.dao.GroupStaffDao;
 import com.qiein.jupiter.web.dao.RolePermissionDao;
 import com.qiein.jupiter.web.dao.SourceDao;
 import com.qiein.jupiter.web.dao.StaffDao;
-import com.qiein.jupiter.web.dao.SystemLogDao;
 import com.qiein.jupiter.web.entity.po.ChannelPO;
 import com.qiein.jupiter.web.entity.po.GroupPO;
 import com.qiein.jupiter.web.entity.po.SourcePO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
-import com.qiein.jupiter.web.entity.po.SystemLog;
 import com.qiein.jupiter.web.entity.vo.BaseStaffVO;
 import com.qiein.jupiter.web.entity.vo.GroupBaseStaffVO;
 import com.qiein.jupiter.web.entity.vo.GroupStaffVO;
@@ -42,8 +39,6 @@ import com.qiein.jupiter.web.service.GroupService;
 @Service
 public class GroupServiceImpl implements GroupService {
 
-	@Autowired
-	private SystemLogDao logDao;
 	@Autowired
 	private GroupDao groupDao;
 	@Autowired
@@ -315,7 +310,7 @@ public class GroupServiceImpl implements GroupService {
 	 * @return
 	 */
 	@Override
-	public int delete(int id, int companyId) {
+	public GroupPO delete(int id, int companyId) {
 		// 先判断是否有下属部门
 		GroupPO groupPO = groupDao.getById(id);
 		if (groupPO == null) {
@@ -352,7 +347,12 @@ public class GroupServiceImpl implements GroupService {
 				sourceDao.deleteByIdAndCid(exist.getId(), exist.getCompanyId());
 			}
 		}
-		return groupDao.delete(id);
+
+		if (1 != groupDao.delete(id)) {
+			throw new RException(ExceptionEnum.UNKNOW_ERROR);
+		}
+
+		return groupPO;
 	}
 
 	/**
@@ -406,9 +406,7 @@ public class GroupServiceImpl implements GroupService {
 				sourceDao.update(exist);
 			}
 		}
-		// 记录日志
-		// logDao.addSystemLog(DBSplitUtil.getSystemLogTabName(groupPO.getCompanyId()),
-		// new SystemLog(typeId, ip, url, staffId, staffName, memo, companyId));
+
 		return groupPO;
 	}
 

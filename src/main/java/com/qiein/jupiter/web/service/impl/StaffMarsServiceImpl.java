@@ -1,5 +1,7 @@
 package com.qiein.jupiter.web.service.impl;
 
+import com.qiein.jupiter.exception.ExceptionEnum;
+import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.*;
 import com.qiein.jupiter.web.entity.dto.StaffMarsDTO;
@@ -171,18 +173,26 @@ public class StaffMarsServiceImpl implements StaffMarsService {
      */
     @Override
     public void editStaffMars(StaffMarsDTO staffMarsDTO) {
-        if (staffMarsDTO.getLimitShopIds()!=null){   //改不接单的拍摄地则同时修改拍摄地名称
+
+        if (staffMarsDTO.getId()==0){
+            throw new RException(ExceptionEnum.ID_IS_NULL);
+        }
+        if (staffMarsDTO.getLimitShopIds()!=null && staffMarsDTO.getLimitShopIds().trim().length()!=0){   //改不接单的拍摄地则同时修改拍摄地名称
             List<String> list = shopDao.getLimitShopNamesByIds(staffMarsDTO.getLimitShopIds().split(","),staffMarsDTO.getCompanyId());
             String limitShopNames ="";
             for (String s:list)limitShopNames += s+",";
             staffMarsDTO.setLimitShopNames(limitShopNames.substring(0,limitShopNames.length()-1));
+        }else if (staffMarsDTO.getLimitShopIds()!=null && staffMarsDTO.getLimitShopIds().trim().length()==0){
+            staffMarsDTO.setLimitShopNames("");
         }
 
-        if(staffMarsDTO.getLimitChannelIds()!=null){    //  修改不接单的渠道同时修改渠道名称
+        if(staffMarsDTO.getLimitChannelIds()!=null && staffMarsDTO.getLimitChannelIds().trim().length()!=0){    //  修改不接单的渠道同时修改渠道名称
             List<String> list = channelDao.getChannelNamesByIds(staffMarsDTO.getCompanyId(),staffMarsDTO.getLimitChannelIds().split(","));
             String limitChannelNames = "";
             for (String s:list)limitChannelNames+= s+",";
             staffMarsDTO.setLimitChannelNames(limitChannelNames.substring(0,limitChannelNames.length()-1));
+        }else if (staffMarsDTO.getLimitChannelIds()!=null && staffMarsDTO.getLimitChannelIds().trim().length()==0){
+            staffMarsDTO.setLimitChannelNames("");
         }
 
         //员工详情
@@ -195,6 +205,8 @@ public class StaffMarsServiceImpl implements StaffMarsService {
             }
         }
 
-        staffMarsDao.update(staffMarsDTO);
+        if (staffMarsDao.update(staffMarsDTO)==0){
+            throw new RException(ExceptionEnum.EDIT_FAIL);
+        }
     }
 }
