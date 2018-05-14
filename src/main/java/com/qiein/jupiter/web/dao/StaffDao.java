@@ -230,4 +230,13 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * 修改员工最后客资推送时间为当前时间
      */
     int updateStaffLastPushTime(@Param("companyId") int companyId, @Param("id") int id);
+
+    /**
+     * 根据员工ID，获取小组员工信息
+     *
+     * @param companyId
+     * @param staffId
+     * @return
+     */
+    List<StaffVO> getGroupStaffById(@Param("companyId") int companyId, @Param("staffId") int staffId);
 }
