@@ -1,14 +1,18 @@
 package com.qiein.jupiter.web.service.impl;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import com.qiein.jupiter.enums.StaffStatusEnum;
 import com.qiein.jupiter.web.dao.*;
+import com.qiein.jupiter.web.entity.dto.PageDictDTO;
 import com.qiein.jupiter.web.entity.dto.StaffMarsDTO;
 import com.qiein.jupiter.web.entity.po.*;
 import com.qiein.jupiter.web.entity.vo.*;
+import com.qiein.jupiter.web.service.SourceService;
+import com.qiein.jupiter.web.service.StatusService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +74,12 @@ public class StaffServiceImpl implements StaffService {
 
     @Autowired
     private StaffStatusLogDao staffStatusLogDao;
+
+    @Autowired
+    private SourceService sourceService;
+
+    @Autowired
+    private StatusService statusService;
 
     /**
      * 员工新增
@@ -579,7 +589,13 @@ public class StaffServiceImpl implements StaffService {
         companyVO.setMenuList(getCompanyMenuList(companyId, staffId));
         staffBaseInfoVO.setCompany(companyVO);
         staffBaseInfoVO.setStaffDetail(staffDao.getStaffDetail(staffId, companyId));
-        // 员工小组信息
+        //设置页面字典
+        PageDictDTO pageDictDTO = new PageDictDTO();
+        //来源字典
+        pageDictDTO.setSourceMap(sourceService.getSourcePageMap(companyId));
+        //状态字典
+        pageDictDTO.setStatusMap(statusService.getStatusDictMap(companyId));
+        staffBaseInfoVO.setPageDict(pageDictDTO);
         return staffBaseInfoVO;
     }
 
@@ -832,10 +848,6 @@ public class StaffServiceImpl implements StaffService {
         return staffDao.getDelStaffListBySearchKey(companyId, searchKey);
     }
 
-    @Override
-    public List<StaffPO> exportStaff() {
-        return staffDao.findList(null);
-    }
 
     /**
      * 根据员工ID，获取小组员工信息

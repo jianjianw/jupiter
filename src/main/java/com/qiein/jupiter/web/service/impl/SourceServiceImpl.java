@@ -10,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class SourceServiceImpl implements SourceService {
@@ -114,5 +117,23 @@ public class SourceServiceImpl implements SourceService {
     @Override
     public List<SourcePO> getSourceListByChannelId(Integer channelId, Integer companyId) {
         return sourceDao.getSourceListByChannelId(channelId, companyId);
+    }
+
+    /**
+     * 获取公司所有的来源Map key 为id  value 为图片地址
+     *
+     * @param companyId
+     * @return
+     */
+    @Override
+    public Map<String, String> getSourcePageMap(int companyId) {
+        //获取所有
+        List<SourcePO> allSourceList = sourceDao.getAllSourceList(companyId);
+        Map<String, String> pageDictMap = new HashMap<>();
+        for (SourcePO sourcePO : allSourceList) {
+            //Id,图片地址
+            pageDictMap.put(String.valueOf(sourcePO.getId()), sourcePO.getSrcImg());
+        }
+        return pageDictMap;
     }
 }
