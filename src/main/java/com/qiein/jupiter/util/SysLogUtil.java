@@ -14,6 +14,8 @@ import com.qiein.jupiter.exception.RException;
  */
 public class SysLogUtil {
 
+	public static final int LOG_TYPE_GROUP = 1;
+
 	public static final String SYS_LOG_PREFIX_ADD = "新增了";
 	public static final String SYS_LOG_PREFIX_EDIT = "修改了";
 	public static final String SYS_LOG_PREFIX_REMOVE = "删除了";
