@@ -20,7 +20,6 @@ import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.aop.aspect.annotation.LoginLog;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.constant.DictionaryConstant;
-import com.qiein.jupiter.constant.NumberConstant;
 import com.qiein.jupiter.constant.RedisConstant;
 import com.qiein.jupiter.constant.RoleConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
@@ -436,7 +435,7 @@ public class StaffServiceImpl implements StaffService {
 		String token = JwtUtil.generatorToken();
 		staffPO.setToken(token);
 		redisTemplate.opsForValue().set(RedisConstant.getStaffKey(staffPO.getId(), staffPO.getCompanyId()), staffPO,
-				NumberConstant.DEFAULT_EXPIRE_TIME, TimeUnit.HOURS);
+				CommonConstant.DEFAULT_EXPIRE_TIME, TimeUnit.HOURS);
 		// 并更新到数据库
 		staffDao.updateToken(staffPO);
 	}

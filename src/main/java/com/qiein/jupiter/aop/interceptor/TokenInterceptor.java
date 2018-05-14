@@ -15,7 +15,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.qiein.jupiter.constant.CommonConstant;
-import com.qiein.jupiter.constant.NumberConstant;
 import com.qiein.jupiter.constant.RedisConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
@@ -63,7 +62,7 @@ public class TokenInterceptor implements HandlerInterceptor {
         // return true;
         // }
         // 检测ip
-        chckIp(httpServletRequest);
+        checkIp(httpServletRequest);
         // 从redis中获取token并验证
         return checkRedisToken(requestToken, httpServletRequest);
     }
@@ -108,14 +107,14 @@ public class TokenInterceptor implements HandlerInterceptor {
             throw new RException(ExceptionEnum.TOKEN_VERIFY_FAIL);
         }
         // 验证成功，更新过期时间
-        redisTemplate.opsForValue().set(userTokenKey, staffPO, NumberConstant.DEFAULT_EXPIRE_TIME, TimeUnit.HOURS);
+        redisTemplate.opsForValue().set(userTokenKey, staffPO, CommonConstant.DEFAULT_EXPIRE_TIME, TimeUnit.HOURS);
         // 将 当前登录用户 放入request
         httpServletRequest.setAttribute(CommonConstant.CURRENT_LOGIN_STAFF, staffPO);
         return true;
     }
 
     // 校验Ip
-    private void chckIp(HttpServletRequest request) {
+    private void checkIp(HttpServletRequest request) {
         String ipAddr = HttpUtil.getIpAddr(request);
         logger.info("访问ip:" + ipAddr);
     }

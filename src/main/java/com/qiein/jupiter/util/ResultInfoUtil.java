@@ -1,6 +1,6 @@
 package com.qiein.jupiter.util;
 
-import com.qiein.jupiter.constant.NumberConstant;
+import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 
@@ -33,7 +33,7 @@ public class ResultInfoUtil {
 	 */
 	public static ResultInfo success(TigMsgEnum msg) {
 		ResultInfo resultInfo = new ResultInfo();
-		resultInfo.setCode(NumberConstant.DEFAULT_SUCCESS_CODE);
+		resultInfo.setCode(CommonConstant.DEFAULT_SUCCESS_CODE);
 		resultInfo.setMsg(msg.toString());
 		return resultInfo;
 	}
@@ -46,7 +46,7 @@ public class ResultInfoUtil {
 	 */
 	public static ResultInfo success(TigMsgEnum msg, Object object) {
 		ResultInfo resultInfo = new ResultInfo();
-		resultInfo.setCode(NumberConstant.DEFAULT_SUCCESS_CODE);
+		resultInfo.setCode(CommonConstant.DEFAULT_SUCCESS_CODE);
 		resultInfo.setMsg(msg.toString());
 		resultInfo.setData(object);
 		return resultInfo;
