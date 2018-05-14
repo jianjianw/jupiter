@@ -278,7 +278,7 @@ public class GroupServiceImpl implements GroupService {
             groupDao.batchUpdateGroupType(byParentId);
         }
         //更新名字，同步转介绍名字
-        if (NumberConstant.DEFAULT_STRING_ZERO.equals(groupPO.getParentId())) {
+        if (CommonConstant.DEFAULT_STRING_ZERO.equals(groupPO.getParentId())) {
             //获取渠道信息
             ChannelPO exist = channelDao.getChannelByNameAndType(groupPO.getCompanyId(), old.getGroupName(), ChannelConstant.STAFF_ZJS);
             if (exist != null) {
@@ -318,7 +318,7 @@ public class GroupServiceImpl implements GroupService {
             throw new RException(ExceptionEnum.GROUP_HAVE_STAFF);
         }
         //删除部门，同步删除渠道
-        if (NumberConstant.DEFAULT_STRING_ZERO.equals(groupPO.getParentId())) {
+        if (CommonConstant.DEFAULT_STRING_ZERO.equals(groupPO.getParentId())) {
             //获取渠道信息
             ChannelPO exist = channelDao.getChannelByNameAndType(groupPO.getCompanyId(), groupPO.getGroupName(), ChannelConstant.STAFF_ZJS);
             //TODO 查询该渠道下有没有客资
@@ -362,7 +362,7 @@ public class GroupServiceImpl implements GroupService {
         groupPO.setGroupId(groupPO.getParentId() + CommonConstant.ROD_SEPARATOR + groupPO.getId());
         groupDao.update(groupPO);
         //新增转介绍渠道，若存在，开启，不存在新增
-        if (NumberConstant.DEFAULT_STRING_ZERO.equals(groupPO.getParentId())) {
+        if (CommonConstant.DEFAULT_STRING_ZERO.equals(groupPO.getParentId())) {
             ChannelPO exist = channelDao.getChannelByNameAndType(groupPO.getCompanyId(), groupPO.getGroupName(), ChannelConstant.STAFF_ZJS);
             if (exist == null) {
                 //新增渠道
