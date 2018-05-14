@@ -19,7 +19,6 @@ public class WebUtil {
 					}
 				}
 			}
-
 		} catch (IOException e) {
 			return area;
 		}

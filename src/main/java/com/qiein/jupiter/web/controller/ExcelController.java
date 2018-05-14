@@ -48,8 +48,8 @@ public class ExcelController extends BaseController {
     @GetMapping("/export_staff")
     public void exportStaff(HttpServletResponse response) {
         try {
-            ExportExcelUtil.export(response, "员工信息",
-                    staffService.exportStaff(), StaffPO.class);
+//            ExportExcelUtil.export(response, "员工信息",
+//                    staffService.exportStaff(), StaffPO.class);
         } catch (Exception e) {
             e.printStackTrace();
         }

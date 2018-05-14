@@ -266,7 +266,7 @@ public class StaffController extends BaseController {
     /**
      * 查询小组员工详情
      *
-     * @param searchKey
+     * @param staffId
      * @return
      */
     @GetMapping("/get_group_staff_by_id")
@@ -592,10 +592,13 @@ public class StaffController extends BaseController {
     public ResultInfo setStaffStatus(@RequestParam("status") int status) {
         // 获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        staffService.updateStatusFlag(currentLoginStaff.getId(), currentLoginStaff.getCompanyId(), status);
+        staffService.updateStatusFlag(currentLoginStaff.getId(), currentLoginStaff.getCompanyId()
+                , status, currentLoginStaff.getId(), currentLoginStaff.getNickName());
         if (status == 0) {
+            //上线
             return ResultInfoUtil.success(TigMsgEnum.OFFLINE_SUCCESS);
         } else {
+            //下线
             return ResultInfoUtil.success(TigMsgEnum.ONLINE_SUCCESS);
         }
     }
