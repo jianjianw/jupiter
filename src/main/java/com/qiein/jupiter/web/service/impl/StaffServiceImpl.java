@@ -67,6 +67,9 @@ public class StaffServiceImpl implements StaffService {
 	@Autowired
 	private PermissionDao permissionDao;
 
+	@Autowired
+	private ClientInfoDao clientInfoDao;
+
 	/**
 	 * 员工新增
 	 *
@@ -201,6 +204,7 @@ public class StaffServiceImpl implements StaffService {
 	@Override
 	@Transactional
 	public void batDelStaff(StaffStateVO staffStateVO) {
+	    //TODO 缓存
 		// 修改删除标识
 		staffDao.batUpdateStaffState(staffStateVO, staffStateVO.getIds().split(","));
 		// 硬删除员工角色
@@ -566,6 +570,16 @@ public class StaffServiceImpl implements StaffService {
 		staffBaseInfoVO.setStaffDetail(staffDao.getStaffDetail(staffId, companyId));
 		// 员工小组信息
 		return staffBaseInfoVO;
+    }
+
+    /**
+     * 交接客资
+     * @param staffChangeVO   交接客服基本信息
+     */
+    @Override
+    public void changeStaff(StaffChangeVO staffChangeVO) {
+        //TODO 调用平台接口
+//        clientInfoDao.changeStaff(staffChangeVO);
 	}
 
 	/**
@@ -820,10 +834,5 @@ public class StaffServiceImpl implements StaffService {
 	 */
 	public List<StaffVO> getGroupStaffById(int companyId, int staffId) {
 		return staffDao.getGroupStaffById(companyId, staffId);
-	}
-
-	@Override
-	public void changeStaff(StaffChangeVO staffChangeVO) {
-
 	}
 }
