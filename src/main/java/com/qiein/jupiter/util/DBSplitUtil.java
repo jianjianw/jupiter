@@ -30,6 +30,7 @@ public class DBSplitUtil {
 	public static final String TAB_SUFFIX_ALLOT_LOG = " hm_crm_allot_log_";// 客资分配日志表
 	public static final String TAB_SUFFIX_LINE_LOG = "hm_crm_line_log_";// 上下线日志表
 	public static final String TAB_SUFFIX_ACCEPT_LOG = "hm_crm_accept_log_";// 接单日志
+	public static final String TAB_SYSLOG_REMARK = "hm_pub_system_log_";// 接单日志
 
 	public static String getNewsTabName(int companyId) throws RException {
 
@@ -56,6 +57,15 @@ public class DBSplitUtil {
 		}
 
 		return getTable(TableEnum.allot, companyId);
+	}
+
+	public static String getSystemLogTabName(int companyId) throws RException {
+
+		if (NumUtil.isInValid(companyId)) {
+			throw new RException(ExceptionEnum.COMPANYID_NULL);
+		}
+
+		return getTable(TableEnum.syslog, companyId);
 	}
 
 	public static String getDetailTabName(int companyId) throws RException {
@@ -135,6 +145,9 @@ public class DBSplitUtil {
 			break;
 		case remark:
 			tableName = TAB_SUFFIX_REMARK + String.valueOf(companyId);
+			break;
+		case syslog:
+			tableName = TAB_SYSLOG_REMARK + String.valueOf(companyId);
 			break;
 		default:
 			break;
@@ -308,9 +321,9 @@ public class DBSplitUtil {
 	 */
 	public static String getCurrentSuffix() throws RException {
 		String str = "_";
-		str += getYearFromData(TimeUtils.getSysdate());
+		str += getYearFromData(TimeUtil.getSysdate());
 		str += "_0";
-		str += getQuarterFromData(TimeUtils.getSysdate());
+		str += getQuarterFromData(TimeUtil.getSysdate());
 		return str;
 	}
 
@@ -321,7 +334,7 @@ public class DBSplitUtil {
 	 * @throws RException
 	 */
 	public static List<String> getAllTableSuffix() throws RException {
-		return getInfoTableSuffix("2017-01-01", TimeUtils.getSysdate());
+		return getInfoTableSuffix("2017-01-01", TimeUtil.getSysdate());
 	}
 
 	public static void main(String[] args) throws RException {

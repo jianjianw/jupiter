@@ -31,91 +31,96 @@ import com.qiein.jupiter.web.service.StaffService;
 public class TokenInterceptor implements HandlerInterceptor {
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    /**
-     * 当前运行环境
-     */
-    @Value("${spring.profiles.active}")
-    private String active;
+	/**
+	 * 当前运行环境
+	 */
+	@Value("${spring.profiles.active}")
+	private String active;
 
-    @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+	@Autowired
+	private RedisTemplate<String, Object> redisTemplate;
 
-    @Autowired
-    private StaffService staffService;
+	@Autowired
+	private StaffService staffService;
 
-    /**
-     * 前置拦截器
-     *
-     * @param httpServletRequest
-     * @param httpServletResponse
-     * @param o
-     * @return
-     */
-    @Override
-    public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) {
-        // 获取校验参数
-        VerifyParamDTO requestToken = HttpUtil.getRequestToken(httpServletRequest);
-        // 如果是dev环境，不验证
-        // if (CommonConstant.DEV.equalsIgnoreCase(active)) {
-        // httpServletRequest.setAttribute(CommonConstant.VERIFY_PARAM,
-        // requestToken);
-        // return true;
-        // }
-        // 检测ip
-        checkIp(httpServletRequest);
-        // 从redis中获取token并验证
-        return checkRedisToken(requestToken, httpServletRequest);
-    }
+	/**
+	 * 前置拦截器
+	 *
+	 * @param httpServletRequest
+	 * @param httpServletResponse
+	 * @param o
+	 * @return
+	 */
+	@Override
+	public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) {
+		// 获取校验参数
+		VerifyParamDTO requestToken = HttpUtil.getRequestToken(httpServletRequest);
+		// 如果是dev环境，不验证
+		// if (CommonConstant.DEV.equalsIgnoreCase(active)) {
+		// httpServletRequest.setAttribute(CommonConstant.VERIFY_PARAM,
+		// requestToken);
+		// return true;
+		// }
+		// 检测ip
+		checkIp(httpServletRequest);
+		// 从redis中获取token并验证
+		return checkRedisToken(requestToken, httpServletRequest);
+	}
 
-    @Override
-    public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o,
-                           ModelAndView modelAndView) {
-    }
+	@Override
+	public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o,
+			ModelAndView modelAndView) {
+	}
 
-    @Override
-    public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
-                                Object o, Exception e) {
-    }
+	@Override
+	public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
+			Object o, Exception e) {
+	}
 
-    /**
-     * 检测redis token方案
-     *
-     * @param verifyParamDTO     token
-     * @param httpServletRequest request
-     */
-    private boolean checkRedisToken(VerifyParamDTO verifyParamDTO, HttpServletRequest httpServletRequest) {
-        // 根据uid cid 从缓存中获取当前登录用户
-        String userTokenKey = RedisConstant.getStaffKey(verifyParamDTO.getUid(), verifyParamDTO.getCid());
-        StaffPO staffPO = (StaffPO) redisTemplate.opsForValue().get(userTokenKey);
-        // 如果缓存中命中失败,从数据库获取用户信息
-        if (staffPO == null) {
-            staffPO = staffService.getById(verifyParamDTO.getUid(), verifyParamDTO.getCid());
-            if (staffPO == null) {
-                // 验证用户不存在
-                throw new RException(ExceptionEnum.VERIFY_USER_NOT_FOUND);
-            } else if (StringUtil.isEmpty(staffPO.getToken())) {
-                // 如果用户当前没有token，说明没有登录或token过期
-                throw new RException(ExceptionEnum.TOKEN_INVALID);
-            }
-        }
-        // 验证是否被锁定
-        if (staffPO.isLockFlag()) {
-            throw new RException(ExceptionEnum.USER_IS_LOCK);
-        }
-        // 验证token是否相等
-        if (!StringUtil.ignoreCaseEqual(verifyParamDTO.getToken(), staffPO.getToken())) {
-            throw new RException(ExceptionEnum.TOKEN_VERIFY_FAIL);
-        }
-        // 验证成功，更新过期时间
-        redisTemplate.opsForValue().set(userTokenKey, staffPO, CommonConstant.DEFAULT_EXPIRE_TIME, TimeUnit.HOURS);
-        // 将 当前登录用户 放入request
-        httpServletRequest.setAttribute(CommonConstant.CURRENT_LOGIN_STAFF, staffPO);
-        return true;
-    }
+	/**
+	 * 检测redis token方案
+	 *
+	 * @param verifyParamDTO
+	 *            token
+	 * @param httpServletRequest
+	 *            request
+	 */
+	private boolean checkRedisToken(VerifyParamDTO verifyParamDTO, HttpServletRequest httpServletRequest) {
+		// 根据uid cid 从缓存中获取当前登录用户
+		String userTokenKey = RedisConstant.getStaffKey(verifyParamDTO.getUid(), verifyParamDTO.getCid());
+		StaffPO staffPO = (StaffPO) redisTemplate.opsForValue().get(userTokenKey);
+		// 如果缓存中命中失败,从数据库获取用户信息
+		if (staffPO == null) {
+			staffPO = staffService.getById(verifyParamDTO.getUid(), verifyParamDTO.getCid());
+			if (staffPO == null) {
+				// 验证用户不存在
+				throw new RException(ExceptionEnum.VERIFY_USER_NOT_FOUND);
+			} else if (StringUtil.isEmpty(staffPO.getToken())) {
+				// 如果用户当前没有token，说明没有登录或token过期
+				throw new RException(ExceptionEnum.TOKEN_INVALID);
+			}
+		}
+		// 验证是否被锁定
+		if (staffPO.isLockFlag()) {
+			throw new RException(ExceptionEnum.USER_IS_LOCK);
+		}
+		// 验证token是否相等
+		if (!StringUtil.ignoreCaseEqual(verifyParamDTO.getToken(), staffPO.getToken())) {
+			throw new RException(ExceptionEnum.TOKEN_VERIFY_FAIL);
+		}
+		// 验证成功，更新过期时间
+		redisTemplate.opsForValue().set(userTokenKey, staffPO, CommonConstant.DEFAULT_EXPIRE_TIME, TimeUnit.HOURS);
+		// 设置请求值
+		staffPO.setUrl(httpServletRequest.getRequestURI());
+		staffPO.setIp(HttpUtil.getIpAddr(httpServletRequest));
+		// 将 当前登录用户 放入request
+		httpServletRequest.setAttribute(CommonConstant.CURRENT_LOGIN_STAFF, staffPO);
+		return true;
+	}
 
-    // 校验Ip
-    private void checkIp(HttpServletRequest request) {
-        String ipAddr = HttpUtil.getIpAddr(request);
-        logger.info("访问ip:" + ipAddr);
-    }
+	// 校验Ip
+	private void checkIp(HttpServletRequest request) {
+		String ipAddr = HttpUtil.getIpAddr(request);
+		logger.info("访问ip:" + ipAddr);
+	}
 }

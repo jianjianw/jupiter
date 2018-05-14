@@ -69,4 +69,9 @@
 			KZID = #{kzId}
 		AND COMPANYID = #{companyId}
     </update>
+
+	<!--交接客资-->
+	<update id="changeStaff" parameterType="staffChangeVO">
+
+	</update>
 </mapper>

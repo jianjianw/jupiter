@@ -43,4 +43,13 @@ public interface StaffRoleDao {
      */
     void batchInsertStaffRoleByVO(@Param("list") List<StaffVO> list);
 
+    /**
+     * 根据权限查询员工人数
+     *
+     * @param companyId
+     * @param roleId
+     * @return
+     */
+    int getCountByRole(@Param("companyId") int companyId, @Param("roleId") int roleId);
+
 }

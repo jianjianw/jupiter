@@ -30,6 +30,7 @@ public enum ExceptionEnum {
     COMPANYID_NULL(306, "公司ID不能为空"),
     ID_NULL(307, "ID不能为空"),
     DELETE_FAIL(309, "删除失败"),
+    EDIT_FAIL(310,"编辑失败"),
     OLD_PASSWORD_ERROR(310, "原始密码错误"),
     STAFF_EXIST_DEL(341, "该员工在离职员工中"),
     PHONE_EXIST(342, "该手机号已存在"),

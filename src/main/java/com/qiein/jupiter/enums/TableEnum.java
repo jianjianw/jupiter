@@ -6,18 +6,5 @@ package com.qiein.jupiter.enums;
  * @author JingChenglong 2018/04/27 10:34
  */
 public enum TableEnum {
-    info,
-    log,
-    invita,
-    shopmeet,
-    detail,
-    temp,
-    ip_log,
-    timer,
-    news,
-    gold_temp,
-    allot,
-    line_log,
-    accept_log,
-    remark
+	info, log, invita, shopmeet, detail, temp, ip_log, timer, news, gold_temp, allot, syslog, line_log, accept_log, remark
 }

@@ -9,7 +9,7 @@ import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.HmacSHA1Utils;
 import com.qiein.jupiter.util.MD5Util;
-import com.qiein.jupiter.util.TimeUtils;
+import com.qiein.jupiter.util.TimeUtil;
 
 /**
  * 接口调用基类
@@ -26,7 +26,7 @@ public abstract class BaseApi {
 		Map<String, Object> map = new LinkedHashMap<String, Object>();
 		Map<String, Object> common = new LinkedHashMap<String, Object>();
 		common.put("action", action);
-		common.put("reqtime", TimeUtils.getSysTimeLong());
+		common.put("reqtime", TimeUtil.getSysTimeLong());
 		map.put("common", common);
 		map.put("content", reqcontent);
 		requestMap.put("request", map);
@@ -45,7 +45,7 @@ public abstract class BaseApi {
 	public String doService(Map<String, Object> reqcontent, String action, String url, String filepath, String key)
 			throws RException {
 		reqcontent.put("action", action);
-		reqcontent.put("reqtime", TimeUtils.getSysTimeLong());
+		reqcontent.put("reqtime", TimeUtil.getSysTimeLong());
 		reqcontent.put("reqlength", getFileLength(filepath));
 		reqcontent.put("reqcontentmd5", MD5Util.md5file(filepath).toLowerCase());
 		try {

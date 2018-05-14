@@ -40,16 +40,16 @@
             <if test="lastPushTime != null">
                 s.LASTPUSHTIME = #{lastPushTime},
             </if>
-            <if test="limitChannelIds != null and limitChannelIds != ''">
+            <if test="limitChannelIds != null">
                 s.LIMITCHANNELIDS = #{limitChannelIds},
             </if>
-            <if test="limitShopIds != null and limitShopIds != ''">
+            <if test="limitShopIds != null">
                 s.LIMITSHOPIDS = #{limitShopIds},
             </if>
-            <if test="limitChannelNames != null and limitChannelNames != ''">
+            <if test="limitChannelNames != null">
                 sd.LIMITCHANNELNAMES = #{limitChannelNames},
             </if>
-            <if test="limitShopNames != null and limitShopNames != ''">
+            <if test="limitShopNames != null">
                 sd.LIMITSHOPNAMES = #{limitShopNames},
             </if>
             <if test="lastLoginTime != null">

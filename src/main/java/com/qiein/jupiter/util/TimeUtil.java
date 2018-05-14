@@ -16,9 +16,9 @@ import org.slf4j.LoggerFactory;
  * @author JingChenglong 2017/12/16 13:41
  *
  */
-public class TimeUtils {
+public class TimeUtil {
 
-	private final static Logger logger = LoggerFactory.getLogger(TimeUtils.class);
+	private final static Logger logger = LoggerFactory.getLogger(TimeUtil.class);
 
 	/** 时间格式化格式 */
 	public static SimpleDateFormat ymdSDF_ = new SimpleDateFormat("yyyy-MM-dd");
