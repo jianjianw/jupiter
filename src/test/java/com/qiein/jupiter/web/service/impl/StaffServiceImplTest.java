@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.service.impl;
 
 import java.util.List;
 
+import com.qiein.jupiter.web.entity.vo.SearchStaffVO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,8 +90,8 @@ public class StaffServiceImplTest {
 
 	@Test
 	public void getStaffListBySearchKey() {
-		List<StaffVO> list = staffDao.getStaffListBySearchKey(1, "大");
-		for (StaffVO vo : list) {
+		List<SearchStaffVO> list = staffDao.getStaffListBySearchKey(1, "大");
+		for (SearchStaffVO vo : list) {
 			System.out.println(vo.getNickName());
 		}
 	}
