@@ -44,6 +44,7 @@ public enum ExceptionEnum {
     PHONE_IS_NULL(350, "手机号不能为空"),
     STAFF_IS_STOP_RECEIPT(351, "员工已被停单，请联系主管解决"),
     STAFF_IS_LIMIT(352, "员工已达到接单限额，请联系主管解决"),
+    STAFF_STATUS_UPDATE_FAIL(353,"员工状态修改失败"),
     //部门
     GROUP_NAME_REPEAT(401, "部门名称重复"),
     GROUP_HAVE_CHILD_GROUP(402, "该部门存在小组，请删除下属小组再进行操作"),

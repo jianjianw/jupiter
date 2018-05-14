@@ -182,7 +182,7 @@ public class StaffMarsServiceImpl implements StaffMarsService {
             String limitShopNames ="";
             for (String s:list)limitShopNames += s+",";
             staffMarsDTO.setLimitShopNames(limitShopNames.substring(0,limitShopNames.length()-1));
-        }else if (staffMarsDTO.getLimitShopIds().trim().length()==0){
+        }else if (staffMarsDTO.getLimitShopIds()!=null && staffMarsDTO.getLimitShopIds().trim().length()==0){
             staffMarsDTO.setLimitShopNames("");
         }
 
@@ -191,7 +191,7 @@ public class StaffMarsServiceImpl implements StaffMarsService {
             String limitChannelNames = "";
             for (String s:list)limitChannelNames+= s+",";
             staffMarsDTO.setLimitChannelNames(limitChannelNames.substring(0,limitChannelNames.length()-1));
-        }else if (staffMarsDTO.getLimitChannelIds().trim().length()==0){
+        }else if (staffMarsDTO.getLimitChannelIds()!=null && staffMarsDTO.getLimitChannelIds().trim().length()==0){
             staffMarsDTO.setLimitChannelNames("");
         }
 
