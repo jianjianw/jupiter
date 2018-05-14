@@ -530,7 +530,7 @@ public class StaffServiceImpl implements StaffService {
      * @param searchKey
      * @return
      */
-    public List<StaffVO> getStaffListBySearchKey(int companyId, String searchKey) {
+    public List<SearchStaffVO> getStaffListBySearchKey(int companyId, String searchKey) {
         return staffDao.getStaffListBySearchKey(companyId, searchKey);
     }
 
