@@ -27,10 +27,10 @@ public class OkHttpUtil {
 				String ss = response.body().string();
 				reply = JSONObject.parseObject(ss);
 			} else {
-//				throw new IOException("Unexpected code " + response);
+				// throw new IOException("Unexpected code " + response);
 			}
 		} catch (Exception e) {
-//			e.printStackTrace();
+			// e.printStackTrace();
 		} finally {
 			if (response != null) {
 				response.body().close();
@@ -50,7 +50,7 @@ public class OkHttpUtil {
 				String ss = response.body().string();
 				reply = JSONObject.parseObject(ss);
 			} else {
-//				throw new IOException("Unexpected code " + response);
+				// throw new IOException("Unexpected code " + response);
 			}
 		} catch (Exception e) {
 
