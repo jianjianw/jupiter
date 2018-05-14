@@ -109,8 +109,29 @@
 
     <!-- 设置咨询类型ID -->
     <update id="updateType" parameterType="map">
-		UPDATE ${tempName} temp SET temp.TYPEID = (SELECT dic.DICCODE FROM hm_crm_dictionary dic WHERE dic.DICTYPE = 'common_kz_type' AND dic.DICNAME = temp.TYPENAME AND dic.COMPANYID = temp.COMPANYID)
-		 WHERE temp.OPERAID = #{staffId};
+		UPDATE ${tempName} temp
+        SET temp.TYPEID = (
+            CASE
+                    WHEN temp.TYPENAME LIKE '婚纱%' THEN 1
+                    WHEN temp.TYPENAME LIKE '写真%' THEN 2
+                    WHEN temp.TYPENAME LIKE '全家%' THEN 3
+                    WHEN temp.TYPENAME LIKE '宝宝%' THEN 4
+                    WHEN temp.TYPENAME LIKE '孕妇%' THEN 5
+                    WHEN temp.TYPENAME LIKE '亲子%' THEN 6
+                    WHEN temp.TYPENAME LIKE '成长%' THEN 7
+                    WHEN temp.TYPENAME LIKE '外景%' THEN 8
+                    WHEN temp.TYPENAME LIKE '礼服%' THEN 9
+                    WHEN temp.TYPENAME LIKE '纪念%' THEN 10
+                    WHEN temp.TYPENAME LIKE '形象%' THEN 11
+                    WHEN temp.TYPENAME LIKE '闺蜜%' THEN 12
+                    WHEN temp.TYPENAME LIKE '母女%' THEN 13
+                    WHEN temp.TYPENAME LIKE '婚庆%' THEN 14
+                    WHEN temp.TYPENAME LIKE '证件%' THEN 15
+                    WHEN temp.TYPENAME LIKE '补拍%' THEN 98
+                    ELSE 99  END
+                )
+        WHERE
+            temp.OPERAID = #{staffId};
 	</update>
 
     <!-- 设置状态名称，唯一版 -->

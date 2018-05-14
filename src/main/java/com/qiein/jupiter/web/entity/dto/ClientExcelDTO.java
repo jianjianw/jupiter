@@ -161,7 +161,7 @@ public class ClientExcelDTO implements Serializable {
     private String address;
 
     public boolean isWrongInfo() {
-        if (NumUtil.isNull(getCollectorId()) || NumUtil.isNull(getSourceId())
+        if (NumUtil.isNull(getTypeId()) || NumUtil.isNull(getCollectorId()) || NumUtil.isNull(getSourceId())
                 || (StringUtil.isEmpty(getKzPhone()) && StringUtil.isEmpty(getKzWechat())
                 && StringUtil.isEmpty(getKzQq()) && StringUtil.isEmpty(getKzWw())) || NumUtil.isNull(getShopId())
                 ) {
