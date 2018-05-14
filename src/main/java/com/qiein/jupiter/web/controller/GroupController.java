@@ -44,8 +44,8 @@ public class GroupController extends BaseController {
 	@GetMapping("/get_company_all_dept_list")
 	public ResultInfo getCompanyAllDeptList() {
 		// 获取当前登录账户
-		StaffPO currentLoginStaff = getCurrentLoginStaff();
-		List<GroupVO> list = groupService.getCompanyAllDeptList(currentLoginStaff.getCompanyId());
+		StaffPO staff = getCurrentLoginStaff();
+		List<GroupVO> list = groupService.getCompanyAllDeptList(staff.getCompanyId());
 		return ResultInfoUtil.success(list);
 	}
 
@@ -57,8 +57,8 @@ public class GroupController extends BaseController {
 	@PostMapping("/update")
 	public ResultInfo update(@Validated @RequestBody GroupPO groupPO) {
 		// 获取当前登录账户
-		StaffPO currentLoginStaff = getCurrentLoginStaff();
-		groupPO.setCompanyId(currentLoginStaff.getCompanyId());
+		StaffPO staff = getCurrentLoginStaff();
+		groupPO.setCompanyId(staff.getCompanyId());
 		// 参数去trim
 		ObjectUtil.objectStrParamTrim(groupPO);
 		groupService.update(groupPO);
@@ -76,18 +76,16 @@ public class GroupController extends BaseController {
 	@PostMapping("/insert")
 	public ResultInfo insert(@Validated @RequestBody GroupPO groupPO) {
 		// 获取当前登录账户
-		StaffPO currentLoginStaff = getCurrentLoginStaff();
-		groupPO.setCompanyId(currentLoginStaff.getCompanyId());
+		StaffPO staff = getCurrentLoginStaff();
+		groupPO.setCompanyId(staff.getCompanyId());
 		// 参数去trim
 		ObjectUtil.objectStrParamTrim(groupPO);
 		groupService.insert(groupPO);
 		// 日志记录
-		logService
-				.addLog(new SystemLog(SysLogUtil.LOG_TYPE_GROUP, currentLoginStaff.getIp(), currentLoginStaff.getUrl(),
-						currentLoginStaff.getId(),
-						currentLoginStaff.getUserName(), SysLogUtil.getAddLog(SysLogUtil.LOG_SUP_GROUP,
-								groupPO.getGroupName(), groupPO.getGroupType(), groupPO.getChiefNames()),
-						currentLoginStaff.getCompanyId()));
+		logService.addLog(new SystemLog(SysLogUtil.LOG_TYPE_GROUP, staff.getIp(), staff.getUrl(),
+				staff.getId(), staff.getUserName(), SysLogUtil.getAddLog(SysLogUtil.LOG_SUP_GROUP,
+						groupPO.getGroupName(), groupPO.getGroupType(), groupPO.getChiefNames()),
+				staff.getCompanyId()));
 		return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
 	}
 
@@ -99,13 +97,12 @@ public class GroupController extends BaseController {
 	@GetMapping("/delete")
 	public ResultInfo delete(@Id Integer id) {
 		// 获取当前登录账户
-		StaffPO currentLoginStaff = getCurrentLoginStaff();
-		GroupPO groupPO = groupService.delete(id, currentLoginStaff.getCompanyId());
+		StaffPO staff = getCurrentLoginStaff();
+		GroupPO groupPO = groupService.delete(id, staff.getCompanyId());
 		// 日志记录
-		logService.addLog(new SystemLog(SysLogUtil.LOG_TYPE_GROUP, currentLoginStaff.getIp(),
-				currentLoginStaff.getUrl(), currentLoginStaff.getId(), currentLoginStaff.getUserName(),
-				SysLogUtil.getRemoveLog(SysLogUtil.LOG_SUP_GROUP, groupPO.getGroupName()),
-				currentLoginStaff.getCompanyId()));
+		logService.addLog(new SystemLog(SysLogUtil.LOG_TYPE_GROUP, staff.getIp(), staff.getUrl(), staff.getId(),
+				staff.getUserName(), SysLogUtil.getRemoveLog(SysLogUtil.LOG_SUP_GROUP, groupPO.getGroupName()),
+				staff.getCompanyId()));
 		return ResultInfoUtil.success(TigMsgEnum.DELETE_SUCCESS);
 	}
 
@@ -114,9 +111,7 @@ public class GroupController extends BaseController {
 	 */
 	@GetMapping("/get_all_dept_and_staff")
 	public ResultInfo getAllDeptAndStaff() {
-		// 获取当前登录账户
-		StaffPO currentLoginStaff = getCurrentLoginStaff();
-		return ResultInfoUtil.success(groupService.getAllDeptAndStaff(currentLoginStaff.getCompanyId()));
+		return ResultInfoUtil.success(groupService.getAllDeptAndStaff(getCurrentLoginStaff().getCompanyId()));
 	}
 
 	/**
@@ -125,9 +120,8 @@ public class GroupController extends BaseController {
 	@GetMapping("/get_group_staff_by_role")
 	public ResultInfo getGroupStaffByRole(@NotEmptyStr @RequestParam("role") String role) {
 		// 获取当前登录账户
-		StaffPO currentLoginStaff = getCurrentLoginStaff();
-		return ResultInfoUtil.success(
-				groupService.getGroupStaffByType(currentLoginStaff.getCompanyId(), currentLoginStaff.getId(), role));
+		StaffPO staff = getCurrentLoginStaff();
+		return ResultInfoUtil.success(groupService.getGroupStaffByType(staff.getCompanyId(), staff.getId(), role));
 	}
 
 	/**
@@ -135,9 +129,6 @@ public class GroupController extends BaseController {
 	 */
 	@GetMapping("/get_dsyy_group_staff_list")
 	public ResultInfo getDsyyGroupStaffList() {
-		// 获取当前登录账户
-		StaffPO currentLoginStaff = getCurrentLoginStaff();
-		return ResultInfoUtil.success(groupService.getDsyyGroupStaffList(currentLoginStaff.getCompanyId()));
+		return ResultInfoUtil.success(groupService.getDsyyGroupStaffList(getCurrentLoginStaff().getCompanyId()));
 	}
-
 }
