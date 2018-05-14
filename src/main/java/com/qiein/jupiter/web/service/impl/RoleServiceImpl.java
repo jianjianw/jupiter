@@ -55,8 +55,6 @@ public class RoleServiceImpl implements RoleService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void delete(Integer roleId, Integer companyId) {
-        //TODO 检查该角色是否绑定人员，如果有提示不能删除
-        //throw new RException(ExceptionEnum.ROLE_DELETE_ERROR);
         int i = roleDao.delete(roleId);
         if (i != 1) {
             throw new RException(ExceptionEnum.DELETE_FAIL);
