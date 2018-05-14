@@ -1,7 +1,7 @@
 package com.qiein.jupiter.web.entity.vo;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.LinkedList;
 
 /**
  * 渠道来源集合
@@ -19,7 +19,7 @@ public class ChannelVO implements Serializable {
 	/**
 	 * 来源集合
 	 */
-	private List<SrcListVO> srcList;
+	private LinkedList<SrcListVO> srcList;
 
 	public int getChannelId() {
 		return channelId;
@@ -37,11 +37,11 @@ public class ChannelVO implements Serializable {
 		this.channelName = channelName;
 	}
 
-	public List<SrcListVO> getSrcList() {
+	public LinkedList<SrcListVO> getSrcList() {
 		return srcList;
 	}
 
-	public void setSrcList(List<SrcListVO> srcList) {
+	public void setSrcList(LinkedList<SrcListVO> srcList) {
 		this.srcList = srcList;
 	}
 }
