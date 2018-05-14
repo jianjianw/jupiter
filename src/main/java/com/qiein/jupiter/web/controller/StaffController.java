@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import com.qiein.jupiter.constant.CommonConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.validation.annotation.Validated;
@@ -21,7 +22,6 @@ import com.qiein.jupiter.aop.aspect.annotation.LoginLog;
 import com.qiein.jupiter.aop.validate.annotation.Bool;
 import com.qiein.jupiter.aop.validate.annotation.Id;
 import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
-import com.qiein.jupiter.constant.NumberConstant;
 import com.qiein.jupiter.constant.RedisConstant;
 import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
@@ -151,7 +151,7 @@ public class StaffController extends BaseController {
 		} catch (RException e) {
 			// 将错误次数+1
 			valueOperations.increment(RedisConstant.getUserLoginErrNumKey(loginUserVO.getUserName()),
-					NumberConstant.LOGIN_ERROR_ADD_NUM);
+					CommonConstant.LOGIN_ERROR_ADD_NUM);
 			return ResultInfoUtil.error(e.getCode(), e.getMsg());
 		}
 	}
@@ -198,13 +198,13 @@ public class StaffController extends BaseController {
 		if (userLoginErrNum == null) {
 			// 如果没有查询到，说明是第一次，设置默认值0,过期时间为1小时
 			valueOperations.set(RedisConstant.getUserLoginErrNumKey(userName),
-					String.valueOf(NumberConstant.DEFAULT_ZERO), NumberConstant.LOGIN_ERROR_NUM_EXPIRE_TIME,
+					String.valueOf(CommonConstant.DEFAULT_ZERO), CommonConstant.LOGIN_ERROR_NUM_EXPIRE_TIME,
 					TimeUnit.HOURS);
 			return false;
 		} else {
 			// 是否大于允许的错误最大值
 			int errNum = Integer.valueOf(userLoginErrNum);
-			return errNum >= NumberConstant.ALLOW_USER_LOGIN_ERR_NUM;
+			return errNum >= CommonConstant.ALLOW_USER_LOGIN_ERR_NUM;
 		}
 	}
 
