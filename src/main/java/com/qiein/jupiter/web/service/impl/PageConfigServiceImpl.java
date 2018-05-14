@@ -2,13 +2,16 @@ package com.qiein.jupiter.web.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.constant.DictionaryConstant;
+
 import java.util.List;
 import java.util.Map;
+
+import com.qiein.jupiter.web.dao.*;
+import com.qiein.jupiter.web.entity.po.BrandPO;
+import com.qiein.jupiter.web.entity.vo.ShopVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.qiein.jupiter.util.CollectionUtils;
-import com.qiein.jupiter.web.dao.GroupDao;
-import com.qiein.jupiter.web.dao.PageConfigDao;
 import com.qiein.jupiter.web.entity.dto.PageFilterDTO;
 import com.qiein.jupiter.web.entity.po.DictionaryPO;
 import com.qiein.jupiter.web.entity.po.PageConfig;
@@ -33,6 +36,15 @@ public class PageConfigServiceImpl implements PageConfigService {
 
     @Autowired
     private GroupDao groupDao;
+
+    @Autowired
+    private SourceDao sourceDao;
+
+    @Autowired
+    private BrandDao brandDao;
+
+    @Autowired
+    private ShopDao shopDao;
 
 
     /**
@@ -75,7 +87,19 @@ public class PageConfigServiceImpl implements PageConfigService {
         //渠道
 
         //品牌
-
+        List<PageFilterDTO> brandFilters = new ArrayList<>();
+        List<BrandPO> brandList = brandDao.getBrandList(companyId);
+        if (CollectionUtils.isNotEmpty(brandList)) {
+            for (BrandPO brandPO : brandList) {
+                PageFilterDTO PageFilterDTO = new PageFilterDTO();
+                //品牌名称
+                PageFilterDTO.setLabel(brandPO.getBrandName());
+                //ID
+                PageFilterDTO.setValue(String.valueOf(brandPO.getId()));
+                brandFilters.add(PageFilterDTO);
+            }
+        }
+        pageFilterMap.setBrand(brandFilters);
         //咨询方式
         List<PageFilterDTO> zxModeFilters = getDictFilter(DictionaryConstant.ZX_MODE, dictMapByCid);
         pageFilterMap.setZxMode(zxModeFilters);
@@ -103,11 +127,13 @@ public class PageConfigServiceImpl implements PageConfigService {
         //客服小组，根据不同的角色
         List<GroupsInfoVO> companyDeptListByType = groupDao.getCompanyDeptListByType(role, companyId);
         List<PageFilterDTO> companyDeptListByTypeFilters = new ArrayList<>();
-        for (GroupsInfoVO groupsInfoVO : companyDeptListByType) {
-            PageFilterDTO PageFilterDTO = new PageFilterDTO();
-            PageFilterDTO.setLabel(groupsInfoVO.getGroupName());
-            PageFilterDTO.setValue(groupsInfoVO.getGroupId());
-            companyDeptListByTypeFilters.add(PageFilterDTO);
+        if (CollectionUtils.isNotEmpty(companyDeptListByTypeFilters)) {
+            for (GroupsInfoVO groupsInfoVO : companyDeptListByType) {
+                PageFilterDTO PageFilterDTO = new PageFilterDTO();
+                PageFilterDTO.setLabel(groupsInfoVO.getGroupName());
+                PageFilterDTO.setValue(groupsInfoVO.getGroupId());
+                companyDeptListByTypeFilters.add(PageFilterDTO);
+            }
         }
         pageFilterMap.setDept(companyDeptListByTypeFilters);
         //推广
@@ -119,6 +145,17 @@ public class PageConfigServiceImpl implements PageConfigService {
         //门市
 
         //门店
+        List<ShopVO> showShopList = shopDao.getShowShopList(companyId);
+        List<PageFilterDTO> shopFilters = new ArrayList<>();
+        if(CollectionUtils.isNotEmpty(showShopList)){
+            for (ShopVO shopVO : showShopList) {
+                PageFilterDTO PageFilterDTO = new PageFilterDTO();
+                PageFilterDTO.setLabel(shopVO.getShopName());
+                PageFilterDTO.setValue(String.valueOf(shopVO.getId()));
+                companyDeptListByTypeFilters.add(PageFilterDTO);
+            }
+        }
+        pageFilterMap.setShop(shopFilters);
 
         return pageFilterMap;
     }
