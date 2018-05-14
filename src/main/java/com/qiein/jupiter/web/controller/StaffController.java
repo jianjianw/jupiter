@@ -11,6 +11,7 @@ import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.web.entity.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -260,6 +261,19 @@ public class StaffController extends BaseController {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         List<SearchStaffVO> staffList = staffService.getStaffListBySearchKey(currentLoginStaff.getCompanyId(), searchKey);
         return ResultInfoUtil.success(staffList);
+    }
+
+    /**
+     * 查询小组员工详情
+     *
+     * @param searchKey
+     * @return
+     */
+    @GetMapping("/get_group_staff_by_id")
+    public ResultInfo getGroupStaffById(@Id @RequestParam("staffId") int staffId) {
+        // 获取当前登录用户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        return ResultInfoUtil.success(staffService.getGroupStaffById(currentLoginStaff.getCompanyId(), staffId));
     }
 
     /**
@@ -578,8 +592,7 @@ public class StaffController extends BaseController {
     public ResultInfo setStaffStatus(@RequestParam("status") int status) {
         // 获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        staffService.updateStatusFlag(currentLoginStaff.getId(), currentLoginStaff.getCompanyId()
-                , status, currentLoginStaff.getId(),currentLoginStaff.getNickName());
+        staffService.updateStatusFlag(currentLoginStaff.getId(), currentLoginStaff.getCompanyId(), status);
         if (status == 0) {
             return ResultInfoUtil.success(TigMsgEnum.OFFLINE_SUCCESS);
         } else {

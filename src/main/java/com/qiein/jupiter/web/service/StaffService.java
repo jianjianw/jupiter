@@ -194,10 +194,9 @@ public interface StaffService {
     /**
      * 交接客资
      *
-     * @param staffId   交接客服编号
-     * @param beStaffId 被转移客资客服编号
+     * @param staffChangeVO 交接客服基本信息
      */
-    void changeStaff(int staffId, int beStaffId);
+    void changeStaff(StaffChangeVO staffChangeVO);
 
     /**
      * 获取可交接邀约客服人员列表
@@ -277,4 +276,19 @@ public interface StaffService {
      */
     List<StaffPO> getDelStaffListBySearchKey(int companyId, String searchKey);
 
+    /**
+     * 导出
+     *
+     * @return
+     */
+    List<StaffPO> exportStaff();
+
+    /**
+     * 根据员工ID，获取小组员工信息
+     *
+     * @param companyId
+     * @param staffId
+     * @return
+     */
+    List<StaffVO> getGroupStaffById(int companyId, int staffId);
 }
