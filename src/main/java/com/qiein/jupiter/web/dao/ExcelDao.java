@@ -52,9 +52,25 @@ public interface ExcelDao {
     void updateClassId(@Param("tempName") String tempName, @Param("staffId") Integer staffId);
 
     /**
-     * 设置渠道ID
+     * 设置来源ID
      */
     void updateSrcId(@Param("tempName") String tempName, @Param("staffId") Integer staffId);
+
+    /**
+     * 设置来源类型ID
+     *
+     * @param tempName
+     * @param staffId
+     */
+    void updateSrcTypeId(@Param("tempName") String tempName, @Param("staffId") Integer staffId);
+
+    /**
+     * 设置渠道ID
+     *
+     * @param tempName
+     * @param staffId
+     */
+    void updateChannelId(@Param("tempName") String tempName, @Param("staffId") Integer staffId);
 
     /**
      * 更新最后跟进时间为当前系统时间
@@ -91,5 +107,19 @@ public interface ExcelDao {
      **/
     void updateGroupId(@Param("tempName") String tempName, @Param("staffId") Integer staffId);
 
+    /**
+     * 获取所有的记录
+     **/
+    List<ClientExcelDTO> getAllRecordByStaffId(@Param("tempName") String tempName, @Param("staffId") int staffId);
 
+    /**
+     * 获取与info表重复的记录
+     **/
+    List<ClientExcelDTO> getRepeatRecord(@Param("tempName") String tempName, @Param("tableName") String tableName,
+                                         @Param("staffId") int staffId);
+
+    /**
+     * 获取Excel重复的记录
+     **/
+    public List<ClientExcelDTO> getExcelRepeatRecord(@Param("tempName") String tempName, @Param("staffId") int staffId);
 }

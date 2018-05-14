@@ -3,12 +3,15 @@ package com.qiein.jupiter.web.entity.dto;
 import java.io.Serializable;
 
 import cn.afterturn.easypoi.excel.annotation.Excel;
+import com.alibaba.druid.util.StringUtils;
+import com.qiein.jupiter.util.NumUtil;
+import com.qiein.jupiter.util.StringUtil;
 
 /**
  * 导入客资实体类
  */
 public class ClientExcelDTO implements Serializable {
-	
+
     private static final long serialVersionUID = -7350905349670754997L;
     /**
      * 客资编码
@@ -156,6 +159,16 @@ public class ClientExcelDTO implements Serializable {
      */
     @Excel(name = "省份")
     private String address;
+
+    public boolean isWrongInfo() {
+        if (NumUtil.isNull(getCollectorId()) || NumUtil.isNull(getSourceId())
+                || (StringUtil.isEmpty(getKzPhone()) && StringUtil.isEmpty(getKzWechat())
+                && StringUtil.isEmpty(getKzQq()) && StringUtil.isEmpty(getKzWw())) || NumUtil.isNull(getShopId())
+                ) {
+            return true;
+        }
+        return false;
+    }
 
     public String getKzId() {
         return kzId;
