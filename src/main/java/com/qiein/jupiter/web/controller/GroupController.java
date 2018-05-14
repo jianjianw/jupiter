@@ -82,10 +82,12 @@ public class GroupController extends BaseController {
 		ObjectUtil.objectStrParamTrim(groupPO);
 		groupService.insert(groupPO);
 		// 日志记录
-		logService.addLog(new SystemLog(SysLogUtil.LOG_TYPE_GROUP, currentLoginStaff.getIp(),
-				currentLoginStaff.getUrl(), currentLoginStaff.getId(), currentLoginStaff.getUserName(),
-				SysLogUtil.getAddLog("部门", groupPO.getGroupName(), groupPO.getGroupType()),
-				currentLoginStaff.getCompanyId()));
+		logService
+				.addLog(new SystemLog(SysLogUtil.LOG_TYPE_GROUP, currentLoginStaff.getIp(), currentLoginStaff.getUrl(),
+						currentLoginStaff.getId(),
+						currentLoginStaff.getUserName(), SysLogUtil.getAddLog(SysLogUtil.LOG_SUP_GROUP,
+								groupPO.getGroupName(), groupPO.getGroupType(), groupPO.getChiefNames()),
+						currentLoginStaff.getCompanyId()));
 		return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
 	}
 
