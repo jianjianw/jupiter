@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.service.impl;
 
+import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.web.dao.BrandDao;
@@ -40,7 +41,7 @@ public class BrandServiceImpl implements BrandService {
      */
     @Override
     public void datDelBrand(String ids, Integer companyId) {
-        String[] idArr = ids.split(",");
+        String[] idArr = ids.split(CommonConstant.STR_SEPARATOR);
         if (brandDao.checkBrandHaveChannel(idArr, companyId) == 0) {
             brandDao.datDelBrand(idArr, companyId);
         } else {
