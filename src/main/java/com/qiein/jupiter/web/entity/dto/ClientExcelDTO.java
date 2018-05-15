@@ -161,9 +161,13 @@ public class ClientExcelDTO implements Serializable {
     private String address;
 
     public boolean checkWrongInfo() {
-        if (NumUtil.isNull(getTypeId()) || NumUtil.isNull(getCollectorId()) || NumUtil.isNull(getSourceId())
+        if (NumUtil.isNull(getTypeId())
+                || NumUtil.isNull(getCollectorId())
+                || NumUtil.isNull(getChannelId())
+                || NumUtil.isNull(getSourceId())
                 || (StringUtil.isEmpty(getKzPhone()) && StringUtil.isEmpty(getKzWechat())
-                && StringUtil.isEmpty(getKzQq()) && StringUtil.isEmpty(getKzWw())) || NumUtil.isNull(getShopId())
+                && StringUtil.isEmpty(getKzQq()) && StringUtil.isEmpty(getKzWw()))
+                || NumUtil.isNull(getShopId())
                 ) {
             return true;
         }
