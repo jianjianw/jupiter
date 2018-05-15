@@ -174,4 +174,20 @@ public class ExcelServiceImpl implements ExcelService {
     }
 
 
+    /**
+     * 缓存表客资转移到info表
+     *
+     * @param companyId
+     * @param staffId   gaoxiaoli
+     */
+    public void tempKzMoveToInfo(int companyId, int staffId) {
+        //添加客资基本表
+        excelDao.insertBaseInfoByStaffId(DBSplitUtil.getInfoTabName(companyId), DBSplitUtil.getTable(TableEnum.temp, companyId), staffId);
+        //添加客资详情表
+        excelDao.insertDetailInfoByStaffId(DBSplitUtil.getInfoTabName(companyId), DBSplitUtil.getTable(TableEnum.temp, companyId), staffId);
+        // 删除缓存表记录
+        excelDao.deleteTempByStaffId(DBSplitUtil.getTable(TableEnum.temp, companyId), staffId);
+    }
+
+
 }

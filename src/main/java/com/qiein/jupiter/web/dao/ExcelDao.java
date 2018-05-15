@@ -114,4 +114,15 @@ public interface ExcelDao {
      * 获取Excel重复的记录
      **/
     public List<ClientExcelDTO> getExcelRepeatRecord(@Param("tempName") String tempName, @Param("staffId") int staffId);
+
+    /**
+     * 添加客资基础信息ByStaffId
+     */
+    public void insertBaseInfoByStaffId(@Param("tabName") String tabName, @Param("tempName") String tempName, @Param("staffId") Integer staffId);
+
+    /**
+     * 添加客资详细信息 ByStaffId
+     */
+    public void insertDetailInfoByStaffId(@Param("tabName") String tabName, @Param("tempName") String tempName, @Param("staffId") Integer staffId);
+
 }

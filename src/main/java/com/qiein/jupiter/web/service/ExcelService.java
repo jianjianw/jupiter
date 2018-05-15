@@ -28,5 +28,14 @@ public interface ExcelService {
      * @param staffId
      * @return
      */
-    public HashMap<String, List<ClientExcelDTO>> getAllUploadRecord(int companyId, int staffId);
+    HashMap<String, List<ClientExcelDTO>> getAllUploadRecord(int companyId, int staffId);
+
+    /**
+     * 缓存表客资转移到info表
+     *
+     * @param companyId
+     * @param staffId
+     */
+    void tempKzMoveToInfo(int companyId, int staffId);
+
 }

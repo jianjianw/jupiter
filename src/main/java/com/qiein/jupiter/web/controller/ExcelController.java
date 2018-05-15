@@ -45,6 +45,7 @@ public class ExcelController extends BaseController {
 
     /**
      * 获取上传客资的所有列表
+     *
      * @return
      */
     @GetMapping("/get_all_upload_record")
@@ -52,6 +53,19 @@ public class ExcelController extends BaseController {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         return ResultInfoUtil.success(excelService.getAllUploadRecord(currentLoginStaff.getCompanyId(), currentLoginStaff.getId()));
+    }
+
+    /**
+     * 保存导入客资
+     *
+     * @return
+     */
+    @GetMapping("/save_excel_kz")
+    public ResultInfo saveExcelKz() {
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        excelService.tempKzMoveToInfo(currentLoginStaff.getCompanyId(), currentLoginStaff.getId());
+        return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
     }
 
     /**
