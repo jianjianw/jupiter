@@ -147,15 +147,12 @@
 	</update>
 
     <!-- 设置来源ID -->
-    <update id="updateSrcId" parameterType="map">
-		UPDATE ${tempName} temp SET temp.SOURCEID = (SELECT src.ID FROM hm_crm_source src WHERE src.COMPANYID = temp.COMPANYID AND src.ISSHOW = 1 AND src.SRCNAME = temp.SOURCENAME )
-		WHERE temp.OPERAID = #{staffId};
-	</update>
-
-    <!-- 设置来源类型ID -->
-    <update id="updateSrcTypeId" parameterType="map">
-		UPDATE ${tempName} temp SET temp.SRCTYPE = (SELECT src.TYPEID FROM hm_crm_source src WHERE src.COMPANYID = temp.COMPANYID AND src.ISSHOW = 1 AND src.SRCNAME = temp.SOURCENAME )
-		WHERE temp.OPERAID = #{staffId};
+    <update id="updateSrcIdAndType" parameterType="map">
+		UPDATE ${tempName} temp
+        INNER JOIN hm_crm_source src  on  temp.SOURCENAME = src.SRCNAME
+        SET temp.SOURCEID = src.ID,temp.SRCTYPE = src.TYPEID
+        WHERE
+            temp.OPERAID = #{staffId};
 	</update>
 
     <!--设置渠道ID-->

@@ -52,17 +52,9 @@ public interface ExcelDao {
     void updateClassId(@Param("tempName") String tempName, @Param("staffId") Integer staffId);
 
     /**
-     * 设置来源ID
+     * 设置来源ID,和来源类型
      */
-    void updateSrcId(@Param("tempName") String tempName, @Param("staffId") Integer staffId);
-
-    /**
-     * 设置来源类型ID
-     *
-     * @param tempName
-     * @param staffId
-     */
-    void updateSrcTypeId(@Param("tempName") String tempName, @Param("staffId") Integer staffId);
+    void updateSrcIdAndType(@Param("tempName") String tempName, @Param("staffId") Integer staffId);
 
     /**
      * 设置渠道ID
