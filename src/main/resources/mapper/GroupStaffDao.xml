@@ -312,6 +312,7 @@
 	        hm_pub_staff s ON gs.STAFFID = s.ID
         WHERE
 	        s.COMPANYID = #{companyId} AND g.GROUPTYPE = #{type}
+	    AND s.ISDEL = 0 AND s.ISLOCK = 0
     </select>
 
     <!--获取员工所属角色-->

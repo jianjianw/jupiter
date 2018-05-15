@@ -38,4 +38,21 @@ public interface ExcelService {
      */
     void tempKzMoveToInfo(int companyId, int staffId);
 
+    /**
+     * 批量删除客资缓存记录
+     *
+     * @param companyId
+     * @param operaId
+     * @param kzIds
+     */
+    void batchDeleteTemp(int companyId, int operaId, String kzIds);
+
+    /**
+     * 编辑客资缓存记录
+     *
+     * @param companyId
+     * @param kzIds
+     * @param info
+     */
+    void editKz(int companyId, String kzIds, ClientExcelDTO info);
 }

@@ -1,12 +1,12 @@
 package com.qiein.jupiter.web.service.impl;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import com.qiein.jupiter.enums.StaffStatusEnum;
+import com.qiein.jupiter.http.CrmBaseApi;
 import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.dao.*;
 import com.qiein.jupiter.web.entity.dto.PageDictDTO;
@@ -78,6 +78,9 @@ public class StaffServiceImpl implements StaffService {
 
     @Autowired
     private StatusService statusService;
+
+    @Autowired
+    private CrmBaseApi crmBaseApi;
 
     /**
      * 员工新增
@@ -605,7 +608,7 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public void changeStaff(StaffChangeVO staffChangeVO) {
         //TODO 调用平台接口
-//        clientInfoDao.changeStaff(staffChangeVO);
+        clientInfoDao.changeStaff(staffChangeVO);
     }
 
     /**
