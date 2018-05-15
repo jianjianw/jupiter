@@ -23,7 +23,7 @@
         <result column="KZWW" jdbcType="VARCHAR" property="kzWw"/>
         <result column="COLLECTORID" jdbcType="INTEGER" property="collectorId"/>
         <result column="COLLECTORNAME" jdbcType="VARCHAR" property="collectorName"/>
-        <result column="APPOINTID" jdbcType="INTEGER" property="appointId"/>
+        <result column="APPOINTORID" jdbcType="INTEGER" property="appointorId"/>
         <result column="APPOINTNAME" jdbcType="VARCHAR" property="appointName"/>
         <result column="APPOINTTIME" jdbcType="VARCHAR" property="appointTime"/>
         <result column="UPDATETIME" jdbcType="VARCHAR" property="updateTime"/>
@@ -50,7 +50,7 @@
 
     <sql id="Base_Column_List">
 		temp.KZID,temp.TYPEID,temp.CLASSID, temp.TYPENAME, temp.STATUSID,temp.STATUSNAME,temp.SRCTYPE,temp.CHANNELID,temp.CHANNELNAME, temp.SOURCEID, temp.SOURCENAME, temp.ZXSTYLE, temp.KZNAME, temp.SEXNAME, temp.KZPHONE, temp.KZWECHAT, temp.KZQQ, temp.COLLECTORID,temp.COLLECTORNAME,
-		 temp.APPOINTID ,temp.APPOINTNAME, temp.APPOINTTIME ,temp.ACTUALTIME , temp.MEMO, temp.CREATETIME , temp.SHOPID, temp.SHOPNAME,
+		 temp.APPOINTORID ,temp.APPOINTNAME, temp.APPOINTTIME ,temp.ACTUALTIME , temp.MEMO, temp.CREATETIME , temp.SHOPID, temp.SHOPNAME,
 	 temp.COMPANYID, temp.ADADDRESS, temp.ADID,  temp.OPERAID, temp.ADDRESS, temp.GROUPID, temp.GROUPNAME, temp.KEYWORD
 	</sql>
 
@@ -169,7 +169,7 @@
 
     <!-- 更新邀约员ID -->
     <update id="updateAppointId" parameterType="map">
-		UPDATE ${tempName} temp SET temp.APPOINTID = ( SELECT sf.ID FROM hm_pub_staff sf WHERE sf.COMPANYID = temp.COMPANYID AND sf.NICKNAME =  temp.APPOINTNAME AND sf.ISDEL = 0 LIMIT 1 )
+		UPDATE ${tempName} temp SET temp.APPOINTORID = ( SELECT sf.ID FROM hm_pub_staff sf WHERE sf.COMPANYID = temp.COMPANYID AND sf.NICKNAME =  temp.APPOINTNAME AND sf.ISDEL = 0 LIMIT 1 )
 		WHERE temp.OPERAID = #{staffId};
 	</update>
 
@@ -177,7 +177,7 @@
     <update id="updateEmptyAppoint">
 		UPDATE ${tempName} temp
 		SET temp.APPOINTNAME = CONCAT("- ",temp.APPOINTNAME)
-		WHERE temp.APPOINTID IS NULL
+		WHERE temp.APPOINTORID IS NULL
 		AND temp.OPERAID = #{operaId}
 		AND  left(APPOINTNAME,1)!='-';
 	</update>
@@ -240,11 +240,11 @@
     <!-- 插入客资基础信息表-->
     <insert id="insertBaseInfoByStaffId" parameterType="map">
 		INSERT INTO ${tabName} (
-			KZID, TYPEID, TYPENAME, CLASSID, KZNAME, KZPHONE, KZWECHAT, KZQQ, KZWW, SEX, STATUSID, SRCTYPE,CHANNELID,SOURCEID, COLLECTORID, COLLECTORNAME, APPOINTID, APPOINTNAME,
+			KZID, TYPEID, TYPENAME, CLASSID, KZNAME, KZPHONE, KZWECHAT, KZQQ, KZWW, SEX, STATUSID, SRCTYPE,CHANNELID,SOURCEID, COLLECTORID, COLLECTORNAME, APPOINTORID, APPOINTNAME,
 			APPOINTTIME, ACTUALTIME, MEMO, UPDATETIME, CREATETIME, SHOPID, SHOPNAME, AMOUNT, RECEPTORID, RECEPTORNAME, COMPANYID, VALIDTIME, COMESHOPTIME, SUCCESSTIME, RECEIVETIME
 		)( SELECT temp.KZID, temp.TYPEID,
 				temp.TYPENAME, temp.CLASSID, temp.KZNAME, temp.KZPHONE, temp.WECHAT, temp.KZQQ, temp.KZWW, temp.SEX, temp.STATUSID,temp.SRCTYPE,temp.CHANNELID, temp.SOURCEID, temp.COLLECTORID, temp.COLLECTORNAME,
-				temp.APPOINTID, temp.APPOINTNAME, temp.APPOINTTIME, temp.ACTUALTIME, temp.MEMO, temp.UPDATETIME, temp.CREATETIME, temp.SHOPID, temp.SHOPNAME,
+				temp.APPOINTORID, temp.APPOINTNAME, temp.APPOINTTIME, temp.ACTUALTIME, temp.MEMO, temp.UPDATETIME, temp.CREATETIME, temp.SHOPID, temp.SHOPNAME,
 				temp.AMOUNT, temp.RECEPTORID, temp.RECEPTORNAME, temp.COMPANYID, temp.VALIDTIME, temp.COMESHOPTIME, temp.SUCCESSTIME, temp.RECEIVETIME
 			FROM
 				${tempName} temp
