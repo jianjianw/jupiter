@@ -77,7 +77,7 @@ public class ExcelController extends BaseController {
      * @return
      */
     @PostMapping("/batch_delete_temp")
-    public ResultInfo batchDeleteTemp(@NotEmptyStr @RequestParam("kzIds") String kzIds) {
+    public ResultInfo batchDeleteTemp(@NotEmptyStr @RequestBody String kzIds) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         excelService.batchDeleteTemp(currentLoginStaff.getCompanyId(), currentLoginStaff.getId(), kzIds);
@@ -90,7 +90,7 @@ public class ExcelController extends BaseController {
      * @return
      */
     @PostMapping("/batch_edit_temp")
-    public ResultInfo batchEditTemp(@NotEmptyStr @RequestParam("kzIds") String kzIds, @RequestBody ClientExcelDTO info) {
+    public ResultInfo batchEditTemp(@NotEmptyStr @RequestBody String kzIds, @RequestBody ClientExcelDTO info) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         excelService.editKz(currentLoginStaff.getCompanyId(), kzIds, info);

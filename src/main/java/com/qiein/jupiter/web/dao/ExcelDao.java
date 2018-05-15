@@ -141,7 +141,7 @@ public interface ExcelDao {
      * @param kzIdArr
      * @param operaId
      */
-    void batchDeleteTemp(@Param("tempName") String tempName, @Param("kzIdArr") String[] kzIdArr, @Param("operaIid") int operaId);
+    void batchDeleteTemp(@Param("tempName") String tempName, @Param("kzIdArr") String[] kzIdArr, @Param("operaId") int operaId);
 
     /**
      * 批量修改员工客资缓存记录
