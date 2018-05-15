@@ -1,38 +1,42 @@
 package com.qiein.jupiter.msg.goeasy;
 
 import com.alibaba.fastjson.JSONObject;
+import com.qiein.jupiter.util.PropertiesUtil;
 import com.qiein.jupiter.util.StringUtil;
 
 import io.goeasy.GoEasy;
 import io.goeasy.publish.GoEasyError;
 import io.goeasy.publish.PublishListener;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 /**
  * GoEasy消息推送
  *
  * @author JingChenglong 2018/04/17 15:54
  */
+@Component
 public class GoEasyUtil {
 
 	/**
 	 * GoEasy对接平台KEY
 	 */
-	private static String goeasyKey = "";
+	private static String goeasyKey;
 
 	/**
 	 * GoEasy实例地址
 	 */
-	private static String goeasyLinkAddr = "";
+	private static String goeasyLinkAddr;
 
 	/**
 	 * GoEasy-WEB消息频道前缀
 	 */
-	private static String hmCrmChannelSuffix = "";
+	private static String hmCrmChannelSuffix;
 
 	/**
 	 * GoEasy-客户端消息频道前缀
 	 */
-	private static String hmAppChannelSuffix = "";
+	private static String hmAppChannelSuffix;
 	/**
 	 * 初始化GoEasy实例
 	 */
@@ -44,14 +48,26 @@ public class GoEasyUtil {
 	private static JSONObject messageJson = null;
 	private static JSONObject contentJson = null;
 
+
 	static {
-		goeasyKey = "f8c84801-0ac1-4cbf-98e3-3edd85d78b09";
-		goeasyLinkAddr = "http://rest-hangzhou.goeasy.io";
-		hmCrmChannelSuffix = "hm_crm_channel_";
-		hmAppChannelSuffix = "hm_app_channel_";
+		goeasyKey = PropertiesUtil.getValue("goeasy.key");
+		goeasyLinkAddr = PropertiesUtil.getValue("goeasy.linkaddr");
+		hmCrmChannelSuffix = PropertiesUtil.getValue("goeasy.hmcrmchannelsuffix");
+		hmAppChannelSuffix = PropertiesUtil.getValue("goeasy.hmappchannelsuffix");
 
 		goeasyInstance = new GoEasy(goeasyLinkAddr, goeasyKey);
 	}
+
+//	GoEasyUtil (@Value("${goeasy.key}")String goeasyKey,
+//					  @Value("${goeasy.linkaddr}")String goeasyLinkAddr,
+//					  @Value("${goeasy.hmcrmchannelsuffix}")String hmCrmChannelSuffix,
+//					  @Value("${goeasy.hmappchannelsuffix}")String hmAppChannelSuffix) {
+//		GoEasyUtil.goeasyKey = goeasyKey;
+//		GoEasyUtil.goeasyLinkAddr = goeasyLinkAddr;
+//		GoEasyUtil.hmCrmChannelSuffix = hmCrmChannelSuffix;
+//		GoEasyUtil.hmAppChannelSuffix = hmAppChannelSuffix;
+//        goeasyInstance = new GoEasy(goeasyLinkAddr, goeasyKey);
+//	}
 
 	// TODO 该方法在系统停止时调用
 	public static void destroy() {
@@ -79,14 +95,12 @@ public class GoEasyUtil {
 			public void onSuccess() {
 				// TODO LogUtils.log()-->消息发送成功--[channel : channel ; content :
 				// content.toString]
-				System.out.println("发送成功");
 			}
 
 			public void onFailed(GoEasyError error) {
 				// TODO LogUtils.log()-->消息发送失败-->"错误编码："- error.getCode()
 				// "错误信息:"
 				// -error.getContent()
-				System.out.println("发送失败");
 			}
 		});
 	}
