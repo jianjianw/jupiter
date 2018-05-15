@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.entity.dto;
 
 import com.qiein.jupiter.web.entity.po.StatusPO;
+import com.qiein.jupiter.web.entity.vo.SourceDictVO;
 
 import java.util.Map;
 
@@ -14,18 +15,18 @@ public class PageDictDTO {
     /**
      * 渠道字典
      */
-    private Map<String, String> sourceMap;
+    private Map<String, SourceDictVO> sourceMap;
 
     /**
      * 状态字典
      */
     private Map<String, StatusPO> statusMap;
 
-    public Map<String, String> getSourceMap() {
+    public Map<String, SourceDictVO> getSourceMap() {
         return sourceMap;
     }
 
-    public void setSourceMap(Map<String, String> sourceMap) {
+    public void setSourceMap(Map<String, SourceDictVO> sourceMap) {
         this.sourceMap = sourceMap;
     }
 

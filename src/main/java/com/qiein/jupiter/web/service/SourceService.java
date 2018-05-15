@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.service;
 
 import com.qiein.jupiter.web.entity.po.SourcePO;
+import com.qiein.jupiter.web.entity.vo.SourceDictVO;
 import com.qiein.jupiter.web.entity.vo.SourceVO;
 
 import java.util.List;
@@ -65,5 +66,5 @@ public interface SourceService {
      * @param companyId
      * @return
      */
-    Map<String, String> getSourcePageMap(int companyId);
+    Map<String, SourceDictVO> getSourcePageMap(int companyId);
 }

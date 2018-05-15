@@ -4,6 +4,7 @@ import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.web.dao.SourceDao;
 import com.qiein.jupiter.web.entity.po.SourcePO;
+import com.qiein.jupiter.web.entity.vo.SourceDictVO;
 import com.qiein.jupiter.web.entity.vo.SourceVO;
 import com.qiein.jupiter.web.service.SourceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -126,13 +127,18 @@ public class SourceServiceImpl implements SourceService {
      * @return
      */
     @Override
-    public Map<String, String> getSourcePageMap(int companyId) {
+    public Map<String, SourceDictVO> getSourcePageMap(int companyId) {
         //获取所有
         List<SourcePO> allSourceList = sourceDao.getAllSourceList(companyId);
-        Map<String, String> pageDictMap = new HashMap<>();
+        Map<String, SourceDictVO> pageDictMap = new HashMap<>();
         for (SourcePO sourcePO : allSourceList) {
-            //Id,图片地址
-            pageDictMap.put(String.valueOf(sourcePO.getId()), sourcePO.getSrcImg());
+            //渠道字典
+            SourceDictVO sourceDictVO = new SourceDictVO();
+            sourceDictVO.setId(sourcePO.getId());
+            sourceDictVO.setSrcImg(sourcePO.getSrcImg());
+            sourceDictVO.setSrcName(sourcePO.getSrcName());
+            //Id
+            pageDictMap.put(String.valueOf(sourcePO.getId()), sourceDictVO);
         }
         return pageDictMap;
     }
