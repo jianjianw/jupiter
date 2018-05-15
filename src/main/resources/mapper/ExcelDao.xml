@@ -304,8 +304,8 @@
             <if test="info.appointName != null and info.appointName != ''">
                 APPOINTNAME = #{info.appointName},
             </if>
-            <if test="info.createTime != null and info.createTime != ''">
-                CREATETIME = #{info.createTime},
+            <if test="info.createTime != null and info.createTime == true ">
+                CREATETIME = unix_timestamp(now()),
             </if>
         </set>
         WHERE OPERAID = #{info.operaId}
