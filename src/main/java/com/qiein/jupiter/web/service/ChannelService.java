@@ -79,12 +79,4 @@ public interface ChannelService {
      */
     List<ChannelVO> getMyChannelSourceByRole(int companyId, int staffId, String role);
 
-    /**
-     * 获取企业所有可用渠道列表
-     *
-     * @param companyId
-     * @return
-     */
-    List<ChannelVO> getAllShowSource(int companyId);
-
 }
