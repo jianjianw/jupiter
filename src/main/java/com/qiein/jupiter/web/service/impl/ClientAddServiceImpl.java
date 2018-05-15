@@ -180,33 +180,8 @@ public class ClientAddServiceImpl implements ClientAddService {
                     it.remove();
                     continue;
                 }
-                //6.配偶姓名
-                if (StringUtil.isChinese(info) && info.length() < 6 && !json.containsKey("matename")) {
-                    json.put("matename", info);
-                    it.remove();
-                    continue;
-                }
-                //7.配偶手机号
-                if (RegexUtil.checkMobile(info) && !json.containsKey("matephone")) {
-                    json.put("matephone", info);
-                    it.remove();
-                    continue;
-                }
-                // 8.配偶微信号
-                if (StringUtil.checkWeChat(info) && !json.containsKey("matewechat")) {
-                    json.put("matewechat", info);
-                    it.remove();
-                    continue;
-                }
-                // 9.配偶QQ号
-                if (StringUtil.isQQCorrect(info) && !json.containsKey("mateqq")) {
-                    json.put("mateqq", info);
-                    it.remove();
-                    continue;
-                }
-
             }
-            // 10.其余放入备注
+            // 其余放入备注
             for (String memo : infoArr) {
                 sb.append(memo);
             }
@@ -214,6 +189,46 @@ public class ClientAddServiceImpl implements ClientAddService {
             jsonArr.add(json);
         }
         return jsonArr;
+    }
+
+    /**
+     * 批量录入
+     *
+     * @param list
+     */
+    public String batchAddDsClient(String list, StaffPO staffPO) {
+        JSONArray jsonArr = JSONArray.parseArray(list);
+
+        int successCount = 0;
+        int errorCount = 0;
+        StringBuffer sb = null;
+        JSONArray rep = new JSONArray();
+        for (int i = 0; i < jsonArr.size(); i++) {
+            ClientVO clientVO = new ClientVO();
+            clientVO.setKzName(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("name")));
+
+            clientVO.setKzPhone(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("phone")));
+            clientVO.setKzWechat(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("wechat")));
+            clientVO.setKzQq(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("qq")));
+            clientVO.setKzWw(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("matephone")));
+            if (StringUtil.isEmpty(clientVO.getKzPhone()) && StringUtil.isEmpty(clientVO.getKzWechat()) && StringUtil.isEmpty(clientVO.getKzQq())
+                    && StringUtil.isEmpty(clientVO.getKzWw())) {
+                continue;
+            }
+            sb = new StringBuffer();
+            sb.append("<p>");
+            sb.append(
+                    StringUtil.nullToStrTrim(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("memo"))));
+            sb.append("</p>");
+            clientVO.setRemark(sb.toString());
+            try {
+                addDsClient(clientVO, staffPO);
+                successCount++;
+            } catch (RException e) {
+                errorCount++;
+            }
+        }
+        return errorCount == 0 ? "录入成功，共录入：" + successCount + " 个客资" : "有录入失败的信息；录入成功：" + successCount + " 个，错误：" + errorCount + " 个";
     }
 
 }

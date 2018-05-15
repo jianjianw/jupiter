@@ -20,4 +20,11 @@ public interface ClientAddService {
      * @param text
      */
     JSONArray changeStrToInfo(String text);
+
+    /**
+     * 批量录入
+     *
+     * @param list
+     */
+    String batchAddDsClient(String list, StaffPO staffPO);
 }

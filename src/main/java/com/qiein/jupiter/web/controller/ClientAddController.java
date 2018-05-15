@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.controller;
 
+import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.util.ResultInfo;
@@ -9,10 +10,7 @@ import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.ClientVO;
 import com.qiein.jupiter.web.service.ClientAddService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 客资录入
@@ -37,6 +35,20 @@ public class ClientAddController extends BaseController {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         clientAddService.addDsClient(clientVO, currentLoginStaff);
+        return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
+    }
+
+    /**
+     * 批量录入
+     *
+     * @param list
+     * @return
+     */
+    @PostMapping("/batch_add_ds_client")
+    public ResultInfo batchAddDsClient(@NotEmptyStr @RequestParam("list") String list) {
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        clientAddService.batchAddDsClient(list, currentLoginStaff);
         return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
     }
 }
