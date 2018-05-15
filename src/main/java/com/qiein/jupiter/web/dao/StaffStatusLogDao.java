@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.dao;
 
 import com.qiein.jupiter.web.entity.po.StaffStatusLog;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -22,5 +23,5 @@ public interface StaffStatusLogDao {
      *
      * @return
      */
-    List<StaffStatusLog> listByStaffId(int staffId);
+    List<StaffStatusLog> listByStaffId(@Param("companyId") int companyId, @Param("staffId") int staffId);
 }

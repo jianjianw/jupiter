@@ -603,4 +603,14 @@ public class StaffController extends BaseController {
         }
     }
 
+    /**
+     * 获取员工状态日志
+     */
+    @GetMapping("/get_staff_status_log")
+    public ResultInfo getStaffStatusLog(@RequestParam("id") int id) {
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        return ResultInfoUtil.success(
+                staffService.getStaffStatusLogById(currentLoginStaff.getCompanyId(), id));
+    }
+
 }

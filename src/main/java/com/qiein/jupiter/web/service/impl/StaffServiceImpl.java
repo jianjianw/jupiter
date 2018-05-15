@@ -860,5 +860,17 @@ public class StaffServiceImpl implements StaffService {
         return staffDao.getGroupStaffById(companyId, staffId);
     }
 
+    /**
+     * 获取员工上下线日志
+     *
+     * @param companyId
+     * @param staffId
+     * @return
+     */
+    @Override
+    public List<StaffStatusLog> getStaffStatusLogById(int companyId, int staffId) {
+        return staffStatusLogDao.listByStaffId(companyId, staffId);
+    }
+
 
 }
