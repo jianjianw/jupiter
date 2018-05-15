@@ -7,7 +7,7 @@
         <result column="STAFFNAME" property="staffName" jdbcType="VARCHAR"/>
         <result column="STATUSCODE" property="statusCode" jdbcType="INTEGER"/>
         <result column="OPERAID" property="operaId" jdbcType="INTEGER"/>
-        <result column="OPERANAME" property="operaName" jdbcType="INTEGER"/>
+        <result column="OPERANAME" property="operaName" jdbcType="VARCHAR"/>
         <result column="LOGTIME" property="logTime" jdbcType="INTEGER"/>
         <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
     </resultMap>

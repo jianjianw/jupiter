@@ -40,6 +40,9 @@ public class StaffStatusLog implements Serializable {
      */
     private int companyId;
 
+    public StaffStatusLog() {
+    }
+
     public StaffStatusLog(int staffId, String staffName, int statusCode,
                           Integer operaId, String operaName, int companyId) {
         this.staffId = staffId;

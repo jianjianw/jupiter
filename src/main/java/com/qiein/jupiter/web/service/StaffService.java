@@ -7,6 +7,7 @@ import com.qiein.jupiter.web.entity.dto.StaffPasswordDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.PermissionPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.entity.po.StaffStatusLog;
 import com.qiein.jupiter.web.entity.vo.*;
 
 import java.util.List;
@@ -284,4 +285,9 @@ public interface StaffService {
      * @return
      */
     List<StaffVO> getGroupStaffById(int companyId, int staffId);
+
+    /**
+     * 获取员工上下线日志
+     */
+    List<StaffStatusLog> getStaffStatusLogById(int companyId, int staffId);
 }
