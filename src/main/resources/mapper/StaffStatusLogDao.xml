@@ -23,6 +23,7 @@
         FROM hm_pub_staff_status_log
         WHERE STAFFID = #{staffId}
         AND COMPANYID = #{companyId}
+        AND LOGTIME >= #{time}
     </select>
 
     <insert id="insert">

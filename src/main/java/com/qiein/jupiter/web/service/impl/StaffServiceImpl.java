@@ -1,16 +1,13 @@
 package com.qiein.jupiter.web.service.impl;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import com.qiein.jupiter.enums.StaffStatusEnum;
 import com.qiein.jupiter.http.CrmBaseApi;
-import com.qiein.jupiter.util.CollectionUtils;
-import com.qiein.jupiter.util.JwtUtil;
-import com.qiein.jupiter.util.MD5Util;
-import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.dao.*;
 import com.qiein.jupiter.web.entity.dto.PageDictDTO;
 import com.qiein.jupiter.web.entity.dto.StaffMarsDTO;
@@ -167,11 +164,12 @@ public class StaffServiceImpl implements StaffService {
         staffPO.setCompanyId(companyId);
         StaffPO staffNow = staffDao.getByIdAndCid(id, companyId);
         // 当要上下线时，判断状态
-        if (statusFlag == 0 || statusFlag == 1) {
-            if (staffNow.getStatusFlag() == 8) {
+        if (statusFlag == StaffStatusEnum.OffLine.getStatusId()
+                || statusFlag == StaffStatusEnum.OffLine.getStatusId()) {
+            if (staffNow.getStatusFlag() == StaffStatusEnum.STOP_ORDER.getStatusId()) {
                 // 停单
                 throw new RException(ExceptionEnum.STAFF_IS_STOP_RECEIPT);
-            } else if (staffNow.getStatusFlag() == 9) {
+            } else if (staffNow.getStatusFlag() == StaffStatusEnum.LIMIT.getStatusId()) {
                 // 满限
                 throw new RException(ExceptionEnum.STAFF_IS_LIMIT);
             }
@@ -380,6 +378,7 @@ public class StaffServiceImpl implements StaffService {
      */
     @Override
     @LoginLog
+    @Transactional
     public StaffPO loginWithCompanyId(String userName, String password, int companyId, String ip) {
         // 加密码加密
         password = MD5Util.getSaltMd5(password);
@@ -414,11 +413,11 @@ public class StaffServiceImpl implements StaffService {
             StaffPO staffPO1 = new StaffPO();
             staffPO1.setId(staffPO.getId());
             staffPO1.setCompanyId(staffPO.getCompanyId());
-            staffPO1.setStatusFlag(StaffStatusEnum.InLine.getStatusId());
+            staffPO1.setStatusFlag(StaffStatusEnum.OnLine.getStatusId());
             staffDao.updateStatusFlag(staffPO1);
             //新增上线日志
             staffStatusLogDao.insert(new StaffStatusLog(
-                    staffPO.getId(), staffPO.getNickName(), StaffStatusEnum.InLine.getStatusId(),
+                    staffPO.getId(), staffPO.getNickName(), StaffStatusEnum.OnLine.getStatusId(),
                     staffPO.getId(), staffPO.getNickName(), staffPO.getCompanyId()
             ));
         }
@@ -776,6 +775,7 @@ public class StaffServiceImpl implements StaffService {
      * @param staffVO
      */
     @Override
+    @Transactional
     public void restoreDelStaff(StaffVO staffVO) {
         // 1.根据手机号，全名，艺名查重，手机号全公司不重复，全名，艺名，在职员工中不能重复
         StaffPO phoneExist = staffDao.getStaffByPhone(staffVO.getCompanyId(), staffVO.getPhone());
@@ -818,6 +818,7 @@ public class StaffServiceImpl implements StaffService {
      * @param groupId
      */
     @Override
+    @Transactional
     public void batchRestoreStaff(int companyId, String staffIds, String roleIds, String password, String groupId) {
         String[] staffIdArr = staffIds.split(CommonConstant.STR_SEPARATOR);
         // 1.恢复员工
@@ -873,7 +874,30 @@ public class StaffServiceImpl implements StaffService {
      */
     @Override
     public List<StaffStatusLog> getStaffStatusLogById(int companyId, int staffId) {
-        return staffStatusLogDao.listByStaffId(companyId, staffId);
+        //获取昨天的时间戳
+        Date yesterDay = TimeUtil.getYesterDay(new Date());
+        int time = TimeUtil.dateToIntMillis(yesterDay);
+        return staffStatusLogDao.listByStaffId(companyId, staffId, time);
+    }
+
+    /**
+     * 退出登录
+     *
+     * @param companyId
+     * @param staffId
+     */
+    @Override
+    @Transactional
+    public void logout(int companyId, int staffId, String staffName) {
+        StaffPO staffNow = staffDao.getByIdAndCid(staffId, companyId);
+        //如果员工当前为在线状态，则让他下线
+        if (staffNow.getStatusFlag() == StaffStatusEnum.OnLine.getStatusId()) {
+            //更新为下线状态，新增日志
+            staffNow.setStatusFlag(StaffStatusEnum.OffLine.getStatusId());
+            staffDao.updateStatusFlag(staffNow);
+            staffStatusLogDao.insert(new StaffStatusLog(staffId, staffName,
+                    StaffStatusEnum.OffLine.getStatusId(), staffId, staffName, companyId));
+        }
     }
 
 
