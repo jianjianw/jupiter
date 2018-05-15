@@ -263,5 +263,13 @@
 		 );
 	</insert>
 
+    <!--插入客资备注表-->
+    <insert id="addExcelKzRemark" parameterType="map">
+        INSERT INTO ${tabName}
+            (KZID,CONTENT,COMPANYID)
+        VALUES
+            (SELECT temp.KZID,temp.MEMO,temp.COMPANYID  FROM ${tempName} temp WHERE temp.OPERAID = #{staffId})
+    </insert>
+
 
 </mapper>

@@ -98,7 +98,7 @@ public class ClientExcelDTO implements Serializable {
     /**
      * 邀约客服ID
      */
-    private int appointId;
+    private int appointorId;
     /**
      * 邀约客服姓名
      */
@@ -299,12 +299,12 @@ public class ClientExcelDTO implements Serializable {
         this.collectorName = collectorName;
     }
 
-    public int getAppointId() {
-        return appointId;
+    public int getAppointorId() {
+        return appointorId;
     }
 
-    public void setAppointId(int appointId) {
-        this.appointId = appointId;
+    public void setAppointorId(int appointorId) {
+        this.appointorId = appointorId;
     }
 
     public String getAppointName() {
