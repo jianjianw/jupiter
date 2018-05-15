@@ -19,10 +19,9 @@ public interface StaffStatusLogDao {
     int insert(StaffStatusLog staffStatusLog);
 
     /**
-     * 根据员工Id获取日志,获取一天之内的
+     * 根据员工Id获取日志
      *
      * @return
      */
-    List<StaffStatusLog> listByStaffId(@Param("companyId") int companyId,
-                                       @Param("staffId") int staffId, @Param("time") int time);
+    List<StaffStatusLog> listByStaffId(@Param("companyId") int companyId, @Param("staffId") int staffId);
 }

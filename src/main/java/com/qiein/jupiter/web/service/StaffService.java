@@ -290,9 +290,4 @@ public interface StaffService {
      * 获取员工上下线日志
      */
     List<StaffStatusLog> getStaffStatusLogById(int companyId, int staffId);
-
-    /**
-     * 退出登录
-     */
-    void logout(int companyId, int staffId, String staffName);
 }

@@ -613,15 +613,4 @@ public class StaffController extends BaseController {
                 staffService.getStaffStatusLogById(currentLoginStaff.getCompanyId(), id));
     }
 
-    /**
-     * 用户退出登录
-     */
-
-    @GetMapping("/logout")
-    public ResultInfo logout() {
-        StaffPO currentLoginStaff = getCurrentLoginStaff();
-        staffService.logout(currentLoginStaff.getCompanyId(),
-                currentLoginStaff.getId(), currentLoginStaff.getNickName());
-        return ResultInfoUtil.success();
-    }
 }

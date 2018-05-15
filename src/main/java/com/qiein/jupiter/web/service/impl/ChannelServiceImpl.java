@@ -25,7 +25,6 @@ import com.qiein.jupiter.web.service.ChannelService;
 @Service
 public class ChannelServiceImpl implements ChannelService {
 
-
     @Autowired
     private ChannelDao channelDao;
 
@@ -200,5 +199,4 @@ public class ChannelServiceImpl implements ChannelService {
     public List<ChannelVO> getAllShowSource(int companyId) {
         return channelDao.getAllShowSource(companyId);
     }
-
 }

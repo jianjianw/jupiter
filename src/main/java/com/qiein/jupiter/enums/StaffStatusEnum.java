@@ -13,7 +13,7 @@ public enum StaffStatusEnum {
     /**
      * 上线
      */
-    OnLine(1),
+    InLine(1),
     /**
      * 停单
      */
