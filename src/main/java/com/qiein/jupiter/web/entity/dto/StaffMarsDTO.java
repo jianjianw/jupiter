@@ -17,22 +17,73 @@ public class StaffMarsDTO extends BaseEntity {
 	 * 手机号
 	 */
 	private String phone;
+	/**
+	 * 全名
+	 */
 	private String userName;
+	/**
+	 * 所属公司编号
+	 */
 	private Integer companyId;
+	/**
+	 * 头像图片地址
+	 */
 	private String headImg;
+	/**
+	 * 员工状态标识
+	 */
 	private Integer statusFlag;
+	/**
+	 * 今日接单数
+	 */
 	private Integer todayNum;
+	/**
+	 * 权重
+	 */
 	private Integer weight;
+	/**
+	 * 今日上线
+	 */
 	private Integer limitDay;
+	/**
+	 * 最后推送时间
+	 */
 	private Integer lastPushTime;
+	/**
+	 * 不接受的渠道编号
+	 */
 	private String limitChannelIds;
+	/**
+	 * 不接受的渠道名称
+	 */
 	private String limitChannelNames;
+	/**
+	 * 不接受的拍摄地编号
+	 */
 	private String limitShopIds;
+	/**
+	 * 不接受的拍摄地名称
+	 */
 	private String limitShopNames;
+	/**
+	 * 最后登录时间
+	 */
 	private Integer lastLoginTime;
+	/**
+	 * 最后登录ip
+	 */
 	private String lastLoginIp;
+	/**
+	 * 最后登出时间
+	 */
 	private Integer lastLogoutTime;
+	/**
+	 * 最后登出ip
+	 */
 	private String lastLogoutIp;
+	/**
+	 * 员工所属小组
+	 */
 	private String groupId;
 
 	public String getNickName() {

@@ -31,10 +31,6 @@ import com.qiein.jupiter.constant.RedisConstant;
 import com.qiein.jupiter.constant.RoleConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
-import com.qiein.jupiter.util.CollectionUtils;
-import com.qiein.jupiter.util.JwtUtil;
-import com.qiein.jupiter.util.MD5Util;
-import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.dto.StaffPasswordDTO;
 import com.qiein.jupiter.web.service.CompanyService;
@@ -80,6 +76,9 @@ public class StaffServiceImpl implements StaffService {
 
     @Autowired
     private StatusService statusService;
+
+    @Autowired
+    private CrmBaseApi crmBaseApi;
 
     /**
      * 员工新增
@@ -607,7 +606,7 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public void changeStaff(StaffChangeVO staffChangeVO) {
         //TODO 调用平台接口
-//        clientInfoDao.changeStaff(staffChangeVO);
+        clientInfoDao.changeStaff(staffChangeVO);
     }
 
     /**

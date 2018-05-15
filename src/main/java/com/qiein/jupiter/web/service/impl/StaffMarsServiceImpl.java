@@ -174,19 +174,21 @@ public class StaffMarsServiceImpl implements StaffMarsService {
     @Override
     public void editStaffMars(StaffMarsDTO staffMarsDTO) {
 
+        //id不能为空
         if (staffMarsDTO.getId()==0){
             throw new RException(ExceptionEnum.ID_IS_NULL);
         }
-        if (staffMarsDTO.getLimitShopIds()!=null && staffMarsDTO.getLimitShopIds().trim().length()!=0){   //改不接单的拍摄地则同时修改拍摄地名称
+
+        if (staffMarsDTO.getLimitShopIds()!=null && staffMarsDTO.getLimitShopIds().trim().length()!=0){   //如果限制拍摄地，改不接单的拍摄地则同时修改拍摄地名称
             List<String> list = shopDao.getLimitShopNamesByIds(staffMarsDTO.getLimitShopIds().split(","),staffMarsDTO.getCompanyId());
             String limitShopNames ="";
             for (String s:list)limitShopNames += s+",";
             staffMarsDTO.setLimitShopNames(limitShopNames.substring(0,limitShopNames.length()-1));
-        }else if (staffMarsDTO.getLimitShopIds()!=null && staffMarsDTO.getLimitShopIds().trim().length()==0){
+        }else if (staffMarsDTO.getLimitShopIds()!=null && staffMarsDTO.getLimitShopIds().trim().length()==0){   //如果不限制拍摄地，将拍摄地名称改为空字符串
             staffMarsDTO.setLimitShopNames("");
         }
 
-        if(staffMarsDTO.getLimitChannelIds()!=null && staffMarsDTO.getLimitChannelIds().trim().length()!=0){    //  修改不接单的渠道同时修改渠道名称
+        if(staffMarsDTO.getLimitChannelIds()!=null && staffMarsDTO.getLimitChannelIds().trim().length()!=0){    //如果限制来源，修改不接单的渠道同时修改渠道名称
             List<String> list = channelDao.getChannelNamesByIds(staffMarsDTO.getCompanyId(),staffMarsDTO.getLimitChannelIds().split(","));
             String limitChannelNames = "";
             for (String s:list)limitChannelNames+= s+",";
