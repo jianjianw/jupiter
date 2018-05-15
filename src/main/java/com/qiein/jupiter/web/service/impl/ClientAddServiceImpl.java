@@ -1,8 +1,9 @@
 package com.qiein.jupiter.web.service.impl;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
+import com.alibaba.fastjson.JSONArray;
+import com.qiein.jupiter.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +12,6 @@ import com.qiein.jupiter.constant.ChannelConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.http.CrmBaseApi;
-import com.qiein.jupiter.util.JsonFmtUtil;
-import com.qiein.jupiter.util.MobileLocationUtil;
-import com.qiein.jupiter.util.NumUtil;
-import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.ChannelDao;
 import com.qiein.jupiter.web.dao.CompanyDao;
 import com.qiein.jupiter.web.dao.GroupDao;
@@ -129,5 +126,94 @@ public class ClientAddServiceImpl implements ClientAddService {
         }
     }
 
+    @Override
+    public JSONArray changeStrToInfo(String text) {
+        String[] strArr = text.split("\\n");
+        JSONArray jsonArr = new JSONArray();
+        JSONObject json = null;
+        String[] infoArrOld = null;
+        List<String> infoArr = new LinkedList<String>();
+        StringBuffer sb = null;
+        for (String str : strArr) {
+            if (StringUtil.isEmpty(str)) {
+                continue;
+            }
+            sb = new StringBuffer();
+            infoArrOld = str.split("\\s");
+            infoArr.clear();
+            for (String s : infoArrOld) {
+                if (StringUtil.isNotEmpty(s)) {
+                    infoArr.add(s);
+                }
+            }
+            json = new JSONObject();
+            Iterator<String> it = infoArr.iterator();
+            while (it.hasNext()) {
+                String info = it.next();
+                //1.客资姓名
+                if (StringUtil.isChinese(info) && info.length() < 6 && !json.containsKey("name")) {
+                    json.put("name", info);
+                    it.remove();
+                    continue;
+                }
+                // 2.客资手机号
+                if (RegexUtil.checkMobile(info) && !json.containsKey("phone")) {
+                    json.put("phone", info);
+                    it.remove();
+                    continue;
+                }
+                // 3.客资微信号
+                if (StringUtil.checkWeChat(info) && !json.containsKey("wechat")) {
+                    json.put("wechat", info);
+                    it.remove();
+                    continue;
+                }
+                // 4.客资QQ号
+                if (StringUtil.isQQCorrect(info) && !json.containsKey("qq")) {
+                    json.put("qq", info);
+                    it.remove();
+                    continue;
+                }
+                //5.客资旺旺号
+                if (StringUtil.checkWeChat(info) && !json.containsKey("ww")) {
+                    json.put("ww", info);
+                    it.remove();
+                    continue;
+                }
+                //6.配偶姓名
+                if (StringUtil.isChinese(info) && info.length() < 6 && !json.containsKey("matename")) {
+                    json.put("matename", info);
+                    it.remove();
+                    continue;
+                }
+                //7.配偶手机号
+                if (RegexUtil.checkMobile(info) && !json.containsKey("matephone")) {
+                    json.put("matephone", info);
+                    it.remove();
+                    continue;
+                }
+                // 8.配偶微信号
+                if (StringUtil.checkWeChat(info) && !json.containsKey("matewechat")) {
+                    json.put("matewechat", info);
+                    it.remove();
+                    continue;
+                }
+                // 9.配偶QQ号
+                if (StringUtil.isQQCorrect(info) && !json.containsKey("mateqq")) {
+                    json.put("mateqq", info);
+                    it.remove();
+                    continue;
+                }
+
+            }
+            // 10.其余放入备注
+            for (String memo : infoArr) {
+                sb.append(memo);
+            }
+            json.put("memo", StringUtil.nullToStrTrim(sb.toString()));
+            jsonArr.add(json);
+        }
+        return jsonArr;
+    }
 
 }
