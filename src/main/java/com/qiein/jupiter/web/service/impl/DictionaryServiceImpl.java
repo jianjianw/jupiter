@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.qiein.jupiter.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -145,12 +146,15 @@ public class DictionaryServiceImpl implements DictionaryService {
         for (DictionaryPO dictionaryPO : dictByCompanyId) {
             List<DictionaryPO> dictList;
             //判断是否存在该key
-            if (map.get(dictionaryPO.getDicType()) == null) {
+            String key = dictionaryPO.getDicType();
+            //转换为驼峰
+            String type = StringUtil.camelCaseName(key);
+            if (map.get(type) == null) {
                 dictList = new ArrayList<>();
                 dictList.add(dictionaryPO);
-                map.put(dictionaryPO.getDicType(), dictList);
+                map.put(type, dictList);
             } else {
-                dictList = map.get(dictionaryPO.getDicType());
+                dictList = map.get(type);
                 dictList.add(dictionaryPO);
             }
         }

@@ -13,8 +13,7 @@ import com.qiein.jupiter.web.entity.dto.PageDictDTO;
 import com.qiein.jupiter.web.entity.dto.StaffMarsDTO;
 import com.qiein.jupiter.web.entity.po.*;
 import com.qiein.jupiter.web.entity.vo.*;
-import com.qiein.jupiter.web.service.SourceService;
-import com.qiein.jupiter.web.service.StatusService;
+import com.qiein.jupiter.web.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +34,6 @@ import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.dto.StaffPasswordDTO;
-import com.qiein.jupiter.web.service.CompanyService;
-import com.qiein.jupiter.web.service.StaffService;
 
 @Service
 public class StaffServiceImpl implements StaffService {
@@ -81,6 +78,9 @@ public class StaffServiceImpl implements StaffService {
 
     @Autowired
     private CrmBaseApi crmBaseApi;
+
+    @Autowired
+    private DictionaryService dictionaryService;
 
     /**
      * 员工新增
@@ -598,6 +598,8 @@ public class StaffServiceImpl implements StaffService {
         pageDictDTO.setSourceMap(sourceService.getSourcePageMap(companyId));
         //状态字典
         pageDictDTO.setStatusMap(statusService.getStatusDictMap(companyId));
+        //公共字典
+        pageDictDTO.setCommonMap(dictionaryService.getDictMapByCid(companyId));
         staffBaseInfoVO.setPageDict(pageDictDTO);
         return staffBaseInfoVO;
     }
