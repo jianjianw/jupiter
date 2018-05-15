@@ -304,7 +304,7 @@
             <if test="info.appointName != null and info.appointName != ''">
                 APPOINTNAME = #{info.appointName},
             </if>
-            <if test="info.createTime != null and info.createTime == true ">
+            <if test="info.currentTime != null and info.currentTime == true ">
                 CREATETIME = unix_timestamp(now()),
             </if>
         </set>

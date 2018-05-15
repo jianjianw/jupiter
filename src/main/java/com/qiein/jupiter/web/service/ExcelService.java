@@ -51,8 +51,7 @@ public interface ExcelService {
      * 编辑客资缓存记录
      *
      * @param companyId
-     * @param kzIds
      * @param info
      */
-    void editKz(int companyId, String kzIds, ClientExcelDTO info);
+    void editKz(int companyId, ClientExcelDTO info);
 }

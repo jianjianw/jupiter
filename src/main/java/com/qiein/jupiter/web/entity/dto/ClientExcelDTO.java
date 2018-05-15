@@ -159,6 +159,14 @@ public class ClientExcelDTO implements Serializable {
      */
     @Excel(name = "省份")
     private String address;
+    /**
+     * 客资ID拼接
+     */
+    private String kzIds;
+    /**
+     * 是否设置成当前时间
+     */
+    private boolean currentTime;
 
     public boolean checkWrongInfo() {
         if (NumUtil.isNull(getTypeId())
@@ -433,5 +441,21 @@ public class ClientExcelDTO implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getKzIds() {
+        return kzIds;
+    }
+
+    public void setKzIds(String kzIds) {
+        this.kzIds = kzIds;
+    }
+
+    public boolean isCurrentTime() {
+        return currentTime;
+    }
+
+    public void setCurrentTime(boolean currentTime) {
+        this.currentTime = currentTime;
     }
 }

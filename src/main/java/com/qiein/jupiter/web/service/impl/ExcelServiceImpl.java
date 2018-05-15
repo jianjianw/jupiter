@@ -216,12 +216,11 @@ public class ExcelServiceImpl implements ExcelService {
      * 编辑客资缓存记录
      *
      * @param companyId
-     * @param kzIds
      * @param info
      */
     @Transactional(rollbackFor = Exception.class)
-    public void editKz(int companyId, String kzIds, ClientExcelDTO info) {
-        String[] kzIdArr = kzIds.split(CommonConstant.STR_SEPARATOR);
+    public void editKz(int companyId, ClientExcelDTO info) {
+        String[] kzIdArr = info.getKzIds().split(CommonConstant.STR_SEPARATOR);
         excelDao.batchEditTemp(DBSplitUtil.getTable(TableEnum.temp, companyId), kzIdArr, info);
         if (StringUtil.isNotEmpty(info.getTypeName())) {
             // 设置咨询类型ID

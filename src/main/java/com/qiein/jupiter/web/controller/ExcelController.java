@@ -90,10 +90,10 @@ public class ExcelController extends BaseController {
      * @return
      */
     @PostMapping("/batch_edit_temp")
-    public ResultInfo batchEditTemp(@NotEmptyStr @RequestBody String kzIds, @RequestBody ClientExcelDTO info) {
+    public ResultInfo batchEditTemp(@RequestBody ClientExcelDTO info) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        excelService.editKz(currentLoginStaff.getCompanyId(), kzIds, info);
+        excelService.editKz(currentLoginStaff.getCompanyId(), info);
         return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
     }
 
