@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
@@ -32,7 +33,14 @@ public class ExcelServiceImpl implements ExcelService {
     @Autowired
     private ExcelDao excelDao;
 
-    @Override
+    /**
+     * 导入客资
+     *
+     * @param file
+     * @param currentLoginStaff
+     * @throws Exception
+     */
+    @Transactional(rollbackFor = Exception.class)
     public void importExcel(MultipartFile file, StaffPO currentLoginStaff) throws Exception {
         ImportParams params = new ImportParams();
         // 表格标题行数,默认0
@@ -130,7 +138,7 @@ public class ExcelServiceImpl implements ExcelService {
 
 
     /**
-     * -- 获取错误记录 --
+     * 获取错误记录
      **/
     public HashMap<String, List<ClientExcelDTO>> getAllUploadRecord(int companyId, int staffId) {
         HashMap<String, List<ClientExcelDTO>> map = new HashMap<>();
@@ -180,6 +188,7 @@ public class ExcelServiceImpl implements ExcelService {
      * @param companyId
      * @param staffId   gaoxiaoli
      */
+    @Transactional(rollbackFor = Exception.class)
     public void tempKzMoveToInfo(int companyId, int staffId) {
         //添加客资基本表
         excelDao.insertBaseInfoByStaffId(DBSplitUtil.getInfoTabName(companyId), DBSplitUtil.getTable(TableEnum.temp, companyId), staffId);
@@ -191,5 +200,54 @@ public class ExcelServiceImpl implements ExcelService {
         excelDao.deleteTempByStaffId(DBSplitUtil.getTable(TableEnum.temp, companyId), staffId);
     }
 
+    /**
+     * 批量删除客资缓存记录
+     *
+     * @param companyId
+     * @param operaId
+     * @param kzIds
+     */
+    public void batchDeleteTemp(int companyId, int operaId, String kzIds) {
+        String[] kzIdArr = kzIds.split(CommonConstant.STR_SEPARATOR);
+        excelDao.batchDeleteTemp(DBSplitUtil.getTable(TableEnum.temp, companyId), kzIdArr, operaId);
+    }
+
+    /**
+     * 编辑客资缓存记录
+     *
+     * @param companyId
+     * @param kzIds
+     * @param info
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void editKz(int companyId, String kzIds, ClientExcelDTO info) {
+        String[] kzIdArr = kzIds.split(CommonConstant.STR_SEPARATOR);
+        excelDao.batchEditTemp(DBSplitUtil.getTable(TableEnum.temp, companyId), kzIdArr, info);
+        if (StringUtil.isNotEmpty(info.getTypeName())) {
+            // 设置咨询类型ID
+            excelDao.updateType(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId());// 导入后执行脚本补全数据
+        }
+        if (StringUtil.isNotEmpty(info.getSourceName())) {
+            // 设置渠道ID
+            excelDao.updateSrcIdAndType(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId());
+        }
+        if (StringUtil.isNotEmpty(info.getStatusName())) {
+            // 设置状态ID
+            excelDao.updateStatusName(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId());
+            excelDao.updateClassId(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId());
+        }
+        if (StringUtil.isNotEmpty(info.getShopName())) {
+            // 更新门店ID
+            excelDao.updateShopId(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId());
+        }
+        if (StringUtil.isNotEmpty(info.getCollectorName())) {
+            // 更新提报人ID
+            excelDao.updateCollectorId(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId());
+        }
+        if (StringUtil.isNotEmpty(info.getAppointName())) {
+            // 更新邀约员ID
+            excelDao.updateAppointId(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId());
+        }
+    }
 
 }

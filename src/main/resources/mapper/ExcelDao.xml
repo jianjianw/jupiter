@@ -271,5 +271,50 @@
             (SELECT temp.KZID,temp.MEMO,temp.COMPANYID  FROM ${tempName} temp WHERE temp.OPERAID = #{staffId})
     </insert>
 
+    <!-- 批量删除员工客资缓存记录 -->
+    <delete id="batchDeleteTemp" parameterType="map" >
+        DELETE FROM ${tempName}
+        WHERE OPERAID = ${operaId}
+        AND KZID IN
+        <foreach collection="kzIdArr" item="kzid" index="index"
+                 open="(" close=")" separator=",">
+            #{kzid}
+        </foreach>
+    </delete>
+
+    <!--批量编辑客资缓存记录-->
+    <update id="batchEditTemp" parameterType="map">
+        UPDATE ${tempName}
+        <set>
+            <if test="info.typeName != null and info.typeName != ''">
+                TYPENAME = #{info.typeName},
+            </if>
+            <if test="info.statusName != null and info.statusName != ''">
+                STATUSNAME = #{info.statusName},
+            </if>
+            <if test="info.sourceName != null and info.sourceName != ''">
+                SOURCENAME = #{info.sourceName},
+            </if>
+            <if test="info.shopName != null and info.shopName != ''">
+                SHOPNAME = #{info.shopName},
+            </if>
+            <if test="info.collectorName != null and info.collectorName != ''">
+                COLLECTORNAME = #{info.collectorName},
+            </if>
+            <if test="info.appointName != null and info.appointName != ''">
+                APPOINTNAME = #{info.appointName},
+            </if>
+            <if test="info.createTime != null and info.createTime != ''">
+                CREATETIME = #{info.createTime},
+            </if>
+        </set>
+        WHERE OPERAID = #{info.operaId}
+        AND KZID IN
+        <foreach collection="kzIdArr" item="kzid" index="index" open="(" close=")" separator=",">
+            #{kzid}
+        </foreach>
+    </update>
+
+
 
 </mapper>

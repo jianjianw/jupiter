@@ -134,4 +134,21 @@ public interface ExcelDao {
      */
     void addExcelKzRemark(@Param("tabName") String tabName, @Param("tempName") String tempName, @Param("staffId") Integer staffId);
 
+    /**
+     * 批量删除员工客资缓存记录
+     *
+     * @param tempName
+     * @param kzIdArr
+     * @param operaId
+     */
+    void batchDeleteTemp(@Param("tempName") String tempName, @Param("kzIdArr") String[] kzIdArr, @Param("operaIid") int operaId);
+
+    /**
+     * 批量修改员工客资缓存记录
+     *
+     * @param tempName
+     * @param kzIdArr
+     * @param info
+     */
+    void batchEditTemp(@Param("tempName") String tempName, @Param("kzIdArr") String[] kzIdArr, @Param("info") ClientExcelDTO info);
 }

@@ -1,9 +1,11 @@
 package com.qiein.jupiter.web.controller;
 
+import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.util.ExportExcelUtil;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
+import com.qiein.jupiter.web.entity.dto.ClientExcelDTO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.service.ExcelService;
 import com.qiein.jupiter.web.service.StaffService;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import sun.misc.UCDecoder;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.swing.undo.CannotUndoException;
@@ -66,6 +69,32 @@ public class ExcelController extends BaseController {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         excelService.tempKzMoveToInfo(currentLoginStaff.getCompanyId(), currentLoginStaff.getId());
         return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
+    }
+
+    /**
+     * 批量删除客资缓存记录
+     *
+     * @return
+     */
+    @PostMapping("/batch_delete_temp")
+    public ResultInfo batchDeleteTemp(@NotEmptyStr @RequestParam("kzIds") String kzIds) {
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        excelService.batchDeleteTemp(currentLoginStaff.getCompanyId(), currentLoginStaff.getId(), kzIds);
+        return ResultInfoUtil.success(TigMsgEnum.DELETE_SUCCESS);
+    }
+
+    /**
+     * 批量编辑客资
+     *
+     * @return
+     */
+    @PostMapping("/batch_edit_temp")
+    public ResultInfo batchEditTemp(@NotEmptyStr @RequestParam("kzIds") String kzIds, @RequestBody ClientExcelDTO info) {
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        excelService.editKz(currentLoginStaff.getCompanyId(), kzIds, info);
+        return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
     }
 
     /**
