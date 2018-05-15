@@ -4,13 +4,17 @@ import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.web.dao.SourceDao;
 import com.qiein.jupiter.web.entity.po.SourcePO;
+import com.qiein.jupiter.web.entity.vo.SourceDictVO;
 import com.qiein.jupiter.web.entity.vo.SourceVO;
 import com.qiein.jupiter.web.service.SourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class SourceServiceImpl implements SourceService {
@@ -114,5 +118,28 @@ public class SourceServiceImpl implements SourceService {
     @Override
     public List<SourcePO> getSourceListByChannelId(Integer channelId, Integer companyId) {
         return sourceDao.getSourceListByChannelId(channelId, companyId);
+    }
+
+    /**
+     * 获取公司所有的来源Map key 为id  value 为图片地址
+     *
+     * @param companyId
+     * @return
+     */
+    @Override
+    public Map<String, SourceDictVO> getSourcePageMap(int companyId) {
+        //获取所有
+        List<SourcePO> allSourceList = sourceDao.getAllSourceList(companyId);
+        Map<String, SourceDictVO> pageDictMap = new HashMap<>();
+        for (SourcePO sourcePO : allSourceList) {
+            //渠道字典
+            SourceDictVO sourceDictVO = new SourceDictVO();
+            sourceDictVO.setId(sourcePO.getId());
+            sourceDictVO.setSrcImg(sourcePO.getSrcImg());
+            sourceDictVO.setSrcName(sourcePO.getSrcName());
+            //Id
+            pageDictMap.put(String.valueOf(sourcePO.getId()), sourceDictVO);
+        }
+        return pageDictMap;
     }
 }

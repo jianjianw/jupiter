@@ -17,7 +17,8 @@ public interface SourceDao extends BaseDao<SourcePO> {
      * @param companyId
      * @return
      */
-    Integer checkSource(@Param("srcName") String srcName, @Param("channelId") Integer channelId, @Param("companyId") Integer companyId);
+    Integer checkSource(@Param("srcName") String srcName, @Param("channelId") Integer channelId,
+                        @Param("companyId") Integer companyId);
 
     /**
      * 根据渠道编号获取旗下的来源列表
@@ -54,7 +55,8 @@ public interface SourceDao extends BaseDao<SourcePO> {
      * @param companyId
      * @return
      */
-    Integer updateChannelName(@Param("channelId") Integer channelId, @Param("channelName") String channelName, @Param("companyId") Integer companyId);
+    Integer updateChannelName(@Param("channelId") Integer channelId, @Param("channelName") String channelName,
+                              @Param("companyId") Integer companyId);
 
     /**
      * 修改向下拖拽排序时波及的来源的排序
@@ -64,7 +66,8 @@ public interface SourceDao extends BaseDao<SourcePO> {
      * @param companyId
      * @return
      */
-    Integer updateDownPriority(@Param("xPriority") Integer xPriority, @Param("dPriority") Integer dPriority, @Param("companyId") Integer companyId);
+    Integer updateDownPriority(@Param("xPriority") Integer xPriority, @Param("dPriority") Integer dPriority,
+                               @Param("companyId") Integer companyId);
 
     /**
      * 修改向上拖拽排序时波及的来源的排序
@@ -74,7 +77,8 @@ public interface SourceDao extends BaseDao<SourcePO> {
      * @param companyId
      * @return
      */
-    Integer updateUpPriority(@Param("xPriority") Integer xPriority, @Param("dPriority") Integer dPriority, @Param("companyId") Integer companyId);
+    Integer updateUpPriority(@Param("xPriority") Integer xPriority, @Param("dPriority") Integer dPriority,
+                             @Param("companyId") Integer companyId);
 
     /**
      * 根据来源ID获取显示可用的来源信息
@@ -105,5 +109,14 @@ public interface SourceDao extends BaseDao<SourcePO> {
      * @param typeId
      * @return
      */
-    SourcePO getSourceByNameAndType(@Param("companyId") int companyId, @Param("srcName") String srcName, @Param("typeId") int typeId);
+    SourcePO getSourceByNameAndType(@Param("companyId") int companyId, @Param("srcName") String srcName,
+                                    @Param("typeId") int typeId);
+
+    /**
+     * 获取公司下所有的来源信息，包括删除的
+     *
+     * @param companyId
+     * @return
+     */
+    List<SourcePO> getAllSourceList(int companyId);
 }

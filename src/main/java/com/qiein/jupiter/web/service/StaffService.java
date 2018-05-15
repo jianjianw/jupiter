@@ -277,13 +277,6 @@ public interface StaffService {
     List<StaffPO> getDelStaffListBySearchKey(int companyId, String searchKey);
 
     /**
-     * 导出
-     *
-     * @return
-     */
-    List<StaffPO> exportStaff();
-
-    /**
      * 根据员工ID，获取小组员工信息
      *
      * @param companyId

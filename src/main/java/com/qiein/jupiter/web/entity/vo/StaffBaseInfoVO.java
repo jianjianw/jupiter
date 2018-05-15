@@ -1,11 +1,12 @@
 package com.qiein.jupiter.web.entity.vo;
 
 
-import com.qiein.jupiter.web.entity.po.GroupPO;
+import com.qiein.jupiter.web.entity.dto.PageDictDTO;
 import com.qiein.jupiter.web.entity.po.PermissionPO;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 员工基础信息
@@ -22,20 +23,20 @@ public class StaffBaseInfoVO implements Serializable {
      */
     private StaffDetailVO staffDetail;
     /**
-     * 员工所在小组的信息
-     */
-    private List<GroupPO> group;
-    /**
      * 公司
      */
     private CompanyVO company;
+    /**
+     * 页面字典
+     */
+    private PageDictDTO pageDict;
 
-    public List<GroupPO> getGroup() {
-        return group;
+    public PageDictDTO getPageDict() {
+        return pageDict;
     }
 
-    public void setGroup(List<GroupPO> group) {
-        this.group = group;
+    public void setPageDict(PageDictDTO pageDict) {
+        this.pageDict = pageDict;
     }
 
     public static long getSerialVersionUID() {

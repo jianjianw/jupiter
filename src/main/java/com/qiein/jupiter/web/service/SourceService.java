@@ -1,9 +1,11 @@
 package com.qiein.jupiter.web.service;
 
 import com.qiein.jupiter.web.entity.po.SourcePO;
+import com.qiein.jupiter.web.entity.vo.SourceDictVO;
 import com.qiein.jupiter.web.entity.vo.SourceVO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 来源Service
@@ -57,4 +59,12 @@ public interface SourceService {
      * @return
      */
     List<SourcePO> getSourceListByChannelId(Integer channelId, Integer companyId);
+
+    /**
+     * 获取公司的渠道字典
+     *
+     * @param companyId
+     * @return
+     */
+    Map<String, SourceDictVO> getSourcePageMap(int companyId);
 }

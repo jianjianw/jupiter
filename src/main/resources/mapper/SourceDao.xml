@@ -22,7 +22,7 @@
     </sql>
 
     <select id="getByIdAndCid" parameterType="Integer" resultMap="baseMap">
-        SELECT 
+        SELECT
         <include refid="baseColumn"/>
         FROM
         hm_crm_source
@@ -145,14 +145,14 @@
     <!--修改指定来源排序-->
     <update id="updatePriority" parameterType="Integer">
         UPDATE
-          hm_crm_source
+        hm_crm_source
         <set>
             <if test="priority != null and priority !=''">
                 PRIORITY = #{priority}
             </if>
         </set>
         WHERE
-          COMPANYID = #{companyId} AND ID = #{id}
+        COMPANYID = #{companyId} AND ID = #{id}
     </update>
 
     <delete id="delete" parameterType="Integer">
@@ -218,11 +218,11 @@
     <!--根据来源ID获取显示可用的来源信息-->
     <select id="getShowSourceById" parameterType="Integer" resultMap="baseMap">
         SELECT
-            <include refid="baseColumn"/>
+        <include refid="baseColumn"/>
         FROM
-            hm_crm_source
+        hm_crm_source
         WHERE
-            COMPANYID = #{companyId}
+        COMPANYID = #{companyId}
         AND ID = #{id}
         AND ISSHOW = 1
     </select>
@@ -230,12 +230,12 @@
     <!--获取员工上个月录入使用来源的次数排序-->
     <select id="getLastMonthSrcSort" parameterType="map" resultType="java.lang.Integer">
         SELECT
-            src.ID
+        src.ID
         FROM
-            ${tableName} info
+        ${tableName} info
         LEFT JOIN hm_crm_source src ON src.COMPANYID = info.COMPANYID AND src.ID = info.SOURCEID
         WHERE
-            info.ISDEL = 0
+        info.ISDEL = 0
         AND info.COMPANYID = #{companyId}
         AND info.COLLECTORID = #{staffId}
         AND DATE_SUB( CURDATE( ), INTERVAL 30 DAY ) &lt;= FROM_UNIXTIME( info.CREATETIME )
@@ -245,19 +245,29 @@
             #{typeId}
         </foreach>
         GROUP BY
-            src.ID
+        src.ID
         ORDER BY COUNT( 1 ) DESC;
     </select>
 
     <!--根据名字类型，获取来源信息-->
     <select id="getSourceByNameAndType" parameterType="map" resultMap="baseMap">
         SELECT
-            <include refid="baseColumn"/>
+        <include refid="baseColumn"/>
         FROM
-            hm_crm_source
+        hm_crm_source
         WHERE
         SRCNAME = #{srcName}
         AND TYPEID = #{typeId}
-        AND   COMPANYID = #{companyId}
+        AND COMPANYID = #{companyId}
+    </select>
+
+    <!--获取公司所有的来源列表 包括停用的-->
+    <select id="getAllSourceList" resultMap="baseMap">
+        SELECT
+        <include refid="baseColumn"/>
+        FROM
+        hm_crm_source
+        WHERE
+        COMPANYID = #{companyId}
     </select>
 </mapper>

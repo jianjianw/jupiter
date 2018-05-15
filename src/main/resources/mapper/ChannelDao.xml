@@ -211,7 +211,7 @@
             <foreach collection="typeList" item="typeId" index="index" open="(" close=")" separator=",">
                 #{typeId}
             </foreach>
-        ORDER BY channel.TYPEID, channel.PRIORITY ,channel.ID,src.PRIORITY, src.ID
+        ORDER BY channel.TYPEID, channel.PRIORITY, channel.ID, src.PRIORITY, src.ID
     </select>
 
     <!--根据ID获取显示可用的渠道-->
@@ -226,25 +226,25 @@
         AND ISSHOW = 1
     </select>
 
-    <!--获取员工上个月录入使用渠道的次数排序-->
-    <select id="getLastMonthChannelSort" parameterType="map" resultType="java.lang.Integer">
+    <!--获取员工7天内录入使用渠道的次数排序-->
+    <select id="getHistoryChannelSort" parameterType="map" resultMap="ChannelVOMap">
         SELECT
-            channel.ID
+            src.CHANNELID ID, src.CHANNELNAME, src.ID AS SRCID, src.SRCNAME
         FROM
             ${tableName} info
-        LEFT JOIN hm_crm_channel channel ON channel.COMPANYID = info.COMPANYID AND channel.ID = info.CHANNELID
+        LEFT JOIN hm_crm_source src ON info.SOURCEID = src.ID AND src.COMPANYID = #{companyId}
         WHERE
             info.ISDEL = 0
         AND info.COMPANYID = #{companyId}
         AND info.COLLECTORID = #{staffId}
-        AND DATE_SUB( CURDATE(), INTERVAL 30 DAY ) &lt;= FROM_UNIXTIME( info.CREATETIME )
-        AND channel.ISSHOW = 1
-        AND channel.TYPEID IN
+        AND DATE_SUB( CURDATE(), INTERVAL 10 DAY ) &lt;= FROM_UNIXTIME( info.CREATETIME )
+        AND src.ISSHOW = 1
+        AND src.TYPEID IN
         <foreach collection="typeList" item="typeId" index="index" open="(" close=")" separator=",">
             #{typeId}
         </foreach>
         GROUP BY
-            channel.ID
+            info.CHANNELID, info.SOURCEID
         ORDER BY COUNT( 1 ) DESC;
     </select>
 
@@ -272,6 +272,4 @@
             AND channel.TYPEID = 3
             AND grp.COMPANYID = #{companyId}
     </select>
-
-
 </mapper>
