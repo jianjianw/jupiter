@@ -1,11 +1,13 @@
 package com.qiein.jupiter.web.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import com.qiein.jupiter.enums.StaffStatusEnum;
+import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.dao.*;
 import com.qiein.jupiter.web.entity.dto.PageDictDTO;
 import com.qiein.jupiter.web.entity.dto.StaffMarsDTO;
@@ -31,10 +33,6 @@ import com.qiein.jupiter.constant.RedisConstant;
 import com.qiein.jupiter.constant.RoleConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
-import com.qiein.jupiter.util.CollectionUtils;
-import com.qiein.jupiter.util.JwtUtil;
-import com.qiein.jupiter.util.MD5Util;
-import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.dto.StaffPasswordDTO;
 import com.qiein.jupiter.web.service.CompanyService;
@@ -869,7 +867,10 @@ public class StaffServiceImpl implements StaffService {
      */
     @Override
     public List<StaffStatusLog> getStaffStatusLogById(int companyId, int staffId) {
-        return staffStatusLogDao.listByStaffId(companyId, staffId);
+        //获取昨天的时间戳
+        Date yesterDay = TimeUtil.getYesterDay(new Date());
+        int time = TimeUtil.dateToIntMillis(yesterDay);
+        return staffStatusLogDao.listByStaffId(companyId, staffId, time);
     }
 
 
