@@ -140,6 +140,7 @@ public class ChannelServiceImpl implements ChannelService {
 	 * @param role
 	 * @return
 	 */
+	@Override
 	public List<ChannelVO> getChannelSourceListByType(Integer companyId, String role) {
 		return channelDao.getChannelSourceListByType(companyId, RoleChannelEnum.getTypeListByRole(role));
 	}
@@ -151,6 +152,7 @@ public class ChannelServiceImpl implements ChannelService {
 	 * @param role
 	 * @return
 	 */
+	@Override
 	public List<ChannelVO> getMyChannelSourceByRole(int companyId, int staffId, String role) {
 
 		List<ChannelVO> myList = channelDao.getHistoryChannelSort(DBSplitUtil.getInfoTabName(companyId), companyId,
