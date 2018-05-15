@@ -1,21 +1,21 @@
 package com.qiein.jupiter.web.service;
 
-import com.qiein.jupiter.web.entity.vo.ClientVO;
+import com.qiein.jupiter.web.entity.vo.ClientStatusVO;
 
 /**
- * Created by Administrator on 2018/5/15 0015.
+ * Created by Tt on 2018/5/15 0015.
  */
 public interface ClientService {
 
     /**
      * 编辑性别
-     * @param clientVO
+     * @param clientStatusVO
      */
-    void editClientSex(ClientVO clientVO);
+    void editClientSex(ClientStatusVO clientStatusVO);
 
     /**
      * 编辑微信标识
-     * @param clientVO
+     * @param clientStatusVO
      */
-    void editClientWCFlag(ClientVO clientVO);
+    void editClientWCFlag(ClientStatusVO clientStatusVO);
 }

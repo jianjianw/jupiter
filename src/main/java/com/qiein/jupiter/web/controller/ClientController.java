@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.controller;
 
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
+import com.qiein.jupiter.web.entity.vo.ClientStatusVO;
 import com.qiein.jupiter.web.entity.vo.ClientVO;
 import com.qiein.jupiter.web.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,29 +16,32 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/client")
-public class ClientController {
+public class ClientController extends BaseController{
 
     @Autowired
     private ClientService clientService;
 
     /**
      * 修改客资性别
+     * @param clientStatusVO
      * @return
      */
     @PostMapping("/edit_sex")
-    public ResultInfo editClientSex(@RequestBody ClientVO clientVO){
-        clientService.editClientSex(clientVO);
+    public ResultInfo editClientSex(@RequestBody ClientStatusVO clientStatusVO){
+        clientStatusVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
+        clientService.editClientSex(clientStatusVO);
         return ResultInfoUtil.success();
     }
 
     /**
      * 修改客资微信状态
-     * @param clientVO
+     * @param clientStatusVO
      * @return
      */
     @PostMapping("/edit_wc")
-    public ResultInfo editClientWCFlag(@RequestBody ClientVO clientVO){
-        clientService.editClientWCFlag(clientVO);
+    public ResultInfo editClientWCFlag(@RequestBody ClientStatusVO clientStatusVO){
+        clientStatusVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
+        clientService.editClientWCFlag(clientStatusVO);
         return ResultInfoUtil.success();
     }
 }

@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.dao;
 
-import com.qiein.jupiter.web.entity.vo.ClientVO;
+import com.qiein.jupiter.web.entity.vo.ClientStatusVO;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * Created by Tt on 2018/5/15 0015.
@@ -8,7 +9,7 @@ import com.qiein.jupiter.web.entity.vo.ClientVO;
 public interface ClientDao {
     /**
      * 编辑客资基本信息，如性别，微信添加状况
-     * @param clientVO
+     * @param clientStatusVO
      */
-    void editClientBaseInfo(ClientVO clientVO);
+    void editClientBaseInfo(ClientStatusVO clientStatusVO, @Param("tabName") String tabName);
 }

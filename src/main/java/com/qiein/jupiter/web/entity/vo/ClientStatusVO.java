@@ -4,17 +4,26 @@ package com.qiein.jupiter.web.entity.vo;
  * Created by Tt on 2018/5/15 0015.
  */
 public class ClientStatusVO {
-    private Integer ID;
+    private Integer id;
     private String kzId;
     private Integer weFlag;
     private Integer sex;
+    private Integer companyId;
 
-    public Integer getID() {
-        return ID;
+    public Integer getCompanyId() {
+        return companyId;
     }
 
-    public void setID(Integer ID) {
-        this.ID = ID;
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getKzId() {
