@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.undo.CannotUndoException;
 
 /**
  * 导入导出
@@ -40,6 +41,17 @@ public class ExcelController extends BaseController {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         excelService.importExcel(file, currentLoginStaff);
         return ResultInfoUtil.success(TigMsgEnum.IMPORT_SUCCESS);
+    }
+
+    /**
+     * 获取上传客资的所有列表
+     * @return
+     */
+    @GetMapping("/get_all_upload_record")
+    public ResultInfo getAllUploadRecord() {
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        return ResultInfoUtil.success(excelService.getAllUploadRecord(currentLoginStaff.getCompanyId(), currentLoginStaff.getId()));
     }
 
     /**

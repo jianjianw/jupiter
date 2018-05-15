@@ -160,7 +160,7 @@ public class ClientExcelDTO implements Serializable {
     @Excel(name = "省份")
     private String address;
 
-    public boolean isWrongInfo() {
+    public boolean checkWrongInfo() {
         if (NumUtil.isNull(getTypeId()) || NumUtil.isNull(getCollectorId()) || NumUtil.isNull(getSourceId())
                 || (StringUtil.isEmpty(getKzPhone()) && StringUtil.isEmpty(getKzWechat())
                 && StringUtil.isEmpty(getKzQq()) && StringUtil.isEmpty(getKzWw())) || NumUtil.isNull(getShopId())

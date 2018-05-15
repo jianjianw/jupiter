@@ -161,7 +161,7 @@ public class ExcelServiceImpl implements ExcelService {
                 continue;
             }
             // 3.查询格式错误
-            if (info.isWrongInfo()) {
+            if (info.checkWrongInfo()) {
                 wrongs.add(info);
             } else {
                 rights.add(info);

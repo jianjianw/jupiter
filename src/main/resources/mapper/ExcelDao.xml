@@ -9,65 +9,49 @@
         <result column="CLASSID" jdbcType="INTEGER" property="classId"/>
         <result column="CLASSNAME" jdbcType="VARCHAR" property="className"/>
         <result column="STATUSID" jdbcType="INTEGER" property="statusId"/>
-        <result column="STATUSNAME" jdbcType="VARCHAR" property="status"/>
+        <result column="STATUSNAME" jdbcType="VARCHAR" property="statusName"/>
         <result column="CHANNELID" jdbcType="INTEGER" property="channelId"/>
         <result column="CHANNELNAME" jdbcType="VARCHAR" property="channelName"/>
         <result column="SOURCEID" jdbcType="INTEGER" property="sourceId"/>
-        <result column="SOURCENAME" jdbcType="VARCHAR" property="source"/>
+        <result column="SOURCENAME" jdbcType="VARCHAR" property="sourceName"/>
         <result column="ZXSTYLE" jdbcType="VARCHAR" property="zxStyle"/>
         <result column="KZNAME" jdbcType="VARCHAR" property="kzName"/>
         <result column="SEXNAME" jdbcType="VARCHAR" property="sex"/>
         <result column="KZPHONE" jdbcType="VARCHAR" property="kzPhone"/>
-        <result column="WECHAT" jdbcType="VARCHAR" property="kzWechat"/>
+        <result column="KZWECHAT" jdbcType="VARCHAR" property="kzWechat"/>
         <result column="KZQQ" jdbcType="VARCHAR" property="kzQq"/>
         <result column="KZWW" jdbcType="VARCHAR" property="kzWw"/>
         <result column="COLLECTORID" jdbcType="INTEGER" property="collectorId"/>
-        <result column="COLLECTORNAME" jdbcType="VARCHAR" property="collector"/>
-        <result column="COLLECTORPHONE" jdbcType="VARCHAR" property="collectorPhone"/>
-        <result column="OLDKZNAME" jdbcType="VARCHAR" property="oldKzName"/>
-        <result column="OLDKZPHONE" jdbcType="VARCHAR" property="oldKzPhone"/>
+        <result column="COLLECTORNAME" jdbcType="VARCHAR" property="collectorName"/>
         <result column="APPOINTID" jdbcType="INTEGER" property="appointId"/>
-        <result column="APPOINTNAME" jdbcType="VARCHAR" property="appoint"/>
+        <result column="APPOINTNAME" jdbcType="VARCHAR" property="appointName"/>
         <result column="APPOINTTIME" jdbcType="VARCHAR" property="appointTime"/>
         <result column="UPDATETIME" jdbcType="VARCHAR" property="updateTime"/>
         <result column="CREATETIME" jdbcType="VARCHAR" property="createTime"/>
         <result column="SHOPID" jdbcType="INTEGER" property="shopId"/>
         <result column="SHOPNAME" jdbcType="VARCHAR" property="shopName"/>
         <result column="AMOUNT" jdbcType="VARCHAR" property="amount"/>
-        <result column="RECEPTORID" jdbcType="INTEGER" property="receptorId"/>
-        <result column="RECEPTORNAME" jdbcType="VARCHAR" property="receptor"/>
         <result column="COMPANYID" jdbcType="INTEGER" property="companyId"/>
-        <result column="ISDEL" jdbcType="BOOLEAN" property="isDel"/>
         <result column="VALIDTIME" jdbcType="VARCHAR" property="validTime"/>
         <result column="COMESHOPTIME" jdbcType="VARCHAR" property="comeShopTime"/>
         <result column="SUCCESSTIME" jdbcType="VARCHAR" property="successTime"/>
         <result column="TRACETIME" jdbcType="VARCHAR" property="traceTime"/>
         <result column="RECEIVETIME" jdbcType="VARCHAR" property="receiveTime"/>
-        <result column="MATENAME" jdbcType="VARCHAR" property="mateName"/>
-        <result column="MATEPHONE" jdbcType="VARCHAR" property="matePhone"/>
-        <result column="MATEWECHAT" jdbcType="VARCHAR" property="mateWeChat"/>
-        <result column="MATEQQ" jdbcType="VARCHAR" property="mateQq"/>
         <result column="MARRYTIME" jdbcType="VARCHAR" property="marryTime"/>
         <result column="YPTIME" jdbcType="VARCHAR" property="ypTime"/>
         <result column="ADADDRESS" jdbcType="VARCHAR" property="adAddress"/>
         <result column="ADID" jdbcType="VARCHAR" property="adId"/>
-        <result column="CREATEIP" jdbcType="VARCHAR" property="createIp"/>
         <result column="OPERAID" jdbcType="INTEGER" property="operaId"/>
-        <result column="INVALIDCODE" jdbcType="INTEGER" property="invalidCode"/>
-        <result column="INVALIDLABEL" jdbcType="VARCHAR" property="invalidLabel"/>
-        <result column="FILMINGAREA" jdbcType="VARCHAR" property="filmingArea"/>
-        <result column="YSRANGE" jdbcType="VARCHAR" property="ysRange"/>
         <result column="ADDRESS" jdbcType="VARCHAR" property="address"/>
-        <result column="DEPTSORT" jdbcType="VARCHAR" property="deptSort"/>
+        <result column="GROUPNAME" jdbcType="VARCHAR" property="groupName"/>
         <result column="GROUPID" jdbcType="VARCHAR" property="groupId"/>
         <result column="KEYWORD" jdbcType="VARCHAR" property="keyWord"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-		temp.KZID,temp.TYPEID,temp.CLASSID, temp.TYPENAME, temp.STATUSID,temp.STATUSNAME,temp.SOURCEID, temp.SOURCENAME, temp.ZXSTYLE, temp.KZNAME, temp.SEXNAME, temp.KZPHONE, temp.WECHAT, temp.KZQQ, temp.COLLECTORID,temp.COLLECTORNAME, temp.COLLECTORPHONE,
-		temp.OLDKZNAME, temp.OLDKZPHONE, temp.APPOINTID ,temp.APPOINTNAME, CAST(temp.APPOINTTIME AS CHAR) AS APPOINTTIME , CAST(temp.ACTUALTIME AS CHAR) AS ACTUALTIME, temp.MEMO, CAST(temp.CREATETIME AS CHAR) AS CREATETIME,  CAST(temp.UPDATETIME AS CHAR) AS UPDATETIME,temp.SHOPID, temp.SHOPNAME, temp.AMOUNT, temp.RECEPTORID,temp.RECEPTORNAME, CAST(temp.VALIDTIME AS CHAR) AS VALIDTIME,  CAST(temp.COMESHOPTIME AS CHAR) AS COMESHOPTIME,
-		CAST(temp.SUCCESSTIME AS CHAR) AS SUCCESSTIME, temp.COMPANYID,temp.MATENAME, temp.MATEPHONE, temp.MATEWECHAT, temp.MATEQQ, CAST(temp.MARRYTIME AS CHAR) AS MARRYTIME, CAST(temp.YPTIME AS CHAR) AS YPTIME, temp.ADADDRESS, temp.ADID, temp.CREATEIP, temp.OPERAID, temp.YXLAVEL,
-		temp.INVALIDLABEL, temp.INVALIDCODE, temp.FILMINGAREA, temp.YSRANGE, temp.ADDRESS, temp.GROUPID, temp.DEPTSORT, temp.KEYWORD
+		temp.KZID,temp.TYPEID,temp.CLASSID, temp.TYPENAME, temp.STATUSID,temp.STATUSNAME,temp.SRCTYPE,temp.CHANNELID,temp.CHANNELNAME, temp.SOURCEID, temp.SOURCENAME, temp.ZXSTYLE, temp.KZNAME, temp.SEXNAME, temp.KZPHONE, temp.KZWECHAT, temp.KZQQ, temp.COLLECTORID,temp.COLLECTORNAME,
+		 temp.APPOINTID ,temp.APPOINTNAME, temp.APPOINTTIME ,temp.ACTUALTIME , temp.MEMO, temp.CREATETIME , temp.SHOPID, temp.SHOPNAME,
+	 temp.COMPANYID, temp.ADADDRESS, temp.ADID,  temp.OPERAID, temp.ADDRESS, temp.GROUPID, temp.GROUPNAME, temp.KEYWORD
 	</sql>
 
     <!-- 删除员工客资缓存记录 -->
@@ -79,7 +63,7 @@
     <!-- 批量写入客资临时缓存表 -->
     <insert id="insertExcelClientInfo">
         INSERT INTO ${tempName}
-        (KZID, TYPENAME, STATUSID, CHANNELNAME, SOURCENAME, KZPHONE, WECHAT, KZQQ, KZWW, COLLECTORNAME,
+        (KZID, TYPENAME, STATUSID, CHANNELNAME, SOURCENAME, KZPHONE, KZWECHAT, KZQQ, KZWW, COLLECTORNAME,
         APPOINTNAME,  CREATETIME, UPDATETIME, SHOPNAME, COMPANYID, OPERAID, ADDRESS, GROUPNAME,KEYWORD
         )
         VALUES
@@ -224,9 +208,9 @@
         DISTINCT <include refid="Base_Column_List" />
         FROM ${tempName} temp
         LEFT JOIN ${tableName} info
-        ON INSTR( CONCAT(IFNULL(info.KZPHONE,''), '-', IFNULL(info.WECHAT,''), '-', IFNULL(info.KZQQ,''), '-' ),CONCAT(temp.KZPHONE, '-')) != 0
-        OR INSTR( CONCAT(IFNULL(info.KZPHONE,''), '-', IFNULL(info.WECHAT,''), '-', IFNULL(info.KZQQ,''), '-' ), CONCAT(temp.WECHAT, '-')) != 0
-        OR INSTR( CONCAT( IFNULL(info.KZPHONE,''), '-', IFNULL(info.WECHAT,''), '-', IFNULL(info.KZQQ,''), '-' ), CONCAT(temp.KZQQ, '-')) != 0
+        ON INSTR( CONCAT(IFNULL(info.KZPHONE,''), '-', IFNULL(info.KZWECHAT,''), '-', IFNULL(info.KZQQ,''), '-' ),CONCAT(temp.KZPHONE, '-')) != 0
+        OR INSTR( CONCAT(IFNULL(info.KZPHONE,''), '-', IFNULL(info.KZWECHAT,''), '-', IFNULL(info.KZQQ,''), '-' ), CONCAT(temp.KZWECHAT, '-')) != 0
+        OR INSTR( CONCAT( IFNULL(info.KZPHONE,''), '-', IFNULL(info.KZWECHAT,''), '-', IFNULL(info.KZQQ,''), '-' ), CONCAT(temp.KZQQ, '-')) != 0
         OR INSTR( CONCAT( IFNULL(info.KZWW,''), '-', IFNULL(info.KZWW,''), '-', IFNULL(info.KZWW,''), '-' ), CONCAT(temp.KZWW, '-')) != 0
         WHERE
         info.KZID IS NOT NULL
@@ -246,7 +230,7 @@
               COUNT(1)
             FROM  ${tempName} a
             WHERE
-            (temp.KZPHONE = a.KZPHONE OR temp.KZQQ = a.KZQQ OR temp.WECHAT = a.WECHAT )
+            (temp.KZPHONE = a.KZPHONE OR temp.KZQQ = a.KZQQ OR temp.KZWECHAT = a.KZWECHAT )
               AND  temp.OPERAID = #{staffId}
           ) > 1
         )
