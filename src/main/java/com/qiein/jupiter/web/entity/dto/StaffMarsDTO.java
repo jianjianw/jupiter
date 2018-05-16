@@ -237,4 +237,29 @@ public class StaffMarsDTO extends BaseEntity {
 	public void setGroupId(String groupId) {
 		this.groupId = groupId;
 	}
+
+    @Override
+    public String toString() {
+        return "StaffMarsDTO{" +
+                "nickName='" + nickName + '\'' +
+                ", phone='" + phone + '\'' +
+                ", userName='" + userName + '\'' +
+                ", companyId=" + companyId +
+                ", headImg='" + headImg + '\'' +
+                ", statusFlag=" + statusFlag +
+                ", todayNum=" + todayNum +
+                ", weight=" + weight +
+                ", limitDay=" + limitDay +
+                ", lastPushTime=" + lastPushTime +
+                ", limitChannelIds='" + limitChannelIds + '\'' +
+                ", limitChannelNames='" + limitChannelNames + '\'' +
+                ", limitShopIds='" + limitShopIds + '\'' +
+                ", limitShopNames='" + limitShopNames + '\'' +
+                ", lastLoginTime=" + lastLoginTime +
+                ", lastLoginIp='" + lastLoginIp + '\'' +
+                ", lastLogoutTime=" + lastLogoutTime +
+                ", lastLogoutIp='" + lastLogoutIp + '\'' +
+                ", groupId='" + groupId + '\'' +
+                '}';
+    }
 }
