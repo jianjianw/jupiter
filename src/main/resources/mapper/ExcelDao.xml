@@ -49,7 +49,8 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-		temp.KZID,temp.TYPEID,temp.CLASSID, temp.TYPENAME, temp.STATUSID,temp.STATUSNAME,temp.SRCTYPE,temp.CHANNELID,temp.CHANNELNAME, temp.SOURCEID, temp.SOURCENAME, temp.ZXSTYLE, temp.KZNAME, temp.SEXNAME, temp.KZPHONE, temp.KZWECHAT, temp.KZQQ, temp.COLLECTORID,temp.COLLECTORNAME,
+		temp.KZID,temp.TYPEID,temp.CLASSID, temp.TYPENAME, temp.STATUSID,temp.STATUSNAME,temp.SRCTYPE,temp.CHANNELID,temp.CHANNELNAME,
+		temp.SOURCEID, temp.SOURCENAME, temp.ZXSTYLE, temp.KZNAME, temp.SEXNAME, temp.KZPHONE, temp.KZWECHAT, temp.KZQQ,temp.KZWW, temp.COLLECTORID,temp.COLLECTORNAME,
 		 temp.APPOINTORID ,temp.APPOINTNAME, temp.APPOINTTIME , temp.MEMO, temp.CREATETIME , temp.SHOPID, temp.SHOPNAME,
 	 temp.COMPANYID, temp.ADADDRESS, temp.ADID,  temp.OPERAID, temp.ADDRESS, temp.GROUPID, temp.GROUPNAME, temp.KEYWORD
 	</sql>
