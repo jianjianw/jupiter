@@ -35,7 +35,7 @@ public class DictionaryConstant {
 	/**
 	 * 意向等级
 	 */
-	public final static String YX_RANK = "yx_lavel";
+	public final static String YX_RANK = "yx_level";
 	/**
 	 * 婚期时间
 	 */

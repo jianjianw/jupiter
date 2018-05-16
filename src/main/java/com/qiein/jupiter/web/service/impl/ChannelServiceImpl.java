@@ -169,8 +169,9 @@ public class ChannelServiceImpl implements ChannelService {
         for (ChannelPO channelPO : channelListByCid) {
             ChannelDictVO channelDictVO = new ChannelDictVO();
             channelDictVO.setId(channelPO.getId());
-            channelDictVO.setChannleImg(channelPO.getChannelImg());
-            channelDictVO.setChannleName(channelPO.getChannelName());
+            channelDictVO.setChannelImg(channelPO.getChannelImg());
+            channelDictVO.setChannelName(channelPO.getChannelName());
+            channelDictVO.setShowFlag(channelPO.getShowFlag());
             map.put(String.valueOf(channelPO.getId()), channelDictVO);
         }
         return map;

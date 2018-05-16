@@ -3,6 +3,7 @@ package com.qiein.jupiter.web.entity.dto;
 import com.qiein.jupiter.web.entity.po.DictionaryPO;
 import com.qiein.jupiter.web.entity.po.StatusPO;
 import com.qiein.jupiter.web.entity.vo.ChannelDictVO;
+import com.qiein.jupiter.web.entity.vo.ShopDictVO;
 import com.qiein.jupiter.web.entity.vo.SourceDictVO;
 
 import java.util.List;
@@ -30,6 +31,18 @@ public class PageDictDTO {
      * 公共字典
      */
     private Map<String, List<DictionaryPO>> commonMap;
+    /**
+     * 拍摄地字典
+     */
+    private Map<String, ShopDictVO> shopMap;
+
+    public Map<String, ShopDictVO> getShopMap() {
+        return shopMap;
+    }
+
+    public void setShopMap(Map<String, ShopDictVO> shopMap) {
+        this.shopMap = shopMap;
+    }
 
     public Map<String, ChannelDictVO> getChannelMap() {
         return channelMap;

@@ -15,11 +15,23 @@ public class ChannelDictVO implements Serializable {
     /**
      * 渠道名称
      */
-    private String channleName;
+    private String channelName;
     /**
      * 渠道图片地址
      */
-    private String channleImg;
+    private String channelImg;
+    /**
+     * 是否显示
+     */
+    private boolean showFlag;
+
+    public boolean isShowFlag() {
+        return showFlag;
+    }
+
+    public void setShowFlag(boolean showFlag) {
+        this.showFlag = showFlag;
+    }
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -33,19 +45,19 @@ public class ChannelDictVO implements Serializable {
         this.id = id;
     }
 
-    public String getChannleName() {
-        return channleName;
+    public String getChannelName() {
+        return channelName;
     }
 
-    public void setChannleName(String channleName) {
-        this.channleName = channleName;
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
     }
 
-    public String getChannleImg() {
-        return channleImg;
+    public String getChannelImg() {
+        return channelImg;
     }
 
-    public void setChannleImg(String channleImg) {
-        this.channleImg = channleImg;
+    public void setChannelImg(String channelImg) {
+        this.channelImg = channelImg;
     }
 }

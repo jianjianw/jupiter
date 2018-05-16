@@ -118,5 +118,5 @@ public interface SourceDao extends BaseDao<SourcePO> {
      * @param companyId
      * @return
      */
-    List<SourcePO> getAllSourceList(int companyId);
+    List<SourcePO> getAllSourceListByCid(int companyId);
 }

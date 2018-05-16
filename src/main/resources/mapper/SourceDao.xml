@@ -262,7 +262,7 @@
     </select>
 
     <!--获取公司所有的来源列表 包括停用的-->
-    <select id="getAllSourceList" resultMap="baseMap">
+    <select id="getAllSourceListByCid" resultMap="baseMap">
         SELECT
         <include refid="baseColumn"/>
         FROM

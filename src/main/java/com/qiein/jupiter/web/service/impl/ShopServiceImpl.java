@@ -5,13 +5,16 @@ import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.web.dao.ShopDao;
 import com.qiein.jupiter.web.entity.po.ShopPO;
+import com.qiein.jupiter.web.entity.vo.ShopDictVO;
 import com.qiein.jupiter.web.entity.vo.ShopVO;
 import com.qiein.jupiter.web.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 拍摄地业务层
@@ -111,6 +114,28 @@ public class ShopServiceImpl implements ShopService {
      */
     public List<ShopVO> getShowShopList(int companyId) {
         return shopDao.getShowShopList(companyId);
+    }
+
+    /**
+     * 获取渠道的字典
+     *
+     * @param companyId
+     * @return
+     */
+    @Override
+    public Map<String, ShopDictVO> getShopDictByCid(int companyId) {
+        List<ShopVO> companyShopList = shopDao.getCompanyShopList(companyId);
+        Map<String, ShopDictVO> shopMap = new HashMap<>();
+        for (ShopVO shopVO : companyShopList) {
+            ShopDictVO shopDictVO = new ShopDictVO();
+            shopDictVO.setId(shopVO.getId());
+            //名称
+            shopDictVO.setShopName(shopVO.getShopName());
+            //是否显示
+            shopDictVO.setShowFlag(shopVO.isShowFlag());
+            shopMap.put(String.valueOf(shopVO.getId()), shopDictVO);
+        }
+        return shopMap;
     }
 
 }
