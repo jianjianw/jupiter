@@ -109,8 +109,9 @@ public enum ExceptionEnum {
     //状态
     STS_COLUMN_ERROR(1701, "状态颜色表示错误"),
     STS_DEFAULT_ERROR(1702, "默认颜色信息缺失"),
-    STS_GET_ERROR(1703, "企业状态信息获取错误");
-
+    STS_GET_ERROR(1703, "企业状态信息获取错误"),
+	//ip白名单
+	IP_ERROR(1801,"ip输入有误");
     private Integer code;
     private String msg;
 

@@ -117,4 +117,9 @@
     <update id="updateRange" parameterType="map">
         UPDATE hm_pub_company SET ${column} = #{num} WHERE ID = #{companyId}
     </update>
+    <!-- 获取iplimit -->
+    <select id="getIpLimit" parameterType="Integer" resultType="Integer">
+    select iplimit  from hm_pub_company where Id=#{0}
+    
+    </select>
 </mapper>
