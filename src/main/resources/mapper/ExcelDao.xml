@@ -140,6 +140,15 @@
             temp.OPERAID = #{staffId};
 	</update>
 
+    <!-- 设置来源和渠道-->
+    <update id="updateSrcAndChannel" parameterType="map">
+		UPDATE ${tempName} temp
+        INNER JOIN hm_crm_source src  on  temp.SOURCENAME = src.SRCNAME
+        SET temp.SOURCEID = src.ID,temp.SRCTYPE = src.TYPEID,temp.CHANNELNAME = src.CHANNELNAME,temp.CHANNELID =src.CHANNELID
+        WHERE
+            temp.OPERAID = #{staffId};
+	</update>
+
     <!--设置渠道ID-->
     <update id="updateChannelId" parameterType="map">
         UPDATE ${tempName} temp
@@ -293,9 +302,6 @@
             </if>
             <if test="info.statusName != null and info.statusName != ''">
                 STATUSNAME = #{info.statusName},
-            </if>
-            <if test="info.channelName != null and info.channelName != ''">
-                CHANNELNAME = #{info.channelName},
             </if>
             <if test="info.sourceName != null and info.sourceName != ''">
                 SOURCENAME = #{info.sourceName},
