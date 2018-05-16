@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.entity.dto;
 
 import com.qiein.jupiter.web.entity.po.DictionaryPO;
 import com.qiein.jupiter.web.entity.po.StatusPO;
+import com.qiein.jupiter.web.entity.vo.ChannelDictVO;
 import com.qiein.jupiter.web.entity.vo.SourceDictVO;
 
 import java.util.List;
@@ -13,7 +14,10 @@ import java.util.Map;
  * @Author: shiTao
  */
 public class PageDictDTO {
-
+    /**
+     * 渠道字典
+     */
+    private Map<String, ChannelDictVO> channelMap;
     /**
      * 来源字典
      */
@@ -26,6 +30,14 @@ public class PageDictDTO {
      * 公共字典
      */
     private Map<String, List<DictionaryPO>> commonMap;
+
+    public Map<String, ChannelDictVO> getChannelMap() {
+        return channelMap;
+    }
+
+    public void setChannelMap(Map<String, ChannelDictVO> channelMap) {
+        this.channelMap = channelMap;
+    }
 
     public Map<String, List<DictionaryPO>> getCommonMap() {
         return commonMap;
