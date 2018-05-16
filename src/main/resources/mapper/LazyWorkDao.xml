@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiein.jupiter.web.dao.LazyWorkDao">
+
+    <select id="getLazyWorkListByStaffId" parameterType="Integer" resultType="lazyWorkVO">
+        SELECT
+	        log.ALLOTTIME, log.STAFFID, log.STAFFNAME, log.KZNUM, log.KZID, info.CHANNELID, info.SOURCEID
+        FROM
+	        hm_crm_allot_log_1314 log
+        LEFT JOIN hm_crm_client_info_1314 info ON log.KZID = info.KZID AND info.COMPANYID = 1314
+        WHERE
+	        log.COMPANYID = #{companyId}
+        AND log.STAFFID = #{staffId}
+        AND log.STATUSID = 0
+        AND log.ALLOTTIME &gt; UNIX_TIMESTAMP(DATE(SYSDATE()))
+        ORDER BY log.ALLOTTIME DESC
+    </select>
+</mapper>
