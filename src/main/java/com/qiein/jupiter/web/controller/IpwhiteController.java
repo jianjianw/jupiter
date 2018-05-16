@@ -66,5 +66,10 @@ public class IpwhiteController extends BaseController{
 	public void delete(){
 		
 	}
+	
+	@GetMapping("update")
+	public ResultInfo update(@Validated @RequestBody IpWhitePO ipWhitePo){
+		return null;
+	}
 
 }
