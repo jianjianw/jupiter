@@ -248,4 +248,14 @@ public class ExcelServiceImpl implements ExcelService {
         }
     }
 
+    /**
+     * 清空导入的客资列表
+     *
+     * @param companyId
+     * @param operaId
+     */
+    public void deleteTempByStaffId(int companyId, int operaId) {
+        excelDao.deleteTempByStaffId((DBSplitUtil.getTable(TableEnum.temp, companyId)), operaId);
+    }
+
 }

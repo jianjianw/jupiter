@@ -108,6 +108,19 @@ public class ExcelController extends BaseController {
     }
 
     /**
+     * 清空导入的客资列表
+     *
+     * @return
+     */
+    @PostMapping("/delete_temp_by_operaid")
+    public ResultInfo deleteTempByOperaId(@RequestBody ClientExcelDTO info) {
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        excelService.deleteTempByStaffId(currentLoginStaff.getCompanyId(), currentLoginStaff.getId());
+        return ResultInfoUtil.success(TigMsgEnum.DELETE_SUCCESS);
+    }
+
+    /**
      * 导出示例
      */
     @GetMapping("/export_staff")

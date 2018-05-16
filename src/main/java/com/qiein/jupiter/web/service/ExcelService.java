@@ -54,4 +54,12 @@ public interface ExcelService {
      * @param info
      */
     void editKz(int companyId, ClientExcelDTO info);
+
+    /**
+     * 清空导入的客资列表
+     *
+     * @param companyId
+     * @param operaId
+     */
+    void deleteTempByStaffId(int companyId, int operaId);
 }
