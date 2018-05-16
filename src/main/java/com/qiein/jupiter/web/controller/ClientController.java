@@ -29,6 +29,8 @@ public class ClientController extends BaseController{
     @PostMapping("/edit_sex")
     public ResultInfo editClientSex(@RequestBody ClientStatusVO clientStatusVO){
         clientStatusVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
+        clientStatusVO.setOperaId(getCurrentLoginStaff().getId());
+        clientStatusVO.setOperaName(getCurrentLoginStaff().getNickName());
         clientService.editClientSex(clientStatusVO);
         return ResultInfoUtil.success();
     }
@@ -41,6 +43,8 @@ public class ClientController extends BaseController{
     @PostMapping("/edit_wc")
     public ResultInfo editClientWCFlag(@RequestBody ClientStatusVO clientStatusVO){
         clientStatusVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
+        clientStatusVO.setOperaId(getCurrentLoginStaff().getId());
+        clientStatusVO.setOperaName(getCurrentLoginStaff().getNickName());
         clientService.editClientWCFlag(clientStatusVO);
         return ResultInfoUtil.success();
     }

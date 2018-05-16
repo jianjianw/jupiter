@@ -1,10 +1,15 @@
 package com.qiein.jupiter.web.service.impl;
 
+import com.qiein.jupiter.constant.ClientLogConst;
+import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.web.dao.ClientDao;
+import com.qiein.jupiter.web.dao.ClientLogDao;
+import com.qiein.jupiter.web.entity.po.ClientLogPO;
 import com.qiein.jupiter.web.entity.vo.ClientStatusVO;
 import com.qiein.jupiter.web.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created by Tt on 2018/5/15 0015.
@@ -14,15 +19,24 @@ public class ClientServiceImpl implements ClientService {
     @Autowired
     private ClientDao clientDao;
 
+    @Autowired
+    private ClientLogDao clientLogDao;
+
     /**
      * 编辑客资性别
      * @param clientStatusVO
      */
     @Override
+    @Transactional
     public void editClientSex(ClientStatusVO clientStatusVO) {
-        //TODO 改用枚举获取分表名称
-        clientDao.editClientBaseInfo(clientStatusVO,"hm_crm_client_info_"+clientStatusVO.getCompanyId());
-        //TODO 记录到客资日志中
+        clientDao.editClientBaseInfo(clientStatusVO, DBSplitUtil.getInfoTabName(clientStatusVO.getCompanyId()));
+
+        int addLogNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(clientStatusVO.getCompanyId()),
+                new ClientLogPO(clientStatusVO.getKzId(),clientStatusVO.getOperaId(),clientStatusVO.getOperaName(),
+                        ClientLogConst.INFO_LOG_EDIT_SEX+(clientStatusVO.getSex()==1?"男":"女"),ClientLogConst.INFO_LOGTYPE_EDIT,clientStatusVO.getCompanyId()));
+        if (addLogNum!=1){
+            System.out.println("插入客资日志失败");
+        }
     }
 
     /**
@@ -30,8 +44,15 @@ public class ClientServiceImpl implements ClientService {
      * @param clientStatusVO
      */
     @Override
+    @Transactional
     public void editClientWCFlag(ClientStatusVO clientStatusVO) {
-        clientDao.editClientBaseInfo(clientStatusVO,"hm_crm_client_info_"+clientStatusVO.getCompanyId());
-        //TODO 记录到客资日志中
+        clientDao.editClientBaseInfo(clientStatusVO, DBSplitUtil.getInfoTabName(clientStatusVO.getCompanyId()));
+
+        int addLogNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(clientStatusVO.getCompanyId()),
+                new ClientLogPO(clientStatusVO.getKzId(),clientStatusVO.getOperaId(),clientStatusVO.getOperaName(),
+                        ClientLogConst.INFO_LOG_EDIT_WCFLAG+(clientStatusVO.getWeFlag()==1?"已加":"未加"),ClientLogConst.INFO_LOGTYPE_EDIT,clientStatusVO.getCompanyId()));
+        if (addLogNum!=1){
+            System.out.println("插入客资日志失败");
+        }
     }
 }

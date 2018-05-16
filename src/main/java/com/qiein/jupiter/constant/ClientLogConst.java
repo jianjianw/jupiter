@@ -28,6 +28,8 @@ public class ClientLogConst {
 	public static final String INFO_LOG_AUTO_ALLOT_TEMPLATE = "系统自动分配该客资给 => ${groupName} 的  ${appointorname} ";
 	public static final String INFO_LOG_AUTO_REVEICE_TEMPLATE = "推送客资领取消息给 => ${groupName} 的  ${appointorname} ";
 	public static final String INFO_LOG_RECEIVE = "在客户端通过客资分配领取了客资";
+	public static final String INFO_LOG_EDIT_SEX = "将客资性别修改为";
+	public static final String INFO_LOG_EDIT_WCFLAG= "将客资微信标记修改为";
 
 	/**
 	 * 生成客资自动分配日志

@@ -3,23 +3,23 @@ package com.qiein.jupiter.web.entity.vo;
 import java.io.Serializable;
 
 /**
- * 渠道的页面字典
+ * 渠道页面字典
  *
  * @Author: shiTao
  */
-public class SourceDictVO implements Serializable {
+public class ChannelDictVO implements Serializable {
 
-    private static final long serialVersionUID = 6039167760834104308L;
+    private static final long serialVersionUID = -8866800767401130L;
 
     private int id;
     /**
-     * 来源名称
+     * 渠道名称
      */
-    private String srcName;
+    private String channelName;
     /**
-     * 来源图片地址
+     * 渠道图片地址
      */
-    private String srcImg;
+    private String channelImg;
     /**
      * 是否显示
      */
@@ -45,19 +45,19 @@ public class SourceDictVO implements Serializable {
         this.id = id;
     }
 
-    public String getSrcName() {
-        return srcName;
+    public String getChannelName() {
+        return channelName;
     }
 
-    public void setSrcName(String srcName) {
-        this.srcName = srcName;
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
     }
 
-    public String getSrcImg() {
-        return srcImg;
+    public String getChannelImg() {
+        return channelImg;
     }
 
-    public void setSrcImg(String srcImg) {
-        this.srcImg = srcImg;
+    public void setChannelImg(String channelImg) {
+        this.channelImg = channelImg;
     }
 }

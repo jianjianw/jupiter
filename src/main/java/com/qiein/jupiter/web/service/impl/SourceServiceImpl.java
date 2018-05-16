@@ -129,7 +129,7 @@ public class SourceServiceImpl implements SourceService {
     @Override
     public Map<String, SourceDictVO> getSourcePageMap(int companyId) {
         //获取所有
-        List<SourcePO> allSourceList = sourceDao.getAllSourceList(companyId);
+        List<SourcePO> allSourceList = sourceDao.getAllSourceListByCid(companyId);
         Map<String, SourceDictVO> pageDictMap = new HashMap<>();
         for (SourcePO sourcePO : allSourceList) {
             //渠道字典
@@ -137,6 +137,7 @@ public class SourceServiceImpl implements SourceService {
             sourceDictVO.setId(sourcePO.getId());
             sourceDictVO.setSrcImg(sourcePO.getSrcImg());
             sourceDictVO.setSrcName(sourcePO.getSrcName());
+            sourceDictVO.setShowFlag(sourcePO.getIsShow());
             //Id
             pageDictMap.put(String.valueOf(sourcePO.getId()), sourceDictVO);
         }

@@ -57,6 +57,13 @@ public interface ExcelDao {
     void updateSrcIdAndType(@Param("tempName") String tempName, @Param("staffId") Integer staffId);
 
     /**
+     * 设置渠道和来源信息
+     * @param tempName
+     * @param staffId
+     */
+    void updateSrcAndChannel(@Param("tempName") String tempName, @Param("staffId") Integer staffId);
+
+    /**
      * 设置渠道ID
      *
      * @param tempName

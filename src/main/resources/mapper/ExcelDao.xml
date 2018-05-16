@@ -46,13 +46,14 @@
         <result column="GROUPNAME" jdbcType="VARCHAR" property="groupName"/>
         <result column="GROUPID" jdbcType="VARCHAR" property="groupId"/>
         <result column="KEYWORD" jdbcType="VARCHAR" property="keyWord"/>
+        <result column="MEMO" jdbcType="VARCHAR" property="remark"/>
     </resultMap>
 
     <sql id="Base_Column_List">
 		temp.KZID,temp.TYPEID,temp.CLASSID, temp.TYPENAME, temp.STATUSID,temp.STATUSNAME,temp.SRCTYPE,temp.CHANNELID,temp.CHANNELNAME,
 		temp.SOURCEID, temp.SOURCENAME, temp.ZXSTYLE, temp.KZNAME, temp.SEXNAME, temp.KZPHONE, temp.KZWECHAT, temp.KZQQ,temp.KZWW, temp.COLLECTORID,temp.COLLECTORNAME,
 		 temp.APPOINTORID ,temp.APPOINTNAME, temp.APPOINTTIME , temp.MEMO, temp.CREATETIME , temp.SHOPID, temp.SHOPNAME,
-	 temp.COMPANYID, temp.ADADDRESS, temp.ADID,  temp.OPERAID, temp.ADDRESS, temp.GROUPID, temp.GROUPNAME, temp.KEYWORD
+	 temp.COMPANYID, temp.ADADDRESS, temp.ADID,  temp.OPERAID, temp.ADDRESS, temp.GROUPID, temp.GROUPNAME, temp.KEYWORD,temp.MEMO
 	</sql>
 
     <!-- 删除员工客资缓存记录 -->
@@ -65,14 +66,14 @@
     <insert id="insertExcelClientInfo">
         INSERT INTO ${tempName}
         (KZID, TYPENAME, STATUSID, CHANNELNAME, SOURCENAME, KZPHONE, KZWECHAT, KZQQ, KZWW, COLLECTORNAME,
-        APPOINTNAME,  CREATETIME, UPDATETIME, SHOPNAME, COMPANYID, OPERAID, ADDRESS, GROUPNAME,KEYWORD
+        APPOINTNAME,  CREATETIME, UPDATETIME, SHOPNAME, COMPANYID, OPERAID, ADDRESS, GROUPNAME,KEYWORD,MEMO
         )
         VALUES
         <foreach collection="list" item="item" index="index" separator=",">
             (#{item.kzId},#{item.typeName}, #{item.statusId},#{item.channelName}, #{item.sourceName},#{item.kzPhone}, #{item.kzWechat},
             #{item.kzQq}, #{item.kzWw}, #{item.collectorName}, #{item.appointName},
              #{item.createTime},unix_timestamp(now()), #{item.shopName}, #{item.companyId},
-            #{item.operaId}, #{item.address}, #{item.groupName}, #{item.keyWord}
+            #{item.operaId}, #{item.address}, #{item.groupName}, #{item.keyWord}, #{item.remark}
             )
         </foreach>
     </insert>
@@ -136,6 +137,15 @@
 		UPDATE ${tempName} temp
         INNER JOIN hm_crm_source src  on  temp.SOURCENAME = src.SRCNAME
         SET temp.SOURCEID = src.ID,temp.SRCTYPE = src.TYPEID
+        WHERE
+            temp.OPERAID = #{staffId};
+	</update>
+
+    <!-- 设置来源和渠道-->
+    <update id="updateSrcAndChannel" parameterType="map">
+		UPDATE ${tempName} temp
+        INNER JOIN hm_crm_source src  on  temp.SOURCENAME = src.SRCNAME
+        SET temp.SOURCEID = src.ID,temp.SRCTYPE = src.TYPEID,temp.CHANNELNAME = src.CHANNELNAME,temp.CHANNELID =src.CHANNELID
         WHERE
             temp.OPERAID = #{staffId};
 	</update>
@@ -209,10 +219,10 @@
         DISTINCT <include refid="Base_Column_List" />
         FROM ${tempName} temp
         LEFT JOIN ${tableName} info
-        ON INSTR( CONCAT(IFNULL(info.KZPHONE,''), '-', IFNULL(info.KZWECHAT,''), '-', IFNULL(info.KZQQ,''), '-' ),CONCAT(temp.KZPHONE, '-')) != 0
-        OR INSTR( CONCAT(IFNULL(info.KZPHONE,''), '-', IFNULL(info.KZWECHAT,''), '-', IFNULL(info.KZQQ,''), '-' ), CONCAT(temp.KZWECHAT, '-')) != 0
-        OR INSTR( CONCAT( IFNULL(info.KZPHONE,''), '-', IFNULL(info.KZWECHAT,''), '-', IFNULL(info.KZQQ,''), '-' ), CONCAT(temp.KZQQ, '-')) != 0
-        OR INSTR( CONCAT( IFNULL(info.KZWW,''), '-', IFNULL(info.KZWW,''), '-', IFNULL(info.KZWW,''), '-' ), CONCAT(temp.KZWW, '-')) != 0
+        ON INSTR( CONCAT('-',IFNULL(info.KZPHONE,''), '-', IFNULL(info.KZWECHAT,''), '-', IFNULL(info.KZQQ,''), '-' ),CONCAT('-',temp.KZPHONE, '-')) != 0
+        OR INSTR( CONCAT('-',IFNULL(info.KZPHONE,''), '-', IFNULL(info.KZWECHAT,''), '-', IFNULL(info.KZQQ,''), '-' ), CONCAT('-',temp.KZWECHAT, '-')) != 0
+        OR INSTR( CONCAT('-',IFNULL(info.KZPHONE,''), '-', IFNULL(info.KZWECHAT,''), '-', IFNULL(info.KZQQ,''), '-' ), CONCAT('-',temp.KZQQ, '-')) != 0
+        OR INSTR( CONCAT('-',IFNULL(info.KZWW,''), '-', IFNULL(info.KZWW,''), '-', IFNULL(info.KZWW,''), '-' ), CONCAT('-',temp.KZWW, '-')) != 0
         WHERE
         info.KZID IS NOT NULL
         AND info.ISDEL = 0
@@ -241,12 +251,12 @@
     <!-- 插入客资基础信息表-->
     <insert id="insertBaseInfoByStaffId" parameterType="map">
 		INSERT INTO ${tabName} (
-			KZID, TYPEID, CLASSID, KZNAME, KZPHONE, KZWECHAT, KZQQ, KZWW, SEX, STATUSID, SRCTYPE,CHANNELID,SOURCEID, COLLECTORID, COLLECTORNAME, APPOINTORID, APPOINTNAME,
-			APPOINTTIME,  MEMO, UPDATETIME, CREATETIME, SHOPID, SHOPNAME, AMOUNT, RECEPTORID, RECEPTORNAME, COMPANYID, VALIDTIME, COMESHOPTIME, SUCCESSTIME, RECEIVETIME
+			KZID, TYPEID, CLASSID, KZNAME, KZPHONE, KZWECHAT, KZQQ, KZWW, SEX, STATUSID, SRCTYPE,CHANNELID,SOURCEID, COLLECTORID, APPOINTORID,
+			APPOINTTIME,   UPDATETIME, CREATETIME, SHOPID, RECEPTORID, COMPANYID, COMESHOPTIME, SUCCESSTIME, RECEIVETIME,GROUPID
 		)( SELECT temp.KZID, temp.TYPEID,
-				 temp.CLASSID, temp.KZNAME, temp.KZPHONE, temp.KZWECHAT, temp.KZQQ, temp.KZWW, temp.SEX, temp.STATUSID,temp.SRCTYPE,temp.CHANNELID, temp.SOURCEID, temp.COLLECTORID, temp.COLLECTORNAME,
-				temp.APPOINTORID, temp.APPOINTNAME, temp.APPOINTTIME, temp.MEMO, temp.UPDATETIME, temp.CREATETIME, temp.SHOPID, temp.SHOPNAME,
-				temp.AMOUNT, temp.RECEPTORID, temp.RECEPTORNAME, temp.COMPANYID, temp.VALIDTIME, temp.COMESHOPTIME, temp.SUCCESSTIME, temp.RECEIVETIME
+				 temp.CLASSID, temp.KZNAME, temp.KZPHONE, temp.KZWECHAT, temp.KZQQ, temp.KZWW, temp.SEX, temp.STATUSID,temp.SRCTYPE,temp.CHANNELID, temp.SOURCEID, temp.COLLECTORID,
+				temp.APPOINTORID,  temp.APPOINTTIME, temp.UPDATETIME, temp.CREATETIME, temp.SHOPID,
+				 temp.RECEPTORID, temp.COMPANYID,  temp.COMESHOPTIME, temp.SUCCESSTIME, temp.RECEIVETIME,temp.GROUPID
 			FROM
 				${tempName} temp
 			WHERE temp.OPERAID = #{staffId}
@@ -256,9 +266,11 @@
     <!-- 插入客资详情表,唯一版 -->
     <insert id="insertDetailInfoByStaffId" parameterType="map">
 		INSERT INTO ${tabName} (
-			KZID, ZXSTYLE, ADADDRESS, ADID, MARRYTIME, YPTIME, MATENAME, MATEPHONE, MATEWECHAT, MATEQQ, COLLECTORPHONE, REMARK, CREATEIP, COMPANYID, YXLAVEL, INVALIDCODE, INVALIDLABEL, YSRANGE, ADDRESS, GROUPID, GROUPNAME, KEYWORD
-		)( SELECT temp.KZID, temp.ZXSTYLE, temp.ADADDRESS, temp.ADID, temp.MARRYTIME, temp.YPTIME, temp.MATENAME, temp.MATEPHONE, temp.MATEWECHAT, temp.MATEQQ, temp.COLLECTORPHONE, temp.MEMO,
-			 temp.CREATEIP, temp.COMPANYID, temp.YXLAVEL, temp.INVALIDCODE, temp.INVALIDLABEL,  temp.YSRANGE, temp.ADDRESS, temp.GROUPID, temp.GROUPNAME, temp.KEYWORD
+			KZID, ZXSTYLE, ADADDRESS, ADID, MARRYTIME, YPTIME, MATENAME, MATEPHONE, MATEWECHAT, MATEQQ,  COMPANYID, YXLAVEL,
+			INVALIDLABEL, YSRANGE, ADDRESS,  GROUPNAME, KEYWORD, COLLECTORNAME,APPOINTNAME,RECEPTORNAME,MEMO,SHOPNAME,  AMOUNT,CREATETIME
+		)( SELECT temp.KZID, temp.ZXSTYLE, temp.ADADDRESS, temp.ADID, temp.MARRYTIME, temp.YPTIME, temp.MATENAME, temp.MATEPHONE, temp.MATEWECHAT, temp.MATEQQ,
+			  temp.COMPANYID, temp.YXLAVEL,  temp.INVALIDLABEL,  temp.YSRANGE, temp.ADDRESS,  temp.GROUPNAME, temp.KEYWORD ,temp.COLLECTORNAME, temp.APPOINTNAME,
+			 temp.RECEPTORNAME,temp.MEMO, temp.SHOPNAME, temp.AMOUNT,temp.CREATETIME
 				FROM ${tempName} temp
 				WHERE temp.OPERAID = #{staffId}
 		 );
@@ -268,7 +280,6 @@
     <insert id="addExcelKzRemark" parameterType="map">
         INSERT INTO ${tabName}
             (KZID,CONTENT,COMPANYID)
-        VALUES
             (SELECT temp.KZID,temp.MEMO,temp.COMPANYID  FROM ${tempName} temp WHERE temp.OPERAID = #{staffId})
     </insert>
 
@@ -293,8 +304,8 @@
             <if test="info.statusName != null and info.statusName != ''">
                 STATUSNAME = #{info.statusName},
             </if>
-            <if test="info.channelName != null and info.channelName != ''">
-                CHANNELNAME = #{info.channelName},
+            <if test="info.sourceName != null and info.sourceName != ''">
+                SOURCENAME = #{info.sourceName},
             </if>
             <if test="info.shopName != null and info.shopName != ''">
                 SHOPNAME = #{info.shopName},

@@ -1,16 +1,17 @@
 package com.qiein.jupiter.web.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.enums.TigMsgEnum;
+import com.qiein.jupiter.exception.ExceptionEnum;
+import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.MobileLocationUtil;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
+import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.service.ClientAddService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/outer")
@@ -19,13 +20,30 @@ public class OuterController {
     @Autowired
     private ClientAddService clientAddService;
 
+    /**
+     * 根据手机号获取地址
+     *
+     * @param phone
+     * @return
+     */
     @GetMapping("/get_address_by_phone")
     public ResultInfo getAddressByPhone(@NotEmptyStr @RequestParam("phone") String phone) {
         return ResultInfoUtil.success(TigMsgEnum.SUCCESS, MobileLocationUtil.getPhoneLocation(phone));
     }
 
-    @GetMapping("/change_str_to_info")
-    public ResultInfo changeStrToInfo(@NotEmptyStr @RequestParam("text") String text) {
+    /**
+     * 解析批量录入字符串，转换成json
+     *
+     * @param jsonObject
+     * @return
+     */
+
+    @PostMapping("/change_str_to_info")
+    public ResultInfo changeStrToInfo(@RequestBody JSONObject jsonObject) {
+        String text = StringUtil.nullToStrTrim(jsonObject.getString("text"));
+        if (StringUtil.isEmpty(text)) {
+            throw new RException(ExceptionEnum.BATCH_ADD_NULL);
+        }
         return ResultInfoUtil.success(clientAddService.changeStrToInfo(text));
     }
 

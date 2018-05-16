@@ -9,6 +9,24 @@ public class ClientStatusVO {
     private Integer weFlag;
     private Integer sex;
     private Integer companyId;
+    private Integer operaId;
+    private String operaName;
+
+    public Integer getOperaId() {
+        return operaId;
+    }
+
+    public void setOperaId(Integer operaId) {
+        this.operaId = operaId;
+    }
+
+    public String getOperaName() {
+        return operaName;
+    }
+
+    public void setOperaName(String operaName) {
+        this.operaName = operaName;
+    }
 
     public Integer getCompanyId() {
         return companyId;

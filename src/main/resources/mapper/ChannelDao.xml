@@ -18,7 +18,7 @@
     <resultMap id="ChannelVOMap" type="com.qiein.jupiter.web.entity.vo.ChannelVO">
         <result column="ID" jdbcType="INTEGER" property="channelId"/>
         <result column="CHANNELNAME" jdbcType="VARCHAR" property="channelName"/>
-        <collection property="srcList" ofType="com.qiein.jupiter.web.entity.vo.SrcListVO" >
+        <collection property="srcList" ofType="com.qiein.jupiter.web.entity.vo.SrcListVO">
             <result column="SRCID" jdbcType="INTEGER" property="srcId"/>
             <result column="SRCNAME" jdbcType="VARCHAR" property="srcName"/>
         </collection>
@@ -35,7 +35,7 @@
         hm_crm_channel
         WHERE
         ID = #{id}
-        AND  COMPANYID = #{companyId}
+        AND COMPANYID = #{companyId}
     </select>
 
     <select id="findList" resultMap="baseMap">
@@ -111,14 +111,14 @@
     <!--修改排序-->
     <update id="updatePriority" parameterType="Integer">
         UPDATE
-          hm_crm_channel
+        hm_crm_channel
         <set>
             <if test="priority != null and priority !=''">
                 PRIORITY = #{priority}
             </if>
         </set>
         WHERE
-          COMPANYID = #{companyId} AND ID = #{id}
+        COMPANYID = #{companyId} AND ID = #{id}
     </update>
 
     <delete id="delete" parameterType="Integer">
@@ -150,7 +150,7 @@
     </delete>
 
     <!--根据粗分类型获取渠道列表-->
-    <select id="getChannelList" parameterType="map" resultMap="baseMap">
+    <select id="getChannelListByTypeIds" parameterType="map" resultMap="baseMap">
         SELECT
         ID,CHANNELNAME,CHANNELIMG,TYPEID,BRANDID,BRANDNAME,PUSHRULE,COMPANYID,PRIORITY,ISSHOW
         FROM
@@ -178,14 +178,14 @@
     <!--根据批量渠道编号获取渠道名称列表-->
     <select id="getChannelNamesByIds" parameterType="map" resultType="String">
         SELECT
-          CHANNELNAME
+        CHANNELNAME
         FROM
-          hm_crm_channel
+        hm_crm_channel
         WHERE
-          COMPANYID = #{companyId} AND ID IN
-          <foreach collection="ids" item="id" index="index" open="(" separator="," close=")">
-              #{id}
-          </foreach>
+        COMPANYID = #{companyId} AND ID IN
+        <foreach collection="ids" item="id" index="index" open="(" separator="," close=")">
+            #{id}
+        </foreach>
     </select>
 
     <select id="checkSrcNumById" parameterType="Integer" resultType="Integer">
@@ -199,29 +199,29 @@
     <!--获取各角色渠道组及渠道-->
     <select id="getChannelSourceListByType" parameterType="map" resultMap="ChannelVOMap">
         SELECT
-            channel.ID, channel.CHANNELNAME, src.ID AS SRCID, src.SRCNAME
+        channel.ID, channel.CHANNELNAME, src.ID AS SRCID, src.SRCNAME
         FROM
-            hm_crm_channel channel
+        hm_crm_channel channel
         LEFT JOIN hm_crm_source src ON src.COMPANYID = channel.COMPANYID AND src.CHANNELID = channel.ID
         WHERE
-            channel.COMPANYID = #{companyId}
-            AND channel.ISSHOW = 1
-            AND src.ISSHOW = 1
-            AND channel.TYPEID IN
-            <foreach collection="typeList" item="typeId" index="index" open="(" close=")" separator=",">
-                #{typeId}
-            </foreach>
+        channel.COMPANYID = #{companyId}
+        AND channel.ISSHOW = 1
+        AND src.ISSHOW = 1
+        AND channel.TYPEID IN
+        <foreach collection="typeList" item="typeId" index="index" open="(" close=")" separator=",">
+            #{typeId}
+        </foreach>
         ORDER BY channel.TYPEID, channel.PRIORITY, channel.ID, src.PRIORITY, src.ID
     </select>
 
     <!--根据ID获取显示可用的渠道-->
     <select id="getShowChannelById" parameterType="Integer" resultMap="baseMap">
         SELECT
-            <include refid="baseColumn"/>
+        <include refid="baseColumn"/>
         FROM
-            hm_crm_channel
+        hm_crm_channel
         WHERE
-            COMPANYID = #{companyId}
+        COMPANYID = #{companyId}
         AND ID = #{id}
         AND ISSHOW = 1
     </select>
@@ -229,12 +229,12 @@
     <!--获取员工7天内录入使用渠道的次数排序-->
     <select id="getHistoryChannelSort" parameterType="map" resultMap="ChannelVOMap">
         SELECT
-            src.CHANNELID ID, src.CHANNELNAME, src.ID AS SRCID, src.SRCNAME
+        src.CHANNELID ID, src.CHANNELNAME, src.ID AS SRCID, src.SRCNAME
         FROM
-            ${tableName} info
+        ${tableName} info
         LEFT JOIN hm_crm_source src ON info.SOURCEID = src.ID AND src.COMPANYID = #{companyId}
         WHERE
-            info.ISDEL = 0
+        info.ISDEL = 0
         AND info.COMPANYID = #{companyId}
         AND info.COLLECTORID = #{staffId}
         AND DATE_SUB( CURDATE(), INTERVAL 10 DAY ) &lt;= FROM_UNIXTIME( info.CREATETIME )
@@ -244,18 +244,18 @@
             #{typeId}
         </foreach>
         GROUP BY
-            info.CHANNELID, info.SOURCEID
+        info.CHANNELID, info.SOURCEID
         ORDER BY COUNT( 1 ) DESC;
     </select>
 
     <!--根据渠道名，类型，获取渠道信息-->
     <select id="getChannelByNameAndType" parameterType="map" resultType="com.qiein.jupiter.web.entity.po.ChannelPO">
         SELECT
-            <include refid="baseColumn"/>
+        <include refid="baseColumn"/>
         FROM
-            hm_crm_channel
+        hm_crm_channel
         WHERE
-            COMPANYID = #{companyId}
+        COMPANYID = #{companyId}
         AND CHANNELNAME = #{channelName}
         AND TYPEID = #{typeId}
     </select>
@@ -272,4 +272,16 @@
             AND channel.TYPEID = 3
             AND grp.COMPANYID = #{companyId}
     </select>
+
+    <!--根据公司ID 获取所有的渠道-->
+    <select id="getChannelListByCid" resultMap="baseMap">
+        SELECT
+        channel.ID,channel.CHANNELNAME,channel.CHANNELIMG,channel.ISSHOW
+        FROM
+         hm_crm_channel channel
+        WHERE
+         channel.COMPANYID = #{companyId}
+    </select>
+
+
 </mapper>
