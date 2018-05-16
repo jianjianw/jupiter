@@ -1,9 +1,11 @@
 package com.qiein.jupiter.web.service;
 
 import com.qiein.jupiter.web.entity.po.ChannelPO;
+import com.qiein.jupiter.web.entity.vo.ChannelDictVO;
 import com.qiein.jupiter.web.entity.vo.ChannelVO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 渠道Service
@@ -79,4 +81,10 @@ public interface ChannelService {
      */
     List<ChannelVO> getMyChannelSourceByRole(int companyId, int staffId, String role);
 
+    /**
+     * 根据公司ID 获取渠道字典
+     *
+     * @return
+     */
+    Map<String, ChannelDictVO> getChannelDict(int companyId);
 }

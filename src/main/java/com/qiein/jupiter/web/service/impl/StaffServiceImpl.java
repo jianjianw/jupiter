@@ -82,6 +82,9 @@ public class StaffServiceImpl implements StaffService {
     @Autowired
     private DictionaryService dictionaryService;
 
+    @Autowired
+    private ChannelService channelService;
+
     /**
      * 员工新增
      *
@@ -425,17 +428,6 @@ public class StaffServiceImpl implements StaffService {
     }
 
     /**
-     * 更新心跳
-     *
-     * @param id
-     * @param companyId
-     */
-    @Override
-    public void heartBeatUpdate(int id, int companyId) {
-
-    }
-
-    /**
      * 删除缓存中的用户错误次数和验证码
      *
      * @param phone
@@ -600,6 +592,8 @@ public class StaffServiceImpl implements StaffService {
         pageDictDTO.setStatusMap(statusService.getStatusDictMap(companyId));
         //公共字典
         pageDictDTO.setCommonMap(dictionaryService.getDictMapByCid(companyId));
+        //渠道字典
+        pageDictDTO.setChannelMap(channelService.getChannelDict(companyId));
         staffBaseInfoVO.setPageDict(pageDictDTO);
         return staffBaseInfoVO;
     }

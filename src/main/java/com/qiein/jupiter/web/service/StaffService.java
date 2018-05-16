@@ -129,11 +129,6 @@ public interface StaffService {
     StaffPO loginWithCompanyId(String userName, String password, int companyId, String ip);
 
     /**
-     * 心跳更新
-     */
-    void heartBeatUpdate(int id, int companyId);
-
-    /**
      * 获取小组人员
      */
     List<StaffVO> getGroupStaffs(int companyId, String groupId);
