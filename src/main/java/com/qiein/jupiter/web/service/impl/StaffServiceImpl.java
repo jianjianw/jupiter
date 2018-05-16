@@ -902,5 +902,10 @@ public class StaffServiceImpl implements StaffService {
         }
     }
 
+    @Override
+    public StaffDetailVO getStaffCard(int staffId, int companyId) {
+        return staffDao.getStaffCard(staffId, companyId);
+    }
+
 
 }
