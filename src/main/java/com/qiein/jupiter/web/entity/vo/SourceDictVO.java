@@ -20,6 +20,18 @@ public class SourceDictVO implements Serializable {
      * 来源图片地址
      */
     private String srcImg;
+    /**
+     * 是否显示
+     */
+    private boolean showFlag;
+
+    public boolean isShowFlag() {
+        return showFlag;
+    }
+
+    public void setShowFlag(boolean showFlag) {
+        this.showFlag = showFlag;
+    }
 
     public static long getSerialVersionUID() {
         return serialVersionUID;

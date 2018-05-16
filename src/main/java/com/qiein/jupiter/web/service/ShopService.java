@@ -1,9 +1,11 @@
 package com.qiein.jupiter.web.service;
 
 import com.qiein.jupiter.web.entity.po.ShopPO;
+import com.qiein.jupiter.web.entity.vo.ShopDictVO;
 import com.qiein.jupiter.web.entity.vo.ShopVO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 拍摄地（门店）
@@ -67,4 +69,9 @@ public interface ShopService {
      * @return
      */
     List<ShopVO> getShowShopList(int companyId);
+
+    /**
+     * 获取拍摄地的字典
+     */
+    Map<String, ShopDictVO> getShopDictByCid(int companyId);
 }

@@ -85,6 +85,9 @@ public class StaffServiceImpl implements StaffService {
     @Autowired
     private ChannelService channelService;
 
+    @Autowired
+    private ShopService shopService;
+
     /**
      * 员工新增
      *
@@ -594,6 +597,8 @@ public class StaffServiceImpl implements StaffService {
         pageDictDTO.setCommonMap(dictionaryService.getDictMapByCid(companyId));
         //渠道字典
         pageDictDTO.setChannelMap(channelService.getChannelDict(companyId));
+        //拍摄地字典
+        pageDictDTO.setShopMap(shopService.getShopDictByCid(companyId));
         staffBaseInfoVO.setPageDict(pageDictDTO);
         return staffBaseInfoVO;
     }

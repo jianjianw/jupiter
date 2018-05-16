@@ -276,7 +276,7 @@
     <!--根据公司ID 获取所有的渠道-->
     <select id="getChannelListByCid" resultMap="baseMap">
         SELECT
-        channel.ID,channel.CHANNELNAME,channel.CHANNELIMG
+        channel.ID,channel.CHANNELNAME,channel.CHANNELIMG,channel.ISSHOW
         FROM
          hm_crm_channel channel
         WHERE
