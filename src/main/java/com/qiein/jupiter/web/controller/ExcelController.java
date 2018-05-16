@@ -112,8 +112,8 @@ public class ExcelController extends BaseController {
      *
      * @return
      */
-    @PostMapping("/delete_temp_by_operaid")
-    public ResultInfo deleteTempByOperaId(@RequestBody ClientExcelDTO info) {
+    @GetMapping("/delete_temp_by_operaid")
+    public ResultInfo deleteTempByOperaId() {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         excelService.deleteTempByStaffId(currentLoginStaff.getCompanyId(), currentLoginStaff.getId());
