@@ -290,11 +290,11 @@
             <if test="info.typeName != null and info.typeName != ''">
                 TYPENAME = #{info.typeName},
             </if>
+            <if test="info.statusName != null and info.statusName != ''">
+                STATUSNAME = #{info.statusName},
+            </if>
             <if test="info.channelName != null and info.channelName != ''">
                 CHANNELNAME = #{info.channelName},
-            </if>
-            <if test="info.sourceName != null and info.sourceName != ''">
-                SOURCENAME = #{info.sourceName},
             </if>
             <if test="info.shopName != null and info.shopName != ''">
                 SHOPNAME = #{info.shopName},
