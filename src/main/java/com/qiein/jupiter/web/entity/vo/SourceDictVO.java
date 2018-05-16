@@ -13,7 +13,7 @@ public class SourceDictVO implements Serializable {
 
     private int id;
     /**
-     * 渠道名称
+     * 来源名称
      */
     private String srcName;
     /**

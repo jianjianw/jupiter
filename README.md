@@ -21,8 +21,9 @@ application_dev.properties 存放开发环境的配置
 application_pro.properties 存放正式环境的配置
 
 ###vo po 说明
-vo-数据库对象
-po-业务对象
+po-数据库对象
+vo-业务对象
+dto-数据传输对象
 
 ###异常说明
 所有的异常需要在exception中的ExceptionEnum 枚举中说明，并在

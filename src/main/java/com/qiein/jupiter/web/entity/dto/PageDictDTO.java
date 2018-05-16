@@ -15,7 +15,7 @@ import java.util.Map;
 public class PageDictDTO {
 
     /**
-     * 渠道字典
+     * 来源字典
      */
     private Map<String, SourceDictVO> sourceMap;
     /**

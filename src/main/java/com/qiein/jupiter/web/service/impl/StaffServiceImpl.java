@@ -425,17 +425,6 @@ public class StaffServiceImpl implements StaffService {
     }
 
     /**
-     * 更新心跳
-     *
-     * @param id
-     * @param companyId
-     */
-    @Override
-    public void heartBeatUpdate(int id, int companyId) {
-
-    }
-
-    /**
      * 删除缓存中的用户错误次数和验证码
      *
      * @param phone
