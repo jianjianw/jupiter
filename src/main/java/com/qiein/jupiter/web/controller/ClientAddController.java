@@ -1,8 +1,10 @@
 package com.qiein.jupiter.web.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
+import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.util.StringUtil;
@@ -45,7 +47,11 @@ public class ClientAddController extends BaseController {
      * @return
      */
     @PostMapping("/batch_add_ds_client")
-    public ResultInfo batchAddDsClient(@NotEmptyStr @RequestParam("list") String list) {
+    public ResultInfo batchAddDsClient(@RequestBody JSONObject jsonObject) {
+        String list = StringUtil.nullToStrTrim(jsonObject.getString("list"));
+        if (StringUtil.isEmpty(list)) {
+            throw new RException(ExceptionEnum.INFO_IS_NULL);
+        }
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         clientAddService.batchAddDsClient(list, currentLoginStaff);
