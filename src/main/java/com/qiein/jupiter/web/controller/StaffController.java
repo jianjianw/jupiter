@@ -624,4 +624,14 @@ public class StaffController extends BaseController {
                 currentLoginStaff.getId(), currentLoginStaff.getNickName());
         return ResultInfoUtil.success();
     }
+
+    /**
+     * 根据员工id获取员工名片
+     * @param staffId
+     * @return
+     */
+    @GetMapping("/card")
+    public ResultInfo getStaffCard(int staffId){
+        return ResultInfoUtil.success(staffService.getStaffCard(staffId,getCurrentLoginStaff().getCompanyId()));
+    }
 }

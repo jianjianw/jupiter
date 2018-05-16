@@ -295,4 +295,12 @@ public interface StaffService {
      * 退出登录
      */
     void logout(int companyId, int staffId, String staffName);
+
+    /**
+     * 获取个人名片
+     * @param staffId
+     * @param companyId
+     * @return
+     */
+    StaffDetailVO getStaffCard (int staffId,int companyId);
 }

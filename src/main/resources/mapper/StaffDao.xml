@@ -536,4 +536,16 @@
             sf.ID = #{staffId}
             AND rela.COMPANYID = #{companyId}
     </select>
+
+    <select id="getStaffCard" parameterType="Integer" resultType="staffDetailVO">
+        SELECT
+	        s.ID,s.NICKNAME,s.PHONE,s.USERNAME,s.COMPANYID,s.HEADIMG,s.STATUSFLAG,s.ISLOCK,
+	        s.ISDEL,sd.WECHATNAME,sd.WECHATIMG,sd.QQ,sd.LASTLOGINTIME,sd.LASTLOGOUTTIME
+        FROM
+	        hm_pub_staff s
+        LEFT JOIN
+	        hm_pub_staff_detail sd ON s.ID = sd.ID
+        WHERE
+	        s.COMPANYID =#{companyId} AND s.ID = #{staffId}
+    </select>
 </mapper>
