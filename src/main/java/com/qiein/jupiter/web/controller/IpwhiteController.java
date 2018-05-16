@@ -1,6 +1,9 @@
 package com.qiein.jupiter.web.controller;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -65,15 +68,32 @@ public class IpwhiteController extends BaseController{
 		return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
 		
 	}
-	
+	/*
+	 * 删除
+	 */
 	@GetMapping("/delete")
 	public ResultInfo delete(@Id int id){
 		ipwhiteService.delete(id);
 		return ResultInfoUtil.success(TigMsgEnum.DELETE_SUCCESS);
 	}
-	
+	/*
+	 * 显示页面
+	 */
+	@GetMapping("/get_all_ip_by_companyId")
+	public ResultInfo get_all_ip_by_companyId(){
+		StaffPO staff=getCurrentLoginStaff();
+		List<IpWhitePO> list=ipwhiteService.select(staff.getCompanyId());
+		Map map=new HashMap<>();
+		map.put("list", list);
+//		map.put("state",state);
+		return ResultInfoUtil.success(map);
+	}
+	/*
+	 * 修改
+	 */
 	@PostMapping("update")
 	public ResultInfo update(@Validated @RequestBody IpWhitePO ipWhitePo){
+		//判断ip 格式
 		String[] ips=ipWhitePo.getIp().split("\\.");
 		if (ips.length==0){
 			ips=ipWhitePo.getIp().split("。");
