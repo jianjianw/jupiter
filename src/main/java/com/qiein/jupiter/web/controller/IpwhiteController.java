@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.qiein.jupiter.aop.validate.annotation.Id;
@@ -75,9 +76,25 @@ public class IpwhiteController extends BaseController{
 	 * 删除
 	 */
 	@GetMapping("/delete")
-	public ResultInfo delete(@Id Integer id){
+	public ResultInfo delete(@RequestParam @Id Integer id){
 		ipwhiteService.delete(id);
 		return ResultInfoUtil.success(TigMsgEnum.DELETE_SUCCESS);
+	}
+	/*
+	 * 修改iplimit
+	 */
+	
+	@GetMapping("/editIpLimit")
+	public ResultInfo editIpLimit(@RequestParam Integer iplimit)
+	{
+		StaffPO staff=getCurrentLoginStaff();
+		if(iplimit==0){
+			iplimit=1;
+		}else{
+			iplimit=0;
+		}
+		companyService.editIpLimit(iplimit,staff.getCompanyId());
+		return ResultInfoUtil.success(TigMsgEnum.UPDATE_SUCCESS);
 	}
 	/*
 	 * 显示页面

@@ -118,4 +118,16 @@ public class CompanyServiceImpl implements CompanyService {
 		// TODO Auto-generated method stub
 		return companyDao.getIpLimit(companyId);
 	}
+	/**
+	 * 修改iplimt
+	 * 
+	 * @param iplimit
+	 * * @param companyId
+	 * @return
+	 */
+	@Override
+	public void editIpLimit(Integer iplimit, int companyId) {
+		// TODO Auto-generated method stub
+		companyDao.editIpLimit(iplimit,companyId);
+	}
 }

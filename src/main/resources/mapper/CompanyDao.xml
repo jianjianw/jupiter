@@ -122,4 +122,8 @@
     select iplimit  from hm_pub_company where Id=#{0}
     
     </select>
+    <update id="editIpLimit" parameterType="Integer">
+    update hm_pub_company set iplimit=#{0} where id=#{1}
+    
+    </update>
 </mapper>
