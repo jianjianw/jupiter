@@ -8,6 +8,11 @@ import org.springframework.stereotype.Service;
 import com.qiein.jupiter.web.dao.IpwhiteDao;
 import com.qiein.jupiter.web.entity.po.IpWhitePO;
 import com.qiein.jupiter.web.service.IpwhiteService;
+/**
+ * ip白名单
+ * 
+ * @author XiangLiang 2018/05/16 
+ **/
 @Service
 public class IpwhiteServiceImpl implements IpwhiteService {
 
@@ -26,17 +31,17 @@ public class IpwhiteServiceImpl implements IpwhiteService {
 		ipwhitedao.delete(id);
 	}
 
-	@Override
-	public List<IpWhitePO> select(int companyid) {
-		// TODO Auto-generated method stub
-//		return ipwhitedao.;
-		return null;
-	}
 
 	@Override
 	public void update(IpWhitePO ipWhitePo) {
 		// TODO Auto-generated method stub
 		ipwhitedao.update(ipWhitePo);
+	}
+
+	@Override
+	public List<IpWhitePO> get_all_ip_by_companyId(int companyId) {
+		// TODO Auto-generated method stub
+		return ipwhitedao.get_all_ip_by_companyId(companyId);
 	}
 
 	

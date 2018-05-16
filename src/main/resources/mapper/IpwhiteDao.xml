@@ -22,4 +22,19 @@
    	<delete id="delete" parameterType="Integer">
    	delete from hm_pub_ip_white where id=#{0}
    	</delete>
+   	
+   	<select id="get_all_ip_by_companyId" parameterType="Integer" resultType="com.qiein.jupiter.web.entity.po.IpWhitePO">
+   	SELECT
+		a.id id,
+		a.IP ip,
+		a.CREATETIME createTime,
+		a.MEMO memo,
+		b.COMPANYNAME companyName,
+		a.companyId companyId
+	FROM
+		hm_pub_ip_white a
+	LEFT JOIN hm_pub_company b ON a.COMPANYID = b.ID
+		WHERE
+	COMPANYID =#{0}
+   	</select>
 </mapper>

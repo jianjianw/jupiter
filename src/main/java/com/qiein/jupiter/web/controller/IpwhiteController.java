@@ -20,6 +20,7 @@ import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.web.entity.po.IpWhitePO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.service.CompanyService;
 import com.qiein.jupiter.web.service.IpwhiteService;
 
 /**
@@ -34,6 +35,8 @@ public class IpwhiteController extends BaseController{
 	
 	@Autowired
 	private IpwhiteService ipwhiteService;
+	@Autowired
+	private CompanyService companyService;
 	/*
 	 * 新增
 	 */
@@ -72,7 +75,7 @@ public class IpwhiteController extends BaseController{
 	 * 删除
 	 */
 	@GetMapping("/delete")
-	public ResultInfo delete(@Id int id){
+	public ResultInfo delete(@Id Integer id){
 		ipwhiteService.delete(id);
 		return ResultInfoUtil.success(TigMsgEnum.DELETE_SUCCESS);
 	}
@@ -82,10 +85,10 @@ public class IpwhiteController extends BaseController{
 	@GetMapping("/get_all_ip_by_companyId")
 	public ResultInfo get_all_ip_by_companyId(){
 		StaffPO staff=getCurrentLoginStaff();
-		List<IpWhitePO> list=ipwhiteService.select(staff.getCompanyId());
+		List<IpWhitePO> list=ipwhiteService.get_all_ip_by_companyId(staff.getCompanyId());
 		Map map=new HashMap<>();
 		map.put("list", list);
-//		map.put("state",state);
+		map.put("state",companyService.getIpLimit(staff.getCompanyId()));
 		return ResultInfoUtil.success(map);
 	}
 	/*

@@ -66,4 +66,11 @@ public interface CompanyService {
 	 * @return
 	 */
 	int updateRange(int companyId, String column, int num);
+	/**
+	 * 获取iplimt
+	 * 
+	 * @param companyId
+	 * @return
+	 */
+	int getIpLimit(int companyId);
 }

@@ -107,4 +107,15 @@ public class CompanyServiceImpl implements CompanyService {
 		}
 		return companyDao.updateRange(companyId, column, num);
 	}
+	/**
+	 * 获取iplimt
+	 * 
+	 * @param companyId
+	 * @return
+	 */
+	@Override
+	public int getIpLimit(int companyId) {
+		// TODO Auto-generated method stub
+		return companyDao.getIpLimit(companyId);
+	}
 }
