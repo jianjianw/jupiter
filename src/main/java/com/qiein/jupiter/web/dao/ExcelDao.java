@@ -151,4 +151,12 @@ public interface ExcelDao {
      * @param info
      */
     void batchEditTemp(@Param("tempName") String tempName, @Param("kzIdArr") String[] kzIdArr, @Param("info") ClientExcelDTO info);
+
+    /**
+     * 设置状态ID和classId
+     *
+     * @param tempName
+     * @param operaId
+     */
+    void updateStatusIdAndClassId(@Param("tempName") String tempName, @Param("operaId") int operaId);
 }

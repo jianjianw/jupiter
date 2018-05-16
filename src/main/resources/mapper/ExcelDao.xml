@@ -275,7 +275,7 @@
     <!-- 批量删除员工客资缓存记录 -->
     <delete id="batchDeleteTemp" parameterType="map" >
         DELETE FROM ${tempName}
-        WHERE OPERAID = ${operaId}
+        WHERE OPERAID = #{operaId}
         AND KZID IN
         <foreach collection="kzIdArr" item="kzid" index="index"
                  open="(" close=")" separator=",">
@@ -290,8 +290,8 @@
             <if test="info.typeName != null and info.typeName != ''">
                 TYPENAME = #{info.typeName},
             </if>
-            <if test="info.statusName != null and info.statusName != ''">
-                STATUSNAME = #{info.statusName},
+            <if test="info.channelName != null and info.channelName != ''">
+                CHANNELNAME = #{info.channelName},
             </if>
             <if test="info.sourceName != null and info.sourceName != ''">
                 SOURCENAME = #{info.sourceName},
@@ -314,6 +314,15 @@
         <foreach collection="kzIdArr" item="kzid" index="index" open="(" close=")" separator=",">
             #{kzid}
         </foreach>
+    </update>
+
+    <!--设置状态ID和classId-->
+    <update id="updateStatusIdAndClassId" parameterType="map">
+        UPDATE ${tempName} temp
+        LEFT JOIN hm_crm_client_status sts  on sts.COMPANYID = temp.COMPANYID AND sts.STATUSNAME = temp.STATUSNAME
+        SET temp.STATUSID = sts.STATUSID ,temp.CLASSID = sts.CLASSID
+        WHERE
+            temp.OPERAID = #{operaId}
     </update>
 
 

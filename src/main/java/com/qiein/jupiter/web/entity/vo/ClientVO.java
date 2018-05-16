@@ -8,320 +8,381 @@ import com.qiein.jupiter.aop.validate.annotation.Id;
  * 客资实体类
  */
 public class ClientVO implements Serializable {
-	private static final long serialVersionUID = 2657896097650380311L;
-	/**
-	 * 性别（0-未知，1-男，2-女）
-	 */
-	private int sex;
-	/**
-	 * 客资姓名
-	 */
-	private String kzName;
-	/**
-	 * 客资手机号
-	 */
-	private String kzPhone;
-	/**
-	 * 客资微信
-	 */
-	private String kzWechat;
-	/**
-	 * 客资旺旺
-	 */
-	private String kzWw;
-	/**
-	 * 客资QQ
-	 */
-	private String kzQq;
-	/**
-	 * 客资咨询方式
-	 */
-	private String zxStyle;
-	/**
-	 * 拍摄地
-	 */
-	@Id(message = "{client.shopId.null}")
-	private int shopId;
-	/**
-	 * 渠道ID
-	 */
-	@Id(message = "{client.channelId.null}")
-	private int channelId;
-	/**
-	 * 来源ID
-	 */
-	@Id(message = "{client.sourceId.null}")
-	private int sourceId;
-	/**
-	 * 拍摄类型ID
-	 */
-	private int typeId;
-	/**
-	 * 广告着陆页
-	 */
-	private String adAddress;
-	/**
-	 * 广告ID
-	 */
-	private String adId;
-	/**
-	 * 关键字
-	 */
-	private String keyWord;
-	/**
-	 * 地址
-	 */
-	private String address;
-	/**
-	 * 推广备注
-	 */
-	private String remark;
-	/**
-	 * 邀约客服ID
-	 */
-	private int appointId;
-	/**
-	 * 邀约客服小组ID
-	 */
-	private String groupId;
-	/**
-	 * 企业ID
-	 */
-	private int companyId;
-	/**
-	 * 推广人ID
-	 */
-	private int collectorId;
-	/**
-	 * 推广人姓名
-	 */
-	private String collectorName;
-	/**
-	 * 渠道名称
-	 */
-	private String channelName;
-	/**
-	 * 来源名称
-	 */
-	private String sourceName;
-	/**
-	 * 拍摄地名称
-	 */
-	private String shopName;
-	/**
-	 * 邀约客服姓名
-	 */
-	private String appointName;
-	/**
-	 * 邀约客服小组名
-	 */
-	private String groupName;
+    private static final long serialVersionUID = 2657896097650380311L;
+    /**
+     * 主键ID
+     */
+    private int id;
+    /**
+     * 性别（0-未知，1-男，2-女）
+     */
+    private int sex;
+    /**
+     * 客资姓名
+     */
+    private String kzName;
+    /**
+     * 客资手机号
+     */
+    private String kzPhone;
+    /**
+     * 客资微信
+     */
+    private String kzWechat;
+    /**
+     * 客资旺旺
+     */
+    private String kzWw;
+    /**
+     * 客资QQ
+     */
+    private String kzQq;
+    /**
+     * 客资咨询方式
+     */
+    private String zxStyle;
+    /**
+     * 拍摄地
+     */
+    @Id(message = "{client.shopId.null}")
+    private int shopId;
+    /**
+     * 渠道ID
+     */
+    @Id(message = "{client.channelId.null}")
+    private int channelId;
+    /**
+     * 来源ID
+     */
+    @Id(message = "{client.sourceId.null}")
+    private int sourceId;
+    /**
+     * 拍摄类型ID
+     */
+    private int typeId;
+    /**
+     * 广告着陆页
+     */
+    private String adAddress;
+    /**
+     * 广告ID
+     */
+    private String adId;
+    /**
+     * 关键字
+     */
+    private String keyWord;
+    /**
+     * 地址
+     */
+    private String address;
+    /**
+     * 推广备注
+     */
+    private String remark;
+    /**
+     * 邀约客服ID
+     */
+    private int appointId;
+    /**
+     * 邀约客服小组ID
+     */
+    private String groupId;
+    /**
+     * 企业ID
+     */
+    private int companyId;
+    /**
+     * 推广人ID
+     */
+    private int collectorId;
+    /**
+     * 推广人姓名
+     */
+    private String collectorName;
+    /**
+     * 渠道名称
+     */
+    private String channelName;
+    /**
+     * 来源名称
+     */
+    private String sourceName;
+    /**
+     * 拍摄地名称
+     */
+    private String shopName;
+    /**
+     * 邀约客服姓名
+     */
+    private String appointName;
+    /**
+     * 邀约客服小组名
+     */
+    private String groupName;
+    /**
+     * 录入时间
+     */
+    private String createTime;
+    /**
+     * 状态名称
+     */
+    private String statusNzme;
+    /**
+     * 无效原因
+     */
+    private String invalidLable;
 
-	public int getSex() {
-		return sex;
-	}
+    /**
+     * 销售备注
+     */
+    private String memo;
 
-	public void setSex(int sex) {
-		this.sex = sex;
-	}
+    public int getSex() {
+        return sex;
+    }
 
-	public String getKzName() {
-		return kzName;
-	}
+    public void setSex(int sex) {
+        this.sex = sex;
+    }
 
-	public void setKzName(String kzName) {
-		this.kzName = kzName;
-	}
+    public String getKzName() {
+        return kzName;
+    }
 
-	public String getKzPhone() {
-		return kzPhone;
-	}
+    public void setKzName(String kzName) {
+        this.kzName = kzName;
+    }
 
-	public void setKzPhone(String kzPhone) {
-		this.kzPhone = kzPhone;
-	}
+    public String getKzPhone() {
+        return kzPhone;
+    }
 
-	public String getKzWechat() {
-		return kzWechat;
-	}
+    public void setKzPhone(String kzPhone) {
+        this.kzPhone = kzPhone;
+    }
 
-	public void setKzWechat(String kzWechat) {
-		this.kzWechat = kzWechat;
-	}
+    public String getKzWechat() {
+        return kzWechat;
+    }
 
-	public String getKzWw() {
-		return kzWw;
-	}
+    public void setKzWechat(String kzWechat) {
+        this.kzWechat = kzWechat;
+    }
 
-	public void setKzWw(String kzWw) {
-		this.kzWw = kzWw;
-	}
+    public String getKzWw() {
+        return kzWw;
+    }
 
-	public String getKzQq() {
-		return kzQq;
-	}
+    public void setKzWw(String kzWw) {
+        this.kzWw = kzWw;
+    }
 
-	public void setKzQq(String kzQq) {
-		this.kzQq = kzQq;
-	}
+    public String getKzQq() {
+        return kzQq;
+    }
 
-	public String getZxStyle() {
-		return zxStyle;
-	}
+    public void setKzQq(String kzQq) {
+        this.kzQq = kzQq;
+    }
 
-	public void setZxStyle(String zxStyle) {
-		this.zxStyle = zxStyle;
-	}
+    public String getZxStyle() {
+        return zxStyle;
+    }
 
-	public int getShopId() {
-		return shopId;
-	}
+    public void setZxStyle(String zxStyle) {
+        this.zxStyle = zxStyle;
+    }
 
-	public void setShopId(int shopId) {
-		this.shopId = shopId;
-	}
+    public int getShopId() {
+        return shopId;
+    }
 
-	public int getChannelId() {
-		return channelId;
-	}
+    public void setShopId(int shopId) {
+        this.shopId = shopId;
+    }
 
-	public void setChannelId(int channelId) {
-		this.channelId = channelId;
-	}
+    public int getChannelId() {
+        return channelId;
+    }
 
-	public int getSourceId() {
-		return sourceId;
-	}
+    public void setChannelId(int channelId) {
+        this.channelId = channelId;
+    }
 
-	public void setSourceId(int sourceId) {
-		this.sourceId = sourceId;
-	}
+    public int getSourceId() {
+        return sourceId;
+    }
 
-	public int getTypeId() {
-		return typeId;
-	}
+    public void setSourceId(int sourceId) {
+        this.sourceId = sourceId;
+    }
 
-	public void setTypeId(int typeId) {
-		this.typeId = typeId;
-	}
+    public int getTypeId() {
+        return typeId;
+    }
 
-	public String getAdAddress() {
-		return adAddress;
-	}
+    public void setTypeId(int typeId) {
+        this.typeId = typeId;
+    }
 
-	public void setAdAddress(String adAddress) {
-		this.adAddress = adAddress;
-	}
+    public String getAdAddress() {
+        return adAddress;
+    }
 
-	public String getAdId() {
-		return adId;
-	}
+    public void setAdAddress(String adAddress) {
+        this.adAddress = adAddress;
+    }
 
-	public void setAdId(String adId) {
-		this.adId = adId;
-	}
+    public String getAdId() {
+        return adId;
+    }
 
-	public String getKeyWord() {
-		return keyWord;
-	}
+    public void setAdId(String adId) {
+        this.adId = adId;
+    }
 
-	public void setKeyWord(String keyWord) {
-		this.keyWord = keyWord;
-	}
+    public String getKeyWord() {
+        return keyWord;
+    }
 
-	public String getAddress() {
-		return address;
-	}
+    public void setKeyWord(String keyWord) {
+        this.keyWord = keyWord;
+    }
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
+    public String getAddress() {
+        return address;
+    }
 
-	public String getRemark() {
-		return remark;
-	}
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-	public void setRemark(String remark) {
-		this.remark = remark;
-	}
+    public String getRemark() {
+        return remark;
+    }
 
-	public int getAppointId() {
-		return appointId;
-	}
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 
-	public void setAppointId(int appointId) {
-		this.appointId = appointId;
-	}
+    public int getAppointId() {
+        return appointId;
+    }
 
-	public String getGroupId() {
-		return groupId;
-	}
+    public void setAppointId(int appointId) {
+        this.appointId = appointId;
+    }
 
-	public void setGroupId(String groupId) {
-		this.groupId = groupId;
-	}
+    public String getGroupId() {
+        return groupId;
+    }
 
-	public int getCompanyId() {
-		return companyId;
-	}
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
 
-	public void setCompanyId(int companyId) {
-		this.companyId = companyId;
-	}
+    public int getCompanyId() {
+        return companyId;
+    }
 
-	public int getCollectorId() {
-		return collectorId;
-	}
+    public void setCompanyId(int companyId) {
+        this.companyId = companyId;
+    }
 
-	public void setCollectorId(int collectorId) {
-		this.collectorId = collectorId;
-	}
+    public int getCollectorId() {
+        return collectorId;
+    }
 
-	public String getCollectorName() {
-		return collectorName;
-	}
+    public void setCollectorId(int collectorId) {
+        this.collectorId = collectorId;
+    }
 
-	public void setCollectorName(String collectorName) {
-		this.collectorName = collectorName;
-	}
+    public String getCollectorName() {
+        return collectorName;
+    }
 
-	public String getChannelName() {
-		return channelName;
-	}
+    public void setCollectorName(String collectorName) {
+        this.collectorName = collectorName;
+    }
 
-	public void setChannelName(String channelName) {
-		this.channelName = channelName;
-	}
+    public String getChannelName() {
+        return channelName;
+    }
 
-	public String getSourceName() {
-		return sourceName;
-	}
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
+    }
 
-	public void setSourceName(String sourceName) {
-		this.sourceName = sourceName;
-	}
+    public String getSourceName() {
+        return sourceName;
+    }
 
-	public String getShopName() {
-		return shopName;
-	}
+    public void setSourceName(String sourceName) {
+        this.sourceName = sourceName;
+    }
 
-	public void setShopName(String shopName) {
-		this.shopName = shopName;
-	}
+    public String getShopName() {
+        return shopName;
+    }
 
-	public String getAppointName() {
-		return appointName;
-	}
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
+    }
 
-	public void setAppointName(String appointName) {
-		this.appointName = appointName;
-	}
+    public String getAppointName() {
+        return appointName;
+    }
 
-	public String getGroupName() {
-		return groupName;
-	}
+    public void setAppointName(String appointName) {
+        this.appointName = appointName;
+    }
 
-	public void setGroupName(String groupName) {
-		this.groupName = groupName;
-	}
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getStatusNzme() {
+        return statusNzme;
+    }
+
+    public void setStatusNzme(String statusNzme) {
+        this.statusNzme = statusNzme;
+    }
+
+    public String getInvalidLable() {
+        return invalidLable;
+    }
+
+    public void setInvalidLable(String invalidLable) {
+        this.invalidLable = invalidLable;
+    }
+
+    public String getMemo() {
+        return memo;
+    }
+
+    public void setMemo(String memo) {
+        this.memo = memo;
+    }
 }
