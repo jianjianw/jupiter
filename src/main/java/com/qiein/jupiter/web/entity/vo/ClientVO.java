@@ -40,7 +40,7 @@ public class ClientVO implements Serializable {
     /**
      * 客资咨询方式
      */
-    private String zxStyle;
+    private int zxStyle;
     /**
      * 拍摄地
      */
@@ -186,11 +186,11 @@ public class ClientVO implements Serializable {
         this.kzQq = kzQq;
     }
 
-    public String getZxStyle() {
+    public int getZxStyle() {
         return zxStyle;
     }
 
-    public void setZxStyle(String zxStyle) {
+    public void setZxStyle(int zxStyle) {
         this.zxStyle = zxStyle;
     }
 
