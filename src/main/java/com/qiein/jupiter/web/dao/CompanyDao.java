@@ -39,9 +39,9 @@ public interface CompanyDao extends BaseDao<CompanyPO> {
 	/**
 	 * 修改iplimt
 	 * 
-	 * @param iplimit
+	 * @param ipLimit
 	 * * @param companyId
 	 * @return
 	 */
-	void editIpLimit(Integer iplimit, int companyId);
+	void editIpLimit(@Param("ipLimit") Integer ipLimit,@Param("companyId") int companyId);
 }

@@ -8,9 +8,9 @@ import com.qiein.jupiter.web.entity.po.IpWhitePO;
  * 
  * @author XiangLiang 2018/05/16 
  **/
-public interface IpwhiteDao extends BaseDao<IpWhitePO>{
+public interface IpWhiteDao extends BaseDao<IpWhitePO>{
 
-	List<IpWhitePO> get_all_ip_by_companyId(int companyId);
+	List<IpWhitePO> getAllIpByCompanyId(int companyId);
 	
 	
 }

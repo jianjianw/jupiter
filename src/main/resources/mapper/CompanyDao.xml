@@ -56,7 +56,7 @@
     </insert>
 
     <update id="update" parameterType="companyPO">
-        UPDATE  hm_pub_company
+        UPDATE hm_pub_company
         <set>
             <if test="companyName != null">
                 COMPANYNAME = #{companyName},
@@ -93,7 +93,7 @@
             </if>
         </set>
         WHERE
-          ID = #{id}
+        ID = #{id}
     </update>
 
     <!--获取企业信息-->
@@ -107,23 +107,23 @@
         	comp.ID = #{companyId}
         AND comp.ISDEL = 0;
     </select>
-    
+
     <!-- 编辑自定义设置 -->
     <update id="updateFlag" parameterType="map">
         UPDATE hm_pub_company SET ${column} = #{flag} WHERE ID = #{companyId}
     </update>
-    
+
     <!-- 编辑自定义范围 -->
     <update id="updateRange" parameterType="map">
         UPDATE hm_pub_company SET ${column} = #{num} WHERE ID = #{companyId}
     </update>
     <!-- 获取iplimit -->
     <select id="getIpLimit" parameterType="Integer" resultType="Integer">
-    select iplimit  from hm_pub_company where Id=#{0}
+    select iplimit  from hm_pub_company where ID = #{companyId}
     
     </select>
     <update id="editIpLimit" parameterType="Integer">
-    update hm_pub_company set iplimit=#{0} where id=#{1}
+    update hm_pub_company set iplimit=#{ipLimit} where id=#{companyId}
     
     </update>
 </mapper>

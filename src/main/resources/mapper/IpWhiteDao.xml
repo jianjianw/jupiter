@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.qiein.jupiter.web.dao.IpwhiteDao">
+<mapper namespace="com.qiein.jupiter.web.dao.IpWhiteDao">
 	<sql id="forinsert">
 		ip,
 		creatoerId,
@@ -12,8 +12,8 @@
 	</sql>
 	<!-- 新增 -->
 	<insert id="insert" parameterType="com.qiein.jupiter.web.entity.po.IpWhitePO">
-	insert into hm_pub_ip_white(<include refid="forinsert"></include>) values(#{ip},#{creatoerId},#{creatoerName},#{createTime},#{companyId},#{memo}) 
-	
+		insert into hm_pub_ip_white(<include refid="forinsert"/>)
+		values(#{ip},#{creatoerId},#{creatoerName},#{createTime},#{companyId},#{memo})
 	</insert>
    	<!-- 修改 -->
    	<update id="update" parameterType="com.qiein.jupiter.web.entity.po.IpWhitePO">
@@ -24,7 +24,7 @@
    	delete from hm_pub_ip_white where id=#{0}
    	</delete>
    	<!-- 获取页面信息 -->
-   	<select id="get_all_ip_by_companyId" parameterType="Integer" resultType="com.qiein.jupiter.web.entity.po.IpWhitePO">
+   	<select id="getAllIpByCompanyId" parameterType="Integer" resultType="com.qiein.jupiter.web.entity.po.IpWhitePO">
    	SELECT
 		a.id id,
 		a.IP ip,
