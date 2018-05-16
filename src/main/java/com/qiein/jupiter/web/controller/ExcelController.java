@@ -11,6 +11,7 @@ import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.dto.ClientExcelDTO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.entity.vo.ClientVO;
 import com.qiein.jupiter.web.service.ExcelService;
 import com.qiein.jupiter.web.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,6 +102,7 @@ public class ExcelController extends BaseController {
     public ResultInfo batchEditTemp(@RequestBody ClientExcelDTO info) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
+        info.setOperaId(currentLoginStaff.getId());
         excelService.editKz(currentLoginStaff.getCompanyId(), info);
         return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
     }
@@ -112,7 +114,7 @@ public class ExcelController extends BaseController {
     public void exportStaff(HttpServletResponse response) {
         try {
 //            ExportExcelUtil.export(response, "员工信息",
-//                    staffService.exportStaff(), StaffPO.class);
+//                    staffService.exportStaff(), ClientVO.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
