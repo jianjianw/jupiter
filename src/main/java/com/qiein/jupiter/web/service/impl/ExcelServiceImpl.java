@@ -230,6 +230,11 @@ public class ExcelServiceImpl implements ExcelService {
             // 设置渠道ID
             excelDao.updateChannelId(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId());
         }
+        if (StringUtil.isNotEmpty(info.getSourceName())){
+            //设置来源ID，来源类型
+            excelDao.updateSrcIdAndType(DBSplitUtil.getTable(TableEnum.temp, info.getCompanyId()),
+                    info.getOperaId());
+        }
         if (StringUtil.isNotEmpty(info.getStatusName())) {
             // 设置状态ID和classId
             excelDao.updateStatusIdAndClassId(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId());
