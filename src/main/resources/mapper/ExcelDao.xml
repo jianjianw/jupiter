@@ -72,7 +72,7 @@
             (#{item.kzId},#{item.typeName}, #{item.statusId},#{item.channelName}, #{item.sourceName},#{item.kzPhone}, #{item.kzWechat},
             #{item.kzQq}, #{item.kzWw}, #{item.collectorName}, #{item.appointName},
              #{item.createTime},unix_timestamp(now()), #{item.shopName}, #{item.companyId},
-            #{item.operaId}, #{item.address}, #{item.groupName}, #{item.keyWord}, #{item.REMARK}
+            #{item.operaId}, #{item.address}, #{item.groupName}, #{item.keyWord}, #{item.remark}
             )
         </foreach>
     </insert>
