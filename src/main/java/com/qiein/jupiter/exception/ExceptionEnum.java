@@ -30,7 +30,7 @@ public enum ExceptionEnum {
     COMPANYID_NULL(306, "公司ID不能为空"),
     ID_NULL(307, "ID不能为空"),
     DELETE_FAIL(309, "删除失败"),
-    EDIT_FAIL(310,"编辑失败"),
+    EDIT_FAIL(310, "编辑失败"),
     OLD_PASSWORD_ERROR(310, "原始密码错误"),
     STAFF_EXIST_DEL(341, "该员工在离职员工中"),
     PHONE_EXIST(342, "该手机号已存在"),
@@ -44,7 +44,7 @@ public enum ExceptionEnum {
     PHONE_IS_NULL(350, "手机号不能为空"),
     STAFF_IS_STOP_RECEIPT(351, "员工已被停单，请联系主管解决"),
     STAFF_IS_LIMIT(352, "员工已达到接单限额，请联系主管解决"),
-    STAFF_STATUS_UPDATE_FAIL(353,"员工状态修改失败"),
+    STAFF_STATUS_UPDATE_FAIL(353, "员工状态修改失败"),
     //部门
     GROUP_NAME_REPEAT(401, "部门名称重复"),
     GROUP_HAVE_CHILD_GROUP(402, "该部门存在小组，请删除下属小组再进行操作"),
@@ -92,22 +92,23 @@ public enum ExceptionEnum {
     //客资
     KZ_CONTACT_INFORMATION(1401, "客资联系方式不能为空"),
     KZ_ADD_FAIL(1402, "录入失败"),
+    KZ_ID_IS_NULL(1403, "客资ID不能为空"),
     //OSS对象存储
     OSS_UPLOAD_TYPE_ERROR(1501, "上传类型错误"),
     OSS_UPLOAD_SIZE_ERROR(1502, "图片大小超过3M"),
     OSS_UPLOAD_FAIL(1503, "图片上传失败"),
     OSS_NO_FILE(1504, "未选择文件"),
-	//客资
-	INFO_ERROR(1601,"客资信息错误"),
-	INFO_OVERTIME_ERROR(1602,"客资领取超时"),
-	INFO_OTHER_APPOINTOR(1603,"该客资已分配给其他客服"),
-	INFO_BE_RECEIVED(1604,"该客资已被领取"),
-	//状态
-	STS_COLUMN_ERROR(1701,"状态颜色表示错误"),
-	STS_DEFAULT_ERROR(1702,"默认颜色信息缺失"),
-	STS_GET_ERROR(1703,"企业状态信息获取错误");
-	
-	private Integer code;
+    //客资
+    INFO_ERROR(1601, "客资信息错误"),
+    INFO_OVERTIME_ERROR(1602, "客资领取超时"),
+    INFO_OTHER_APPOINTOR(1603, "该客资已分配给其他客服"),
+    INFO_BE_RECEIVED(1604, "该客资已被领取"),
+    //状态
+    STS_COLUMN_ERROR(1701, "状态颜色表示错误"),
+    STS_DEFAULT_ERROR(1702, "默认颜色信息缺失"),
+    STS_GET_ERROR(1703, "企业状态信息获取错误");
+
+    private Integer code;
     private String msg;
 
     ExceptionEnum(Integer code, String msg) {

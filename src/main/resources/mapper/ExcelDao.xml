@@ -49,7 +49,8 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-		temp.KZID,temp.TYPEID,temp.CLASSID, temp.TYPENAME, temp.STATUSID,temp.STATUSNAME,temp.SRCTYPE,temp.CHANNELID,temp.CHANNELNAME, temp.SOURCEID, temp.SOURCENAME, temp.ZXSTYLE, temp.KZNAME, temp.SEXNAME, temp.KZPHONE, temp.KZWECHAT, temp.KZQQ, temp.COLLECTORID,temp.COLLECTORNAME,
+		temp.KZID,temp.TYPEID,temp.CLASSID, temp.TYPENAME, temp.STATUSID,temp.STATUSNAME,temp.SRCTYPE,temp.CHANNELID,temp.CHANNELNAME,
+		temp.SOURCEID, temp.SOURCENAME, temp.ZXSTYLE, temp.KZNAME, temp.SEXNAME, temp.KZPHONE, temp.KZWECHAT, temp.KZQQ,temp.KZWW, temp.COLLECTORID,temp.COLLECTORNAME,
 		 temp.APPOINTORID ,temp.APPOINTNAME, temp.APPOINTTIME , temp.MEMO, temp.CREATETIME , temp.SHOPID, temp.SHOPNAME,
 	 temp.COMPANYID, temp.ADADDRESS, temp.ADID,  temp.OPERAID, temp.ADDRESS, temp.GROUPID, temp.GROUPNAME, temp.KEYWORD
 	</sql>
@@ -240,10 +241,10 @@
     <!-- 插入客资基础信息表-->
     <insert id="insertBaseInfoByStaffId" parameterType="map">
 		INSERT INTO ${tabName} (
-			KZID, TYPEID, TYPENAME, CLASSID, KZNAME, KZPHONE, KZWECHAT, KZQQ, KZWW, SEX, STATUSID, SRCTYPE,CHANNELID,SOURCEID, COLLECTORID, COLLECTORNAME, APPOINTORID, APPOINTNAME,
+			KZID, TYPEID, CLASSID, KZNAME, KZPHONE, KZWECHAT, KZQQ, KZWW, SEX, STATUSID, SRCTYPE,CHANNELID,SOURCEID, COLLECTORID, COLLECTORNAME, APPOINTORID, APPOINTNAME,
 			APPOINTTIME,  MEMO, UPDATETIME, CREATETIME, SHOPID, SHOPNAME, AMOUNT, RECEPTORID, RECEPTORNAME, COMPANYID, VALIDTIME, COMESHOPTIME, SUCCESSTIME, RECEIVETIME
 		)( SELECT temp.KZID, temp.TYPEID,
-				temp.TYPENAME, temp.CLASSID, temp.KZNAME, temp.KZPHONE, temp.WECHAT, temp.KZQQ, temp.KZWW, temp.SEX, temp.STATUSID,temp.SRCTYPE,temp.CHANNELID, temp.SOURCEID, temp.COLLECTORID, temp.COLLECTORNAME,
+				 temp.CLASSID, temp.KZNAME, temp.KZPHONE, temp.KZWECHAT, temp.KZQQ, temp.KZWW, temp.SEX, temp.STATUSID,temp.SRCTYPE,temp.CHANNELID, temp.SOURCEID, temp.COLLECTORID, temp.COLLECTORNAME,
 				temp.APPOINTORID, temp.APPOINTNAME, temp.APPOINTTIME, temp.MEMO, temp.UPDATETIME, temp.CREATETIME, temp.SHOPID, temp.SHOPNAME,
 				temp.AMOUNT, temp.RECEPTORID, temp.RECEPTORNAME, temp.COMPANYID, temp.VALIDTIME, temp.COMESHOPTIME, temp.SUCCESSTIME, temp.RECEIVETIME
 			FROM
@@ -274,7 +275,7 @@
     <!-- 批量删除员工客资缓存记录 -->
     <delete id="batchDeleteTemp" parameterType="map" >
         DELETE FROM ${tempName}
-        WHERE OPERAID = ${operaId}
+        WHERE OPERAID = #{operaId}
         AND KZID IN
         <foreach collection="kzIdArr" item="kzid" index="index"
                  open="(" close=")" separator=",">
@@ -292,8 +293,8 @@
             <if test="info.statusName != null and info.statusName != ''">
                 STATUSNAME = #{info.statusName},
             </if>
-            <if test="info.sourceName != null and info.sourceName != ''">
-                SOURCENAME = #{info.sourceName},
+            <if test="info.channelName != null and info.channelName != ''">
+                CHANNELNAME = #{info.channelName},
             </if>
             <if test="info.shopName != null and info.shopName != ''">
                 SHOPNAME = #{info.shopName},
@@ -313,6 +314,15 @@
         <foreach collection="kzIdArr" item="kzid" index="index" open="(" close=")" separator=",">
             #{kzid}
         </foreach>
+    </update>
+
+    <!--设置状态ID和classId-->
+    <update id="updateStatusIdAndClassId" parameterType="map">
+        UPDATE ${tempName} temp
+        LEFT JOIN hm_crm_client_status sts  on sts.COMPANYID = temp.COMPANYID AND sts.STATUSNAME = temp.STATUSNAME
+        SET temp.STATUSID = sts.STATUSID ,temp.CLASSID = sts.CLASSID
+        WHERE
+            temp.OPERAID = #{operaId}
     </update>
 
 
