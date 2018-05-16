@@ -94,6 +94,7 @@ public enum ExceptionEnum {
     KZ_CONTACT_INFORMATION(1401, "客资联系方式不能为空"),
     KZ_ADD_FAIL(1402, "录入失败"),
     KZ_ID_IS_NULL(1403, "客资ID不能为空"),
+    TYPEID_IS_NULL(1404, "拍摄类型不能为空"),
     //OSS对象存储
     OSS_UPLOAD_TYPE_ERROR(1501, "上传类型错误"),
     OSS_UPLOAD_SIZE_ERROR(1502, "图片大小超过3M"),

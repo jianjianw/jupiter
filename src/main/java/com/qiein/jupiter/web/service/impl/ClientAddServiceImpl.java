@@ -196,7 +196,7 @@ public class ClientAddServiceImpl implements ClientAddService {
      *
      * @param list
      */
-    public String batchAddDsClient(String list, StaffPO staffPO) {
+    public String batchAddDsClient(String list, int channelId, int sourceId, int shopId, int typeId, StaffPO staffPO) {
         JSONArray jsonArr = JSONArray.parseArray(list);
 
         int successCount = 0;
@@ -205,8 +205,11 @@ public class ClientAddServiceImpl implements ClientAddService {
         JSONArray rep = new JSONArray();
         for (int i = 0; i < jsonArr.size(); i++) {
             ClientVO clientVO = new ClientVO();
+            clientVO.setChannelId(channelId);
+            clientVO.setSourceId(sourceId);
+            clientVO.setShopId(shopId);
+            clientVO.setTypeId(typeId);
             clientVO.setKzName(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("name")));
-
             clientVO.setKzPhone(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("phone")));
             clientVO.setKzWechat(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("wechat")));
             clientVO.setKzQq(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("qq")));

@@ -26,5 +26,5 @@ public interface ClientAddService {
      *
      * @param list
      */
-    String batchAddDsClient(String list, StaffPO staffPO);
+    String batchAddDsClient(String list, int channelId, int sourceId, int shopId, int typeId, StaffPO staffPO);
 }
