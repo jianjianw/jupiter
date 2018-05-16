@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiein.jupiter.web.dao.ClientDao">
+
+    <update id="editClientBaseInfo" parameterType="clientStatusVO">
+        UPDATE
+	      ${tabName}
+        <set>
+            <if test="weFlag != null and weFlag !=''">
+                WEFLAG = #{weFlag},
+            </if>
+            <if test="sex != null and sex != ''">
+                SEX = #{sex}
+            </if>
+        </set>
+        WHERE
+	      KZID = #{kzId} AND COMPANYID = #{companyId}
+    </update>
+</mapper>
