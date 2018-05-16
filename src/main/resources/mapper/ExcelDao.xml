@@ -46,13 +46,14 @@
         <result column="GROUPNAME" jdbcType="VARCHAR" property="groupName"/>
         <result column="GROUPID" jdbcType="VARCHAR" property="groupId"/>
         <result column="KEYWORD" jdbcType="VARCHAR" property="keyWord"/>
+        <result column="REMARK" jdbcType="VARCHAR" property="remark"/>
     </resultMap>
 
     <sql id="Base_Column_List">
 		temp.KZID,temp.TYPEID,temp.CLASSID, temp.TYPENAME, temp.STATUSID,temp.STATUSNAME,temp.SRCTYPE,temp.CHANNELID,temp.CHANNELNAME,
 		temp.SOURCEID, temp.SOURCENAME, temp.ZXSTYLE, temp.KZNAME, temp.SEXNAME, temp.KZPHONE, temp.KZWECHAT, temp.KZQQ,temp.KZWW, temp.COLLECTORID,temp.COLLECTORNAME,
 		 temp.APPOINTORID ,temp.APPOINTNAME, temp.APPOINTTIME , temp.MEMO, temp.CREATETIME , temp.SHOPID, temp.SHOPNAME,
-	 temp.COMPANYID, temp.ADADDRESS, temp.ADID,  temp.OPERAID, temp.ADDRESS, temp.GROUPID, temp.GROUPNAME, temp.KEYWORD
+	 temp.COMPANYID, temp.ADADDRESS, temp.ADID,  temp.OPERAID, temp.ADDRESS, temp.GROUPID, temp.GROUPNAME, temp.KEYWORD,temp.REMARK
 	</sql>
 
     <!-- 删除员工客资缓存记录 -->
@@ -218,10 +219,10 @@
         DISTINCT <include refid="Base_Column_List" />
         FROM ${tempName} temp
         LEFT JOIN ${tableName} info
-        ON INSTR( CONCAT(IFNULL(info.KZPHONE,''), '-', IFNULL(info.KZWECHAT,''), '-', IFNULL(info.KZQQ,''), '-' ),CONCAT(temp.KZPHONE, '-')) != 0
-        OR INSTR( CONCAT(IFNULL(info.KZPHONE,''), '-', IFNULL(info.KZWECHAT,''), '-', IFNULL(info.KZQQ,''), '-' ), CONCAT(temp.KZWECHAT, '-')) != 0
-        OR INSTR( CONCAT( IFNULL(info.KZPHONE,''), '-', IFNULL(info.KZWECHAT,''), '-', IFNULL(info.KZQQ,''), '-' ), CONCAT(temp.KZQQ, '-')) != 0
-        OR INSTR( CONCAT( IFNULL(info.KZWW,''), '-', IFNULL(info.KZWW,''), '-', IFNULL(info.KZWW,''), '-' ), CONCAT(temp.KZWW, '-')) != 0
+        ON INSTR( CONCAT('-',IFNULL(info.KZPHONE,''), '-', IFNULL(info.KZWECHAT,''), '-', IFNULL(info.KZQQ,''), '-' ),CONCAT('-',temp.KZPHONE, '-')) != 0
+        OR INSTR( CONCAT('-',IFNULL(info.KZPHONE,''), '-', IFNULL(info.KZWECHAT,''), '-', IFNULL(info.KZQQ,''), '-' ), CONCAT('-',temp.KZWECHAT, '-')) != 0
+        OR INSTR( CONCAT('-',IFNULL(info.KZPHONE,''), '-', IFNULL(info.KZWECHAT,''), '-', IFNULL(info.KZQQ,''), '-' ), CONCAT('-',temp.KZQQ, '-')) != 0
+        OR INSTR( CONCAT('-',IFNULL(info.KZWW,''), '-', IFNULL(info.KZWW,''), '-', IFNULL(info.KZWW,''), '-' ), CONCAT('-',temp.KZWW, '-')) != 0
         WHERE
         info.KZID IS NOT NULL
         AND info.ISDEL = 0
