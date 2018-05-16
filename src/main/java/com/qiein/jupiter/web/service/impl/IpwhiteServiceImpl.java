@@ -36,7 +36,7 @@ public class IpwhiteServiceImpl implements IpwhiteService {
 	@Override
 	public void update(IpWhitePO ipWhitePo) {
 		// TODO Auto-generated method stub
-		
+		ipwhitedao.update(ipWhitePo);
 	}
 
 	

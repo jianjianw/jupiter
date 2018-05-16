@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.qiein.jupiter.aop.validate.annotation.Id;
 import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.util.ResultInfo;
@@ -39,7 +40,10 @@ public class IpwhiteController extends BaseController{
 		StaffPO staff=getCurrentLoginStaff();
 		
 		//判断ip 输入是否正确
-		String[] ips=ipWhitePo.getIp().split(".");
+		String[] ips=ipWhitePo.getIp().split("\\.");
+		if (ips.length==0){
+			ips=ipWhitePo.getIp().split("。");
+		}
 		if(ips.length!=4){
 			return ResultInfoUtil.error(ExceptionEnum.IP_ERROR);
 		}
@@ -63,13 +67,32 @@ public class IpwhiteController extends BaseController{
 	}
 	
 	@GetMapping("/delete")
-	public void delete(){
-		
+	public ResultInfo delete(@Id int id){
+		ipwhiteService.delete(id);
+		return ResultInfoUtil.success(TigMsgEnum.DELETE_SUCCESS);
 	}
 	
-	@GetMapping("update")
+	@PostMapping("update")
 	public ResultInfo update(@Validated @RequestBody IpWhitePO ipWhitePo){
-		return null;
+		String[] ips=ipWhitePo.getIp().split("\\.");
+		if (ips.length==0){
+			ips=ipWhitePo.getIp().split("。");
+		}
+		if(ips.length!=4){
+			return ResultInfoUtil.error(ExceptionEnum.IP_ERROR);
+		}
+		for(int i=0;i<ips.length-1;i++){
+			int number=Integer.parseInt(ips[i]);
+			if(!(number>=0&&number<=255)){
+				return ResultInfoUtil.error(ExceptionEnum.IP_ERROR);
+				
+			}
+		}
+		if(!ips[3].equals("*")){
+			return ResultInfoUtil.error(ExceptionEnum.IP_ERROR);
+		}
+		ipwhiteService.update(ipWhitePo);
+		return ResultInfoUtil.success(TigMsgEnum.UPDATE_SUCCESS);
 	}
 
 }

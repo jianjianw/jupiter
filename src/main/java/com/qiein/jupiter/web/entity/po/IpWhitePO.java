@@ -37,7 +37,7 @@ public class IpWhitePO implements Serializable{
 	/**
      * 备注
      */
-	private String MeMo;
+	private String memo;
 	/**
      * 企业id
      */
@@ -76,11 +76,12 @@ public class IpWhitePO implements Serializable{
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
-	public String getMeMo() {
-		return MeMo;
+	
+	public String getMemo() {
+		return memo;
 	}
-	public void setMeMo(String meMo) {
-		MeMo = meMo;
+	public void setMemo(String memo) {
+		this.memo = memo;
 	}
 	public int getCompanyId() {
 		return companyId;
