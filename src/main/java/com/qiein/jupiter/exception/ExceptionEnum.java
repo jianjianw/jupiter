@@ -104,6 +104,7 @@ public enum ExceptionEnum {
     INFO_OVERTIME_ERROR(1602, "客资领取超时"),
     INFO_OTHER_APPOINTOR(1603, "该客资已分配给其他客服"),
     INFO_BE_RECEIVED(1604, "该客资已被领取"),
+    INFO_IS_NULL(1605, "客资信息不能为空"),
     //状态
     STS_COLUMN_ERROR(1701, "状态颜色表示错误"),
     STS_DEFAULT_ERROR(1702, "默认颜色信息缺失"),
