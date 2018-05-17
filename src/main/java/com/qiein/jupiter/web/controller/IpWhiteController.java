@@ -1,20 +1,9 @@
 package com.qiein.jupiter.web.controller;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import com.qiein.jupiter.web.entity.vo.IpWhitePageVO;
 import com.qiein.jupiter.web.entity.vo.IpWhiteStaffVo;
-import com.qiein.jupiter.web.entity.vo.IpWhiteStaffVoShow;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,10 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
-import com.aliyuncs.ecs.model.v20140526.AttachKeyPairResponse.Result;
 import com.qiein.jupiter.aop.validate.annotation.Id;
 import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
