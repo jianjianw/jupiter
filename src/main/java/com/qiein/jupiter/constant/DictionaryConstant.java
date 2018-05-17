@@ -39,13 +39,18 @@ public class DictionaryConstant {
 	/**
 	 * 婚期时间
 	 */
-	public final static String MARRY_RANGE = "marry_range";
+	public final static String MARRY_TIME = "marry_time";
 	/**
 	 * 预拍时间
 	 */
-	public final static String YP_RANGE = "yp_range";
+	public final static String YP_TIME = "yp_time";
 	/**
 	 * 预算范围
 	 */
 	public final static String YS_RANGE = "ys_range";
+
+	/**
+	 * 预算范围
+	 */
+	public final static String PAY_STYLE = "pay_style";
 }
