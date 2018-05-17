@@ -316,4 +316,11 @@ public interface StaffService {
      * @param staffId
      */
 	void delListIpWhite(List<Integer> ids);
+	 /**
+     * 查找白名单的 员工id
+     *
+     * @param companyId
+     * @return List<Integer>
+     */
+	List<Integer> findId(int companyId);
 }

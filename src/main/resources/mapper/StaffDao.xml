@@ -564,4 +564,10 @@
 		 #{staffId}
 		</foreach>
     </update>
+    <!-- 根据公司id 寻找员工中拥有ip白名单权限的账号 -->
+    <select id="findId" parameterType="Integer" resultType="Integer">
+    select id from hm_pub_staff where companyId=#{companyId} and whiteflag=1
+    
+    </select>
+    
 </mapper>

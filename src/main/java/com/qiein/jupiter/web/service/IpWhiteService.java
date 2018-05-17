@@ -45,11 +45,15 @@ public interface IpWhiteService {
     List<IpWhitePO> getAllIpByCompanyId(int companyId);
     /**
      * 显示ip页面
-     * @param companyId 
-     *
      * @param companyId
      * @return List<IpWhiteStaffVo>
      */
 	List<IpWhiteStaffVo> FindIpWhite(int companyId);
+	/**
+     * 根据公司id 寻找白名单ip
+     * @param companyId
+     * @return List<String>
+     */
+	List<String> findIp(int companyId);
 
 }

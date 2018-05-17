@@ -62,10 +62,26 @@ public class IpWhiteServiceImpl implements IpWhiteService {
 	public List<IpWhitePO> getAllIpByCompanyId(int companyId) {
 		return ipwhitedao.getAllIpByCompanyId(companyId);
 	}
+	 /**
+     * 显示ip页面
+     * @param companyId
+     * @return List<IpWhiteStaffVo>
+     */
 	@Override
 	public List<IpWhiteStaffVo> FindIpWhite(int companyId) {
 		// TODO Auto-generated method stub
 		return ipwhitedao.FindIpWhite(companyId);
+	}
+	
+	/**
+     * 根据公司id 寻找白名单ip
+     * @param companyId
+     * @return List<String>
+     */
+	@Override
+	public List<String> findIp(int companyId) {
+		// TODO Auto-generated method stub
+		return ipwhitedao.findIp(companyId);
 	}
 
 	

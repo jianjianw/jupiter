@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.qiein.jupiter.web.entity.vo.IpWhitePageVO;
 import com.qiein.jupiter.web.entity.vo.IpWhiteStaffVo;
 import com.qiein.jupiter.web.entity.vo.IpWhiteStaffVoShow;
@@ -21,7 +23,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.aliyuncs.ecs.model.v20140526.AttachKeyPairResponse.Result;
 import com.qiein.jupiter.aop.validate.annotation.Id;
 import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
@@ -178,11 +183,41 @@ public class IpWhiteController extends BaseController {
     	staffService.delListIpWhite(ids);
     	return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
     }
-    
+    /*
+     * 在ip白名单的员工信息
+     */
     @GetMapping("/FindIpWhite")
     public ResultInfo FindIpWhite(){
     	StaffPO staff =getCurrentLoginStaff();
     	List<IpWhiteStaffVo> list=ipwhiteService.FindIpWhite(staff.getCompanyId());
     	return ResultInfoUtil.success(list);
+    }
+    /*
+     * ip判断
+     */
+    @GetMapping("/verifyLegalIp")
+    public ResultInfo verifyLegalIp(){
+
+    	String ip=getIp();
+    	StaffPO staff =getCurrentLoginStaff();
+    	int staffId=staff.getId();
+    	int companyId =staff.getCompanyId();
+    	List<Integer> ids=staffService.findId(companyId);
+    	for(int id:ids){
+    		if(id==staffId){
+    			return ResultInfoUtil.success();
+    		}
+    	}
+    	List<String> ips=ipwhiteService.findIp(companyId);
+    	for(String sip:ips){
+    		if (sip.endsWith("*")) {
+    			sip = sip.replace("*", "");
+    		}
+    		if(ip.startsWith(sip)){
+    			return ResultInfoUtil.success();
+    		};
+    	}
+    	return ResultInfoUtil.error(ExceptionEnum.IP_UNALLOW);
+    	
     }
 }
