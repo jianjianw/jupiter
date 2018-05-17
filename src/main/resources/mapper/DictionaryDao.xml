@@ -92,6 +92,7 @@
         hm_crm_dictionary dic
         WHERE
         dic.COMPANYID = #{companyId}
+        ORDER BY dic.DICTYPE,dic.PRIORITY
     </select>
 
 
