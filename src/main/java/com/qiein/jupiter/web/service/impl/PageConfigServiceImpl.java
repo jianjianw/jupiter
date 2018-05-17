@@ -1,26 +1,29 @@
 package com.qiein.jupiter.web.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
-import com.qiein.jupiter.constant.DictionaryConstant;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.qiein.jupiter.web.dao.*;
-import com.qiein.jupiter.web.entity.po.BrandPO;
-import com.qiein.jupiter.web.entity.vo.ShopVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.alibaba.fastjson.JSONObject;
+import com.qiein.jupiter.constant.DictionaryConstant;
 import com.qiein.jupiter.util.CollectionUtils;
+import com.qiein.jupiter.web.dao.BrandDao;
+import com.qiein.jupiter.web.dao.GroupDao;
+import com.qiein.jupiter.web.dao.PageConfigDao;
+import com.qiein.jupiter.web.dao.ShopDao;
+import com.qiein.jupiter.web.dao.SourceDao;
 import com.qiein.jupiter.web.entity.dto.PageFilterDTO;
+import com.qiein.jupiter.web.entity.po.BrandPO;
 import com.qiein.jupiter.web.entity.po.DictionaryPO;
 import com.qiein.jupiter.web.entity.po.PageConfig;
 import com.qiein.jupiter.web.entity.vo.FilterMapVO;
 import com.qiein.jupiter.web.entity.vo.GroupsInfoVO;
+import com.qiein.jupiter.web.entity.vo.ShopVO;
 import com.qiein.jupiter.web.service.DictionaryService;
 import com.qiein.jupiter.web.service.PageConfigService;
-
-import java.util.ArrayList;
 
 /**
  * 页面配置
@@ -104,15 +107,15 @@ public class PageConfigServiceImpl implements PageConfigService {
 		pageFilterMap.setZxMode(zxModeFilters);
 		// 意向等级
 		List<PageFilterDTO> yxRankFilters = getDictFilter(DictionaryConstant.YX_RANK, dictMapByCid);
-		pageFilterMap.setYsRange(yxRankFilters);
+		pageFilterMap.setYxRank(yxRankFilters);
 		// 婚期简述
-		List<PageFilterDTO> marryRangeFilters = getDictFilter(DictionaryConstant.MARRY_RANGE, dictMapByCid);
+		List<PageFilterDTO> marryRangeFilters = getDictFilter(DictionaryConstant.MARRY_TIME, dictMapByCid);
 		pageFilterMap.setMarryRange(marryRangeFilters);
 		// 咨询类型
 		List<PageFilterDTO> zxTypeFilters = getDictFilter(DictionaryConstant.COMMON_TYPE, dictMapByCid);
 		pageFilterMap.setZxType(zxTypeFilters);
 		// 预拍时间简述
-		List<PageFilterDTO> ypRangeFilters = getDictFilter(DictionaryConstant.YP_RANGE, dictMapByCid);
+		List<PageFilterDTO> ypRangeFilters = getDictFilter(DictionaryConstant.YP_TIME, dictMapByCid);
 		pageFilterMap.setYpRange(ypRangeFilters);
 		// 预算范围
 		List<PageFilterDTO> ysRangeFilters = getDictFilter(DictionaryConstant.YS_RANGE, dictMapByCid);
