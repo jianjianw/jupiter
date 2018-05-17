@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.qiein.jupiter.web.entity.vo.IpWhitePageVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -66,7 +67,6 @@ public class IpWhiteController extends BaseController {
         if (!ips[3].equals("*")) {
             return ResultInfoUtil.error(ExceptionEnum.IP_ERROR);
         }
-        ipWhitePo.setCreateTime(new Date());
         ipWhitePo.setCompanyId(staff.getCompanyId());
         ipWhitePo.setCreatoerId(staff.getId());
         ipWhitePo.setCreatoerName(staff.getUserName());
@@ -106,10 +106,10 @@ public class IpWhiteController extends BaseController {
     public ResultInfo getAllIpByCompanyId() {
         StaffPO staff = getCurrentLoginStaff();
         List<IpWhitePO> list = ipwhiteService.getAllIpByCompanyId(staff.getCompanyId());
-        Map map = new HashMap<>();
-        map.put("list", list);
-        map.put("state", companyService.getIpLimit(staff.getCompanyId()));
-        return ResultInfoUtil.success(map);
+        IpWhitePageVO ipWhitePageVO = new IpWhitePageVO();
+        ipWhitePageVO.setIpWhiteList(list);
+        ipWhitePageVO.setLimitFlag(companyService.getIpLimit(staff.getCompanyId()));
+        return ResultInfoUtil.success(ipWhitePageVO);
     }
 
     /*

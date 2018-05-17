@@ -13,7 +13,7 @@
 	<!-- 新增 -->
 	<insert id="insert" parameterType="com.qiein.jupiter.web.entity.po.IpWhitePO">
 		insert into hm_pub_ip_white(<include refid="forinsert"/>)
-		values(#{ip},#{creatoerId},#{creatoerName},#{createTime},#{companyId},#{memo})
+		values(#{ip},#{creatoerId},#{creatoerName},UNIX_TIMESTAMP(now()),#{companyId},#{memo})
 	</insert>
    	<!-- 修改 -->
    	<update id="update" parameterType="com.qiein.jupiter.web.entity.po.IpWhitePO">
@@ -21,7 +21,7 @@
    	</update>
    	<!-- 删除 -->
    	<delete id="delete" parameterType="Integer">
-   	delete from hm_pub_ip_white where id=#{0}
+   	delete from hm_pub_ip_white where id=#{companyId}
    	</delete>
    	<!-- 获取页面信息 -->
    	<select id="getAllIpByCompanyId" parameterType="Integer" resultType="com.qiein.jupiter.web.entity.po.IpWhitePO">
@@ -36,6 +36,6 @@
 		hm_pub_ip_white a
 	LEFT JOIN hm_pub_company b ON a.COMPANYID = b.ID
 		WHERE
-	COMPANYID =#{0}
+	COMPANYID =#{companyId}
    	</select>
 </mapper>
