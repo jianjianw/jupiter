@@ -1,11 +1,18 @@
 package com.qiein.jupiter.web.controller;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 
 import com.qiein.jupiter.web.entity.vo.IpWhitePageVO;
+import com.qiein.jupiter.web.entity.vo.IpWhiteStaffVo;
+import com.qiein.jupiter.web.entity.vo.IpWhiteStaffVoShow;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +31,7 @@ import com.qiein.jupiter.web.entity.po.IpWhitePO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.service.CompanyService;
 import com.qiein.jupiter.web.service.IpWhiteService;
+import com.qiein.jupiter.web.service.StaffService;
 
 /**
  * ip白名单
@@ -40,6 +48,9 @@ public class IpWhiteController extends BaseController {
 
     @Autowired
     private CompanyService companyService;
+    
+    @Autowired
+    private StaffService staffService;
 
     /*
      * 新增
@@ -115,7 +126,7 @@ public class IpWhiteController extends BaseController {
     /*
      * 修改
      */
-    @PostMapping("update")
+    @PostMapping("/update")
     public ResultInfo update(@Validated @RequestBody IpWhitePO ipWhitePo) {
         //判断ip 格式
         String[] ips = ipWhitePo.getIp().split("\\.");
@@ -138,5 +149,40 @@ public class IpWhiteController extends BaseController {
         ipwhiteService.update(ipWhitePo);
         return ResultInfoUtil.success(TigMsgEnum.UPDATE_SUCCESS);
     }
-
+    /*
+     * 添加到白名单
+     */
+    @GetMapping("/addIpWhite")
+    public ResultInfo addIpWhite(@RequestParam int staffId){
+    	staffService.addIpWhite(staffId);
+    	return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
+    }
+    /*
+     * 从ip白名单删除
+     */
+    @GetMapping("/delIpWhite")
+    public ResultInfo delIpWhite(@RequestParam int staffId){
+    	staffService.delIpWhite(staffId);
+    	return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
+    }
+    /*
+     * 批量从ip白名单删除
+     */
+    @GetMapping("/delListIpWhite")
+    public ResultInfo delListIpWhite(@RequestParam String staffIds){
+    	String[] StringIds =staffIds.split(",");
+    	List<Integer> ids =new LinkedList<>();
+    	for(String s:StringIds){
+    		ids.add(Integer.parseInt(s));
+    	}
+    	staffService.delListIpWhite(ids);
+    	return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
+    }
+    
+    @GetMapping("/FindIpWhite")
+    public ResultInfo FindIpWhite(){
+    	StaffPO staff =getCurrentLoginStaff();
+    	List<IpWhiteStaffVo> list=ipwhiteService.FindIpWhite(staff.getCompanyId());
+    	return ResultInfoUtil.success(list);
+    }
 }
