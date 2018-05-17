@@ -37,6 +37,9 @@ public class ClientEditController extends BaseController {
         if (StringUtil.isAllEmpty(clientVO.getKzPhone(), clientVO.getKzWechat(), clientVO.getKzQq(), clientVO.getKzWw())) {
             return ResultInfoUtil.error(ExceptionEnum.KZ_CONTACT_INFORMATION);
         }
+        if (StringUtil.isEmpty(clientVO.getKzId())){
+            return ResultInfoUtil.error(ExceptionEnum.KZ_ID_IS_NULL);
+        }
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         clientEditService.editClientByDscj(clientVO, currentLoginStaff);
