@@ -11,5 +11,5 @@ public interface ClientDao {
      * 编辑客资基本信息，如性别，微信添加状况
      * @param clientStatusVO
      */
-    void editClientBaseInfo(ClientStatusVO clientStatusVO, @Param("tabName") String tabName);
+    void editClientBaseInfo(@Param("clientStatusVO") ClientStatusVO clientStatusVO, @Param("tabName") String tabName);
 }

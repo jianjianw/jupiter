@@ -1,9 +1,12 @@
 package com.qiein.jupiter.web.entity.vo;
 
+import java.io.Serializable;
+
 /**
  * Created by Tt on 2018/5/15 0015.
  */
-public class ClientStatusVO {
+public class ClientStatusVO implements Serializable {
+    private static final long serialVersionUID = 1L;
     private Integer id;
     private String kzId;
     private Integer weFlag;
