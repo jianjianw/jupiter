@@ -255,4 +255,16 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @return
      */
 	void addIpWhite(@Param("staffId") int staffId);
+	 /**
+     * 从白名单删除
+     * @param staffId
+     * @return
+     */
+	void delIpWhite(@Param("staffId") int staffId);
+	 /**
+     * 批量从白名单删除
+     * @param ids
+     * @return
+     */
+	void delListIpWhite(@Param("ids") List<Integer> ids);
 }

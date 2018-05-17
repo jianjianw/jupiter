@@ -915,6 +915,21 @@ public class StaffServiceImpl implements StaffService {
 		// TODO Auto-generated method stub
 		staffDao.addIpWhite(staffId);
 	}
+	 /**
+     * 从白名单删除
+     * @param staffId
+     */
+	@Override
+	public void delIpWhite(int staffId) {
+		// TODO Auto-generated method stub
+		staffDao.delIpWhite(staffId);
+	}
+
+	@Override
+	public void delListIpWhite(List<Integer> ids) {
+		// TODO Auto-generated method stub
+		staffDao.delListIpWhite(ids);
+	}
 
 
 }

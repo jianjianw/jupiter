@@ -3,6 +3,7 @@ package com.qiein.jupiter.web.service;
 import java.util.List;
 
 import com.qiein.jupiter.web.entity.po.IpWhitePO;
+import com.qiein.jupiter.web.entity.vo.IpWhiteStaffVo;
 
 /**
  * ip白名单
@@ -36,11 +37,19 @@ public interface IpWhiteService {
     void update(IpWhitePO ipWhitePo);
 
     /**
-     * 显示页面
+     * 显示ip页面
      *
      * @param companyId
      * @return List<IpWhitePO>
      */
     List<IpWhitePO> getAllIpByCompanyId(int companyId);
+    /**
+     * 显示ip页面
+     * @param companyId 
+     *
+     * @param companyId
+     * @return List<IpWhiteStaffVo>
+     */
+	List<IpWhiteStaffVo> FindIpWhite(int companyId);
 
 }

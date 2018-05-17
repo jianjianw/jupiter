@@ -41,4 +41,23 @@
 	COMPANYID =#{companyId}
    	</select>
    	
+   	<select id="FindIpWhite" parameterType="Integer" resultType="com.qiein.jupiter.web.entity.vo.IpWhiteStaffVo">
+   	SELECT
+		a.ID id,
+		a.HEADIMG imgAdd,
+		a.USERNAME staffName,
+		d.GROUPNAME groupName,
+		b.CREATETIME createTime,
+		b.LASTLOGINIP lastLoginIp,
+		b.LASTLOGINTIME lastLoginTime,
+		b.IPLOCATION ipLocation
+	FROM
+		hm_pub_staff a
+	LEFT JOIN hm_pub_staff_detail b ON a.ID = b.ID
+	LEFT JOIN hm_pub_group_staff c ON a.ID = c.STAFFID
+	LEFT JOIN hm_pub_group d ON c.GROUPID = d.GROUPID
+   	WHERE
+		a.COMPANYID = #{companyId}
+		AND a.WHITEFLAG = 1
+   	</select>
 </mapper>

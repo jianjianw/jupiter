@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.qiein.jupiter.web.dao.IpWhiteDao;
 import com.qiein.jupiter.web.entity.po.IpWhitePO;
+import com.qiein.jupiter.web.entity.vo.IpWhiteStaffVo;
 import com.qiein.jupiter.web.service.IpWhiteService;
 /**
  * ip白名单
@@ -60,6 +61,11 @@ public class IpWhiteServiceImpl implements IpWhiteService {
 	@Override
 	public List<IpWhitePO> getAllIpByCompanyId(int companyId) {
 		return ipwhitedao.getAllIpByCompanyId(companyId);
+	}
+	@Override
+	public List<IpWhiteStaffVo> FindIpWhite(int companyId) {
+		// TODO Auto-generated method stub
+		return ipwhitedao.FindIpWhite(companyId);
 	}
 
 	
