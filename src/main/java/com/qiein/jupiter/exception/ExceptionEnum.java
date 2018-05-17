@@ -94,6 +94,7 @@ public enum ExceptionEnum {
     KZ_CONTACT_INFORMATION(1401, "客资联系方式不能为空"),
     KZ_ADD_FAIL(1402, "录入失败"),
     KZ_ID_IS_NULL(1403, "客资ID不能为空"),
+    TYPEID_IS_NULL(1404, "拍摄类型不能为空"),
     //OSS对象存储
     OSS_UPLOAD_TYPE_ERROR(1501, "上传类型错误"),
     OSS_UPLOAD_SIZE_ERROR(1502, "图片大小超过3M"),
@@ -104,11 +105,13 @@ public enum ExceptionEnum {
     INFO_OVERTIME_ERROR(1602, "客资领取超时"),
     INFO_OTHER_APPOINTOR(1603, "该客资已分配给其他客服"),
     INFO_BE_RECEIVED(1604, "该客资已被领取"),
+    INFO_IS_NULL(1605, "客资信息不能为空"),
     //状态
     STS_COLUMN_ERROR(1701, "状态颜色表示错误"),
     STS_DEFAULT_ERROR(1702, "默认颜色信息缺失"),
-    STS_GET_ERROR(1703, "企业状态信息获取错误");
-
+    STS_GET_ERROR(1703, "企业状态信息获取错误"),
+	//ip白名单
+	IP_ERROR(1801,"ip输入有误");
     private Integer code;
     private String msg;
 

@@ -170,7 +170,6 @@ public class ClientExcelDTO implements Serializable {
 
     public boolean checkWrongInfo() {
         if (NumUtil.isNull(getTypeId())
-                || NumUtil.isNull(getCollectorId())
                 || NumUtil.isNull(getChannelId())
                 || NumUtil.isNull(getSourceId())
                 || (StringUtil.isEmpty(getKzPhone()) && StringUtil.isEmpty(getKzWechat())

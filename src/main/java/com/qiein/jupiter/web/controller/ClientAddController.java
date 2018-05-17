@@ -1,8 +1,10 @@
 package com.qiein.jupiter.web.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
+import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.util.StringUtil;
@@ -45,10 +47,30 @@ public class ClientAddController extends BaseController {
      * @return
      */
     @PostMapping("/batch_add_ds_client")
-    public ResultInfo batchAddDsClient(@NotEmptyStr @RequestParam("list") String list) {
+    public ResultInfo batchAddDsClient(@RequestBody JSONObject jsonObject) {
+        String list = StringUtil.nullToStrTrim(jsonObject.getString("list"));
+        if (StringUtil.isEmpty(list)) {
+            throw new RException(ExceptionEnum.INFO_IS_NULL);
+        }
+        String sourceId = StringUtil.nullToStrTrim(jsonObject.getString("sourceId"));
+        if (StringUtil.isEmpty(sourceId)) {
+            throw new RException(ExceptionEnum.SOURCE_ID_NULL);
+        }
+        String channelId = StringUtil.nullToStrTrim(jsonObject.getString("channelId"));
+        if (StringUtil.isEmpty(channelId)) {
+            throw new RException(ExceptionEnum.CHANNEL_ID_NULL);
+        }
+        String shopId = StringUtil.nullToStrTrim(jsonObject.getString("shopId"));
+        if (StringUtil.isEmpty(shopId)) {
+            throw new RException(ExceptionEnum.SHOP_ID_NULL);
+        }
+        String typeId = StringUtil.nullToStrTrim(jsonObject.getString("typeId"));
+        if (StringUtil.isEmpty(typeId)) {
+            throw new RException(ExceptionEnum.TYPEID_IS_NULL);
+        }
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        clientAddService.batchAddDsClient(list, currentLoginStaff);
-        return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
+        return ResultInfoUtil.success(clientAddService.batchAddDsClient(list, Integer.parseInt(channelId), Integer.parseInt(sourceId),
+                Integer.parseInt(shopId), Integer.parseInt(typeId), currentLoginStaff));
     }
 }

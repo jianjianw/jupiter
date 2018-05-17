@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.controller;
 
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.util.HttpUtil;
+import com.qiein.jupiter.web.entity.dto.RequestInfoDTO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,11 +20,20 @@ public class BaseController {
 
     /**
      * 系统启动
+     *
      * @return
      */
     @RequestMapping("/")
     public String initSys() {
         return "jupiter is running success!";
+    }
+
+    /**
+     * 获取当前登录IP
+     */
+    @GetMapping("/ip")
+    String getIp() {
+        return HttpUtil.getIpAddr(request);
     }
 
     /**
@@ -56,10 +66,10 @@ public class BaseController {
     }
 
     /**
-     * 获取当前登录IP
+     * 获取当前登录信息
      */
-    String getIp() {
-        return HttpUtil.getIpAddr(request);
+    RequestInfoDTO getRequestInfo() {
+        return (RequestInfoDTO) request.getAttribute(CommonConstant.REQUEST_INFO);
     }
 
 }

@@ -29,4 +29,21 @@ public interface CompanyDao extends BaseDao<CompanyPO> {
      * @return
      */
     int updateRange(@Param("companyId") int companyId, @Param("column") String column, @Param("num") int num);
+
+    /**
+     * 获取iplimt
+     *
+     * @param companyId
+     * @return
+     */
+    int getIpLimit(int companyId);
+
+    /**
+     * 修改iplimt
+     *
+     * @param ipLimit
+     * @param companyId
+     * @return
+     */
+    void editIpLimit(@Param("ipLimit") Integer ipLimit, @Param("companyId") int companyId);
 }
