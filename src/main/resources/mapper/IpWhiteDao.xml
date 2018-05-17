@@ -38,4 +38,5 @@
 		WHERE
 	COMPANYID =#{0}
    	</select>
+   	
 </mapper>

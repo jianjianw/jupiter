@@ -23,6 +23,7 @@ import com.qiein.jupiter.web.entity.po.IpWhitePO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.service.CompanyService;
 import com.qiein.jupiter.web.service.IpWhiteService;
+import com.qiein.jupiter.web.service.StaffService;
 
 /**
  * ip白名单
@@ -39,6 +40,9 @@ public class IpWhiteController extends BaseController {
 
     @Autowired
     private CompanyService companyService;
+    
+    @Autowired
+    private StaffService staffService;
 
     /*
      * 新增
@@ -115,7 +119,7 @@ public class IpWhiteController extends BaseController {
     /*
      * 修改
      */
-    @PostMapping("update")
+    @PostMapping("/update")
     public ResultInfo update(@Validated @RequestBody IpWhitePO ipWhitePo) {
         //判断ip 格式
         String[] ips = ipWhitePo.getIp().split("\\.");
@@ -137,6 +141,14 @@ public class IpWhiteController extends BaseController {
         }
         ipwhiteService.update(ipWhitePo);
         return ResultInfoUtil.success(TigMsgEnum.UPDATE_SUCCESS);
+    }
+    /*
+     * 添加到白名单
+     */
+    @GetMapping("/addIpWhite")
+    public ResultInfo addIpWhite(@RequestParam int staffId){
+    	staffService.addIpWhite(staffId);
+    	return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
     }
 
 }

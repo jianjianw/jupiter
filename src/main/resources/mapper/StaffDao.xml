@@ -548,4 +548,10 @@
         WHERE
 	        s.COMPANYID =#{companyId} AND s.ID = #{staffId}
     </select>
+    
+    <update id="addIpWhite" parameterType="Integer">
+		UPDATE hm_pub_staff set WHITEFLAG=1 where id=#{staffId} 
+    </update>
+    
+    
 </mapper>

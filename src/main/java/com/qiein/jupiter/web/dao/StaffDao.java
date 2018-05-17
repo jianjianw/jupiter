@@ -249,4 +249,10 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @return
      */
     StaffDetailVO getStaffCard(@Param("staffId") int staffId , @Param("companyId") int companyId);
+    /**
+     * 添加到白名单
+     * @param staffId
+     * @return
+     */
+	void addIpWhite(@Param("staffId") int staffId);
 }

@@ -298,4 +298,10 @@ public interface StaffService {
      * @return
      */
     StaffDetailVO getStaffCard (int staffId,int companyId);
+    /**
+     * 添加到白名单
+     *
+     * @param staffId
+     */
+	void addIpWhite(int staffId);
 }

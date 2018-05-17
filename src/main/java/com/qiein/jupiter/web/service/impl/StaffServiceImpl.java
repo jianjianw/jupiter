@@ -905,6 +905,16 @@ public class StaffServiceImpl implements StaffService {
     public StaffDetailVO getStaffCard(int staffId, int companyId) {
         return staffDao.getStaffCard(staffId, companyId);
     }
+    /**
+     * 添加到白名单
+     *
+     * @param staffId
+     */
+	@Override
+	public void addIpWhite(int staffId) {
+		// TODO Auto-generated method stub
+		staffDao.addIpWhite(staffId);
+	}
 
 
 }
