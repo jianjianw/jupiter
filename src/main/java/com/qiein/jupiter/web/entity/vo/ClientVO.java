@@ -14,6 +14,10 @@ public class ClientVO implements Serializable {
      */
     private int id;
     /**
+     * 客资ID
+     */
+    private String kzId;
+    /**
      * 性别（0-未知，1-男，2-女）
      */
     private int sex;
@@ -137,6 +141,23 @@ public class ClientVO implements Serializable {
      * 销售备注
      */
     private String memo;
+    /**
+     * 意向等级
+     */
+    private int yxLevel;
+
+    /**
+     * 预算范围
+     */
+    private int ysRange;
+    /**
+     * 婚期时间
+     */
+    private int marryTime;
+    /**
+     * 预拍时间
+     */
+    private int ypTime;
 
     public int getSex() {
         return sex;
@@ -384,5 +405,45 @@ public class ClientVO implements Serializable {
 
     public void setMemo(String memo) {
         this.memo = memo;
+    }
+
+    public String getKzId() {
+        return kzId;
+    }
+
+    public void setKzId(String kzId) {
+        this.kzId = kzId;
+    }
+
+    public int getYxLevel() {
+        return yxLevel;
+    }
+
+    public void setYxLevel(int yxLevel) {
+        this.yxLevel = yxLevel;
+    }
+
+    public int getYsRange() {
+        return ysRange;
+    }
+
+    public void setYsRange(int ysRange) {
+        this.ysRange = ysRange;
+    }
+
+    public int getMarryTime() {
+        return marryTime;
+    }
+
+    public void setMarryTime(int marryTime) {
+        this.marryTime = marryTime;
+    }
+
+    public int getYpTime() {
+        return ypTime;
+    }
+
+    public void setYpTime(int ypTime) {
+        this.ypTime = ypTime;
     }
 }

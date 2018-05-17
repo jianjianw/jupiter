@@ -198,7 +198,6 @@ public class ClientAddServiceImpl implements ClientAddService {
      */
     public String batchAddDsClient(String list, int channelId, int sourceId, int shopId, int typeId, StaffPO staffPO) {
         JSONArray jsonArr = JSONArray.parseArray(list);
-
         int successCount = 0;
         int errorCount = 0;
         StringBuffer sb = null;
