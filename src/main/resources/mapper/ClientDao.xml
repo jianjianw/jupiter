@@ -2,18 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qiein.jupiter.web.dao.ClientDao">
 
-    <update id="editClientBaseInfo" parameterType="clientStatusVO">
+    <update id="editClientBaseInfo" parameterType="map">
         UPDATE
 	      ${tabName}
         <set>
-            <if test="weFlag != null and weFlag !=''">
-                WEFLAG = #{weFlag},
+            <if test="clientStatusVO.weFlag != null">
+                WEFLAG = #{clientStatusVO.weFlag},
             </if>
-            <if test="sex != null and sex != ''">
-                SEX = #{sex}
+            <if test="clientStatusVO.sex != null">
+                SEX = #{clientStatusVO.sex}
             </if>
         </set>
         WHERE
-	      KZID = #{kzId} AND COMPANYID = #{companyId}
+	      KZID = #{clientStatusVO.kzId} AND COMPANYID = #{clientStatusVO.companyId}
     </update>
 </mapper>
