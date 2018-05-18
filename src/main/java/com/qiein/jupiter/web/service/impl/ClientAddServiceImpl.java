@@ -241,7 +241,7 @@ public class ClientAddServiceImpl implements ClientAddService {
             }
         }
         result.put("error", rep);
-        result.put("msg", "errorCount == 0 ? \"录入成功，共录入：\" + successCount + \" 个客资\" : \"有录入失败的信息；录入成功：\" + successCount + \" 个，错误：\" + errorCount + \" 个\"");
+        result.put("msg", errorCount == 0 ? "录入成功，共录入：" + successCount + " 个客资" : "有录入失败的信息；录入成功：" + successCount + " 个，错误：" + errorCount + " 个");
         return result;
     }
 
