@@ -18,20 +18,20 @@ public class StaffPO extends BaseEntity {
      * 昵称
      */
     @NotEmptyStr(message = "{staff.name.null}")
-    @Excel(name="艺名")
+    @Excel(name = "艺名")
     private String nickName;
     /**
      * 手机号码
      */
     @NotEmptyStr(message = "{staff.phone.null}")
     @Phone
-    @Excel(name="手机")
+    @Excel(name = "手机")
     private String phone;
     /**
      * 全名
      */
     @NotEmptyStr(message = "{staff.userName.null}")
-    @Excel(name="全名")
+    @Excel(name = "全名")
     private String userName;
     /**
      * 密码
@@ -70,18 +70,54 @@ public class StaffPO extends BaseEntity {
      * 是否删除
      */
     private boolean delFlag;
-
+    /**
+     * 今日接单数
+     */
     private int todayNum;
-
+    /**
+     * 权重
+     */
     private int weight;
-
+    /**
+     * 日限额
+     */
     private int limitDay;
-
+    /**
+     * 最后推送时间
+     */
     private int lastPushTime;
-
+    /**
+     * 不接受的渠道ID
+     */
     private String limitChannelIds;
-
+    /**
+     * 不接受的拍摄地ID 类型ID
+     */
     private String limitShopIds;
+    /**
+     * 心跳时间
+     */
+    private int heartTime;
+    /**
+     * 是否IP白名单
+     */
+    private boolean whiteFlag;
+
+    public int getHeartTime() {
+        return heartTime;
+    }
+
+    public void setHeartTime(int heartTime) {
+        this.heartTime = heartTime;
+    }
+
+    public boolean isWhiteFlag() {
+        return whiteFlag;
+    }
+
+    public void setWhiteFlag(boolean whiteFlag) {
+        this.whiteFlag = whiteFlag;
+    }
 
     public int getTodayNum() {
         return todayNum;
@@ -153,7 +189,7 @@ public class StaffPO extends BaseEntity {
         this.token = staffDetailVO.getToken();
         this.lockFlag = staffDetailVO.isLockFlag();
         this.delFlag = staffDetailVO.isDelFlag();
-        this.statusFlag=staffDetailVO.getStatusFlag();
+        this.statusFlag = staffDetailVO.getStatusFlag();
     }
 
     public String getNickName() {

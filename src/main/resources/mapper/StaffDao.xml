@@ -550,7 +550,10 @@
     </select>
     <!-- 添加到ip白名单 -->
     <update id="addIpWhite" parameterType="Integer">
-		UPDATE hm_pub_staff set WHITEFLAG=1 where id=#{staffId} 
+		UPDATE hm_pub_staff set WHITEFLAG=1 where id IN
+        <foreach collection="ids" item="id" index="index" open="(" separator="," close=")">
+            #{id}
+        </foreach>
     </update>
     <!-- 从ip白名单删除 -->
     <update id="delIpWhite" parameterType="Integer">

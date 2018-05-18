@@ -244,34 +244,42 @@ public interface StaffDao extends BaseDao<StaffPO> {
 
     /**
      * 根据员工编号获取员工名片
+     *
      * @param staffId
      * @param companyId
      * @return
      */
-    StaffDetailVO getStaffCard(@Param("staffId") int staffId , @Param("companyId") int companyId);
+    StaffDetailVO getStaffCard(@Param("staffId") int staffId, @Param("companyId") int companyId);
+
     /**
      * 添加到白名单
-     * @param staffId
-     * @return
-     */
-	void addIpWhite(@Param("staffId") int staffId);
-	 /**
-     * 从白名单删除
-     * @param staffId
-     * @return
-     */
-	void delIpWhite(@Param("staffId") int staffId);
-	 /**
-     * 批量从白名单删除
+     *
      * @param ids
      * @return
      */
-	void delListIpWhite(@Param("ids") List<Integer> ids);
-	 /**
+    void addIpWhite(@Param("ids") String[] ids);
+
+    /**
+     * 从白名单删除
+     *
+     * @param staffId
+     * @return
+     */
+    void delIpWhite(@Param("staffId") int staffId);
+
+    /**
+     * 批量从白名单删除
+     *
+     * @param ids
+     * @return
+     */
+    void delListIpWhite(@Param("ids") List<Integer> ids);
+
+    /**
      * 查找白名单的 员工id
      *
      * @param companyId
      * @return List<Integer>
      */
-	List<Integer> findId(@Param("companyId") int companyId);
+    List<Integer> findId(@Param("companyId") int companyId);
 }

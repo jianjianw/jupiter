@@ -77,14 +77,9 @@ public class IpWhiteController extends BaseController {
      * 修改iplimit
      */
     @GetMapping("/edit_ip_limit")
-    public ResultInfo editIpLimit(@RequestParam Integer iplimit) {
+    public ResultInfo editIpLimit(@RequestParam Integer limitFlag) {
         StaffPO staff = getCurrentLoginStaff();
-        if (iplimit == 0) {
-            iplimit = 1;
-        } else {
-            iplimit = 0;
-        }
-        companyService.editIpLimit(iplimit, staff.getCompanyId());
+        companyService.editIpLimit(limitFlag, staff.getCompanyId());
         return ResultInfoUtil.success(TigMsgEnum.UPDATE_SUCCESS);
     }
 
@@ -117,33 +112,33 @@ public class IpWhiteController extends BaseController {
     /*
      * 添加到白名单
      */
-    @GetMapping("/add_ip_white")
-    public ResultInfo addIpWhite(@RequestParam int staffId) {
-        staffService.addIpWhite(staffId);
+    @GetMapping("/add_ip_white_staff")
+    public ResultInfo addIpWhiteStaff(@RequestParam String staffIds) {
+        staffService.addIpWhite(staffIds);
         return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
     }
 
     /*
      * 从ip白名单删除
      */
-    @GetMapping("/del_ip_white")
-    public ResultInfo delIpWhite(@RequestParam int staffId) {
+    @GetMapping("/del_ip_white_staff")
+    public ResultInfo delIpWhiteStaff(@RequestParam int staffId) {
         staffService.delIpWhite(staffId);
-        return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
+        return ResultInfoUtil.success(TigMsgEnum.DELETE_SUCCESS);
     }
 
     /*
      * 批量从ip白名单删除
      */
-    @GetMapping("/del_list_ip_white")
-    public ResultInfo delListIpWhite(@RequestParam String staffIds) {
+    @GetMapping("/batch_del_ip_white_staff")
+    public ResultInfo batchDelIpWhiteStaff(@RequestParam String staffIds) {
         String[] StringIds = staffIds.split(",");
         List<Integer> ids = new LinkedList<>();
         for (String s : StringIds) {
             ids.add(Integer.parseInt(s));
         }
         staffService.delListIpWhite(ids);
-        return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
+        return ResultInfoUtil.success(TigMsgEnum.DELETE_SUCCESS);
     }
 
     /*

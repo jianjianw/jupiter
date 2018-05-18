@@ -33,6 +33,9 @@
                 <id column="STAFFID" property="id" jdbcType="INTEGER"/>
                 <result column="NICKNAME" property="nickName" jdbcType="VARCHAR"/>
                 <result column="PHONE" property="phone" jdbcType="VARCHAR"/>
+                <result column="ISLOCK" property="lockFlag" jdbcType="BOOLEAN"/>
+                <result column="ISDEL" property="delFlag" jdbcType="BOOLEAN"/>
+                <result column="WHITEFLAG" property="whiteFlag" jdbcType="BOOLEAN"/>
                 <result column="USERNAME" property="userName" jdbcType="VARCHAR"/>
                 <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
                 <result column="HEADIMG" property="headImg" jdbcType="VARCHAR"/>
@@ -168,6 +171,7 @@
 			LEFT JOIN hm_pub_staff staff ON rela.STAFFID = staff.ID
 		WHERE hm_pub_group.PARENTID = #{parentId}
 		AND hm_pub_group.COMPANYID = #{companyId}
+		ORDER BY hm_pub_group.GROUPTYPE, hm_pub_group.GROUPNAME
     </select>
 
     <!--删除员工小组-->
@@ -286,7 +290,7 @@
        SELECT
           group_up.ID UPID,group_up.GROUPNAME UPGROUPNAME,group_up.GROUPID UPGROUPID,group_up.PARENTID UPPARENTID,
            group_down.ID, group_down.GROUPNAME,group_down.GROUPID,group_down.PARENTID,
-            staff.id STAFFID,staff.NICKNAME
+            staff.id STAFFID,staff.NICKNAME,staff.ISLOCK,staff.ISDEL,staff.WHITEFLAG
         FROM
             hm_pub_group group_up
             LEFT JOIN hm_pub_group group_down ON group_up.COMPANYID = group_down.COMPANYID
@@ -297,6 +301,7 @@
 	        AND staff.ISDEL = 0
           WHERE group_up.COMPANYID = #{companyId}
           AND group_up.PARENTID = '0'
+          ORDER BY group_up.GROUPTYPE, group_up.GROUPNAME,group_down.GROUPNAME
     </select>
 
     <!--根据组类型获取所有小组及组内人员信息-->

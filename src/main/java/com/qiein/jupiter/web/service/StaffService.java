@@ -293,34 +293,39 @@ public interface StaffService {
 
     /**
      * 获取个人名片
+     *
      * @param staffId
      * @param companyId
      * @return
      */
-    StaffDetailVO getStaffCard (int staffId,int companyId);
+    StaffDetailVO getStaffCard(int staffId, int companyId);
+
     /**
-     * 添加到白名单
+     * 批量添加到白名单
      *
-     * @param staffId
+     * @param staffIds
      */
-	void addIpWhite(int staffId);
-	 /**
+    void addIpWhite(String staffIds);
+
+    /**
      * 从白名单删除
      *
      * @param staffId
      */
-	void delIpWhite(int staffId);
-	 /**
+    void delIpWhite(int staffId);
+
+    /**
      * 批量从白名单删除
      *
-     * @param staffId
+     * @param ids
      */
-	void delListIpWhite(List<Integer> ids);
-	 /**
+    void delListIpWhite(List<Integer> ids);
+
+    /**
      * 查找白名单的 员工id
      *
      * @param companyId
      * @return List<Integer>
      */
-	List<Integer> findId(int companyId);
+    List<Integer> findId(int companyId);
 }

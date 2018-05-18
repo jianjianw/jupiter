@@ -901,6 +901,13 @@ public class StaffServiceImpl implements StaffService {
         }
     }
 
+    /**
+     * 获取员工名片
+     *
+     * @param staffId
+     * @param companyId
+     * @return
+     */
     @Override
     public StaffDetailVO getStaffCard(int staffId, int companyId) {
         return staffDao.getStaffCard(staffId, companyId);
@@ -909,12 +916,12 @@ public class StaffServiceImpl implements StaffService {
     /**
      * 添加到白名单
      *
-     * @param staffId
+     * @param staffIds
      */
     @Override
-    public void addIpWhite(int staffId) {
-        // TODO Auto-generated method stub
-        staffDao.addIpWhite(staffId);
+    public void addIpWhite(String staffIds) {
+        String[] split = staffIds.split(CommonConstant.STR_SEPARATOR);
+        staffDao.addIpWhite(split);
     }
 
     /**
