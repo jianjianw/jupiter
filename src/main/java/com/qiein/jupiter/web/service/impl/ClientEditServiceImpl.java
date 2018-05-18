@@ -17,6 +17,7 @@ import com.qiein.jupiter.web.entity.vo.ClientVO;
 import com.qiein.jupiter.web.entity.vo.ShopVO;
 import com.qiein.jupiter.web.service.ClientEditService;
 import com.qiein.jupiter.web.service.ClientPushService;
+import javafx.scene.shape.VLineTo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -125,22 +126,25 @@ public class ClientEditServiceImpl implements ClientEditService {
         reqContent.put("kzqq", clientVO.getKzQq());
         reqContent.put("kzww", clientVO.getKzWw());
         //邀约结果
-        reqContent.put("yyrst", clientVO.getYyRst());
-        reqContent.put("invalidLabel", clientVO.getInvalidLabel() + clientVO.getInvalidMemo());
-        reqContent.put("tracktime", clientVO.getTraceTime());
-        reqContent.put("warnStyle", clientVO.getWarnStyle());
-        reqContent.put("shopid", clientVO.getShopId());
-        //获取拍摄地名
-        ShopVO shopVO = shopDao.getShowShopById(staffPO.getCompanyId(), clientVO.getShopId());
-        if (shopVO == null) {
-            throw new RException(ExceptionEnum.SHOP_NOT_FOUND);
+        if (NumUtil.isNotNull(clientVO.getYyRst())) {
+            reqContent.put("yyrst", clientVO.getYyRst());
+            reqContent.put("invalidLabel", clientVO.getInvalidLabel() + clientVO.getInvalidMemo());
+            reqContent.put("tracktime", clientVO.getTraceTime());
+            if (NumUtil.isNotNull(clientVO.getShopId())) {
+                //获取拍摄地名
+                ShopVO shopVO = shopDao.getShowShopById(staffPO.getCompanyId(), clientVO.getShopId());
+                if (shopVO == null) {
+                    throw new RException(ExceptionEnum.SHOP_NOT_FOUND);
+                }
+                reqContent.put("shopid", clientVO.getShopId());
+                reqContent.put("shopname", shopVO.getShopName());
+            }
+            reqContent.put("amount", clientVO.getAmount());//成交套系金额
+            reqContent.put("stayamount", clientVO.getStayAmount());//已收金额
+            reqContent.put("paystyle", clientVO.getPayStyle());//支付方式
+            reqContent.put("htnum", clientVO.getHtNum());//合同编号
+            reqContent.put("successtime", clientVO.getSuccessTime());//订单时间
         }
-        reqContent.put("shopname", shopVO.getShopName());
-        reqContent.put("amount", clientVO.getAmount());//成交套系金额
-        reqContent.put("stayamount", clientVO.getStayAmount());//已收金额
-        reqContent.put("paystyle", clientVO.getPayStyle());//支付方式
-        reqContent.put("htnum", clientVO.getHtNum());//合同编号
-        reqContent.put("successtime", clientVO.getSuccessTime());//订单时间
         reqContent.put("memo", clientVO.getMemo());
 
         String addRstStr = crmBaseApi.doService(reqContent, "clientEditDsyyLp");
