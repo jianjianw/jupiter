@@ -1,5 +1,9 @@
 package com.qiein.jupiter.constant;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * 客资状态
  * 
@@ -60,4 +64,10 @@ public class ClientStatusConst {
 
 	/*-- 客资分类 --*/
 	public static final int KZ_CLASS_NEW = 1;// 新客资
+
+	// 成交状态
+	public static List<Integer> SUCCESS_STATUS_RANGE = new ArrayList<Integer>(Arrays.asList(9, 30, 40));
+	// 待追踪
+	public static List<Integer> TRACE_STATUS_RANGE = new ArrayList<Integer>(
+			Arrays.asList(6, 18, 19, 20, 11, 22, 23, 24, 13, 17, 2, 15, 16, 28));
 }
