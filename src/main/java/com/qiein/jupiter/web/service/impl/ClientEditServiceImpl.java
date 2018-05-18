@@ -127,7 +127,7 @@ public class ClientEditServiceImpl implements ClientEditService {
         //邀约结果
         if (NumUtil.isNotNull(clientVO.getYyRst())) {
             reqContent.put("yyrst", clientVO.getYyRst());
-            reqContent.put("invalidLabel", clientVO.getInvalidLabel() + clientVO.getInvalidMemo());
+            reqContent.put("invalidLabel", clientVO.getInvalidLabel() + StringUtil.nullToStrTrim(clientVO.getInvalidMemo()));
             reqContent.put("tracktime", clientVO.getTraceTime());
             if (NumUtil.isNotNull(clientVO.getShopId())) {
                 //获取拍摄地名
