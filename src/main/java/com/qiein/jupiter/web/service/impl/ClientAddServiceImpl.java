@@ -122,7 +122,7 @@ public class ClientAddServiceImpl implements ClientAddService {
             clientPushService.pushLp(channelPO.getPushRule(), staffPO.getCompanyId(), jsInfo.getString("kzid"), clientVO.getShopId(), channelPO.getId()
                     , channelPO.getTypeId(), companyPO.getOvertime(), companyPO.getKzInterval());
         } else {
-            throw new RException(ExceptionEnum.KZ_ADD_FAIL);
+            throw new RException(jsInfo.getString("msg"));
         }
     }
 
@@ -196,11 +196,13 @@ public class ClientAddServiceImpl implements ClientAddService {
      *
      * @param list
      */
-    public String batchAddDsClient(String list, int channelId, int sourceId, int shopId, int typeId, StaffPO staffPO) {
+    public JSONObject batchAddDsClient(String list, int channelId, int sourceId, int shopId, int typeId, StaffPO staffPO) {
         JSONArray jsonArr = JSONArray.parseArray(list);
         int successCount = 0;
         int errorCount = 0;
         StringBuffer sb = null;
+        JSONObject error = null;
+        JSONObject result = new JSONObject();
         JSONArray rep = new JSONArray();
         for (int i = 0; i < jsonArr.size(); i++) {
             ClientVO clientVO = new ClientVO();
@@ -227,10 +229,20 @@ public class ClientAddServiceImpl implements ClientAddService {
                 addDsClient(clientVO, staffPO);
                 successCount++;
             } catch (RException e) {
+                error = new JSONObject();
+                error.put("name", clientVO.getKzName());
+                error.put("phone", clientVO.getKzPhone());
+                error.put("wechat", clientVO.getKzWechat());
+                error.put("qq", clientVO.getKzQq());
+                error.put("memo", StringUtil.replaceAllHTML(sb.toString()));
+                error.put("msg", e.getMsg());
+                rep.add(error);
                 errorCount++;
             }
         }
-        return errorCount == 0 ? "录入成功，共录入：" + successCount + " 个客资" : "有录入失败的信息；录入成功：" + successCount + " 个，错误：" + errorCount + " 个";
+        result.put("error", rep);
+        result.put("msg", "errorCount == 0 ? \"录入成功，共录入：\" + successCount + \" 个客资\" : \"有录入失败的信息；录入成功：\" + successCount + \" 个，错误：\" + errorCount + \" 个\"");
+        return result;
     }
 
 }

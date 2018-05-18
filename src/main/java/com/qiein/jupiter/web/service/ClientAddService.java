@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.service;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.ClientVO;
 
@@ -26,5 +27,5 @@ public interface ClientAddService {
      *
      * @param list
      */
-    String batchAddDsClient(String list, int channelId, int sourceId, int shopId, int typeId, StaffPO staffPO);
+    JSONObject batchAddDsClient(String list, int channelId, int sourceId, int shopId, int typeId, StaffPO staffPO);
 }
