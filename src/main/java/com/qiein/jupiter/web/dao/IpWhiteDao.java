@@ -26,6 +26,12 @@ public interface IpWhiteDao extends BaseDao<IpWhitePO>{
      * @param List<IpWhiteStaffVo>
      */
 	List<IpWhiteStaffVo> FindIpWhite(@Param("companyId") int companyId);
+	/**
+     * 根据公司id 寻找白名单ip
+     * @param companyId
+     * @return List<String>
+     */
+	List<String> findIp(int companyId);
 	
 	
 }

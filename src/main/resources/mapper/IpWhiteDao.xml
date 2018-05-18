@@ -60,4 +60,9 @@
 		a.COMPANYID = #{companyId}
 		AND a.WHITEFLAG = 1
    	</select>
+   	
+   	<select id="findIp" parameterType="Integer" resultType="String">
+   	
+   	select ip from hm_pub_ip_white where companyId=#{companyId}
+   	</select>
 </mapper>

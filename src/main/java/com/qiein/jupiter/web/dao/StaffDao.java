@@ -267,4 +267,11 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @return
      */
 	void delListIpWhite(@Param("ids") List<Integer> ids);
+	 /**
+     * 查找白名单的 员工id
+     *
+     * @param companyId
+     * @return List<Integer>
+     */
+	List<Integer> findId(@Param("companyId") int companyId);
 }

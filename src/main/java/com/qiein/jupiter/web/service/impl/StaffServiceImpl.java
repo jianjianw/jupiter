@@ -924,11 +924,25 @@ public class StaffServiceImpl implements StaffService {
 		// TODO Auto-generated method stub
 		staffDao.delIpWhite(staffId);
 	}
-
+	 /**
+     * 批量从白名单删除
+     * @param staffIds
+     */
 	@Override
 	public void delListIpWhite(List<Integer> ids) {
 		// TODO Auto-generated method stub
 		staffDao.delListIpWhite(ids);
+	}
+	 /**
+     * 查找白名单的 员工id
+     *
+     * @param companyId
+     * @return List<Integer>
+     */
+	@Override
+	public List<Integer> findId(int companyId) {
+		// TODO Auto-generated method stub
+		return staffDao.findId(companyId);
 	}
 
 
