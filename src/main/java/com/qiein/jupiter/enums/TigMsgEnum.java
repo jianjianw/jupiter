@@ -144,7 +144,35 @@ public enum TigMsgEnum {
     /**
      * 停单成功
      */
-    STOP_ORDER_SUCCESS("停单成功");
+    STOP_ORDER_SUCCESS("停单成功"),
+    /**
+     * IP限制打开成功
+     */
+    IP_LIMIT_OPEN_SUCCESS("企业IP限制开启成功"),
+    /**
+     * IP限制关闭成功
+     */
+    IP_LIMIT_CLOSE_SUCCESS("企业IP限制关闭成功"),
+    /**
+     * 安全IP新增成功
+     */
+    SAFETY_IP_INSERT_SUCCESS("安全IP新增成功"),
+    /**
+     * 安全IP删除成功
+     */
+    SAFETY_IP_DEL_SUCCESS("安全IP删除成功"),
+    /**
+     * 安全IP修改成功
+     */
+    SAFETY_IP_UPDATE_SUCCESS("安全IP修改成功"),
+    /**
+     * IP白名单新增成功
+     */
+    IP_WHITE_ADD_SUCCESS("IP白名单新增成功"),
+    /**
+     * IP白名单删除成功
+     */
+    IP_WHITE_DEL_SUCCESS("IP白名单删除成功");
 
     private String desc;
 

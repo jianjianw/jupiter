@@ -60,7 +60,7 @@ public class IpWhiteController extends BaseController {
         ipWhitePo.setCreatoerId(staff.getId());
         ipWhitePo.setCreatoerName(staff.getNickName());
         ipwhiteService.insert(ipWhitePo);
-        return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
+        return ResultInfoUtil.success(TigMsgEnum.SAFETY_IP_INSERT_SUCCESS);
 
     }
 
@@ -70,7 +70,7 @@ public class IpWhiteController extends BaseController {
     @GetMapping("/delete")
     public ResultInfo delete(@RequestParam @Id Integer id) {
         ipwhiteService.delete(id);
-        return ResultInfoUtil.success(TigMsgEnum.DELETE_SUCCESS);
+        return ResultInfoUtil.success(TigMsgEnum.SAFETY_IP_DEL_SUCCESS);
     }
 
     /*
@@ -80,7 +80,12 @@ public class IpWhiteController extends BaseController {
     public ResultInfo editIpLimit(@RequestParam Integer limitFlag) {
         StaffPO staff = getCurrentLoginStaff();
         companyService.editIpLimit(limitFlag, staff.getCompanyId());
-        return ResultInfoUtil.success(TigMsgEnum.UPDATE_SUCCESS);
+        if (limitFlag == 0) {
+            return ResultInfoUtil.success(TigMsgEnum.IP_LIMIT_CLOSE_SUCCESS);
+        } else {
+            return ResultInfoUtil.success(TigMsgEnum.IP_LIMIT_OPEN_SUCCESS);
+        }
+
     }
 
     /*
@@ -106,7 +111,7 @@ public class IpWhiteController extends BaseController {
             return ResultInfoUtil.success(ExceptionEnum.IP_ERROR);
         }
         ipwhiteService.update(ipWhitePo);
-        return ResultInfoUtil.success(TigMsgEnum.UPDATE_SUCCESS);
+        return ResultInfoUtil.success(TigMsgEnum.SAFETY_IP_UPDATE_SUCCESS);
     }
 
     /*
@@ -115,7 +120,7 @@ public class IpWhiteController extends BaseController {
     @GetMapping("/add_ip_white_staff")
     public ResultInfo addIpWhiteStaff(@RequestParam String staffIds) {
         staffService.addIpWhite(staffIds);
-        return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
+        return ResultInfoUtil.success(TigMsgEnum.IP_WHITE_ADD_SUCCESS);
     }
 
     /*
@@ -124,7 +129,7 @@ public class IpWhiteController extends BaseController {
     @GetMapping("/del_ip_white_staff")
     public ResultInfo delIpWhiteStaff(@RequestParam int staffId) {
         staffService.delIpWhite(staffId);
-        return ResultInfoUtil.success(TigMsgEnum.DELETE_SUCCESS);
+        return ResultInfoUtil.success(TigMsgEnum.IP_WHITE_DEL_SUCCESS);
     }
 
     /*
@@ -138,7 +143,7 @@ public class IpWhiteController extends BaseController {
             ids.add(Integer.parseInt(s));
         }
         staffService.delListIpWhite(ids);
-        return ResultInfoUtil.success(TigMsgEnum.DELETE_SUCCESS);
+        return ResultInfoUtil.success(TigMsgEnum.IP_WHITE_DEL_SUCCESS);
     }
 
     /*
