@@ -45,7 +45,8 @@ public class DictionaryServiceImpl implements DictionaryService {
      */
     public void addInvalidReason(DictionaryPO dictionaryPO) {
         dictionaryPO.setDicType(DictionaryConstant.INVALID_REASON);
-        dictionaryPO.setDicCode(DictionaryConstant.COMMON_CODE);
+        int dicCode = dictionaryDao.getMaxDicCode(dictionaryPO.getCompanyId(), dictionaryPO.getDicType());
+        dictionaryPO.setDicCode(dicCode + 1);
         //1.去重
         DictionaryPO exist = dictionaryDao.getDicByTypeAndName(dictionaryPO.getCompanyId(), dictionaryPO.getDicType(), dictionaryPO.getDicName());
         if (exist != null) {
@@ -88,7 +89,8 @@ public class DictionaryServiceImpl implements DictionaryService {
      * @param dicName
      */
     public void addRunoffReason(int companyId, String dicName) {
-        DictionaryPO dictionaryPO = new DictionaryPO(DictionaryConstant.RUN_OFF_REASON, DictionaryConstant.COMMON_CODE, dicName, companyId);
+        int dicCode = dictionaryDao.getMaxDicCode(companyId, DictionaryConstant.RUN_OFF_REASON);
+        DictionaryPO dictionaryPO = new DictionaryPO(DictionaryConstant.RUN_OFF_REASON, dicCode + 1, dicName, companyId);
         //1.去重
         DictionaryPO exist = dictionaryDao.getDicByTypeAndName(dictionaryPO.getCompanyId(), dictionaryPO.getDicType(), dictionaryPO.getDicName());
         if (exist != null) {

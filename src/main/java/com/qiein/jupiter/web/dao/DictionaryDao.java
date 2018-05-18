@@ -51,4 +51,12 @@ public interface DictionaryDao extends BaseDao<DictionaryPO> {
      * 获取一个公司下面所有的字典信息
      */
     List<DictionaryPO> getDictByCompanyId(@Param("companyId") int companyId);
+
+    /**
+     * 获取最大编码
+     * @param companyId
+     * @param dicType
+     * @return
+     */
+    int getMaxDicCode(@Param("companyId") int companyId, @Param("dicType") String dicType);
 }
