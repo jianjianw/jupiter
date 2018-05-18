@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.qiein.jupiter.web.entity.vo.IpWhitePageVO;
-import com.qiein.jupiter.web.entity.vo.IpWhiteStaffVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,7 +54,7 @@ public class IpWhiteController extends BaseController {
         StaffPO staff = getCurrentLoginStaff();
         //判断ip 输入是否正确
         if (!HttpUtil.isIp(ipWhitePo.getIp())) {
-            return ResultInfoUtil.success(ExceptionEnum.IP_ERROR);
+            return ResultInfoUtil.error(ExceptionEnum.IP_ERROR);
         }
         ipWhitePo.setCompanyId(staff.getCompanyId());
         ipWhitePo.setCreatoerId(staff.getId());
@@ -92,7 +91,7 @@ public class IpWhiteController extends BaseController {
     /*
      * 显示页面
      */
-    @GetMapping("/get_all_ip_by_companyId")
+    @GetMapping("/get_all_ip_by_cid")
     public ResultInfo getAllIpByCompanyId() {
         StaffPO staff = getCurrentLoginStaff();
         List<IpWhitePO> list = ipwhiteService.getAllIpByCompanyId(staff.getCompanyId());
@@ -150,8 +149,8 @@ public class IpWhiteController extends BaseController {
     /*
      * 在ip白名单的员工信息
      */
-    @PostMapping("/find_ip_white")
-    public ResultInfo findIpWhite(@RequestBody QueryMapDTO queryMapDTO) {
+    @PostMapping("/find_ip_white_staff")
+    public ResultInfo findIpWhiteStaff(@RequestBody QueryMapDTO queryMapDTO) {
         StaffPO staff = getCurrentLoginStaff();
         return ResultInfoUtil.success(ipwhiteService.findIpWhite(queryMapDTO, staff.getCompanyId()));
     }

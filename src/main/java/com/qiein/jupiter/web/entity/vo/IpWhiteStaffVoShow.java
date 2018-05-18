@@ -11,13 +11,13 @@ public class IpWhiteStaffVoShow {
 	   /**
      * ip白名单员工名单
      */
-	private List<IpWhiteStaffVo> list;
+	private List<IpWhiteStaffVO> list;
 
-	public List<IpWhiteStaffVo> getList() {
+	public List<IpWhiteStaffVO> getList() {
 		return list;
 	}
 
-	public void setList(List<IpWhiteStaffVo> list) {
+	public void setList(List<IpWhiteStaffVO> list) {
 		this.list = list;
 	}
 	

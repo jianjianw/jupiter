@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.qiein.jupiter.web.entity.po.IpWhitePO;
-import com.qiein.jupiter.web.entity.vo.IpWhiteStaffVo;
+import com.qiein.jupiter.web.entity.vo.IpWhiteStaffVO;
 
 /**
  * ip白名单
@@ -26,7 +26,7 @@ public interface IpWhiteDao extends BaseDao<IpWhitePO> {
      *
      * @param companyId
      */
-    List<IpWhiteStaffVo> findIpWhite(@Param("companyId") int companyId);
+    List<IpWhiteStaffVO> findIpWhite(@Param("companyId") int companyId);
 
     /**
      * 根据公司id 寻找白名单ip

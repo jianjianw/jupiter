@@ -46,15 +46,16 @@
 		COMPANYID =#{companyId}
    	</select>
 
-    <select id="findIpWhite" parameterType="Integer" resultType="com.qiein.jupiter.web.entity.vo.IpWhiteStaffVo">
+    <select id="findIpWhite" parameterType="Integer" resultType="com.qiein.jupiter.web.entity.vo.IpWhiteStaffVO">
 		SELECT
 			a.ID id,
-			a.HEADIMG imgAdd,
-			a.USERNAME staffName,
+			a.HEADIMG headImg,
+			a.NICKNAME nickName,
 			d.GROUPNAME groupName,
 			b.CREATETIME createTime,
 			b.LASTLOGINIP lastLoginIp,
 			b.LASTLOGINTIME lastLoginTime,
+			b.LASTLOGINIP lastLoginIp,
 			b.IPLOCATION ipLocation
 		FROM
 			hm_pub_staff a

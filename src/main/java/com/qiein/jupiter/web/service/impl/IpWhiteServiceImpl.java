@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.service.impl;
 
 import java.util.List;
 
+import com.qiein.jupiter.web.entity.vo.IpWhiteStaffVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +11,6 @@ import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.web.dao.IpWhiteDao;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.IpWhitePO;
-import com.qiein.jupiter.web.entity.vo.IpWhitePageVO;
-import com.qiein.jupiter.web.entity.vo.IpWhiteStaffVo;
-import com.qiein.jupiter.web.entity.vo.IpWhiteStaffVoShow;
 import com.qiein.jupiter.web.service.IpWhiteService;
 
 /**
@@ -75,12 +73,12 @@ public class IpWhiteServiceImpl implements IpWhiteService {
      * 显示ip页面
      *
      * @param companyId
-     * @return List<IpWhiteStaffVo>
+     * @return List<IpWhiteStaffVO>
      */
     @Override
-    public PageInfo<IpWhiteStaffVo> findIpWhite(QueryMapDTO queryMapDTO, int companyId) {
+    public PageInfo<IpWhiteStaffVO> findIpWhite(QueryMapDTO queryMapDTO, int companyId) {
         PageHelper.startPage(queryMapDTO.getPageNum(), queryMapDTO.getPageSize());
-        List<IpWhiteStaffVo> list = ipwhitedao.findIpWhite(companyId);
+        List<IpWhiteStaffVO> list = ipwhitedao.findIpWhite(companyId);
         return new PageInfo<>(list);
     }
 
