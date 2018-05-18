@@ -5,9 +5,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.web.dao.IpWhiteDao;
+import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.IpWhitePO;
+import com.qiein.jupiter.web.entity.vo.IpWhitePageVO;
 import com.qiein.jupiter.web.entity.vo.IpWhiteStaffVo;
+import com.qiein.jupiter.web.entity.vo.IpWhiteStaffVoShow;
 import com.qiein.jupiter.web.service.IpWhiteService;
 /**
  * ip白名单
@@ -68,9 +73,11 @@ public class IpWhiteServiceImpl implements IpWhiteService {
      * @return List<IpWhiteStaffVo>
      */
 	@Override
-	public List<IpWhiteStaffVo> FindIpWhite(int companyId) {
+	public PageInfo<IpWhiteStaffVo> FindIpWhite(QueryMapDTO queryMapDTO, int companyId) {
 		// TODO Auto-generated method stub
-		return ipwhitedao.FindIpWhite(companyId);
+		PageHelper.startPage(queryMapDTO.getPageNum(), queryMapDTO.getPageSize());
+		List<IpWhiteStaffVo> list=ipwhitedao.FindIpWhite(companyId);
+		return new PageInfo<>(list)  ;
 	}
 	
 	/**

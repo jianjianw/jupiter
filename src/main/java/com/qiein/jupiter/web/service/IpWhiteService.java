@@ -2,7 +2,10 @@ package com.qiein.jupiter.web.service;
 
 import java.util.List;
 
+import com.github.pagehelper.PageInfo;
+import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.IpWhitePO;
+import com.qiein.jupiter.web.entity.vo.IpWhitePageVO;
 import com.qiein.jupiter.web.entity.vo.IpWhiteStaffVo;
 
 /**
@@ -45,10 +48,11 @@ public interface IpWhiteService {
     List<IpWhitePO> getAllIpByCompanyId(int companyId);
     /**
      * 显示ip页面
+     * @param queryMapDTO 
      * @param companyId
      * @return List<IpWhiteStaffVo>
      */
-	List<IpWhiteStaffVo> FindIpWhite(int companyId);
+	PageInfo<IpWhiteStaffVo> FindIpWhite(QueryMapDTO queryMapDTO, int companyId);
 	/**
      * 根据公司id 寻找白名单ip
      * @param companyId
