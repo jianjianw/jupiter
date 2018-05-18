@@ -905,45 +905,48 @@ public class StaffServiceImpl implements StaffService {
     public StaffDetailVO getStaffCard(int staffId, int companyId) {
         return staffDao.getStaffCard(staffId, companyId);
     }
+
     /**
      * 添加到白名单
      *
      * @param staffId
      */
-	@Override
-	public void addIpWhite(int staffId) {
-		// TODO Auto-generated method stub
-		staffDao.addIpWhite(staffId);
-	}
-	 /**
+    @Override
+    public void addIpWhite(int staffId) {
+        // TODO Auto-generated method stub
+        staffDao.addIpWhite(staffId);
+    }
+
+    /**
      * 从白名单删除
+     *
      * @param staffId
      */
-	@Override
-	public void delIpWhite(int staffId) {
-		// TODO Auto-generated method stub
-		staffDao.delIpWhite(staffId);
-	}
-	 /**
+    @Override
+    public void delIpWhite(int staffId) {
+        staffDao.delIpWhite(staffId);
+    }
+
+    /**
      * 批量从白名单删除
-     * @param staffIds
+     *
+     * @param ids
      */
-	@Override
-	public void delListIpWhite(List<Integer> ids) {
-		// TODO Auto-generated method stub
-		staffDao.delListIpWhite(ids);
-	}
-	 /**
+    @Override
+    public void delListIpWhite(List<Integer> ids) {
+        staffDao.delListIpWhite(ids);
+    }
+
+    /**
      * 查找白名单的 员工id
      *
      * @param companyId
      * @return List<Integer>
      */
-	@Override
-	public List<Integer> findId(int companyId) {
-		// TODO Auto-generated method stub
-		return staffDao.findId(companyId);
-	}
+    @Override
+    public List<Integer> findId(int companyId) {
+        return staffDao.findId(companyId);
+    }
 
 
 }
