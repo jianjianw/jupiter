@@ -18,4 +18,13 @@ public interface ClientEditService {
     void editClientByDscj(ClientVO clientVO, StaffPO staffPO);
 
 
+    /**
+     * 电商邀约修改客资
+     *
+     * @param clientVO
+     * @param staffPO
+     */
+    void editClientByDsyy(ClientVO clientVO, StaffPO staffPO);
+
+
 }

@@ -131,11 +131,7 @@ public class ClientVO implements Serializable {
     /**
      * 状态名称
      */
-    private String statusNzme;
-    /**
-     * 无效原因
-     */
-    private String invalidLable;
+    private String statusName;
 
     /**
      * 销售备注
@@ -158,6 +154,47 @@ public class ClientVO implements Serializable {
      * 预拍时间
      */
     private int ypTime;
+    /**
+     * 邀约结果
+     */
+    private int yyRst;
+    /**
+     * 无效原因
+     */
+    private String invalidLabel;
+    /**
+     * 无效备注
+     */
+    private String invalidMemo;
+    /**
+     * 下次追踪时间
+     */
+    private int traceTime;
+    /**
+     * 消息提醒
+     */
+    private int warnStyle;
+    /**
+     * 成交套系金额
+     */
+    private int amount;
+    /**
+     * 已收金额
+     */
+    private int stayAmount;
+    /**
+     * 支付方式
+     */
+    private int payStyle;
+    /**
+     * 合同编号
+     */
+    private String htNum;
+    /**
+     * 订单时间
+     */
+    private int successTime;
+
 
     public int getSex() {
         return sex;
@@ -383,20 +420,12 @@ public class ClientVO implements Serializable {
         this.createTime = createTime;
     }
 
-    public String getStatusNzme() {
-        return statusNzme;
+    public String getStatusName() {
+        return statusName;
     }
 
-    public void setStatusNzme(String statusNzme) {
-        this.statusNzme = statusNzme;
-    }
-
-    public String getInvalidLable() {
-        return invalidLable;
-    }
-
-    public void setInvalidLable(String invalidLable) {
-        this.invalidLable = invalidLable;
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
     }
 
     public String getMemo() {
@@ -445,5 +474,85 @@ public class ClientVO implements Serializable {
 
     public void setYpTime(int ypTime) {
         this.ypTime = ypTime;
+    }
+
+    public int getYyRst() {
+        return yyRst;
+    }
+
+    public void setYyRst(int yyRst) {
+        this.yyRst = yyRst;
+    }
+
+    public String getInvalidLabel() {
+        return invalidLabel;
+    }
+
+    public void setInvalidLabel(String invalidLabel) {
+        this.invalidLabel = invalidLabel;
+    }
+
+    public String getInvalidMemo() {
+        return invalidMemo;
+    }
+
+    public void setInvalidMemo(String invalidMemo) {
+        this.invalidMemo = invalidMemo;
+    }
+
+    public int getTraceTime() {
+        return traceTime;
+    }
+
+    public void setTraceTime(int traceTime) {
+        this.traceTime = traceTime;
+    }
+
+    public int getWarnStyle() {
+        return warnStyle;
+    }
+
+    public void setWarnStyle(int warnStyle) {
+        this.warnStyle = warnStyle;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public int getStayAmount() {
+        return stayAmount;
+    }
+
+    public void setStayAmount(int stayAmount) {
+        this.stayAmount = stayAmount;
+    }
+
+    public int getPayStyle() {
+        return payStyle;
+    }
+
+    public void setPayStyle(int payStyle) {
+        this.payStyle = payStyle;
+    }
+
+    public String getHtNum() {
+        return htNum;
+    }
+
+    public void setHtNum(String htNum) {
+        this.htNum = htNum;
+    }
+
+    public int getSuccessTime() {
+        return successTime;
+    }
+
+    public void setSuccessTime(int successTime) {
+        this.successTime = successTime;
     }
 }
