@@ -46,18 +46,22 @@ public interface IpWhiteService {
      * @return List<IpWhitePO>
      */
     List<IpWhitePO> getAllIpByCompanyId(int companyId);
+
     /**
      * 显示ip页面
-     * @param queryMapDTO 
+     *
+     * @param queryMapDTO
      * @param companyId
      * @return List<IpWhiteStaffVo>
      */
-	PageInfo<IpWhiteStaffVo> FindIpWhite(QueryMapDTO queryMapDTO, int companyId);
-	/**
+    PageInfo<IpWhiteStaffVo> findIpWhite(QueryMapDTO queryMapDTO, int companyId);
+
+    /**
      * 根据公司id 寻找白名单ip
+     *
      * @param companyId
      * @return List<String>
      */
-	List<String> findIp(int companyId);
+    List<String> findIp(int companyId);
 
 }

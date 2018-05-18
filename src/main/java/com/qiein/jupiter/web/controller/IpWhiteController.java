@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.controller;
 
 import java.util.LinkedList;
 import java.util.List;
+
 import com.qiein.jupiter.web.entity.vo.IpWhitePageVO;
 import com.qiein.jupiter.web.entity.vo.IpWhiteStaffVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,7 @@ public class IpWhiteController extends BaseController {
 
     @Autowired
     private CompanyService companyService;
-    
+
     @Autowired
     private StaffService staffService;
 
@@ -52,10 +53,9 @@ public class IpWhiteController extends BaseController {
     public ResultInfo insert(@Validated @RequestBody IpWhitePO ipWhitePo) {
         //获取当前登录用户
         StaffPO staff = getCurrentLoginStaff();
-
         //判断ip 输入是否正确
-        if(!HttpUtil.isIp(ipWhitePo.getIp())){
-        	return ResultInfoUtil.success(ExceptionEnum.IP_ERROR);
+        if (!HttpUtil.isIp(ipWhitePo.getIp())) {
+            return ResultInfoUtil.success(ExceptionEnum.IP_ERROR);
         }
         ipWhitePo.setCompanyId(staff.getCompanyId());
         ipWhitePo.setCreatoerId(staff.getId());
@@ -73,10 +73,10 @@ public class IpWhiteController extends BaseController {
         ipwhiteService.delete(id);
         return ResultInfoUtil.success(TigMsgEnum.DELETE_SUCCESS);
     }
+
     /*
      * 修改iplimit
      */
-
     @GetMapping("/edit_ip_limit")
     public ResultInfo editIpLimit(@RequestParam Integer iplimit) {
         StaffPO staff = getCurrentLoginStaff();
@@ -108,75 +108,79 @@ public class IpWhiteController extends BaseController {
     @PostMapping("/update")
     public ResultInfo update(@Validated @RequestBody IpWhitePO ipWhitePo) {
         //判断ip 格式
-    	 if(!HttpUtil.isIp(ipWhitePo.getIp())){
-         	return ResultInfoUtil.success(ExceptionEnum.IP_ERROR);
-         }
+        if (!HttpUtil.isIp(ipWhitePo.getIp())) {
+            return ResultInfoUtil.success(ExceptionEnum.IP_ERROR);
+        }
         ipwhiteService.update(ipWhitePo);
         return ResultInfoUtil.success(TigMsgEnum.UPDATE_SUCCESS);
     }
+
     /*
      * 添加到白名单
      */
     @GetMapping("/add_ip_white")
-    public ResultInfo addIpWhite(@RequestParam int staffId){
-    	staffService.addIpWhite(staffId);
-    	return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
+    public ResultInfo addIpWhite(@RequestParam int staffId) {
+        staffService.addIpWhite(staffId);
+        return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
     }
+
     /*
      * 从ip白名单删除
      */
     @GetMapping("/del_ip_white")
-    public ResultInfo delIpWhite(@RequestParam int staffId){
-    	staffService.delIpWhite(staffId);
-    	return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
+    public ResultInfo delIpWhite(@RequestParam int staffId) {
+        staffService.delIpWhite(staffId);
+        return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
     }
+
     /*
      * 批量从ip白名单删除
      */
     @GetMapping("/del_list_ip_white")
-    public ResultInfo delListIpWhite(@RequestParam String staffIds){
-    	String[] StringIds =staffIds.split(",");
-    	List<Integer> ids =new LinkedList<>();
-    	for(String s:StringIds){
-    		ids.add(Integer.parseInt(s));
-    	}
-    	staffService.delListIpWhite(ids);
-    	return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
+    public ResultInfo delListIpWhite(@RequestParam String staffIds) {
+        String[] StringIds = staffIds.split(",");
+        List<Integer> ids = new LinkedList<>();
+        for (String s : StringIds) {
+            ids.add(Integer.parseInt(s));
+        }
+        staffService.delListIpWhite(ids);
+        return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
     }
+
     /*
      * 在ip白名单的员工信息
      */
     @PostMapping("/find_ip_white")
-    public ResultInfo FindIpWhite(@RequestBody QueryMapDTO queryMapDTO){
-    	StaffPO staff =getCurrentLoginStaff();
-    	return ResultInfoUtil.success(ipwhiteService.FindIpWhite(queryMapDTO,staff.getCompanyId()));
+    public ResultInfo findIpWhite(@RequestBody QueryMapDTO queryMapDTO) {
+        StaffPO staff = getCurrentLoginStaff();
+        return ResultInfoUtil.success(ipwhiteService.findIpWhite(queryMapDTO, staff.getCompanyId()));
     }
+
     /*
      * ip判断
      */
     @GetMapping("/verify_legal_ip")
-    public ResultInfo verifyLegalIp(){
+    public ResultInfo verifyLegalIp() {
 
-    	String ip=getIp();
-    	StaffPO staff =getCurrentLoginStaff();
-    	int staffId=staff.getId();
-    	int companyId =staff.getCompanyId();
-    	List<Integer> ids=staffService.findId(companyId);
-    	for(int id:ids){
-    		if(id==staffId){
-    			return ResultInfoUtil.success();
-    		}
-    	}
-    	List<String> ips=ipwhiteService.findIp(companyId);
-    	for(String sip:ips){
-    		if (sip.endsWith("0")) {
-    			sip = sip.replace("0", "");
-    		}
-    		if(ip.startsWith(sip)){
-    			return ResultInfoUtil.success();
-    		};
-    	}
-    	return ResultInfoUtil.error(ExceptionEnum.IP_UNALLOW);
-    	
+        String ip = getIp();
+        StaffPO staff = getCurrentLoginStaff();
+        int staffId = staff.getId();
+        int companyId = staff.getCompanyId();
+        List<Integer> ids = staffService.findId(companyId);
+        for (int id : ids) {
+            if (id == staffId) {
+                return ResultInfoUtil.success();
+            }
+        }
+        List<String> ips = ipwhiteService.findIp(companyId);
+        for (String sip : ips) {
+            if (sip.endsWith("0")) {
+                sip = sip.replace("0", "");
+            }
+            if (ip.startsWith(sip)) {
+                return ResultInfoUtil.success();
+            }
+        }
+        return ResultInfoUtil.error(ExceptionEnum.IP_UNALLOW);
     }
 }
