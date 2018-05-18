@@ -149,5 +149,11 @@ public class ClientEditServiceImpl implements ClientEditService {
 
         String addRstStr = crmBaseApi.doService(reqContent, "clientEditDsyyLp");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
+        if ("100000".equals(jsInfo.getString("code"))) {
+            System.out.println("邀约编辑成功");
+
+        } else {
+            throw new RException(ExceptionEnum.KZ_EDIT_FAIL);
+        }
     }
 }
