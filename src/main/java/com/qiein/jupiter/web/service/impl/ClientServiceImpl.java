@@ -33,7 +33,7 @@ public class ClientServiceImpl implements ClientService {
 
         int addLogNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(clientStatusVO.getCompanyId()),
                 new ClientLogPO(clientStatusVO.getKzId(),clientStatusVO.getOperaId(),clientStatusVO.getOperaName(),
-                        ClientLogConst.INFO_LOG_EDIT_SEX+(clientStatusVO.getSex()==1?"男":"女"),ClientLogConst.INFO_LOGTYPE_EDIT,clientStatusVO.getCompanyId()));
+                        ClientLogConst.INFO_LOG_EDIT_SEX+(clientStatusVO.getSex()==1?"先生":"女士"),ClientLogConst.INFO_LOGTYPE_EDIT,clientStatusVO.getCompanyId()));
         if (addLogNum!=1){
             System.out.println("插入客资日志失败");
         }
