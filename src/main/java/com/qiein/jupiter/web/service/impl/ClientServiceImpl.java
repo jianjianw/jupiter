@@ -50,7 +50,7 @@ public class ClientServiceImpl implements ClientService {
 
         int addLogNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(clientStatusVO.getCompanyId()),
                 new ClientLogPO(clientStatusVO.getKzId(),clientStatusVO.getOperaId(),clientStatusVO.getOperaName(),
-                        ClientLogConst.INFO_LOG_EDIT_WCFLAG+(clientStatusVO.getWeFlag()==1?"已加":"未加"),ClientLogConst.INFO_LOGTYPE_EDIT,clientStatusVO.getCompanyId()));
+                        ClientLogConst.INFO_LOG_EDIT_WCFLAG+(clientStatusVO.getWeFlag()==1?"已添加":"没加上"),ClientLogConst.INFO_LOGTYPE_EDIT,clientStatusVO.getCompanyId()));
         if (addLogNum!=1){
             System.out.println("插入客资日志失败");
         }
