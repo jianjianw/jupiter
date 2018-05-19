@@ -169,7 +169,7 @@ public class ClientVO implements Serializable {
     /**
      * 下次追踪时间
      */
-    private int traceTime;
+    private int trackTime;
     /**
      * 消息提醒
      */
@@ -513,12 +513,12 @@ public class ClientVO implements Serializable {
         this.invalidMemo = invalidMemo;
     }
 
-    public int getTraceTime() {
-        return traceTime;
+    public int getTrackTime() {
+        return trackTime;
     }
 
-    public void setTraceTime(int traceTime) {
-        this.traceTime = traceTime;
+    public void setTrackTime(int trackTime) {
+        this.trackTime = trackTime;
     }
 
     public int getWarnStyle() {
