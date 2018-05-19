@@ -1,7 +1,9 @@
 package com.qiein.jupiter.web.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.Constant;
 import com.qiein.jupiter.constant.ChannelConstant;
+import com.qiein.jupiter.constant.ClientStatusConst;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.http.CrmBaseApi;
@@ -124,34 +126,43 @@ public class ClientEditServiceImpl implements ClientEditService {
         reqContent.put("kzwechat", clientVO.getKzWechat());
         reqContent.put("kzqq", clientVO.getKzQq());
         reqContent.put("kzww", clientVO.getKzWw());
+        if (NumUtil.isNotNull(clientVO.getShopId())) {
+            //获取拍摄地名
+            ShopVO shopVO = shopDao.getShowShopById(staffPO.getCompanyId(), clientVO.getShopId());
+            if (shopVO == null) {
+                throw new RException(ExceptionEnum.SHOP_NOT_FOUND);
+            }
+            reqContent.put("shopid", clientVO.getShopId());
+            reqContent.put("shopname", shopVO.getShopName());
+        }
         //邀约结果
         if (NumUtil.isNotNull(clientVO.getYyRst())) {
             reqContent.put("yyrst", clientVO.getYyRst());
-            reqContent.put("invalidLabel", clientVO.getInvalidLabel() + StringUtil.nullToStrTrim(clientVO.getInvalidMemo()));
-            reqContent.put("tracktime", clientVO.getTraceTime());
-            if (NumUtil.isNotNull(clientVO.getShopId())) {
-                //获取拍摄地名
-                ShopVO shopVO = shopDao.getShowShopById(staffPO.getCompanyId(), clientVO.getShopId());
-                if (shopVO == null) {
-                    throw new RException(ExceptionEnum.SHOP_NOT_FOUND);
-                }
-                reqContent.put("shopid", clientVO.getShopId());
-                reqContent.put("shopname", shopVO.getShopName());
+            //无效,或者流失
+            if (ClientStatusConst.INVALID_BE_STAY == clientVO.getYyRst() || ClientStatusConst.COME_SHOP_FAIL == clientVO.getYyRst()) {
+                reqContent.put("invalidLabel", clientVO.getInvalidLabel() + StringUtil.nullToStrTrim(clientVO.getInvalidMemo()));
             }
-            if (NumUtil.isNotNull(clientVO.getFilmingCode())) {
-                //获取最终拍摄地名
-                ShopVO shopVO = shopDao.getShowShopById(staffPO.getCompanyId(), clientVO.getFilmingCode());
-                if (shopVO == null) {
-                    throw new RException(ExceptionEnum.SHOP_NOT_FOUND);
-                }
-                reqContent.put("filmingcode", clientVO.getFilmingCode());
-                reqContent.put("filmingname", shopVO.getShopName());
+            //下次追踪
+            if (ClientStatusConst.TRACE_STATUS_RANGE.contains(clientVO.getYyRst())) {
+                reqContent.put("tracktime", clientVO.getTrackTime());
             }
-            reqContent.put("amount", clientVO.getAmount());//成交套系金额
-            reqContent.put("stayamount", clientVO.getStayAmount());//已收金额
-            reqContent.put("paystyle", clientVO.getPayStyle());//支付方式
-            reqContent.put("htnum", clientVO.getHtNum());//合同编号
-            reqContent.put("successtime", clientVO.getSuccessTime());//订单时间
+            //订单
+            if (ClientStatusConst.ONLINE_SUCCESS == clientVO.getYyRst()) {
+                if (NumUtil.isNotNull(clientVO.getFilmingCode())) {
+                    //获取最终拍摄地名
+                    ShopVO shopVO = shopDao.getShowShopById(staffPO.getCompanyId(), clientVO.getFilmingCode());
+                    if (shopVO == null) {
+                        throw new RException(ExceptionEnum.SHOP_NOT_FOUND);
+                    }
+                    reqContent.put("filmingcode", clientVO.getFilmingCode());
+                    reqContent.put("filmingname", shopVO.getShopName());
+                }
+                reqContent.put("amount", clientVO.getAmount());//成交套系金额
+                reqContent.put("stayamount", clientVO.getStayAmount());//已收金额
+                reqContent.put("paystyle", clientVO.getPayStyle());//支付方式
+                reqContent.put("htnum", clientVO.getHtNum());//合同编号
+                reqContent.put("successtime", clientVO.getSuccessTime());//订单时间
+            }
         }
         reqContent.put("memo", clientVO.getMemo());
 
@@ -237,9 +248,9 @@ public class ClientEditServiceImpl implements ClientEditService {
 
         String addRstStr = crmBaseApi.doService(reqContent, "clientEditCwzxLp");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
-        if ("100000".equals(jsInfo.getString("code"))){
+        if ("100000".equals(jsInfo.getString("code"))) {
             System.out.println("邀约编辑成功");
-        } else{
+        } else {
             throw new RException(ExceptionEnum.KZ_EDIT_FAIL);
         }
     }
