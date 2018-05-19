@@ -402,6 +402,10 @@ public class StaffServiceImpl implements StaffService {
             // 删除
             throw new RException(ExceptionEnum.USER_IS_DEL);
         }
+        //IP限制
+        if (!checkIpLimit(staffPO.getId(), companyId, ip)) {
+            throw new RException(ExceptionEnum.IP_NOT_IN_SAFETY);
+        }
         // 验证公司属性
         CompanyPO companyPO = companyService.getById(staffPO.getCompanyId());
         // 如果员工没有token，重新生成
@@ -958,6 +962,15 @@ public class StaffServiceImpl implements StaffService {
     public boolean staffHeartBeat(int staffId, int companyId, String ip) {
         //更新心跳时间
         staffDao.updateStaffHeartTime(staffId, companyId);
+        return checkIpLimit(staffId, companyId, ip);
+    }
+
+    /**
+     * 校验IP限制
+     *
+     * @return
+     */
+    private boolean checkIpLimit(int staffId, int companyId, String ip) {
         if (StringUtil.isEmpty(ip)) {
             log.error("未获取到IP！！");
             return true;
