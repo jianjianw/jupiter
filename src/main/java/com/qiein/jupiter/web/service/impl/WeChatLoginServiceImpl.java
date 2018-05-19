@@ -31,7 +31,7 @@ public class WeChatLoginServiceImpl implements WeChatLoginService {
     @Override
     public void getAccessToken(String code) {
         String wechatRes = HttpClient
-                .get(userInfoUrl)
+                .get(tokenUrl)
                 .queryString("appid", appid)
                 .queryString("secret", secret)
                 .queryString("code", code)
@@ -45,7 +45,7 @@ public class WeChatLoginServiceImpl implements WeChatLoginService {
     @Override
     public void getUserInfo(String token, String openId) {
         String wechatRes = HttpClient
-                .get(tokenUrl)
+                .get(userInfoUrl)
                 .queryString("access_token", token)
                 .queryString("openid", openId)
                 .asString();
