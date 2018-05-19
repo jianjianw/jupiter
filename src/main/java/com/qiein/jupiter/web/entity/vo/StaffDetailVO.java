@@ -21,6 +21,22 @@ public class StaffDetailVO extends StaffPO {
      */
     private String qq;
     /**
+     * 所属小组编号
+     */
+    private String groupId;
+    /**
+     * 所属小组名称
+     */
+    private String groupName;
+    /**
+     * 所属部门编号
+     */
+    private String deptId;
+    /**
+     * 所属部门名称
+     */
+    private String deptName;
+    /**
      * 上次登录时间
      */
     private int lastLoginTime;
@@ -36,6 +52,38 @@ public class StaffDetailVO extends StaffPO {
      * 创建时间
      */
     private int createTime;
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public String getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(String deptId) {
+        this.deptId = deptId;
+    }
+
+    public String getDeptName() {
+        return deptName;
+    }
+
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
+    }
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
