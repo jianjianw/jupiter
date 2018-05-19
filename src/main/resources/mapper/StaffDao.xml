@@ -548,14 +548,22 @@
             AND rela.COMPANYID = #{companyId}
     </select>
 
+    <!--获取员工card-->
     <select id="getStaffCard" parameterType="Integer" resultType="staffDetailVO">
         SELECT
 	        s.ID,s.NICKNAME,s.PHONE,s.USERNAME,s.COMPANYID,s.HEADIMG,s.STATUSFLAG,s.ISLOCK,
-	        s.ISDEL,sd.WECHATNAME,sd.WECHATIMG,sd.QQ,sd.LASTLOGINTIME,sd.LASTLOGOUTTIME
+	        s.ISDEL,sd.WECHATNAME,sd.WECHATIMG,sd.QQ,sd.LASTLOGINTIME,sd.LASTLOGOUTTIME,
+	        g.GROUPID groupId , g.GROUPNAME groupName , gg.GROUPID deptId , gg.GROUPNAME deptName
         FROM
 	        hm_pub_staff s
         LEFT JOIN
 	        hm_pub_staff_detail sd ON s.ID = sd.ID
+	    LEFT JOIN
+	        hm_pub_group_staff gs ON gs.STAFFID = s.ID
+	    LEFT JOIN
+	        hm_pub_group g ON g.GROUPID = gs.GROUPID
+	    LEFT JOIN
+	        hm_pub_group gg ON g.PARENTID = gg.GROUPID
         WHERE
 	        s.COMPANYID =#{companyId} AND s.ID = #{staffId}
     </select>
