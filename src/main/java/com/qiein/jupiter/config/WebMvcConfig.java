@@ -27,7 +27,9 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
                 .excludePathPatterns("/staff/login_with_company_id")
                 .excludePathPatterns("/staff/verify_code")
                 .excludePathPatterns("/staff/need_verity_code")
-                .excludePathPatterns("/outer/**");
+                .excludePathPatterns("/outer/**")
+                //WX相关
+                .excludePathPatterns("/wx_login/**");
     }
 
 }
