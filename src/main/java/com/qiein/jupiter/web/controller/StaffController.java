@@ -129,96 +129,6 @@ public class StaffController extends BaseController {
         return ResultInfoUtil.success();
     }
 
-    /**
-     * 获取用户所在所有企业信息
-     *
-     * @param loginUserVO
-     * @return
-     */
-    @PostMapping("/get_company_list")
-    public ResultInfo getCompanyList(@RequestBody @Validated LoginUserVO loginUserVO) {
-        // 对象参数trim
-        ObjectUtil.objectStrParamTrim(loginUserVO);
-        // 校验用户验证码
-        checkLoginVerifyCode(loginUserVO);
-        try {
-            // 返回结果
-            List<CompanyPO> companyList = staffService.getCompanyList(loginUserVO.getUserName(),
-                    loginUserVO.getPassword());
-            return ResultInfoUtil.success(companyList);
-        } catch (RException e) {
-            // 将错误次数+1
-            valueOperations.increment(RedisConstant.getUserLoginErrNumKey(loginUserVO.getUserName()),
-                    CommonConstant.LOGIN_ERROR_ADD_NUM);
-            return ResultInfoUtil.error(e.getCode(), e.getMsg());
-        }
-    }
-
-    /**
-     * 根据公司ID登录
-     *
-     * @param loginUserVO
-     * @return
-     */
-    @PostMapping("/login_with_company_id")
-    public ResultInfo loginWithCompanyId(@RequestBody @Validated LoginUserVO loginUserVO) {
-        // 对象参数trim
-        ObjectUtil.objectStrParamTrim(loginUserVO);
-        // 校验用户验证码
-        checkLoginVerifyCode(loginUserVO);
-        String userName = loginUserVO.getUserName();
-        String password = loginUserVO.getPassword();
-        // 校验公司Id
-        if (loginUserVO.getCompanyId() == 0) {
-            throw new RException(ExceptionEnum.COMPANYID_NULL);
-        }
-        try {
-            // 返回结果
-            StaffPO staffPO = staffService.loginWithCompanyId(userName, password, loginUserVO.getCompanyId(), getIp());
-            return ResultInfoUtil.success(staffPO);
-        } catch (RException e) {
-            // 登录失败，将错误次数+1
-            valueOperations.increment(RedisConstant.getUserLoginErrNumKey(userName), 1);
-            return ResultInfoUtil.error(e.getCode(), e.getMsg());
-        }
-    }
-
-    /**
-     * 是否需要验证码
-     *
-     * @param userName 用户名
-     */
-    @GetMapping("/need_verity_code")
-    public boolean needVerityCode(@NotEmptyStr @RequestParam("phone") String userName) {
-        // 判断是否需要验证码
-        String userLoginErrNum = valueOperations.get(RedisConstant.getUserLoginErrNumKey(userName));
-        if (userLoginErrNum == null) {
-            // 如果没有查询到，说明是第一次，设置默认值0,过期时间为1小时
-            valueOperations.set(RedisConstant.getUserLoginErrNumKey(userName),
-                    String.valueOf(CommonConstant.DEFAULT_ZERO), CommonConstant.LOGIN_ERROR_NUM_EXPIRE_TIME,
-                    TimeUnit.HOURS);
-            return false;
-        } else {
-            // 是否大于允许的错误最大值
-            int errNum = Integer.valueOf(userLoginErrNum);
-            return errNum >= CommonConstant.ALLOW_USER_LOGIN_ERR_NUM;
-        }
-    }
-
-    /**
-     * 请求验证码
-     *
-     * @param response
-     */
-    @GetMapping("/verify_code")
-    public void loginCode(HttpServletResponse response, @RequestParam("phone") String userName) {
-        if (StringUtil.isEmpty(userName) || !RegexUtil.checkMobile(userName)) {
-            return;
-        }
-        // 生成验证码并放入缓存
-        String code = VerifyCodeUtil.execute(response);
-        valueOperations.set(RedisConstant.getVerifyCodeKey(userName), code);
-    }
 
     /**
      * 获取组员工列表
@@ -276,31 +186,6 @@ public class StaffController extends BaseController {
         return ResultInfoUtil.success(staffService.getGroupStaffById(currentLoginStaff.getCompanyId(), staffId));
     }
 
-    /**
-     * 校验用户验证码
-     *
-     * @param loginUserVO
-     */
-    private void checkLoginVerifyCode(LoginUserVO loginUserVO) {
-        // 对象参数trim
-        ObjectUtil.objectStrParamTrim(loginUserVO);
-        String userName = loginUserVO.getUserName();
-        String verifyCode = loginUserVO.getVerifyCode();
-        // 判断是否需要验证码以及验证码正确性
-        if (needVerityCode(userName)) {
-            // 验证码为空
-            if (StringUtil.isEmpty(verifyCode)) {
-                throw new RException(ExceptionEnum.VERIFY_NULL);
-            } else {
-                // 从缓存获取key并判断
-                String verifyCodeTrue = valueOperations.get(RedisConstant.getVerifyCodeKey(userName));
-                if (!StringUtil.ignoreCaseEqual(verifyCode, verifyCodeTrue)) {
-                    // 验证码错误
-                    throw new RException(ExceptionEnum.VERIFY_ERROR);
-                }
-            }
-        }
-    }
 
     /**
      * 获取员工详情
@@ -315,16 +200,6 @@ public class StaffController extends BaseController {
                 .success(staffService.getById(currentLoginStaff.getId(), currentLoginStaff.getCompanyId()));
     }
 
-    /**
-     * 首页获取基础信息
-     */
-    @GetMapping("/base_info")
-    public ResultInfo getBaseInfo() {
-        // 获取当前登录账户
-        StaffPO currentLoginStaff = getCurrentLoginStaff();
-        return ResultInfoUtil
-                .success(staffService.getStaffBaseInfo(currentLoginStaff.getId(), currentLoginStaff.getCompanyId()));
-    }
 
     /**
      * 删除指定员工
@@ -613,6 +488,32 @@ public class StaffController extends BaseController {
                 staffService.getStaffStatusLogById(currentLoginStaff.getCompanyId(), id));
     }
 
+
+    /**
+     * 根据员工id获取员工名片
+     *
+     * @param staffId
+     * @return
+     */
+    @GetMapping("/card")
+    public ResultInfo getStaffCard(int staffId) {
+        return ResultInfoUtil.success(staffService.getStaffCard(staffId, getCurrentLoginStaff().getCompanyId()));
+    }
+
+    /**
+     * 更新员工心跳，同时检测IP
+     */
+    @GetMapping("/heart_beat")
+    public ResultInfo staffHeartBeat() {
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        boolean b = staffService.staffHeartBeat(currentLoginStaff.getId(), currentLoginStaff.getCompanyId(), getIp());
+        if (b) {
+            return ResultInfoUtil.success();
+        } else {
+            return ResultInfoUtil.error(ExceptionEnum.IP_NOT_IN_SAFETY);
+        }
+    }
+
     /**
      * 用户退出登录
      */
@@ -626,12 +527,131 @@ public class StaffController extends BaseController {
     }
 
     /**
-     * 根据员工id获取员工名片
-     * @param staffId
+     * 首页获取基础信息
+     */
+    @GetMapping("/base_info")
+    public ResultInfo getBaseInfo() {
+        // 获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        return ResultInfoUtil
+                .success(staffService.getStaffBaseInfo(currentLoginStaff.getId(), currentLoginStaff.getCompanyId()));
+    }
+
+
+    /**
+     * 校验用户验证码
+     *
+     * @param loginUserVO
+     */
+    private void checkLoginVerifyCode(LoginUserVO loginUserVO) {
+        // 对象参数trim
+        ObjectUtil.objectStrParamTrim(loginUserVO);
+        String userName = loginUserVO.getUserName();
+        String verifyCode = loginUserVO.getVerifyCode();
+        // 判断是否需要验证码以及验证码正确性
+        if (needVerityCode(userName)) {
+            // 验证码为空
+            if (StringUtil.isEmpty(verifyCode)) {
+                throw new RException(ExceptionEnum.VERIFY_NULL);
+            } else {
+                // 从缓存获取key并判断
+                String verifyCodeTrue = valueOperations.get(RedisConstant.getVerifyCodeKey(userName));
+                if (!StringUtil.ignoreCaseEqual(verifyCode, verifyCodeTrue)) {
+                    // 验证码错误
+                    throw new RException(ExceptionEnum.VERIFY_ERROR);
+                }
+            }
+        }
+    }
+
+    /**
+     * 请求验证码
+     *
+     * @param response
+     */
+    @GetMapping("/verify_code")
+    public void loginCode(HttpServletResponse response, @RequestParam("phone") String userName) {
+        if (StringUtil.isEmpty(userName) || !RegexUtil.checkMobile(userName)) {
+            return;
+        }
+        // 生成验证码并放入缓存
+        String code = VerifyCodeUtil.execute(response);
+        valueOperations.set(RedisConstant.getVerifyCodeKey(userName), code);
+    }
+
+    /**
+     * 是否需要验证码
+     *
+     * @param userName 用户名
+     */
+    @GetMapping("/need_verity_code")
+    public boolean needVerityCode(@NotEmptyStr @RequestParam("phone") String userName) {
+        // 判断是否需要验证码
+        String userLoginErrNum = valueOperations.get(RedisConstant.getUserLoginErrNumKey(userName));
+        if (userLoginErrNum == null) {
+            // 如果没有查询到，说明是第一次，设置默认值0,过期时间为1小时
+            valueOperations.set(RedisConstant.getUserLoginErrNumKey(userName),
+                    String.valueOf(CommonConstant.DEFAULT_ZERO), CommonConstant.LOGIN_ERROR_NUM_EXPIRE_TIME,
+                    TimeUnit.HOURS);
+            return false;
+        } else {
+            // 是否大于允许的错误最大值
+            int errNum = Integer.valueOf(userLoginErrNum);
+            return errNum >= CommonConstant.ALLOW_USER_LOGIN_ERR_NUM;
+        }
+    }
+
+    /**
+     * 根据公司ID登录
+     *
+     * @param loginUserVO
      * @return
      */
-    @GetMapping("/card")
-    public ResultInfo getStaffCard(int staffId){
-        return ResultInfoUtil.success(staffService.getStaffCard(staffId,getCurrentLoginStaff().getCompanyId()));
+    @PostMapping("/login_with_company_id")
+    public ResultInfo loginWithCompanyId(@RequestBody @Validated LoginUserVO loginUserVO) {
+        // 对象参数trim
+        ObjectUtil.objectStrParamTrim(loginUserVO);
+        // 校验用户验证码
+        checkLoginVerifyCode(loginUserVO);
+        String userName = loginUserVO.getUserName();
+        String password = loginUserVO.getPassword();
+        // 校验公司Id
+        if (loginUserVO.getCompanyId() == 0) {
+            throw new RException(ExceptionEnum.COMPANYID_NULL);
+        }
+        try {
+            // 返回结果
+            StaffPO staffPO = staffService.loginWithCompanyId(userName, password, loginUserVO.getCompanyId(), getIp());
+            return ResultInfoUtil.success(staffPO);
+        } catch (RException e) {
+            // 登录失败，将错误次数+1
+            valueOperations.increment(RedisConstant.getUserLoginErrNumKey(userName), 1);
+            return ResultInfoUtil.error(e.getCode(), e.getMsg());
+        }
+    }
+
+    /**
+     * 获取用户所在所有企业信息
+     *
+     * @param loginUserVO
+     * @return
+     */
+    @PostMapping("/get_company_list")
+    public ResultInfo getCompanyList(@RequestBody @Validated LoginUserVO loginUserVO) {
+        // 对象参数trim
+        ObjectUtil.objectStrParamTrim(loginUserVO);
+        // 校验用户验证码
+        checkLoginVerifyCode(loginUserVO);
+        try {
+            // 返回结果
+            List<CompanyPO> companyList = staffService.getCompanyList(loginUserVO.getUserName(),
+                    loginUserVO.getPassword());
+            return ResultInfoUtil.success(companyList);
+        } catch (RException e) {
+            // 将错误次数+1
+            valueOperations.increment(RedisConstant.getUserLoginErrNumKey(loginUserVO.getUserName()),
+                    CommonConstant.LOGIN_ERROR_ADD_NUM);
+            return ResultInfoUtil.error(e.getCode(), e.getMsg());
+        }
     }
 }

@@ -155,31 +155,4 @@ public class IpWhiteController extends BaseController {
         return ResultInfoUtil.success(ipwhiteService.findIpWhite(queryMapDTO, staff.getCompanyId()));
     }
 
-    /*
-     * ip判断
-     */
-    @GetMapping("/verify_legal_ip")
-    public ResultInfo verifyLegalIp() {
-
-        String ip = getIp();
-        StaffPO staff = getCurrentLoginStaff();
-        int staffId = staff.getId();
-        int companyId = staff.getCompanyId();
-        List<Integer> ids = staffService.findId(companyId);
-        for (int id : ids) {
-            if (id == staffId) {
-                return ResultInfoUtil.success();
-            }
-        }
-        List<String> ips = ipwhiteService.findIp(companyId);
-        for (String sip : ips) {
-            if (sip.endsWith("0")) {
-                sip = sip.replace("0", "");
-            }
-            if (ip.startsWith(sip)) {
-                return ResultInfoUtil.success();
-            }
-        }
-        return ResultInfoUtil.error(ExceptionEnum.IP_UNALLOW);
-    }
 }

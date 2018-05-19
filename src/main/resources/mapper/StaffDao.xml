@@ -15,6 +15,15 @@
         <result column="STATUSFLAG" property="statusFlag" jdbcType="BOOLEAN"/>
         <result column="ISLOCK" property="lockFlag" jdbcType="BOOLEAN"/>
         <result column="ISDEL" property="delFlag" jdbcType="BOOLEAN"/>
+        <result column="TODAYNUM" property="todayNum" jdbcType="INTEGER"/>
+        <result column="WEIGHT" property="weight" jdbcType="INTEGER"/>
+        <result column="LIMITDAY" property="limitDay" jdbcType="INTEGER"/>
+        <result column="LASTPUSHTIME" property="lastPushTime" jdbcType="INTEGER"/>
+        <result column="LIMITCHANNELIDS" property="limitChannelIds" jdbcType="VARCHAR"/>
+        <result column="LIMITSHOPIDS" property="limitShopIds" jdbcType="VARCHAR"/>
+        <result column="HEARTTIME" property="heartTime" jdbcType="INTEGER"/>
+        <result column="WHITEFLAG" property="whiteFlag" jdbcType="BOOLEAN"/>
+
     </resultMap>
 
     <resultMap id="StaffVOMap" type="com.qiein.jupiter.web.entity.vo.StaffVO">
@@ -64,8 +73,8 @@
         <result column="OPENID" property="openId" jdbcType="VARCHAR"/>
         <result column="CREATETIME" property="createTime" jdbcType="INTEGER"/>
     </resultMap>
-    
-     <resultMap id="pushMap" type="com.qiein.jupiter.web.entity.dto.StaffPushDTO">
+
+    <resultMap id="pushMap" type="com.qiein.jupiter.web.entity.dto.StaffPushDTO">
         <result column="ID" property="staffId" jdbcType="INTEGER"/>
         <result column="NICKNAME" property="staffName" jdbcType="VARCHAR"/>
         <result column="WEIGHT" property="weight" jdbcType="INTEGER"/>
@@ -85,8 +94,10 @@
 
     <sql id="baseColumn">
         ID, NICKNAME, PHONE, USERNAME, PASSWORD,COMPANYID, CORPID, DINGUSERID, HEADIMG,
-        TOKEN,STATUSFLAG,ISLOCK,ISDEL
+        TOKEN,STATUSFLAG,ISLOCK,ISDEL,TODAYNUM,WEIGHT,LIMITDAY,LASTPUSHTIME,LIMITCHANNELIDS,
+        LIMITSHOPIDS,HEARTTIME,WHITEFLAG
     </sql>
+
 
     <select id="getById" parameterType="java.lang.Integer" resultMap="baseMap">
         SELECT
@@ -113,7 +124,7 @@
                 AND PASSWORD = #{password}
             </if>
             <if test="companyId != null and companyId != ''">
-               AND COMPANYID = #{companyId}
+                AND COMPANYID = #{companyId}
             </if>
             <if test="corpId != null and corpId != ''">
                 AND CORPID = #{corpId}
@@ -134,7 +145,7 @@
                 AND ISLOCK = #{lockFlag}
             </if>
             <if test="delFlag != null">
-               AND ISDEL = #{delFlag}
+                AND ISDEL = #{delFlag}
             </if>
         </where>
     </select>
@@ -335,26 +346,26 @@
         s.ID=d.ID AND s.COMPANYID = #{companyId} AND
         s.ID IN
         <foreach collection="ids" item="id" index="index" open="(" separator="," close=")">
-           #{id}
+            #{id}
         </foreach>
     </delete>
 
     <!--批量编辑员工状态,显示，锁定，删除-->
     <update id="batUpdateStaffState" parameterType="map">
-      UPDATE
+        UPDATE
         hm_pub_staff
-      <set>
-          <if test="ssv.statusFlag != null">
-              STATUSFLAG = #{ssv.statusFlag},
-          </if>
-          <if test="ssv.lock != null">
-              ISLOCK = #{ssv.lock} ,
-          </if>
-          <if test="ssv.del != null">
-              ISDEL = #{ssv.del}
-          </if>
-      </set>
-      WHERE
+        <set>
+            <if test="ssv.statusFlag != null">
+                STATUSFLAG = #{ssv.statusFlag},
+            </if>
+            <if test="ssv.lock != null">
+                ISLOCK = #{ssv.lock} ,
+            </if>
+            <if test="ssv.del != null">
+                ISDEL = #{ssv.del}
+            </if>
+        </set>
+        WHERE
         COMPANYID = #{ssv.companyId} AND ID IN
         <foreach collection="ids" item="id" index="index" open="(" separator="," close=")">
             #{id}
@@ -450,7 +461,7 @@
         WHERE ID = #{id}
         AND COMPANYID = #{companyId}
     </update>
-    
+
     <!--更新员工的登录情况-->
     <update id="updateStaffLoginInfo">
         UPDATE hm_pub_staff_detail
@@ -474,7 +485,7 @@
 	        )
     </select>
 
-	<!--根据客资的渠道ID和拍摄地ID以及小组ID获取可分配的客服集合-->
+    <!--根据客资的渠道ID和拍摄地ID以及小组ID获取可分配的客服集合-->
     <select id="listStaffPushDTOByShopIdAndChannelId" parameterType="map" resultMap="pushMap">
     	SELECT
 			DISTINCT sf.ID, sf.NICKNAME, sf.WEIGHT, sf.COMPANYID
@@ -493,28 +504,28 @@
 		AND ( UNIX_TIMESTAMP(NOW()) - LASTPUSHTIME ) &gt; #{interval}
 		AND sf.TODAYNUM &lt; LIMITDAY;
     </select>
-    
+
     <!--获取客服指定时间内渠道和拍摄地客资的领取情况-->
     <select id="listStaffPushDTOByAlloted" parameterType="map" resultMap="pushMap">
-    	SELECT
-			info.APPOINTORID ID, COUNT(1) TODAYNUM
-		FROM
-			${infoTabName} info
-		WHERE
-			info.COMPANYID = #{companyId}
-		AND info.ISDEL = 0
-		AND info.SHOPID = #{shopId}
-		AND info.CHANNELID = #{channelId}
-		AND info.STATUSID != 5
+        SELECT
+        info.APPOINTORID ID, COUNT(1) TODAYNUM
+        FROM
+        ${infoTabName} info
+        WHERE
+        info.COMPANYID = #{companyId}
+        AND info.ISDEL = 0
+        AND info.SHOPID = #{shopId}
+        AND info.CHANNELID = #{channelId}
+        AND info.STATUSID != 5
         AND info.CREATETIME &gt;= UNIX_TIMESTAMP(CAST(SYSDATE() AS DATE))
-		AND ( UNIX_TIMESTAMP(NOW()) - info.CREATETIME ) &gt; ${calcRange}
-		AND info.APPOINTORID IN
+        AND ( UNIX_TIMESTAMP(NOW()) - info.CREATETIME ) &gt; ${calcRange}
+        AND info.APPOINTORID IN
         <foreach collection="staffList" item="staff" index="index" open="(" separator="," close=")">
             #{staff.staffId}
         </foreach>
-		GROUP BY info.APPOINTORID;
+        GROUP BY info.APPOINTORID;
     </select>
-    
+
     <!-- 修改员工最后客资推送时间为当前时间 -->
     <update id="updateStaffLastPushTime">
         UPDATE hm_pub_staff
@@ -550,7 +561,7 @@
     </select>
     <!-- 添加到ip白名单 -->
     <update id="addIpWhite" parameterType="Integer">
-		UPDATE hm_pub_staff set WHITEFLAG=1 where id IN
+        UPDATE hm_pub_staff set WHITEFLAG=1 where id IN
         <foreach collection="ids" item="id" index="index" open="(" separator="," close=")">
             #{id}
         </foreach>
@@ -559,18 +570,26 @@
     <update id="delIpWhite" parameterType="Integer">
 		UPDATE hm_pub_staff set WHITEFLAG=0 where id=#{staffId} 
     </update>
-    
-      <!-- 批量从ip白名单删除 -->
+
+    <!-- 批量从ip白名单删除 -->
     <update id="delListIpWhite">
-		UPDATE hm_pub_staff set WHITEFLAG=0 where id in
-		<foreach collection="ids" item="staffId" open="(" separator="," close=")" >
-		 #{staffId}
-		</foreach>
+        UPDATE hm_pub_staff set WHITEFLAG=0 where id in
+        <foreach collection="ids" item="staffId" open="(" separator="," close=")">
+            #{staffId}
+        </foreach>
     </update>
+
     <!-- 根据公司id 寻找员工中拥有ip白名单权限的账号 -->
     <select id="findId" parameterType="Integer" resultType="Integer">
-    select id from hm_pub_staff where companyId=#{companyId} and whiteflag=1
-    
+         select id from hm_pub_staff where companyId=#{companyId} and whiteflag=1
     </select>
-    
+
+    <!-- 更新员工心跳时间 -->
+    <update id="updateStaffHeartTime">
+        UPDATE hm_pub_staff staff set HEARTTIME =  UNIX_TIMESTAMP(now())
+        where
+          ID = #{staffId}
+        AND COMPANYID = #{companyId}
+
+    </update>
 </mapper>
