@@ -39,6 +39,7 @@ public class WeChatLoginServiceImpl implements WeChatLoginService {
                 .asString();
         JSONObject res = JSON.parseObject(wechatRes);
         System.out.println(res);
+        getUserInfo(res.getString("access_token"), res.getString("openid"));
     }
 
     @Override
