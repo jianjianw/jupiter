@@ -322,10 +322,7 @@ public interface StaffService {
     void delListIpWhite(List<Integer> ids);
 
     /**
-     * 查找白名单的 员工id
-     *
-     * @param companyId
-     * @return List<Integer>
+     * 员工心跳
      */
-    List<Integer> findId(int companyId);
+    boolean staffHeartBeat(int staffId, int companyId, String ip);
 }

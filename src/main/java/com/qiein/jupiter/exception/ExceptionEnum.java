@@ -112,8 +112,9 @@ public enum ExceptionEnum {
     STS_DEFAULT_ERROR(1702, "默认颜色信息缺失"),
     STS_GET_ERROR(1703, "企业状态信息获取错误"),
 	//ip白名单
-	IP_ERROR(1801,"ip输入有误"),
-	IP_UNALLOW(1802,"ip无权访问");
+	IP_ERROR(1801,"IP输入有误"),
+	IP_UNALLOW(1802,"IP无权访问"),
+    IP_NOT_IN_SAFETY(1803,"当前IP不在安全IP范围内，请联系主管！");
     private Integer code;
     private String msg;
 

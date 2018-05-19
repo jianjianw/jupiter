@@ -13,6 +13,10 @@
         <result column="OVERTIME" property="overtime" jdbcType="INTEGER"/>
         <result column="LIMITDEFAULT" property="limitDefault" jdbcType="INTEGER"/>
         <result column="KZINTERVAL" property="kzInterval" jdbcType="INTEGER"/>
+        <result column="NOTSELFBLIND" property="notSelfBlind" jdbcType="BOOLEAN"/>
+        <result column="UNABLESELFLINE" property="unableSelfLine" jdbcType="BOOLEAN"/>
+        <result column="UNABLEAPPOINTOR" property="unableAppointor" jdbcType="BOOLEAN"/>
+        <result column="UNABLEINVALIDRANGE" property="unableInvalidRange" jdbcType="INTEGER"/>
         <result column="ISDEL" property="delFlag" jdbcType="BOOLEAN"/>
     </resultMap>
 

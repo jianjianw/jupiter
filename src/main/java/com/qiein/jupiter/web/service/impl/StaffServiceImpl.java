@@ -88,6 +88,9 @@ public class StaffServiceImpl implements StaffService {
     @Autowired
     private ShopService shopService;
 
+    @Autowired
+    private IpWhiteService ipWhiteService;
+
     /**
      * 员工新增
      *
@@ -398,6 +401,10 @@ public class StaffServiceImpl implements StaffService {
         } else if (staffPO.isDelFlag()) {
             // 删除
             throw new RException(ExceptionEnum.USER_IS_DEL);
+        }
+        //IP限制
+        if (!checkIpLimit(staffPO.getId(), companyId, ip)) {
+            throw new RException(ExceptionEnum.IP_NOT_IN_SAFETY);
         }
         // 验证公司属性
         CompanyPO companyPO = companyService.getById(staffPO.getCompanyId());
@@ -945,14 +952,51 @@ public class StaffServiceImpl implements StaffService {
     }
 
     /**
-     * 查找白名单的 员工id
+     * 检测
      *
+     * @param staffId
      * @param companyId
-     * @return List<Integer>
+     * @return
      */
     @Override
-    public List<Integer> findId(int companyId) {
-        return staffDao.findId(companyId);
+    public boolean staffHeartBeat(int staffId, int companyId, String ip) {
+        //更新心跳时间
+        staffDao.updateStaffHeartTime(staffId, companyId);
+        return checkIpLimit(staffId, companyId, ip);
+    }
+
+    /**
+     * 校验IP限制
+     *
+     * @return
+     */
+    private boolean checkIpLimit(int staffId, int companyId, String ip) {
+        if (StringUtil.isEmpty(ip)) {
+            log.error("未获取到IP！！");
+            return true;
+        }
+        //校验IP,当企业开启了IP校验功能
+        if (companyDao.getById(companyId).isIpLimit()) {
+            StaffPO StaffPOById = getById(staffId, companyId);
+            //是IP白名单用户
+            if (StaffPOById.isWhiteFlag()) {
+                return true;
+            }
+            //判断是否在安全IP内
+            List<String> ips = ipWhiteService.findIp(companyId);
+            for (String sip : ips) {
+                if (sip.endsWith(".0")) {
+                    //去掉最后.0
+                    sip = sip.substring(0, sip.length() - 2);
+                }
+                if (ip.startsWith(sip)) {
+                    return true;
+                }
+            }
+        } else {
+            return true;
+        }
+        return false;
     }
 
 
