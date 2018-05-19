@@ -6,6 +6,7 @@ import com.mzlion.easyokhttp.HttpClient;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.CollectionUtils;
+import com.qiein.jupiter.util.HttpUtil;
 import com.qiein.jupiter.util.MD5Util;
 import com.qiein.jupiter.web.dao.StaffDao;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
@@ -95,9 +96,18 @@ public class WeChatLoginServiceImpl implements WeChatLoginService {
             // 用户不存在
             throw new RException(ExceptionEnum.USER_NOT_FOUND);
         }
-        List<CompanyPO> companyList =staffService.getCompanyList(staff.getUserName(), staff.getPassword(),true);
+        List<CompanyPO> companyList =staffService.getCompanyList(staff.getPhone(), staff.getPassword(),true);
        
         return companyList;
+	}
+
+	@Override
+	public StaffPO getCodeForIn(String code,String openid, int companyId, String ip) {
+		// TODO Auto-generated method stub
+		
+        StaffPO staff=staffDao.getByOpenId(openid);
+        staffService.loginWithCompanyId(staff.getPhone(), staff.getPassword(), companyId, ip, true);
+		return staff;
 	}
 	
 	

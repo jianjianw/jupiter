@@ -35,7 +35,7 @@ public class WeChatLoginController extends BaseController {
     
     @GetMapping("/get_code_for_login")
     public void getCodeForLogin(@RequestParam String code) {
-        weChatLoginService.ForLogin(code);
+    	List<CompanyPO> list= weChatLoginService.ForLogin(code);
     }
 
     @GetMapping("get_code_for_save")
@@ -46,5 +46,9 @@ public class WeChatLoginController extends BaseController {
     	staffService.saveWechat(staffDetailPO);
     }
     
+    @GetMapping("get_code_for_in")
+    public void getCodeForIn(@RequestParam String code,@RequestParam String openid,@RequestParam int companyId ){
+    	StaffPO staff=weChatLoginService.getCodeForIn(code,openid,companyId,getIp());
+    }
   
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.StaffDetailPO;
+import com.qiein.jupiter.web.entity.po.StaffPO;
 
 /**
  * wx登录
@@ -30,4 +31,9 @@ public interface WeChatLoginService {
      * @return 
      */
 	List<CompanyPO> ForLogin(String code);
+
+
+	StaffPO getCodeForIn(String code, String openid, int companyId, String ip);
+
+
 }

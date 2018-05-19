@@ -615,6 +615,6 @@
     
     <select id="getByOpenId" parameterType="String" resultType="com.qiein.jupiter.web.entity.po.StaffPO">
     
-    	select a.userName userName, a.password password  from hm_pub_staff a left join hm_pub_staff_detail b on a.id=b.id where b.openid=#{openId}
+    	select a.phone phone, a.password password  from hm_pub_staff a left join hm_pub_staff_detail b on a.id=b.id where b.openid=#{openId}
     </select>
 </mapper>
