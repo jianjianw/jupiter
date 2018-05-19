@@ -199,6 +199,14 @@ public class ClientVO implements Serializable {
      * 最终拍摄地ID
      */
     private int filmingCode;
+    /**
+     * 状态ID
+     */
+    private int statusId;
+    /**
+     * 领单时间
+     */
+    private int receiveTime;
 
 
     public int getSex() {
@@ -567,5 +575,21 @@ public class ClientVO implements Serializable {
 
     public void setFilmingCode(int filmingCode) {
         this.filmingCode = filmingCode;
+    }
+
+    public int getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(int statusId) {
+        this.statusId = statusId;
+    }
+
+    public int getReceiveTime() {
+        return receiveTime;
+    }
+
+    public void setReceiveTime(int receiveTime) {
+        this.receiveTime = receiveTime;
     }
 }

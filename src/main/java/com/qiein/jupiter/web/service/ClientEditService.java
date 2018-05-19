@@ -26,5 +26,13 @@ public interface ClientEditService {
      */
     void editClientByDsyy(ClientVO clientVO, StaffPO staffPO);
 
+    /**
+     * 主管纠错
+     *
+     * @param clientVO
+     * @param staffPO
+     */
+    void editClientByCwzx(ClientVO clientVO, StaffPO staffPO);
+
 
 }

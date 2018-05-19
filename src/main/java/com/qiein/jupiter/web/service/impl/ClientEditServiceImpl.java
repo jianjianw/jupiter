@@ -164,4 +164,83 @@ public class ClientEditServiceImpl implements ClientEditService {
             throw new RException(ExceptionEnum.KZ_EDIT_FAIL);
         }
     }
+
+    /**
+     * 主管纠错
+     *
+     * @param clientVO
+     * @param staffPO
+     */
+    public void editClientByCwzx(ClientVO clientVO, StaffPO staffPO) {
+        Map<String, Object> reqContent = new HashMap<>();
+        reqContent.put("companyid", staffPO.getCompanyId());
+        reqContent.put("operaid", staffPO.getId());
+        reqContent.put("operaname", staffPO.getNickName());
+        reqContent.put("kzid", clientVO.getKzId());
+        //客资基础信息
+        reqContent.put("typeid", clientVO.getTypeId());
+        reqContent.put("address", StringUtil.isNotEmpty(clientVO.getAddress()) ? clientVO.getAddress() :
+                MobileLocationUtil.getAddressByContactInfo(clientVO.getKzPhone(), clientVO.getKzWechat(), clientVO.getKzQq()));
+        reqContent.put("yxlevel", clientVO.getYxLevel());
+        reqContent.put("ysrange", clientVO.getYsRange());
+        reqContent.put("marrytime", clientVO.getMarryTime());
+        reqContent.put("yptime", clientVO.getYpTime());
+        reqContent.put("sex", clientVO.getSex());
+        reqContent.put("kzname", clientVO.getKzName());
+        reqContent.put("kzphone", clientVO.getKzPhone());
+        reqContent.put("kzwechat", clientVO.getKzWechat());
+        reqContent.put("kzqq", clientVO.getKzQq());
+        reqContent.put("kzww", clientVO.getKzWw());
+        //获取拍摄地名
+        ShopVO shopVO = shopDao.getShowShopById(staffPO.getCompanyId(), clientVO.getShopId());
+        if (shopVO == null) {
+            throw new RException(ExceptionEnum.SHOP_NOT_FOUND);
+        }
+        reqContent.put("shopid", clientVO.getShopId());
+        reqContent.put("shopname", shopVO.getShopName());
+
+        //纠错信息
+        reqContent.put("sourceid", clientVO.getSourceId());
+        //获取来源名
+        SourcePO sourcePO = sourceDao.getShowSourceById(staffPO.getCompanyId(), clientVO.getSourceId());
+        if (sourcePO == null) {
+            throw new RException(ExceptionEnum.SOURCE_NOT_FOUND);
+        }
+        reqContent.put("sourcename", sourcePO.getSrcName());
+
+        //获取渠道名
+        ChannelPO channelPO = channelDao.getShowChannelById(staffPO.getCompanyId(), clientVO.getChannelId());
+        if (channelPO == null) {
+            throw new RException(ExceptionEnum.CHANNEL_NOT_FOUND);
+        }
+        reqContent.put("channelid", clientVO.getChannelId());
+        reqContent.put("channelname", channelPO.getChannelName());
+        reqContent.put("createtime", clientVO.getCreateTime());
+        reqContent.put("statusid", clientVO.getStatusId());
+        reqContent.put("receivetime", clientVO.getReceiveTime());
+
+        if (NumUtil.isNotNull(clientVO.getFilmingCode())) {
+            //获取最终拍摄地名
+            ShopVO shop = shopDao.getShowShopById(staffPO.getCompanyId(), clientVO.getFilmingCode());
+            if (shop == null) {
+                throw new RException(ExceptionEnum.SHOP_NOT_FOUND);
+            }
+            reqContent.put("filmingcode", clientVO.getFilmingCode());
+            reqContent.put("filmingarea", shop.getShopName());
+        }
+        reqContent.put("successtime", clientVO.getSuccessTime());//订单时间
+        reqContent.put("stayamount", clientVO.getStayAmount());//已收金额
+        reqContent.put("paystyle", clientVO.getPayStyle());//支付方式
+        reqContent.put("htnum", clientVO.getHtNum());//合同编号
+        reqContent.put("amount", clientVO.getAmount());//成交套系金额
+        reqContent.put("memo", clientVO.getMemo());
+
+        String addRstStr = crmBaseApi.doService(reqContent, "clientEditCwzxLp");
+        JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
+        if ("100000".equals(jsInfo.getString("code"))){
+            System.out.println("邀约编辑成功");
+        } else{
+            throw new RException(ExceptionEnum.KZ_EDIT_FAIL);
+        }
+    }
 }

@@ -67,4 +67,24 @@ public class ClientEditController extends BaseController {
     }
 
 
+    /**
+     * 主管纠错
+     *
+     * @return
+     */
+    @PostMapping("/edit_client_by_cwzx")
+    public ResultInfo editClientByCwzx(@RequestBody ClientVO clientVO) {
+        if (StringUtil.isAllEmpty(clientVO.getKzPhone(), clientVO.getKzWechat(), clientVO.getKzQq(), clientVO.getKzWw())) {
+            return ResultInfoUtil.error(ExceptionEnum.KZ_CONTACT_INFORMATION);
+        }
+        if (StringUtil.isEmpty(clientVO.getKzId())){
+            return ResultInfoUtil.error(ExceptionEnum.KZ_ID_IS_NULL);
+        }
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        clientEditService.editClientByDsyy(clientVO, currentLoginStaff);
+        return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
+    }
+
+
 }
