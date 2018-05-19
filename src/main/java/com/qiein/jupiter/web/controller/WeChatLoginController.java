@@ -1,9 +1,17 @@
 package com.qiein.jupiter.web.controller;
 
+import com.qiein.jupiter.exception.ExceptionEnum;
+import com.qiein.jupiter.exception.RException;
+import com.qiein.jupiter.util.CollectionUtils;
+import com.qiein.jupiter.util.MD5Util;
+import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.StaffDetailPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.service.StaffService;
 import com.qiein.jupiter.web.service.WeChatLoginService;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +35,7 @@ public class WeChatLoginController extends BaseController {
     
     @GetMapping("/get_code_for_login")
     public void getCodeForLogin(@RequestParam String code) {
-        weChatLoginService.getAccessToken(code);
+        weChatLoginService.ForLogin(code);
     }
 
     @GetMapping("get_code_for_save")
@@ -37,4 +45,6 @@ public class WeChatLoginController extends BaseController {
     	staffDetailPO.setId(staff.getId());
     	staffService.saveWechat(staffDetailPO);
     }
+    
+  
 }

@@ -602,8 +602,8 @@
     </update>
     
     <update id="saveWechat" parameterType="com.qiein.jupiter.web.entity.po.StaffDetailPO">
-    	update hm_pub_staff_detail set openid=#{staffdetail.openId},wechatname=#{staffdetail.wechatName}
-    	<if test="staffId!=''">
+    	update hm_pub_staff_detail set openid=#{staffdetail.openId}
+    	<if test="staffdetail.weChatImg!=''">
     	,wechatimg=#{staffdetail.weChatImg}
     	</if>
     	where id=#{staffdetail.id}
@@ -611,5 +611,10 @@
     
     <select id="getDetailById" parameterType="Integer" resultType="String">
     select wechatimg from hm_pub_staff_detail where id=#{staffId}
+    </select>
+    
+    <select id="getByOpenId" parameterType="String" resultType="com.qiein.jupiter.web.entity.po.StaffPO">
+    
+    	select a.userName userName, a.password password  from hm_pub_staff a left join hm_pub_staff_detail b on a.id=b.id where b.openid=#{openId}
     </select>
 </mapper>
