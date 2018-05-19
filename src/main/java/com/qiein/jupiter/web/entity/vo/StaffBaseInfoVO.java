@@ -30,6 +30,18 @@ public class StaffBaseInfoVO implements Serializable {
      * 页面字典
      */
     private PageDictDTO pageDict;
+    /**
+     * 消息
+     */
+    private NewsTotalAmountAndFlag news;
+
+    public NewsTotalAmountAndFlag getNews() {
+        return news;
+    }
+
+    public void setNews(NewsTotalAmountAndFlag news) {
+        this.news = news;
+    }
 
     public PageDictDTO getPageDict() {
         return pageDict;
