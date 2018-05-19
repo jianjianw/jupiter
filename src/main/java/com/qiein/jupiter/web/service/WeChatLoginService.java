@@ -1,5 +1,7 @@
 package com.qiein.jupiter.web.service;
 
+import com.qiein.jupiter.web.entity.po.StaffDetailPO;
+
 /**
  * wx登录
  *
@@ -9,12 +11,14 @@ public interface WeChatLoginService {
 
     /**
      * 根据CODE 获取access token
+     * @return 
      */
-    void getAccessToken(String code);
+    StaffDetailPO getAccessToken(String code);
 
 
     /**
      * 根据accessToken和 openId 获取用户信息
+     * @return 
      */
-    void getUserInfo(String token, String openId);
+    StaffDetailPO getUserInfo(String token, String openId);
 }

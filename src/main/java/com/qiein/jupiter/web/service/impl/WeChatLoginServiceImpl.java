@@ -3,6 +3,7 @@ package com.qiein.jupiter.web.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.mzlion.easyokhttp.HttpClient;
+import com.qiein.jupiter.web.entity.po.StaffDetailPO;
 import com.qiein.jupiter.web.service.WeChatLoginService;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +30,7 @@ public class WeChatLoginServiceImpl implements WeChatLoginService {
     private final static String secret = "d3d9f6d809f9f03a01b2ecce5211264c";
 
     @Override
-    public void getAccessToken(String code) {
+    public StaffDetailPO getAccessToken(String code) {
         String wechatRes = HttpClient
                 .get(tokenUrl)
                 .queryString("appid", appid)
@@ -39,11 +40,14 @@ public class WeChatLoginServiceImpl implements WeChatLoginService {
                 .asString();
         JSONObject res = JSON.parseObject(wechatRes);
         System.out.println(res);
-        getUserInfo(res.getString("access_token"), res.getString("openid"));
+        StaffDetailPO staffDetailPO=getUserInfo(res.getString("access_token"), res.getString("openid"));
+        return staffDetailPO;
     }
 
     @Override
-    public void getUserInfo(String token, String openId) {
+    public StaffDetailPO getUserInfo(String token, String openId) {
+    	StaffDetailPO staffDetailPO=new StaffDetailPO();
+    	staffDetailPO.setOpenId(openId);
         String wechatRes = HttpClient
                 .get(userInfoUrl)
                 .queryString("access_token", token)
@@ -51,6 +55,10 @@ public class WeChatLoginServiceImpl implements WeChatLoginService {
                 .asString();
         JSONObject res = JSON.parseObject(wechatRes);
         System.out.println(res);
+        staffDetailPO.setWeChatName(res.getString("nickname"));
+        staffDetailPO.setWeChatImg(res.getString("headimgurl"));
+        return staffDetailPO;
+        
     }
 }
 

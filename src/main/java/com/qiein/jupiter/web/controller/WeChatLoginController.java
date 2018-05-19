@@ -1,5 +1,8 @@
 package com.qiein.jupiter.web.controller;
 
+import com.qiein.jupiter.web.entity.po.StaffDetailPO;
+import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.service.StaffService;
 import com.qiein.jupiter.web.service.WeChatLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,9 +22,19 @@ public class WeChatLoginController extends BaseController {
     @Autowired
     private WeChatLoginService weChatLoginService;
 
-    @GetMapping("/get_code")
-    public void getCode(@RequestParam String code) {
+    @Autowired
+    private StaffService staffService;
+    
+    @GetMapping("/get_code_for_login")
+    public void getCodeForLogin(@RequestParam String code) {
         weChatLoginService.getAccessToken(code);
     }
 
+    @GetMapping("get_code_for_save")
+    public void getCodeForSave(@RequestParam String code){
+    	StaffDetailPO staffDetailPO=weChatLoginService.getAccessToken(code);
+    	StaffPO staff=getCurrentLoginStaff();
+    	staffDetailPO.setId(staff.getId());
+    	staffService.saveWechat(staffDetailPO);
+    }
 }

@@ -6,6 +6,7 @@ import com.qiein.jupiter.web.entity.dto.StaffMarsDTO;
 import com.qiein.jupiter.web.entity.dto.StaffPasswordDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.PermissionPO;
+import com.qiein.jupiter.web.entity.po.StaffDetailPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.po.StaffStatusLog;
 import com.qiein.jupiter.web.entity.vo.*;
@@ -325,4 +326,9 @@ public interface StaffService {
      * 员工心跳
      */
     boolean staffHeartBeat(int staffId, int companyId, String ip);
+    /**
+     * 绑定微信
+     * @param staffDetailPO
+     */
+	void saveWechat(StaffDetailPO staffDetailPO);
 }

@@ -600,4 +600,16 @@
         AND COMPANYID = #{companyId}
 
     </update>
+    
+    <update id="saveWechat" parameterType="com.qiein.jupiter.web.entity.po.StaffDetailPO">
+    	update hm_pub_staff_detail set openid=#{staffdetail.openId},wechatname=#{staffdetail.wechatName}
+    	<if test="staffId!=''">
+    	,wechatimg=#{staffdetail.weChatImg}
+    	</if>
+    	where id=#{staffdetail.id}
+    </update>
+    
+    <select id="getDetailById" parameterType="Integer" resultType="String">
+    select wechatimg from hm_pub_staff_detail where id=#{staffId}
+    </select>
 </mapper>
