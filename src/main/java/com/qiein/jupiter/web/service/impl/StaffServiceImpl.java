@@ -91,9 +91,6 @@ public class StaffServiceImpl implements StaffService {
     @Autowired
     private IpWhiteService ipWhiteService;
 
-    @Autowired
-    private NewsService newsService;
-
     /**
      * 员工新增
      *
@@ -613,8 +610,6 @@ public class StaffServiceImpl implements StaffService {
         //拍摄地字典
         pageDictDTO.setShopMap(shopService.getShopDictByCid(companyId));
         staffBaseInfoVO.setPageDict(pageDictDTO);
-        //消息
-        staffBaseInfoVO.setNews(newsService.getNewsTotalAmountAndFlag(staffId, companyId));
         return staffBaseInfoVO;
     }
 

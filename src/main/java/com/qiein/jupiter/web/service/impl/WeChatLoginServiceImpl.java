@@ -3,8 +3,20 @@ package com.qiein.jupiter.web.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.mzlion.easyokhttp.HttpClient;
+import com.qiein.jupiter.exception.ExceptionEnum;
+import com.qiein.jupiter.exception.RException;
+import com.qiein.jupiter.util.CollectionUtils;
+import com.qiein.jupiter.util.MD5Util;
+import com.qiein.jupiter.web.dao.StaffDao;
+import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.StaffDetailPO;
+import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.service.StaffService;
 import com.qiein.jupiter.web.service.WeChatLoginService;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -29,6 +41,10 @@ public class WeChatLoginServiceImpl implements WeChatLoginService {
      */
     private final static String secret = "d3d9f6d809f9f03a01b2ecce5211264c";
 
+    @Autowired
+    private StaffDao staffDao;
+    @Autowired
+    private StaffService staffService;
     @Override
     public StaffDetailPO getAccessToken(String code) {
         String wechatRes = HttpClient
@@ -60,5 +76,31 @@ public class WeChatLoginServiceImpl implements WeChatLoginService {
         return staffDetailPO;
         
     }
+
+	@Override
+	public List<CompanyPO> ForLogin(String code) {
+		// TODO Auto-generated method stub
+		String wechatRes = HttpClient
+                .get(tokenUrl)
+                .queryString("appid", appid)
+                .queryString("secret", secret)
+                .queryString("code", code)
+                .queryString("grant_type", "authorization_code")
+                .asString();
+        JSONObject res = JSON.parseObject(wechatRes);
+        System.out.println(res);
+        String openid= res.getString("openid");
+        StaffPO staff=staffDao.getByOpenId(openid);
+        if (staff==null) {
+            // 用户不存在
+            throw new RException(ExceptionEnum.USER_NOT_FOUND);
+        }
+        List<CompanyPO> companyList =staffService.getCompanyList(staff.getUserName(), staff.getPassword(),true);
+       
+        return companyList;
+	}
+	
+	
+	
 }
 
