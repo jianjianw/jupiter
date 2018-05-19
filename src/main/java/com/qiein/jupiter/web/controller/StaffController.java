@@ -621,7 +621,8 @@ public class StaffController extends BaseController {
         }
         try {
             // 返回结果
-            StaffPO staffPO = staffService.loginWithCompanyId(userName, password, loginUserVO.getCompanyId(), getIp());
+            StaffPO staffPO = staffService.loginWithCompanyId(
+                    userName, password, loginUserVO.getCompanyId(), getIp(), false);
             return ResultInfoUtil.success(staffPO);
         } catch (RException e) {
             // 登录失败，将错误次数+1
@@ -645,7 +646,7 @@ public class StaffController extends BaseController {
         try {
             // 返回结果
             List<CompanyPO> companyList = staffService.getCompanyList(loginUserVO.getUserName(),
-                    loginUserVO.getPassword());
+                    loginUserVO.getPassword(), false);
             return ResultInfoUtil.success(companyList);
         } catch (RException e) {
             // 将错误次数+1

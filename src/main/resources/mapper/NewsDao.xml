@@ -35,8 +35,9 @@
             AND TYPE = 'system'
         </if>
         ORDER BY
-        CREATETIME DESC,
-        ISREAD ASC
+        ISREAD ASC,
+        CREATETIME DESC
+
     </select>
 
     <!--获取未读的消息-->

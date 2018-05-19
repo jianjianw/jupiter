@@ -369,8 +369,9 @@ public class StaffServiceImpl implements StaffService {
      * @return
      */
     @Override
-    public List<CompanyPO> getCompanyList(String userName, String password) {
-        List<CompanyPO> companyList = staffDao.getCompanyList(userName, MD5Util.getSaltMd5(password));
+    public List<CompanyPO> getCompanyList(String userName, String password, boolean isSalt) {
+        //是否是加过密的密码
+        List<CompanyPO> companyList = staffDao.getCompanyList(userName, isSalt ? password : MD5Util.getSaltMd5(password));
         if (CollectionUtils.isEmpty(companyList)) {
             // 用户不存在
             throw new RException(ExceptionEnum.USERNAME_OR_PASSWORD_ERROR);
@@ -391,9 +392,11 @@ public class StaffServiceImpl implements StaffService {
     @Override
     @LoginLog
     @Transactional
-    public StaffPO loginWithCompanyId(String userName, String password, int companyId, String ip) {
-        // 加密码加密
-        password = MD5Util.getSaltMd5(password);
+    public StaffPO loginWithCompanyId(String userName, String password, int companyId, String ip, boolean isSalt) {
+        // 加密码加密，判断是否已经加过密
+        if (!isSalt) {
+            password = MD5Util.getSaltMd5(password);
+        }
         StaffPO staffPO = staffDao.loginWithCompanyId(userName, password, companyId);
         if (staffPO == null) {
             // 用户不存在
@@ -1003,19 +1006,21 @@ public class StaffServiceImpl implements StaffService {
         }
         return false;
     }
+
     /**
      * 绑定微信
+     *
      * @param staffDetailPO
      */
-	@Override
-	public void saveWechat(StaffDetailPO staffDetailPO) {
-		// TODO Auto-generated method stub
-		String img=staffDao.getDetailById(staffDetailPO.getId());
-		if(img!=null&&!img.equals("")){
-			staffDetailPO.setWeChatImg("");
-		}
-		staffDao.saveWechat(staffDetailPO);
-	}
+    @Override
+    public void saveWechat(StaffDetailPO staffDetailPO) {
+        // TODO Auto-generated method stub
+        String img = staffDao.getDetailById(staffDetailPO.getId());
+        if (img != null && !img.equals("")) {
+            staffDetailPO.setWeChatImg("");
+        }
+        staffDao.saveWechat(staffDetailPO);
+    }
 
 
 }

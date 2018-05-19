@@ -117,7 +117,7 @@ public interface StaffService {
      * @param password 密码
      * @return 用户所在公司集合
      */
-    List<CompanyPO> getCompanyList(String userName, String password);
+    List<CompanyPO> getCompanyList(String userName, String password, boolean isSalt);
 
     /**
      * 根据用户名及密码和公司Id进行登录
@@ -127,7 +127,7 @@ public interface StaffService {
      * @param companyId
      * @return
      */
-    StaffPO loginWithCompanyId(String userName, String password, int companyId, String ip);
+    StaffPO loginWithCompanyId(String userName, String password, int companyId, String ip, boolean isSalt);
 
     /**
      * 获取小组人员
@@ -326,9 +326,11 @@ public interface StaffService {
      * 员工心跳
      */
     boolean staffHeartBeat(int staffId, int companyId, String ip);
+
     /**
      * 绑定微信
+     *
      * @param staffDetailPO
      */
-	void saveWechat(StaffDetailPO staffDetailPO);
+    void saveWechat(StaffDetailPO staffDetailPO);
 }
