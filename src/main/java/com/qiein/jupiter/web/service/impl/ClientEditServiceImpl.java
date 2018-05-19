@@ -138,6 +138,15 @@ public class ClientEditServiceImpl implements ClientEditService {
                 reqContent.put("shopid", clientVO.getShopId());
                 reqContent.put("shopname", shopVO.getShopName());
             }
+            if (NumUtil.isNotNull(clientVO.getFilmingCode())) {
+                //获取最终拍摄地名
+                ShopVO shopVO = shopDao.getShowShopById(staffPO.getCompanyId(), clientVO.getFilmingCode());
+                if (shopVO == null) {
+                    throw new RException(ExceptionEnum.SHOP_NOT_FOUND);
+                }
+                reqContent.put("filmingcode", clientVO.getFilmingCode());
+                reqContent.put("filmingname", shopVO.getShopName());
+            }
             reqContent.put("amount", clientVO.getAmount());//成交套系金额
             reqContent.put("stayamount", clientVO.getStayAmount());//已收金额
             reqContent.put("paystyle", clientVO.getPayStyle());//支付方式
