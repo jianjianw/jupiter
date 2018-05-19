@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/wx_login")
-public class WxLoginController extends BaseController {
+public class WeChatLoginController extends BaseController {
 
     @GetMapping("/get_code")
     public void getCode(@RequestParam String code) {
-        System.out.println("微信code:" + code);
+
     }
 
 }
