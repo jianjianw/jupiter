@@ -20,6 +20,6 @@ public class DingLoginController {
 
     @GetMapping("/post_code")
     public void postCode(String code) {
-        dingLoginService.getPersistentCode(code);
+//        dingLoginService.getPersistentCode(code);
     }
 }

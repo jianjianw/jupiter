@@ -14,21 +14,6 @@ import com.qiein.jupiter.web.entity.po.StaffPO;
 public interface WeChatLoginService {
 
     /**
-     * 根据CODE 获取access token
-     *
-     * @return StaffDetailPO
-     */
-    StaffDetailPO getAccessToken(String code);
-
-
-    /**
-     * 根据accessToken和 openId 获取用户信息
-     *
-     * @return StaffDetailPO
-     */
-    StaffDetailPO getUserInfo(String token, String openId);
-
-    /**
      * 根据accessToken和 openId 获取用户信息
      *
      * @return

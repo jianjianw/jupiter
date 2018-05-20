@@ -40,10 +40,10 @@ public class WeChatLoginController extends BaseController {
 
     @GetMapping("get_code_for_save")
     public void getCodeForSave(@RequestParam String code) {
-        StaffDetailPO staffDetailPO = weChatLoginService.getAccessToken(code);
-        StaffPO staff = getCurrentLoginStaff();
-        staffDetailPO.setId(staff.getId());
-        staffService.saveWeChat(staffDetailPO);
+//        StaffDetailPO staffDetailPO = weChatLoginService.getAccessToken(code);
+//        StaffPO staff = getCurrentLoginStaff();
+//        staffDetailPO.setId(staff.getId());
+//        staffService.saveWeChat(staffDetailPO);
     }
 
     @GetMapping("get_code_for_in")
