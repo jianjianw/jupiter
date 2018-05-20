@@ -282,23 +282,28 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @param companyId
      */
     void updateStaffHeartTime(@Param("staffId") int staffId, @Param("companyId") int companyId);
+
     /**
      * 绑定微信
+     *
      * @param staffDetailPO
      */
-	void saveWechat(@Param("staffdetail") StaffDetailPO staffDetailPO);
+    void saveWeChat(StaffDetailPO staffDetailPO);
+
     /**
      * 根据staffid获取detail内容
-     * @param staffid
+     *
+     * @param staffId
      * @return String
      */
-	String getDetailById(@Param("staffId") int staffId);
-	/**
+    String getDetailById(@Param("staffId") int staffId);
+
+    /**
      * 根据openid获取账号密码
      *
-     * @param openid
+     * @param weChatOpenId
      * @return StaffPo
      */
 
-	StaffPO getByOpenId(@Param("openId") String openid);
+    StaffPO getByWeChatOpenId(@Param("weChatOpenId") String weChatOpenId);
 }

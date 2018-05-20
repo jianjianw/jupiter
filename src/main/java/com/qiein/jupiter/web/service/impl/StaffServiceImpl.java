@@ -1008,13 +1008,13 @@ public class StaffServiceImpl implements StaffService {
      * @param staffDetailPO
      */
     @Override
-    public void saveWechat(StaffDetailPO staffDetailPO) {
+    public void saveWeChat(StaffDetailPO staffDetailPO) {
         // TODO Auto-generated method stub
         String img = staffDao.getDetailById(staffDetailPO.getId());
         if (img != null && !img.equals("")) {
             staffDetailPO.setWeChatImg("");
         }
-        staffDao.saveWechat(staffDetailPO);
+        staffDao.saveWeChat(staffDetailPO);
     }
 
 

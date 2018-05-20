@@ -332,5 +332,5 @@ public interface StaffService {
      *
      * @param staffDetailPO
      */
-    void saveWechat(StaffDetailPO staffDetailPO);
+    void saveWeChat(StaffDetailPO staffDetailPO);
 }

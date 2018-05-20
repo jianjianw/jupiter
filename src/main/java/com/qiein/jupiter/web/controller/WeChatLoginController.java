@@ -32,23 +32,23 @@ public class WeChatLoginController extends BaseController {
 
     @Autowired
     private StaffService staffService;
-    
-    @GetMapping("/get_code_for_login")
-    public void getCodeForLogin(@RequestParam String code) {
-    	List<CompanyPO> list= weChatLoginService.ForLogin(code);
+
+    @GetMapping("/get_company_list")
+    public void getCompanyList(@RequestParam String code) {
+        List<CompanyPO> list = weChatLoginService.forLogin(code);
     }
 
     @GetMapping("get_code_for_save")
-    public void getCodeForSave(@RequestParam String code){
-    	StaffDetailPO staffDetailPO=weChatLoginService.getAccessToken(code);
-    	StaffPO staff=getCurrentLoginStaff();
-    	staffDetailPO.setId(staff.getId());
-    	staffService.saveWechat(staffDetailPO);
+    public void getCodeForSave(@RequestParam String code) {
+        StaffDetailPO staffDetailPO = weChatLoginService.getAccessToken(code);
+        StaffPO staff = getCurrentLoginStaff();
+        staffDetailPO.setId(staff.getId());
+        staffService.saveWeChat(staffDetailPO);
     }
-    
+
     @GetMapping("get_code_for_in")
-    public void getCodeForIn(@RequestParam String code,@RequestParam String openid,@RequestParam int companyId ){
-    	StaffPO staff=weChatLoginService.getCodeForIn(code,openid,companyId,getIp());
+    public void getCodeForIn(@RequestParam String code, @RequestParam String openid, @RequestParam int companyId) {
+        StaffPO staff = weChatLoginService.getCodeForIn(code, openid, companyId, getIp());
     }
-  
+
 }

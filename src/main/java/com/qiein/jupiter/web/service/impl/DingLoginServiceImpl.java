@@ -3,8 +3,11 @@ package com.qiein.jupiter.web.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.mzlion.easyokhttp.HttpClient;
+import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.po.StaffDetailPO;
 import com.qiein.jupiter.web.service.DingLoginService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,26 +18,90 @@ import org.springframework.stereotype.Service;
 @Service
 public class DingLoginServiceImpl implements DingLoginService {
 
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
     /**
-     * 获取TOKEN的URL
+     * 获取app token 的url
      */
-    private final static String persistentCode = "https://oapi.dingtalk.com/sns/get_persistent_code";
+
+    private final String accessTokenUrl = "https://oapi.dingtalk.com/sns/gettoken";
     /**
-     * 永久授权码
+     * 获取 persistentCode 的URL
      */
-    private final static String snsToken = "https://oapi.dingtalk.com/sns/get_sns_token";
+    private final String persistentCodeUrl = "https://oapi.dingtalk.com/sns/get_persistent_code";
+    /**
+     * 永久授权码 url
+     */
+    private final String snsTokenUrl = "https://oapi.dingtalk.com/sns/get_sns_token";
     /**
      * 获取用户信息的URL
      */
-    private final static String userInfoUrl = "https://api.weixin.qq.com/sns/userinfo";
+    private final String userInfoUrl = "https://oapi.dingtalk.com/sns/getuserinfo";
     /**
      * APPID
      */
-    private final static String appid = "wx84a2df1a7858dc87";
+    private final String appid = "dingoatz1qoekuxwg65olq";
     /**
      * SECRET
      */
-    private final static String secret = "d3d9f6d809f9f03a01b2ecce5211264c";
+    private final String secret = "bYRHSagjXrAfq0A_SRA6KhQGqGSO4qtKYv0ccExZ4Gm_ofY4nOVyqjqSgdHYvB12";
 
 
+    private String accessToken;
+
+    /**
+     * 定时根据appid secret 获取应用 access token
+     */
+    @Override
+    public void timingGetAccessToken() {
+        String resStr = HttpClient
+                .get(accessTokenUrl)
+                .queryString("appid", appid)
+                .queryString("appsecret", secret)
+                .asString();
+        JSONObject res = JSON.parseObject(resStr);
+        System.out.println(res);
+        if (res.getIntValue("errcode") != 0) {
+            log.error("获取钉钉 access token 失败");
+        }
+        this.accessToken = res.getString("access_token");
+    }
+
+
+    /**
+     * 根据用户登录授权码和access token 获取用户持久授权码（包含openid 和 unionid）
+     */
+    @Override
+    public void getPersistentCode(String authCode) {
+        if (StringUtil.isEmpty(accessToken)) {
+            timingGetAccessToken();
+        }
+        JSONObject params = new JSONObject();
+        params.put("tmp_auth_code", authCode);
+        String resStr = HttpClient
+                // 请求方式和请求url
+                .textBody(persistentCodeUrl)
+                .queryString("access_token", accessToken)
+                // post提交json
+                .json(params.toString())
+                .asString();
+        JSONObject res = JSON.parseObject(resStr);
+        System.out.println(res);
+    }
+
+    /**
+     * 根据access token 和 openid 。persistent_code 获取用户sns token;
+     */
+    @Override
+    public void getSnsToken(String accessToken, String openId, String persistentCode) {
+
+    }
+
+    /**
+     * 根据  sns token 获取用户信息
+     */
+    @Override
+    public void getUserInfo(String snsToken) {
+
+    }
 }

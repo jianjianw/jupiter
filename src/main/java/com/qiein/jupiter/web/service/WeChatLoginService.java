@@ -15,6 +15,7 @@ public interface WeChatLoginService {
 
     /**
      * 根据CODE 获取access token
+     *
      * @return StaffDetailPO
      */
     StaffDetailPO getAccessToken(String code);
@@ -22,18 +23,20 @@ public interface WeChatLoginService {
 
     /**
      * 根据accessToken和 openId 获取用户信息
+     *
      * @return StaffDetailPO
      */
     StaffDetailPO getUserInfo(String token, String openId);
 
     /**
      * 根据accessToken和 openId 获取用户信息
-     * @return 
+     *
+     * @return
      */
-	List<CompanyPO> ForLogin(String code);
+    List<CompanyPO> forLogin(String code);
 
 
-	StaffPO getCodeForIn(String code, String openid, int companyId, String ip);
+    StaffPO getCodeForIn(String code, String openid, int companyId, String ip);
 
 
 }

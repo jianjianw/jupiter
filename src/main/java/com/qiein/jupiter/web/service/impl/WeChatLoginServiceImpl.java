@@ -79,7 +79,7 @@ public class WeChatLoginServiceImpl implements WeChatLoginService {
     }
 
 	@Override
-	public List<CompanyPO> ForLogin(String code) {
+	public List<CompanyPO> forLogin(String code) {
 		// TODO Auto-generated method stub
 		String wechatRes = HttpClient
                 .get(tokenUrl)
@@ -91,7 +91,7 @@ public class WeChatLoginServiceImpl implements WeChatLoginService {
         JSONObject res = JSON.parseObject(wechatRes);
         System.out.println(res);
         String openid= res.getString("openid");
-        StaffPO staff=staffDao.getByOpenId(openid);
+        StaffPO staff=staffDao.getByWeChatOpenId(openid);
         if (staff==null) {
             // 用户不存在
             throw new RException(ExceptionEnum.USER_NOT_FOUND);
@@ -105,7 +105,7 @@ public class WeChatLoginServiceImpl implements WeChatLoginService {
 	public StaffPO getCodeForIn(String code,String openid, int companyId, String ip) {
 		// TODO Auto-generated method stub
 		
-        StaffPO staff=staffDao.getByOpenId(openid);
+        StaffPO staff=staffDao.getByWeChatOpenId(openid);
         staffService.loginWithCompanyId(staff.getPhone(), staff.getPassword(), companyId, ip, true);
 		return staff;
 	}
