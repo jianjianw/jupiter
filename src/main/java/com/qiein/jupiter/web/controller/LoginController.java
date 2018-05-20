@@ -180,7 +180,7 @@ public class LoginController extends BaseController {
     }
 
     /**
-     * 微信登录 获取公司列表
+     * 钉钉 获取公司列表
      */
     @GetMapping("/get_company_list_by_ding")
     public ResultInfo dingGetCompanyList(String code) {
@@ -188,7 +188,7 @@ public class LoginController extends BaseController {
     }
 
     /**
-     * 微信登录
+     * 钉钉登录
      */
     @GetMapping("/login_by_ding")
     public ResultInfo dingLogin(String code, int cid) {
