@@ -70,7 +70,7 @@
         <result column="WECHATIMG" property="weChatImg" jdbcType="VARCHAR"/>
         <result column="LASTLOGINTIME" property="lastLoginTime" jdbcType="INTEGER"/>
         <result column="LASTLOGINIP" property="lastLoginIp" jdbcType="VARCHAR"/>
-        <result column="OPENID" property="openId" jdbcType="VARCHAR"/>
+        <result column="WECHATOPENID" property="weChatOpenId" jdbcType="VARCHAR"/>
         <result column="CREATETIME" property="createTime" jdbcType="INTEGER"/>
     </resultMap>
 
@@ -383,15 +383,17 @@
             #{id}
         </foreach>
     </select>
+
     <!--插入员工详细信息-->
     <insert id="insertStaffDetail" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO hm_pub_staff_detail
-         (ID,WECHATNAME, WECHATIMG, LASTLOGINTIME, OPENID, CREATETIME,COMPANYID)
+         (ID,WECHATNAME, WECHATIMG, LASTLOGINTIME, WECHATOPENID, CREATETIME,COMPANYID)
         VALUES (
         #{id},#{weChatName}, #{weChatImg}, #{lastLoginTime},
-        #{openId},UNIX_TIMESTAMP(now()),#{companyId}
+        #{weChatOpenId},UNIX_TIMESTAMP(now()),#{companyId}
         )
     </insert>
+
     <!--更新员工详细信息-->
     <update id="updateStaffDetail">
         UPDATE hm_pub_staff_detail
@@ -405,8 +407,8 @@
             <if test="qq != null">
                 QQ = #{qq},
             </if>
-            <if test="openId != null">
-                OPENID = #{openId},
+            <if test="weChatOpenId != null">
+                WECHATOPENID = #{weChatOpenId},
             </if>
         </set>
         WHERE ID = #{id}
@@ -426,12 +428,13 @@
         staff.TOKEN,staff.STATUSFLAG,staff.ISLOCK,staff.ISDEL,
         staff.TODAYNUM , staff.WEIGHT,staff.LIMITDAY,staff.LASTPUSHTIME,staff.LIMITCHANNELIDS,staff.LIMITSHOPIDS,
         detail.WECHATNAME, detail.WECHATIMG, detail.LASTLOGINTIME,
-        detail.OPENID,detail.LASTLOGINIP,detail.OPENID, detail.CREATETIME
+        detail.WECHATOPENID,detail.LASTLOGINIP, detail.CREATETIME
         FROM  hm_pub_staff staff LEFT JOIN
         hm_pub_staff_detail detail ON staff.ID = detail.ID
         WHERE staff.ID = #{id}
         AND staff.COMPANYID = #{companyId}
     </select>
+
     <!--更新员工token-->
     <update id="updateToken">
         UPDATE hm_pub_staff
@@ -439,6 +442,7 @@
          WHERE ID = #{id}
         AND COMPANYID = #{companyId}
     </update>
+
     <!--更新员工在线状态-->
     <update id="updateStatusFlag">
         UPDATE hm_pub_staff
@@ -446,6 +450,7 @@
         WHERE ID = #{id}
         AND COMPANYID = #{companyId}
     </update>
+
     <!--更新员工锁定状态-->
     <update id="updateLockFlag">
         UPDATE hm_pub_staff
@@ -600,21 +605,20 @@
         AND COMPANYID = #{companyId}
 
     </update>
-    
+
     <update id="saveWechat" parameterType="com.qiein.jupiter.web.entity.po.StaffDetailPO">
-    	update hm_pub_staff_detail set openid=#{staffdetail.openId}
-    	<if test="staffdetail.weChatImg!=''">
-    	,wechatimg=#{staffdetail.weChatImg}
-    	</if>
-    	where id=#{staffdetail.id}
+        update hm_pub_staff_detail set WECHATOPENID=#{staffdetail.weChatOpenId}
+        <if test="staffdetail.weChatImg!=''">
+            ,wechatimg=#{staffdetail.weChatImg}
+        </if>
+        where id=#{staffdetail.id}
     </update>
-    
+
     <select id="getDetailById" parameterType="Integer" resultType="String">
     select wechatimg from hm_pub_staff_detail where id=#{staffId}
     </select>
-    
-    <select id="getByOpenId" parameterType="String" resultType="com.qiein.jupiter.web.entity.po.StaffPO">
-    
+
+    <select id="getByWeChatOpenId" parameterType="String" resultType="com.qiein.jupiter.web.entity.po.StaffPO">
     	select a.phone phone, a.password password  from hm_pub_staff a left join hm_pub_staff_detail b on a.id=b.id where b.openid=#{openId}
     </select>
 </mapper>

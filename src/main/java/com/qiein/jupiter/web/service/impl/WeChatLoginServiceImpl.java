@@ -46,6 +46,7 @@ public class WeChatLoginServiceImpl implements WeChatLoginService {
     private StaffDao staffDao;
     @Autowired
     private StaffService staffService;
+
     @Override
     public StaffDetailPO getAccessToken(String code) {
         String wechatRes = HttpClient
@@ -57,14 +58,14 @@ public class WeChatLoginServiceImpl implements WeChatLoginService {
                 .asString();
         JSONObject res = JSON.parseObject(wechatRes);
         System.out.println(res);
-        StaffDetailPO staffDetailPO=getUserInfo(res.getString("access_token"), res.getString("openid"));
+        StaffDetailPO staffDetailPO = getUserInfo(res.getString("access_token"), res.getString("openid"));
         return staffDetailPO;
     }
 
     @Override
     public StaffDetailPO getUserInfo(String token, String openId) {
-    	StaffDetailPO staffDetailPO=new StaffDetailPO();
-    	staffDetailPO.setOpenId(openId);
+        StaffDetailPO staffDetailPO = new StaffDetailPO();
+        staffDetailPO.setWeChatOpenId(openId);
         String wechatRes = HttpClient
                 .get(userInfoUrl)
                 .queryString("access_token", token)
@@ -75,13 +76,13 @@ public class WeChatLoginServiceImpl implements WeChatLoginService {
         staffDetailPO.setWeChatName(res.getString("nickname"));
         staffDetailPO.setWeChatImg(res.getString("headimgurl"));
         return staffDetailPO;
-        
+
     }
 
-	@Override
-	public List<CompanyPO> forLogin(String code) {
-		// TODO Auto-generated method stub
-		String wechatRes = HttpClient
+    @Override
+    public List<CompanyPO> forLogin(String code) {
+        // TODO Auto-generated method stub
+        String wechatRes = HttpClient
                 .get(tokenUrl)
                 .queryString("appid", appid)
                 .queryString("secret", secret)
@@ -90,27 +91,26 @@ public class WeChatLoginServiceImpl implements WeChatLoginService {
                 .asString();
         JSONObject res = JSON.parseObject(wechatRes);
         System.out.println(res);
-        String openid= res.getString("openid");
-        StaffPO staff=staffDao.getByWeChatOpenId(openid);
-        if (staff==null) {
+        String openid = res.getString("openid");
+        StaffPO staff = staffDao.getByWeChatOpenId(openid);
+        if (staff == null) {
             // 用户不存在
             throw new RException(ExceptionEnum.USER_NOT_FOUND);
         }
-        List<CompanyPO> companyList =staffService.getCompanyList(staff.getPhone(), staff.getPassword(),true);
-       
-        return companyList;
-	}
+        List<CompanyPO> companyList = staffService.getCompanyList(staff.getPhone(), staff.getPassword(), true);
 
-	@Override
-	public StaffPO getCodeForIn(String code,String openid, int companyId, String ip) {
-		// TODO Auto-generated method stub
-		
-        StaffPO staff=staffDao.getByWeChatOpenId(openid);
+        return companyList;
+    }
+
+    @Override
+    public StaffPO getCodeForIn(String code, String openid, int companyId, String ip) {
+        // TODO Auto-generated method stub
+
+        StaffPO staff = staffDao.getByWeChatOpenId(openid);
         staffService.loginWithCompanyId(staff.getPhone(), staff.getPassword(), companyId, ip, true);
-		return staff;
-	}
-	
-	
-	
+        return staff;
+    }
+
+
 }
 

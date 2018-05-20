@@ -47,7 +47,7 @@ public class StaffDetailVO extends StaffPO {
     /**
      * openid
      */
-    private String openId;
+    private String weChatOpenId;
     /**
      * 创建时间
      */
@@ -129,12 +129,12 @@ public class StaffDetailVO extends StaffPO {
         this.lastLoginIp = lastLoginIp;
     }
 
-    public String getOpenId() {
-        return openId;
+    public String getWeChatOpenId() {
+        return weChatOpenId;
     }
 
-    public void setOpenId(String openId) {
-        this.openId = openId;
+    public void setWeChatOpenId(String weChatOpenId) {
+        this.weChatOpenId = weChatOpenId;
     }
 
     public int getCreateTime() {
