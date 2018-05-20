@@ -327,10 +327,4 @@ public interface StaffService {
      */
     boolean staffHeartBeat(int staffId, int companyId, String ip);
 
-    /**
-     * 绑定微信
-     *
-     * @param staffDetailPO
-     */
-    void saveWeChat(StaffDetailPO staffDetailPO);
 }

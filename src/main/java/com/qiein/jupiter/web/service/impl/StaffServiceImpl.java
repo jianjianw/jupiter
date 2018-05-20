@@ -1007,20 +1007,4 @@ public class StaffServiceImpl implements StaffService {
         return false;
     }
 
-    /**
-     * 绑定微信
-     *
-     * @param staffDetailPO
-     */
-    @Override
-    public void saveWeChat(StaffDetailPO staffDetailPO) {
-        // TODO Auto-generated method stub
-        String img = staffDao.getDetailById(staffDetailPO.getId());
-        if (img != null && !img.equals("")) {
-            staffDetailPO.setWeChatImg("");
-        }
-        staffDao.saveWeChat(staffDetailPO);
-    }
-
-
 }
