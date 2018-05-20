@@ -49,7 +49,7 @@ public class DingAuthUtil {
     private String accessToken;
 
     /**
-     * 定时根据appid secret 获取应用 access token 每小时执行一次
+     * 定时根据appid secret 获取应用 access token（有效期2小时） 每小时执行一次
      */
     @Scheduled(cron = "0 * * * * ?")
     public void timingGetAccessToken() {
@@ -69,7 +69,7 @@ public class DingAuthUtil {
 
 
     /**
-     * 根据用户登录授权码和access token 获取用户持久授权码（包含openid 和 unionid）
+     * 根据用户登录授权码和access token 获取用户持久授权码（包含openid 和 unionid，永久有效）
      */
     public void getPersistentCode(String authCode) {
         if (StringUtil.isEmpty(accessToken)) {
@@ -91,14 +91,33 @@ public class DingAuthUtil {
     /**
      * 根据access token 和 openid 。persistent_code 获取用户sns token;
      */
-    public void getSnsToken(String accessToken, String openId, String persistentCode) {
-
+    public void getSnsToken(String openId, String persistentCode) {
+        if (StringUtil.isEmpty(accessToken)) {
+            timingGetAccessToken();
+        }
+        JSONObject params = new JSONObject();
+        params.put("openid", openId);
+        params.put("persistent_code", persistentCode);
+        String resStr = HttpClient
+                // 请求方式和请求url
+                .textBody(persistentCodeUrl)
+                .queryString("access_token", accessToken)
+                // post提交json
+                .json(params.toString())
+                .asString();
+        JSONObject res = JSON.parseObject(resStr);
+        System.out.println(res);
     }
 
     /**
      * 根据  sns token 获取用户信息
      */
     public void getUserInfo(String snsToken) {
-
+        String resStr = HttpClient
+                .get(userInfoUrl)
+                .queryString("sns_token", snsToken)
+                .asString();
+        JSONObject res = JSON.parseObject(resStr);
+        System.out.println(res);
     }
 }
