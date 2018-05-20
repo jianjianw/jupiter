@@ -6,7 +6,6 @@ import com.qiein.jupiter.web.entity.dto.StaffMarsDTO;
 import com.qiein.jupiter.web.entity.dto.StaffPasswordDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.PermissionPO;
-import com.qiein.jupiter.web.entity.po.StaffDetailPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.po.StaffStatusLog;
 import com.qiein.jupiter.web.entity.vo.*;
@@ -111,25 +110,6 @@ public interface StaffService {
     PageInfo<?> findList(QueryMapDTO queryMapDTO);
 
     /**
-     * 获取员工所在的所有的公司集合
-     *
-     * @param userName 用户名
-     * @param password 密码
-     * @return 用户所在公司集合
-     */
-    List<CompanyPO> getCompanyList(String userName, String password, boolean isSalt);
-
-    /**
-     * 根据用户名及密码和公司Id进行登录
-     *
-     * @param userName
-     * @param password
-     * @param companyId
-     * @return
-     */
-    StaffPO loginWithCompanyId(String userName, String password, int companyId, String ip, boolean isSalt);
-
-    /**
      * 获取小组人员
      */
     List<StaffVO> getGroupStaffs(int companyId, String groupId);
@@ -178,15 +158,6 @@ public interface StaffService {
      * @param companyId
      */
     List<PermissionPO> getStaffPermissionById(int staffId, int companyId);
-
-    /**
-     * 根据id获取员工基础信息
-     *
-     * @param staffId
-     * @param companyId
-     * @return
-     */
-    StaffBaseInfoVO getStaffBaseInfo(int staffId, int companyId);
 
     /**
      * 交接客资
@@ -325,6 +296,6 @@ public interface StaffService {
     /**
      * 员工心跳
      */
-    boolean staffHeartBeat(int staffId, int companyId, String ip);
+    boolean heartBeat(int staffId, int companyId, String ip);
 
 }

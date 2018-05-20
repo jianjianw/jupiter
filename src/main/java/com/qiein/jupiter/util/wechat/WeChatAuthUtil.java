@@ -3,6 +3,7 @@ package com.qiein.jupiter.util.wechat;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.mzlion.easyokhttp.HttpClient;
+import com.qiein.jupiter.web.entity.dto.WeChatAuthDTO;
 import com.qiein.jupiter.web.entity.po.StaffDetailPO;
 import org.springframework.stereotype.Component;
 
@@ -30,8 +31,13 @@ public class WeChatAuthUtil {
      */
     private final static String secret = "d3d9f6d809f9f03a01b2ecce5211264c";
 
-
-    public String getAccessToken(String code) {
+    /**
+     * 根据认证CODE 获取access token
+     *
+     * @param code
+     * @return
+     */
+    public WeChatAuthDTO getAccessToken(String code) {
         String wechatRes = HttpClient
                 .get(tokenUrl)
                 .queryString("appid", appid)
@@ -40,22 +46,29 @@ public class WeChatAuthUtil {
                 .queryString("grant_type", "authorization_code")
                 .asString();
         JSONObject res = JSON.parseObject(wechatRes);
-        return res.getString("openid");
+        WeChatAuthDTO weChatAuthDTO = new WeChatAuthDTO();
+        weChatAuthDTO.setAccessToken(res.getString("access_token"));
+        weChatAuthDTO.setAuthCode(code);
+        weChatAuthDTO.setOpenId(res.getString("openid"));
+        return weChatAuthDTO;
     }
 
-    public StaffDetailPO getUserInfo(String token, String openId) {
-        StaffDetailPO staffDetailPO = new StaffDetailPO();
-        staffDetailPO.setWeChatOpenId(openId);
+    /**
+     * 获取用户信息
+     *
+     * @param weChatAuthDTO
+     * @return
+     */
+    public WeChatAuthDTO getUserInfo(WeChatAuthDTO weChatAuthDTO) {
         String wechatRes = HttpClient
                 .get(userInfoUrl)
-                .queryString("access_token", token)
-                .queryString("openid", openId)
+                .queryString("access_token", weChatAuthDTO.getAccessToken())
+                .queryString("openid", weChatAuthDTO.getOpenId())
                 .asString();
         JSONObject res = JSON.parseObject(wechatRes);
-        System.out.println(res);
-        staffDetailPO.setWeChatName(res.getString("nickname"));
-        staffDetailPO.setWeChatImg(res.getString("headimgurl"));
-        return staffDetailPO;
+        weChatAuthDTO.setUnionId(res.getString("unionid"));
+        weChatAuthDTO.setHeadImg(res.getString("headimgurl"));
+        return weChatAuthDTO;
 
     }
 }

@@ -362,101 +362,6 @@ public class StaffServiceImpl implements StaffService {
     }
 
     /**
-     * 登录时获取员工公司集合
-     *
-     * @param userName 用户名
-     * @param password 密码
-     * @return
-     */
-    @Override
-    public List<CompanyPO> getCompanyList(String userName, String password, boolean isSalt) {
-        //是否是加过密的密码
-        List<CompanyPO> companyList = staffDao.getCompanyList(userName, isSalt ? password : MD5Util.getSaltMd5(password));
-        if (CollectionUtils.isEmpty(companyList)) {
-            // 用户不存在
-            throw new RException(ExceptionEnum.USERNAME_OR_PASSWORD_ERROR);
-        }
-        // 移除错误次数
-        removeUserErrorNumber(userName);
-        return companyList;
-    }
-
-    /**
-     * 根据公司id登录
-     *
-     * @param userName
-     * @param password
-     * @param companyId
-     * @return
-     */
-    @Override
-    @LoginLog
-    @Transactional
-    public StaffPO loginWithCompanyId(String userName, String password, int companyId, String ip, boolean isSalt) {
-        // 加密码加密，判断是否已经加过密
-        if (!isSalt) {
-            password = MD5Util.getSaltMd5(password);
-        }
-        StaffPO staffPO = staffDao.loginWithCompanyId(userName, password, companyId);
-        if (staffPO == null) {
-            // 用户不存在
-            throw new RException(ExceptionEnum.USERNAME_OR_PASSWORD_ERROR);
-        } else if (staffPO.isLockFlag()) {
-            // 锁定
-            throw new RException(ExceptionEnum.USER_IS_LOCK);
-        } else if (staffPO.isDelFlag()) {
-            // 删除
-            throw new RException(ExceptionEnum.USER_IS_DEL);
-        }
-        //IP限制
-        if (!checkIpLimit(staffPO.getId(), companyId, ip)) {
-            throw new RException(ExceptionEnum.IP_NOT_IN_SAFETY);
-        }
-        // 验证公司属性
-        CompanyPO companyPO = companyService.getById(staffPO.getCompanyId());
-        // 如果员工没有token，重新生成
-        if (StringUtil.isEmpty(staffPO.getToken()) || companyPO.isSsoLimit()) {
-            updateStaffToken(staffPO);
-        }
-        // todo 上下线日志
-        // 移除错误次数
-        removeUserErrorNumber(userName);
-        // 更新登录时间和IP
-        StaffDetailPO staffDetailPO = new StaffDetailPO();
-        staffDetailPO.setId(staffPO.getId());
-        staffDetailPO.setCompanyId(staffPO.getCompanyId());
-        staffDetailPO.setLastLoginIp(ip);
-        staffDao.updateStaffLoginInfo(staffDetailPO);
-        // 如果当前员工为下线状态，则更新他为上线状态
-        if (staffPO.getStatusFlag() == StaffStatusEnum.OffLine.getStatusId()) {
-            StaffPO staffPO1 = new StaffPO();
-            staffPO1.setId(staffPO.getId());
-            staffPO1.setCompanyId(staffPO.getCompanyId());
-            staffPO1.setStatusFlag(StaffStatusEnum.OnLine.getStatusId());
-            staffDao.updateStatusFlag(staffPO1);
-            //新增上线日志
-            staffStatusLogDao.insert(new StaffStatusLog(
-                    staffPO.getId(), staffPO.getNickName(), StaffStatusEnum.OnLine.getStatusId(),
-                    staffPO.getId(), staffPO.getNickName(), staffPO.getCompanyId()
-            ));
-        }
-        return staffPO;
-    }
-
-    /**
-     * 删除缓存中的用户错误次数和验证码
-     *
-     * @param phone
-     */
-    private void removeUserErrorNumber(String phone) {
-        // 错误次数
-        String userLoginErrNum = RedisConstant.getUserLoginErrNumKey(phone);
-        redisTemplate.delete(userLoginErrNum);
-        // 验证码
-        redisTemplate.delete(RedisConstant.getVerifyCodeKey(phone));
-    }
-
-    /**
      * 将更新的staff放入redis 并更新到数据库
      *
      * @param staffPO
@@ -471,25 +376,9 @@ public class StaffServiceImpl implements StaffService {
         staffDao.updateToken(staffPO);
     }
 
-    // /**
-    // * 生成Jwt
-    // *
-    // * @param staffPO
-    // * @return
-    // */
-    // private String executeJwtToken(StaffPO staffPO) {
-    // StaffPO jwtStaff = new StaffPO();
-    // jwtStaff.setId(staffPO.getId());
-    // jwtStaff.setCompanyId(staffPO.getCompanyId());
-    // jwtStaff.setPhone(staffPO.getPhone());
-    // return JwtUtil.encrypt(JSONObject.toJSONString(jwtStaff));
-    // }
-
     /**
      * 获取小组人员
      */
-    // @Cacheable(value = "groupStaff", key =
-    // "'groupStaff'+':'+#companyId+':'+#groupId")
     public List<StaffVO> getGroupStaffs(int companyId, String groupId) {
         List<StaffVO> list = groupStaffDao.getGroupStaffs(companyId, groupId);
         if (CollectionUtils.isNotEmpty(list)) {
@@ -508,9 +397,7 @@ public class StaffServiceImpl implements StaffService {
      * @return
      */
     public List<StaffMarsDTO> getGroupStaffsDetail(int companyId, String groupId) {
-
-        List<StaffMarsDTO> list = groupStaffDao.getGroupStaffsDetail(companyId, groupId);
-        return list;
+        return groupStaffDao.getGroupStaffsDetail(companyId, groupId);
     }
 
     /**
@@ -582,41 +469,6 @@ public class StaffServiceImpl implements StaffService {
         return permissionDao.getStaffPermission(staffId, companyId);
     }
 
-    /**
-     * 获取员工的基础信息
-     *
-     * @param staffId
-     * @param companyId
-     * @return
-     */
-    @Override
-    public StaffBaseInfoVO getStaffBaseInfo(int staffId, int companyId) {
-        StaffBaseInfoVO staffBaseInfoVO = new StaffBaseInfoVO();
-        // 员工对象
-        List<PermissionPO> permissionPOList = permissionDao.getStaffPermission(staffId, companyId);
-        staffBaseInfoVO.setPermission(permissionPOList);
-        // 放入公司对象
-        CompanyVO companyVO = companyDao.getVOById(companyId);
-        companyVO.setMenuList(getCompanyMenuList(companyId, staffId));
-        staffBaseInfoVO.setCompany(companyVO);
-        staffBaseInfoVO.setStaffDetail(staffDao.getStaffDetail(staffId, companyId));
-        //设置页面字典
-        PageDictDTO pageDictDTO = new PageDictDTO();
-        //来源字典
-        pageDictDTO.setSourceMap(sourceService.getSourcePageMap(companyId));
-        //状态字典
-        pageDictDTO.setStatusMap(statusService.getStatusDictMap(companyId));
-        //公共字典
-        pageDictDTO.setCommonMap(dictionaryService.getDictMapByCid(companyId));
-        //渠道字典
-        pageDictDTO.setChannelMap(channelService.getChannelDict(companyId));
-        //拍摄地字典
-        pageDictDTO.setShopMap(shopService.getShopDictByCid(companyId));
-        staffBaseInfoVO.setPageDict(pageDictDTO);
-        //消息
-        staffBaseInfoVO.setNews(newsService.getNewsTotalAmountAndFlag(staffId, companyId));
-        return staffBaseInfoVO;
-    }
 
     /**
      * 交接客资
@@ -629,56 +481,6 @@ public class StaffServiceImpl implements StaffService {
         clientInfoDao.changeStaff(staffChangeVO);
     }
 
-    /**
-     * 根据公司ID和个人获取菜单列表
-     *
-     * @param companyId
-     * @param staffId
-     * @return
-     */
-    private List<MenuVO> getCompanyMenuList(int companyId, int staffId) {
-        // 企业左上角菜单栏
-        List<MenuVO> menuList = dictionaryDao.getCompanyMemu(companyId, DictionaryConstant.MENU_TYPE);
-        if (CollectionUtils.isEmpty(menuList)) {
-            menuList = dictionaryDao.getCompanyMemu(DictionaryConstant.COMMON_COMPANYID, DictionaryConstant.MENU_TYPE);
-        }
-        // 获取员工角色
-        List<String> roleList = groupStaffDao.getStaffRoleList(companyId, staffId);
-        if (CollectionUtils.isEmpty(menuList)) {
-            throw new RException(ExceptionEnum.MENU_NULL);
-        }
-        if (CollectionUtils.isEmpty(roleList)) {
-            return menuList;
-        }
-
-        for (String role : roleList) {
-            // 1.如果是管理中心，全部开放
-            if (RoleConstant.GLZX.equals(role)) {
-                for (MenuVO menu : menuList) {
-                    menu.setSelectFlag(true);
-                }
-                return menuList;
-            }
-            // 2.如果是财务中心，除管理中心，全部开放
-            if (RoleConstant.CWZX.equals(role)) {
-                for (MenuVO menu : menuList) {
-                    if (RoleConstant.GLZX.equals(menu.getType())) {
-                        menu.setSelectFlag(false);
-                    } else {
-                        menu.setSelectFlag(true);
-                    }
-                }
-                return menuList;
-            }
-            // 都不是，则一一对应
-            for (MenuVO menu : menuList) {
-                if (role.equals(menu.getType())) {
-                    menu.setSelectFlag(true);
-                }
-            }
-        }
-        return menuList;
-    }
 
     /**
      * 获取电商邀约小组人员列表
@@ -961,50 +763,12 @@ public class StaffServiceImpl implements StaffService {
 
     /**
      * 检测
-     *
-     * @param staffId
-     * @param companyId
-     * @return
      */
     @Override
-    public boolean staffHeartBeat(int staffId, int companyId, String ip) {
+    public boolean heartBeat(int staffId, int companyId, String ip) {
         //更新心跳时间
         staffDao.updateStaffHeartTime(staffId, companyId);
-        return checkIpLimit(staffId, companyId, ip);
-    }
-
-    /**
-     * 校验IP限制
-     *
-     * @return
-     */
-    private boolean checkIpLimit(int staffId, int companyId, String ip) {
-        if (StringUtil.isEmpty(ip)) {
-            log.error("未获取到IP！！");
-            return true;
-        }
-        //校验IP,当企业开启了IP校验功能
-        if (companyDao.getById(companyId).isIpLimit()) {
-            StaffPO StaffPOById = getById(staffId, companyId);
-            //是IP白名单用户
-            if (StaffPOById.isWhiteFlag()) {
-                return true;
-            }
-            //判断是否在安全IP内
-            List<String> ips = ipWhiteService.findIp(companyId);
-            for (String sip : ips) {
-                if (sip.endsWith(".0")) {
-                    //去掉最后.0
-                    sip = sip.substring(0, sip.length() - 2);
-                }
-                if (ip.startsWith(sip)) {
-                    return true;
-                }
-            }
-        } else {
-            return true;
-        }
-        return false;
+        return ipWhiteService.checkIpLimit(staffId, companyId, ip);
     }
 
 }

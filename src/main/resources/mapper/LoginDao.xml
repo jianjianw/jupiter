@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiein.jupiter.web.dao.LoginDao">
+
+    <sql id="baseColumn">
+        ID,PHONE,COMPANYID,TOKEN,STATUSFLAG,ISLOCK,ISDEL,HEARTTIME,WHITEFLAG
+    </sql>
+
+    <!--根据手机号码获取公司列表-->
+    <select id="getCompanyListByPhone" resultType="com.qiein.jupiter.web.entity.po.CompanyPO">
+        SELECT company.ID,company.COMPANYNAME,
+        company.LOGO
+        FROM hm_pub_staff
+        as staff
+        LEFT JOIN
+        hm_pub_company as company
+        ON staff.COMPANYID = company.ID
+        WHERE staff.PHONE = #{phone}
+        AND staff.PASSWORD = #{password}
+    </select>
+
+    <!--根据手机号码登录-->
+    <select id="loginWithCidByPhone" resultType="com.qiein.jupiter.web.entity.po.StaffPO">
+        SELECT
+        <include refid="baseColumn"/>
+        FROM hm_pub_staff
+        WHERE PHONE = #{phone}
+        AND PASSWORD = #{password}
+        AND COMPANYID = #{companyId}
+    </select>
+
+    <!--根据微信获取公司列表-->
+    <select id="getCompanyListByWeChatUnionId" resultType="com.qiein.jupiter.web.entity.po.CompanyPO">
+        SELECT company.ID,company.COMPANYNAME,
+        company.LOGO
+        FROM hm_pub_staff as  staff
+        LEFT JOIN hm_pub_staff_detail as detail
+           ON staff.ID = detail.ID
+        LEFT JOIN hm_pub_company as company
+          ON staff.COMPANYID = company.ID
+        WHERE
+        detail.WECHATUNIODID = #{unionId}
+    </select>
+
+    <!--根据微信登录-->
+    <select id="loginWithCidByWeChatUnionId" resultType="com.qiein.jupiter.web.entity.po.StaffPO">
+        SELECT
+          staff.ID,staff.COMPANYID,staff.TOKEN,staff.STATUSFLAG,
+          staff.ISLOCK,staff.ISDEL,staff.HEARTTIME,staff.WHITEFLAG
+        FROM hm_pub_staff as  staff
+        LEFT JOIN hm_pub_staff_detail as detail
+          ON staff.ID = detail.ID
+         WHERE
+          detail.WECHATUNIODID = #{unionId}
+            AND staff.COMPANYID = #{companyId}
+    </select>
+
+    <!--根据钉钉获取公司列表-->
+    <select id="getCompanyListByDingUnionId" resultType="com.qiein.jupiter.web.entity.po.CompanyPO">
+       SELECT company.ID,company.COMPANYNAME,
+        company.LOGO
+        FROM hm_pub_staff as  staff
+        LEFT JOIN hm_pub_staff_detail as detail
+           ON staff.ID = detail.ID
+        LEFT JOIN hm_pub_company as company
+          ON staff.COMPANYID = company.ID
+        WHERE
+        detail.DINGUNIONID = #{unionId}
+    </select>
+
+    <!--根据钉钉登录-->
+    <select id="loginWithCidByDingUnionId" resultType="com.qiein.jupiter.web.entity.po.StaffPO">
+        SELECT
+          staff.ID,staff.COMPANYID,staff.TOKEN,staff.STATUSFLAG,
+          staff.ISLOCK,staff.ISDEL,staff.HEARTTIME,staff.WHITEFLAG
+        FROM hm_pub_staff as  staff
+        LEFT JOIN hm_pub_staff_detail as detail
+          ON staff.ID = detail.ID
+         WHERE
+           detail.DINGUNIONID = #{unionId}
+            AND staff.COMPANYID = #{companyId}
+    </select>
+
+</mapper>

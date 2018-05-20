@@ -40,4 +40,11 @@ public class RedisConstant {
     public static String getStaffKey(int uid, int cid) {
         return "staff" + splitChar + uid + splitChar + cid;
     }
+
+    /**
+     * 微信accesstoken
+     */
+    public static String getWeChatKey(String key) {
+        return "wechat-key" + splitChar + key;
+    }
 }

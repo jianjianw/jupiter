@@ -2,7 +2,13 @@ package com.qiein.jupiter.web.service.impl;
 
 import java.util.List;
 
+import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.IpWhiteStaffVO;
+import com.qiein.jupiter.web.service.CompanyService;
+import com.qiein.jupiter.web.service.StaffService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,9 +27,16 @@ import com.qiein.jupiter.web.service.IpWhiteService;
 @Service
 public class IpWhiteServiceImpl implements IpWhiteService {
 
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private IpWhiteDao ipwhitedao;
+
+    @Autowired
+    private CompanyService companyService;
+
+    @Autowired
+    private StaffService staffService;
 
     /**
      * 新增
@@ -90,6 +103,39 @@ public class IpWhiteServiceImpl implements IpWhiteService {
     @Override
     public List<String> findIp(int companyId) {
         return ipwhitedao.findIp(companyId);
+    }
+
+    /**
+     * 校验IP限制
+     */
+    @Override
+    public boolean checkIpLimit(int staffId, int companyId, String ip) {
+        if (StringUtil.isEmpty(ip)) {
+            log.error("未获取到IP！！");
+            return true;
+        }
+        //校验IP,当企业开启了IP校验功能
+        if (companyService.getById(companyId).isIpLimit()) {
+            StaffPO StaffPOById = staffService.getById(staffId, companyId);
+            //是IP白名单用户
+            if (StaffPOById.isWhiteFlag()) {
+                return true;
+            }
+            //判断是否在安全IP内
+            List<String> ips = findIp(companyId);
+            for (String sip : ips) {
+                if (sip.endsWith(".0")) {
+                    //去掉最后.0
+                    sip = sip.substring(0, sip.length() - 2);
+                }
+                if (ip.startsWith(sip)) {
+                    return true;
+                }
+            }
+        } else {
+            return true;
+        }
+        return false;
     }
 
 

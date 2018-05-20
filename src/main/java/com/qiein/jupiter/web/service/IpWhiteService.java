@@ -63,4 +63,9 @@ public interface IpWhiteService {
      */
     List<String> findIp(int companyId);
 
+    /**
+     * 校验IP限制
+     */
+    boolean checkIpLimit(int staffId, int companyId, String ip);
+
 }

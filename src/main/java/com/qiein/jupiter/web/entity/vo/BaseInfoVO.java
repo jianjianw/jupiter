@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * 员工基础信息
  */
-public class StaffBaseInfoVO implements Serializable {
+public class BaseInfoVO implements Serializable {
 
     private static final long serialVersionUID = 9076352385052021856L;
     /**
