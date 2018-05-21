@@ -47,4 +47,11 @@ public class RedisConstant {
     public static String getWeChatKey(String key) {
         return "wechat-key" + splitChar + key;
     }
+
+    /**
+     * 钉钉accesstoken
+     */
+    public static String getDingKey(String key) {
+        return "ding-key" + splitChar + key;
+    }
 }

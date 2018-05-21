@@ -184,7 +184,7 @@ public class LoginController extends BaseController {
      */
     @GetMapping("/get_company_list_by_ding")
     public ResultInfo dingGetCompanyList(String code) {
-        return ResultInfoUtil.success(loginService.getCompanyListByWeChat(code));
+        return ResultInfoUtil.success(loginService.getCompanyListByDing(code));
     }
 
     /**
@@ -192,7 +192,7 @@ public class LoginController extends BaseController {
      */
     @GetMapping("/login_by_ding")
     public ResultInfo dingLogin(String code, int cid) {
-        return ResultInfoUtil.success(loginService.loginWithCompanyIdByWeChat(code, cid, getIp()));
+        return ResultInfoUtil.success(loginService.loginWithCompanyIdByDing(code, cid, getIp()));
     }
 
 

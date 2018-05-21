@@ -11,8 +11,10 @@ import com.qiein.jupiter.util.CollectionUtils;
 import com.qiein.jupiter.util.JwtUtil;
 import com.qiein.jupiter.util.MD5Util;
 import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.util.ding.DingAuthUtil;
 import com.qiein.jupiter.util.wechat.WeChatAuthUtil;
 import com.qiein.jupiter.web.dao.*;
+import com.qiein.jupiter.web.entity.dto.DingAuthDTO;
 import com.qiein.jupiter.web.entity.dto.PageDictDTO;
 import com.qiein.jupiter.web.entity.dto.WeChatAuthDTO;
 import com.qiein.jupiter.web.entity.po.*;
@@ -90,6 +92,9 @@ public class LoginServiceImpl implements LoginService {
     @Autowired
     private WeChatAuthUtil weChatAuthUtil;
 
+    @Autowired
+    private DingAuthUtil dingAuthUtil;
+
     /**
      * 微信获取公司列表
      *
@@ -101,14 +106,14 @@ public class LoginServiceImpl implements LoginService {
         WeChatAuthDTO accessToken = weChatAuthUtil.getAccessToken(authCode);
         WeChatAuthDTO userInfo = weChatAuthUtil.getUserInfo(accessToken);
         String unionId = userInfo.getUnionId();
-        //根据CODE 把unionid 放入redis
-        redisTemplate.opsForValue().set(RedisConstant.getWeChatKey(authCode), unionId,
-                CommonConstant.DEFAULT_EXPIRE_TIME, TimeUnit.MINUTES);
         List<CompanyPO> companyList = loginDao.getCompanyListByWeChatUnionId(unionId);
         if (CollectionUtils.isEmpty(companyList)) {
             // 用户不存在
             throw new RException(ExceptionEnum.USER_NOT_FOUND);
         }
+        //根据CODE 把unionid 放入redis
+        redisTemplate.opsForValue().set(RedisConstant.getWeChatKey(authCode), unionId,
+                CommonConstant.DEFAULT_EXPIRE_TIME, TimeUnit.MINUTES);
         return companyList;
     }
 
@@ -150,7 +155,7 @@ public class LoginServiceImpl implements LoginService {
     }
 
     /**
-     * 手机号码获取公司ID
+     * 手机号码 登录
      *
      * @param phone
      * @param password
@@ -169,30 +174,38 @@ public class LoginServiceImpl implements LoginService {
     /**
      * 钉钉获取公司列表
      *
-     * @param dingUnionId
+     * @param authCode
      * @return
      */
     @Override
-    public List<CompanyPO> getCompanyListByDing(String dingUnionId) {
-        List<CompanyPO> companyList = loginDao.getCompanyListByDingUnionId(dingUnionId);
+    public List<CompanyPO> getCompanyListByDing(String authCode) {
+        DingAuthDTO persistentCode = dingAuthUtil.getPersistentCode(authCode);
+        List<CompanyPO> companyList = loginDao.getCompanyListByDingUnionId(persistentCode.getUnionId());
         if (CollectionUtils.isEmpty(companyList)) {
             // 用户不存在
             throw new RException(ExceptionEnum.USER_NOT_FOUND);
         }
+        //根据CODE 把unionid 放入redis
+        redisTemplate.opsForValue().set(RedisConstant.getWeChatKey(authCode), persistentCode.getPersistentCode(),
+                CommonConstant.DEFAULT_EXPIRE_TIME, TimeUnit.MINUTES);
         return companyList;
     }
 
     /**
      * 钉钉登录
      *
-     * @param dingUnionId
+     * @param authCode
      * @param companyId
      * @param ip
      * @return
      */
     @Override
-    public StaffPO loginWithCompanyIdByDing(String dingUnionId, int companyId, String ip) {
-        StaffPO staff = loginDao.loginWithCidByDingUnionId(dingUnionId, companyId);
+    public StaffPO loginWithCompanyIdByDing(String authCode, int companyId, String ip) {
+        String unionId = (String) redisTemplate.opsForValue().get(RedisConstant.getDingKey(authCode));
+        if (StringUtil.isEmpty(unionId)) {
+            //过期
+        }
+        StaffPO staff = loginDao.loginWithCidByDingUnionId(unionId, companyId);
         return checkUserInfo(staff, ip);
     }
 

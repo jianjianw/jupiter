@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.mzlion.easyokhttp.HttpClient;
 import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.web.entity.dto.DingAuthDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -51,7 +52,7 @@ public class DingAuthUtil {
     /**
      * 定时根据appid secret 获取应用 access token（有效期2小时） 每小时执行一次
      */
-    @Scheduled(cron = "0 * * * * ?")
+    @Scheduled(initialDelay = 1000, fixedDelay = 60 * 60 * 1000)
     public void timingGetAccessToken() {
         String resStr = HttpClient
                 .get(accessTokenUrl)
@@ -59,19 +60,18 @@ public class DingAuthUtil {
                 .queryString("appsecret", secret)
                 .asString();
         JSONObject res = JSON.parseObject(resStr);
-        System.out.println(res);
         if (res.getIntValue("errcode") != 0) {
             log.error("获取钉钉 access token 失败");
         }
-        log.info("获取到了access token:" + accessToken);
         this.accessToken = res.getString("access_token");
+        log.info("获取到了access token:" + accessToken);
     }
 
 
     /**
      * 根据用户登录授权码和access token 获取用户持久授权码（包含openid 和 unionid，永久有效）
      */
-    public void getPersistentCode(String authCode) {
+    public DingAuthDTO getPersistentCode(String authCode) {
         if (StringUtil.isEmpty(accessToken)) {
             timingGetAccessToken();
         }
@@ -85,19 +85,25 @@ public class DingAuthUtil {
                 .json(params.toString())
                 .asString();
         JSONObject res = JSON.parseObject(resStr);
+        DingAuthDTO dingAuthDTO = new DingAuthDTO();
+        dingAuthDTO.setAuthCode(authCode);
+        dingAuthDTO.setOpenId(res.getString("openid"));
+        dingAuthDTO.setUnionId(res.getString("unionid"));
+        dingAuthDTO.setPersistentCode(res.getString("persistent_code"));
         System.out.println(res);
+        return dingAuthDTO;
     }
 
     /**
      * 根据access token 和 openid 。persistent_code 获取用户sns token;
      */
-    public void getSnsToken(String openId, String persistentCode) {
+    public DingAuthDTO getSnsToken(DingAuthDTO dingAuthDTO) {
         if (StringUtil.isEmpty(accessToken)) {
             timingGetAccessToken();
         }
         JSONObject params = new JSONObject();
-        params.put("openid", openId);
-        params.put("persistent_code", persistentCode);
+        params.put("openid", dingAuthDTO.getOpenId());
+        params.put("persistent_code", dingAuthDTO.getPersistentCode());
         String resStr = HttpClient
                 // 请求方式和请求url
                 .textBody(persistentCodeUrl)
@@ -106,7 +112,9 @@ public class DingAuthUtil {
                 .json(params.toString())
                 .asString();
         JSONObject res = JSON.parseObject(resStr);
+        dingAuthDTO.setSnsToken(res.getString("sns_token"));
         System.out.println(res);
+        return dingAuthDTO;
     }
 
     /**
