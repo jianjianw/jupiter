@@ -38,7 +38,7 @@ public class StringUtil {
 
     public static boolean isEmpty(String str) {
 
-        return ((str == null) || (str.trim().length() == 0));
+        return ((str == null) || (str.trim().length() == 0) || STR_NULL.equals(str.trim()));
     }
 
     public static boolean isAllEmpty(String... strs) {
@@ -531,6 +531,7 @@ public class StringUtil {
         String regex = "[1-9][0-9]{4,9}";
         return qq.matches(regex);
     }
+
     /**
      * 转换为下划线
      *

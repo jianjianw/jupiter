@@ -210,11 +210,11 @@ public class ClientAddServiceImpl implements ClientAddService {
             clientVO.setSourceId(sourceId);
             clientVO.setShopId(shopId);
             clientVO.setTypeId(typeId);
-            clientVO.setKzName(StringUtil.nullToStrTrim(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("name"))));
-            clientVO.setKzPhone(StringUtil.nullToStrTrim(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("phone"))));
-            clientVO.setKzWechat(StringUtil.nullToStrTrim(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("wechat"))));
-            clientVO.setKzQq(StringUtil.nullToStrTrim(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("qq"))));
-            clientVO.setKzWw(StringUtil.nullToStrTrim(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("matephone"))));
+            clientVO.setKzName(StringUtil.emptyToNull(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("name"))));
+            clientVO.setKzPhone(StringUtil.emptyToNull(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("phone"))));
+            clientVO.setKzWechat(StringUtil.emptyToNull(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("wechat"))));
+            clientVO.setKzQq(StringUtil.emptyToNull(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("qq"))));
+            clientVO.setKzWw(StringUtil.emptyToNull(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("matephone"))));
             if (StringUtil.isEmpty(clientVO.getKzPhone()) && StringUtil.isEmpty(clientVO.getKzWechat()) && StringUtil.isEmpty(clientVO.getKzQq())
                     && StringUtil.isEmpty(clientVO.getKzWw())) {
                 continue;
