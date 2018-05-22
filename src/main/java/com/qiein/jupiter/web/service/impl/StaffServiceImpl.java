@@ -732,7 +732,11 @@ public class StaffServiceImpl implements StaffService {
      */
     @Override
     public StaffDetailVO getStaffCard(int staffId, int companyId) {
-        return staffDao.getStaffCard(staffId, companyId);
+        StaffDetailVO staffDetailVO = staffDao.getStaffCard(staffId, companyId);
+        if (staffDetailVO==null){
+            throw new RException(ExceptionEnum.STAFF_IS_NOT_EXIST);
+        }
+        return staffDetailVO;
     }
 
     /**

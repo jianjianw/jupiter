@@ -121,7 +121,7 @@ public class StaffMarsServiceImpl implements StaffMarsService {
         //根据权限过滤显示标记
         //获取员工权限
         List<Integer> roleList = rolePermissionDao.getStaffPmsList(companyId, staffId);
-        //获取员工所在小组列表
+        //获取员工所在小组或主管小组列表
         List<String> groupList = groupDao.getGroupByStaffAndType(companyId, staffId, null);
         //获取各小组内人员的接单数和在线人数
         List<GroupsInfoVO> infoList = groupStaffDao.getStaffMarsInfo(companyId);

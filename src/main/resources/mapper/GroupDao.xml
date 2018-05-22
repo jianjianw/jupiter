@@ -179,7 +179,7 @@
         </foreach>
     </update>
 
-    <!--获取员工所在组-->
+    <!--获取员工所在组或者主管的小组-->
     <select id="getGroupByStaffAndType" parameterType="map" resultType="java.lang.String">
         SELECT
             grp.GROUPID
@@ -189,7 +189,8 @@
         WHERE
             grp.COMPANYID = #{companyId}
             AND grp.PARENTID != '0'
-            AND rela.STAFFID = #{staffId}
+            AND (rela.STAFFID = #{staffId} OR INSTR(CONCAT(',',grp.CHIEFIDS,','),CONCAT(',',#{staffId},',')))
+        GROUP BY grp.GROUPID
     </select>
 
     <!--获取员工所在组-->
@@ -235,7 +236,8 @@
             grp.COMPANYID = #{companyId}
             AND grp.GROUPTYPE = #{type}
             AND grp.PARENTID != '0'
-            AND rela.STAFFID =#{staffId}
+            AND (rela.STAFFID =#{staffId} OR INSTR(CONCAT(',',grp.CHIEFIDS,','),CONCAT(',',#{staffId},',')))
+        GROUP BY son.PARENTID
     </select>
 
     <!--根据小组ID获取小组信息-->

@@ -99,8 +99,6 @@ public interface GroupDao extends BaseDao<GroupPO> {
      */
     List<String> getDeptByTypeAndStaff(@Param("companyId") int companyId, @Param("staffId") int staffId, @Param("type") String type);
 
-
-
     /**
      * 获取员工所在小组的信息
      *
