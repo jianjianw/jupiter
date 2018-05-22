@@ -85,6 +85,7 @@ public class ClientEditServiceImpl implements ClientEditService {
         reqContent.put("adaddress", clientVO.getAdAddress());
         reqContent.put("adid", clientVO.getAdId());
         reqContent.put("typeid", clientVO.getTypeId());
+        reqContent.put("zxstyle", clientVO.getZxStyle());
         reqContent.put("address", StringUtil.isNotEmpty(clientVO.getAddress()) ? clientVO.getAddress() :
                 MobileLocationUtil.getAddressByContactInfo(clientVO.getKzPhone(), clientVO.getKzWechat(), clientVO.getKzQq()));
         reqContent.put("remark", clientVO.getRemark());
