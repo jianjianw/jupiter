@@ -3,6 +3,7 @@ package com.qiein.jupiter.web.service.impl;
 import java.util.List;
 import java.util.Map;
 
+import com.qiein.jupiter.web.entity.vo.CompanyVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -129,4 +130,17 @@ public class CompanyServiceImpl implements CompanyService {
     public void editIpLimit(Integer ipLimit, int companyId) {
         companyDao.editIpLimit(ipLimit, companyId);
     }
+
+    /**
+     * 获取VO
+     *
+     * @param companyId
+     * @return
+     */
+    @Override
+    public CompanyVO getCompanyVO(int companyId) {
+        return companyDao.getVOById(companyId);
+    }
+
+
 }

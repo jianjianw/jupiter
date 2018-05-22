@@ -18,6 +18,8 @@
         <result column="UNABLEAPPOINTOR" property="unableAppointor" jdbcType="BOOLEAN"/>
         <result column="UNABLEINVALIDRANGE" property="unableInvalidRange" jdbcType="INTEGER"/>
         <result column="ISDEL" property="delFlag" jdbcType="BOOLEAN"/>
+        <result column="ONLYAPP" property="onlyApp" jdbcType="BOOLEAN"/>
+        <result column="ISLOCK" property="lockFlag" jdbcType="BOOLEAN"/>
     </resultMap>
 
     <resultMap id="VOMap" type="com.qiein.jupiter.web.entity.vo.CompanyVO">
@@ -37,7 +39,7 @@
 
     <sql id="baseColumn">
         ID, COMPANYNAME, TYPEID, LOGO, CORPID, CONFIG, IPLIMIT,
-        SSOLIMIT,OVERTIME,LIMITDEFAULT,KZINTERVAL,ISDEL
+        SSOLIMIT,OVERTIME,LIMITDEFAULT,KZINTERVAL,ISDEL,ONLYAPP,ISLOCK
     </sql>
 
     <select id="getById" parameterType="java.lang.Integer" resultMap="baseMap">
@@ -130,6 +132,5 @@
     <!--修改IP限制-->
     <update id="editIpLimit" parameterType="Integer">
       update hm_pub_company set iplimit=#{ipLimit} where id=#{companyId}
-    
     </update>
 </mapper>

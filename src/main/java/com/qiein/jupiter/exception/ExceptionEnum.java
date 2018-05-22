@@ -87,6 +87,7 @@ public enum ExceptionEnum {
     INVALID_REASON_TYPE_NULL(1102, "类型不能为空"),
     //公司
     COMPANY_ID_NULL(1201, "该公司编号不能为空"),
+    COMPANY_IS_LOCK(1202, "该公司已经被锁定"),
     //导入导出
     EXCEL_IS_NULL(1301, "Excel文件是空的"),
     EXCEL_ADD_FAIL(1302, "Excele添加数据库失败"),
@@ -112,10 +113,10 @@ public enum ExceptionEnum {
     STS_COLUMN_ERROR(1701, "状态颜色表示错误"),
     STS_DEFAULT_ERROR(1702, "默认颜色信息缺失"),
     STS_GET_ERROR(1703, "企业状态信息获取错误"),
-	//ip白名单
-	IP_ERROR(1801,"IP输入有误"),
-	IP_UNALLOW(1802,"IP无权访问"),
-    IP_NOT_IN_SAFETY(1803,"当前IP不在安全IP范围内，请联系主管！");
+    //ip白名单
+    IP_ERROR(1801, "IP输入有误"),
+    IP_UNALLOW(1802, "IP无权访问"),
+    IP_NOT_IN_SAFETY(1803, "当前IP不在安全IP范围内，请联系主管！");
     private Integer code;
     private String msg;
 
