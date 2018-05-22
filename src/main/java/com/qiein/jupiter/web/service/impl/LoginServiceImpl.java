@@ -186,7 +186,7 @@ public class LoginServiceImpl implements LoginService {
             throw new RException(ExceptionEnum.USER_NOT_FOUND);
         }
         //根据CODE 把unionid 放入redis
-        redisTemplate.opsForValue().set(RedisConstant.getWeChatKey(authCode), persistentCode.getPersistentCode(),
+        redisTemplate.opsForValue().set(RedisConstant.getDingKey(authCode), persistentCode.getUnionId(),
                 CommonConstant.DEFAULT_EXPIRE_TIME, TimeUnit.MINUTES);
         return companyList;
     }

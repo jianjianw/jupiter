@@ -298,4 +298,14 @@ public interface StaffService {
      */
     boolean heartBeat(int staffId, int companyId, String ip);
 
+    /**
+     * 绑定微信
+     */
+    boolean bindingWeChat(int staffId, int companyId, String code);
+
+    /**
+     * 绑定钉钉
+     */
+    boolean bindingDing(int staffId, int companyId, String code);
+
 }

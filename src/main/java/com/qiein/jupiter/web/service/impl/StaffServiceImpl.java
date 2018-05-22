@@ -8,9 +8,10 @@ import java.util.concurrent.TimeUnit;
 import com.qiein.jupiter.enums.StaffStatusEnum;
 import com.qiein.jupiter.http.CrmBaseApi;
 import com.qiein.jupiter.util.*;
+import com.qiein.jupiter.util.ding.DingAuthUtil;
+import com.qiein.jupiter.util.wechat.WeChatAuthUtil;
 import com.qiein.jupiter.web.dao.*;
-import com.qiein.jupiter.web.entity.dto.PageDictDTO;
-import com.qiein.jupiter.web.entity.dto.StaffMarsDTO;
+import com.qiein.jupiter.web.entity.dto.*;
 import com.qiein.jupiter.web.entity.po.*;
 import com.qiein.jupiter.web.entity.vo.*;
 import com.qiein.jupiter.web.service.*;
@@ -32,8 +33,6 @@ import com.qiein.jupiter.constant.RedisConstant;
 import com.qiein.jupiter.constant.RoleConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
-import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
-import com.qiein.jupiter.web.entity.dto.StaffPasswordDTO;
 
 @Service
 public class StaffServiceImpl implements StaffService {
@@ -93,6 +92,12 @@ public class StaffServiceImpl implements StaffService {
 
     @Autowired
     private NewsService newsService;
+
+    @Autowired
+    private WeChatAuthUtil weChatAuthUtil;
+
+    @Autowired
+    private DingAuthUtil dingAuthUtil;
 
     /**
      * 员工新增
@@ -769,6 +774,49 @@ public class StaffServiceImpl implements StaffService {
         //更新心跳时间
         staffDao.updateStaffHeartTime(staffId, companyId);
         return ipWhiteService.checkIpLimit(staffId, companyId, ip);
+    }
+
+    /**
+     * 绑定微信
+     *
+     * @param staffId
+     * @param companyId
+     * @param code
+     * @return
+     */
+    @Override
+    public boolean bindingWeChat(int staffId, int companyId, String code) {
+        WeChatAuthDTO accessToken = weChatAuthUtil.getAccessToken(code);
+        WeChatAuthDTO userInfo = weChatAuthUtil.getUserInfo(accessToken);
+        String unionId = userInfo.getUnionId();
+        //TODO 判断空
+        StaffDetailVO staffDetailVO = new StaffDetailVO();
+        staffDetailVO.setId(staffId);
+        staffDetailVO.setCompanyId(companyId);
+        staffDetailVO.setWeChatUnionId(unionId);
+        staffDao.bindingWeChat(staffDetailVO);
+        return true;
+    }
+
+    /**
+     * 绑定钉钉
+     *
+     * @param staffId
+     * @param companyId
+     * @param code
+     * @return
+     */
+    @Override
+    public boolean bindingDing(int staffId, int companyId, String code) {
+        DingAuthDTO persistentCode = dingAuthUtil.getPersistentCode(code);
+        String unionId = persistentCode.getUnionId();
+        //TODO 判断空
+        StaffDetailVO staffDetailVO = new StaffDetailVO();
+        staffDetailVO.setId(staffId);
+        staffDetailVO.setCompanyId(companyId);
+        staffDetailVO.setDingUnionId(unionId);
+        staffDao.bindingDing(staffDetailVO);
+        return true;
     }
 
 }

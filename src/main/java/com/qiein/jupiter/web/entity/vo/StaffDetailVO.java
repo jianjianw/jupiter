@@ -45,13 +45,49 @@ public class StaffDetailVO extends StaffPO {
      */
     private String lastLoginIp;
     /**
-     * openid
+     * wechat openid
      */
     private String weChatOpenId;
+    /**
+     * wechat union id
+     */
+    private String weChatUnionId;
+    /**
+     * ding openid
+     */
+    private String dingOpenId;
+    /**
+     * ding union id
+     */
+    private String dingUnionId;
     /**
      * 创建时间
      */
     private int createTime;
+
+    public String getWeChatUnionId() {
+        return weChatUnionId;
+    }
+
+    public void setWeChatUnionId(String weChatUnionId) {
+        this.weChatUnionId = weChatUnionId;
+    }
+
+    public String getDingOpenId() {
+        return dingOpenId;
+    }
+
+    public void setDingOpenId(String dingOpenId) {
+        this.dingOpenId = dingOpenId;
+    }
+
+    public String getDingUnionId() {
+        return dingUnionId;
+    }
+
+    public void setDingUnionId(String dingUnionId) {
+        this.dingUnionId = dingUnionId;
+    }
 
     public String getGroupId() {
         return groupId;
