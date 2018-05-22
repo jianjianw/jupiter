@@ -87,7 +87,7 @@ public enum ExceptionEnum {
     INVALID_REASON_TYPE_NULL(1102, "类型不能为空"),
     //公司
     COMPANY_ID_NULL(1201, "该公司编号不能为空"),
-    COMPANY_IS_LOCK(1202, "该公司已经被锁定"),
+    COMPANY_IS_LOCK(1202, "该公司已经被锁定，请联系平台管理员！"),
     //导入导出
     EXCEL_IS_NULL(1301, "Excel文件是空的"),
     EXCEL_ADD_FAIL(1302, "Excele添加数据库失败"),
