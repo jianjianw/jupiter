@@ -330,6 +330,15 @@
         WHERE
             rela.STAFFID = #{staffId}
         AND rela.COMPANYID = #{companyId}
+        UNION
+        (
+            SELECT
+                grp.GROUPTYPE
+            FROM
+                hm_pub_group grp
+            WHERE
+                INSTR( CONCAT( ',', grp.CHIEFIDS, ',' ), CONCAT( ',', #{staffId}+ '', ',' ) ) > 0
+        )
     </select>
 
     <!--根据不同类型，获取小组及人员-->
