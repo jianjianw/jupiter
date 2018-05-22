@@ -814,7 +814,7 @@ public class StaffServiceImpl implements StaffService {
         StaffDetailVO staffDetailVO = new StaffDetailVO();
         staffDetailVO.setId(staffId);
         staffDetailVO.setCompanyId(companyId);
-        staffDetailVO.setWeChatUnionId(unionId);
+        staffDetailVO.setDingUnionId(unionId);
         staffDao.bindingDing(staffDetailVO);
         return true;
     }
