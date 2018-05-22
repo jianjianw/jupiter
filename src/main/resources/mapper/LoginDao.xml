@@ -1,9 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qiein.jupiter.web.dao.LoginDao">
+    <resultMap id="baseMap" type="com.qiein.jupiter.web.entity.po.StaffPO">
+        <id column="ID" property="id" jdbcType="INTEGER"/>
+        <result column="NICKNAME" property="nickName" jdbcType="VARCHAR"/>
+        <result column="PHONE" property="phone" jdbcType="VARCHAR"/>
+        <result column="USERNAME" property="userName" jdbcType="VARCHAR"/>
+        <result column="PASSWORD" property="password" jdbcType="VARCHAR"/>
+        <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
+        <result column="CORPID" property="corpId" jdbcType="VARCHAR"/>
+        <result column="DINGUSERID" property="dingUserId" jdbcType="VARCHAR"/>
+        <result column="HEADIMG" property="headImg" jdbcType="VARCHAR"/>
+        <result column="TOKEN" property="token" jdbcType="VARCHAR"/>
+        <result column="STATUSFLAG" property="statusFlag" jdbcType="BOOLEAN"/>
+        <result column="ISLOCK" property="lockFlag" jdbcType="BOOLEAN"/>
+        <result column="ISDEL" property="delFlag" jdbcType="BOOLEAN"/>
+        <result column="TODAYNUM" property="todayNum" jdbcType="INTEGER"/>
+        <result column="WEIGHT" property="weight" jdbcType="INTEGER"/>
+        <result column="LIMITDAY" property="limitDay" jdbcType="INTEGER"/>
+        <result column="LASTPUSHTIME" property="lastPushTime" jdbcType="INTEGER"/>
+        <result column="LIMITCHANNELIDS" property="limitChannelIds" jdbcType="VARCHAR"/>
+        <result column="LIMITSHOPIDS" property="limitShopIds" jdbcType="VARCHAR"/>
+        <result column="HEARTTIME" property="heartTime" jdbcType="INTEGER"/>
+        <result column="WHITEFLAG" property="whiteFlag" jdbcType="BOOLEAN"/>
+    </resultMap>
 
     <sql id="baseColumn">
-        ID,PHONE,COMPANYID,TOKEN,STATUSFLAG,ISLOCK,ISDEL,HEARTTIME,WHITEFLAG
+        ID,NICKNAME,PHONE,COMPANYID,TOKEN,STATUSFLAG,ISLOCK,ISDEL,HEARTTIME,WHITEFLAG
     </sql>
 
     <!--根据手机号码获取公司列表-->
@@ -20,7 +43,7 @@
     </select>
 
     <!--根据手机号码登录-->
-    <select id="loginWithCidByPhone" resultType="com.qiein.jupiter.web.entity.po.StaffPO">
+    <select id="loginWithCidByPhone" resultMap="baseMap">
         SELECT
         <include refid="baseColumn"/>
         FROM hm_pub_staff
@@ -43,9 +66,9 @@
     </select>
 
     <!--根据微信登录-->
-    <select id="loginWithCidByWeChatUnionId" resultType="com.qiein.jupiter.web.entity.po.StaffPO">
+    <select id="loginWithCidByWeChatUnionId" resultMap="baseMap">
         SELECT
-          staff.ID,staff.COMPANYID,staff.TOKEN,staff.STATUSFLAG,
+          staff.ID,staff.NICKNAME,staff.COMPANYID,staff.TOKEN,staff.STATUSFLAG,
           staff.ISLOCK,staff.ISDEL,staff.HEARTTIME,staff.WHITEFLAG
         FROM hm_pub_staff as  staff
         LEFT JOIN hm_pub_staff_detail as detail
@@ -69,9 +92,9 @@
     </select>
 
     <!--根据钉钉登录-->
-    <select id="loginWithCidByDingUnionId" resultType="com.qiein.jupiter.web.entity.po.StaffPO">
+    <select id="loginWithCidByDingUnionId" resultMap="baseMap">
         SELECT
-          staff.ID,staff.COMPANYID,staff.TOKEN,staff.STATUSFLAG,
+          staff.ID,staff.NICKNAME,staff.COMPANYID,staff.TOKEN,staff.STATUSFLAG,
           staff.ISLOCK,staff.ISDEL,staff.HEARTTIME,staff.WHITEFLAG
         FROM hm_pub_staff as  staff
         LEFT JOIN hm_pub_staff_detail as detail

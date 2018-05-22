@@ -90,7 +90,6 @@ public class DingAuthUtil {
         dingAuthDTO.setOpenId(res.getString("openid"));
         dingAuthDTO.setUnionId(res.getString("unionid"));
         dingAuthDTO.setPersistentCode(res.getString("persistent_code"));
-        System.out.println(res);
         return dingAuthDTO;
     }
 
@@ -113,7 +112,6 @@ public class DingAuthUtil {
                 .asString();
         JSONObject res = JSON.parseObject(resStr);
         dingAuthDTO.setSnsToken(res.getString("sns_token"));
-        System.out.println(res);
         return dingAuthDTO;
     }
 
@@ -126,6 +124,5 @@ public class DingAuthUtil {
                 .queryString("sns_token", snsToken)
                 .asString();
         JSONObject res = JSON.parseObject(resStr);
-        System.out.println(res);
     }
 }
