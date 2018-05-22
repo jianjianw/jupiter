@@ -153,6 +153,11 @@ public class CommonConstant {
      * 默认成功返回值
      */
     public final static int DEFAULT_SUCCESS_CODE = 100000;
+
+    /**
+     * 默认错误返回值
+     */
+    public final static int DEFAULT_ERROR_CODE = 999999;
     /**
      * 登录错误时，增加
      */

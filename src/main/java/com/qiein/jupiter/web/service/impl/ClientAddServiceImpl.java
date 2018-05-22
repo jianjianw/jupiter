@@ -3,6 +3,7 @@ package com.qiein.jupiter.web.service.impl;
 import java.util.*;
 
 import com.alibaba.fastjson.JSONArray;
+import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -242,6 +243,7 @@ public class ClientAddServiceImpl implements ClientAddService {
         }
         result.put("error", rep);
         result.put("msg", errorCount == 0 ? "录入成功，共录入：" + successCount + " 个客资" : "有录入失败的信息；录入成功：" + successCount + " 个，错误：" + errorCount + " 个");
+        result.put("code", errorCount == 0 ? CommonConstant.DEFAULT_SUCCESS_CODE : CommonConstant.DEFAULT_ERROR_CODE);
         return result;
     }
 

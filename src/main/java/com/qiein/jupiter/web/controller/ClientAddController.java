@@ -70,7 +70,12 @@ public class ClientAddController extends BaseController {
         }
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        return ResultInfoUtil.success(clientAddService.batchAddDsClient(list, Integer.parseInt(channelId), Integer.parseInt(sourceId),
-                Integer.parseInt(shopId), Integer.parseInt(typeId), currentLoginStaff));
+        JSONObject result = clientAddService.batchAddDsClient(list, Integer.parseInt(channelId), Integer.parseInt(sourceId),
+                Integer.parseInt(shopId), Integer.parseInt(typeId), currentLoginStaff);
+        ResultInfo rep = new ResultInfo();
+        rep.setCode(result.getInteger("code"));
+        rep.setMsg(result.getString("msg"));
+        rep.setData(result);
+        return rep;
     }
 }
