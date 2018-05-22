@@ -572,6 +572,7 @@
         WHERE
 	        s.COMPANYID =#{companyId} AND s.ID = #{staffId}
     </select>
+
     <!-- 添加到ip白名单 -->
     <update id="addIpWhite" parameterType="Integer">
         UPDATE hm_pub_staff set WHITEFLAG=1 where id IN
@@ -579,6 +580,7 @@
             #{id}
         </foreach>
     </update>
+
     <!-- 从ip白名单删除 -->
     <update id="delIpWhite" parameterType="Integer">
 		UPDATE hm_pub_staff set WHITEFLAG=0 where id=#{staffId} 
@@ -603,22 +605,21 @@
         where
           ID = #{staffId}
         AND COMPANYID = #{companyId}
-
     </update>
 
-    <update id="saveWechat" parameterType="com.qiein.jupiter.web.entity.po.StaffDetailPO">
-        update hm_pub_staff_detail set WECHATOPENID=#{staffdetail.weChatOpenId}
-        <if test="staffdetail.weChatImg!=''">
-            ,wechatimg=#{staffdetail.weChatImg}
-        </if>
-        where id=#{staffdetail.id}
+    <!--绑定微信-->
+    <update id="bindingWeChat">
+        update hm_pub_staff_detail
+          set WECHATUNIODID = #{weChatUnionId}
+        where id=#{id}
+        AND COMPANYID = #{companyId}
     </update>
 
-    <select id="getDetailById" parameterType="Integer" resultType="String">
-    select wechatimg from hm_pub_staff_detail where id=#{staffId}
-    </select>
-
-    <select id="getByWeChatOpenId" parameterType="String" resultType="com.qiein.jupiter.web.entity.po.StaffPO">
-    	select a.phone phone, a.password password  from hm_pub_staff a left join hm_pub_staff_detail b on a.id=b.id where b.openid=#{openId}
-    </select>
+    <!--绑定钉钉-->
+    <update id="bindingDing">
+        update hm_pub_staff_detail
+              set DINGUNIONID = #{dingUnionId}
+            where id=#{id}
+            AND COMPANYID = #{companyId}
+    </update>
 </mapper>

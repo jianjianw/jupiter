@@ -504,7 +504,6 @@ public class StaffController extends BaseController {
     /**
      * 用户退出登录
      */
-
     @GetMapping("/logout")
     public ResultInfo logout() {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
@@ -526,5 +525,26 @@ public class StaffController extends BaseController {
         } else {
             return ResultInfoUtil.error(ExceptionEnum.IP_NOT_IN_SAFETY);
         }
+    }
+
+    /**
+     * 绑定微信
+     */
+    @GetMapping("/binding_wechat")
+    public ResultInfo bindingWeChat(String code) {
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        staffService.bindingWeChat(currentLoginStaff.getId(), currentLoginStaff.getCompanyId(),
+                code);
+        return ResultInfoUtil.success();
+    }
+
+    /**
+     * 绑定钉钉
+     */
+    @GetMapping("/binding_ding")
+    public ResultInfo bindingDing(String code) {
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        staffService.bindingDing(currentLoginStaff.getId(), currentLoginStaff.getCompanyId(), code);
+        return ResultInfoUtil.success();
     }
 }
