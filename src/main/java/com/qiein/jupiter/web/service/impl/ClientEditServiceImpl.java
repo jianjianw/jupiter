@@ -97,8 +97,8 @@ public class ClientEditServiceImpl implements ClientEditService {
         String addRstStr = crmBaseApi.doService(reqContent, "clientEditDscjLp");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if ("100000".equals(jsInfo.getString("code"))) {
-            CompanyVO companyVO = companyDao.getVOById(clientVO.getCompanyId());
-            clientPushService.pushLp(channelPO.getPushRule(), clientVO.getCompanyId(), clientVO.getKzId(), clientVO.getShopId(),
+            CompanyVO companyVO = companyDao.getVOById(staffPO.getCompanyId());
+            clientPushService.pushLp(channelPO.getPushRule(), staffPO.getCompanyId(), clientVO.getKzId(), clientVO.getShopId(),
                     clientVO.getChannelId(), channelPO.getTypeId(), companyVO.getOverTime(), companyVO.getKzInterval());
         } else {
             throw new RException(jsInfo.getString("msg"));
@@ -175,13 +175,13 @@ public class ClientEditServiceImpl implements ClientEditService {
         String addRstStr = crmBaseApi.doService(reqContent, "clientEditDsyyLp");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if ("100000".equals(jsInfo.getString("code"))) {
-            CompanyVO companyVO = companyDao.getVOById(clientVO.getCompanyId());
+            CompanyVO companyVO = companyDao.getVOById(staffPO.getCompanyId());
             //获取渠道名
             ChannelPO channelPO = channelDao.getShowChannelById(staffPO.getCompanyId(), clientVO.getChannelId());
             if (channelPO == null) {
                 throw new RException(ExceptionEnum.CHANNEL_NOT_FOUND);
             }
-            clientPushService.pushLp(channelPO.getPushRule(), clientVO.getCompanyId(), clientVO.getKzId(), clientVO.getShopId(),
+            clientPushService.pushLp(channelPO.getPushRule(), staffPO.getCompanyId(), clientVO.getKzId(), clientVO.getShopId(),
                     clientVO.getChannelId(), channelPO.getTypeId(), companyVO.getOverTime(), companyVO.getKzInterval());
         } else {
             throw new RException(jsInfo.getString("msg"));
@@ -261,8 +261,8 @@ public class ClientEditServiceImpl implements ClientEditService {
         String addRstStr = crmBaseApi.doService(reqContent, "clientEditCwzxLp");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if ("100000".equals(jsInfo.getString("code"))) {
-            CompanyVO companyVO = companyDao.getVOById(clientVO.getCompanyId());
-            clientPushService.pushLp(channelPO.getPushRule(), clientVO.getCompanyId(), clientVO.getKzId(), clientVO.getShopId(),
+            CompanyVO companyVO = companyDao.getVOById(staffPO.getCompanyId());
+            clientPushService.pushLp(channelPO.getPushRule(), staffPO.getCompanyId(), clientVO.getKzId(), clientVO.getShopId(),
                     clientVO.getChannelId(), channelPO.getTypeId(), companyVO.getOverTime(), companyVO.getKzInterval());
         } else {
             throw new RException(jsInfo.getString("msg"));
