@@ -253,12 +253,12 @@ public class LoginServiceImpl implements LoginService {
             staffPO1.setCompanyId(staff.getCompanyId());
             staffPO1.setStatusFlag(StaffStatusEnum.OnLine.getStatusId());
             staffDao.updateStatusFlag(staffPO1);
-            //新增上线日志
-            staffStatusLogDao.insert(new StaffStatusLog(
-                    staff.getId(), staff.getNickName(), StaffStatusEnum.OnLine.getStatusId(),
-                    staff.getId(), staff.getNickName(), staff.getCompanyId()
-            ));
         }
+        //新增上线日志
+        staffStatusLogDao.insert(new StaffStatusLog(
+                staff.getId(), staff.getNickName(), StaffStatusEnum.OnLine.getStatusId(),
+                staff.getId(), staff.getNickName(), staff.getCompanyId()
+        ));
         return staff;
     }
 

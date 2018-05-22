@@ -718,9 +718,9 @@ public class StaffServiceImpl implements StaffService {
             //更新为下线状态，新增日志
             staffNow.setStatusFlag(StaffStatusEnum.OffLine.getStatusId());
             staffDao.updateStatusFlag(staffNow);
-            staffStatusLogDao.insert(new StaffStatusLog(staffId, staffName,
-                    StaffStatusEnum.OffLine.getStatusId(), staffId, staffName, companyId));
         }
+        staffStatusLogDao.insert(new StaffStatusLog(staffId, staffName,
+                StaffStatusEnum.OffLine.getStatusId(), staffId, staffName, companyId));
     }
 
     /**
@@ -733,7 +733,7 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public StaffDetailVO getStaffCard(int staffId, int companyId) {
         StaffDetailVO staffDetailVO = staffDao.getStaffCard(staffId, companyId);
-        if (staffDetailVO==null){
+        if (staffDetailVO == null) {
             throw new RException(ExceptionEnum.STAFF_IS_NOT_EXIST);
         }
         return staffDetailVO;
