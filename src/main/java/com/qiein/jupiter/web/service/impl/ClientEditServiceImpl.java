@@ -12,10 +12,12 @@ import com.qiein.jupiter.util.MobileLocationUtil;
 import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.ChannelDao;
+import com.qiein.jupiter.web.dao.CompanyDao;
 import com.qiein.jupiter.web.dao.ShopDao;
 import com.qiein.jupiter.web.dao.SourceDao;
 import com.qiein.jupiter.web.entity.po.*;
 import com.qiein.jupiter.web.entity.vo.ClientVO;
+import com.qiein.jupiter.web.entity.vo.CompanyVO;
 import com.qiein.jupiter.web.entity.vo.ShopVO;
 import com.qiein.jupiter.web.service.ClientEditService;
 import com.qiein.jupiter.web.service.ClientPushService;
@@ -41,6 +43,8 @@ public class ClientEditServiceImpl implements ClientEditService {
     private ShopDao shopDao;
     @Autowired
     private ClientPushService clientPushService;
+    @Autowired
+    private CompanyDao companyDao;
 
     @Override
     public void editClientByDscj(ClientVO clientVO, StaffPO staffPO) {
@@ -93,10 +97,11 @@ public class ClientEditServiceImpl implements ClientEditService {
         String addRstStr = crmBaseApi.doService(reqContent, "clientEditDscjLp");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if ("100000".equals(jsInfo.getString("code"))) {
-            System.out.println("推广编辑成功");
-
+            CompanyVO companyVO = companyDao.getVOById(clientVO.getCompanyId());
+            clientPushService.pushLp(channelPO.getPushRule(), clientVO.getCompanyId(), clientVO.getKzId(), clientVO.getShopId(),
+                    clientVO.getChannelId(), channelPO.getTypeId(), companyVO.getOverTime(), companyVO.getKzInterval());
         } else {
-            throw new RException(ExceptionEnum.KZ_EDIT_FAIL);
+            throw new RException(jsInfo.getString("msg"));
         }
     }
 
@@ -170,10 +175,16 @@ public class ClientEditServiceImpl implements ClientEditService {
         String addRstStr = crmBaseApi.doService(reqContent, "clientEditDsyyLp");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if ("100000".equals(jsInfo.getString("code"))) {
-            System.out.println("邀约编辑成功");
-
+            CompanyVO companyVO = companyDao.getVOById(clientVO.getCompanyId());
+            //获取渠道名
+            ChannelPO channelPO = channelDao.getShowChannelById(staffPO.getCompanyId(), clientVO.getChannelId());
+            if (channelPO == null) {
+                throw new RException(ExceptionEnum.CHANNEL_NOT_FOUND);
+            }
+            clientPushService.pushLp(channelPO.getPushRule(), clientVO.getCompanyId(), clientVO.getKzId(), clientVO.getShopId(),
+                    clientVO.getChannelId(), channelPO.getTypeId(), companyVO.getOverTime(), companyVO.getKzInterval());
         } else {
-            throw new RException(ExceptionEnum.KZ_EDIT_FAIL);
+            throw new RException(jsInfo.getString("msg"));
         }
     }
 
@@ -250,9 +261,11 @@ public class ClientEditServiceImpl implements ClientEditService {
         String addRstStr = crmBaseApi.doService(reqContent, "clientEditCwzxLp");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if ("100000".equals(jsInfo.getString("code"))) {
-            System.out.println("邀约编辑成功");
+            CompanyVO companyVO = companyDao.getVOById(clientVO.getCompanyId());
+            clientPushService.pushLp(channelPO.getPushRule(), clientVO.getCompanyId(), clientVO.getKzId(), clientVO.getShopId(),
+                    clientVO.getChannelId(), channelPO.getTypeId(), companyVO.getOverTime(), companyVO.getKzInterval());
         } else {
-            throw new RException(ExceptionEnum.KZ_EDIT_FAIL);
+            throw new RException(jsInfo.getString("msg"));
         }
     }
 }
