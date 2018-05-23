@@ -148,10 +148,10 @@ public class OSSUtil {
 		// policy
 		try {
 			String policy = BinaryUtil.toBase64String(postPolicy.getBytes("utf-8"));
-			System.out.println("policy :" + policy);
+//			System.out.println("policy :" + policy);
 			// 签名
 			String signature = client.calculatePostSignature(postPolicy);
-			System.out.println("signature :" + signature);
+//			System.out.println("signature :" + signature);
 			// 回调
 			// String callbackData =
 			// BinaryUtil.toBase64String(callback.toString().getBytes("utf-8"));
