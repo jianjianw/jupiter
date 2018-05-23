@@ -1,9 +1,13 @@
 package com.qiein.jupiter.web.controller;
 
+import cn.afterturn.easypoi.cache.manager.IFileLoader;
 import com.alibaba.fastjson.JSONObject;
+import com.qiein.jupiter.constant.ClientConst;
+import com.qiein.jupiter.constant.ClientStatusConst;
 import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
+import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.util.StringUtil;
@@ -53,8 +57,8 @@ public class ClientTrackController extends BaseController {
         if (StringUtil.isEmpty(kzIds)) {
             throw new RException(ExceptionEnum.KZ_ID_IS_NULL);
         }
-        String toStaffId = StringUtil.nullToStrTrim(jsonObject.getString("toStaffId"));
-        if (StringUtil.isEmpty(toStaffId)) {
+        int toStaffId = jsonObject.getIntValue("toStaffId");
+        if (NumUtil.isNull(toStaffId)) {
             throw new RException(ExceptionEnum.STAFF_ID_NULL);
         }
         String role = StringUtil.nullToStrTrim(jsonObject.getString("role"));
@@ -63,8 +67,33 @@ public class ClientTrackController extends BaseController {
         }
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        clientTrackService.batchTransferKzList(kzIds, role, Integer.parseInt(toStaffId), currentLoginStaff);
+        clientTrackService.batchTransferKzList(kzIds, role, toStaffId, currentLoginStaff);
         return ResultInfoUtil.success(TigMsgEnum.TRANSFER_SUCCESS);
+    }
+
+    /**
+     * 无效审批
+     *
+     * @return
+     */
+    @PostMapping("/approval_invalid_kz_list")
+    public ResultInfo approvalInvalidKzList(@RequestBody JSONObject jsonObject) {
+        String kzIds = StringUtil.nullToStrTrim(jsonObject.getString("kzIds"));
+        if (StringUtil.isEmpty(kzIds)) {
+            throw new RException(ExceptionEnum.KZ_ID_IS_NULL);
+        }
+        String memo = StringUtil.nullToStrTrim(jsonObject.getString("memo"));
+        int rst = jsonObject.getIntValue("rst");
+        if (NumUtil.isNull(rst)) {
+            throw new RException(ExceptionEnum.APPROVAL_RST_IS_NULL);
+        }
+        if (ClientStatusConst.BE_INVALID_REJECT == rst && StringUtil.isEmpty(memo)) {
+            throw new RException(ExceptionEnum.APPROVAL_MEMO_IS_NULL);
+        }
+        String invalidLabel = StringUtil.nullToStrTrim(jsonObject.getString("invalidLabel"));
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        return ResultInfoUtil.success(clientTrackService.approvalInvalidKzList(kzIds, memo, rst, invalidLabel, currentLoginStaff));
     }
 
 

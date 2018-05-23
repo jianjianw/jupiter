@@ -30,5 +30,16 @@ public interface ClientTrackService {
      */
     void batchTransferKzList(String kzIds, String role, int toStaffId, StaffPO staffPO);
 
+    /**
+     * 无效审批
+     *
+     * @param kzIds
+     * @param memo
+     * @param rst
+     * @param invalidLabel
+     * @param staffPO
+     */
+    String approvalInvalidKzList(String kzIds, String memo, int rst, String invalidLabel, StaffPO staffPO);
+
 
 }

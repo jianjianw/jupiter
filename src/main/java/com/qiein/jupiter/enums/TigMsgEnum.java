@@ -176,7 +176,11 @@ public enum TigMsgEnum {
     /**
      * 客资转移成功
      */
-    TRANSFER_SUCCESS("转移成功");
+    TRANSFER_SUCCESS("转移成功"),
+    /**
+     * 审批成功
+     */
+    APPROVAL_SUCCESS("审批成功");
 
     private String desc;
 
