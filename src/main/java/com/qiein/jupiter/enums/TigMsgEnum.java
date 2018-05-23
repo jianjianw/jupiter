@@ -172,7 +172,11 @@ public enum TigMsgEnum {
     /**
      * IP白名单删除成功
      */
-    IP_WHITE_DEL_SUCCESS("IP白名单删除成功");
+    IP_WHITE_DEL_SUCCESS("IP白名单删除成功"),
+    /**
+     * 客资转移成功
+     */
+    TRANSFER_SUCCESS("转移成功");
 
     private String desc;
 
