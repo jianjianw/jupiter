@@ -33,14 +33,12 @@ public class ApolloController extends BaseController {
 	 */
 	@PostMapping("/heart")
 	public ResultInfo heart(HttpServletRequest request) {
-		String ip = "";
-
 		int companyId = 0;
 		String accessKey = "";
 		String sign = "";
 
 		checkAccessKey(companyId, accessKey);
-		checkSign(ip, companyId, accessKey, sign);
+		checkSign(companyId, accessKey, sign);
 
 		return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
 	}
@@ -62,8 +60,8 @@ public class ApolloController extends BaseController {
 		}
 	}
 
-	public static void checkSign(String ip, int companyId, String accessKey, String sign) {
-		if (StringUtils.isEmpty(sign) || !sign.equalsIgnoreCase(MD5Util.getMD5(ip + companyId + accessKey))) {
+	public static void checkSign(int companyId, String accessKey, String sign) {
+		if (StringUtils.isEmpty(sign) || !sign.equalsIgnoreCase(MD5Util.getMD5(companyId + accessKey))) {
 			throw new RException(ExceptionEnum.SIGN_ERROR);
 		}
 	}
