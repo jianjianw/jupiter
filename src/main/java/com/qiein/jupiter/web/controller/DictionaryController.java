@@ -190,6 +190,20 @@ public class DictionaryController extends BaseController {
 	}
 
 	/**
+	 *
+	 * @param dictionaryVO
+	 * @return
+	 */
+	@PostMapping("/create_common_type")
+	public ResultInfo createCommonType(@RequestBody DictionaryVO dictionaryVO){
+		dictionaryVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
+		dictionaryVO.setDicType("common_type");
+
+		dictionaryService.createCommonType(dictionaryVO);
+		return ResultInfoUtil.success();
+	}
+
+	/**
 	 * 删除字典
 	 * @param id
 	 * @return

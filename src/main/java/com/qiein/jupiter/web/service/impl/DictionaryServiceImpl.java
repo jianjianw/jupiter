@@ -176,6 +176,13 @@ public class DictionaryServiceImpl implements DictionaryService {
         }
     }
 
+    @Override
+    public void createCommonType(DictionaryVO dictionaryVO) {
+        //TODO
+
+
+    }
+
 //    /**
 //     * 编辑字典
 //     * @param dictionaryPO
