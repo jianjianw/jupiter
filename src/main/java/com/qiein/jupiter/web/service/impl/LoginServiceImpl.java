@@ -18,9 +18,10 @@ import com.qiein.jupiter.web.entity.dto.DingAuthDTO;
 import com.qiein.jupiter.web.entity.dto.PageDictDTO;
 import com.qiein.jupiter.web.entity.dto.WeChatAuthDTO;
 import com.qiein.jupiter.web.entity.po.*;
+import com.qiein.jupiter.web.entity.vo.BaseInfoVO;
 import com.qiein.jupiter.web.entity.vo.CompanyVO;
 import com.qiein.jupiter.web.entity.vo.MenuVO;
-import com.qiein.jupiter.web.entity.vo.BaseInfoVO;
+import com.qiein.jupiter.web.entity.vo.StaffDetailVO;
 import com.qiein.jupiter.web.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -287,14 +288,21 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public BaseInfoVO getBaseInfo(int staffId, int companyId) {
         BaseInfoVO staffBaseInfoVO = new BaseInfoVO();
-        // 员工对象
+        // 权限列表
         List<PermissionPO> permissionPOList = permissionDao.getStaffPermission(staffId, companyId);
         staffBaseInfoVO.setPermission(permissionPOList);
         // 放入公司对象
         CompanyVO companyVO = companyService.getCompanyVO(companyId);
         companyVO.setMenuList(getCompanyMenuList(companyId, staffId));
         staffBaseInfoVO.setCompany(companyVO);
-        staffBaseInfoVO.setStaffDetail(staffDao.getStaffDetail(staffId, companyId));
+        //员工
+        StaffDetailVO staffDetailVO = staffDao.getStaffDetailVO(staffId, companyId);
+        //是否原始密码
+        if (StringUtil.ignoreCaseEqual(staffDetailVO.getPassword(), MD5Util
+                .getSaltMd5(staffDetailVO.getPhone()))) {
+            staffDetailVO.setSimplePasswordFlag(true);
+        }
+        staffBaseInfoVO.setStaffDetail(staffDetailVO);
         //设置页面字典
         PageDictDTO pageDictDTO = new PageDictDTO();
         //来源字典
