@@ -65,6 +65,19 @@ public class StaffDetailVO extends StaffPO {
      */
     private int createTime;
 
+    /**
+     * 是否是简单密码
+     */
+    private boolean simplePasswordFlag;
+
+    public boolean isSimplePasswordFlag() {
+        return simplePasswordFlag;
+    }
+
+    public void setSimplePasswordFlag(boolean simplePasswordFlag) {
+        this.simplePasswordFlag = simplePasswordFlag;
+    }
+
     public String getWeChatUnionId() {
         return weChatUnionId;
     }

@@ -555,6 +555,19 @@ public class StaffServiceImpl implements StaffService {
      */
     @Override
     public int updatePassword(StaffPasswordDTO staffPasswordDTO) {
+        String newPassword = staffPasswordDTO.getNewPassword();
+        //空
+        if (StringUtil.isEmpty(newPassword)) {
+            throw new RException(ExceptionEnum.PASSWORD_NULL);
+        }
+        //长度
+        if (newPassword.length() < 6) {
+            throw new RException(ExceptionEnum.SIMPLE_PASSWORD);
+        }
+        //纯数字
+        if (StringUtil.isNumber(newPassword)) {
+            throw new RException(ExceptionEnum.SIMPLE_NUMBER_PASSWORD);
+        }
         // 如果原始密码不对
         if (!isRightPassword(staffPasswordDTO.getId(), staffPasswordDTO.getOldPassword(),
                 staffPasswordDTO.getCompanyId())) {

@@ -175,9 +175,9 @@ public class GoEasyUtil {
 	}
 
 	public static void main(String[] args) {
-		int cid = 9999;
-		int uid = 108;
-		int kzNum = 11;
+		int cid = 2012;
+		int uid = 698;
+		int kzNum = 1;
 		String kzId = "123123123";
 		String logId = "12";
 		int overTime = 120;

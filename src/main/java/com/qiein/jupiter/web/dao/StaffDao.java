@@ -147,7 +147,7 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @param companyId
      * @return
      */
-    StaffDetailVO getStaffDetail(@Param("id") int id, @Param("companyId") int companyId);
+    StaffDetailVO getStaffDetailVO(@Param("id") int id, @Param("companyId") int companyId);
 
     /**
      * 更新token

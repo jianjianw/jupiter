@@ -46,6 +46,9 @@ public enum ExceptionEnum {
     STAFF_IS_LIMIT(352, "员工已达到接单限额，请联系主管解决"),
     STAFF_STATUS_UPDATE_FAIL(353, "员工状态修改失败"),
     STAFF_IS_NOT_EXIST(354, "员工不存在"),
+    SIMPLE_PASSWORD(355,"密码不能低于6为位"),
+    SIMPLE_NUMBER_PASSWORD(356,"密码不能为纯数字"),
+    PASSWORD_NULL(357,"密码不能为空"),
     //部门
     GROUP_NAME_REPEAT(401, "部门名称重复"),
     GROUP_HAVE_CHILD_GROUP(402, "该部门存在小组，请删除下属小组再进行操作"),
@@ -116,7 +119,11 @@ public enum ExceptionEnum {
     //ip白名单
     IP_ERROR(1801, "IP输入有误"),
     IP_UNALLOW(1802, "IP无权访问"),
-    IP_NOT_IN_SAFETY(1803, "当前IP不在安全IP范围内，请联系主管！");
+    IP_NOT_IN_SAFETY(1803, "当前IP不在安全IP范围内，请联系主管！"),
+	//apollo
+	ACCESSKEY_ERROR(1901,"accesskey错误"),
+	SIGN_ERROR(1902,"请求签名错误");
+	
     private Integer code;
     private String msg;
 
