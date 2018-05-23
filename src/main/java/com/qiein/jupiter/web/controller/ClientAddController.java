@@ -43,7 +43,7 @@ public class ClientAddController extends BaseController {
     /**
      * 批量录入
      *
-     * @param list
+     * @param jsonObject
      * @return
      */
     @PostMapping("/batch_add_ds_client")
