@@ -106,5 +106,36 @@
         AND dic.COMPANYID = #{companyId}
     </select>
 
+    <!--新增字典记录-->
+    <insert id="createDict" parameterType="dictionaryPO">
+        INSERT INTO
+	      hm_crm_dictionary
+            (DICTYPE,DICCODE,DICNAME,PRIORITY,SPARE,COMPANYID)
+        SELECT
+          #{dicType},
+	      (SELECT IFNULL(MAX(DICCODE),0)+1 FROM hm_crm_dictionary WHERE COMPANYID = 9292 AND DICTYPE = 'common_type'),
+          #{dicName},
+          (SELECT IFNULL(MAX(PRIORITY),0)+1 FROM hm_crm_dictionary WHERE COMPANYID = 9292 AND DICTYPE = 'common_type'),
+          #{spare},#{companyId}
+    </insert>
+
+    <!--<update id="editDict" parameterType="dictionaryPO">
+        UPDATE
+          hm_crm_dictionary
+        <set>
+            <if test="">
+
+            </if>
+        </set>
+    </update>-->
+
+    <!--删除字典记录-->
+    <delete id="delDict" parameterType="Integer">
+        DELETE
+        FROM
+          hm_crm_dictionary
+        WHERE
+          ID = #{id} AND COMPANYID = #{companyId}
+    </delete>
 
 </mapper>
