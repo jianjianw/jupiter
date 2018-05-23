@@ -4,6 +4,7 @@ import cn.afterturn.easypoi.cache.manager.IFileLoader;
 import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.constant.ClientConst;
 import com.qiein.jupiter.constant.ClientStatusConst;
+import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
@@ -93,7 +94,11 @@ public class ClientTrackController extends BaseController {
         String invalidLabel = StringUtil.nullToStrTrim(jsonObject.getString("invalidLabel"));
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        return ResultInfoUtil.success(clientTrackService.approvalInvalidKzList(kzIds, memo, rst, invalidLabel, currentLoginStaff));
+        String msg = clientTrackService.approvalInvalidKzList(kzIds, memo, rst, invalidLabel, currentLoginStaff);
+        ResultInfo resultInfo = new ResultInfo();
+        resultInfo.setCode(CommonConstant.DEFAULT_SUCCESS_CODE);
+        resultInfo.setMsg(msg);
+        return resultInfo;
     }
 
 
