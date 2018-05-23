@@ -181,7 +181,7 @@ public class ClientEditServiceImpl implements ClientEditService {
         if ("100000".equals(jsInfo.getString("code"))) {
             if (ClientStatusConst.ONLINE_SUCCESS == clientVO.getYyRst()) {
                 //成功订单爆彩
-                ClientPushDTO clientPushDTO = clientInfoDao.getClientPushDTOById(clientVO.getKzId(), DBSplitUtil.getInfoTabName(staffPO.getCompanyId()));
+                ClientPushDTO clientPushDTO = clientInfoDao.getClientPushDTOById(clientVO.getKzId(), DBSplitUtil.getInfoTabName(staffPO.getCompanyId()), DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
                 StaffPO appoint = staffDao.getByIdAndCid(clientPushDTO.getAppointorId(), staffPO.getCompanyId());
                 OrderSuccessMsg orderSuccessMsg = new OrderSuccessMsg();
                 orderSuccessMsg.setCompanyId(staffPO.getCompanyId());
