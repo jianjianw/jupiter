@@ -2,17 +2,15 @@ package com.qiein.jupiter.web.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.constant.ClientStatusConst;
+import com.qiein.jupiter.enums.OrderSuccessTypeEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.http.CrmBaseApi;
-import com.qiein.jupiter.util.JsonFmtUtil;
-import com.qiein.jupiter.util.MobileLocationUtil;
-import com.qiein.jupiter.util.NumUtil;
-import com.qiein.jupiter.util.StringUtil;
-import com.qiein.jupiter.web.dao.ChannelDao;
-import com.qiein.jupiter.web.dao.CompanyDao;
-import com.qiein.jupiter.web.dao.ShopDao;
-import com.qiein.jupiter.web.dao.SourceDao;
+import com.qiein.jupiter.msg.websocket.WebSocketMsgUtil;
+import com.qiein.jupiter.util.*;
+import com.qiein.jupiter.web.dao.*;
+import com.qiein.jupiter.web.entity.dto.ClientPushDTO;
+import com.qiein.jupiter.web.entity.dto.OrderSuccessMsg;
 import com.qiein.jupiter.web.entity.po.ChannelPO;
 import com.qiein.jupiter.web.entity.po.SourcePO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
@@ -45,6 +43,12 @@ public class ClientEditServiceImpl implements ClientEditService {
     private ClientPushService clientPushService;
     @Autowired
     private CompanyDao companyDao;
+    @Autowired
+    private WebSocketMsgUtil webSocketMsgUtil;
+    @Autowired
+    private ClientInfoDao clientInfoDao;
+    @Autowired
+    private StaffDao staffDao;
 
     @Override
     public void editClientByDscj(ClientVO clientVO, StaffPO staffPO) {
@@ -142,6 +146,7 @@ public class ClientEditServiceImpl implements ClientEditService {
             reqContent.put("shopname", shopVO.getShopName());
         }
         //邀约结果
+        ShopVO shopVO = null;
         if (NumUtil.isNotNull(clientVO.getYyRst())) {
             reqContent.put("yyrst", clientVO.getYyRst());
             //无效,或者流失
@@ -156,7 +161,7 @@ public class ClientEditServiceImpl implements ClientEditService {
             if (ClientStatusConst.ONLINE_SUCCESS == clientVO.getYyRst()) {
                 if (NumUtil.isNotNull(clientVO.getFilmingCode())) {
                     //获取最终拍摄地名
-                    ShopVO shopVO = shopDao.getShowShopById(staffPO.getCompanyId(), clientVO.getFilmingCode());
+                    shopVO = shopDao.getShowShopById(staffPO.getCompanyId(), clientVO.getFilmingCode());
                     if (shopVO == null) {
                         throw new RException(ExceptionEnum.SHOP_NOT_FOUND);
                     }
@@ -171,18 +176,24 @@ public class ClientEditServiceImpl implements ClientEditService {
             }
         }
         reqContent.put("memo", clientVO.getMemo());
-
         String addRstStr = crmBaseApi.doService(reqContent, "clientEditDsyyLp");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if ("100000".equals(jsInfo.getString("code"))) {
-            CompanyVO companyVO = companyDao.getVOById(staffPO.getCompanyId());
-            //获取渠道名
-            ChannelPO channelPO = channelDao.getShowChannelById(staffPO.getCompanyId(), clientVO.getChannelId());
-            if (channelPO == null) {
-                throw new RException(ExceptionEnum.CHANNEL_NOT_FOUND);
+            if (ClientStatusConst.ONLINE_SUCCESS == clientVO.getYyRst()) {
+                //成功订单爆彩
+                ClientPushDTO clientPushDTO = clientInfoDao.getClientPushDTOById(clientVO.getKzId(), DBSplitUtil.getInfoTabName(clientVO.getCompanyId()));
+                StaffPO appoint = staffDao.getByIdAndCid(clientPushDTO.getAppointorId(), clientVO.getCompanyId());
+                OrderSuccessMsg orderSuccessMsg = new OrderSuccessMsg();
+                orderSuccessMsg.setCompanyId(clientVO.getCompanyId());
+                orderSuccessMsg.setStaffName(appoint.getNickName());
+                orderSuccessMsg.setShopName(clientPushDTO.getFilmingArea());
+                orderSuccessMsg.setAmount(String.valueOf(clientVO.getAmount()));
+                orderSuccessMsg.setType(OrderSuccessTypeEnum.TourShoot);
+                orderSuccessMsg.setSrcImg(String.valueOf(clientPushDTO.getSourceId()));
+                orderSuccessMsg.setHeadImg(appoint.getHeadImg());
+                webSocketMsgUtil.pushOrderSuccessMsg(orderSuccessMsg);
             }
-            clientPushService.pushLp(channelPO.getPushRule(), staffPO.getCompanyId(), clientVO.getKzId(), clientVO.getShopId(),
-                    clientVO.getChannelId(), channelPO.getTypeId(), companyVO.getOverTime(), companyVO.getKzInterval());
+
         } else {
             throw new RException(jsInfo.getString("msg"));
         }
