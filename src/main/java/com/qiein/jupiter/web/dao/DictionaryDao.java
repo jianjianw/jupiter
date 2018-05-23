@@ -81,4 +81,13 @@ public interface DictionaryDao extends BaseDao<DictionaryPO> {
      * @return
      */
     int delDict(@Param("id") int id,@Param("companyId")int companyId);
+
+    /**
+     * 编辑字典排序
+     * @param id
+     * @param priority
+     * @param companyId
+     * @return
+     */
+    int editDictPriority(@Param("id") int id , @Param("priority") int priority , @Param("companyId") int companyId);
 }
