@@ -1,6 +1,8 @@
 package com.qiein.jupiter.web.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.Constant;
+import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.http.CrmBaseApi;
@@ -76,6 +78,37 @@ public class ClientTrackServiceImpl implements ClientTrackService {
         if ("100000".equals(jsInfo.getString("code"))) {
             //TODO 推送
             System.out.println("转移成功");
+        } else {
+            throw new RException(jsInfo.getString("msg"));
+        }
+    }
+
+    /**
+     * 无效审批
+     *
+     * @param kzIds
+     * @param memo
+     * @param rst
+     * @param invalidLabel
+     * @param staffPO
+     */
+    public String approvalInvalidKzList(String kzIds, String memo, int rst, String invalidLabel, StaffPO staffPO) {
+        Map<String, Object> reqContent = new HashMap<>();
+        reqContent.put("companyid", staffPO.getCompanyId());
+        reqContent.put("operaid", staffPO.getId());
+        reqContent.put("operaname", staffPO.getNickName());
+        reqContent.put("kzids", kzIds);
+        reqContent.put("rst", rst);
+        reqContent.put("memo", memo);
+        reqContent.put("invalidLlabel", invalidLabel);
+
+        String addRstStr = crmBaseApi.doService(reqContent, "clientBatchApprovalLp");
+        JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
+        if ("100000".equals(jsInfo.getString("code"))) {
+            //TODO 推送
+            int wrongNum = JsonFmtUtil.strContentToJsonObj(addRstStr).getIntValue("num");
+            System.out.println(wrongNum);
+            return "审批成功:" + (kzIds.split(CommonConstant.STR_SEPARATOR).length - wrongNum) + "个,审批失败：" + wrongNum + "个";
         } else {
             throw new RException(jsInfo.getString("msg"));
         }
