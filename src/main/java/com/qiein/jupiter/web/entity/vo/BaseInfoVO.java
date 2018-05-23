@@ -35,6 +35,19 @@ public class BaseInfoVO implements Serializable {
      */
     private NewsTotalAmountAndFlag news;
 
+    /**
+     * 权限map
+     */
+    private Map<String, String> permissionMap;
+
+    public Map<String, String> getPermissionMap() {
+        return permissionMap;
+    }
+
+    public void setPermissionMap(Map<String, String> permissionMap) {
+        this.permissionMap = permissionMap;
+    }
+
     public NewsTotalAmountAndFlag getNews() {
         return news;
     }
