@@ -119,7 +119,11 @@ public enum ExceptionEnum {
     //ip白名单
     IP_ERROR(1801, "IP输入有误"),
     IP_UNALLOW(1802, "IP无权访问"),
-    IP_NOT_IN_SAFETY(1803, "当前IP不在安全IP范围内，请联系主管！");
+    IP_NOT_IN_SAFETY(1803, "当前IP不在安全IP范围内，请联系主管！"),
+	//apollo
+	ACCESSKEY_ERROR(1901,"accesskey错误"),
+	SIGN_ERROR(1902,"请求签名错误");
+	
     private Integer code;
     private String msg;
 
