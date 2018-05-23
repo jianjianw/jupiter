@@ -1,11 +1,11 @@
 package com.qiein.jupiter.util.wechat;
 
+import org.springframework.stereotype.Component;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.mzlion.easyokhttp.HttpClient;
 import com.qiein.jupiter.web.entity.dto.WeChatAuthDTO;
-import com.qiein.jupiter.web.entity.po.StaffDetailPO;
-import org.springframework.stereotype.Component;
 
 /**
  * 微信验证工具类
@@ -17,7 +17,7 @@ public class WeChatAuthUtil {
     /**
      * 获取TOKEN的URL
      */
-    private final static String tokenUrl = "https://api.weixin.qq.com/sns/oauth2/access_token";
+	private final static String tokenUrl = "https://api.weixin.qq.com/sns/oauth2/access_token";
     /**
      * 获取用户信息的URL
      */
