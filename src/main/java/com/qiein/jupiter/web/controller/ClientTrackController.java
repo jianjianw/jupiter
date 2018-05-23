@@ -38,8 +38,33 @@ public class ClientTrackController extends BaseController {
         }
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        clientTrackService.batchDeleteKzList(kzIds,currentLoginStaff);
+        clientTrackService.batchDeleteKzList(kzIds, currentLoginStaff);
         return ResultInfoUtil.success(TigMsgEnum.DELETE_SUCCESS);
+    }
+
+    /**
+     * 批量转移客资
+     *
+     * @return
+     */
+    @PostMapping("/batch_transfer_kz_list")
+    public ResultInfo batchTransferKzList(@RequestBody JSONObject jsonObject) {
+        String kzIds = StringUtil.nullToStrTrim(jsonObject.getString("kzIds"));
+        if (StringUtil.isEmpty(kzIds)) {
+            throw new RException(ExceptionEnum.KZ_ID_IS_NULL);
+        }
+        String toStaffId = StringUtil.nullToStrTrim(jsonObject.getString("toStaffId"));
+        if (StringUtil.isEmpty(toStaffId)) {
+            throw new RException(ExceptionEnum.STAFF_ID_NULL);
+        }
+        String role = StringUtil.nullToStrTrim(jsonObject.getString("role"));
+        if (StringUtil.isEmpty(role)) {
+            throw new RException(ExceptionEnum.INVALID_REASON_TYPE_NULL);
+        }
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        clientTrackService.batchTransferKzList(kzIds, role, Integer.parseInt(toStaffId), currentLoginStaff);
+        return ResultInfoUtil.success(TigMsgEnum.TRANSFER_SUCCESS);
     }
 
 
