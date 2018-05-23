@@ -163,4 +163,37 @@ public class DictionaryServiceImpl implements DictionaryService {
         return map;
     }
 
+    /**
+     * 新增字典
+     * @param dictionaryPO
+     */
+    @Override
+    public void createDict(DictionaryPO dictionaryPO) {
+        if (dictionaryDao.createDict(dictionaryPO)!=1){
+            throw new RException(ExceptionEnum.ADD_FAIL);
+        }
+    }
+
+//    /**
+//     * 编辑字典
+//     * @param dictionaryPO
+//     */
+//    @Override
+//    public void editDict(DictionaryPO dictionaryPO) {
+//        if(dictionaryDao.editDict(dictionaryPO)!=1){
+//            throw new RException(ExceptionEnum.EDIT_FAIL);
+//        }
+//    }
+
+    /**
+     * 删除字典
+     * @param id
+     * @param companyId
+     */
+    @Override
+    public void delDict(int id, int companyId) {
+        dictionaryDao.delDict(id,companyId);
+    }
+
+
 }

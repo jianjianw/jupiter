@@ -59,4 +59,26 @@ public interface DictionaryDao extends BaseDao<DictionaryPO> {
      * @return
      */
     int getMaxDicCode(@Param("companyId") int companyId, @Param("dicType") String dicType);
+
+    /**
+     * 新增字典记录
+     * @param dictionaryPO
+     * @return
+     */
+    int createDict(DictionaryPO dictionaryPO);
+
+//    /**
+//     * 编辑字典记录
+//     * @param dictionaryPO
+//     * @return
+//     */
+//    int editDict(DictionaryPO dictionaryPO);
+
+    /**
+     * 根据id删除
+     * @param id
+     * @param companyId
+     * @return
+     */
+    int delDict(@Param("id") int id,@Param("companyId")int companyId);
 }

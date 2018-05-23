@@ -73,4 +73,24 @@ public interface DictionaryService {
      * @return
      */
     Map<String, List<DictionaryPO>> getDictMapByCid(int companyId);
+
+    /**
+     * 新增字典记录
+     * @param dictionaryPO
+     */
+    void createDict(DictionaryPO dictionaryPO);
+
+//    /**
+//     * 编辑字典记录
+//     * @param dictionaryPO
+//     */
+//    void editDict(DictionaryPO dictionaryPO);
+
+    /**
+     * 根据Id删除字典记录
+     * @param id
+     * @param companyId
+     */
+    void delDict(int id ,int companyId);
+
 }

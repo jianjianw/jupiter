@@ -402,7 +402,7 @@ public class ClientPushServiceImpl implements ClientPushService {
 			return Double.MAX_VALUE;
 		}
 
-		double maxDiffPid = 0.0;
+		double maxDiffPid = -1;
 
 		// 值匹配
 		for (StaffPushDTO appointor : staffOnlineList) {
@@ -434,7 +434,7 @@ public class ClientPushServiceImpl implements ClientPushService {
 			return Double.MAX_VALUE;
 		}
 
-		double maxDiffPid = 0.0;
+		double maxDiffPid = -1;
 
 		// 值匹配
 		for (ShopChannelGroupPO rela : shopChannelGroupRelaList) {
@@ -461,7 +461,7 @@ public class ClientPushServiceImpl implements ClientPushService {
 	 */
 	private double doGroupDiffCalc(List<ShopChannelGroupPO> shopChannelGroupRelaList) {
 
-		double maxDiffPid = 0.0;
+		double maxDiffPid = -1;
 
 		// 值匹配
 		for (ShopChannelGroupPO rela : shopChannelGroupRelaList) {

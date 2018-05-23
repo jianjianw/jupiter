@@ -176,4 +176,43 @@ public class DictionaryController extends BaseController {
 				dictionaryService.getCommonDicByType(currentLoginStaff.getCompanyId(), DictionaryConstant.ZX_STYLE));
 	}
 
+	/**
+	 * 新增字典
+	 * @return
+	 */
+	@PostMapping("/{dicType}")
+	public ResultInfo createDict(@PathVariable("dicType") String dicType,@RequestBody DictionaryPO dictionaryPO){
+		dictionaryPO.setCompanyId(getCurrentLoginStaff().getCompanyId());
+		dictionaryPO.setDicType(dicType);
+		dictionaryService.createDict(dictionaryPO);
+		return ResultInfoUtil.success();
+	}
+
+	/**
+	 * 删除字典
+	 * @param id
+	 * @return
+	 */
+	@GetMapping("/{id}")
+	public ResultInfo delDict(@PathVariable("id") int id){
+		dictionaryService.delDict(id,getCurrentLoginStaff().getCompanyId());
+		return ResultInfoUtil.success();
+	}
+
+//	/**
+//	 * 编辑字典
+//	 * @param dicType
+//	 * @param dictionaryPO
+//	 * @return
+//	 */
+//	@PutMapping("/{dicType}")
+//	public ResultInfo editDict(@PathVariable("dicType") String dicType ,@RequestBody DictionaryPO dictionaryPO){
+//		dictionaryPO.setDicType(dicType);
+//		dictionaryPO.setCompanyId(getCurrentLoginStaff().getCompanyId());
+//		//TODO service
+//		dictionaryService.editDict(dictionaryPO);
+//		System.out.println(dictionaryPO);
+//		return ResultInfoUtil.success();
+//	}
+
 }
