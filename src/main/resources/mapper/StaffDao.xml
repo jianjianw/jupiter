@@ -530,8 +530,8 @@
             sf.COMPANYID
         FROM
             hm_pub_group grp
-            LEFT JOIN hm_pub_group_staff rela ON grp.GROUPID = rela.GROUPID AND rela.COMPANYID = 9999
-            LEFT JOIN hm_pub_staff sf ON rela.STAFFID = sf.ID AND sf.COMPANYID = 9999
+            LEFT JOIN hm_pub_group_staff rela ON grp.GROUPID = rela.GROUPID AND rela.COMPANYID = #{companyId}
+            LEFT JOIN hm_pub_staff sf ON rela.STAFFID = sf.ID AND sf.COMPANYID = #{companyId}
         WHERE
             grp.COMPANYID = #{companyId}
             AND grp.GROUPID = #{groupId}
