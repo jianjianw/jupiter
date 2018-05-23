@@ -193,7 +193,7 @@ public class DictionaryController extends BaseController {
 	 * @param id
 	 * @return
 	 */
-	@DeleteMapping("/{id}")
+	@GetMapping("/{id}")
 	public ResultInfo delDict(@PathVariable("id") int id){
 		dictionaryService.delDict(id,getCurrentLoginStaff().getCompanyId());
 		return ResultInfoUtil.success();
