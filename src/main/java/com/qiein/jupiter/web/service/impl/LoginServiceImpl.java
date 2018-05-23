@@ -57,9 +57,6 @@ public class LoginServiceImpl implements LoginService {
     private GroupStaffDao groupStaffDao;
 
     @Autowired
-    private CompanyDao companyDao;
-
-    @Autowired
     private DictionaryDao dictionaryDao;
 
     @Autowired
@@ -229,7 +226,11 @@ public class LoginServiceImpl implements LoginService {
             throw new RException(ExceptionEnum.IP_NOT_IN_SAFETY);
         }
         // 验证公司属性
-        CompanyPO companyPO = companyDao.getById(staff.getCompanyId());
+        CompanyPO companyPO = companyService.getById(staff.getCompanyId());
+        //被锁定
+        if (companyPO.isLockFlag()) {
+            throw new RException(ExceptionEnum.COMPANY_IS_LOCK);
+        }
         // 如果员工没有token，重新生成
         if (StringUtil.isEmpty(staff.getToken()) || companyPO.isSsoLimit()) {
             // 生成token
@@ -290,7 +291,7 @@ public class LoginServiceImpl implements LoginService {
         List<PermissionPO> permissionPOList = permissionDao.getStaffPermission(staffId, companyId);
         staffBaseInfoVO.setPermission(permissionPOList);
         // 放入公司对象
-        CompanyVO companyVO = companyDao.getVOById(companyId);
+        CompanyVO companyVO = companyService.getCompanyVO(companyId);
         companyVO.setMenuList(getCompanyMenuList(companyId, staffId));
         staffBaseInfoVO.setCompany(companyVO);
         staffBaseInfoVO.setStaffDetail(staffDao.getStaffDetail(staffId, companyId));

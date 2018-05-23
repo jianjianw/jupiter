@@ -40,6 +40,7 @@
         ON staff.COMPANYID = company.ID
         WHERE staff.PHONE = #{phone}
         AND staff.PASSWORD = #{password}
+        AND company.ISDEL = 0
     </select>
 
     <!--根据手机号码登录-->
@@ -63,6 +64,7 @@
           ON staff.COMPANYID = company.ID
         WHERE
         detail.WECHATUNIODID = #{unionId}
+          AND company.ISDEL = 0
     </select>
 
     <!--根据微信登录-->
@@ -89,6 +91,7 @@
           ON staff.COMPANYID = company.ID
         WHERE
         detail.DINGUNIONID = #{unionId}
+          AND company.ISDEL = 0
     </select>
 
     <!--根据钉钉登录-->
