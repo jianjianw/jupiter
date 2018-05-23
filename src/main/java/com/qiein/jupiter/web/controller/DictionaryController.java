@@ -215,14 +215,14 @@ public class DictionaryController extends BaseController {
 	}
 
 	/**
-	 * 编辑咨询类型
+	 * 新增咨询类型
 	 * @param dictionaryVO
 	 * @return
 	 */
-	@PostMapping("/edit_common_type")
+	@PostMapping("/add_common_type")
 	public ResultInfo editCommonType(@RequestBody DictionaryVO dictionaryVO){
 		dictionaryVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
-		dictionaryService.editCommonType(dictionaryVO);
+		dictionaryService.addCommonType(dictionaryVO);
 		return ResultInfoUtil.success();
 	}
 

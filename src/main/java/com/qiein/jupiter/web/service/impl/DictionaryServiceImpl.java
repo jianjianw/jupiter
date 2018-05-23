@@ -209,8 +209,17 @@ public class DictionaryServiceImpl implements DictionaryService {
      * @param dictionaryVO
      */
     @Override
-    public void editCommonType(DictionaryVO dictionaryVO) {
-        //TODO dao层
+    @Transactional
+    public void addCommonType(DictionaryVO dictionaryVO) {
+        //TODO dao层 先获取codes
+        String[] codes =dictionaryVO.getDicCodes().split(",");
+        //获取默认0的对应字典记录
+        List<DictionaryPO> list =dictionaryDao.getDicByCodeAndType(0,"common_type",codes);
+
+        for (DictionaryPO d:list){
+            d.setCompanyId(dictionaryVO.getCompanyId());
+            dictionaryDao.createDict(d);
+        }
     }
 
     /**

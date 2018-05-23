@@ -103,7 +103,7 @@ public interface DictionaryService {
      * 编辑咨询类型接口
      * @param dictionaryVO
      */
-    void editCommonType(DictionaryVO dictionaryVO);
+    void addCommonType(DictionaryVO dictionaryVO);
 
 
     /**

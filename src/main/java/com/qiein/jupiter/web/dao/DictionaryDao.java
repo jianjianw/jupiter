@@ -40,6 +40,8 @@ public interface DictionaryDao extends BaseDao<DictionaryPO> {
      */
     DictionaryPO getDicByTypeAndName(@Param("companyId") int companyId, @Param("dicType") String dicType, @Param("dicName") String dicName);
 
+    List<DictionaryPO> getDicByCodeAndType(@Param("companyId") int companyId,@Param("dicType") String dicType , @Param("dicCodes")String[] dicCodes);
+
     /**
      * 批量删除字典数据
      *
