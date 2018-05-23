@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.web.entity.vo.DictionaryVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import com.qiein.jupiter.util.CollectionUtils;
 import com.qiein.jupiter.web.dao.DictionaryDao;
 import com.qiein.jupiter.web.entity.po.DictionaryPO;
 import com.qiein.jupiter.web.service.DictionaryService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 字典业务层
@@ -195,5 +197,28 @@ public class DictionaryServiceImpl implements DictionaryService {
         dictionaryDao.delDict(id,companyId);
     }
 
+    /**
+     * 编辑咨询类型
+     * @param dictionaryVO
+     */
+    @Override
+    public void editCommonType(DictionaryVO dictionaryVO) {
+        //TODO dao层
+    }
+
+    /**
+     * 编辑字典排序
+     * @param id1
+     * @param priority1
+     * @param id2
+     * @param priority2
+     * @param companyId
+     */
+    @Override
+    @Transactional
+    public void editDictPriority(int id1, int priority1, int id2, int priority2, int companyId) {
+        dictionaryDao.editDictPriority(id1,priority1,companyId);
+        dictionaryDao.editDictPriority(id2,priority2,companyId);
+    }
 
 }

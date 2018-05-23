@@ -119,6 +119,16 @@
           #{spare},#{companyId}
     </insert>
 
+    <!--编辑字典排序-->
+    <update id="editDictPriority" parameterType="Integer">
+        UPDATE
+          hm_crm_dictionary
+        SET
+          PRIORITY = #{priority}
+        WHERE
+          ID = #{id} AND COMPANYID = #{companyId}
+    </update>
+
     <!--<update id="editDict" parameterType="dictionaryPO">
         UPDATE
           hm_crm_dictionary
