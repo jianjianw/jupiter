@@ -113,9 +113,9 @@
             (DICTYPE,DICCODE,DICNAME,PRIORITY,SPARE,COMPANYID)
         SELECT
           #{dicType},
-	      (SELECT IFNULL(MAX(DICCODE),0)+1 FROM hm_crm_dictionary WHERE COMPANYID = 9292 AND DICTYPE = 'common_type'),
+	      (SELECT IFNULL(MAX(DICCODE),0)+1 FROM hm_crm_dictionary WHERE COMPANYID = 9292 AND DICTYPE = #{dicType}),
           #{dicName},
-          (SELECT IFNULL(MAX(PRIORITY),0)+1 FROM hm_crm_dictionary WHERE COMPANYID = 9292 AND DICTYPE = 'common_type'),
+          (SELECT IFNULL(MAX(PRIORITY),0)+1 FROM hm_crm_dictionary WHERE COMPANYID = 9292 AND DICTYPE = #{dicType}),
           #{spare},#{companyId}
     </insert>
 
