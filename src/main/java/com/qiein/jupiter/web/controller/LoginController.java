@@ -214,12 +214,8 @@ public class LoginController extends BaseController {
     public ResultInfo checkToken(HttpServletRequest request) {
         VerifyParamDTO requestToken = HttpUtil.getRequestToken(request);
         StaffPO staff = staffService.getById(requestToken.getUid(), requestToken.getCid());
-        if (tokenInterceptor.checkToken(requestToken, staff)) {
-            return ResultInfoUtil.success(true);
-        } else {
-            return ResultInfoUtil.error(ExceptionEnum.TOKEN_VERIFY_FAIL);
-        }
-
+        tokenInterceptor.checkToken(requestToken, staff);
+        return ResultInfoUtil.error(ExceptionEnum.TOKEN_VERIFY_FAIL);
     }
 
 
