@@ -64,7 +64,7 @@ public class ClientReceiveServiceImpl implements ClientReceiveService {
 	 * @param staffId
 	 */
 	private void receive(String kzId, int logId, int companyId, int staffId, String staffName) {
-		ClientPushDTO info = clientInfoDao.getClientPushDTOById(kzId, DBSplitUtil.getInfoLogTabName(companyId));
+		ClientPushDTO info = clientInfoDao.getClientPushDTOById(kzId, DBSplitUtil.getInfoTabName(companyId),DBSplitUtil.getDetailTabName(companyId));
 		if (info == null) {
 			throw new RException(ExceptionEnum.INFO_ERROR);
 		}

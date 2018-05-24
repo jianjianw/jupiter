@@ -9,18 +9,22 @@
         <result column="APPOINTORID" jdbcType="INTEGER" property="appointorId"/>
         <result column="COMPANYID" jdbcType="INTEGER" property="companyId"/>
         <result column="PUSHINTERVAL" jdbcType="INTEGER" property="pushInterval"/>
+        <result column="SOURCEID" jdbcType="INTEGER" property="sourceId"/>
+        <result column="APPOINTNAME" jdbcType="VARCHAR" property="appointName"/>
+        <result column="FILMINGAREA" jdbcType="VARCHAR" property="filmingArea"/>
     </resultMap>
 
     <sql id="baseColumn">
-        info.ID, info.KZID, info.STATUSID, info.APPOINTORID, info.COMPANYID
+        info.ID, info.KZID, info.STATUSID, info.APPOINTORID, info.COMPANYID, info.SOURCEID
     </sql>
 
     <!--检查是否存在同名品牌-->
     <select id="getClientPushDTOById" parameterType="map" resultMap="infoMap">
 		SELECT
-			<include refid="baseColumn"/>, (UNIX_TIMESTAMP(NOW()) - info.LASTPUSHTIME) PUSHINTERVAL
+			<include refid="baseColumn"/>, (UNIX_TIMESTAMP(NOW()) - info.LASTPUSHTIME) PUSHINTERVAL, det.APPOINTNAME, det.FILMINGAREA
 		FROM
 			${infoTabName} info
+		LEFT JOIN ${detailTabName} det ON det.KZID = info.KZID AND info.COMPANYID = det.COMPANYID
 		WHERE
 			info.ISDEL = 0
 		AND info.KZID = #{kzId};
@@ -74,4 +78,6 @@
 	<update id="changeStaff" parameterType="staffChangeVO">
 
 	</update>
+
+
 </mapper>

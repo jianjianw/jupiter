@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.dao;
 
 import com.qiein.jupiter.web.entity.po.DictionaryPO;
+import com.qiein.jupiter.web.entity.vo.DictionaryVO;
 import com.qiein.jupiter.web.entity.vo.MenuVO;
 import org.apache.ibatis.annotations.Param;
 
@@ -39,6 +40,8 @@ public interface DictionaryDao extends BaseDao<DictionaryPO> {
      */
     DictionaryPO getDicByTypeAndName(@Param("companyId") int companyId, @Param("dicType") String dicType, @Param("dicName") String dicName);
 
+    List<DictionaryPO> getDicByCodeAndType(@Param("companyId") int companyId,@Param("dicType") String dicType , @Param("dicCodes")String[] dicCodes);
+
     /**
      * 批量删除字典数据
      *
@@ -67,6 +70,20 @@ public interface DictionaryDao extends BaseDao<DictionaryPO> {
      */
     int createDict(DictionaryPO dictionaryPO);
 
+    /**
+     * 新增咨询类型
+     * @param dictionaryPO
+     * @return
+     */
+    int createCommonType(DictionaryPO dictionaryPO);
+
+    /**
+     *  新增咨询类型
+     * @param dictionaryVO
+     * @return
+     */
+    int createCommonType(DictionaryVO dictionaryVO);
+
 //    /**
 //     * 编辑字典记录
 //     * @param dictionaryPO
@@ -81,4 +98,13 @@ public interface DictionaryDao extends BaseDao<DictionaryPO> {
      * @return
      */
     int delDict(@Param("id") int id,@Param("companyId")int companyId);
+
+    /**
+     * 编辑字典排序
+     * @param id
+     * @param priority
+     * @param companyId
+     * @return
+     */
+    int editDictPriority(@Param("id") int id , @Param("priority") int priority , @Param("companyId") int companyId);
 }

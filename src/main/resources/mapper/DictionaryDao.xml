@@ -113,21 +113,44 @@
             (DICTYPE,DICCODE,DICNAME,PRIORITY,SPARE,COMPANYID)
         SELECT
           #{dicType},
-	      (SELECT IFNULL(MAX(DICCODE),0)+1 FROM hm_crm_dictionary WHERE COMPANYID = 9292 AND DICTYPE = 'common_type'),
+	      (SELECT IFNULL(MAX(DICCODE),0)+1 FROM hm_crm_dictionary WHERE COMPANYID = #{companyId} AND DICTYPE = #{dicType}),
           #{dicName},
-          (SELECT IFNULL(MAX(PRIORITY),0)+1 FROM hm_crm_dictionary WHERE COMPANYID = 9292 AND DICTYPE = 'common_type'),
+          (SELECT IFNULL(MAX(PRIORITY),0)+1 FROM hm_crm_dictionary WHERE COMPANYID = #{companyId} AND DICTYPE = #{dicType}),
           #{spare},#{companyId}
     </insert>
 
-    <!--<update id="editDict" parameterType="dictionaryPO">
+    <!--新增咨询类型-->
+    <insert id="createCommonType" parameterType="dictionaryPO">
+        INSERT INTO
+        hm_crm_dictionary
+        (DICTYPE,DICCODE,DICNAME,PRIORITY,SPARE,COMPANYID)
+        SELECT
+        #{dicType},
+        #{dicCode},
+        #{dicName},
+        (SELECT IFNULL(MAX(PRIORITY),0)+1 FROM hm_crm_dictionary WHERE COMPANYID = #{companyId} AND DICTYPE = #{dicType}),
+        #{spare},#{companyId}
+    </insert>
+
+    <!--编辑字典排序-->
+    <update id="editDictPriority" parameterType="Integer">
         UPDATE
           hm_crm_dictionary
-        <set>
-            <if test="">
+        SET
+          PRIORITY = #{priority}
+        WHERE
+          ID = #{id} AND COMPANYID = #{companyId}
+    </update>
 
-            </if>
-        </set>
-    </update>-->
+    <select id="getDicByCodeAndType" parameterType="map" resultType="dictionaryPO">
+        SELECT
+          *
+        FROM
+          hm_crm_dictionary
+        WHERE
+          COMPANYID = #{companyId} AND DICTYPE = #{dicType} AND
+          DICCODE IN <foreach collection="dicCodes" item="dicCode" index="index" open="(" separator="," close=")">#{dicCode}</foreach>
+    </select>
 
     <!--删除字典记录-->
     <delete id="delDict" parameterType="Integer">

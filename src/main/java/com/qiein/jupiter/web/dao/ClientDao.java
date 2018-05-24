@@ -12,4 +12,16 @@ public interface ClientDao {
      * @param clientStatusVO
      */
     void editClientBaseInfo(@Param("clientStatusVO") ClientStatusVO clientStatusVO, @Param("tabName") String tabName);
+
+    /**
+     * 快速添加备注标签
+     *
+     * @param tabName
+     * @param companyId
+     * @param kzId
+     * @param label
+     * @return
+     */
+    public int editClientMemoLabel(@Param("tabName") String tabName, @Param("companyId") int companyId,
+                                   @Param("kzId") String kzId, @Param("label") String label);
 }

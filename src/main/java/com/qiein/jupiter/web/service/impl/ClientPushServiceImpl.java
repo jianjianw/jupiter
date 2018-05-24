@@ -32,9 +32,8 @@ import com.qiein.jupiter.web.service.ClientPushService;
 
 /**
  * 客资推送
- * 
- * @author JingChenglong 2018/05/08 10:58
  *
+ * @author JingChenglong 2018/05/08 10:58
  */
 @Service
 public class ClientPushServiceImpl implements ClientPushService {
@@ -251,7 +250,8 @@ public class ClientPushServiceImpl implements ClientPushService {
 			int overTime, int interval) {
 
 		// 获取客资信息
-		ClientPushDTO clientDTO = clientInfoDao.getClientPushDTOById(kzId, DBSplitUtil.getInfoTabName(companyId));
+		ClientPushDTO clientDTO = clientInfoDao.getClientPushDTOById(kzId, DBSplitUtil.getInfoTabName(companyId),
+				DBSplitUtil.getDetailTabName(companyId));
 
 		// 判断客资当前状态-限定客资最后推送时间已经超过分配间隔
 		if (clientDTO == null || (clientDTO.getPushInterval() != 0 && clientDTO.getPushInterval() < overTime)) {

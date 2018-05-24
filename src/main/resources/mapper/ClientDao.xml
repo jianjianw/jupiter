@@ -16,4 +16,15 @@
         WHERE
 	      KZID = #{clientStatusVO.kzId} AND COMPANYID = #{clientStatusVO.companyId}
     </update>
+
+    <!-- 快速添加备注标签 -->
+    <update id="editClientMemoLabel" parameterType="map">
+		UPDATE
+		${tabName}
+		SET
+		MEMO = CONCAT(#{label}, IFNULL(MEMO,''))
+		WHERE
+		COMPANYID = #{companyId}
+		AND KZID = #{kzId};
+	</update>
 </mapper>

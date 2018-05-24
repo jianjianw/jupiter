@@ -354,7 +354,7 @@
             AND grp.GROUPTYPE = #{type}
             AND grp.PARENTID != '0'
             AND sf.ISDEL = 0
-        ORDER BY grp.GROUPNAME, grp.ID, sf.STATUSFLAG DESC, sf.ISLOCK, sf.ID
+        ORDER BY grp.GROUPNAME, grp.ID, sf.ISLOCK, sf.STATUSFLAG DESC, sf.ID
     </select>
 
 </mapper>

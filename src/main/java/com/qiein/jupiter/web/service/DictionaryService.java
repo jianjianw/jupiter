@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.qiein.jupiter.web.entity.po.DictionaryPO;
+import com.qiein.jupiter.web.entity.vo.DictionaryVO;
 
 /**
  * 字典业务层
@@ -92,5 +93,21 @@ public interface DictionaryService {
      * @param companyId
      */
     void delDict(int id ,int companyId);
+
+    /**
+     * 编辑咨询类型接口
+     * @param dictionaryVO
+     */
+    void addCommonType(DictionaryVO dictionaryVO);
+
+
+    /**
+     * 调换字典的排序
+     * @param id1
+     * @param priority1
+     * @param id2
+     * @param priority2
+     */
+    void editDictPriority(int id1, int priority1, int id2, int priority2,int companyId);
 
 }

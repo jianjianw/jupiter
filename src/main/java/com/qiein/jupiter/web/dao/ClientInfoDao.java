@@ -20,7 +20,7 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
      * @param typeId
      * @return
      */
-    ClientPushDTO getClientPushDTOById(@Param("kzId") String kzId, @Param("infoTabName") String infoTabName);
+    ClientPushDTO getClientPushDTOById(@Param("kzId") String kzId, @Param("infoTabName") String infoTabName, @Param("detailTabName") String detailTabName);
 
     /**
      * 客资分配给客服后修改客资信息
@@ -78,8 +78,11 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
 
     /**
      * 将未交接的客资转移到指定员工
+     *
      * @param staffChangeVO
      * @return
      */
     int changeStaff(StaffChangeVO staffChangeVO);
+
+
 }

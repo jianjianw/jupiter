@@ -11,6 +11,7 @@ import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.po.DictionaryPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.entity.vo.DictionaryVO;
 import com.qiein.jupiter.web.service.DictionaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -196,6 +197,33 @@ public class DictionaryController extends BaseController {
 	@GetMapping("/{id}")
 	public ResultInfo delDict(@PathVariable("id") int id){
 		dictionaryService.delDict(id,getCurrentLoginStaff().getCompanyId());
+		return ResultInfoUtil.success();
+	}
+
+	/**
+	 * 新增咨询类型
+	 * @param dictionaryVO
+	 * @return
+	 */
+	@PostMapping("/add_common_type")
+	public ResultInfo addCommonType(@RequestBody DictionaryVO dictionaryVO){
+		dictionaryVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
+		dictionaryService.addCommonType(dictionaryVO);
+		return ResultInfoUtil.success();
+	}
+
+	/**
+	 * 编辑字典排序
+	 * @param id1
+	 * @param priority1
+	 * @param id2
+	 * @param priority2
+	 * @return
+	 */
+	@GetMapping("/edit_priority/{id1}/{priority1}/{id2}/{priority2}")
+	public ResultInfo editDictPriority(@PathVariable("id1") int id1,@PathVariable("priority1") int priority1,
+									   @PathVariable("id2") int id2,@PathVariable("priority2") int priority2){
+		dictionaryService.editDictPriority(id1,priority1,id2,priority2,getCurrentLoginStaff().getCompanyId());
 		return ResultInfoUtil.success();
 	}
 

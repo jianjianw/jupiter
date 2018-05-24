@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.web.entity.vo.DictionaryVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import com.qiein.jupiter.util.CollectionUtils;
 import com.qiein.jupiter.web.dao.DictionaryDao;
 import com.qiein.jupiter.web.entity.po.DictionaryPO;
 import com.qiein.jupiter.web.service.DictionaryService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 字典业务层
@@ -195,5 +197,52 @@ public class DictionaryServiceImpl implements DictionaryService {
         dictionaryDao.delDict(id,companyId);
     }
 
+    /**
+     * 编辑咨询类型
+     * @param dictionaryVO
+     */
+    @Override
+    @Transactional
+    public void addCommonType(DictionaryVO dictionaryVO) {
+        String[] codes =dictionaryVO.getDicCodes().split(",");
+        //获取默认0的对应字典记录
+        List<DictionaryPO> list =dictionaryDao.getDicByCodeAndType(0,"common_type",codes);
+        for (DictionaryPO d:list){
+            d.setCompanyId(dictionaryVO.getCompanyId());
+            dictionaryDao.createCommonType(d);
+        }
+        //TODO 这里循环了数据源，但是将查询结果insert的sql不能解决排序自增的需求
+        //sql
+//    <!--将查询出的公司0结果插入自己公司-->
+//        INSERT INTO
+//                hm_crm_dictionary
+//        (DICTYPE,DICCODE,DICNAME,PRIORITY,SPARE,COMPANYID)
+//        SELECT
+//                DICTYPE,
+//                DICCODE,
+//                DICNAME,
+//                (SELECT IFNULL(MAX(PRIORITY),0)+1 FROM hm_crm_dictionary WHERE COMPANYID = 1 AND DICTYPE = 'common_type') PRIORITY,
+//                SPARE,1 COMPANYID
+//                FROM
+//        hm_crm_dictionary dd
+//        WHERE
+//                COMPANYID = 0 AND DICTYPE = 'common_type' AND
+//        DICCODE IN (7,8,9)
+    }
+
+    /**
+     * 编辑字典排序
+     * @param id1
+     * @param priority1
+     * @param id2
+     * @param priority2
+     * @param companyId
+     */
+    @Override
+    @Transactional
+    public void editDictPriority(int id1, int priority1, int id2, int priority2, int companyId) {
+        dictionaryDao.editDictPriority(id1,priority1,companyId);
+        dictionaryDao.editDictPriority(id2,priority2,companyId);
+    }
 
 }
