@@ -29,7 +29,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -288,9 +290,11 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public BaseInfoVO getBaseInfo(int staffId, int companyId) {
         BaseInfoVO staffBaseInfoVO = new BaseInfoVO();
-        // 权限列表
+        // 权限列表 和 map
         List<PermissionPO> permissionPOList = permissionDao.getStaffPermission(staffId, companyId);
+        Map<String, String> permissionMap = getPermissionMap(permissionPOList);
         staffBaseInfoVO.setPermission(permissionPOList);
+        staffBaseInfoVO.setPermissionMap(permissionMap);
         // 放入公司对象
         CompanyVO companyVO = companyService.getCompanyVO(companyId);
         companyVO.setMenuList(getCompanyMenuList(companyId, staffId));
@@ -371,6 +375,22 @@ public class LoginServiceImpl implements LoginService {
             }
         }
         return menuList;
+    }
+
+    /**
+     * 获取权限Map
+     *
+     * @param permissionPOList
+     * @return
+     */
+    private Map<String, String> getPermissionMap(List<PermissionPO> permissionPOList) {
+        Map<String, String> map = new HashMap<>();
+        if (CollectionUtils.isNotEmpty(permissionPOList)) {
+            for (PermissionPO permissionPO : permissionPOList) {
+                map.put(String.valueOf(permissionPO.getPermissionId()), permissionPO.getPermissionName());
+            }
+        }
+        return map;
     }
 
 

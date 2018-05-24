@@ -81,6 +81,11 @@ public interface DictionaryService {
      */
     void createDict(DictionaryPO dictionaryPO);
 
+    /**
+     * 新增咨询类型
+     */
+    void createCommonType(DictionaryVO dictionaryVO);
+
 //    /**
 //     * 编辑字典记录
 //     * @param dictionaryPO
@@ -98,7 +103,7 @@ public interface DictionaryService {
      * 编辑咨询类型接口
      * @param dictionaryVO
      */
-    void editCommonType(DictionaryVO dictionaryVO);
+    void addCommonType(DictionaryVO dictionaryVO);
 
 
     /**

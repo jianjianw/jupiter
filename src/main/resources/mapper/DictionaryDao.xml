@@ -129,6 +129,32 @@
           ID = #{id} AND COMPANYID = #{companyId}
     </update>
 
+    <select id="getDicByCodeAndType" parameterType="map" resultType="dictionaryPO">
+        SELECT
+          *
+        FROM
+          hm_crm_dictionary
+        WHERE
+          COMPANYID = #{companyId} AND DICTYPE = #{dicType} AND
+          DICCODE IN <foreach collection="dicCodes" item="dicCode" index="index" open="(" separator="," close=")">#{dicCode}</foreach>
+    </select>
+
+    <!--将查询出的公司0结果插入自己公司-->
+    <!--INSERT INTO
+	      hm_crm_dictionary
+            (DICTYPE,DICCODE,DICNAME,PRIORITY,SPARE,COMPANYID)
+SELECT
+	DICTYPE,
+	(SELECT IFNULL(MAX(DICCODE),0)+1 FROM hm_crm_dictionary WHERE COMPANYID = 1 AND DICTYPE = 'common_type') DICCODE,
+DICNAME,
+(SELECT IFNULL(MAX(PRIORITY),0)+1 FROM hm_crm_dictionary WHERE COMPANYID = 1 AND DICTYPE = 'common_type') PRIORITY,
+SPARE,1 COMPANYID
+FROM
+	hm_crm_dictionary dd
+WHERE
+	COMPANYID = 0 AND DICTYPE = 'common_type' AND
+          DICCODE IN (7,8,9)-->
+
     <!--<update id="editDict" parameterType="dictionaryPO">
         UPDATE
           hm_crm_dictionary
