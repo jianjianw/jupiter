@@ -72,8 +72,5 @@ public class ClientServiceImpl implements ClientService {
         clientDao.editClientMemoLabel(DBSplitUtil.getDetailTabName(companyId), companyId, kzId, "【微信已扫码】");
         int addLogNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(companyId), new ClientLogPO(kzId, CommonConstant.DEFAULT_ZERO, null
                 , "通过扫描二维码复制了微信账号", ClientLogConst.INFO_LOGTYPE_EDIT, companyId));
-        if (addLogNum != 1) {
-            System.out.println("插入客资日志失败");
-        }
     }
 }
