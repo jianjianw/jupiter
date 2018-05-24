@@ -177,6 +177,7 @@ public class GoEasyUtil {
 		int cid = 1;
 		int uid = 98;
 		pushStaffRefresh(cid, uid, "192.168.1.1", "浙江省杭州市");
+		// pushStatusRefresh(cid, uid);
 	}
 
 	/**

@@ -56,6 +56,9 @@ public class ClientReceiveServiceImpl implements ClientReceiveService {
 		}
 	}
 
+	/**
+	 * 客资拒接
+	 */
 	@Override
 	public void refuse(String kzId, String logId, int companyId, int staffId, String staffName) {
 
