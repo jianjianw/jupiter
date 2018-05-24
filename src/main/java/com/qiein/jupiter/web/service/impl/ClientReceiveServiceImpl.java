@@ -87,7 +87,7 @@ public class ClientReceiveServiceImpl implements ClientReceiveService {
 		}
 
 		// 修改客资的领取时间和最后操作时间
-		updateNum = clientInfoDao.updateClientInfoAfterAllot(companyId, DBSplitUtil.getInfoLogTabName(companyId), kzId);
+		updateNum = clientInfoDao.updateClientInfoAfterAllot(companyId, DBSplitUtil.getInfoTabName(companyId), kzId);
 		if (1 != updateNum) {
 			throw new RException(ExceptionEnum.INFO_EDIT_ERROR);
 		}
