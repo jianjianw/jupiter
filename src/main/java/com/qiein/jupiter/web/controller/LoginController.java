@@ -195,5 +195,15 @@ public class LoginController extends BaseController {
         return ResultInfoUtil.success(loginService.loginWithCompanyIdByDing(code, cid, getIp()));
     }
 
+    /**
+     * 校验token
+     *
+     * @return
+     */
+    @GetMapping("/check_token")
+    public ResultInfo checkToken() {
+        return ResultInfoUtil.success(true);
+    }
+
 
 }
