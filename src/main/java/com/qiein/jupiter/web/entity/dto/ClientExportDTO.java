@@ -80,8 +80,7 @@ public class ClientExportDTO implements Serializable {
      * 高级搜索sql拼接
      */
     private String superSql;
-    private int page;
-    private int size;
+   
 
     public int getCompanyId() {
         return companyId;
@@ -243,19 +242,4 @@ public class ClientExportDTO implements Serializable {
         this.superSql = superSql;
     }
 
-    public int getPage() {
-        return page;
-    }
-
-    public void setPage(int page) {
-        this.page = page;
-    }
-
-    public int getSize() {
-        return size;
-    }
-
-    public void setSize(int size) {
-        this.size = size;
-    }
 }
