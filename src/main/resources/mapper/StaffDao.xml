@@ -682,4 +682,30 @@
         WHERE id = #{id}
               AND COMPANYID = #{companyId}
     </update>
+    
+    <!-- 获取员工今日分配的客资数 -->
+    <select id="getTodayKzNum" parameterType="map" resultType="Integer">
+        SELECT
+			COUNT(info.KZID) NUM
+		FROM
+			${infoTabName} info
+		LEFT JOIN hm_crm_channel channel ON info.CHANNELID = channel.ID AND channel.COMPANYID = #{companyId}
+		WHERE
+			info.ISDEL = 0
+		AND info.COMPANYID = #{companyId}
+		AND info.APPOINTORID = #{staffId}
+		AND info.STATUSID != 5
+		AND info.STATUSID != 0
+		AND info.STATUSID != 98
+		AND info.STATUSID != 99
+		AND (
+			channel.PUSHRULE = 11
+			OR channel.PUSHRULE = 1
+		)
+    </select>
+    
+    <!-- 修改员工今日领取客资数 -->
+    <update id="updateTodatKzNum">
+        UPDATE hm_pub_staff SET TODAYNUM = #{num} WHERE COMPANYID = #{companyId} AND ID = #{staffId};
+    </update>
 </mapper>

@@ -10,12 +10,14 @@ import com.qiein.jupiter.constant.ClientStatusConst;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
+import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.ClientAllotLogDao;
 import com.qiein.jupiter.web.dao.ClientInfoDao;
 import com.qiein.jupiter.web.dao.ClientLogDao;
+import com.qiein.jupiter.web.dao.StaffDao;
 import com.qiein.jupiter.web.entity.dto.ClientPushDTO;
 import com.qiein.jupiter.web.entity.po.ClientLogPO;
 import com.qiein.jupiter.web.service.ClientReceiveService;
@@ -35,6 +37,8 @@ public class ClientReceiveServiceImpl implements ClientReceiveService {
 	private ClientLogDao clientLogDao;
 	@Autowired
 	private ClientAllotLogDao clientAllotLogDao;
+	@Autowired
+	private StaffDao staffDao;
 
 	@Override
 	@Transactional
@@ -107,8 +111,18 @@ public class ClientReceiveServiceImpl implements ClientReceiveService {
 		}
 
 		// 计算客服今日领取客资数
+		int num = staffDao.getTodayKzNum(companyId, staffId, DBSplitUtil.getInfoTabName(companyId));
+		// 修改今日领取客资数
+		updateNum = staffDao.updateTodatKzNum(companyId, staffId, num);
+		if (1 != updateNum) {
+			throw new RException(ExceptionEnum.STAFF_EDIT_ERROR);
+		}
+
+		// 计算是否满限
+		// TODO
 
 		// 推送页面重载客资列表
+		GoEasyUtil.pushInfoRefresh(companyId, staffId);
 	}
 
 	/**
