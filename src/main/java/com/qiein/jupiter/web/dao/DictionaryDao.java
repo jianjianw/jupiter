@@ -71,6 +71,13 @@ public interface DictionaryDao extends BaseDao<DictionaryPO> {
     int createDict(DictionaryPO dictionaryPO);
 
     /**
+     * 新增咨询类型
+     * @param dictionaryPO
+     * @return
+     */
+    int createCommonType(DictionaryPO dictionaryPO);
+
+    /**
      *  新增咨询类型
      * @param dictionaryVO
      * @return

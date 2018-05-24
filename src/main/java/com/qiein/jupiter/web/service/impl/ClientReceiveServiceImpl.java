@@ -40,7 +40,7 @@ public class ClientReceiveServiceImpl implements ClientReceiveService {
 		if (StringUtil.haveEmpty(kzId, logId) || NumUtil.haveInvalid(companyId, staffId)) {
 			throw new RException(ExceptionEnum.INFO_ERROR);
 		}
-		if (kzId.indexOf(CommonConstant.STR_SEPARATOR) != 0) {
+		if (kzId.length() > 32 && kzId.indexOf(CommonConstant.STR_SEPARATOR) != -1) {
 			// 多个客资领取
 			receive(kzId.split(CommonConstant.STR_SEPARATOR), logId.split(CommonConstant.STR_SEPARATOR), companyId,
 					staffId, staffName);
@@ -64,7 +64,8 @@ public class ClientReceiveServiceImpl implements ClientReceiveService {
 	 * @param staffId
 	 */
 	private void receive(String kzId, int logId, int companyId, int staffId, String staffName) {
-		ClientPushDTO info = clientInfoDao.getClientPushDTOById(kzId, DBSplitUtil.getInfoTabName(companyId),DBSplitUtil.getDetailTabName(companyId));
+		ClientPushDTO info = clientInfoDao.getClientPushDTOById(kzId, DBSplitUtil.getInfoTabName(companyId),
+				DBSplitUtil.getDetailTabName(companyId));
 		if (info == null) {
 			throw new RException(ExceptionEnum.INFO_ERROR);
 		}
