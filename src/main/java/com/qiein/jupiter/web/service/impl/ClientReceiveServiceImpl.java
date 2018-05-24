@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.qiein.jupiter.constant.ClientConst;
 import com.qiein.jupiter.constant.ClientLogConst;
@@ -36,6 +37,7 @@ public class ClientReceiveServiceImpl implements ClientReceiveService {
 	private ClientAllotLogDao clientAllotLogDao;
 
 	@Override
+	@Transactional
 	public void receive(String kzId, String logId, int companyId, int staffId, String staffName) {
 		if (StringUtil.haveEmpty(kzId, logId) || NumUtil.haveInvalid(companyId, staffId)) {
 			throw new RException(ExceptionEnum.INFO_ERROR);
@@ -81,21 +83,27 @@ public class ClientReceiveServiceImpl implements ClientReceiveService {
 		int updateNum = clientInfoDao.updateClientInfoStatus(companyId, DBSplitUtil.getInfoTabName(companyId), kzId,
 				ClientStatusConst.KZ_CLASS_NEW, ClientStatusConst.BE_HAVE_MAKE_ORDER);
 		if (1 != updateNum) {
-			System.out.println("更新失败");
+			throw new RException(ExceptionEnum.INFO_STATUS_EDIT_ERROR);
+		}
+
+		// 修改客资的领取时间和最后操作时间
+		updateNum = clientInfoDao.updateClientInfoAfterAllot(companyId, DBSplitUtil.getInfoTabName(companyId), kzId);
+		if (1 != updateNum) {
+			throw new RException(ExceptionEnum.INFO_EDIT_ERROR);
 		}
 
 		// 添加客资领取日志
 		updateNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(companyId), new ClientLogPO(kzId, staffId,
 				staffName, ClientLogConst.INFO_LOG_RECEIVE, ClientLogConst.INFO_LOGTYPE_RECEIVE, companyId));
 		if (1 != updateNum) {
-			System.out.println("更新失败");
+			throw new RException(ExceptionEnum.LOG_ERROR);
 		}
 
 		// 修改客资分配日志状态为已领取
 		updateNum = clientAllotLogDao.updateAllogLog(DBSplitUtil.getAllotLogTabName(companyId), companyId, kzId, logId,
 				ClientConst.ALLOT_LOG_STATUS_YES, "now");
 		if (1 != updateNum) {
-			System.out.println("修改错误");
+			throw new RException(ExceptionEnum.ALLOT_LOG_ERROR);
 		}
 
 		// 计算客服今日领取客资数

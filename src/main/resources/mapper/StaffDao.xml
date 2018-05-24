@@ -557,7 +557,7 @@
         AND info.CHANNELID = #{channelId}
         AND info.STATUSID != 5
         AND info.CREATETIME &gt;= UNIX_TIMESTAMP(CAST(SYSDATE() AS DATE))
-        AND ( UNIX_TIMESTAMP(NOW()) - info.CREATETIME ) &gt; ${calcRange}
+        AND ( UNIX_TIMESTAMP(NOW()) - info.CREATETIME ) &lt; ${calcRange}
         AND info.APPOINTORID IN
         <foreach collection="staffList" item="staff" index="index" open="(" separator="," close=")">
             #{staff.staffId}

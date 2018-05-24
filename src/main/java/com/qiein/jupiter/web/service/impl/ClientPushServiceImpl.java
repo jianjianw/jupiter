@@ -11,6 +11,8 @@ import com.qiein.jupiter.constant.ClientConst;
 import com.qiein.jupiter.constant.ClientLogConst;
 import com.qiein.jupiter.constant.ClientStatusConst;
 import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.exception.ExceptionEnum;
+import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
 import com.qiein.jupiter.util.CollectionUtils;
 import com.qiein.jupiter.util.DBSplitUtil;
@@ -124,32 +126,32 @@ public class ClientPushServiceImpl implements ClientPushService {
 				kzId, ClientStatusConst.KZ_CLASS_NEW, ClientStatusConst.BE_HAVE_MAKE_ORDER, appointer.getStaffId(),
 				appointer.getGroupId(), ClientConst.ALLOT_SYSTEM_AUTO);
 		if (1 != updateRstNum) {
-			System.out.println("修改错误");
+			throw new RException(ExceptionEnum.INFO_STATUS_EDIT_ERROR);
 		}
 
 		updateRstNum = clientInfoDao.updateClientDetailWhenAllot(companyId, DBSplitUtil.getDetailTabName(companyId),
 				kzId, appointer.getStaffName(), appointer.getGroupName());
 		if (1 != updateRstNum) {
-			System.out.println("修改错误");
+			throw new RException(ExceptionEnum.INFO_EDIT_ERROR);
 		}
 
 		// 修改指定分配日志状态为已领取
 		updateRstNum = clientAllotLogDao.updateAllogLog(DBSplitUtil.getAllotLogTabName(companyId), companyId, kzId,
 				allotLogId, ClientConst.ALLOT_LOG_STATUS_YES, "now");
 		if (1 != updateRstNum) {
-			System.out.println("修改错误");
+			throw new RException(ExceptionEnum.INFO_STATUS_EDIT_ERROR);
 		}
 
 		// 修改客资的领取时间
 		updateRstNum = clientInfoDao.updateClientInfoAfterAllot(companyId, DBSplitUtil.getInfoTabName(companyId), kzId);
 		if (1 != updateRstNum) {
-			System.out.println("修改错误");
+			throw new RException(ExceptionEnum.INFO_EDIT_ERROR);
 		}
 
 		// 修改客服最后推送时间
 		updateRstNum = staffDao.updateStaffLastPushTime(companyId, appointer.getStaffId());
 		if (1 != updateRstNum) {
-			System.out.println("修改错误");
+			throw new RException(ExceptionEnum.STAFF_EDIT_ERROR);
 		}
 
 		// 客资日志记录
@@ -158,7 +160,7 @@ public class ClientPushServiceImpl implements ClientPushService {
 						ClientLogConst.getAutoAllotLog(appointer.getGroupName(), appointer.getStaffName()),
 						ClientLogConst.INFO_LOGTYPE_ALLOT, companyId));
 		if (1 != updateRstNum) {
-			System.out.println("更新失败");
+			throw new RException(ExceptionEnum.LOG_ERROR);
 		}
 
 		// 推送消息
@@ -180,19 +182,19 @@ public class ClientPushServiceImpl implements ClientPushService {
 				kzId, ClientStatusConst.KZ_CLASS_NEW, ClientStatusConst.BE_ALLOTING, appointer.getStaffId(),
 				appointer.getGroupId(), ClientConst.ALLOT_SYSTEM_AUTO);
 		if (1 != updateRstNum) {
-			System.out.println("修改错误");
+			throw new RException(ExceptionEnum.INFO_STATUS_EDIT_ERROR);
 		}
 
 		updateRstNum = clientInfoDao.updateClientDetailWhenAllot(companyId, DBSplitUtil.getDetailTabName(companyId),
 				kzId, appointer.getStaffName(), appointer.getGroupName());
 		if (1 != updateRstNum) {
-			System.out.println("修改错误");
+			throw new RException(ExceptionEnum.INFO_EDIT_ERROR);
 		}
 
 		// 修改客服最后推送时间
 		updateRstNum = staffDao.updateStaffLastPushTime(companyId, appointer.getStaffId());
 		if (1 != updateRstNum) {
-			System.out.println("修改错误");
+			throw new RException(ExceptionEnum.STAFF_EDIT_ERROR);
 		}
 
 		// 客资日志记录
@@ -200,6 +202,9 @@ public class ClientPushServiceImpl implements ClientPushService {
 				new ClientLogPO(kzId,
 						ClientLogConst.getAutoReceiveLog(appointer.getGroupName(), appointer.getStaffName()),
 						ClientLogConst.INFO_LOGTYPE_ALLOT, companyId));
+		if (1 != updateRstNum) {
+			throw new RException(ExceptionEnum.LOG_ERROR);
+		}
 
 		// 推送消息
 		GoEasyUtil.pushAppInfoReceive(companyId, appointer.getStaffId(), 1, kzId, allotLogId, overTime);
@@ -228,7 +233,7 @@ public class ClientPushServiceImpl implements ClientPushService {
 		clientAllotLogDao.addClientAllogLog(DBSplitUtil.getAllotLogTabName(companyId), allotLog);
 
 		if (NumUtil.isInValid(allotLog.getId())) {
-			System.out.println("日志记录错误");
+			throw new RException(ExceptionEnum.ALLOT_LOG_ERROR);
 		}
 
 		return allotLog;
