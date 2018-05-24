@@ -57,7 +57,7 @@
     <!-- 客资分配后修改客资的领取时间和最后操作时间 -->
     <update id="updateClientInfoAfterAllot" parameterType="map">
     	UPDATE ${infoTabName}
-		SET RECEIVETIME = UNIX_TIMESTAMP(NOW())
+		SET RECEIVETIME = UNIX_TIMESTAMP(NOW()), UPDATETIME = UNIX_TIMESTAMP(NOW())
 		WHERE
 			KZID = #{kzId}
 		AND COMPANYID = #{companyId}
