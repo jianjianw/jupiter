@@ -525,6 +525,10 @@ public class ClientPushServiceImpl implements ClientPushService {
 	 * @return
 	 */
 	public List<ClientPushDTO> getInfoListBeReadyPush(int companyId, int interval) {
-		return clientInfoDao.getInfoListBeReadyPush(DBSplitUtil.getInfoTabName(companyId), companyId, interval);
+		try {
+			return clientInfoDao.getInfoListBeReadyPush(DBSplitUtil.getInfoTabName(companyId), companyId, interval);
+		} catch (Exception e) {
+			return null;
+		}
 	}
 }
