@@ -15,5 +15,5 @@ public interface LazyWorkDao {
      * @param companyId
      * @return
      */
-    List<LazyWorkVO> getLazyWorkListByStaffId(@Param("staffId") int staffId,@Param("companyId") int companyId);
+    List<LazyWorkVO> getLazyWorkListByStaffId(@Param("staffId") int staffId,@Param("companyId") int companyId,@Param("logTab") String logTab,@Param("infoTab")String infoTab);
 }

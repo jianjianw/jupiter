@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.service.impl;
 
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
+import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.*;
 import com.qiein.jupiter.web.entity.dto.StaffMarsDTO;
@@ -212,11 +213,15 @@ public class StaffMarsServiceImpl implements StaffMarsService {
         //员工详情
         StaffDetailVO staff = staffDao.getStaffDetailVO(staffMarsDTO.getId(), staffMarsDTO.getCompanyId());
         if (staffMarsDTO.getLimitDay() != null) { //  改了日接单限额
-            if (staff.getTodayNum() >= staffMarsDTO.getLimitDay())   //如果今日接单数大于等于接单上限，设置为满限状态
+            if (staff.getTodayNum() >= staffMarsDTO.getLimitDay()) {   //如果今日接单数大于等于接单上限，设置为满限状态
                 staffMarsDTO.setStatusFlag(9);
-            else {
+                // 推送状态重载消息
+                GoEasyUtil.pushStatusRefresh(staff.getCompanyId(), staff.getId());
+            }else{
                 if (staff.getStatusFlag() == 9) {  //如果之前是满限状态，更改为已停单
                     staffMarsDTO.setStatusFlag(0);
+                    // 推送状态重载消息
+                    GoEasyUtil.pushStatusRefresh(staff.getCompanyId(),staff.getId());
                 }
             }
         }

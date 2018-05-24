@@ -3,19 +3,15 @@ package com.qiein.jupiter.web.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import com.alibaba.fastjson.JSONObject;
-import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.http.CrmBaseApi;
 import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.entity.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,13 +24,11 @@ import com.qiein.jupiter.aop.aspect.annotation.LoginLog;
 import com.qiein.jupiter.aop.validate.annotation.Bool;
 import com.qiein.jupiter.aop.validate.annotation.Id;
 import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
-import com.qiein.jupiter.constant.RedisConstant;
 import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.dto.StaffPasswordDTO;
-import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.service.StaffService;
 
@@ -214,6 +208,12 @@ public class StaffController extends BaseController {
 
         // 检查是否可删除
         // 先检查是否为客服
+        Map<String , Object> map = new HashMap<>();
+        String addRstStr = crmBaseApi.doService(map, "clientMoveLp");
+        JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
+        if (!"100000".equals(jsInfo.getString("code")))
+            throw new RException(jsInfo.getString("msg"));
+
         // 是客服则检查是否存在未邀约客资
         // TODO 等待客资内容写完继续写删除
         StaffStateVO staffStateVO = new StaffStateVO();
@@ -232,25 +232,16 @@ public class StaffController extends BaseController {
      */
     @GetMapping("/del_staff_check")
     public ResultInfo DelStaffCheck(@NotEmptyStr @RequestParam("staffId") String ids) {
-        // // 获取当前登录账户
-        // StaffPO currentLoginStaff = getCurrentLoginStaff();
+        Map<String,Object> map = new HashMap<>();
+        map.put("companyid",getCurrentLoginStaff().getCompanyId());
+        map.put("oldstaffid",ids);
+        String addRstStr = crmBaseApi.doService(map, "staffCanBeDelete");
+        JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
+        if (!"100000".equals(jsInfo.getString("code"))){
+            return ResultInfoUtil.success(jsInfo.get("content.result"));
+        }
 
-        // // 获取操作用户所属公司
-        // Integer companyId = currentLoginStaff.getCompanyId();
-        //
-        // // 待被检查是否可删除的员工数组
-        // String[] array = ids.split(",");
-
-        // 检查是否可删除
-        // 先检查是否为客服
-        // String msg = "";
-        // if (true) {
-        // TODO 等待客资内容写完继续写删除
-        // msg = staffService.checkBatDelete(array, companyId);
-        // } else {
-        // }
-        // 是客服则检查是否存在未邀约客资
-        return ResultInfoUtil.success(TigMsgEnum.SUCCESS, true);
+        return ResultInfoUtil.success();
     }
 
     /**

@@ -4,10 +4,10 @@
 
     <select id="getLazyWorkListByStaffId" parameterType="Integer" resultType="lazyWorkVO">
         SELECT
-	        log.ALLOTTIME, log.STAFFID, log.STAFFNAME, log.KZNUM, log.KZID, info.CHANNELID, info.SOURCEID
+	        log.ALLOTTIME, log.STAFFID, log.STAFFNAME, info.ID kzNum, log.KZID, info.CHANNELID, info.SOURCEID
         FROM
-	        hm_crm_allot_log_1314 log
-        LEFT JOIN hm_crm_client_info_1314 info ON log.KZID = info.KZID AND info.COMPANYID = 1314
+	        ${logTab} log
+        LEFT JOIN ${infoTab} info ON log.KZID = info.KZID AND info.COMPANYID = #{companyId}
         WHERE
 	        log.COMPANYID = #{companyId}
         AND log.STAFFID = #{staffId}

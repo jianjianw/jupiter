@@ -33,6 +33,8 @@ public class StaffStateVO implements Serializable {
      */
     private Integer companyId;
 
+    public StaffStateVO(){}
+
     public String getIds() {
         return ids;
     }

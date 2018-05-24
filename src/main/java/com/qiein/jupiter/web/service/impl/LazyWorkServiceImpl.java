@@ -25,6 +25,9 @@ public class LazyWorkServiceImpl implements LazyWorkService {
      */
     @Override
     public List<LazyWorkVO> getLazyWorkListByStaffId(int staffId, int companyId) {
-        return lazyWorkDao.getLazyWorkListByStaffId(staffId, companyId);
+        //TODO 表名之后改
+        String logTab  = "hm_crm_allot_log_"+companyId;
+        String infoTab = "hm_crm_client_info_"+companyId;
+        return lazyWorkDao.getLazyWorkListByStaffId(staffId, companyId,logTab,infoTab);
     }
 }
