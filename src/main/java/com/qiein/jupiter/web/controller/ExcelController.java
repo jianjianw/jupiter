@@ -122,7 +122,7 @@ public class ExcelController extends BaseController {
     /**
      * 导出示例
      */
-    @GetMapping("/export_client_list")
+    @PostMapping("/export_client_list")
     public void exportClientList(HttpServletResponse response, @RequestBody ClientExportDTO clientExportDTO) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
