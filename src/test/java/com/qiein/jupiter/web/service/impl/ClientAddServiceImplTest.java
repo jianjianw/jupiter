@@ -24,7 +24,7 @@ public class ClientAddServiceImplTest {
 		clientVO.setShopId(65);
 		clientVO.setKzName("JINGCHENGLONG");
 		clientVO.setTypeId(1);
-		clientVO.setKzPhone("2sddd256");
+		clientVO.setKzPhone("2swewdyuidd256");
 		StaffPO staffPO = new StaffPO();
 		staffPO.setCompanyId(2012);
 		staffPO.setId(698);
