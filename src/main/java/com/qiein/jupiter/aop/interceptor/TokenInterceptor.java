@@ -88,25 +88,6 @@ public class TokenInterceptor implements HandlerInterceptor {
         // 根据uid cid 从缓存中获取当前登录用户
         String userTokenKey = RedisConstant.getStaffKey(verifyParamDTO.getUid(), verifyParamDTO.getCid());
         StaffPO staffPO = (StaffPO) redisTemplate.opsForValue().get(userTokenKey);
-        // 如果缓存中命中失败,从数据库获取用户信息
-        if (staffPO == null) {
-            staffPO = staffService.getById(verifyParamDTO.getUid(), verifyParamDTO.getCid());
-            if (staffPO == null) {
-                // 验证用户不存在
-                throw new RException(ExceptionEnum.VERIFY_USER_NOT_FOUND);
-            } else if (StringUtil.isEmpty(staffPO.getToken())) {
-                // 如果用户当前没有token，说明没有登录或token过期
-                throw new RException(ExceptionEnum.TOKEN_INVALID);
-            }
-        }
-        // 验证是否被锁定
-        if (staffPO.isLockFlag()) {
-            throw new RException(ExceptionEnum.USER_IS_LOCK);
-        }
-        // 验证token是否相等
-        if (!StringUtil.ignoreCaseEqual(verifyParamDTO.getToken(), staffPO.getToken())) {
-            throw new RException(ExceptionEnum.TOKEN_VERIFY_FAIL);
-        }
         // 验证成功，更新过期时间
         redisTemplate.opsForValue().set(userTokenKey, staffPO, CommonConstant.DEFAULT_EXPIRE_TIME, TimeUnit.HOURS);
 
@@ -128,4 +109,33 @@ public class TokenInterceptor implements HandlerInterceptor {
         logger.info("访问ip:" + ipAddr);
     }
 
+    /**
+     * 校验token
+     *
+     * @param verifyParamDTO
+     * @param staffPO
+     * @return
+     */
+    public boolean checkToken(VerifyParamDTO verifyParamDTO, StaffPO staffPO) {
+        // 如果缓存中命中失败,从数据库获取用户信息
+        if (staffPO == null) {
+            staffPO = staffService.getById(verifyParamDTO.getUid(), verifyParamDTO.getCid());
+            if (staffPO == null) {
+                // 验证用户不存在
+                throw new RException(ExceptionEnum.VERIFY_USER_NOT_FOUND);
+            } else if (StringUtil.isEmpty(staffPO.getToken())) {
+                // 如果用户当前没有token，说明没有登录或token过期
+                throw new RException(ExceptionEnum.TOKEN_INVALID);
+            }
+        }
+        // 验证是否被锁定
+        if (staffPO.isLockFlag()) {
+            throw new RException(ExceptionEnum.USER_IS_LOCK);
+        }
+        // 验证token是否相等
+        if (!StringUtil.ignoreCaseEqual(verifyParamDTO.getToken(), staffPO.getToken())) {
+            throw new RException(ExceptionEnum.TOKEN_VERIFY_FAIL);
+        }
+        return true;
+    }
 }
