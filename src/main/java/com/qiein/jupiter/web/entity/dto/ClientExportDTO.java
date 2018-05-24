@@ -16,7 +16,7 @@ public class ClientExportDTO implements Serializable {
     /**
      * 员工ID
      */
-    private int uid;
+    private String uid;
     /**
      * token
      */
@@ -32,45 +32,45 @@ public class ClientExportDTO implements Serializable {
     /**
      * 搜索客资时间类型
      */
-    private int timeType;
+    private String timeType;
     /**
      * 开始时间
      */
-    private int start;
+    private String start;
     /**
      * 结束时间
      */
-    private int end;
+    private String end;
     /**
      * 渠道ID
      */
-    private int channelId;
+    private String channelId;
     /**
      * 来源ID
      */
-    private int sourceId;
+    private String sourceId;
     /**
      * 拍摄地ID
      */
-    private int shopId;
+    private String shopId;
     /**
      * 搜索员工的ID
      */
-    private int staffId;
+    private String staffId;
     /**
      * 婚纱照类型
      */
-    private int typeId;
+    private String typeId;
     /**
      * 意向等级
      */
-    private int yxLevel;
+    private String yxLevel;
     /**
      * 邀约客服ID拼接
      */
     private String appointIds;
-    private int pmsLimit;
-    private int linkLimit;
+    private String pmsLimit;
+    private String linkLimit;
     private String spareSql;
     /**
      * 过滤sql拼接
@@ -80,7 +80,7 @@ public class ClientExportDTO implements Serializable {
      * 高级搜索sql拼接
      */
     private String superSql;
-   
+
 
     public int getCompanyId() {
         return companyId;
@@ -90,11 +90,11 @@ public class ClientExportDTO implements Serializable {
         this.companyId = companyId;
     }
 
-    public int getUid() {
+    public String getUid() {
         return uid;
     }
 
-    public void setUid(int uid) {
+    public void setUid(String uid) {
         this.uid = uid;
     }
 
@@ -122,75 +122,75 @@ public class ClientExportDTO implements Serializable {
         this.role = role;
     }
 
-    public int getTimeType() {
+    public String getTimeType() {
         return timeType;
     }
 
-    public void setTimeType(int timeType) {
+    public void setTimeType(String timeType) {
         this.timeType = timeType;
     }
 
-    public int getStart() {
+    public String getStart() {
         return start;
     }
 
-    public void setStart(int start) {
+    public void setStart(String start) {
         this.start = start;
     }
 
-    public int getEnd() {
+    public String getEnd() {
         return end;
     }
 
-    public void setEnd(int end) {
+    public void setEnd(String end) {
         this.end = end;
     }
 
-    public int getChannelId() {
+    public String getChannelId() {
         return channelId;
     }
 
-    public void setChannelId(int channelId) {
+    public void setChannelId(String channelId) {
         this.channelId = channelId;
     }
 
-    public int getSourceId() {
+    public String getSourceId() {
         return sourceId;
     }
 
-    public void setSourceId(int sourceId) {
+    public void setSourceId(String sourceId) {
         this.sourceId = sourceId;
     }
 
-    public int getShopId() {
+    public String getShopId() {
         return shopId;
     }
 
-    public void setShopId(int shopId) {
+    public void setShopId(String shopId) {
         this.shopId = shopId;
     }
 
-    public int getStaffId() {
+    public String getStaffId() {
         return staffId;
     }
 
-    public void setStaffId(int staffId) {
+    public void setStaffId(String staffId) {
         this.staffId = staffId;
     }
 
-    public int getTypeId() {
+    public String getTypeId() {
         return typeId;
     }
 
-    public void setTypeId(int typeId) {
+    public void setTypeId(String typeId) {
         this.typeId = typeId;
     }
 
-    public int getYxLevel() {
+    public String getYxLevel() {
         return yxLevel;
     }
 
-    public void setYxLevel(int yxLevel) {
+    public void setYxLevel(String yxLevel) {
         this.yxLevel = yxLevel;
     }
 
@@ -202,19 +202,19 @@ public class ClientExportDTO implements Serializable {
         this.appointIds = appointIds;
     }
 
-    public int getPmsLimit() {
+    public String getPmsLimit() {
         return pmsLimit;
     }
 
-    public void setPmsLimit(int pmsLimit) {
+    public void setPmsLimit(String pmsLimit) {
         this.pmsLimit = pmsLimit;
     }
 
-    public int getLinkLimit() {
+    public String getLinkLimit() {
         return linkLimit;
     }
 
-    public void setLinkLimit(int linkLimit) {
+    public void setLinkLimit(String linkLimit) {
         this.linkLimit = linkLimit;
     }
 
@@ -241,5 +241,4 @@ public class ClientExportDTO implements Serializable {
     public void setSuperSql(String superSql) {
         this.superSql = superSql;
     }
-
 }

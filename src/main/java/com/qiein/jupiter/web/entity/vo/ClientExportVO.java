@@ -25,7 +25,7 @@ public class ClientExportVO implements Serializable {
     /**
      * 录入时间接收格式
      */
-    @Excel(name = "录入时间", format = "yyyy-MM-dd HH:mm:ss", width = 40)
+    @Excel(name = "录入时间", width = 40)
     private String createTime;
 
     /**

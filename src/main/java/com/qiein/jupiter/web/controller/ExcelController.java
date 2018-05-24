@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
+import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import sun.misc.UCDecoder;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.swing.undo.CannotUndoException;
 
@@ -123,11 +125,15 @@ public class ExcelController extends BaseController {
      * 导出示例
      */
     @PostMapping("/export_client_list")
-    public void exportClientList(HttpServletResponse response, @RequestBody ClientExportDTO clientExportDTO) {
+    public void exportClientList(HttpServletRequest request, HttpServletResponse response, @RequestBody ClientExportDTO clientExportDTO) {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
+        clientExportDTO.setCompanyId(currentLoginStaff.getCompanyId());
+        clientExportDTO.setUid(HttpUtil.getRequestParam(request, CommonConstant.UID));
+        clientExportDTO.setSig(HttpUtil.getRequestParam(request, CommonConstant.TOKEN));
         try {
-            String fileName = TimeUtil.intMillisToTimeStr(clientExportDTO.getStart(), TimeUtil.ymdSDF_) + "--" + TimeUtil.intMillisToTimeStr(clientExportDTO.getEnd(), TimeUtil.ymdSDF_) + "客资（" + currentLoginStaff.getNickName() + "）";
+            String fileName = TimeUtil.intMillisToTimeStr(Integer.parseInt(clientExportDTO.getStart()), TimeUtil.ymdSDF_) + "--"
+                    + TimeUtil.intMillisToTimeStr(Integer.parseInt(clientExportDTO.getEnd()), TimeUtil.ymdSDF_) + "客资（" + currentLoginStaff.getNickName() + "）";
             ExportExcelUtil.export(response, fileName,
                     excelService.Export(currentLoginStaff, clientExportDTO), ClientExportVO.class);
         } catch (Exception e) {
