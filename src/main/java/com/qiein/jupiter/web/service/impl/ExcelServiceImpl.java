@@ -3,6 +3,15 @@ package com.qiein.jupiter.web.service.impl;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.qiein.jupiter.http.CrmBaseApi;
+import com.qiein.jupiter.util.JsonFmtUtil;
+import com.qiein.jupiter.web.entity.dto.ClientExportDTO;
+import com.qiein.jupiter.web.entity.vo.ClientExportVO;
+import com.qiein.jupiter.web.service.ChannelService;
+import com.qiein.jupiter.web.service.SourceService;
+import com.qiein.jupiter.web.service.StatusService;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import com.qiein.jupiter.constant.ClientStatusConst;
 import com.qiein.jupiter.constant.CommonConstant;
@@ -27,11 +37,21 @@ import com.qiein.jupiter.web.service.ExcelService;
 import cn.afterturn.easypoi.excel.ExcelImportUtil;
 import cn.afterturn.easypoi.excel.entity.ImportParams;
 
+import javax.servlet.http.HttpServletResponse;
+
 @Service
 public class ExcelServiceImpl implements ExcelService {
 
     @Autowired
     private ExcelDao excelDao;
+    @Autowired
+    private CrmBaseApi crmBaseApi;
+    @Autowired
+    private SourceService sourceService;
+    @Autowired
+    private StatusService statusService;
+    @Autowired
+    private ChannelService channelService;
 
     /**
      * 导入客资
@@ -257,6 +277,48 @@ public class ExcelServiceImpl implements ExcelService {
      */
     public void deleteTempByStaffId(int companyId, int operaId) {
         excelDao.deleteTempByStaffId((DBSplitUtil.getTable(TableEnum.temp, companyId)), operaId);
+    }
+
+    /**
+     * 导出客资
+     *
+     * @param staffPO
+     * @param clientExportDTO
+     * @return
+     */
+    public List<ClientExportVO> Export(StaffPO staffPO, ClientExportDTO clientExportDTO) {
+        Map<String, Object> reqContent = new HashMap<>();
+        reqContent.put("cid", staffPO.getCompanyId());
+        reqContent.put("uid", clientExportDTO.getUid());
+        reqContent.put("sig", clientExportDTO.getSig());
+        reqContent.put("action", clientExportDTO.getAction());
+        reqContent.put("role", clientExportDTO.getRole());
+        reqContent.put("timetype", clientExportDTO.getTimeType());
+        reqContent.put("start", clientExportDTO.getStart());
+        reqContent.put("end", clientExportDTO.getEnd());
+        reqContent.put("channelid", clientExportDTO.getChannelId());
+        reqContent.put("sourceid", clientExportDTO.getSourceId());
+        reqContent.put("shopid", clientExportDTO.getShopId());
+        reqContent.put("staffid", clientExportDTO.getStaffId());
+        reqContent.put("typeid", clientExportDTO.getTypeId());
+        reqContent.put("yxlevel", clientExportDTO.getYxLevel());
+        reqContent.put("appointids", clientExportDTO.getAppointIds());
+        reqContent.put("pmslimit", clientExportDTO.getPmsLimit());
+        reqContent.put("linklimit", clientExportDTO.getLinkLimit());
+        reqContent.put("sparesql", clientExportDTO.getSpareSql());
+        reqContent.put("filtersql", clientExportDTO.getFilterSql());
+        reqContent.put("supersql", clientExportDTO.getSuperSql());
+
+        String addRstStr = crmBaseApi.doService(reqContent, "excel_export_lp");
+        JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
+        if ("100000".equals(jsInfo.getString("code"))) {
+            //TODO 推送
+            JSONArray jsArr = JsonFmtUtil.strContentToJsonObj(addRstStr).getJSONArray("infoList");
+            List<ClientExportVO> clientList = JsonFmtUtil.jsonArrToClientExportVO(jsArr, staffPO.getCompanyId(), sourceService, statusService, channelService);
+            return clientList;
+        } else {
+            throw new RException(jsInfo.getString("msg"));
+        }
     }
 
 }

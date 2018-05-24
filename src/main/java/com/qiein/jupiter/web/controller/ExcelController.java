@@ -5,12 +5,11 @@ import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
-import com.qiein.jupiter.util.ExportExcelUtil;
-import com.qiein.jupiter.util.ResultInfo;
-import com.qiein.jupiter.util.ResultInfoUtil;
-import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.entity.dto.ClientExcelDTO;
+import com.qiein.jupiter.web.entity.dto.ClientExportDTO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.entity.vo.ClientExportVO;
 import com.qiein.jupiter.web.entity.vo.ClientVO;
 import com.qiein.jupiter.web.service.ExcelService;
 import com.qiein.jupiter.web.service.StaffService;
@@ -124,10 +123,13 @@ public class ExcelController extends BaseController {
      * 导出示例
      */
     @GetMapping("/export_staff")
-    public void exportStaff(HttpServletResponse response) {
+    public void exportStaff(HttpServletResponse response, @RequestBody ClientExportDTO clientExportDTO) {
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
         try {
-//            ExportExcelUtil.export(response, "员工信息",
-//                    staffService.exportStaff(), ClientVO.class);
+            String fileName = TimeUtil.intMillisToTimeStr(clientExportDTO.getStart(), TimeUtil.ymdSDF_) + "--" + TimeUtil.intMillisToTimeStr(clientExportDTO.getEnd(), TimeUtil.ymdSDF_) + "客资（" + currentLoginStaff.getNickName() + "）";
+            ExportExcelUtil.export(response, fileName,
+                    excelService.Export(currentLoginStaff, clientExportDTO), ClientExportVO.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
