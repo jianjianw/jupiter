@@ -2,6 +2,8 @@ package com.qiein.jupiter.web.entity.po;
 
 import java.io.Serializable;
 
+import com.qiein.jupiter.constant.CommonConstant;
+
 /**
  * 客资日志
  * 
@@ -60,6 +62,7 @@ public class ClientLogPO implements Serializable {
 	public ClientLogPO(String kzId, String memo, int logType, int companyId) {
 		super();
 		this.kzId = kzId;
+		this.operaName = CommonConstant.SYSTEM_OPERA_NAME;
 		this.memo = memo;
 		this.logType = logType;
 		this.companyId = companyId;
