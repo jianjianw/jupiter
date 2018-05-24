@@ -2,12 +2,16 @@ package com.qiein.jupiter.web.controller;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.http.CrmBaseApi;
+import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.entity.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ValueOperations;
@@ -28,13 +32,6 @@ import com.qiein.jupiter.constant.RedisConstant;
 import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
-import com.qiein.jupiter.util.NumUtil;
-import com.qiein.jupiter.util.ObjectUtil;
-import com.qiein.jupiter.util.RegexUtil;
-import com.qiein.jupiter.util.ResultInfo;
-import com.qiein.jupiter.util.ResultInfoUtil;
-import com.qiein.jupiter.util.StringUtil;
-import com.qiein.jupiter.util.VerifyCodeUtil;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.dto.StaffPasswordDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
@@ -54,6 +51,9 @@ public class StaffController extends BaseController {
 
     @Autowired
     private ValueOperations<String, String> valueOperations;
+
+    @Autowired
+    private CrmBaseApi crmBaseApi;
 
     /**
      * 获取列表
@@ -275,24 +275,30 @@ public class StaffController extends BaseController {
     /**
      * 交接接口
      *
-     * @param staffId   交接的员工id
-     * @param beStaffId 被转移的员工id
+     * @param staffChangeVO
      * @return
      */
-    @GetMapping("/change_staff")
-    public ResultInfo ChangeStaff(@Id @RequestParam("staffId") Integer staffId,
-                                  @Id @RequestParam("beStaffId") Integer beStaffId) {
-        // // 获取当前登录账户
-        // StaffPO currentLoginStaff = getCurrentLoginStaff();
-        // // 获取操作用户所属公司
-        // Integer companyId = currentLoginStaff.getCompanyId();
+    @PostMapping("/change_staff")
+    public ResultInfo ChangeStaff(@RequestBody StaffChangeVO staffChangeVO) {
+         // 获取当前登录账户
+         StaffPO staffPO = getCurrentLoginStaff();
 
-        try {
-            // TODO 等待客资内容写完继续写删除
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultInfoUtil.error(ExceptionEnum.UNKNOW_ERROR);
-        }
+        Map<String,Object> map = new HashMap<>();
+        map.put("operaid",staffPO.getId());
+        map.put("operaname",staffPO.getNickName());
+        map.put("companyId",staffPO.getCompanyId());
+        map.put("tostaffid",staffChangeVO.getToStaffId());
+        map.put("tostaffname",staffChangeVO.getToStaffName());
+        map.put("groupid",staffChangeVO.getGroupId());
+        map.put("groupname",staffChangeVO.getGroupName());
+        map.put("oldstaffid",staffChangeVO.getOldStaffId());
+        map.put("oldstaffname",staffChangeVO.getOldStaffName());
+
+        //直接转发到平台
+        String addRstStr = crmBaseApi.doService(map, "clientMoveLp");
+        JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
+        if (!"100000".equals(jsInfo.getString("code")))
+            throw new RException(jsInfo.getString("msg"));
         return ResultInfoUtil.success("交接成功");
     }
 

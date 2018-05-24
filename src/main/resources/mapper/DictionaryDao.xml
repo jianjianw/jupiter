@@ -132,6 +132,25 @@
         #{spare},#{companyId}
     </insert>
 
+    <!--将查询出的默认咨询类型插入到本公司的字典中-->
+    <insert id="addCommonType" parameterType="map">
+        INSERT INTO
+          hm_crm_dictionary
+            (DICTYPE,DICCODE,DICNAME,PRIORITY,SPARE,COMPANYID)
+        SELECT
+            DICTYPE,
+            DICCODE,
+            DICNAME,
+            PRIORITY,
+            SPARE,
+            #{companyId}
+        FROM
+            hm_crm_dictionary dd
+        WHERE
+                COMPANYID = 0 AND DICTYPE = 'common_type' AND
+        DICCODE IN <foreach collection="dicCodes" item="dicCode" index="index" open="(" separator="," close=")">#{dicCode}</foreach>
+    </insert>
+
     <!--编辑字典排序-->
     <update id="editDictPriority" parameterType="Integer">
         UPDATE
@@ -144,7 +163,7 @@
 
     <select id="getDicByCodeAndType" parameterType="map" resultType="dictionaryPO">
         SELECT
-          *
+          DICTYPE,DICCODE,DICNAME,PRIORITY,SPARE,COMPANYID
         FROM
           hm_crm_dictionary
         WHERE

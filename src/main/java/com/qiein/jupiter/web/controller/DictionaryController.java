@@ -227,20 +227,4 @@ public class DictionaryController extends BaseController {
 		return ResultInfoUtil.success();
 	}
 
-//	/**
-//	 * 编辑字典
-//	 * @param dicType
-//	 * @param dictionaryPO
-//	 * @return
-//	 */
-//	@PutMapping("/{dicType}")
-//	public ResultInfo editDict(@PathVariable("dicType") String dicType ,@RequestBody DictionaryPO dictionaryPO){
-//		dictionaryPO.setDicType(dicType);
-//		dictionaryPO.setCompanyId(getCurrentLoginStaff().getCompanyId());
-//		//TODO service
-//		dictionaryService.editDict(dictionaryPO);
-//		System.out.println(dictionaryPO);
-//		return ResultInfoUtil.success();
-//	}
-
 }
