@@ -34,7 +34,8 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
                 .excludePathPatterns("/login/get_company_list_by_ding")
                 .excludePathPatterns("/login/login_by_ding")
                 .excludePathPatterns("/login/verify_code")
-                .excludePathPatterns("/login/need_verity_code");
+                .excludePathPatterns("/login/need_verity_code")
+                .excludePathPatterns("/qrCodePage/*");
     }
 
 }

@@ -1,10 +1,13 @@
 package com.qiein.jupiter.web.service.impl;
 
+import com.github.pagehelper.Constant;
 import com.qiein.jupiter.constant.ClientLogConst;
+import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.web.dao.ClientDao;
 import com.qiein.jupiter.web.dao.ClientLogDao;
 import com.qiein.jupiter.web.entity.po.ClientLogPO;
+import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.ClientStatusVO;
 import com.qiein.jupiter.web.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +27,7 @@ public class ClientServiceImpl implements ClientService {
 
     /**
      * 编辑客资性别
+     *
      * @param clientStatusVO
      */
     @Override
@@ -32,15 +36,16 @@ public class ClientServiceImpl implements ClientService {
         clientDao.editClientBaseInfo(clientStatusVO, DBSplitUtil.getInfoTabName(clientStatusVO.getCompanyId()));
 
         int addLogNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(clientStatusVO.getCompanyId()),
-                new ClientLogPO(clientStatusVO.getKzId(),clientStatusVO.getOperaId(),clientStatusVO.getOperaName(),
-                        ClientLogConst.INFO_LOG_EDIT_SEX+(clientStatusVO.getSex()==1?"先生":"女士"),ClientLogConst.INFO_LOGTYPE_EDIT,clientStatusVO.getCompanyId()));
-        if (addLogNum!=1){
+                new ClientLogPO(clientStatusVO.getKzId(), clientStatusVO.getOperaId(), clientStatusVO.getOperaName(),
+                        ClientLogConst.INFO_LOG_EDIT_SEX + (clientStatusVO.getSex() == 1 ? "先生" : "女士"), ClientLogConst.INFO_LOGTYPE_EDIT, clientStatusVO.getCompanyId()));
+        if (addLogNum != 1) {
             System.out.println("插入客资日志失败");
         }
     }
 
     /**
      * 编辑客资微信标识
+     *
      * @param clientStatusVO
      */
     @Override
@@ -49,9 +54,25 @@ public class ClientServiceImpl implements ClientService {
         clientDao.editClientBaseInfo(clientStatusVO, DBSplitUtil.getInfoTabName(clientStatusVO.getCompanyId()));
 
         int addLogNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(clientStatusVO.getCompanyId()),
-                new ClientLogPO(clientStatusVO.getKzId(),clientStatusVO.getOperaId(),clientStatusVO.getOperaName(),
-                        ClientLogConst.INFO_LOG_EDIT_WCFLAG+(clientStatusVO.getWeFlag()==1?"已添加":"没加上"),ClientLogConst.INFO_LOGTYPE_EDIT,clientStatusVO.getCompanyId()));
-        if (addLogNum!=1){
+                new ClientLogPO(clientStatusVO.getKzId(), clientStatusVO.getOperaId(), clientStatusVO.getOperaName(),
+                        ClientLogConst.INFO_LOG_EDIT_WCFLAG + (clientStatusVO.getWeFlag() == 1 ? "已添加" : "没加上"), ClientLogConst.INFO_LOGTYPE_EDIT, clientStatusVO.getCompanyId()));
+        if (addLogNum != 1) {
+            System.out.println("插入客资日志失败");
+        }
+    }
+
+
+    /**
+     * 微信二位码扫描记录
+     *
+     * @param companyId
+     * @param kzId
+     */
+    public void scanWechat(int companyId, String kzId) {
+        clientDao.editClientMemoLabel(DBSplitUtil.getInfoTabName(companyId), companyId, kzId, "【微信已扫码】");
+        int addLogNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(companyId), new ClientLogPO(kzId, CommonConstant.DEFAULT_ZERO, null
+                , "通过扫描二维码复制了微信账号", ClientLogConst.INFO_LOGTYPE_EDIT, companyId));
+        if (addLogNum != 1) {
             System.out.println("插入客资日志失败");
         }
     }

@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.qiein.jupiter.aop.validate.annotation.Id;
 import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
@@ -10,6 +11,7 @@ import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.service.ClientAddService;
+import com.qiein.jupiter.web.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +21,8 @@ public class OuterController {
 
     @Autowired
     private ClientAddService clientAddService;
+    @Autowired
+    private ClientService clientService;
 
     /**
      * 根据手机号获取地址
@@ -45,6 +49,19 @@ public class OuterController {
             throw new RException(ExceptionEnum.BATCH_ADD_NULL);
         }
         return ResultInfoUtil.success(clientAddService.changeStrToInfo(text));
+    }
+
+    /**
+     * 扫描微信二维码
+     *
+     * @param kzId
+     * @return
+     */
+
+    @GetMapping("/scan_wecaht")
+    public ResultInfo scanWechat(@Id int companyId, @NotEmptyStr String kzId) {
+        clientService.scanWechat(companyId, kzId);
+        return ResultInfoUtil.success();
     }
 
 

@@ -83,4 +83,6 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
      * @return
      */
     int changeStaff(StaffChangeVO staffChangeVO);
+
+
 }
