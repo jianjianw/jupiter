@@ -7,10 +7,8 @@ import com.qiein.jupiter.constant.RoleConstant;
 import com.qiein.jupiter.enums.StaffStatusEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
-import com.qiein.jupiter.util.CollectionUtils;
-import com.qiein.jupiter.util.JwtUtil;
-import com.qiein.jupiter.util.MD5Util;
-import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
+import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.util.ding.DingAuthUtil;
 import com.qiein.jupiter.util.wechat.WeChatAuthUtil;
 import com.qiein.jupiter.web.dao.*;
@@ -263,6 +261,8 @@ public class LoginServiceImpl implements LoginService {
                 staff.getId(), staff.getNickName(), StaffStatusEnum.OnLine.getStatusId(),
                 staff.getId(), staff.getNickName(), staff.getCompanyId()
         ));
+        //给特定用户推送上线
+        GoEasyUtil.pushStaffRefresh(staff.getCompanyId(), staff.getId(), ip, HttpUtil.getIpLocation(ip));
         return staff;
     }
 

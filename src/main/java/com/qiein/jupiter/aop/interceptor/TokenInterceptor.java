@@ -88,6 +88,35 @@ public class TokenInterceptor implements HandlerInterceptor {
         // 根据uid cid 从缓存中获取当前登录用户
         String userTokenKey = RedisConstant.getStaffKey(verifyParamDTO.getUid(), verifyParamDTO.getCid());
         StaffPO staffPO = (StaffPO) redisTemplate.opsForValue().get(userTokenKey);
+        checkToken(verifyParamDTO, staffPO);
+        // 验证成功，更新过期时间
+        redisTemplate.opsForValue().set(userTokenKey, staffPO, CommonConstant.DEFAULT_EXPIRE_TIME, TimeUnit.HOURS);
+        // 将 当前登录用户 放入request
+        httpServletRequest.setAttribute(CommonConstant.CURRENT_LOGIN_STAFF, staffPO);
+        return true;
+    }
+
+    // 校验Ip
+    private void checkIp(HttpServletRequest request) {
+        String ipAddr = HttpUtil.getIpAddr(request);
+        RequestInfoDTO requestInfoDTO = new RequestInfoDTO();
+        // 设置请求值
+        requestInfoDTO.setUrl(request.getRequestURI());
+        requestInfoDTO.setIp(HttpUtil.getIpAddr(request));
+        //todo 参数
+        //放入attr
+        request.setAttribute(CommonConstant.REQUEST_INFO, requestInfoDTO);
+        logger.info("访问ip:" + ipAddr);
+    }
+
+    /**
+     * 校验token
+     *
+     * @param verifyParamDTO
+     * @param staffPO
+     * @return
+     */
+    public boolean checkToken(VerifyParamDTO verifyParamDTO, StaffPO staffPO) {
         // 如果缓存中命中失败,从数据库获取用户信息
         if (staffPO == null) {
             staffPO = staffService.getById(verifyParamDTO.getUid(), verifyParamDTO.getCid());
@@ -107,25 +136,6 @@ public class TokenInterceptor implements HandlerInterceptor {
         if (!StringUtil.ignoreCaseEqual(verifyParamDTO.getToken(), staffPO.getToken())) {
             throw new RException(ExceptionEnum.TOKEN_VERIFY_FAIL);
         }
-        // 验证成功，更新过期时间
-        redisTemplate.opsForValue().set(userTokenKey, staffPO, CommonConstant.DEFAULT_EXPIRE_TIME, TimeUnit.HOURS);
-
-        // 将 当前登录用户 放入request
-        httpServletRequest.setAttribute(CommonConstant.CURRENT_LOGIN_STAFF, staffPO);
         return true;
     }
-
-    // 校验Ip
-    private void checkIp(HttpServletRequest request) {
-        String ipAddr = HttpUtil.getIpAddr(request);
-        RequestInfoDTO requestInfoDTO = new RequestInfoDTO();
-        // 设置请求值
-        requestInfoDTO.setUrl(request.getRequestURI());
-        requestInfoDTO.setIp(HttpUtil.getIpAddr(request));
-        //todo 参数
-        //放入attr
-        request.setAttribute(CommonConstant.REQUEST_INFO, requestInfoDTO);
-        logger.info("访问ip:" + ipAddr);
-    }
-
 }

@@ -40,6 +40,13 @@ public interface DictionaryDao extends BaseDao<DictionaryPO> {
      */
     DictionaryPO getDicByTypeAndName(@Param("companyId") int companyId, @Param("dicType") String dicType, @Param("dicName") String dicName);
 
+    /**
+     * 根据字典code和type获取字典列表
+     * @param companyId
+     * @param dicType
+     * @param dicCodes
+     * @return
+     */
     List<DictionaryPO> getDicByCodeAndType(@Param("companyId") int companyId,@Param("dicType") String dicType , @Param("dicCodes")String[] dicCodes);
 
     /**
@@ -78,18 +85,19 @@ public interface DictionaryDao extends BaseDao<DictionaryPO> {
     int createCommonType(DictionaryPO dictionaryPO);
 
     /**
+     * 从默认咨询类型中获取记录添加到本公司中
+     * @param companyId
+     * @param dicCodes
+     * @return
+     */
+    int addCommonType(@Param("companyId") int companyId, @Param("dicCodes")String[] dicCodes);
+
+    /**
      *  新增咨询类型
      * @param dictionaryVO
      * @return
      */
     int createCommonType(DictionaryVO dictionaryVO);
-
-//    /**
-//     * 编辑字典记录
-//     * @param dictionaryPO
-//     * @return
-//     */
-//    int editDict(DictionaryPO dictionaryPO);
 
     /**
      * 根据id删除
