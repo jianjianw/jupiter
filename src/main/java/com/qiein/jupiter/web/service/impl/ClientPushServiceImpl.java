@@ -283,7 +283,7 @@ public class ClientPushServiceImpl implements ClientPushService {
 
 		while (CollectionUtils.isNotEmpty(shopChannelGroupRelaList)) {
 
-			if (maxDiffPid == -1) {
+			if (maxDiffPid == -Double.MAX_VALUE) {
 				maxDiffPid = doGroupDiffCalc(shopChannelGroupRelaList);
 			}
 
@@ -298,7 +298,7 @@ public class ClientPushServiceImpl implements ClientPushService {
 			if (appointor == null) {
 				shopChannelGroupRelaList.remove(thisGroup);
 				// 差比重置
-				maxDiffPid = -1;
+				maxDiffPid = -Double.MAX_VALUE;
 			} else {
 				appointor.setGroupId(thisGroup.getGroupId());
 				appointor.setGroupName(thisGroup.getGroupName());
@@ -399,10 +399,10 @@ public class ClientPushServiceImpl implements ClientPushService {
 	private double doAppointDiffCalc(List<StaffPushDTO> staffOnlineList, List<StaffPushDTO> staffAllotList) {
 
 		if (CollectionUtils.isEmpty(staffAllotList)) {
-			return Double.MAX_VALUE;
+			return -Double.MAX_VALUE;
 		}
 
-		double maxDiffPid = -1;
+		double maxDiffPid = -Double.MAX_VALUE;
 
 		// 值匹配
 		for (StaffPushDTO appointor : staffOnlineList) {
@@ -431,10 +431,10 @@ public class ClientPushServiceImpl implements ClientPushService {
 			List<GroupKzNumToday> groupKzNumTodayList) {
 
 		if (CollectionUtils.isEmpty(groupKzNumTodayList)) {
-			return Double.MAX_VALUE;
+			return -Double.MAX_VALUE;
 		}
 
-		double maxDiffPid = -1;
+		double maxDiffPid = -Double.MAX_VALUE;
 
 		// 值匹配
 		for (ShopChannelGroupPO rela : shopChannelGroupRelaList) {
@@ -461,7 +461,7 @@ public class ClientPushServiceImpl implements ClientPushService {
 	 */
 	private double doGroupDiffCalc(List<ShopChannelGroupPO> shopChannelGroupRelaList) {
 
-		double maxDiffPid = -1;
+		double maxDiffPid = -Double.MAX_VALUE;
 
 		// 值匹配
 		for (ShopChannelGroupPO rela : shopChannelGroupRelaList) {
