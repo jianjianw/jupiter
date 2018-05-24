@@ -3,19 +3,19 @@ package com.qiein.jupiter.web.entity.vo;
 import com.qiein.jupiter.web.entity.po.DictionaryPO;
 
 /**
- * 批量编辑字典VO
+ * 新增咨询类型字典VO
  * Created by Tt on 2018/5/23 0023.
  */
-public class DictionaryVO extends DictionaryPO{
-    private String dicNames;
+public class DictionaryVO{
     private String dicCodes;
+    private int companyId;
 
-    public String getDicNames() {
-        return dicNames;
+    public int getCompanyId() {
+        return companyId;
     }
 
-    public void setDicNames(String dicNames) {
-        this.dicNames = dicNames;
+    public void setCompanyId(int companyId) {
+        this.companyId = companyId;
     }
 
     public String getDicCodes() {

@@ -176,13 +176,6 @@ public class DictionaryServiceImpl implements DictionaryService {
         }
     }
 
-    @Override
-    public void createCommonType(DictionaryVO dictionaryVO) {
-        //TODO
-
-
-    }
-
 //    /**
 //     * 编辑字典
 //     * @param dictionaryPO
@@ -211,15 +204,30 @@ public class DictionaryServiceImpl implements DictionaryService {
     @Override
     @Transactional
     public void addCommonType(DictionaryVO dictionaryVO) {
-        //TODO dao层 先获取codes
         String[] codes =dictionaryVO.getDicCodes().split(",");
         //获取默认0的对应字典记录
         List<DictionaryPO> list =dictionaryDao.getDicByCodeAndType(0,"common_type",codes);
-
         for (DictionaryPO d:list){
             d.setCompanyId(dictionaryVO.getCompanyId());
-            dictionaryDao.createDict(d);
+            dictionaryDao.createCommonType(d);
         }
+        //TODO 这里循环了数据源，但是将查询结果insert的sql不能解决排序自增的需求
+        //sql
+//    <!--将查询出的公司0结果插入自己公司-->
+//        INSERT INTO
+//                hm_crm_dictionary
+//        (DICTYPE,DICCODE,DICNAME,PRIORITY,SPARE,COMPANYID)
+//        SELECT
+//                DICTYPE,
+//                DICCODE,
+//                DICNAME,
+//                (SELECT IFNULL(MAX(PRIORITY),0)+1 FROM hm_crm_dictionary WHERE COMPANYID = 1 AND DICTYPE = 'common_type') PRIORITY,
+//                SPARE,1 COMPANYID
+//                FROM
+//        hm_crm_dictionary dd
+//        WHERE
+//                COMPANYID = 0 AND DICTYPE = 'common_type' AND
+//        DICCODE IN (7,8,9)
     }
 
     /**
