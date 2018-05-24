@@ -24,8 +24,10 @@ public class ClientPushTask {
 		int companyId = 2012;
 		int interval = 120;
 		int overTime = 180;
+		System.out.println("开始执行客资定时推送任务");
 		List<ClientPushDTO> infoList = pushService.getInfoListBeReadyPush(companyId, 120);
 		pushInfo(companyId, overTime, interval, infoList);
+		System.out.println("执行完毕");
 	}
 
 	/**
