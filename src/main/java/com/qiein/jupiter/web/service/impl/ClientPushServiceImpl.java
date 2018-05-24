@@ -47,7 +47,7 @@ public class ClientPushServiceImpl implements ClientPushService {
 	@Autowired
 	private ClientAllotLogDao clientAllotLogDao;
 	@Autowired
-	private ShopChannelGroupDao ShopChannelGroupDao;
+	private ShopChannelGroupDao shopChannelGroupDao;
 	@Autowired
 	private GroupKzNumTodayDao groupKzNumTodayDao;
 	@Autowired
@@ -287,7 +287,7 @@ public class ClientPushServiceImpl implements ClientPushService {
 		}
 
 		// 根据拍摄地ID，渠道ID获取要分配的小组ID集合
-		List<ShopChannelGroupPO> shopChannelGroupRelaList = ShopChannelGroupDao.listShopChannelGroupRela(companyId,
+		List<ShopChannelGroupPO> shopChannelGroupRelaList = shopChannelGroupDao.listShopChannelGroupRela(companyId,
 				shopId, channelId);
 
 		if (CollectionUtils.isEmpty(shopChannelGroupRelaList)) {
@@ -516,5 +516,15 @@ public class ClientPushServiceImpl implements ClientPushService {
 			// 推送状态重载消息
 			GoEasyUtil.pushStatusRefresh(companyId, staffId);
 		}
+	}
+
+	/**
+	 * 获取需要推送的客资信息
+	 * 
+	 * @param companyId
+	 * @return
+	 */
+	public List<ClientPushDTO> getInfoListBeReadyPush(int companyId, int interval) {
+		return clientInfoDao.getInfoListBeReadyPush(DBSplitUtil.getInfoTabName(companyId), companyId, interval);
 	}
 }

@@ -12,13 +12,17 @@
         <result column="SOURCEID" jdbcType="INTEGER" property="sourceId"/>
         <result column="APPOINTNAME" jdbcType="VARCHAR" property="appointName"/>
         <result column="FILMINGAREA" jdbcType="VARCHAR" property="filmingArea"/>
+        <result column="PUSHRULE" jdbcType="INTEGER" property="pushRule"/>
+        <result column="SHOPID" jdbcType="INTEGER" property="shopId"/>
+        <result column="CHANNELID" jdbcType="INTEGER" property="channelId"/>
+        <result column="TYPEID" jdbcType="INTEGER" property="channelTypeId"/>
     </resultMap>
 
     <sql id="baseColumn">
         info.ID, info.KZID, info.STATUSID, info.APPOINTORID, info.COMPANYID, info.SOURCEID
     </sql>
 
-    <!--检查是否存在同名品牌-->
+    <!--获取要推送的客资信息-->
     <select id="getClientPushDTOById" parameterType="map" resultMap="infoMap">
 		SELECT
 			<include refid="baseColumn"/>, (UNIX_TIMESTAMP(NOW()) - info.LASTPUSHTIME) PUSHINTERVAL, det.APPOINTNAME, det.FILMINGAREA
@@ -79,5 +83,22 @@
 
 	</update>
 
-
+	<!-- 获取企业要推送的客资信息 -->	
+    <select id="getInfoListBeReadyPush" parameterType="map" resultMap="infoMap">
+		SELECT
+			channel.PUSHRULE, info.KZID, info.COMPANYID, info.SHOPID, info.CHANNELID, channel.TYPEID
+		FROM
+			${infoTabName} info
+		LEFT JOIN hm_crm_channel channel ON info.CHANNELID = channel.ID AND channel.COMPANYID = #{companyId}
+		WHERE
+			info.COMPANYID = #{companyId}
+		AND info.ISDEL = 0
+		AND (
+			info.STATUSID = 999
+			OR info.STATUSID = 12
+		)
+		AND (
+			UNIX_TIMESTAMP(NOW()) - info.LASTPUSHTIME
+		) &gt;= #{interval}
+    </select>
 </mapper>

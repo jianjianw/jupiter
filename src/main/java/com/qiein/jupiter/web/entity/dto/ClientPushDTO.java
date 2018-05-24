@@ -9,121 +9,172 @@ import java.io.Serializable;
  */
 public class ClientPushDTO implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    /**
-     * 推送时间间隔
-     */
-    private int pushInterval;
+	/**
+	 * 推送时间间隔
+	 */
+	private int pushInterval;
 
+	/**
+	 * 企业ID
+	 */
+	private int companyId;
 
-    /**
-     * 企业ID
-     */
-    private int companyId;
+	/**
+	 * 主键ID
+	 */
+	private int id;
 
-    /**
-     * 主键ID
-     */
-    private int id;
+	/**
+	 * 客资ID
+	 */
+	private String kzId;
 
-    /**
-     * 客资ID
-     */
-    private String kzId;
+	/**
+	 * 状态ID
+	 */
+	private int statusId;
 
-    /**
-     * 状态ID
-     */
-    private int statusId;
+	/**
+	 * 客服ID
+	 */
+	private int appointorId;
+	/**
+	 * 来源ID
+	 */
+	private int sourceId;
+	/**
+	 * 邀约名称
+	 */
+	private String appointName;
 
-    /**
-     * 客服ID
-     */
-    private int appointorId;
-    /**
-     * 来源ID
-     */
-    private int sourceId;
-    /**
-     * 邀约名称
-     */
-    private String appointName;
+	/**
+	 * 最终拍摄地名称
+	 */
+	private String filmingArea;
 
-    /**
-     * 最终拍摄地名称
-     */
-    private String filmingArea;
+	/**
+	 * 推送规则
+	 */
+	private int pushRule;
 
-    public int getId() {
-        return id;
-    }
+	/**
+	 * 拍摄地ID
+	 */
+	private int shopId;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	/**
+	 * 渠道ID
+	 */
+	private int channelId;
 
-    public int getPushInterval() {
-        return pushInterval;
-    }
+	/**
+	 * 渠道类型
+	 */
+	private int channelTypeId;
 
-    public void setPushInterval(int pushInterval) {
-        this.pushInterval = pushInterval;
-    }
+	public int getPushRule() {
+		return pushRule;
+	}
 
-    public int getCompanyId() {
-        return companyId;
-    }
+	public void setPushRule(int pushRule) {
+		this.pushRule = pushRule;
+	}
 
-    public void setCompanyId(int companyId) {
-        this.companyId = companyId;
-    }
+	public int getShopId() {
+		return shopId;
+	}
 
-    public String getKzId() {
-        return kzId;
-    }
+	public void setShopId(int shopId) {
+		this.shopId = shopId;
+	}
 
-    public void setKzId(String kzId) {
-        this.kzId = kzId;
-    }
+	public int getChannelId() {
+		return channelId;
+	}
 
-    public int getStatusId() {
-        return statusId;
-    }
+	public void setChannelId(int channelId) {
+		this.channelId = channelId;
+	}
 
-    public void setStatusId(int statusId) {
-        this.statusId = statusId;
-    }
+	public int getChannelTypeId() {
+		return channelTypeId;
+	}
 
-    public int getAppointorId() {
-        return appointorId;
-    }
+	public void setChannelTypeId(int channelTypeId) {
+		this.channelTypeId = channelTypeId;
+	}
 
-    public void setAppointorId(int appointorId) {
-        this.appointorId = appointorId;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public int getSourceId() {
-        return sourceId;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    public void setSourceId(int sourceId) {
-        this.sourceId = sourceId;
-    }
+	public int getPushInterval() {
+		return pushInterval;
+	}
 
-    public String getAppointName() {
-        return appointName;
-    }
+	public void setPushInterval(int pushInterval) {
+		this.pushInterval = pushInterval;
+	}
 
-    public void setAppointName(String appointName) {
-        this.appointName = appointName;
-    }
+	public int getCompanyId() {
+		return companyId;
+	}
 
-    public String getFilmingArea() {
-        return filmingArea;
-    }
+	public void setCompanyId(int companyId) {
+		this.companyId = companyId;
+	}
 
-    public void setFilmingArea(String filmingArea) {
-        this.filmingArea = filmingArea;
-    }
+	public String getKzId() {
+		return kzId;
+	}
+
+	public void setKzId(String kzId) {
+		this.kzId = kzId;
+	}
+
+	public int getStatusId() {
+		return statusId;
+	}
+
+	public void setStatusId(int statusId) {
+		this.statusId = statusId;
+	}
+
+	public int getAppointorId() {
+		return appointorId;
+	}
+
+	public void setAppointorId(int appointorId) {
+		this.appointorId = appointorId;
+	}
+
+	public int getSourceId() {
+		return sourceId;
+	}
+
+	public void setSourceId(int sourceId) {
+		this.sourceId = sourceId;
+	}
+
+	public String getAppointName() {
+		return appointName;
+	}
+
+	public void setAppointName(String appointName) {
+		this.appointName = appointName;
+	}
+
+	public String getFilmingArea() {
+		return filmingArea;
+	}
+
+	public void setFilmingArea(String filmingArea) {
+		this.filmingArea = filmingArea;
+	}
 }
