@@ -708,4 +708,9 @@
     <update id="updateTodatKzNum">
         UPDATE hm_pub_staff SET TODAYNUM = #{num} WHERE COMPANYID = #{companyId} AND ID = #{staffId};
     </update>
+
+	<!-- 计算是否满限 -->    
+    <update id="checkOverFlowToday">
+        UPDATE hm_pub_staff SET STATUSFLAG = 9 WHERE COMPANYID = #{companyId} AND ID = #{staffId} AND TODAYNUM &gt;= LIMITDAY;
+    </update>
 </mapper>

@@ -69,7 +69,9 @@ public class ClientReceiveServiceImpl implements ClientReceiveService {
 	 * @param companyId
 	 * @param staffId
 	 */
+	@Transactional
 	private void receive(String kzId, int logId, int companyId, int staffId, String staffName) {
+
 		ClientPushDTO info = clientInfoDao.getClientPushDTOById(kzId, DBSplitUtil.getInfoTabName(companyId),
 				DBSplitUtil.getDetailTabName(companyId));
 		if (info == null) {
@@ -83,6 +85,27 @@ public class ClientReceiveServiceImpl implements ClientReceiveService {
 			throw new RException(ExceptionEnum.INFO_BE_RECEIVED);
 		}
 
+		// 修改客资信息
+		updateInfoWhenReceive(companyId, kzId, logId, staffId, staffName);
+
+		// 计算今日客资个数
+		resizeTodayNum(companyId, staffId);
+
+		// 推送页面重载客资列表
+		GoEasyUtil.pushInfoRefresh(companyId, staffId);
+	}
+
+	/**
+	 * 领取时修改客资信息
+	 * 
+	 * @param companyId
+	 * @param kzId
+	 * @param logId
+	 * @param staffId
+	 * @param staffName
+	 */
+	@Transactional
+	private void updateInfoWhenReceive(int companyId, String kzId, int logId, int staffId, String staffName) {
 		// 修改客资状态为未设置
 		int updateNum = clientInfoDao.updateClientInfoStatus(companyId, DBSplitUtil.getInfoTabName(companyId), kzId,
 				ClientStatusConst.KZ_CLASS_NEW, ClientStatusConst.BE_HAVE_MAKE_ORDER);
@@ -109,20 +132,28 @@ public class ClientReceiveServiceImpl implements ClientReceiveService {
 		if (1 != updateNum) {
 			throw new RException(ExceptionEnum.ALLOT_LOG_ERROR);
 		}
+	}
 
+	/**
+	 * 计算员工今日客资数，并校验是否满限状态
+	 * 
+	 * @param companyId
+	 * @param staffId
+	 */
+	private void resizeTodayNum(int companyId, int staffId) {
 		// 计算客服今日领取客资数
 		int num = staffDao.getTodayKzNum(companyId, staffId, DBSplitUtil.getInfoTabName(companyId));
 		// 修改今日领取客资数
-		updateNum = staffDao.updateTodatKzNum(companyId, staffId, num);
+		int updateNum = staffDao.updateTodatKzNum(companyId, staffId, num);
 		if (1 != updateNum) {
 			throw new RException(ExceptionEnum.STAFF_EDIT_ERROR);
 		}
-
 		// 计算是否满限
-		// TODO
-
-		// 推送页面重载客资列表
-		GoEasyUtil.pushInfoRefresh(companyId, staffId);
+		updateNum = staffDao.checkOverFlowToday(companyId, staffId);
+		if (1 == updateNum) {
+			// 推送状态重载消息
+			// TODO
+		}
 	}
 
 	/**
