@@ -45,7 +45,7 @@ public class StaffPushDTO implements Serializable {
 	/**
 	 * 差比
 	 */
-	private double diffPid = -Double.MAX_VALUE;
+	private double diffPid = Double.MAX_VALUE;
 
 	/**
 	 * 企业ID
