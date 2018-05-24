@@ -1,10 +1,13 @@
 package com.qiein.jupiter.web.service;
 
 import com.qiein.jupiter.web.entity.dto.ClientExcelDTO;
+import com.qiein.jupiter.web.entity.dto.ClientExportDTO;
+import com.qiein.jupiter.web.entity.vo.ClientExportVO;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.qiein.jupiter.web.entity.po.StaffPO;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 
@@ -62,4 +65,12 @@ public interface ExcelService {
      * @param operaId
      */
     void deleteTempByStaffId(int companyId, int operaId);
+
+    /**
+     * 导出客资
+     * @param staffPO
+     * @param clientExportDTO
+     * @return
+     */
+    List<ClientExportVO>  Export(StaffPO staffPO, ClientExportDTO clientExportDTO);
 }
