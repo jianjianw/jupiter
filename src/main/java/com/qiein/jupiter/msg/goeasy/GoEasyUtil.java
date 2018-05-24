@@ -274,6 +274,18 @@ public class GoEasyUtil {
 	}
 
 	/**
+	 * 状态重载消息
+	 * 
+	 * @param companyId
+	 * @param staffId
+	 */
+	public static void pushStatusRefresh(int companyId, int staffId) {
+
+		contentJson = new JSONObject();
+		pushWeb(MessageConts.MSG_TYPE_STATUS_REFRESH, companyId, staffId, contentJson);
+	}
+
+	/**
 	 * 发送闪信
 	 *
 	 * @param companyId

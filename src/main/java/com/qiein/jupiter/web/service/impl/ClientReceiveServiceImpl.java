@@ -152,7 +152,7 @@ public class ClientReceiveServiceImpl implements ClientReceiveService {
 		updateNum = staffDao.checkOverFlowToday(companyId, staffId);
 		if (1 == updateNum) {
 			// 推送状态重载消息
-			// TODO
+			GoEasyUtil.pushStatusRefresh(companyId, staffId);
 		}
 	}
 
