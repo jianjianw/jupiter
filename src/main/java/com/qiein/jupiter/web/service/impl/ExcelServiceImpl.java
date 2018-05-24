@@ -308,6 +308,8 @@ public class ExcelServiceImpl implements ExcelService {
         reqContent.put("sparesql", clientExportDTO.getSpareSql());
         reqContent.put("filtersql", clientExportDTO.getFilterSql());
         reqContent.put("supersql", clientExportDTO.getSuperSql());
+        reqContent.put("page", clientExportDTO.getPage());
+        reqContent.put("size", clientExportDTO.getSize());
 
         String addRstStr = crmBaseApi.doService(reqContent, "excel_export_lp");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
