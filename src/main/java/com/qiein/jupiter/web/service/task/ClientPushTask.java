@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 
 import com.qiein.jupiter.web.entity.dto.ClientPushDTO;
 import com.qiein.jupiter.web.service.impl.ClientPushServiceImpl;
@@ -14,6 +15,7 @@ import com.qiein.jupiter.web.service.impl.ClientPushServiceImpl;
  * @author JingChenglong 2018/05/24 19:09
  *
  */
+@Service
 public class ClientPushTask {
 
 	@Autowired
