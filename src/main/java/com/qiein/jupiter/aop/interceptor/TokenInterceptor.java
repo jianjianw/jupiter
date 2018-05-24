@@ -88,9 +88,9 @@ public class TokenInterceptor implements HandlerInterceptor {
         // 根据uid cid 从缓存中获取当前登录用户
         String userTokenKey = RedisConstant.getStaffKey(verifyParamDTO.getUid(), verifyParamDTO.getCid());
         StaffPO staffPO = (StaffPO) redisTemplate.opsForValue().get(userTokenKey);
+        checkToken(verifyParamDTO, staffPO);
         // 验证成功，更新过期时间
         redisTemplate.opsForValue().set(userTokenKey, staffPO, CommonConstant.DEFAULT_EXPIRE_TIME, TimeUnit.HOURS);
-
         // 将 当前登录用户 放入request
         httpServletRequest.setAttribute(CommonConstant.CURRENT_LOGIN_STAFF, staffPO);
         return true;
