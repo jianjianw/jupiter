@@ -286,7 +286,7 @@ public class StaffController extends BaseController {
         Map<String,Object> map = new HashMap<>();
         map.put("operaid",staffPO.getId());
         map.put("operaname",staffPO.getNickName());
-        map.put("companyId",staffPO.getCompanyId());
+        map.put("companyid",staffPO.getCompanyId());
         map.put("tostaffid",staffChangeVO.getToStaffId());
         map.put("tostaffname",staffChangeVO.getToStaffName());
         map.put("groupid",staffChangeVO.getGroupId());
