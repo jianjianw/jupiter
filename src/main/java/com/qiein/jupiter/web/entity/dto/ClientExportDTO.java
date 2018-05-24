@@ -80,6 +80,7 @@ public class ClientExportDTO implements Serializable {
      * 高级搜索sql拼接
      */
     private String superSql;
+   
 
     public int getCompanyId() {
         return companyId;
@@ -240,4 +241,5 @@ public class ClientExportDTO implements Serializable {
     public void setSuperSql(String superSql) {
         this.superSql = superSql;
     }
+
 }

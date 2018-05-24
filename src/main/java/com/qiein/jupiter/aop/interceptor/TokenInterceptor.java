@@ -127,4 +127,5 @@ public class TokenInterceptor implements HandlerInterceptor {
         request.setAttribute(CommonConstant.REQUEST_INFO, requestInfoDTO);
         logger.info("访问ip:" + ipAddr);
     }
+
 }

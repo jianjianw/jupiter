@@ -50,6 +50,12 @@ public class ClientEditServiceImpl implements ClientEditService {
     @Autowired
     private StaffDao staffDao;
 
+    /**
+     * 电商推广修改客资
+     *
+     * @param clientVO
+     * @param staffPO
+     */
     @Override
     public void editClientByDscj(ClientVO clientVO, StaffPO staffPO) {
         Map<String, Object> reqContent = new HashMap<>();
@@ -183,6 +189,9 @@ public class ClientEditServiceImpl implements ClientEditService {
                 //成功订单爆彩
                 ClientPushDTO clientPushDTO = clientInfoDao.getClientPushDTOById(clientVO.getKzId(), DBSplitUtil.getInfoTabName(staffPO.getCompanyId()), DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
                 StaffPO appoint = staffDao.getByIdAndCid(clientPushDTO.getAppointorId(), staffPO.getCompanyId());
+                if (appoint == null) {
+                    return;
+                }
                 OrderSuccessMsg orderSuccessMsg = new OrderSuccessMsg();
                 orderSuccessMsg.setCompanyId(staffPO.getCompanyId());
                 orderSuccessMsg.setStaffName(appoint.getNickName());
@@ -271,11 +280,7 @@ public class ClientEditServiceImpl implements ClientEditService {
 
         String addRstStr = crmBaseApi.doService(reqContent, "clientEditCwzxLp");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
-        if ("100000".equals(jsInfo.getString("code"))) {
-            CompanyVO companyVO = companyDao.getVOById(staffPO.getCompanyId());
-            clientPushService.pushLp(channelPO.getPushRule(), staffPO.getCompanyId(), clientVO.getKzId(), clientVO.getShopId(),
-                    clientVO.getChannelId(), channelPO.getTypeId(), companyVO.getOverTime(), companyVO.getKzInterval());
-        } else {
+        if (!"100000".equals(jsInfo.getString("code"))) {
             throw new RException(jsInfo.getString("msg"));
         }
     }
