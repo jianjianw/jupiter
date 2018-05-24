@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.qiein.jupiter.util.TimeUtil;
+import com.qiein.jupiter.web.entity.po.StaffPO;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.junit.Test;
 
@@ -108,5 +109,17 @@ public class AllTest {
         Date yesterDay = TimeUtil.getYesterDay(new Date());
         int i = TimeUtil.dateToIntMillis(yesterDay);
         System.out.println(i);
+    }
+
+
+    @Test
+    public void testObj1() {
+        StaffPO staffPO = new StaffPO();
+        doSomething(staffPO);
+        System.out.println(staffPO.getPhone());
+    }
+
+    private void doSomething(StaffPO staffPO) {
+        staffPO.setPhone("12312321");
     }
 }

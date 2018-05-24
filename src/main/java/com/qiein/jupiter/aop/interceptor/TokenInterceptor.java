@@ -46,11 +46,6 @@ public class TokenInterceptor implements HandlerInterceptor {
 
     /**
      * 前置拦截器
-     *
-     * @param httpServletRequest
-     * @param httpServletResponse
-     * @param o
-     * @return
      */
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) {
@@ -87,8 +82,13 @@ public class TokenInterceptor implements HandlerInterceptor {
     private boolean checkRedisToken(VerifyParamDTO verifyParamDTO, HttpServletRequest httpServletRequest) {
         // 根据uid cid 从缓存中获取当前登录用户
         String userTokenKey = RedisConstant.getStaffKey(verifyParamDTO.getUid(), verifyParamDTO.getCid());
+        //校验TOKEN 如果传过去的staff 为空，则从数据库找到并赋值
         StaffPO staffPO = (StaffPO) redisTemplate.opsForValue().get(userTokenKey);
-        staffPO = checkToken(verifyParamDTO, staffPO);
+        if (staffPO == null) {
+            staffPO = staffService.getById(verifyParamDTO.getUid(), verifyParamDTO.getCid());
+        }
+        //校验用户信息 比对
+        checkTokenUserInfo(verifyParamDTO, staffPO);
         // 验证成功，更新过期时间
         redisTemplate.opsForValue().set(userTokenKey, staffPO, CommonConstant.DEFAULT_EXPIRE_TIME, TimeUnit.HOURS);
         // 将 当前登录用户 放入request
@@ -112,21 +112,18 @@ public class TokenInterceptor implements HandlerInterceptor {
     /**
      * 校验token
      *
-     * @param verifyParamDTO
-     * @param staffPO
+     * @param verifyParamDTO 要校验的对象
+     * @param staffPO        要比对的对象，从redis 或数据库找到的
      * @return
      */
-    public StaffPO checkToken(VerifyParamDTO verifyParamDTO, StaffPO staffPO) {
+    public void checkTokenUserInfo(VerifyParamDTO verifyParamDTO, StaffPO staffPO) {
         // 如果缓存中命中失败,从数据库获取用户信息
         if (staffPO == null) {
-            staffPO = staffService.getById(verifyParamDTO.getUid(), verifyParamDTO.getCid());
-            if (staffPO == null) {
-                // 验证用户不存在
-                throw new RException(ExceptionEnum.VERIFY_USER_NOT_FOUND);
-            } else if (StringUtil.isEmpty(staffPO.getToken())) {
-                // 如果用户当前没有token，说明没有登录或token过期
-                throw new RException(ExceptionEnum.TOKEN_INVALID);
-            }
+            // 验证用户不存在
+            throw new RException(ExceptionEnum.VERIFY_USER_NOT_FOUND);
+        } else if (StringUtil.isEmpty(staffPO.getToken())) {
+            // 如果用户当前没有token，说明没有登录或token过期
+            throw new RException(ExceptionEnum.TOKEN_INVALID);
         }
         // 验证是否被锁定
         if (staffPO.isLockFlag()) {
@@ -136,6 +133,5 @@ public class TokenInterceptor implements HandlerInterceptor {
         if (!StringUtil.ignoreCaseEqual(verifyParamDTO.getToken(), staffPO.getToken())) {
             throw new RException(ExceptionEnum.TOKEN_VERIFY_FAIL);
         }
-        return staffPO;
     }
 }
