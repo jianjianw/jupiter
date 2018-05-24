@@ -281,7 +281,7 @@
         LEFT JOIN
 	        hm_pub_staff_detail sfdet ON sfdet.ID = stf.ID
         WHERE
-	        grpstf.GROUPID = #{groupId} AND grpstf.COMPANYID = #{companyId} AND stf.ISDEL = 0
+	        grpstf.GROUPID = #{groupId} AND grpstf.COMPANYID = #{companyId} AND stf.ISDEL = 0 AND  stf.ISLOCK = 0
         ORDER BY stf.ISLOCK,stf.NICKNAME
     </select>
 

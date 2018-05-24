@@ -1,5 +1,7 @@
 package com.qiein.jupiter.msg.goeasy;
 
+import org.springframework.stereotype.Component;
+
 import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.util.PropertiesUtil;
 import com.qiein.jupiter.util.StringUtil;
@@ -7,8 +9,6 @@ import com.qiein.jupiter.util.StringUtil;
 import io.goeasy.GoEasy;
 import io.goeasy.publish.GoEasyError;
 import io.goeasy.publish.PublishListener;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 /**
  * GoEasy消息推送
@@ -48,7 +48,6 @@ public class GoEasyUtil {
 	private static JSONObject messageJson = null;
 	private static JSONObject contentJson = null;
 
-
 	static {
 		goeasyKey = PropertiesUtil.getValue("goeasy.key");
 		goeasyLinkAddr = PropertiesUtil.getValue("goeasy.linkaddr");
@@ -58,16 +57,16 @@ public class GoEasyUtil {
 		goeasyInstance = new GoEasy(goeasyLinkAddr, goeasyKey);
 	}
 
-//	GoEasyUtil (@Value("${goeasy.key}")String goeasyKey,
-//					  @Value("${goeasy.linkaddr}")String goeasyLinkAddr,
-//					  @Value("${goeasy.hmcrmchannelsuffix}")String hmCrmChannelSuffix,
-//					  @Value("${goeasy.hmappchannelsuffix}")String hmAppChannelSuffix) {
-//		GoEasyUtil.goeasyKey = goeasyKey;
-//		GoEasyUtil.goeasyLinkAddr = goeasyLinkAddr;
-//		GoEasyUtil.hmCrmChannelSuffix = hmCrmChannelSuffix;
-//		GoEasyUtil.hmAppChannelSuffix = hmAppChannelSuffix;
-//        goeasyInstance = new GoEasy(goeasyLinkAddr, goeasyKey);
-//	}
+	// GoEasyUtil (@Value("${goeasy.key}")String goeasyKey,
+	// @Value("${goeasy.linkaddr}")String goeasyLinkAddr,
+	// @Value("${goeasy.hmcrmchannelsuffix}")String hmCrmChannelSuffix,
+	// @Value("${goeasy.hmappchannelsuffix}")String hmAppChannelSuffix) {
+	// GoEasyUtil.goeasyKey = goeasyKey;
+	// GoEasyUtil.goeasyLinkAddr = goeasyLinkAddr;
+	// GoEasyUtil.hmCrmChannelSuffix = hmCrmChannelSuffix;
+	// GoEasyUtil.hmAppChannelSuffix = hmAppChannelSuffix;
+	// goeasyInstance = new GoEasy(goeasyLinkAddr, goeasyKey);
+	// }
 
 	// TODO 该方法在系统停止时调用
 	public static void destroy() {
@@ -175,13 +174,10 @@ public class GoEasyUtil {
 	}
 
 	public static void main(String[] args) {
-		int cid = 2012;
-		int uid = 698;
-		int kzNum = 1;
-		String kzId = "123123123";
-		String logId = "12";
-		int overTime = 120;
-		pushAppInfoReceive(cid, uid, kzNum, kzId, logId, overTime);
+		int cid = 1;
+		int uid = 98;
+		pushStaffRefresh(cid, uid, "192.168.1.1", "浙江省杭州市");
+		// pushStatusRefresh(cid, uid);
 	}
 
 	/**
@@ -270,10 +266,24 @@ public class GoEasyUtil {
 	 * @param companyId
 	 * @param staffId
 	 */
-	public static void pushStaffRefresh(int companyId, int staffId) {
+	public static void pushStaffRefresh(int companyId, int staffId, String ip, String address) {
 
 		contentJson = new JSONObject();
+		contentJson.put("ip", ip);
+		contentJson.put("address", address);
 		pushWeb(MessageConts.MSG_TYPE_STAFF_REFRESH, companyId, staffId, contentJson);
+	}
+
+	/**
+	 * 状态重载消息
+	 * 
+	 * @param companyId
+	 * @param staffId
+	 */
+	public static void pushStatusRefresh(int companyId, int staffId) {
+
+		contentJson = new JSONObject();
+		pushWeb(MessageConts.MSG_TYPE_STATUS_REFRESH, companyId, staffId, contentJson);
 	}
 
 	/**

@@ -7,51 +7,30 @@ import java.io.Serializable;
  * Created by Administrator on 2018/5/14 0014.
  */
 public class StaffChangeVO implements Serializable {
-    private Integer staffId;
-    private Integer staffName;
-    private Integer groupId;
-    private Integer gourpName;
-    private Integer beStaffId;
+    private Integer operaId;
+    private String operaName;
     private Integer companyId;
+    private Integer toStaffId;
+    private String toStaffName;
+    private String groupId;
+    private String groupName;
+    private Integer oldStaffId;
+    private String oldStaffName;
 
-    public Integer getStaffId() {
-        return staffId;
+    public Integer getOperaId() {
+        return operaId;
     }
 
-    public void setStaffId(Integer staffId) {
-        this.staffId = staffId;
+    public void setOperaId(Integer operaId) {
+        this.operaId = operaId;
     }
 
-    public Integer getStaffName() {
-        return staffName;
+    public String getOperaName() {
+        return operaName;
     }
 
-    public void setStaffName(Integer staffName) {
-        this.staffName = staffName;
-    }
-
-    public Integer getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(Integer groupId) {
-        this.groupId = groupId;
-    }
-
-    public Integer getGourpName() {
-        return gourpName;
-    }
-
-    public void setGourpName(Integer gourpName) {
-        this.gourpName = gourpName;
-    }
-
-    public Integer getBeStaffId() {
-        return beStaffId;
-    }
-
-    public void setBeStaffId(Integer beStaffId) {
-        this.beStaffId = beStaffId;
+    public void setOperaName(String operaName) {
+        this.operaName = operaName;
     }
 
     public Integer getCompanyId() {
@@ -60,5 +39,53 @@ public class StaffChangeVO implements Serializable {
 
     public void setCompanyId(Integer companyId) {
         this.companyId = companyId;
+    }
+
+    public Integer getToStaffId() {
+        return toStaffId;
+    }
+
+    public void setToStaffId(Integer toStaffId) {
+        this.toStaffId = toStaffId;
+    }
+
+    public String getToStaffName() {
+        return toStaffName;
+    }
+
+    public void setToStaffName(String toStaffName) {
+        this.toStaffName = toStaffName;
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public Integer getOldStaffId() {
+        return oldStaffId;
+    }
+
+    public void setOldStaffId(Integer oldStaffId) {
+        this.oldStaffId = oldStaffId;
+    }
+
+    public String getOldStaffName() {
+        return oldStaffName;
+    }
+
+    public void setOldStaffName(String oldStaffName) {
+        this.oldStaffName = oldStaffName;
     }
 }

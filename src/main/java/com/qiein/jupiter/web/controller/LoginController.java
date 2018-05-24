@@ -1,20 +1,24 @@
 package com.qiein.jupiter.web.controller;
 
+import com.qiein.jupiter.aop.interceptor.TokenInterceptor;
 import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.constant.RedisConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.*;
+import com.qiein.jupiter.web.entity.dto.VerifyParamDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.LoginUserVO;
 import com.qiein.jupiter.web.service.LoginService;
+import com.qiein.jupiter.web.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -32,6 +36,12 @@ public class LoginController extends BaseController {
 
     @Autowired
     private ValueOperations<String, String> valueOperations;
+
+    @Autowired
+    private TokenInterceptor tokenInterceptor;
+
+    @Autowired
+    private StaffService staffService;
 
     /**
      * 获取用户所在所有企业信息
@@ -193,6 +203,23 @@ public class LoginController extends BaseController {
     @GetMapping("/login_by_ding")
     public ResultInfo dingLogin(String code, int cid) {
         return ResultInfoUtil.success(loginService.loginWithCompanyIdByDing(code, cid, getIp()));
+    }
+
+    /**
+     * 校验token
+     *
+     * @return
+     */
+    @GetMapping("/check_token")
+    public ResultInfo checkToken(HttpServletRequest request) {
+        VerifyParamDTO requestToken = HttpUtil.getRequestToken(request);
+        StaffPO staff = staffService.getById(requestToken.getUid(), requestToken.getCid());
+        if (tokenInterceptor.checkToken(requestToken, staff)) {
+            return ResultInfoUtil.success(true);
+        } else {
+            return ResultInfoUtil.error(ExceptionEnum.TOKEN_VERIFY_FAIL);
+        }
+
     }
 
 

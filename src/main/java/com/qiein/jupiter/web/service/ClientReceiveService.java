@@ -25,5 +25,5 @@ public interface ClientReceiveService {
      * @param companyId
      * @param staffId
      */
-    void refuse(String kzId, String logId, int companyId, int staffId, String staffName);
+	void refuse(String kzId, String logId, int companyId, int staffId, String staffName);
 }

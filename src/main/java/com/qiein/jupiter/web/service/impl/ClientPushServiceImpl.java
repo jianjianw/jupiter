@@ -121,6 +121,26 @@ public class ClientPushServiceImpl implements ClientPushService {
 	 */
 	private void doPushAvgAllot(int companyId, String kzId, StaffPushDTO appointer, int allotLogId, int overTime) {
 
+		// 修改客资信息
+		updateInfoWhenReceive(companyId, kzId, allotLogId, appointer);
+
+		// 重载客服今日领取客资数
+		resizeTodayNum(companyId, appointer.getStaffId());
+
+		// 推送消息
+		// TODO
+	}
+
+	/**
+	 * 客资领取时修改客资信息
+	 * 
+	 * @param companyId
+	 * @param kzId
+	 * @param logId
+	 * @param staffId
+	 * @param staffName
+	 */
+	private void updateInfoWhenReceive(int companyId, String kzId, int allotLogId, StaffPushDTO appointer) {
 		// 客资绑定客服，修改客资状态，客资客服ID，客服名，客资分类，客资客服组信息，最后操作时间，客资最后推送时间
 		int updateRstNum = clientInfoDao.updateClientInfoWhenAllot(companyId, DBSplitUtil.getInfoTabName(companyId),
 				kzId, ClientStatusConst.KZ_CLASS_NEW, ClientStatusConst.BE_HAVE_MAKE_ORDER, appointer.getStaffId(),
@@ -162,8 +182,6 @@ public class ClientPushServiceImpl implements ClientPushService {
 		if (1 != updateRstNum) {
 			throw new RException(ExceptionEnum.LOG_ERROR);
 		}
-
-		// 推送消息
 	}
 
 	/**
@@ -476,5 +494,27 @@ public class ClientPushServiceImpl implements ClientPushService {
 		}
 
 		return maxDiffPid;
+	}
+
+	/**
+	 * 计算员工今日客资数，并校验是否满限状态
+	 * 
+	 * @param companyId
+	 * @param staffId
+	 */
+	private void resizeTodayNum(int companyId, int staffId) {
+		// 计算客服今日领取客资数
+		int num = staffDao.getTodayKzNum(companyId, staffId, DBSplitUtil.getInfoTabName(companyId));
+		// 修改今日领取客资数
+		int updateNum = staffDao.updateTodatKzNum(companyId, staffId, num);
+		if (1 != updateNum) {
+			throw new RException(ExceptionEnum.STAFF_EDIT_ERROR);
+		}
+		// 计算是否满限
+		updateNum = staffDao.checkOverFlowToday(companyId, staffId);
+		if (1 == updateNum) {
+			// 推送状态重载消息
+			GoEasyUtil.pushStatusRefresh(companyId, staffId);
+		}
 	}
 }
