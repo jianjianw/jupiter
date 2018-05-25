@@ -20,7 +20,7 @@
         <result column="SHOPID" jdbcType="INTEGER" property="shopId"/>
         <result column="CHANNELID" jdbcType="INTEGER" property="channelId"/>
         <result column="TYPEID" jdbcType="INTEGER" property="channelTypeId"/>
-		<result column="SRCNAME" jdbcType="VARCHAR" property="srcName"/>
+		<result column="SRCNAME" jdbcType="VARCHAR" property="sourceName"/>
 		<result column="CHANNELNAME" jdbcType="VARCHAR" property="channelName"/>
 		<result column="INVALIDLABEL" jdbcType="VARCHAR" property="invalidLabel"/>
 		<result column="SUCCESSTIME" jdbcType="INTEGER" property="successTime"/>
