@@ -109,4 +109,24 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
      */
     ClientGoEasyDTO getClientGoEasyDTOById(@Param("kzId") String kzId, @Param("infoTabName") String infoTabName,
                                            @Param("detailTabName") String detailTabName);
+
+    /**
+     * 根据拍摄地获取客资数量
+     *
+     * @param infoTabName
+     * @param companyId
+     * @param shopId
+     * @return
+     */
+    int getKzNumByShopId(@Param("infoTabName") String infoTabName, @Param("companyId") int companyId, @Param("shopId") int shopId);
+
+    /**
+     * 根据最终拍摄地获取客资数量
+     *
+     * @param detailName
+     * @param companyId
+     * @param filmingCode
+     * @return
+     */
+    int getKzNumByFilmingCode(@Param("detailName") String detailName, @Param("companyId") int companyId, @Param("filmingCode") int filmingCode);
 }

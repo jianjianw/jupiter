@@ -52,7 +52,7 @@ public enum ExceptionEnum {
     SIMPLE_PASSWORD(355, "密码不能低于6为位"),
     SIMPLE_NUMBER_PASSWORD(356, "密码不能为纯数字"),
     PASSWORD_NULL(357, "密码不能为空"),
-    STAFF_CAN_NOT_DEL(358,"该员工存在为交接客资，请交接后再删除"),
+    STAFF_CAN_NOT_DEL(358, "该员工存在为交接客资，请交接后再删除"),
     //部门
     GROUP_NAME_REPEAT(401, "部门名称重复"),
     GROUP_HAVE_CHILD_GROUP(402, "该部门存在小组，请删除下属小组再进行操作"),
@@ -75,6 +75,7 @@ public enum ExceptionEnum {
     SHOP_EXIST(601, "拍摄地已存在"),
     SHOP_ID_NULL(602, "拍摄地ID不能为空"),
     SHOP_NOT_FOUND(603, "拍摄地不存在"),
+    SHOP_KZ_EXIST(604, "该拍摄地存在客资，不能删除"),
     //权限
     ROLE_EXIST(701, "该角权限已存在"),
     ROLE_EDIT_FAIL(702, "权限修改失败"),
