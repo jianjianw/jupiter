@@ -10,7 +10,6 @@
         <result column="COMPANYID" jdbcType="INTEGER" property="companyId"/>
         <result column="PUSHINTERVAL" jdbcType="INTEGER" property="pushInterval"/>
         <result column="SOURCEID" jdbcType="INTEGER" property="sourceId"/>
-        <result column="APPOINTNAME" jdbcType="VARCHAR" property="appointName"/>
         <result column="PUSHRULE" jdbcType="INTEGER" property="pushRule"/>
         <result column="SHOPID" jdbcType="INTEGER" property="shopId"/>
         <result column="CHANNELID" jdbcType="INTEGER" property="channelId"/>
