@@ -35,7 +35,7 @@ public class ClientPushTask {
 	 */
 	@Scheduled(initialDelay = 1000, fixedDelay = 30 * 1000)
 	public void taskPushLp() {
-		System.out.println("指定定时推送任务");
+		System.out.println("执行定时推送任务");
 		List<CompanyPO> compList = companyDao.listComp();
 		for (CompanyPO comp : compList) {
 			List<ClientPushDTO> infoList = pushService.getInfoListBeReadyPush(comp.getId(), comp.getOvertime());
