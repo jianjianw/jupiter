@@ -118,7 +118,8 @@ public class ClientTrackController extends BaseController {
         }
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        return ResultInfoUtil.success();
+        clientTrackService.allot(kzIds, staffIds);
+        return ResultInfoUtil.success(TigMsgEnum.ALLOT_SUCCESS);
     }
 
 

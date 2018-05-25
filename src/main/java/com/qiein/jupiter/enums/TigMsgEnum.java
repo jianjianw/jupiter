@@ -180,7 +180,11 @@ public enum TigMsgEnum {
     /**
      * 审批成功
      */
-    APPROVAL_SUCCESS("审批成功");
+    APPROVAL_SUCCESS("审批成功"),
+    /**
+     * 分配成功
+     */
+    ALLOT_SUCCESS("分配成功");
 
     private String desc;
 
