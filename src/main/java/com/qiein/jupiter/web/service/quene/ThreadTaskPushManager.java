@@ -11,6 +11,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.qiein.jupiter.web.entity.dto.ClientPushDTO;
 import com.qiein.jupiter.web.service.impl.ClientPushServiceImpl;
@@ -21,6 +22,7 @@ import com.qiein.jupiter.web.service.impl.ClientPushServiceImpl;
  * @author JingChenglong 2018/05/25 10:05
  *
  */
+@Service
 public class ThreadTaskPushManager {
 
 	@Autowired
@@ -41,9 +43,6 @@ public class ThreadTaskPushManager {
 	private final static int WORK_QUEUE_SIZE = 50;// 线程池所使用的缓冲队列大小。
 
 	public void pushInfo(ClientPushDTO pushVO) {
-		if(this.service == null){
-			System.out.println("---------------推送service注入失败--------------");
-		}
 		threadPool.execute(new PushThread(this.service, pushVO));
 	}
 
