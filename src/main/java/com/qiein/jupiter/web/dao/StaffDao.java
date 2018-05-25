@@ -326,4 +326,26 @@ public interface StaffDao extends BaseDao<StaffPO> {
 	 * @return
 	 */
 	int checkOverFlowToday(@Param("companyId") int companyId, @Param("staffId") int staffId);
+
+	/**
+	 * 校验是否有上线后连续三次怠工
+	 * 
+	 * @param allotLogTabName
+	 * @param companyId
+	 * @param appointorId
+	 * @param overTime
+	 * @return
+	 */
+	int getSaboteurCheckNum(@Param("logTabName") String logTabName, @Param("companyId") int companyId,
+			@Param("staffId") int staffId, @Param("overTime") int overTime);
+
+	/**
+	 * 修改员工当前状态
+	 * 
+	 * @param companyId
+	 * @param appointorId
+	 * @param statusId
+	 */
+	int editStatusFlagOffLine(@Param("companyId") int companyId, @Param("staffId") int staffId,
+			@Param("statusFlag") int statusFlag);
 }

@@ -87,9 +87,12 @@ public class ExportExcelUtil {
         response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
         response.setHeader("Pragma", "no-cache");
         response.setHeader("Expires", "0");
+        //编码格式
         response.setHeader("charset", "utf-8");
         response.setHeader("Content-Disposition", "attachment; filename=" + fileNameTemp);
+        //文件名称
         response.setHeader("file-name", fileNameTemp);
+        //设置前端允许访问的Header，不设置前端获取不到文件名称
         response.setHeader("Access-Control-Expose-Headers", "file-name");
         OutputStream os = response.getOutputStream();
         Workbook excel = createExcel(fileName, list, pojoClass);

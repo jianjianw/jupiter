@@ -1,36 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qiein.jupiter.web.dao.StaffStatusLogDao">
-    <resultMap id="baseMap" type="com.qiein.jupiter.web.entity.po.StaffStatusLog">
-        <id column="ID" property="id" jdbcType="INTEGER"/>
-        <result column="STAFFID" property="staffId" jdbcType="INTEGER"/>
-        <result column="STAFFNAME" property="staffName" jdbcType="VARCHAR"/>
-        <result column="STATUSCODE" property="statusCode" jdbcType="INTEGER"/>
-        <result column="OPERAID" property="operaId" jdbcType="INTEGER"/>
-        <result column="OPERANAME" property="operaName" jdbcType="VARCHAR"/>
-        <result column="LOGTIME" property="logTime" jdbcType="INTEGER"/>
-        <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
-    </resultMap>
+	<resultMap id="baseMap"
+		type="com.qiein.jupiter.web.entity.po.StaffStatusLog">
+		<id column="ID" property="id" jdbcType="INTEGER" />
+		<result column="STAFFID" property="staffId" jdbcType="INTEGER" />
+		<result column="STATUSCODE" property="statusCode" jdbcType="INTEGER" />
+		<result column="OPERAID" property="operaId" jdbcType="INTEGER" />
+		<result column="OPERANAME" property="operaName" jdbcType="VARCHAR" />
+		<result column="MEMO" property="memo" jdbcType="VARCHAR" />
+		<result column="LOGTIME" property="logTime" jdbcType="INTEGER" />
+		<result column="COMPANYID" property="companyId" jdbcType="INTEGER" />
+	</resultMap>
 
-    <sql id="baseColumn">
-        ID,STAFFID,STAFFNAME,STATUSCODE,OPERAID,OPERANAME,LOGTIME
-    </sql>
+	<sql id="baseColumn">
+		ID, STAFFID, STATUSCODE, OPERAID, OPERANAME, LOGTIME, MEMO
+	</sql>
 
-    <!--获取所有的消息-->
-    <select id="listByStaffId" resultMap="baseMap">
-        SELECT
-        <include refid="baseColumn"/>
-        FROM hm_pub_staff_status_log
-        WHERE STAFFID = #{staffId}
-        AND COMPANYID = #{companyId}
-        AND LOGTIME >= #{time}
-    </select>
+	<!--获取所有的消息 -->
+	<select id="listByStaffId" resultMap="baseMap">
+		SELECT
+			<include refid="baseColumn" />
+		FROM 
+			hm_pub_staff_status_log
+		WHERE 
+			STAFFID = #{staffId}
+		AND COMPANYID = #{companyId}
+		AND LOGTIME &gt;= #{time}
+	</select>
 
-    <insert id="insert">
-     INSERT INTO  hm_pub_staff_status_log
-     (STAFFID,STAFFNAME,STATUSCODE,OPERAID,OPERANAME,LOGTIME,COMPANYID)
-     VALUES
-     (#{staffId},#{staffName}, #{statusCode}, #{operaId},
-     #{operaName}, UNIX_TIMESTAMP(now()),#{companyId})
-    </insert>
+	<insert id="insert">
+		INSERT INTO 
+			hm_pub_staff_status_log
+		(STAFFID, STATUSCODE, OPERAID, OPERANAME, LOGTIME, COMPANYID, MEMO)
+			VALUES
+		(#{staffId}, #{statusCode}, #{operaId}, #{operaName}, UNIX_TIMESTAMP(now()), #{companyId}, #{memo})
+	</insert>
 </mapper>
