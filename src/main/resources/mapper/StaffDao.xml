@@ -737,4 +737,18 @@
     <update id="editStatusFlagOffLine" parameterType="map">
         UPDATE hm_pub_staff SET STATUSFLAG = #{statusFlag} WHERE COMPANYID = #{companyId} AND ID = #{staffId} AND STATUSFLAG = 1;
     </update>
+    
+    <!--查询所选客服集合-->
+    <select id="listStaffInstrIds" parameterType="map" resultMap="pushMap">
+        SELECT
+			sf.ID, sf.NICKNAME, sf.COMPANYID
+		FROM
+			hm_pub_staff sf
+		WHERE
+			sf.COMPANYID = #{companyId}
+		AND sf.ISDEL = 0
+		AND sf.ISLOCK = 0
+		AND sf.STATUSFLAG = 1
+		AND INSTR(CONCAT(',',#{staffIds},','),CONCAT(',',sf.ID,',')) != 0;
+    </select>
 </mapper>
