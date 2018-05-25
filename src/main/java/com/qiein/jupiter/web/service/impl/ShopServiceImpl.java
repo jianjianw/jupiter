@@ -100,20 +100,25 @@ public class ShopServiceImpl implements ShopService {
     }
 
     /**
+     * 校验拍摄地是否可删除
+     *
+     * @param companyId
+     * @param id
+     */
+    public boolean shopCanDelete(int companyId, int id) {
+        int shopKzNum = clientInfoDao.getKzNumByShopId(DBSplitUtil.getInfoTabName(companyId), companyId, id);
+        int filmingCodeKzNum = clientInfoDao.getKzNumByFilmingCode(DBSplitUtil.getInfoTabName(companyId), companyId, id);
+        return (shopKzNum == 0 && filmingCodeKzNum == 0) ? true : false;
+    }
+
+    /**
      * 删除拍摄地
      *
      * @param companyId
      * @param id
      */
     public void deleteShop(int companyId, int id) {
-        int shopKzNum = clientInfoDao.getKzNumByShopId(DBSplitUtil.getInfoTabName(companyId), companyId, id);
-        if (shopKzNum > 0) {
-            throw new RException(ExceptionEnum.SHOP_KZ_EXIST);
-        }
-        int filmingCodeKzNum = clientInfoDao.getKzNumByFilmingCode(DBSplitUtil.getInfoTabName(companyId), companyId, id);
-        if (filmingCodeKzNum > 0) {
-            throw new RException(ExceptionEnum.SHOP_KZ_EXIST);
-        }
+
         shopDao.deleteShop(companyId, id);
     }
 

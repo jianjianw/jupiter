@@ -22,6 +22,11 @@ public class ShopController extends BaseController {
     @Autowired
     private ShopService shopService;
 
+    /**
+     * 获取企业所有拍摄地列表，包含停用
+     *
+     * @return
+     */
     @GetMapping("/get_company_shop_list")
     public ResultInfo getCompanyShopList() {
         //获取当前登录用户
@@ -29,6 +34,12 @@ public class ShopController extends BaseController {
         return ResultInfoUtil.success(shopService.getCompanyShopList(currentLoginStaff.getCompanyId()));
     }
 
+    /**
+     * 添加拍摄地
+     *
+     * @param shopPO
+     * @return
+     */
     @PostMapping("/add_shop")
     public ResultInfo addShop(@RequestBody @Validated ShopPO shopPO) {
         //获取当前登录用户
@@ -38,6 +49,12 @@ public class ShopController extends BaseController {
         return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
     }
 
+    /**
+     * 编辑拍摄地
+     *
+     * @param shopPO
+     * @return
+     */
     @PostMapping("/edit_shop")
     public ResultInfo editShop(@RequestBody @Validated ShopPO shopPO) {
         if (NumUtil.isNull(shopPO.getId())) {
@@ -50,6 +67,13 @@ public class ShopController extends BaseController {
         return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
     }
 
+    /**
+     * 编辑拍摄地是否启用
+     *
+     * @param id
+     * @param showFlag
+     * @return
+     */
     @GetMapping("/edit_shop_show")
     public ResultInfo editShopShow(@Id @RequestParam("id") Integer id,
                                    @Bool @RequestParam("showFlag") Boolean showFlag) {
@@ -62,6 +86,25 @@ public class ShopController extends BaseController {
         return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
     }
 
+    /**
+     * 校验拍摄地是否可删除
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("/shop_can_delete")
+    public ResultInfo shopCanDelete(@Id @RequestParam("id") Integer id) {
+        //获取当前登录用户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        return ResultInfoUtil.success(shopService.shopCanDelete(currentLoginStaff.getCompanyId(), id));
+    }
+
+    /**
+     * 删除拍摄地
+     *
+     * @param id
+     * @return
+     */
     @GetMapping("/delete_shop")
     public ResultInfo deleteShop(@Id @RequestParam("id") Integer id) {
         //获取当前登录用户
@@ -70,6 +113,12 @@ public class ShopController extends BaseController {
         return ResultInfoUtil.success(TigMsgEnum.DELETE_SUCCESS);
     }
 
+
+    /**
+     * 获取所有启用的拍摄地列表
+     *
+     * @return
+     */
     @GetMapping("/get_show_shop_list")
     public ResultInfo getShowShopList() {
         //获取当前登录用户

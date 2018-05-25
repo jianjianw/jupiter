@@ -63,6 +63,15 @@ public interface ShopService {
     void deleteShop(int companyId, int id);
 
     /**
+     * 校验拍摄地是否可删除
+     *
+     * @param companyId
+     * @param id
+     */
+    boolean shopCanDelete(int companyId, int id);
+
+
+    /**
      * 获取企业显示的拍摄地列表
      *
      * @param companyId
