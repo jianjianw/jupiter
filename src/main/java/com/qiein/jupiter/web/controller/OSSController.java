@@ -38,7 +38,6 @@ public class OSSController extends BaseController {
 	@GetMapping("/delete")
 	public ResultInfo deleteImg(String imgUrl) {
 		OSSUtil.deleteObject(imgUrl);
-		System.out.println(1);
 		return ResultInfoUtil.success(TigMsgEnum.SUCCESS);
 	}
 
@@ -62,7 +61,6 @@ public class OSSController extends BaseController {
 	@PostMapping("/upload_img")
 	public ResultInfo uploadImg(MultipartFile file) {
 		String path = null;
-		System.out.println(1);
 		// 图片上传
 		if (file != null) {
 			// 检查文件类型是否为图片

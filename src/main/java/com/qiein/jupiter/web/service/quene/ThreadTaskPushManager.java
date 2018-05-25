@@ -11,70 +11,73 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import com.qiein.jupiter.web.entity.dto.ClientPushDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 客资定时分配任务
- * 
- * @author JingChenglong 2018/05/25 10:05
  *
+ * @author JingChenglong 2018/05/25 10:05
  */
 public class ThreadTaskPushManager {
 
-	public static ThreadTaskPushManager tpm = new ThreadTaskPushManager();
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
-	public static ThreadTaskPushManager getInstance() {
-		return tpm;
-	}
+    public static ThreadTaskPushManager tpm = new ThreadTaskPushManager();
 
-	private ThreadTaskPushManager() {
-	}
+    public static ThreadTaskPushManager getInstance() {
+        return tpm;
+    }
 
-	private final static int CORE_POOL_SIZE = 5;// 线程池维护线程的最小数量。
-	private final static int MAX_POOL_SIZE = 5;// 线程池维护线程的最大数量。
-	private final static int KEEP_ALIVE_TIME = 100;// 线程池维护线程所允许的空闲时间。
-	private final static int WORK_QUEUE_SIZE = 50;// 线程池所使用的缓冲队列大小。
+    private ThreadTaskPushManager() {
+    }
 
-	public void pushInfo(ClientPushDTO pushVO) {
-		threadPool.execute(new PushThread(pushVO));
-	}
+    private final static int CORE_POOL_SIZE = 5;// 线程池维护线程的最小数量。
+    private final static int MAX_POOL_SIZE = 5;// 线程池维护线程的最大数量。
+    private final static int KEEP_ALIVE_TIME = 100;// 线程池维护线程所允许的空闲时间。
+    private final static int WORK_QUEUE_SIZE = 50;// 线程池所使用的缓冲队列大小。
 
-	final RejectedExecutionHandler handler = new RejectedExecutionHandler() {
+    public void pushInfo(ClientPushDTO pushVO) {
+        threadPool.execute(new PushThread(pushVO));
+    }
 
-		public void rejectedExecution(Runnable arg0, ThreadPoolExecutor arg1) {
-			if (!infoQueue.offer(((PushThread) arg0).getPushVO())) {
-				System.out.println(
-						"*************************队列已满，ThreadInfoPushManager--offer失败*******************************");
-			}
-		}
-	};
+    final RejectedExecutionHandler handler = new RejectedExecutionHandler() {
 
-	// 管理工作线程的线程池
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	final ThreadPoolExecutor threadPool = new ThreadPoolExecutor(CORE_POOL_SIZE, MAX_POOL_SIZE, KEEP_ALIVE_TIME,
-			TimeUnit.SECONDS, new LinkedBlockingQueue(WORK_QUEUE_SIZE), this.handler);
+        public void rejectedExecution(Runnable arg0, ThreadPoolExecutor arg1) {
+            if (!infoQueue.offer(((PushThread) arg0).getPushVO())) {
+                log.info(
+                        "*************************队列已满，ThreadInfoPushManager--offer失败*******************************");
+            }
+        }
+    };
 
-	Queue<ClientPushDTO> infoQueue = new LinkedList<ClientPushDTO>();// 客资信息缓冲队列
+    // 管理工作线程的线程池
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    final ThreadPoolExecutor threadPool = new ThreadPoolExecutor(CORE_POOL_SIZE, MAX_POOL_SIZE, KEEP_ALIVE_TIME,
+            TimeUnit.SECONDS, new LinkedBlockingQueue(WORK_QUEUE_SIZE), this.handler);
 
-	// 访问消息缓存的调度线程
-	// 查看是否有待定请求，如果有，则创建一个新的AccessDBThread并添加到线程池中。
-	final Runnable accessBufferThread = new Runnable() {
+    Queue<ClientPushDTO> infoQueue = new LinkedList<ClientPushDTO>();// 客资信息缓冲队列
 
-		public void run() {
+    // 访问消息缓存的调度线程
+    // 查看是否有待定请求，如果有，则创建一个新的AccessDBThread并添加到线程池中。
+    final Runnable accessBufferThread = new Runnable() {
 
-			if (hasMoreAcquire()) {
-				PushThread vo = new PushThread(infoQueue.poll());
-				threadPool.execute(vo);
-			}
-		}
-	};
+        public void run() {
 
-	// 调度线程池
-	final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1000);
+            if (hasMoreAcquire()) {
+                PushThread vo = new PushThread(infoQueue.poll());
+                threadPool.execute(vo);
+            }
+        }
+    };
 
-	@SuppressWarnings("rawtypes")
-	final ScheduledFuture taskHandler = scheduler.scheduleAtFixedRate(accessBufferThread, 0, 1, TimeUnit.SECONDS);
+    // 调度线程池
+    final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1000);
 
-	private boolean hasMoreAcquire() {
-		return !infoQueue.isEmpty();
-	}
+    @SuppressWarnings("rawtypes")
+    final ScheduledFuture taskHandler = scheduler.scheduleAtFixedRate(accessBufferThread, 0, 1, TimeUnit.SECONDS);
+
+    private boolean hasMoreAcquire() {
+        return !infoQueue.isEmpty();
+    }
 }
