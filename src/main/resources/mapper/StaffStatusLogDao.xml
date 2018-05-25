@@ -27,6 +27,7 @@
 			STAFFID = #{staffId}
 		AND COMPANYID = #{companyId}
 		AND LOGTIME &gt;= #{time}
+        ORDER BY LOGTIME DESC
 	</select>
 
 	<insert id="insert">
