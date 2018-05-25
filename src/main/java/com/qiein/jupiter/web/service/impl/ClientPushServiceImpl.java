@@ -63,8 +63,8 @@ public class ClientPushServiceImpl implements ClientPushService {
 	 */
 	@Transactional
 	@Override
-	public void pushLp(int rule, int companyId, String kzId, int shopId, int channelId, int channelTypeId, int overTime,
-			int interval) {
+	public synchronized void pushLp(int rule, int companyId, String kzId, int shopId, int channelId, int channelTypeId,
+			int overTime, int interval) {
 
 		if (NumUtil.haveInvalid(rule, companyId, shopId, channelId, channelTypeId) || StringUtil.isEmpty(kzId)) {
 			return;
