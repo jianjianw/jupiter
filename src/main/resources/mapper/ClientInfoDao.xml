@@ -54,7 +54,7 @@
 	<!--获取要goeasy推送的客资信息-->
 	<select id="getClientGoEasyDTOById" parameterType="map" resultMap="goEasyMap">
 		SELECT
-		info.ID, info.KZID,info.KZNAME, info.KZPHONE, info.KZWECHAT, info.APPOINTORID, info.COMPANYID, info.SOURCEID, det.APPOINTNAME, det.FILMINGAREA, src.SRCNAME,
+		info.ID, info.KZID,info.KZNAME, info.KZPHONE, info.KZWECHAT, info.APPOINTORID,info.COLLECTORID, info.COMPANYID, info.SOURCEID, det.APPOINTNAME, det.FILMINGAREA, src.SRCNAME,
 		src.CHANNELNAME, det.INVALIDLABEL, info.SUCCESSTIME, det.AMOUNT
 		FROM
 		${infoTabName} info
