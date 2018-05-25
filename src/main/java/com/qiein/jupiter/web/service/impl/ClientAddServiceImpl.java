@@ -1,24 +1,33 @@
 package com.qiein.jupiter.web.service.impl;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
-import com.alibaba.fastjson.JSONArray;
-import com.qiein.jupiter.constant.CommonConstant;
-import com.qiein.jupiter.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.constant.ChannelConstant;
+import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.http.CrmBaseApi;
+import com.qiein.jupiter.util.JsonFmtUtil;
+import com.qiein.jupiter.util.MobileLocationUtil;
+import com.qiein.jupiter.util.NumUtil;
+import com.qiein.jupiter.util.RegexUtil;
+import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.ChannelDao;
 import com.qiein.jupiter.web.dao.CompanyDao;
 import com.qiein.jupiter.web.dao.GroupDao;
 import com.qiein.jupiter.web.dao.ShopDao;
 import com.qiein.jupiter.web.dao.SourceDao;
 import com.qiein.jupiter.web.dao.StaffDao;
+import com.qiein.jupiter.web.entity.dto.ClientPushDTO;
 import com.qiein.jupiter.web.entity.po.ChannelPO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.GroupPO;
@@ -27,7 +36,7 @@ import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.ClientVO;
 import com.qiein.jupiter.web.entity.vo.ShopVO;
 import com.qiein.jupiter.web.service.ClientAddService;
-import com.qiein.jupiter.web.service.ClientPushService;
+import com.qiein.jupiter.web.service.quene.ThreadTaskPushManager;
 
 @Service
 public class ClientAddServiceImpl implements ClientAddService {
@@ -44,9 +53,10 @@ public class ClientAddServiceImpl implements ClientAddService {
 	@Autowired
 	private CrmBaseApi crmBaseApi;
 	@Autowired
-	private ClientPushService clientPushService;
-	@Autowired
 	private CompanyDao companyDao;
+
+	// 客资推送线程池
+	ThreadTaskPushManager tpm = ThreadTaskPushManager.getInstance();
 
 	/**
 	 * 添加电商客资
@@ -121,9 +131,9 @@ public class ClientAddServiceImpl implements ClientAddService {
 		JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
 		if ("100000".equals(jsInfo.getString("code"))) {
 			CompanyPO companyPO = companyDao.getById(staffPO.getCompanyId());
-			clientPushService.pushLp(channelPO.getPushRule(), staffPO.getCompanyId(),
+			tpm.pushInfo(new ClientPushDTO(channelPO.getPushRule(), staffPO.getCompanyId(),
 					JsonFmtUtil.strContentToJsonObj(addRstStr).getString("kzid"), clientVO.getShopId(),
-					channelPO.getId(), channelPO.getTypeId(), companyPO.getOvertime(), companyPO.getKzInterval());
+					channelPO.getId(), channelPO.getTypeId(), companyPO.getOvertime(), companyPO.getKzInterval()));
 		} else {
 			throw new RException(jsInfo.getString("msg"));
 		}

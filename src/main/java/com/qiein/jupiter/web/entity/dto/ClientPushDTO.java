@@ -2,6 +2,9 @@ package com.qiein.jupiter.web.entity.dto;
 
 import java.io.Serializable;
 
+import com.qiein.jupiter.util.NumUtil;
+import com.qiein.jupiter.util.StringUtil;
+
 /**
  * 客资推送时封装客资信息
  *
@@ -15,6 +18,11 @@ public class ClientPushDTO implements Serializable {
 	 * 推送时间间隔
 	 */
 	private int pushInterval;
+
+	/**
+	 * 客资领取超时时间
+	 */
+	private int overTime;
 
 	/**
 	 * 企业ID
@@ -73,6 +81,36 @@ public class ClientPushDTO implements Serializable {
 	 * 渠道类型
 	 */
 	private int channelTypeId;
+
+	public ClientPushDTO(Integer pushRule, int companyId, String kzId, int shopId, int channelId, Integer channelTypeId,
+			int overtime, int kzInterval) {
+		this.pushRule = pushRule;
+		this.companyId = companyId;
+		this.kzId = kzId;
+		this.shopId = shopId;
+		this.channelId = channelId;
+		this.channelTypeId = channelTypeId;
+		this.overTime = overtime;
+		this.pushInterval = kzInterval;
+	}
+
+	public ClientPushDTO() {
+		super();
+	}
+
+	public boolean isNotEmpty() {
+		return (NumUtil.isValid(this.pushRule) && NumUtil.isValid(this.companyId) && StringUtil.isValid(this.kzId)
+				&& NumUtil.isValid(this.shopId) && NumUtil.isValid(this.channelId)
+				&& NumUtil.isValid(this.channelTypeId));
+	}
+
+	public int getOverTime() {
+		return overTime;
+	}
+
+	public void setOverTime(int overTime) {
+		this.overTime = overTime;
+	}
 
 	public int getPushRule() {
 		return pushRule;
