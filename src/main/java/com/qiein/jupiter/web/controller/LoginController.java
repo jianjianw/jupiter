@@ -218,5 +218,4 @@ public class LoginController extends BaseController {
 		tokenInterceptor.checkTokenUserInfo(requestToken, staff);
 		return ResultInfoUtil.success(true);
 	}
-
 }
