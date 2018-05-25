@@ -113,4 +113,14 @@ public class ClientTrackServiceImpl implements ClientTrackService {
             throw new RException(jsInfo.getString("msg"));
         }
     }
+
+    /**
+     * 分配客资
+     *
+     * @param kzIds
+     * @param staffIds
+     */
+    public void allot(String kzIds, String staffIds) {
+        //TODO 分配客资
+    }
 }

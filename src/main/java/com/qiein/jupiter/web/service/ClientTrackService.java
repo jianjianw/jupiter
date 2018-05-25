@@ -41,5 +41,13 @@ public interface ClientTrackService {
      */
     String approvalInvalidKzList(String kzIds, String memo, int rst, String invalidLabel, StaffPO staffPO);
 
+    /**
+     * 分配客资
+     *
+     * @param kzIds
+     * @param staffIds
+     */
+    void allot(String kzIds, String staffIds);
+
 
 }

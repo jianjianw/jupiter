@@ -101,5 +101,25 @@ public class ClientTrackController extends BaseController {
         return resultInfo;
     }
 
+    /**
+     * 分配
+     *
+     * @return
+     */
+    @PostMapping("/allot")
+    public ResultInfo allot(@RequestBody JSONObject jsonObject) {
+        String kzIds = StringUtil.nullToStrTrim(jsonObject.getString("kzIds"));
+        if (StringUtil.isEmpty(kzIds)) {
+            throw new RException(ExceptionEnum.KZ_ID_IS_NULL);
+        }
+        String staffIds = StringUtil.nullToStrTrim(jsonObject.getString("staffIds"));
+        if (StringUtil.isEmpty(staffIds)) {
+            throw new RException(ExceptionEnum.STAFF_ID_NULL);
+        }
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        return ResultInfoUtil.success();
+    }
+
 
 }
