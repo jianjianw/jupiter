@@ -389,7 +389,7 @@ public class GoEasyUtil {
         }
         sb.append("渠道：" + StringUtil.nullToStrTrim(info.getChannelName()) + "<br/>");
         sb.append("来源：" + StringUtil.nullToStrTrim(info.getSourceName()) + "<br/>");
-        sb.append("客服：" + StringUtil.nullToStrTrim(info.getAppointName()) + "<br/><br/>");
+        sb.append("客服：" + StringUtil.nullToStrTrim(info.getAppointName()) + "<br/>");
         sb.append("成交套系： ¥" + info.getAmount() + "<br/>");
         sb.append("订单时间：" + TimeUtil.intMillisToTimeStr(info.getSuccessTime()));
         String msg = sb.toString();
