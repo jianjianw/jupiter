@@ -107,7 +107,7 @@ public class ShopServiceImpl implements ShopService {
      */
     public boolean shopCanDelete(int companyId, int id) {
         int shopKzNum = clientInfoDao.getKzNumByShopId(DBSplitUtil.getInfoTabName(companyId), companyId, id);
-        int filmingCodeKzNum = clientInfoDao.getKzNumByFilmingCode(DBSplitUtil.getInfoTabName(companyId), companyId, id);
+        int filmingCodeKzNum = clientInfoDao.getKzNumByFilmingCode(DBSplitUtil.getDetailTabName(companyId), companyId, id);
         return (shopKzNum == 0 && filmingCodeKzNum == 0) ? true : false;
     }
 
