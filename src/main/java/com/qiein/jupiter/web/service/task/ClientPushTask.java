@@ -43,8 +43,9 @@ public class ClientPushTask {
 				continue;
 			}
 			for (ClientPushDTO info : infoList) {
-				tpm.pushInfo(new ClientPushDTO(info.getPushRule(), comp.getId(), info.getKzId(), info.getShopId(),
-						info.getChannelId(), info.getChannelTypeId(), comp.getOvertime(), comp.getKzInterval()));
+				tpm.pushInfo(new ClientPushDTO(pushService, info.getPushRule(), comp.getId(), info.getKzId(),
+						info.getShopId(), info.getChannelId(), info.getChannelTypeId(), comp.getOvertime(),
+						comp.getKzInterval()));
 			}
 			System.out.println("推送了客资：" + infoList.size() + " 个");
 		}

@@ -40,6 +40,10 @@ import com.qiein.jupiter.web.service.quene.ThreadTaskPushManager;
 
 @Service
 public class ClientAddServiceImpl implements ClientAddService {
+
+	@Autowired
+	private ClientPushServiceImpl pushService;
+
 	@Autowired
 	private ChannelDao channelDao;
 	@Autowired
@@ -131,7 +135,7 @@ public class ClientAddServiceImpl implements ClientAddService {
 		JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
 		if ("100000".equals(jsInfo.getString("code"))) {
 			CompanyPO companyPO = companyDao.getById(staffPO.getCompanyId());
-			tpm.pushInfo(new ClientPushDTO(channelPO.getPushRule(), staffPO.getCompanyId(),
+			tpm.pushInfo(new ClientPushDTO(pushService, channelPO.getPushRule(), staffPO.getCompanyId(),
 					JsonFmtUtil.strContentToJsonObj(addRstStr).getString("kzid"), clientVO.getShopId(),
 					channelPO.getId(), channelPO.getTypeId(), companyPO.getOvertime(), companyPO.getKzInterval()));
 		} else {

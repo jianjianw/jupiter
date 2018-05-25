@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.web.service.impl.ClientPushServiceImpl;
 
 /**
  * 客资推送时封装客资信息
@@ -73,8 +74,10 @@ public class ClientPushDTO implements Serializable {
 	 */
 	private int channelTypeId;
 
-	public ClientPushDTO(Integer pushRule, int companyId, String kzId, int shopId, int channelId, Integer channelTypeId,
-			int overtime, int kzInterval) {
+	private ClientPushServiceImpl service;
+
+	public ClientPushDTO(ClientPushServiceImpl service, Integer pushRule, int companyId, String kzId, int shopId,
+			int channelId, Integer channelTypeId, int overtime, int kzInterval) {
 		this.pushRule = pushRule;
 		this.companyId = companyId;
 		this.kzId = kzId;
@@ -83,6 +86,7 @@ public class ClientPushDTO implements Serializable {
 		this.channelTypeId = channelTypeId;
 		this.overTime = overtime;
 		this.pushInterval = kzInterval;
+		this.service = service;
 	}
 
 	public ClientPushDTO() {
@@ -90,9 +94,17 @@ public class ClientPushDTO implements Serializable {
 	}
 
 	public boolean isNotEmpty() {
-		return (NumUtil.isValid(this.pushRule) && NumUtil.isValid(this.companyId) && StringUtil.isValid(this.kzId)
-				&& NumUtil.isValid(this.shopId) && NumUtil.isValid(this.channelId)
+		return (service != null && NumUtil.isValid(this.pushRule) && NumUtil.isValid(this.companyId)
+				&& StringUtil.isValid(this.kzId) && NumUtil.isValid(this.shopId) && NumUtil.isValid(this.channelId)
 				&& NumUtil.isValid(this.channelTypeId));
+	}
+
+	public ClientPushServiceImpl getService() {
+		return service;
+	}
+
+	public void setService(ClientPushServiceImpl service) {
+		this.service = service;
 	}
 
 	public int getPushInterval() {
