@@ -108,9 +108,19 @@ public class ClientTrackServiceImpl implements ClientTrackService {
             //TODO 推送
             int wrongNum = JsonFmtUtil.strContentToJsonObj(addRstStr).getIntValue("num");
             System.out.println(wrongNum);
-            return "审批成功：" + (kzIds.split(CommonConstant.STR_SEPARATOR).length - wrongNum) + "个,审批失败：" + wrongNum + "个";
+            return "审批成功：" + (kzIds.split(CommonConstant.STR_SEPARATOR).length - wrongNum) + "个，审批失败：" + wrongNum + "个";
         } else {
             throw new RException(jsInfo.getString("msg"));
         }
+    }
+
+    /**
+     * 分配客资
+     *
+     * @param kzIds
+     * @param staffIds
+     */
+    public void allot(String kzIds, String staffIds) {
+        //TODO 分配客资
     }
 }
