@@ -8,12 +8,13 @@
         <result column="STATUSCODE" property="statusCode" jdbcType="INTEGER"/>
         <result column="OPERAID" property="operaId" jdbcType="INTEGER"/>
         <result column="OPERANAME" property="operaName" jdbcType="VARCHAR"/>
+        <result column="MEMO" property="memo" jdbcType="VARCHAR"/>
         <result column="LOGTIME" property="logTime" jdbcType="INTEGER"/>
         <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="baseColumn">
-        ID,STAFFID,STAFFNAME,STATUSCODE,OPERAID,OPERANAME,LOGTIME
+        ID, STAFFID, STAFFNAME, STATUSCODE, OPERAID, OPERANAME, LOGTIME,MEMO
     </sql>
 
     <!--获取所有的消息-->
@@ -27,10 +28,10 @@
     </select>
 
     <insert id="insert">
-     INSERT INTO  hm_pub_staff_status_log
-     (STAFFID,STAFFNAME,STATUSCODE,OPERAID,OPERANAME,LOGTIME,COMPANYID)
-     VALUES
-     (#{staffId},#{staffName}, #{statusCode}, #{operaId},
-     #{operaName}, UNIX_TIMESTAMP(now()),#{companyId})
+        INSERT INTO hm_pub_staff_status_log
+        (STAFFID, STAFFNAME, STATUSCODE, OPERAID, OPERANAME, LOGTIME, COMPANYID,MEMO)
+        VALUES
+            (#{staffId}, #{staffName}, #{statusCode}, #{operaId},
+             #{operaName}, UNIX_TIMESTAMP(now()), #{companyId},#{memo})
     </insert>
 </mapper>
