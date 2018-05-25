@@ -35,6 +35,7 @@ public class ClientPushTask {
 	 */
 	@Scheduled(initialDelay = 1000, fixedDelay = 30 * 1000)
 	public void taskPushLp() {
+		System.out.println("指定定时推送任务");
 		List<CompanyPO> compList = companyDao.listComp();
 		for (CompanyPO comp : compList) {
 			List<ClientPushDTO> infoList = pushService.getInfoListBeReadyPush(comp.getId(), comp.getOvertime());
@@ -45,6 +46,7 @@ public class ClientPushTask {
 				tpm.pushInfo(new ClientPushDTO(info.getPushRule(), comp.getId(), info.getKzId(), info.getShopId(),
 						info.getChannelId(), info.getChannelTypeId(), comp.getOvertime(), comp.getKzInterval()));
 			}
+			System.out.println("推送了客资：" + infoList.size() + " 个");
 		}
 	}
 }
