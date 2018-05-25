@@ -348,4 +348,13 @@ public interface StaffDao extends BaseDao<StaffPO> {
 	 */
 	int editStatusFlagOffLine(@Param("companyId") int companyId, @Param("staffId") int staffId,
 			@Param("statusFlag") int statusFlag);
+
+	/**
+	 * 查询所选客服集合
+	 * 
+	 * @param companyId
+	 * @param staffIds
+	 * @return
+	 */
+	List<StaffPushDTO> listStaffInstrIds(@Param("companyId") int companyId, @Param("staffIds") String staffIds);
 }

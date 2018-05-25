@@ -552,4 +552,58 @@ public class ClientPushServiceImpl implements ClientPushService {
 			return null;
 		}
 	}
+
+	/**
+	 * 客资批量分配
+	 */
+	@Override
+	public void pushLp(String kzIds, String staffIds, int companyId) {
+		if (StringUtil.isEmpty(kzIds) || StringUtil.isEmpty(staffIds) || NumUtil.isInValid(companyId)) {
+			throw new RException(ExceptionEnum.ALLOT_ERROR);
+		}
+		// 查询所选客资里面没有分出去的客资
+		List<ClientPushDTO> infoList = clientInfoDao.listClientsInStrKzids(kzIds, companyId,
+				DBSplitUtil.getInfoTabName(companyId));
+		if (CollectionUtils.isEmpty(infoList)) {
+			throw new RException(ExceptionEnum.ALLOTED_ERROR);
+		}
+		// 查询所选客服集合
+		List<StaffPushDTO> staffList = staffDao.listStaffInstrIds(companyId, staffIds);
+		if (staffList == null || staffList.size() == 0) {
+			throw new RException(ExceptionEnum.APPOINTOR_ERROR);
+		}
+		while (infoList.size() != 0) {
+			for (StaffPushDTO staff : staffList) {
+				if (infoList.size() > 0) {
+					// 客资修改最后消息推送时间为当前系统时间，绑定客服，修改状态为分配中
+					int updateRstNum = clientInfoDao.updateClientInfoWhenAllot(companyId,
+							DBSplitUtil.getInfoTabName(companyId), infoList.get(0).getKzId(),
+							ClientStatusConst.KZ_CLASS_NEW, ClientStatusConst.BE_ALLOTING, staff.getStaffId(),
+							staff.getGroupId(), ClientConst.ALLOT_SYSTEM_AUTO);
+					if (1 != updateRstNum) {
+						throw new RException(ExceptionEnum.INFO_STATUS_EDIT_ERROR);
+					}
+
+					// // 获取客服所在的客服组的ID和集合
+					// Group group = groupDao.getGroupByStaffYy(staff.getId(),
+					// companyId, "dsyy");
+					// // 客资修改客资的客服组ID，和客服组名称
+					// clientInfoDao.editInfoDetailGroupIdAndName(infoList.get(0).getKzId(),
+					// group.getGroupId(),
+					// group.getGroupName(), companyId,
+					// DBSplit.getTableNamePlus(TableEnum.detail, companyId),
+					// ClientInfoConstant.ALLOTTYPE_HANDLE);
+					// staff.doAddKzIdsWill(infoList.get(0).getKzNum());
+					// infoList.remove(0);
+				} else {
+					break;
+				}
+			}
+		}
+
+		// for (Staff staff : staffList) {
+		// push(companyId, staff.getWillHaveKzidsStrBf(), staff.getId());
+		// }
+	}
+
 }

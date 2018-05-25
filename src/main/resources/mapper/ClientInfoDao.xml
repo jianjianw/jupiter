@@ -148,4 +148,20 @@
 		WHERE det.FILMINGCODE = #{filmingCode} AND det.ISDEL = 0
 		AND det.COMPANYID = #{companyId}
 	</select>
+	
+	<!-- 根据客资ID集合查询客资信息 -->	
+    <select id="listClientsInStrKzids" parameterType="map" resultMap="infoMap">
+		SELECT
+			info.ID, info.KZID, info.COMPANYID
+		FROM
+			${infoTabName} info
+		WHERE
+			info.COMPANYID = #{companyId}
+		AND info.ISDEL = 0
+		AND (
+			info.STATUSID = 12
+			OR info.STATUSID = 999
+		)
+		AND INSTR(#{kzIds},info.KZID) != 0;
+    </select>
 </mapper>
