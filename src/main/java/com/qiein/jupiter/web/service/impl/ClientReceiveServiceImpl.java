@@ -8,6 +8,7 @@ import com.qiein.jupiter.constant.ClientConst;
 import com.qiein.jupiter.constant.ClientLogConst;
 import com.qiein.jupiter.constant.ClientStatusConst;
 import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.enums.StaffStatusEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
@@ -18,8 +19,10 @@ import com.qiein.jupiter.web.dao.ClientAllotLogDao;
 import com.qiein.jupiter.web.dao.ClientInfoDao;
 import com.qiein.jupiter.web.dao.ClientLogDao;
 import com.qiein.jupiter.web.dao.StaffDao;
+import com.qiein.jupiter.web.dao.StaffStatusLogDao;
 import com.qiein.jupiter.web.entity.dto.ClientPushDTO;
 import com.qiein.jupiter.web.entity.po.ClientLogPO;
+import com.qiein.jupiter.web.entity.po.StaffStatusLog;
 import com.qiein.jupiter.web.service.ClientReceiveService;
 
 /**
@@ -39,6 +42,8 @@ public class ClientReceiveServiceImpl implements ClientReceiveService {
 	private ClientAllotLogDao clientAllotLogDao;
 	@Autowired
 	private StaffDao staffDao;
+	@Autowired
+	private StaffStatusLogDao statusLogDao;
 
 	@Override
 	@Transactional
@@ -184,6 +189,10 @@ public class ClientReceiveServiceImpl implements ClientReceiveService {
 		// 计算是否满限
 		updateNum = staffDao.checkOverFlowToday(companyId, staffId);
 		if (1 == updateNum) {
+			// 记录状态修改日志
+			statusLogDao.insert(
+					new StaffStatusLog(staffId, StaffStatusEnum.LIMIT.getStatusId(), CommonConstant.SYSTEM_OPERA_ID,
+							CommonConstant.SYSTEM_OPERA_NAME, companyId, ClientLogConst.LIMITDAY_OVERFLOW));
 			// 推送状态重载消息
 			GoEasyUtil.pushStatusRefresh(companyId, staffId);
 		}

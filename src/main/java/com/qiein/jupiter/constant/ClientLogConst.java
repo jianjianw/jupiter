@@ -32,6 +32,7 @@ public class ClientLogConst {
 	public static final String INFO_LOG_EDIT_WCFLAG = "将客资微信标记为：";
 
 	public static final String CONTINUOUS_SABOTEUR_DONW = "连续怠工三次自动下线";
+	public static final String LIMITDAY_OVERFLOW = "今日领取客资数达到最大限额";
 
 	/**
 	 * 生成客资自动分配日志
