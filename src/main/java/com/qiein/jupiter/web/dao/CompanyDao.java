@@ -2,6 +2,9 @@ package com.qiein.jupiter.web.dao;
 
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.vo.CompanyVO;
+
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -46,4 +49,10 @@ public interface CompanyDao extends BaseDao<CompanyPO> {
      * @return
      */
     void editIpLimit(@Param("ipLimit") Integer ipLimit, @Param("companyId") int companyId);
+
+    /**
+     * 获取系统中的企业信息列表
+     * @return
+     */
+	List<CompanyPO> listComp();
 }

@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import com.qiein.jupiter.util.CollectionUtils;
+import com.qiein.jupiter.web.dao.CompanyDao;
 import com.qiein.jupiter.web.entity.dto.ClientPushDTO;
+import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.service.impl.ClientPushServiceImpl;
 
 /**
@@ -20,16 +23,19 @@ public class ClientPushTask {
 
 	@Autowired
 	private ClientPushServiceImpl pushService;
+	@Autowired
+	private CompanyDao companyDao;
 
-	@Scheduled(initialDelay = 1000, fixedDelay = 60 * 60 * 1000)
+	/**
+	 * 定时任务-推送客资
+	 */
+	@Scheduled(initialDelay = 1000, fixedDelay = 30 * 1000)
 	public void taskPushLp() {
-		int companyId = 2012;
-		int interval = 120;
-		int overTime = 180;
-		System.out.println("开始执行客资定时推送任务");
-		List<ClientPushDTO> infoList = pushService.getInfoListBeReadyPush(companyId, 120);
-		pushInfo(companyId, overTime, interval, infoList);
-		System.out.println("执行完毕");
+		List<CompanyPO> compList = companyDao.listComp();
+		for (CompanyPO comp : compList) {
+			List<ClientPushDTO> infoList = pushService.getInfoListBeReadyPush(comp.getId(), comp.getOvertime());
+			pushInfo(comp.getId(), comp.getOvertime(), comp.getKzInterval(), infoList);
+		}
 	}
 
 	/**
@@ -41,6 +47,9 @@ public class ClientPushTask {
 	 * @param infoList
 	 */
 	public void pushInfo(int companyId, int overTime, int interval, List<ClientPushDTO> infoList) {
+		if (CollectionUtils.isEmpty(infoList)) {
+			return;
+		}
 		for (ClientPushDTO info : infoList) {
 			pushService.pushLp(info.getPushRule(), companyId, info.getKzId(), info.getShopId(), info.getChannelId(),
 					info.getChannelTypeId(), overTime, interval);

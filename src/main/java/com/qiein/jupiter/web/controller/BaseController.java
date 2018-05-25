@@ -1,6 +1,8 @@
 package com.qiein.jupiter.web.controller;
 
 import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.exception.ExceptionEnum;
+import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.HttpUtil;
 import com.qiein.jupiter.web.entity.dto.RequestInfoDTO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
@@ -62,7 +64,11 @@ public class BaseController {
      * @return
      */
     StaffPO getCurrentLoginStaff() {
-        return (StaffPO) request.getAttribute(CommonConstant.CURRENT_LOGIN_STAFF);
+        StaffPO attribute = (StaffPO) request.getAttribute(CommonConstant.CURRENT_LOGIN_STAFF);
+        if (attribute == null) {
+            throw new RException(ExceptionEnum.CAN_NOT_FIND_USER_FROM_REQ);
+        }
+        return attribute;
     }
 
     /**
