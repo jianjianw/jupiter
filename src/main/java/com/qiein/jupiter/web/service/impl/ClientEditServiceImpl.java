@@ -10,6 +10,7 @@ import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
 import com.qiein.jupiter.msg.websocket.WebSocketMsgUtil;
 import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.dao.*;
+import com.qiein.jupiter.web.entity.dto.ClientGoEasyDTO;
 import com.qiein.jupiter.web.entity.dto.ClientPushDTO;
 import com.qiein.jupiter.web.entity.dto.OrderSuccessMsg;
 import com.qiein.jupiter.web.entity.po.ChannelPO;
@@ -188,27 +189,27 @@ public class ClientEditServiceImpl implements ClientEditService {
         String addRstStr = crmBaseApi.doService(reqContent, "clientEditDsyyLp");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if ("100000".equals(jsInfo.getString("code"))) {
-            ClientPushDTO clientPushDTO = clientInfoDao.getClientPushDTOById(clientVO.getKzId(), DBSplitUtil.getInfoTabName(staffPO.getCompanyId()), DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
+            ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(clientVO.getKzId(), DBSplitUtil.getInfoTabName(staffPO.getCompanyId()), DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
             if (ClientStatusConst.ONLINE_SUCCESS == clientVO.getYyRst()) {
                 //成功订单爆彩
-                StaffPO appoint = staffDao.getByIdAndCid(clientPushDTO.getAppointorId(), staffPO.getCompanyId());
+                StaffPO appoint = staffDao.getByIdAndCid(info.getAppointorId(), staffPO.getCompanyId());
                 if (appoint == null) {
                     return;
                 }
                 OrderSuccessMsg orderSuccessMsg = new OrderSuccessMsg();
                 orderSuccessMsg.setCompanyId(staffPO.getCompanyId());
                 orderSuccessMsg.setStaffName(appoint.getNickName());
-                orderSuccessMsg.setShopName(clientPushDTO.getFilmingArea());
+                orderSuccessMsg.setShopName(info.getFilmingArea());
                 orderSuccessMsg.setAmount(String.valueOf(clientVO.getAmount()));
                 orderSuccessMsg.setType(OrderSuccessTypeEnum.TourShoot);
-                orderSuccessMsg.setSrcImg(String.valueOf(clientPushDTO.getSourceId()));
+                orderSuccessMsg.setSrcImg(String.valueOf(info.getSourceId()));
                 orderSuccessMsg.setHeadImg(appoint.getHeadImg());
                 webSocketMsgUtil.pushOrderSuccessMsg(orderSuccessMsg);
                 //发送成功消息给录入人
-                GoEasyUtil.pushSuccessOnline(clientPushDTO.getCompanyId(), clientPushDTO.getCollectorId(), clientPushDTO, newsDao);
+                GoEasyUtil.pushSuccessOnline(info.getCompanyId(), info.getCollectorId(), info, newsDao);
             } else if (ClientStatusConst.BE_INVALID == clientVO.getYyRst()) {
                 //如果是无效，发送警告消息给录入人
-                GoEasyUtil.pushYyValidReject(clientPushDTO.getCompanyId(), clientPushDTO.getCollectorId(), clientPushDTO, newsDao);
+                GoEasyUtil.pushYyValidReject(info.getCompanyId(), info.getCollectorId(), info, newsDao);
             }
         } else {
             throw new RException(jsInfo.getString("msg"));

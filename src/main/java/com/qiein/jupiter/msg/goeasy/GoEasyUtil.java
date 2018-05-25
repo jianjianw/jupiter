@@ -3,6 +3,7 @@ package com.qiein.jupiter.msg.goeasy;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.TimeUtil;
 import com.qiein.jupiter.web.dao.NewsDao;
+import com.qiein.jupiter.web.entity.dto.ClientGoEasyDTO;
 import com.qiein.jupiter.web.entity.dto.ClientPushDTO;
 import com.qiein.jupiter.web.entity.po.NewsPO;
 import com.qiein.jupiter.web.entity.vo.ClientVO;
@@ -373,7 +374,7 @@ public class GoEasyUtil {
      * @param info
      * @param newsDao
      */
-    public static void pushSuccessOnline(int companyId, int staffId, ClientPushDTO info, NewsDao newsDao) {
+    public static void pushSuccessOnline(int companyId, int staffId, ClientGoEasyDTO info, NewsDao newsDao) {
 
         String head = "恭喜您，您的客户在线订单啦";
         StringBuffer sb = new StringBuffer();
@@ -466,7 +467,7 @@ public class GoEasyUtil {
      * @param info
      * @param newsDao
      */
-    public static void pushYyValidReject(int companyId, int staffId, ClientPushDTO info, NewsDao newsDao) {
+    public static void pushYyValidReject(int companyId, int staffId, ClientGoEasyDTO info, NewsDao newsDao) {
         String head = "您录入的客资被判为无效";
         StringBuffer sb = new StringBuffer();
         sb.append("编号：" + info.getId() + "<br/>");
@@ -488,7 +489,7 @@ public class GoEasyUtil {
     }
 
     public static void main(String[] args) {
-        ClientPushDTO info = new ClientPushDTO();
+        ClientGoEasyDTO info = new ClientGoEasyDTO();
         info.setId(668);
         info.setKzWechat("xiangsiyu521");
         info.setSourceName("杭州微博");
