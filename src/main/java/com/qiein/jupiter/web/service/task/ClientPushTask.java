@@ -11,6 +11,7 @@ import com.qiein.jupiter.web.dao.CompanyDao;
 import com.qiein.jupiter.web.entity.dto.ClientPushDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.service.impl.ClientPushServiceImpl;
+import com.qiein.jupiter.web.service.quene.ThreadTaskPushManager;
 
 /**
  * 定时客资分配
@@ -25,6 +26,9 @@ public class ClientPushTask {
 	private ClientPushServiceImpl pushService;
 	@Autowired
 	private CompanyDao companyDao;
+
+	// 客资推送线程池
+	ThreadTaskPushManager tpm = ThreadTaskPushManager.getInstance();
 
 	/**
 	 * 定时任务-推送客资
@@ -51,8 +55,8 @@ public class ClientPushTask {
 			return;
 		}
 		for (ClientPushDTO info : infoList) {
-			pushService.pushLp(info.getPushRule(), companyId, info.getKzId(), info.getShopId(), info.getChannelId(),
-					info.getChannelTypeId(), overTime, interval);
+			tpm.pushInfo(new ClientPushDTO(info.getPushRule(), companyId, info.getKzId(), info.getShopId(),
+					info.getChannelId(), info.getChannelTypeId(), overTime, interval));
 		}
 	}
 }

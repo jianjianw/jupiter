@@ -237,7 +237,7 @@ public class StaffServiceImpl implements StaffService {
     @Override
     @Transactional
     public void batDelStaff(StaffStateVO staffStateVO) {
-        //TODO 缓存
+        //TODO 清除缓存
         // 修改删除标识
         staffDao.batUpdateStaffState(staffStateVO, staffStateVO.getIds().split(","));
         // 硬删除员工角色

@@ -11,10 +11,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class ClientPushServiceImplTest {
 
 	@Autowired
-	private ClientPushServiceImpl clientPushServiceImpl;
+	private ClientReceiveServiceImpl service;
 
 	@Test
-	public void getAllDeptAndStaff() {
-		clientPushServiceImpl.pushLp(11, 2012, "8d953bce43e6809e94641e3a3dc6cdc7", 70, 101, 1, 120, 180);
+	public void refuse() {
+		service.refuse("fb02a517ef2b60d7c4dde5540381d414", "1", 2012, 698, "井成龙");
 	}
 }
