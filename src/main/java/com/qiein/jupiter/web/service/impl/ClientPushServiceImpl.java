@@ -115,7 +115,7 @@ public class ClientPushServiceImpl implements ClientPushService {
 			if (NumUtil.isValid(clientDTO.getAppointorId())) {
 				int checkNum = staffDao.getSaboteurCheckNum(DBSplitUtil.getAllotLogTabName(companyId), companyId,
 						clientDTO.getAppointorId(), overTime);
-				if (0 != checkNum) {
+				if (0 == checkNum) {
 					// 连续三次怠工，强制下线
 					int i = staffDao.editStatusFlagOffLine(companyId, clientDTO.getAppointorId(),
 							StaffStatusEnum.OffLine.getStatusId());
