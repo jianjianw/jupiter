@@ -27,18 +27,6 @@ public class NewsServiceImpl implements NewsService {
     private NewsDao newsDao;
 
     /**
-     * 设置单条消息的已读状态
-     *
-     * @param id  消息Id
-     * @param cid 公司id
-     * @return
-     */
-    public int updateNewsReadFlag(int id, int cid) {
-        // todo
-        return 0;
-    }
-
-    /**
      * 获取所有消息，分页
      *
      * @param queryMapDTO
@@ -99,7 +87,6 @@ public class NewsServiceImpl implements NewsService {
         // 根据公司获取表名
         String tableName = DBSplitUtil.getNewsTabName(cid);
         if (StringUtil.isEmpty(msgIds)) {
-            // todo
             return 0;
         }
         // ids数组

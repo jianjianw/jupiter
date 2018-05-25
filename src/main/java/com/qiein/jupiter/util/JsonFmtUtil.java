@@ -15,6 +15,7 @@ import com.qiein.jupiter.web.entity.vo.SourceDictVO;
 import com.qiein.jupiter.web.service.ChannelService;
 import com.qiein.jupiter.web.service.SourceService;
 import com.qiein.jupiter.web.service.StatusService;
+import org.aspectj.weaver.Dump;
 
 /**
  * 返回结果解析工具类
@@ -73,10 +74,10 @@ public class JsonFmtUtil {
             vo.setKzWw(info.getString("kzww"));
             vo.setShopName(info.getString("shopname"));
             vo.setAppointName(info.getString("appointname"));
-            vo.setSourceName(StringUtil.isNotEmpty(info.getString("sourceid")) ? sourceMap.get(info.getString("sourceid")).getSrcName() : "");
-            vo.setStatusName(StringUtil.isNotEmpty(info.getString("statusid")) ? statusMap.get(info.getString("statusid")).getStatusName() : "");
-            vo.setChannelName(StringUtil.isNotEmpty(info.getString("channelid")) ? channelMap.get(info.getString("channelid")).getChannelName() : "");
-            vo.setRemark(info.getString("remark"));
+            vo.setSourceName(sourceMap.get(info.getString("sourceid")) == null ? "" : sourceMap.get(info.getString("sourceid")).getSrcName());
+            vo.setStatusName(statusMap.get(info.getString("statusid")) == null ? "" : statusMap.get(info.getString("statusid")).getStatusName());
+            vo.setChannelName(channelMap.get(info.getString("channelid")) == null ? "" : channelMap.get(info.getString("channelid")).getChannelName());
+            vo.setRemark(StringUtil.replaceAllHTML(info.getString("content")));
             vo.setAddress(info.getString("adaddress"));
             vo.setKeyWord(info.getString("keyword"));
             vo.setInvalidLabel(info.getString("invalidlabel"));

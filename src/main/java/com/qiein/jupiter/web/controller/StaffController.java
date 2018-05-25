@@ -205,10 +205,7 @@ public class StaffController extends BaseController {
     public ResultInfo deleteStaff(@NotEmptyStr @RequestParam("staffId") String ids) {
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-
-        // 检查是否可删除
-        // 先检查是否为客服
-        //TODO
+        //如果是批量删除则不校验
         if (ids.split(",").length==1){
             Map<String , Object> map = new HashMap<>();
             map.put("companyid",getCurrentLoginStaff().getCompanyId());
@@ -222,7 +219,6 @@ public class StaffController extends BaseController {
                 throw new RException(ExceptionEnum.STAFF_CAN_NOT_DEL);
         }
 
-        // TODO 等待客资内容写完继续写删除
         StaffStateVO staffStateVO = new StaffStateVO();
         staffStateVO.setCompanyId(currentLoginStaff.getCompanyId());
         staffStateVO.setIds(ids);

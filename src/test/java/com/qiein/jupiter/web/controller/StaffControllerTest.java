@@ -29,7 +29,7 @@ public class StaffControllerTest {
     public void getAll() throws Exception {
         Map<String,Object> map = new HashMap<>();
         map.put("companyid",1);
-        map.put("oldstaffid",2);
+        map.put("oldstaffid",712);
         String back = crmBaseApi.doService(map,"staffCanBeDelete");
 
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(back);
