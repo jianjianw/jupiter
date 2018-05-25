@@ -122,7 +122,7 @@ public class ExcelController extends BaseController {
     }
 
     /**
-     * 导出示例
+     * 导出客资
      */
     @PostMapping("/export_client_list")
     public void exportClientList(HttpServletRequest request, HttpServletResponse response, @RequestBody ClientExportDTO clientExportDTO) {
