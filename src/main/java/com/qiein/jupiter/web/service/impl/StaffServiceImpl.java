@@ -353,6 +353,18 @@ public class StaffServiceImpl implements StaffService {
 	}
 
 	/**
+	 * 根据Id获取员工基础信息
+	 *
+	 * @param id
+	 * @param companyId
+	 * @return
+	 */
+	@Override
+	public StaffPO getByIdWithoutCache(int id, int companyId) {
+		return staffDao.getByIdAndCid(id, companyId);
+	}
+
+	/**
 	 * 根据条件获取集合
 	 *
 	 * @param queryMapDTO

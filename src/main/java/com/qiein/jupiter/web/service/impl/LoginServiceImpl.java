@@ -259,7 +259,8 @@ public class LoginServiceImpl implements LoginService {
 		staffStatusLogDao.insert(new StaffStatusLog(staff.getId(), StaffStatusEnum.OnLine.getStatusId(), staff.getId(),
 				staff.getNickName(), staff.getCompanyId(), ""));
 		// 给特定用户推送上线
-		GoEasyUtil.pushStaffRefresh(staff.getCompanyId(), staff.getId(), ip, HttpUtil.getIpLocation(ip));
+		GoEasyUtil.pushStaffRefresh(staff.getCompanyId(), staff.getId(), ip,
+				HttpUtil.getIpLocation(ip).replace(CommonConstant.STR_SEPARATOR, ""));
 		return staff;
 	}
 
