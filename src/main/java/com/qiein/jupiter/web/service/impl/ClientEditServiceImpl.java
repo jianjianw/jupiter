@@ -207,7 +207,7 @@ public class ClientEditServiceImpl implements ClientEditService {
                 webSocketMsgUtil.pushOrderSuccessMsg(orderSuccessMsg);
                 //发送成功消息给录入人
                 GoEasyUtil.pushSuccessOnline(info.getCompanyId(), info.getCollectorId(), info, newsDao);
-            } else if (ClientStatusConst.BE_INVALID == clientVO.getYyRst()) {
+            } else if (ClientStatusConst.INVALID_BE_STAY == clientVO.getYyRst()) {
                 //如果是无效，发送警告消息给录入人
                 GoEasyUtil.pushYyValidReject(info.getCompanyId(), info.getCollectorId(), info, newsDao);
             }
