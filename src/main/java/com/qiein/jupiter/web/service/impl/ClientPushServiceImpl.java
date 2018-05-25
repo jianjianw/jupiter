@@ -11,6 +11,7 @@ import com.qiein.jupiter.constant.ClientConst;
 import com.qiein.jupiter.constant.ClientLogConst;
 import com.qiein.jupiter.constant.ClientStatusConst;
 import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.enums.StaffStatusEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
@@ -24,12 +25,14 @@ import com.qiein.jupiter.web.dao.ClientLogDao;
 import com.qiein.jupiter.web.dao.GroupKzNumTodayDao;
 import com.qiein.jupiter.web.dao.ShopChannelGroupDao;
 import com.qiein.jupiter.web.dao.StaffDao;
+import com.qiein.jupiter.web.dao.StaffStatusLogDao;
 import com.qiein.jupiter.web.entity.dto.ClientPushDTO;
 import com.qiein.jupiter.web.entity.dto.GroupKzNumToday;
 import com.qiein.jupiter.web.entity.dto.StaffPushDTO;
 import com.qiein.jupiter.web.entity.po.AllotLogPO;
 import com.qiein.jupiter.web.entity.po.ClientLogPO;
 import com.qiein.jupiter.web.entity.po.ShopChannelGroupPO;
+import com.qiein.jupiter.web.entity.po.StaffStatusLog;
 import com.qiein.jupiter.web.service.ClientPushService;
 
 /**
@@ -52,9 +55,11 @@ public class ClientPushServiceImpl implements ClientPushService {
 	private GroupKzNumTodayDao groupKzNumTodayDao;
 	@Autowired
 	private StaffDao staffDao;
+	@Autowired
+	private StaffStatusLogDao statusLogDao;
 
 	/**
-	 * 旅拍版本客资推送
+	 * 根据拍摄地和渠道维度推送客资
 	 */
 	@Transactional
 	@Override
@@ -76,7 +81,19 @@ public class ClientPushServiceImpl implements ClientPushService {
 		StaffPushDTO appointer = null;
 		AllotLogPO allotLog = null;
 
-		// 客资分配
+		// 获取客资信息
+		ClientPushDTO clientDTO = clientInfoDao.getClientPushDTOById(kzId, DBSplitUtil.getInfoTabName(companyId),
+				DBSplitUtil.getDetailTabName(companyId));
+
+		// 判断客资当前状态-限定客资最后推送时间已经超过分配间隔
+		if (clientDTO == null || (clientDTO.getPushInterval() != 0 && clientDTO.getPushInterval() < overTime)) {
+			return;
+		}
+		// 限定客资状态为分配中，可领取，未接入
+		if (clientDTO.getStatusId() != ClientStatusConst.BE_ALLOTING
+				&& clientDTO.getStatusId() != ClientStatusConst.BE_WAIT_MAKE_ORDER) {
+			return;
+		}
 
 		switch (rule) {
 		case ChannelConstant.PUSH_RULE_AVG_ALLOT:
@@ -94,6 +111,22 @@ public class ClientPushServiceImpl implements ClientPushService {
 			break;
 		case ChannelConstant.PUSH_RULE_AVG_RECEIVE:
 			// 11：小组+员工-指定承接小组依据权重比自动分配 - <客户端领取>
+			// 校验之前的客服是否连续怠工
+			if (NumUtil.isValid(clientDTO.getAppointorId())) {
+				int checkNum = staffDao.getSaboteurCheckNum(DBSplitUtil.getAllotLogTabName(companyId), companyId,
+						clientDTO.getAppointorId(), overTime);
+				if (0 != checkNum) {
+					// 连续三次怠工，强制下线
+					staffDao.editStatusFlag(companyId, clientDTO.getAppointorId(),
+							StaffStatusEnum.OffLine.getStatusId());
+					// 记录下线日志
+					statusLogDao.insert(new StaffStatusLog(clientDTO.getAppointorId(),
+							StaffStatusEnum.OffLine.getStatusId(), CommonConstant.SYSTEM_OPERA_ID,
+							CommonConstant.SYSTEM_OPERA_NAME, companyId, ClientLogConst.CONTINUOUS_SABOTEUR_DONW));
+					// 推送状态重载消息
+					GoEasyUtil.pushStatusRefresh(companyId, clientDTO.getAppointorId());
+				}
+			}
 			appointer = getStaffGroupStaffAvg(companyId, kzId, shopId, channelId, channelTypeId, overTime, interval);
 			if (appointer == null) {
 				return;
@@ -271,20 +304,6 @@ public class ClientPushServiceImpl implements ClientPushService {
 	 */
 	public StaffPushDTO getStaffGroupStaffAvg(int companyId, String kzId, int shopId, int channelId, int channelTypeId,
 			int overTime, int interval) {
-
-		// 获取客资信息
-		ClientPushDTO clientDTO = clientInfoDao.getClientPushDTOById(kzId, DBSplitUtil.getInfoTabName(companyId),
-				DBSplitUtil.getDetailTabName(companyId));
-
-		// 判断客资当前状态-限定客资最后推送时间已经超过分配间隔
-		if (clientDTO == null || (clientDTO.getPushInterval() != 0 && clientDTO.getPushInterval() < overTime)) {
-			return null;
-		}
-		// 限定客资状态为分配中，可领取，未接入
-		if (clientDTO.getStatusId() != ClientStatusConst.BE_ALLOTING
-				&& clientDTO.getStatusId() != ClientStatusConst.BE_WAIT_MAKE_ORDER) {
-			return null;
-		}
 
 		// 根据拍摄地ID，渠道ID获取要分配的小组ID集合
 		List<ShopChannelGroupPO> shopChannelGroupRelaList = shopChannelGroupDao.listShopChannelGroupRela(companyId,

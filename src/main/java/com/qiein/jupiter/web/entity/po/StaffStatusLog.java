@@ -8,116 +8,113 @@ import java.io.Serializable;
  * @author shiTao
  */
 public class StaffStatusLog implements Serializable {
-    private static final long serialVersionUID = 7222442536607896438L;
+	private static final long serialVersionUID = 7222442536607896438L;
 
-    private int id;
-    /**
-     * 员工Id
-     */
-    private int staffId;
-    /**
-     * 员工姓名
-     */
-    private String staffName;
-    /**
-     * 状态编码0-下线，1-上线，8-停单，9-满限
-     */
-    private int statusCode;
-    /**
-     * 操作人Id
-     */
-    private Integer operaId;
-    /**
-     * 操作人姓名
-     */
-    private String operaName;
-    /**
-     * 时间
-     */
-    private int logTime;
-    /**
-     * 公司Id
-     */
-    private int companyId;
+	private int id;
+	/**
+	 * 员工Id
+	 */
+	private int staffId;
+	/**
+	 * 状态编码0-下线，1-上线，8-停单，9-满限
+	 */
+	private int statusCode;
+	/**
+	 * 操作人Id
+	 */
+	private Integer operaId;
+	/**
+	 * 操作人姓名
+	 */
+	private String operaName;
+	/**
+	 * 时间
+	 */
+	private int logTime;
+	/**
+	 * 公司Id
+	 */
+	private int companyId;
 
-    public StaffStatusLog() {
-    }
+	private String memo;
 
-    public StaffStatusLog(int staffId, String staffName, int statusCode,
-                          Integer operaId, String operaName, int companyId) {
-        this.staffId = staffId;
-        this.staffName = staffName;
-        this.statusCode = statusCode;
-        this.operaId = operaId;
-        this.operaName = operaName;
-        this.companyId = companyId;
-    }
+	public StaffStatusLog() {
+	}
 
-    public int getCompanyId() {
-        return companyId;
-    }
+	public StaffStatusLog(int staffId, int statusCode, Integer operaId, String operaName, int companyId, String memo) {
+		this.staffId = staffId;
+		this.statusCode = statusCode;
+		this.operaId = operaId;
+		this.operaName = operaName;
+		this.companyId = companyId;
+		this.memo = memo;
+	}
 
-    public void setCompanyId(int companyId) {
-        this.companyId = companyId;
-    }
+	public String getMemo() {
+		return memo;
+	}
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
+	public void setMemo(String memo) {
+		this.memo = memo;
+	}
 
-    public int getId() {
-        return id;
-    }
+	public int getCompanyId() {
+		return companyId;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public void setCompanyId(int companyId) {
+		this.companyId = companyId;
+	}
 
-    public int getStaffId() {
-        return staffId;
-    }
+	public static long getSerialVersionUID() {
+		return serialVersionUID;
+	}
 
-    public void setStaffId(int staffId) {
-        this.staffId = staffId;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public String getStaffName() {
-        return staffName;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    public void setStaffName(String staffName) {
-        this.staffName = staffName;
-    }
+	public int getStaffId() {
+		return staffId;
+	}
 
-    public int getStatusCode() {
-        return statusCode;
-    }
+	public void setStaffId(int staffId) {
+		this.staffId = staffId;
+	}
 
-    public void setStatusCode(int statusCode) {
-        this.statusCode = statusCode;
-    }
+	public int getStatusCode() {
+		return statusCode;
+	}
 
-    public Integer getOperaId() {
-        return operaId;
-    }
+	public void setStatusCode(int statusCode) {
+		this.statusCode = statusCode;
+	}
 
-    public void setOperaId(Integer operaId) {
-        this.operaId = operaId;
-    }
+	public Integer getOperaId() {
+		return operaId;
+	}
 
-    public String getOperaName() {
-        return operaName;
-    }
+	public void setOperaId(Integer operaId) {
+		this.operaId = operaId;
+	}
 
-    public void setOperaName(String operaName) {
-        this.operaName = operaName;
-    }
+	public String getOperaName() {
+		return operaName;
+	}
 
-    public int getLogTime() {
-        return logTime;
-    }
+	public void setOperaName(String operaName) {
+		this.operaName = operaName;
+	}
 
-    public void setLogTime(int logTime) {
-        this.logTime = logTime;
-    }
+	public int getLogTime() {
+		return logTime;
+	}
+
+	public void setLogTime(int logTime) {
+		this.logTime = logTime;
+	}
 }

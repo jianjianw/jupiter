@@ -713,4 +713,28 @@
     <update id="checkOverFlowToday">
         UPDATE hm_pub_staff SET STATUSFLAG = 9 WHERE COMPANYID = #{companyId} AND ID = #{staffId} AND TODAYNUM &gt;= LIMITDAY;
     </update>
+    
+    <!-- 校验是否有上线后连续三次怠工 -->
+    <select id="getSaboteurCheckNum" parameterType="map" resultType="Integer">
+    	SELECT
+			SUM(log.STATUSID) NUM
+		FROM
+			${logTabName} log
+		LEFT JOIN hm_pub_staff_detail sf ON log.STAFFID = sf.ID AND sf.COMPANYID = #{companyId}
+		WHERE
+			log.STAFFID = #{staffId}
+		AND log.COMPANYID = #{companyId}
+		AND log.ALLOTTIME &gt; sf.LASTLOGINTIME
+		AND (
+			UNIX_TIMESTAMP(NOW()) - log.ALLOTTIME
+		) &gt; #{overTime}
+		ORDER BY
+			log.ALLOTTIME DESC
+		LIMIT 3;
+    </select>
+    
+    <!-- 修改员工当前状态 -->
+    <update id="editStatusFlag" parameterType="map">
+        UPDATE hm_pub_staff SET STATUSFLAG = #{statusFlag} WHERE COMPANYID = #{companyId} AND ID = #{staffId};
+    </update>
 </mapper>

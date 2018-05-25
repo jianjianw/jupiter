@@ -182,5 +182,6 @@ public class CommonConstant {
 	 */
 	public final static String REQUEST_INFO = "requestInfo";
 
+	public final static int SYSTEM_OPERA_ID = 0;
 	public final static String SYSTEM_OPERA_NAME = "草莓卷机器人";
 }

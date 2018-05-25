@@ -29,7 +29,9 @@ public class ClientLogConst {
 	public static final String INFO_LOG_AUTO_REVEICE_TEMPLATE = "推送客资领取消息给 => ${groupName} 的  ${appointorname} ";
 	public static final String INFO_LOG_RECEIVE = "在客户端通过客资分配领取了客资";
 	public static final String INFO_LOG_EDIT_SEX = "将客资性别修改为：";
-	public static final String INFO_LOG_EDIT_WCFLAG= "将客资微信标记为：";
+	public static final String INFO_LOG_EDIT_WCFLAG = "将客资微信标记为：";
+
+	public static final String CONTINUOUS_SABOTEUR_DONW = "连续怠工三次自动下线";
 
 	/**
 	 * 生成客资自动分配日志
