@@ -41,6 +41,9 @@ public class ThreadTaskPushManager {
 	private final static int WORK_QUEUE_SIZE = 50;// 线程池所使用的缓冲队列大小。
 
 	public void pushInfo(ClientPushDTO pushVO) {
+		if(this.service == null){
+			System.out.println("---------------推送service注入失败--------------");
+		}
 		threadPool.execute(new PushThread(this.service, pushVO));
 	}
 
