@@ -55,7 +55,7 @@ public class JsonFmtUtil {
 
     /*-- JSONArray转客资导出客资集合 --*/
     public static List<ClientExportVO> jsonArrToClientExportVO(JSONArray jsArr, int companyId, SourceService sourceService,
-                                                                    StatusService statusService, ChannelService channelService) {
+                                                               StatusService statusService, ChannelService channelService) {
         Map<String, SourceDictVO> sourceMap = sourceService.getSourcePageMap(companyId);
         Map<String, StatusPO> statusMap = statusService.getStatusDictMap(companyId);
         Map<String, ChannelDictVO> channelMap = channelService.getChannelDict(companyId);
@@ -73,9 +73,9 @@ public class JsonFmtUtil {
             vo.setKzWw(info.getString("kzww"));
             vo.setShopName(info.getString("shopname"));
             vo.setAppointName(info.getString("appointname"));
-            vo.setSourceName(sourceMap.get(info.getString("sourceid")).getSrcName());
-            vo.setStatusName(statusMap.get(info.getString("statusid")).getStatusName());
-            vo.setChannelName(channelMap.get(info.getString("channelid")).getChannelName());
+            vo.setSourceName(StringUtil.isNotEmpty(info.getString("sourceid")) ? sourceMap.get(info.getString("sourceid")).getSrcName() : "");
+            vo.setStatusName(StringUtil.isNotEmpty(info.getString("statusid")) ? statusMap.get(info.getString("statusid")).getStatusName() : "");
+            vo.setChannelName(StringUtil.isNotEmpty(info.getString("channelid")) ? channelMap.get(info.getString("channelid")).getChannelName() : "");
             vo.setRemark(info.getString("remark"));
             vo.setAddress(info.getString("adaddress"));
             vo.setKeyWord(info.getString("keyword"));
