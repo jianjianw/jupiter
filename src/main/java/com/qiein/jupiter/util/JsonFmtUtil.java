@@ -74,10 +74,9 @@ public class JsonFmtUtil {
             vo.setKzWw(info.getString("kzww"));
             vo.setShopName(info.getString("shopname"));
             vo.setAppointName(info.getString("appointname"));
-            System.out.println("ID:" + info.getIntValue("id") + "渠道ID：" + info.getString("sourceid"));
-            vo.setSourceName(StringUtil.isNotEmpty(info.getString("sourceid")) ? sourceMap.get(info.getString("sourceid")).getSrcName() : "");
-            vo.setStatusName(StringUtil.isNotEmpty(info.getString("statusid")) ? statusMap.get(info.getString("statusid")).getStatusName() : "");
-            vo.setChannelName(StringUtil.isNotEmpty(info.getString("channelid")) ? channelMap.get(info.getString("channelid")).getChannelName() : "");
+            vo.setSourceName(sourceMap.get(info.getString("sourceid")) == null ? "" : sourceMap.get(info.getString("sourceid")).getSrcName());
+            vo.setStatusName(statusMap.get(info.getString("statusid")) == null ? "" : statusMap.get(info.getString("statusid")).getStatusName());
+            vo.setChannelName(channelMap.get(info.getString("channelid")) == null ? "" : channelMap.get(info.getString("channelid")).getChannelName());
             vo.setRemark(info.getString("remark"));
             vo.setAddress(info.getString("adaddress"));
             vo.setKeyWord(info.getString("keyword"));
