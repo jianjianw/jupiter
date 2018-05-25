@@ -346,6 +346,6 @@ public interface StaffDao extends BaseDao<StaffPO> {
 	 * @param appointorId
 	 * @param statusId
 	 */
-	void editStatusFlag(@Param("companyId") int companyId, @Param("staffId") int staffId,
+	int editStatusFlagOffLine(@Param("companyId") int companyId, @Param("staffId") int staffId,
 			@Param("statusFlag") int statusFlag);
 }

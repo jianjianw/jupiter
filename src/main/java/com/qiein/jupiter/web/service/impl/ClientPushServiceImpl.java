@@ -117,14 +117,16 @@ public class ClientPushServiceImpl implements ClientPushService {
 						clientDTO.getAppointorId(), overTime);
 				if (0 != checkNum) {
 					// 连续三次怠工，强制下线
-					staffDao.editStatusFlag(companyId, clientDTO.getAppointorId(),
+					int i = staffDao.editStatusFlagOffLine(companyId, clientDTO.getAppointorId(),
 							StaffStatusEnum.OffLine.getStatusId());
-					// 记录下线日志
-					statusLogDao.insert(new StaffStatusLog(clientDTO.getAppointorId(),
-							StaffStatusEnum.OffLine.getStatusId(), CommonConstant.SYSTEM_OPERA_ID,
-							CommonConstant.SYSTEM_OPERA_NAME, companyId, ClientLogConst.CONTINUOUS_SABOTEUR_DONW));
-					// 推送状态重载消息
-					GoEasyUtil.pushStatusRefresh(companyId, clientDTO.getAppointorId());
+					if (i == 1) {
+						// 记录下线日志
+						statusLogDao.insert(new StaffStatusLog(clientDTO.getAppointorId(),
+								StaffStatusEnum.OffLine.getStatusId(), CommonConstant.SYSTEM_OPERA_ID,
+								CommonConstant.SYSTEM_OPERA_NAME, companyId, ClientLogConst.CONTINUOUS_SABOTEUR_DONW));
+						// 推送状态重载消息
+						GoEasyUtil.pushStatusRefresh(companyId, clientDTO.getAppointorId());
+					}
 				}
 			}
 			appointer = getStaffGroupStaffAvg(companyId, kzId, shopId, channelId, channelTypeId, overTime, interval);

@@ -733,8 +733,8 @@
 		LIMIT 3;
     </select>
     
-    <!-- 修改员工当前状态 -->
-    <update id="editStatusFlag" parameterType="map">
-        UPDATE hm_pub_staff SET STATUSFLAG = #{statusFlag} WHERE COMPANYID = #{companyId} AND ID = #{staffId};
+    <!-- 修改下线 -->
+    <update id="editStatusFlagOffLine" parameterType="map">
+        UPDATE hm_pub_staff SET STATUSFLAG = #{statusFlag} WHERE COMPANYID = #{companyId} AND ID = #{staffId} AND STATUSFLAG = 1;
     </update>
 </mapper>
