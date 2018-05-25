@@ -208,13 +208,20 @@ public class StaffController extends BaseController {
 
         // 检查是否可删除
         // 先检查是否为客服
-        Map<String , Object> map = new HashMap<>();
-        String addRstStr = crmBaseApi.doService(map, "clientMoveLp");
-        JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
-        if (!"100000".equals(jsInfo.getString("code")))
-            throw new RException(jsInfo.getString("msg"));
+        //TODO
+        if (ids.split(",").length==1){
+            Map<String , Object> map = new HashMap<>();
+            map.put("companyid",getCurrentLoginStaff().getCompanyId());
+            map.put("oldstaffid",ids);
+            String back = crmBaseApi.doService(map, "staffCanBeDelete");
+            JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(back);
+            JSONObject jsCent = JsonFmtUtil.strContentToJsonObj(back);
+            if (!"100000".equals(jsInfo.getString("code")))
+                throw new RException(jsInfo.getString("msg"));
+            if (!jsCent.getBoolean("result"))
+                throw new RException(ExceptionEnum.STAFF_CAN_NOT_DEL);
+        }
 
-        // 是客服则检查是否存在未邀约客资
         // TODO 等待客资内容写完继续写删除
         StaffStateVO staffStateVO = new StaffStateVO();
         staffStateVO.setCompanyId(currentLoginStaff.getCompanyId());
@@ -222,7 +229,7 @@ public class StaffController extends BaseController {
         staffStateVO.setDel(true);
         // staffService.batUpdateStaffState(staffStateVO);
         staffService.batDelStaff(staffStateVO);
-        return ResultInfoUtil.success("删除成功");
+        return ResultInfoUtil.success();
     }
 
     /**
@@ -232,16 +239,22 @@ public class StaffController extends BaseController {
      */
     @GetMapping("/del_staff_check")
     public ResultInfo DelStaffCheck(@NotEmptyStr @RequestParam("staffId") String ids) {
+        //如果多选删除，直接让删除，不校验
+        if (ids.split(",").length>1){
+            return ResultInfoUtil.success(true);
+        }
         Map<String,Object> map = new HashMap<>();
         map.put("companyid",getCurrentLoginStaff().getCompanyId());
         map.put("oldstaffid",ids);
-        String addRstStr = crmBaseApi.doService(map, "staffCanBeDelete");
-        JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
-        if (!"100000".equals(jsInfo.getString("code"))){
-            return ResultInfoUtil.success(jsInfo.get("content.result"));
-        }
+        String back = crmBaseApi.doService(map, "staffCanBeDelete");
+        JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(back);
+        JSONObject jsCent = JsonFmtUtil.strContentToJsonObj(back);
+        if (!"100000".equals(jsInfo.getString("code")))
+            throw new RException(jsInfo.getString("msg"));
+        if (!jsCent.getBoolean("result"))
+            throw new RException(ExceptionEnum.STAFF_CAN_NOT_DEL);
 
-        return ResultInfoUtil.success();
+        return ResultInfoUtil.success(true);
     }
 
     /**

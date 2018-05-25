@@ -52,6 +52,7 @@ public enum ExceptionEnum {
     SIMPLE_PASSWORD(355, "密码不能低于6为位"),
     SIMPLE_NUMBER_PASSWORD(356, "密码不能为纯数字"),
     PASSWORD_NULL(357, "密码不能为空"),
+    STAFF_CAN_NOT_DEL(358,"该员工存在为交接客资，请交接后再删除"),
     //部门
     GROUP_NAME_REPEAT(401, "部门名称重复"),
     GROUP_HAVE_CHILD_GROUP(402, "该部门存在小组，请删除下属小组再进行操作"),

@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.http.CrmBaseApi;
 import com.qiein.jupiter.util.JsonFmtUtil;
@@ -32,10 +33,22 @@ public class StaffControllerTest {
         String back = crmBaseApi.doService(map,"staffCanBeDelete");
 
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(back);
-        if (!"100000".equals(jsInfo.getString("code"))){
-            System.out.println(jsInfo.get("content.result"));
-        }
-        System.out.println(back);
+        JSONObject jsCent = JsonFmtUtil.strContentToJsonObj(back);
+//        JSONObject jsInfo = JSON.parseObject(back);
+        System.out.println(jsInfo.toJSONString());
+        System.out.println(jsCent.toJSONString());
+//        if (!"100000".equals(jsInfo.getString("code"))){
+//            System.out.println("result:"+jsInfo.getJSONObject("response").getJSONObject("info").getJSONObject("content").getBoolean("result"));
+//        }
+//        System.out.println("result:"+jsInfo.getJSONObject("response").getJSONObject("info").getJSONObject("content").getBoolean("result"));
     }
 
+    @Test
+    public void asd() throws Exception{
+        String ids = "1,2";
+        if (ids.split(",").length>1){
+            System.out.println(true);
+        }
+        System.out.println(false);
+    }
 }
