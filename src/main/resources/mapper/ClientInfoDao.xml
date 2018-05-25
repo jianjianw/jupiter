@@ -5,7 +5,11 @@
     <resultMap id="infoMap" type="com.qiein.jupiter.web.entity.dto.ClientPushDTO">
         <id column="ID" jdbcType="INTEGER" property="id"/>
         <result column="KZID" jdbcType="VARCHAR" property="kzId"/>
+        <result column="KZNAME" jdbcType="VARCHAR" property="kzName"/>
+        <result column="KZPHONE" jdbcType="VARCHAR" property="kzPhone"/>
+        <result column="KZWECHAT" jdbcType="VARCHAR" property="kzWechat"/>
         <result column="STATUSID" jdbcType="INTEGER" property="statusId"/>
+        <result column="COLLECTORID" jdbcType="INTEGER" property="collectorId"/>
         <result column="APPOINTORID" jdbcType="INTEGER" property="appointorId"/>
         <result column="COMPANYID" jdbcType="INTEGER" property="companyId"/>
         <result column="PUSHINTERVAL" jdbcType="INTEGER" property="pushInterval"/>
@@ -16,19 +20,26 @@
         <result column="SHOPID" jdbcType="INTEGER" property="shopId"/>
         <result column="CHANNELID" jdbcType="INTEGER" property="channelId"/>
         <result column="TYPEID" jdbcType="INTEGER" property="channelTypeId"/>
+		<result column="SRCNAME" jdbcType="VARCHAR" property="srcName"/>
+		<result column="CHANNELNAME" jdbcType="VARCHAR" property="channelName"/>
+		<result column="INVALIDLABEL" jdbcType="VARCHAR" property="invalidLabel"/>
+		<result column="SUCCESSTIME" jdbcType="INTEGER" property="successTime"/>
+		<result column="AMOUNT" jdbcType="INTEGER" property="amount"/>
     </resultMap>
 
     <sql id="baseColumn">
-        info.ID, info.KZID, info.STATUSID, info.APPOINTORID, info.COMPANYID, info.SOURCEID
+        info.ID, info.KZID,info.KZNAME, info.KZPHONE, info.KZWECHAT, info.STATUSID, info.COLLECTORID, info.APPOINTORID, info.COMPANYID, info.SOURCEID
     </sql>
 
     <!--获取要推送的客资信息-->
     <select id="getClientPushDTOById" parameterType="map" resultMap="infoMap">
 		SELECT
-			<include refid="baseColumn"/>, (UNIX_TIMESTAMP(NOW()) - info.LASTPUSHTIME) PUSHINTERVAL, det.APPOINTNAME, det.FILMINGAREA
+			<include refid="baseColumn"/>, (UNIX_TIMESTAMP(NOW()) - info.LASTPUSHTIME) PUSHINTERVAL, det.APPOINTNAME, det.FILMINGAREA, src.SRCNAME,
+			src.CHANNELNAME, det.INVALIDLABEL, info.SUCCESSTIME, det.AMOUNT
 		FROM
 			${infoTabName} info
 		LEFT JOIN ${detailTabName} det ON det.KZID = info.KZID AND info.COMPANYID = det.COMPANYID
+		LEFT JOIN hm_crm_source src ON src.COMPANYID =  info.COMPANYID AND src.ID = info.SOURCEID
 		WHERE
 			info.ISDEL = 0
 		AND info.KZID = #{kzId};

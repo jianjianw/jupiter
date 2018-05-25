@@ -6,6 +6,7 @@ import com.qiein.jupiter.enums.OrderSuccessTypeEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.http.CrmBaseApi;
+import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
 import com.qiein.jupiter.msg.websocket.WebSocketMsgUtil;
 import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.dao.*;
@@ -49,6 +50,8 @@ public class ClientEditServiceImpl implements ClientEditService {
     private ClientInfoDao clientInfoDao;
     @Autowired
     private StaffDao staffDao;
+    @Autowired
+    private NewsDao newsDao;
 
     /**
      * 电商推广修改客资
@@ -185,9 +188,9 @@ public class ClientEditServiceImpl implements ClientEditService {
         String addRstStr = crmBaseApi.doService(reqContent, "clientEditDsyyLp");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if ("100000".equals(jsInfo.getString("code"))) {
+            ClientPushDTO clientPushDTO = clientInfoDao.getClientPushDTOById(clientVO.getKzId(), DBSplitUtil.getInfoTabName(staffPO.getCompanyId()), DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
             if (ClientStatusConst.ONLINE_SUCCESS == clientVO.getYyRst()) {
                 //成功订单爆彩
-                ClientPushDTO clientPushDTO = clientInfoDao.getClientPushDTOById(clientVO.getKzId(), DBSplitUtil.getInfoTabName(staffPO.getCompanyId()), DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
                 StaffPO appoint = staffDao.getByIdAndCid(clientPushDTO.getAppointorId(), staffPO.getCompanyId());
                 if (appoint == null) {
                     return;
@@ -201,8 +204,12 @@ public class ClientEditServiceImpl implements ClientEditService {
                 orderSuccessMsg.setSrcImg(String.valueOf(clientPushDTO.getSourceId()));
                 orderSuccessMsg.setHeadImg(appoint.getHeadImg());
                 webSocketMsgUtil.pushOrderSuccessMsg(orderSuccessMsg);
+                //发送成功消息给录入人
+                GoEasyUtil.pushSuccessOnline(clientPushDTO.getCompanyId(), clientPushDTO.getCollectorId(), clientPushDTO, newsDao);
+            } else if (ClientStatusConst.BE_INVALID == clientVO.getYyRst()) {
+                //如果是无效，发送警告消息给录入人
+                GoEasyUtil.pushYyValidReject(clientPushDTO.getCompanyId(), clientPushDTO.getCollectorId(), clientPushDTO, newsDao);
             }
-
         } else {
             throw new RException(jsInfo.getString("msg"));
         }

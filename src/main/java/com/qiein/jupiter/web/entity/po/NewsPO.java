@@ -45,7 +45,18 @@ public class NewsPO extends BaseEntity {
      */
     private String tableName;
 
+    public NewsPO() {
+    }
 
+    public NewsPO(String type, String head, String msg, String kzid, int staffId, int companyId, String tableName) {
+        this.type = type;
+        this.head = head;
+        this.msg = msg;
+        this.kzid = kzid;
+        this.staffId = staffId;
+        this.companyId = companyId;
+        this.tableName = tableName;
+    }
 
     public String getTableName() {
         return tableName;
