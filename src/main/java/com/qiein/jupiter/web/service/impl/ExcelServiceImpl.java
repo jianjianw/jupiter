@@ -312,7 +312,6 @@ public class ExcelServiceImpl implements ExcelService {
         String addRstStr = crmBaseApi.doService(reqContent, "excel_export_lp");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if ("100000".equals(jsInfo.getString("code"))) {
-            //TODO 推送
             JSONArray jsArr = JsonFmtUtil.strContentToJsonObj(addRstStr).getJSONArray("infoList");
             List<ClientExportVO> clientList = JsonFmtUtil.jsonArrToClientExportVO(jsArr, staffPO.getCompanyId(), sourceService, statusService, channelService);
             return clientList;
