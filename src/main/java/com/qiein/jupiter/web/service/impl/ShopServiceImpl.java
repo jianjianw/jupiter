@@ -3,6 +3,8 @@ package com.qiein.jupiter.web.service.impl;
 import com.qiein.jupiter.enums.ShopTypeEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
+import com.qiein.jupiter.util.DBSplitUtil;
+import com.qiein.jupiter.web.dao.ClientInfoDao;
 import com.qiein.jupiter.web.dao.ShopDao;
 import com.qiein.jupiter.web.entity.po.ShopPO;
 import com.qiein.jupiter.web.entity.vo.ShopDictVO;
@@ -24,6 +26,8 @@ public class ShopServiceImpl implements ShopService {
 
     @Autowired
     private ShopDao shopDao;
+    @Autowired
+    private ClientInfoDao clientInfoDao;
 
     /**
      * 获取企业所有拍摄地列表
@@ -102,7 +106,14 @@ public class ShopServiceImpl implements ShopService {
      * @param id
      */
     public void deleteShop(int companyId, int id) {
-        //TODO 校验是否有该拍摄地的客资
+        int shopKzNum = clientInfoDao.getKzNumByShopId(DBSplitUtil.getInfoTabName(companyId), companyId, id);
+        if (shopKzNum > 0) {
+            throw new RException(ExceptionEnum.SHOP_KZ_EXIST);
+        }
+        int filmingCodeKzNum = clientInfoDao.getKzNumByFilmingCode(DBSplitUtil.getInfoTabName(companyId), companyId, id);
+        if (filmingCodeKzNum > 0) {
+            throw new RException(ExceptionEnum.SHOP_KZ_EXIST);
+        }
         shopDao.deleteShop(companyId, id);
     }
 

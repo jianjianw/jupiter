@@ -132,4 +132,20 @@
 			UNIX_TIMESTAMP(NOW()) - info.LASTPUSHTIME
 		) &gt;= #{interval}
     </select>
+
+	<!--根据拍摄地获取客资数量-->
+	<select id="getKzNumByShopId" parameterType="map" resultType="java.lang.Integer">
+		SELECT COUNT(1)
+		FROM ${infoTabName} info
+		WHERE info.SHOPID = #{shopId} AND info.ISDEL = 0
+		AND info.COMPANYID = #{companyId}
+	</select>
+
+	<!--根据最终拍摄地获取客资数量-->
+	<select id="getKzNumByFilmingCode" parameterType="map" resultType="java.lang.Integer">
+		SELECT COUNT(1)
+		FROM ${detailName} det
+		WHERE det.FILMINGCODE = #{filmingCode} AND det.ISDEL = 0
+		AND det.COMPANYID = #{companyId}
+	</select>
 </mapper>
