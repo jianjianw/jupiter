@@ -69,7 +69,7 @@ public class ExportExcelUtil {
      */
     private static Workbook createExcel(String title, List<?> list, Class<?> pojoClass) {
         Workbook workBook;
-        ExportParams params = new ExportParams(title, title);
+        ExportParams params = new ExportParams(null, title);
         workBook = ExcelExportUtil.exportBigExcel(params, pojoClass, list);
         ExcelExportUtil.closeExportBigExcel();
         return workBook;
