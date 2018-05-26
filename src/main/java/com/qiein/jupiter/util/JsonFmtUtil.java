@@ -78,7 +78,7 @@ public class JsonFmtUtil {
             vo.setStatusName(statusMap.get(info.getString("statusid")) == null ? "" : statusMap.get(info.getString("statusid")).getStatusName());
             vo.setChannelName(channelMap.get(info.getString("channelid")) == null ? "" : channelMap.get(info.getString("channelid")).getChannelName());
             vo.setRemark(StringUtil.replaceAllHTML(info.getString("content")));
-            vo.setAddress(info.getString("adaddress"));
+            vo.setAddress(info.getString("address"));
             vo.setKeyWord(info.getString("keyword"));
             vo.setInvalidLabel(info.getString("invalidlabel"));
             vo.setMemo(info.getString("memo"));

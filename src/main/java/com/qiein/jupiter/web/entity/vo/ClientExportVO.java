@@ -31,7 +31,7 @@ public class ClientExportVO implements Serializable {
     /**
      * 推广员姓名
      */
-    @Excel(name = "鼠标手", width = 20)
+    @Excel(name = "推广", width = 20)
     private String collectorName;
     /**
      * 客资电话
@@ -82,7 +82,7 @@ public class ClientExportVO implements Serializable {
     /**
      * 推广备注
      */
-    @Excel(name = "鼠标手备注", width = 50)
+    @Excel(name = "推广备注", width = 50)
     private String remark;
     /**
      * 省份地址
