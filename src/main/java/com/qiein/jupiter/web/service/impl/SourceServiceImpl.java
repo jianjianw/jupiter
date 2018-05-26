@@ -3,6 +3,7 @@ package com.qiein.jupiter.web.service.impl;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.CollectionUtils;
+import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.web.dao.SourceDao;
 import com.qiein.jupiter.web.entity.po.SourcePO;
 import com.qiein.jupiter.web.entity.vo.SourceDictVO;
@@ -102,8 +103,9 @@ public class SourceServiceImpl implements SourceService {
      */
     @Override
     public void datDelSrc(String ids, Integer companyId) {
-        //TODO  删除前需要检查来源下是否存在客资,为空才可删除
         String[] idArr = ids.split(",");
+        if (sourceDao.datDelCheck(idArr, DBSplitUtil.getInfoTabName(companyId)) > 0)
+            throw new RException(ExceptionEnum.SOURCE_HAVE_KZ);
         sourceDao.datDelete(idArr, companyId);
     }
 

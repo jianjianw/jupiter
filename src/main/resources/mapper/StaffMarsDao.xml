@@ -101,7 +101,7 @@ FROM
 RIGHT JOIN hm_pub_group_staff gs ON stf.COMPANYID = gs.COMPANYID
 AND stf.ID = gs.STAFFID
 WHERE
-	stf.COMPANYID = #{companyId}
+	stf.COMPANYID = #{companyId} AND stf.ISDEL = 0 AND stf.ISLOCK =0
 GROUP BY
 	gs.GROUPID) a ON a.aid = gp.GROUPID
 LEFT JOIN
@@ -118,7 +118,7 @@ FROM
 RIGHT JOIN hm_pub_group_staff gs ON stf.COMPANYID = gs.COMPANYID
 AND stf.ID = gs.STAFFID
 WHERE
-	stf.COMPANYID = #{companyId} AND stf.STATUSFLAG = 1
+	stf.COMPANYID = #{companyId} AND stf.STATUSFLAG = 1 AND stf.ISDEL = 0 AND stf.ISLOCK =0
 GROUP BY
 	gs.GROUPID) b ON b.bid = gp2.GROUPID
 WHERE
@@ -152,12 +152,12 @@ LEFT JOIN (
 	JOIN hm_pub_group_staff gs ON stf.COMPANYID = gs.COMPANYID
 	AND stf.ID = gs.STAFFID
 	WHERE
-		stf.COMPANYID = #{companyId} AND stf.STATUSFLAG = 1
+		stf.COMPANYID = #{companyId} AND stf.STATUSFLAG = 1 AND stf.ISDEL = 0 AND stf.ISLOCK =0
 	GROUP BY
 		gs.GROUPID
 ) b ON b.bid = gs.GROUPID
 WHERE
-	stf.COMPANYID = #{companyId}
+	stf.COMPANYID = #{companyId} AND stf.ISDEL = 0 AND stf.ISLOCK =0
 GROUP BY
 	gs.GROUPID,b.lineNum
     </select>

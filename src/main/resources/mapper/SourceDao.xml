@@ -175,6 +175,16 @@
         </foreach>
     </delete>
 
+    <!--批量删除校验是否可删-->
+    <select id="datDelCheck" parameterType="map" resultType="Integer">
+        SELECT
+          COUNT(1)
+        FROM
+          ${tabName}
+        WHERE
+          SOURCEID IN <foreach collection="ids" item="id" index="index" open="(" separator="," close=")">#{id}</foreach>
+    </select>
+
     <!--同名校验-->
     <select id="checkSource" parameterType="map" resultType="Integer">
         SELECT

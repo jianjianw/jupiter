@@ -48,6 +48,14 @@ public interface SourceDao extends BaseDao<SourcePO> {
     Integer datDelete(@Param("ids") String[] ids, @Param("companyId") Integer companyId);
 
     /**
+     * 查询所选要删除的渠道下存在多少客资
+     * @param ids
+     * @param tabName
+     * @return
+     */
+    Integer datDelCheck(@Param("ids") String[] ids , @Param("tabName") String tabName);
+
+    /**
      * 渠道名变更时下属所有来源的记录也要相应变更
      *
      * @param channelId
