@@ -58,7 +58,7 @@ public class OuterController {
      * @return
      */
 
-    @GetMapping("/scan_wecaht")
+    @GetMapping("/scan_wechat")
     public ResultInfo scanWechat(@Id int companyId, @NotEmptyStr String kzId) {
         clientService.scanWechat(companyId, kzId);
         return ResultInfoUtil.success();
