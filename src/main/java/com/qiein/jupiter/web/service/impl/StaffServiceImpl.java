@@ -344,7 +344,7 @@ public class StaffServiceImpl implements StaffService {
 	 * @param companyId
 	 * @return
 	 */
-	@Cacheable(value = "staff", key = "'staff'+':'+#id+':'+#companyId")
+//	@Cacheable(value = "staff", key = "'staff'+':'+#id+':'+#companyId")
 	@Override
 	public StaffPO getById(int id, int companyId) {
 		log.debug("未使用缓存");
