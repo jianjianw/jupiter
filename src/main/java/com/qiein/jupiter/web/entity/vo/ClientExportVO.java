@@ -72,7 +72,7 @@ public class ClientExportVO implements Serializable {
     /**
      * 状态名称
      */
-    @Excel(name = "状态", width = 10)
+    @Excel(name = "状态", width = 15)
     private String statusName;
     /**
      * 渠道名
@@ -92,7 +92,7 @@ public class ClientExportVO implements Serializable {
     /**
      * 关键词
      */
-    @Excel(name = "关键字", width = 10)
+    @Excel(name = "关键字", width = 20)
     private String keyWord;
     /**
      * 无效原因
