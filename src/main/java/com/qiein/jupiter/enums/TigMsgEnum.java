@@ -34,6 +34,10 @@ public enum TigMsgEnum {
      * 删除成功
      */
     DELETE_SUCCESS("删除成功"),
+    /**
+     * 回收成功
+     */
+    RESTORE_SUCCESS("客资回收成功"),
 
     /**
      * 用户名不能为空

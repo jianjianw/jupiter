@@ -50,4 +50,13 @@ public interface ClientTrackService {
     void allot(String kzIds, String staffIds);
 
 
+    /**
+     * 批量恢复，回收客资
+     *
+     * @param kzIds
+     * @param staffPO
+     */
+    void batchRestoreKzList(String kzIds, StaffPO staffPO);
+
+
 }
