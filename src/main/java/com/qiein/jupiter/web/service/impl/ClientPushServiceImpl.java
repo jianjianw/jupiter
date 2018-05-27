@@ -132,7 +132,7 @@ public class ClientPushServiceImpl implements ClientPushService {
 					// 连续三次怠工，强制下线
 					int i = staffDao.editStatusFlagOffLine(companyId, clientDTO.getAppointorId(),
 							StaffStatusEnum.OffLine.getStatusId());
-					if (i == 1) {
+					if (0 == i) {
 						// 记录下线日志
 						statusLogDao.insert(new StaffStatusLog(clientDTO.getAppointorId(),
 								StaffStatusEnum.OffLine.getStatusId(), CommonConstant.SYSTEM_OPERA_ID,

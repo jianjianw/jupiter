@@ -716,21 +716,23 @@
     
     <!-- 校验是否有上线后连续三次怠工 -->
     <select id="getSaboteurCheckNum" parameterType="map" resultType="Integer">
-    	SELECT
-			SUM(log.STATUSID) NUM
-		FROM
-			${logTabName} log
-		LEFT JOIN hm_pub_staff_detail sf ON log.STAFFID = sf.ID AND sf.COMPANYID = #{companyId}
-		WHERE
-			log.STAFFID = #{staffId}
-		AND log.COMPANYID = #{companyId}
-		AND log.ALLOTTIME &gt; sf.LASTLOGINTIME
-		AND (
-			UNIX_TIMESTAMP(NOW()) - log.ALLOTTIME
-		) &gt; #{overTime}
-		ORDER BY
-			log.ALLOTTIME DESC
-		LIMIT 3;
+    	SELECT SUM(a.STATUSID) NUM FROM (
+	    	SELECT
+				log.STATUSID
+			FROM
+				${logTabName} log
+			LEFT JOIN hm_pub_staff_detail sf ON log.STAFFID = sf.ID AND sf.COMPANYID = #{companyId}
+			WHERE
+				log.STAFFID = #{staffId}
+			AND log.COMPANYID = #{companyId}
+			AND log.ALLOTTIME &gt; sf.LASTLOGINTIME
+			AND (
+				UNIX_TIMESTAMP(NOW()) - log.ALLOTTIME
+			) &gt; #{overTime}
+			ORDER BY
+				log.ALLOTTIME DESC
+			LIMIT 3
+		) a	
     </select>
     
     <!-- 修改下线 -->
