@@ -497,9 +497,9 @@ public class GoEasyUtil {
 	 * @param newsDao
 	 */
 	public static void pushInfoComed(int companyId, int staffId, ClientGoEasyDTO info, NewsDao newsDao) {
-		String head = "新客资来啦";
+		String head = "新客资来啦^_^";
 		StringBuffer sb = new StringBuffer();
-		sb.append("编号：" + info.getId() + "<br/>");
+		sb.append("编号：" + info.getId() + "<br/><br/>");
 		if (StringUtil.isNotEmpty(info.getKzName())) {
 			sb.append("姓名：" + StringUtil.nullToStrTrim(info.getKzName()) + "<br/>");
 		}
@@ -509,8 +509,15 @@ public class GoEasyUtil {
 		if (StringUtil.isNotEmpty(info.getKzWechat())) {
 			sb.append("微信：" + StringUtil.nullToStrTrim(info.getKzWechat()) + "<br/>");
 		}
-		sb.append("渠道：" + StringUtil.nullToStrTrim(info.getChannelName()) + "<br/>");
-		sb.append("来源：" + StringUtil.nullToStrTrim(info.getSourceName()) + "<br/>");
+		if (StringUtil.isNotEmpty(info.getKzQq())) {
+			sb.append("QQ：" + StringUtil.nullToStrTrim(info.getKzQq()) + "<br/>");
+		}
+		if (StringUtil.isNotEmpty(info.getKzWw())) {
+			sb.append("旺旺：" + StringUtil.nullToStrTrim(info.getKzWw()) + "<br/>");
+		}
+		sb.append("<br/>渠道：" + StringUtil.nullToStrTrim(info.getChannelName()) + "<br/>");
+		sb.append("来源：" + StringUtil.nullToStrTrim(info.getSourceName()) + "<br/><br/>");
+		sb.append("备注：" + StringUtil.nullToStrTrim(info.getMemo()));
 		String msg = sb.toString();
 		pushCommon(companyId, staffId, head, msg);
 		newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_COMMON, head, msg.replaceAll("<br/>", "；"), info.getKzId(),
