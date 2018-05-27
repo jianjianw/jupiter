@@ -94,7 +94,8 @@ public class ClientPushServiceImpl implements ClientPushService {
 			return;
 		}
 		// 判定是否已经预选客服
-		if (NumUtil.isValid(clientDTO.getAppointorId())) {
+		if (NumUtil.isValid(clientDTO.getAppointorId())
+				&& clientDTO.getStatusId() == ClientStatusConst.BE_HAVE_MAKE_ORDER) {
 			ClientGoEasyDTO infoDTO = clientInfoDao.getClientGoEasyDTOById(clientDTO.getKzId(),
 					DBSplitUtil.getInfoTabName(companyId), DBSplitUtil.getDetailTabName(companyId));
 			GoEasyUtil.pushInfoComed(companyId, clientDTO.getAppointorId(), infoDTO, newsDao);
