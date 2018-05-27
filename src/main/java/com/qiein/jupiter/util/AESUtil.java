@@ -22,7 +22,8 @@ public class AESUtil {
     /**
      * 秘钥
      */
-    private static final String password = "qiein%BKM*ihH[)u%";
+    @SuppressWarnings("unused")
+	private static final String password = "qiein%BKM*ihH[)u%";
 
     /**
      * AES 加密操作

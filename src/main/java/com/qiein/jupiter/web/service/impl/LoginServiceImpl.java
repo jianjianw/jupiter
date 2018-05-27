@@ -1,5 +1,14 @@
 package com.qiein.jupiter.web.service.impl;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Service;
+
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.constant.DictionaryConstant;
 import com.qiein.jupiter.constant.RedisConstant;
@@ -8,29 +17,40 @@ import com.qiein.jupiter.enums.StaffStatusEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
-import com.qiein.jupiter.util.*;
+import com.qiein.jupiter.util.CollectionUtils;
+import com.qiein.jupiter.util.HttpUtil;
+import com.qiein.jupiter.util.JwtUtil;
+import com.qiein.jupiter.util.MD5Util;
+import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.util.ding.DingAuthUtil;
 import com.qiein.jupiter.util.wechat.WeChatAuthUtil;
-import com.qiein.jupiter.web.dao.*;
+import com.qiein.jupiter.web.dao.DictionaryDao;
+import com.qiein.jupiter.web.dao.GroupStaffDao;
+import com.qiein.jupiter.web.dao.LoginDao;
+import com.qiein.jupiter.web.dao.PermissionDao;
+import com.qiein.jupiter.web.dao.StaffDao;
+import com.qiein.jupiter.web.dao.StaffStatusLogDao;
 import com.qiein.jupiter.web.entity.dto.DingAuthDTO;
 import com.qiein.jupiter.web.entity.dto.PageDictDTO;
 import com.qiein.jupiter.web.entity.dto.WeChatAuthDTO;
-import com.qiein.jupiter.web.entity.po.*;
+import com.qiein.jupiter.web.entity.po.CompanyPO;
+import com.qiein.jupiter.web.entity.po.PermissionPO;
+import com.qiein.jupiter.web.entity.po.StaffDetailPO;
+import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.entity.po.StaffStatusLog;
 import com.qiein.jupiter.web.entity.vo.BaseInfoVO;
 import com.qiein.jupiter.web.entity.vo.CompanyVO;
 import com.qiein.jupiter.web.entity.vo.MenuVO;
 import com.qiein.jupiter.web.entity.vo.StaffDetailVO;
-import com.qiein.jupiter.web.service.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
+import com.qiein.jupiter.web.service.ChannelService;
+import com.qiein.jupiter.web.service.CompanyService;
+import com.qiein.jupiter.web.service.DictionaryService;
+import com.qiein.jupiter.web.service.IpWhiteService;
+import com.qiein.jupiter.web.service.LoginService;
+import com.qiein.jupiter.web.service.NewsService;
+import com.qiein.jupiter.web.service.ShopService;
+import com.qiein.jupiter.web.service.SourceService;
+import com.qiein.jupiter.web.service.StatusService;
 
 /**
  * 登录服务
@@ -40,352 +60,352 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class LoginServiceImpl implements LoginService {
 
-    private final Logger log = LoggerFactory.getLogger(getClass());
+	// private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private LoginDao loginDao;
+	@Autowired
+	private LoginDao loginDao;
 
-    @Autowired
-    private StaffDao staffDao;
+	@Autowired
+	private StaffDao staffDao;
 
-    @Autowired
-    private CompanyService companyService;
+	@Autowired
+	private CompanyService companyService;
 
-    @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+	@Autowired
+	private RedisTemplate<String, Object> redisTemplate;
 
-    @Autowired
-    private GroupStaffDao groupStaffDao;
+	@Autowired
+	private GroupStaffDao groupStaffDao;
 
-    @Autowired
-    private DictionaryDao dictionaryDao;
+	@Autowired
+	private DictionaryDao dictionaryDao;
 
-    @Autowired
-    private PermissionDao permissionDao;
+	@Autowired
+	private PermissionDao permissionDao;
 
-    @Autowired
-    private StaffStatusLogDao staffStatusLogDao;
+	@Autowired
+	private StaffStatusLogDao staffStatusLogDao;
 
-    @Autowired
-    private SourceService sourceService;
+	@Autowired
+	private SourceService sourceService;
 
-    @Autowired
-    private StatusService statusService;
+	@Autowired
+	private StatusService statusService;
 
-    @Autowired
-    private DictionaryService dictionaryService;
+	@Autowired
+	private DictionaryService dictionaryService;
 
-    @Autowired
-    private ChannelService channelService;
+	@Autowired
+	private ChannelService channelService;
 
-    @Autowired
-    private ShopService shopService;
+	@Autowired
+	private ShopService shopService;
 
-    @Autowired
-    private IpWhiteService ipWhiteService;
+	@Autowired
+	private IpWhiteService ipWhiteService;
 
-    @Autowired
-    private NewsService newsService;
+	@Autowired
+	private NewsService newsService;
 
-    @Autowired
-    private WeChatAuthUtil weChatAuthUtil;
+	@Autowired
+	private WeChatAuthUtil weChatAuthUtil;
 
-    @Autowired
-    private DingAuthUtil dingAuthUtil;
+	@Autowired
+	private DingAuthUtil dingAuthUtil;
 
-    /**
-     * 微信获取公司列表
-     *
-     * @param authCode
-     * @return
-     */
-    @Override
-    public List<CompanyPO> getCompanyListByWeChat(String authCode) {
-        WeChatAuthDTO accessToken = weChatAuthUtil.getAccessToken(authCode);
-        WeChatAuthDTO userInfo = weChatAuthUtil.getUserInfo(accessToken);
-        String unionId = userInfo.getUnionId();
-        List<CompanyPO> companyList = loginDao.getCompanyListByWeChatUnionId(unionId);
-        if (CollectionUtils.isEmpty(companyList)) {
-            // 用户不存在
-            throw new RException(ExceptionEnum.USER_NOT_FOUND);
-        }
-        // 根据CODE 把unionid 放入redis
-        redisTemplate.opsForValue().set(RedisConstant.getWeChatKey(authCode), unionId,
-                CommonConstant.DEFAULT_EXPIRE_TIME, TimeUnit.MINUTES);
-        return companyList;
-    }
+	/**
+	 * 微信获取公司列表
+	 *
+	 * @param authCode
+	 * @return
+	 */
+	@Override
+	public List<CompanyPO> getCompanyListByWeChat(String authCode) {
+		WeChatAuthDTO accessToken = weChatAuthUtil.getAccessToken(authCode);
+		WeChatAuthDTO userInfo = weChatAuthUtil.getUserInfo(accessToken);
+		String unionId = userInfo.getUnionId();
+		List<CompanyPO> companyList = loginDao.getCompanyListByWeChatUnionId(unionId);
+		if (CollectionUtils.isEmpty(companyList)) {
+			// 用户不存在
+			throw new RException(ExceptionEnum.USER_NOT_FOUND);
+		}
+		// 根据CODE 把unionid 放入redis
+		redisTemplate.opsForValue().set(RedisConstant.getWeChatKey(authCode), unionId,
+				CommonConstant.DEFAULT_EXPIRE_TIME, TimeUnit.MINUTES);
+		return companyList;
+	}
 
-    /**
-     * 微信根据公司ID登录
-     *
-     * @param authCode
-     * @param companyId
-     * @param ip
-     * @return
-     */
-    @Override
-    public StaffPO loginWithCompanyIdByWeChat(String authCode, int companyId, String ip) {
-        String weChatUnionID = (String) redisTemplate.opsForValue().get(RedisConstant.getWeChatKey(authCode));
-        if (StringUtil.isEmpty(weChatUnionID)) {
-            // 过期
-        }
-        StaffPO staff = loginDao.loginWithCidByWeChatUnionId(weChatUnionID, companyId);
-        return checkUserInfo(staff, ip);
-    }
+	/**
+	 * 微信根据公司ID登录
+	 *
+	 * @param authCode
+	 * @param companyId
+	 * @param ip
+	 * @return
+	 */
+	@Override
+	public StaffPO loginWithCompanyIdByWeChat(String authCode, int companyId, String ip) {
+		String weChatUnionID = (String) redisTemplate.opsForValue().get(RedisConstant.getWeChatKey(authCode));
+		if (StringUtil.isEmpty(weChatUnionID)) {
+			// 过期
+		}
+		StaffPO staff = loginDao.loginWithCidByWeChatUnionId(weChatUnionID, companyId);
+		return checkUserInfo(staff, ip);
+	}
 
-    /**
-     * 手机号码 获取公司列表
-     *
-     * @param phone
-     * @param password
-     * @return
-     */
-    @Override
-    public List<CompanyPO> getCompanyListByPhone(String phone, String password) {
-        List<CompanyPO> companyList = loginDao.getCompanyListByPhone(phone, MD5Util.getSaltMd5(password));
-        if (CollectionUtils.isEmpty(companyList)) {
-            // 用户不存在
-            throw new RException(ExceptionEnum.USERNAME_OR_PASSWORD_ERROR);
-        }
-        // 移除错误次数
-        removeUserErrorNumber(phone);
-        return companyList;
-    }
+	/**
+	 * 手机号码 获取公司列表
+	 *
+	 * @param phone
+	 * @param password
+	 * @return
+	 */
+	@Override
+	public List<CompanyPO> getCompanyListByPhone(String phone, String password) {
+		List<CompanyPO> companyList = loginDao.getCompanyListByPhone(phone, MD5Util.getSaltMd5(password));
+		if (CollectionUtils.isEmpty(companyList)) {
+			// 用户不存在
+			throw new RException(ExceptionEnum.USERNAME_OR_PASSWORD_ERROR);
+		}
+		// 移除错误次数
+		removeUserErrorNumber(phone);
+		return companyList;
+	}
 
-    /**
-     * 手机号码 登录
-     *
-     * @param phone
-     * @param password
-     * @param companyId
-     * @return
-     */
-    @Override
-    public StaffPO loginWithCompanyIdByPhone(String phone, String password, int companyId, String ip) {
-        StaffPO staff = loginDao.loginWithCidByPhone(phone, MD5Util.getSaltMd5(password), companyId);
-        StaffPO staffPO = checkUserInfo(staff, ip);
-        // 移除错误次数
-        removeUserErrorNumber(phone);
-        return staffPO;
-    }
+	/**
+	 * 手机号码 登录
+	 *
+	 * @param phone
+	 * @param password
+	 * @param companyId
+	 * @return
+	 */
+	@Override
+	public StaffPO loginWithCompanyIdByPhone(String phone, String password, int companyId, String ip) {
+		StaffPO staff = loginDao.loginWithCidByPhone(phone, MD5Util.getSaltMd5(password), companyId);
+		StaffPO staffPO = checkUserInfo(staff, ip);
+		// 移除错误次数
+		removeUserErrorNumber(phone);
+		return staffPO;
+	}
 
-    /**
-     * 钉钉获取公司列表
-     *
-     * @param authCode
-     * @return
-     */
-    @Override
-    public List<CompanyPO> getCompanyListByDing(String authCode) {
-        DingAuthDTO persistentCode = dingAuthUtil.getPersistentCode(authCode);
-        List<CompanyPO> companyList = loginDao.getCompanyListByDingUnionId(persistentCode.getUnionId());
-        if (CollectionUtils.isEmpty(companyList)) {
-            // 用户不存在
-            throw new RException(ExceptionEnum.USER_NOT_FOUND);
-        }
-        // 根据CODE 把unionid 放入redis
-        redisTemplate.opsForValue().set(RedisConstant.getDingKey(authCode), persistentCode.getUnionId(),
-                CommonConstant.DEFAULT_EXPIRE_TIME, TimeUnit.MINUTES);
-        return companyList;
-    }
+	/**
+	 * 钉钉获取公司列表
+	 *
+	 * @param authCode
+	 * @return
+	 */
+	@Override
+	public List<CompanyPO> getCompanyListByDing(String authCode) {
+		DingAuthDTO persistentCode = dingAuthUtil.getPersistentCode(authCode);
+		List<CompanyPO> companyList = loginDao.getCompanyListByDingUnionId(persistentCode.getUnionId());
+		if (CollectionUtils.isEmpty(companyList)) {
+			// 用户不存在
+			throw new RException(ExceptionEnum.USER_NOT_FOUND);
+		}
+		// 根据CODE 把unionid 放入redis
+		redisTemplate.opsForValue().set(RedisConstant.getDingKey(authCode), persistentCode.getUnionId(),
+				CommonConstant.DEFAULT_EXPIRE_TIME, TimeUnit.MINUTES);
+		return companyList;
+	}
 
-    /**
-     * 钉钉登录
-     *
-     * @param authCode
-     * @param companyId
-     * @param ip
-     * @return
-     */
-    @Override
-    public StaffPO loginWithCompanyIdByDing(String authCode, int companyId, String ip) {
-        String unionId = (String) redisTemplate.opsForValue().get(RedisConstant.getDingKey(authCode));
-        if (StringUtil.isEmpty(unionId)) {
-            // 过期
-        }
-        StaffPO staff = loginDao.loginWithCidByDingUnionId(unionId, companyId);
-        return checkUserInfo(staff, ip);
-    }
+	/**
+	 * 钉钉登录
+	 *
+	 * @param authCode
+	 * @param companyId
+	 * @param ip
+	 * @return
+	 */
+	@Override
+	public StaffPO loginWithCompanyIdByDing(String authCode, int companyId, String ip) {
+		String unionId = (String) redisTemplate.opsForValue().get(RedisConstant.getDingKey(authCode));
+		if (StringUtil.isEmpty(unionId)) {
+			// 过期
+		}
+		StaffPO staff = loginDao.loginWithCidByDingUnionId(unionId, companyId);
+		return checkUserInfo(staff, ip);
+	}
 
-    /**
-     * 根据公司ID 登录
-     */
-    private StaffPO checkUserInfo(StaffPO staff, String ip) {
-        if (staff == null) {
-            // 用户不存在
-            throw new RException(ExceptionEnum.USER_NOT_FOUND);
-        } else if (staff.isLockFlag()) {
-            // 锁定
-            throw new RException(ExceptionEnum.USER_IS_LOCK);
-        } else if (staff.isDelFlag()) {
-            // 删除
-            throw new RException(ExceptionEnum.USER_IS_DEL);
-        }
-        // IP限制
-        if (!ipWhiteService.checkIpLimit(staff.getId(), staff.getCompanyId(), ip)) {
-            throw new RException(ExceptionEnum.IP_NOT_IN_SAFETY);
-        }
-        // 验证公司属性
-        CompanyPO companyPO = companyService.getById(staff.getCompanyId());
-        // 被锁定
-        if (companyPO.isLockFlag()) {
-            throw new RException(ExceptionEnum.COMPANY_IS_LOCK);
-        }
-        // 如果员工没有token，重新生成
-        if (StringUtil.isEmpty(staff.getToken()) || companyPO.isSsoLimit()) {
-            // 生成token
-            String token = JwtUtil.generatorToken();
-            staff.setToken(token);
-            redisTemplate.opsForValue().set(RedisConstant.getStaffKey(staff.getId(), staff.getCompanyId()), staff,
-                    CommonConstant.DEFAULT_EXPIRE_TIME, TimeUnit.HOURS);
-            // 并更新到数据库
-            staffDao.updateToken(staff);
-        }
-        // 更新登录时间和IP
-        StaffDetailPO staffDetailPO = new StaffDetailPO();
-        staffDetailPO.setId(staff.getId());
-        staffDetailPO.setCompanyId(staff.getCompanyId());
-        staffDetailPO.setLastLoginIp(ip);
-        staffDao.updateStaffLoginInfo(staffDetailPO);
-        // 如果当前员工为下线状态，则更新他为上线状态
-        if (staff.getStatusFlag() == StaffStatusEnum.OffLine.getStatusId()) {
-            StaffPO staffPO1 = new StaffPO();
-            staffPO1.setId(staff.getId());
-            staffPO1.setCompanyId(staff.getCompanyId());
-            staffPO1.setStatusFlag(StaffStatusEnum.OnLine.getStatusId());
-            staffDao.updateStatusFlag(staffPO1);
-        }
-        // 新增上线日志
-        staffStatusLogDao.insert(new StaffStatusLog(staff.getId(), StaffStatusEnum.OnLine.getStatusId(), staff.getId(),
-                staff.getNickName(), staff.getCompanyId(), ""));
-        // 给特定用户推送上线
-        GoEasyUtil.pushStaffRefresh(staff.getCompanyId(), staff.getId(), ip,
-                HttpUtil.getIpLocation(ip).replace(CommonConstant.STR_SEPARATOR, ""));
-        return staff;
-    }
+	/**
+	 * 根据公司ID 登录
+	 */
+	private StaffPO checkUserInfo(StaffPO staff, String ip) {
+		if (staff == null) {
+			// 用户不存在
+			throw new RException(ExceptionEnum.USER_NOT_FOUND);
+		} else if (staff.isLockFlag()) {
+			// 锁定
+			throw new RException(ExceptionEnum.USER_IS_LOCK);
+		} else if (staff.isDelFlag()) {
+			// 删除
+			throw new RException(ExceptionEnum.USER_IS_DEL);
+		}
+		// IP限制
+		if (!ipWhiteService.checkIpLimit(staff.getId(), staff.getCompanyId(), ip)) {
+			throw new RException(ExceptionEnum.IP_NOT_IN_SAFETY);
+		}
+		// 验证公司属性
+		CompanyPO companyPO = companyService.getById(staff.getCompanyId());
+		// 被锁定
+		if (companyPO.isLockFlag()) {
+			throw new RException(ExceptionEnum.COMPANY_IS_LOCK);
+		}
+		// 如果员工没有token，重新生成
+		if (StringUtil.isEmpty(staff.getToken()) || companyPO.isSsoLimit()) {
+			// 生成token
+			String token = JwtUtil.generatorToken();
+			staff.setToken(token);
+			redisTemplate.opsForValue().set(RedisConstant.getStaffKey(staff.getId(), staff.getCompanyId()), staff,
+					CommonConstant.DEFAULT_EXPIRE_TIME, TimeUnit.HOURS);
+			// 并更新到数据库
+			staffDao.updateToken(staff);
+		}
+		// 更新登录时间和IP
+		StaffDetailPO staffDetailPO = new StaffDetailPO();
+		staffDetailPO.setId(staff.getId());
+		staffDetailPO.setCompanyId(staff.getCompanyId());
+		staffDetailPO.setLastLoginIp(ip);
+		staffDao.updateStaffLoginInfo(staffDetailPO);
+		// 如果当前员工为下线状态，则更新他为上线状态
+		if (staff.getStatusFlag() == StaffStatusEnum.OffLine.getStatusId()) {
+			StaffPO staffPO1 = new StaffPO();
+			staffPO1.setId(staff.getId());
+			staffPO1.setCompanyId(staff.getCompanyId());
+			staffPO1.setStatusFlag(StaffStatusEnum.OnLine.getStatusId());
+			staffDao.updateStatusFlag(staffPO1);
+		}
+		// 新增上线日志
+		staffStatusLogDao.insert(new StaffStatusLog(staff.getId(), StaffStatusEnum.OnLine.getStatusId(), staff.getId(),
+				staff.getNickName(), staff.getCompanyId(), ""));
+		// 给特定用户推送上线
+		GoEasyUtil.pushStaffRefresh(staff.getCompanyId(), staff.getId(), ip,
+				HttpUtil.getIpLocation(ip).replace(CommonConstant.STR_SEPARATOR, ""));
+		return staff;
+	}
 
-    /**
-     * 删除缓存中的用户错误次数和验证码
-     *
-     * @param phone
-     */
-    private void removeUserErrorNumber(String phone) {
-        // 错误次数
-        String userLoginErrNum = RedisConstant.getUserLoginErrNumKey(phone);
-        redisTemplate.delete(userLoginErrNum);
-        // 验证码
-        redisTemplate.delete(RedisConstant.getVerifyCodeKey(phone));
-    }
+	/**
+	 * 删除缓存中的用户错误次数和验证码
+	 *
+	 * @param phone
+	 */
+	private void removeUserErrorNumber(String phone) {
+		// 错误次数
+		String userLoginErrNum = RedisConstant.getUserLoginErrNumKey(phone);
+		redisTemplate.delete(userLoginErrNum);
+		// 验证码
+		redisTemplate.delete(RedisConstant.getVerifyCodeKey(phone));
+	}
 
-    /**
-     * 获取员工的基础信息
-     *
-     * @param staffId
-     * @param companyId
-     * @return
-     */
-    @Override
-    public BaseInfoVO getBaseInfo(int staffId, int companyId) {
-        BaseInfoVO staffBaseInfoVO = new BaseInfoVO();
-        // 权限列表 和 map
-        List<PermissionPO> permissionPOList = permissionDao.getStaffPermission(staffId, companyId);
-        Map<String, String> permissionMap = getPermissionMap(permissionPOList);
-        staffBaseInfoVO.setPermission(permissionPOList);
-        staffBaseInfoVO.setPermissionMap(permissionMap);
-        // 放入公司对象
-        CompanyVO companyVO = companyService.getCompanyVO(companyId);
-        companyVO.setMenuList(getCompanyMenuList(companyId, staffId));
-        staffBaseInfoVO.setCompany(companyVO);
-        // 员工
-        StaffDetailVO staffDetailVO = staffDao.getStaffDetailVO(staffId, companyId);
-        // 是否原始密码
-        if (StringUtil.ignoreCaseEqual(staffDetailVO.getPassword(), MD5Util.getSaltMd5(staffDetailVO.getPhone()))) {
-            staffDetailVO.setSimplePasswordFlag(true);
-        }
-        staffBaseInfoVO.setStaffDetail(staffDetailVO);
-        // 设置页面字典
-        PageDictDTO pageDictDTO = new PageDictDTO();
-        // 来源字典
-        pageDictDTO.setSourceMap(sourceService.getSourcePageMap(companyId));
-        // 状态字典
-        pageDictDTO.setStatusMap(statusService.getStatusDictMap(companyId));
-        // 公共字典
-        pageDictDTO.setCommonMap(dictionaryService.getDictMapByCid(companyId));
-        // 渠道字典
-        pageDictDTO.setChannelMap(channelService.getChannelDict(companyId));
-        // 拍摄地字典
-        pageDictDTO.setShopMap(shopService.getShopDictByCid(companyId));
-        staffBaseInfoVO.setPageDict(pageDictDTO);
-        // 消息
-        staffBaseInfoVO.setNews(newsService.getNewsTotalAmountAndFlag(staffId, companyId));
-        return staffBaseInfoVO;
-    }
+	/**
+	 * 获取员工的基础信息
+	 *
+	 * @param staffId
+	 * @param companyId
+	 * @return
+	 */
+	@Override
+	public BaseInfoVO getBaseInfo(int staffId, int companyId) {
+		BaseInfoVO staffBaseInfoVO = new BaseInfoVO();
+		// 权限列表 和 map
+		List<PermissionPO> permissionPOList = permissionDao.getStaffPermission(staffId, companyId);
+		Map<String, String> permissionMap = getPermissionMap(permissionPOList);
+		staffBaseInfoVO.setPermission(permissionPOList);
+		staffBaseInfoVO.setPermissionMap(permissionMap);
+		// 放入公司对象
+		CompanyVO companyVO = companyService.getCompanyVO(companyId);
+		companyVO.setMenuList(getCompanyMenuList(companyId, staffId));
+		staffBaseInfoVO.setCompany(companyVO);
+		// 员工
+		StaffDetailVO staffDetailVO = staffDao.getStaffDetailVO(staffId, companyId);
+		// 是否原始密码
+		if (StringUtil.ignoreCaseEqual(staffDetailVO.getPassword(), MD5Util.getSaltMd5(staffDetailVO.getPhone()))) {
+			staffDetailVO.setSimplePasswordFlag(true);
+		}
+		staffBaseInfoVO.setStaffDetail(staffDetailVO);
+		// 设置页面字典
+		PageDictDTO pageDictDTO = new PageDictDTO();
+		// 来源字典
+		pageDictDTO.setSourceMap(sourceService.getSourcePageMap(companyId));
+		// 状态字典
+		pageDictDTO.setStatusMap(statusService.getStatusDictMap(companyId));
+		// 公共字典
+		pageDictDTO.setCommonMap(dictionaryService.getDictMapByCid(companyId));
+		// 渠道字典
+		pageDictDTO.setChannelMap(channelService.getChannelDict(companyId));
+		// 拍摄地字典
+		pageDictDTO.setShopMap(shopService.getShopDictByCid(companyId));
+		staffBaseInfoVO.setPageDict(pageDictDTO);
+		// 消息
+		staffBaseInfoVO.setNews(newsService.getNewsTotalAmountAndFlag(staffId, companyId));
+		return staffBaseInfoVO;
+	}
 
-    /**
-     * 根据公司ID和个人获取菜单列表
-     *
-     * @param companyId
-     * @param staffId
-     * @return
-     */
-    private List<MenuVO> getCompanyMenuList(int companyId, int staffId) {
-        // 企业左上角菜单栏
-        List<MenuVO> menuList = dictionaryDao.getCompanyMemu(companyId, DictionaryConstant.MENU_TYPE);
-        if (CollectionUtils.isEmpty(menuList)) {
-            menuList = dictionaryDao.getCompanyMemu(DictionaryConstant.COMMON_COMPANYID, DictionaryConstant.MENU_TYPE);
-        }
-        // 获取员工角色
-        List<String> roleList = groupStaffDao.getStaffRoleList(companyId, staffId);
-        if (CollectionUtils.isEmpty(menuList)) {
-            throw new RException(ExceptionEnum.MENU_NULL);
-        }
-        if (CollectionUtils.isEmpty(roleList)) {
-            return menuList;
-        }
+	/**
+	 * 根据公司ID和个人获取菜单列表
+	 *
+	 * @param companyId
+	 * @param staffId
+	 * @return
+	 */
+	private List<MenuVO> getCompanyMenuList(int companyId, int staffId) {
+		// 企业左上角菜单栏
+		List<MenuVO> menuList = dictionaryDao.getCompanyMemu(companyId, DictionaryConstant.MENU_TYPE);
+		if (CollectionUtils.isEmpty(menuList)) {
+			menuList = dictionaryDao.getCompanyMemu(DictionaryConstant.COMMON_COMPANYID, DictionaryConstant.MENU_TYPE);
+		}
+		// 获取员工角色
+		List<String> roleList = groupStaffDao.getStaffRoleList(companyId, staffId);
+		if (CollectionUtils.isEmpty(menuList)) {
+			throw new RException(ExceptionEnum.MENU_NULL);
+		}
+		if (CollectionUtils.isEmpty(roleList)) {
+			return menuList;
+		}
 
-        for (String role : roleList) {
-            // 1.如果是管理中心，全部开放
-            if (RoleConstant.GLZX.equals(role)) {
-                for (MenuVO menu : menuList) {
-                    menu.setSelectFlag(true);
-                }
-                return menuList;
-            }
-            // 2.如果是财务中心，除管理中心，全部开放
-            if (RoleConstant.CWZX.equals(role)) {
-                for (MenuVO menu : menuList) {
-                    if (RoleConstant.GLZX.equals(menu.getType())) {
-                        menu.setSelectFlag(false);
-                    } else {
-                        menu.setSelectFlag(true);
-                    }
-                }
-                return menuList;
-            }
-            // 都不是，则一一对应
-            for (MenuVO menu : menuList) {
-                if (role.equals(menu.getType())) {
-                    menu.setSelectFlag(true);
-                }
-            }
-        }
-        return menuList;
-    }
+		for (String role : roleList) {
+			// 1.如果是管理中心，全部开放
+			if (RoleConstant.GLZX.equals(role)) {
+				for (MenuVO menu : menuList) {
+					menu.setSelectFlag(true);
+				}
+				return menuList;
+			}
+			// 2.如果是财务中心，除管理中心，全部开放
+			if (RoleConstant.CWZX.equals(role)) {
+				for (MenuVO menu : menuList) {
+					if (RoleConstant.GLZX.equals(menu.getType())) {
+						menu.setSelectFlag(false);
+					} else {
+						menu.setSelectFlag(true);
+					}
+				}
+				return menuList;
+			}
+			// 都不是，则一一对应
+			for (MenuVO menu : menuList) {
+				if (role.equals(menu.getType())) {
+					menu.setSelectFlag(true);
+				}
+			}
+		}
+		return menuList;
+	}
 
-    /**
-     * 获取权限Map
-     *
-     * @param permissionPOList
-     * @return
-     */
-    private Map<String, String> getPermissionMap(List<PermissionPO> permissionPOList) {
-        Map<String, String> map = new HashMap<>();
-        if (CollectionUtils.isNotEmpty(permissionPOList)) {
-            for (PermissionPO permissionPO : permissionPOList) {
-                map.put("key" + String.valueOf(permissionPO.getPermissionId()), permissionPO.getPermissionName());
-            }
-        }
-        return map;
-    }
+	/**
+	 * 获取权限Map
+	 *
+	 * @param permissionPOList
+	 * @return
+	 */
+	private Map<String, String> getPermissionMap(List<PermissionPO> permissionPOList) {
+		Map<String, String> map = new HashMap<>();
+		if (CollectionUtils.isNotEmpty(permissionPOList)) {
+			for (PermissionPO permissionPO : permissionPOList) {
+				map.put("key" + String.valueOf(permissionPO.getPermissionId()), permissionPO.getPermissionName());
+			}
+		}
+		return map;
+	}
 
 }

@@ -1,37 +1,58 @@
 package com.qiein.jupiter.web.service.impl;
 
-import java.util.*;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import com.alibaba.fastjson.JSONObject;
-import com.qiein.jupiter.enums.StaffStatusEnum;
-import com.qiein.jupiter.http.CrmBaseApi;
-import com.qiein.jupiter.util.*;
-import com.qiein.jupiter.util.ding.DingAuthUtil;
-import com.qiein.jupiter.util.wechat.WeChatAuthUtil;
-import com.qiein.jupiter.web.dao.*;
-import com.qiein.jupiter.web.entity.dto.*;
-import com.qiein.jupiter.web.entity.po.*;
-import com.qiein.jupiter.web.entity.vo.*;
-import com.qiein.jupiter.web.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.qiein.jupiter.aop.aspect.annotation.LoginLog;
 import com.qiein.jupiter.constant.CommonConstant;
-import com.qiein.jupiter.constant.DictionaryConstant;
 import com.qiein.jupiter.constant.RedisConstant;
-import com.qiein.jupiter.constant.RoleConstant;
+import com.qiein.jupiter.enums.StaffStatusEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
+import com.qiein.jupiter.util.CollectionUtils;
+import com.qiein.jupiter.util.JwtUtil;
+import com.qiein.jupiter.util.MD5Util;
+import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.util.TimeUtil;
+import com.qiein.jupiter.util.ding.DingAuthUtil;
+import com.qiein.jupiter.util.wechat.WeChatAuthUtil;
+import com.qiein.jupiter.web.dao.ClientInfoDao;
+import com.qiein.jupiter.web.dao.CompanyDao;
+import com.qiein.jupiter.web.dao.GroupStaffDao;
+import com.qiein.jupiter.web.dao.PermissionDao;
+import com.qiein.jupiter.web.dao.StaffDao;
+import com.qiein.jupiter.web.dao.StaffRoleDao;
+import com.qiein.jupiter.web.dao.StaffStatusLogDao;
+import com.qiein.jupiter.web.entity.dto.DingAuthDTO;
+import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
+import com.qiein.jupiter.web.entity.dto.StaffMarsDTO;
+import com.qiein.jupiter.web.entity.dto.StaffPasswordDTO;
+import com.qiein.jupiter.web.entity.dto.WeChatAuthDTO;
+import com.qiein.jupiter.web.entity.po.CompanyPO;
+import com.qiein.jupiter.web.entity.po.PermissionPO;
+import com.qiein.jupiter.web.entity.po.StaffDetailPO;
+import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.entity.po.StaffStatusLog;
+import com.qiein.jupiter.web.entity.vo.GroupStaffVO;
+import com.qiein.jupiter.web.entity.vo.GroupsInfoVO;
+import com.qiein.jupiter.web.entity.vo.SearchStaffVO;
+import com.qiein.jupiter.web.entity.vo.StaffChangeVO;
+import com.qiein.jupiter.web.entity.vo.StaffDetailVO;
+import com.qiein.jupiter.web.entity.vo.StaffStateVO;
+import com.qiein.jupiter.web.entity.vo.StaffVO;
+import com.qiein.jupiter.web.service.IpWhiteService;
+import com.qiein.jupiter.web.service.StaffService;
 
 @Service
 public class StaffServiceImpl implements StaffService {
@@ -40,9 +61,6 @@ public class StaffServiceImpl implements StaffService {
 
 	@Autowired
 	private StaffDao staffDao;
-
-	@Autowired
-	private CompanyService companyService;
 
 	@Autowired
 	private RedisTemplate<String, Object> redisTemplate;
@@ -57,9 +75,6 @@ public class StaffServiceImpl implements StaffService {
 	private CompanyDao companyDao;
 
 	@Autowired
-	private DictionaryDao dictionaryDao;
-
-	@Autowired
 	private PermissionDao permissionDao;
 
 	@Autowired
@@ -69,28 +84,7 @@ public class StaffServiceImpl implements StaffService {
 	private StaffStatusLogDao staffStatusLogDao;
 
 	@Autowired
-	private SourceService sourceService;
-
-	@Autowired
-	private StatusService statusService;
-
-	@Autowired
-	private CrmBaseApi crmBaseApi;
-
-	@Autowired
-	private DictionaryService dictionaryService;
-
-	@Autowired
-	private ChannelService channelService;
-
-	@Autowired
-	private ShopService shopService;
-
-	@Autowired
 	private IpWhiteService ipWhiteService;
-
-	@Autowired
-	private NewsService newsService;
 
 	@Autowired
 	private WeChatAuthUtil weChatAuthUtil;
@@ -344,7 +338,7 @@ public class StaffServiceImpl implements StaffService {
 	 * @param companyId
 	 * @return
 	 */
-//	@Cacheable(value = "staff", key = "'staff'+':'+#id+':'+#companyId")
+	// @Cacheable(value = "staff", key = "'staff'+':'+#id+':'+#companyId")
 	@Override
 	public StaffPO getById(int id, int companyId) {
 		log.debug("未使用缓存");
@@ -383,6 +377,7 @@ public class StaffServiceImpl implements StaffService {
 	 *
 	 * @param staffPO
 	 */
+	@SuppressWarnings("unused")
 	private void updateStaffToken(StaffPO staffPO) {
 		// 生成token
 		String token = JwtUtil.generatorToken();

@@ -1,20 +1,17 @@
 package com.qiein.jupiter.web.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.qiein.jupiter.http.CrmBaseApi;
-import com.qiein.jupiter.util.JsonFmtUtil;
-import com.qiein.jupiter.util.ResultInfoUtil;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.junit.Assert.*;
+import com.alibaba.fastjson.JSONObject;
+import com.qiein.jupiter.http.CrmBaseApi;
+import com.qiein.jupiter.util.JsonFmtUtil;
 
 /**
  * Created by Administrator on 2018/5/24 0024.

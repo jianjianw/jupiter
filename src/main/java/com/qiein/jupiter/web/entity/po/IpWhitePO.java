@@ -1,7 +1,6 @@
 package com.qiein.jupiter.web.entity.po;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * ip白名单

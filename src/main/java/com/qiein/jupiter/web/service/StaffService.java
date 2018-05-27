@@ -1,16 +1,21 @@
 package com.qiein.jupiter.web.service;
 
+import java.util.List;
+
 import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.dto.StaffMarsDTO;
 import com.qiein.jupiter.web.entity.dto.StaffPasswordDTO;
-import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.PermissionPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.po.StaffStatusLog;
-import com.qiein.jupiter.web.entity.vo.*;
-
-import java.util.List;
+import com.qiein.jupiter.web.entity.vo.GroupStaffVO;
+import com.qiein.jupiter.web.entity.vo.GroupsInfoVO;
+import com.qiein.jupiter.web.entity.vo.SearchStaffVO;
+import com.qiein.jupiter.web.entity.vo.StaffChangeVO;
+import com.qiein.jupiter.web.entity.vo.StaffDetailVO;
+import com.qiein.jupiter.web.entity.vo.StaffStateVO;
+import com.qiein.jupiter.web.entity.vo.StaffVO;
 
 /**
  * 员工

@@ -1,20 +1,25 @@
 package com.qiein.jupiter.web.service.impl;
 
+import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
 import com.qiein.jupiter.util.StringUtil;
-import com.qiein.jupiter.web.dao.*;
+import com.qiein.jupiter.web.dao.ChannelDao;
+import com.qiein.jupiter.web.dao.GroupDao;
+import com.qiein.jupiter.web.dao.RolePermissionDao;
+import com.qiein.jupiter.web.dao.ShopDao;
+import com.qiein.jupiter.web.dao.StaffDao;
+import com.qiein.jupiter.web.dao.StaffMarsDao;
 import com.qiein.jupiter.web.entity.dto.StaffMarsDTO;
 import com.qiein.jupiter.web.entity.vo.GroupsInfoVO;
 import com.qiein.jupiter.web.entity.vo.StaffDetailVO;
 import com.qiein.jupiter.web.service.StaffMarsService;
-import org.apache.poi.ss.formula.functions.T;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by Administrator on 2018/5/10 0010.
@@ -39,9 +44,6 @@ public class StaffMarsServiceImpl implements StaffMarsService {
 
 	@Autowired
 	private GroupDao groupDao;
-
-	@Autowired
-	private GroupStaffDao groupStaffDao;
 
 	/**
 	 * 根据类型获取部门列表
@@ -114,8 +116,6 @@ public class StaffMarsServiceImpl implements StaffMarsService {
 		List<Integer> roleList = rolePermissionDao.getStaffPmsList(companyId, staffId);
 		// 获取员工所在小组或主管小组列表
 		List<String> groupList = groupDao.getGroupByStaffAndType(companyId, staffId, null);
-		// 获取各小组内人员的接单数和在线人数
-		List<GroupsInfoVO> infoList = groupStaffDao.getStaffMarsInfo(companyId);
 
 		if (roleList.contains(111) || roleList.contains(124)) { // 查看所有 所有的都显示
 			forShowFlag(list, true);

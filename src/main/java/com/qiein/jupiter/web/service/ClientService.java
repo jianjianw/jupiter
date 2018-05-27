@@ -1,6 +1,5 @@
 package com.qiein.jupiter.web.service;
 
-import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.ClientStatusVO;
 
 /**
@@ -8,25 +7,25 @@ import com.qiein.jupiter.web.entity.vo.ClientStatusVO;
  */
 public interface ClientService {
 
-    /**
-     * 编辑性别
-     *
-     * @param clientStatusVO
-     */
-    void editClientSex(ClientStatusVO clientStatusVO);
+	/**
+	 * 编辑性别
+	 *
+	 * @param clientStatusVO
+	 */
+	void editClientSex(ClientStatusVO clientStatusVO);
 
-    /**
-     * 编辑微信标识
-     *
-     * @param clientStatusVO
-     */
-    void editClientWCFlag(ClientStatusVO clientStatusVO);
+	/**
+	 * 编辑微信标识
+	 *
+	 * @param clientStatusVO
+	 */
+	void editClientWCFlag(ClientStatusVO clientStatusVO);
 
-    /**
-     * 微信二位码扫描记录
-     *
-     * @param companyId
-     * @param kzId
-     */
-    void scanWechat(int companyId, String kzId);
+	/**
+	 * 微信二位码扫描记录
+	 *
+	 * @param companyId
+	 * @param kzId
+	 */
+	void scanWechat(int companyId, String kzId);
 }

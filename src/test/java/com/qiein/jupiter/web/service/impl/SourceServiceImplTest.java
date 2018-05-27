@@ -1,14 +1,12 @@
 package com.qiein.jupiter.web.service.impl;
 
-import com.qiein.jupiter.web.dao.SourceDao;
-import com.qiein.jupiter.web.service.SourceService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.junit.Assert.*;
+import com.qiein.jupiter.web.dao.SourceDao;
 
 /**
  * Created by Administrator on 2018/5/25 0025.
