@@ -225,5 +225,7 @@ public class StaffMarsServiceImpl implements StaffMarsService {
 		if (staffMarsDao.update(staffMarsDTO) == 0) {
 			throw new RException(ExceptionEnum.EDIT_FAIL);
 		}
+
+		GoEasyUtil.pushStatusRefresh(staffMarsDTO.getCompanyId(), staffMarsDTO.getId());
 	}
 }
