@@ -80,7 +80,6 @@ public class GroupServiceImpl implements GroupService {
 		List<String> deptList = groupDao.getDeptByTypeAndStaff(companyId, staffId, type);
 		// 获取各小组内人员的接单数和在线人数
 		List<GroupsInfoVO> infoList = groupStaffDao.getStaffMarsInfo(companyId);
-		System.out.println(infoList);
 
 		if (roleList.contains(111)) { // 查看所有 所有的都显示
 			for (GroupsInfoVO giv : list) {

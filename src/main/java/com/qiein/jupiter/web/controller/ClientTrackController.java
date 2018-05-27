@@ -122,5 +122,22 @@ public class ClientTrackController extends BaseController {
         return ResultInfoUtil.success(TigMsgEnum.ALLOT_SUCCESS);
     }
 
+    /**
+     * 批量恢复，回收客资
+     *
+     * @return
+     */
+    @PostMapping("/batch_restore_kz_list")
+    public ResultInfo batchRestoreKzList(@RequestBody JSONObject jsonObject) {
+        String kzIds = StringUtil.nullToStrTrim(jsonObject.getString("kzIds"));
+        if (StringUtil.isEmpty(kzIds)) {
+            throw new RException(ExceptionEnum.KZ_ID_IS_NULL);
+        }
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        clientTrackService.batchRestoreKzList(kzIds, currentLoginStaff);
+        return ResultInfoUtil.success(TigMsgEnum.RESTORE_SUCCESS);
+    }
+
 
 }

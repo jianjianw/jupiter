@@ -123,4 +123,27 @@ public class ClientTrackServiceImpl implements ClientTrackService {
     public void allot(String kzIds, String staffIds) {
         //TODO 分配客资
     }
+
+    /**
+     * 批量恢复，回收客资
+     *
+     * @param kzIds
+     * @param staffPO
+     */
+    public void batchRestoreKzList(String kzIds, StaffPO staffPO) {
+        Map<String, Object> reqContent = new HashMap<>();
+        reqContent.put("companyid", staffPO.getCompanyId());
+        reqContent.put("operaid", staffPO.getId());
+        reqContent.put("operaname", staffPO.getNickName());
+        reqContent.put("kzids", kzIds);
+
+        String addRstStr = crmBaseApi.doService(reqContent, "clientBatchRestoreLp");
+        JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
+        if ("100000".equals(jsInfo.getString("code"))) {
+            //TODO 推送
+            System.out.println("客资回收成功");
+        } else {
+            throw new RException(jsInfo.getString("msg"));
+        }
+    }
 }

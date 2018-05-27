@@ -42,7 +42,6 @@ public class ChannelController extends BaseController {
      */
     @PostMapping("/add")
     public ResultInfo addChannel(@RequestBody @Validated ChannelPO channelPO) {
-        System.out.println(channelPO);
         // 获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         // 设置cid

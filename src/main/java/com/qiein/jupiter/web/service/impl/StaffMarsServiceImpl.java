@@ -93,14 +93,7 @@ public class StaffMarsServiceImpl implements StaffMarsService {
 	@Override
 	public List<GroupsInfoVO> filterDeptList(List<GroupsInfoVO> list, int companyId, int staffId) {
 		List<GroupsInfoVO> qxList = staffMarsDao.getDeptLineNumAndOrderNum(companyId);
-		for (GroupsInfoVO siv : list) {
-			for (GroupsInfoVO qxsiv : qxList) {
-				if (qxsiv.getGroupId().equals(siv.getGroupId())) {
-					siv.setLineNum(qxsiv.getLineNum());
-					siv.setOrderNum(qxsiv.getOrderNum());
-				}
-			}
-		}
+		doFilterGroupList(list, qxList);
 		return list;
 	}
 
@@ -150,6 +143,11 @@ public class StaffMarsServiceImpl implements StaffMarsService {
 	public List<GroupsInfoVO> filterGroupList(List<GroupsInfoVO> list, String deptId, int companyId) {
 
 		List<GroupsInfoVO> qxList = staffMarsDao.getGroupLineNumAndOrderNum(companyId, deptId);
+		doFilterGroupList(list, qxList);
+		return list;
+	}
+
+	private void doFilterGroupList(List<GroupsInfoVO> list, List<GroupsInfoVO> qxList) {
 		for (GroupsInfoVO siv : list) {
 			for (GroupsInfoVO qxsiv : qxList) {
 				if (qxsiv.getGroupId().equals(siv.getGroupId())) {
@@ -157,9 +155,7 @@ public class StaffMarsServiceImpl implements StaffMarsService {
 					siv.setOrderNum(qxsiv.getOrderNum());
 				}
 			}
-			System.out.println();
 		}
-		return list;
 	}
 
 	/**
@@ -229,7 +225,5 @@ public class StaffMarsServiceImpl implements StaffMarsService {
 		if (staffMarsDao.update(staffMarsDTO) == 0) {
 			throw new RException(ExceptionEnum.EDIT_FAIL);
 		}
-
-		GoEasyUtil.pushStatusRefresh(staffMarsDTO.getCompanyId(), staffMarsDTO.getId());
 	}
 }
