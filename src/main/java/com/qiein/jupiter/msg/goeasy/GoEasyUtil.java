@@ -381,7 +381,7 @@ public class GoEasyUtil {
 			sb.append("姓名：" + StringUtil.nullToStrTrim(info.getKzName()) + "<br/>");
 		}
 		if (StringUtil.isNotEmpty(info.getKzPhone())) {
-			sb.append("手机号：" + StringUtil.nullToStrTrim(info.getKzPhone()) + "<br/>");
+			sb.append("电话：" + StringUtil.nullToStrTrim(info.getKzPhone()) + "<br/>");
 		}
 		if (StringUtil.isNotEmpty(info.getKzWechat())) {
 			sb.append("微信：" + StringUtil.nullToStrTrim(info.getKzWechat()) + "<br/>");
@@ -474,7 +474,7 @@ public class GoEasyUtil {
 			sb.append("姓名：" + StringUtil.nullToStrTrim(info.getKzName()) + "<br/>");
 		}
 		if (StringUtil.isNotEmpty(info.getKzPhone())) {
-			sb.append("手机号：" + StringUtil.nullToStrTrim(info.getKzPhone()) + "<br/>");
+			sb.append("电话：" + StringUtil.nullToStrTrim(info.getKzPhone()) + "<br/>");
 		}
 		if (StringUtil.isNotEmpty(info.getKzWechat())) {
 			sb.append("微信：" + StringUtil.nullToStrTrim(info.getKzWechat()) + "<br/>");
@@ -504,7 +504,7 @@ public class GoEasyUtil {
 			sb.append("姓名：" + StringUtil.nullToStrTrim(info.getKzName()) + "<br/>");
 		}
 		if (StringUtil.isNotEmpty(info.getKzPhone())) {
-			sb.append("手机号：" + StringUtil.nullToStrTrim(info.getKzPhone()) + "<br/>");
+			sb.append("电话：" + StringUtil.nullToStrTrim(info.getKzPhone()) + "<br/>");
 		}
 		if (StringUtil.isNotEmpty(info.getKzWechat())) {
 			sb.append("微信：" + StringUtil.nullToStrTrim(info.getKzWechat()) + "<br/>");
