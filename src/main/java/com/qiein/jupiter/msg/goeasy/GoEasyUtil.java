@@ -488,6 +488,35 @@ public class GoEasyUtil {
 				staffId, companyId, DBSplitUtil.getNewsTabName(companyId)));
 	}
 
+	/**
+	 * 新分配的客资消息
+	 * 
+	 * @param companyId
+	 * @param staffId
+	 * @param info
+	 * @param newsDao
+	 */
+	public static void pushInfoComed(int companyId, int staffId, ClientGoEasyDTO info, NewsDao newsDao) {
+		String head = "新客资来啦";
+		StringBuffer sb = new StringBuffer();
+		sb.append("编号：" + info.getId() + "<br/>");
+		if (StringUtil.isNotEmpty(info.getKzName())) {
+			sb.append("姓名：" + StringUtil.nullToStrTrim(info.getKzName()) + "<br/>");
+		}
+		if (StringUtil.isNotEmpty(info.getKzPhone())) {
+			sb.append("手机号：" + StringUtil.nullToStrTrim(info.getKzPhone()) + "<br/>");
+		}
+		if (StringUtil.isNotEmpty(info.getKzWechat())) {
+			sb.append("微信：" + StringUtil.nullToStrTrim(info.getKzWechat()) + "<br/>");
+		}
+		sb.append("渠道：" + StringUtil.nullToStrTrim(info.getChannelName()) + "<br/>");
+		sb.append("来源：" + StringUtil.nullToStrTrim(info.getSourceName()) + "<br/>");
+		String msg = sb.toString();
+		pushCommon(companyId, staffId, head, msg);
+		newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_COMMON, head, msg.replaceAll("<br/>", "；"), info.getKzId(),
+				staffId, companyId, DBSplitUtil.getNewsTabName(companyId)));
+	}
+
 	public static void main(String[] args) {
 		// ClientGoEasyDTO info = new ClientGoEasyDTO();
 		// info.setId(668);

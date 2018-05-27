@@ -23,9 +23,11 @@ import com.qiein.jupiter.web.dao.ClientAllotLogDao;
 import com.qiein.jupiter.web.dao.ClientInfoDao;
 import com.qiein.jupiter.web.dao.ClientLogDao;
 import com.qiein.jupiter.web.dao.GroupKzNumTodayDao;
+import com.qiein.jupiter.web.dao.NewsDao;
 import com.qiein.jupiter.web.dao.ShopChannelGroupDao;
 import com.qiein.jupiter.web.dao.StaffDao;
 import com.qiein.jupiter.web.dao.StaffStatusLogDao;
+import com.qiein.jupiter.web.entity.dto.ClientGoEasyDTO;
 import com.qiein.jupiter.web.entity.dto.ClientPushDTO;
 import com.qiein.jupiter.web.entity.dto.GroupKzNumToday;
 import com.qiein.jupiter.web.entity.dto.StaffPushDTO;
@@ -57,6 +59,8 @@ public class ClientPushServiceImpl implements ClientPushService {
 	private StaffDao staffDao;
 	@Autowired
 	private StaffStatusLogDao statusLogDao;
+	@Autowired
+	private NewsDao newsDao;
 
 	/**
 	 * 根据拍摄地和渠道维度推送客资
@@ -87,6 +91,14 @@ public class ClientPushServiceImpl implements ClientPushService {
 
 		// 判断客资当前状态-限定客资最后推送时间已经超过分配间隔
 		if (clientDTO == null || (clientDTO.getPushInterval() != 0 && clientDTO.getPushInterval() < overTime)) {
+			return;
+		}
+		// 判定是否已经预选客服
+		if (NumUtil.isValid(clientDTO.getAppointorId())) {
+			ClientGoEasyDTO infoDTO = clientInfoDao.getClientGoEasyDTOById(clientDTO.getKzId(),
+					DBSplitUtil.getInfoTabName(companyId), DBSplitUtil.getDetailTabName(companyId));
+			GoEasyUtil.pushInfoComed(companyId, clientDTO.getAppointorId(), infoDTO, newsDao);
+			GoEasyUtil.pushInfoRefresh(companyId, clientDTO.getAppointorId());
 			return;
 		}
 		// 限定客资状态为分配中，可领取，未接入
@@ -163,7 +175,10 @@ public class ClientPushServiceImpl implements ClientPushService {
 		resizeTodayNum(companyId, appointer.getStaffId());
 
 		// 推送消息
-		// TODO
+		ClientGoEasyDTO infoDTO = clientInfoDao.getClientGoEasyDTOById(kzId, DBSplitUtil.getInfoTabName(companyId),
+				DBSplitUtil.getDetailTabName(companyId));
+		GoEasyUtil.pushInfoComed(companyId, appointer.getStaffId(), infoDTO, newsDao);
+		GoEasyUtil.pushInfoRefresh(companyId, appointer.getStaffId());
 	}
 
 	/**
