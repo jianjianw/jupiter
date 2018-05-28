@@ -134,6 +134,7 @@
 		AND (
 			UNIX_TIMESTAMP(NOW()) - info.LASTPUSHTIME
 		) &gt;= #{interval}
+		ORDER BY info.ID ASC
     </select>
 
 	<!--根据拍摄地获取客资数量-->
