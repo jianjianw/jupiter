@@ -398,6 +398,21 @@ public class GoEasyUtil {
 	}
 
 	/**
+	 * 连续三次怠工自动下线
+	 * 
+	 * @param companyId
+	 * @param staffId
+	 * @param newsDao
+	 */
+	public static void pushOffLineAuto(int companyId, int staffId, NewsDao newsDao) {
+		String head = "连续三次怠工已自动下线";
+		String msg = "上线后连续三次怠工未领取到客资被系统自动下线，如需领取客资请重新手动上线或重新登录系统";
+		pushError(companyId, staffId, head, msg);
+		newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_SYSTEM, head, msg, "", staffId, companyId,
+				DBSplitUtil.getNewsTabName(companyId)));
+	}
+
+	/**
 	 * 到店订单通知
 	 *
 	 * @param companyId

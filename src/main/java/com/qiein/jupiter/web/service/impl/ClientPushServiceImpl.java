@@ -164,6 +164,8 @@ public class ClientPushServiceImpl implements ClientPushService {
 						ClientLogConst.CONTINUOUS_SABOTEUR_DONW));
 				// 推送状态重载消息
 				GoEasyUtil.pushStatusRefresh(companyId, appointId);
+				// 推送连续三次怠工下线消息
+				GoEasyUtil.pushOffLineAuto(companyId, appointId, newsDao);
 			}
 		}
 	}
