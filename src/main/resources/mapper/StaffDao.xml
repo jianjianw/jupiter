@@ -698,6 +698,7 @@
 		AND info.STATUSID != 0
 		AND info.STATUSID != 98
 		AND info.STATUSID != 99
+		AND info.STATUSID != 999
 		AND (
 			channel.PUSHRULE = 11
 			OR channel.PUSHRULE = 1
