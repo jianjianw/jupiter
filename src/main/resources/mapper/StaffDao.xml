@@ -753,4 +753,9 @@
 		AND sf.STATUSFLAG = 1
 		AND INSTR(CONCAT(',',#{staffIds},','),CONCAT(',',sf.ID,',')) != 0;
     </select>
+    
+    <!-- 修改最后上线时间 -->
+    <update id="updatLastLoginTime" parameterType="map">
+        UPDATE hm_pub_staff_detail SET LASTLOGINTIME = UNIX_TIMESTAMP() WHERE COMPANYID = #{companyId} AND ID = #{id};
+    </update>
 </mapper>

@@ -187,6 +187,10 @@ public class StaffServiceImpl implements StaffService {
 		staffPO.setStatusFlag(statusFlag);
 		// 更新状态
 		staffDao.updateStatusFlag(staffPO);
+		// 如果是上线，修改最后上线时间
+		if (StaffStatusEnum.OnLine.getStatusId() == statusFlag) {
+			staffDao.updatLastLoginTime(id, companyId);
+		}
 		// 保存日志
 		// 更新的员工
 		StaffPO updateStaff = staffDao.getByIdAndCid(id, companyId);

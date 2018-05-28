@@ -357,4 +357,12 @@ public interface StaffDao extends BaseDao<StaffPO> {
 	 * @return
 	 */
 	List<StaffPushDTO> listStaffInstrIds(@Param("companyId") int companyId, @Param("staffIds") String staffIds);
+
+	/**
+	 * 修改最后上线时间
+	 * 
+	 * @param id
+	 * @param companyId
+	 */
+	void updatLastLoginTime(@Param("id") int id, @Param("companyId") int companyId);
 }

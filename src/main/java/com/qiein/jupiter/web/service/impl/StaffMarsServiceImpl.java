@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.qiein.jupiter.enums.StaffStatusEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
@@ -224,6 +225,13 @@ public class StaffMarsServiceImpl implements StaffMarsService {
 
 		if (staffMarsDao.update(staffMarsDTO) == 0) {
 			throw new RException(ExceptionEnum.EDIT_FAIL);
+		}
+
+		/**
+		 * 如果是上线，标记最后上线时间
+		 */
+		if (StaffStatusEnum.OnLine.getStatusId() == staffMarsDTO.getStatusFlag().intValue()) {
+			staffDao.updatLastLoginTime(staffMarsDTO.getId(), staffMarsDTO.getCompanyId());
 		}
 
 		GoEasyUtil.pushStatusRefresh(staffMarsDTO.getCompanyId(), staffMarsDTO.getId());
