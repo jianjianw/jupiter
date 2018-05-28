@@ -126,21 +126,7 @@ public class ClientPushServiceImpl implements ClientPushService {
 			// 11：小组+员工-指定承接小组依据权重比自动分配 - <客户端领取>
 			// 校验之前的客服是否连续怠工
 			if (NumUtil.isValid(clientDTO.getAppointorId())) {
-				int checkNum = staffDao.getSaboteurCheckNum(DBSplitUtil.getAllotLogTabName(companyId), companyId,
-						clientDTO.getAppointorId(), overTime);
-				if (0 == checkNum) {
-					// 连续三次怠工，强制下线
-					int i = staffDao.editStatusFlagOffLine(companyId, clientDTO.getAppointorId(),
-							StaffStatusEnum.OffLine.getStatusId());
-					if (0 == i) {
-						// 记录下线日志
-						statusLogDao.insert(new StaffStatusLog(clientDTO.getAppointorId(),
-								StaffStatusEnum.OffLine.getStatusId(), CommonConstant.SYSTEM_OPERA_ID,
-								CommonConstant.SYSTEM_OPERA_NAME, companyId, ClientLogConst.CONTINUOUS_SABOTEUR_DONW));
-						// 推送状态重载消息
-						GoEasyUtil.pushStatusRefresh(companyId, clientDTO.getAppointorId());
-					}
-				}
+				checkOffLine(clientDTO.getAppointorId(), companyId, overTime);
 			}
 			appointer = getStaffGroupStaffAvg(companyId, kzId, shopId, channelId, channelTypeId, overTime, interval);
 			if (appointer == null) {
@@ -155,6 +141,30 @@ public class ClientPushServiceImpl implements ClientPushService {
 			break;
 		default:
 			break;
+		}
+	}
+
+	/**
+	 * 连续怠工三次自动下线
+	 * 
+	 * @param appointId
+	 * @param companyId
+	 * @param overTime
+	 */
+	private void checkOffLine(int appointId, int companyId, int overTime) {
+		int checkNum = staffDao.getSaboteurCheckNum(DBSplitUtil.getAllotLogTabName(companyId), companyId, appointId,
+				overTime);
+		if (0 == checkNum) {
+			// 连续三次怠工，强制下线
+			int i = staffDao.editStatusFlagOffLine(companyId, appointId, StaffStatusEnum.OffLine.getStatusId());
+			if (0 == i) {
+				// 记录下线日志
+				statusLogDao.insert(new StaffStatusLog(appointId, StaffStatusEnum.OffLine.getStatusId(),
+						CommonConstant.SYSTEM_OPERA_ID, CommonConstant.SYSTEM_OPERA_NAME, companyId,
+						ClientLogConst.CONTINUOUS_SABOTEUR_DONW));
+				// 推送状态重载消息
+				GoEasyUtil.pushStatusRefresh(companyId, appointId);
+			}
 		}
 	}
 
