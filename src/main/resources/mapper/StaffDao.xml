@@ -703,6 +703,7 @@
 			channel.PUSHRULE = 11
 			OR channel.PUSHRULE = 1
 		)
+		AND info.CREATETIME &gt;= UNIX_TIMESTAMP(CAST(SYSDATE() AS DATE))
     </select>
     
     <!-- 修改员工今日领取客资数 -->
