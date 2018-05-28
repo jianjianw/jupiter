@@ -716,7 +716,7 @@
     
     <!-- 校验是否有上线后连续三次怠工 -->
     <select id="getSaboteurCheckNum" parameterType="map" resultType="Integer">
-    	SELECT SUM(a.STATUSID) NUM FROM (
+    	SELECT IFNULL(SUM(a.STATUSID), -1) NUM FROM (
 	    	SELECT
 				log.STATUSID
 			FROM
