@@ -409,8 +409,8 @@ public class GoEasyUtil {
 		String head = ClientLogConst.CONTINUOUS_SABOTEUR_DONW;
 		String msg = "连续三次怠工被系统自动下线，<br/>请重新上线或重新登录系统";
 		pushError(companyId, staffId, head, msg);
-		newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_SYSTEM, head, msg, "", staffId, companyId,
-				DBSplitUtil.getNewsTabName(companyId)));
+		newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_SYSTEM, head, msg.replaceAll("<br/>", "；"), "", staffId,
+				companyId, DBSplitUtil.getNewsTabName(companyId)));
 	}
 
 	/**
