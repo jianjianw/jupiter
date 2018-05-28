@@ -3,6 +3,7 @@ package com.qiein.jupiter.msg.goeasy;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
+import com.qiein.jupiter.constant.ClientLogConst;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.PropertiesUtil;
 import com.qiein.jupiter.util.StringUtil;
@@ -405,8 +406,8 @@ public class GoEasyUtil {
 	 * @param newsDao
 	 */
 	public static void pushOffLineAuto(int companyId, int staffId, NewsDao newsDao) {
-		String head = "连续三次怠工已自动下线";
-		String msg = "上线后连续三次怠工未领取到客资被系统自动下线，如需领取客资请重新手动上线或重新登录系统";
+		String head = ClientLogConst.CONTINUOUS_SABOTEUR_DONW;
+		String msg = "连续三次怠工被系统自动下线，<br/>请重新上线或重新登录系统";
 		pushError(companyId, staffId, head, msg);
 		newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_SYSTEM, head, msg, "", staffId, companyId,
 				DBSplitUtil.getNewsTabName(companyId)));
