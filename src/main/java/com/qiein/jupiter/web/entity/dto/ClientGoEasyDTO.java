@@ -9,200 +9,236 @@ import java.io.Serializable;
  */
 public class ClientGoEasyDTO implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    /**
-     * 企业ID
-     */
-    private int companyId;
+	private static final long serialVersionUID = 1L;
+	/**
+	 * 企业ID
+	 */
+	private int companyId;
 
-    /**
-     * 主键ID
-     */
-    private int id;
+	/**
+	 * 主键ID
+	 */
+	private int id;
 
-    /**
-     * 客资ID
-     */
-    private String kzId;
-    /**
-     * 客服ID
-     */
-    private int appointorId;
-    /**
-     * 来源ID
-     */
-    private int sourceId;
-    /**
-     * 邀约名称
-     */
-    private String appointName;
+	/**
+	 * 客资ID
+	 */
+	private String kzId;
+	/**
+	 * 客服ID
+	 */
+	private int appointorId;
+	/**
+	 * 来源ID
+	 */
+	private int sourceId;
+	/**
+	 * 邀约名称
+	 */
+	private String appointName;
 
-    /**
-     * 最终拍摄地名称
-     */
-    private String filmingArea;
-    /**
-     * 客资姓名
-     */
-    private String kzName;
-    /**
-     * 客资手机号
-     */
-    private String kzPhone;
-    /**
-     * 客资微信
-     */
-    private String kzWechat;
-    /**
-     * 渠道名称
-     */
-    private String channelName;
-    /**
-     * 来源名称
-     */
-    private String sourceName;
-    /**
-     * 无效原因
-     */
-    private String invalidLabel;
-    /**
-     * 推广人ID
-     */
-    private int collectorId;
-    /**
-     * 订单时间
-     */
-    private int successTime;
-    /**
-     * 成交套系金额
-     */
-    private int amount;
+	/**
+	 * 最终拍摄地名称
+	 */
+	private String filmingArea;
+	/**
+	 * 客资姓名
+	 */
+	private String kzName;
+	/**
+	 * 客资手机号
+	 */
+	private String kzPhone;
+	/**
+	 * 客资微信
+	 */
+	private String kzWechat;
+	/**
+	 * 客资QQ
+	 */
+	private String kzQq;
+	/**
+	 * 客资旺旺
+	 */
+	private String kzWw;
+	/**
+	 * 渠道名称
+	 */
+	private String channelName;
+	/**
+	 * 来源名称
+	 */
+	private String sourceName;
+	/**
+	 * 无效原因
+	 */
+	private String invalidLabel;
+	/**
+	 * 推广人ID
+	 */
+	private int collectorId;
+	/**
+	 * 订单时间
+	 */
+	private int successTime;
+	/**
+	 * 成交套系金额
+	 */
+	private int amount;
+	/**
+	 * 备注
+	 */
+	private String memo;
 
-    public int getCompanyId() {
-        return companyId;
-    }
+	public String getKzQq() {
+		return kzQq;
+	}
 
-    public void setCompanyId(int companyId) {
-        this.companyId = companyId;
-    }
+	public void setKzQq(String kzQq) {
+		this.kzQq = kzQq;
+	}
 
-    public int getId() {
-        return id;
-    }
+	public String getKzWw() {
+		return kzWw;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public void setKzWw(String kzWw) {
+		this.kzWw = kzWw;
+	}
 
-    public String getKzId() {
-        return kzId;
-    }
+	public String getMemo() {
+		return memo;
+	}
 
-    public void setKzId(String kzId) {
-        this.kzId = kzId;
-    }
+	public void setMemo(String memo) {
+		this.memo = memo;
+	}
 
-    public int getAppointorId() {
-        return appointorId;
-    }
+	public int getCompanyId() {
+		return companyId;
+	}
 
-    public void setAppointorId(int appointorId) {
-        this.appointorId = appointorId;
-    }
+	public void setCompanyId(int companyId) {
+		this.companyId = companyId;
+	}
 
-    public int getSourceId() {
-        return sourceId;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public void setSourceId(int sourceId) {
-        this.sourceId = sourceId;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    public String getAppointName() {
-        return appointName;
-    }
+	public String getKzId() {
+		return kzId;
+	}
 
-    public void setAppointName(String appointName) {
-        this.appointName = appointName;
-    }
+	public void setKzId(String kzId) {
+		this.kzId = kzId;
+	}
 
-    public String getFilmingArea() {
-        return filmingArea;
-    }
+	public int getAppointorId() {
+		return appointorId;
+	}
 
-    public void setFilmingArea(String filmingArea) {
-        this.filmingArea = filmingArea;
-    }
+	public void setAppointorId(int appointorId) {
+		this.appointorId = appointorId;
+	}
 
-    public String getKzName() {
-        return kzName;
-    }
+	public int getSourceId() {
+		return sourceId;
+	}
 
-    public void setKzName(String kzName) {
-        this.kzName = kzName;
-    }
+	public void setSourceId(int sourceId) {
+		this.sourceId = sourceId;
+	}
 
-    public String getKzPhone() {
-        return kzPhone;
-    }
+	public String getAppointName() {
+		return appointName;
+	}
 
-    public void setKzPhone(String kzPhone) {
-        this.kzPhone = kzPhone;
-    }
+	public void setAppointName(String appointName) {
+		this.appointName = appointName;
+	}
 
-    public String getKzWechat() {
-        return kzWechat;
-    }
+	public String getFilmingArea() {
+		return filmingArea;
+	}
 
-    public void setKzWechat(String kzWechat) {
-        this.kzWechat = kzWechat;
-    }
+	public void setFilmingArea(String filmingArea) {
+		this.filmingArea = filmingArea;
+	}
 
-    public String getChannelName() {
-        return channelName;
-    }
+	public String getKzName() {
+		return kzName;
+	}
 
-    public void setChannelName(String channelName) {
-        this.channelName = channelName;
-    }
+	public void setKzName(String kzName) {
+		this.kzName = kzName;
+	}
 
-    public String getSourceName() {
-        return sourceName;
-    }
+	public String getKzPhone() {
+		return kzPhone;
+	}
 
-    public void setSourceName(String sourceName) {
-        this.sourceName = sourceName;
-    }
+	public void setKzPhone(String kzPhone) {
+		this.kzPhone = kzPhone;
+	}
 
-    public String getInvalidLabel() {
-        return invalidLabel;
-    }
+	public String getKzWechat() {
+		return kzWechat;
+	}
 
-    public void setInvalidLabel(String invalidLabel) {
-        this.invalidLabel = invalidLabel;
-    }
+	public void setKzWechat(String kzWechat) {
+		this.kzWechat = kzWechat;
+	}
 
-    public int getCollectorId() {
-        return collectorId;
-    }
+	public String getChannelName() {
+		return channelName;
+	}
 
-    public void setCollectorId(int collectorId) {
-        this.collectorId = collectorId;
-    }
+	public void setChannelName(String channelName) {
+		this.channelName = channelName;
+	}
 
-    public int getSuccessTime() {
-        return successTime;
-    }
+	public String getSourceName() {
+		return sourceName;
+	}
 
-    public void setSuccessTime(int successTime) {
-        this.successTime = successTime;
-    }
+	public void setSourceName(String sourceName) {
+		this.sourceName = sourceName;
+	}
 
-    public int getAmount() {
-        return amount;
-    }
+	public String getInvalidLabel() {
+		return invalidLabel;
+	}
 
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
+	public void setInvalidLabel(String invalidLabel) {
+		this.invalidLabel = invalidLabel;
+	}
+
+	public int getCollectorId() {
+		return collectorId;
+	}
+
+	public void setCollectorId(int collectorId) {
+		this.collectorId = collectorId;
+	}
+
+	public int getSuccessTime() {
+		return successTime;
+	}
+
+	public void setSuccessTime(int successTime) {
+		this.successTime = successTime;
+	}
+
+	public int getAmount() {
+		return amount;
+	}
+
+	public void setAmount(int amount) {
+		this.amount = amount;
+	}
 }

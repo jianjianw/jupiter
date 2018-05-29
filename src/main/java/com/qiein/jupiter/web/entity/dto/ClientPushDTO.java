@@ -202,4 +202,12 @@ public class ClientPushDTO implements Serializable {
 	public void setChannelTypeId(int channelTypeId) {
 		this.channelTypeId = channelTypeId;
 	}
+
+	@Override
+	public String toString() {
+		return "ClientPushDTO [pushInterval=" + pushInterval + ", overTime=" + overTime + ", companyId=" + companyId
+				+ ", id=" + id + ", kzId=" + kzId + ", statusId=" + statusId + ", appointorId=" + appointorId
+				+ ", sourceId=" + sourceId + ", pushRule=" + pushRule + ", shopId=" + shopId + ", channelId="
+				+ channelId + ", channelTypeId=" + channelTypeId + ", service=" + service + "]";
+	}
 }

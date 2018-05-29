@@ -23,9 +23,11 @@ import com.qiein.jupiter.web.dao.ClientAllotLogDao;
 import com.qiein.jupiter.web.dao.ClientInfoDao;
 import com.qiein.jupiter.web.dao.ClientLogDao;
 import com.qiein.jupiter.web.dao.GroupKzNumTodayDao;
+import com.qiein.jupiter.web.dao.NewsDao;
 import com.qiein.jupiter.web.dao.ShopChannelGroupDao;
 import com.qiein.jupiter.web.dao.StaffDao;
 import com.qiein.jupiter.web.dao.StaffStatusLogDao;
+import com.qiein.jupiter.web.entity.dto.ClientGoEasyDTO;
 import com.qiein.jupiter.web.entity.dto.ClientPushDTO;
 import com.qiein.jupiter.web.entity.dto.GroupKzNumToday;
 import com.qiein.jupiter.web.entity.dto.StaffPushDTO;
@@ -57,6 +59,8 @@ public class ClientPushServiceImpl implements ClientPushService {
 	private StaffDao staffDao;
 	@Autowired
 	private StaffStatusLogDao statusLogDao;
+	@Autowired
+	private NewsDao newsDao;
 
 	/**
 	 * 根据拍摄地和渠道维度推送客资
@@ -89,6 +93,15 @@ public class ClientPushServiceImpl implements ClientPushService {
 		if (clientDTO == null || (clientDTO.getPushInterval() != 0 && clientDTO.getPushInterval() < overTime)) {
 			return;
 		}
+		// 判定是否已经预选客服
+		if (NumUtil.isValid(clientDTO.getAppointorId())
+				&& clientDTO.getStatusId() == ClientStatusConst.BE_HAVE_MAKE_ORDER) {
+			ClientGoEasyDTO infoDTO = clientInfoDao.getClientGoEasyDTOById(clientDTO.getKzId(),
+					DBSplitUtil.getInfoTabName(companyId), DBSplitUtil.getDetailTabName(companyId));
+			GoEasyUtil.pushInfoComed(companyId, clientDTO.getAppointorId(), infoDTO, newsDao);
+			GoEasyUtil.pushInfoRefresh(companyId, clientDTO.getAppointorId());
+			return;
+		}
 		// 限定客资状态为分配中，可领取，未接入
 		if (clientDTO.getStatusId() != ClientStatusConst.BE_ALLOTING
 				&& clientDTO.getStatusId() != ClientStatusConst.BE_WAIT_MAKE_ORDER) {
@@ -113,21 +126,7 @@ public class ClientPushServiceImpl implements ClientPushService {
 			// 11：小组+员工-指定承接小组依据权重比自动分配 - <客户端领取>
 			// 校验之前的客服是否连续怠工
 			if (NumUtil.isValid(clientDTO.getAppointorId())) {
-				int checkNum = staffDao.getSaboteurCheckNum(DBSplitUtil.getAllotLogTabName(companyId), companyId,
-						clientDTO.getAppointorId(), overTime);
-				if (0 == checkNum) {
-					// 连续三次怠工，强制下线
-					int i = staffDao.editStatusFlagOffLine(companyId, clientDTO.getAppointorId(),
-							StaffStatusEnum.OffLine.getStatusId());
-					if (i == 1) {
-						// 记录下线日志
-						statusLogDao.insert(new StaffStatusLog(clientDTO.getAppointorId(),
-								StaffStatusEnum.OffLine.getStatusId(), CommonConstant.SYSTEM_OPERA_ID,
-								CommonConstant.SYSTEM_OPERA_NAME, companyId, ClientLogConst.CONTINUOUS_SABOTEUR_DONW));
-						// 推送状态重载消息
-						GoEasyUtil.pushStatusRefresh(companyId, clientDTO.getAppointorId());
-					}
-				}
+				checkOffLine(clientDTO.getAppointorId(), companyId, overTime);
 			}
 			appointer = getStaffGroupStaffAvg(companyId, kzId, shopId, channelId, channelTypeId, overTime, interval);
 			if (appointer == null) {
@@ -142,6 +141,32 @@ public class ClientPushServiceImpl implements ClientPushService {
 			break;
 		default:
 			break;
+		}
+	}
+
+	/**
+	 * 连续怠工三次自动下线
+	 * 
+	 * @param appointId
+	 * @param companyId
+	 * @param overTime
+	 */
+	private void checkOffLine(int appointId, int companyId, int overTime) {
+		int checkNum = staffDao.getSaboteurCheckNum(DBSplitUtil.getAllotLogTabName(companyId), companyId, appointId,
+				overTime);
+		if (0 == checkNum) {
+			// 连续三次怠工，强制下线
+			int i = staffDao.editStatusFlagOffLine(companyId, appointId, StaffStatusEnum.OffLine.getStatusId());
+			if (1 == i) {
+				// 记录下线日志
+				statusLogDao.insert(new StaffStatusLog(appointId, StaffStatusEnum.OffLine.getStatusId(),
+						CommonConstant.SYSTEM_OPERA_ID, CommonConstant.SYSTEM_OPERA_NAME, companyId,
+						ClientLogConst.CONTINUOUS_SABOTEUR_DONW));
+				// 推送状态重载消息
+				GoEasyUtil.pushStatusRefresh(companyId, appointId);
+				// 推送连续三次怠工下线消息
+				GoEasyUtil.pushOffLineAuto(companyId, appointId, newsDao);
+			}
 		}
 	}
 
@@ -163,7 +188,10 @@ public class ClientPushServiceImpl implements ClientPushService {
 		resizeTodayNum(companyId, appointer.getStaffId());
 
 		// 推送消息
-		// TODO
+		ClientGoEasyDTO infoDTO = clientInfoDao.getClientGoEasyDTOById(kzId, DBSplitUtil.getInfoTabName(companyId),
+				DBSplitUtil.getDetailTabName(companyId));
+		GoEasyUtil.pushInfoComed(companyId, appointer.getStaffId(), infoDTO, newsDao);
+		GoEasyUtil.pushInfoRefresh(companyId, appointer.getStaffId());
 	}
 
 	/**

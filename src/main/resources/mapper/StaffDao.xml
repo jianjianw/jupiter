@@ -698,10 +698,12 @@
 		AND info.STATUSID != 0
 		AND info.STATUSID != 98
 		AND info.STATUSID != 99
+		AND info.STATUSID != 999
 		AND (
 			channel.PUSHRULE = 11
 			OR channel.PUSHRULE = 1
 		)
+		AND info.CREATETIME &gt;= UNIX_TIMESTAMP(CAST(SYSDATE() AS DATE))
     </select>
     
     <!-- 修改员工今日领取客资数 -->
@@ -716,21 +718,23 @@
     
     <!-- 校验是否有上线后连续三次怠工 -->
     <select id="getSaboteurCheckNum" parameterType="map" resultType="Integer">
-    	SELECT
-			SUM(log.STATUSID) NUM
-		FROM
-			${logTabName} log
-		LEFT JOIN hm_pub_staff_detail sf ON log.STAFFID = sf.ID AND sf.COMPANYID = #{companyId}
-		WHERE
-			log.STAFFID = #{staffId}
-		AND log.COMPANYID = #{companyId}
-		AND log.ALLOTTIME &gt; sf.LASTLOGINTIME
-		AND (
-			UNIX_TIMESTAMP(NOW()) - log.ALLOTTIME
-		) &gt; #{overTime}
-		ORDER BY
-			log.ALLOTTIME DESC
-		LIMIT 3;
+    	SELECT (IFNULL(SUM(a.STATUSID),-1) + COUNT(1) - 3) NUM FROM (
+	    	SELECT
+				log.STATUSID
+			FROM
+				${logTabName} log
+			LEFT JOIN hm_pub_staff_detail sf ON log.STAFFID = sf.ID AND sf.COMPANYID = #{companyId}
+			WHERE
+				log.STAFFID = #{staffId}
+			AND log.COMPANYID = #{companyId}
+			AND log.ALLOTTIME &gt; sf.LASTLOGINTIME
+			AND (
+				UNIX_TIMESTAMP(NOW()) - log.ALLOTTIME
+			) &gt; #{overTime}
+			ORDER BY
+				log.ALLOTTIME DESC
+			LIMIT 3
+		) a	
     </select>
     
     <!-- 修改下线 -->
@@ -751,4 +755,9 @@
 		AND sf.STATUSFLAG = 1
 		AND INSTR(CONCAT(',',#{staffIds},','),CONCAT(',',sf.ID,',')) != 0;
     </select>
+    
+    <!-- 修改最后上线时间 -->
+    <update id="updatLastLoginTime" parameterType="map">
+        UPDATE hm_pub_staff_detail SET LASTLOGINTIME = UNIX_TIMESTAMP() WHERE COMPANYID = #{companyId} AND ID = #{id};
+    </update>
 </mapper>

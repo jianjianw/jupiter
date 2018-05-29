@@ -21,4 +21,8 @@ public class MessageConts {
 
 	// 客户端消息类型
 	public static final String MSG_APP_INFO_REVEIVE = "receive";// 客资领取
+
+	// 消息中心消息类型
+	public static final String MSG_TYPE_SYSTEM = "system";// 系统消息
+	public static final String MSG_TYPE_NOTICE = "notice";// 定时提醒
 }

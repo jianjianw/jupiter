@@ -14,7 +14,6 @@ import com.qiein.jupiter.web.dao.BrandDao;
 import com.qiein.jupiter.web.dao.GroupDao;
 import com.qiein.jupiter.web.dao.PageConfigDao;
 import com.qiein.jupiter.web.dao.ShopDao;
-import com.qiein.jupiter.web.dao.SourceDao;
 import com.qiein.jupiter.web.entity.dto.PageFilterDTO;
 import com.qiein.jupiter.web.entity.po.BrandPO;
 import com.qiein.jupiter.web.entity.po.DictionaryPO;
@@ -39,9 +38,6 @@ public class PageConfigServiceImpl implements PageConfigService {
 
 	@Autowired
 	private GroupDao groupDao;
-
-	@Autowired
-	private SourceDao sourceDao;
 
 	@Autowired
 	private BrandDao brandDao;
