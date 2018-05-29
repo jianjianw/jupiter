@@ -73,7 +73,7 @@ public class ClientAddController extends BaseController {
             throw new RException(ExceptionEnum.TYPEID_IS_NULL);
         }
         String adId = StringUtil.nullToStrTrim(jsonObject.getString("adId"));
-        String adAddress = StringUtil.nullToStrTrim(jsonObject.getString("adaddress"));
+        String adAddress = StringUtil.nullToStrTrim(jsonObject.getString("adAddress"));
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         JSONObject result = clientAddService.batchAddDsClient(list, Integer.parseInt(channelId),
