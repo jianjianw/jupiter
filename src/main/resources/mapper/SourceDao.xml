@@ -259,18 +259,6 @@
         ORDER BY COUNT( 1 ) DESC;
     </select>
 
-    <!--根据名字类型，获取来源信息-->
-    <select id="getSourceByNameAndType" parameterType="map" resultMap="baseMap">
-        SELECT
-        <include refid="baseColumn"/>
-        FROM
-        hm_crm_source
-        WHERE
-        SRCNAME = #{srcName}
-        AND TYPEID = #{typeId}
-        AND COMPANYID = #{companyId}
-    </select>
-
     <!--获取公司所有的来源列表 包括停用的-->
     <select id="getAllSourceListByCid" resultMap="baseMap">
         SELECT

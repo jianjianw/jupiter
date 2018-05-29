@@ -282,23 +282,6 @@ public class GroupServiceImpl implements GroupService {
 			}
 			groupDao.batchUpdateGroupType(byParentId);
 		}
-		// 更新名字，同步转介绍名字
-		if (CommonConstant.DEFAULT_STRING_ZERO.equals(groupPO.getParentId())) {
-			// 获取渠道信息
-			ChannelPO exist = channelDao.getChannelByNameAndType(groupPO.getCompanyId(), old.getGroupName(),
-					ChannelConstant.STAFF_ZJS);
-			if (exist != null) {
-				exist.setChannelName(groupPO.getGroupName());
-				channelDao.update(exist);
-			}
-		} else {
-			SourcePO exist = sourceDao.getSourceByNameAndType(groupPO.getCompanyId(), old.getGroupName(),
-					ChannelConstant.STAFF_ZJS);
-			if (exist != null) {
-				exist.setSrcName(groupPO.getGroupName());
-				sourceDao.update(exist);
-			}
-		}
 		return groupPO;
 	}
 
@@ -324,29 +307,6 @@ public class GroupServiceImpl implements GroupService {
 		if (CollectionUtils.isNotEmpty(groupStaffs)) {
 			throw new RException(ExceptionEnum.GROUP_HAVE_STAFF);
 		}
-		// 删除部门，同步删除渠道
-		if (CommonConstant.DEFAULT_STRING_ZERO.equals(groupPO.getParentId())) {
-			// 获取渠道信息
-			ChannelPO exist = channelDao.getChannelByNameAndType(groupPO.getCompanyId(), groupPO.getGroupName(),
-					ChannelConstant.STAFF_ZJS);
-			// TODO 查询该渠道下有没有客资
-			// exist.setIsShow(false);
-			// channelDao.update(exist);
-			if (exist != null) {
-				channelDao.deleteByIdAndCid(exist.getId(), exist.getCompanyId());
-			}
-		} else {
-			// 删除小组，同步删除来源
-			SourcePO exist = sourceDao.getSourceByNameAndType(groupPO.getCompanyId(), groupPO.getGroupName(),
-					ChannelConstant.STAFF_ZJS);
-			// TODO 查询该来源下有没有客资
-			// exist.setIsShow(false);
-			// sourceDao.update(exist);
-			if (exist != null) {
-				sourceDao.deleteByIdAndCid(exist.getId(), exist.getCompanyId());
-			}
-		}
-
 		if (1 != groupDao.delete(id)) {
 			throw new RException(ExceptionEnum.UNKNOW_ERROR);
 		}
@@ -375,37 +335,6 @@ public class GroupServiceImpl implements GroupService {
 		// 把组id 设置为父类Id+ 分隔符 + 新增的id
 		groupPO.setGroupId(groupPO.getParentId() + CommonConstant.ROD_SEPARATOR + groupPO.getId());
 		groupDao.update(groupPO);
-		// 新增转介绍渠道，若存在，开启，不存在新增
-		if (CommonConstant.DEFAULT_STRING_ZERO.equals(groupPO.getParentId())) {
-			ChannelPO exist = channelDao.getChannelByNameAndType(groupPO.getCompanyId(), groupPO.getGroupName(),
-					ChannelConstant.STAFF_ZJS);
-			if (exist == null) {
-				// 新增渠道
-				ChannelPO channelPO = new ChannelPO(groupPO.getGroupName(), ChannelConstant.STAFF_ZJS, 0,
-						groupPO.getCompanyId(), true);
-				channelDao.insert(channelPO);
-			} else if (!exist.getShowFlag()) {
-				// 开启渠道
-				exist.setShowFlag(true);
-				channelDao.update(exist);
-			}
-		} else {
-			SourcePO exist = sourceDao.getSourceByNameAndType(groupPO.getCompanyId(), groupPO.getGroupName(),
-					ChannelConstant.STAFF_ZJS);
-			if (exist == null) {
-				// 新增来源
-				// 获取渠道ID
-				ChannelPO channel = channelDao.getZjsChannelByDeptId(groupPO.getCompanyId(), groupPO.getParentId());
-				SourcePO sourcePO = new SourcePO(groupPO.getGroupName(), ChannelConstant.STAFF_ZJS, channel.getId(),
-						channel.getChannelName(), groupPO.getCompanyId(), true, false);
-				sourceDao.insert(sourcePO);
-			} else {
-				// 开启来源
-				exist.setIsShow(true);
-				sourceDao.update(exist);
-			}
-		}
-
 		return groupPO;
 	}
 

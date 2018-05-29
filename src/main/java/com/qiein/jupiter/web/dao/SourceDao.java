@@ -49,11 +49,12 @@ public interface SourceDao extends BaseDao<SourcePO> {
 
     /**
      * 查询所选要删除的渠道下存在多少客资
+     *
      * @param ids
      * @param tabName
      * @return
      */
-    Integer datDelCheck(@Param("ids") String[] ids , @Param("tabName") String tabName);
+    Integer datDelCheck(@Param("ids") String[] ids, @Param("tabName") String tabName);
 
     /**
      * 渠道名变更时下属所有来源的记录也要相应变更
@@ -109,16 +110,6 @@ public interface SourceDao extends BaseDao<SourcePO> {
     List<Integer> getLastMonthSrcSort(@Param("tableName") String tableName, @Param("companyId") Integer companyId,
                                       @Param("staffId") int staffId, @Param("typeList") List<Integer> typeList);
 
-    /**
-     * 根据名字类型，获取来源信息
-     *
-     * @param companyId
-     * @param srcName
-     * @param typeId
-     * @return
-     */
-    SourcePO getSourceByNameAndType(@Param("companyId") int companyId, @Param("srcName") String srcName,
-                                    @Param("typeId") int typeId);
 
     /**
      * 获取公司下所有的来源信息，包括删除的

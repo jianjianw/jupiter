@@ -248,31 +248,6 @@
         ORDER BY COUNT( 1 ) DESC;
     </select>
 
-    <!--根据渠道名，类型，获取渠道信息-->
-    <select id="getChannelByNameAndType" parameterType="map" resultType="com.qiein.jupiter.web.entity.po.ChannelPO">
-        SELECT
-        <include refid="baseColumn"/>
-        FROM
-        hm_crm_channel
-        WHERE
-        COMPANYID = #{companyId}
-        AND CHANNELNAME = #{channelName}
-        AND TYPEID = #{typeId}
-    </select>
-
-    <!--根据部门ID，获取对应的转介绍渠道ID，和渠道名-->
-    <select id="getZjsChannelByDeptId" parameterType="map" resultMap="baseMap">
-        SELECT
-            channel.ID,channel.CHANNELNAME
-        FROM
-            hm_pub_group  grp
-        INNER JOIN hm_crm_channel channel ON grp.GROUPNAME = channel.CHANNELNAME AND channel.COMPANYID = grp.COMPANYID
-        WHERE
-            grp.GROUPID = #{groupId}
-            AND channel.TYPEID = 3
-            AND grp.COMPANYID = #{companyId}
-    </select>
-
     <!--根据公司ID 获取所有的渠道-->
     <select id="getChannelListByCid" resultMap="baseMap">
         SELECT
