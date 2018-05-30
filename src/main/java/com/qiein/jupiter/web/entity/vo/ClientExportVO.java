@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.entity.vo;
 
 import cn.afterturn.easypoi.excel.annotation.Excel;
+import cn.afterturn.easypoi.excel.annotation.ExcelTarget;
 
 import java.io.Serializable;
 
@@ -9,100 +10,99 @@ import java.io.Serializable;
  * gaoxiaoli
  * 2018/5/24
  */
-
 public class ClientExportVO implements Serializable {
     private static final long serialVersionUID = 1288139895464503208L;
     /**
      * 客资编号
      */
-    @Excel(name = "编号", width = 10)
+    @Excel(name = "编号", width = 10, height = 6)
     private int id;
     /**
      * 客服组名称
      */
-    @Excel(name = "组别", width = 10)
+    @Excel(name = "组别", width = 10, height = 6)
     private String groupName;
     /**
      * 录入时间接收格式
      */
-    @Excel(name = "录入时间", width = 20)
+    @Excel(name = "录入时间", width = 20, height = 6)
     private String createTime;
 
     /**
      * 推广员姓名
      */
-    @Excel(name = "推广", width = 20)
+    @Excel(name = "推广", width = 20, height = 6)
     private String collectorName;
     /**
      * 客资电话
      */
-    @Excel(name = "手机号", width = 20)
+    @Excel(name = "手机号", width = 20, height = 6)
     private String kzPhone;
     /**
      * 客资微信
      */
-    @Excel(name = "微信号", width = 20)
+    @Excel(name = "微信号", width = 20, height = 6)
     private String kzWechat;
     /**
      * 客资QQ
      */
-    @Excel(name = "QQ", width = 20)
+    @Excel(name = "QQ", width = 20, height = 6)
     private String kzQq;
     /**
      * 客资旺旺
      */
-    @Excel(name = "旺旺", width = 20)
+    @Excel(name = "旺旺", width = 20, height = 6)
     private String kzWw;
 
     /**
      * 拍摄地名称
      */
-    @Excel(name = "拍摄地", width = 10)
+    @Excel(name = "拍摄地", width = 10, height = 6)
     private String shopName;
     /**
      * 邀约客服姓名
      */
-    @Excel(name = "客服", width = 20)
+    @Excel(name = "客服", width = 20, height = 6)
     private String appointName;
     /**
      * 渠道名称
      */
-    @Excel(name = "来源", width = 10)
+    @Excel(name = "来源", width = 10, height = 6)
     private String sourceName;
     /**
      * 状态名称
      */
-    @Excel(name = "状态", width = 15)
+    @Excel(name = "状态", width = 15, height = 6)
     private String statusName;
     /**
      * 渠道名
      */
-    @Excel(name = "渠道", width = 10)
+    @Excel(name = "渠道", width = 10, height = 6)
     private String channelName;
     /**
      * 推广备注
      */
-    @Excel(name = "推广备注", width = 50)
+    @Excel(name = "推广备注", width = 50, height = 6)
     private String remark;
     /**
      * 省份地址
      */
-    @Excel(name = "省份", width = 20)
+    @Excel(name = "省份", width = 20, height = 6)
     private String address;
     /**
      * 关键词
      */
-    @Excel(name = "关键字", width = 20)
+    @Excel(name = "关键字", width = 20, height = 6)
     private String keyWord;
     /**
      * 无效原因
      */
-    @Excel(name = "无效原因", width = 30)
+    @Excel(name = "无效原因", width = 30, height = 6)
     private String invalidLabel;
     /**
      * 销售备注
      */
-    @Excel(name = "销售备注", width = 40)
+    @Excel(name = "销售备注", width = 40, height = 6)
     private String memo;
 
     public int getId() {
