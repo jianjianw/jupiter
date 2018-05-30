@@ -18,6 +18,8 @@ import com.qiein.jupiter.web.service.NewsService;
 
 /**
  * 消息
+ *
+ * @author shiTao
  */
 @Service
 public class NewsServiceImpl implements NewsService {

@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.dao;
 
 import com.qiein.jupiter.web.entity.po.ClientTimerPO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -20,5 +21,5 @@ public interface ClientTimerDao {
     /**
      * 批量删除已经提醒过的
      */
-    int batchDelAready(Integer[] ids);
+    int batchDelAready(@Param("ids") Integer[] ids);
 }

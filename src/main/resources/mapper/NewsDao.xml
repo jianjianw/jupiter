@@ -62,7 +62,7 @@
         CREATETIME DESC
     </select>
 
-    <!--批量新增消息-->
+    <!--新增消息-->
     <insert id="insert">
         INSERT INTO ${tableName}
         (TYPE,HEAD,MSG,KZID,STAFFID,CREATETIME,COMPANYID,ISREAD)
