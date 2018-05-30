@@ -46,6 +46,11 @@ public class ClientPushDTO implements Serializable {
 	private int statusId;
 
 	/**
+	 * 推广ID
+	 */
+	private int collectorId;
+
+	/**
 	 * 客服ID
 	 */
 	private int appointorId;
@@ -97,6 +102,14 @@ public class ClientPushDTO implements Serializable {
 		return (service != null && NumUtil.isValid(this.pushRule) && NumUtil.isValid(this.companyId)
 				&& StringUtil.isValid(this.kzId) && NumUtil.isValid(this.shopId) && NumUtil.isValid(this.channelId)
 				&& NumUtil.isValid(this.channelTypeId));
+	}
+
+	public int getCollectorId() {
+		return collectorId;
+	}
+
+	public void setCollectorId(int collectorId) {
+		this.collectorId = collectorId;
 	}
 
 	public ClientPushServiceImpl getService() {

@@ -6,6 +6,7 @@
         <id column="ID" jdbcType="INTEGER" property="id"/>
         <result column="KZID" jdbcType="VARCHAR" property="kzId"/>
         <result column="STATUSID" jdbcType="INTEGER" property="statusId"/>
+		<result column="COLLECTORID" jdbcType="INTEGER" property="collectorId"/>
         <result column="APPOINTORID" jdbcType="INTEGER" property="appointorId"/>
         <result column="COMPANYID" jdbcType="INTEGER" property="companyId"/>
         <result column="PUSHINTERVAL" jdbcType="INTEGER" property="pushInterval"/>
@@ -39,7 +40,7 @@
 	</resultMap>
 
     <sql id="baseColumn">
-        info.ID, info.KZID, info.STATUSID, info.APPOINTORID, info.COMPANYID, info.SOURCEID
+        info.ID, info.KZID, info.STATUSID, info.APPOINTORID, info.COLLECTORID, info.COMPANYID, info.SOURCEID
     </sql>
 
     <!--获取要推送的客资信息-->

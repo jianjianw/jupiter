@@ -77,6 +77,8 @@
     <resultMap id="pushMap" type="com.qiein.jupiter.web.entity.dto.StaffPushDTO">
         <result column="ID" property="staffId" jdbcType="INTEGER"/>
         <result column="NICKNAME" property="staffName" jdbcType="VARCHAR"/>
+        <result column="GROUPID" property="groupId" jdbcType="VARCHAR"/>
+        <result column="GROUPNAME" property="groupName" jdbcType="VARCHAR"/>
         <result column="WEIGHT" property="weight" jdbcType="INTEGER"/>
         <result column="TODAYNUM" property="todayNum" jdbcType="INTEGER"/>
         <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
@@ -760,4 +762,17 @@
     <update id="updatLastLoginTime" parameterType="map">
         UPDATE hm_pub_staff_detail SET LASTLOGINTIME = UNIX_TIMESTAMP() WHERE COMPANYID = #{companyId} AND ID = #{id};
     </update>
+    
+    <!-- 根据ID和企业ID获取推送员工信息 -->
+    <select id="getPushDTOByCidAndUid" parameterType="map" resultMap="pushMap">
+        SELECT
+			sf.ID, sf.NICKNAME, grp.GROUPID, grp.GROUPNAME
+		FROM
+			hm_pub_staff sf
+		LEFT JOIN hm_pub_group_staff rela ON sf.ID = rela.STAFFID AND rela.COMPANYID = #{companyId}
+		LEFT JOIN hm_pub_group grp ON rela.GROUPID = grp.GROUPID AND grp.COMPANYID = #{companyId}
+		WHERE
+			sf.ID = #{id}
+		AND sf.COMPANYID = #{companyId}
+    </select>
 </mapper>

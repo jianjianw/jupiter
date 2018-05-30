@@ -365,4 +365,13 @@ public interface StaffDao extends BaseDao<StaffPO> {
 	 * @param companyId
 	 */
 	void updatLastLoginTime(@Param("id") int id, @Param("companyId") int companyId);
+
+	/**
+	 * 根据ID和企业ID获取推送员工信息
+	 * 
+	 * @param id
+	 * @param companyId
+	 * @return
+	 */
+	StaffPushDTO getPushDTOByCidAndUid(@Param("id") int id, @Param("companyId") int companyId);
 }
