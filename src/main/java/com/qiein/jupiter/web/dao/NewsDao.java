@@ -7,6 +7,8 @@ import java.util.List;
 
 /**
  * 消息
+ *
+ * @Author: shiTao
  */
 public interface NewsDao extends BaseDao<NewsPO> {
     /**

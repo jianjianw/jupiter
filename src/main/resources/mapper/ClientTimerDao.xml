@@ -3,14 +3,14 @@
 <mapper namespace="com.qiein.jupiter.web.dao.ClientTimerDao">
 
     <!--获取所有的需要提醒的-->
-    <select id="getAll">
+    <select id="getAll" resultType="com.qiein.jupiter.web.entity.po.ClientTimerPO">
         SELECT
-            ID,
-            WARNTIME,
-            STAFFID,
-            MSG,
-            KZID,
-            COMPANYID
+            ID        id,
+            WARNTIME  warnTime,
+            STAFFID   staffId,
+            MSG       msg,
+            KZID      kzId,
+            COMPANYID companyId
         FROM hm_crm_timer
         WHERE WARNTIME &lt; UNIX_TIMESTAMP(NOW())
     </select>

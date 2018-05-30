@@ -1,12 +1,14 @@
 package com.qiein.jupiter.web.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.qiein.jupiter.msg.goeasy.MessageConts;
 import com.qiein.jupiter.web.dao.*;
 import com.qiein.jupiter.web.entity.po.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,6 +57,7 @@ public class ClientPushServiceImpl implements ClientPushService {
     private NewsDao newsDao;
     @Autowired
     private ClientTimerDao clientTimerDao;
+
 
     /**
      * 根据拍摄地和渠道维度推送客资
@@ -193,9 +196,8 @@ public class ClientPushServiceImpl implements ClientPushService {
      *
      * @param companyId
      * @param kzId
-     * @param logId
-     * @param staffId
-     * @param staffName
+     * @param allotLogId
+     * @param appointer
      */
     private void updateInfoWhenReceive(int companyId, String kzId, int allotLogId, StaffPushDTO appointer) {
         // 客资绑定客服，修改客资状态，客资客服ID，客服名，客资分类，客资客服组信息，最后操作时间，客资最后推送时间
@@ -293,7 +295,6 @@ public class ClientPushServiceImpl implements ClientPushService {
      * @param staffName
      * @param groupId
      * @param groupName
-     * @param statusId
      * @param allotType
      * @param companyId
      * @return
@@ -384,7 +385,6 @@ public class ClientPushServiceImpl implements ClientPushService {
      * @param shopId
      * @param channelId
      * @param channelTypeId
-     * @param overTime
      * @param interval
      * @return
      */
@@ -440,7 +440,7 @@ public class ClientPushServiceImpl implements ClientPushService {
     /**
      * 取出差比分析后差比值最大的客服即为要分配的客服
      *
-     * @param shopChannelGroupRelaList
+     * @param staffOnlineList
      * @param maxDiffPid
      * @return
      */
@@ -629,23 +629,42 @@ public class ClientPushServiceImpl implements ClientPushService {
     }
 
     /**
-     * 定时推送需要追踪的客资
+     * 定时推送消息，需要追踪的客资
      */
     @Override
-    @Async
     public void pushClientNoticeInfo() {
         List<ClientTimerPO> allClientTimerList = clientTimerDao.getAll();
-        List<Integer> idsDel = new ArrayList<>();
-        for (ClientTimerPO clientTimerPO : allClientTimerList) {
-            //推送消息
-            GoEasyUtil.pushWarnTimer(clientTimerPO.getCompanyId(), clientTimerPO.getStaffId(),
-                    clientTimerPO.getKzId(), clientTimerPO.getMsg());
-            idsDel.add(clientTimerPO.getId());
+        if (CollectionUtils.isNotEmpty(allClientTimerList)) {
+            List<Integer> idsDel = new ArrayList<>();
+            //每个公司一个List
+            Map<String, List<NewsPO>> companyMap = new HashMap<>();
+            for (ClientTimerPO clientTimerPO : allClientTimerList) {
+                //推送消息
+                GoEasyUtil.pushWarnTimer(clientTimerPO.getCompanyId(), clientTimerPO.getStaffId(),
+                        clientTimerPO.getKzId(), clientTimerPO.getMsg());
+                idsDel.add(clientTimerPO.getId());
+                //新加一条消息
+                NewsPO news = new NewsPO();
+                news.setStaffId(clientTimerPO.getStaffId());
+                news.setType(MessageConts.MSG_TYPE_NOTICE);
+                news.setCompanyId(clientTimerPO.getCompanyId());
+                news.setHead(MessageConts.TO_BE_TRACKED_HEAD);
+                news.setMsg(clientTimerPO.getMsg());
+                news.setKzid(clientTimerPO.getKzId());
+                String tableName = DBSplitUtil.getNewsTabName(clientTimerPO.getCompanyId());
+                if (companyMap.get(tableName) == null) {
+                    companyMap.put(tableName, new ArrayList<NewsPO>());
+                }
+                companyMap.get(tableName).add(news);
+            }
+            //添加消息记录
+            for (String tableName : companyMap.keySet()) {
+                newsDao.batchInsertNews(tableName, companyMap.get(tableName));
+            }
+            //删掉已经推送的
+            Integer[] idsDelInt = idsDel.toArray(new Integer[idsDel.size()]);
+            clientTimerDao.batchDelAready(idsDelInt);
         }
-        //删掉已经推送的
-        Integer[] idsDelInt = idsDel.toArray(new Integer[idsDel.size()]);
-        clientTimerDao.batchDelAready(idsDelInt);
-
     }
 
 }
