@@ -27,6 +27,6 @@ public class MessageConts {
 	/**
 	 * 待追踪的消息头
 	 */
-	public static final String TO_BE_TRACKED_HEAD = "定时待追踪的客资";
+	public static final String TO_BE_TRACKED_HEAD = "待追踪的客资";
 
 }
