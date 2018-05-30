@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.controller;
 
+import com.qiein.jupiter.util.NumUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -56,28 +57,29 @@ public class ClientAddController extends BaseController {
         if (StringUtil.isEmpty(list)) {
             throw new RException(ExceptionEnum.INFO_IS_NULL);
         }
-        String sourceId = StringUtil.nullToStrTrim(jsonObject.getString("sourceId"));
-        if (StringUtil.isEmpty(sourceId)) {
+        int sourceId = jsonObject.getIntValue("sourceId");
+        if (NumUtil.isNull(sourceId)) {
             throw new RException(ExceptionEnum.SOURCE_ID_NULL);
         }
-        String channelId = StringUtil.nullToStrTrim(jsonObject.getString("channelId"));
-        if (StringUtil.isEmpty(channelId)) {
+        int channelId = jsonObject.getIntValue("channelId");
+        if (NumUtil.isNull(channelId)) {
             throw new RException(ExceptionEnum.CHANNEL_ID_NULL);
         }
-        String shopId = StringUtil.nullToStrTrim(jsonObject.getString("shopId"));
-        if (StringUtil.isEmpty(shopId)) {
+        int shopId = jsonObject.getIntValue("shopId");
+        if (NumUtil.isNull(shopId)) {
             throw new RException(ExceptionEnum.SHOP_ID_NULL);
         }
-        String typeId = StringUtil.nullToStrTrim(jsonObject.getString("typeId"));
-        if (StringUtil.isEmpty(typeId)) {
+        int typeId = jsonObject.getIntValue("typeId");
+        if (NumUtil.isNull(typeId)) {
             throw new RException(ExceptionEnum.TYPEID_IS_NULL);
         }
         String adId = StringUtil.nullToStrTrim(jsonObject.getString("adId"));
         String adAddress = StringUtil.nullToStrTrim(jsonObject.getString("adAddress"));
+        String groupId = StringUtil.nullToStrTrim(jsonObject.getString("groupId"));
+        int appointId = jsonObject.getIntValue("appointId");
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        JSONObject result = clientAddService.batchAddDsClient(list, Integer.parseInt(channelId),
-                Integer.parseInt(sourceId), Integer.parseInt(shopId), Integer.parseInt(typeId), currentLoginStaff, adId, adAddress);
+        JSONObject result = clientAddService.batchAddDsClient(list, channelId, sourceId, shopId, typeId, currentLoginStaff, adId, adAddress, groupId, appointId);
         ResultInfo rep = new ResultInfo();
         rep.setCode(result.getInteger("code"));
         rep.setMsg(result.getString("msg"));

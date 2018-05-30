@@ -1,6 +1,5 @@
 package com.qiein.jupiter.msg.goeasy;
 
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
@@ -23,7 +22,7 @@ import io.goeasy.publish.PublishListener;
  * @author JingChenglong 2018/04/17 15:54
  */
 @Component
-public class GoEasyUtil {
+public class GoEasyUtil {	
 
     /**
      * GoEasy对接平台KEY
@@ -550,7 +549,7 @@ public class GoEasyUtil {
      * @param msg
      */
     public static void pushWarnTimer(int companyId, int staffId, String kzId, String msg) {
-        // TODO
+    	pushCommon(companyId, staffId, MessageConts.TO_BE_TRACKED_HEAD, msg);
     }
 
     public static void main(String[] args) {

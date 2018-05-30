@@ -87,7 +87,7 @@ public class ClientExportVO implements Serializable {
     /**
      * 省份地址
      */
-    @Excel(name = "省份", width = 20, height = 6)
+    @Excel(name = "地址", width = 20, height = 6)
     private String address;
     /**
      * 关键词

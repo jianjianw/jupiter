@@ -579,7 +579,7 @@ public class ClientPushServiceImpl implements ClientPushService {
      * 客资批量分配
      */
     @Override
-    public void pushLp(String kzIds, String staffIds, int companyId) {
+    public void pushLp(String kzIds, String staffIds, int companyId,int operaId,String operaName) {
         if (StringUtil.isEmpty(kzIds) || StringUtil.isEmpty(staffIds) || NumUtil.isInValid(companyId)) {
             throw new RException(ExceptionEnum.ALLOT_ERROR);
         }

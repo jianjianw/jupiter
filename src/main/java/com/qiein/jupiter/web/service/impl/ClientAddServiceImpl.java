@@ -214,7 +214,25 @@ public class ClientAddServiceImpl implements ClientAddService {
      * @param list
      */
     public JSONObject batchAddDsClient(String list, int channelId, int sourceId, int shopId, int typeId,
-                                       StaffPO staffPO, String adId, String adAddress) {
+                                       StaffPO staffPO, String adId, String adAddress, String groupId, int appointId) {
+        // 获取邀约客服名称
+        String appointName = "";
+        if (NumUtil.isNotNull(appointId)) {
+            StaffPO appoint = staffDao.getById(appointId);
+            if (appoint == null) {
+                throw new RException(ExceptionEnum.APPOINT_NOT_FOUND);
+            }
+            appointName = appoint.getNickName();
+        }
+        // 获取邀约客服组名称
+        String groupName = "";
+        if (StringUtil.isNotEmpty(groupId)) {
+            GroupPO groupPO = groupDao.getGroupById(staffPO.getCompanyId(), groupId);
+            if (groupPO == null) {
+                throw new RException(ExceptionEnum.APPOINT_GROUP_NOT_FOUND);
+            }
+            groupName = groupPO.getGroupName();
+        }
         JSONArray jsonArr = JSONArray.parseArray(list);
         int successCount = 0;
         int errorCount = 0;
@@ -240,6 +258,10 @@ public class ClientAddServiceImpl implements ClientAddService {
                     .emptyToNull(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("matephone"))));
             clientVO.setAdId(adId);
             clientVO.setAdAddress(adAddress);
+            clientVO.setAppointId(appointId);
+            clientVO.setAppointName(appointName);
+            clientVO.setGroupId(groupId);
+            clientVO.setGroupName(groupName);
             if (StringUtil.isEmpty(clientVO.getKzPhone()) && StringUtil.isEmpty(clientVO.getKzWechat())
                     && StringUtil.isEmpty(clientVO.getKzQq()) && StringUtil.isEmpty(clientVO.getKzWw())) {
                 continue;
