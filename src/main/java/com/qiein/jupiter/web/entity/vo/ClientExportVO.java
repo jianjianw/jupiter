@@ -1,9 +1,8 @@
 package com.qiein.jupiter.web.entity.vo;
 
-import cn.afterturn.easypoi.excel.annotation.Excel;
-import cn.afterturn.easypoi.excel.annotation.ExcelTarget;
-
 import java.io.Serializable;
+
+import cn.afterturn.easypoi.excel.annotation.Excel;
 
 /**
  * 客资导出封装类
