@@ -76,7 +76,7 @@ public class ClientAddController extends BaseController {
         String adId = StringUtil.nullToStrTrim(jsonObject.getString("adId"));
         String adAddress = StringUtil.nullToStrTrim(jsonObject.getString("adAddress"));
         String groupId = StringUtil.nullToStrTrim(jsonObject.getString("groupId"));
-        int appointId = jsonObject.getIntValue("appointid");
+        int appointId = jsonObject.getIntValue("appointId");
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         JSONObject result = clientAddService.batchAddDsClient(list, channelId, sourceId, shopId, typeId, currentLoginStaff, adId, adAddress, groupId, appointId);
