@@ -4,7 +4,6 @@
     <resultMap id="baseMap" type="com.qiein.jupiter.web.entity.po.PermissionPO">
         <id column="ID" property="permissionId" jdbcType="BIGINT"/>
         <result column="PERMISSIONNAME" property="permissionName" jdbcType="VARCHAR"/>
-        <result column="ABBREVIATE" property="abbreviate" jdbcType="VARCHAR"/>
         <result column="TYPEID" property="typeId" jdbcType="INTEGER"/>
     </resultMap>
 
@@ -28,7 +27,7 @@
     </resultMap>
 
     <sql id="baseColumn">
-        ID,PERMISSIONNAME,TYPEID,ABBREVIATE
+        ID,PERMISSIONNAME,TYPEID
     </sql>
 
     <sql id="tableName">
@@ -52,9 +51,9 @@
 
     <insert id="insert">
         <include refid="tableName"/>
-        (ID,PERMISSIONNAME,ABBREVIATE,TYPEID)
+        (ID,PERMISSIONNAME,TYPEID)
         VALUES (
-        #{id}, #{permissionName},#{abbreviate}, #{typeId}
+        #{id}, #{permissionName}, #{typeId}
         )
     </insert>
 
@@ -64,9 +63,6 @@
         <set>
             <if test="permissionName != null">
                 PERMISSIONNAME = #{permissionName},
-            </if>
-            <if test="abbreviate != null">
-                abbreviate = #{abbreviate},
             </if>
             <if test="typeId != null">
                 TYPEID = #{typeId},
@@ -93,7 +89,6 @@
         SELECT
         permission.PERMISSIONNAME,
         permission.ID,
-        permission.ABBREVIATE,
         permission.TYPEID
         FROM
         hm_pub_staff_role staff_role

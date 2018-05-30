@@ -20,11 +20,6 @@ public class PermissionPO implements Serializable {
 	private String permissionName;
 
 	/**
-	 * 权限缩写
-	 */
-	private String abbreviate;
-
-	/**
 	 * 类型Id
 	 */
 	private int typeId;
@@ -53,11 +48,4 @@ public class PermissionPO implements Serializable {
 		this.typeId = typeId;
 	}
 
-	public String getAbbreviate() {
-		return abbreviate;
-	}
-
-	public void setAbbreviate(String abbreviate) {
-		this.abbreviate = abbreviate;
-	}
 }

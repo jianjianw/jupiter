@@ -1,5 +1,7 @@
 package com.qiein.jupiter.web.service.impl;
 
+import com.qiein.jupiter.web.service.ChannelService;
+import com.qiein.jupiter.web.service.ClientPushService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +12,19 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class ClientPushServiceImplTest {
 
-	@Autowired
-	private ClientReceiveServiceImpl service;
+    @Autowired
+    private ClientReceiveServiceImpl service;
 
-	@Test
-	public void refuse() {
-		service.refuse("fb02a517ef2b60d7c4dde5540381d414", "1", 2012, 698, "井成龙");
-	}
+    @Autowired
+    private ClientPushService clientPushService;
+
+    @Test
+    public void refuse() {
+        service.refuse("fb02a517ef2b60d7c4dde5540381d414", "1", 2012, 698, "井成龙");
+    }
+
+    @Test
+    public void pushClientNoticeInfo() {
+        clientPushService.pushClientNoticeInfo();
+    }
 }
