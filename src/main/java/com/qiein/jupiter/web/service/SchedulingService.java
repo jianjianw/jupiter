@@ -1,15 +1,16 @@
 package com.qiein.jupiter.web.service;
 
-import java.util.List;
-
 import com.qiein.jupiter.web.entity.dto.StaffMarsDTO;
+import com.qiein.jupiter.web.entity.po.GroupPO;
 import com.qiein.jupiter.web.entity.vo.GroupsInfoVO;
+
+import java.util.List;
 
 /**
  * 网销排班Service
  * Created by Administrator on 2018/5/10 0010.
  */
-public interface StaffMarsService {
+public interface SchedulingService {
 
     /**
      * 获取公司所有符合类型的部门列表
