@@ -17,8 +17,8 @@ import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.service.ClientPushService;
 import com.qiein.jupiter.web.service.ClientTrackService;
-import com.qiein.jupiter.web.service.impl.ClientPushServiceImpl;
 
 /**
  * 客资录入
@@ -30,7 +30,7 @@ public class ClientTrackController extends BaseController {
 	@Autowired
 	private ClientTrackService clientTrackService;
 	@Autowired
-	ClientPushServiceImpl clientPushServiceImpl;
+	private ClientPushService clientPushService;
 
 	/**
 	 * 批量删除客资
@@ -118,7 +118,9 @@ public class ClientTrackController extends BaseController {
 		if (StringUtil.isEmpty(staffIds)) {
 			throw new RException(ExceptionEnum.STAFF_ID_NULL);
 		}
-		clientPushServiceImpl.pushLp(kzIds, staffIds, getCurrentLoginStaff().getCompanyId());
+		StaffPO currentStaff = getCurrentLoginStaff();
+		clientPushService.pushLp(kzIds, staffIds, currentStaff.getCompanyId(), currentStaff.getId(),
+				currentStaff.getNickName());
 		return ResultInfoUtil.success(TigMsgEnum.ALLOT_SUCCESS);
 	}
 
