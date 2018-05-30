@@ -311,7 +311,7 @@ public class ClientPushServiceImpl implements ClientPushService {
 
 		// 客资绑定客服，修改客资状态，客资客服ID，客服名，客资分类，客资客服组信息，最后操作时间，客资最后推送时间
 		int updateRstNum = clientInfoDao.updateClientInfoWhenAllot(companyId, DBSplitUtil.getInfoTabName(companyId),
-				kzId, ClientStatusConst.KZ_CLASS_NEW, ClientStatusConst.BE_ALLOTING, appointer.getStaffId(),
+				kzId, ClientStatusConst.KZ_CLASS_NEW, ClientStatusConst.BE_HAVE_MAKE_ORDER, appointer.getStaffId(),
 				appointer.getGroupId(), ClientConst.ALLOT_SYSTEM_AUTO);
 		if (1 != updateRstNum) {
 			throw new RException(ExceptionEnum.INFO_STATUS_EDIT_ERROR);
@@ -323,10 +323,23 @@ public class ClientPushServiceImpl implements ClientPushService {
 			throw new RException(ExceptionEnum.INFO_EDIT_ERROR);
 		}
 
+		// 修改指定分配日志状态为已领取
+		updateRstNum = clientAllotLogDao.updateAllogLog(DBSplitUtil.getAllotLogTabName(companyId), companyId, kzId,
+				allotLogId, ClientConst.ALLOT_LOG_STATUS_YES, "now");
+		if (1 != updateRstNum) {
+			throw new RException(ExceptionEnum.INFO_STATUS_EDIT_ERROR);
+		}
+
+		// 修改客资的领取时间
+		updateRstNum = clientInfoDao.updateClientInfoAfterAllot(companyId, DBSplitUtil.getInfoTabName(companyId), kzId);
+		if (1 != updateRstNum) {
+			throw new RException(ExceptionEnum.INFO_EDIT_ERROR);
+		}
+
 		// 客资日志记录
 		updateRstNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(companyId),
 				new ClientLogPO(kzId,
-						ClientLogConst.getAutoReceiveLog(appointer.getGroupName(), appointer.getStaffName()),
+						ClientLogConst.getAutoAllotLog(appointer.getGroupName(), appointer.getStaffName()),
 						ClientLogConst.INFO_LOGTYPE_ALLOT, companyId));
 		if (1 != updateRstNum) {
 			throw new RException(ExceptionEnum.LOG_ERROR);
