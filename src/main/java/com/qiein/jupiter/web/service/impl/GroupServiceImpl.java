@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.qiein.jupiter.constant.ChannelConstant;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.constant.PmsConstant;
 import com.qiein.jupiter.constant.RoleConstant;
@@ -15,15 +14,11 @@ import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.CollectionUtils;
 import com.qiein.jupiter.util.StringUtil;
-import com.qiein.jupiter.web.dao.ChannelDao;
 import com.qiein.jupiter.web.dao.GroupDao;
 import com.qiein.jupiter.web.dao.GroupStaffDao;
 import com.qiein.jupiter.web.dao.RolePermissionDao;
-import com.qiein.jupiter.web.dao.SourceDao;
 import com.qiein.jupiter.web.dao.StaffDao;
-import com.qiein.jupiter.web.entity.po.ChannelPO;
 import com.qiein.jupiter.web.entity.po.GroupPO;
-import com.qiein.jupiter.web.entity.po.SourcePO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.BaseStaffVO;
 import com.qiein.jupiter.web.entity.vo.GroupBaseStaffVO;
@@ -47,10 +42,6 @@ public class GroupServiceImpl implements GroupService {
 	private StaffDao staffDao;
 	@Autowired
 	private RolePermissionDao rolePermissionDao;
-	@Autowired
-	private ChannelDao channelDao;
-	@Autowired
-	private SourceDao sourceDao;
 
 	/**
 	 * @param companyId
