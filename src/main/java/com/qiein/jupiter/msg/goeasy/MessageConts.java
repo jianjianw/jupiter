@@ -7,25 +7,26 @@ package com.qiein.jupiter.msg.goeasy;
  */
 public class MessageConts {
 
-    // WEB消息类型
-    public static final String MSG_TYPE_COMMON = "common";// 通用消息
-    public static final String MSG_TYPE_SUCCESS = "success";// 成功类型消息
-    public static final String MSG_TYPE_WARN = "warn";// 警示类型消息
-    public static final String MSG_TYPE_ERROR = "error";// 错误类型消息
-    public static final String MSG_TYPE_FLASH = "flash";// 闪信
-    public static final String MSG_TYPE_RECEIVE = "receive";// 客资领取
-    public static final String MSG_TYPE_INFO_REFRESH = "info_refresh";// 客资重载消息
-    public static final String MSG_TYPE_STAFF_REFRESH = "staff_refresh";// 身份重验证消息
-    public static final String MSG_TYPE_STATUS_REFRESH = "status_refresh";// 状态重验证消息
+	// WEB消息类型
+	public static final String MSG_TYPE_COMMON = "common";// 通用消息
+	public static final String MSG_TYPE_SUCCESS = "success";// 成功类型消息
+	public static final String MSG_TYPE_WARN = "warn";// 警示类型消息
+	public static final String MSG_TYPE_ERROR = "error";// 错误类型消息
+	public static final String MSG_TYPE_FLASH = "flash";// 闪信
+	public static final String MSG_TYPE_RECEIVE = "receive";// 客资领取
+	public static final String MSG_TYPE_INFO_REFRESH = "info_refresh";// 客资重载消息
+	public static final String MSG_TYPE_STAFF_REFRESH = "staff_refresh";// 身份重验证消息
+	public static final String MSG_TYPE_STATUS_REFRESH = "status_refresh";// 状态重验证消息
 
-    // 客户端消息类型
-    public static final String MSG_APP_INFO_REVEIVE = "receive";// 客资领取
+	// 客户端消息类型
+	public static final String MSG_APP_INFO_REVEIVE = "receive";// 客资领取
 
-    // 消息中心消息类型
-    public static final String MSG_TYPE_SYSTEM = "system";// 系统消息
-    public static final String MSG_TYPE_NOTICE = "notice";// 定时提醒
-    /**
-     * 待追踪的消息头
-     */
-    public static final String TO_BE_TRACKED_HEAD = "您有客资信息待追踪";
+	// 消息中心消息类型
+	public static final String MSG_TYPE_SYSTEM = "system";// 系统消息
+	public static final String MSG_TYPE_NOTICE = "notice";// 定时提醒
+	/**
+	 * 待追踪的消息头
+	 */
+	public static final String TO_BE_TRACKED_HEAD = "定时待追踪的客资";
+
 }
