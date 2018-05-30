@@ -5,6 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.qiein.jupiter.util.CollectionUtils;
@@ -22,34 +23,34 @@ import com.qiein.jupiter.web.service.quene.ThreadTaskPushManager;
 @Service
 public class ClientPushTask {
 
-	private final Logger log = LoggerFactory.getLogger(getClass());
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
-	@Autowired
-	private ClientPushServiceImpl pushService;
-	@Autowired
-	private CompanyDao companyDao;
+    @Autowired
+    private ClientPushServiceImpl pushService;
+    @Autowired
+    private CompanyDao companyDao;
 
-	// 客资推送线程池
-	ThreadTaskPushManager tpm = ThreadTaskPushManager.getInstance();
+    // 客资推送线程池
+    ThreadTaskPushManager tpm = ThreadTaskPushManager.getInstance();
 
-	/**
-	 * 定时任务-推送客资
-	 */
-	// @Scheduled(initialDelay = 1000, fixedDelay = 30 * 1000)
-	public void taskPushLp() {
-		log.info("执行定时推送任务");
-		List<CompanyPO> compList = companyDao.listComp();
-		for (CompanyPO comp : compList) {
-			List<ClientPushDTO> infoList = pushService.getInfoListBeReadyPush(comp.getId(), comp.getOvertime());
-			if (CollectionUtils.isEmpty(infoList)) {
-				continue;
-			}
-			for (ClientPushDTO info : infoList) {
-				tpm.pushInfo(new ClientPushDTO(pushService, info.getPushRule(), comp.getId(), info.getKzId(),
-						info.getShopId(), info.getChannelId(), info.getChannelTypeId(), comp.getOvertime(),
-						comp.getKzInterval()));
-			}
-			log.info("推送了客资：" + infoList.size() + " 个");
-		}
-	}
+    /**
+     * 定时任务-推送客资
+     */
+    @Scheduled(initialDelay = 1000, fixedDelay = 30 * 1000)
+    public void taskPushLp() {
+        log.info("执行定时推送任务");
+        List<CompanyPO> compList = companyDao.listComp();
+        for (CompanyPO comp : compList) {
+            List<ClientPushDTO> infoList = pushService.getInfoListBeReadyPush(comp.getId(), comp.getOvertime());
+            if (CollectionUtils.isEmpty(infoList)) {
+                continue;
+            }
+            for (ClientPushDTO info : infoList) {
+                tpm.pushInfo(new ClientPushDTO(pushService, info.getPushRule(), comp.getId(), info.getKzId(),
+                        info.getShopId(), info.getChannelId(), info.getChannelTypeId(), comp.getOvertime(),
+                        comp.getKzInterval()));
+            }
+            log.info("推送了客资：" + infoList.size() + " 个");
+        }
+    }
 }
