@@ -540,6 +540,18 @@ public class GoEasyUtil {
 				staffId, companyId, DBSplitUtil.getNewsTabName(companyId)));
 	}
 
+	/**
+	 * 推送定时提醒消息
+	 * 
+	 * @param companyId
+	 * @param staffId
+	 * @param kzId
+	 * @param msg
+	 */
+	public static void pushWarnTimer(int companyId, int staffId, String kzId, String msg) {
+		// TODO
+	}
+
 	public static void main(String[] args) {
 		// ClientGoEasyDTO info = new ClientGoEasyDTO();
 		// info.setId(668);
