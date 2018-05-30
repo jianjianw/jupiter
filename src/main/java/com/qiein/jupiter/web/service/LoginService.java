@@ -3,6 +3,7 @@ package com.qiein.jupiter.web.service;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.BaseInfoVO;
+import com.qiein.jupiter.web.entity.vo.LoginUserVO;
 
 import java.util.List;
 
@@ -26,12 +27,12 @@ public interface LoginService {
     /**
      * 手机号码 获取公司列表
      */
-    List<CompanyPO> getCompanyListByPhone(String phone, String password);
+    List<CompanyPO> getCompanyListByPhone(LoginUserVO loginUserVO);
 
     /**
      * 手机号码 根据公司ID 登录
      */
-    StaffPO loginWithCompanyIdByPhone(String phone, String password, int companyId, String ip);
+    StaffPO loginWithCompanyIdByPhone(LoginUserVO loginUserVO);
 
     /**
      * 钉钉 获取公司列表

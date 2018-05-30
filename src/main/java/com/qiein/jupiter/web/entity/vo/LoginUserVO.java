@@ -40,6 +40,18 @@ public class LoginUserVO implements Serializable {
      * 客户端版本
      */
     private int clientVersion;
+    /**
+     * ip
+     */
+    private String ip;
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
 
     public void setClientFlag(boolean clientFlag) {
         this.clientFlag = clientFlag;
