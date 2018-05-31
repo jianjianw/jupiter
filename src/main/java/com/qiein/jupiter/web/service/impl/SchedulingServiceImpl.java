@@ -232,7 +232,7 @@ public class SchedulingServiceImpl implements SchedulingService {
 					// TODO 添加上下线日志 修改上下线时间
 					staffStatusLogDao.insert(new StaffStatusLog(staffMarsDTO.getId(), 0, staffMarsDTO.getOperaId(),
 							staffMarsDTO.getOperaName(), staffMarsDTO.getCompanyId(),
-							staffMarsDTO.getOperaName() + "将" + staffMarsDTO.getNickName() + "状态修改为下线"));
+							staffMarsDTO.getOperaName() + " 将 " + staffMarsDTO.getOperaName() + " 状态修改为下线"));
 					StaffDetailPO staffDetailPO = new StaffDetailPO();
 					staffDetailPO.setLastLogoutIp("");
 					staffDao.updateStaffLogoutInfo(staffDetailPO);
@@ -248,7 +248,7 @@ public class SchedulingServiceImpl implements SchedulingService {
 				// TODO 添加上下线日志 修改上下线时间
 				staffStatusLogDao.insert(new StaffStatusLog(staffMarsDTO.getId(), 0, staffMarsDTO.getOperaId(),
 						staffMarsDTO.getOperaName(), staffMarsDTO.getCompanyId(),
-						staffMarsDTO.getOperaName() + "将" + staffMarsDTO.getNickName() + "状态修改为"
+						staffMarsDTO.getOperaName() + " 将 " + staffMarsDTO.getOperaName() + " 的状态修改为"
 								+ (staffMarsDTO.getStatusFlag() == 0 ? "下线" : "上线")));
 				if (staffMarsDTO.getStatusFlag() == 0) {
 					staffDetailPO.setLastLogoutIp("");
