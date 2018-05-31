@@ -17,10 +17,26 @@ public class ClientExportVO implements Serializable {
     @Excel(name = "编号", width = 10, height = 6)
     private int id;
     /**
+     * 渠道名
+     */
+    @Excel(name = "渠道", width = 10, height = 6)
+    private String channelName;
+
+    /**
+     * 渠道名称
+     */
+    @Excel(name = "来源", width = 10, height = 6)
+    private String sourceName;
+    /**
      * 客服组名称
      */
     @Excel(name = "组别", width = 10, height = 6)
     private String groupName;
+    /**
+     * 邀约客服姓名
+     */
+    @Excel(name = "客服", width = 20, height = 6)
+    private String appointName;
     /**
      * 录入时间接收格式
      */
@@ -95,26 +111,13 @@ public class ClientExportVO implements Serializable {
      */
     @Excel(name = "订单周期", width = 10, height = 6)
     private String successPeriod;
-    /**
-     * 邀约客服姓名
-     */
-    @Excel(name = "客服", width = 20, height = 6)
-    private String appointName;
-    /**
-     * 渠道名称
-     */
-    @Excel(name = "来源", width = 10, height = 6)
-    private String sourceName;
+
     /**
      * 状态名称
      */
     @Excel(name = "状态", width = 15, height = 6)
     private String statusName;
-    /**
-     * 渠道名
-     */
-    @Excel(name = "渠道", width = 10, height = 6)
-    private String channelName;
+
     /**
      * 推广备注
      */
@@ -123,8 +126,13 @@ public class ClientExportVO implements Serializable {
     /**
      * 省份地址
      */
-    @Excel(name = "地址", width = 20, height = 6)
-    private String address;
+    @Excel(name = "省", width = 10, height = 6)
+    private String province;
+    /**
+     * 市
+     */
+    @Excel(name = "市", width = 10, height = 6)
+    private String city;
     /**
      * 关键词
      */
@@ -253,12 +261,20 @@ public class ClientExportVO implements Serializable {
         this.remark = remark;
     }
 
-    public String getAddress() {
-        return address;
+    public String getProvince() {
+        return province;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public String getKeyWord() {

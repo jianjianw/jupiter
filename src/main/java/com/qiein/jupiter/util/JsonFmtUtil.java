@@ -7,6 +7,8 @@ import java.util.Map;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.Constant;
+import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.constant.DictionaryConstant;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.web.entity.po.DictionaryPO;
@@ -89,7 +91,8 @@ public class JsonFmtUtil {
             vo.setStatusName(statusMap.get(info.getString("statusid")) == null ? "" : statusMap.get(info.getString("statusid")).getStatusName());
             vo.setChannelName(channelMap.get(info.getString("channelid")) == null ? "" : channelMap.get(info.getString("channelid")).getChannelName());
             vo.setRemark(StringUtil.replaceAllHTML(info.getString("content")));
-            vo.setAddress(info.getString("address"));
+            vo.setProvince(getProvince(info.getString("address")));
+            vo.setCity(getCity(info.getString("address")));
             vo.setKeyWord(info.getString("keyword"));
             vo.setInvalidLabel(info.getString("invalidlabel"));
             vo.setMemo(info.getString("memo"));
@@ -98,8 +101,35 @@ public class JsonFmtUtil {
         return clientList;
     }
 
+    //获取省份
+    public static String getProvince(String address) {
+        if (StringUtil.isEmpty(address)) {
+            return "";
+        }
+        String[] arr = address.split(CommonConstant.STR_SEPARATOR);
+        if (arr.length > 1) {
+            return arr[0];
+        }
+        return "";
+    }
+
+    //获取城市
+    public static String getCity(String address) {
+        if (StringUtil.isEmpty(address)) {
+            return "";
+        }
+        String[] arr = address.split(CommonConstant.STR_SEPARATOR);
+        if (arr.length > 2) {
+            return arr[1];
+        }
+        return "";
+    }
+
     //获取套系名称
     public static String getPackageName(int packageCode, Map<String, List<DictionaryPO>> dicMap) {
+        if (packageCode == 0) {
+            return "";
+        }
         List<DictionaryPO> list = dicMap.get(StringUtil.camelCaseName(DictionaryConstant.TX_NAME));
         if (CollectionUtils.isNotEmpty(list)) {
             for (DictionaryPO dic : list) {
@@ -124,7 +154,7 @@ public class JsonFmtUtil {
         if (begin > end || begin == 0 || end == 0) {
             return "";
         }
-        if (begin==end){
+        if (begin == end) {
             return "0";
         }
         int time = end - begin;
