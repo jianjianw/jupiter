@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.service.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -704,8 +705,8 @@ public class ClientPushServiceImpl implements ClientPushService {
 		// }
 
 		// 推送消息
-		GoEasyUtil.pushAppInfoReceive(companyId, appoint.getStaffId(), 1, kzIdsArr.toString(), allogIdsArr.toString(),
-				180);
+		GoEasyUtil.pushAppInfoReceive(companyId, appoint.getStaffId(), kzIdsArr.length, Arrays.toString(kzIdsArr),
+				Arrays.toString(allogIdsArr), 180);
 	}
 
 	/**
