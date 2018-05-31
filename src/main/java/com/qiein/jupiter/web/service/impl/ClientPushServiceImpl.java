@@ -1,14 +1,10 @@
 package com.qiein.jupiter.web.service.impl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.qiein.jupiter.msg.goeasy.MessageConts;
-import com.qiein.jupiter.web.dao.*;
-import com.qiein.jupiter.web.entity.po.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,14 +18,31 @@ import com.qiein.jupiter.enums.StaffStatusEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
+import com.qiein.jupiter.msg.goeasy.MessageConts;
 import com.qiein.jupiter.util.CollectionUtils;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.web.dao.ClientAllotLogDao;
+import com.qiein.jupiter.web.dao.ClientInfoDao;
+import com.qiein.jupiter.web.dao.ClientLogDao;
+import com.qiein.jupiter.web.dao.ClientTimerDao;
+import com.qiein.jupiter.web.dao.CompanyDao;
+import com.qiein.jupiter.web.dao.GroupKzNumTodayDao;
+import com.qiein.jupiter.web.dao.NewsDao;
+import com.qiein.jupiter.web.dao.ShopChannelGroupDao;
+import com.qiein.jupiter.web.dao.StaffDao;
+import com.qiein.jupiter.web.dao.StaffStatusLogDao;
 import com.qiein.jupiter.web.entity.dto.ClientGoEasyDTO;
 import com.qiein.jupiter.web.entity.dto.ClientPushDTO;
 import com.qiein.jupiter.web.entity.dto.GroupKzNumToday;
 import com.qiein.jupiter.web.entity.dto.StaffPushDTO;
+import com.qiein.jupiter.web.entity.po.AllotLogPO;
+import com.qiein.jupiter.web.entity.po.ClientLogPO;
+import com.qiein.jupiter.web.entity.po.ClientTimerPO;
+import com.qiein.jupiter.web.entity.po.NewsPO;
+import com.qiein.jupiter.web.entity.po.ShopChannelGroupPO;
+import com.qiein.jupiter.web.entity.po.StaffStatusLog;
 import com.qiein.jupiter.web.service.ClientPushService;
 
 /**
@@ -708,8 +721,25 @@ public class ClientPushServiceImpl implements ClientPushService {
 		}
 
 		// 推送消息
-		GoEasyUtil.pushAppInfoReceive(companyId, appoint.getStaffId(), kzIdsArr.length, Arrays.toString(kzIdsArr),
-				Arrays.toString(allogIdsArr), overTime);
+		GoEasyUtil.pushAppInfoReceive(companyId, appoint.getStaffId(), kzIdsArr.length, arrToStr(kzIdsArr),
+				arrToStr(allogIdsArr), overTime);
+	}
+
+	public static String arrToStr(String[] arr) {
+		if (arr == null || arr.length == 0) {
+			return "";
+		}
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < arr.length; i++) {
+			if (StringUtil.isEmpty(arr[i])) {
+				continue;
+			}
+			sb.append(arr[i]);
+			sb.append(",");
+		}
+		String str = sb.toString();
+		str = str.substring(0, str.length() - 1);
+		return str;
 	}
 
 	/**
