@@ -131,13 +131,13 @@ public class JsonFmtUtil {
         if (time / 60 <= 1) {
             return "1分钟";
         }
-        if (time / 3600 <= 1) {
+        if (time / 3600 < 1) {
             return (time / 60 + 1) + "分钟";
         }
-        if (time / (3600 * 24) <= 1) {
+        if (time / (3600 * 24) < 1) {
             return (time / 3600 + 1) + "小时";
         }
-        if (time / (3600 * 24) > 1) {
+        if (time / (3600 * 24) >= 1) {
             return (time / (3600 * 24) + 1) + "天";
         }
         return "";
