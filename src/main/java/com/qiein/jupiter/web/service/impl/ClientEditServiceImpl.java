@@ -201,6 +201,7 @@ public class ClientEditServiceImpl implements ClientEditService {
                 reqContent.put("paystyle", clientVO.getPayStyle());// 支付方式
                 reqContent.put("htnum", clientVO.getHtNum());// 合同编号
                 reqContent.put("successtime", clientVO.getSuccessTime());// 订单时间
+                reqContent.put("packageCode", clientVO.getPackageCode());// 套系名称编码
             }
         }
         reqContent.put("memo", clientVO.getMemo());
@@ -307,7 +308,7 @@ public class ClientEditServiceImpl implements ClientEditService {
         reqContent.put("htnum", clientVO.getHtNum());// 合同编号
         reqContent.put("amount", clientVO.getAmount());// 成交套系金额
         reqContent.put("memo", clientVO.getMemo());
-
+        reqContent.put("packageCode", clientVO.getPackageCode());// 套系名称编码
         String addRstStr = crmBaseApi.doService(reqContent, "clientEditCwzxLp");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if (!"100000".equals(jsInfo.getString("code"))) {

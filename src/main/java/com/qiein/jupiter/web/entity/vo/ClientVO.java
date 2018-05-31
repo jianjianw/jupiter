@@ -207,6 +207,10 @@ public class ClientVO implements Serializable {
      * 领单时间
      */
     private int receiveTime;
+    /**
+     * 套系名称编码
+     */
+    private int packageCode;
 
 
     public int getSex() {
@@ -591,5 +595,13 @@ public class ClientVO implements Serializable {
 
     public void setReceiveTime(int receiveTime) {
         this.receiveTime = receiveTime;
+    }
+
+    public int getPackageCode() {
+        return packageCode;
+    }
+
+    public void setPackageCode(int packageCode) {
+        this.packageCode = packageCode;
     }
 }
