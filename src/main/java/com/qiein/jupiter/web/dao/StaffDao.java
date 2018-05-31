@@ -191,6 +191,13 @@ public interface StaffDao extends BaseDao<StaffPO> {
 	int updateStaffLoginInfo(StaffDetailPO staffDetailPO);
 
 	/**
+	 * 更新员工的下线情况 IP 时间
+	 * @param staffDetailPO
+	 * @return
+	 */
+	int updateStaffLogoutInfo(StaffDetailPO staffDetailPO);
+
+	/**
 	 * 批量恢复员工
 	 *
 	 * @param companyId

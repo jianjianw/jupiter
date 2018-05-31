@@ -505,6 +505,15 @@
               AND COMPANYID = #{companyId}
     </update>
 
+    <!--更新员工的下线情况-->
+    <update id="updateStaffLogoutInfo">
+        UPDATE hm_pub_staff_detail
+            SET LASTLOGOUTTIME = UNIX_TIMESTAMP(now()),
+            LASTLOGOUTIP   = #{lastLogoutIp}
+        WHERE ID = #{id}
+              AND COMPANYID = #{companyId}
+    </update>
+
     <!--搜索离职员工-->
     <select id="getDelStaffListBySearchKey" resultMap="baseMap">
         SELECT
