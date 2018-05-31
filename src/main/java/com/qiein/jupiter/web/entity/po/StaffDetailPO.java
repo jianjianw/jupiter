@@ -31,6 +31,14 @@ public class StaffDetailPO extends BaseEntity {
      */
     private String lastLoginIp;
     /**
+     * 上次登出时间
+     */
+    private int lastLogoutTime;
+    /**
+     * 上次登出IP
+     */
+    private int lastLogoutIp;
+    /**
      * Openid
      */
     private String weChatOpenId;
@@ -66,6 +74,22 @@ public class StaffDetailPO extends BaseEntity {
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
+    }
+
+    public int getLastLogoutTime() {
+        return lastLogoutTime;
+    }
+
+    public void setLastLogoutTime(int lastLogoutTime) {
+        this.lastLogoutTime = lastLogoutTime;
+    }
+
+    public int getLastLogoutIp() {
+        return lastLogoutIp;
+    }
+
+    public void setLastLogoutIp(int lastLogoutIp) {
+        this.lastLogoutIp = lastLogoutIp;
     }
 
     public String getQq() {

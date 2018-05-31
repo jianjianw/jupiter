@@ -105,6 +105,8 @@ public class SchedulingController extends BaseController {
 		StaffPO currentLoginStaff = getCurrentLoginStaff();
 		// 设置cid
 		staffMarsDTO.setCompanyId(currentLoginStaff.getCompanyId());
+		staffMarsDTO.setOperaId(currentLoginStaff.getId());
+		staffMarsDTO.setOperaName(currentLoginStaff.getNickName());
 		// 对象参数去空
 		ObjectUtil.objectStrParamTrim(staffMarsDTO);
 		schedulingService.editStaffMars(staffMarsDTO);

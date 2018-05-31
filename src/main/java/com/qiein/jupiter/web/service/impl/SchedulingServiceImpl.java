@@ -7,6 +7,8 @@ import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.*;
 import com.qiein.jupiter.web.entity.dto.StaffMarsDTO;
+import com.qiein.jupiter.web.entity.po.StaffDetailPO;
+import com.qiein.jupiter.web.entity.po.StaffStatusLog;
 import com.qiein.jupiter.web.entity.vo.GroupsInfoVO;
 import com.qiein.jupiter.web.entity.vo.StaffDetailVO;
 import com.qiein.jupiter.web.service.SchedulingService;
@@ -42,6 +44,9 @@ public class SchedulingServiceImpl implements SchedulingService {
 
     @Autowired
     private GroupStaffDao groupStaffDao;
+
+    @Autowired
+    private StaffStatusLogDao staffStatusLogDao;
 
     /**
      * 根据类型获取部门列表
@@ -216,8 +221,26 @@ public class SchedulingServiceImpl implements SchedulingService {
             }else{
                 if (staff.getStatusFlag() == 9) {  //如果之前是满限状态，更改为已停单
                     staffMarsDTO.setStatusFlag(0);
+                    //TODO 添加上下线日志 修改上下线时间
+                    staffStatusLogDao.insert(new StaffStatusLog(staffMarsDTO.getId(),0,staffMarsDTO.getOperaId(),staffMarsDTO.getOperaName(),staffMarsDTO.getCompanyId(),staffMarsDTO.getOperaName()+"将"+staffMarsDTO.getNickName()+"状态修改为下线"));
+                    staffDao.updateStaffLogoutInfo(new StaffDetailPO());
                     // 推送状态重载消息
                     GoEasyUtil.pushStatusRefresh(staff.getCompanyId(),staff.getId());
+                }
+            }
+        }
+
+        if (staffMarsDTO.getStatusFlag()!=null){
+            if (staffMarsDTO.getStatusFlag()==0||staffMarsDTO.getStatusFlag()==1){
+                //TODO 添加上下线日志 修改上下线时间
+                staffStatusLogDao.insert(
+                        new StaffStatusLog(
+                                staffMarsDTO.getId(),0,staffMarsDTO.getOperaId(),staffMarsDTO.getOperaName(),staffMarsDTO.getCompanyId(),staffMarsDTO.getOperaName()+
+                                "将"+staffMarsDTO.getNickName()+"状态修改为"+(staffMarsDTO.getStatusFlag()==0?"下线":"上线")));
+                if (staffMarsDTO.getStatusFlag()==0){
+                    staffDao.updateStaffLogoutInfo(new StaffDetailPO());
+                }else {
+                    staffDao.updateStaffLoginInfo(new StaffDetailPO());
                 }
             }
         }

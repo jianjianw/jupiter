@@ -85,6 +85,30 @@ public class StaffMarsDTO extends BaseEntity {
 	 * 员工所属小组
 	 */
 	private String groupId;
+	/**
+	 * 操作人Id
+	 */
+	private Integer operaId;
+	/**
+	 * 操作人姓名
+	 */
+	private String operaName;
+
+	public Integer getOperaId() {
+		return operaId;
+	}
+
+	public void setOperaId(Integer operaId) {
+		this.operaId = operaId;
+	}
+
+	public String getOperaName() {
+		return operaName;
+	}
+
+	public void setOperaName(String operaName) {
+		this.operaName = operaName;
+	}
 
 	public String getNickName() {
 		return nickName;
@@ -238,28 +262,30 @@ public class StaffMarsDTO extends BaseEntity {
 		this.groupId = groupId;
 	}
 
-    @Override
-    public String toString() {
-        return "StaffMarsDTO{" +
-                "nickName='" + nickName + '\'' +
-                ", phone='" + phone + '\'' +
-                ", userName='" + userName + '\'' +
-                ", companyId=" + companyId +
-                ", headImg='" + headImg + '\'' +
-                ", statusFlag=" + statusFlag +
-                ", todayNum=" + todayNum +
-                ", weight=" + weight +
-                ", limitDay=" + limitDay +
-                ", lastPushTime=" + lastPushTime +
-                ", limitChannelIds='" + limitChannelIds + '\'' +
-                ", limitChannelNames='" + limitChannelNames + '\'' +
-                ", limitShopIds='" + limitShopIds + '\'' +
-                ", limitShopNames='" + limitShopNames + '\'' +
-                ", lastLoginTime=" + lastLoginTime +
-                ", lastLoginIp='" + lastLoginIp + '\'' +
-                ", lastLogoutTime=" + lastLogoutTime +
-                ", lastLogoutIp='" + lastLogoutIp + '\'' +
-                ", groupId='" + groupId + '\'' +
-                '}';
-    }
+	@Override
+	public String toString() {
+		return "StaffMarsDTO{" +
+				"nickName='" + nickName + '\'' +
+				", phone='" + phone + '\'' +
+				", userName='" + userName + '\'' +
+				", companyId=" + companyId +
+				", headImg='" + headImg + '\'' +
+				", statusFlag=" + statusFlag +
+				", todayNum=" + todayNum +
+				", weight=" + weight +
+				", limitDay=" + limitDay +
+				", lastPushTime=" + lastPushTime +
+				", limitChannelIds='" + limitChannelIds + '\'' +
+				", limitChannelNames='" + limitChannelNames + '\'' +
+				", limitShopIds='" + limitShopIds + '\'' +
+				", limitShopNames='" + limitShopNames + '\'' +
+				", lastLoginTime=" + lastLoginTime +
+				", lastLoginIp='" + lastLoginIp + '\'' +
+				", lastLogoutTime=" + lastLogoutTime +
+				", lastLogoutIp='" + lastLogoutIp + '\'' +
+				", groupId='" + groupId + '\'' +
+				", operaId=" + operaId +
+				", operaName='" + operaName + '\'' +
+				'}';
+	}
 }
