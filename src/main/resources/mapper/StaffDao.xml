@@ -756,9 +756,11 @@
     <!--查询所选客服集合-->
     <select id="listStaffInstrIds" parameterType="map" resultMap="pushMap">
         SELECT
-			sf.ID, sf.NICKNAME, sf.COMPANYID
+			sf.ID, sf.NICKNAME, sf.COMPANYID, grp.GROUPID, grp.GROUPNAME
 		FROM
 			hm_pub_staff sf
+		LEFT JOIN hm_pub_group_staff rela ON sf.ID = rela.STAFFID AND rela.COMPANYID = #{companyId}
+		LEFT JOIN hm_pub_group grp ON rela.GROUPID = grp.GROUPID AND grp.COMPANYID = #{companyId}
 		WHERE
 			sf.COMPANYID = #{companyId}
 		AND sf.ISDEL = 0
