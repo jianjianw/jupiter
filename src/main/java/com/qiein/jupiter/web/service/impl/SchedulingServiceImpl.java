@@ -230,7 +230,7 @@ public class SchedulingServiceImpl implements SchedulingService {
 				if (staff.getStatusFlag() == 9) { // 如果之前是满限状态，更改为已停单
 					staffMarsDTO.setStatusFlag(0);
 					// TODO 添加上下线日志 修改上下线时间
-					staffStatusLogDao.insert(new StaffStatusLog(staffMarsDTO.getId(), 0, staffMarsDTO.getOperaId(),
+					staffStatusLogDao.insert(new StaffStatusLog(staffMarsDTO.getId(), staffMarsDTO.getStatusFlag(), staffMarsDTO.getOperaId(),
 							staffMarsDTO.getOperaName(), staffMarsDTO.getCompanyId(),
 							staffMarsDTO.getOperaName() + " 将 " + staff.getNickName() + " 状态修改为下线"));
 					StaffDetailPO staffDetailPO = new StaffDetailPO();
@@ -246,7 +246,7 @@ public class SchedulingServiceImpl implements SchedulingService {
 				staffDetailPO.setCompanyId(staffMarsDTO.getCompanyId());
 				staffDetailPO.setId(staffMarsDTO.getId());
 				// TODO 添加上下线日志 修改上下线时间
-				staffStatusLogDao.insert(new StaffStatusLog(staffMarsDTO.getId(), 0, staffMarsDTO.getOperaId(),
+				staffStatusLogDao.insert(new StaffStatusLog(staffMarsDTO.getId(), staffMarsDTO.getStatusFlag(), staffMarsDTO.getOperaId(),
 						staffMarsDTO.getOperaName(), staffMarsDTO.getCompanyId(),
 						staffMarsDTO.getOperaName() + " 将 " + staff.getNickName() + " 的状态修改为"
 								+ (staffMarsDTO.getStatusFlag() == 0 ? "下线" : "上线")));
