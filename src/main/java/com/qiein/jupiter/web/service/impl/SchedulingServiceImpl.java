@@ -54,7 +54,7 @@ public class SchedulingServiceImpl implements SchedulingService {
     public List<GroupsInfoVO> getDeptListByType(String type, int companyId, int staffId) {
         //TODO 加入缓存
         //获取了全部符合类型的部门
-        List<GroupsInfoVO> list = schedulingDao.getDeptListByType(type, companyId);
+        List<GroupsInfoVO> list = schedulingDao.getDeptListByType(type.startsWith("ds")?"dsyy":"zjsyy", companyId);
         //根据权限过滤显示标记
         //获取员工权限
         List<Integer> roleList = rolePermissionDao.getStaffPmsList(companyId, staffId);
