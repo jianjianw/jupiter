@@ -11,8 +11,30 @@
         WHERE
 	        log.COMPANYID = #{companyId}
         AND log.STAFFID = #{staffId}
-        AND log.STATUSID = 0
+
         AND log.ALLOTTIME &gt; UNIX_TIMESTAMP(DATE(SYSDATE()))
+        ORDER BY log.ALLOTTIME DESC
+    </select>
+
+    <select id="getLazyWorkListByUWant" parameterType="map" resultType="lazyWorkVO">
+        SELECT
+	        log.ALLOTTIME, log.STAFFID, log.STAFFNAME, info.ID kzNum, log.KZID, info.CHANNELID, info.SOURCEID, s.SRCNAME
+        FROM
+	        ${logTab} log
+        LEFT JOIN ${infoTab} info ON log.KZID = info.KZID AND info.COMPANYID = #{lw.companyId}
+        LEFT JOIN hm_crm_source s ON s.ID = info.SOURCEID AND log.COMPANYID = s.COMPANYID
+        <where>
+            log.COMPANYID = #{lw.companyId} AND log.STATUSID = 0
+            <if test="lw.startTime!=null and lw.endTime!=null">
+                AND log.ALLOTTIME &gt; #{lw.startTime} AND log.ALLOTTIME &lt; #{lw.endTime}
+            </if>
+            <if test="ids != null">
+                AND log.STAFFID IN
+                <foreach collection="ids" item="id" index="index" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+            </if>
+        </where>
         ORDER BY log.ALLOTTIME DESC
     </select>
 </mapper>

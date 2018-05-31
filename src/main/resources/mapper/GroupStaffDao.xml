@@ -282,7 +282,7 @@
 	        hm_pub_staff_detail sfdet ON sfdet.ID = stf.ID
         WHERE
 	        grpstf.GROUPID = #{groupId} AND grpstf.COMPANYID = #{companyId} AND stf.ISDEL = 0 AND  stf.ISLOCK = 0
-        ORDER BY stf.ISLOCK,stf.NICKNAME
+        ORDER BY FIELD(STATUSFLAG, 1, 0, 8, 9) , stf.ISLOCK,stf.NICKNAME
     </select>
 
     <!--获取公司下所有的部门及员工-->
