@@ -93,8 +93,8 @@ public class ClientServiceImpl implements ClientService {
      */
     public HashMap<String, Integer> getKzNumByStatusId(int companyId) {
         HashMap<String, Integer> result = new HashMap<>();
-        result.put("notAllot", clientDao.getKzNumByStatusId(ClientStatusConst.NO_ALLOTING_INT, companyId, DBSplitUtil.getInfoTabName(companyId)));
-        result.put("beAlloting", clientDao.getKzNumByStatusId(ClientStatusConst.BE_ALLOTINGS_INT, companyId, DBSplitUtil.getInfoTabName(companyId)));
+        result.put("notAllot", clientDao.getKzNumByStatusId(ClientStatusConst.BE_WAIT_MAKE_ORDER, companyId, DBSplitUtil.getInfoTabName(companyId)));
+        result.put("beAlloting", clientDao.getKzNumByStatusId(ClientStatusConst.BE_ALLOTING, companyId, DBSplitUtil.getInfoTabName(companyId)));
         return result;
     }
 }

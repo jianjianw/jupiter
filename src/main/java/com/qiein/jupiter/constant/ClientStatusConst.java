@@ -61,8 +61,6 @@ public class ClientStatusConst {
 
 	public static final int ONLINE_SUCCESS = 40;// 线上成交
 	public static final int ONLINE_STAY = 28;// 线上保留
-	public static final int BE_ALLOTINGS_INT = 999;// 未接入
-	public static final int NO_ALLOTING_INT = 998;// 未分配
 	/*-- 客资分类 --*/
 	public static final int KZ_CLASS_NEW = 1;// 新客资
 
