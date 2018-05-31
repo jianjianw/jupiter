@@ -702,7 +702,7 @@ public class ClientPushServiceImpl implements ClientPushService {
 			allogIdsArr[i] = String.valueOf(allotLog.getId());
 		}
 
-		int overTime = companyDao.getById(companyId).getId();
+		int overTime = companyDao.getById(companyId).getOvertime();
 		if (overTime == 0) {
 			overTime = CommonConstant.DEFAULT_OVERTIME;
 		}
