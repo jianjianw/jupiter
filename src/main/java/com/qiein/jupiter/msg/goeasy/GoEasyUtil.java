@@ -1,13 +1,10 @@
 package com.qiein.jupiter.msg.goeasy;
 
+import com.qiein.jupiter.util.*;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.constant.ClientLogConst;
-import com.qiein.jupiter.util.DBSplitUtil;
-import com.qiein.jupiter.util.PropertiesUtil;
-import com.qiein.jupiter.util.StringUtil;
-import com.qiein.jupiter.util.TimeUtil;
 import com.qiein.jupiter.web.dao.NewsDao;
 import com.qiein.jupiter.web.entity.dto.ClientGoEasyDTO;
 import com.qiein.jupiter.web.entity.po.NewsPO;
@@ -22,7 +19,7 @@ import io.goeasy.publish.PublishListener;
  * @author JingChenglong 2018/04/17 15:54
  */
 @Component
-public class GoEasyUtil {	
+public class GoEasyUtil {
 
     /**
      * GoEasy对接平台KEY
@@ -549,7 +546,7 @@ public class GoEasyUtil {
      * @param msg
      */
     public static void pushWarnTimer(int companyId, int staffId, String kzId, String msg) {
-    	pushCommon(companyId, staffId, MessageConts.TO_BE_TRACKED_HEAD, msg);
+        pushCommon(companyId, staffId, MessageConts.TO_BE_TRACKED_HEAD, msg);
     }
 
     public static void main(String[] args) {
@@ -561,5 +558,24 @@ public class GoEasyUtil {
         // info.setInvalidLabel("分手了");
         // pushYyValidReject(1, 1, info, null);
         pushStaffRefresh(2012, 698, "127.0.0.1", "火星");
+    }
+
+    /**
+     * 推广备注被修改，推送给客服
+     *
+     * @param companyId
+     * @param staffId
+     * @param msg
+     * @param kzId
+     * @param newsDao
+     */
+    public static void pushRemark(int companyId, int staffId, String msg, String kzId, NewsDao newsDao) {
+        if (NumUtil.isNull(staffId) || NumUtil.isNull(companyId)) {
+            return;
+        }
+        String head = "推广备注被修改";
+        pushWarn(companyId, staffId, head, msg);
+        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_WARN, head, msg, kzId,
+                staffId, companyId, DBSplitUtil.getNewsTabName(companyId)));
     }
 }
