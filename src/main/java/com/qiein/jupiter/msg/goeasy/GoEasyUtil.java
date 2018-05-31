@@ -40,6 +40,7 @@ public class GoEasyUtil {
 	 * GoEasy-客户端消息频道前缀
 	 */
 	private static String hmAppChannelSuffix;
+
 	/**
 	 * 初始化GoEasy实例
 	 */

@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.service;
 
+import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.web.entity.vo.LazyWorkVO;
 import org.springframework.stereotype.Service;
 
@@ -19,5 +20,5 @@ public interface LazyWorkService {
     List<LazyWorkVO> getLazyWorkListByStaffId(int staffId,int companyId);
 
 
-    List<LazyWorkVO> getLazyWorkList(LazyWorkVO lazyWorkVO);
+    PageInfo<LazyWorkVO> getLazyWorkList(LazyWorkVO lazyWorkVO);
 }

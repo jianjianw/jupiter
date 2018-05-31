@@ -44,7 +44,6 @@ public class LazyWorkController extends BaseController {
     public ResultInfo getLazyWorkList(LazyWorkVO lazyWorkVO) {
         StaffPO staffPO = getCurrentLoginStaff();
         lazyWorkVO.setCompanyId(staffPO.getCompanyId());
-        List<LazyWorkVO> list = lazyWorkService.getLazyWorkList(lazyWorkVO);
-        return ResultInfoUtil.success(list);
+        return ResultInfoUtil.success(lazyWorkService.getLazyWorkList(lazyWorkVO));
     }
 }
