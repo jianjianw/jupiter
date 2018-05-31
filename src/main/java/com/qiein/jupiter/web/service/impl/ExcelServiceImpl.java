@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.qiein.jupiter.web.service.*;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,10 +29,6 @@ import com.qiein.jupiter.web.entity.dto.ClientExcelDTO;
 import com.qiein.jupiter.web.entity.dto.ClientExportDTO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.ClientExportVO;
-import com.qiein.jupiter.web.service.ChannelService;
-import com.qiein.jupiter.web.service.ExcelService;
-import com.qiein.jupiter.web.service.SourceService;
-import com.qiein.jupiter.web.service.StatusService;
 
 import cn.afterturn.easypoi.excel.ExcelImportUtil;
 import cn.afterturn.easypoi.excel.entity.ImportParams;
@@ -49,6 +46,8 @@ public class ExcelServiceImpl implements ExcelService {
     private StatusService statusService;
     @Autowired
     private ChannelService channelService;
+    @Autowired
+    private DictionaryService dictionaryService;
 
     /**
      * 导入客资
@@ -310,7 +309,7 @@ public class ExcelServiceImpl implements ExcelService {
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if ("100000".equals(jsInfo.getString("code"))) {
             JSONArray jsArr = JsonFmtUtil.strContentToJsonObj(addRstStr).getJSONArray("infoList");
-            List<ClientExportVO> clientList = JsonFmtUtil.jsonArrToClientExportVO(jsArr, staffPO.getCompanyId(), sourceService, statusService, channelService);
+            List<ClientExportVO> clientList = JsonFmtUtil.jsonArrToClientExportVO(jsArr, staffPO.getCompanyId(), sourceService, statusService, channelService, dictionaryService);
             return clientList;
         } else {
             throw new RException(jsInfo.getString("msg"));

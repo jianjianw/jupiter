@@ -26,6 +26,16 @@ public class ClientExportVO implements Serializable {
      */
     @Excel(name = "录入时间", width = 20, height = 6)
     private String createTime;
+    /**
+     * 领取时间接收格式
+     */
+    @Excel(name = "领取时间", width = 20, height = 6)
+    private String receiveTime;
+    /**
+     * 领取周期
+     */
+    @Excel(name = "领取周期", width = 10, height = 6)
+    private String receivePeriod;
 
     /**
      * 推广员姓名
@@ -58,6 +68,33 @@ public class ClientExportVO implements Serializable {
      */
     @Excel(name = "拍摄地", width = 10, height = 6)
     private String shopName;
+
+    /**
+     * 套餐金额
+     */
+    @Excel(name = "套餐金额", width = 10, height = 6)
+    private int amount;
+    /**
+     * 套餐金额
+     */
+    @Excel(name = "已收金额", width = 10, height = 6)
+    private int stayAmount;
+    /**
+     * 套系名称
+     */
+    @Excel(name = "套系名称", width = 15, height = 6)
+    private String packageName;
+
+    /**
+     * 订单时间
+     */
+    @Excel(name = "订单时间", width = 20, height = 6)
+    private String successTime;
+    /**
+     * 订单周期
+     */
+    @Excel(name = "订单周期", width = 10, height = 6)
+    private String successPeriod;
     /**
      * 邀约客服姓名
      */
@@ -246,5 +283,61 @@ public class ClientExportVO implements Serializable {
 
     public void setMemo(String memo) {
         this.memo = memo;
+    }
+
+    public String getReceiveTime() {
+        return receiveTime;
+    }
+
+    public void setReceiveTime(String receiveTime) {
+        this.receiveTime = receiveTime;
+    }
+
+    public String getReceivePeriod() {
+        return receivePeriod;
+    }
+
+    public void setReceivePeriod(String receivePeriod) {
+        this.receivePeriod = receivePeriod;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public int getStayAmount() {
+        return stayAmount;
+    }
+
+    public void setStayAmount(int stayAmount) {
+        this.stayAmount = stayAmount;
+    }
+
+    public String getPackageName() {
+        return packageName;
+    }
+
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
+    }
+
+    public String getSuccessTime() {
+        return successTime;
+    }
+
+    public void setSuccessTime(String successTime) {
+        this.successTime = successTime;
+    }
+
+    public String getSuccessPeriod() {
+        return successPeriod;
+    }
+
+    public void setSuccessPeriod(String successPeriod) {
+        this.successPeriod = successPeriod;
     }
 }
