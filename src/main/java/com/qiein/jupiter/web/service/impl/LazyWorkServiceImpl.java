@@ -1,6 +1,9 @@
 package com.qiein.jupiter.web.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.web.dao.LazyWorkDao;
+import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.LazyWorkVO;
 import com.qiein.jupiter.web.service.LazyWorkService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +35,12 @@ public class LazyWorkServiceImpl implements LazyWorkService {
     }
 
     @Override
-    public List<LazyWorkVO> getLazyWorkList(LazyWorkVO lazyWorkVO) {
+    public PageInfo<LazyWorkVO> getLazyWorkList(LazyWorkVO lazyWorkVO) {
         //TODO 表名之后改
         String logTab  = "hm_crm_allot_log_"+lazyWorkVO.getCompanyId();
         String infoTab = "hm_crm_client_info_"+lazyWorkVO.getCompanyId();
-        return lazyWorkDao.getLazyWorkListByUWant(lazyWorkVO,lazyWorkVO.getStaffIds()==null?null:lazyWorkVO.getStaffIds().split(","),logTab,infoTab);
+        PageHelper.startPage(lazyWorkVO.getPageNum(), lazyWorkVO.getPageSize());
+        List<LazyWorkVO> list = lazyWorkDao.getLazyWorkListByUWant(lazyWorkVO,lazyWorkVO.getStaffIds()==null?null:lazyWorkVO.getStaffIds().split(","),logTab,infoTab);
+        return new PageInfo<>(list);
     }
 }

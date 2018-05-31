@@ -26,6 +26,30 @@ public class LazyWorkVO{
      * 查询的结束时间
      */
     private Integer endTime;
+    /**
+     * 当前页数
+     */
+    private Integer pageNum = 1;
+    /**
+     * 当前页码
+     */
+    private Integer pageSize = 50;
+
+    public Integer getPageNum() {
+        return pageNum;
+    }
+
+    public void setPageNum(Integer pageNum) {
+        this.pageNum = pageNum;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
+    }
 
     public String getStaffIds() {
         return staffIds;
