@@ -9,11 +9,13 @@ public class LazyWorkVO{
     private Integer staffId;
     private String staffName;
     private String staffPhone;
+    private String headImg;
     private Integer kzNum;
     private Integer statusId;
     private String kzId;
     private Integer channelId;
     private Integer sourceId;
+    private String sourceImg;
     private String sourceName;
     private Integer companyId;
     /**
@@ -40,6 +42,22 @@ public class LazyWorkVO{
      * 当前页码
      */
     private Integer pageSize = 50;
+
+    public String getSourceImg() {
+        return sourceImg;
+    }
+
+    public void setSourceImg(String sourceImg) {
+        this.sourceImg = sourceImg;
+    }
+
+    public String getHeadImg() {
+        return headImg;
+    }
+
+    public void setHeadImg(String headImg) {
+        this.headImg = headImg;
+    }
 
     public String getStaffPhone() {
         return staffPhone;

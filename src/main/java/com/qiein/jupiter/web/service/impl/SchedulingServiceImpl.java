@@ -227,7 +227,7 @@ public class SchedulingServiceImpl implements SchedulingService {
 			if (staff.getTodayNum() >= staffMarsDTO.getLimitDay()) { // 如果今日接单数大于等于接单上限，设置为满限状态
 				staffMarsDTO.setStatusFlag(9);
 			} else {
-				if (staff.getStatusFlag() == 9) { // 如果之前是满限状态，更改为已停单
+				if (staff.getStatusFlag() == 9) { // 如果之前是满限状态，更改为已下线
 					staffMarsDTO.setStatusFlag(0);
 					// TODO 添加上下线日志 修改上下线时间
 					staffStatusLogDao.insert(new StaffStatusLog(staffMarsDTO.getId(), staffMarsDTO.getStatusFlag(), staffMarsDTO.getOperaId(),

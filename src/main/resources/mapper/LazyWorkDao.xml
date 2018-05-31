@@ -18,7 +18,7 @@
 
     <select id="getLazyWorkListByUWant" parameterType="map" resultType="lazyWorkVO">
         SELECT
-	        log.ALLOTTIME, log.STAFFID, log.STAFFNAME, info.ID kzNum, log.KZID, info.CHANNELID, info.SOURCEID, s.SRCNAME sourceName ,stf.PHONE staffPhone
+	        log.ALLOTTIME, log.STAFFID, log.STAFFNAME, info.ID kzNum, log.KZID, info.CHANNELID, info.SOURCEID, s.SRCNAME sourceName ,stf.PHONE staffPhone,stf.HEADIMG headImg,s.SRCIMG sourceImg
         FROM
 	        ${logTab} log
         LEFT JOIN ${infoTab} info ON log.KZID = info.KZID AND info.COMPANYID = #{lw.companyId}
