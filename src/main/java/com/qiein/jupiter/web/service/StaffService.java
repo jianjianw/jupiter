@@ -76,15 +76,6 @@ public interface StaffService {
 	void batUpdateStaffState(StaffStateVO staffStateVO);
 
 	/**
-	 * 批量检查是否可删除
-	 *
-	 * @param ids
-	 * @param companyId
-	 * @return
-	 */
-	String checkBatDelete(String[] ids, int companyId);
-
-	/**
 	 * 员工删除(逻辑删除)
 	 *
 	 * @param id

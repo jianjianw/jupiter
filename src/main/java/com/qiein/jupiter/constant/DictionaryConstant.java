@@ -56,4 +56,8 @@ public class DictionaryConstant {
      * 追踪状态 72小时追踪。。
      */
     public final static String TRACK_STATUS = "track_status";
+    /**
+     * 套系名称
+     */
+    public final static String TX_NAME = "tx_name";
 }

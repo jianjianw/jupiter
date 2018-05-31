@@ -255,20 +255,6 @@ public class StaffServiceImpl implements StaffService {
 	}
 
 	/**
-	 * 批量检查员工是否可删
-	 *
-	 * @param ids
-	 * @param companyId
-	 * @return
-	 */
-	@Override
-	public String checkBatDelete(String[] ids, int companyId) {
-		// TODO 检查员工是否可删除
-
-		return "可删除";
-	}
-
-	/**
 	 * 逻辑删除，即设置isdel 1
 	 *
 	 * @param id
