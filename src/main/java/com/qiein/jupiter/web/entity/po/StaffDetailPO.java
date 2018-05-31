@@ -37,7 +37,7 @@ public class StaffDetailPO extends BaseEntity {
     /**
      * 上次登出IP
      */
-    private int lastLogoutIp;
+    private String lastLogoutIp;
     /**
      * Openid
      */
@@ -84,11 +84,11 @@ public class StaffDetailPO extends BaseEntity {
         this.lastLogoutTime = lastLogoutTime;
     }
 
-    public int getLastLogoutIp() {
+    public String getLastLogoutIp() {
         return lastLogoutIp;
     }
 
-    public void setLastLogoutIp(int lastLogoutIp) {
+    public void setLastLogoutIp(String lastLogoutIp) {
         this.lastLogoutIp = lastLogoutIp;
     }
 

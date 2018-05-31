@@ -223,24 +223,32 @@ public class SchedulingServiceImpl implements SchedulingService {
                     staffMarsDTO.setStatusFlag(0);
                     //TODO 添加上下线日志 修改上下线时间
                     staffStatusLogDao.insert(new StaffStatusLog(staffMarsDTO.getId(),0,staffMarsDTO.getOperaId(),staffMarsDTO.getOperaName(),staffMarsDTO.getCompanyId(),staffMarsDTO.getOperaName()+"将"+staffMarsDTO.getNickName()+"状态修改为下线"));
-                    staffDao.updateStaffLogoutInfo(new StaffDetailPO());
+                    StaffDetailPO staffDetailPO = new StaffDetailPO();
+                    staffDetailPO.setLastLogoutIp("");
+                    staffDao.updateStaffLogoutInfo(staffDetailPO);
                     // 推送状态重载消息
                     GoEasyUtil.pushStatusRefresh(staff.getCompanyId(),staff.getId());
                 }
             }
         }
 
+
         if (staffMarsDTO.getStatusFlag()!=null){
             if (staffMarsDTO.getStatusFlag()==0||staffMarsDTO.getStatusFlag()==1){
+                StaffDetailPO staffDetailPO = new StaffDetailPO();
+                staffDetailPO.setCompanyId(staffMarsDTO.getCompanyId());
+                staffDetailPO.setId(staffMarsDTO.getId());
                 //TODO 添加上下线日志 修改上下线时间
                 staffStatusLogDao.insert(
                         new StaffStatusLog(
                                 staffMarsDTO.getId(),0,staffMarsDTO.getOperaId(),staffMarsDTO.getOperaName(),staffMarsDTO.getCompanyId(),staffMarsDTO.getOperaName()+
                                 "将"+staffMarsDTO.getNickName()+"状态修改为"+(staffMarsDTO.getStatusFlag()==0?"下线":"上线")));
                 if (staffMarsDTO.getStatusFlag()==0){
-                    staffDao.updateStaffLogoutInfo(new StaffDetailPO());
+                    staffDetailPO.setLastLogoutIp("");
+                    staffDao.updateStaffLogoutInfo(staffDetailPO);
                 }else {
-                    staffDao.updateStaffLoginInfo(new StaffDetailPO());
+                    staffDetailPO.setLastLoginIp("");
+                    staffDao.updateStaffLoginInfo(staffDetailPO);
                 }
             }
         }
