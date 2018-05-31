@@ -27,4 +27,13 @@
 		COMPANYID = #{companyId}
 		AND KZID = #{kzId};
 	</update>
+
+    <!-- 根据状态筛选客资数量 -->
+    <select id="getKzNumByStatusId" parameterType="map" resultType="java.lang.Integer">
+		SELECT COUNT(1)
+		FROM ${tableName} info
+		WHERE  info.ISDEL = 0
+		AND info.STATUSID = #{statusId}
+		AND info.COMPANYID = #{companyId}
+	</select>
 </mapper>

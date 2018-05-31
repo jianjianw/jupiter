@@ -169,4 +169,5 @@
 		)
 		AND INSTR(#{kzIds},info.KZID) != 0;
     </select>
+
 </mapper>

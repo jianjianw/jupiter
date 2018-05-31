@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Param;
 public interface ClientDao {
     /**
      * 编辑客资基本信息，如性别，微信添加状况
+     *
      * @param clientStatusVO
      */
     void editClientBaseInfo(@Param("clientStatusVO") ClientStatusVO clientStatusVO, @Param("tabName") String tabName);
@@ -22,6 +23,17 @@ public interface ClientDao {
      * @param label
      * @return
      */
-    public int editClientMemoLabel(@Param("tabName") String tabName, @Param("companyId") int companyId,
-                                   @Param("kzId") String kzId, @Param("label") String label);
+    int editClientMemoLabel(@Param("tabName") String tabName, @Param("companyId") int companyId,
+                            @Param("kzId") String kzId, @Param("label") String label);
+
+    /**
+     * 根据状态筛选客资数量
+     *
+     * @param statusId
+     * @param companyId
+     * @param tableName
+     * @return
+     */
+    public int getKzNumByStatusId(@Param("statusId") int statusId, @Param("companyId") Integer companyId,
+                                  @Param("tableName") String tableName);
 }
