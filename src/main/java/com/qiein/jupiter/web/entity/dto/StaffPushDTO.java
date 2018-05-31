@@ -2,6 +2,8 @@ package com.qiein.jupiter.web.entity.dto;
 
 import java.io.Serializable;
 
+import com.qiein.jupiter.util.StringUtil;
+
 /**
  * 员工信息
  * 
@@ -53,6 +55,11 @@ public class StaffPushDTO implements Serializable {
 	private int companyId;
 
 	/**
+	 * 将要领取的客资ID
+	 */
+	private String willHaveKzidsStrBf = "";
+
+	/**
 	 * 差比计算
 	 */
 	public void doCalculateAllotNumDiffPID() {
@@ -61,6 +68,14 @@ public class StaffPushDTO implements Serializable {
 		}
 		double w = this.weight;
 		this.diffPid = (this.weight - this.todayNum) / w;
+	}
+
+	public String getWillHaveKzidsStrBf() {
+		return willHaveKzidsStrBf;
+	}
+
+	public void setWillHaveKzidsStrBf(String willHaveKzidsStrBf) {
+		this.willHaveKzidsStrBf = willHaveKzidsStrBf;
 	}
 
 	public String getGroupId() {
@@ -125,5 +140,12 @@ public class StaffPushDTO implements Serializable {
 
 	public void setCompanyId(int companyId) {
 		this.companyId = companyId;
+	}
+
+	public void doAddKzIdsWill(String kzId) {
+		if (StringUtil.isNotEmpty(this.willHaveKzidsStrBf)) {
+			this.willHaveKzidsStrBf += ",";
+		}
+		this.willHaveKzidsStrBf += kzId;
 	}
 }

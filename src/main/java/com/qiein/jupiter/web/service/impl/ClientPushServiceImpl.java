@@ -295,7 +295,7 @@ public class ClientPushServiceImpl implements ClientPushService {
 		}
 
 		// 推送消息
-		GoEasyUtil.pushAppInfoReceive(companyId, appointer.getStaffId(), 1, kzId, allotLogId, overTime);
+		GoEasyUtil.pushAppInfoReceive(companyId, appointer.getStaffId(), 1, kzId, String.valueOf(allotLogId), overTime);
 	}
 
 	/**
@@ -660,31 +660,52 @@ public class ClientPushServiceImpl implements ClientPushService {
 					int updateRstNum = clientInfoDao.updateClientInfoWhenAllot(companyId,
 							DBSplitUtil.getInfoTabName(companyId), infoList.get(0).getKzId(),
 							ClientStatusConst.KZ_CLASS_NEW, ClientStatusConst.BE_ALLOTING, staff.getStaffId(),
-							staff.getGroupId(), ClientConst.ALLOT_SYSTEM_AUTO);
+							staff.getGroupId(), ClientConst.ALLOT_HANDLER);
 					if (1 != updateRstNum) {
 						throw new RException(ExceptionEnum.INFO_STATUS_EDIT_ERROR);
 					}
 
-					// // 获取客服所在的客服组的ID和集合
-					// Group group = groupDao.getGroupByStaffYy(staff.getId(),
-					// companyId, "dsyy");
-					// // 客资修改客资的客服组ID，和客服组名称
-					// clientInfoDao.editInfoDetailGroupIdAndName(infoList.get(0).getKzId(),
-					// group.getGroupId(),
-					// group.getGroupName(), companyId,
-					// DBSplit.getTableNamePlus(TableEnum.detail, companyId),
-					// ClientInfoConstant.ALLOTTYPE_HANDLE);
-					// staff.doAddKzIdsWill(infoList.get(0).getKzNum());
-					// infoList.remove(0);
+					// 客资修改客资的客服组ID，和客服组名称
+					clientInfoDao.updateClientDetailWhenAllot(companyId, DBSplitUtil.getDetailTabName(companyId),
+							infoList.get(0).getKzId(), staff.getStaffName(), staff.getGroupName());
+					staff.doAddKzIdsWill(infoList.get(0).getKzId());
+					infoList.remove(0);
 				} else {
 					break;
 				}
 			}
 		}
 
-		// for (Staff staff : staffList) {
-		// push(companyId, staff.getWillHaveKzidsStrBf(), staff.getId());
+		for (StaffPushDTO staff : staffList) {
+			push(companyId, staff.getWillHaveKzidsStrBf(), staff);
+		}
+	}
+
+	public void push(int companyId, String kzIds, StaffPushDTO appoint) {
+
+		// 根据每个客资生成对应的分配日志
+		String[] kzIdsArr = kzIds.split(",");
+		String[] allogIdsArr = new String[kzIdsArr.length];
+		for (int i = 0; i < kzIdsArr.length; i++) {
+			// 生成分配日志
+			AllotLogPO allotLog = new AllotLogPO(kzIdsArr[i], appoint.getStaffId(), appoint.getStaffName(),
+					appoint.getGroupId(), appoint.getGroupName(), ClientConst.ALLOT_HANDLER, companyId);
+
+			// 记录分配日志
+			clientAllotLogDao.addClientAllogLog(DBSplitUtil.getAllotLogTabName(companyId), allotLog);
+
+			allogIdsArr[i] = String.valueOf(allotLog.getId());
+		}
+
+		// Company company = companyDao.getCompanyInfoById(companyId);
+		// Integer overTime = company.getOverTime();
+		// if (overTime == null || overTime < 1) {
+		// overTime = ;
 		// }
+
+		// 推送消息
+		GoEasyUtil.pushAppInfoReceive(companyId, appoint.getStaffId(), 1, kzIdsArr.toString(), allogIdsArr.toString(),
+				180);
 	}
 
 	/**
