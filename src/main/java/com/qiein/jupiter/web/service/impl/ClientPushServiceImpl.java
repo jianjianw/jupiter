@@ -713,6 +713,11 @@ public class ClientPushServiceImpl implements ClientPushService {
 			clientAllotLogDao.addClientAllogLog(DBSplitUtil.getAllotLogTabName(companyId), allotLog);
 
 			allogIdsArr[i] = String.valueOf(allotLog.getId());
+			// 客资日志记录
+			clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(companyId),
+					new ClientLogPO(kzIdsArr[i],
+							ClientLogConst.getAutoAllotLog(appoint.getGroupName(), appoint.getStaffName()),
+							ClientLogConst.INFO_LOGTYPE_ALLOT, companyId));
 		}
 
 		int overTime = companyDao.getById(companyId).getOvertime();
