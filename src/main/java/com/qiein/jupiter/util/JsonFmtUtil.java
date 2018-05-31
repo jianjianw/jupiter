@@ -107,7 +107,7 @@ public class JsonFmtUtil {
             return "";
         }
         String[] arr = address.split(CommonConstant.STR_SEPARATOR);
-        if (arr.length > 1) {
+        if (arr.length >= 1) {
             return arr[0];
         }
         return "";
@@ -119,7 +119,7 @@ public class JsonFmtUtil {
             return "";
         }
         String[] arr = address.split(CommonConstant.STR_SEPARATOR);
-        if (arr.length > 2) {
+        if (arr.length >= 2) {
             return arr[1];
         }
         return "";

@@ -17,27 +17,6 @@ public class ClientExportVO implements Serializable {
     @Excel(name = "编号", width = 10, height = 6)
     private int id;
     /**
-     * 渠道名
-     */
-    @Excel(name = "渠道", width = 10, height = 6)
-    private String channelName;
-
-    /**
-     * 渠道名称
-     */
-    @Excel(name = "来源", width = 10, height = 6)
-    private String sourceName;
-    /**
-     * 客服组名称
-     */
-    @Excel(name = "组别", width = 10, height = 6)
-    private String groupName;
-    /**
-     * 邀约客服姓名
-     */
-    @Excel(name = "客服", width = 20, height = 6)
-    private String appointName;
-    /**
      * 录入时间接收格式
      */
     @Excel(name = "录入时间", width = 20, height = 6)
@@ -84,7 +63,27 @@ public class ClientExportVO implements Serializable {
      */
     @Excel(name = "拍摄地", width = 10, height = 6)
     private String shopName;
+    /**
+     * 渠道名
+     */
+    @Excel(name = "渠道", width = 10, height = 6)
+    private String channelName;
 
+    /**
+     * 渠道名称
+     */
+    @Excel(name = "来源", width = 10, height = 6)
+    private String sourceName;
+    /**
+     * 客服组名称
+     */
+    @Excel(name = "组别", width = 10, height = 6)
+    private String groupName;
+    /**
+     * 邀约客服姓名
+     */
+    @Excel(name = "客服", width = 20, height = 6)
+    private String appointName;
     /**
      * 套餐金额
      */
