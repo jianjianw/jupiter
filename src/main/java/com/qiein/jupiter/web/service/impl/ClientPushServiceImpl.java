@@ -58,6 +58,8 @@ public class ClientPushServiceImpl implements ClientPushService {
 	private NewsDao newsDao;
 	@Autowired
 	private ClientTimerDao clientTimerDao;
+	@Autowired
+	private CompanyDao companyDao;
 
 	/**
 	 * 根据拍摄地和渠道维度推送客资
@@ -698,15 +700,14 @@ public class ClientPushServiceImpl implements ClientPushService {
 			allogIdsArr[i] = String.valueOf(allotLog.getId());
 		}
 
-		// Company company = companyDao.getCompanyInfoById(companyId);
-		// Integer overTime = company.getOverTime();
-		// if (overTime == null || overTime < 1) {
-		// overTime = ;
-		// }
+		int overTime = companyDao.getById(companyId).getId();
+		if (overTime == 0) {
+			overTime = CommonConstant.DEFAULT_OVERTIME;
+		}
 
 		// 推送消息
 		GoEasyUtil.pushAppInfoReceive(companyId, appoint.getStaffId(), kzIdsArr.length, Arrays.toString(kzIdsArr),
-				Arrays.toString(allogIdsArr), 180);
+				Arrays.toString(allogIdsArr), overTime);
 	}
 
 	/**
