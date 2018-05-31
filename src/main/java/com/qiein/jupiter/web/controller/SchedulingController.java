@@ -27,7 +27,7 @@ import com.qiein.jupiter.web.service.GroupService;
  * Created by Tt on 2018/5/8 0008.
  */
 @RestController
-@RequestMapping("/staffmars")
+@RequestMapping("/scheduling")
 public class SchedulingController extends BaseController {
 
 	@Resource

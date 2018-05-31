@@ -14,6 +14,42 @@ public class LazyWorkVO{
     private Integer channelId;
     private Integer sourceId;
     private Integer companyId;
+    /**
+     * 查询时多选的staffid
+     */
+    private String staffIds;
+    /**
+     * 查询的开始时间
+     */
+    private Integer startTime;
+    /**
+     * 查询的结束时间
+     */
+    private Integer endTime;
+
+    public String getStaffIds() {
+        return staffIds;
+    }
+
+    public void setStaffIds(String staffIds) {
+        this.staffIds = staffIds;
+    }
+
+    public Integer getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Integer startTime) {
+        this.startTime = startTime;
+    }
+
+    public Integer getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Integer endTime) {
+        this.endTime = endTime;
+    }
 
     public Long getAllotTime() {
         return allotTime;

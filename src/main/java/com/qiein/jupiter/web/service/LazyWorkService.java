@@ -10,5 +10,14 @@ import java.util.List;
  */
 @Service
 public interface LazyWorkService {
+    /**
+     * 根据员工id获取怠工日志列表
+     * @param staffId
+     * @param companyId
+     * @return
+     */
     List<LazyWorkVO> getLazyWorkListByStaffId(int staffId,int companyId);
+
+
+    List<LazyWorkVO> getLazyWorkList(LazyWorkVO lazyWorkVO);
 }
