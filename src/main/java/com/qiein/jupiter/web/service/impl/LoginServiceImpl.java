@@ -177,7 +177,7 @@ public class LoginServiceImpl implements LoginService {
         StaffPO staff = loginDao.loginWithCidByPhone(loginUserVO.getUserName(),
                 MD5Util.getSaltMd5(loginUserVO.getPassword()),
                 loginUserVO.getCompanyId());
-        StaffPO staffPO = checkUserInfo(staff, loginUserVO.getIp(), false);
+        StaffPO staffPO = checkUserInfo(staff, loginUserVO.getIp(), loginUserVO.isClientFlag());
         // 移除错误次数
         removeUserErrorNumber(loginUserVO.getUserName());
         return staffPO;
