@@ -41,7 +41,12 @@ public class LazyWorkServiceImpl implements LazyWorkService {
         String logTab  = "hm_crm_allot_log_"+lazyWorkVO.getCompanyId();
         String infoTab = "hm_crm_client_info_"+lazyWorkVO.getCompanyId();
         PageHelper.startPage(lazyWorkVO.getPageNum(), lazyWorkVO.getPageSize());
-        List<LazyWorkVO> list = lazyWorkDao.getLazyWorkListByUWant(lazyWorkVO,StringUtil.isEmpty(lazyWorkVO.getStaffIds())?null:lazyWorkVO.getStaffIds().split(","),logTab,infoTab);
+        List<LazyWorkVO> list = lazyWorkDao.getLazyWorkListByUWant(
+                lazyWorkVO,
+                StringUtil.isEmpty(lazyWorkVO.getStaffIds())?null:lazyWorkVO.getStaffIds().split(","),
+                StringUtil.isEmpty(lazyWorkVO.getSourceIds())?null:lazyWorkVO.getSourceIds().split(","),
+                logTab,
+                infoTab);
         return new PageInfo<>(list);
     }
 }
