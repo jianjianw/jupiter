@@ -365,7 +365,8 @@ public class ClientPushServiceImpl implements ClientPushService {
 			int allotType, int companyId) {
 
 		// 生成分配日志
-		AllotLogPO allotLog = new AllotLogPO(kzId, staffId, staffName, groupId, groupName, allotType, companyId);
+		AllotLogPO allotLog = new AllotLogPO(kzId, staffId, staffName, groupId, groupName, allotType, companyId,
+				CommonConstant.SYSTEM_OPERA_ID, CommonConstant.SYSTEM_OPERA_NAME);
 
 		// 记录分配日志
 		clientAllotLogDao.addClientAllogLog(DBSplitUtil.getAllotLogTabName(companyId), allotLog);
@@ -680,11 +681,11 @@ public class ClientPushServiceImpl implements ClientPushService {
 		}
 
 		for (StaffPushDTO staff : staffList) {
-			push(companyId, staff.getWillHaveKzidsStrBf(), staff);
+			push(companyId, staff.getWillHaveKzidsStrBf(), staff, operaId, operaName);
 		}
 	}
 
-	public void push(int companyId, String kzIds, StaffPushDTO appoint) {
+	public void push(int companyId, String kzIds, StaffPushDTO appoint, int operaId, String operaName) {
 
 		// 根据每个客资生成对应的分配日志
 		String[] kzIdsArr = kzIds.split(",");
@@ -692,7 +693,8 @@ public class ClientPushServiceImpl implements ClientPushService {
 		for (int i = 0; i < kzIdsArr.length; i++) {
 			// 生成分配日志
 			AllotLogPO allotLog = new AllotLogPO(kzIdsArr[i], appoint.getStaffId(), appoint.getStaffName(),
-					appoint.getGroupId(), appoint.getGroupName(), ClientConst.ALLOT_HANDLER, companyId);
+					appoint.getGroupId(), appoint.getGroupName(), ClientConst.ALLOT_HANDLER, companyId, operaId,
+					operaName);
 
 			// 记录分配日志
 			clientAllotLogDao.addClientAllogLog(DBSplitUtil.getAllotLogTabName(companyId), allotLog);

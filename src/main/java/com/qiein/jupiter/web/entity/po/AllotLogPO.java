@@ -69,8 +69,18 @@ public class AllotLogPO implements Serializable {
 	 */
 	private int companyId;
 
+	/**
+	 * 分配人ID
+	 */
+	private int operaId;
+
+	/**
+	 * 分配人姓名
+	 */
+	private String operaName;
+
 	public AllotLogPO(String kzId, int staffId, String staffName, String groupId, String groupName, int allotType,
-			int companyId) {
+			int companyId, int operaId, String operaName) {
 		super();
 		this.kzId = kzId;
 		this.staffId = staffId;
@@ -79,6 +89,24 @@ public class AllotLogPO implements Serializable {
 		this.groupName = groupName;
 		this.allotType = allotType;
 		this.companyId = companyId;
+		this.operaId = operaId;
+		this.operaName = operaName;
+	}
+
+	public int getOperaId() {
+		return operaId;
+	}
+
+	public void setOperaId(int operaId) {
+		this.operaId = operaId;
+	}
+
+	public String getOperaName() {
+		return operaName;
+	}
+
+	public void setOperaName(String operaName) {
+		this.operaName = operaName;
 	}
 
 	public AllotLogPO() {

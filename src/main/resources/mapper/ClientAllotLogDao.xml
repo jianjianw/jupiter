@@ -9,6 +9,8 @@
         <result column="APPOINTORID" jdbcType="INTEGER" property="appointorId"/>
         <result column="COMPANYID" jdbcType="INTEGER" property="companyId"/>
         <result column="PUSHINTERVAL" jdbcType="INTEGER" property="pushInterval"/>
+        <result column="OPERAID" jdbcType="INTEGER" property="operaId"/>
+        <result column="OPERANAME" jdbcType="VARCHAR" property="operaName"/>
     </resultMap>
 
     <sql id="baseColumn">
@@ -18,11 +20,11 @@
     <!-- 新增分配日志 -->
     <insert id="addClientAllogLog" useGeneratedKeys="true" keyProperty="allotLog.id">
         INSERT INTO ${allotLogTabName} (
-			KZID, ALLOTTIME, STAFFID, STAFFNAME, GROUPID, GROUPNAME, STATUSID, ALLOTTYPE, COMPANYID
+			KZID, ALLOTTIME, STAFFID, STAFFNAME, GROUPID, GROUPNAME, STATUSID, ALLOTTYPE, COMPANYID, OPERAID, OPERANAME
 		)
 		VALUES
 			(#{allotLog.kzId}, UNIX_TIMESTAMP(NOW()), #{allotLog.staffId}, #{allotLog.staffName}, #{allotLog.groupId}, #{allotLog.groupName},
-			 #{allotLog.statusId}, #{allotLog.allotType}, #{allotLog.companyId}
+			 #{allotLog.statusId}, #{allotLog.allotType}, #{allotLog.companyId}, #{allotLog.operaId}, #{allotLog.operaName}
 		)
     </insert>
     
