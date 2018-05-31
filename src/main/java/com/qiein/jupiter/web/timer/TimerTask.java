@@ -18,9 +18,9 @@ public class TimerTask {
     private ClientPushService clientPushService;
 
     /**
-     * 每天8-23点  10分钟执行一次
+     * 每天8-23点  2分钟执行一次
      */
-    @Scheduled(cron = "0 */10  8-23 * * ?")
+    @Scheduled(cron = "0 */2  8-23 * * ?")
     public void pushClientNotice() {
         clientPushService.pushClientNoticeInfo();
         log.info("执行了定时推送提醒任务...");

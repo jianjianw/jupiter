@@ -53,6 +53,7 @@ public enum ExceptionEnum {
     SIMPLE_NUMBER_PASSWORD(356, "密码不能为纯数字"),
     PASSWORD_NULL(357, "密码不能为空"),
     STAFF_CAN_NOT_DEL(358, "该员工存在为交接客资，请交接后再删除"),
+    ONLY_APP_LOGIN(359, "只允许客户端登录"),
     //部门
     GROUP_NAME_REPEAT(401, "部门名称重复"),
     GROUP_HAVE_CHILD_GROUP(402, "该部门存在小组，请删除下属小组再进行操作"),
@@ -71,7 +72,7 @@ public enum ExceptionEnum {
     CHANNEL_NOT_FOUND(505, "该渠道不存在"),
     SOURCE_NOT_FOUND(506, "该来源不存在"),
     CHANNEL_HAVE_SOURCE(507, "该渠道下存在来源，请先删除下属所有来源再继续操作"),
-    SOURCE_HAVE_KZ(508,"该来源下存在客资，不可删除"),
+    SOURCE_HAVE_KZ(508, "该来源下存在客资，不可删除"),
     //拍摄地
     SHOP_EXIST(601, "拍摄地已存在"),
     SHOP_ID_NULL(602, "拍摄地ID不能为空"),
