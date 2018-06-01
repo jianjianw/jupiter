@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import com.qiein.jupiter.web.entity.vo.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,13 +45,6 @@ import com.qiein.jupiter.web.entity.po.PermissionPO;
 import com.qiein.jupiter.web.entity.po.StaffDetailPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.po.StaffStatusLog;
-import com.qiein.jupiter.web.entity.vo.GroupStaffVO;
-import com.qiein.jupiter.web.entity.vo.GroupsInfoVO;
-import com.qiein.jupiter.web.entity.vo.SearchStaffVO;
-import com.qiein.jupiter.web.entity.vo.StaffChangeVO;
-import com.qiein.jupiter.web.entity.vo.StaffDetailVO;
-import com.qiein.jupiter.web.entity.vo.StaffStateVO;
-import com.qiein.jupiter.web.entity.vo.StaffVO;
 import com.qiein.jupiter.web.service.IpWhiteService;
 import com.qiein.jupiter.web.service.StaffService;
 
@@ -346,6 +340,17 @@ public class StaffServiceImpl implements StaffService {
 	@Override
 	public StaffPO getByIdWithoutCache(int id, int companyId) {
 		return staffDao.getByIdAndCid(id, companyId);
+	}
+
+	/**
+	 * 
+	 * @param staffMsg
+	 */
+	@Override
+	public void editMsgSet(StaffMsg staffMsg) {
+		if (staffDao.editMsgSet(staffMsg)<1){
+			throw new RException(ExceptionEnum.EDIT_FAIL);
+		}
 	}
 
 	/**

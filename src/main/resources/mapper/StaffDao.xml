@@ -457,7 +457,9 @@
             detail.LASTLOGINTIME,
             detail.WECHATOPENID,
             detail.LASTLOGINIP,
-            detail.CREATETIME
+            detail.CREATETIME,
+            detail.MSGSET
+
         FROM hm_pub_staff staff LEFT JOIN
             hm_pub_staff_detail detail ON staff.ID = detail.ID
         WHERE staff.ID = #{id}
@@ -786,4 +788,10 @@
 			sf.ID = #{id}
 		AND sf.COMPANYID = #{companyId}
     </select>
+
+    <update id="editMsgSet" parameterType="staffMsg">
+        UPDATE hm_pub_staff_detail
+        SET MSGSET = #{msgSet}
+        WHERE ID = #{id} AND COMPANYID = #{companyId}
+    </update>
 </mapper>

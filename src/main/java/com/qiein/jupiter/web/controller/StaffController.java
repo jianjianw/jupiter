@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import com.qiein.jupiter.web.entity.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,11 +35,6 @@ import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.dto.StaffPasswordDTO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
-import com.qiein.jupiter.web.entity.vo.SearchStaffVO;
-import com.qiein.jupiter.web.entity.vo.StaffChangeVO;
-import com.qiein.jupiter.web.entity.vo.StaffDetailVO;
-import com.qiein.jupiter.web.entity.vo.StaffStateVO;
-import com.qiein.jupiter.web.entity.vo.StaffVO;
 import com.qiein.jupiter.web.service.StaffService;
 
 /**
@@ -552,6 +548,13 @@ public class StaffController extends BaseController {
 	public ResultInfo bindingDing(String code) {
 		StaffPO currentLoginStaff = getCurrentLoginStaff();
 		staffService.bindingDing(currentLoginStaff.getId(), currentLoginStaff.getCompanyId(), code);
+		return ResultInfoUtil.success();
+	}
+
+	@PostMapping("/set_msg")
+	public ResultInfo staffMsgSet(@RequestBody StaffMsg staffMsg){
+		staffMsg.setCompanyId(getCurrentLoginStaff().getCompanyId());
+		staffService.editMsgSet(staffMsg);
 		return ResultInfoUtil.success();
 	}
 }

@@ -9,13 +9,7 @@ import com.qiein.jupiter.web.entity.dto.StaffPasswordDTO;
 import com.qiein.jupiter.web.entity.po.PermissionPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.po.StaffStatusLog;
-import com.qiein.jupiter.web.entity.vo.GroupStaffVO;
-import com.qiein.jupiter.web.entity.vo.GroupsInfoVO;
-import com.qiein.jupiter.web.entity.vo.SearchStaffVO;
-import com.qiein.jupiter.web.entity.vo.StaffChangeVO;
-import com.qiein.jupiter.web.entity.vo.StaffDetailVO;
-import com.qiein.jupiter.web.entity.vo.StaffStateVO;
-import com.qiein.jupiter.web.entity.vo.StaffVO;
+import com.qiein.jupiter.web.entity.vo.*;
 
 /**
  * 员工
@@ -314,4 +308,10 @@ public interface StaffService {
 	 * @return
 	 */
 	StaffPO getByIdWithoutCache(int id, int companyId);
+
+	/**
+	 * 编辑个人消息设置
+	 * @param staffMsg
+	 */
+	void editMsgSet(StaffMsg staffMsg);
 }
