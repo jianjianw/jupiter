@@ -117,11 +117,11 @@ public class JsonFmtUtil {
                 vo.setRemark(getBlindString(StringUtil.replaceAllHTML(info.getString("content"))));
                 vo.setMemo(getBlindString(info.getString("memo")));
             }
-            vo.setYxLevel(getYxLevel(info.getIntValue("yxlevel"), dicMap));
+            vo.setYxLevel(getDicNameByCode(info.getIntValue("yxlevel"), DictionaryConstant.YX_RANK, dicMap));
             vo.setShopName(info.getString("shopname"));
             vo.setAmount(info.getIntValue("amount"));
             vo.setStayAmount(info.getIntValue("stayamount"));
-            vo.setPackageName(getPackageName(info.getIntValue("packagecode"), dicMap));
+            vo.setPackageName(getDicNameByCode(info.getIntValue("packagecode"), DictionaryConstant.TX_NAME, dicMap));
             vo.setSuccessTime(TimeUtil.intMillisToTimeStr(info.getIntValue("successtime")));
             vo.setSuccessPeriod(getSuccessPeriod(info.getIntValue("createtime"), info.getIntValue("successtime")));
             vo.setAppointName(info.getString("appointname"));
@@ -188,38 +188,6 @@ public class JsonFmtUtil {
             return "";
         }
         List<DictionaryPO> list = dicMap.get(StringUtil.camelCaseName(type));
-        if (CollectionUtils.isNotEmpty(list)) {
-            for (DictionaryPO dic : list) {
-                if (dic.getDicCode() == code) {
-                    return dic.getDicName();
-                }
-            }
-        }
-        return "";
-    }
-
-    //获取套系名称
-    public static String getPackageName(int packageCode, Map<String, List<DictionaryPO>> dicMap) {
-        if (NumUtil.isNull(packageCode) || dicMap.isEmpty()) {
-            return "";
-        }
-        List<DictionaryPO> list = dicMap.get(StringUtil.camelCaseName(DictionaryConstant.TX_NAME));
-        if (CollectionUtils.isNotEmpty(list)) {
-            for (DictionaryPO dic : list) {
-                if (dic.getDicCode() == packageCode) {
-                    return dic.getDicName();
-                }
-            }
-        }
-        return "";
-    }
-
-    //获取意向等级
-    public static String getYxLevel(int code, Map<String, List<DictionaryPO>> dicMap) {
-        if (NumUtil.isNull(code) || dicMap.isEmpty()) {
-            return "";
-        }
-        List<DictionaryPO> list = dicMap.get(StringUtil.camelCaseName(DictionaryConstant.YX_RANK));
         if (CollectionUtils.isNotEmpty(list)) {
             for (DictionaryPO dic : list) {
                 if (dic.getDicCode() == code) {
