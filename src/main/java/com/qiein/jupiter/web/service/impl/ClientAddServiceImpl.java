@@ -214,7 +214,7 @@ public class ClientAddServiceImpl implements ClientAddService {
      * @param list
      */
     public JSONObject batchAddDsClient(String list, int channelId, int sourceId, int shopId, int typeId,
-                                       StaffPO staffPO, String adId, String adAddress, String groupId, int appointId) {
+                                       StaffPO staffPO, String adId, String adAddress, String groupId, int appointId, int zxStyle) {
         // 获取邀约客服名称
         String appointName = "";
         if (NumUtil.isNotNull(appointId)) {
@@ -262,6 +262,7 @@ public class ClientAddServiceImpl implements ClientAddService {
             clientVO.setAppointName(appointName);
             clientVO.setGroupId(groupId);
             clientVO.setGroupName(groupName);
+            clientVO.setZxStyle(zxStyle);
             if (StringUtil.isEmpty(clientVO.getKzPhone()) && StringUtil.isEmpty(clientVO.getKzWechat())
                     && StringUtil.isEmpty(clientVO.getKzQq()) && StringUtil.isEmpty(clientVO.getKzWw())) {
                 continue;

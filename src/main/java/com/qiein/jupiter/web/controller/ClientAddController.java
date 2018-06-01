@@ -77,9 +77,11 @@ public class ClientAddController extends BaseController {
         String adAddress = StringUtil.nullToStrTrim(jsonObject.getString("adAddress"));
         String groupId = StringUtil.nullToStrTrim(jsonObject.getString("groupId"));
         int appointId = jsonObject.getIntValue("appointId");
+        int zxStyle = jsonObject.getIntValue("zxStyle");
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        JSONObject result = clientAddService.batchAddDsClient(list, channelId, sourceId, shopId, typeId, currentLoginStaff, adId, adAddress, groupId, appointId);
+        JSONObject result = clientAddService.batchAddDsClient(list, channelId, sourceId, shopId, typeId, currentLoginStaff, adId,
+                adAddress, groupId, appointId, zxStyle);
         ResultInfo rep = new ResultInfo();
         rep.setCode(result.getInteger("code"));
         rep.setMsg(result.getString("msg"));
