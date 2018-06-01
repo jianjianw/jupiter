@@ -175,9 +175,32 @@ public class JsonFmtUtil {
         return "";
     }
 
+    /**
+     * 字典表，根据编码获取中文描述
+     *
+     * @param code
+     * @param type
+     * @param dicMap
+     * @return
+     */
+    public static String getDicNameByCode(int code, String type, Map<String, List<DictionaryPO>> dicMap) {
+        if (NumUtil.isNull(code) || dicMap.isEmpty()) {
+            return "";
+        }
+        List<DictionaryPO> list = dicMap.get(StringUtil.camelCaseName(type));
+        if (CollectionUtils.isNotEmpty(list)) {
+            for (DictionaryPO dic : list) {
+                if (dic.getDicCode() == code) {
+                    return dic.getDicName();
+                }
+            }
+        }
+        return "";
+    }
+
     //获取套系名称
     public static String getPackageName(int packageCode, Map<String, List<DictionaryPO>> dicMap) {
-        if (NumUtil.isNull(packageCode)) {
+        if (NumUtil.isNull(packageCode) || dicMap.isEmpty()) {
             return "";
         }
         List<DictionaryPO> list = dicMap.get(StringUtil.camelCaseName(DictionaryConstant.TX_NAME));
@@ -193,7 +216,7 @@ public class JsonFmtUtil {
 
     //获取意向等级
     public static String getYxLevel(int code, Map<String, List<DictionaryPO>> dicMap) {
-        if (NumUtil.isNull(code)) {
+        if (NumUtil.isNull(code) || dicMap.isEmpty()) {
             return "";
         }
         List<DictionaryPO> list = dicMap.get(StringUtil.camelCaseName(DictionaryConstant.YX_RANK));
