@@ -117,7 +117,7 @@ public class JsonFmtUtil {
                 vo.setRemark(getBlindString(StringUtil.replaceAllHTML(info.getString("content"))));
                 vo.setMemo(getBlindString(info.getString("memo")));
             }
-
+            vo.setYxLevel(getYxLevel(info.getIntValue("yxlevel"), dicMap));
             vo.setShopName(info.getString("shopname"));
             vo.setAmount(info.getIntValue("amount"));
             vo.setStayAmount(info.getIntValue("stayamount"));
@@ -128,12 +128,10 @@ public class JsonFmtUtil {
             vo.setSourceName(sourceMap.get(info.getString("sourceid")) == null ? "" : sourceMap.get(info.getString("sourceid")).getSrcName());
             vo.setStatusName(statusMap.get(info.getString("statusid")) == null ? "" : statusMap.get(info.getString("statusid")).getStatusName());
             vo.setChannelName(channelMap.get(info.getString("channelid")) == null ? "" : channelMap.get(info.getString("channelid")).getChannelName());
-
             vo.setProvince(getProvince(info.getString("address")));
             vo.setCity(getCity(info.getString("address")));
             vo.setKeyWord(info.getString("keyword"));
             vo.setInvalidLabel(info.getString("invalidlabel"));
-
             clientList.add(vo);
         }
         return clientList;
@@ -179,13 +177,29 @@ public class JsonFmtUtil {
 
     //获取套系名称
     public static String getPackageName(int packageCode, Map<String, List<DictionaryPO>> dicMap) {
-        if (packageCode == 0) {
+        if (NumUtil.isNull(packageCode)) {
             return "";
         }
         List<DictionaryPO> list = dicMap.get(StringUtil.camelCaseName(DictionaryConstant.TX_NAME));
         if (CollectionUtils.isNotEmpty(list)) {
             for (DictionaryPO dic : list) {
                 if (dic.getDicCode() == packageCode) {
+                    return dic.getDicName();
+                }
+            }
+        }
+        return "";
+    }
+
+    //获取意向等级
+    public static String getYxLevel(int code, Map<String, List<DictionaryPO>> dicMap) {
+        if (NumUtil.isNull(code)) {
+            return "";
+        }
+        List<DictionaryPO> list = dicMap.get(StringUtil.camelCaseName(DictionaryConstant.YX_RANK));
+        if (CollectionUtils.isNotEmpty(list)) {
+            for (DictionaryPO dic : list) {
+                if (dic.getDicCode() == code) {
                     return dic.getDicName();
                 }
             }

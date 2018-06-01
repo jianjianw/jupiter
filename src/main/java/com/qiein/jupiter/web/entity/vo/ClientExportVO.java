@@ -85,6 +85,11 @@ public class ClientExportVO implements Serializable {
     @Excel(name = "客服", width = 20, height = 6)
     private String appointName;
     /**
+     * 意向等级
+     */
+    @Excel(name = "意向等级", width = 10, height = 6)
+    private String yxLevel;
+    /**
      * 套餐金额
      */
     @Excel(name = "套餐金额", width = 10, height = 6)
@@ -354,5 +359,13 @@ public class ClientExportVO implements Serializable {
 
     public void setSuccessPeriod(String successPeriod) {
         this.successPeriod = successPeriod;
+    }
+
+    public String getYxLevel() {
+        return yxLevel;
+    }
+
+    public void setYxLevel(String yxLevel) {
+        this.yxLevel = yxLevel;
     }
 }
