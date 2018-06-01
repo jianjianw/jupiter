@@ -8,12 +8,20 @@ public class LazyWorkVO{
     private Long allotTime;
     private Integer staffId;
     private String staffName;
+    private String staffPhone;
+    private String headImg;
     private Integer kzNum;
     private Integer statusId;
     private String kzId;
     private Integer channelId;
     private Integer sourceId;
+    private Integer groupId;
+    private String groupName;
     private Integer companyId;
+    /**
+     * 查询时多选的sourceId
+     */
+    private String sourceIds;
     /**
      * 查询时多选的staffid
      */
@@ -34,6 +42,46 @@ public class LazyWorkVO{
      * 当前页码
      */
     private Integer pageSize = 50;
+
+    public Integer getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Integer groupId) {
+        this.groupId = groupId;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public String getHeadImg() {
+        return headImg;
+    }
+
+    public void setHeadImg(String headImg) {
+        this.headImg = headImg;
+    }
+
+    public String getStaffPhone() {
+        return staffPhone;
+    }
+
+    public void setStaffPhone(String staffPhone) {
+        this.staffPhone = staffPhone;
+    }
+
+    public String getSourceIds() {
+        return sourceIds;
+    }
+
+    public void setSourceIds(String sourceIds) {
+        this.sourceIds = sourceIds;
+    }
 
     public Integer getPageNum() {
         return pageNum;
