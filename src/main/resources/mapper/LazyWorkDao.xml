@@ -18,12 +18,13 @@
 
     <select id="getLazyWorkListByUWant" parameterType="map" resultType="lazyWorkVO">
         SELECT
-	        log.ALLOTTIME, log.STAFFID, log.STAFFNAME, info.ID kzNum, log.KZID, info.CHANNELID, info.SOURCEID, s.SRCNAME sourceName ,stf.PHONE staffPhone,stf.HEADIMG headImg,s.SRCIMG sourceImg
+	        log.ALLOTTIME, log.STAFFID, log.STAFFNAME, info.ID kzNum, log.KZID, info.CHANNELID, info.SOURCEID,stf.PHONE staffPhone,stf.HEADIMG headImg, grp.GROUPID,grp.GROUPNAME
         FROM
 	        ${logTab} log
         LEFT JOIN ${infoTab} info ON log.KZID = info.KZID AND info.COMPANYID = #{lw.companyId}
-        LEFT JOIN hm_crm_source s ON s.ID = info.SOURCEID AND log.COMPANYID = s.COMPANYID
         LEFT JOIN hm_pub_staff stf ON stf.ID = log.STAFFID AND stf.COMPANYID = log.COMPANYID
+        LEFT JOIN hm_pub_group_staff gs ON gs.STAFFID = stf.ID AND gs.COMPANYID = log.COMPANYID
+        LEFT JOIN hm_pub_group grp ON grp.GROUPID = gs.GROUPID AND grp.COMPANYID = log.COMPANYID
         <where>
             log.COMPANYID = #{lw.companyId} AND log.STATUSID = 0
             <if test="lw.startTime!=null and lw.endTime!=null">
