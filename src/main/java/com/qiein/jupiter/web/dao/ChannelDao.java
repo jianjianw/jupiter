@@ -7,7 +7,8 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * 渠道dao Created by Administrator on 2018/4/19 0019.
+ * 渠道dao
+ * Created by 叶华葳 on 2018/4/19 0019.
  */
 public interface ChannelDao extends BaseDao<ChannelPO> {
 

@@ -6,7 +6,9 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * Created by Administrator on 2018/5/16 0016.
+ * 怠工Dao
+ * Created by Tt(叶华葳)
+ * on 2018/5/16 0016.
  */
 public interface LazyWorkDao {
     /**

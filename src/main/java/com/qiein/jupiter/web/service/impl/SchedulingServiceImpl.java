@@ -27,7 +27,9 @@ import com.qiein.jupiter.web.entity.vo.StaffDetailVO;
 import com.qiein.jupiter.web.service.SchedulingService;
 
 /**
- * Created by Administrator on 2018/5/10 0010.
+ * 网销排班实现类
+ * Created by Tt(叶华葳)
+ * on 2018/5/10 0010.
  */
 @Service
 public class SchedulingServiceImpl implements SchedulingService {

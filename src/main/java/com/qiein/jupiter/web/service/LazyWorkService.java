@@ -7,7 +7,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Created by Administrator on 2018/5/16 0016.
+ * Created by Tt(叶华葳) 
+ * on 2018/5/16 0016.
  */
 @Service
 public interface LazyWorkService {

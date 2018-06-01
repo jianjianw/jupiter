@@ -4,7 +4,8 @@ import java.io.Serializable;
 
 /**
  * 批量编辑员工状态的VO
- * Created by Administrator on 2018/4/25 0025.
+ * Created by Tt(叶华葳)
+ * on 2018/4/25 0025.
  */
 public class StaffStateVO implements Serializable {
     private static final long serialVersionUID = -7122419973591307115L;

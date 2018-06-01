@@ -3,7 +3,9 @@ package com.qiein.jupiter.web.entity.dto;
 import com.qiein.jupiter.web.entity.BaseEntity;
 
 /**
- * 网销排班员工实体类 Created by Administrator on 2018/5/10 0010.
+ * 网销排班员工实体类
+ * Created by Tt(叶华葳)
+ * on 2018/5/10 0010.
  */
 public class StaffMarsDTO extends BaseEntity {
 

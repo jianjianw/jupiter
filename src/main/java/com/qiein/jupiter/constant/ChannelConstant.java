@@ -5,7 +5,9 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 渠道常量 Created by Administrator on 2018/4/19 0019.
+ * 渠道常量
+ * Created by Tt(叶华葳)
+ * on 2018/4/19 0019.
  */
 public class ChannelConstant {
 

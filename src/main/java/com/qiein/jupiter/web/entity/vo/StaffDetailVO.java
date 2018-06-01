@@ -70,6 +70,19 @@ public class StaffDetailVO extends StaffPO {
      */
     private boolean simplePasswordFlag;
 
+    /**
+     * 个人消息设置
+     */
+    private String msgSet;
+
+    public String getMsgSet() {
+        return msgSet;
+    }
+
+    public void setMsgSet(String msgSet) {
+        this.msgSet = msgSet;
+    }
+
     public boolean isSimplePasswordFlag() {
         return simplePasswordFlag;
     }

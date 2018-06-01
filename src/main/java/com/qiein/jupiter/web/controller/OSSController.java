@@ -13,7 +13,9 @@ import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 
 /**
- * 阿里OSSController Created by Administrator on 2018/4/26 0026.
+ * 阿里OSSController
+ * Created by Tt(叶华葳)
+ * on 2018/4/26 0026.
  */
 @RestController
 @RequestMapping("/oss")
