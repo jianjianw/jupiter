@@ -14,7 +14,8 @@ import java.util.List;
 
 /**
  * 品牌Service
- * Created by Administrator on 2018/4/24 0024.
+ * Created by Tt(叶华葳)
+ * on 2018/4/24 0024.
  */
 @Service
 public class BrandServiceImpl implements BrandService {

@@ -343,7 +343,7 @@ public class StaffServiceImpl implements StaffService {
 	}
 
 	/**
-	 * 
+	 * 编辑员工消息设置
 	 * @param staffMsg
 	 */
 	@Override

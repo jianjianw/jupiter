@@ -7,7 +7,8 @@ import java.util.List;
 
 /**
  * 网销排班部门小组实体类
- * Created by Administrator on 2018/5/8 008.
+ * Created by Tt(叶华葳)
+ * on 2018/5/8 008.
  */
 public class GroupsInfoVO extends GroupPO {
 

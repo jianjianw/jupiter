@@ -4,7 +4,9 @@ import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.web.entity.BaseEntity;
 
 /**
- * Created by Administrator on 2018/4/24 0024.
+ * 品牌
+ * Created by Tt(叶华葳)
+ * on 2018/4/24 0024.
  */
 public class BrandPO extends BaseEntity {
 

@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * 品牌
- * Created by Administrator on 2018/4/24 0024.
+ * Created by Tt(叶华葳)
+ * on 2018/4/24 0024.
  */
 @RestController
 @RequestMapping("/brand")

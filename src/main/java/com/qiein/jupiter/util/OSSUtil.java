@@ -14,7 +14,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * 阿里OSS对象存储工具类，饿汉式单例模式 Created by Administrator on 2018/4/28 0028.
+ * 阿里OSS对象存储工具类，饿汉式单例模式
+ * Created by Tt(叶华葳)
+ * on 2018/4/28 0028.
  */
 public class OSSUtil {
 	// 参考https://blog.csdn.net/wus_shang/article/details/79286756

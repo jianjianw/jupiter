@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Created by Administrator on 2018/4/21 0021.
+ * Created by Tt(叶华葳)
+ * on 2018/4/21 0021.
  */
 @RestController
 @RequestMapping("/image")

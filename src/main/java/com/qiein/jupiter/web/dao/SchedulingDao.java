@@ -9,7 +9,8 @@ import com.qiein.jupiter.web.entity.vo.GroupsInfoVO;
 
 /**
  * 网销排班Dao
- * Created by Administrator on 2018/5/10 0010.
+ * Created by Tt(叶华葳)
+ * on 2018/5/10 0010.
  */
 public interface SchedulingDao extends BaseDao<StaffMarsDTO> {
     /**

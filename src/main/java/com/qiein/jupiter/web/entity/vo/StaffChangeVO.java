@@ -3,7 +3,9 @@ package com.qiein.jupiter.web.entity.vo;
 import java.io.Serializable;
 
 /**
- * 员工交接VO Created by Administrator on 2018/5/14 0014.
+ * 员工交接VO
+ * Created by Tt(叶华葳)
+ * on 2018/5/14 0014.
  */
 public class StaffChangeVO implements Serializable {
 	private static final long serialVersionUID = 1L;

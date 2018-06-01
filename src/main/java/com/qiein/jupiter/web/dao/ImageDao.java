@@ -7,7 +7,8 @@ import java.util.Map;
 
 /**
  * 公共图片Dao
- * Created by Administrator on 2018/4/21 0021.
+ * Created by Tt(叶华葳)
+ * on 2018/4/21 0021.
  */
 public interface ImageDao {
     List<Map<String, Object>> getSrcImgList(@Param("type") String type);

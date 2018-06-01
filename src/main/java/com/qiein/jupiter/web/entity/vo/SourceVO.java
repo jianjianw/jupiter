@@ -3,7 +3,9 @@ package com.qiein.jupiter.web.entity.vo;
 import com.qiein.jupiter.web.entity.po.SourcePO;
 
 /**
- * 渠道VO Created by Administrator on 2018/4/21 0021.
+ * 渠道VO
+ * Created by Tt(叶华葳)
+ * on 2018/4/21 0021.
  */
 public class SourceVO extends SourcePO {
 	private static final long serialVersionUID = 1L;
