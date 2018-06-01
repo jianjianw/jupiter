@@ -24,6 +24,10 @@ public class PmsConstant {
      * 查看所有
      */
     public static final int SEE_ALL = 111;
+    /**
+     * 查看脱敏数据
+     */
+    public static final int SEE_BLIND = 129;
 
 
 }

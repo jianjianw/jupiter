@@ -5,6 +5,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.qiein.jupiter.web.dao.CompanyDao;
+import com.qiein.jupiter.web.dao.PermissionDao;
+import com.qiein.jupiter.web.entity.po.PermissionPO;
+import com.qiein.jupiter.web.entity.vo.CompanyVO;
 import com.qiein.jupiter.web.service.*;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +52,10 @@ public class ExcelServiceImpl implements ExcelService {
     private ChannelService channelService;
     @Autowired
     private DictionaryService dictionaryService;
+    @Autowired
+    private CompanyDao companyDao;
+    @Autowired
+    private PermissionDao permissionDao;
 
     /**
      * 导入客资
@@ -304,12 +312,13 @@ public class ExcelServiceImpl implements ExcelService {
         reqContent.put("sparesql", clientExportDTO.getSpareSql());
         reqContent.put("filtersql", clientExportDTO.getFilterSql());
         reqContent.put("supersql", clientExportDTO.getSuperSql());
-
+        CompanyVO companyVO = companyDao.getVOById(staffPO.getCompanyId());
         String addRstStr = crmBaseApi.doService(reqContent, "excel_export_lp");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if ("100000".equals(jsInfo.getString("code"))) {
             JSONArray jsArr = JsonFmtUtil.strContentToJsonObj(addRstStr).getJSONArray("infoList");
-            List<ClientExportVO> clientList = JsonFmtUtil.jsonArrToClientExportVO(jsArr, staffPO.getCompanyId(), sourceService, statusService, channelService, dictionaryService);
+            List<ClientExportVO> clientList = JsonFmtUtil.jsonArrToClientExportVO(jsArr, staffPO,
+                    sourceService, statusService, channelService, dictionaryService, companyVO, permissionDao);
             return clientList;
         } else {
             throw new RException(jsInfo.getString("msg"));

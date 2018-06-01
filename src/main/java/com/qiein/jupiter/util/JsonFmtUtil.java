@@ -10,11 +10,16 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Constant;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.constant.DictionaryConstant;
+import com.qiein.jupiter.constant.PmsConstant;
 import com.qiein.jupiter.exception.RException;
+import com.qiein.jupiter.web.dao.PermissionDao;
 import com.qiein.jupiter.web.entity.po.DictionaryPO;
+import com.qiein.jupiter.web.entity.po.PermissionPO;
+import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.po.StatusPO;
 import com.qiein.jupiter.web.entity.vo.ChannelDictVO;
 import com.qiein.jupiter.web.entity.vo.ClientExportVO;
+import com.qiein.jupiter.web.entity.vo.CompanyVO;
 import com.qiein.jupiter.web.entity.vo.SourceDictVO;
 import com.qiein.jupiter.web.service.ChannelService;
 import com.qiein.jupiter.web.service.DictionaryService;
@@ -59,13 +64,29 @@ public class JsonFmtUtil {
     }
 
     /*-- JSONArray转客资导出客资集合 --*/
-    public static List<ClientExportVO> jsonArrToClientExportVO(JSONArray jsArr, int companyId, SourceService sourceService,
-                                                               StatusService statusService, ChannelService channelService, DictionaryService dictionaryService) {
-        Map<String, SourceDictVO> sourceMap = sourceService.getSourcePageMap(companyId);
-        Map<String, StatusPO> statusMap = statusService.getStatusDictMap(companyId);
-        Map<String, ChannelDictVO> channelMap = channelService.getChannelDict(companyId);
-        Map<String, List<DictionaryPO>> dicMap = dictionaryService.getDictMapByCid(companyId);
-
+    public static List<ClientExportVO> jsonArrToClientExportVO(JSONArray jsArr, StaffPO staffPO, SourceService sourceService,
+                                                               StatusService statusService, ChannelService channelService,
+                                                               DictionaryService dictionaryService, CompanyVO companyVO, PermissionDao permissionDao) {
+        Map<String, SourceDictVO> sourceMap = sourceService.getSourcePageMap(staffPO.getCompanyId());
+        Map<String, StatusPO> statusMap = statusService.getStatusDictMap(staffPO.getCompanyId());
+        Map<String, ChannelDictVO> channelMap = channelService.getChannelDict(staffPO.getCompanyId());
+        Map<String, List<DictionaryPO>> dicMap = dictionaryService.getDictMapByCid(staffPO.getCompanyId());
+        //默认只看脱敏数据
+        boolean blind = true;
+        //如果没有开启，就看显示全部
+        if (companyVO != null && !companyVO.isNotSelfBlind()) {
+            blind = false;
+        }
+        if (blind) {
+            // 如果开启，但是又查看全部权限，，查看全部数据
+            List<PermissionPO> permissionPOList = permissionDao.getStaffPermission(staffPO.getId(), staffPO.getCompanyId());
+            for (PermissionPO pms : permissionPOList) {
+                if (pms.getPermissionId() == PmsConstant.SEE_BLIND) {
+                    blind = false;
+                    break;
+                }
+            }
+        }
         List<ClientExportVO> clientList = new ArrayList<ClientExportVO>();
         for (int i = jsArr.size() - 1; i >= 0; i--) {
             JSONObject info = (JSONObject) jsArr.getJSONObject(i).get("info");
@@ -76,10 +97,27 @@ public class JsonFmtUtil {
             vo.setReceiveTime(TimeUtil.intMillisToTimeStr(info.getIntValue("receivetime")));
             vo.setReceivePeriod(getReceivePeriod(info.getIntValue("createtime"), info.getIntValue("receivetime")));//领取周期
             vo.setCollectorName(info.getString("collectorname"));
-            vo.setKzPhone(info.getString("kzphone"));
-            vo.setKzWechat(info.getString("kzwechat"));
-            vo.setKzQq(info.getString("kzqq"));
-            vo.setKzWw(info.getString("kzww"));
+            //查看全部
+            if (!blind || (NumUtil.isNotNull(info.getIntValue("collectorid")) && info.getIntValue("collectorid") == staffPO.getId())
+                    || (NumUtil.isNotNull(info.getIntValue("appointorid")) && info.getIntValue("appointorid") == staffPO.getId())
+                    || (NumUtil.isNotNull(info.getIntValue("promotorid")) && info.getIntValue("promotorid") == staffPO.getId())
+                    || (NumUtil.isNotNull(info.getIntValue("receptorid")) && info.getIntValue("receptorid") == staffPO.getId())) {
+                vo.setKzPhone(info.getString("kzphone"));
+                vo.setKzWechat(info.getString("kzwechat"));
+                vo.setKzQq(info.getString("kzqq"));
+                vo.setKzWw(info.getString("kzww"));
+                vo.setRemark(StringUtil.replaceAllHTML(info.getString("content")));
+                vo.setMemo(info.getString("memo"));
+            } else {
+                //查看脱敏数据
+                vo.setKzPhone(getBlindString(info.getString("kzphone")));
+                vo.setKzWechat(getBlindString(info.getString("kzwechat")));
+                vo.setKzQq(getBlindString(info.getString("kzqq")));
+                vo.setKzWw(getBlindString(info.getString("kzww")));
+                vo.setRemark(getBlindString(StringUtil.replaceAllHTML(info.getString("content"))));
+                vo.setMemo(getBlindString(info.getString("memo")));
+            }
+
             vo.setShopName(info.getString("shopname"));
             vo.setAmount(info.getIntValue("amount"));
             vo.setStayAmount(info.getIntValue("stayamount"));
@@ -90,15 +128,29 @@ public class JsonFmtUtil {
             vo.setSourceName(sourceMap.get(info.getString("sourceid")) == null ? "" : sourceMap.get(info.getString("sourceid")).getSrcName());
             vo.setStatusName(statusMap.get(info.getString("statusid")) == null ? "" : statusMap.get(info.getString("statusid")).getStatusName());
             vo.setChannelName(channelMap.get(info.getString("channelid")) == null ? "" : channelMap.get(info.getString("channelid")).getChannelName());
-            vo.setRemark(StringUtil.replaceAllHTML(info.getString("content")));
+
             vo.setProvince(getProvince(info.getString("address")));
             vo.setCity(getCity(info.getString("address")));
             vo.setKeyWord(info.getString("keyword"));
             vo.setInvalidLabel(info.getString("invalidlabel"));
-            vo.setMemo(info.getString("memo"));
+
             clientList.add(vo);
         }
         return clientList;
+    }
+
+    //获取脱敏后的数据
+    public static String getBlindString(String str) {
+        if (StringUtil.isEmpty(str)) {
+            return "";
+        }
+        if (str.length() == 1) {
+            return str + "*";
+        }
+        if (str.length() > 1) {
+            return str.substring(0, 1) + "******" + str.substring(str.length() - 1, str.length());
+        }
+        return "";
     }
 
     //获取省份
