@@ -219,28 +219,12 @@ public class SchedulingServiceImpl implements SchedulingService {
 			staffMarsDTO.setLimitChannelNames("");
 		}
 
+
+
 		// 员工详情
 		StaffDetailVO staff = staffDao.getStaffDetailVO(staffMarsDTO.getId(), staffMarsDTO.getCompanyId());
-		if (staffMarsDTO.getLimitDay() != null) { // 改了日接单限额
-			if (staff.getTodayNum() >= staffMarsDTO.getLimitDay()) { // 如果今日接单数大于等于接单上限，设置为满限状态
-				staffMarsDTO.setStatusFlag(9);
-				staffStatusLogDao.insert(new StaffStatusLog(staffMarsDTO.getId(), staffMarsDTO.getStatusFlag(), staffMarsDTO.getOperaId(),
-						staffMarsDTO.getOperaName(), staffMarsDTO.getCompanyId(),
-						staffMarsDTO.getOperaName() + " 更改了 " + staff.getNickName() + " 的接单上限，状态被修改为满限"));
-			} else {
-				if (staff.getStatusFlag() == 9) { // 如果之前是满限状态，更改为已下线
-					staffMarsDTO.setStatusFlag(0);
-					// TODO 添加上下线日志 修改上下线时间
-					staffStatusLogDao.insert(new StaffStatusLog(staffMarsDTO.getId(), staffMarsDTO.getStatusFlag(), staffMarsDTO.getOperaId(),
-							staffMarsDTO.getOperaName(), staffMarsDTO.getCompanyId(),
-							staffMarsDTO.getOperaName() + " 将 " + staff.getNickName() + " 状态修改为下线"));
-					StaffDetailPO staffDetailPO = new StaffDetailPO();
-					staffDetailPO.setLastLogoutIp("");
-					staffDao.updateStaffLogoutInfo(staffDetailPO);
-				}
-			}
-		}
 
+		//修改员工状态
 		if (staffMarsDTO.getStatusFlag() != null) {
 			if (staffMarsDTO.getStatusFlag() == 0 || staffMarsDTO.getStatusFlag() == 1) {
 				StaffDetailPO staffDetailPO = new StaffDetailPO();
@@ -264,6 +248,27 @@ public class SchedulingServiceImpl implements SchedulingService {
 						staffMarsDTO.getOperaName() + " 将 " + staff.getNickName() + " 的状态修改为停单"));
 			}
 		}
+
+		if (staffMarsDTO.getLimitDay() != null) { // 改了日接单限额
+			if (staff.getTodayNum() >= staffMarsDTO.getLimitDay()) { // 如果今日接单数大于等于接单上限，设置为满限状态
+				staffMarsDTO.setStatusFlag(9);
+				staffStatusLogDao.insert(new StaffStatusLog(staffMarsDTO.getId(), staffMarsDTO.getStatusFlag(), staffMarsDTO.getOperaId(),
+						staffMarsDTO.getOperaName(), staffMarsDTO.getCompanyId(),
+						staffMarsDTO.getOperaName() + " 更改了 " + staff.getNickName() + " 的接单上限，状态被修改为满限"));
+			} else {
+				if (staff.getStatusFlag() == 9) { // 如果之前是满限状态，更改为已下线
+					staffMarsDTO.setStatusFlag(0);
+					// TODO 添加上下线日志 修改上下线时间
+					staffStatusLogDao.insert(new StaffStatusLog(staffMarsDTO.getId(), staffMarsDTO.getStatusFlag(), staffMarsDTO.getOperaId(),
+							staffMarsDTO.getOperaName(), staffMarsDTO.getCompanyId(),
+							staffMarsDTO.getOperaName() + " 将 " + staff.getNickName() + " 状态修改为下线"));
+					StaffDetailPO staffDetailPO = new StaffDetailPO();
+					staffDetailPO.setLastLogoutIp("");
+					staffDao.updateStaffLogoutInfo(staffDetailPO);
+				}
+			}
+		}
+
 
 		if (schedulingDao.update(staffMarsDTO) == 0) {
 			throw new RException(ExceptionEnum.EDIT_FAIL);
