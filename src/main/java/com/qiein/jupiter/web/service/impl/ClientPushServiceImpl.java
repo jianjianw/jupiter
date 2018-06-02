@@ -788,5 +788,4 @@ public class ClientPushServiceImpl implements ClientPushService {
 			clientTimerDao.batchDelAready(idsDelInt);
 		}
 	}
-
 }
