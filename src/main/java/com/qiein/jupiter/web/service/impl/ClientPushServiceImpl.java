@@ -632,6 +632,10 @@ public class ClientPushServiceImpl implements ClientPushService {
 		// 计算是否满限
 		updateNum = staffDao.checkOverFlowToday(companyId, staffId);
 		if (1 == updateNum) {
+			// 记录状态修改日志
+			statusLogDao.insert(
+					new StaffStatusLog(staffId, StaffStatusEnum.LIMIT.getStatusId(), CommonConstant.SYSTEM_OPERA_ID,
+							CommonConstant.SYSTEM_OPERA_NAME, companyId, ClientLogConst.LIMITDAY_OVERFLOW));
 			// 推送状态重载消息
 			GoEasyUtil.pushStatusRefresh(companyId, staffId);
 		}
