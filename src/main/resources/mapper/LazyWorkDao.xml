@@ -11,7 +11,7 @@
         WHERE
 	        log.COMPANYID = #{companyId}
         AND log.STAFFID = #{staffId}
-
+        AND log.STATUSID = 0
         AND log.ALLOTTIME &gt; UNIX_TIMESTAMP(DATE(SYSDATE()))
         ORDER BY log.ALLOTTIME DESC
     </select>

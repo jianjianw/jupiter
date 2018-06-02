@@ -3,6 +3,7 @@ package com.qiein.jupiter.web.service.impl;
 import java.util.Arrays;
 import java.util.List;
 
+import com.qiein.jupiter.web.dao.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,10 +15,6 @@ import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.CollectionUtils;
 import com.qiein.jupiter.util.StringUtil;
-import com.qiein.jupiter.web.dao.GroupDao;
-import com.qiein.jupiter.web.dao.GroupStaffDao;
-import com.qiein.jupiter.web.dao.RolePermissionDao;
-import com.qiein.jupiter.web.dao.StaffDao;
 import com.qiein.jupiter.web.entity.po.GroupPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.BaseStaffVO;
@@ -42,6 +39,8 @@ public class GroupServiceImpl implements GroupService {
     private StaffDao staffDao;
     @Autowired
     private RolePermissionDao rolePermissionDao;
+    @Autowired
+    private ShopChannelGroupDao shopChannelGroupDao;
 
     /**
      * @param companyId
@@ -283,6 +282,7 @@ public class GroupServiceImpl implements GroupService {
      * @return
      */
     @Override
+    @Transactional
     public GroupPO delete(int id, int companyId) {
         // 先判断是否有下属部门
         GroupPO groupPO = groupDao.getById(id);
@@ -298,10 +298,12 @@ public class GroupServiceImpl implements GroupService {
         if (CollectionUtils.isNotEmpty(groupStaffs)) {
             throw new RException(ExceptionEnum.GROUP_HAVE_STAFF);
         }
+        //删除
         if (1 != groupDao.delete(id)) {
-            throw new RException(ExceptionEnum.UNKNOW_ERROR);
+            throw new RException(ExceptionEnum.DELETE_FAIL);
         }
-
+        //删除拍摄地-渠道-组关联表中的
+        shopChannelGroupDao.delByGroupId(companyId, groupPO.getGroupId());
         return groupPO;
     }
 
