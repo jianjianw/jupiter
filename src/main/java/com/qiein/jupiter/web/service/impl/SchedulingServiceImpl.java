@@ -224,6 +224,9 @@ public class SchedulingServiceImpl implements SchedulingService {
 		if (staffMarsDTO.getLimitDay() != null) { // 改了日接单限额
 			if (staff.getTodayNum() >= staffMarsDTO.getLimitDay()) { // 如果今日接单数大于等于接单上限，设置为满限状态
 				staffMarsDTO.setStatusFlag(9);
+				staffStatusLogDao.insert(new StaffStatusLog(staffMarsDTO.getId(), staffMarsDTO.getStatusFlag(), staffMarsDTO.getOperaId(),
+						staffMarsDTO.getOperaName(), staffMarsDTO.getCompanyId(),
+						staffMarsDTO.getOperaName() + " 更改了 " + staff.getNickName() + " 的接单上限，状态被修改为满限"));
 			} else {
 				if (staff.getStatusFlag() == 9) { // 如果之前是满限状态，更改为已下线
 					staffMarsDTO.setStatusFlag(0);
@@ -255,6 +258,10 @@ public class SchedulingServiceImpl implements SchedulingService {
 					staffDetailPO.setLastLoginIp("");
 					staffDao.updateStaffLoginInfo(staffDetailPO);
 				}
+			}else if (staffMarsDTO.getStatusFlag() == 8){
+				staffStatusLogDao.insert(new StaffStatusLog(staffMarsDTO.getId(), staffMarsDTO.getStatusFlag(), staffMarsDTO.getOperaId(),
+						staffMarsDTO.getOperaName(), staffMarsDTO.getCompanyId(),
+						staffMarsDTO.getOperaName() + " 将 " + staff.getNickName() + " 的状态修改为停单"));
 			}
 		}
 
