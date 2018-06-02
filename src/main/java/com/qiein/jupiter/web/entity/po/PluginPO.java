@@ -3,7 +3,8 @@ package com.qiein.jupiter.web.entity.po;
 import com.qiein.jupiter.web.entity.BaseEntity;
 
 /**
- * Created by Tt on 2018/5/26 0026.
+ * Created by Tt(叶华葳)
+ * on 2018/5/26 0026.
  */
 public class PluginPO extends BaseEntity {
 	private static final long serialVersionUID = 1L;

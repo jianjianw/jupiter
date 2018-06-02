@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiein.jupiter.web.dao.OnLineTimeDao">
+
+    <resultMap id="timeMap" type="com.qiein.jupiter.web.entity.po.OnLineTimePO">
+        <id column="ID" jdbcType="INTEGER" property="id"/>
+        <result column="STAFFID" jdbcType="INTEGER" property="staffId"/>
+        <result column="STAFFNAME" jdbcType="INTEGER" property="staffName"/>
+        <result column="ONLINETIME" jdbcType="INTEGER" property="onLineTime"/>
+        <result column="COMPANYID" jdbcType="INTEGER" property="companyId"/>
+        <result column="LINEDAY" jdbcType="INTEGER" property="lineDay"/>
+    </resultMap>
+
+    <sql id="baseColumn">
+        log.ID, log.STAFFID, log.STAFFNAME, log.ONLINETIME, log.COMPANYID, log.LINEDAY
+    </sql>
+
+    <!-- 新增在线时长日志 -->
+    <insert id="addOnLineTimeLog" parameterType="map">
+        INSERT INTO ${logTabName} (
+			STAFFID, STAFFNAME, ONLINETIME, COMPANYID, LINEDAY
+		)
+		VALUES
+			( #{staffId}, #{staffName}, 0, #{companyId}, UNIX_TIMESTAMP(CAST(SYSDATE()AS DATE))
+		)
+    </insert>
+
+    <!--修改在线时长时间-->
+    <update id="updateOnLineTime" parameterType="map">
+        UPDATE ${logTabName}
+        SET ONLINETIME = ONLINETIME + #{time}
+        WHERE COMPANYID = #{companyId}
+        AND STAFFID = #{staffId}
+        AND LINEDAY = UNIX_TIMESTAMP(CAST(SYSDATE()AS DATE))
+    </update>
+
+    <!--根据员工ID和日期，查询日志-->
+    <select id="getLogByStaffAndDay" parameterType="map" resultMap="timeMap">
+        SELECT
+        <include refid="baseColumn"/>
+        FROM ${logTabName} log
+        WHERE COMPANYID = #{companyId}
+        AND STAFFID = #{staffId}
+        AND LINEDAY = UNIX_TIMESTAMP(CAST(SYSDATE()AS DATE))
+    </select>
+</mapper>

@@ -3,6 +3,11 @@ package com.qiein.jupiter.web.service.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
+import com.qiein.jupiter.util.DBSplitUtil;
+import com.qiein.jupiter.web.dao.ClientInfoDao;
+import com.qiein.jupiter.web.dao.NewsDao;
+import com.qiein.jupiter.web.entity.dto.ClientGoEasyDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +32,10 @@ public class ClientTrackServiceImpl implements ClientTrackService {
     private CrmBaseApi crmBaseApi;
     @Autowired
     private StaffDao staffDao;
+    @Autowired
+    private ClientInfoDao clientInfoDao;
+    @Autowired
+    private NewsDao newsDao;
 
     /**
      * 批量删除客资
@@ -76,8 +85,8 @@ public class ClientTrackServiceImpl implements ClientTrackService {
         String addRstStr = crmBaseApi.doService(reqContent, "clientBatchTransferLp");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if ("100000".equals(jsInfo.getString("code"))) {
-            //TODO 推送
-            System.out.println("转移成功");
+            //推送给目标员工
+            GoEasyUtil.pushTransfer(staffPO, toStaffId, kzIds, newsDao, clientInfoDao);
         } else {
             throw new RException(jsInfo.getString("msg"));
         }
