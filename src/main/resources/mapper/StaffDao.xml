@@ -554,7 +554,8 @@
             AND INSTR(sf.LIMITCHANNELIDS, CONCAT(',', #{channelId}, ',')) = 0
             AND INSTR(sf.LIMITSHOPIDS, CONCAT(',', #{shopId}, ',')) = 0
             AND (UNIX_TIMESTAMP(NOW()) - LASTPUSHTIME) &gt; #{interval}
-            AND sf.TODAYNUM &lt; LIMITDAY;
+            AND sf.TODAYNUM &lt; LIMITDAY
+        ORDER BY sf.LASTPUSHTIME ASC;    
     </select>
 
     <!--获取客服指定时间内渠道和拍摄地客资的领取情况-->

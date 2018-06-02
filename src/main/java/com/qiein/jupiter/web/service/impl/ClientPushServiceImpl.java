@@ -552,7 +552,7 @@ public class ClientPushServiceImpl implements ClientPushService {
 				if (appointor.getStaffId() == todayNum.getStaffId()) {
 					appointor.setTodayNum(todayNum.getTodayNum());
 					appointor.doCalculateAllotNumDiffPID();
-					continue;
+					break;
 				}
 			}
 			if (appointor.getDiffPid() > maxDiffPid) {
@@ -584,7 +584,7 @@ public class ClientPushServiceImpl implements ClientPushService {
 				if (rela.getGroupId().equals(todayNum.getGroupId())) {
 					rela.setTodayNum(todayNum.getKzNum());
 					rela.doCalculateAllotNumDiffPID();
-					continue;
+					break;
 				}
 			}
 			if (rela.getDiffPid() > maxDiffPid) {
