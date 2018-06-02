@@ -180,7 +180,7 @@ public class CommonConstant {
     /**
      * 在线时长时间，，默认180秒更新一次
      */
-    public final static int DEFAULT_ONLINE_TIME = 180;
+    public final static int DEFAULT_ONLINE_TIME = 120;
 
     /**
      * request信息

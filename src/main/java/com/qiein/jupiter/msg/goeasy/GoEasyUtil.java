@@ -598,10 +598,9 @@ public class GoEasyUtil {
             return;
         }
         String[] kzArr = kzIds.split(CommonConstant.STR_SEPARATOR);
-        String head = "";
+        String head = staffPO.getNickName() + " 转移给您" + kzArr.length + "个客资";
         StringBuffer sb = new StringBuffer();
         if (kzArr.length == 1) {
-            head = "您好，" + staffPO.getNickName() + "转移客资给您";
             ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(kzArr[0], DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
                     DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
             sb.append("编号：" + info.getId() + "<br/><br/>");
@@ -622,13 +621,11 @@ public class GoEasyUtil {
             }
             sb.append("<br/>渠道：" + StringUtil.nullToStrTrim(info.getChannelName()) + "<br/>");
             sb.append("来源：" + StringUtil.nullToStrTrim(info.getSourceName()) + "<br/><br/>");
-            sb.append("备注：" + StringUtil.nullToStrTrim(info.getMemo()));
 
             pushCommon(staffPO.getCompanyId(), toStaffId, head, sb.toString());
             newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_COMMON, head, sb.toString().replaceAll("<br/>", "；"), info.getKzId(),
                     toStaffId, staffPO.getCompanyId(), DBSplitUtil.getNewsTabName(staffPO.getCompanyId())));
         } else {
-            head = "您好，" + staffPO.getNickName() + "转移给您" + kzArr.length + " 个客资。";
             pushCommon(staffPO.getCompanyId(), toStaffId, head, "");
             newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_COMMON, head, "", null,
                     toStaffId, staffPO.getCompanyId(), DBSplitUtil.getNewsTabName(staffPO.getCompanyId())));

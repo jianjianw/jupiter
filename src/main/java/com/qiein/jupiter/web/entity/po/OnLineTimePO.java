@@ -9,6 +9,7 @@ import com.qiein.jupiter.web.entity.BaseEntity;
  */
 
 public class OnLineTimePO extends BaseEntity {
+    private static final long serialVersionUID = -1369747010643612987L;
     /**
      * 员工ID
      */
