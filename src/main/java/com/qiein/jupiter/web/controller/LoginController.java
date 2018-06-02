@@ -143,7 +143,6 @@ public class LoginController extends BaseController {
         // 校验用户验证码
         checkLoginVerifyCode(loginUserVO);
         String userName = loginUserVO.getUserName();
-        String password = loginUserVO.getPassword();
         loginUserVO.setIp(getIp());
         // 校验公司Id
         if (loginUserVO.getCompanyId() == 0) {

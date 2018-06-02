@@ -13,7 +13,6 @@ import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.ChannelDao;
 import com.qiein.jupiter.web.dao.GroupDao;
-import com.qiein.jupiter.web.dao.GroupStaffDao;
 import com.qiein.jupiter.web.dao.RolePermissionDao;
 import com.qiein.jupiter.web.dao.SchedulingDao;
 import com.qiein.jupiter.web.dao.ShopDao;
@@ -51,9 +50,6 @@ public class SchedulingServiceImpl implements SchedulingService {
 
 	@Autowired
 	private GroupDao groupDao;
-
-	@Autowired
-	private GroupStaffDao groupStaffDao;
 
 	@Autowired
 	private StaffStatusLogDao staffStatusLogDao;
@@ -130,8 +126,8 @@ public class SchedulingServiceImpl implements SchedulingService {
 		List<Integer> roleList = rolePermissionDao.getStaffPmsList(companyId, staffId);
 		// 获取员工所在小组或主管小组列表
 		List<String> groupList = groupDao.getGroupByStaffAndType(companyId, staffId, null);
-		// 获取各小组内人员的接单数和在线人数
-		List<GroupsInfoVO> infoList = groupStaffDao.getStaffMarsInfo(companyId);
+//		// 获取各小组内人员的接单数和在线人数
+//		List<GroupsInfoVO> infoList = groupStaffDao.getStaffMarsInfo(companyId);
 
 		if (roleList.contains(PmsConstant.SEE_ALL) || roleList.contains(PmsConstant.SEE_MY_DEPT)) { // 查看所有
 																									// 所有的都显示
