@@ -286,7 +286,7 @@ public interface StaffService {
     /**
      * 员工心跳
      */
-    boolean heartBeat(int staffId, String staffName, int companyId, String ip);
+    boolean heartBeat(StaffPO staffPO, String ip);
 
     /**
      * 绑定微信

@@ -776,19 +776,20 @@ public class StaffServiceImpl implements StaffService {
      * 检测
      */
     @Override
-    public boolean heartBeat(int staffId, String staffName, int companyId, String ip) {
+    public boolean heartBeat(StaffPO staffPO, String ip) {
         // 更新心跳时间
-        staffDao.updateStaffHeartTime(staffId, companyId);
-        //更新在线时间
-        OnLineTimePO onLineTimePO = onLineTimeDao.getLogByStaffAndDay(staffId, companyId, DBSplitUtil.getOnLineTimeLogTabName(companyId));
-        if (onLineTimePO == null) {
-            onLineTimeDao.addOnLineTimeLog(staffId, companyId, staffName, DBSplitUtil.getOnLineTimeLogTabName(companyId));
-            onLineTimeDao.updateOnLineTime(staffId, companyId, DBSplitUtil.getOnLineTimeLogTabName(companyId), CommonConstant.DEFAULT_ONLINE_TIME);
-        } else {
-            onLineTimeDao.updateOnLineTime(staffId, companyId, DBSplitUtil.getOnLineTimeLogTabName(companyId), CommonConstant.DEFAULT_ONLINE_TIME);
+        staffDao.updateStaffHeartTime(staffPO.getId(), staffPO.getCompanyId());
+        //如果在线，更新在线时间
+        if (staffPO.getStatusFlag() == StaffStatusEnum.OnLine.getStatusId()) {
+            OnLineTimePO onLineTimePO = onLineTimeDao.getLogByStaffAndDay(staffPO.getId(), staffPO.getCompanyId(), DBSplitUtil.getOnLineTimeLogTabName(staffPO.getCompanyId()));
+            if (onLineTimePO == null) {
+                onLineTimeDao.addOnLineTimeLog(staffPO.getId(), staffPO.getCompanyId(), staffPO.getNickName(), DBSplitUtil.getOnLineTimeLogTabName(staffPO.getCompanyId()));
+                onLineTimeDao.updateOnLineTime(staffPO.getId(), staffPO.getCompanyId(), DBSplitUtil.getOnLineTimeLogTabName(staffPO.getCompanyId()), CommonConstant.DEFAULT_ONLINE_TIME);
+            } else {
+                onLineTimeDao.updateOnLineTime(staffPO.getId(), staffPO.getCompanyId(), DBSplitUtil.getOnLineTimeLogTabName(staffPO.getCompanyId()), CommonConstant.DEFAULT_ONLINE_TIME);
+            }
         }
-
-        return ipWhiteService.checkIpLimit(staffId, companyId, ip);
+        return ipWhiteService.checkIpLimit(staffPO.getId(), staffPO.getCompanyId(), ip);
     }
 
     /**

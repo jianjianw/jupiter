@@ -521,7 +521,7 @@ public class StaffController extends BaseController {
     @GetMapping("/heart_beat")
     public ResultInfo staffHeartBeat() {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        boolean b = staffService.heartBeat(currentLoginStaff.getId(), currentLoginStaff.getNickName(), currentLoginStaff.getCompanyId(), getIp());
+        boolean b = staffService.heartBeat(currentLoginStaff, getIp());
         if (b) {
             return ResultInfoUtil.success();
         } else {
