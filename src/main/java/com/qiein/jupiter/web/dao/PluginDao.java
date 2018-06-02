@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.dao;
 
 import com.qiein.jupiter.web.entity.po.CompanyPluginPO;
 import com.qiein.jupiter.web.entity.po.PluginPO;
+import com.qiein.jupiter.web.entity.vo.PluginVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -14,10 +15,10 @@ import java.util.List;
 public interface PluginDao {
     /**
      * 获取公司插件列表
-     * @param companyId
+     * @paramcompanyId
      * @return
      */
-    List<PluginPO> getListByCompanyId(@Param("companyId") int companyId);
+    List<PluginVO> getListByCompanyId(@Param("companyId") int companyId);
 
     /**
      * 获取所有插件列表

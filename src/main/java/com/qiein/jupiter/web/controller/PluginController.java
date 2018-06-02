@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.qiein.jupiter.web.entity.vo.PluginVO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +19,7 @@ import com.qiein.jupiter.web.entity.po.PluginPO;
 import com.qiein.jupiter.web.service.PluginService;
 
 /**
- * Created by Tt on 2018/5/26 0026.
+ * Created by Tt(叶华葳) on 2018/5/26 0026.
  */
 @RestController
 @RequestMapping("/plugin")
@@ -45,7 +46,7 @@ public class PluginController extends BaseController {
 	 */
 	@GetMapping("/list")
 	public ResultInfo getCompanyPlugin() {
-		List<PluginPO> list = pluginService.getListByCompanyId(getCurrentLoginStaff().getCompanyId());
+		List<PluginVO> list = pluginService.getListByCompanyId(getCurrentLoginStaff().getCompanyId());
 		return ResultInfoUtil.success(list);
 	}
 

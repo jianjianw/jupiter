@@ -3,6 +3,7 @@ package com.qiein.jupiter.web.service.impl;
 import com.qiein.jupiter.web.dao.PluginDao;
 import com.qiein.jupiter.web.entity.po.CompanyPluginPO;
 import com.qiein.jupiter.web.entity.po.PluginPO;
+import com.qiein.jupiter.web.entity.vo.PluginVO;
 import com.qiein.jupiter.web.service.PluginService;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,7 @@ public class PluginServiceImpl implements PluginService{
      * @return
      */
     @Override
-    public List<PluginPO> getListByCompanyId(int companyId) {
+    public List<PluginVO> getListByCompanyId(int companyId) {
         return pluginDao.getListByCompanyId(companyId);
     }
 
