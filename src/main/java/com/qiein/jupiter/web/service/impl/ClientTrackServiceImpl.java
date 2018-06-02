@@ -86,7 +86,7 @@ public class ClientTrackServiceImpl implements ClientTrackService {
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if ("100000".equals(jsInfo.getString("code"))) {
             //推送给目标员工
-            GoEasyUtil.pushTransfer(staffPO.getCompanyId(), toStaffId, kzIds, newsDao, clientInfoDao);
+            GoEasyUtil.pushTransfer(staffPO, toStaffId, kzIds, newsDao, clientInfoDao);
         } else {
             throw new RException(jsInfo.getString("msg"));
         }

@@ -3,6 +3,7 @@ package com.qiein.jupiter.msg.goeasy;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.dao.ClientInfoDao;
+import com.qiein.jupiter.web.entity.po.StaffPO;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
@@ -585,13 +586,14 @@ public class GoEasyUtil {
     /**
      * 客资转移消息
      *
-     * @param companyId
-     * @param staffId
-     * @param info
+     * @param staffPO
+     * @param toStaffId
+     * @param kzIds
      * @param newsDao
+     * @param clientInfoDao
      */
 
-    public static void pushTransfer(int companyId, int staffId, String kzIds, NewsDao newsDao, ClientInfoDao clientInfoDao) {
+    public static void pushTransfer(StaffPO staffPO, int toStaffId, String kzIds, NewsDao newsDao, ClientInfoDao clientInfoDao) {
         if (StringUtil.isEmpty(kzIds)) {
             return;
         }
@@ -599,9 +601,9 @@ public class GoEasyUtil {
         String head = "";
         StringBuffer sb = new StringBuffer();
         if (kzArr.length == 1) {
-            head = "您好，您有新转移给您的客资";
-            ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(kzArr[0], DBSplitUtil.getInfoTabName(companyId),
-                    DBSplitUtil.getDetailTabName(companyId));
+            head = "您好，" + staffPO.getNickName() + "转移客资给您";
+            ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(kzArr[0], DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
+                    DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
             sb.append("编号：" + info.getId() + "<br/><br/>");
             if (StringUtil.isNotEmpty(info.getKzName())) {
                 sb.append("姓名：" + StringUtil.nullToStrTrim(info.getKzName()) + "<br/>");
@@ -622,14 +624,14 @@ public class GoEasyUtil {
             sb.append("来源：" + StringUtil.nullToStrTrim(info.getSourceName()) + "<br/><br/>");
             sb.append("备注：" + StringUtil.nullToStrTrim(info.getMemo()));
 
-            pushCommon(companyId, staffId, head, sb.toString());
+            pushCommon(staffPO.getCompanyId(), toStaffId, head, sb.toString());
             newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_COMMON, head, sb.toString().replaceAll("<br/>", "；"), info.getKzId(),
-                    staffId, companyId, DBSplitUtil.getNewsTabName(companyId)));
+                    toStaffId, staffPO.getCompanyId(), DBSplitUtil.getNewsTabName(staffPO.getCompanyId())));
         } else {
-            head = "您好，您有新转移给您的客资 - " + kzArr.length + " 个。";
-            pushCommon(companyId, staffId, head, "");
+            head = "您好，" + staffPO.getNickName() + "转移给您" + kzArr.length + " 个客资。";
+            pushCommon(staffPO.getCompanyId(), toStaffId, head, "");
             newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_COMMON, head, "", null,
-                    staffId, companyId, DBSplitUtil.getNewsTabName(companyId)));
+                    toStaffId, staffPO.getCompanyId(), DBSplitUtil.getNewsTabName(staffPO.getCompanyId())));
         }
     }
 
