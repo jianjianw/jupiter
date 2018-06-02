@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.service;
 
 import com.qiein.jupiter.web.entity.po.CompanyPluginPO;
 import com.qiein.jupiter.web.entity.po.PluginPO;
+import com.qiein.jupiter.web.entity.vo.PluginVO;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ public interface PluginService {
      * @param companyId
      * @return
      */
-    List<PluginPO> getListByCompanyId(int companyId);
+    List<PluginVO> getListByCompanyId(int companyId);
 
     /**
      * 获取所有插件列表

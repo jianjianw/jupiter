@@ -23,12 +23,13 @@
     </select>
 
     <!--获取公司插件列表-->
-    <select id="getListByCompanyId" resultMap="PluginPO">
+    <select id="getListByCompanyId" resultType="pluginVO">
       SELECT DISTINCT
-	    <include refid="pg_all"/>
+	    pg.ID,pg.PLUGINNAME,pg.PLUGINIMG,pg.ACTION,pg.ISSHOW showFlag,pg.ISPUBLIC publicFlag,pg.ISBLANK blankFlag,pms.ID pmsId
       FROM
 	    hm_crm_plugin pg
       LEFT JOIN hm_crm_company_plugin rela ON pg.ID = rela.PLUGINID AND rela.COMPANYID = #{companyId}
+      LEFT JOIN hm_pub_permission pms ON pms.PERMISSIONNAME = pg.PLUGINNAME
       WHERE
 	    pg.ISSHOW = 1
           AND (pg.ISPUBLIC = 1 OR
