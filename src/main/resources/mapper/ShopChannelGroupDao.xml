@@ -28,7 +28,14 @@
     <!--获取拍摄地，渠道，小组关联-->
     <select id="getShopChannelGroupList" parameterType="map" resultMap="VOMap">
         SELECT
-            rela.CHANNELID, channel.CHANNELNAME, channel.CHANNELIMG, rela.GROUPNAME, rela.WEIGHT, rela.COMPANYID, rela.ID, rela.GROUPID
+            rela.CHANNELID,
+            channel.CHANNELNAME,
+            channel.CHANNELIMG,
+            rela.GROUPNAME,
+            rela.WEIGHT,
+            rela.COMPANYID,
+            rela.ID,
+            rela.GROUPID
         FROM
             hm_crm_shop_channel_group_rela rela
             LEFT JOIN hm_crm_channel channel ON channel.COMPANYID = rela.COMPANYID AND rela.CHANNELID = channel.ID
@@ -42,13 +49,13 @@
         UPDATE hm_crm_shop_channel_group_rela
         SET WEIGHT = #{weight}
         WHERE ID = #{relaId}
-        AND COMPANYID = #{companyId}
+              AND COMPANYID = #{companyId}
     </update>
 
     <!--批量删除拍摄地渠道小组关联-->
-    <delete id="batchDeleteGroup" parameterType="map" >
+    <delete id="batchDeleteGroup" parameterType="map">
         DELETE FROM hm_crm_shop_channel_group_rela
-        WHERE  COMPANYID = #{companyId}
+        WHERE COMPANYID = #{companyId}
         AND ID IN
         <foreach collection="relaIdArr" item="id" index="index" open="("
                  close=")" separator=",">
@@ -59,18 +66,18 @@
     <!--根据渠道拍摄地，删除记录-->
     <delete id="deleteByChannelAndShopId" parameterType="map">
         DELETE FROM hm_crm_shop_channel_group_rela
-        WHERE  COMPANYID = #{companyId}
-        AND SHOPID = #{shopId}
-        AND CHANNELID = #{channelId}
+        WHERE COMPANYID = #{companyId}
+              AND SHOPID = #{shopId}
+              AND CHANNELID = #{channelId}
     </delete>
 
     <!--根据渠道编号删除所有和拍摄地关联记录-->
-    <delete id="delByChannelId" parameterType="Integer" >
+    <delete id="delByChannelId" parameterType="Integer">
         DELETE
         FROM
-          hm_crm_shop_channel_group_rela
+            hm_crm_shop_channel_group_rela
         WHERE
-          COMPANYID = #{companyId} AND CHANNELID = #{channelId}
+            COMPANYID = #{companyId} AND CHANNELID = #{channelId}
     </delete>
 
     <!-- 批量添加拍摄地渠道关联-->
@@ -93,7 +100,12 @@
     <!--根据拍摄地，渠道，小组查询关联-->
     <select id="getByShopAndChannelAndGroup" parameterType="map" resultMap="baseMap">
         SELECT
-            rela.ID,rela.SHOPID,rela.CHANNELID,rela.GROUPID,rela.WEIGHT,rela.COMPANYID
+            rela.ID,
+            rela.SHOPID,
+            rela.CHANNELID,
+            rela.GROUPID,
+            rela.WEIGHT,
+            rela.COMPANYID
         FROM
             hm_crm_shop_channel_group_rela rela
         WHERE
@@ -106,16 +118,19 @@
     <!--编辑客服小组-->
     <update id="editChannelGroup" parameterType="map">
         UPDATE hm_crm_shop_channel_group_rela
-        SET GROUPID= #{groupId},
-        	GROUPNAME= #{groupName}
+        SET GROUPID   = #{groupId},
+            GROUPNAME = #{groupName}
         WHERE ID = #{relaId}
-        AND COMPANYID = #{companyId}
+              AND COMPANYID = #{companyId}
     </update>
 
     <!--模糊查询渠道小组关联-->
     <select id="searchChannelGroup" parameterType="map" resultMap="groupMap">
         SELECT
-             rela.ID,rela.WEIGHT, grp.GROUPNAME,rela.GROUPID
+            rela.ID,
+            rela.WEIGHT,
+            grp.GROUPNAME,
+            rela.GROUPID
         FROM
             hm_crm_shop_channel_group_rela rela
             LEFT JOIN hm_pub_group grp ON rela.GROUPID = grp.GROUPID AND rela.COMPANYID = grp.COMPANYID
@@ -123,26 +138,40 @@
             rela.COMPANYID = #{companyId}
             AND rela.SHOPID = #{shopId}
             AND rela.CHANNELID = #{channelId}
-            AND grp.GROUPNAME LIKE CONCAT('%',#{searchKey},'%')
+            AND grp.GROUPNAME LIKE CONCAT('%', #{searchKey}, '%')
     </select>
 
-	<!--客服组修改名字时联动修改关联分配表中的名字-->
+    <!--客服组修改名字时联动修改关联分配表中的名字-->
     <update id="updateGroupNameById" parameterType="map">
         UPDATE hm_crm_shop_channel_group_rela
-        SET GROUPNAME= #{groupName}
-        WHERE GROUPID= #{groupId}
-        AND COMPANYID = #{companyId}
+        SET GROUPNAME = #{groupName}
+        WHERE GROUPID = #{groupId}
+              AND COMPANYID = #{companyId}
     </update>
-    
-	<!-- 根据渠道和拍摄地获取关联的客服组集合 -->
-	<select id="listShopChannelGroupRela" parameterType="map" resultMap="baseMap">
+
+    <!-- 根据渠道和拍摄地获取关联的客服组集合 -->
+    <select id="listShopChannelGroupRela" parameterType="map" resultMap="baseMap">
         SELECT
-			rela.CHANNELID, rela.SHOPID, rela.GROUPID, rela.GROUPNAME, rela.COMPANYID
-		FROM
-			hm_crm_shop_channel_group_rela rela
-		WHERE
-			rela.COMPANYID = #{companyId}
-		AND rela.SHOPID = #{shopId}
-		AND rela.CHANNELID = #{channelId};
+            rela.CHANNELID,
+            rela.SHOPID,
+            rela.GROUPID,
+            rela.GROUPNAME,
+            rela.COMPANYID
+        FROM
+            hm_crm_shop_channel_group_rela rela
+        WHERE
+            rela.COMPANYID = #{companyId}
+            AND rela.SHOPID = #{shopId}
+            AND rela.CHANNELID = #{channelId};
     </select>
+
+    <!--根据组id删除-->
+    <delete id="delByGroupId">
+        DELETE
+        FROM
+            hm_crm_shop_channel_group_rela
+        WHERE
+            COMPANYID = #{companyId} AND GROUPID = #{groupId}
+    </delete>
+
 </mapper>

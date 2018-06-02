@@ -102,11 +102,11 @@ public class TokenInterceptor implements HandlerInterceptor {
         RequestInfoDTO requestInfoDTO = new RequestInfoDTO();
         // 设置请求值
         requestInfoDTO.setUrl(request.getRequestURI());
-        requestInfoDTO.setIp(HttpUtil.getIpAddr(request));
+        requestInfoDTO.setIp(ipAddr);
         //todo 参数
         //放入attr
         request.setAttribute(CommonConstant.REQUEST_INFO, requestInfoDTO);
-        logger.info("访问ip:" + ipAddr);
+//        logger.info("访问ip:" + ipAddr);
     }
 
     /**

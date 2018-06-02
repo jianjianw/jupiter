@@ -44,6 +44,18 @@ public class LoginUserVO implements Serializable {
      * ip
      */
     private String ip;
+    /**
+     * mac
+     */
+    private String mac;
+
+    public String getMac() {
+        return mac;
+    }
+
+    public void setMac(String mac) {
+        this.mac = mac;
+    }
 
     public String getIp() {
         return ip;
