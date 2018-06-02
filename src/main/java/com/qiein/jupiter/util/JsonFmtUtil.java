@@ -102,6 +102,7 @@ public class JsonFmtUtil {
                     || (NumUtil.isNotNull(info.getIntValue("appointorid")) && info.getIntValue("appointorid") == staffPO.getId())
                     || (NumUtil.isNotNull(info.getIntValue("promotorid")) && info.getIntValue("promotorid") == staffPO.getId())
                     || (NumUtil.isNotNull(info.getIntValue("receptorid")) && info.getIntValue("receptorid") == staffPO.getId())) {
+                vo.setKzName(info.getString("kzname"));
                 vo.setKzPhone(info.getString("kzphone"));
                 vo.setKzWechat(info.getString("kzwechat"));
                 vo.setKzQq(info.getString("kzqq"));
@@ -110,6 +111,7 @@ public class JsonFmtUtil {
                 vo.setMemo(info.getString("memo"));
             } else {
                 //查看脱敏数据
+                vo.setKzName(getBlindString(info.getString("kzname")));
                 vo.setKzPhone(getBlindString(info.getString("kzphone")));
                 vo.setKzWechat(getBlindString(info.getString("kzwechat")));
                 vo.setKzQq(getBlindString(info.getString("kzqq")));

@@ -38,6 +38,11 @@ public class ClientExportVO implements Serializable {
     @Excel(name = "推广", width = 20, height = 6)
     private String collectorName;
     /**
+     * 客资姓名
+     */
+    @Excel(name = "姓名", width = 20, height = 6)
+    private String kzName;
+    /**
      * 客资电话
      */
     @Excel(name = "手机号", width = 20, height = 6)
@@ -367,5 +372,13 @@ public class ClientExportVO implements Serializable {
 
     public void setYxLevel(String yxLevel) {
         this.yxLevel = yxLevel;
+    }
+
+    public String getKzName() {
+        return kzName;
+    }
+
+    public void setKzName(String kzName) {
+        this.kzName = kzName;
     }
 }
