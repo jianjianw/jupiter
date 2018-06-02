@@ -178,7 +178,7 @@ public class CommonConstant {
     public final static int DEFAULT_EXPIRE_TIME = 12;
 
     /**
-     * 在线时长时间，，默认180秒更新一次
+     * 在线时差查过120秒，默认当第一次上线
      */
     public final static int DEFAULT_ONLINE_TIME = 120;
 

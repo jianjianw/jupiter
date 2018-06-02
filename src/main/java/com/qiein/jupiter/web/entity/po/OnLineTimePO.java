@@ -23,6 +23,10 @@ public class OnLineTimePO extends BaseEntity {
      */
     private int onLineTime;
     /**
+     * 上次心跳时间
+     */
+    private int lastHeartTime;
+    /**
      * 企业D
      */
     private int companyId;
@@ -78,5 +82,13 @@ public class OnLineTimePO extends BaseEntity {
 
     public void setLineDay(int lineDay) {
         this.lineDay = lineDay;
+    }
+
+    public int getLastHeartTime() {
+        return lastHeartTime;
+    }
+
+    public void setLastHeartTime(int lastHeartTime) {
+        this.lastHeartTime = lastHeartTime;
     }
 }

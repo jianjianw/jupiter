@@ -39,4 +39,23 @@ public interface OnLineTimeDao extends BaseDao<OnLineTimePO> {
      * @return
      */
     OnLineTimePO getLogByStaffAndDay(@Param("staffId") int staffId, @Param("companyId") int companyId, @Param("logTabName") String logTabName);
+
+    /**
+     * 获取上一次心跳时间
+     *
+     * @param staffId
+     * @param companyId
+     * @param logTabName
+     * @return
+     */
+    int getLastHeartTime(@Param("staffId") int staffId, @Param("companyId") int companyId, @Param("logTabName") String logTabName);
+
+    /**
+     * 更新上次心跳时间
+     *
+     * @param staffId
+     * @param companyId
+     * @param logTabName
+     */
+    void updateLastHeartTime(@Param("staffId") int staffId, @Param("companyId") int companyId, @Param("logTabName") String logTabName);
 }
