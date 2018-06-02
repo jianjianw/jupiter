@@ -28,7 +28,7 @@ public class OnLineTimePO extends BaseEntity {
     /**
      * 日期
      */
-    private String lineDay;
+    private int lineDay;
 
     public OnLineTimePO() {
     }
@@ -71,11 +71,11 @@ public class OnLineTimePO extends BaseEntity {
         this.companyId = companyId;
     }
 
-    public String getLineDay() {
+    public int getLineDay() {
         return lineDay;
     }
 
-    public void setLineDay(String lineDay) {
+    public void setLineDay(int lineDay) {
         this.lineDay = lineDay;
     }
 }

@@ -8,7 +8,7 @@
         <result column="STAFFNAME" jdbcType="INTEGER" property="staffName"/>
         <result column="ONLINETIME" jdbcType="INTEGER" property="onLineTime"/>
         <result column="COMPANYID" jdbcType="INTEGER" property="companyId"/>
-        <result column="LINEDAY" jdbcType="VARCHAR" property="lineDay"/>
+        <result column="LINEDAY" jdbcType="INTEGER" property="lineDay"/>
     </resultMap>
 
     <sql id="baseColumn">
@@ -21,7 +21,7 @@
 			STAFFID, STAFFNAME, ONLINETIME, COMPANYID, LINEDAY
 		)
 		VALUES
-			( #{staffId}, #{staffName}, 0, #{companyId}, CURRENT_DATE
+			( #{staffId}, #{staffName}, 0, #{companyId}, UNIX_TIMESTAMP(CAST(SYSDATE()AS DATE))
 		)
     </insert>
 
@@ -31,7 +31,7 @@
         SET ONLINETIME = ONLINETIME + #{time}
         WHERE COMPANYID = #{companyId}
         AND STAFFID = #{staffId}
-        AND LINEDAY = CURRENT_DATE
+        AND LINEDAY = UNIX_TIMESTAMP(CAST(SYSDATE()AS DATE))
     </update>
 
     <!--根据员工ID和日期，查询日志-->
@@ -41,6 +41,6 @@
         FROM ${logTabName} log
         WHERE COMPANYID = #{companyId}
         AND STAFFID = #{staffId}
-        AND LINEDAY = CURRENT_DATE
+        AND LINEDAY = UNIX_TIMESTAMP(CAST(SYSDATE()AS DATE))
     </select>
 </mapper>
