@@ -124,7 +124,6 @@ public class GoEasyUtil {
      * @param content
      */
     private static synchronized void pushWeb(String type, int companyId, int staffId, JSONObject content) {
-        log.info("web消息推送" + type + " " + companyId + " " + staffId + " " + content);
         messageJson = new JSONObject();
         messageJson.put("cid", companyId);
         messageJson.put("uid", staffId);
@@ -148,7 +147,6 @@ public class GoEasyUtil {
      * @param content
      */
     private static synchronized void pushApp(String type, int companyId, int staffId, JSONObject content) {
-        log.info("客户端消息推送：" + type + " " + companyId + " " + staffId + " " + content);
         messageJson = new JSONObject();
         messageJson.put("cid", companyId);
         messageJson.put("uid", staffId);
@@ -347,8 +345,6 @@ public class GoEasyUtil {
      */
     public static void pushShopMeetRunOff(int companyId, int staffId, ClientDTO info, String reason,
                                           String comeShopTime, String shopName, String receptorName) {
-        log.info("门店流失消息推送:" + companyId + " " + staffId + " " + info + " " + reason + " " + comeShopTime + " " + shopName
-                + " " + receptorName);
 
         StringBuffer sb = new StringBuffer();
         sb.append(" 您的客人在 ");
@@ -378,7 +374,6 @@ public class GoEasyUtil {
      * @param newsDao
      */
     public static void pushSuccessOnline(int companyId, int staffId, ClientGoEasyDTO info, NewsDao newsDao) {
-
         String head = "恭喜您，您的客户在线订单啦";
         StringBuffer sb = new StringBuffer();
         sb.append("编号：").append(info.getId()).append("<br/>");
@@ -430,7 +425,6 @@ public class GoEasyUtil {
      */
     public static void pushSuccessShop(int companyId, int staffId, ClientDTO info, String successTime, String amount,
                                        String shopName, String receptorName) {
-
         StringBuffer sb = new StringBuffer();
         sb.append("恭喜您，您的客户在 ");
         sb.append(StringUtil.nullToStrTrim(shopName));
