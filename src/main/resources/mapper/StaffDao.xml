@@ -795,4 +795,14 @@
         SET MSGSET = #{msgSet}
         WHERE ID = #{id} AND COMPANYID = #{companyId}
     </update>
+    
+    <!-- 重置员工今日接单数 -->
+    <update id="resetTodayNum" parameterType="map">
+        UPDATE hm_pub_staff SET TODAYNUM = 0;
+    </update>
+    
+    <!-- 满限变离线 -->
+    <update id="resetOffLineWhenLimit" parameterType="map">
+        UPDATE hm_pub_staff SET STATUSFLAG = 0 WHERE STATUSFLAG = 9;
+    </update>
 </mapper>
