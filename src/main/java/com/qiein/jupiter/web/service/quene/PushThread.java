@@ -27,7 +27,7 @@ public class PushThread implements Runnable {
 	}
 
 	public boolean isNotEmpty() {
-		System.out.println(this.pushVO.toString());
+		log.info(this.pushVO.toString());
 		return (this.pushVO != null && this.pushVO.isNotEmpty());
 	}
 
