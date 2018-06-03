@@ -5,9 +5,6 @@ import java.util.concurrent.TimeUnit;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.qiein.jupiter.web.entity.dto.RequestInfoDTO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -21,6 +18,7 @@ import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.HttpUtil;
 import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.web.entity.dto.RequestInfoDTO;
 import com.qiein.jupiter.web.entity.dto.VerifyParamDTO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.service.StaffService;
@@ -30,7 +28,7 @@ import com.qiein.jupiter.web.service.StaffService;
  */
 @Component
 public class TokenInterceptor implements HandlerInterceptor {
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+	// private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
      * 当前运行环境
