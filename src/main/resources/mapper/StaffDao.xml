@@ -554,7 +554,8 @@
             AND INSTR(sf.LIMITCHANNELIDS, CONCAT(',', #{channelId}, ',')) = 0
             AND INSTR(sf.LIMITSHOPIDS, CONCAT(',', #{shopId}, ',')) = 0
             AND (UNIX_TIMESTAMP(NOW()) - LASTPUSHTIME) &gt; #{interval}
-            AND sf.TODAYNUM &lt; LIMITDAY;
+            AND sf.TODAYNUM &lt; LIMITDAY
+        ORDER BY sf.LASTPUSHTIME ASC;    
     </select>
 
     <!--获取客服指定时间内渠道和拍摄地客资的领取情况-->
@@ -793,5 +794,15 @@
         UPDATE hm_pub_staff_detail
         SET MSGSET = #{msgSet}
         WHERE ID = #{id} AND COMPANYID = #{companyId}
+    </update>
+    
+    <!-- 重置员工今日接单数 -->
+    <update id="resetTodayNum" parameterType="map">
+        UPDATE hm_pub_staff SET TODAYNUM = 0;
+    </update>
+    
+    <!-- 满限变离线 -->
+    <update id="resetOffLineWhenLimit" parameterType="map">
+        UPDATE hm_pub_staff SET STATUSFLAG = 0 WHERE STATUSFLAG = 9;
     </update>
 </mapper>

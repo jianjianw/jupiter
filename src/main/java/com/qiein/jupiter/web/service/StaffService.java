@@ -323,4 +323,9 @@ public interface StaffService {
 	 * @param staffMsg
 	 */
 	void editMsgSet(StaffMsg staffMsg);
+	
+	/**
+	 * 每天晚上初始化员工分客资信息
+	 */
+	void taskClockInit();
 }

@@ -3,11 +3,8 @@ package com.qiein.jupiter.web.service.impl;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
-import com.qiein.jupiter.util.DBSplitUtil;
-import com.qiein.jupiter.web.dao.ClientInfoDao;
-import com.qiein.jupiter.web.dao.NewsDao;
-import com.qiein.jupiter.web.entity.dto.ClientGoEasyDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +13,10 @@ import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.http.CrmBaseApi;
+import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
 import com.qiein.jupiter.util.JsonFmtUtil;
+import com.qiein.jupiter.web.dao.ClientInfoDao;
+import com.qiein.jupiter.web.dao.NewsDao;
 import com.qiein.jupiter.web.dao.StaffDao;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.service.ClientTrackService;
@@ -27,6 +27,7 @@ import com.qiein.jupiter.web.service.ClientTrackService;
  */
 @Service
 public class ClientTrackServiceImpl implements ClientTrackService {
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private CrmBaseApi crmBaseApi;
@@ -54,7 +55,7 @@ public class ClientTrackServiceImpl implements ClientTrackService {
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if ("100000".equals(jsInfo.getString("code"))) {
             //TODO 推送
-            System.out.println("删除成功");
+            log.info("删除成功");
         } else {
             throw new RException(jsInfo.getString("msg"));
         }
@@ -116,7 +117,7 @@ public class ClientTrackServiceImpl implements ClientTrackService {
         if ("100000".equals(jsInfo.getString("code"))) {
             //TODO 推送
             int wrongNum = JsonFmtUtil.strContentToJsonObj(addRstStr).getIntValue("num");
-            System.out.println(wrongNum);
+            log.info("" + wrongNum);
             return "审批成功：" + (kzIds.split(CommonConstant.STR_SEPARATOR).length - wrongNum) + "个，审批失败：" + wrongNum + "个";
         } else {
             throw new RException(jsInfo.getString("msg"));
@@ -150,7 +151,7 @@ public class ClientTrackServiceImpl implements ClientTrackService {
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if ("100000".equals(jsInfo.getString("code"))) {
             //TODO 推送
-            System.out.println("客资回收成功");
+            log.info("客资回收成功");
         } else {
             throw new RException(jsInfo.getString("msg"));
         }

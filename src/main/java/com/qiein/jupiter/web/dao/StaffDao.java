@@ -192,6 +192,7 @@ public interface StaffDao extends BaseDao<StaffPO> {
 
 	/**
 	 * 更新员工的下线情况 IP 时间
+	 * 
 	 * @param staffDetailPO
 	 * @return
 	 */
@@ -384,8 +385,19 @@ public interface StaffDao extends BaseDao<StaffPO> {
 
 	/**
 	 * 编辑个人消息设置
+	 * 
 	 * @param staffMsg
 	 * @return
 	 */
 	int editMsgSet(StaffMsg staffMsg);
+
+	/**
+	 * 重置员工今日接单数
+	 */
+	void resetTodayNum();
+
+	/**
+	 * 满限变离线
+	 */
+	void resetOffLineWhenLimit();
 }
