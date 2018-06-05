@@ -783,13 +783,13 @@ public class ClientPushServiceImpl implements ClientPushService {
 				}
 				companyMap.get(tableName).add(news);
 			}
+			// 删掉已经推送的
+			Integer[] idsDelInt = idsDel.toArray(new Integer[idsDel.size()]);
+			clientTimerDao.batchDelAready(idsDelInt);
 			// 添加消息记录
 			for (String tableName : companyMap.keySet()) {
 				newsDao.batchInsertNews(tableName, companyMap.get(tableName));
 			}
-			// 删掉已经推送的
-			Integer[] idsDelInt = idsDel.toArray(new Integer[idsDel.size()]);
-			clientTimerDao.batchDelAready(idsDelInt);
 		}
 	}
 }
