@@ -618,4 +618,23 @@ public class GoEasyUtil {
         }
     }
 
+    /**
+     * 账号异地登录提醒
+     *
+     * @param companyId
+     * @param staffId
+     * @param ip
+     * @param newsDao
+     */
+    public static void pushRemoteLogin(int companyId, int staffId, String ip, String address, NewsDao newsDao) {
+        if (NumUtil.isNull(staffId) || NumUtil.isNull(companyId)) {
+            return;
+        }
+        String head = "账号异地登录";
+        String msg = "您的账号在" + address + "登录，<br/>IP：" + ip + "<br/>如非本人操作，请及时修改密码";
+        pushWarn(companyId, staffId, head, msg);
+        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_WARN, head, msg.replaceAll("<br/>", "；"), null, staffId, companyId,
+                DBSplitUtil.getNewsTabName(companyId)));
+    }
+
 }

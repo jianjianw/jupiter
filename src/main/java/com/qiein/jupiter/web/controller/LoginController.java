@@ -6,6 +6,7 @@ import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.constant.RedisConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
+import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
 import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.entity.dto.RequestInfoDTO;
 import com.qiein.jupiter.web.entity.dto.VerifyParamDTO;
@@ -158,10 +159,11 @@ public class LoginController extends BaseController {
             // 返回结果
             StaffPO staffPO = loginService.loginWithCompanyIdByPhone(loginUserVO);
             try {
+                String ip = HttpUtil.getIpAddr(request);
                 //检测是否异地登录
-
+                logService.checkAbnormalIp(staffPO.getCompanyId(), staffPO.getId(), ip, userName);
                 // 登录日志记录
-                SystemLog log = new SystemLog(SysLogUtil.LOG_TYPE_LOGIN, HttpUtil.getIpAddr(request), request.getRequestURI(), staffPO.getId(),
+                SystemLog log = new SystemLog(SysLogUtil.LOG_TYPE_LOGIN, ip, request.getRequestURI(), staffPO.getId(),
                         staffPO.getNickName(), SysLogUtil.getLog(SysLogUtil.SYS_LOG_PREFIX_DO, SysLogUtil.LOG_SUP_LOGIN, null),
                         staffPO.getCompanyId());
                 logService.addLog(log);
