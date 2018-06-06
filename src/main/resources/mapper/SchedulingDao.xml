@@ -2,13 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qiein.jupiter.web.dao.SchedulingDao">
 
-    <!--UPDATE
-    hm_pub_staff s , hm_pub_staff_detail sd
-    SET
-    s.STATUSFLAG = 0,s.TODAYNUM = 1 , s.WEIGHT =10 , sd.LIMITCHANNELNAMES='aa'
-    WHERE
-    sd.ID=s.ID AND s.ID = 112 AND s.COMPANYID=1 AND s.COMPANYID=sd.COMPANYID-->
-
     <update id="update" parameterType="staffMarsDTO">
         UPDATE
 	      hm_pub_staff s , hm_pub_staff_detail sd
@@ -41,10 +34,10 @@
                 s.LASTPUSHTIME = #{lastPushTime},
             </if>
             <if test="limitChannelIds != null">
-                s.LIMITCHANNELIDS = #{limitChannelIds},
+                s.LIMITCHANNELIDS = CONCAT(",",#{limitChannelIds},","),
             </if>
             <if test="limitShopIds != null">
-                s.LIMITSHOPIDS = #{limitShopIds},
+                s.LIMITSHOPIDS = CONCAT(",",#{limitShopIds},","),
             </if>
             <if test="limitChannelNames != null">
                 sd.LIMITCHANNELNAMES = #{limitChannelNames},

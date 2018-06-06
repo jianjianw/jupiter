@@ -68,6 +68,14 @@ public interface SourceDao extends BaseDao<SourcePO> {
                               @Param("companyId") Integer companyId);
 
     /**
+     * 渠道关闭时，同时关闭下属所有来源
+     * @param channelId
+     * @param companyId
+     * @return
+     */
+    Integer updateIsShowByChannelId(@Param("channelId")Integer channelId,@Param("companyId") Integer companyId);
+
+    /**
      * 修改向下拖拽排序时波及的来源的排序
      *
      * @param xPriority
