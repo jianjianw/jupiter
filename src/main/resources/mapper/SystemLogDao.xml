@@ -37,7 +37,7 @@
         WHERE log.COMPANYID = #{companyId}
         AND log.STAFFID = #{staffId}
         AND log.TYPEID = 1
-        <if test="ip != null and ip 1= '' ">
+        <if test="ip != null and ip != '' ">
             AND log.IP = #{ip}
         </if>
     </select>

@@ -168,6 +168,7 @@ public class LoginController extends BaseController {
                         staffPO.getCompanyId());
                 logService.addLog(log);
             } catch (Exception e) {
+                e.printStackTrace();
                 System.out.println("添加登录日志出错。。。。。。");
             }
             return ResultInfoUtil.success(staffPO);
