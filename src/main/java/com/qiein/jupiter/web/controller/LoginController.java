@@ -143,7 +143,7 @@ public class LoginController extends BaseController {
      * @return
      */
     @PostMapping("/login_by_phone")
-    public ResultInfo loginWithCompanyIdByPhone(@RequestBody @Validated LoginUserVO loginUserVO) {
+    public ResultInfo loginWithCompanyIdByPhone(HttpServletRequest request, @RequestBody @Validated LoginUserVO loginUserVO) {
         // 对象参数trim
         ObjectUtil.objectStrParamTrim(loginUserVO);
         // 校验用户验证码
@@ -157,14 +157,14 @@ public class LoginController extends BaseController {
         try {
             // 返回结果
             StaffPO staffPO = loginService.loginWithCompanyIdByPhone(loginUserVO);
-            RequestInfoDTO requestInfo = getRequestInfo();
             // 日志记录
-            SystemLog log = new SystemLog(SysLogUtil.LOG_TYPE_LOGIN, requestInfo.getIp(), requestInfo.getUrl(), staffPO.getId(),
-                    staffPO.getUserName(), SysLogUtil.getAddLog(SysLogUtil.LOG_SUP_LOGIN),
+            SystemLog log = new SystemLog(SysLogUtil.LOG_TYPE_LOGIN, HttpUtil.getIpAddr(request), request.getRequestURI(), staffPO.getId(),
+                    staffPO.getNickName(), SysLogUtil.getLog(SysLogUtil.SYS_LOG_PREFIX_DO, SysLogUtil.LOG_SUP_LOGIN, null),
                     staffPO.getCompanyId());
             logService.addLog(log);
             return ResultInfoUtil.success(staffPO);
         } catch (RException e) {
+            e.printStackTrace();
             // 登录失败，将错误次数+1
             valueOperations.increment(RedisConstant.getUserLoginErrNumKey(userName), 1);
             return ResultInfoUtil.error(e.getCode(), e.getMsg());

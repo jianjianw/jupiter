@@ -21,6 +21,7 @@ public class SysLogUtil {
     public static final String SYS_LOG_PREFIX_ADD = "新增了";
     public static final String SYS_LOG_PREFIX_EDIT = "修改了";
     public static final String SYS_LOG_PREFIX_REMOVE = "删除了";
+    public static final String SYS_LOG_PREFIX_DO = "进行了";
 
     public static String getAddLog(String supName, String... params) {
 
@@ -62,7 +63,7 @@ public class SysLogUtil {
         return getLog(SYS_LOG_PREFIX_REMOVE, supName, params);
     }
 
-    private static String getLog(String prefix, String supName, String... params) {
+    public static String getLog(String prefix, String supName, String... params) {
 
         if (StringUtil.haveEmpty(prefix, supName)) {
             throw new RException(ExceptionEnum.UNKNOW_ERROR);

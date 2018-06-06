@@ -85,7 +85,7 @@ public class GroupController extends BaseController {
         groupService.insert(groupPO);
         // 日志记录
         SystemLog log = new SystemLog(SysLogUtil.LOG_TYPE_GROUP, requestInfo.getIp(), requestInfo.getUrl(), staff.getId(),
-                staff.getUserName(), SysLogUtil.getAddLog(SysLogUtil.LOG_SUP_GROUP, groupPO.getGroupName(),
+                staff.getNickName(), SysLogUtil.getAddLog(SysLogUtil.LOG_SUP_GROUP, groupPO.getGroupName(),
                 groupPO.getGroupType(), groupPO.getChiefNames()),
                 staff.getCompanyId());
         logService.addLog(log);
@@ -105,7 +105,7 @@ public class GroupController extends BaseController {
         GroupPO groupPO = groupService.delete(id, staff.getCompanyId());
         // 日志记录
         logService.addLog(new SystemLog(SysLogUtil.LOG_TYPE_GROUP, requestInfo.getIp(), requestInfo.getUrl(), staff.getId(),
-                staff.getUserName(), SysLogUtil.getRemoveLog(SysLogUtil.LOG_SUP_GROUP, groupPO.getGroupName()),
+                staff.getNickName(), SysLogUtil.getRemoveLog(SysLogUtil.LOG_SUP_GROUP, groupPO.getGroupName()),
                 staff.getCompanyId()));
         return ResultInfoUtil.success(TigMsgEnum.DELETE_SUCCESS);
     }
