@@ -157,11 +157,17 @@ public class LoginController extends BaseController {
         try {
             // 返回结果
             StaffPO staffPO = loginService.loginWithCompanyIdByPhone(loginUserVO);
-            // 日志记录
-            SystemLog log = new SystemLog(SysLogUtil.LOG_TYPE_LOGIN, HttpUtil.getIpAddr(request), request.getRequestURI(), staffPO.getId(),
-                    staffPO.getNickName(), SysLogUtil.getLog(SysLogUtil.SYS_LOG_PREFIX_DO, SysLogUtil.LOG_SUP_LOGIN, null),
-                    staffPO.getCompanyId());
-            logService.addLog(log);
+            try {
+                //检测是否异地登录
+
+                // 登录日志记录
+                SystemLog log = new SystemLog(SysLogUtil.LOG_TYPE_LOGIN, HttpUtil.getIpAddr(request), request.getRequestURI(), staffPO.getId(),
+                        staffPO.getNickName(), SysLogUtil.getLog(SysLogUtil.SYS_LOG_PREFIX_DO, SysLogUtil.LOG_SUP_LOGIN, null),
+                        staffPO.getCompanyId());
+                logService.addLog(log);
+            } catch (Exception e) {
+                System.out.println("添加登录日志出错。。。。。。");
+            }
             return ResultInfoUtil.success(staffPO);
         } catch (RException e) {
             e.printStackTrace();
