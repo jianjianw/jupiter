@@ -42,7 +42,8 @@ public class SystemLogServiceImpl implements SystemLogService {
      */
     public void checkAbnormalIp(int companyId, int staffId, String ip, String phone) {
         //如果是异常登录，推送该消息
-        if (logDao.getCountByStaffIdAndIp(DBSplitUtil.getSystemLogTabName(companyId), companyId, staffId, ip) == 0) {
+        if (logDao.getCountByStaffIdAndIp(DBSplitUtil.getSystemLogTabName(companyId), companyId, staffId, null) != 0
+                && logDao.getCountByStaffIdAndIp(DBSplitUtil.getSystemLogTabName(companyId), companyId, staffId, ip) == 0) {
             //提醒异地登录
             String address = HttpUtil.getIpLocation(ip);
             GoEasyUtil.pushRemoteLogin(companyId, staffId, ip, address, newsDao);

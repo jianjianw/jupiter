@@ -36,7 +36,9 @@
         FROM ${logTabName} log
         WHERE log.COMPANYID = #{companyId}
         AND log.STAFFID = #{staffId}
-        AND log.IP = #{ip}
         AND log.TYPEID = 1
+        <if test="ip != null and ip 1= '' ">
+            AND log.IP = #{ip}
+        </if>
     </select>
 </mapper>
