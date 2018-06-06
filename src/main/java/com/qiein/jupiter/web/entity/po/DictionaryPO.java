@@ -44,6 +44,14 @@ public class DictionaryPO extends BaseEntity {
 		this.companyId = companyId;
 	}
 
+	public DictionaryPO(String dicType, int dicCode, String dicName,int priority, int companyId) {
+		this.dicType = dicType;
+		this.dicCode = dicCode;
+		this.dicName = dicName;
+		this.priority = priority;
+		this.companyId = companyId;
+	}
+
 	public DictionaryPO(String dicType, String dicName, int companyId, int id) {
 		super(id);
 		this.dicType = dicType;

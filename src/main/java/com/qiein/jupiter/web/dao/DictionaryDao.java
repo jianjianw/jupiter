@@ -90,7 +90,14 @@ public interface DictionaryDao extends BaseDao<DictionaryPO> {
      * @param dicCodes
      * @return
      */
-    int addCommonType(@Param("companyId") int companyId, @Param("dicCodes")String[] dicCodes);
+    int addCommonTypeFromZero(@Param("companyId") int companyId, @Param("dicCodes")String[] dicCodes);
+
+    /**
+     * 直接添加咨询类型
+     * @param dictionaryVO
+     * @return
+     */
+    int addCommonType(DictionaryVO dictionaryVO);
 
     /**
      *  新增咨询类型
@@ -98,6 +105,13 @@ public interface DictionaryDao extends BaseDao<DictionaryPO> {
      * @return
      */
     int createCommonType(DictionaryVO dictionaryVO);
+
+    /**
+     * 获取咨询类型最新排序
+     * @param companyId
+     * @return
+     */
+    int getCommonTypePriority(@Param("companyId") Integer companyId);
 
     /**
      * 根据id删除

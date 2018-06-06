@@ -11,7 +11,7 @@ public class PluginPO extends BaseEntity {
 	// 插件名称
 	private String pluginName;
 	// 插件图标地址
-	private String pulginImg;
+	private String pluginImg;
 	// 跳转地址
 	private String action;
 	// 是否启用
@@ -29,12 +29,12 @@ public class PluginPO extends BaseEntity {
 		this.pluginName = pluginName;
 	}
 
-	public String getPulginImg() {
-		return pulginImg;
+	public String getPluginImg() {
+		return pluginImg;
 	}
 
-	public void setPulginImg(String pulginImg) {
-		this.pulginImg = pulginImg;
+	public void setPluginImg(String pluginImg) {
+		this.pluginImg = pluginImg;
 	}
 
 	public String getAction() {

@@ -206,12 +206,14 @@ public class DictionaryServiceImpl implements DictionaryService {
     public void addCommonType(DictionaryVO dictionaryVO) {
         String[] codes =dictionaryVO.getDicCodes().split(",");
         //获取默认0的对应字典记录
-        dictionaryDao.addCommonType(dictionaryVO.getCompanyId(),codes);
-//        List<DictionaryPO> list =dictionaryDao.getDicByCodeAndType(0,"common_type",codes);
-//        for (DictionaryPO d:list){
-//            d.setCompanyId(dictionaryVO.getCompanyId());
-//            dictionaryDao.createCommonType(d);
-//        }
+//        dictionaryDao.addCommonType(dictionaryVO.getCompanyId(),codes);
+        String[] dicCodes = dictionaryVO.getDicCodes().split(",");
+        String[] dicNames = dictionaryVO.getDicNames().split(",");
+        int priority = dictionaryDao.getCommonTypePriority(dictionaryVO.getCompanyId());
+        for (int i = 0 ; i < dicCodes.length ; i++){
+            dictionaryVO.getDiclist().add(new DictionaryPO("common_type",Integer.parseInt(dicCodes[i]),dicNames[i],priority + i,dictionaryVO.getCompanyId()));
+        }
+        dictionaryDao.addCommonType(dictionaryVO);
     }
 
     /**

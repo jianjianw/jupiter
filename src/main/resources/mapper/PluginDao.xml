@@ -3,8 +3,8 @@
 <mapper namespace="com.qiein.jupiter.web.dao.PluginDao">
     <resultMap id="PluginPO" type="com.qiein.jupiter.web.entity.po.PluginPO">
         <id property="id" jdbcType="INTEGER" column="ID"/>
-        <result property="pulginName" jdbcType="VARCHAR" column="PLUGINNAME"/>
-        <result property="pulginImg" jdbcType="VARCHAR" column="PLUGINIMG"/>
+        <result property="pluginName" jdbcType="VARCHAR" column="PLUGINNAME"/>
+        <result property="pluginImg" jdbcType="VARCHAR" column="PLUGINIMG"/>
         <result property="action" jdbcType="VARCHAR" column="ACTION"/>
         <result property="showFlag" jdbcType="VARCHAR" column="ISSHOW"/>
         <result property="publicFlag" jdbcType="VARCHAR" column="ISPUBLIC"/>
@@ -23,17 +23,15 @@
     </select>
 
     <!--获取公司插件列表-->
-    <select id="getListByCompanyId" resultType="pluginVO">
+    <select id="getListByCompanyId" resultType="PluginVO">
       SELECT DISTINCT
-	    pg.ID,pg.PLUGINNAME,pg.PLUGINIMG,pg.ACTION,pg.ISSHOW showFlag,pg.ISPUBLIC publicFlag,pg.ISBLANK blankFlag,pms.ID pmsId
+	    pg.ID,pg.PLUGINNAME ,pg.PLUGINIMG,pg.ACTION,pg.ISSHOW showFlag,pg.ISPUBLIC publicFlag,pg.ISBLANK blankFlag,pms.ID pmsId
       FROM
 	    hm_crm_plugin pg
       LEFT JOIN hm_crm_company_plugin rela ON pg.ID = rela.PLUGINID AND rela.COMPANYID = #{companyId}
       LEFT JOIN hm_pub_permission pms ON pms.PERMISSIONNAME = pg.PLUGINNAME
       WHERE
-	    pg.ISSHOW = 1
-          AND (pg.ISPUBLIC = 1 OR
-            (rela.COMPANYID = #{companyId}  AND rela.ISSHOW = 1))
+	    pg.ISSHOW = 1 AND rela.COMPANYID = #{companyId}  AND rela.ISSHOW = 1
     </select>
 
     <!--新增插件-->
