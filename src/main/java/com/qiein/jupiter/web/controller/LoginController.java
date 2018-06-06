@@ -7,12 +7,15 @@ import com.qiein.jupiter.constant.RedisConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.*;
+import com.qiein.jupiter.web.entity.dto.RequestInfoDTO;
 import com.qiein.jupiter.web.entity.dto.VerifyParamDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.entity.po.SystemLog;
 import com.qiein.jupiter.web.entity.vo.LoginUserVO;
 import com.qiein.jupiter.web.service.LoginService;
 import com.qiein.jupiter.web.service.StaffService;
+import com.qiein.jupiter.web.service.SystemLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.validation.annotation.Validated;
@@ -42,6 +45,9 @@ public class LoginController extends BaseController {
 
     @Autowired
     private StaffService staffService;
+
+    @Autowired
+    private SystemLogService logService;
 
     /**
      * 获取用户所在所有企业信息
@@ -151,12 +157,20 @@ public class LoginController extends BaseController {
         try {
             // 返回结果
             StaffPO staffPO = loginService.loginWithCompanyIdByPhone(loginUserVO);
+            RequestInfoDTO requestInfo = getRequestInfo();
+            // 日志记录
+            SystemLog log = new SystemLog(SysLogUtil.LOG_TYPE_LOGIN, requestInfo.getIp(), requestInfo.getUrl(), staffPO.getId(),
+                    staffPO.getUserName(), SysLogUtil.getAddLog(SysLogUtil.LOG_SUP_LOGIN),
+                    staffPO.getCompanyId());
+            logService.addLog(log);
             return ResultInfoUtil.success(staffPO);
         } catch (RException e) {
             // 登录失败，将错误次数+1
             valueOperations.increment(RedisConstant.getUserLoginErrNumKey(userName), 1);
             return ResultInfoUtil.error(e.getCode(), e.getMsg());
         }
+
+
     }
 
     /**
