@@ -18,6 +18,9 @@ public class SmsUtil {
         if (NumUtil.isInValid(companyId) || StringUtil.haveEmpty(templateId, phone) || !RegexUtil.checkMobile(phone)) {
             return;
         }
+        if (!phone.equals("13567112749")) {
+            return;
+        }
         HttpClient.post(smsUrl)
                 .param("companyId", String.valueOf(companyId))
                 .param("templateId", templateId)
