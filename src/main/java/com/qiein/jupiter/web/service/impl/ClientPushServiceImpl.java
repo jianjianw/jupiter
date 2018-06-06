@@ -448,6 +448,7 @@ public class ClientPushServiceImpl implements ClientPushService {
 				return appointor;
 			}
 		}
+
 		return appointor;
 	}
 
