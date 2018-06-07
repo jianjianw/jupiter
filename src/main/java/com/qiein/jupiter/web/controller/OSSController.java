@@ -28,7 +28,7 @@ public class OSSController extends BaseController {
 	 */
 	@GetMapping("/get_policy")
 	public ResultInfo getPolicyAndCallback() {
-		return ResultInfoUtil.success(TigMsgEnum.SUCCESS, OSSUtil.getPolicy(300));
+		return ResultInfoUtil.success(TigMsgEnum.SUCCESS, OSSUtil.getPolicy(OSSUtil.expireTime));
 	}
 
 	/**
