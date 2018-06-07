@@ -18,16 +18,20 @@ public class SmsUtil {
     //异地登录短信模板ID
     private static final String abnormalTemplateId = "SMS_136399206";
 
-    public static void sendSms(int companyId, String templateId, String phone, String param) {
+    public static void sendSms(int companyId, String templateId, String phone, JSONObject map) {
         if (NumUtil.isInValid(companyId) || StringUtil.haveEmpty(templateId, phone) || !RegexUtil.checkMobile(phone)) {
             return;
         }
-        HttpClient.post(smsUrl)
-                .param("companyId", String.valueOf(companyId))
-                .param("templateId", templateId)
-                .param("phone", phone)
-                .param("map", param)
-                .execute();
+        JSONObject params = new JSONObject();
+        JSONObject jsonObj = new JSONObject();
+        jsonObj.put("companyId", companyId);
+        jsonObj.put("templateId", abnormalTemplateId);
+        jsonObj.put("phone", phone);
+        jsonObj.put("map", map);
+        params.put("params", jsonObj);
+        HttpClient.textBody(smsUrl).queryString("sign", MD5Util.getApolloMd5(params.toString()))
+                .json(params)
+                .asString();
     }
 
     /**
@@ -44,14 +48,15 @@ public class SmsUtil {
         if (!phone.equals("13567112749")) {
             return;
         }
-        JSONObject param = new JSONObject();
-        param.put("companyId", companyId);
-        param.put("templateId", abnormalTemplateId);
-        param.put("phone", phone);
-        param.put("map", map);
-        HttpClient.post(smsUrl)
-                .param("params", param.toJSONString())
-                .param("sign", MD5Util.getApolloMd5(param.toString()))
-                .execute();
+        JSONObject params = new JSONObject();
+        JSONObject jsonObj = new JSONObject();
+        jsonObj.put("companyId", companyId);
+        jsonObj.put("templateId", abnormalTemplateId);
+        jsonObj.put("phone", phone);
+        jsonObj.put("map", map);
+        params.put("params", jsonObj);
+        HttpClient.textBody(smsUrl).queryString("sign", MD5Util.getApolloMd5(params.toString()))
+                .json(params)
+                .asString();
     }
 }
