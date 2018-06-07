@@ -633,7 +633,7 @@ public class GoEasyUtil {
         String head = "账号异常";
         String msg = "您的账号在" + address + "登录<br/>IP：" + ip + "<br/>如非本人操作，请及时修改密码";
         pushWarn(companyId, staffId, head, msg);
-        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_WARN, head, msg.replaceAll("<br/>", "；"), null, staffId, companyId,
+        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_SYSTEM, head, msg.replaceAll("<br/>", "；"), null, staffId, companyId,
                 DBSplitUtil.getNewsTabName(companyId)));
     }
 

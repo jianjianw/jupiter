@@ -24,8 +24,6 @@ public class SystemLogServiceImpl implements SystemLogService {
     private SystemLogDao logDao;
     @Autowired
     private NewsDao newsDao;
-    //异地登录短信模板ID
-    private static final String abnormalTemplateId = "SMS_136399066";
 
     @Override
     public void addLog(SystemLog log) {
@@ -48,10 +46,9 @@ public class SystemLogServiceImpl implements SystemLogService {
             String address = HttpUtil.getIpLocation(ip);
             GoEasyUtil.pushRemoteLogin(companyId, staffId, ip, address, newsDao);
             JSONObject param = new JSONObject();
-            param.put("ip", ip);
             param.put("address", address);
             //发送短信
-            SmsUtil.sendSms(companyId, abnormalTemplateId, phone, param.toJSONString());
+            SmsUtil.sendAbnormalSms(companyId, phone, param.toJSONString());
         }
     }
 }
