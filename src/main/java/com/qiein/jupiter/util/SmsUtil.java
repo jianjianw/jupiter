@@ -1,5 +1,7 @@
 package com.qiein.jupiter.util;
 
+import com.alibaba.fastjson.JSONObject;
+import com.google.gson.JsonObject;
 import com.mzlion.easyokhttp.HttpClient;
 
 import java.util.HashMap;
@@ -12,7 +14,7 @@ import java.util.HashMap;
 
 public class SmsUtil {
 
-    private static final String smsUrl = "http://114.55.249.156:8286/send_msg/send_msg";
+    private static final String smsUrl = "http://192.168.3.56:8286/send_msg/send_msg";
     //异地登录短信模板ID
     private static final String abnormalTemplateId = "SMS_136399206";
 
@@ -33,20 +35,23 @@ public class SmsUtil {
      *
      * @param companyId
      * @param phone
-     * @param param
+     * @param map
      */
-    public static void sendAbnormalSms(int companyId, String phone, String param) {
+    public static void sendAbnormalSms(int companyId, String phone, JSONObject map) {
         if (NumUtil.isInValid(companyId) || !RegexUtil.checkMobile(phone)) {
             return;
         }
         if (!phone.equals("13567112749")) {
             return;
         }
+        JSONObject param = new JSONObject();
+        param.put("companyId", companyId);
+        param.put("templateId", abnormalTemplateId);
+        param.put("phone", phone);
+        param.put("map", map);
         HttpClient.post(smsUrl)
-                .param("companyId", String.valueOf(companyId))
-                .param("templateId", abnormalTemplateId)
-                .param("phone", phone)
-                .param("map", param)
+                .param("params", param.toJSONString())
+                .param("sign", MD5Util.getApolloMd5(param.toString()))
                 .execute();
     }
 }

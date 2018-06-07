@@ -48,7 +48,7 @@ public class SystemLogServiceImpl implements SystemLogService {
             JSONObject param = new JSONObject();
             param.put("address", address);
             //发送短信
-            SmsUtil.sendAbnormalSms(companyId, phone, param.toJSONString());
+            SmsUtil.sendAbnormalSms(companyId, phone, param);
         }
     }
 }
