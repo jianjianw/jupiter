@@ -1,6 +1,5 @@
 package com.qiein.jupiter.util.wechat;
 
-import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.util.OkHttpUtil;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +9,7 @@ import java.io.IOException;
  * @create by Tt(叶华葳) 2018-06-05 15:55
  */
 @Component
-public class WeChanPushUtil {
+public class WeChatPushUtil {
 
     //GET请求，获取access_token
     private static final String GET_ACCESS_TOKEN = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx67a4a7028f12a820&secret=f1643abe4865080db153a0d181719005";

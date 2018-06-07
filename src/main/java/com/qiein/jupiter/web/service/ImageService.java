@@ -1,6 +1,8 @@
 package com.qiein.jupiter.web.service;
 
 
+import com.alibaba.fastjson.JSONArray;
+
 import java.util.List;
 import java.util.Map;
 
@@ -16,4 +18,9 @@ public interface ImageService {
      * @return
      */
     List<Map<String, Object>> getSrcImgList(String type);
+
+    /**
+     * 根据类型和公司  远程获取图片集合
+     */
+    JSONArray getSrcImgListRPC(String type, int companyId);
 }
