@@ -144,4 +144,19 @@ public class ChannelPO extends BaseEntity {
     public void setShowFlag(Boolean showFlag) {
         this.showFlag = showFlag;
     }
+
+    @Override
+    public String toString() {
+        return "ChannelPO{" +
+                "channelName='" + channelName + '\'' +
+                ", channelImg='" + channelImg + '\'' +
+                ", typeId=" + typeId +
+                ", brandId=" + brandId +
+                ", brandName='" + brandName + '\'' +
+                ", pushRule=" + pushRule +
+                ", companyId=" + companyId +
+                ", priority=" + priority +
+                ", showFlag=" + showFlag +
+                '}';
+    }
 }
