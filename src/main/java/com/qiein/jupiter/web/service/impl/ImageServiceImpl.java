@@ -48,14 +48,21 @@ public class ImageServiceImpl implements ImageService {
         JSONObject params = new JSONObject();
         params.put("companyId", companyId);
         params.put("typeCode", type);
-        String res = HttpClient.get(getImgUrl)
-                .queryString("sign", MD5Util.getApolloMd5(params.toString()))
-                .queryString("params", params.toString())
-                .queryString("time", new Date().getTime())
-                .asString();
-        JSONObject json = JSON.parseObject(res);
-        if (json.getIntValue("code") == CommonConstant.DEFAULT_SUCCESS_CODE) {
-            return json.getJSONArray("data");
+
+        String res;
+        try {
+            res = HttpClient.textBody(getImgUrl)
+                    .queryString("sign", MD5Util.getApolloMd5(params.toString()))
+                    .queryString("time", new Date().getTime())
+                    .json(params.toString())
+                    .asString();
+            JSONObject json = JSON.parseObject(res);
+            if (json.getIntValue("code") == CommonConstant.DEFAULT_SUCCESS_CODE) {
+                return json.getJSONArray("data");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new JSONArray();
         }
         return new JSONArray();
     }
