@@ -227,4 +227,17 @@ public class DictionaryController extends BaseController {
 		return ResultInfoUtil.success();
 	}
 
+	/**
+	 * 获取意向等级
+	 *
+	 * @return
+	 */
+	@GetMapping("/get_yx_level_list")
+	public ResultInfo getYxLevelList() {
+		// 获取当前登录账户
+		StaffPO currentLoginStaff = getCurrentLoginStaff();
+		return ResultInfoUtil.success(
+				dictionaryService.getCommonDicByType(currentLoginStaff.getCompanyId(), DictionaryConstant.YX_RANK));
+	}
+
 }
