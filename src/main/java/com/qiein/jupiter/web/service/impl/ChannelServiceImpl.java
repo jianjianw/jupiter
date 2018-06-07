@@ -71,6 +71,10 @@ public class ChannelServiceImpl implements ChannelService {
                 }
             }
         }
+
+        if (!channelPO.getShowFlag()){ //关闭渠道则关闭下属所有来源
+            sourceDao.updateIsShowByChannelId(channelPO.getId(),channelPO.getCompanyId());
+        }
         channelDao.update(channelPO);
     }
 
@@ -101,6 +105,8 @@ public class ChannelServiceImpl implements ChannelService {
         // 删除前需要检查渠道下属是否还存在来源
         if (channelDao.checkSrcNumById(id, companyId) > 0)
             throw new RException(ExceptionEnum.CHANNEL_HAVE_SOURCE);
+        //TODO 渠道下属来源全部isShow改为0
+
         // hm_crm_shop_channel_group_rela删除时关联删除该表信息
         channelDao.deleteByIdAndCid(id, companyId);
         shopChannelGroupDao.delByChannelId(companyId, id);

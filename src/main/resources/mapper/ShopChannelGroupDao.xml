@@ -155,10 +155,15 @@
 			rela.CHANNELID, rela.SHOPID, rela.GROUPID, rela.GROUPNAME, rela.COMPANYID, rela.WEIGHT
 		FROM
 			hm_crm_shop_channel_group_rela rela
+		LEFT JOIN ${infoTab} info ON rela.GROUPID = info.GROUPID 
+			AND info.CREATETIME &gt; UNIX_TIMESTAMP(CAST(SYSDATE() AS DATE)) 
+			AND info.STATUSID != 5	
 		WHERE
 			rela.COMPANYID = #{companyId}
 		AND rela.SHOPID = #{shopId}
-		AND rela.CHANNELID = #{channelId};
+		AND rela.CHANNELID = #{channelId}
+		GROUP BY rela.GROUPID
+		ORDER BY COUNT(1) ASC;
     </select>
 
     <!--根据组id删除-->

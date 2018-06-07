@@ -408,7 +408,7 @@ public class ClientPushServiceImpl implements ClientPushService {
 
 		// 根据拍摄地ID，渠道ID获取要分配的小组ID集合
 		List<ShopChannelGroupPO> shopChannelGroupRelaList = shopChannelGroupDao.listShopChannelGroupRela(companyId,
-				shopId, channelId);
+				shopId, channelId, DBSplitUtil.getInfoTabName(companyId));
 
 		if (CollectionUtils.isEmpty(shopChannelGroupRelaList)) {
 			return null;

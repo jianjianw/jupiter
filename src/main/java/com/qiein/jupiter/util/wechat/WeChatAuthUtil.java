@@ -17,7 +17,7 @@ public class WeChatAuthUtil {
     /**
      * 获取TOKEN的URL
      */
-	private final static String tokenUrl = "https://api.weixin.qq.com/sns/oauth2/access_token";
+    private final static String tokenUrl = "https://api.weixin.qq.com/sns/oauth2/access_token";
     /**
      * 获取用户信息的URL
      */
@@ -69,6 +69,5 @@ public class WeChatAuthUtil {
         weChatAuthDTO.setUnionId(res.getString("unionid"));
         weChatAuthDTO.setHeadImg(res.getString("headimgurl"));
         return weChatAuthDTO;
-
     }
 }

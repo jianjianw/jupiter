@@ -42,6 +42,13 @@
         SELECT IFNULL(MAX(PRIORITY),0)+1 FROM hm_crm_source WHERE COMPANYID = #{companyId})
     </insert>
 
+    <!--渠道关闭时，同时关闭下属所有来源-->
+    <update id="updateIsShowByChannelId" parameterType="map">
+        UPDATE hm_crm_source
+        SET ISSHOW = false
+        WHERE CHANNELID = #{channelId} AND COMPANYID = #{companyId}
+    </update>
+
     <update id="update" parameterType="com.qiein.jupiter.web.entity.po.SourcePO">
         UPDATE
         hm_crm_source
