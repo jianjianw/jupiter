@@ -35,7 +35,8 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
                 .excludePathPatterns("/login/login_by_ding")
                 .excludePathPatterns("/login/verify_code")
                 .excludePathPatterns("/login/need_verity_code")
-                .excludePathPatterns("/login/check_token");
+                .excludePathPatterns("/login/check_token")
+                .excludePathPatterns("/wechat/**");
     }
 
 }
