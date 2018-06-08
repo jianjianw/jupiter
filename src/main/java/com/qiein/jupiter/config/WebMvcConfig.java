@@ -21,6 +21,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         registry.addInterceptor(tokenInterceptor)
                 //要拦截的url
                 .addPathPatterns("/**")
+                .addPathPatterns("/wechat/get_qr_code_ticket")
                 //要排除的url
                 .excludePathPatterns("/")
                 .excludePathPatterns("/outer/**")
@@ -35,8 +36,8 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
                 .excludePathPatterns("/login/login_by_ding")
                 .excludePathPatterns("/login/verify_code")
                 .excludePathPatterns("/login/need_verity_code")
-                .excludePathPatterns("/login/check_token")
-                .excludePathPatterns("/wechat/**");
+                .excludePathPatterns("/login/check_token");
+//                .excludePathPatterns("/wechat/**");
     }
 
 }

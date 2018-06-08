@@ -3,6 +3,7 @@ package com.qiein.jupiter.web.controller;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.util.wechat.WeChatPushUtil;
+import com.qiein.jupiter.web.entity.po.StaffPO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,9 +31,10 @@ public class WeChatController extends BaseController {
 //        return ResultInfoUtil.success();
 //    }
 
-    @GetMapping("/get_qr_code_ticket")
+    @GetMapping("/get_qr_code_img")
     public ResultInfo getQRCode(){
-        return ResultInfoUtil.success(WeChatPushUtil.getQRCode());
+        StaffPO staffPO = getCurrentLoginStaff();
+        return ResultInfoUtil.success(WeChatPushUtil.getQRCodeImg(staffPO.getId(),staffPO.getCompanyId()));
     }
 
 }
