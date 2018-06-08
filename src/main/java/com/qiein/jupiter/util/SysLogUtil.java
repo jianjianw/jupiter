@@ -16,9 +16,13 @@ public class SysLogUtil {
     public static final int LOG_TYPE_LOGIN = 1;
     public static final int LOG_TYPE_GROUP = 2;
     public static final int LOG_TYPE_CLIENT = 3;
+    public static final int LOG_TYPE_CHANNEL = 4;
+    public static final int LOG_TYPE_SOURCE = 5;
     public static final String LOG_SUP_LOGIN = "登录";
     public static final String LOG_SUP_GROUP = "部门";
     public static final String LOG_SUP_CLIENT = "客资";
+    public static final String LOG_SUP_CHANNEL = "渠道";
+    public static final String LOG_SUP_SOURCE = "来源";
 
     public static final String SYS_LOG_PREFIX_ADD = "新增了";
     public static final String SYS_LOG_PREFIX_EDIT = "修改了";

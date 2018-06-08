@@ -5,17 +5,19 @@ import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
-import com.qiein.jupiter.util.ObjectUtil;
-import com.qiein.jupiter.util.ResultInfo;
-import com.qiein.jupiter.util.ResultInfoUtil;
-import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.util.*;
+import com.qiein.jupiter.web.entity.dto.RequestInfoDTO;
 import com.qiein.jupiter.web.entity.po.SourcePO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.entity.po.SystemLog;
 import com.qiein.jupiter.web.entity.vo.SourceVO;
 import com.qiein.jupiter.web.service.SourceService;
+import com.qiein.jupiter.web.service.SystemLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
 
 /**
  * 来源Controller
@@ -27,6 +29,8 @@ public class SourceController extends BaseController {
 
     @Autowired
     private SourceService sourceService;
+    @Autowired
+    private SystemLogService logService;
 
     /**
      * 新增来源
@@ -44,6 +48,16 @@ public class SourceController extends BaseController {
         ObjectUtil.objectStrParamTrim(sourcePO);
 
         sourceService.createSource(sourcePO);
+        //添加日志
+        try {
+            RequestInfoDTO requestInfo = getRequestInfo();
+            // 日志记录
+            SystemLog log = new SystemLog(SysLogUtil.LOG_TYPE_SOURCE, requestInfo.getIp(), requestInfo.getUrl(), currentLoginStaff.getId(),
+                    currentLoginStaff.getNickName(), SysLogUtil.getAddLog(SysLogUtil.LOG_SUP_SOURCE, sourcePO.getSrcName()), currentLoginStaff.getCompanyId());
+            logService.addLog(log);
+        } catch (Exception e) {
+
+        }
         return ResultInfoUtil.success(TigMsgEnum.ADD_SOURCE_SUCCESS);
     }
 
@@ -94,7 +108,6 @@ public class SourceController extends BaseController {
         //获取所属公司编号
         Integer companyId = currentLoginStaff.getCompanyId();
         sourceService.datDelSrc(ids, companyId);
-
         return ResultInfoUtil.success(TigMsgEnum.DEL_SOURCE_SUCCESS);
     }
 }

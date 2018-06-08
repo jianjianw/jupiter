@@ -6,14 +6,14 @@ import com.qiein.jupiter.constant.ChannelConstant;
 import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
-import com.qiein.jupiter.util.ObjectUtil;
-import com.qiein.jupiter.util.ResultInfo;
-import com.qiein.jupiter.util.ResultInfoUtil;
-import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.util.*;
+import com.qiein.jupiter.web.entity.dto.RequestInfoDTO;
 import com.qiein.jupiter.web.entity.po.ChannelPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.entity.po.SystemLog;
 import com.qiein.jupiter.web.service.ChannelService;
 import com.qiein.jupiter.web.service.SourceService;
+import com.qiein.jupiter.web.service.SystemLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +33,8 @@ public class ChannelController extends BaseController {
 
     @Autowired
     private SourceService sourceService;
+    @Autowired
+    private SystemLogService logService;
 
     /**
      * 新增渠道
@@ -48,8 +50,17 @@ public class ChannelController extends BaseController {
         channelPO.setCompanyId(currentLoginStaff.getCompanyId());
         // 对象参数去空
         ObjectUtil.objectStrParamTrim(channelPO);
-
         channelService.createChannel(channelPO);
+        //添加日志
+        try {
+            RequestInfoDTO requestInfo = getRequestInfo();
+            // 日志记录
+            SystemLog log = new SystemLog(SysLogUtil.LOG_TYPE_CHANNEL, requestInfo.getIp(), requestInfo.getUrl(), currentLoginStaff.getId(),
+                    currentLoginStaff.getNickName(), SysLogUtil.getAddLog(SysLogUtil.LOG_SUP_CHANNEL, channelPO.getChannelName()), currentLoginStaff.getCompanyId());
+            logService.addLog(log);
+        } catch (Exception e) {
+
+        }
         return ResultInfoUtil.success(TigMsgEnum.ADD_CHANNEL_SUCCESS);
     }
 
