@@ -1,18 +1,18 @@
 package com.qiein.jupiter.web.service.impl;
 
-import java.util.List;
-
-import com.qiein.jupiter.util.StringUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.LazyWorkDao;
 import com.qiein.jupiter.web.entity.vo.LazyWorkVO;
 import com.qiein.jupiter.web.service.LazyWorkService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
+ * 怠工
  * Created by Tt on 2018/5/16 0016.
  */
 @Service
@@ -23,6 +23,7 @@ public class LazyWorkServiceImpl implements LazyWorkService {
 
     /**
      * 根据员工编号获取员工怠工日志
+     *
      * @param staffId
      * @param companyId
      * @return
@@ -30,21 +31,21 @@ public class LazyWorkServiceImpl implements LazyWorkService {
     @Override
     public List<LazyWorkVO> getLazyWorkListByStaffId(int staffId, int companyId) {
         //TODO 表名之后改
-        String logTab  = "hm_crm_allot_log_"+companyId;
-        String infoTab = "hm_crm_client_info_"+companyId;
-        return lazyWorkDao.getLazyWorkListByStaffId(staffId, companyId,logTab,infoTab);
+        String logTab = "hm_crm_allot_log_" + companyId;
+        String infoTab = "hm_crm_client_info_" + companyId;
+        return lazyWorkDao.getLazyWorkListByStaffId(staffId, companyId, logTab, infoTab);
     }
 
     @Override
     public PageInfo<LazyWorkVO> getLazyWorkList(LazyWorkVO lazyWorkVO) {
         //TODO 表名之后改
-        String logTab  = "hm_crm_allot_log_"+lazyWorkVO.getCompanyId();
-        String infoTab = "hm_crm_client_info_"+lazyWorkVO.getCompanyId();
+        String logTab = "hm_crm_allot_log_" + lazyWorkVO.getCompanyId();
+        String infoTab = "hm_crm_client_info_" + lazyWorkVO.getCompanyId();
         PageHelper.startPage(lazyWorkVO.getPageNum(), lazyWorkVO.getPageSize());
         List<LazyWorkVO> list = lazyWorkDao.getLazyWorkListByUWant(
                 lazyWorkVO,
-                StringUtil.isEmpty(lazyWorkVO.getStaffIds())?null:lazyWorkVO.getStaffIds().split(","),
-                StringUtil.isEmpty(lazyWorkVO.getSourceIds())?null:lazyWorkVO.getSourceIds().split(","),
+                StringUtil.isEmpty(lazyWorkVO.getStaffIds()) ? null : lazyWorkVO.getStaffIds().split(","),
+                StringUtil.isEmpty(lazyWorkVO.getSourceIds()) ? null : lazyWorkVO.getSourceIds().split(","),
                 logTab,
                 infoTab);
         return new PageInfo<>(list);

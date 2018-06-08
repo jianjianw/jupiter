@@ -1,15 +1,5 @@
 package com.qiein.jupiter.web.service.impl;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
-import com.qiein.jupiter.web.entity.vo.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Service;
-
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.constant.DictionaryConstant;
 import com.qiein.jupiter.constant.RedisConstant;
@@ -18,36 +8,24 @@ import com.qiein.jupiter.enums.StaffStatusEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
-import com.qiein.jupiter.util.CollectionUtils;
-import com.qiein.jupiter.util.HttpUtil;
-import com.qiein.jupiter.util.JwtUtil;
-import com.qiein.jupiter.util.MD5Util;
-import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.util.ding.DingAuthUtil;
 import com.qiein.jupiter.util.wechat.WeChatAuthUtil;
-import com.qiein.jupiter.web.dao.DictionaryDao;
-import com.qiein.jupiter.web.dao.GroupStaffDao;
-import com.qiein.jupiter.web.dao.LoginDao;
-import com.qiein.jupiter.web.dao.PermissionDao;
-import com.qiein.jupiter.web.dao.StaffDao;
-import com.qiein.jupiter.web.dao.StaffStatusLogDao;
+import com.qiein.jupiter.web.dao.*;
 import com.qiein.jupiter.web.entity.dto.DingAuthDTO;
 import com.qiein.jupiter.web.entity.dto.PageDictDTO;
 import com.qiein.jupiter.web.entity.dto.WeChatAuthDTO;
-import com.qiein.jupiter.web.entity.po.CompanyPO;
-import com.qiein.jupiter.web.entity.po.PermissionPO;
-import com.qiein.jupiter.web.entity.po.StaffDetailPO;
-import com.qiein.jupiter.web.entity.po.StaffPO;
-import com.qiein.jupiter.web.entity.po.StaffStatusLog;
-import com.qiein.jupiter.web.service.ChannelService;
-import com.qiein.jupiter.web.service.CompanyService;
-import com.qiein.jupiter.web.service.DictionaryService;
-import com.qiein.jupiter.web.service.IpWhiteService;
-import com.qiein.jupiter.web.service.LoginService;
-import com.qiein.jupiter.web.service.NewsService;
-import com.qiein.jupiter.web.service.ShopService;
-import com.qiein.jupiter.web.service.SourceService;
-import com.qiein.jupiter.web.service.StatusService;
+import com.qiein.jupiter.web.entity.po.*;
+import com.qiein.jupiter.web.entity.vo.*;
+import com.qiein.jupiter.web.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 登录服务

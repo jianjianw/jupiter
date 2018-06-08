@@ -17,6 +17,9 @@ import com.qiein.jupiter.web.entity.vo.SourceDictVO;
 import com.qiein.jupiter.web.entity.vo.SourceVO;
 import com.qiein.jupiter.web.service.SourceService;
 
+/**
+ * 来源
+ */
 @Service
 public class SourceServiceImpl implements SourceService {
     @Autowired

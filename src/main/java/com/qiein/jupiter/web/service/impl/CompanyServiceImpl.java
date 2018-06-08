@@ -1,18 +1,17 @@
 package com.qiein.jupiter.web.service.impl;
 
-import java.util.List;
-import java.util.Map;
-
-import com.qiein.jupiter.web.entity.vo.CompanyVO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.web.dao.CompanyDao;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
+import com.qiein.jupiter.web.entity.vo.CompanyVO;
 import com.qiein.jupiter.web.service.CompanyService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 公司实现类

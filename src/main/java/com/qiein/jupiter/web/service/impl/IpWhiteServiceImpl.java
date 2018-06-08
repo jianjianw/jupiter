@@ -1,23 +1,22 @@
 package com.qiein.jupiter.web.service.impl;
 
-import java.util.List;
-
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.web.dao.IpWhiteDao;
+import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
+import com.qiein.jupiter.web.entity.po.IpWhitePO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.IpWhiteStaffVO;
 import com.qiein.jupiter.web.service.CompanyService;
+import com.qiein.jupiter.web.service.IpWhiteService;
 import com.qiein.jupiter.web.service.StaffService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.qiein.jupiter.web.dao.IpWhiteDao;
-import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
-import com.qiein.jupiter.web.entity.po.IpWhitePO;
-import com.qiein.jupiter.web.service.IpWhiteService;
+import java.util.List;
 
 /**
  * ip白名单
