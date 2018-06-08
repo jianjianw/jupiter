@@ -47,7 +47,7 @@
         ORDER BY dic.PRIORITY, dic.ID
     </select>
 
-    <!--获取企业左上角菜单栏-->
+    <!--根据类型和名称获取字典-->
     <select id="getDicByTypeAndName" parameterType="map" resultMap="baseMap">
         SELECT
         <include refid="baseColumn"/>

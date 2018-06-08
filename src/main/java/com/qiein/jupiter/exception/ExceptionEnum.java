@@ -139,7 +139,9 @@ public enum ExceptionEnum {
     IP_NOT_IN_SAFETY(1803, "当前IP不在安全IP范围内，请联系主管！"),
     //apollo
     ACCESSKEY_ERROR(1901, "accesskey错误"),
-    SIGN_ERROR(1902, "请求签名错误");
+    SIGN_ERROR(1902, "请求签名错误"),
+    //字典
+    DICTNAME_EXIST(2001, "字典名称重复");
 
     private Integer code;
     private String msg;

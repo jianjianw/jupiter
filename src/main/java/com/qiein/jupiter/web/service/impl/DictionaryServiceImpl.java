@@ -239,6 +239,14 @@ public class DictionaryServiceImpl implements DictionaryService {
      */
     @Override
     public void editDictName(DictionaryPO dictionaryPO) {
+        DictionaryPO dicByTypeAndName = dictionaryDao.getDicByTypeAndName(
+                dictionaryPO.getCompanyId(),
+                dictionaryPO.getDicType(),
+                dictionaryPO.getDicName());
+        //校验重复
+        if (dicByTypeAndName != null && dicByTypeAndName.getId() != dictionaryPO.getId()) {
+            throw new RException(ExceptionEnum.DICTNAME_EXIST);
+        }
         dictionaryDao.editDictName(dictionaryPO);
     }
 
