@@ -14,7 +14,7 @@ public class DictionaryDaoTest {
 
 	@Test
 	public void getCompanyMemu() {
-		List<MenuVO> list = dictionaryDao.getCompanyMemu(0, DictionaryConstant.MENU_TYPE);
+		List<MenuVO> list = dictionaryDao.getCompanyMenu(0, DictionaryConstant.MENU_TYPE);
 		System.out.println(list.size());
 	}
 }

@@ -13,41 +13,41 @@ import java.util.Map;
  * on 2018/5/23 0023.
  */
 public class DictionaryVO implements Serializable {
-	private static final long serialVersionUID = 1L;
-	private String dicCodes;
-	private String dicNames;
-	private List<DictionaryPO> Diclist = new ArrayList<>();
-	private int companyId;
+    private static final long serialVersionUID = 1L;
+    private String dicCodes;
+    private String dicNames;
+    private List<DictionaryPO> Diclist = new ArrayList<>();
+    private int companyId;
 
-	public int getCompanyId() {
-		return companyId;
-	}
+    public int getCompanyId() {
+        return companyId;
+    }
 
-	public void setCompanyId(int companyId) {
-		this.companyId = companyId;
-	}
+    public void setCompanyId(int companyId) {
+        this.companyId = companyId;
+    }
 
-	public String getDicCodes() {
-		return dicCodes;
-	}
+    public String getDicCodes() {
+        return dicCodes;
+    }
 
-	public void setDicCodes(String dicCodes) {
-		this.dicCodes = dicCodes;
-	}
+    public void setDicCodes(String dicCodes) {
+        this.dicCodes = dicCodes;
+    }
 
-	public String getDicNames() {
-		return dicNames;
-	}
+    public String getDicNames() {
+        return dicNames;
+    }
 
-	public void setDicNames(String dicNames) {
-		this.dicNames = dicNames;
-	}
+    public void setDicNames(String dicNames) {
+        this.dicNames = dicNames;
+    }
 
-	public List<DictionaryPO> getDiclist() {
-		return Diclist;
-	}
+    public List<DictionaryPO> getDiclist() {
+        return Diclist;
+    }
 
-	public void setDiclist(List<DictionaryPO> diclist) {
-		Diclist = diclist;
-	}
+    public void setDiclist(List<DictionaryPO> diclist) {
+        Diclist = diclist;
+    }
 }

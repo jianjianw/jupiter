@@ -328,9 +328,9 @@ public class LoginServiceImpl implements LoginService {
      */
     private List<MenuVO> getCompanyMenuList(int companyId, int staffId) {
         // 企业左上角菜单栏
-        List<MenuVO> menuList = dictionaryDao.getCompanyMemu(companyId, DictionaryConstant.MENU_TYPE);
+        List<MenuVO> menuList = dictionaryDao.getCompanyMenu(companyId, DictionaryConstant.MENU_TYPE);
         if (CollectionUtils.isEmpty(menuList)) {
-            menuList = dictionaryDao.getCompanyMemu(DictionaryConstant.COMMON_COMPANYID, DictionaryConstant.MENU_TYPE);
+            menuList = dictionaryDao.getCompanyMenu(DictionaryConstant.COMMON_COMPANYID, DictionaryConstant.MENU_TYPE);
         }
         // 获取员工角色
         List<String> roleList = groupStaffDao.getStaffRoleList(companyId, staffId);

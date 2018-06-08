@@ -234,4 +234,20 @@ public class DictionaryServiceImpl implements DictionaryService {
         dictionaryDao.editDictPriority(id2, priority2, companyId);
     }
 
+    /**
+     * 编辑字典名称
+     */
+    @Override
+    public void editDictName(DictionaryPO dictionaryPO) {
+        dictionaryDao.editDictName(dictionaryPO);
+    }
+
+    /**
+     * 字典排序
+     */
+    @Override
+    public void editDictShowFlag(DictionaryPO dictionaryPO) {
+        dictionaryDao.editDictShowFlag(dictionaryPO);
+    }
+
 }

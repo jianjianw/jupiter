@@ -19,7 +19,7 @@ public interface DictionaryDao extends BaseDao<DictionaryPO> {
      * @param dicType
      * @return
      */
-    List<MenuVO> getCompanyMemu(@Param("companyId") int companyId, @Param("dicType") String dicType);
+    List<MenuVO> getCompanyMenu(@Param("companyId") int companyId, @Param("dicType") String dicType);
 
     /**
      * 根绝类型获取字典数据
@@ -42,12 +42,13 @@ public interface DictionaryDao extends BaseDao<DictionaryPO> {
 
     /**
      * 根据字典code和type获取字典列表
+     *
      * @param companyId
      * @param dicType
      * @param dicCodes
      * @return
      */
-    List<DictionaryPO> getDicByCodeAndType(@Param("companyId") int companyId,@Param("dicType") String dicType , @Param("dicCodes")String[] dicCodes);
+    List<DictionaryPO> getDicByCodeAndType(@Param("companyId") int companyId, @Param("dicType") String dicType, @Param("dicCodes") String[] dicCodes);
 
     /**
      * 批量删除字典数据
@@ -64,6 +65,7 @@ public interface DictionaryDao extends BaseDao<DictionaryPO> {
 
     /**
      * 获取最大编码
+     *
      * @param companyId
      * @param dicType
      * @return
@@ -72,6 +74,7 @@ public interface DictionaryDao extends BaseDao<DictionaryPO> {
 
     /**
      * 新增字典记录
+     *
      * @param dictionaryPO
      * @return
      */
@@ -79,6 +82,7 @@ public interface DictionaryDao extends BaseDao<DictionaryPO> {
 
     /**
      * 新增咨询类型
+     *
      * @param dictionaryPO
      * @return
      */
@@ -86,21 +90,24 @@ public interface DictionaryDao extends BaseDao<DictionaryPO> {
 
     /**
      * 从默认咨询类型中获取记录添加到本公司中
+     *
      * @param companyId
      * @param dicCodes
      * @return
      */
-    int addCommonTypeFromZero(@Param("companyId") int companyId, @Param("dicCodes")String[] dicCodes);
+    int addCommonTypeFromZero(@Param("companyId") int companyId, @Param("dicCodes") String[] dicCodes);
 
     /**
      * 直接添加咨询类型
+     *
      * @param dictionaryVO
      * @return
      */
     int addCommonType(DictionaryVO dictionaryVO);
 
     /**
-     *  新增咨询类型
+     * 新增咨询类型
+     *
      * @param dictionaryVO
      * @return
      */
@@ -108,6 +115,7 @@ public interface DictionaryDao extends BaseDao<DictionaryPO> {
 
     /**
      * 获取咨询类型最新排序
+     *
      * @param companyId
      * @return
      */
@@ -115,18 +123,30 @@ public interface DictionaryDao extends BaseDao<DictionaryPO> {
 
     /**
      * 根据id删除
+     *
      * @param id
      * @param companyId
      * @return
      */
-    int delDict(@Param("id") int id,@Param("companyId")int companyId);
+    int delDict(@Param("id") int id, @Param("companyId") int companyId);
 
     /**
      * 编辑字典排序
+     *
      * @param id
      * @param priority
      * @param companyId
      * @return
      */
-    int editDictPriority(@Param("id") int id , @Param("priority") int priority , @Param("companyId") int companyId);
+    int editDictPriority(@Param("id") int id, @Param("priority") int priority, @Param("companyId") int companyId);
+
+    /**
+     * 编辑字典名称
+     */
+    int editDictName(DictionaryPO dictionaryPO);
+
+    /**
+     * 编辑字典可用状态
+     */
+    int editDictShowFlag(DictionaryPO dictionaryPO);
 }

@@ -9,6 +9,7 @@
         <result column="DICNAME" jdbcType="INTEGER" property="dicName"/>
         <result column="PRIORITY" jdbcType="VARCHAR" property="priority"/>
         <result column="SPARE" jdbcType="INTEGER" property="spare"/>
+        <result column="ISSHOW" jdbcType="BOOLEAN" property="showFlag"/>
         <result column="COMPANYID" jdbcType="INTEGER" property="companyId"/>
     </resultMap>
 
@@ -18,18 +19,19 @@
     </resultMap>
 
     <sql id="baseColumn">
-        ID,DICTYPE, DICCODE, DICNAME,PRIORITY, SPARE, COMPANYID
+        ID, DICTYPE, DICCODE, DICNAME, PRIORITY, SPARE, COMPANYID
     </sql>
 
     <!--获取企业左上角菜单栏-->
     <select id="getCompanyMemu" parameterType="map" resultMap="VOMap">
         SELECT
-            dic.DICNAME, dic.SPARE
+            dic.DICNAME,
+            dic.SPARE
         FROM
             hm_crm_dictionary dic
         WHERE
-        dic.DICTYPE = #{dicType}
-         AND  dic.COMPANYID = #{companyId}
+            dic.DICTYPE = #{dicType}
+            AND dic.COMPANYID = #{companyId}
 
     </select>
 
@@ -62,7 +64,7 @@
         INSERT INTO hm_crm_dictionary
         (DICTYPE, DICCODE, DICNAME, PRIORITY, SPARE, COMPANYID)
         VALUES
-        (#{dicType},#{dicCode},#{dicName},#{priority},#{spare},#{companyId})
+            (#{dicType}, #{dicCode}, #{dicName}, #{priority}, #{spare}, #{companyId})
     </insert>
 
     <!--编辑数据字典-->
@@ -71,7 +73,7 @@
         SET DICNAME = #{dicName}, SPARE = #{spare}
         WHERE
             COMPANYID = #{companyId}
-        AND ID = #{id}
+            AND ID = #{id}
     </update>
 
     <!--批量删除字典数据-->
@@ -97,109 +99,138 @@
 
     <!--获取最大编码-->
     <select id="getMaxDicCode" parameterType="map" resultType="java.lang.Integer">
-        SELECT
-            IFNULL(MAX(dic.DICCODE),0)
+        SELECT IFNULL(MAX(dic.DICCODE), 0)
         FROM
-          hm_crm_dictionary dic
+            hm_crm_dictionary dic
         WHERE
-          dic.DICTYPE = #{dicType}
-        AND dic.COMPANYID = #{companyId}
+            dic.DICTYPE = #{dicType}
+            AND dic.COMPANYID = #{companyId}
     </select>
 
     <!--新增字典记录-->
     <insert id="createDict" parameterType="dictionaryPO">
         INSERT INTO
-	      hm_crm_dictionary
-            (DICTYPE,DICCODE,DICNAME,PRIORITY,SPARE,COMPANYID)
-        SELECT
-          #{dicType},
-	      (SELECT IFNULL(MAX(DICCODE),0)+1 FROM hm_crm_dictionary WHERE COMPANYID = #{companyId} AND DICTYPE = #{dicType}),
-          #{dicName},
-          (SELECT IFNULL(MAX(PRIORITY),0)+1 FROM hm_crm_dictionary WHERE COMPANYID = #{companyId} AND DICTYPE = #{dicType}),
-          #{spare},#{companyId}
+            hm_crm_dictionary
+            (DICTYPE, DICCODE, DICNAME, PRIORITY, SPARE, COMPANYID)
+            SELECT
+                #{dicType},
+                (SELECT IFNULL(MAX(DICCODE), 0) + 1
+                 FROM hm_crm_dictionary
+                 WHERE COMPANYID = #{companyId} AND DICTYPE = #{dicType}),
+                #{dicName},
+                (SELECT IFNULL(MAX(PRIORITY), 0) + 1
+                 FROM hm_crm_dictionary
+                 WHERE COMPANYID = #{companyId} AND DICTYPE = #{dicType}),
+                #{spare},
+                #{companyId}
     </insert>
 
     <!--新增咨询类型-->
     <insert id="createCommonType" parameterType="dictionaryPO">
         INSERT INTO
-        hm_crm_dictionary
-        (DICTYPE,DICCODE,DICNAME,PRIORITY,SPARE,COMPANYID)
-        SELECT
-        #{dicType},
-        #{dicCode},
-        #{dicName},
-        (SELECT IFNULL(MAX(PRIORITY),0)+1 FROM hm_crm_dictionary WHERE COMPANYID = #{companyId} AND DICTYPE = #{dicType}),
-        #{spare},#{companyId}
+            hm_crm_dictionary
+            (DICTYPE, DICCODE, DICNAME, PRIORITY, SPARE, COMPANYID)
+            SELECT
+                #{dicType},
+                #{dicCode},
+                #{dicName},
+                (SELECT IFNULL(MAX(PRIORITY), 0) + 1
+                 FROM hm_crm_dictionary
+                 WHERE COMPANYID = #{companyId} AND DICTYPE = #{dicType}),
+                #{spare},
+                #{companyId}
     </insert>
 
     <!--将查询出的默认咨询类型插入到本公司的字典中-->
     <insert id="addCommonTypeFromZero" parameterType="map">
         INSERT INTO
-          hm_crm_dictionary
-            (DICTYPE,DICCODE,DICNAME,PRIORITY,SPARE,COMPANYID)
+        hm_crm_dictionary
+        (DICTYPE,DICCODE,DICNAME,PRIORITY,SPARE,COMPANYID)
         SELECT
-            DICTYPE,
-            DICCODE,
-            DICNAME,
-            PRIORITY,
-            SPARE,
-            #{companyId}
+        DICTYPE,
+        DICCODE,
+        DICNAME,
+        PRIORITY,
+        SPARE,
+        #{companyId}
         FROM
-            hm_crm_dictionary dd
+        hm_crm_dictionary dd
         WHERE
-                COMPANYID = 0 AND DICTYPE = 'common_type' AND
-        DICCODE IN <foreach collection="dicCodes" item="dicCode" index="index" open="(" separator="," close=")">#{dicCode}</foreach>
+        COMPANYID = 0 AND DICTYPE = 'common_type' AND
+        DICCODE IN
+        <foreach collection="dicCodes" item="dicCode" index="index" open="(" separator="," close=")">#{dicCode}
+        </foreach>
     </insert>
 
     <!--直接添加咨询类型-->
     <insert id="addCommonType" parameterType="dictionaryPO">
         INSERT INTO
-          hm_crm_dictionary
-            (DICTYPE,DICCODE,DICNAME,SPARE,COMPANYID,PRIORITY)
+        hm_crm_dictionary
+        (DICTYPE,DICCODE,DICNAME,SPARE,COMPANYID,PRIORITY)
         VALUES
-          <foreach collection="Diclist" item="dic" index="index" separator=",">
-              (#{dic.dicType},#{dic.dicCode},#{dic.dicName},
-              #{dic.spare},#{companyId},#{dic.priority})
-          </foreach>
+        <foreach collection="Diclist" item="dic" index="index" separator=",">
+            (#{dic.dicType},#{dic.dicCode},#{dic.dicName},
+            #{dic.spare},#{companyId},#{dic.priority})
+        </foreach>
     </insert>
 
     <!--获取咨询类型排序-->
     <select id="getCommonTypePriority" parameterType="Integer" resultType="Integer">
-        SELECT
-          IFNULL(MAX(PRIORITY),0)+1
+        SELECT IFNULL(MAX(PRIORITY), 0) + 1
         FROM
-          hm_crm_dictionary
+            hm_crm_dictionary
         WHERE
-          COMPANYID = #{companyId} AND DICTYPE = 'common_type'
+            COMPANYID = #{companyId} AND DICTYPE = 'common_type'
     </select>
 
     <!--编辑字典排序-->
     <update id="editDictPriority" parameterType="Integer">
         UPDATE
-          hm_crm_dictionary
+            hm_crm_dictionary
         SET
-          PRIORITY = #{priority}
+            PRIORITY = #{priority}
         WHERE
-          ID = #{id} AND COMPANYID = #{companyId}
+            ID = #{id} AND COMPANYID = #{companyId}
     </update>
 
     <select id="getDicByCodeAndType" parameterType="map" resultType="dictionaryPO">
         SELECT
-          DICTYPE,DICCODE,DICNAME,PRIORITY,SPARE,COMPANYID
+        DICTYPE,DICCODE,DICNAME,PRIORITY,SPARE,COMPANYID
         FROM
-          hm_crm_dictionary
+        hm_crm_dictionary
         WHERE
-          COMPANYID = #{companyId} AND DICTYPE = #{dicType} AND
-          DICCODE IN <foreach collection="dicCodes" item="dicCode" index="index" open="(" separator="," close=")">#{dicCode}</foreach>
+        COMPANYID = #{companyId} AND DICTYPE = #{dicType} AND
+        DICCODE IN
+        <foreach collection="dicCodes" item="dicCode" index="index" open="(" separator="," close=")">#{dicCode}
+        </foreach>
     </select>
 
     <!--删除字典记录-->
     <delete id="delDict" parameterType="Integer">
         DELETE
         FROM
-          hm_crm_dictionary
+            hm_crm_dictionary
         WHERE
-          ID = #{id} AND COMPANYID = #{companyId}
+            ID = #{id} AND COMPANYID = #{companyId}
     </delete>
 
+    <!--编辑字典名称-->
+    <update id="editDictName">
+        UPDATE
+            hm_crm_dictionary
+        SET
+            DICNAME = #{dicName}
+        WHERE
+            ID = #{id} AND COMPANYID = #{companyId}
+    </update>
+
+    <!--编辑字典是否启用-->
+    <update id="editDictShowFlag">
+        UPDATE
+            hm_crm_dictionary
+        SET
+            ISSHOW = #{showFlag}
+        WHERE
+            ID = #{id} AND COMPANYID = #{companyId}
+    </update>
 </mapper>

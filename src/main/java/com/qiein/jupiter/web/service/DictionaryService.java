@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.qiein.jupiter.web.entity.po.DictionaryPO;
 import com.qiein.jupiter.web.entity.vo.DictionaryVO;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 字典业务层
@@ -77,6 +78,7 @@ public interface DictionaryService {
 
     /**
      * 新增字典记录
+     *
      * @param dictionaryPO
      */
     void createDict(DictionaryPO dictionaryPO);
@@ -89,13 +91,15 @@ public interface DictionaryService {
 
     /**
      * 根据Id删除字典记录
+     *
      * @param id
      * @param companyId
      */
-    void delDict(int id ,int companyId);
+    void delDict(int id, int companyId);
 
     /**
      * 编辑咨询类型接口
+     *
      * @param dictionaryVO
      */
     void addCommonType(DictionaryVO dictionaryVO);
@@ -103,11 +107,22 @@ public interface DictionaryService {
 
     /**
      * 调换字典的排序
+     *
      * @param id1
      * @param priority1
      * @param id2
      * @param priority2
      */
-    void editDictPriority(int id1, int priority1, int id2, int priority2,int companyId);
+    void editDictPriority(int id1, int priority1, int id2, int priority2, int companyId);
+
+    /**
+     * 编辑字典名称
+     */
+    void editDictName(DictionaryPO dictionaryPO);
+
+    /**
+     * 字典排序
+     */
+    void editDictShowFlag(DictionaryPO dictionaryPO);
 
 }
