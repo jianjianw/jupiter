@@ -149,10 +149,7 @@ public class ClientTrackServiceImpl implements ClientTrackService {
 
         String addRstStr = crmBaseApi.doService(reqContent, "clientBatchRestoreLp");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
-        if ("100000".equals(jsInfo.getString("code"))) {
-            //TODO 推送
-            log.info("客资回收成功");
-        } else {
+        if (!"100000".equals(jsInfo.getString("code"))) {
             throw new RException(jsInfo.getString("msg"));
         }
     }
