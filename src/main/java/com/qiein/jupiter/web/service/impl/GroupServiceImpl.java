@@ -1,13 +1,5 @@
 package com.qiein.jupiter.web.service.impl;
 
-import java.util.Arrays;
-import java.util.List;
-
-import com.qiein.jupiter.web.dao.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.constant.PmsConstant;
 import com.qiein.jupiter.constant.RoleConstant;
@@ -15,15 +7,17 @@ import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.CollectionUtils;
 import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.web.dao.*;
 import com.qiein.jupiter.web.entity.po.GroupPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
-import com.qiein.jupiter.web.entity.vo.BaseStaffVO;
-import com.qiein.jupiter.web.entity.vo.GroupBaseStaffVO;
-import com.qiein.jupiter.web.entity.vo.GroupStaffVO;
-import com.qiein.jupiter.web.entity.vo.GroupVO;
-import com.qiein.jupiter.web.entity.vo.GroupsInfoVO;
-import com.qiein.jupiter.web.entity.vo.StaffVO;
+import com.qiein.jupiter.web.entity.vo.*;
 import com.qiein.jupiter.web.service.GroupService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 部门小组实现类

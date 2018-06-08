@@ -1,24 +1,23 @@
 package com.qiein.jupiter.web.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.qiein.jupiter.util.StringUtil;
-import com.qiein.jupiter.web.entity.vo.DictionaryVO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.constant.DictionaryConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.CollectionUtils;
+import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.DictionaryDao;
 import com.qiein.jupiter.web.entity.po.DictionaryPO;
+import com.qiein.jupiter.web.entity.vo.DictionaryVO;
 import com.qiein.jupiter.web.service.DictionaryService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 字典业务层
@@ -167,11 +166,12 @@ public class DictionaryServiceImpl implements DictionaryService {
 
     /**
      * 新增字典
+     *
      * @param dictionaryPO
      */
     @Override
     public void createDict(DictionaryPO dictionaryPO) {
-        if (dictionaryDao.createDict(dictionaryPO)!=1){
+        if (dictionaryDao.createDict(dictionaryPO) != 1) {
             throw new RException(ExceptionEnum.ADD_FAIL);
         }
     }
@@ -189,35 +189,38 @@ public class DictionaryServiceImpl implements DictionaryService {
 
     /**
      * 删除字典
+     *
      * @param id
      * @param companyId
      */
     @Override
     public void delDict(int id, int companyId) {
-        dictionaryDao.delDict(id,companyId);
+        dictionaryDao.delDict(id, companyId);
     }
 
     /**
      * 编辑咨询类型
+     *
      * @param dictionaryVO
      */
     @Override
     @Transactional
     public void addCommonType(DictionaryVO dictionaryVO) {
-        String[] codes =dictionaryVO.getDicCodes().split(",");
+        String[] codes = dictionaryVO.getDicCodes().split(",");
         //获取默认0的对应字典记录
 //        dictionaryDao.addCommonType(dictionaryVO.getCompanyId(),codes);
         String[] dicCodes = dictionaryVO.getDicCodes().split(",");
         String[] dicNames = dictionaryVO.getDicNames().split(",");
         int priority = dictionaryDao.getCommonTypePriority(dictionaryVO.getCompanyId());
-        for (int i = 0 ; i < dicCodes.length ; i++){
-            dictionaryVO.getDiclist().add(new DictionaryPO("common_type",Integer.parseInt(dicCodes[i]),dicNames[i],priority + i,dictionaryVO.getCompanyId()));
+        for (int i = 0; i < dicCodes.length; i++) {
+            dictionaryVO.getDiclist().add(new DictionaryPO("common_type", Integer.parseInt(dicCodes[i]), dicNames[i], priority + i, dictionaryVO.getCompanyId()));
         }
         dictionaryDao.addCommonType(dictionaryVO);
     }
 
     /**
      * 编辑字典排序
+     *
      * @param id1
      * @param priority1
      * @param id2
@@ -227,8 +230,8 @@ public class DictionaryServiceImpl implements DictionaryService {
     @Override
     @Transactional
     public void editDictPriority(int id1, int priority1, int id2, int priority2, int companyId) {
-        dictionaryDao.editDictPriority(id1,priority1,companyId);
-        dictionaryDao.editDictPriority(id2,priority2,companyId);
+        dictionaryDao.editDictPriority(id1, priority1, companyId);
+        dictionaryDao.editDictPriority(id2, priority2, companyId);
     }
 
 }

@@ -1,16 +1,9 @@
 package com.qiein.jupiter.web.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import com.qiein.jupiter.util.StringUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.constant.DictionaryConstant;
 import com.qiein.jupiter.util.CollectionUtils;
+import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.BrandDao;
 import com.qiein.jupiter.web.dao.GroupDao;
 import com.qiein.jupiter.web.dao.PageConfigDao;
@@ -24,6 +17,12 @@ import com.qiein.jupiter.web.entity.vo.GroupsInfoVO;
 import com.qiein.jupiter.web.entity.vo.ShopVO;
 import com.qiein.jupiter.web.service.DictionaryService;
 import com.qiein.jupiter.web.service.PageConfigService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 页面配置

@@ -17,18 +17,22 @@ public class WeChatController extends BaseController {
     private static final String testAppId = "wxcfb9db7577fca934";
     private static final String testAppSecret = "c00e1dc5cf3c7c305ccf9e0b9dd6158e";
 
-    @GetMapping("/auth")
-    public ResultInfo weChatAuth(String signature,
-                                 String timestamp ,
-                                 Integer nonce ,
-                                 String echostr){
-        System.out.println("signature: "+signature);
-        System.out.println("timestamp: "+timestamp);
-        System.out.println("nonce: "+nonce);
-        System.out.println("echostr: "+echostr);
-        System.out.println("token: "+ WeChatPushUtil.getAccessToken());
-        return ResultInfoUtil.success();
-    }
+//    @GetMapping("/auth")
+//    public ResultInfo weChatAuth(String signature,
+//                                 String timestamp ,
+//                                 Integer nonce ,
+//                                 String echostr){
+//        System.out.println("signature: "+signature);
+//        System.out.println("timestamp: "+timestamp);
+//        System.out.println("nonce: "+nonce);
+//        System.out.println("echostr: "+echostr);
+//        System.out.println("token: "+ WeChatPushUtil.getAccessToken());
+//        return ResultInfoUtil.success();
+//    }
 
+    @GetMapping("/get_qr_code_ticket")
+    public ResultInfo getQRCode(){
+        return ResultInfoUtil.success(WeChatPushUtil.getQRCode());
+    }
 
 }

@@ -11,17 +11,19 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
+ * 插件
  * Created by Tt
  * on 2018/5/26 0026.
  */
 @Service
-public class PluginServiceImpl implements PluginService{
+public class PluginServiceImpl implements PluginService {
 
     @Resource
     private PluginDao pluginDao;
 
     /**
      * 获取该公司插件列表
+     *
      * @param companyId
      * @return
      */
@@ -42,7 +44,7 @@ public class PluginServiceImpl implements PluginService{
 
     @Override
     public void delPlugin(String pluginIds, int companyId) {
-        pluginDao.delPlugin(pluginIds.split(","),companyId);
+        pluginDao.delPlugin(pluginIds.split(","), companyId);
     }
 
 }

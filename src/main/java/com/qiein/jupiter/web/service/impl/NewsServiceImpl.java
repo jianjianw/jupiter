@@ -1,10 +1,5 @@
 package com.qiein.jupiter.web.service.impl;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.constant.CommonConstant;
@@ -15,6 +10,10 @@ import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.NewsPO;
 import com.qiein.jupiter.web.entity.vo.NewsTotalAmountAndFlag;
 import com.qiein.jupiter.web.service.NewsService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 消息

@@ -17,6 +17,9 @@ import com.qiein.jupiter.web.service.SystemLogService;
 
 import java.util.HashMap;
 
+/**
+ * 系统日志
+ */
 @Service
 public class SystemLogServiceImpl implements SystemLogService {
 

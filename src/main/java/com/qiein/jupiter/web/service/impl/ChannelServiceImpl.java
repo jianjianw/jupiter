@@ -1,12 +1,5 @@
 package com.qiein.jupiter.web.service.impl;
 
-import java.util.*;
-
-import com.qiein.jupiter.web.entity.vo.ChannelDictVO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.qiein.jupiter.enums.RoleChannelEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
@@ -17,9 +10,15 @@ import com.qiein.jupiter.web.dao.ChannelDao;
 import com.qiein.jupiter.web.dao.ShopChannelGroupDao;
 import com.qiein.jupiter.web.dao.SourceDao;
 import com.qiein.jupiter.web.entity.po.ChannelPO;
+import com.qiein.jupiter.web.entity.vo.ChannelDictVO;
 import com.qiein.jupiter.web.entity.vo.ChannelVO;
 import com.qiein.jupiter.web.entity.vo.SrcListVO;
 import com.qiein.jupiter.web.service.ChannelService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
 
 @Service
 public class ChannelServiceImpl implements ChannelService {
@@ -73,8 +72,8 @@ public class ChannelServiceImpl implements ChannelService {
             }
         }
 
-        if (channelPO.getShowFlag()!=null &&!channelPO.getShowFlag()){ //关闭渠道则关闭下属所有来源
-            sourceDao.updateIsShowByChannelId(channelPO.getId(),channelPO.getCompanyId());
+        if (channelPO.getShowFlag() != null && !channelPO.getShowFlag()) { //关闭渠道则关闭下属所有来源
+            sourceDao.updateIsShowByChannelId(channelPO.getId(), channelPO.getCompanyId());
         }
         channelDao.update(channelPO);
     }
