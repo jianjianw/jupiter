@@ -23,7 +23,7 @@
     </sql>
 
     <!--获取企业左上角菜单栏-->
-    <select id="getCompanyMemu" parameterType="map" resultMap="VOMap">
+    <select id="getCompanyMenu" parameterType="map" resultMap="VOMap">
         SELECT
             dic.DICNAME,
             dic.SPARE
