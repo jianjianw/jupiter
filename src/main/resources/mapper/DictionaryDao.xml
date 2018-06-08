@@ -19,7 +19,7 @@
     </resultMap>
 
     <sql id="baseColumn">
-        ID, DICTYPE, DICCODE, DICNAME, PRIORITY, SPARE, COMPANYID
+        ID, DICTYPE, DICCODE, DICNAME, PRIORITY, SPARE, ISSHOW, COMPANYID
     </sql>
 
     <!--获取企业左上角菜单栏-->
