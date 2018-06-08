@@ -101,7 +101,7 @@ public class WeChatPushUtil {
         scene_str.put("scene_str",cidAndUid);
         Map<String,Object> scene = new HashMap<String,Object>();
         scene.put("scene",scene_str);
-        return getQRCode(60*60*12,"QR_STR_SCENE",scene);
+        return getQRCode(60*5,"QR_STR_SCENE",scene);
     }
 
     /**
@@ -121,6 +121,7 @@ public class WeChatPushUtil {
                 .json(params.toString())
                 .asString();
         System.out.println(resJsonStr);
+        //TODO 异常处理
         QRCodeDTO qrCodeDTO = JSONObject.parseObject(resJsonStr,QRCodeDTO.class);
         System.out.println(qrCodeDTO);
         return qrCodeDTO;
