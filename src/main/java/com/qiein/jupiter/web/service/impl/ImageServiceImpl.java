@@ -9,6 +9,8 @@ import com.qiein.jupiter.util.MD5Util;
 import com.qiein.jupiter.web.dao.ImageDao;
 import com.qiein.jupiter.web.service.ImageService;
 import org.apache.poi.ss.formula.functions.T;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,8 @@ import java.util.Map;
  */
 @Service
 public class ImageServiceImpl implements ImageService {
+
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private ImageDao imageDao;
@@ -62,6 +66,7 @@ public class ImageServiceImpl implements ImageService {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            log.error("阿波罗远程连接错误！");
             return new JSONArray();
         }
         return new JSONArray();
