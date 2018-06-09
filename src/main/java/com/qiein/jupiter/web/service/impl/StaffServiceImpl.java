@@ -1,7 +1,9 @@
 package com.qiein.jupiter.web.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.mzlion.easyokhttp.HttpClient;
 import com.qiein.jupiter.constant.ClientLogConst;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.constant.RedisConstant;
@@ -339,6 +341,36 @@ public class StaffServiceImpl implements StaffService {
         if (staffDao.editMsgSet(staffMsg) < 1) {
             throw new RException(ExceptionEnum.EDIT_FAIL);
         }
+    }
+
+    /**
+     * 编辑微信绑定状态
+     * @param companyId
+     * @param staffId
+     * @param bindFlag
+     */
+    @Override
+    public void editBindWeChat(Integer companyId, Integer staffId, boolean bindFlag) {
+        if (staffDao.editBindWeChat(companyId, staffId, bindFlag)==0){
+            throw new RException("微信绑定失败");
+        }
+    }
+
+    /**
+     * 检查是否绑定成功，如果绑定成功返回微信公众号用户的所有信息
+     * @param companyId
+     * @param staffId
+     */
+    @Override
+    public WeChatUserDTO checkWXBind(Integer companyId, Integer staffId) {
+        if (staffDao.checkBindWeChat(companyId, staffId)){
+            String resultJsonStr = HttpClient.get("http://uzymz6.natappfree.cc/wechat/get_user_info")
+                    .queryString("companyId",companyId)
+                    .queryString("staffId",staffId)
+                    .asString();
+            return JSONObject.parseObject(resultJsonStr,WeChatUserDTO.class);
+        }
+        return null;
     }
 
     /**

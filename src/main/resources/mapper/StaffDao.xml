@@ -790,11 +790,26 @@
 		AND sf.COMPANYID = #{companyId}
     </select>
 
+    <!--修改消息推送设置-->
     <update id="editMsgSet" parameterType="staffMsg">
         UPDATE hm_pub_staff_detail
         SET MSGSET = #{msgSet}
         WHERE ID = #{id} AND COMPANYID = #{companyId}
     </update>
+
+    <!--修改微信绑定标识-->
+    <update id="editBindWeChat" parameterType="map">
+        UPDATE hm_pub_staff_detail
+        SET WECHATBINDFLAG = #{bindFlag}
+        WHERE COMPANYID = #{companyId} AND ID = #{staffId}
+    </update>
+
+    <!--查询员工微信绑定情况-->
+    <select id="checkBindWeChat" parameterType="Integer" resultType="Boolean">
+        SELECT WECHATBINDFLAG
+        FROM hm_pub_staff_detail
+        WHERE COMPANYID = #{companyId} AND ID = #{staffId}
+    </select>
     
     <!-- 重置员工今日接单数 -->
     <update id="resetTodayNum" parameterType="map">

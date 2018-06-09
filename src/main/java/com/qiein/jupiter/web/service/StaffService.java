@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.dto.StaffMarsDTO;
 import com.qiein.jupiter.web.entity.dto.StaffPasswordDTO;
+import com.qiein.jupiter.web.entity.dto.WeChatUserDTO;
 import com.qiein.jupiter.web.entity.po.PermissionPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.po.StaffStatusLog;
@@ -323,6 +324,21 @@ public interface StaffService {
 	 * @param staffMsg
 	 */
 	void editMsgSet(StaffMsg staffMsg);
+
+	/**
+	 * 编辑个人微信绑定标记
+	 * @param companyId
+	 * @param staffId
+	 * @param bindFlag
+	 */
+	void editBindWeChat(Integer companyId,Integer staffId,boolean bindFlag);
+
+	/**
+	 * 检查是否绑定成功，如果绑定成功返回微信公众号用户的所有信息
+	 * @param companyId
+	 * @param staffId
+	 */
+	WeChatUserDTO checkWXBind(Integer companyId, Integer staffId);
 	
 	/**
 	 * 每天晚上初始化员工分客资信息

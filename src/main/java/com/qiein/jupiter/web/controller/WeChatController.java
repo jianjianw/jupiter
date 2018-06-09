@@ -3,10 +3,16 @@ package com.qiein.jupiter.web.controller;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.util.wechat.WeChatPushUtil;
+import com.qiein.jupiter.web.entity.dto.WeChatUserDTO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.service.StaffService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
 
 /**
  * @create by Tt(叶华葳) 2018-06-06 11:47
@@ -14,6 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/wechat")
 public class WeChatController extends BaseController {
+
+    @Resource
+    private StaffService staffService;
 
     private static final String testAppId = "wxcfb9db7577fca934";
     private static final String testAppSecret = "c00e1dc5cf3c7c305ccf9e0b9dd6158e";
@@ -35,6 +44,18 @@ public class WeChatController extends BaseController {
     public ResultInfo getQRCode(){
         StaffPO staffPO = getCurrentLoginStaff();
         return ResultInfoUtil.success(WeChatPushUtil.getQRCodeImg(staffPO.getId(),staffPO.getCompanyId()));
+    }
+
+    @GetMapping("/check_bind")
+    public ResultInfo checkWXBind(){
+        WeChatUserDTO weChatUserDTO = staffService.checkWXBind(getCurrentLoginStaff().getCompanyId(),getCurrentLoginStaff().getId());
+        return ResultInfoUtil.success(weChatUserDTO);
+    }
+
+    @PostMapping("/bind_wx")
+    public ResultInfo BindWeChat(Integer companyId,Integer staffId,boolean bindFlag){
+        staffService.editBindWeChat(companyId, staffId, bindFlag);
+        return ResultInfoUtil.success();
     }
 
 }
