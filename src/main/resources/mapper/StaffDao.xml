@@ -458,7 +458,8 @@
             detail.WECHATOPENID,
             detail.LASTLOGINIP,
             detail.CREATETIME,
-            detail.MSGSET
+            detail.MSGSET,
+            detail.WECHATBINDFLAG
 
         FROM hm_pub_staff staff LEFT JOIN
             hm_pub_staff_detail detail ON staff.ID = detail.ID
