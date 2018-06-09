@@ -141,7 +141,9 @@ public enum ExceptionEnum {
     ACCESSKEY_ERROR(1901, "accesskey错误"),
     SIGN_ERROR(1902, "请求签名错误"),
     //字典
-    DICTNAME_EXIST(2001, "字典名称重复");
+    DICTNAME_EXIST(2001, "字典名称重复"),
+    //微信
+    WX_BIND_ERROR(2101,"微信绑定失败");
 
     private Integer code;
     private String msg;

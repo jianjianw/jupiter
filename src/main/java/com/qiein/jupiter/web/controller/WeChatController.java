@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.controller;
 
 import com.qiein.jupiter.exception.ExceptionEnum;
+import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.util.wechat.WeChatPushUtil;
@@ -51,7 +52,7 @@ public class WeChatController extends BaseController {
     public ResultInfo checkWXBind(){
         WeChatUserDTO weChatUserDTO = staffService.checkWXBind(getCurrentLoginStaff().getCompanyId(),getCurrentLoginStaff().getId());
             if (weChatUserDTO==null)
-                return ResultInfoUtil.error(ExceptionEnum.UNKNOW_ERROR);
+                throw new RException(ExceptionEnum.WX_BIND_ERROR);
         return ResultInfoUtil.success(weChatUserDTO);
     }
 
