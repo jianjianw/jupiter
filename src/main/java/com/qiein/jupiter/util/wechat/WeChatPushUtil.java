@@ -140,12 +140,12 @@ public class WeChatPushUtil {
 //        }
 //    }
 
-    //TODO 推送新客资模版消息
+
     public static void pushMsg(WeChatPushMsgDTO weChatPushMsgDTO){
         String contentStr = JSONObject.toJSONString(weChatPushMsgDTO);
         System.out.println(contentStr);
-
-        String resultJsonStr = HttpClient.textBody("http://mzd5qf.natappfree.cc/wechat/push_new_client")
+        //TODO 之后放进配置类中
+        String resultJsonStr = HttpClient.textBody("http://uzymz6.natappfree.cc/wechat/push_new_client")
                 .json(contentStr)
                 .asString();
         if (JSONObject.parseObject(resultJsonStr).getIntValue("code")!=100000){

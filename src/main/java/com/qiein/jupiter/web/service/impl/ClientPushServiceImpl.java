@@ -10,6 +10,8 @@ import com.qiein.jupiter.util.CollectionUtils;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.util.wechat.WeChatPushMsgDTO;
+import com.qiein.jupiter.util.wechat.WeChatPushUtil;
 import com.qiein.jupiter.web.dao.*;
 import com.qiein.jupiter.web.entity.dto.ClientGoEasyDTO;
 import com.qiein.jupiter.web.entity.dto.ClientPushDTO;
@@ -21,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -291,8 +294,14 @@ public class ClientPushServiceImpl implements ClientPushService {
             throw new RException(ExceptionEnum.LOG_ERROR);
         }
 
+
         // 推送消息
         GoEasyUtil.pushAppInfoReceive(companyId, appointer.getStaffId(), 1, kzId, String.valueOf(allotLogId), overTime);
+    }
+
+    public static void main(String[] args) {
+        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(1,"原野",18,"https://crm-jupiter.oss-cn-hangzhou.aliyuncs.com/wechat/index.html","保密","保密",
+                new SimpleDateFormat("YYYY-MM-DD HH:mm").format(1528270490)));
     }
 
     /**

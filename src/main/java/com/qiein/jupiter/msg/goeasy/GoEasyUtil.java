@@ -2,6 +2,8 @@ package com.qiein.jupiter.msg.goeasy;
 
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.util.*;
+import com.qiein.jupiter.util.wechat.WeChatPushMsgDTO;
+import com.qiein.jupiter.util.wechat.WeChatPushUtil;
 import com.qiein.jupiter.web.dao.ClientInfoDao;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import org.slf4j.Logger;
@@ -17,6 +19,8 @@ import com.qiein.jupiter.web.entity.po.NewsPO;
 import io.goeasy.GoEasy;
 import io.goeasy.publish.GoEasyError;
 import io.goeasy.publish.PublishListener;
+
+import java.text.SimpleDateFormat;
 
 /**
  * GoEasy消息推送
@@ -164,6 +168,9 @@ public class GoEasyUtil {
         contentJson.put("logid", logId);
         contentJson.put("kznum", kzNum);
         contentJson.put("overtime", overTime);
+        //TODO
+        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(companyId,"xx",staffId,"https://crm-jupiter.oss-cn-hangzhou.aliyuncs.com/wechat/index.html","保密","保密",
+                new SimpleDateFormat("YYYY-MM-DD HH:mm").format(overTime)));
 
         pushApp(MessageConts.MSG_APP_INFO_REVEIVE, companyId, staffId, contentJson);
     }

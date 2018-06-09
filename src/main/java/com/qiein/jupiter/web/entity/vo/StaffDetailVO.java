@@ -75,19 +75,6 @@ public class StaffDetailVO extends StaffPO {
      */
     private String msgSet;
 
-    /**
-     * 微信绑定标识 true绑定 false未绑定
-     */
-    private boolean weChatBindFlag;
-
-    public boolean isWeChatBindFlag() {
-        return weChatBindFlag;
-    }
-
-    public void setWeChatBindFlag(boolean weChatBindFlag) {
-        this.weChatBindFlag = weChatBindFlag;
-    }
-
     public String getMsgSet() {
         return msgSet;
     }
