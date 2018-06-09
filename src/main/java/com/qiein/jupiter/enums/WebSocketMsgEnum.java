@@ -10,7 +10,9 @@ public enum WebSocketMsgEnum {
     //通用
     Common(2),
     //闪屏
-    Flash(3);
+    Flash(3),
+    //微信刷新
+    WeChatCallBack(4);
 
     /**
      * 类型
