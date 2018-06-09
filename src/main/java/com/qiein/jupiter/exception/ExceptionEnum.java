@@ -143,7 +143,8 @@ public enum ExceptionEnum {
     //字典
     DICTNAME_EXIST(2001, "字典名称重复"),
     //微信
-    WX_BIND_ERROR(2101,"微信绑定失败");
+    WX_BIND_ERROR(2101,"微信绑定失败"),
+    WX_REMOVE_BIND_FAIL(2102,"微信解绑失败");
 
     private Integer code;
     private String msg;

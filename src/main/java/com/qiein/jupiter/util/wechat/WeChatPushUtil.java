@@ -3,6 +3,8 @@ package com.qiein.jupiter.util.wechat;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.mzlion.easyokhttp.HttpClient;
+import com.qiein.jupiter.exception.ExceptionEnum;
+import com.qiein.jupiter.exception.RException;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -29,7 +31,8 @@ public class WeChatPushUtil {
     //APPSECRET
     private final static String APP_SECRET = "c00e1dc5cf3c7c305ccf9e0b9dd6158e";    //"f1643abe4865080db153a0d181719005"
     //阿波罗地址
-    private final static String APOLLO_URL ="http://uzymz6.natappfree.cc/";
+//    private final static String APOLLO_URL ="http://uzymz6.natappfree.cc/";
+    private final static String APOLLO_URL ="http://127.0.0.1:80/";
     //成功code
     private final static int SUCCESS_CODE = 100000;
 
@@ -140,12 +143,28 @@ public class WeChatPushUtil {
 //        }
 //    }
 
+    public static void removeBind(Integer companyId,Integer staffId){
+        String url = APOLLO_URL+"wechat/remove_bind";
+        String resultJsonStr = HttpClient.get(url)
+                .queryString("companyId",companyId)
+                .queryString("staffId",staffId)
+                .asString();
+        JSONObject resultJson = JSONObject.parseObject(resultJsonStr);
+        if (resultJson.getIntValue("code")!=SUCCESS_CODE){
+            throw new RException(ExceptionEnum.WX_REMOVE_BIND_FAIL);
+        }
+    }
 
+    /**
+     * 推送新客资模版消息
+     * @param weChatPushMsgDTO
+     */
     public static void pushMsg(WeChatPushMsgDTO weChatPushMsgDTO){
         String contentStr = JSONObject.toJSONString(weChatPushMsgDTO);
         System.out.println(contentStr);
         //TODO 之后放进配置类中
-        String resultJsonStr = HttpClient.textBody("http://uzymz6.natappfree.cc/wechat/push_new_client")
+        String url = APOLLO_URL+"wechat/push_new_client";
+        String resultJsonStr = HttpClient.textBody(url)
                 .json(contentStr)
                 .asString();
         if (JSONObject.parseObject(resultJsonStr).getIntValue("code")!=100000){
@@ -160,12 +179,4 @@ public class WeChatPushUtil {
         pushMsg(weChatPushMsgDTO);
     }
 
-
-    //TODO 之后不要写死URL
-    public static String getAccessTokenUrl (){
-        String accessTokenUrl = GET_ACCESS_TOKEN.toString();
-        return accessTokenUrl.replaceFirst("/$APPID/$",APP_ID).replaceFirst("/$APPSECRET/$",APP_SECRET);
     }
-
-
-}

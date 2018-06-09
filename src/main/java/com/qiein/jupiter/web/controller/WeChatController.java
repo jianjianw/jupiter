@@ -48,6 +48,13 @@ public class WeChatController extends BaseController {
         return ResultInfoUtil.success(WeChatPushUtil.getQRCodeImg(staffPO.getId(),staffPO.getCompanyId()));
     }
 
+    @GetMapping("/remove_bind")
+    public ResultInfo removeBind(){
+        StaffPO staffPO = getCurrentLoginStaff();
+        WeChatPushUtil.removeBind(staffPO.getCompanyId(), staffPO.getId());
+        return ResultInfoUtil.success();
+    }
+
     @GetMapping("/check_bind")
     public ResultInfo checkWXBind(){
         WeChatUserDTO weChatUserDTO = staffService.checkWXBind(getCurrentLoginStaff().getCompanyId(),getCurrentLoginStaff().getId());
