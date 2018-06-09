@@ -368,7 +368,12 @@ public class StaffServiceImpl implements StaffService {
                     .queryString("companyId",companyId)
                     .queryString("staffId",staffId)
                     .asString();
-            return JSONObject.parseObject(resultJsonStr,WeChatUserDTO.class);
+            JSONObject resultJson = JSONObject.parseObject(resultJsonStr);
+            if (resultJson.getIntValue("code")!=100000)
+                return null;
+            WeChatUserDTO weChatUserDTO =JSONObject.parseObject(resultJson.getString("data"),WeChatUserDTO.class);
+            System.out.println(weChatUserDTO);
+            return weChatUserDTO;
         }
         return null;
     }

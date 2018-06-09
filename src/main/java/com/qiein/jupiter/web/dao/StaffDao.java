@@ -406,7 +406,7 @@ public interface StaffDao extends BaseDao<StaffPO> {
 	 * @param staffId
 	 * @return true 绑定 false 未绑定
 	 */
-	boolean checkBindWeChat(@Param("companyId") Integer companyId,@Param("staffId") Integer staffId);
+	Boolean checkBindWeChat(@Param("companyId") Integer companyId,@Param("staffId") Integer staffId);
 
 	/**
 	 * 重置员工今日接单数
