@@ -65,8 +65,8 @@ public class WeChatPushMsgDTO {
         this.url = url;
         HashMap<String,Object> first = new HashMap<>();
         first.put("value","您有一个新的客资(待领取)");
-        HashMap<String,Object> remake = new HashMap<>();
-        remake.put("value","客资消息来自"+cName);
+        HashMap<String,Object> remark = new HashMap<>();
+        remark.put("value","客资消息来自"+cName);
 
         HashMap<String,Object> h1 = new HashMap<>();
         h1.put("value",kzName);
@@ -78,7 +78,7 @@ public class WeChatPushMsgDTO {
         this.data.put("keyword1",h1);
         this.data.put("keyword2",h2);
         this.data.put("keyword3",h3);
-        this.data.put("remake",remake);
+        this.data.put("remark",remark);
     }
 
     public WeChatPushMsgDTO() {
