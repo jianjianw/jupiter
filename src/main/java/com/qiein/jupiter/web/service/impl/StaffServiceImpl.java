@@ -365,6 +365,7 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public WeChatUserDTO checkWXBind(Integer companyId, Integer staffId) {
         if (staffDao.checkBindWeChat(companyId, staffId)){
+            System.out.println(WeChatPushUtil.APOLLO_URL);
             String resultJsonStr = HttpClient.get(WeChatPushUtil.APOLLO_URL+"/wechat/get_user_info")
                     .queryString("companyId",companyId)
                     .queryString("staffId",staffId)
