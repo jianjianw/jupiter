@@ -34,9 +34,9 @@ public class WeChatPushUtil {
     //阿波罗地址
     public static String APOLLO_URL;
 
-    @Value("apollo.baseUrl")
+    @Value("${apollo.baseUrl}")
     public void setApolloUrl(String apolloUrl) {
-        APOLLO_URL = apolloUrl;
+        WeChatPushUtil.APOLLO_URL = apolloUrl;
     }
 
     //    private final static String APOLLO_URL ="http://127.0.0.1:80/";
@@ -175,6 +175,7 @@ public class WeChatPushUtil {
         System.out.println(contentStr);
         //TODO 之后放进配置类中
         String url = APOLLO_URL+"/wechat/push_new_client";
+        System.out.println(url);
         HttpClient.textBody(url)
                 .json(contentStr)
                 .execute();

@@ -194,7 +194,8 @@ public class GoEasyUtil {
         contentJson.put("overtime", overTime);
 
         //TODO
-        String url ="https://crm-jupiter.oss-cn-hangzhou.aliyuncs.com/wechat/index.html?kzId="+kzId+"&logId="+logId+"&staffId="+staffId+"&url="+serverAddress;
+        String url ="https://crm-jupiter.oss-cn-hangzhou.aliyuncs.com/wechat/index.html?kzId="+kzId+"&logId="+logId+"&uid="+staffId+"&cid="+companyId+"&url="+serverAddress;
+        System.out.println(url);
         CompanyPO companyPO = companyService.getById(companyId);
         WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(companyId,companyPO.getCompanyName(),staffId,url,"保密","保密",
                 new SimpleDateFormat("YYYY-MM-DD HH:mm").format(overTime)));

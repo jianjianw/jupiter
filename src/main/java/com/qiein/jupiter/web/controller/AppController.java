@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.controller;
 
+import com.qiein.jupiter.web.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,9 +30,12 @@ public class AppController extends BaseController {
 	@Autowired
 	private ClientReceiveService receiveService;
 
+	@Autowired
+	private StaffService staffService;
+
 	/**
 	 * 客资领取
-	 * 
+	 *
 	 * @param kzId
 	 * @param logId
 	 * @return
@@ -40,6 +44,26 @@ public class AppController extends BaseController {
 	public ResultInfo reveice(@RequestParam String kzId, @RequestParam String logId) {
 		// 获取当前登录用户
 		StaffPO currentLoginStaff = getCurrentLoginStaff();
+		if (StringUtil.haveEmpty(kzId, logId)) {
+			ResultInfoUtil.error(ExceptionEnum.INFO_ERROR);
+		}
+		// 客资领取
+		receiveService.receive(kzId, logId, currentLoginStaff.getCompanyId(), currentLoginStaff.getId(),
+				currentLoginStaff.getNickName());
+		return ResultInfoUtil.success(TigMsgEnum.INFO_RECEIVE_SUCCESS);
+	}
+
+	/**
+	 * 客资领取
+	 *
+	 * @param kzId
+	 * @param logId
+	 * @return
+	 */
+	@GetMapping("/wx_receive")
+	public ResultInfo reveice(@RequestParam String kzId, @RequestParam String logId , @RequestParam Integer staffId ,@RequestParam Integer companyId) {
+		// 获取当前登录用户
+		StaffPO currentLoginStaff = staffService.getById(staffId,companyId);
 		if (StringUtil.haveEmpty(kzId, logId)) {
 			ResultInfoUtil.error(ExceptionEnum.INFO_ERROR);
 		}
