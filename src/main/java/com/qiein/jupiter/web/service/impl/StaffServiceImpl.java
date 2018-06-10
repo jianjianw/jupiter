@@ -374,7 +374,7 @@ public class StaffServiceImpl implements StaffService {
                     .asString();
             JSONObject resultJson = JSONObject.parseObject(resultJsonStr);
             if (StringUtil.isEmpty(resultJson.getString("data")) && resultJson.getIntValue("code")==100000)
-                throw new RException (ExceptionEnum.ID_IS_NULL);
+                throw new RException (ExceptionEnum.WX_NOT_BIND);
             if (resultJson.getIntValue("code")!=100000)
                 throw new RException(ExceptionEnum.GET_WX_INFO_FAIL);
 
