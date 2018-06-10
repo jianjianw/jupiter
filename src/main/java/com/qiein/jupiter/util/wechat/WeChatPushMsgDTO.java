@@ -64,9 +64,9 @@ public class WeChatPushMsgDTO {
         this.uid = uid;
         this.url = url;
         HashMap<String,Object> first = new HashMap<>();
-        first.put("value","您有一个新的客资(待领取)");
+        first.put("value","您有一个新的客资");
         HashMap<String,Object> remark = new HashMap<>();
-        remark.put("value","客资消息来自"+cName);
+        remark.put("value","点击详情即可领取客资,客资来自"+cName);
 
         HashMap<String,Object> h1 = new HashMap<>();
         h1.put("value",kzName);

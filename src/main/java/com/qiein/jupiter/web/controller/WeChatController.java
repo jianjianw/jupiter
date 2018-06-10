@@ -58,8 +58,6 @@ public class WeChatController extends BaseController {
     @GetMapping("/check_bind")
     public ResultInfo checkWXBind(){
         WeChatUserDTO weChatUserDTO = staffService.checkWXBind(getCurrentLoginStaff().getCompanyId(),getCurrentLoginStaff().getId());
-            if (weChatUserDTO==null)
-                throw new RException(ExceptionEnum.WX_BIND_ERROR);
         return ResultInfoUtil.success(weChatUserDTO);
     }
 
