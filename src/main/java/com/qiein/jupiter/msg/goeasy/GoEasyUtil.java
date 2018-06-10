@@ -5,9 +5,13 @@ import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.util.wechat.WeChatPushMsgDTO;
 import com.qiein.jupiter.util.wechat.WeChatPushUtil;
 import com.qiein.jupiter.web.dao.ClientInfoDao;
+import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.service.CompanyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
@@ -20,6 +24,7 @@ import io.goeasy.GoEasy;
 import io.goeasy.publish.GoEasyError;
 import io.goeasy.publish.PublishListener;
 
+import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 
 /**
@@ -31,6 +36,9 @@ import java.text.SimpleDateFormat;
 public class GoEasyUtil {
 
     private final static Logger log = LoggerFactory.getLogger(GoEasyUtil.class);
+
+
+    private static CompanyService companyService;
 
     /**
      * GoEasy对接平台KEY
@@ -51,6 +59,16 @@ public class GoEasyUtil {
      * GoEasy-客户端消息频道前缀
      */
     private static String hmAppChannelSuffix;
+
+    /**
+     * 当前服务器的ip地址
+     */
+    public static String serverAddress;
+
+    @Value("${server.ip.address}")
+    public void setServerAddress(String serverAddress) {
+        GoEasyUtil.serverAddress = serverAddress;
+    }
 
     /**
      * 初始化GoEasy实例
@@ -79,6 +97,12 @@ public class GoEasyUtil {
 
         goeasyInstance = null;
         log.info("GoEasy消息组件停止服务");
+    }
+
+
+    @Autowired
+    public void setCompanyService(CompanyService companyService) {
+        GoEasyUtil.companyService = companyService;
     }
 
     /**
@@ -168,10 +192,12 @@ public class GoEasyUtil {
         contentJson.put("logid", logId);
         contentJson.put("kznum", kzNum);
         contentJson.put("overtime", overTime);
-        //TODO
-        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(companyId,"xx",staffId,"https://crm-jupiter.oss-cn-hangzhou.aliyuncs.com/wechat/index.html","保密","保密",
-                new SimpleDateFormat("YYYY-MM-DD HH:mm").format(overTime)));
 
+        //TODO
+        String url ="https://crm-jupiter.oss-cn-hangzhou.aliyuncs.com/wechat/index.html?kzId="+kzId+"&logId="+logId+"&staffId="+staffId+"&url="+serverAddress;
+        CompanyPO companyPO = companyService.getById(companyId);
+        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(companyId,companyPO.getCompanyName(),staffId,url,"保密","保密",
+                new SimpleDateFormat("YYYY-MM-DD HH:mm").format(overTime)));
         pushApp(MessageConts.MSG_APP_INFO_REVEIVE, companyId, staffId, contentJson);
     }
 
@@ -543,16 +569,16 @@ public class GoEasyUtil {
         pushCommon(companyId, staffId, MessageConts.TO_BE_TRACKED_HEAD, msg);
     }
 
-    public static void main(String[] args) {
-        // ClientGoEasyDTO info = new ClientGoEasyDTO();
-        // info.setId(668);
-        // info.setKzWechat("xiangsiyu521");
-        // info.setSourceName("杭州微博");
-        // info.setChannelName("微博");
-        // info.setInvalidLabel("分手了");
-        // pushYyValidReject(1, 1, info, null);
-        pushStaffRefresh(2012, 698, "127.0.0.1", "火星");
-    }
+//    public static void main(String[] args) {
+//        // ClientGoEasyDTO info = new ClientGoEasyDTO();
+//        // info.setId(668);
+//        // info.setKzWechat("xiangsiyu521");
+//        // info.setSourceName("杭州微博");
+//        // info.setChannelName("微博");
+//        // info.setInvalidLabel("分手了");
+//        // pushYyValidReject(1, 1, info, null);
+//        pushStaffRefresh(2012, 698, "127.0.0.1", "火星");
+//    }
 
     /**
      * 推广备注被修改，推送给客服

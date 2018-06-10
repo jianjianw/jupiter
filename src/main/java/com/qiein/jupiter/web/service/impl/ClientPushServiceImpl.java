@@ -299,11 +299,6 @@ public class ClientPushServiceImpl implements ClientPushService {
         GoEasyUtil.pushAppInfoReceive(companyId, appointer.getStaffId(), 1, kzId, String.valueOf(allotLogId), overTime);
     }
 
-    public static void main(String[] args) {
-        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(1,"原野",18,"https://crm-jupiter.oss-cn-hangzhou.aliyuncs.com/wechat/index.html","保密","保密",
-                new SimpleDateFormat("YYYY-MM-DD HH:mm").format(1528270490)));
-    }
-
     /**
      * 客资绑定客服为自己
      *

@@ -12,8 +12,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class GoEasyUtilTest {
+    @Test
+    public void setCCBIPADDRESS() throws Exception {
+    	//int companyId, int staffId, int kzNum, String kzId, String logId,int overTime) {
+		GoEasyUtil.pushAppInfoReceive(1,12,1,"4fe3728b71ef747e815b95379c528e6e","1",1528270490);
+	}
 
-	@Test
+    @Test
 	public void destroy() throws Exception {
 
 	}

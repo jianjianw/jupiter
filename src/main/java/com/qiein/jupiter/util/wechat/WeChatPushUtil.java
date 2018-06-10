@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.mzlion.easyokhttp.HttpClient;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -31,8 +32,14 @@ public class WeChatPushUtil {
     //APPSECRET
     private final static String APP_SECRET = "c00e1dc5cf3c7c305ccf9e0b9dd6158e";    //"f1643abe4865080db153a0d181719005"
     //阿波罗地址
-    public final static String APOLLO_URL ="http://uzymz6.natappfree.cc/";
-//    private final static String APOLLO_URL ="http://127.0.0.1:80/";
+    public static String APOLLO_URL;
+
+    @Value("apollo.baseUrl")
+    public void setApolloUrl(String apolloUrl) {
+        APOLLO_URL = apolloUrl;
+    }
+
+    //    private final static String APOLLO_URL ="http://127.0.0.1:80/";
     //成功code
     private final static int SUCCESS_CODE = 100000;
 
@@ -79,6 +86,10 @@ public class WeChatPushUtil {
         }
         System.out.println("AccessToken: "+resJsonObj.getString("data"));
         return resJsonObj.getString("data");
+    }
+
+    public static void main(String[] args) {
+        System.out.println(getAccessToken());
     }
 
     /**
@@ -163,20 +174,16 @@ public class WeChatPushUtil {
         String contentStr = JSONObject.toJSONString(weChatPushMsgDTO);
         System.out.println(contentStr);
         //TODO 之后放进配置类中
-        String url = APOLLO_URL+"wechat/push_new_client";
-        String resultJsonStr = HttpClient.textBody(url)
+        String url = APOLLO_URL+"/wechat/push_new_client";
+        HttpClient.textBody(url)
                 .json(contentStr)
-                .asString();
-        if (JSONObject.parseObject(resultJsonStr).getIntValue("code")!=100000){
-            //TODO 发送失败
-            System.out.println("微信客资提示消息发送失败"+resultJsonStr);
-        }
+                .execute();
     }
 
-    // 新客资消息推送 DEMO
-    public static void main(String[] args) {
-        WeChatPushMsgDTO weChatPushMsgDTO = new WeChatPushMsgDTO(1,"唯一旅拍",12,"http://longzhu.com/","吴亦凡","12345678900","2018年6月8日 21:46");
-        pushMsg(weChatPushMsgDTO);
-    }
+//    // 新客资消息推送 DEMO
+//    public static void main(String[] args) {
+//        WeChatPushMsgDTO weChatPushMsgDTO = new WeChatPushMsgDTO(1,"唯一旅拍",12,"http://longzhu.com/","吴亦凡","12345678900","2018年6月8日 21:46");
+//        pushMsg(weChatPushMsgDTO);
+//    }
 
     }
