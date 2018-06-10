@@ -14,6 +14,7 @@ import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
 import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.util.ding.DingAuthUtil;
 import com.qiein.jupiter.util.wechat.WeChatAuthUtil;
+import com.qiein.jupiter.util.wechat.WeChatPushUtil;
 import com.qiein.jupiter.web.dao.*;
 import com.qiein.jupiter.web.entity.dto.*;
 import com.qiein.jupiter.web.entity.po.*;
@@ -364,7 +365,7 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public WeChatUserDTO checkWXBind(Integer companyId, Integer staffId) {
         if (staffDao.checkBindWeChat(companyId, staffId)){
-            String resultJsonStr = HttpClient.get("http://uzymz6.natappfree.cc/wechat/get_user_info")
+            String resultJsonStr = HttpClient.get(WeChatPushUtil.APOLLO_URL+"wechat/get_user_info")
                     .queryString("companyId",companyId)
                     .queryString("staffId",staffId)
                     .asString();

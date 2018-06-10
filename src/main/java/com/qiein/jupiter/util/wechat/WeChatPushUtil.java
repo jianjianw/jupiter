@@ -31,7 +31,7 @@ public class WeChatPushUtil {
     //APPSECRET
     private final static String APP_SECRET = "c00e1dc5cf3c7c305ccf9e0b9dd6158e";    //"f1643abe4865080db153a0d181719005"
     //阿波罗地址
-    private final static String APOLLO_URL ="http://uzymz6.natappfree.cc/";
+    public final static String APOLLO_URL ="http://uzymz6.natappfree.cc/";
 //    private final static String APOLLO_URL ="http://127.0.0.1:80/";
     //成功code
     private final static int SUCCESS_CODE = 100000;
