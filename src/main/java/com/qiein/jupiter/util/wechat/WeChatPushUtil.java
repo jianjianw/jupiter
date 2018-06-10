@@ -78,7 +78,7 @@ public class WeChatPushUtil {
         if (accessToken !=null && expireTime > System.currentTimeMillis()){
             return accessToken;
         }
-        String resJsonStr = HttpClient.get(APOLLO_URL+"wechat/get_access_token").asString();
+        String resJsonStr = HttpClient.get(APOLLO_URL+"/wechat/get_access_token").asString();
         JSONObject resJsonObj = JSONObject.parseObject(resJsonStr);
         if (resJsonObj.getIntValue("code") !=  SUCCESS_CODE){
             //TODO  返回失败,做处理
@@ -155,7 +155,7 @@ public class WeChatPushUtil {
 //    }
 
     public static void removeBind(Integer companyId,Integer staffId){
-        String url = APOLLO_URL+"wechat/remove_bind";
+        String url = APOLLO_URL+"/wechat/remove_bind";
         String resultJsonStr = HttpClient.get(url)
                 .queryString("companyId",companyId)
                 .queryString("staffId",staffId)
