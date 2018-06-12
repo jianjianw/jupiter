@@ -345,19 +345,6 @@ public class StaffServiceImpl implements StaffService {
     }
 
     /**
-     * 编辑微信绑定状态
-     * @param companyId
-     * @param staffId
-     * @param bindFlag
-     */
-    @Override
-    public void editBindWeChat(Integer companyId, Integer staffId, boolean bindFlag) {
-        if (staffDao.editBindWeChat(companyId, staffId, bindFlag)==0){
-            throw new RException("微信绑定失败");
-        }
-    }
-
-    /**
      * 检查是否绑定成功，如果绑定成功返回微信公众号用户的所有信息
      * @param companyId
      * @param staffId

@@ -26,22 +26,6 @@ public class WeChatController extends BaseController {
     @Resource
     private StaffService staffService;
 
-    private static final String testAppId = "wxcfb9db7577fca934";
-    private static final String testAppSecret = "c00e1dc5cf3c7c305ccf9e0b9dd6158e";
-
-//    @GetMapping("/auth")
-//    public ResultInfo weChatAuth(String signature,
-//                                 String timestamp ,
-//                                 Integer nonce ,
-//                                 String echostr){
-//        System.out.println("signature: "+signature);
-//        System.out.println("timestamp: "+timestamp);
-//        System.out.println("nonce: "+nonce);
-//        System.out.println("echostr: "+echostr);
-//        System.out.println("token: "+ WeChatPushUtil.getAccessToken());
-//        return ResultInfoUtil.success();
-//    }
-
     @GetMapping("/get_qr_code_img")
     public ResultInfo getQRCode(){
         StaffPO staffPO = getCurrentLoginStaff();
@@ -60,11 +44,4 @@ public class WeChatController extends BaseController {
         WeChatUserDTO weChatUserDTO = staffService.checkWXBind(getCurrentLoginStaff().getCompanyId(),getCurrentLoginStaff().getId());
         return ResultInfoUtil.success(weChatUserDTO);
     }
-
-    @PostMapping("/bind_wx")
-    public ResultInfo BindWeChat(Integer companyId,Integer staffId,boolean bindFlag){
-        staffService.editBindWeChat(companyId, staffId, bindFlag);
-        return ResultInfoUtil.success();
-    }
-
 }
