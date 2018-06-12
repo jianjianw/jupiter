@@ -458,8 +458,7 @@
             detail.WECHATOPENID,
             detail.LASTLOGINIP,
             detail.CREATETIME,
-            detail.MSGSET,
-            detail.WECHATBINDFLAG
+            detail.MSGSET
 
         FROM hm_pub_staff staff LEFT JOIN
             hm_pub_staff_detail detail ON staff.ID = detail.ID
@@ -798,20 +797,6 @@
         WHERE ID = #{id} AND COMPANYID = #{companyId}
     </update>
 
-    <!--修改微信绑定标识-->
-    <update id="editBindWeChat" parameterType="map">
-        UPDATE hm_pub_staff_detail
-        SET WECHATBINDFLAG = #{bindFlag}
-        WHERE COMPANYID = #{companyId} AND ID = #{staffId}
-    </update>
-
-    <!--查询员工微信绑定情况-->
-    <select id="checkBindWeChat" parameterType="Integer" resultType="Boolean">
-        SELECT WECHATBINDFLAG
-        FROM hm_pub_staff_detail
-        WHERE COMPANYID = #{companyId} AND ID = #{staffId}
-    </select>
-    
     <!-- 重置员工今日接单数 -->
     <update id="resetTodayNum" parameterType="map">
         UPDATE hm_pub_staff SET TODAYNUM = 0;

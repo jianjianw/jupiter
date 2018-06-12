@@ -326,14 +326,6 @@ public interface StaffService {
 	void editMsgSet(StaffMsg staffMsg);
 
 	/**
-	 * 编辑个人微信绑定标记
-	 * @param companyId
-	 * @param staffId
-	 * @param bindFlag
-	 */
-	void editBindWeChat(Integer companyId,Integer staffId,boolean bindFlag);
-
-	/**
 	 * 检查是否绑定成功，如果绑定成功返回微信公众号用户的所有信息
 	 * @param companyId
 	 * @param staffId

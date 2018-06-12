@@ -392,23 +392,6 @@ public interface StaffDao extends BaseDao<StaffPO> {
 	int editMsgSet(StaffMsg staffMsg);
 
 	/**
-	 * 编辑微信绑定状态
-	 * @param companyId
-	 * @param staffId
-	 * @param bindFlag
-	 * @return
-	 */
-	int editBindWeChat(@Param("companyId") Integer companyId,@Param("staffId") Integer staffId,@Param("bindFlag") boolean bindFlag);
-
-	/**
-	 * 查询员工微信绑定情况
-	 * @param companyId
-	 * @param staffId
-	 * @return true 绑定 false 未绑定
-	 */
-	Boolean checkBindWeChat(@Param("companyId") Integer companyId,@Param("staffId") Integer staffId);
-
-	/**
 	 * 重置员工今日接单数
 	 */
 	void resetTodayNum();
