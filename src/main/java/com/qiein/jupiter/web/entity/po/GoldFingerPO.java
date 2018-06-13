@@ -16,6 +16,16 @@ public class GoldFingerPO {
     private String formId;
     //表单名称
     private String formName;
+    //姓名字段名
+    private String kzNameField;
+    //电话字段名
+    private String kzPhoneField;
+    //微信字段名
+    private String kzWechatField;
+    //其他字段代表
+    private String fieldKey;
+    //其他字段名的名称
+    private String fieldValue;
     //渠道
     private Integer  srcId;
     //渠道名称
@@ -25,52 +35,30 @@ public class GoldFingerPO {
     //类型名称
     private String typeName;
     //咨询方式
-    private Integer  collecterId;
-    //咨询方式名称
-    private String collecterName;
+    private String  zxStyle;
     //广告ID
     private String  adId;
     //广告着陆页
     private String  adAddress;
-    //金数据字段解析前
-    private Map<String,String> map;
-    //金数据字段解析后
-    private String  remark;
     //是否启用
-    private Integer enabled;
+    private Integer isShow;
     //是否推送消息
     private Integer isSend;
     //是否过滤
     private Integer isFilter;
     //异地拦截
-    private Integer isIntercept;
+    private Integer areaLimit;
     //POST地址
-    private String postAddress;
+    private String postURL;
     //备注
     private String memo;
 
-    public String getSrcName() {
-        return srcName;
+    public Integer getId() {
+        return id;
     }
 
-    public void setSrcName(String srcName) {
-        this.srcName = srcName;
-    }
-
-    public String getTypeName() {
-        return typeName;
-    }
-
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
-    }
-
-    public String getCollecterName() {
-        return collecterName;
-    }
-
-    public void setCollecterName(String collecterName) {
-        this.collecterName = collecterName;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Integer getStaffId() {
@@ -89,14 +77,6 @@ public class GoldFingerPO {
         this.companyId = companyId;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public String getFormId() {
         return formId;
     }
@@ -113,12 +93,60 @@ public class GoldFingerPO {
         this.formName = formName;
     }
 
+    public String getKzNameField() {
+        return kzNameField;
+    }
+
+    public void setKzNameField(String kzNameField) {
+        this.kzNameField = kzNameField;
+    }
+
+    public String getKzPhoneField() {
+        return kzPhoneField;
+    }
+
+    public void setKzPhoneField(String kzPhoneField) {
+        this.kzPhoneField = kzPhoneField;
+    }
+
+    public String getKzWechatField() {
+        return kzWechatField;
+    }
+
+    public void setKzWechatField(String kzWechatField) {
+        this.kzWechatField = kzWechatField;
+    }
+
+    public String getFieldKey() {
+        return fieldKey;
+    }
+
+    public void setFieldKey(String fieldKey) {
+        this.fieldKey = fieldKey;
+    }
+
+    public String getFieldValue() {
+        return fieldValue;
+    }
+
+    public void setFieldValue(String fieldValue) {
+        this.fieldValue = fieldValue;
+    }
+
     public Integer getSrcId() {
         return srcId;
     }
 
     public void setSrcId(Integer srcId) {
         this.srcId = srcId;
+    }
+
+    public String getSrcName() {
+        return srcName;
+    }
+
+    public void setSrcName(String srcName) {
+        this.srcName = srcName;
     }
 
     public Integer getTypeId() {
@@ -129,12 +157,20 @@ public class GoldFingerPO {
         this.typeId = typeId;
     }
 
-    public Integer getCollecterId() {
-        return collecterId;
+    public String getTypeName() {
+        return typeName;
     }
 
-    public void setCollecterId(Integer collecterId) {
-        this.collecterId = collecterId;
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
+
+    public String getZxStyle() {
+        return zxStyle;
+    }
+
+    public void setZxStyle(String zxStyle) {
+        this.zxStyle = zxStyle;
     }
 
     public String getAdId() {
@@ -153,28 +189,12 @@ public class GoldFingerPO {
         this.adAddress = adAddress;
     }
 
-    public Map<String, String> getMap() {
-        return map;
-    }
-
-    public void setMap(Map<String, String> map) {
-        this.map = map;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
     public Integer getEnabled() {
-        return enabled;
+        return isShow;
     }
 
-    public void setEnabled(Integer enabled) {
-        this.enabled = enabled;
+    public void setEnabled(Integer isShow) {
+        this.isShow = isShow;
     }
 
     public Integer getIsSend() {
@@ -193,20 +213,20 @@ public class GoldFingerPO {
         this.isFilter = isFilter;
     }
 
-    public Integer getIsIntercept() {
-        return isIntercept;
+    public Integer getAreaLimit() {
+        return areaLimit;
     }
 
-    public void setIsIntercept(Integer isIntercept) {
-        this.isIntercept = isIntercept;
+    public void setAreaLimit(Integer areaLimit) {
+        this.areaLimit = areaLimit;
     }
 
-    public String getPostAddress() {
-        return postAddress;
+    public String getPostURL() {
+        return postURL;
     }
 
-    public void setPostAddress(String postAddress) {
-        this.postAddress = postAddress;
+    public void setPostURL(String postURL) {
+        this.postURL = postURL;
     }
 
     public String getMemo() {

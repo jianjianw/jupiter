@@ -2,8 +2,92 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qiein.jupiter.web.dao.GoldFingerDao">
 
+    <sql id="formInsert">
+        FORMID,
+        FORMNAME,
+        KZNAMEFIELD,
+        KZPHONEFIELD,
+        KZWECHATFIELD,
+        FIELDKEY,
+        FIELDVALUE,
+        SRCID,
+        SRCNAME,
+        TYPEID,
+        TYPENAME,
+        ADID,
+        ADADDRESS,
+        ZXSTYLE,
+        MEMO,
+        ISSHOW,
+        POSTURL,
+        CREATEORID,
+        CREATEORNAME,
+        CREATETIME,
+        COMPANYID,
+        AREALIMIT,
+        ISFILTER,
+        ISSEND
+    </sql>
+    <sql id="formUpdate">
+        FORMID=#{formId},
+        FORMNAME=#{formName},
+        KZNAMEFIELD=#{kzNameField},
+        KZPHONEFIELD=#{kzPhoneField},
+        KZWECHATFIELD=#{kzWechatField},
+        FIELDKEY=#{fieldKey},
+        FIELDVALUE=#{fieldValue},
+        SRCID=#{srcId},
+        SRCNAME=#{srcName},
+        TYPEID=#{typeId},
+        TYPENAME=#{typeName},
+        ADID=#{adId},
+        ADADDRESS=#{adAddress},
+        ZXSTYLE=#{zxStyle},
+        MEMO=#{memo},
+        ISSHOW=#{isShow},
+        POSTURL=#{postURL},
+        AREALIMIT=#{areaLimit},
+        ISFILTER=#{isFilter},
+        ISSEND=#{isSend}
+    </sql>
     <insert id="insert">
-        insert into
+        INSERT INTO hm_crm_gold_plug_setting (
+            <include refid="formInsert"/>
+        )
+        VALUES
+            (
+                #{formId},
+                #{formName},
+                #{kzNameField},
+                #{kzPhoneField},
+                #{kzWechatField},
+                #{fieldKey},
+                #{fieldValue},
+                #{srcId},
+                #{srcName},
+                #{typeId},
+                #{typeName},
+                #{adId},
+                #{adAddress},
+                #{zxStyle},
+                #{memo},
+                #{isShow},
+                #{postURL},
+                #{staffId},
+                (
+                    SELECT
+                        nickname
+                    FROM
+                        hm_pub_staff
+                    WHERE
+                        id = #{staffId}
+                ),
+                UNIX_TIMESTAMP(now()),
+                #{companyId},
+                #{areaLimit},
+                #{isFilter},
+                #{isSend},
+    )
     </insert>
 
     <delete id="delete">
@@ -11,6 +95,6 @@
     </delete>
 
     <update id="update">
-        update  set
+        update hm_crm_gold_plug_setting  set <include refid="formUpdate"/> where id=#{id}
     </update>
 </mapper>

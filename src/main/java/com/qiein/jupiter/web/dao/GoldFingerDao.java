@@ -3,6 +3,8 @@ package com.qiein.jupiter.web.dao;
 import com.qiein.jupiter.web.entity.po.GoldFingerPO;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * 金手指表单
  * Author xiangliang 2018/6/13
@@ -24,5 +26,10 @@ public interface GoldFingerDao {
      */
     void delete(@Param("id") Integer id);
 
-    //void insert(GoldFingerPO goldFingerPO);
+    /**
+     * 金数据表单页面显示
+     * @param companyId
+     * @return List<GoldFingerPO>
+     */
+    List<GoldFingerPO> select(Integer companyId);
 }

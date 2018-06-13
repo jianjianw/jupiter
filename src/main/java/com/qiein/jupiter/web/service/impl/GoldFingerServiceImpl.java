@@ -1,10 +1,11 @@
 package com.qiein.jupiter.web.service.impl;
 
-import com.alibaba.druid.support.json.JSONUtils;
 import com.qiein.jupiter.web.dao.GoldFingerDao;
 import com.qiein.jupiter.web.entity.po.GoldFingerPO;
 import com.qiein.jupiter.web.service.GoldFingerService;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 /**
  * 金手指表单
@@ -19,7 +20,6 @@ public class GoldFingerServiceImpl implements GoldFingerService {
      * @param goldFingerPO
      */
     public void insert(GoldFingerPO goldFingerPO){
-        goldFingerPO.setRemark(JSONUtils.toJSONString(goldFingerPO.getMap()));
         goldFingerDao.insert(goldFingerPO);
     }
     /**
@@ -27,7 +27,6 @@ public class GoldFingerServiceImpl implements GoldFingerService {
      * @param goldFingerPO
      */
     public void update(GoldFingerPO goldFingerPO){
-        goldFingerPO.setRemark(JSONUtils.toJSONString(goldFingerPO.getMap()));
         goldFingerDao.update(goldFingerPO);
     }
     /**
@@ -36,5 +35,14 @@ public class GoldFingerServiceImpl implements GoldFingerService {
      */
     public void delete(Integer id){
         goldFingerDao.delete(id);
+    }
+    /**
+     * 金数据表单页面显示
+     * @param companyId
+     * @return
+     */
+    public List<GoldFingerPO> select(Integer companyId){
+        return goldFingerDao.select(companyId);
+
     }
 }

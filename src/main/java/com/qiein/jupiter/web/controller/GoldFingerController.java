@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 /**
  * 金手指表单
@@ -58,5 +60,15 @@ public class GoldFingerController extends BaseController{
         goldFingerPO.setCompanyId(staff.getCompanyId());
         goldFingerService.update(goldFingerPO);
         return ResultInfoUtil.success();
+    }
+
+    /**
+     * 金数据表单页面显示
+     */
+    @GetMapping("/select")
+    public ResultInfo select(){
+        StaffPO staff=getCurrentLoginStaff();
+        List<GoldFingerPO> list =goldFingerService.select(staff.getCompanyId());
+        return ResultInfoUtil.success(list);
     }
 }
