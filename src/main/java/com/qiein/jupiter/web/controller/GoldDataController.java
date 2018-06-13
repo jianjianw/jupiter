@@ -17,7 +17,7 @@ import java.util.List;
  * Author xiangliang 2018/6/13
  */
 @RestController
-@RequestMapping("/gold_finger")
+@RequestMapping("/gold_data")
 @Validated
 public class GoldDataController extends BaseController{
     @Autowired
