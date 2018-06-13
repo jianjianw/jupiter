@@ -62,6 +62,11 @@ public class ChannelPO extends BaseEntity {
      */
     private Boolean showFlag;
 
+    /**
+     * 是否启用 true启用/false停用
+     */
+    private Boolean filterFlag;
+
     public ChannelPO() {
     }
 
@@ -71,6 +76,14 @@ public class ChannelPO extends BaseEntity {
         this.pushRule = pushRule;
         this.companyId = companyId;
         this.showFlag = showFlag;
+    }
+
+    public Boolean getFilterFlag() {
+        return filterFlag;
+    }
+
+    public void setFilterFlag(Boolean filterFlag) {
+        this.filterFlag = filterFlag;
     }
 
     public String getChannelName() {

@@ -111,7 +111,7 @@ public class WeChatPushUtil {
      */
     public static QRCodeDTO getQRCode(Integer staffId,Integer companyId){  //GET_QR_CODE_INFO+getAccessToken()
         Map<String,Object> scene_str = new HashMap<String,Object>();
-        String cidAndUid = "cid_"+companyId+"&uid_"+staffId;
+        String cidAndUid = "cid_"+companyId+"&uid_"+staffId;    //+"&url_"+APOLLO_URL.replace("http://","")
         scene_str.put("scene_str",cidAndUid);
         Map<String,Object> scene = new HashMap<String,Object>();
         scene.put("scene",scene_str);

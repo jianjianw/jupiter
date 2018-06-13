@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.dao;
 
 import java.util.List;
 
+import com.qiein.jupiter.web.entity.dto.StaffTodayInfoDTO;
 import com.qiein.jupiter.web.entity.vo.*;
 import org.apache.ibatis.annotations.Param;
 
@@ -390,6 +391,14 @@ public interface StaffDao extends BaseDao<StaffPO> {
 	 * @return
 	 */
 	int editMsgSet(StaffMsg staffMsg);
+
+	/**
+	 * 获取微信个人中心展示数据
+	 * @param companyId
+	 * @param staffId
+	 * @return
+	 */
+	StaffTodayInfoDTO getWXStaffInfo(@Param("companyId") Integer companyId,@Param("staffId") Integer staffId);
 
 	/**
 	 * 重置员工今日接单数

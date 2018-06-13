@@ -372,6 +372,12 @@ public class StaffServiceImpl implements StaffService {
 //        return null;
     }
 
+    @Override
+    public StaffTodayInfoDTO getWXStaffInfo(Integer companyId,Integer staffId) {
+        //TODO
+        return null;
+    }
+
     /**
      * 根据条件获取集合
      *

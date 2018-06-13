@@ -44,4 +44,14 @@ public class WeChatController extends BaseController {
         WeChatUserDTO weChatUserDTO = staffService.checkWXBind(getCurrentLoginStaff().getCompanyId(),getCurrentLoginStaff().getId());
         return ResultInfoUtil.success(weChatUserDTO);
     }
+
+    /**
+     * 获取员工今日信息
+     * @return
+     */
+    @GetMapping("/get_staff_info")
+    public ResultInfo getStaffInfo(int companyId,int staffId){
+        staffService.getWXStaffInfo(companyId,staffId);
+        return ResultInfoUtil.success();
+    }
 }
