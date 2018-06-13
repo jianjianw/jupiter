@@ -12,6 +12,7 @@ public enum RoleChannelEnum {
     DSCJ(RoleConstant.DSCJ, ChannelConstant.DS_TYPE_LIST),
     DSSX(RoleConstant.DSSX, ChannelConstant.DS_TYPE_LIST),
     DSYY(RoleConstant.DSYY, ChannelConstant.DS_TYPE_LIST),
+    ZJSSX(RoleConstant.ZJSSX,ChannelConstant.ZJS_TYPE_LIST),
     ZJSYY(RoleConstant.ZJSYY, ChannelConstant.ZJS_TYPE_LIST),
     MSZX(RoleConstant.MSZX, ChannelConstant.ZR_TYPE_LIST),
     CWZX(RoleConstant.CWZX, ChannelConstant.ALL_TYPE_LIST);

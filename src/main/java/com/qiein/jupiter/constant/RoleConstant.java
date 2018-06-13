@@ -17,6 +17,10 @@ public class RoleConstant {
      */
     public static final String DSYY = "dsyy";
     /**
+     * 转介绍筛选
+     */
+    public static final String ZJSSX = "zjssx";
+    /**
      * 转介绍邀约
      */
     public static final String ZJSYY = "zjsyy";
