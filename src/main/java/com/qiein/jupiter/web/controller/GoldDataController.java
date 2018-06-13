@@ -1,5 +1,7 @@
 package com.qiein.jupiter.web.controller;
 
+import com.qiein.jupiter.exception.ExceptionEnum;
+import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.web.entity.po.GoldFingerPO;
@@ -30,10 +32,17 @@ public class GoldDataController extends BaseController{
      */
     @PostMapping("/insert")
     public ResultInfo insert(@RequestBody GoldFingerPO goldFingerPO){
+        if(goldFingerPO.getFormId().isEmpty()||goldFingerPO.getFormName().isEmpty()||goldFingerPO.getPostURL().isEmpty()||goldFingerPO.getSrcName().isEmpty()||goldFingerPO.getTypeName().isEmpty()||goldFingerPO.getZxStyle().isEmpty()){
+            throw new RException(ExceptionEnum.LOSE_FILED);
+        }
         StaffPO staff=getCurrentLoginStaff();
         goldFingerPO.setStaffId(staff.getId());
         goldFingerPO.setCompanyId(staff.getCompanyId());
-        goldDataService.insert(goldFingerPO);
+        try {
+            goldDataService.insert(goldFingerPO);
+        }catch (Exception e){
+            throw new RException(ExceptionEnum.ADD_FAIL);
+        }
         return ResultInfoUtil.success();
     }
 
@@ -55,10 +64,17 @@ public class GoldDataController extends BaseController{
      */
     @PostMapping("/update")
     public ResultInfo update(@RequestBody GoldFingerPO goldFingerPO){
+        if(goldFingerPO.getFormId().isEmpty()||goldFingerPO.getFormName().isEmpty()||goldFingerPO.getPostURL().isEmpty()||goldFingerPO.getSrcName().isEmpty()||goldFingerPO.getTypeName().isEmpty()||goldFingerPO.getZxStyle().isEmpty()){
+            throw new RException(ExceptionEnum.LOSE_FILED);
+        }
         StaffPO staff=getCurrentLoginStaff();
         goldFingerPO.setStaffId(staff.getId());
         goldFingerPO.setCompanyId(staff.getCompanyId());
+        try{
         goldDataService.update(goldFingerPO);
+        }catch (Exception e){
+            throw new RException(ExceptionEnum.EDIT_FAIL);
+        }
         return ResultInfoUtil.success();
     }
 

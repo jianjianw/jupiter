@@ -13,6 +13,7 @@ public enum ExceptionEnum {
     CAN_NOT_FIND_USER_FROM_REQ(-11, "未能从请求中获取到用户信息"),
     //常用错误
     ADD_FAIL(1, "新增失败"),
+    LOSE_FILED(2,"缺少必须条件"),
     //token验证相关
     TOKEN_NULL(100, "token不存在"),
     TOKEN_INVALID(101, "token失效"),
