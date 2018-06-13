@@ -101,6 +101,7 @@ public class ClientAddServiceImpl implements ClientAddService {
         reqContent.put("channelid", clientVO.getChannelId());
         reqContent.put("sourceid", clientVO.getSourceId());
         reqContent.put("srctype", ChannelConstant.DS_ONLY);
+        reqContent.put("isfilter",sourcePO.getIsFilter());
         reqContent.put("shopid", clientVO.getShopId());
         reqContent.put("zxstyle", clientVO.getZxStyle());
         reqContent.put("keyword", clientVO.getKeyWord());
@@ -113,7 +114,7 @@ public class ClientAddServiceImpl implements ClientAddService {
                         clientVO.getKzQq()));
         reqContent.put("remark", clientVO.getRemark());
 
-        String addRstStr = crmBaseApi.doService(reqContent, "addClientInfoPcDsLp");
+        String addRstStr = crmBaseApi.doService(reqContent, "addClientInfoPcDsHs");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if ("100000".equals(jsInfo.getString("code"))) {
             CompanyPO companyPO = companyDao.getById(staffPO.getCompanyId());
