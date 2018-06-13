@@ -806,4 +806,14 @@
     <update id="resetOffLineWhenLimit" parameterType="map">
         UPDATE hm_pub_staff SET STATUSFLAG = 0 WHERE STATUSFLAG = 9;
     </update>
+
+    <select id="getWXStaffInfo" parameterType="Integer" resultType="staffTodayInfoDTO">
+        SELECT
+        ID,NICKNAME,STATUSFLAG,TODAYNUM,COUNT(al.STATUSID=1)
+        FROM
+        hm_pub_staff s
+        LEFT
+        ${allotLogTab} al ON s.ID = al.STAFFID
+
+    </select>
 </mapper>

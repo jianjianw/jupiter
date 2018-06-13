@@ -3,10 +3,7 @@ package com.qiein.jupiter.web.service;
 import java.util.List;
 
 import com.github.pagehelper.PageInfo;
-import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
-import com.qiein.jupiter.web.entity.dto.StaffMarsDTO;
-import com.qiein.jupiter.web.entity.dto.StaffPasswordDTO;
-import com.qiein.jupiter.web.entity.dto.WeChatUserDTO;
+import com.qiein.jupiter.web.entity.dto.*;
 import com.qiein.jupiter.web.entity.po.PermissionPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.po.StaffStatusLog;
@@ -331,6 +328,13 @@ public interface StaffService {
 	 * @param staffId
 	 */
 	WeChatUserDTO checkWXBind(Integer companyId, Integer staffId);
+
+	/**
+	 * 获取微信个人中心员工数据
+	 * @param staffId
+	 * @return
+	 */
+	StaffTodayInfoDTO getWXStaffInfo(Integer companyId,Integer staffId);
 	
 	/**
 	 * 每天晚上初始化员工分客资信息
