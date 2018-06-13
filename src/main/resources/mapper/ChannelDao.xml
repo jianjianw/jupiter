@@ -12,6 +12,7 @@
         <result column="PUSHRULE" jdbcType="INTEGER" property="pushRule"/>
         <result column="COMPANYID" jdbcType="INTEGER" property="companyId"/>
         <result column="ISSHOW" jdbcType="BOOLEAN" property="showFlag"/>
+        <result column="ISFILTER" jdbcType="BOOLEAN" property="filterFlag"/>
         <result column="PRIORITY" jdbcType="INTEGER" property="priority"/>
     </resultMap>
 
@@ -25,7 +26,7 @@
     </resultMap>
 
     <sql id="baseColumn">
-        ID,CHANNELNAME,CHANNELIMG,TYPEID,BRANDID,BRANDNAME,PUSHRULE,COMPANYID,ISSHOW
+        ID,CHANNELNAME,CHANNELIMG,TYPEID,BRANDID,BRANDNAME,PUSHRULE,COMPANYID,ISSHOW,ISFILTER
     </sql>
 
     <select id="getByIdAndCid" parameterType="Integer" resultMap="baseMap">
@@ -72,9 +73,9 @@
     <insert id="insert" parameterType="com.qiein.jupiter.web.entity.po.ChannelPO" useGeneratedKeys="true"
             keyProperty="id">
         INSERT INTO hm_crm_channel
-        (CHANNELNAME,CHANNELIMG,TYPEID,BRANDID,BRANDNAME,PUSHRULE,COMPANYID,ISSHOW,PRIORITY)
+        (CHANNELNAME,CHANNELIMG,TYPEID,BRANDID,BRANDNAME,PUSHRULE,COMPANYID,ISSHOW,ISFILTER,PRIORITY)
         SELECT
-        #{channelName},#{channelImg},#{typeId},#{brandId},#{brandName},#{pushRule},#{companyId},#{showFlag},(
+        #{channelName},#{channelImg},#{typeId},#{brandId},#{brandName},#{pushRule},#{companyId},#{showFlag},#{filterFlag},(
         SELECT IFNULL(MAX(PRIORITY),0)+1 FROM hm_crm_channel WHERE COMPANYID = #{companyId})
     </insert>
 
@@ -102,6 +103,9 @@
             </if>
             <if test="showFlag != null">
                 ISSHOW = #{showFlag},
+            </if>
+            <if test="filterFlag !=null">
+                ISFILTER = #{filterFlag}
             </if>
         </set>
         WHERE
@@ -152,7 +156,7 @@
     <!--根据粗分类型获取渠道列表-->
     <select id="getChannelListByTypeIds" parameterType="map" resultMap="baseMap">
         SELECT
-        ID,CHANNELNAME,CHANNELIMG,TYPEID,BRANDID,BRANDNAME,PUSHRULE,COMPANYID,PRIORITY,ISSHOW
+        ID,CHANNELNAME,CHANNELIMG,TYPEID,BRANDID,BRANDNAME,PUSHRULE,COMPANYID,PRIORITY,ISSHOW, ISFILTER
         FROM
         hm_crm_channel
         WHERE
@@ -167,7 +171,7 @@
     <!--根据细分类型获取渠道列表-->
     <select id="getListByType" parameterType="Integer" resultMap="baseMap">
         SELECT
-          ID,CHANNELNAME,CHANNELIMG,TYPEID,BRANDID,BRANDNAME,PUSHRULE,COMPANYID,PRIORITY,ISSHOW
+          ID,CHANNELNAME,CHANNELIMG,TYPEID,BRANDID,BRANDNAME,PUSHRULE,COMPANYID,PRIORITY,ISSHOW, ISFILTER
         FROM
           hm_crm_channel
         WHERE
