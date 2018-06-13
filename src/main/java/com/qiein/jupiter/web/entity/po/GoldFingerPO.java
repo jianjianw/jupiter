@@ -53,6 +53,34 @@ public class GoldFingerPO {
     //备注
     private String memo;
 
+    private String createorName;
+
+    private int createTime;
+
+    public Integer getIsShow() {
+        return isShow;
+    }
+
+    public void setIsShow(Integer isShow) {
+        this.isShow = isShow;
+    }
+
+    public String getCreateorName() {
+        return createorName;
+    }
+
+    public void setCreateorName(String createorName) {
+        this.createorName = createorName;
+    }
+
+    public int getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(int createTime) {
+        this.createTime = createTime;
+    }
+
     public Integer getId() {
         return id;
     }

@@ -31,5 +31,5 @@ public interface GoldFingerDao {
      * @param companyId
      * @return List<GoldFingerPO>
      */
-    List<GoldFingerPO> select(Integer companyId);
+    List<GoldFingerPO> select(@Param("companyId") Integer companyId);
 }

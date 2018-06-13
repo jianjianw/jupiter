@@ -4,6 +4,7 @@ import com.qiein.jupiter.web.dao.GoldFingerDao;
 import com.qiein.jupiter.web.entity.po.GoldFingerPO;
 import com.qiein.jupiter.web.service.GoldFingerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ import java.util.List;
  * 金手指表单
  * Author xiangliang 2018/6/13
  */
+@Service
 public class GoldFingerServiceImpl implements GoldFingerService {
 
     @Autowired

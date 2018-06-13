@@ -28,6 +28,31 @@
         ISFILTER,
         ISSEND
     </sql>
+    <sql id="formList">
+        ID id,
+        FORMID formId,
+        FORMNAME formName,
+        KZNAMEFIELD kzNameField,
+        KZPHONEFIELD kzPhoneField,
+        KZWECHATFIELD kzWechatField,
+        FIELDKEY fieldKey,
+        FIELDVALUE fieldValue,
+        SRCID srcId,
+        SRCNAME srcName,
+        TYPEID typeId,
+        TYPENAME typeName,
+        ADID adId,
+        ADADDRESS adAddress,
+        ZXSTYLE zsStyle,
+        MEMO memo,
+        ISSHOW isShow,
+        POSTURL postURL,
+        CREATEORNAME createorName,
+        CREATETIME createTime,
+        AREALIMIT areaLimit,
+        ISFILTER isFilter,
+        ISSEND isSend
+    </sql>
     <sql id="formUpdate">
         FORMID=#{formId},
         FORMNAME=#{formName},
@@ -86,15 +111,22 @@
                 #{companyId},
                 #{areaLimit},
                 #{isFilter},
-                #{isSend},
+                #{isSend}
     )
     </insert>
 
     <delete id="delete">
-        delete from  where id=#{id}
+        delete from hm_crm_gold_plug_setting  where id=#{id}
     </delete>
 
     <update id="update">
         update hm_crm_gold_plug_setting  set <include refid="formUpdate"/> where id=#{id}
     </update>
+
+    <select id="select" resultType="com.qiein.jupiter.web.entity.po.GoldFingerPO">
+        select
+      <include refid="formList"/>
+        from hm_crm_gold_plug_setting where companyId=#{companyId}
+
+    </select>
 </mapper>
