@@ -4,6 +4,7 @@ import com.qiein.jupiter.web.entity.po.SourcePO;
 import com.qiein.jupiter.web.entity.vo.SourceVO;
 import org.apache.ibatis.annotations.Param;
 
+import javax.ws.rs.POST;
 import java.util.List;
 
 /**
@@ -126,4 +127,13 @@ public interface SourceDao extends BaseDao<SourcePO> {
      * @return
      */
     List<SourcePO> getAllSourceListByCid(int companyId);
+
+    /**
+     * 根据渠道id，来源名称获取来源
+     * @param srcName
+     * @param companyId
+     * @param channelId
+     * @return
+     * */
+    SourcePO getSourceBySrcname(@Param(value="srcName") String srcName,@Param(value="companyId") Integer companyId,@Param(value="channelId")Integer channelId);
 }

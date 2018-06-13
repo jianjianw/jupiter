@@ -63,4 +63,14 @@ public class ClientController extends BaseController {
     }
 
 
+    /**
+     * 修改客资有效无效状态
+     * */
+    @PostMapping("update_kz_valid_status")
+    public ResultInfo updateKzValidStatus(Integer status){
+        clientService.updateKzValidStatus(status);
+        return ResultInfoUtil.success();
+    }
+
+
 }

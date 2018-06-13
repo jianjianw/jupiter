@@ -275,4 +275,12 @@
         WHERE
         COMPANYID = #{companyId}
     </select>
+
+    <!--根据名称获取来源-->
+    <select id = "getSourceBySrcname" resultMap="baseMap">
+       select
+           <include refid="baseColumn"/>
+        from hm_crm_source
+       where COMPANYID = #{companyId} and SRCNAME = #{srcName} and CHANNELID = #{channelId}
+    </select>
 </mapper>

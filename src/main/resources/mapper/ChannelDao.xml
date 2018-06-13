@@ -258,5 +258,14 @@
          channel.COMPANYID = #{companyId}
     </select>
 
+    <!--根据组名称获取渠道-->
+    <select id = "getChannelByGroupName" resultMap="baseMap">
+        select id,CHANNELNAME,CHANNELIMG,TYPEID,BRANDID,BRANDNAME,PUSHRULE,PRIORITY,ISSHOW,COMPANYID from hm_crm_channel where  CHANNELNAME = #{groupName} and COMPANYID = #{companyId}
+    </select>
+
+    <!--根据父节点id获取渠道-->
+    <select id = "getChannelByGroupParentId" resultMap="baseMap">
+        select id,CHANNELNAME,CHANNELIMG,TYPEID,BRANDID,BRANDNAME,PUSHRULE,PRIORITY,ISSHOW,COMPANYID from hm_crm_channel where  CHANNELNAME = (select GROUPNAME from hm_pub_group where GROUPID = #{parentId})and COMPANYID = #{companyId}
+    </select>
 
 </mapper>

@@ -3,6 +3,7 @@ package com.qiein.jupiter.web.dao;
 import com.qiein.jupiter.web.entity.po.ChannelPO;
 import com.qiein.jupiter.web.entity.vo.ChannelVO;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
@@ -95,4 +96,22 @@ public interface ChannelDao extends BaseDao<ChannelPO> {
      * @return
      */
     List<ChannelPO> getChannelListByCid(@Param("companyId") int companyId);
+
+    /**
+     * 根据组名称获取渠道
+     *
+     * @param groupName
+     * @return
+     */
+    ChannelPO getChannelByGroupName(@Param("groupName") String groupName, @Param("companyId") Integer companyId);
+
+    /**
+     * 根据GroupParentId获取渠道
+     *
+     * @param parentId
+     * @param companyId
+     * @return
+     * */
+    ChannelPO getChannelByGroupParentId(@Param(value="parentId") String parentId,@Param(value="companyId") Integer companyId);
+
 }

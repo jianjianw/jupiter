@@ -38,4 +38,10 @@ public interface ClientService {
      * @return
      */
     HashMap<String, Integer> getKzNumByStatusId(int companyId);
+
+    /**
+     * 修改客资状态
+     * @param status
+     * */
+    void updateKzValidStatus(Integer status);
 }

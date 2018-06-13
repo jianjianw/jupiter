@@ -75,6 +75,7 @@ public class ClientServiceImpl implements ClientService {
      * @param companyId
      * @param kzId
      */
+    @Override
     public void scanWechat(int companyId, String kzId) {
         clientDao.editClientMemoLabel(DBSplitUtil.getDetailTabName(companyId), companyId, kzId, "【微信已扫码】");
         clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(companyId), new ClientLogPO(kzId,
@@ -87,10 +88,22 @@ public class ClientServiceImpl implements ClientService {
      * @param companyId
      * @return
      */
+    @Override
     public HashMap<String, Integer> getKzNumByStatusId(int companyId) {
         HashMap<String, Integer> result = new HashMap<>();
         result.put("notAllot", clientDao.getKzNumByStatusId(ClientStatusConst.BE_WAIT_MAKE_ORDER, companyId, DBSplitUtil.getInfoTabName(companyId)));
         result.put("beAlloting", clientDao.getKzNumByStatusId(ClientStatusConst.BE_ALLOTING, companyId, DBSplitUtil.getInfoTabName(companyId)));
         return result;
     }
+
+    /**
+     * 修改客资状态
+     * */
+    @Override
+    public void updateKzValidStatus(Integer status) {
+    }
+
+
+
+
 }
