@@ -53,7 +53,11 @@ public class GoldDataController extends BaseController{
      */
     @GetMapping("/delete")
     public ResultInfo delete(@RequestParam Integer id){
-        goldDataService.delete(id);
+        try {
+            goldDataService.delete(id);
+        }catch (Exception e){
+            throw new RException(ExceptionEnum.DELETE_FAIL);
+        }
         return ResultInfoUtil.success();
     }
 
