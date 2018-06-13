@@ -1,8 +1,8 @@
 package com.qiein.jupiter.web.service.impl;
 
-import com.qiein.jupiter.web.dao.GoldFingerDao;
+import com.qiein.jupiter.web.dao.GoldDataDao;
 import com.qiein.jupiter.web.entity.po.GoldFingerPO;
-import com.qiein.jupiter.web.service.GoldFingerService;
+import com.qiein.jupiter.web.service.GoldDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,30 +13,30 @@ import java.util.List;
  * Author xiangliang 2018/6/13
  */
 @Service
-public class GoldFingerServiceImpl implements GoldFingerService {
+public class GoldDataServiceImpl implements GoldDataService {
 
     @Autowired
-    private GoldFingerDao goldFingerDao;
+    private GoldDataDao goldDataDao;
     /**
      * 添加表单
      * @param goldFingerPO
      */
     public void insert(GoldFingerPO goldFingerPO){
-        goldFingerDao.insert(goldFingerPO);
+        goldDataDao.insert(goldFingerPO);
     }
     /**
      * 修改表单
      * @param goldFingerPO
      */
     public void update(GoldFingerPO goldFingerPO){
-        goldFingerDao.update(goldFingerPO);
+        goldDataDao.update(goldFingerPO);
     }
     /**
      * 删除表单
      * @param id
      */
     public void delete(Integer id){
-        goldFingerDao.delete(id);
+        goldDataDao.delete(id);
     }
     /**
      * 金数据表单页面显示
@@ -44,7 +44,7 @@ public class GoldFingerServiceImpl implements GoldFingerService {
      * @return
      */
     public List<GoldFingerPO> select(Integer companyId){
-        return goldFingerDao.select(companyId);
+        return goldDataDao.select(companyId);
 
     }
 }

@@ -4,7 +4,7 @@ import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.web.entity.po.GoldFingerPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
-import com.qiein.jupiter.web.service.GoldFingerService;
+import com.qiein.jupiter.web.service.GoldDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -19,9 +19,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/gold_finger")
 @Validated
-public class GoldFingerController extends BaseController{
+public class GoldDataController extends BaseController{
     @Autowired
-    private GoldFingerService goldFingerService;
+    private GoldDataService goldDataService;
 
     /**
      * 增加金数据表单
@@ -33,7 +33,7 @@ public class GoldFingerController extends BaseController{
         StaffPO staff=getCurrentLoginStaff();
         goldFingerPO.setStaffId(staff.getId());
         goldFingerPO.setCompanyId(staff.getCompanyId());
-        goldFingerService.insert(goldFingerPO);
+        goldDataService.insert(goldFingerPO);
         return ResultInfoUtil.success();
     }
 
@@ -44,7 +44,7 @@ public class GoldFingerController extends BaseController{
      */
     @GetMapping("/delete")
     public ResultInfo delete(@RequestParam Integer id){
-        goldFingerService.delete(id);
+        goldDataService.delete(id);
         return ResultInfoUtil.success();
     }
 
@@ -58,7 +58,7 @@ public class GoldFingerController extends BaseController{
         StaffPO staff=getCurrentLoginStaff();
         goldFingerPO.setStaffId(staff.getId());
         goldFingerPO.setCompanyId(staff.getCompanyId());
-        goldFingerService.update(goldFingerPO);
+        goldDataService.update(goldFingerPO);
         return ResultInfoUtil.success();
     }
 
@@ -68,7 +68,7 @@ public class GoldFingerController extends BaseController{
     @GetMapping("/select")
     public ResultInfo select(){
         StaffPO staff=getCurrentLoginStaff();
-        List<GoldFingerPO> list =goldFingerService.select(staff.getCompanyId());
+        List<GoldFingerPO> list = goldDataService.select(staff.getCompanyId());
         return ResultInfoUtil.success(list);
     }
 }

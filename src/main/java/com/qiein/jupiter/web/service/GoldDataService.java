@@ -8,7 +8,7 @@ import java.util.List;
  * 金手指表单
  * Author xiangliang 2018/6/13
  */
-public interface GoldFingerService {
+public interface GoldDataService {
     /**
      * 添加表单
      * @param goldFingerPO

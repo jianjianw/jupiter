@@ -9,7 +9,7 @@ import java.util.List;
  * 金手指表单
  * Author xiangliang 2018/6/13
  */
-public interface GoldFingerDao {
+public interface GoldDataDao {
     /**
      * 添加表单
      * @param goldFingerPO
