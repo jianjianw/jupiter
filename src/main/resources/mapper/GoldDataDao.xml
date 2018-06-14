@@ -43,7 +43,7 @@
         TYPENAME typeName,
         ADID adId,
         ADADDRESS adAddress,
-        ZXSTYLE zsStyle,
+        ZXSTYLE zxStyle,
         MEMO memo,
         ISSHOW isShow,
         POSTURL postURL,
