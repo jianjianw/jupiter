@@ -1,6 +1,12 @@
 package com.qiein.jupiter.web.service;
 
+import com.github.pagehelper.PageInfo;
+import com.qiein.jupiter.web.entity.dto.GoldCustomerDTO;
+import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.GoldFingerPO;
+import com.qiein.jupiter.web.entity.vo.GoldCustomerShowVO;
+import com.qiein.jupiter.web.entity.vo.GoldCustomerVO;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -32,4 +38,17 @@ public interface GoldDataService {
      * @return
      */
     List<GoldFingerPO> select(Integer companyId);
+
+    /**
+     * 管理开关
+     * @param goldFingerPO
+     */
+    void editOpenOrClose(GoldFingerPO goldFingerPO);
+
+    /**
+     * 金数据客资日志
+     * @param goldCustomerDTO
+     * @return
+     */
+    GoldCustomerShowVO goldCustomerSelect(QueryMapDTO queryMapDTO, GoldCustomerDTO goldCustomerDTO);
 }

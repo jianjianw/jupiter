@@ -1,6 +1,8 @@
 package com.qiein.jupiter.web.dao;
 
+import com.qiein.jupiter.web.entity.dto.GoldCustomerDTO;
 import com.qiein.jupiter.web.entity.po.GoldFingerPO;
+import com.qiein.jupiter.web.entity.vo.GoldCustomerVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -32,4 +34,15 @@ public interface GoldDataDao {
      * @return List<GoldFingerPO>
      */
     List<GoldFingerPO> select(@Param("companyId") Integer companyId);
+    /**
+     * 管理开关
+     * @param goldFingerPO
+     */
+    void editOpenOrClose(GoldFingerPO goldFingerPO);
+    /**
+     * 金数据客资日志
+     * @param goldCustomerDTO
+     * @return
+     */
+    List<GoldCustomerVO> goldCustomerSelect( GoldCustomerDTO goldCustomerDTO);
 }
