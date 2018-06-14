@@ -33,5 +33,9 @@ public class RoleConstant {
      * 管理中心
      */
     public static final String GLZX = "glzx";
+    /**
+     * 转介绍筛选
+     * */
+    public static final String ZJSSX = "zjssx";
 
 }
