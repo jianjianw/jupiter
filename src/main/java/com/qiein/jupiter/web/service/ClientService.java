@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.service;
 
 import com.qiein.jupiter.web.entity.vo.ClientStatusVO;
+import com.qiein.jupiter.web.entity.vo.ClientStatusVoteVO;
 
 import java.util.HashMap;
 
@@ -41,7 +42,7 @@ public interface ClientService {
 
     /**
      * 修改客资状态
-     * @param status
+     * @param clientStatusVoteVO
      * */
-    void updateKzValidStatus(Integer status);
+    void updateKzValidStatus(ClientStatusVoteVO clientStatusVoteVO);
 }

@@ -31,4 +31,12 @@ public class ClientConst {
 	public static final int PMS_LOMIT_DEPRT = 3;// 只看部门
 	public static final int PMS_LOMIT_SHOP = 4;// 只看本店
 	public static final int PMS_LOMIT_ALL = 0;// 查看所有
+
+	/**
+	 * 客资筛选状态名称
+	 * */
+	public static final String KZ_BZ_WATING_MAKE_ORDER = "有效待接单";
+	public static final String KZ_BZ_WATING_NAME = "待定";
+	public static final String KZ_BZ_INVALID_NAME= "失效";
+
 }

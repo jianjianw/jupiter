@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qiein.jupiter.web.dao.ClientDao">
+    <resultMap id="clientDtoMapper" type="com.qiein.jupiter.msg.goeasy.ClientDTO">
+        <result property="kzId" column="kzid"></result>
+        <result property="kzName" column="kzName"></result>
+        <result property="kzPhone" column="kzphone"></result>
+        <result property="kzWeChat" column="kzwechat"></result>
+        <result property="kzQq" column="kzqq"></result>
+        <result property="collector" column="collector"></result>
+        <result property="appointor" column="appointorid"></result>
+        <result property="channelName" column="channelname"></result>
+        <result property="srcName" column="srcname"></result>
+        <result property="memo" column="memo"></result>
+        <result property="createTime" column="createtime"></result>
+    </resultMap>
 
     <update id="editClientBaseInfo" parameterType="map">
         UPDATE
-	      ${tabName}
+        ${tabName}
         <set>
             <if test="clientStatusVO.weFlag != null">
                 WEFLAG = #{clientStatusVO.weFlag},
@@ -14,26 +27,35 @@
             </if>
         </set>
         WHERE
-	      KZID = #{clientStatusVO.kzId} AND COMPANYID = #{clientStatusVO.companyId}
+        KZID = #{clientStatusVO.kzId} AND COMPANYID = #{clientStatusVO.companyId}
     </update>
 
     <!-- 快速添加备注标签 -->
     <update id="editClientMemoLabel" parameterType="map">
-		UPDATE
-		${tabName}
-		SET
-		MEMO = CONCAT(#{label}, IFNULL(MEMO,''))
-		WHERE
-		COMPANYID = #{companyId}
-		AND KZID = #{kzId};
-	</update>
+        UPDATE
+            ${tabName}
+        SET
+            MEMO = CONCAT(#{label}, IFNULL(MEMO, ''))
+        WHERE
+            COMPANYID = #{companyId}
+            AND KZID = #{kzId};
+    </update>
 
     <!-- 根据状态筛选客资数量 -->
     <select id="getKzNumByStatusId" parameterType="map" resultType="java.lang.Integer">
-		SELECT COUNT(1)
-		FROM ${tableName} info
-		WHERE  info.ISDEL = 0
-		AND info.STATUSID = #{statusId}
-		AND info.COMPANYID = #{companyId}
-	</select>
+        SELECT COUNT(1)
+        FROM ${tableName} info
+        WHERE info.ISDEL = 0
+              AND info.STATUSID = #{statusId}
+              AND info.COMPANYID = #{companyId}
+    </select>
+
+    <!--修改客资状态-->
+    <update id="updateKzValidStatusByKzId">
+        update ${tabName} info
+        set info.STATUSID = #{clientStatusVoteVO.statusId}
+        where info.kzid = #{clientStatusVoteVO.kzId} and info.companyid = #{clientStatusVoteVO.companyId}
+    </update>
+
+
 </mapper>

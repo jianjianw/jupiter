@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiein.jupiter.web.dao.ClientRemarkDao">
+    <resultMap id="baseMap" type="com.qiein.jupiter.web.entity.po.ClientRemarkPO">
+        <id property="id" column="id"/>
+        <result property="kzId" column="kzid"/>
+        <result property="content" column="content"/>
+        <result property="companyId" column="companyid"/>
+    </resultMap>
+
+    <!--增加备注-->
+    <insert id="insert">
+        insert into ${tabName} (kzid, content, companyid)
+        values (#{clientRemarkPO.kzId}, #{clientRemarkPO.content}, #{clientRemarkPO.companyId})
+    </insert>
+
+    <!--修改备注-->
+    <update id="update">
+        update ${tabName} remark
+        set remark.content = #{clientRemarkPO.content}
+        where remark.kzid = #{clientRemarkPO.kzId} and remark.companyid = #{clientRemarkPO.companyId}
+    </update>
+
+    <!--根据客资id查询-->
+    <select id="getById" resultMap="baseMap">
+        select
+            id,
+            kzid,
+            content,
+            COMPANYID
+        from ${tabName} remark
+        where remark.kzid = #{clientRemarkPO.kzId} and remark.companyid = #{clientRemarkPO.companyId}
+    </select>
+</mapper>

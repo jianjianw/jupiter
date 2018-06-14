@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.controller;
 
+import com.qiein.jupiter.web.entity.vo.ClientStatusVoteVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -67,7 +68,11 @@ public class ClientController extends BaseController {
      * 客资有效，无效，待定的判定
      * */
     @PostMapping("update_kz_valid_status")
-    public ResultInfo updateKzValidStatus(Integer id,Integer status){
+    public ResultInfo updateKzValidStatus(@RequestBody ClientStatusVoteVO clientStatusVoteVO){
+        clientStatusVoteVO.setCompanyId(clientStatusVoteVO.getCompanyId());
+        clientStatusVoteVO.setOperaId(getCurrentLoginStaff().getId());
+        clientStatusVoteVO.setOperaName(getCurrentLoginStaff().getNickName());
+        clientService.updateKzValidStatus(clientStatusVoteVO);
         return ResultInfoUtil.success();
     }
 

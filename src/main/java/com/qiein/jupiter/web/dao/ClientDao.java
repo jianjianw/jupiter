@@ -1,7 +1,10 @@
 package com.qiein.jupiter.web.dao;
 
+import com.qiein.jupiter.msg.goeasy.ClientDTO;
 import com.qiein.jupiter.web.entity.vo.ClientStatusVO;
+import com.qiein.jupiter.web.entity.vo.ClientStatusVoteVO;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.PostMapping;
 
 /**
  * Created by Tt on 2018/5/15 0015.
@@ -36,4 +39,14 @@ public interface ClientDao {
      */
     public int getKzNumByStatusId(@Param("statusId") int statusId, @Param("companyId") Integer companyId,
                                   @Param("tableName") String tableName);
+    /**
+     * 根据客资Id修改客资状态
+     * @param tabName
+     * @param clientStatusVoteVO
+     * */
+    void updateKzValidStatusByKzId(@Param("tabName") String tabName,@Param(value="clientStatusVoteVO") ClientStatusVoteVO clientStatusVoteVO);
+
+
+
+
 }

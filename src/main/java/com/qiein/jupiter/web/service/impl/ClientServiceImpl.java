@@ -1,13 +1,19 @@
 package com.qiein.jupiter.web.service.impl;
 
-import com.qiein.jupiter.constant.ClientLogConst;
-import com.qiein.jupiter.constant.ClientStatusConst;
-import com.qiein.jupiter.constant.CommonConstant;
+import ch.qos.logback.classic.db.names.TableName;
+import com.qiein.jupiter.constant.*;
+import com.qiein.jupiter.exception.ExceptionEnum;
+import com.qiein.jupiter.exception.RException;
+import com.qiein.jupiter.msg.goeasy.ClientDTO;
+import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.web.dao.ClientDao;
 import com.qiein.jupiter.web.dao.ClientLogDao;
+import com.qiein.jupiter.web.dao.ClientRemarkDao;
 import com.qiein.jupiter.web.entity.po.ClientLogPO;
+import com.qiein.jupiter.web.entity.po.ClientRemarkPO;
 import com.qiein.jupiter.web.entity.vo.ClientStatusVO;
+import com.qiein.jupiter.web.entity.vo.ClientStatusVoteVO;
 import com.qiein.jupiter.web.service.ClientService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +36,11 @@ public class ClientServiceImpl implements ClientService {
 
     @Autowired
     private ClientLogDao clientLogDao;
+
+    @Autowired
+    private ClientRemarkDao clientRemarkDao;
+
+
 
     /**
      * 编辑客资性别
@@ -96,11 +107,66 @@ public class ClientServiceImpl implements ClientService {
         return result;
     }
 
+
     /**
      * 修改客资状态
      * */
     @Override
-    public void updateKzValidStatus(Integer status) {
+    public void updateKzValidStatus(ClientStatusVoteVO clientStatusVoteVO) {
+        if(null == clientStatusVoteVO){
+            throw new RException(ExceptionEnum.UNKNOW_ERROR);
+        }
+        //有效或待定，增加到备注表中
+        Integer type = clientStatusVoteVO.getType();
+        String tabName = DBSplitUtil.getRemarkTabName(clientStatusVoteVO.getCompanyId());
+        //获取客资时候有备注
+        ClientRemarkPO clientRemarkPO = new ClientRemarkPO();
+        clientRemarkPO.setKzId(clientStatusVoteVO.getKzId());
+        clientRemarkPO.setCompanyId(clientStatusVoteVO.getCompanyId());
+        clientRemarkPO.setContent(clientStatusVoteVO.getContent());
+
+        ClientRemarkPO clientRemark = clientRemarkDao.getById(tabName, clientRemarkPO);
+        String kzStatusName = "";
+        if(ClientStatusTypeConst.VALID_TYPE.equals(type)){
+            //有效
+            kzStatusName = ClientConst.KZ_BZ_WATING_MAKE_ORDER;
+            clientStatusVoteVO.setStatusId(ClientStatusConst.BE_WAIT_MAKE_ORDER);
+        }else if(ClientStatusTypeConst.WATING_TYPE.equals(type)){
+            //待定
+            kzStatusName = ClientConst.KZ_BZ_WATING_NAME;
+            clientStatusVoteVO.setStatusId(ClientStatusConst.BE_WAIT_WAITING);
+        }else if(ClientStatusTypeConst.INVALID_TYPE.equals(type)){
+            kzStatusName = ClientConst.KZ_BZ_INVALID_NAME;
+            //无效客资Goeasy推送一条消息
+            clientStatusVoteVO.setStatusId(ClientStatusConst.BE_FILTER_INVALID);
+            ClientDTO clientDTO = new ClientDTO();
+            clientDTO.setKzId(clientStatusVoteVO.getKzId());
+            clientDTO.setChannelName(clientStatusVoteVO.getChannelName());
+            clientDTO.setKzQq(clientStatusVoteVO.getKzQq());
+            clientDTO.setKzWeChat(clientStatusVoteVO.getKzWeChat());
+            clientDTO.setKzPhone(clientStatusVoteVO.getKzPhone());
+            clientDTO.setKzName(clientStatusVoteVO.getKzName());
+            GoEasyUtil.pushBeValidCheck(clientStatusVoteVO.getCompanyId(),clientStatusVoteVO.getCollectorId(),clientDTO,clientStatusVoteVO.getContent());
+        }
+        if(!ClientStatusTypeConst.INVALID_TYPE.equals(type)){
+            //修改状态id
+            clientDao.updateKzValidStatusByKzId(DBSplitUtil.getInfoTabName(clientStatusVoteVO.getCompanyId()),clientStatusVoteVO);
+            //是否有备注
+            if(null == clientRemark){
+                clientRemarkDao.insert(tabName,clientRemarkPO);
+            }else{
+                clientRemarkDao.update(tabName,clientRemarkPO);
+            }
+        }
+
+        //插入日志
+        int addLogNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(clientStatusVoteVO.getCompanyId()),
+                new ClientLogPO(clientStatusVoteVO.getKzId(), clientStatusVoteVO.getOperaId(), clientStatusVoteVO.getOperaName(),
+                        ClientLogConst.INFO_LOG_EDIT_BE_STATUS + kzStatusName,
+                        ClientLogConst.INFO_LOGTYPE_EDIT, clientStatusVoteVO.getCompanyId()));
+        if (addLogNum != 1) {
+            log.error("插入客资日志失败");
+        }
     }
 
 
