@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -50,11 +51,17 @@ public class ClientTrackServiceImpl implements ClientTrackService {
         reqContent.put("operaname", staffPO.getNickName());
         reqContent.put("kzids", kzIds);
 
+        //获取推广人员集合
+        List<StaffNumVO> onwerCollector = getOnwerStaffList("COLLECTORID", staffPO.getCompanyId(), kzIds);
+        List<StaffNumVO> appoints = getOnwerStaffList("APPOINTORID", staffPO.getCompanyId(), kzIds);
+
         String addRstStr = crmBaseApi.doService(reqContent, "clientBatchDeleteLp");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if ("100000".equals(jsInfo.getString("code"))) {
-            //TODO 推送
-            log.info("删除成功");
+            //给录入人推送消息
+            pushRemoveMsg(onwerCollector, "录入", staffPO);
+            //给要约人推送消息
+            pushRemoveMsg(appoints, "邀约", staffPO);
         } else {
             throw new RException(jsInfo.getString("msg"));
         }
