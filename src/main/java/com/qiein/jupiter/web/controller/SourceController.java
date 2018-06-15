@@ -89,10 +89,25 @@ public class SourceController extends BaseController {
      * @param id        拖拽的来源编号
      * @return
      */
-    @GetMapping("/priority")
+    @GetMapping("/tz_priority")
     public ResultInfo editPriority(@Id Integer fPriority, @Id Integer sPriority, @Id Integer id) {
         sourceService.editSourcePriority(fPriority, sPriority, id, getCurrentLoginStaff().getCompanyId());
         return ResultInfoUtil.success(TigMsgEnum.EDIT_SOURCE_SUCCESS);
+    }
+
+    /**
+     * 编辑渠道排序
+     *
+     * @param fId
+     * @param fPriority
+     * @param sId
+     * @param sPriority
+     * @return
+     */
+    @GetMapping("/priority")
+    public ResultInfo editPriority(Integer fId,Integer fPriority,Integer sId,Integer sPriority) {
+        sourceService.editProiority(fId, fPriority, sId, sPriority, getCurrentLoginStaff().getCompanyId());
+        return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
     }
 
     /**
