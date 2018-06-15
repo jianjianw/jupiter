@@ -6,11 +6,16 @@ import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.http.CrmBaseApi;
 import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
+import com.qiein.jupiter.util.CollectionUtils;
+import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.JsonFmtUtil;
+import com.qiein.jupiter.web.dao.ClientDao;
 import com.qiein.jupiter.web.dao.ClientInfoDao;
 import com.qiein.jupiter.web.dao.NewsDao;
 import com.qiein.jupiter.web.dao.StaffDao;
+import com.qiein.jupiter.web.entity.dto.ClientGoEasyDTO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.entity.vo.StaffNumVO;
 import com.qiein.jupiter.web.service.ClientTrackService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +42,8 @@ public class ClientTrackServiceImpl implements ClientTrackService {
     private ClientInfoDao clientInfoDao;
     @Autowired
     private NewsDao newsDao;
+    @Autowired
+    private ClientDao clientDao;
 
     /**
      * 批量删除客资
@@ -65,6 +72,40 @@ public class ClientTrackServiceImpl implements ClientTrackService {
         } else {
             throw new RException(jsInfo.getString("msg"));
         }
+    }
+    /**
+     * 封装推送客资被删除消息
+     *
+     * @param staffList
+     * @param type
+     * @param opera
+     */
+    private void pushRemoveMsg(List<StaffNumVO> staffList, String type, StaffPO opera) {
+        if (CollectionUtils.isNotEmpty(staffList)) {
+            for (StaffNumVO sf : staffList) {
+                if (!sf.isEmpty()) {
+                    ClientGoEasyDTO info = null;
+                    if (sf.getNum() == 1) {
+                        info = clientInfoDao.getClientGoEasyDTOById(sf.getKzId(),
+                                DBSplitUtil.getInfoTabName(opera.getCompanyId()),
+                                DBSplitUtil.getDetailTabName(opera.getCompanyId()));
+                    }
+                    GoEasyUtil.pushRemove(opera.getCompanyId(), sf.getStaffId(), info, sf.getNum(), type, opera.getNickName(), newsDao);
+                }
+            }
+        }
+    }
+
+    /**
+     * 获取客资拥有者列表
+     *
+     * @param type
+     * @param companyId
+     * @param kzIds
+     * @return
+     */
+    private List<StaffNumVO> getOnwerStaffList(String type, int companyId, String kzIds) {
+        return clientDao.getOnwerInfoNumByIds(DBSplitUtil.getInfoTabName(companyId), kzIds, " info." + type + " ", companyId);
     }
 
     /**

@@ -3,8 +3,11 @@ package com.qiein.jupiter.web.dao;
 import com.qiein.jupiter.msg.goeasy.ClientDTO;
 import com.qiein.jupiter.web.entity.vo.ClientStatusVO;
 import com.qiein.jupiter.web.entity.vo.ClientStatusVoteVO;
+import com.qiein.jupiter.web.entity.vo.StaffNumVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.List;
 
 /**
  * Created by Tt on 2018/5/15 0015.
@@ -46,7 +49,17 @@ public interface ClientDao {
      * */
     void updateKzValidStatusByKzId(@Param("tabName") String tabName,@Param(value="clientStatusVoteVO") ClientStatusVoteVO clientStatusVoteVO);
 
-
+    /**
+     * 客资被转移时统计被转移人的客资数
+     *
+     * @param tabName
+     * @param kzIds
+     * @param type
+     * @param companyId
+     * @return
+     */
+    List<StaffNumVO> getOnwerInfoNumByIds(@Param("tabName") String tabName, @Param("kzIds") String kzIds,
+                                          @Param("type") String type, @Param("companyId") Integer companyId);
 
 
 }

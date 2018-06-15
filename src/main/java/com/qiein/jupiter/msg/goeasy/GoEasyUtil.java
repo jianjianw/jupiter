@@ -671,4 +671,48 @@ public class GoEasyUtil {
                 DBSplitUtil.getNewsTabName(companyId)));
     }
 
+    /**
+     * 推送客资被删除消息
+     *
+     * @param companyId
+     * @param staffId
+     * @param info
+     * @param type
+     * @param operaId
+     * @param newsDao
+     */
+    public static void pushRemove(int companyId, int staffId, ClientGoEasyDTO info, int num, String type, String operaName, NewsDao newsDao) {
+        if (NumUtil.isNull(staffId) || NumUtil.isNull(companyId)) {
+            return;
+        }
+        String head = "删除提醒";
+        StringBuffer sb = new StringBuffer();
+        if (num == 1) {
+            sb.append("您好，您有1个" + type + "的客资被 " + operaName + " 删除 <br/>");
+            sb.append("编号：").append(info.getId()).append("<br/>");
+            if (StringUtil.isNotEmpty(info.getKzName())) {
+                sb.append("姓名：").append(StringUtil.nullToStrTrim(info.getKzName())).append("<br/>");
+            }
+            if (StringUtil.isNotEmpty(info.getKzPhone())) {
+                sb.append("电话：").append(StringUtil.nullToStrTrim(info.getKzPhone())).append("<br/>");
+            }
+            if (StringUtil.isNotEmpty(info.getKzWechat())) {
+                sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWechat())).append("<br/>");
+            }
+            if (StringUtil.isNotEmpty(info.getKzQq())) {
+                sb.append("QQ：").append(StringUtil.nullToStrTrim(info.getKzQq())).append("<br/>");
+            }
+            if (StringUtil.isNotEmpty(info.getKzWw())) {
+                sb.append("旺旺：").append(StringUtil.nullToStrTrim(info.getKzWw())).append("<br/>");
+            }
+            sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("<br/>");
+            sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("<br/><br/>");
+        } else {
+            sb.append("您好，您有" + num + "个" + type + "的客资被 " + operaName + " 删除 ");
+        }
+        pushWarn(companyId, staffId, head, sb.toString());
+        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_WARN, head, sb.toString().replaceAll("<br/>", "；"), null, staffId, companyId,
+                DBSplitUtil.getNewsTabName(companyId)));
+    }
+
 }
