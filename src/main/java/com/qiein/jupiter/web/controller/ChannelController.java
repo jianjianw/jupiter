@@ -216,7 +216,6 @@ public class ChannelController extends BaseController {
     public ResultInfo getMyChannelSourceByRole(@NotEmptyStr @RequestParam("role") String role) {
         // 获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        return ResultInfoUtil.success(channelService.getMyChannelSourceByRole(currentLoginStaff.getCompanyId(),
-                currentLoginStaff.getId(), role));
+        return ResultInfoUtil.success(channelService.getChannelSourceListByType(currentLoginStaff.getCompanyId(), role));
     }
 }

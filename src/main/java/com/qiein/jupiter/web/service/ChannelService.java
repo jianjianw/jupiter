@@ -73,15 +73,6 @@ public interface ChannelService {
     List<ChannelVO> getChannelSourceListByType(Integer companyId, String role);
 
     /**
-     * 获取员工各角色录入页面，渠道来源下拉框选项，根据个人上月使用频率排序
-     *
-     * @param companyId
-     * @param role
-     * @return
-     */
-    List<ChannelVO> getMyChannelSourceByRole(int companyId, int staffId, String role);
-
-    /**
      * 根据公司ID 获取渠道字典
      *
      * @return

@@ -148,20 +148,6 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     /**
-     * 获取员工各角色录入页面，渠道来源下拉框选项，根据个人上月使用频率排序
-     *
-     * @param companyId
-     * @param role
-     * @return
-     */
-    public List<ChannelVO> getMyChannelSourceByRole(int companyId, int staffId, String role) {
-
-        List<ChannelVO> myList = channelDao.getHistoryChannelSort(DBSplitUtil.getInfoTabName(companyId), companyId,
-                staffId, RoleChannelEnum.getTypeListByRole(role));
-        return myList;
-    }
-
-    /**
      * 获取渠道字典
      *
      * @param companyId
