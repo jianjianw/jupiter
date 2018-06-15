@@ -1,79 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qiein.jupiter.web.dao.GoldDataDao">
-
+    <resultMap id="goldData" type="com.qiein.jupiter.web.entity.po.GoldFingerPO">
+        <id column="ID" jdbcType="INTEGER" property="id"/>
+        <result column="FORMID" jdbcType="VARCHAR" property="formId"/>
+        <result column="FORMNAME" jdbcType="VARCHAR" property="formName"/>
+        <result column="KZNAMEFIELD" jdbcType="VARCHAR" property="kzNameField"/>
+        <result column="KZPHONEFIELD" jdbcType="VARCHAR" property="kzPhoneField"/>
+        <result column="KZWECHATFIELD" jdbcType="VARCHAR" property="kzWechatField"/>
+        <result column="FIELDKEY" jdbcType="VARCHAR" property="fieldKey"/>
+        <result column="FIELDVALUE" jdbcType="VARCHAR" property="fieldValue"/>
+        <result column="SRCID" jdbcType="INTEGER" property="srcId"/>
+        <result column="SRCNAME" jdbcType="VARCHAR" property="srcName"/>
+        <result column="TYPEID" jdbcType="INTEGER" property="typeId"/>
+        <result column="TYPENAME" jdbcType="VARCHAR" property="typeName"/>
+        <result column="ADID" jdbcType="INTEGER" property="adId"/>
+        <result column="ADADDRESS" jdbcType="VARCHAR" property="adAddress"/>
+        <result column="ZXSTYLE" jdbcType="VARCHAR" property="zxStyle"/>
+        <result column="MEMO" jdbcType="VARCHAR" property="memo"/>
+        <result column="ISSHOW" jdbcType="INTEGER" property="isShow"/>
+        <result column="POSTURL" jdbcType="VARCHAR" property="postURL"/>
+        <result column="CREATEORNAME" jdbcType="VARCHAR" property="createorName"/>
+        <result column="CREATETIME" jdbcType="INTEGER" property="createTime"/>
+        <result column="AREALIMIT" jdbcType="INTEGER" property="areaLimit"/>
+        <result column="ISFILTER" jdbcType="INTEGER" property="isFilter"/>
+        <result column="ISSEND" jdbcType="INTEGER" property="isSend"/>
+    </resultMap>
+    <resultMap id="goldCustomer" type="com.qiein.jupiter.web.entity.vo.GoldCustomerVO">
+        <id column="ID" jdbcType="INTEGER" property="id"/>
+        <result column="FORMID" jdbcType="VARCHAR" property="formId"/>
+        <result column="FORMNAME" jdbcType="VARCHAR" property="formName"/>
+        <result column="SRCID" jdbcType="INTEGER" property="srcId"/>
+        <result column="SRCNAME" jdbcType="VARCHAR" property="srcName"/>
+        <result column="TYPEID" jdbcType="INTEGER" property="typeId"/>
+        <result column="TYPENAME" jdbcType="VARCHAR" property="typeName"/>
+        <result column="MEMO" jdbcType="VARCHAR" property="memo"/>
+        <result column="CREATETIME" jdbcType="INTEGER" property="createTime"/>
+        <result column="ADID" jdbcType="INTEGER" property="adId"/>
+        <result column="ADADDRESS" jdbcType="VARCHAR" property="adAddress"/>
+        <result column="KZNAME" jdbcType="VARCHAR" property="kzName"/>
+        <result column="KZPHONE" jdbcType="VARCHAR" property="kzPhone"/>
+        <result column="WECHAT" jdbcType="VARCHAR" property="wechat"/>
+        <result column="ADDRESS" jdbcType="VARCHAR" property="address"/>
+        <result column="REMARK" jdbcType="VARCHAR" property="remark"/>
+        <result column="IP" jdbcType="VARCHAR" property="ip"/>
+        <result column="IPADDRESS" jdbcType="VARCHAR" property="ipAddress"/>
+        <result column="COMPANYID" jdbcType="INTEGER" property="companyId"/>
+        <result column="STATUSID" jdbcType="INTEGER" property="statusId"/>
+    </resultMap>
+    <sql id="goldCustomerlist">
+        ID,FORMID,FORMNAME,SRCNAME,TYPENAME,MEMO,CREATETIME,KZNAME,KZPHONE,WECHAT,ADDRESS,REMARK,IP,IPADDRESS,STATUSID
+    </sql>
     <sql id="formInsert">
-        FORMID,
-        FORMNAME,
-        KZNAMEFIELD,
-        KZPHONEFIELD,
-        KZWECHATFIELD,
-        FIELDKEY,
-        FIELDVALUE,
-        SRCID,
-        SRCNAME,
-        TYPEID,
-        TYPENAME,
-        ADID,
-        ADADDRESS,
-        ZXSTYLE,
-        MEMO,
-        ISSHOW,
-        POSTURL,
-        CREATEORID,
-        CREATEORNAME,
-        CREATETIME,
-        COMPANYID,
-        AREALIMIT,
-        ISFILTER,
-        ISSEND
+        FORMID,FORMNAME,KZNAMEFIELD,KZPHONEFIELD,KZWECHATFIELD,FIELDKEY,FIELDVALUE,SRCID,SRCNAME,TYPEID,TYPENAME,ADID,ADADDRESS,ZXSTYLE,MEMO,ISSHOW,POSTURL,CREATEORID,CREATEORNAME,CREATETIME,COMPANYID,ISFILTER,ISSEND
     </sql>
     <sql id="formList">
-        ID id,
-        FORMID formId,
-        FORMNAME formName,
-        KZNAMEFIELD kzNameField,
-        KZPHONEFIELD kzPhoneField,
-        KZWECHATFIELD kzWechatField,
-        FIELDKEY fieldKey,
-        FIELDVALUE fieldValue,
-        SRCID srcId,
-        SRCNAME srcName,
-        TYPEID typeId,
-        TYPENAME typeName,
-        ADID adId,
-        ADADDRESS adAddress,
-        ZXSTYLE zxStyle,
-        MEMO memo,
-        ISSHOW isShow,
-        POSTURL postURL,
-        CREATEORNAME createorName,
-        CREATETIME createTime,
-        AREALIMIT areaLimit,
-        ISFILTER isFilter,
-        ISSEND isSend
+        ID ,FORMID , FORMNAME ,KZNAMEFIELD ,KZPHONEFIELD ,KZWECHATFIELD ,FIELDKEY ,FIELDVALUE ,SRCID ,SRCNAME ,TYPEID ,TYPENAME ,ADID ,ADADDRESS ,ZXSTYLE ,MEMO ,ISSHOW ,POSTURL ,CREATEORNAME ,CREATETIME ,AREALIMIT ,ISFILTER ,ISSEND
     </sql>
     <sql id="formUpdate">
-        FORMID=#{formId},
-        FORMNAME=#{formName},
-        KZNAMEFIELD=#{kzNameField},
-        KZPHONEFIELD=#{kzPhoneField},
-        KZWECHATFIELD=#{kzWechatField},
-        FIELDKEY=#{fieldKey},
-        FIELDVALUE=#{fieldValue},
-        SRCID=#{srcId},
-        SRCNAME=#{srcName},
-        TYPEID=#{typeId},
-        TYPENAME=#{typeName},
-        ADID=#{adId},
-        ADADDRESS=#{adAddress},
-        ZXSTYLE=#{zxStyle},
-        MEMO=#{memo},
-        ISSHOW=#{isShow},
-        POSTURL=#{postURL},
-        AREALIMIT=#{areaLimit},
-        ISFILTER=#{isFilter},
-        ISSEND=#{isSend}
+        FORMID=#{formId}, FORMNAME=#{formName},KZNAMEFIELD=#{kzNameField},KZPHONEFIELD=#{kzPhoneField},KZWECHATFIELD=#{kzWechatField},FIELDKEY=#{fieldKey}, FIELDVALUE=#{fieldValue},SRCID=#{srcId},SRCNAME=#{srcName},TYPEID=#{typeId},TYPENAME=#{typeName},ADID=#{adId},ADADDRESS=#{adAddress},ZXSTYLE=#{zxStyle},MEMO=#{memo},POSTURL=#{postURL}
     </sql>
     <insert id="insert">
         INSERT INTO hm_crm_gold_plug_setting (
@@ -99,17 +84,9 @@
                 #{isShow},
                 #{postURL},
                 #{staffId},
-                (
-                    SELECT
-                        nickname
-                    FROM
-                        hm_pub_staff
-                    WHERE
-                        id = #{staffId}
-                ),
+                #{createorName},
                 UNIX_TIMESTAMP(now()),
                 #{companyId},
-                #{areaLimit},
                 #{isFilter},
                 #{isSend}
     )
@@ -123,10 +100,43 @@
         update hm_crm_gold_plug_setting  set <include refid="formUpdate"/> where id=#{id}
     </update>
 
-    <select id="select" resultType="com.qiein.jupiter.web.entity.po.GoldFingerPO">
+    <select id="select" resultMap="goldData" >
         select
       <include refid="formList"/>
         from hm_crm_gold_plug_setting where companyId=#{companyId}
 
+    </select>
+
+    <update id="editOpenOrClose">
+        update hm_crm_gold_plug_setting
+        <set>
+            <if test="isShow!=null">
+                ISSHOW=#{isShow},
+            </if>
+            <if test="areaLimit!=null">
+                AREALIMIT=#{areaLimit},
+            </if>
+            <if test="isFilter!=null">
+                ISFILTER=#{isFilter},
+            </if>
+            <if test="isSend!=null">
+                ISSEND=#{isSend},
+            </if>
+        </set>
+        where id=#{id}
+
+    </update>
+
+    <select id="goldCustomerSelect" resultMap="goldCustomer">
+        select <include refid="goldCustomerlist"/> from hm_crm_gold_temp where formId=#{formId}
+        <if test="startTime!=null">
+          and  createTime &gt;= #{startTime}
+        </if>
+        <if test="endTime!=null">
+            and   createTime &lt;= #{endTime}
+        </if>
+        <if test="statusId!=null">
+            and   statusId =#{statusId}
+        </if>
     </select>
 </mapper>

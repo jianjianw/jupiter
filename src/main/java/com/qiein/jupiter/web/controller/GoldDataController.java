@@ -1,12 +1,20 @@
 package com.qiein.jupiter.web.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
+import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
+import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.web.entity.dto.GoldCustomerDTO;
+import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.GoldFingerPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.entity.vo.GoldCustomerVO;
 import com.qiein.jupiter.web.service.GoldDataService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -32,18 +40,19 @@ public class GoldDataController extends BaseController{
      */
     @PostMapping("/insert")
     public ResultInfo insert(@RequestBody GoldFingerPO goldFingerPO){
-        if(goldFingerPO.getFormId().isEmpty()||goldFingerPO.getFormName().isEmpty()||goldFingerPO.getPostURL().isEmpty()||goldFingerPO.getSrcName().isEmpty()||goldFingerPO.getTypeName().isEmpty()||goldFingerPO.getZxStyle().isEmpty()){
+        if(StringUtil.haveEmpty(goldFingerPO.getFormId(),goldFingerPO.getFormName(),goldFingerPO.getPostURL(),goldFingerPO.getSrcName(),goldFingerPO.getTypeName(),goldFingerPO.getZxStyle())){
             throw new RException(ExceptionEnum.LOSE_FILED);
         }
         StaffPO staff=getCurrentLoginStaff();
         goldFingerPO.setStaffId(staff.getId());
+        goldFingerPO.setCreateorName(staff.getNickName());
         goldFingerPO.setCompanyId(staff.getCompanyId());
         try {
             goldDataService.insert(goldFingerPO);
         }catch (Exception e){
             throw new RException(ExceptionEnum.ADD_FAIL);
         }
-        return ResultInfoUtil.success();
+        return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
     }
 
     /**
@@ -58,7 +67,7 @@ public class GoldDataController extends BaseController{
         }catch (Exception e){
             throw new RException(ExceptionEnum.DELETE_FAIL);
         }
-        return ResultInfoUtil.success();
+        return ResultInfoUtil.success(TigMsgEnum.DELETE_SUCCESS);
     }
 
     /**
@@ -68,7 +77,7 @@ public class GoldDataController extends BaseController{
      */
     @PostMapping("/update")
     public ResultInfo update(@RequestBody GoldFingerPO goldFingerPO){
-        if(goldFingerPO.getFormId().isEmpty()||goldFingerPO.getFormName().isEmpty()||goldFingerPO.getPostURL().isEmpty()||goldFingerPO.getSrcName().isEmpty()||goldFingerPO.getTypeName().isEmpty()||goldFingerPO.getZxStyle().isEmpty()){
+        if(StringUtil.haveEmpty(goldFingerPO.getFormId(),goldFingerPO.getFormName(),goldFingerPO.getPostURL(),goldFingerPO.getSrcName(),goldFingerPO.getTypeName(),goldFingerPO.getZxStyle())){
             throw new RException(ExceptionEnum.LOSE_FILED);
         }
         StaffPO staff=getCurrentLoginStaff();
@@ -79,7 +88,7 @@ public class GoldDataController extends BaseController{
         }catch (Exception e){
             throw new RException(ExceptionEnum.EDIT_FAIL);
         }
-        return ResultInfoUtil.success();
+        return ResultInfoUtil.success(TigMsgEnum.UPDATE_SUCCESS);
     }
 
     /**
@@ -90,5 +99,21 @@ public class GoldDataController extends BaseController{
         StaffPO staff=getCurrentLoginStaff();
         List<GoldFingerPO> list = goldDataService.select(staff.getCompanyId());
         return ResultInfoUtil.success(list);
+    }
+
+    /**
+     *修改开关
+     */
+    @PostMapping("/edit_open_or_close")
+    public ResultInfo editOpenOrClose(@RequestBody GoldFingerPO goldFingerPO){
+        goldDataService.editOpenOrClose(goldFingerPO);
+        return ResultInfoUtil.success(TigMsgEnum.UPDATE_SUCCESS);
+    }
+
+    @PostMapping("/gold_customer_select")
+    public ResultInfo goldCustomerSelect( @RequestBody JSONObject params){
+        QueryMapDTO queryMapDTO=JSONObject.parseObject(params.getJSONObject("queryMapDTO").toJSONString(),QueryMapDTO.class) ;
+         GoldCustomerDTO goldCustomerDTO=JSONObject.parseObject(params.getJSONObject("goldCustomerDTO").toJSONString(),GoldCustomerDTO.class) ;
+        return ResultInfoUtil.success(goldDataService.goldCustomerSelect(queryMapDTO,goldCustomerDTO));
     }
 }
