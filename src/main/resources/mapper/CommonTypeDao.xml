@@ -31,4 +31,19 @@
         </foreach>
         )
     </delete>
+
+    <update id="editTypeChannelGroup">
+        update hm_crm_type_channel_group_rela
+        <set>
+            <if test="weight !=null">
+                WEIGHT=#{weight}
+            </if>
+            <if test="weight !=null">
+                WEIGHT=#{weight}
+            </if>
+            <if test="weight !=null">
+                WEIGHT=#{weight}
+            </if>
+        </set>
+    </update>
 </mapper>

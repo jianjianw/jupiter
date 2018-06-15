@@ -65,7 +65,7 @@ public class CommonTypeSerivceImpl implements CommonTypeSerivce {
      * @param commonTypePO
      */
     public void editTypeChannelGroup( CommonTypePO commonTypePO){
-
+        commonTypeDao.editTypeChannelGroup(commonTypePO);
     }
 
 }

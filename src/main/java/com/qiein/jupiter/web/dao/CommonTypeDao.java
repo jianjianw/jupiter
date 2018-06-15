@@ -26,4 +26,9 @@ public interface CommonTypeDao {
      * @param list
      */
     void deleteTypeChannelGroup(List<Integer> list);
+    /**
+     * 修改渠道
+     * @param commonTypePO
+     */
+    void editTypeChannelGroup( CommonTypePO commonTypePO);
 }

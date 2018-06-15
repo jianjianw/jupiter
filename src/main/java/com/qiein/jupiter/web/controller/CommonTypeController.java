@@ -58,5 +58,6 @@ public class CommonTypeController extends BaseController{
         StaffPO staff=getCurrentLoginStaff();
         commonTypePO.setCompanyId(staff.getCompanyId());
         commonTypeSerivce.editTypeChannelGroup(commonTypePO);
+        return ResultInfoUtil.success(TigMsgEnum.UPDATE_SUCCESS);
     }
 }
