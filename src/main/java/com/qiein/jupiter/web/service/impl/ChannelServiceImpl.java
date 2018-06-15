@@ -158,7 +158,7 @@ public class ChannelServiceImpl implements ChannelService {
 
         List<ChannelVO> myList = channelDao.getHistoryChannelSort(DBSplitUtil.getInfoTabName(companyId), companyId,
                 staffId, RoleChannelEnum.getTypeListByRole(role));
-        return channelCompara(myList, getChannelSourceListByType(companyId, role));
+        return myList;
     }
 
     /**
@@ -183,37 +183,4 @@ public class ChannelServiceImpl implements ChannelService {
         return map;
     }
 
-    private static List<ChannelVO> channelCompara(List<ChannelVO> my, List<ChannelVO> all) {
-        if (CollectionUtils.isEmpty(my) || CollectionUtils.isEmpty(all)) {
-            return all;
-        }
-        for (ChannelVO myChannel : my) {
-            Iterator<ChannelVO> allIter = all.iterator();
-            while (allIter.hasNext()) {
-                ChannelVO allChannel = allIter.next();
-                if (allChannel.getChannelId() == myChannel.getChannelId()) {
-                    myChannel.setSrcList(sourceCompara(myChannel.getSrcList(), allChannel.getSrcList()));
-                    allIter.remove();
-                }
-            }
-        }
-        my.addAll(all);
-        return my;
-    }
-
-    private static LinkedList<SrcListVO> sourceCompara(LinkedList<SrcListVO> my, LinkedList<SrcListVO> all) {
-        if (CollectionUtils.isEmpty(my) || CollectionUtils.isEmpty(all)) {
-            return all;
-        }
-        for (SrcListVO mySrc : my) {
-            Iterator<SrcListVO> allIter = all.iterator();
-            while (allIter.hasNext()) {
-                if (allIter.next().getSrcId() == mySrc.getSrcId()) {
-                    allIter.remove();
-                }
-            }
-        }
-        my.addAll(all);
-        return my;
-    }
 }
