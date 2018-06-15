@@ -21,16 +21,5 @@ public class ChannelServiceImplTest {
 
 	@Test
 	public void getAllDeptAndStaff() {
-		List<ChannelVO> list = channelService.getMyChannelSourceByRole(9999, 100, "dsyy");
-		for (ChannelVO channel : list) {
-			System.out.println(channel.getChannelName());
-			System.out.println("-----------------------");
-			for (SrcListVO src : channel.getSrcList()) {
-				System.out.println("----" + src.getSrcName());
-			}
-			System.out.println();
-			System.out.println();
-			System.out.println();
-		}
 	}
 }
