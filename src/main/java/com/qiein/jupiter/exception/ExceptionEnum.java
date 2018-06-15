@@ -147,7 +147,9 @@ public enum ExceptionEnum {
     WX_BIND_ERROR(2101,"微信绑定失败"),
     WX_REMOVE_BIND_FAIL(2102,"微信解绑失败"),
     WX_NOT_BIND(2103,"微信未绑定"),
-    GET_WX_INFO_FAIL(2104,"获取用户微信信息失败");
+    GET_WX_INFO_FAIL(2104,"获取用户微信信息失败"),
+    //金数据
+    FORM_WAS_IN(2201,"表单已存在");
 
     private Integer code;
     private String msg;

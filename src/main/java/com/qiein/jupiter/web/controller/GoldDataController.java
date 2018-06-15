@@ -47,11 +47,8 @@ public class GoldDataController extends BaseController{
         goldFingerPO.setStaffId(staff.getId());
         goldFingerPO.setCreateorName(staff.getNickName());
         goldFingerPO.setCompanyId(staff.getCompanyId());
-        try {
-            goldDataService.insert(goldFingerPO);
-        }catch (Exception e){
-            throw new RException(ExceptionEnum.ADD_FAIL);
-        }
+        goldDataService.insert(goldFingerPO);
+
         return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
     }
 
@@ -83,11 +80,7 @@ public class GoldDataController extends BaseController{
         StaffPO staff=getCurrentLoginStaff();
         goldFingerPO.setStaffId(staff.getId());
         goldFingerPO.setCompanyId(staff.getCompanyId());
-        try{
         goldDataService.update(goldFingerPO);
-        }catch (Exception e){
-            throw new RException(ExceptionEnum.EDIT_FAIL);
-        }
         return ResultInfoUtil.success(TigMsgEnum.UPDATE_SUCCESS);
     }
 
