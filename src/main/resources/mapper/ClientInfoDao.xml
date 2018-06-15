@@ -65,8 +65,7 @@
 		LEFT JOIN ${detailTabName} det ON det.KZID = info.KZID AND info.COMPANYID = det.COMPANYID
 		LEFT JOIN hm_crm_source src ON src.COMPANYID =  info.COMPANYID AND src.ID = info.SOURCEID
 		WHERE
-			info.ISDEL = 0
-		AND info.KZID = #{kzId};
+			 info.KZID = #{kzId};
 	</select>
     
     <!-- 客资分配给客服后修改客资信息 -->

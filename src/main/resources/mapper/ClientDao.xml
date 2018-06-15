@@ -15,6 +15,12 @@
         <result property="createTime" column="createtime"></result>
     </resultMap>
 
+    <resultMap type="com.qiein.jupiter.web.entity.vo.StaffNumVO" id="staffMap">
+        <id column="ID" jdbcType="INTEGER" property="staffId" />
+        <result column="NUM" jdbcType="INTEGER" property="num" />
+        <result column="KZID" jdbcType="INTEGER" property="kzId" />
+    </resultMap>
+
     <update id="editClientBaseInfo" parameterType="map">
         UPDATE
         ${tabName}
@@ -57,5 +63,20 @@
         where info.kzid = #{clientStatusVoteVO.kzId} and info.companyid = #{clientStatusVoteVO.companyId}
     </update>
 
+    <!-- 客资被转移时统计被转移人的客资数 -->
+    <select id="getOnwerInfoNumByIds" parameterType="map"  resultMap="staffMap">
+		SELECT
+		${type} ID, COUNT(1) NUM, KZID
+		FROM
+		${tabName} info
+		WHERE
+		info.COMPANYID = #{companyId}
+		AND info.ISDEL = 0
+		AND ${type} IS NOT NULL
+		AND (
+		INSTR(#{kzIds}, info.KZID) != 0
+		)
+		GROUP BY ${type}
+	</select>
 
 </mapper>
