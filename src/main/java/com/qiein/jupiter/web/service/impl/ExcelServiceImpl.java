@@ -95,17 +95,18 @@ public class ExcelServiceImpl implements ExcelService {
             clientExcelDTO.setOperaId(currentLoginStaff.getId());
             clientExcelDTO.setTypeName(CommonConstant.EXCEL_DEFAULT_PHOTO_TYPE_NAME);
             clientExcelDTO.setCreateTime(clientExcelDTO.getTime() == 0 ? 0 : HSSFDateUtil.getJavaDate(clientExcelDTO.getTime()).getTime() / 1000);
-            clientExcelDTO.setCreateTime(TimeUtil.dateToIntMillis(clientExcelDTO.getTimeDate()));
-            clientExcelDTO.setAppointTime(TimeUtil.dateToIntMillis(clientExcelDTO.getAppointTimeDate()));
-            clientExcelDTO.setComeShopTime(TimeUtil.dateToIntMillis(clientExcelDTO.getComeShopTimeDate()));
-            clientExcelDTO.setSuccessTime(TimeUtil.dateToIntMillis(clientExcelDTO.getSuccessTimeDate()));
-            clientExcelDTO.setMarryTime(TimeUtil.dateToIntMillis(clientExcelDTO.getMarryTimeDate()));
-            clientExcelDTO.setYpTime(TimeUtil.dateToIntMillis(clientExcelDTO.getYpTimeDate()));
+//            clientExcelDTO.setCreateTime(TimeUtil.dateToIntMillis(clientExcelDTO.getTimeDate()));
+//            clientExcelDTO.setAppointTime(TimeUtil.dateToIntMillis(clientExcelDTO.getAppointTimeDate()));
+//            clientExcelDTO.setComeShopTime(TimeUtil.dateToIntMillis(clientExcelDTO.getComeShopTimeDate()));
+//            clientExcelDTO.setSuccessTime(TimeUtil.dateToIntMillis(clientExcelDTO.getSuccessTimeDate()));
+//            clientExcelDTO.setMarryTime(TimeUtil.dateToIntMillis(clientExcelDTO.getMarryTimeDate()));
+//            clientExcelDTO.setYpTime(TimeUtil.dateToIntMillis(clientExcelDTO.getYpTimeDate()));
 //            dictionaryDao.getDicByTypeAndName(clientExcelDTO.getCompanyId(),DictionaryConstant.MARRY_TIME);
 //            dictionaryDao.getDicByTypeAndName(clientExcelDTO.getCompanyId(),DictionaryConstant.YP_TIME);
 //            dictionaryDao.getDicByTypeAndName(clientExcelDTO.getCompanyId(),DictionaryConstant.YX_RANK);
 //            dictionaryDao.getDicByTypeAndName(clientExcelDTO.getCompanyId(),DictionaryConstant.YS_RANGE);
 //            clientExcelDTO.setCreateTime(HSSFDateUtil.getJavaDate(clientExcelDTO.getTime()).getTime() / 1000);
+            clientExcelDTO.setCreateTime(clientExcelDTO.getTime() == 0 ? 0 : HSSFDateUtil.getJavaDate(clientExcelDTO.getTime()).getTime() / 1000);
         }
         // 1.删除员工客资缓存记录
         excelDao.deleteTempByStaffId(DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()),
@@ -179,9 +180,6 @@ public class ExcelServiceImpl implements ExcelService {
         // 更新门市ID
         excelDao.updateReceptorId(DBSplitUtil.getTable(TableEnum.temp,currentLoginStaff.getCompanyId()),
                 currentLoginStaff.getId());
-
-
-
     }
 
 
