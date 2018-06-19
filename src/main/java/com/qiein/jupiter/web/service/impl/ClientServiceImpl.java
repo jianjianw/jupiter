@@ -112,6 +112,7 @@ public class ClientServiceImpl implements ClientService {
      * 修改客资状态
      * */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updateKzValidStatus(ClientStatusVoteVO clientStatusVoteVO) {
         if(null == clientStatusVoteVO){
             throw new RException(ExceptionEnum.UNKNOW_ERROR);

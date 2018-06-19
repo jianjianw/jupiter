@@ -107,6 +107,14 @@ public interface ExcelDao {
     void updateGroupId(@Param("tempName") String tempName, @Param("staffId") Integer staffId);
 
     /**
+     * 更新门市id
+     * @param tempName
+     * @param staffId
+     * */
+    void updateReceptorId(@Param(value="tempName") String tempName,
+                          @Param(value="staffId") int staffId);
+
+    /**
      * 获取所有的记录
      **/
     List<ClientExcelDTO> getAllRecordByStaffId(@Param("tempName") String tempName, @Param("staffId") int staffId);
@@ -166,4 +174,6 @@ public interface ExcelDao {
      * @param operaId
      */
     void updateStatusIdAndClassId(@Param("tempName") String tempName, @Param("operaId") int operaId);
+
+
 }

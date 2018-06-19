@@ -205,6 +205,12 @@
 		WHERE temp.OPERAID = #{staffId};
 	</update>
 
+    <!--更新门市id-->
+    <update id="updateReceptorId">
+        update ${tampName}  temp set temp.RECEPTORID = (select sf.ID from hm_pub_staff sf where sf.NICKNAME = temp.RECEPTORNAME and sf.COMPANYID = temp.COMPANYID AND sf.ISDEL = 0 LIMIT 1)
+        where temp.operaid=  #{staffId};
+    </update>
+
     <!--获取导入的所有客资列表-->
     <select id="getAllRecordByStaffId" parameterType="map" resultMap="baseMap">
         SELECT
