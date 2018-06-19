@@ -49,6 +49,13 @@
         WHERE CHANNELID = #{channelId} AND COMPANYID = #{companyId}
     </update>
 
+    <!--渠道筛选关闭时，同时关闭下属所有来源-->
+    <update id="updateIsFilterByChannelId" parameterType="map">
+        UPDATE hm_crm_source
+        SET ISFILTER = false
+        WHERE CHANNELID = #{channelId} AND COMPANYID = #{companyId}
+    </update>
+
     <update id="update" parameterType="com.qiein.jupiter.web.entity.po.SourcePO">
         UPDATE
         hm_crm_source
