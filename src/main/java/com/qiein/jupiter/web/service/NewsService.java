@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.service;
 
 import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
+import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.NewsTotalAmountAndFlag;
 
 public interface NewsService {
@@ -42,5 +43,15 @@ public interface NewsService {
      * @return
      */
     int setAllNewIsRead(int uid, int cid);
+
+    /**
+     * 推送闪信信息，，催一次，崔二次
+     *
+     * @param kzId
+     * @param toStaffId
+     * @param msg
+     * @param opera
+     */
+    void pushInfoNewsInApp(String kzId, int toStaffId, String msg, StaffPO opera);
 
 }

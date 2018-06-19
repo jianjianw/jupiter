@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
@@ -89,6 +90,20 @@ public class NewsController extends BaseController {
 		// 获取当前登录用户
 		StaffPO currentLoginStaff = getCurrentLoginStaff();
 		newsService.setAllNewIsRead(currentLoginStaff.getId(), currentLoginStaff.getCompanyId());
+		return ResultInfoUtil.success(TigMsgEnum.OPERATE_SUCCESS);
+	}
+
+	/**
+	 * 设置当前登录用户的所有消息为已读
+	 *
+	 * @return
+	 */
+	@GetMapping("/push_info_news_in_app")
+	public ResultInfo pushInfoNewsInApp(@NotEmptyStr @RequestParam("kzId") String kzId, @NotEmptyStr @RequestParam("toStaffId") int toStaffId,
+										@NotEmptyStr @RequestParam("msg") String msg) {
+		// 获取当前登录用户
+		StaffPO currentLoginStaff = getCurrentLoginStaff();
+		newsService.pushInfoNewsInApp(kzId, toStaffId, msg, currentLoginStaff);
 		return ResultInfoUtil.success(TigMsgEnum.OPERATE_SUCCESS);
 	}
 }
