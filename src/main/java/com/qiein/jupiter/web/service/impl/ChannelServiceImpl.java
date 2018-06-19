@@ -76,8 +76,8 @@ public class ChannelServiceImpl implements ChannelService {
             sourceDao.updateIsShowByChannelId(channelPO.getId(), channelPO.getCompanyId());
         }
 
-        if (channelPO.getFilterFlag() != null && !channelPO.getFilterFlag()) { //关闭渠道则关闭下属所有来源
-            sourceDao.updateIsFilterByChannelId(channelPO.getId(), channelPO.getCompanyId());
+        if (channelPO.getFilterFlag() != null) { //关闭渠道则关闭下属所有来源
+            sourceDao.updateIsFilterByChannelId(channelPO.getId(), channelPO.getCompanyId(),channelPO.getFilterFlag());
         }
         channelDao.update(channelPO);
     }

@@ -82,7 +82,7 @@ public interface SourceDao extends BaseDao<SourcePO> {
      * @param companyId
      * @return
      */
-    Integer updateIsFilterByChannelId(@Param("channelId")Integer channelId,@Param("companyId") Integer companyId);
+    Integer updateIsFilterByChannelId(@Param("channelId")Integer channelId,@Param("companyId") Integer companyId,@Param("flag") boolean flag);
 
     /**
      * 修改向下拖拽排序时波及的来源的排序
