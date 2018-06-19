@@ -71,6 +71,12 @@ public class SchedulingServiceImpl implements SchedulingService {
         List<Integer> roleList = rolePermissionDao.getStaffPmsList(companyId, staffId);
         // 获取员工所在部门列表
         List<String> deptList = groupDao.getDeptByTypeAndStaff(companyId, staffId, type);
+        // 获取员工所属的电商小组
+        List<String> dsGroupList = groupDao.getStaffBelongDSGroup(companyId,staffId);
+
+        if (dsGroupList.size()==0){
+            roleList.add(PmsConstant.SEE_ALL);
+        }
 
         if (roleList.contains(PmsConstant.SEE_ALL)) { // 查看所有 所有的都显示
             for (GroupsInfoVO giv : list) {
@@ -126,8 +132,13 @@ public class SchedulingServiceImpl implements SchedulingService {
         List<Integer> roleList = rolePermissionDao.getStaffPmsList(companyId, staffId);
         // 获取员工所在小组或主管小组列表
         List<String> groupList = groupDao.getGroupByStaffAndType(companyId, staffId, null);
+        // 员工所在电商小组
+        List<String> dsGroupList = groupDao.getStaffBelongDSGroup(companyId, staffId);
 //		// 获取各小组内人员的接单数和在线人数
 //		List<GroupsInfoVO> infoList = groupStaffDao.getStaffMarsInfo(companyId);
+
+        if (dsGroupList.size()==0)
+            roleList.add(PmsConstant.SEE_ALL);
 
         if (roleList.contains(PmsConstant.SEE_ALL) || roleList.contains(PmsConstant.SEE_MY_DEPT)) { // 查看所有
             // 所有的都显示
