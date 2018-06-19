@@ -184,6 +184,30 @@ public class ClientAddServiceImpl implements ClientAddService {
                     it.remove();
                     continue;
                 }
+                // 6.配偶姓名
+                if(StringUtil.isChinese(info) && info.length() < 6 && !json.containsKey("matename")){
+                    json.put("matename",info);
+                    it.remove();
+                    continue;
+                }
+                // 7.配偶电话
+                if (RegexUtil.checkMobile(info) && !json.containsKey("matephone")) {
+                    json.put("matephone", info);
+                    it.remove();
+                    continue;
+                }
+                // 8.配偶微信
+                if (StringUtil.checkWeChat(info) && !json.containsKey("matewechat")) {
+                    json.put("matewechat", info);
+                    it.remove();
+                    continue;
+                }
+                // 9.配偶qq
+                if (StringUtil.isQQCorrect(info) && !json.containsKey("mateqq")) {
+                    json.put("mateqq", info);
+                    it.remove();
+                    continue;
+                }
             }
             // 其余放入备注
             for (String memo : infoArr) {

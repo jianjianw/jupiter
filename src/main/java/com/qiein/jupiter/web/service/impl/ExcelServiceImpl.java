@@ -106,7 +106,6 @@ public class ExcelServiceImpl implements ExcelService {
 //            dictionaryDao.getDicByTypeAndName(clientExcelDTO.getCompanyId(),DictionaryConstant.YX_RANK);
 //            dictionaryDao.getDicByTypeAndName(clientExcelDTO.getCompanyId(),DictionaryConstant.YS_RANGE);
 //            clientExcelDTO.setCreateTime(HSSFDateUtil.getJavaDate(clientExcelDTO.getTime()).getTime() / 1000);
-            clientExcelDTO.setCreateTime(clientExcelDTO.getTime() == 0 ? 0 : HSSFDateUtil.getJavaDate(clientExcelDTO.getTime()).getTime() / 1000);
         }
         // 1.删除员工客资缓存记录
         excelDao.deleteTempByStaffId(DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()),
