@@ -63,8 +63,6 @@ public class ExcelServiceImpl implements ExcelService {
     private CompanyDao companyDao;
     @Autowired
     private PermissionDao permissionDao;
-    @Autowired
-    private DictionaryDao dictionaryDao;
 
     /**
      * 导入客资
@@ -80,13 +78,12 @@ public class ExcelServiceImpl implements ExcelService {
         params.setTitleRows(0);
         // 表头行数,默认1
         params.setHeadRows(1);
-        List<ClientExcelNewsDTO> clientList = ExcelImportUtil.importExcel(file.getInputStream(), ClientExcelNewsDTO.class,
+        List<ClientExcelDTO> clientList = ExcelImportUtil.importExcel(file.getInputStream(), ClientExcelDTO.class,
                 params);
         if (CollectionUtils.isEmpty(clientList)) {
             throw new RException(ExceptionEnum.EXCEL_IS_NULL);
         }
-        for (ClientExcelNewsDTO clientExcelDTO : clientList) {
-            System.out.println(clientExcelDTO);
+        for (ClientExcelDTO clientExcelDTO : clientList) {
             String status = clientExcelDTO.getStatusName();
             clientExcelDTO.setStatusId((StringUtil.isNotEmpty(status) && status.contains("无"))
                     ? ClientStatusConst.BE_INVALID : ClientStatusConst.BE_HAVE_MAKE_ORDER);
@@ -97,6 +94,7 @@ public class ExcelServiceImpl implements ExcelService {
             clientExcelDTO.setKzId(StringUtil.getRandom());
             clientExcelDTO.setOperaId(currentLoginStaff.getId());
             clientExcelDTO.setTypeName(CommonConstant.EXCEL_DEFAULT_PHOTO_TYPE_NAME);
+            clientExcelDTO.setCreateTime(clientExcelDTO.getTime() == 0 ? 0 : HSSFDateUtil.getJavaDate(clientExcelDTO.getTime()).getTime() / 1000);
             clientExcelDTO.setCreateTime(TimeUtil.dateToIntMillis(clientExcelDTO.getTimeDate()));
             clientExcelDTO.setAppointTime(TimeUtil.dateToIntMillis(clientExcelDTO.getAppointTimeDate()));
             clientExcelDTO.setComeShopTime(TimeUtil.dateToIntMillis(clientExcelDTO.getComeShopTimeDate()));
@@ -109,18 +107,18 @@ public class ExcelServiceImpl implements ExcelService {
 //            dictionaryDao.getDicByTypeAndName(clientExcelDTO.getCompanyId(),DictionaryConstant.YS_RANGE);
 //            clientExcelDTO.setCreateTime(HSSFDateUtil.getJavaDate(clientExcelDTO.getTime()).getTime() / 1000);
         }
-//         1.删除员工客资缓存记录
-//        excelDao.deleteTempByStaffId(DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()),
-//                currentLoginStaff.getId());
-//
-//        /*-- 新增客资信息 --*/
-//        int back = excelDao.insertExcelClientInfo(clientList,
-//                DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()));
-//        if (back != clientList.size()) {
-//            /*-- 清空缓存表 --*/
-//            excelDao.truncateTempTable(DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()));
-//            throw new RException(ExceptionEnum.EXCEL_ADD_FAIL);
-//        }
+        // 1.删除员工客资缓存记录
+        excelDao.deleteTempByStaffId(DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()),
+                currentLoginStaff.getId());
+
+        /*-- 新增客资信息 --*/
+        int back = excelDao.insertExcelClientInfo(clientList,
+                DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()));
+        if (back != clientList.size()) {
+            /*-- 清空缓存表 --*/
+            excelDao.truncateTempTable(DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()));
+            throw new RException(ExceptionEnum.EXCEL_ADD_FAIL);
+        }
 
         // 设置企业ID
         excelDao.updateCompanyId(currentLoginStaff.getCompanyId(),

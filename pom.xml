@@ -5,11 +5,11 @@
 
     <groupId>com.qiein</groupId>
     <artifactId>jupiter</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>wedding</version>
     <packaging>jar</packaging>
 
-    <name>jupiter</name>
-    <description>Demo project for Spring Boot</description>
+    <name>jupiter-wedding</name>
+    <description>jupiter-wedding</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

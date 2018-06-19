@@ -38,13 +38,13 @@ public interface ClientTrackService {
 	String approvalInvalidKzList(String kzIds, String memo, int rst, String invalidLabel, StaffPO staffPO);
 
 	/**
-	 * 分配客资
+	 * 客资批量分配
 	 *
 	 * @param kzIds
 	 * @param staffIds
+	 * @param companyId
 	 */
-	void allot(String kzIds, String staffIds);
-
+	void pushLp(String kzIds, String staffIds, int companyId, int operaId, String operaName);
 	/**
 	 * 批量恢复，回收客资
 	 *

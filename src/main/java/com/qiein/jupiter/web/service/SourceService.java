@@ -36,6 +36,17 @@ public interface SourceService {
     void editSourcePriority(Integer fPriority, Integer sPriority, Integer id, Integer companyId);
 
     /**
+     * 修改排序
+     *
+     * @param fId
+     * @param fPriority
+     * @param sId
+     * @param sPriority
+     * @param companyId
+     */
+    void editProiority(Integer fId, Integer fPriority, Integer sId, Integer sPriority, Integer companyId);
+
+    /**
      * 根据来源编号删除来源
      *
      * @param id

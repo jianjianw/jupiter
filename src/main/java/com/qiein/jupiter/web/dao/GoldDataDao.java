@@ -45,4 +45,18 @@ public interface GoldDataDao {
      * @return
      */
     List<GoldCustomerVO> goldCustomerSelect( GoldCustomerDTO goldCustomerDTO);
+
+    /**
+     * 插入或者修改数据查重
+     * @param goldFingerPO
+     * @return
+     */
+    List<GoldFingerPO> checkForm(GoldFingerPO goldFingerPO);
+
+    /**
+     * 查询表单信息
+     * @param formId
+     * @return
+     */
+    GoldFingerPO findForm(String formId);
 }

@@ -39,13 +39,20 @@
         SELECT
         #{srcName},#{srcImg},#{typeId},#{channelId},#{channelName},#{brandId},
         #{brandName},#{companyId},#{isFilter},#{isShow},(
-        SELECT IFNULL(MAX(PRIORITY),0)+1 FROM hm_crm_source WHERE COMPANYID = #{companyId})
+        SELECT IFNULL(MAX(PRIORITY),0)+1 FROM hm_crm_source WHERE COMPANYID = #{companyId} AND CHANNELID = #{channelId})
     </insert>
 
     <!--渠道关闭时，同时关闭下属所有来源-->
-    <update id="updateIsShowByChannelId" parameterType="map">
+    <update id="updateIsShowByChannelId" parameterType="Integer">
         UPDATE hm_crm_source
         SET ISSHOW = false
+        WHERE CHANNELID = #{channelId} AND COMPANYID = #{companyId}
+    </update>
+
+    <!--渠道筛选关闭时，同时关闭下属所有来源-->
+    <update id="updateIsFilterByChannelId" parameterType="map">
+        UPDATE hm_crm_source
+        SET ISFILTER = #{flag}
         WHERE CHANNELID = #{channelId} AND COMPANYID = #{companyId}
     </update>
 

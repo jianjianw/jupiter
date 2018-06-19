@@ -88,6 +88,21 @@ public class SourceServiceImpl implements SourceService {
     }
 
     /**
+     * 普通排序
+     * @param fId
+     * @param fPriority
+     * @param sId
+     * @param sPriority
+     * @param companyId
+     */
+    @Override
+    @Transactional
+    public void editProiority(Integer fId, Integer fPriority, Integer sId, Integer sPriority, Integer companyId) {
+        sourceDao.updatePriority(fId, fPriority, companyId);
+        sourceDao.updatePriority(sId, sPriority, companyId);
+    }
+
+    /**
      * 删除来源
      *
      * @param id

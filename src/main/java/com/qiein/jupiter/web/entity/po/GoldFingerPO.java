@@ -1,6 +1,6 @@
 package com.qiein.jupiter.web.entity.po;
 
-import java.util.Map;
+import java.sql.Date;
 /**
  * 金手指表单 添加PO
  * Author xiangliang 2018/6/13
@@ -41,13 +41,13 @@ public class GoldFingerPO {
     //广告着陆页
     private String  adAddress;
     //是否启用
-    private Integer isShow;
+    private Boolean isShow;
     //是否推送消息
-    private Integer isSend;
+    private Boolean pushNews;
     //是否过滤
-    private Integer isFilter;
+    private Boolean isFilter;
     //异地拦截
-    private Integer areaLimit;
+    private Boolean areaLimit;
     //POST地址
     private String postURL;
     //备注
@@ -55,13 +55,13 @@ public class GoldFingerPO {
 
     private String createorName;
 
-    private int createTime;
+    private String createTime;
 
-    public Integer getIsShow() {
+    public Boolean getIsShow() {
         return isShow;
     }
 
-    public void setIsShow(Integer isShow) {
+    public void setIsShow(Boolean isShow) {
         this.isShow = isShow;
     }
 
@@ -73,11 +73,11 @@ public class GoldFingerPO {
         this.createorName = createorName;
     }
 
-    public int getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(int createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
@@ -217,35 +217,35 @@ public class GoldFingerPO {
         this.adAddress = adAddress;
     }
 
-    public Integer getEnabled() {
+    public Boolean getEnabled() {
         return isShow;
     }
 
-    public void setEnabled(Integer isShow) {
+    public void setEnabled(Boolean isShow) {
         this.isShow = isShow;
     }
 
-    public Integer getIsSend() {
-        return isSend;
+    public Boolean getPushNews() {
+        return pushNews;
     }
 
-    public void setIsSend(Integer isSend) {
-        this.isSend = isSend;
+    public void setPushNews(Boolean pushNews) {
+        this.pushNews = pushNews;
     }
 
-    public Integer getIsFilter() {
+    public Boolean getIsFilter() {
         return isFilter;
     }
 
-    public void setIsFilter(Integer isFilter) {
+    public void setIsFilter(Boolean isFilter) {
         this.isFilter = isFilter;
     }
 
-    public Integer getAreaLimit() {
+    public Boolean getAreaLimit() {
         return areaLimit;
     }
 
-    public void setAreaLimit(Integer areaLimit) {
+    public void setAreaLimit(Boolean areaLimit) {
         this.areaLimit = areaLimit;
     }
 

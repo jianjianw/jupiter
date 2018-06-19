@@ -89,6 +89,10 @@ public class ClientGoEasyDTO implements Serializable {
 	 * 备注
 	 */
 	private String memo;
+	/**
+	 * 录入时间
+	 */
+	private int createTime;
 
 	public String getKzQq() {
 		return kzQq;
@@ -240,5 +244,13 @@ public class ClientGoEasyDTO implements Serializable {
 
 	public void setAmount(int amount) {
 		this.amount = amount;
+	}
+
+	public int getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(int createTime) {
+		this.createTime = createTime;
 	}
 }

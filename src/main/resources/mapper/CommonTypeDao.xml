@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiein.jupiter.web.dao.CommonTypeDao">
+    <resultMap id="commonType" type="com.qiein.jupiter.web.entity.vo.CommonTypeVO">
+        <id column="ID" jdbcType="INTEGER" property="id"/>
+        <result column="DICNAME" jdbcType="VARCHAR" property="dicName"/>
+        <result column="DICTYPE" jdbcType="VARCHAR" property="dicType"/>
+        <result column="ISSHOW" jdbcType="INTEGER" property="isShow"/>
+        <result column="COMPANYID" jdbcType="INTEGER" property="companyId"/>
+
+    </resultMap>
+    <insert id="addPhotoType">
+        insert into hm_crm_dictionary(DICTYPE,DICNAME,COMPANYID) values("common_type",#{commonType},#{companyId})
+    </insert>
+
+    <select id="findCommonType" resultMap="commonType">
+        select ID,DICNAME,ISSHOW from hm_crm_dictionary where DICTYPE="common_type" and COMPANYID=#{companyId}
+    </select>
+
+    <insert id="addTypeChannelGroup">
+        insert into hm_crm_type_channel_group_rela(TYPEID,CHANNELID,GROUPID,GROUPNAME,WEIGHT,COMPANYID) values
+        <foreach collection="list" item="it" separator=",">
+            (#{it.typeId},#{it.channelId},#{it.groupId},#{it.groupName},#{it.weight},#{it.companyId})
+        </foreach>
+    </insert>
+
+    <delete id="deleteTypeChannelGroup">
+        delete from hm_crm_type_channel_group_rela where id in (
+        <foreach collection="list" item="it" separator=",">
+            #{it}
+        </foreach>
+        )
+    </delete>
+
+    <update id="editTypeChannelGroup">
+        update hm_crm_type_channel_group_rela
+        <set>
+            <if test="weight !=null and weight!=''">
+                WEIGHT=#{weight},
+            </if>
+            <if test="groupName !=null and groupName!=''">
+                GROUPNAME=#{groupName},
+            </if>
+            <if test="groupId !=null and groupId!=''">
+                GROUPID=#{groupId},
+            </if>
+        </set>
+    </update>
+
+    <select id="find_channel_group">
+        SELECT
+            a.ID  id,
+            TYPEID typeId,
+            DICNAME typeName,
+            CHANNELID channelId,
+            GROUPID gourpId,
+            GROUPNAME groupName,
+            WEIGHT weight
+        FROM
+            hm_crm_type_channel_group_rela a
+        LEFT JOIN hm_crm_dictionary b ON a.TYPEID = b.DICCODE
+        WHERE
+            DICTYPE = "common_type"
+
+        <choose>
+            <when test="typeId !=null and typeId!=''">
+                and TYPEID=#{typeId}
+            </when>
+            <otherwise>
+                limit 0,1
+            </otherwise>
+        </choose>
+
+
+    </select>
+
+</mapper>

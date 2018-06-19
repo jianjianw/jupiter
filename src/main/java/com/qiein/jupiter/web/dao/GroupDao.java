@@ -100,6 +100,14 @@ public interface GroupDao extends BaseDao<GroupPO> {
     List<String> getDeptByTypeAndStaff(@Param("companyId") int companyId, @Param("staffId") int staffId, @Param("type") String type);
 
     /**
+     * 获取员工所属的电商小组，如果没有，则返回的list为空
+     * @param companyId
+     * @param staffId
+     * @return
+     */
+    List<String> getStaffBelongDSGroup(@Param("companyId") int companyId, @Param("staffId") int staffId);
+
+    /**
      * 获取员工所在小组的信息
      *
      * @param staffId
