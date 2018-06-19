@@ -1,10 +1,15 @@
 package com.qiein.jupiter.web.service.impl;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.qiein.jupiter.constant.DictionaryConstant;
+import com.qiein.jupiter.util.*;
+import com.qiein.jupiter.web.dao.DictionaryDao;
+import com.qiein.jupiter.web.entity.dto.ClientExcelNewsDTO;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,10 +24,6 @@ import com.qiein.jupiter.enums.TableEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.http.CrmBaseApi;
-import com.qiein.jupiter.util.CollectionUtils;
-import com.qiein.jupiter.util.DBSplitUtil;
-import com.qiein.jupiter.util.JsonFmtUtil;
-import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.CompanyDao;
 import com.qiein.jupiter.web.dao.ExcelDao;
 import com.qiein.jupiter.web.dao.PermissionDao;
@@ -94,6 +95,17 @@ public class ExcelServiceImpl implements ExcelService {
             clientExcelDTO.setOperaId(currentLoginStaff.getId());
             clientExcelDTO.setTypeName(CommonConstant.EXCEL_DEFAULT_PHOTO_TYPE_NAME);
             clientExcelDTO.setCreateTime(clientExcelDTO.getTime() == 0 ? 0 : HSSFDateUtil.getJavaDate(clientExcelDTO.getTime()).getTime() / 1000);
+//            clientExcelDTO.setCreateTime(TimeUtil.dateToIntMillis(clientExcelDTO.getTimeDate()));
+//            clientExcelDTO.setAppointTime(TimeUtil.dateToIntMillis(clientExcelDTO.getAppointTimeDate()));
+//            clientExcelDTO.setComeShopTime(TimeUtil.dateToIntMillis(clientExcelDTO.getComeShopTimeDate()));
+//            clientExcelDTO.setSuccessTime(TimeUtil.dateToIntMillis(clientExcelDTO.getSuccessTimeDate()));
+//            clientExcelDTO.setMarryTime(TimeUtil.dateToIntMillis(clientExcelDTO.getMarryTimeDate()));
+//            clientExcelDTO.setYpTime(TimeUtil.dateToIntMillis(clientExcelDTO.getYpTimeDate()));
+//            dictionaryDao.getDicByTypeAndName(clientExcelDTO.getCompanyId(),DictionaryConstant.MARRY_TIME);
+//            dictionaryDao.getDicByTypeAndName(clientExcelDTO.getCompanyId(),DictionaryConstant.YP_TIME);
+//            dictionaryDao.getDicByTypeAndName(clientExcelDTO.getCompanyId(),DictionaryConstant.YX_RANK);
+//            dictionaryDao.getDicByTypeAndName(clientExcelDTO.getCompanyId(),DictionaryConstant.YS_RANGE);
+//            clientExcelDTO.setCreateTime(HSSFDateUtil.getJavaDate(clientExcelDTO.getTime()).getTime() / 1000);
         }
         // 1.删除员工客资缓存记录
         excelDao.deleteTempByStaffId(DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()),
@@ -164,6 +176,9 @@ public class ExcelServiceImpl implements ExcelService {
         excelDao.updateGroupId(DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()),
                 currentLoginStaff.getId());
 
+        // 更新门市ID
+        excelDao.updateReceptorId(DBSplitUtil.getTable(TableEnum.temp,currentLoginStaff.getCompanyId()),
+                currentLoginStaff.getId());
     }
 
 

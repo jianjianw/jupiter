@@ -347,6 +347,7 @@ public class GroupServiceImpl implements GroupService {
                     channelPO.setPriority(CommonConstant.DEFAULT_ZERO);
                     channelPO.setPushRule(CommonConstant.DEFAULT_ZERO);
                     channelPO.setShowFlag(true);
+                    channelPO.setFilterFlag(false);
                     channelDao.insert(channelPO);
                 } else {
                     //非根节点
@@ -361,6 +362,7 @@ public class GroupServiceImpl implements GroupService {
                         channelPO.setPriority(CommonConstant.DEFAULT_ZERO);
                         channelPO.setPushRule(CommonConstant.DEFAULT_ZERO);
                         channelPO.setShowFlag(true);
+                        channelPO.setFilterFlag(false);
                         channelDao.insert(channelPO);
                         //来源
                         SourcePO sourcePO = new SourcePO();

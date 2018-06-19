@@ -54,7 +54,6 @@ public class ChannelServiceImpl implements ChannelService {
     @Override
     @Transactional
     public void editChannel(ChannelPO channelPO) {
-        System.out.println(channelPO);
         if (StringUtil.isNotEmpty(channelPO.getBrandName())) { // 如果名字为空，可能只是想改显示
             // 检查是否存在
             ChannelPO cp = channelDao.getByIdAndCid(channelPO.getId(), channelPO.getCompanyId());
@@ -74,6 +73,10 @@ public class ChannelServiceImpl implements ChannelService {
 
         if (channelPO.getShowFlag() != null && !channelPO.getShowFlag()) { //关闭渠道则关闭下属所有来源
             sourceDao.updateIsShowByChannelId(channelPO.getId(), channelPO.getCompanyId());
+        }
+
+        if (channelPO.getFilterFlag() != null) { //关闭渠道则关闭下属所有来源
+            sourceDao.updateIsFilterByChannelId(channelPO.getId(), channelPO.getCompanyId(),channelPO.getFilterFlag());
         }
         channelDao.update(channelPO);
     }

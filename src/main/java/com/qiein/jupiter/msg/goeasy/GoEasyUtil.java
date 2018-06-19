@@ -307,7 +307,6 @@ public class GoEasyUtil {
         contentJson = new JSONObject();
         pushWeb(MessageConts.MSG_TYPE_STATUS_REFRESH, companyId, staffId, contentJson);
     }
-
     /**
      * 发送闪信
      *
@@ -322,14 +321,15 @@ public class GoEasyUtil {
      * @param kzMemo
      * @param msg
      */
-    public static synchronized void pushFlashMsgForInfo(int companyId, int barStaffId, int senderId, String senderName,
-                                                        String kzName, String kzPhone, String kzId, String kzChannel, String kzSource, String kzMemo, String msg) {
-
-        contentJson = new JSONObject();
+    public static void pushFlashMsgForInfo(int companyId, int barStaffId, int senderId, String senderName,
+                                           String kzName, String kzPhone, int id, String kzId, String kzChannel, String kzSource, String kzMemo, String msg, String createTime) {
+        JSONObject contentJson = new JSONObject();
         contentJson.put("senderId", senderId);
         contentJson.put("senderName", senderName);
         contentJson.put("kzName", kzName);
         contentJson.put("kzPhone", kzPhone);
+        contentJson.put("id", id);
+        contentJson.put("createtime", createTime);
         contentJson.put("kzId", kzId);
         contentJson.put("kzChannel", kzChannel);
         contentJson.put("kzSource", kzSource);
@@ -714,5 +714,49 @@ public class GoEasyUtil {
         newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_WARN, head, sb.toString().replaceAll("<br/>", "；"), null, staffId, companyId,
                 DBSplitUtil.getNewsTabName(companyId)));
     }
+
+    /**
+     * 推送催一次崔二次闪讯
+     *
+     * @param companyId
+     * @param staffId
+     * @param info
+     * @param operaId
+     * @param operaName
+     * @param msg
+     * @param newsDao
+     */
+    public static void pushFlash(int companyId, int staffId, ClientGoEasyDTO info, int operaId, String operaName, String msg, NewsDao newsDao) {
+        if (NumUtil.isNull(staffId) || NumUtil.isNull(companyId) || info == null) {
+            return;
+        }
+        String head = "来自 " + operaName + " 的客资消息";
+        StringBuffer sb = new StringBuffer();
+        sb.append("编号：").append(info.getId()).append("<br/>");
+        if (StringUtil.isNotEmpty(info.getKzName())) {
+            sb.append("姓名：").append(StringUtil.nullToStrTrim(info.getKzName())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzPhone())) {
+            sb.append("电话：").append(StringUtil.nullToStrTrim(info.getKzPhone())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzWechat())) {
+            sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWechat())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzQq())) {
+            sb.append("QQ：").append(StringUtil.nullToStrTrim(info.getKzQq())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzWw())) {
+            sb.append("旺旺：").append(StringUtil.nullToStrTrim(info.getKzWw())).append("<br/>");
+        }
+        sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("<br/>");
+        sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("<br/>");
+        sb.append("录入时间：" + TimeUtil.intMillisToTimeStr(info.getCreateTime()) + "<br/>");
+        sb.append("消息：" + msg + "<br/>");
+        pushFlashMsgForInfo(companyId, staffId, operaId, operaName, StringUtil.nullToStrTrim(info.getKzName()), StringUtil.nullToStrTrim(info.getKzPhone()), info.getId(),
+                info.getKzId(), StringUtil.nullToStrTrim(info.getChannelName()), StringUtil.nullToStrTrim(info.getSourceName()), StringUtil.nullToStrTrim(info.getMemo()), msg, TimeUtil.intMillisToTimeStr(info.getCreateTime()));
+        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_FLASH, head, sb.toString().replaceAll("<br/>", "；"), info.getKzId(), staffId, companyId,
+                DBSplitUtil.getNewsTabName(companyId)));
+    }
+
 
 }

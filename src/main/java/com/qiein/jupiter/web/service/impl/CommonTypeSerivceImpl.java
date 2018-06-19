@@ -2,6 +2,8 @@ package com.qiein.jupiter.web.service.impl;
 
 import com.qiein.jupiter.web.dao.CommonTypeDao;
 import com.qiein.jupiter.web.entity.po.CommonTypePO;
+import com.qiein.jupiter.web.entity.vo.CommonTypeChannelVO;
+import com.qiein.jupiter.web.entity.vo.CommonTypeVO;
 import com.qiein.jupiter.web.service.CommonTypeSerivce;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -66,6 +68,30 @@ public class CommonTypeSerivceImpl implements CommonTypeSerivce {
      */
     public void editTypeChannelGroup( CommonTypePO commonTypePO){
         commonTypeDao.editTypeChannelGroup(commonTypePO);
+    }
+
+    /**
+     * 获取拍摄地渠道小组分类
+     * @param typeId
+     * @return
+     */
+    public List<CommonTypePO> findChannelGroup(Integer typeId,Integer companyId){
+        return commonTypeDao.findChannelGroup(typeId,companyId);
+    }
+    /**
+     * 第一次进入时获取拍摄地渠道小组分类
+     * @param companyId
+     * @return
+     */
+    public CommonTypeChannelVO findChannelGroupFirst(Integer companyId){
+        CommonTypeChannelVO commonTypeChannelVO=new CommonTypeChannelVO();
+        List<CommonTypeVO> list=commonTypeDao.findCommonType(companyId);
+        if(list.size()!=0){
+            commonTypeChannelVO.setCommonTypeVOList(list);
+            commonTypeChannelVO.setCommonTypePOList(commonTypeDao.findChannelGroup(list.get(0).getId(),companyId));
+        }
+
+        return commonTypeChannelVO;
     }
 
 }

@@ -35,15 +35,44 @@
     <update id="editTypeChannelGroup">
         update hm_crm_type_channel_group_rela
         <set>
-            <if test="weight !=null">
-                WEIGHT=#{weight}
+            <if test="weight !=null and weight!=''">
+                WEIGHT=#{weight},
             </if>
-            <if test="weight !=null">
-                WEIGHT=#{weight}
+            <if test="groupName !=null and groupName!=''">
+                GROUPNAME=#{groupName},
             </if>
-            <if test="weight !=null">
-                WEIGHT=#{weight}
+            <if test="groupId !=null and groupId!=''">
+                GROUPID=#{groupId},
             </if>
         </set>
+        where id=#{id}
     </update>
+
+    <select id="findChannelGroup" resultType="com.qiein.jupiter.web.entity.po.CommonTypePO">
+        SELECT
+            a.ID  id,
+            TYPEID typeId,
+            DICNAME typeName,
+            CHANNELID channelId,
+            GROUPID gourpId,
+            GROUPNAME groupName,
+            WEIGHT weight
+        FROM
+            hm_crm_type_channel_group_rela a
+        LEFT JOIN hm_crm_dictionary b ON a.TYPEID = b.DICCODE
+        WHERE
+            DICTYPE = "common_type"
+
+        <choose>
+            <when test="typeId !=null and typeId!=''">
+                and TYPEID=#{typeId}
+            </when>
+            <otherwise>
+                limit 0,1
+            </otherwise>
+        </choose>
+
+
+    </select>
+
 </mapper>

@@ -37,6 +37,7 @@
 		<result column="INVALIDLABEL" jdbcType="VARCHAR" property="invalidLabel"/>
 		<result column="SUCCESSTIME" jdbcType="INTEGER" property="successTime"/>
 		<result column="AMOUNT" jdbcType="INTEGER" property="amount"/>
+		<result column="CREATETIME" jdbcType="INTEGER" property="createTime"/>
 	</resultMap>
 
     <sql id="baseColumn">
@@ -59,7 +60,7 @@
 	<select id="getClientGoEasyDTOById" parameterType="map" resultMap="goEasyMap">
 		SELECT
 			info.ID, info.KZID, info.KZNAME, info.KZPHONE, info.KZWECHAT, info.KZWW, info.KZQQ, det.MEMO, info.APPOINTORID,info.COLLECTORID, info.COMPANYID, info.SOURCEID, det.APPOINTNAME, det.FILMINGAREA, src.SRCNAME,
-			src.CHANNELNAME, det.INVALIDLABEL, info.SUCCESSTIME, det.AMOUNT
+			src.CHANNELNAME, det.INVALIDLABEL, info.SUCCESSTIME, det.AMOUNT, info.CREATETIME
 		FROM
 			${infoTabName} info
 		LEFT JOIN ${detailTabName} det ON det.KZID = info.KZID AND info.COMPANYID = det.COMPANYID

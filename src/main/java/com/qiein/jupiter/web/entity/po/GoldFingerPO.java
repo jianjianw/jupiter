@@ -1,6 +1,6 @@
 package com.qiein.jupiter.web.entity.po;
 
-import java.util.Map;
+import java.sql.Date;
 /**
  * 金手指表单 添加PO
  * Author xiangliang 2018/6/13
@@ -43,7 +43,7 @@ public class GoldFingerPO {
     //是否启用
     private Integer isShow;
     //是否推送消息
-    private Integer isSend;
+    private Integer pushNews;
     //是否过滤
     private Integer isFilter;
     //异地拦截
@@ -55,7 +55,7 @@ public class GoldFingerPO {
 
     private String createorName;
 
-    private int createTime;
+    private String createTime;
 
     public Integer getIsShow() {
         return isShow;
@@ -73,11 +73,11 @@ public class GoldFingerPO {
         this.createorName = createorName;
     }
 
-    public int getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(int createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
@@ -225,12 +225,12 @@ public class GoldFingerPO {
         this.isShow = isShow;
     }
 
-    public Integer getIsSend() {
-        return isSend;
+    public Integer getPushNews() {
+        return pushNews;
     }
 
-    public void setIsSend(Integer isSend) {
-        this.isSend = isSend;
+    public void setPushNews(Integer pushNews) {
+        this.pushNews = pushNews;
     }
 
     public Integer getIsFilter() {
