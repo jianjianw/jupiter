@@ -15,10 +15,13 @@ import com.qiein.jupiter.web.entity.po.SourcePO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.*;
 import com.qiein.jupiter.web.service.GroupService;
+import com.sun.org.apache.regexp.internal.RE;
+import io.jsonwebtoken.lang.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -273,6 +276,31 @@ public class GroupServiceImpl implements GroupService {
             }
             groupDao.batchUpdateGroupType(byParentId);
         }
+        ChannelPO channelPO = channelDao.getChannelByGroupName(groupPO.getGroupName(), groupPO.getCompanyId());
+        //节点不存在
+        if (null == channelPO) {
+            throw new RException(ExceptionEnum.UNKNOW_ERROR);
+        } else {
+            if (CommonConstant.DEFAULT_STRING_ZERO.equalsIgnoreCase(groupPO.getParentId())) {
+                //是根节点
+                    channelPO.setCompanyId(groupPO.getCompanyId());
+                    channelPO.setChannelName(groupPO.getGroupName());
+                    channelPO.setShowFlag(true);
+                    channelDao.update(channelPO);
+            } else {
+                SourcePO sourcePO = sourceDao.getSourceBySrcname(groupPO.getGroupName(), groupPO.getCompanyId(), channelPO.getId());
+                if (null == sourcePO) {
+                    throw new RException(ExceptionEnum.UNKNOW_ERROR);
+                } else {
+                    sourcePO.setSrcName(groupPO.getGroupName());
+                    sourcePO.setChannelId(channelPO.getId());
+                    sourcePO.setCompanyId(channelPO.getCompanyId());
+                    sourcePO.setIsShow(true);
+                    sourceDao.update(sourcePO);
+                }
+            }
+
+        }
         return groupPO;
     }
 
@@ -305,6 +333,29 @@ public class GroupServiceImpl implements GroupService {
         }
         //删除拍摄地-渠道-组关联表中的
         shopChannelGroupDao.delByGroupId(companyId, groupPO.getGroupId());
+        ChannelPO channelPO = channelDao.getChannelByGroupName(groupPO.getGroupName(), groupPO.getCompanyId());
+
+        //节点不存在
+        if(channelPO != null){
+            if (CommonConstant.DEFAULT_STRING_ZERO.equalsIgnoreCase(groupPO.getParentId())) {
+                //是根节点
+                channelPO.setShowFlag(false);
+                channelDao.update(channelPO);
+                List<SourcePO> sourcePOS = sourceDao.getSourceListByChannelId(channelPO.getId(), channelPO.getCompanyId());
+                if(CollectionUtils.isNotEmpty(sourcePOS)){
+                       sourceDao.updateIsShowByChannelId(channelPO.getId(),channelPO.getCompanyId());
+                }
+            } else {
+                SourcePO sourcePO = sourceDao.getSourceBySrcname(groupPO.getGroupName(), groupPO.getCompanyId(), channelPO.getId());
+                sourcePO.setSrcName(groupPO.getGroupName());
+                sourcePO.setChannelId(channelPO.getId());
+                sourcePO.setCompanyId(channelPO.getCompanyId());
+                sourcePO.setIsShow(false);
+                sourceDao.update(sourcePO);
+            }
+
+        }
+
         return groupPO;
     }
 

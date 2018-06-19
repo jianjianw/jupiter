@@ -131,6 +131,7 @@ public class ShopChannelGroupServiceImpl implements ShopChannelGroupService {
             return;
         }
         shopChannelGroupDao.updateGroupNameById(groupName, groupId, companyId);
+
     }
 
     /**
