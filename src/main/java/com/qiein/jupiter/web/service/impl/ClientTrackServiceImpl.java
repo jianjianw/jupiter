@@ -1,22 +1,25 @@
 package com.qiein.jupiter.web.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.qiein.jupiter.constant.ClientConst;
+import com.qiein.jupiter.constant.ClientLogConst;
+import com.qiein.jupiter.constant.ClientStatusConst;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.http.CrmBaseApi;
 import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
-import com.qiein.jupiter.util.CollectionUtils;
-import com.qiein.jupiter.util.DBSplitUtil;
-import com.qiein.jupiter.util.JsonFmtUtil;
-import com.qiein.jupiter.web.dao.ClientDao;
-import com.qiein.jupiter.web.dao.ClientInfoDao;
-import com.qiein.jupiter.web.dao.NewsDao;
-import com.qiein.jupiter.web.dao.StaffDao;
+import com.qiein.jupiter.util.*;
+import com.qiein.jupiter.web.dao.*;
 import com.qiein.jupiter.web.entity.dto.ClientGoEasyDTO;
+import com.qiein.jupiter.web.entity.dto.ClientPushDTO;
+import com.qiein.jupiter.web.entity.dto.StaffPushDTO;
+import com.qiein.jupiter.web.entity.po.AllotLogPO;
+import com.qiein.jupiter.web.entity.po.ClientLogPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.StaffNumVO;
 import com.qiein.jupiter.web.service.ClientTrackService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +47,12 @@ public class ClientTrackServiceImpl implements ClientTrackService {
     private NewsDao newsDao;
     @Autowired
     private ClientDao clientDao;
+    @Autowired
+    private ClientLogDao clientLogDao;
+    @Autowired
+    private ClientAllotLogDao clientAllotLogDao;
+    @Autowired
+    private CompanyDao companyDao;
 
     /**
      * 批量删除客资
@@ -172,14 +181,91 @@ public class ClientTrackServiceImpl implements ClientTrackService {
     }
 
     /**
-     * 分配客资
-     *
-     * @param kzIds
-     * @param staffIds
+     * 客资批量分配
      */
-    public void allot(String kzIds, String staffIds) {
-        //TODO 分配客资
+    @Override
+    public void pushLp(String kzIds, String staffIds, int companyId, int operaId, String operaName) {
+        if (StringUtil.isEmpty(kzIds) || StringUtil.isEmpty(staffIds) || NumUtil.isInValid(companyId)) {
+            throw new RException(ExceptionEnum.ALLOT_ERROR);
+        }
+        // 查询所选客资里面没有分出去的客资
+        List<ClientPushDTO> infoList = clientInfoDao.listClientsInStrKzids(kzIds, companyId,
+                DBSplitUtil.getInfoTabName(companyId));
+        if (CollectionUtils.isEmpty(infoList)) {
+            throw new RException(ExceptionEnum.ALLOTED_ERROR);
+        }
+        // 查询所选客服集合
+        List<StaffPushDTO> staffList = staffDao.listStaffInstrIds(companyId, staffIds);
+        if (staffList == null || staffList.size() == 0) {
+            throw new RException(ExceptionEnum.APPOINTOR_ERROR);
+        }
+        while (infoList.size() != 0) {
+            for (StaffPushDTO staff : staffList) {
+                if (infoList.size() > 0) {
+                    // 客资修改最后消息推送时间为当前系统时间，绑定客服，修改状态为分配中
+                    int updateRstNum = clientInfoDao.updateClientInfoWhenAllot(companyId,
+                            DBSplitUtil.getInfoTabName(companyId), infoList.get(0).getKzId(),
+                            ClientStatusConst.KZ_CLASS_NEW, ClientStatusConst.BE_ALLOTING, staff.getStaffId(),
+                            staff.getGroupId(), ClientConst.ALLOT_HANDLER);
+                    if (1 != updateRstNum) {
+                        throw new RException(ExceptionEnum.INFO_STATUS_EDIT_ERROR);
+                    }
+                    // 客资修改客资的客服组ID，和客服组名称
+                    clientInfoDao.updateClientDetailWhenAllot(companyId, DBSplitUtil.getDetailTabName(companyId),
+                            infoList.get(0).getKzId(), staff.getStaffName(), staff.getGroupName());
+                    staff.doAddKzIdsWill(infoList.get(0).getKzId());
+                    infoList.remove(0);
+                } else {
+                    break;
+                }
+            }
+        }
+        if (infoList.size() < staffList.size()) {
+            for (int i = 0; i < infoList.size(); i++) {
+                push(companyId, staffList.get(i).getWillHaveKzidsStrBf(), staffList.get(i), operaId, operaName);
+            }
+        } else {
+            for (StaffPushDTO staff : staffList) {
+                push(companyId, staff.getWillHaveKzidsStrBf(), staff, operaId, operaName);
+            }
+        }
     }
+
+    public void push(int companyId, String kzIds, StaffPushDTO appoint, int operaId, String operaName) {
+
+        // 根据每个客资生成对应的分配日志
+        String[] kzIdsArr = kzIds.split(",");
+        String[] allogIdsArr = new String[kzIdsArr.length];
+        for (int i = 0; i < kzIdsArr.length; i++) {
+            // 生成分配日志
+            AllotLogPO allotLog = new AllotLogPO(kzIdsArr[i], appoint.getStaffId(), appoint.getStaffName(),
+                    appoint.getGroupId(), appoint.getGroupName(), ClientConst.ALLOT_HANDLER, companyId, operaId,
+                    operaName);
+
+            // 记录分配日志
+            clientAllotLogDao.addClientAllogLog(DBSplitUtil.getAllotLogTabName(companyId), allotLog);
+
+            allogIdsArr[i] = String.valueOf(allotLog.getId());
+
+            // 客资日志记录
+            clientLogDao
+                    .addInfoLog(DBSplitUtil.getInfoLogTabName(companyId),
+                            new ClientLogPO(
+                                    kzIdsArr[i], ClientLogConst.getAllotLog(appoint.getGroupName(),
+                                    appoint.getStaffName(), operaId, operaName),
+                                    ClientLogConst.INFO_LOGTYPE_ALLOT, companyId));
+        }
+
+        int overTime = companyDao.getById(companyId).getOvertime();
+        if (overTime == 0) {
+            overTime = CommonConstant.DEFAULT_OVERTIME;
+        }
+
+        // 推送消息
+        GoEasyUtil.pushAppInfoReceive(companyId, appoint.getStaffId(), kzIdsArr.length, StringUtils.join(kzIdsArr, ","),
+                StringUtils.join(allogIdsArr, ","), overTime);
+    }
+
 
     /**
      * 批量恢复，回收客资
