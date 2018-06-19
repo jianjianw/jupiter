@@ -5,6 +5,8 @@ public class CommonTypePO {
     private Integer id;
     //拍摄类型id
     private Integer typeId;
+    //拍摄类型名称
+    private String typeName;
     //小组id
     private String groupId;
     //小组名称

@@ -45,7 +45,7 @@ public class GoldDataController extends BaseController{
      */
     @PostMapping("/insert")
     public ResultInfo insert(@RequestBody GoldFingerPO goldFingerPO){
-        if(StringUtil.haveEmpty(goldFingerPO.getFormId(),goldFingerPO.getFormName(),goldFingerPO.getPostURL(),goldFingerPO.getSrcName(),goldFingerPO.getTypeName(),goldFingerPO.getZxStyle())){
+        if(StringUtil.haveEmpty(goldFingerPO.getFormId(),goldFingerPO.getFormName(),goldFingerPO.getSrcName(),goldFingerPO.getTypeName(),goldFingerPO.getZxStyle())){
             throw new RException(ExceptionEnum.LOSE_FILED);
         }
         StaffPO staff=getCurrentLoginStaff();
@@ -79,7 +79,7 @@ public class GoldDataController extends BaseController{
      */
     @PostMapping("/update")
     public ResultInfo update(@RequestBody GoldFingerPO goldFingerPO){
-        if(StringUtil.haveEmpty(goldFingerPO.getFormId(),goldFingerPO.getFormName(),goldFingerPO.getPostURL(),goldFingerPO.getSrcName(),goldFingerPO.getTypeName(),goldFingerPO.getZxStyle())){
+        if(StringUtil.haveEmpty(goldFingerPO.getFormId(),goldFingerPO.getFormName(),goldFingerPO.getSrcName(),goldFingerPO.getTypeName(),goldFingerPO.getZxStyle())){
             throw new RException(ExceptionEnum.LOSE_FILED);
         }
         StaffPO staff=getCurrentLoginStaff();

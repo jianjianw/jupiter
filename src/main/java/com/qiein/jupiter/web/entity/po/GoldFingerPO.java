@@ -1,7 +1,6 @@
 package com.qiein.jupiter.web.entity.po;
 
-import java.util.Date;
-import java.util.Map;
+import java.sql.Date;
 /**
  * 金手指表单 添加PO
  * Author xiangliang 2018/6/13
@@ -56,7 +55,7 @@ public class GoldFingerPO {
 
     private String createorName;
 
-    private Date createTime;
+    private String createTime;
 
     public Boolean getIsShow() {
         return isShow;
@@ -74,11 +73,11 @@ public class GoldFingerPO {
         this.createorName = createorName;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
