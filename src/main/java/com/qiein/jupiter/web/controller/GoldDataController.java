@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.google.gson.JsonObject;
 import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
@@ -116,4 +117,13 @@ public class GoldDataController extends BaseController{
          GoldCustomerDTO goldCustomerDTO=JSONObject.parseObject(params.getJSONObject("goldCustomerDTO").toJSONString(),GoldCustomerDTO.class) ;
         return ResultInfoUtil.success(goldDataService.goldCustomerSelect(queryMapDTO,goldCustomerDTO));
     }
+
+    /**
+     * 金数据表单回调
+     * */
+    @GetMapping("/receive_gold_data_form")
+    public ResultInfo receiveGoldDataForm(@RequestBody JsonObject jsonObject){
+        return ResultInfoUtil.success();
+    }
+
 }

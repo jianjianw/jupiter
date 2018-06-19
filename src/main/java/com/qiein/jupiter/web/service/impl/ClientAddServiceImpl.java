@@ -101,7 +101,7 @@ public class ClientAddServiceImpl implements ClientAddService {
         reqContent.put("channelid", clientVO.getChannelId());
         reqContent.put("sourceid", clientVO.getSourceId());
         reqContent.put("srctype", ChannelConstant.DS_ONLY);
-        reqContent.put("isfilter",sourcePO.getIsFilter());
+        reqContent.put("isfilter", sourcePO.getIsFilter());
         reqContent.put("shopid", clientVO.getShopId());
         reqContent.put("zxstyle", clientVO.getZxStyle());
         reqContent.put("keyword", clientVO.getKeyWord());
@@ -113,6 +113,10 @@ public class ClientAddServiceImpl implements ClientAddService {
                         : MobileLocationUtil.getAddressByContactInfo(clientVO.getKzPhone(), clientVO.getKzWechat(),
                         clientVO.getKzQq()));
         reqContent.put("remark", clientVO.getRemark());
+        reqContent.put("matephone",clientVO.getMatePhone());
+        reqContent.put("matename",clientVO.getMatePhone());
+        reqContent.put("matewechat",clientVO.getMateWeChat());
+        reqContent.put("mateqq",clientVO.getMateQq());
 
         String addRstStr = crmBaseApi.doService(reqContent, "addClientInfoPcDsHs");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
@@ -237,8 +241,14 @@ public class ClientAddServiceImpl implements ClientAddService {
                     StringUtil.emptyToNull(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("wechat"))));
             clientVO.setKzQq(
                     StringUtil.emptyToNull(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("qq"))));
-            clientVO.setKzWw(StringUtil
-                    .emptyToNull(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("matephone"))));
+            clientVO.setMateName(StringUtil
+                    .emptyToNull(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("mateName"))));
+            clientVO.setMatePhone(StringUtil
+                    .emptyToNull(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("matePhone"))));
+            clientVO.setMateQq(StringUtil
+                    .emptyToNull(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("mateQq"))));
+            clientVO.setMateWeChat(StringUtil
+                    .emptyToNull(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("mateWeChat"))));
             clientVO.setAdId(adId);
             clientVO.setAdAddress(adAddress);
             clientVO.setAppointId(appointId);

@@ -69,7 +69,7 @@ public class ClientController extends BaseController {
      * */
     @PostMapping("update_kz_valid_status")
     public ResultInfo updateKzValidStatus(@RequestBody ClientStatusVoteVO clientStatusVoteVO){
-        clientStatusVoteVO.setCompanyId(clientStatusVoteVO.getCompanyId());
+        clientStatusVoteVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
         clientStatusVoteVO.setOperaId(getCurrentLoginStaff().getId());
         clientStatusVoteVO.setOperaName(getCurrentLoginStaff().getNickName());
         clientService.updateKzValidStatus(clientStatusVoteVO);

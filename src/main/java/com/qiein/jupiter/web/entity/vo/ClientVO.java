@@ -211,7 +211,55 @@ public class ClientVO implements Serializable {
      * 套系名称编码
      */
     private int packageCode;
+    /**
+     * 配偶姓名
+     * */
+    private String mateName;
+    /**
+     * 配偶电话
+     * */
+    private String matePhone;
+    /**
+     * 配偶微信
+     * */
+    private String mateWeChat;
+    /**
+     * 配偶QQ
+     * */
+    private String mateQq;
 
+
+    public String getMateName() {
+        return mateName;
+    }
+
+    public void setMateName(String mateName) {
+        this.mateName = mateName;
+    }
+
+    public String getMatePhone() {
+        return matePhone;
+    }
+
+    public void setMatePhone(String matePhone) {
+        this.matePhone = matePhone;
+    }
+
+    public String getMateWeChat() {
+        return mateWeChat;
+    }
+
+    public void setMateWeChat(String mateWeChat) {
+        this.mateWeChat = mateWeChat;
+    }
+
+    public String getMateQq() {
+        return mateQq;
+    }
+
+    public void setMateQq(String mateQq) {
+        this.mateQq = mateQq;
+    }
 
     public int getSex() {
         return sex;
