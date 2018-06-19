@@ -276,7 +276,7 @@ public class GroupServiceImpl implements GroupService {
             }
             groupDao.batchUpdateGroupType(byParentId);
         }
-        ChannelPO channelPO = channelDao.getChannelByGroupName(groupPO.getGroupName(), groupPO.getCompanyId());
+        ChannelPO channelPO = channelDao.getChannelByGroupName(old.getGroupName(), old.getCompanyId());
         //节点不存在
         if (null == channelPO) {
             throw new RException(ExceptionEnum.UNKNOW_ERROR);
@@ -288,7 +288,7 @@ public class GroupServiceImpl implements GroupService {
                     channelPO.setShowFlag(true);
                     channelDao.update(channelPO);
             } else {
-                SourcePO sourcePO = sourceDao.getSourceBySrcname(groupPO.getGroupName(), groupPO.getCompanyId(), channelPO.getId());
+                SourcePO sourcePO = sourceDao.getSourceBySrcname(old.getGroupName(), old.getCompanyId(), channelPO.getId());
                 if (null == sourcePO) {
                     throw new RException(ExceptionEnum.UNKNOW_ERROR);
                 } else {
@@ -333,6 +333,7 @@ public class GroupServiceImpl implements GroupService {
         }
         //删除拍摄地-渠道-组关联表中的
         shopChannelGroupDao.delByGroupId(companyId, groupPO.getGroupId());
+
         ChannelPO channelPO = channelDao.getChannelByGroupName(groupPO.getGroupName(), groupPO.getCompanyId());
 
         //节点不存在
