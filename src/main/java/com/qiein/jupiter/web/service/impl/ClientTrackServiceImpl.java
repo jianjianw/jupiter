@@ -194,6 +194,7 @@ public class ClientTrackServiceImpl implements ClientTrackService {
         if (CollectionUtils.isEmpty(infoList)) {
             throw new RException(ExceptionEnum.ALLOTED_ERROR);
         }
+        int kzNum = infoList.size();
         // 查询所选客服集合
         List<StaffPushDTO> staffList = staffDao.listStaffInstrIds(companyId, staffIds);
         if (staffList == null || staffList.size() == 0) {
@@ -220,8 +221,8 @@ public class ClientTrackServiceImpl implements ClientTrackService {
                 }
             }
         }
-        if (infoList.size() < staffList.size()) {
-            for (int i = 0; i < infoList.size(); i++) {
+        if (kzNum < staffList.size()) {
+            for (int i = 0; i < kzNum; i++) {
                 push(companyId, staffList.get(i).getWillHaveKzidsStrBf(), staffList.get(i), operaId, operaName);
             }
         } else {
