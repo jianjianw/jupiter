@@ -59,7 +59,7 @@
         ID ,FORMID , FORMNAME ,KZNAMEFIELD ,KZPHONEFIELD ,KZWECHATFIELD ,FIELDKEY ,FIELDVALUE ,SRCID ,SRCNAME ,TYPEID ,TYPENAME ,ADID ,ADADDRESS ,ZXSTYLE ,MEMO ,ISSHOW ,POSTURL ,CREATEORNAME ,FROM_UNIXTIME(CREATETIME,'%Y/%m/%d %H:%i:%s') createTime ,AREALIMIT ,ISFILTER ,PUSHNEWS
     </sql>
     <sql id="formUpdate">
-        FORMID=#{formId}, FORMNAME=#{formName},KZNAMEFIELD=#{kzNameField},KZPHONEFIELD=#{kzPhoneField},KZWECHATFIELD=#{kzWechatField},FIELDKEY=#{fieldKey}, FIELDVALUE=#{fieldValue},SRCID=#{srcId},SRCNAME=#{srcName},TYPEID=#{typeId},TYPENAME=#{typeName},ADID=#{adId},ADADDRESS=#{adAddress},ZXSTYLE=#{zxStyle},MEMO=#{memo},POSTURL=#{postURL}
+        FORMID=#{formId}, FORMNAME=#{formName},KZNAMEFIELD=#{kzNameField},KZPHONEFIELD=#{kzPhoneField},KZWECHATFIELD=#{kzWechatField},FIELDKEY=#{fieldKey}, FIELDVALUE=#{fieldValue},SRCID=#{srcId},SRCNAME=#{srcName},TYPEID=#{typeId},TYPENAME=#{typeName},ADID=#{adId},ADADDRESS=#{adAddress},ZXSTYLE=#{zxStyle},MEMO=#{memo},POSTURL=#{postURL} , ISSHOW=#{isShow},AREALIMIT=#{areaLimit},ISFILTER=#{isFilter},PUSHNEWS=#{pushNews}
     </sql>
     <insert id="insert">
         INSERT INTO hm_crm_gold_plug_setting (
