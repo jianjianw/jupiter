@@ -290,7 +290,7 @@ public class GroupServiceImpl implements GroupService {
                 throw new RException(ExceptionEnum.UNKNOW_ERROR);
             }
         }else{
-            ChannelPO channelPO = channelDao.getChannelByGroupName(old.getGroupName(), old.getCompanyId());
+            ChannelPO channelPO = channelDao.getChannelByGroupParentId(groupPO.getParentId(), old.getCompanyId());
             if(channelPO != null){
                 SourcePO sourcePO = sourceDao.getSourceBySrcname(old.getGroupName(), old.getCompanyId(), channelPO.getId());
                 if (null == sourcePO) {
