@@ -63,6 +63,8 @@ public class ExcelServiceImpl implements ExcelService {
     private CompanyDao companyDao;
     @Autowired
     private PermissionDao permissionDao;
+    @Autowired
+    private DictionaryDao dictionaryDao;
 
     /**
      * 导入客资
@@ -95,7 +97,8 @@ public class ExcelServiceImpl implements ExcelService {
             clientExcelDTO.setOperaId(currentLoginStaff.getId());
             clientExcelDTO.setTypeName(CommonConstant.EXCEL_DEFAULT_PHOTO_TYPE_NAME);
             clientExcelDTO.setCreateTime(clientExcelDTO.getTime() == 0 ? 0 : HSSFDateUtil.getJavaDate(clientExcelDTO.getTime()).getTime() / 1000);
-//            clientExcelDTO.setCreateTime(TimeUtil.dateToIntMillis(clientExcelDTO.getTimeDate()));
+            //TODO 需要添加字典中的数据
+            //            clientExcelDTO.setCreateTime(TimeUtil.dateToIntMillis(clientExcelDTO.getTimeDate()));
 //            clientExcelDTO.setAppointTime(TimeUtil.dateToIntMillis(clientExcelDTO.getAppointTimeDate()));
 //            clientExcelDTO.setComeShopTime(TimeUtil.dateToIntMillis(clientExcelDTO.getComeShopTimeDate()));
 //            clientExcelDTO.setSuccessTime(TimeUtil.dateToIntMillis(clientExcelDTO.getSuccessTimeDate()));
@@ -177,7 +180,7 @@ public class ExcelServiceImpl implements ExcelService {
                 currentLoginStaff.getId());
 
         // 更新门市ID
-        excelDao.updateReceptorId(DBSplitUtil.getTable(TableEnum.temp,currentLoginStaff.getCompanyId()),
+        excelDao.updateReceptorId(DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()),
                 currentLoginStaff.getId());
     }
 

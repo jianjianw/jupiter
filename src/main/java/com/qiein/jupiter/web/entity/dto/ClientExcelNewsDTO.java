@@ -319,7 +319,7 @@ public class ClientExcelNewsDTO implements Serializable {
     /**
      * 已收金额
      */
-    private String stayaMount;
+    private Integer stayaMount;
 
     /**
      * 合同编号
@@ -841,11 +841,11 @@ public class ClientExcelNewsDTO implements Serializable {
         this.stayaMountStr = stayaMountStr;
     }
 
-    public String getStayaMount() {
+    public Integer getStayaMount() {
         return stayaMount;
     }
 
-    public void setStayaMount(String stayaMount) {
+    public void setStayaMount(Integer stayaMount) {
         this.stayaMount = stayaMount;
     }
 
