@@ -170,6 +170,7 @@ public class ChannelPO extends BaseEntity {
                 ", companyId=" + companyId +
                 ", priority=" + priority +
                 ", showFlag=" + showFlag +
+                ", filterFlag=" + filterFlag +
                 '}';
     }
 }
