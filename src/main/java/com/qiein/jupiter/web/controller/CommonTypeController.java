@@ -5,6 +5,7 @@ import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.web.entity.po.CommonTypePO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.entity.vo.CommonTypeChannelVO;
 import com.qiein.jupiter.web.service.CommonTypeSerivce;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -53,6 +54,9 @@ public class CommonTypeController extends BaseController{
         return ResultInfoUtil.success(TigMsgEnum.DELETE_SUCCESS);
     }
 
+    /**
+    * 修改具体属性
+     */
     @PostMapping("/edit_type_channel_group")
     public ResultInfo editTypeChannelGroup(@RequestBody CommonTypePO commonTypePO){
         StaffPO staff=getCurrentLoginStaff();
@@ -60,4 +64,19 @@ public class CommonTypeController extends BaseController{
         commonTypeSerivce.editTypeChannelGroup(commonTypePO);
         return ResultInfoUtil.success(TigMsgEnum.UPDATE_SUCCESS);
     }
+
+    /**
+     * 获取拍摄方式渠道的页面
+     */
+    @GetMapping("/find_common_type_channel")
+    public ResultInfo findCommonTypeChannel(@RequestParam String typeId){
+        StaffPO staffPO=getCurrentLoginStaff();
+        if(typeId.equals("")){
+            CommonTypeChannelVO commonTypeChannelVO=commonTypeSerivce.findChannelGroupFirst(staffPO.getCompanyId());
+            return ResultInfoUtil.success(commonTypeChannelVO);
+        }
+        List<CommonTypePO> list =commonTypeSerivce.findChannelGroup(Integer.parseInt(typeId),staffPO.getCompanyId());
+        return ResultInfoUtil.success(list);
+    }
+
 }

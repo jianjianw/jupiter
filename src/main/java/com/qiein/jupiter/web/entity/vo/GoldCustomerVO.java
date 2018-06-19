@@ -3,6 +3,7 @@ package com.qiein.jupiter.web.entity.vo;
 import com.qiein.jupiter.web.entity.BaseEntity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 金数据客资日志 表单
@@ -47,13 +48,13 @@ public class GoldCustomerVO implements Serializable {
     //备注
     private String memo;
     //录入时间
-    private Integer createTime;
+    private Date createTime;
 
-    public Integer getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Integer createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 
