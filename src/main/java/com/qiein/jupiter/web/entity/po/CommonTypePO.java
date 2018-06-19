@@ -1,5 +1,8 @@
 package com.qiein.jupiter.web.entity.po;
-
+/**
+ * 拍摄类型渠道
+ * Author xiangliang
+ */
 public class CommonTypePO {
 
     private Integer id;
