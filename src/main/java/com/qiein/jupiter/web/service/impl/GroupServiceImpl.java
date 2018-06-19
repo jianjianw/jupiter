@@ -302,6 +302,8 @@ public class GroupServiceImpl implements GroupService {
                     sourcePO.setIsShow(true);
                     sourceDao.update(sourcePO);
                 }
+            }else{
+                throw new RException(ExceptionEnum.UNKNOW_ERROR);
             }
         }
         return groupPO;
@@ -340,25 +342,26 @@ public class GroupServiceImpl implements GroupService {
         ChannelPO channelPO = channelDao.getChannelByGroupName(groupPO.getGroupName(), groupPO.getCompanyId());
 
         //节点不存在
-        if(channelPO != null){
-            if (CommonConstant.DEFAULT_STRING_ZERO.equalsIgnoreCase(groupPO.getParentId())) {
-                //是根节点
-                channelPO.setShowFlag(false);
-                channelDao.update(channelPO);
-                List<SourcePO> sourcePOS = sourceDao.getSourceListByChannelId(channelPO.getId(), channelPO.getCompanyId());
-                if(CollectionUtils.isNotEmpty(sourcePOS)){
-                       sourceDao.updateIsShowByChannelId(channelPO.getId(),channelPO.getCompanyId());
-                }
-            } else {
-                SourcePO sourcePO = sourceDao.getSourceBySrcname(groupPO.getGroupName(), groupPO.getCompanyId(), channelPO.getId());
-                sourcePO.setSrcName(groupPO.getGroupName());
-                sourcePO.setChannelId(channelPO.getId());
-                sourcePO.setCompanyId(channelPO.getCompanyId());
-                sourcePO.setIsShow(false);
-                sourceDao.update(sourcePO);
-            }
-
-        }
+        //TODO 删除有BUG
+//        if(channelPO != null){
+//            if (CommonConstant.DEFAULT_STRING_ZERO.equalsIgnoreCase(groupPO.getParentId())) {
+//                //是根节点
+//                channelPO.setShowFlag(false);
+//                channelDao.update(channelPO);
+//                List<SourcePO> sourcePOS = sourceDao.getSourceListByChannelId(channelPO.getId(), channelPO.getCompanyId());
+//                if(CollectionUtils.isNotEmpty(sourcePOS)){
+//                       sourceDao.updateIsShowByChannelId(channelPO.getId(),channelPO.getCompanyId());
+//                }
+//            } else {
+//                SourcePO sourcePO = sourceDao.getSourceBySrcname(groupPO.getGroupName(), groupPO.getCompanyId(), channelPO.getId());
+//                sourcePO.setSrcName(groupPO.getGroupName());
+//                sourcePO.setChannelId(channelPO.getId());
+//                sourcePO.setCompanyId(channelPO.getCompanyId());
+//                sourcePO.setIsShow(false);
+//                sourceDao.update(sourcePO);
+//            }
+//
+//        }
 
         return groupPO;
     }
