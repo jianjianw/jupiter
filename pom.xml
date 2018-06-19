@@ -5,7 +5,7 @@
 
     <groupId>com.qiein</groupId>
     <artifactId>jupiter</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>wedding</version>
     <packaging>jar</packaging>
 
     <name>jupiter</name>
