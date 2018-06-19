@@ -276,18 +276,22 @@ public class GroupServiceImpl implements GroupService {
             }
             groupDao.batchUpdateGroupType(byParentId);
         }
-        ChannelPO channelPO = channelDao.getChannelByGroupName(old.getGroupName(), old.getCompanyId());
         //节点不存在
-        if (null == channelPO) {
-            throw new RException(ExceptionEnum.UNKNOW_ERROR);
-        } else {
-            if (CommonConstant.DEFAULT_STRING_ZERO.equalsIgnoreCase(groupPO.getParentId())) {
+        if (CommonConstant.DEFAULT_STRING_ZERO.equalsIgnoreCase(groupPO.getParentId())) {
+            //根节点
+            ChannelPO channelPO = channelDao.getChannelByGroupName(old.getGroupName(), old.getCompanyId());
+            if(channelPO != null){
                 //是根节点
-                    channelPO.setCompanyId(groupPO.getCompanyId());
-                    channelPO.setChannelName(groupPO.getGroupName());
-                    channelPO.setShowFlag(true);
-                    channelDao.update(channelPO);
-            } else {
+                channelPO.setCompanyId(groupPO.getCompanyId());
+                channelPO.setChannelName(groupPO.getGroupName());
+                channelPO.setShowFlag(true);
+                channelDao.update(channelPO);
+            }else{
+                throw new RException(ExceptionEnum.UNKNOW_ERROR);
+            }
+        }else{
+            ChannelPO channelPO = channelDao.getChannelByGroupName(old.getGroupName(), old.getCompanyId());
+            if(channelPO != null){
                 SourcePO sourcePO = sourceDao.getSourceBySrcname(old.getGroupName(), old.getCompanyId(), channelPO.getId());
                 if (null == sourcePO) {
                     throw new RException(ExceptionEnum.UNKNOW_ERROR);
@@ -299,7 +303,6 @@ public class GroupServiceImpl implements GroupService {
                     sourceDao.update(sourcePO);
                 }
             }
-
         }
         return groupPO;
     }
