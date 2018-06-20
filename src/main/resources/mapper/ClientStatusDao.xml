@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiein.jupiter.web.dao.ClientStatusDao">
+    <resultMap id="baseMap" type="com.qiein.jupiter.web.entity.po.ClientStatusPO">
+        <id column="id"  property="id"/>
+        <result column="classid" property="classId"/>
+        <result column="classname"  property="className"/>
+        <result column="statusid"  property="statusId"/>
+        <result column="statusname"  property="statusName"/>
+        <result column="backcolor"  property="backColor"/>
+        <result column="fontcolor"  property="fontColor"/>
+        <result column="companyid"  property="companyId"/>
+    </resultMap>
+
+
+    <select id="getClientStatusByStatusId" resultMap="baseMap">
+        select
+            id,
+            CLASSID,
+            CLASSNAME,
+            STATUSID,
+            STATUSNAME,
+            BACKCOLOR,
+            FONTCOLOR,
+            COMPANYID
+        from hm_crm_client_status
+        where STATUSID = #{statusId} and COMPANYID = #{companyId}
+    </select>
+</mapper>

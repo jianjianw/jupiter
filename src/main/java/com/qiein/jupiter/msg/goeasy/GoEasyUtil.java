@@ -759,4 +759,45 @@ public class GoEasyUtil {
     }
 
 
+
+
+    /**
+     * 推送无效客资提醒
+     *
+     * @param companyId
+     * @param staffId
+     * @param info
+     * @param invalidReason
+     */
+    public static void pushInvalidKz(int companyId, int staffId, ClientDTO info, String invalidReason) {
+
+        StringBuffer sb = new StringBuffer();
+        sb.append("无效待审批 ");
+        String header = sb.toString();
+
+        sb.delete(0, sb.length());
+        sb.append("<br/>无效原因：").append(invalidReason);
+        sb.append("<br/><br/>渠道：").append(StringUtil.nullToStrTrim(info.getChannelSource()));
+
+
+        if (StringUtil.isNotEmpty(info.getKzName())) {
+            sb.append("姓名：").append(StringUtil.nullToStrTrim(info.getKzName())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzPhone())) {
+            sb.append("电话：").append(StringUtil.nullToStrTrim(info.getKzPhone())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzWeChat())) {
+            sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWeChat())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzQq())) {
+            sb.append("QQ：").append(StringUtil.nullToStrTrim(info.getKzQq())).append("<br/>");
+        }
+        sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("<br/>");
+        sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSrcName())).append("<br/>");
+
+        String msg = sb.toString();
+        pushWarn(companyId, staffId, header, msg);
+    }
+
+
 }

@@ -59,7 +59,7 @@
     <!--修改客资状态-->
     <update id="updateKzValidStatusByKzId">
         update ${tabName} info
-        set info.STATUSID = #{clientStatusVoteVO.statusId}
+        set info.STATUSID = #{clientStatusVoteVO.statusId},info.classid = #{clientStatusVoteVO.classId}
         where info.kzid = #{clientStatusVoteVO.kzId} and info.companyid = #{clientStatusVoteVO.companyId}
     </update>
 

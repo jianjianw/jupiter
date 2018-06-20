@@ -10,8 +10,10 @@ import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.web.dao.ClientDao;
 import com.qiein.jupiter.web.dao.ClientLogDao;
 import com.qiein.jupiter.web.dao.ClientRemarkDao;
+import com.qiein.jupiter.web.dao.ClientStatusDao;
 import com.qiein.jupiter.web.entity.po.ClientLogPO;
 import com.qiein.jupiter.web.entity.po.ClientRemarkPO;
+import com.qiein.jupiter.web.entity.po.ClientStatusPO;
 import com.qiein.jupiter.web.entity.vo.ClientStatusVO;
 import com.qiein.jupiter.web.entity.vo.ClientStatusVoteVO;
 import com.qiein.jupiter.web.service.ClientService;
@@ -40,6 +42,8 @@ public class ClientServiceImpl implements ClientService {
     @Autowired
     private ClientRemarkDao clientRemarkDao;
 
+    @Autowired
+    private ClientStatusDao clientStatusDao;
 
 
     /**
@@ -110,11 +114,11 @@ public class ClientServiceImpl implements ClientService {
 
     /**
      * 修改客资状态
-     * */
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateKzValidStatus(ClientStatusVoteVO clientStatusVoteVO) {
-        if(null == clientStatusVoteVO){
+        if (null == clientStatusVoteVO) {
             throw new RException(ExceptionEnum.UNKNOW_ERROR);
         }
         //有效或待定，增加到备注表中
@@ -128,18 +132,28 @@ public class ClientServiceImpl implements ClientService {
 
         ClientRemarkPO clientRemark = clientRemarkDao.getById(tabName, clientRemarkPO);
         String kzStatusName = "";
-        if(ClientStatusTypeConst.VALID_TYPE.equals(type)){
+        if (ClientStatusTypeConst.VALID_TYPE.equals(type)) {
             //有效
             kzStatusName = ClientConst.KZ_BZ_WATING_MAKE_ORDER;
+
+            ClientStatusPO clientStatusPO = clientStatusDao.getClientStatusByStatusId(ClientStatusConst.BE_WAIT_MAKE_ORDER, clientStatusVoteVO.getCompanyId());
             clientStatusVoteVO.setStatusId(ClientStatusConst.BE_WAIT_MAKE_ORDER);
-        }else if(ClientStatusTypeConst.WATING_TYPE.equals(type)){
+            clientStatusVoteVO.setClassId(clientStatusPO.getClassId());
+        } else if (ClientStatusTypeConst.WATING_TYPE.equals(type)) {
             //待定
             kzStatusName = ClientConst.KZ_BZ_WATING_NAME;
+            ClientStatusPO clientStatusPO = clientStatusDao.getClientStatusByStatusId(ClientStatusConst.BE_WAIT_MAKE_ORDER, clientStatusVoteVO.getCompanyId());
             clientStatusVoteVO.setStatusId(ClientStatusConst.BE_WAIT_WAITING);
-        }else if(ClientStatusTypeConst.INVALID_TYPE.equals(type)){
+            clientStatusVoteVO.setClassId(clientStatusPO.getClassId());
+
+        } else if (ClientStatusTypeConst.INVALID_TYPE.equals(type)) {
             kzStatusName = ClientConst.KZ_BZ_INVALID_NAME;
-            //无效客资Goeasy推送一条消息
+
             clientStatusVoteVO.setStatusId(ClientStatusConst.BE_FILTER_INVALID);
+            ClientStatusPO clientStatusPO = clientStatusDao.getClientStatusByStatusId(ClientStatusConst.BE_WAIT_MAKE_ORDER, clientStatusVoteVO.getCompanyId());
+            clientStatusVoteVO.setClassId(clientStatusPO.getClassId());
+
+            //无效客资Goeasy推送一条消息
             ClientDTO clientDTO = new ClientDTO();
             clientDTO.setKzId(clientStatusVoteVO.getKzId());
             clientDTO.setChannelName(clientStatusVoteVO.getChannelName());
@@ -147,17 +161,16 @@ public class ClientServiceImpl implements ClientService {
             clientDTO.setKzWeChat(clientStatusVoteVO.getKzWeChat());
             clientDTO.setKzPhone(clientStatusVoteVO.getKzPhone());
             clientDTO.setKzName(clientStatusVoteVO.getKzName());
-            GoEasyUtil.pushBeValidCheck(clientStatusVoteVO.getCompanyId(),clientStatusVoteVO.getCollectorId(),clientDTO,clientStatusVoteVO.getContent());
+            GoEasyUtil.pushInvalidKz(clientStatusVoteVO.getCompanyId(), clientStatusVoteVO.getCollectorId(), clientDTO, clientStatusVoteVO.getContent());
         }
-        if(!ClientStatusTypeConst.INVALID_TYPE.equals(type)){
-            //修改状态id
-            clientDao.updateKzValidStatusByKzId(DBSplitUtil.getInfoTabName(clientStatusVoteVO.getCompanyId()),clientStatusVoteVO);
-            //是否有备注
-            if(null == clientRemark){
-                clientRemarkDao.insert(tabName,clientRemarkPO);
-            }else{
-                clientRemarkDao.update(tabName,clientRemarkPO);
-            }
+
+        //修改状态id
+        clientDao.updateKzValidStatusByKzId(DBSplitUtil.getInfoTabName(clientStatusVoteVO.getCompanyId()), clientStatusVoteVO);
+        //是否有备注
+        if (null == clientRemark) {
+            clientRemarkDao.insert(tabName, clientRemarkPO);
+        } else {
+            clientRemarkDao.update(tabName, clientRemarkPO);
         }
 
         //插入日志
@@ -169,8 +182,6 @@ public class ClientServiceImpl implements ClientService {
             log.error("插入客资日志失败");
         }
     }
-
-
 
 
 }

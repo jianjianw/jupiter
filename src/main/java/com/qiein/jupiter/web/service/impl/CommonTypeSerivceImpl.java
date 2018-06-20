@@ -136,5 +136,16 @@ public class CommonTypeSerivceImpl implements CommonTypeSerivce {
     public void deleteByChannelId(Integer channelId,Integer typeId,Integer companyId){
         commonTypeDao.deleteByChannelId(channelId,typeId,companyId);
     }
+    /**
+     * 搜索小组
+     * @param channelId
+     * @param typeId
+     * @param companyId
+     * @param groupName
+     * @return
+     */
+    public List<CommonTypePO> searchByChannelId(Integer channelId,Integer typeId,Integer companyId,String groupName){
+        return commonTypeDao.searchByChannelId(channelId,typeId,companyId,groupName);
+    }
 
 }
