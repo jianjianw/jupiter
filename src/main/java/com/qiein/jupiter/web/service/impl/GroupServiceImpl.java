@@ -356,27 +356,6 @@ public class GroupServiceImpl implements GroupService {
             }
         }
 
-
-//        if(channelPO != null){
-//            if (CommonConstant.DEFAULT_STRING_ZERO.equalsIgnoreCase(groupPO.getParentId())) {
-//                //是根节点
-//                channelPO.setShowFlag(false);
-//                channelDao.update(channelPO);
-//                List<SourcePO> sourcePOS = sourceDao.getSourceListByChannelId(channelPO.getId(), channelPO.getCompanyId());
-//                if(CollectionUtils.isNotEmpty(sourcePOS)){
-//                       sourceDao.updateIsShowByChannelId(channelPO.getId(),channelPO.getCompanyId());
-//                }
-//            } else {
-//                SourcePO sourcePO = sourceDao.getSourceBySrcname(groupPO.getGroupName(), groupPO.getCompanyId(), channelPO.getId());
-//                sourcePO.setSrcName(groupPO.getGroupName());
-//                sourcePO.setChannelId(channelPO.getId());
-//                sourcePO.setCompanyId(channelPO.getCompanyId());
-//                sourcePO.setIsShow(false);
-//                sourceDao.update(sourcePO);
-//            }
-//
-//        }
-
         return groupPO;
     }
 
