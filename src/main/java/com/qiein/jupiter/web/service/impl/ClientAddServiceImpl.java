@@ -116,7 +116,7 @@ public class ClientAddServiceImpl implements ClientAddService {
                         clientVO.getKzQq()));
         reqContent.put("remark", clientVO.getRemark());
         reqContent.put("matephone", clientVO.getMatePhone());
-        reqContent.put("matename", clientVO.getMatePhone());
+        reqContent.put("matename", clientVO.getMateName());
         reqContent.put("matewechat", clientVO.getMateWeChat());
         reqContent.put("mateqq", clientVO.getMateQq());
         reqContent.put("yxlevel",clientVO.getYxLevel());
