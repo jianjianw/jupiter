@@ -14,11 +14,11 @@ public class ClientStatusConst {
 
 	/*-- 客资状态 --*/
 	public static final int BE_WAIT_FILTER = 0;// 筛选中
-	public static final int BE_WAIT_WAITING = 98;// 筛选待定
+	public static final int BE_WAIT_WAITING = 98;// 筛选后待定,
 	public static final int BE_FILTER_INVALID = 99;// 筛选后无效
-	public static final int BE_WAIT_MAKE_ORDER = 12;// 待接单
-	public static final int BE_HAVE_MAKE_ORDER = 1;// 已接单-未设置
-	public static final int BE_ALLOTING = 999;// 未接入
+	public static final int BE_WAIT_MAKE_ORDER = 12;// 待接单,筛选有效
+	public static final int BE_HAVE_MAKE_ORDER = 1;// 已接单-未设置，已分配，已领取，没有任何操作
+	public static final int BE_ALLOTING = 999;// 未接入，已分配，未领取
 
 	public static final int BE_TRACK = 6;// 待追踪-------未联系上
 	public static final int BE_TRACK_A = 18;// 待追踪-A--72小时内再跟踪
