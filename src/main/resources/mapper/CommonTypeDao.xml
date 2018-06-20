@@ -81,4 +81,23 @@
         delete  from hm_crm_type_channel_group_rela where COMPANYID=#{companyId} and TYPEID=#{typeId} and CHANNELID=#{channelId}
     </delete>
 
+    <select id="searchByChannelId" resultType="com.qiein.jupiter.web.entity.po.CommonTypePO">
+         SELECT
+        a.ID id,
+        TYPEID typeId,
+        DICNAME typeName,
+        CHANNELID channelId,
+        GROUPID groupId,
+        GROUPNAME groupName,
+        WEIGHT weight
+        FROM
+        hm_crm_type_channel_group_rela a
+        LEFT JOIN hm_crm_dictionary b ON a.TYPEID = b.ID
+        WHERE
+        DICTYPE = "common_type"
+        AND TYPEID = #{typeId}
+        AND a.COMPANYID = #{companyId}
+        AND a.channelId=#{channelId}
+        AND a.groupName like concat("%",#{groupName},"%")
+    </select>
 </mapper>

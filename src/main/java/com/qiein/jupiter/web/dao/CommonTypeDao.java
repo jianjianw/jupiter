@@ -61,4 +61,13 @@ public interface CommonTypeDao {
      * @param companyId
      */
     void deleteByChannelId( @Param("channelId")Integer channelId,@Param("typeId")Integer typeId, @Param("companyId")Integer companyId);
+    /**
+     * 搜索小组
+     * @param channelId
+     * @param typeId
+     * @param companyId
+     * @param groupName
+     * @return
+     */
+    List<CommonTypePO> searchByChannelId(@Param("channelId")Integer channelId,@Param("typeId")Integer typeId,@Param("companyId")Integer companyId,@Param("groupName")String groupName);
 }

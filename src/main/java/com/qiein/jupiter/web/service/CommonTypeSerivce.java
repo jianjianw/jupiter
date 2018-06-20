@@ -56,4 +56,14 @@ public interface CommonTypeSerivce {
      */
     void deleteByChannelId(Integer channelId,Integer typeId,Integer companyId);
 
+    /**
+     * 搜索小组
+     * @param channelId
+     * @param typeId
+     * @param companyId
+     * @param groupName
+     * @return
+     */
+    List<CommonTypePO> searchByChannelId(Integer channelId,Integer typeId,Integer companyId,String groupName);
+
 }

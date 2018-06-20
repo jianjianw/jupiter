@@ -83,10 +83,17 @@ public class CommonTypeController extends BaseController{
      * 根据来源id删除
      */
     @GetMapping("/delete_by_channel_id")
-    public ResultInfo deleteByChannelId(@RequestParam Integer channelId,Integer typeId){
+    public ResultInfo deleteByChannelId(@RequestParam Integer channelId,@RequestParam Integer typeId){
         StaffPO staffPO=getCurrentLoginStaff();
         commonTypeSerivce.deleteByChannelId(channelId,typeId,staffPO.getCompanyId());
         return  ResultInfoUtil.success(TigMsgEnum.DELETE_SUCCESS);
+    }
+
+    @GetMapping("/search_by_channel_id")
+    public ResultInfo searchByChannelId(@RequestParam Integer channelId,@RequestParam Integer typeId,@RequestParam String groupName){
+        StaffPO staffPO=getCurrentLoginStaff();
+        commonTypeSerivce.searchByChannelId(channelId,typeId,staffPO.getCompanyId(),groupName);
+        return ResultInfoUtil.success();
     }
 
 }
