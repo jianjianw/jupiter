@@ -134,14 +134,16 @@ public class GoldDataServiceImpl implements GoldDataService {
         if (fieldKeys.length != fieldValues.length) {
             throw new RException(ExceptionEnum.UNKNOW_ERROR);
         }
+        //表单数据
+        JSONObject entry = jsonObject.getJSONObject("entry");
         if (fieldKeys.length != 0 || fieldValues.length != 0){
             for (int i = 0; i < fieldValues.length; i++) {
                 if ("kzqq".equalsIgnoreCase(fieldValues[i])) {
-                    reqContent.put("kzqq", jsonObject.getString(fieldKeys[i]));
+                    reqContent.put("kzqq", entry.getString(fieldKeys[i]));
                     continue;
                 }
                 if ("address".equalsIgnoreCase(fieldValues[i])) {
-                    reqContent.put("address", jsonObject.getString(fieldValues[i]));
+                    reqContent.put("address", entry.getJSONObject(fieldValues[i]).getString("province")+entry.getJSONObject(fieldValues[i]).getString("city"));
                 }
             }
         }
@@ -151,8 +153,8 @@ public class GoldDataServiceImpl implements GoldDataService {
             throw new RException(ExceptionEnum.UNKNOW_ERROR);
         }
         reqContent.put("companyid", goldFingerPO.getCompanyId());
-        reqContent.put("kzname", jsonObject.getString(goldFingerPO.getKzNameField()));
-        reqContent.put("kzphone", jsonObject.getString(goldFingerPO.getKzPhoneField()));
+        reqContent.put("kzname", entry.getString(goldFingerPO.getKzNameField()));
+        reqContent.put("kzphone", entry.getString(goldFingerPO.getKzPhoneField()));
         reqContent.put("channelid", sourcePO.getChannelId());
         reqContent.put("channelname", sourcePO.getChannelName());
         reqContent.put("srcid", goldFingerPO.getSrcId());

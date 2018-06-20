@@ -120,7 +120,7 @@ public class ClientAddServiceImpl implements ClientAddService {
         reqContent.put("matewechat", clientVO.getMateWeChat());
         reqContent.put("mateqq", clientVO.getMateQq());
 
-        String addRstStr = crmBaseApi.doService(reqContent, "addClientInfoPcDsHs");
+        String addRstStr = crmBaseApi.doService(reqContent, "addClientInfoPcHs");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if ("100000".equals(jsInfo.getString("code"))) {
             CompanyPO companyPO = companyDao.getById(staffPO.getCompanyId());
