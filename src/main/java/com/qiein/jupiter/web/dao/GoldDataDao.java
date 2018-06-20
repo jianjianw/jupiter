@@ -59,4 +59,11 @@ public interface GoldDataDao {
      * @return
      */
     GoldFingerPO findForm(String formId);
+
+    /**
+     * 获取金数据表单
+     * @param formId
+     * @param formName
+     * */
+    GoldFingerPO getGoldFingerByFormIdAndFormName(@Param(value="formId") String formId,@Param(value="formName") String formName);
 }

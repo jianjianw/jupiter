@@ -52,10 +52,21 @@ public class GoldFingerPO {
     private String postURL;
     //备注
     private String memo;
-
+    //创建者id
+    private Integer createorId;
+    //创建者名称
     private String createorName;
 
     private String createTime;
+
+
+    public Integer getCreateorId() {
+        return createorId;
+    }
+
+    public void setCreateorId(Integer createorId) {
+        this.createorId = createorId;
+    }
 
     public Integer getIsShow() {
         return isShow;

@@ -1,9 +1,11 @@
 package com.qiein.jupiter.web.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.web.entity.dto.GoldCustomerDTO;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.GoldFingerPO;
+import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.GoldCustomerShowVO;
 import com.qiein.jupiter.web.entity.vo.GoldCustomerVO;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -51,4 +53,11 @@ public interface GoldDataService {
      * @return
      */
     GoldCustomerShowVO goldCustomerSelect(QueryMapDTO queryMapDTO, GoldCustomerDTO goldCustomerDTO);
+
+    /**
+     * 接受金数据表单
+     * @param jsonObject
+     * */
+    void receiveGoldDataForm(JSONObject jsonObject, StaffPO staffPO);
+
 }

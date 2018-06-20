@@ -2,12 +2,12 @@ package com.qiein.jupiter.web.service.impl;
 
 import com.qiein.jupiter.web.dao.CommonTypeDao;
 import com.qiein.jupiter.web.entity.po.CommonTypePO;
+import com.qiein.jupiter.web.entity.vo.CommonTypeChannelShowVO;
 import com.qiein.jupiter.web.entity.vo.CommonTypeChannelVO;
 import com.qiein.jupiter.web.entity.vo.CommonTypeVO;
 import com.qiein.jupiter.web.service.CommonTypeSerivce;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,23 +75,46 @@ public class CommonTypeSerivceImpl implements CommonTypeSerivce {
      * @param typeId
      * @return
      */
-    public List<CommonTypePO> findChannelGroup(Integer typeId,Integer companyId){
-        return commonTypeDao.findChannelGroup(typeId,companyId);
+    public List<CommonTypeChannelVO> findChannelGroup(Integer typeId, Integer companyId){
+        List<CommonTypeChannelVO>  channelList=commonTypeDao.findChannel(typeId,companyId);
+        List<CommonTypePO> list=commonTypeDao.findChannelGroup(typeId,companyId);
+        for(CommonTypeChannelVO vo:channelList){
+            List<CommonTypePO> commonTypePOList=new ArrayList<>() ;
+            vo.setList(commonTypePOList);
+            for(CommonTypePO po:list){
+                if(vo.getChannelId()==po.getChannelId()){
+                    vo.getList().add(po);
+                }
+            }
+        }
+        return channelList;
     }
     /**
      * 第一次进入时获取拍摄地渠道小组分类
      * @param companyId
      * @return
      */
-    public CommonTypeChannelVO findChannelGroupFirst(Integer companyId){
-        CommonTypeChannelVO commonTypeChannelVO=new CommonTypeChannelVO();
+    public CommonTypeChannelShowVO findChannelGroupFirst(Integer companyId){
+        CommonTypeChannelShowVO commonTypeChannelShowVO =new CommonTypeChannelShowVO();
         List<CommonTypeVO> list=commonTypeDao.findCommonType(companyId);
         if(list.size()!=0){
-            commonTypeChannelVO.setCommonTypeVOList(list);
-            commonTypeChannelVO.setCommonTypePOList(commonTypeDao.findChannelGroup(list.get(0).getId(),companyId));
+            commonTypeChannelShowVO.setCommonTypeVOList(list);
+            Integer typeId=list.get(0).getId();
+            List<CommonTypeChannelVO>  channelList=commonTypeDao.findChannel(typeId,companyId);
+            List<CommonTypePO> commonTypePOList=commonTypeDao.findChannelGroup(typeId,companyId);
+            for(CommonTypeChannelVO vo:channelList){
+                List<CommonTypePO> commonTypePOS=new ArrayList<>() ;
+                vo.setList(commonTypePOS);
+                for(CommonTypePO po:commonTypePOList){
+                    if(vo.getChannelId()==po.getChannelId()){
+                        vo.getList().add(po);
+                    }
+                }
+            }
+            commonTypeChannelShowVO.setCommonTypeChannelVOList(channelList);
         }
 
-        return commonTypeChannelVO;
+        return commonTypeChannelShowVO;
     }
 
 }
