@@ -47,4 +47,13 @@ public interface CommonTypeSerivce {
      * @return
      */
     CommonTypeChannelShowVO findChannelGroupFirst(Integer companyId);
+
+    /**
+     * 根据来源id删除
+     * @param channelId
+     * @param typeId
+     * @param companyId
+     */
+    void deleteByChannelId(Integer channelId,Integer typeId,Integer companyId);
+
 }

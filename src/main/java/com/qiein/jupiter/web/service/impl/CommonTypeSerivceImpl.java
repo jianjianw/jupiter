@@ -116,5 +116,14 @@ public class CommonTypeSerivceImpl implements CommonTypeSerivce {
 
         return commonTypeChannelShowVO;
     }
+    /**
+     * 根据来源id删除
+     * @param channelId
+     * @param typeId
+     * @param companyId
+     */
+    public void deleteByChannelId(Integer channelId,Integer typeId,Integer companyId){
+        commonTypeDao.deleteByChannelId(channelId,typeId,companyId);
+    }
 
 }

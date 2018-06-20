@@ -54,4 +54,11 @@ public interface CommonTypeDao {
      * @return
      */
     List<CommonTypeChannelVO> findChannel(@Param("typeId")Integer typeId, @Param("companyId")Integer companyId);
+    /**
+     * 根据来源id删除
+     * @param channelId
+     * @param typeId
+     * @param companyId
+     */
+    void deleteByChannelId( @Param("channelId")Integer channelId,@Param("typeId")Integer typeId, @Param("companyId")Integer companyId);
 }
