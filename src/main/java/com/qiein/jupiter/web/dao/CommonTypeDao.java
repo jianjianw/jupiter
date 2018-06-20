@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.dao;
 
 import com.qiein.jupiter.web.entity.po.CommonTypePO;
+import com.qiein.jupiter.web.entity.vo.CommonTypeChannelVO;
 import com.qiein.jupiter.web.entity.vo.CommonTypeVO;
 import org.apache.ibatis.annotations.Param;
 
@@ -45,4 +46,12 @@ public interface CommonTypeDao {
      * @return
      */
     List<CommonTypeVO> findCommonType(@Param("companyId")Integer companyId);
+
+    /**
+     * 获取来源信息
+     * @param typeId
+     * @param companyId
+     * @return
+     */
+    List<CommonTypeChannelVO> findChannel(@Param("typeId")Integer typeId, @Param("companyId")Integer companyId);
 }

@@ -5,13 +5,13 @@ import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.web.entity.po.CommonTypePO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.entity.vo.CommonTypeChannelShowVO;
 import com.qiein.jupiter.web.entity.vo.CommonTypeChannelVO;
 import com.qiein.jupiter.web.service.CommonTypeSerivce;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -72,10 +72,10 @@ public class CommonTypeController extends BaseController{
     public ResultInfo findCommonTypeChannel(@RequestParam String typeId){
         StaffPO staffPO=getCurrentLoginStaff();
         if(typeId.equals("")){
-            CommonTypeChannelVO commonTypeChannelVO=commonTypeSerivce.findChannelGroupFirst(staffPO.getCompanyId());
-            return ResultInfoUtil.success(commonTypeChannelVO);
+            CommonTypeChannelShowVO commonTypeChannelShowVO =commonTypeSerivce.findChannelGroupFirst(staffPO.getCompanyId());
+            return ResultInfoUtil.success(commonTypeChannelShowVO);
         }
-        List<CommonTypePO> list =commonTypeSerivce.findChannelGroup(Integer.parseInt(typeId),staffPO.getCompanyId());
+        List<CommonTypeChannelVO> list =commonTypeSerivce.findChannelGroup(Integer.parseInt(typeId),staffPO.getCompanyId());
         return ResultInfoUtil.success(list);
     }
 

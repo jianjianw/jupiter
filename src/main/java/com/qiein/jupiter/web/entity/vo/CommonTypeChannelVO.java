@@ -3,29 +3,47 @@ package com.qiein.jupiter.web.entity.vo;
 import com.qiein.jupiter.web.entity.po.CommonTypePO;
 
 import java.util.List;
+
 /**
- * 拍摄类型渠道
- * Author xiangliang
+ * author xiangliang
  */
 public class CommonTypeChannelVO {
-    //拍摄方式渠道分配
-    private List<CommonTypePO> commonTypePOList;
-    //拍摄方式
-    private List<CommonTypeVO>  commonTypeVOList;
+    //来源
+    private Integer channelId;
+    private String channelImg;
+    private String channelName;
+    //渠道
+    private List<CommonTypePO> list;
 
-    public List<CommonTypePO> getCommonTypePOList() {
-        return commonTypePOList;
+    public Integer getChannelId() {
+        return channelId;
     }
 
-    public void setCommonTypePOList(List<CommonTypePO> commonTypePOList) {
-        this.commonTypePOList = commonTypePOList;
+    public void setChannelId(Integer channelId) {
+        this.channelId = channelId;
     }
 
-    public List<CommonTypeVO> getCommonTypeVOList() {
-        return commonTypeVOList;
+    public String getChannelImg() {
+        return channelImg;
     }
 
-    public void setCommonTypeVOList(List<CommonTypeVO> commonTypeVOList) {
-        this.commonTypeVOList = commonTypeVOList;
+    public void setChannelImg(String channelImg) {
+        this.channelImg = channelImg;
+    }
+
+    public String getChannelName() {
+        return channelName;
+    }
+
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
+    }
+
+    public List<CommonTypePO> getList() {
+        return list;
+    }
+
+    public void setList(List<CommonTypePO> list) {
+        this.list = list;
     }
 }

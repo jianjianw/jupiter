@@ -1,8 +1,8 @@
 package com.qiein.jupiter.web.service;
 
 import com.qiein.jupiter.web.entity.po.CommonTypePO;
+import com.qiein.jupiter.web.entity.vo.CommonTypeChannelShowVO;
 import com.qiein.jupiter.web.entity.vo.CommonTypeChannelVO;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -39,12 +39,12 @@ public interface CommonTypeSerivce {
      * @param typeId
      * @return
      */
-    List<CommonTypePO> findChannelGroup(Integer typeId, Integer companyId);
+    List<CommonTypeChannelVO> findChannelGroup(Integer typeId, Integer companyId);
 
     /**
      * 第一次进入时获取拍摄地渠道小组分类
      * @param companyId
      * @return
      */
-    CommonTypeChannelVO findChannelGroupFirst(Integer companyId);
+    CommonTypeChannelShowVO findChannelGroupFirst(Integer companyId);
 }
