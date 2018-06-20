@@ -119,6 +119,9 @@ public class ClientAddServiceImpl implements ClientAddService {
         reqContent.put("matename", clientVO.getMatePhone());
         reqContent.put("matewechat", clientVO.getMateWeChat());
         reqContent.put("mateqq", clientVO.getMateQq());
+        reqContent.put("yxlevel", clientVO.getYxLevel());
+        reqContent.put("marry", clientVO.getMarryTime());
+        reqContent.put("ysrange", clientVO.getYsRange());
 
         String addRstStr = crmBaseApi.doService(reqContent, "addClientInfoPcHs");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
