@@ -779,7 +779,7 @@ public class GoEasyUtil {
 
         sb.delete(0, sb.length());
         sb.append("<br/>无效原因：").append(invalidReason);
-        sb.append("<br/><br/>渠道：").append(StringUtil.nullToStrTrim(info.getChannelSource()));
+        sb.append("<br/><br/>渠道：").append(StringUtil.nullToStrTrim(info.getChannelSource())).append("<br/>");
 
 
         if (StringUtil.isNotEmpty(info.getKzName())) {

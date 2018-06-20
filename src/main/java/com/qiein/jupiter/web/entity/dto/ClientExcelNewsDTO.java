@@ -148,12 +148,12 @@ public class ClientExcelNewsDTO implements Serializable {
      * 录入时间接收格式
      */
     @Excel(name = "录入时间", databaseFormat = "MM月dd日", format = "yyyy-MM-dd HH:mm:ss")
-    private double time;
+    private Date time;
     /**
      * 预约时间接受格式
      */
     @Excel(name = "预约时间", databaseFormat = "MM月dd日", format = "yyyy-MM-dd HH:mm:ss")
-    private double appointTimeDate;
+    private Date appointTimeDate;
     /**
      * 预约时间
      * */
@@ -162,7 +162,7 @@ public class ClientExcelNewsDTO implements Serializable {
      * 入店时间接受格式
      */
     @Excel(name = "入店时间 (首次入店时间，邀约计算业绩)", databaseFormat = "MM月dd日", format = "yyyy-MM-dd HH:mm:ss")
-    private double comeShopTimeDate;
+    private Date comeShopTimeDate;
 
     /**
      * 入店时间
@@ -172,7 +172,7 @@ public class ClientExcelNewsDTO implements Serializable {
      * 成交时间接受格式
      */
     @Excel(name = "成交时间", databaseFormat = "MM月dd日", format = "yyyy-MM-dd HH:mm:ss")
-    private double successTimeDate;
+    private Date successTimeDate;
     /**
      * 成交时间
      * */
@@ -349,6 +349,37 @@ public class ClientExcelNewsDTO implements Serializable {
      */
     private boolean currentTime;
 
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
+    }
+
+    public Date getAppointTimeDate() {
+        return appointTimeDate;
+    }
+
+    public void setAppointTimeDate(Date appointTimeDate) {
+        this.appointTimeDate = appointTimeDate;
+    }
+
+    public Date getComeShopTimeDate() {
+        return comeShopTimeDate;
+    }
+
+    public void setComeShopTimeDate(Date comeShopTimeDate) {
+        this.comeShopTimeDate = comeShopTimeDate;
+    }
+
+    public Date getSuccessTimeDate() {
+        return successTimeDate;
+    }
+
+    public void setSuccessTimeDate(Date successTimeDate) {
+        this.successTimeDate = successTimeDate;
+    }
 
     public String getKzName() {
         return kzName;
@@ -358,29 +389,8 @@ public class ClientExcelNewsDTO implements Serializable {
         this.kzName = kzName;
     }
 
-    public double getAppointTimeDate() {
-        return appointTimeDate;
-    }
 
-    public void setAppointTimeDate(double appointTimeDate) {
-        this.appointTimeDate = appointTimeDate;
-    }
 
-    public double getComeShopTimeDate() {
-        return comeShopTimeDate;
-    }
-
-    public void setComeShopTimeDate(double comeShopTimeDate) {
-        this.comeShopTimeDate = comeShopTimeDate;
-    }
-
-    public double getSuccessTimeDate() {
-        return successTimeDate;
-    }
-
-    public void setSuccessTimeDate(double successTimeDate) {
-        this.successTimeDate = successTimeDate;
-    }
 
     public String getMarryTimeStr() {
         return marryTimeStr;
@@ -590,13 +600,6 @@ public class ClientExcelNewsDTO implements Serializable {
         this.remark = remark;
     }
 
-    public double getTime() {
-        return time;
-    }
-
-    public void setTime(double time) {
-        this.time = time;
-    }
 
 
     public long getAppointTime() {

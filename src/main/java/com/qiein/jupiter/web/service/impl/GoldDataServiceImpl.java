@@ -170,6 +170,16 @@ public class GoldDataServiceImpl implements GoldDataService {
         reqContent.put("collectorname", goldFingerPO.getCreateorName());
 
 
+        GoldTempPO goldTempPO = new GoldTempPO();
+        goldTempPO.setFormId(goldFingerPO.getFormId());
+        goldTempPO.setFormName(goldFingerPO.getFormName());
+        goldTempPO.setSrcId(goldFingerPO.getSrcId());
+        goldTempPO.setSrcName(goldFingerPO.getSrcName());
+        goldTempPO.setTypeId(goldFingerPO.getTypeId());
+        goldTempPO.setTypeName(goldFingerPO.getTypeName());
+        goldTempPO.setMemo(goldFingerPO.getMemo());
+        goldTempPO.setCollecterId(goldFingerPO.getCreateorId());
+        goldTempPO.setCollecterName(goldFingerPO.getCreateorName());
 
         String addRstStr = crmBaseApi.doService(reqContent, "clientAddGoldPlug");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);

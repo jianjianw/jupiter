@@ -75,7 +75,7 @@
             (#{item.kzId},#{item.typeName}, #{item.statusId},#{item.channelName},
             #{item.sourceName},#{item.zxStyle},#{item.kzName},#{item.sex},#{item.kzPhone}, #{item.kzWechat},
             #{item.kzQq}, #{item.kzWw}, #{item.collectorName},
-            #{item.appointName},#{item.appointTime},#{item.receptorName},#{AMOUNT}
+            #{item.appointName},#{item.appointTime},#{item.receptorName},#{item.amout},
             #{item.createTime},unix_timestamp(now()),#{item.comeShopTime},#{item.successTime}, #{item.shopName},
             #{item.companyId},
             #{item.operaId}, #{item.address}, #{item.groupName}, #{item.keyWord},
@@ -263,7 +263,7 @@
 
     <!--更新门市id-->
     <update id="updateReceptorId">
-        update ${tampName} temp
+        update ${tempName} temp
         set temp.RECEPTORID = (select sf.ID
                                from hm_pub_staff sf
                                where sf.NICKNAME = temp.RECEPTORNAME and sf.COMPANYID = temp.COMPANYID AND sf.ISDEL = 0

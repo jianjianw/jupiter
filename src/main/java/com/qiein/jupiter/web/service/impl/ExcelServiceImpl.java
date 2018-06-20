@@ -10,6 +10,7 @@ import com.qiein.jupiter.constant.DictionaryConstant;
 import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.dao.DictionaryDao;
 import com.qiein.jupiter.web.entity.dto.ClientExcelNewsDTO;
+import com.qiein.jupiter.web.entity.po.DictionaryPO;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -96,15 +97,23 @@ public class ExcelServiceImpl implements ExcelService {
             clientExcelDTO.setKzId(StringUtil.getRandom());
             clientExcelDTO.setOperaId(currentLoginStaff.getId());
             clientExcelDTO.setTypeName(CommonConstant.EXCEL_DEFAULT_PHOTO_TYPE_NAME);
-            clientExcelDTO.setCreateTime(clientExcelDTO.getTime() == 0 ? 0 : HSSFDateUtil.getJavaDate(clientExcelDTO.getTime()).getTime() / 1000);
-            clientExcelDTO.setSuccessTime(clientExcelDTO.getSuccessTimeDate() == 0 ? 0 : HSSFDateUtil.getJavaDate(clientExcelDTO.getSuccessTimeDate()).getTime() / 1000);
-            clientExcelDTO.setAppointTime(clientExcelDTO.getAppointTimeDate() == 0 ? 0 : HSSFDateUtil.getJavaDate(clientExcelDTO.getAppointTimeDate()).getTime() / 1000);
-            clientExcelDTO.setComeShopTime(clientExcelDTO.getComeShopTimeDate() == 0 ? 0 : HSSFDateUtil.getJavaDate(clientExcelDTO.getComeShopTimeDate()).getTime() / 1000);
-            clientExcelDTO.setZxStyle(dictionaryDao.getDicByTypeAndName(currentLoginStaff.getCompanyId(),DictionaryConstant.ZX_STYLE,clientExcelDTO.getZxStyleStr()).getDicCode());
-            clientExcelDTO.setYsRange(dictionaryDao.getDicByTypeAndName(currentLoginStaff.getCompanyId(),DictionaryConstant.YS_RANGE,clientExcelDTO.getYsRangeStr()).getDicCode());
-            clientExcelDTO.setMarryTime(dictionaryDao.getDicByTypeAndName(currentLoginStaff.getCompanyId(),DictionaryConstant.MARRY_TIME,clientExcelDTO.getMarryTimeStr()).getDicCode());
-            clientExcelDTO.setYxLevel(dictionaryDao.getDicByTypeAndName(currentLoginStaff.getCompanyId(),DictionaryConstant.YX_RANK,clientExcelDTO.getYxLevelStr()).getDicCode());
-            clientExcelDTO.setYpTime(dictionaryDao.getDicByTypeAndName(currentLoginStaff.getCompanyId(),DictionaryConstant.YP_TIME,clientExcelDTO.getYpTimeStr()).getDicCode());
+            clientExcelDTO.setCreateTime(clientExcelDTO.getTime() == null ? 0 : clientExcelDTO.getTime().getTime() / 1000);
+            clientExcelDTO.setSuccessTime(clientExcelDTO.getSuccessTimeDate() == null ? 0 : clientExcelDTO.getSuccessTimeDate().getTime() / 1000);
+            clientExcelDTO.setAppointTime(clientExcelDTO.getAppointTimeDate() == null ? 0 : clientExcelDTO.getAppointTimeDate().getTime() / 1000);
+            clientExcelDTO.setComeShopTime(clientExcelDTO.getComeShopTimeDate() == null ? 0 : clientExcelDTO.getComeShopTimeDate().getTime() / 1000);
+
+
+            //设置字典表
+            DictionaryPO dictionaryPO = dictionaryDao.getDicByTypeAndName(currentLoginStaff.getCompanyId(), DictionaryConstant.ZX_STYLE, clientExcelDTO.getZxStyleStr());
+            clientExcelDTO.setZxStyle(dictionaryPO == null ? null : dictionaryPO.getDicCode());
+            dictionaryPO = dictionaryDao.getDicByTypeAndName(currentLoginStaff.getCompanyId(), DictionaryConstant.YS_RANGE, clientExcelDTO.getYsRangeStr());
+            clientExcelDTO.setYsRange(dictionaryPO == null ? null : dictionaryPO.getDicCode());
+            dictionaryPO = dictionaryDao.getDicByTypeAndName(currentLoginStaff.getCompanyId(), DictionaryConstant.MARRY_TIME, clientExcelDTO.getMarryTimeStr());
+            clientExcelDTO.setMarryTime(dictionaryPO == null ? null : dictionaryPO.getDicCode());
+            dictionaryPO = dictionaryDao.getDicByTypeAndName(currentLoginStaff.getCompanyId(), DictionaryConstant.YX_RANK, clientExcelDTO.getYxLevelStr());
+            clientExcelDTO.setYxLevel(dictionaryPO == null ? null : dictionaryPO.getDicCode());
+            dictionaryPO = dictionaryDao.getDicByTypeAndName(currentLoginStaff.getCompanyId(), DictionaryConstant.YP_TIME, clientExcelDTO.getYpTimeStr());
+            clientExcelDTO.setYpTime(dictionaryPO == null ? null : dictionaryPO.getDicCode());
         }
         // 1.删除员工客资缓存记录
         excelDao.deleteTempByStaffId(DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()),

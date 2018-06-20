@@ -37,6 +37,6 @@ public class ClientConst {
 	 * */
 	public static final String KZ_BZ_WATING_MAKE_ORDER = "有效待接单";
 	public static final String KZ_BZ_WATING_NAME = "待定";
-	public static final String KZ_BZ_INVALID_NAME= "失效";
+	public static final String KZ_BZ_INVALID_NAME= "无效";
 
 }
