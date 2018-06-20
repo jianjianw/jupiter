@@ -54,7 +54,7 @@
         TYPEID typeId,
         DICNAME typeName,
         CHANNELID channelId,
-        GROUPID gourpId,
+        GROUPID groupId,
         GROUPNAME groupName,
         WEIGHT weight
         FROM
