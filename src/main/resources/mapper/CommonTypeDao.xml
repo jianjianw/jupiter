@@ -14,7 +14,7 @@
     </insert>
 
     <select id="findCommonType" resultMap="commonType">
-        select ID,DICNAME,ISSHOW from hm_crm_dictionary where DICTYPE="common_type" and COMPANYID=#{companyId}
+        select ID,DICNAME,ISSHOW from hm_crm_dictionary where DICTYPE="common_type" and COMPANYID=#{companyId} order by ISSHOW DESC
     </select>
 
     <insert id="addTypeChannelGroup">
