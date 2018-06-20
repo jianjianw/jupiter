@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.controller;
 
 import java.util.List;
 
+import com.qiein.jupiter.constant.RoleConstant;
 import com.qiein.jupiter.web.entity.dto.RequestInfoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -125,6 +126,9 @@ public class GroupController extends BaseController {
     public ResultInfo getGroupStaffByRole(@NotEmptyStr @RequestParam("role") String role) {
         // 获取当前登录账户
         StaffPO staff = getCurrentLoginStaff();
+        if (RoleConstant.CWZX.equals(role)) {
+            role = RoleConstant.MSJD;
+        }
         return ResultInfoUtil.success(groupService.getGroupStaffByType(staff.getCompanyId(), staff.getId(), role));
     }
 

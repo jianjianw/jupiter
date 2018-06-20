@@ -27,7 +27,7 @@ public class RoleConstant {
     /**
      * 门市中心
      */
-    public static final String MSZX = "mszx";
+    public static final String MSJD = "msjd";
 
     /**
      * 财务中心
