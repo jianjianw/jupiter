@@ -77,4 +77,8 @@
         WHERE a.typeId=#{typeId} and a.companyId=#{companyId}
     </select>
 
+    <delete id="deleteByChannelId">
+        delete  from hm_crm_type_channel_group_rela where COMPANYID=#{companyId} and TYPEID=#{typeId} and CHANNELID=#{channelId}
+    </delete>
+
 </mapper>
