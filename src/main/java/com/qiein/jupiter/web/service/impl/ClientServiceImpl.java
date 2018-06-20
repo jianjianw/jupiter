@@ -161,7 +161,7 @@ public class ClientServiceImpl implements ClientService {
             clientDTO.setKzWeChat(clientStatusVoteVO.getKzWeChat());
             clientDTO.setKzPhone(clientStatusVoteVO.getKzPhone());
             clientDTO.setKzName(clientStatusVoteVO.getKzName());
-            GoEasyUtil.pushBeValidCheck(clientStatusVoteVO.getCompanyId(), clientStatusVoteVO.getCollectorId(), clientDTO, clientStatusVoteVO.getContent());
+            GoEasyUtil.pushInvalidKz(clientStatusVoteVO.getCompanyId(), clientStatusVoteVO.getCollectorId(), clientDTO, clientStatusVoteVO.getContent());
         }
 
         //修改状态id
