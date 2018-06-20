@@ -794,7 +794,6 @@ public class GoEasyUtil {
         }
         sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("<br/>");
         sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSrcName())).append("<br/>");
-        sb.append("录入时间：" + TimeUtil.intMillisToTimeStr(Integer.valueOf(info.getCreateTime())) + "<br/>");
 
         String msg = sb.toString();
         pushWarn(companyId, staffId, header, msg);

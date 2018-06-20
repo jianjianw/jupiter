@@ -136,7 +136,6 @@ public class GoldDataServiceImpl implements GoldDataService {
         }
         //表单数据
         JSONObject entry = jsonObject.getJSONObject("entry");
-        System.out.println(entry);
         if (fieldKeys.length != 0 || fieldValues.length != 0){
             for (int i = 0; i < fieldValues.length; i++) {
                 if ("kzqq".equalsIgnoreCase(fieldValues[i])) {
@@ -171,7 +170,6 @@ public class GoldDataServiceImpl implements GoldDataService {
         reqContent.put("collectorname", goldFingerPO.getCreateorName());
 
 
-        System.out.println(reqContent.toString());
 
         String addRstStr = crmBaseApi.doService(reqContent, "clientAddGoldPlug");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
