@@ -48,7 +48,6 @@ public class ClientVO implements Serializable {
     /**
      * 拍摄地
      */
-    @Id(message = "{client.shopId.null}")
     private int shopId;
     /**
      * 渠道ID

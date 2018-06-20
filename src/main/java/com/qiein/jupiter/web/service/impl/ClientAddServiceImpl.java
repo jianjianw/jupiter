@@ -67,12 +67,14 @@ public class ClientAddServiceImpl implements ClientAddService {
             throw new RException(ExceptionEnum.SOURCE_NOT_FOUND);
         }
         reqContent.put("sourcename", sourcePO.getSrcName());
-        // 获取拍摄地名
-        ShopVO shopVO = shopDao.getShowShopById(sourcePO.getCompanyId(), clientVO.getShopId());
-        if (shopVO == null) {
-            throw new RException(ExceptionEnum.SHOP_NOT_FOUND);
+        if (NumUtil.isValid(clientVO.getShopId())) {
+            // 获取拍摄地名
+            ShopVO shopVO = shopDao.getShowShopById(sourcePO.getCompanyId(), clientVO.getShopId());
+            if (shopVO == null) {
+                throw new RException(ExceptionEnum.SHOP_NOT_FOUND);
+            }
+            reqContent.put("shopname", shopVO.getShopName());
         }
-        reqContent.put("shopname", shopVO.getShopName());
         // 获取邀约客服名称
         if (NumUtil.isNotNull(clientVO.getAppointId())) {
             StaffPO appoint = staffDao.getById(clientVO.getAppointId());
@@ -101,7 +103,7 @@ public class ClientAddServiceImpl implements ClientAddService {
         reqContent.put("channelid", clientVO.getChannelId());
         reqContent.put("sourceid", clientVO.getSourceId());
         reqContent.put("srctype", sourcePO.getTypeId());
-        reqContent.put("isfilter",sourcePO.getIsFilter());
+        reqContent.put("isfilter", sourcePO.getIsFilter());
         reqContent.put("shopid", clientVO.getShopId());
         reqContent.put("zxstyle", clientVO.getZxStyle());
         reqContent.put("keyword", clientVO.getKeyWord());
@@ -113,10 +115,10 @@ public class ClientAddServiceImpl implements ClientAddService {
                         : MobileLocationUtil.getAddressByContactInfo(clientVO.getKzPhone(), clientVO.getKzWechat(),
                         clientVO.getKzQq()));
         reqContent.put("remark", clientVO.getRemark());
-        reqContent.put("matephone",clientVO.getMatePhone());
-        reqContent.put("matename",clientVO.getMatePhone());
-        reqContent.put("matewechat",clientVO.getMateWeChat());
-        reqContent.put("mateqq",clientVO.getMateQq());
+        reqContent.put("matephone", clientVO.getMatePhone());
+        reqContent.put("matename", clientVO.getMatePhone());
+        reqContent.put("matewechat", clientVO.getMateWeChat());
+        reqContent.put("mateqq", clientVO.getMateQq());
 
         String addRstStr = crmBaseApi.doService(reqContent, "addClientInfoPcDsHs");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
@@ -185,8 +187,8 @@ public class ClientAddServiceImpl implements ClientAddService {
                     continue;
                 }
                 // 6.配偶姓名
-                if(StringUtil.isChinese(info) && info.length() < 6 && !json.containsKey("matename")){
-                    json.put("matename",info);
+                if (StringUtil.isChinese(info) && info.length() < 6 && !json.containsKey("matename")) {
+                    json.put("matename", info);
                     it.remove();
                     continue;
                 }
