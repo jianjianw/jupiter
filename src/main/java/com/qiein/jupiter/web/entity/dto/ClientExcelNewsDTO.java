@@ -36,7 +36,21 @@ public class ClientExcelNewsDTO implements Serializable {
      */
     @Excel(name = "状态")
     private String className;
+    /**
+     * 咨询方式
+     * */
+    @Excel(name="咨询方式")
+    private String zxStyleStr;
+    /**
+     * 咨询方式
+     * */
+    private Integer zxStyle;
 
+    /**
+     * 姓名
+     * */
+    @Excel(name="姓名")
+    private String kzName;
     /**
      * 客资电话
      */
@@ -133,41 +147,41 @@ public class ClientExcelNewsDTO implements Serializable {
     /**
      * 录入时间接收格式
      */
-    @Excel(name = "提报时间")
-    private Date timeDate;
+    @Excel(name = "录入时间", databaseFormat = "MM月dd日", format = "yyyy-MM-dd HH:mm:ss")
+    private double time;
     /**
      * 预约时间接受格式
      */
-    @Excel(name = "预约时间")
-    private Date appointTimeDate;
+    @Excel(name = "预约时间", databaseFormat = "MM月dd日", format = "yyyy-MM-dd HH:mm:ss")
+    private double appointTimeDate;
     /**
      * 预约时间
      * */
-    private Integer appointTime;
+    private long appointTime;
     /**
      * 入店时间接受格式
      */
-    @Excel(name = "入店时间 (首次入店时间，邀约计算业绩)")
-    private Date comeShopTimeDate;
+    @Excel(name = "入店时间 (首次入店时间，邀约计算业绩)", databaseFormat = "MM月dd日", format = "yyyy-MM-dd HH:mm:ss")
+    private double comeShopTimeDate;
 
     /**
      * 入店时间
      * */
-    private Integer comeShopTime;
+    private long comeShopTime;
     /**
      * 成交时间接受格式
      */
-    @Excel(name = "成交时间")
-    private Date successTimeDate;
+    @Excel(name = "成交时间", databaseFormat = "MM月dd日", format = "yyyy-MM-dd HH:mm:ss")
+    private double successTimeDate;
     /**
      * 成交时间
      * */
-    private Integer successTime;
+    private long successTime;
     /**
      * 婚期时间接受格式
      */
     @Excel(name = "婚期时间")
-    private Date marryTimeDate;
+    private String marryTimeStr;
     /**
      * 婚期时间
      * */
@@ -176,7 +190,7 @@ public class ClientExcelNewsDTO implements Serializable {
      * 预拍时间
      */
     @Excel(name = "预拍时间")
-    private Date ypTimeDate;
+    private String ypTimeStr;
     /**
      * 预拍时间
      * */
@@ -335,6 +349,54 @@ public class ClientExcelNewsDTO implements Serializable {
      */
     private boolean currentTime;
 
+
+    public String getKzName() {
+        return kzName;
+    }
+
+    public void setKzName(String kzName) {
+        this.kzName = kzName;
+    }
+
+    public double getAppointTimeDate() {
+        return appointTimeDate;
+    }
+
+    public void setAppointTimeDate(double appointTimeDate) {
+        this.appointTimeDate = appointTimeDate;
+    }
+
+    public double getComeShopTimeDate() {
+        return comeShopTimeDate;
+    }
+
+    public void setComeShopTimeDate(double comeShopTimeDate) {
+        this.comeShopTimeDate = comeShopTimeDate;
+    }
+
+    public double getSuccessTimeDate() {
+        return successTimeDate;
+    }
+
+    public void setSuccessTimeDate(double successTimeDate) {
+        this.successTimeDate = successTimeDate;
+    }
+
+    public String getMarryTimeStr() {
+        return marryTimeStr;
+    }
+
+    public void setMarryTimeStr(String marryTimeStr) {
+        this.marryTimeStr = marryTimeStr;
+    }
+
+    public String getYpTimeStr() {
+        return ypTimeStr;
+    }
+
+    public void setYpTimeStr(String ypTimeStr) {
+        this.ypTimeStr = ypTimeStr;
+    }
 
     public String getKzId() {
         return kzId;
@@ -528,69 +590,37 @@ public class ClientExcelNewsDTO implements Serializable {
         this.remark = remark;
     }
 
-
-    public Date getTimeDate() {
-        return timeDate;
+    public double getTime() {
+        return time;
     }
 
-    public void setTimeDate(Date timeDate) {
-        this.timeDate = timeDate;
+    public void setTime(double time) {
+        this.time = time;
     }
 
-    public java.util.Date getAppointTimeDate() {
-        return appointTimeDate;
-    }
 
-    public void setAppointTimeDate(java.util.Date appointTimeDate) {
-        this.appointTimeDate = appointTimeDate;
-    }
-
-    public Integer getAppointTime() {
+    public long getAppointTime() {
         return appointTime;
     }
 
-    public void setAppointTime(Integer appointTime) {
+    public void setAppointTime(long appointTime) {
         this.appointTime = appointTime;
     }
 
-    public java.util.Date getComeShopTimeDate() {
-        return comeShopTimeDate;
-    }
-
-    public void setComeShopTimeDate(java.util.Date comeShopTimeDate) {
-        this.comeShopTimeDate = comeShopTimeDate;
-    }
-
-    public Integer getComeShopTime() {
+    public long getComeShopTime() {
         return comeShopTime;
     }
 
-    public void setComeShopTime(Integer comeShopTime) {
+    public void setComeShopTime(long comeShopTime) {
         this.comeShopTime = comeShopTime;
     }
 
-    public java.util.Date getSuccessTimeDate() {
-        return successTimeDate;
-    }
-
-    public void setSuccessTimeDate(java.util.Date successTimeDate) {
-        this.successTimeDate = successTimeDate;
-    }
-
-    public Integer getSuccessTime() {
+    public long getSuccessTime() {
         return successTime;
     }
 
-    public void setSuccessTime(Integer successTime) {
+    public void setSuccessTime(long successTime) {
         this.successTime = successTime;
-    }
-
-    public java.util.Date getMarryTimeDate() {
-        return marryTimeDate;
-    }
-
-    public void setMarryTimeDate(java.util.Date marryTimeDate) {
-        this.marryTimeDate = marryTimeDate;
     }
 
     public Integer getMarryTime() {
@@ -601,13 +631,6 @@ public class ClientExcelNewsDTO implements Serializable {
         this.marryTime = marryTime;
     }
 
-    public java.util.Date getYpTimeDate() {
-        return ypTimeDate;
-    }
-
-    public void setYpTimeDate(java.util.Date ypTimeDate) {
-        this.ypTimeDate = ypTimeDate;
-    }
 
     public Integer getYpTime() {
         return ypTime;
@@ -874,76 +897,19 @@ public class ClientExcelNewsDTO implements Serializable {
     }
 
 
-    @Override
-    public String toString() {
-        return "ClientExcelNewsDTO{" +
-                "kzId='" + kzId + '\'' +
-                ", typeId=" + typeId +
-                ", typeName='" + typeName + '\'' +
-                ", classId=" + classId +
-                ", className='" + className + '\'' +
-                ", kzPhone='" + kzPhone + '\'' +
-                ", kzWechat='" + kzWechat + '\'' +
-                ", kzQq='" + kzQq + '\'' +
-                ", kzWw='" + kzWw + '\'' +
-                ", sex='" + sex + '\'' +
-                ", statusId=" + statusId +
-                ", statusName='" + statusName + '\'' +
-                ", channelId=" + channelId +
-                ", channelName='" + channelName + '\'' +
-                ", sourceId=" + sourceId +
-                ", sourceName='" + sourceName + '\'' +
-                ", collectorId=" + collectorId +
-                ", collectorName='" + collectorName + '\'' +
-                ", appointorId=" + appointorId +
-                ", appointName='" + appointName + '\'' +
-                ", appointNamePhone='" + appointNamePhone + '\'' +
-                ", oldKzName='" + oldKzName + '\'' +
-                ", oldKzPhone='" + oldKzPhone + '\'' +
-                ", remark='" + remark + '\'' +
-                ", timeDate=" + timeDate +
-                ", appointTimeDate=" + appointTimeDate +
-                ", appointTime=" + appointTime +
-                ", comeShopTimeDate=" + comeShopTimeDate +
-                ", comeShopTime=" + comeShopTime +
-                ", successTimeDate=" + successTimeDate +
-                ", successTime=" + successTime +
-                ", marryTimeDate=" + marryTimeDate +
-                ", marryTime=" + marryTime +
-                ", ypTimeDate=" + ypTimeDate +
-                ", ypTime=" + ypTime +
-                ", createTime=" + createTime +
-                ", shopId=" + shopId +
-                ", shopName='" + shopName + '\'' +
-                ", amout=" + amout +
-                ", amoutStr='" + amoutStr + '\'' +
-                ", receptorId=" + receptorId +
-                ", receptorName='" + receptorName + '\'' +
-                ", mateName='" + mateName + '\'' +
-                ", matePhone='" + matePhone + '\'' +
-                ", mateWeChat='" + mateWeChat + '\'' +
-                ", mateQq='" + mateQq + '\'' +
-                ", adId='" + adId + '\'' +
-                ", adAddress='" + adAddress + '\'' +
-                ", yxLevelStr='" + yxLevelStr + '\'' +
-                ", yxLevel=" + yxLevel +
-                ", companyId=" + companyId +
-                ", operaId=" + operaId +
-                ", keyWord='" + keyWord + '\'' +
-                ", groupId='" + groupId + '\'' +
-                ", groupName='" + groupName + '\'' +
-                ", validFlag='" + validFlag + '\'' +
-                ", address='" + address + '\'' +
-                ", filmingCode='" + filmingCode + '\'' +
-                ", filmingArea='" + filmingArea + '\'' +
-                ", ysRangeStr='" + ysRangeStr + '\'' +
-                ", ysRange=" + ysRange +
-                ", invalidLabel='" + invalidLabel + '\'' +
-                ", stayaMountStr='" + stayaMountStr + '\'' +
-                ", stayaMount='" + stayaMount + '\'' +
-                ", htNum='" + htNum + '\'' +
-                ", kzIds='" + kzIds + '\'' +
-                ", currentTime=" + currentTime +
-                '}';
+    public String getZxStyleStr() {
+        return zxStyleStr;
+    }
+
+    public void setZxStyleStr(String zxStyleStr) {
+        this.zxStyleStr = zxStyleStr;
+    }
+
+    public Integer getZxStyle() {
+        return zxStyle;
+    }
+
+    public void setZxStyle(Integer zxStyle) {
+        this.zxStyle = zxStyle;
     }
 }

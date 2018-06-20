@@ -119,6 +119,9 @@ public class ClientAddServiceImpl implements ClientAddService {
         reqContent.put("matename", clientVO.getMatePhone());
         reqContent.put("matewechat", clientVO.getMateWeChat());
         reqContent.put("mateqq", clientVO.getMateQq());
+        reqContent.put("yxlevel",clientVO.getYxLevel());
+        reqContent.put("ysrange",clientVO.getYsRange());
+        reqContent.put("marrytime",clientVO.getMarryTime());
 
         String addRstStr = crmBaseApi.doService(reqContent, "addClientInfoPcHs");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
@@ -180,12 +183,6 @@ public class ClientAddServiceImpl implements ClientAddService {
                     it.remove();
                     continue;
                 }
-                // 5.客资旺旺号
-                if (StringUtil.checkWeChat(info) && !json.containsKey("ww")) {
-                    json.put("ww", info);
-                    it.remove();
-                    continue;
-                }
                 // 6.配偶姓名
                 if (StringUtil.isChinese(info) && info.length() < 6 && !json.containsKey("matename")) {
                     json.put("matename", info);
@@ -227,7 +224,7 @@ public class ClientAddServiceImpl implements ClientAddService {
      * @param list
      */
     public JSONObject batchAddDsClient(String list, int channelId, int sourceId, int shopId, int typeId,
-                                       StaffPO staffPO, String adId, String adAddress, String groupId, int appointId, int zxStyle) {
+                                       StaffPO staffPO, String adId, String adAddress, String groupId, int appointId, int zxStyle,int yxLevel,int ysRange,int marryTime) {
         // 获取邀约客服名称
         String appointName = "";
         if (NumUtil.isNotNull(appointId)) {
@@ -268,13 +265,13 @@ public class ClientAddServiceImpl implements ClientAddService {
             clientVO.setKzQq(
                     StringUtil.emptyToNull(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("qq"))));
             clientVO.setMateName(StringUtil
-                    .emptyToNull(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("mateName"))));
+                    .emptyToNull(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("matename"))));
             clientVO.setMatePhone(StringUtil
-                    .emptyToNull(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("matePhone"))));
+                    .emptyToNull(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("matephone"))));
             clientVO.setMateQq(StringUtil
-                    .emptyToNull(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("mateQq"))));
+                    .emptyToNull(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("mateqq"))));
             clientVO.setMateWeChat(StringUtil
-                    .emptyToNull(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("mateWeChat"))));
+                    .emptyToNull(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("matewechat"))));
             clientVO.setAdId(adId);
             clientVO.setAdAddress(adAddress);
             clientVO.setAppointId(appointId);
@@ -282,6 +279,9 @@ public class ClientAddServiceImpl implements ClientAddService {
             clientVO.setGroupId(groupId);
             clientVO.setGroupName(groupName);
             clientVO.setZxStyle(zxStyle);
+            clientVO.setYsRange(ysRange);
+            clientVO.setYxLevel(yxLevel);
+            clientVO.setMarryTime(marryTime);
             if (StringUtil.isEmpty(clientVO.getKzPhone()) && StringUtil.isEmpty(clientVO.getKzWechat())
                     && StringUtil.isEmpty(clientVO.getKzQq()) && StringUtil.isEmpty(clientVO.getKzWw())) {
                 continue;

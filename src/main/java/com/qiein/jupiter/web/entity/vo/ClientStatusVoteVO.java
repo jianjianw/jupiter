@@ -39,7 +39,6 @@ public class ClientStatusVoteVO implements Serializable {
      * 收集人id
      * */
     private Integer collectorId;
-
     /**
      * 渠道id
      * */
@@ -48,6 +47,14 @@ public class ClientStatusVoteVO implements Serializable {
      * 渠道名称
      * */
     private String channelName;
+    /**
+     * 来源id
+     * */
+    private Integer sourceId;
+    /**
+     * 来源名称
+     * */
+    private String sourceName;
     /**
      * 客资名称
      * */
@@ -81,6 +88,22 @@ public class ClientStatusVoteVO implements Serializable {
      * */
     private String operaName;
 
+
+    public Integer getSourceId() {
+        return sourceId;
+    }
+
+    public void setSourceId(Integer sourceId) {
+        this.sourceId = sourceId;
+    }
+
+    public String getSourceName() {
+        return sourceName;
+    }
+
+    public void setSourceName(String sourceName) {
+        this.sourceName = sourceName;
+    }
 
     public Integer getClassId() {
         return classId;

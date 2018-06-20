@@ -28,5 +28,5 @@ public interface ClientAddService {
      * @param list
      */
     JSONObject batchAddDsClient(String list, int channelId, int sourceId, int shopId, int typeId, StaffPO staffPO,
-                                String adId, String adAddress, String groupId, int appointId, int zxStyle);
+                                String adId, String adAddress, String groupId, int appointId, int zxStyle,int yxLevel,int ysRange,int marryTime);
 }

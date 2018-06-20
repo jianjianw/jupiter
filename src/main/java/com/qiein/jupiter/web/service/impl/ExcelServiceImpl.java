@@ -80,12 +80,12 @@ public class ExcelServiceImpl implements ExcelService {
         params.setTitleRows(0);
         // 表头行数,默认1
         params.setHeadRows(1);
-        List<ClientExcelDTO> clientList = ExcelImportUtil.importExcel(file.getInputStream(), ClientExcelDTO.class,
+        List<ClientExcelNewsDTO> clientList = ExcelImportUtil.importExcel(file.getInputStream(), ClientExcelNewsDTO.class,
                 params);
         if (CollectionUtils.isEmpty(clientList)) {
             throw new RException(ExceptionEnum.EXCEL_IS_NULL);
         }
-        for (ClientExcelDTO clientExcelDTO : clientList) {
+        for (ClientExcelNewsDTO clientExcelDTO : clientList) {
             String status = clientExcelDTO.getStatusName();
             clientExcelDTO.setStatusId((StringUtil.isNotEmpty(status) && status.contains("无"))
                     ? ClientStatusConst.BE_INVALID : ClientStatusConst.BE_HAVE_MAKE_ORDER);
@@ -97,18 +97,14 @@ public class ExcelServiceImpl implements ExcelService {
             clientExcelDTO.setOperaId(currentLoginStaff.getId());
             clientExcelDTO.setTypeName(CommonConstant.EXCEL_DEFAULT_PHOTO_TYPE_NAME);
             clientExcelDTO.setCreateTime(clientExcelDTO.getTime() == 0 ? 0 : HSSFDateUtil.getJavaDate(clientExcelDTO.getTime()).getTime() / 1000);
-            //TODO 需要添加字典中的数据
-            //            clientExcelDTO.setCreateTime(TimeUtil.dateToIntMillis(clientExcelDTO.getTimeDate()));
-//            clientExcelDTO.setAppointTime(TimeUtil.dateToIntMillis(clientExcelDTO.getAppointTimeDate()));
-//            clientExcelDTO.setComeShopTime(TimeUtil.dateToIntMillis(clientExcelDTO.getComeShopTimeDate()));
-//            clientExcelDTO.setSuccessTime(TimeUtil.dateToIntMillis(clientExcelDTO.getSuccessTimeDate()));
-//            clientExcelDTO.setMarryTime(TimeUtil.dateToIntMillis(clientExcelDTO.getMarryTimeDate()));
-//            clientExcelDTO.setYpTime(TimeUtil.dateToIntMillis(clientExcelDTO.getYpTimeDate()));
-//            dictionaryDao.getDicByTypeAndName(clientExcelDTO.getCompanyId(),DictionaryConstant.MARRY_TIME);
-//            dictionaryDao.getDicByTypeAndName(clientExcelDTO.getCompanyId(),DictionaryConstant.YP_TIME);
-//            dictionaryDao.getDicByTypeAndName(clientExcelDTO.getCompanyId(),DictionaryConstant.YX_RANK);
-//            dictionaryDao.getDicByTypeAndName(clientExcelDTO.getCompanyId(),DictionaryConstant.YS_RANGE);
-//            clientExcelDTO.setCreateTime(HSSFDateUtil.getJavaDate(clientExcelDTO.getTime()).getTime() / 1000);
+            clientExcelDTO.setSuccessTime(clientExcelDTO.getSuccessTimeDate() == 0 ? 0 : HSSFDateUtil.getJavaDate(clientExcelDTO.getSuccessTimeDate()).getTime() / 1000);
+            clientExcelDTO.setAppointTime(clientExcelDTO.getAppointTimeDate() == 0 ? 0 : HSSFDateUtil.getJavaDate(clientExcelDTO.getAppointTimeDate()).getTime() / 1000);
+            clientExcelDTO.setComeShopTime(clientExcelDTO.getComeShopTimeDate() == 0 ? 0 : HSSFDateUtil.getJavaDate(clientExcelDTO.getComeShopTimeDate()).getTime() / 1000);
+            clientExcelDTO.setZxStyle(dictionaryDao.getDicByTypeAndName(currentLoginStaff.getCompanyId(),DictionaryConstant.ZX_STYLE,clientExcelDTO.getZxStyleStr()).getDicCode());
+            clientExcelDTO.setYsRange(dictionaryDao.getDicByTypeAndName(currentLoginStaff.getCompanyId(),DictionaryConstant.YS_RANGE,clientExcelDTO.getYsRangeStr()).getDicCode());
+            clientExcelDTO.setMarryTime(dictionaryDao.getDicByTypeAndName(currentLoginStaff.getCompanyId(),DictionaryConstant.MARRY_TIME,clientExcelDTO.getMarryTimeStr()).getDicCode());
+            clientExcelDTO.setYxLevel(dictionaryDao.getDicByTypeAndName(currentLoginStaff.getCompanyId(),DictionaryConstant.YX_RANK,clientExcelDTO.getYxLevelStr()).getDicCode());
+            clientExcelDTO.setYpTime(dictionaryDao.getDicByTypeAndName(currentLoginStaff.getCompanyId(),DictionaryConstant.YP_TIME,clientExcelDTO.getYpTimeStr()).getDicCode());
         }
         // 1.删除员工客资缓存记录
         excelDao.deleteTempByStaffId(DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()),

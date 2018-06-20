@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.dao;
 
 import com.qiein.jupiter.web.entity.dto.ClientExcelDTO;
+import com.qiein.jupiter.web.entity.dto.ClientExcelNewsDTO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public interface ExcelDao {
     /**
      * 批量写入客资临时缓存表
      */
-    int insertExcelClientInfo(@Param("list") List<ClientExcelDTO> list, @Param("tempName") String tempName);
+    int insertExcelClientInfo(@Param("list") List<ClientExcelNewsDTO> list, @Param("tempName") String tempName);
 
     /**
      * 清空缓存表
