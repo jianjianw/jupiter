@@ -82,6 +82,7 @@ public class ClientTrackServiceImpl implements ClientTrackService {
             throw new RException(jsInfo.getString("msg"));
         }
     }
+
     /**
      * 封装推送客资被删除消息
      *
@@ -158,7 +159,7 @@ public class ClientTrackServiceImpl implements ClientTrackService {
      * @param invalidLabel
      * @param staffPO
      */
-    public String approvalInvalidKzList(String kzIds, String memo, int rst, String invalidLabel, StaffPO staffPO) {
+    public void approvalInvalidKzList(String kzIds, String memo, int rst, String invalidLabel, StaffPO staffPO) {
         Map<String, Object> reqContent = new HashMap<>();
         reqContent.put("companyid", staffPO.getCompanyId());
         reqContent.put("operaid", staffPO.getId());
@@ -167,17 +168,12 @@ public class ClientTrackServiceImpl implements ClientTrackService {
         reqContent.put("rst", rst);
         reqContent.put("memo", memo);
         reqContent.put("invalidLlabel", invalidLabel);
-
         String addRstStr = crmBaseApi.doService(reqContent, "clientBatchApprovalLp");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
-        if ("100000".equals(jsInfo.getString("code"))) {
-            //TODO 推送
-            int wrongNum = JsonFmtUtil.strContentToJsonObj(addRstStr).getIntValue("num");
-            log.info("" + wrongNum);
-            return "审批成功：" + (kzIds.split(CommonConstant.STR_SEPARATOR).length - wrongNum) + "个，审批失败：" + wrongNum + "个";
-        } else {
+        if (!"100000".equals(jsInfo.getString("code"))) {
             throw new RException(jsInfo.getString("msg"));
         }
+
     }
 
     /**
