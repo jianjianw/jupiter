@@ -45,9 +45,10 @@
                 GROUPID=#{groupId},
             </if>
         </set>
+        where id=#{id}
     </update>
 
-    <select id="find_channel_group">
+    <select id="findChannelGroup" resultType="com.qiein.jupiter.web.entity.po.CommonTypePO">
         SELECT
             a.ID  id,
             TYPEID typeId,

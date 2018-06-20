@@ -36,6 +36,10 @@ public class ClientStatusVoteVO implements Serializable {
     private Integer collectorId;
 
     /**
+     * 渠道id
+     * */
+    private Integer channelId;
+    /**
      * 渠道名称
      * */
     private String channelName;
@@ -55,22 +59,39 @@ public class ClientStatusVoteVO implements Serializable {
      * 客资手机号
      * */
     private String kzPhone;
-
+    /**
+     * 客资旺旺
+     * */
+    private String kzWw;
     /**
      * 公司id
      * */
     private Integer companyId;
-
     /**
      * 操作者id
      * */
     private Integer operaId;
-
     /**
      * 操作者名称
      * */
     private String operaName;
 
+
+    public Integer getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(Integer channelId) {
+        this.channelId = channelId;
+    }
+
+    public String getKzWw() {
+        return kzWw;
+    }
+
+    public void setKzWw(String kzWw) {
+        this.kzWw = kzWw;
+    }
 
     public Integer getOperaId() {
         return operaId;

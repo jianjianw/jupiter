@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.controller;
 
 import com.alibaba.druid.Constants;
 import com.alibaba.fastjson.JSONObject;
+import com.google.gson.JsonObject;
 import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
@@ -45,7 +46,7 @@ public class GoldDataController extends BaseController{
      */
     @PostMapping("/insert")
     public ResultInfo insert(@RequestBody GoldFingerPO goldFingerPO){
-        if(StringUtil.haveEmpty(goldFingerPO.getFormId(),goldFingerPO.getFormName(),goldFingerPO.getPostURL(),goldFingerPO.getSrcName(),goldFingerPO.getTypeName(),goldFingerPO.getZxStyle())){
+        if(StringUtil.haveEmpty(goldFingerPO.getFormId(),goldFingerPO.getFormName(),goldFingerPO.getSrcName(),goldFingerPO.getTypeName(),goldFingerPO.getZxStyle())){
             throw new RException(ExceptionEnum.LOSE_FILED);
         }
         StaffPO staff=getCurrentLoginStaff();
@@ -79,7 +80,7 @@ public class GoldDataController extends BaseController{
      */
     @PostMapping("/update")
     public ResultInfo update(@RequestBody GoldFingerPO goldFingerPO){
-        if(StringUtil.haveEmpty(goldFingerPO.getFormId(),goldFingerPO.getFormName(),goldFingerPO.getPostURL(),goldFingerPO.getSrcName(),goldFingerPO.getTypeName(),goldFingerPO.getZxStyle())){
+        if(StringUtil.haveEmpty(goldFingerPO.getFormId(),goldFingerPO.getFormName(),goldFingerPO.getSrcName(),goldFingerPO.getTypeName(),goldFingerPO.getZxStyle())){
             throw new RException(ExceptionEnum.LOSE_FILED);
         }
         StaffPO staff=getCurrentLoginStaff();
@@ -125,4 +126,14 @@ public class GoldDataController extends BaseController{
         return ResultInfoUtil.success(goldDataService.goldCustomerSelect(queryMapDTO,goldCustomerDTO));
 
     }
+
+    /**
+     * 金数据表单回调
+     * */
+    @GetMapping("/receive_gold_data_form")
+    public ResultInfo receiveGoldDataForm(@RequestBody JSONObject jsonObject){
+        //TODO 获取到数据，存储temp与plugSetting
+        return ResultInfoUtil.success();
+    }
+
 }

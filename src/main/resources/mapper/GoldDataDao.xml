@@ -50,16 +50,16 @@
         <result column="STATUSID" jdbcType="INTEGER" property="statusId"/>
     </resultMap>
     <sql id="goldCustomerlist">
-        ID,FORMID,FORMNAME,SRCNAME,TYPENAME,MEMO,FROM_UNIXTIME(CREATETIME) createTime,KZNAME,KZPHONE,WECHAT,ADDRESS,REMARK,IP,IPADDRESS,STATUSID
+        ID,FORMID,FORMNAME,SRCNAME,TYPENAME,MEMO,FROM_UNIXTIME(CREATETIME,'%Y/%m/%d %H:%i') createTime,KZNAME,KZPHONE,WECHAT,ADDRESS,REMARK,IP,IPADDRESS,STATUSID
     </sql>
     <sql id="formInsert">
         FORMID,FORMNAME,KZNAMEFIELD,KZPHONEFIELD,KZWECHATFIELD,FIELDKEY,FIELDVALUE,SRCID,SRCNAME,TYPEID,TYPENAME,ADID,ADADDRESS,ZXSTYLE,MEMO,ISSHOW,POSTURL,CREATEORID,CREATEORNAME,CREATETIME,COMPANYID,ISFILTER,PUSHNEWS
     </sql>
     <sql id="formList">
-        ID ,FORMID , FORMNAME ,KZNAMEFIELD ,KZPHONEFIELD ,KZWECHATFIELD ,FIELDKEY ,FIELDVALUE ,SRCID ,SRCNAME ,TYPEID ,TYPENAME ,ADID ,ADADDRESS ,ZXSTYLE ,MEMO ,ISSHOW ,POSTURL ,CREATEORNAME ,FROM_UNIXTIME(CREATETIME) createTime ,AREALIMIT ,ISFILTER ,PUSHNEWS
+        ID ,FORMID , FORMNAME ,KZNAMEFIELD ,KZPHONEFIELD ,KZWECHATFIELD ,FIELDKEY ,FIELDVALUE ,SRCID ,SRCNAME ,TYPEID ,TYPENAME ,ADID ,ADADDRESS ,ZXSTYLE ,MEMO ,ISSHOW ,POSTURL ,CREATEORNAME ,FROM_UNIXTIME(CREATETIME,'%Y/%m/%d %H:%i') createTime ,AREALIMIT ,ISFILTER ,PUSHNEWS
     </sql>
     <sql id="formUpdate">
-        FORMID=#{formId}, FORMNAME=#{formName},KZNAMEFIELD=#{kzNameField},KZPHONEFIELD=#{kzPhoneField},KZWECHATFIELD=#{kzWechatField},FIELDKEY=#{fieldKey}, FIELDVALUE=#{fieldValue},SRCID=#{srcId},SRCNAME=#{srcName},TYPEID=#{typeId},TYPENAME=#{typeName},ADID=#{adId},ADADDRESS=#{adAddress},ZXSTYLE=#{zxStyle},MEMO=#{memo},POSTURL=#{postURL}
+        FORMID=#{formId}, FORMNAME=#{formName},KZNAMEFIELD=#{kzNameField},KZPHONEFIELD=#{kzPhoneField},KZWECHATFIELD=#{kzWechatField},FIELDKEY=#{fieldKey}, FIELDVALUE=#{fieldValue},SRCID=#{srcId},SRCNAME=#{srcName},TYPEID=#{typeId},TYPENAME=#{typeName},ADID=#{adId},ADADDRESS=#{adAddress},ZXSTYLE=#{zxStyle},MEMO=#{memo},POSTURL=#{postURL} , ISSHOW=#{isShow},AREALIMIT=#{areaLimit},ISFILTER=#{isFilter},PUSHNEWS=#{pushNews}
     </sql>
     <insert id="insert">
         INSERT INTO hm_crm_gold_plug_setting (
@@ -105,7 +105,7 @@
     <select id="select" resultMap="goldData" >
         select
       <include refid="formList"/>
-        from hm_crm_gold_plug_setting where companyId=#{companyId}
+        from hm_crm_gold_plug_setting where companyId=#{companyId} order by id DESC
 
     </select>
 
@@ -140,6 +140,7 @@
         <if test="statusId!=null and statusId!=''">
             and   statusId =#{statusId}
         </if>
+        order by id DESC
     </select>
 
     <select id="checkForm" resultMap="goldData">

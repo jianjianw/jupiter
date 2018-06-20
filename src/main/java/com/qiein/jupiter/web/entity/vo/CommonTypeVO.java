@@ -1,5 +1,8 @@
 package com.qiein.jupiter.web.entity.vo;
-
+/**
+ * 拍摄类型渠道
+ * Author xiangliang
+ */
 public class CommonTypeVO {
     private Integer id;
     private String dicName;

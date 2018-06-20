@@ -36,12 +36,14 @@ public class ClientPushTask {
     /**
      * 定时任务-推送客资
      */
-    @Scheduled(initialDelay = 1000, fixedDelay = 30 * 1000)
+//    @Scheduled(initialDelay = 1000, fixedDelay = 30 * 1000)
     public void taskPushLp() {
         log.info("执行定时推送任务");
         List<CompanyPO> compList = companyDao.listComp();
         for (CompanyPO comp : compList) {
-            List<ClientPushDTO> infoList = pushService.getInfoListBeReadyPush(comp.getId(), comp.getOvertime());
+            //超时时间设置是秒，但是两个数据库是毫秒时间戳
+            int overTime = comp.getOvertime() * 1000;
+            List<ClientPushDTO> infoList = pushService.getInfoListBeReadyPush(comp.getId(), overTime);
             if (CollectionUtils.isEmpty(infoList)) {
                 continue;
             }

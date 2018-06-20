@@ -3,7 +3,10 @@ package com.qiein.jupiter.web.entity.vo;
 import com.qiein.jupiter.web.entity.po.CommonTypePO;
 
 import java.util.List;
-
+/**
+ * 拍摄类型渠道
+ * Author xiangliang
+ */
 public class CommonTypeChannelVO {
     //拍摄方式渠道分配
     private List<CommonTypePO> commonTypePOList;

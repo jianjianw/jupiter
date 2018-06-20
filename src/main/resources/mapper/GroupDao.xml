@@ -240,6 +240,20 @@
         GROUP BY son.PARENTID
     </select>
 
+    <!--获取员工所在电商小组-->
+    <select id="getStaffBelongDSGroup" parameterType="map" resultType="String">
+        SELECT
+        grp.GROUPID
+        FROM
+        hm_pub_group grp
+        LEFT JOIN hm_pub_group_staff gs ON gs.COMPANYID = grp.COMPANYID AND gs.GROUPID = grp.GROUPID
+        WHERE
+        grp.COMPANYID = #{companyId}
+        AND grp.PARENTID != '0'
+        AND INSTR(grp.GROUPTYPE,'yy')!=0
+        AND gs.STAFFID = #{staffId}
+    </select>
+
     <!--根据小组ID获取小组信息-->
     <select id="getGroupById" parameterType="map" resultMap="baseMap">
         SELECT
