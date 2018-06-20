@@ -150,7 +150,7 @@ public enum ExceptionEnum {
     GET_WX_INFO_FAIL(2104,"获取用户微信信息失败"),
     //金数据
     FORM_WAS_IN(2201,"表单已存在");
-
+    
     private Integer code;
     private String msg;
 

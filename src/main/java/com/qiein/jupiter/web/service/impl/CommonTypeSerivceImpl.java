@@ -1,5 +1,7 @@
 package com.qiein.jupiter.web.service.impl;
 
+import com.qiein.jupiter.exception.ExceptionEnum;
+import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.web.dao.CommonTypeDao;
 import com.qiein.jupiter.web.entity.po.CommonTypePO;
 import com.qiein.jupiter.web.entity.vo.CommonTypeChannelShowVO;
@@ -50,7 +52,11 @@ public class CommonTypeSerivceImpl implements CommonTypeSerivce {
                  list.add(type);
              }
          }
-         commonTypeDao.addTypeChannelGroup(list);
+         try {
+             commonTypeDao.addTypeChannelGroup(list);
+         }catch(Exception e){
+             throw new RException(ExceptionEnum.GROUP_NAME_REPEAT);
+         }
      }
     /**
      * 批量删除
@@ -67,7 +73,12 @@ public class CommonTypeSerivceImpl implements CommonTypeSerivce {
      * @param commonTypePO
      */
     public void editTypeChannelGroup( CommonTypePO commonTypePO){
-        commonTypeDao.editTypeChannelGroup(commonTypePO);
+        try {
+            commonTypeDao.editTypeChannelGroup(commonTypePO);
+        }catch(Exception e){
+            throw new RException(ExceptionEnum.GROUP_NAME_REPEAT);
+        }
+
     }
 
     /**
