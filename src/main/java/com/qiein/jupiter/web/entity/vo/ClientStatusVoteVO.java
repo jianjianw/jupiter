@@ -26,6 +26,11 @@ public class ClientStatusVoteVO implements Serializable {
     private String content;
 
     /**
+     * classid
+     * */
+    private Integer classId;
+
+    /**
      * 状态id
      * */
     private Integer statusId;
@@ -76,6 +81,14 @@ public class ClientStatusVoteVO implements Serializable {
      * */
     private String operaName;
 
+
+    public Integer getClassId() {
+        return classId;
+    }
+
+    public void setClassId(Integer classId) {
+        this.classId = classId;
+    }
 
     public Integer getChannelId() {
         return channelId;

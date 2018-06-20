@@ -136,6 +136,7 @@ public class GoldDataServiceImpl implements GoldDataService {
         }
         //表单数据
         JSONObject entry = jsonObject.getJSONObject("entry");
+        System.out.println(entry);
         if (fieldKeys.length != 0 || fieldValues.length != 0){
             for (int i = 0; i < fieldValues.length; i++) {
                 if ("kzqq".equalsIgnoreCase(fieldValues[i])) {
@@ -143,7 +144,7 @@ public class GoldDataServiceImpl implements GoldDataService {
                     continue;
                 }
                 if ("address".equalsIgnoreCase(fieldValues[i])) {
-                    reqContent.put("address", entry.getJSONObject(fieldValues[i]).getString("province")+entry.getJSONObject(fieldValues[i]).getString("city"));
+                    reqContent.put("address", entry.getJSONObject(fieldKeys[i]).getString("province")+entry.getJSONObject(fieldKeys[i]).getString("city"));
                 }
             }
         }
@@ -157,7 +158,7 @@ public class GoldDataServiceImpl implements GoldDataService {
         reqContent.put("kzphone", entry.getString(goldFingerPO.getKzPhoneField()));
         reqContent.put("channelid", sourcePO.getChannelId());
         reqContent.put("channelname", sourcePO.getChannelName());
-        reqContent.put("srcid", goldFingerPO.getSrcId());
+        reqContent.put("sourceid", goldFingerPO.getSrcId());
         reqContent.put("srctype", sourcePO.getTypeId());
         reqContent.put("sourcename", goldFingerPO.getSrcName());
         reqContent.put("isfilter", goldFingerPO.getIsFilter());
@@ -167,9 +168,10 @@ public class GoldDataServiceImpl implements GoldDataService {
         reqContent.put("zxstyle", goldFingerPO.getZxStyle());
         reqContent.put("remark", goldFingerPO.getMemo());
         reqContent.put("collectorid", goldFingerPO.getCreateorId());
-        reqContent.put("collectorName", goldFingerPO.getCreateorName());
+        reqContent.put("collectorname", goldFingerPO.getCreateorName());
 
 
+        System.out.println(reqContent.toString());
 
         String addRstStr = crmBaseApi.doService(reqContent, "clientAddGoldPlug");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
