@@ -100,7 +100,7 @@ public class ClientAddServiceImpl implements ClientAddService {
         reqContent.put("kzww", clientVO.getKzWw());
         reqContent.put("channelid", clientVO.getChannelId());
         reqContent.put("sourceid", clientVO.getSourceId());
-        reqContent.put("srctype", ChannelConstant.DS_ONLY);
+        reqContent.put("srctype", sourcePO.getTypeId());
         reqContent.put("isfilter",sourcePO.getIsFilter());
         reqContent.put("shopid", clientVO.getShopId());
         reqContent.put("zxstyle", clientVO.getZxStyle());
