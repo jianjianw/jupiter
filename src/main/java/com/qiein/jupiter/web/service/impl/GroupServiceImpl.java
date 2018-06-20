@@ -280,30 +280,24 @@ public class GroupServiceImpl implements GroupService {
         if (CommonConstant.DEFAULT_STRING_ZERO.equalsIgnoreCase(groupPO.getParentId())) {
             //根节点
             ChannelPO channelPO = channelDao.getChannelByGroupName(old.getGroupName(), old.getCompanyId());
-            if(channelPO != null){
+            if (null != channelPO) {
                 //是根节点
                 channelPO.setCompanyId(groupPO.getCompanyId());
                 channelPO.setChannelName(groupPO.getGroupName());
                 channelPO.setShowFlag(true);
                 channelDao.update(channelPO);
-            }else{
-                throw new RException(ExceptionEnum.UNKNOW_ERROR);
             }
-        }else{
+        } else {
             ChannelPO channelPO = channelDao.getChannelByGroupParentId(groupPO.getParentId(), old.getCompanyId());
-            if(channelPO != null){
+            if (channelPO != null) {
                 SourcePO sourcePO = sourceDao.getSourceBySrcname(old.getGroupName(), old.getCompanyId(), channelPO.getId());
-                if (null == sourcePO) {
-                    throw new RException(ExceptionEnum.UNKNOW_ERROR);
-                } else {
+                if (null != sourcePO) {
                     sourcePO.setSrcName(groupPO.getGroupName());
                     sourcePO.setChannelId(channelPO.getId());
                     sourcePO.setCompanyId(channelPO.getCompanyId());
                     sourcePO.setIsShow(true);
                     sourceDao.update(sourcePO);
                 }
-            }else{
-                throw new RException(ExceptionEnum.UNKNOW_ERROR);
             }
         }
         return groupPO;
@@ -339,10 +333,30 @@ public class GroupServiceImpl implements GroupService {
         //删除拍摄地-渠道-组关联表中的
         shopChannelGroupDao.delByGroupId(companyId, groupPO.getGroupId());
 
-        ChannelPO channelPO = channelDao.getChannelByGroupName(groupPO.getGroupName(), groupPO.getCompanyId());
 
         //节点不存在
-        //TODO 删除有BUG
+        if (CommonConstant.DEFAULT_STRING_ZERO.equalsIgnoreCase(groupPO.getParentId())) {
+            ChannelPO channelPO = channelDao.getChannelByGroupName(groupPO.getGroupName(), groupPO.getCompanyId());
+            if (null != channelPO) {
+                channelPO.setShowFlag(false);
+                channelDao.update(channelPO);
+                List<SourcePO> sourcePOS = sourceDao.getSourceListByChannelId(channelPO.getId(), channelPO.getCompanyId());
+                if (CollectionUtils.isNotEmpty(sourcePOS)) {
+                    sourceDao.updateIsShowByChannelId(channelPO.getId(), channelPO.getCompanyId());
+                }
+            }
+        } else {
+            ChannelPO channelPO = channelDao.getChannelByGroupParentId(groupPO.getParentId(), groupPO.getCompanyId());
+            if (null != channelPO) {
+                SourcePO sourcePO = sourceDao.getSourceBySrcname(groupPO.getGroupName(), groupPO.getCompanyId(), channelPO.getId());
+                if (null != sourcePO) {
+                    sourcePO.setIsShow(false);
+                    sourceDao.update(sourcePO);
+                }
+            }
+        }
+
+
 //        if(channelPO != null){
 //            if (CommonConstant.DEFAULT_STRING_ZERO.equalsIgnoreCase(groupPO.getParentId())) {
 //                //是根节点
