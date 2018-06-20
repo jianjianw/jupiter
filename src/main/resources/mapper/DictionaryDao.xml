@@ -32,7 +32,7 @@
         WHERE
             dic.DICTYPE = #{dicType}
             AND dic.COMPANYID = #{companyId}
-
+        ORDER BY dic.PRIORITY ASC
     </select>
 
     <!--获取企业左上角菜单栏-->
