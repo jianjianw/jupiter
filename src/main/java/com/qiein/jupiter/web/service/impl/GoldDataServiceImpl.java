@@ -3,7 +3,9 @@ package com.qiein.jupiter.web.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.mzlion.core.http.IPUtils;
 import com.mzlion.core.lang.StringUtils;
+import com.qiein.jupiter.constant.ClientStatusConst;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
@@ -12,6 +14,7 @@ import com.qiein.jupiter.util.JsonFmtUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.ChannelDao;
 import com.qiein.jupiter.web.dao.GoldDataDao;
+import com.qiein.jupiter.web.dao.GoldTempDao;
 import com.qiein.jupiter.web.dao.SourceDao;
 import com.qiein.jupiter.web.entity.dto.ClientPushDTO;
 import com.qiein.jupiter.web.entity.dto.GoldCustomerDTO;
@@ -45,6 +48,8 @@ public class GoldDataServiceImpl implements GoldDataService {
     private SourceDao sourceDao;
     @Autowired
     private CrmBaseApi crmBaseApi;
+    @Autowired
+    private GoldTempDao goldTempDao;
 
     /**
      * 添加表单
@@ -169,7 +174,7 @@ public class GoldDataServiceImpl implements GoldDataService {
         reqContent.put("collectorid", goldFingerPO.getCreateorId());
         reqContent.put("collectorname", goldFingerPO.getCreateorName());
 
-
+        //插入记录
         GoldTempPO goldTempPO = new GoldTempPO();
         goldTempPO.setFormId(goldFingerPO.getFormId());
         goldTempPO.setFormName(goldFingerPO.getFormName());
@@ -180,6 +185,20 @@ public class GoldDataServiceImpl implements GoldDataService {
         goldTempPO.setMemo(goldFingerPO.getMemo());
         goldTempPO.setCollecterId(goldFingerPO.getCreateorId());
         goldTempPO.setCollecterName(goldFingerPO.getCreateorName());
+        goldTempPO.setAdId(goldFingerPO.getAdId());
+        goldTempPO.setAdAddress(goldFingerPO.getAdAddress());
+        goldTempPO.setKzName(entry.getString(goldFingerPO.getKzNameField()));
+        goldTempPO.setKzPhone(entry.getString(goldFingerPO.getKzPhoneField()));
+        goldTempPO.setStatusId(ClientStatusConst.BE_HAVE_MAKE_ORDER);
+        goldTempPO.setCompanyId(goldFingerPO.getCompanyId());
+        if(reqContent.containsKey("address")){
+            goldTempPO.setAdAddress(reqContent.get("address").toString());
+        }
+        if(StringUtil.isNotEmpty(goldFingerPO.getKzWechatField())){
+            goldTempPO.setWechat(entry.getString(goldFingerPO.getKzWechatField()));
+        }
+        //TODO  ip，ipAddress，remark
+        goldTempDao.insert(goldTempPO);
 
         String addRstStr = crmBaseApi.doService(reqContent, "clientAddGoldPlug");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);

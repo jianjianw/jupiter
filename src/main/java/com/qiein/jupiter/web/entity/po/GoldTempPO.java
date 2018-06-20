@@ -54,7 +54,7 @@ public class GoldTempPO {
     /**
      * 广告id
      * */
-    private Integer adId;
+    private String adId;
     /**
      * 广告地址页
      * */
@@ -184,11 +184,11 @@ public class GoldTempPO {
         this.createTime = createTime;
     }
 
-    public Integer getAdId() {
+    public String getAdId() {
         return adId;
     }
 
-    public void setAdId(Integer adId) {
+    public void setAdId(String adId) {
         this.adId = adId;
     }
 
