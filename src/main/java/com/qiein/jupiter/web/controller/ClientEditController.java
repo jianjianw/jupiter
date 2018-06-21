@@ -61,27 +61,27 @@ public class ClientEditController extends BaseController {
             return ResultInfoUtil.error(ExceptionEnum.KZ_ID_IS_NULL);
         }
         //预约到店
-        if (ClientStatusConst.BE_COMFIRM == clientVO.getYyRst() && NumUtil.isInValid(clientVO.getShopId())) {
+        if (NumUtil.isValid(clientVO.getYyRst()) && ClientStatusConst.BE_COMFIRM == clientVO.getYyRst() && NumUtil.isInValid(clientVO.getShopId())) {
             return ResultInfoUtil.error(ExceptionEnum.SHOP_ID_IS_NULL);
         }
-        if (ClientStatusConst.BE_COMFIRM == clientVO.getYyRst() && NumUtil.isInValid(clientVO.getAppointTime())) {
+        if (NumUtil.isValid(clientVO.getYyRst()) && ClientStatusConst.BE_COMFIRM == clientVO.getYyRst() && NumUtil.isInValid(clientVO.getAppointTime())) {
             return ResultInfoUtil.error(ExceptionEnum.APPOINT_TIME_IS_NULL);
         }
         // 在线订单
-        if (ClientStatusConst.ONLINE_SUCCESS == clientVO.getYyRst() && NumUtil.isInValid(clientVO.getAmount())) {
+        if (NumUtil.isValid(clientVO.getYyRst()) && ClientStatusConst.ONLINE_SUCCESS == clientVO.getYyRst() && NumUtil.isInValid(clientVO.getAmount())) {
             return ResultInfoUtil.error(ExceptionEnum.AMOUNT_IS_NULL);
         }
-        if (ClientStatusConst.ONLINE_SUCCESS == clientVO.getYyRst() && NumUtil.isInValid(clientVO.getStayAmount())) {
+        if (NumUtil.isValid(clientVO.getYyRst()) && ClientStatusConst.ONLINE_SUCCESS == clientVO.getYyRst() && NumUtil.isInValid(clientVO.getStayAmount())) {
             return ResultInfoUtil.error(ExceptionEnum.STAY_AMOUNT_IS_NULL);
         }
-        if (ClientStatusConst.ONLINE_SUCCESS == clientVO.getYyRst() && NumUtil.isInValid(clientVO.getSuccessTime())) {
+        if (NumUtil.isValid(clientVO.getYyRst()) && ClientStatusConst.ONLINE_SUCCESS == clientVO.getYyRst() && NumUtil.isInValid(clientVO.getSuccessTime())) {
             return ResultInfoUtil.error(ExceptionEnum.SUCCESS_TIME_IS_NULL);
         }
         //在线保留
-        if (ClientStatusConst.ONLINE_STAY == clientVO.getYyRst() && NumUtil.isInValid(clientVO.getStayAmount())) {
+        if (NumUtil.isValid(clientVO.getYyRst()) && ClientStatusConst.ONLINE_STAY == clientVO.getYyRst() && NumUtil.isInValid(clientVO.getStayAmount())) {
             return ResultInfoUtil.error(ExceptionEnum.STAY_AMOUNT_IS_NULL);
         }
-        if (ClientStatusConst.ONLINE_STAY == clientVO.getYyRst() && NumUtil.isInValid(clientVO.getStayTime())) {
+        if (NumUtil.isValid(clientVO.getYyRst()) && ClientStatusConst.ONLINE_STAY == clientVO.getYyRst() && NumUtil.isInValid(clientVO.getStayTime())) {
             return ResultInfoUtil.error(ExceptionEnum.STAY_TIME_IS_NULL);
         }
         //获取当前登录账户
