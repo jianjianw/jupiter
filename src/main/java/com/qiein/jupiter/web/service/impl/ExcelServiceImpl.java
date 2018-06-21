@@ -8,7 +8,7 @@ import java.util.Map;
 
 import com.qiein.jupiter.constant.DictionaryConstant;
 import com.qiein.jupiter.util.*;
-import com.qiein.jupiter.web.dao.DictionaryDao;
+import com.qiein.jupiter.web.dao.*;
 import com.qiein.jupiter.web.entity.dto.ClientExcelNewsDTO;
 import com.qiein.jupiter.web.entity.po.DictionaryPO;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
@@ -25,9 +25,6 @@ import com.qiein.jupiter.enums.TableEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.http.CrmBaseApi;
-import com.qiein.jupiter.web.dao.CompanyDao;
-import com.qiein.jupiter.web.dao.ExcelDao;
-import com.qiein.jupiter.web.dao.PermissionDao;
 import com.qiein.jupiter.web.entity.dto.ClientExcelDTO;
 import com.qiein.jupiter.web.entity.dto.ClientExportDTO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
@@ -66,6 +63,8 @@ public class ExcelServiceImpl implements ExcelService {
     private PermissionDao permissionDao;
     @Autowired
     private DictionaryDao dictionaryDao;
+    @Autowired
+    private SourceDao sourceDao;
 
     /**
      * 导入客资
@@ -156,9 +155,6 @@ public class ExcelServiceImpl implements ExcelService {
         excelDao.updateSrcIdAndType(DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()),
                 currentLoginStaff.getId());
 
-        //设置渠道ID
-        excelDao.updateChannelId(DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()),
-                currentLoginStaff.getId());
 
         // 更新最后跟进时间为当前系统时间
         excelDao.updateUpdateTime(DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()),
@@ -191,6 +187,11 @@ public class ExcelServiceImpl implements ExcelService {
         // 更新门市ID
         excelDao.updateReceptorId(DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()),
                 currentLoginStaff.getId());
+
+        //设置来源和渠道
+        excelDao.updateSrcAndChannel(DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()),
+                currentLoginStaff.getId());
+
     }
 
 

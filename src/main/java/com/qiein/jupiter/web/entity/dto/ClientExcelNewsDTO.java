@@ -94,7 +94,6 @@ public class ClientExcelNewsDTO implements Serializable {
     /**
      * 渠道名
      */
-    @Excel(name = "渠道（必填-匹配后台）")
     private String channelName;
     /**
      * 渠道ID
@@ -103,7 +102,7 @@ public class ClientExcelNewsDTO implements Serializable {
     /**
      * 渠道名称
      */
-    @Excel(name = "来源")
+    @Excel(name = "渠道（必填-匹配后台）")
     private String sourceName;
 
     /**
@@ -412,7 +411,7 @@ public class ClientExcelNewsDTO implements Serializable {
                 || NumUtil.isNull(getShopId())) {
             return true;
         }
-        if(StringUtil.checkWeChat(getKzWechat()) || RegexUtil.checkMobile(getKzPhone()) || StringUtil.isQQCorrect(getKzQq())){
+        if(!StringUtil.checkWeChat(getKzWechat()) || !RegexUtil.checkMobile(getKzPhone()) || !StringUtil.isQQCorrect(getKzQq())){
             return true;
         }
         return false;
