@@ -117,6 +117,7 @@ public enum ExceptionEnum {
     STAY_AMOUNT_IS_NULL(1411, "已收金额不能为空"),
     SUCCESS_TIME_IS_NULL(1412, "订单时间不能为空"),
     STAY_TIME_IS_NULL(1413, "收款时间不能为空"),
+    JD_RESULT_IS_NULL(1414, "接待结果不能为空"),
     //OSS对象存储
     OSS_UPLOAD_TYPE_ERROR(1501, "上传类型错误"),
     OSS_UPLOAD_SIZE_ERROR(1502, "图片大小超过3M"),

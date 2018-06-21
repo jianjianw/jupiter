@@ -234,6 +234,18 @@ public class ClientVO implements Serializable {
      * 收款时间
      */
     private int stayTime;
+    /**
+     * 门市接待人ID
+     */
+    private int receptorId;
+    /**
+     * 门市接待人姓名
+     */
+    private String receptorName;
+    /**
+     * 到店时间
+     */
+    private int comeShopTime;
 
 
     public String getMateName() {
@@ -674,5 +686,29 @@ public class ClientVO implements Serializable {
 
     public void setStayTime(int stayTime) {
         this.stayTime = stayTime;
+    }
+
+    public int getReceptorId() {
+        return receptorId;
+    }
+
+    public void setReceptorId(int receptorId) {
+        this.receptorId = receptorId;
+    }
+
+    public String getReceptorName() {
+        return receptorName;
+    }
+
+    public void setReceptorName(String receptorName) {
+        this.receptorName = receptorName;
+    }
+
+    public int getComeShopTime() {
+        return comeShopTime;
+    }
+
+    public void setComeShopTime(int comeShopTime) {
+        this.comeShopTime = comeShopTime;
     }
 }
