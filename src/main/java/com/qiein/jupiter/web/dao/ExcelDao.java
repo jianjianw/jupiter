@@ -118,18 +118,18 @@ public interface ExcelDao {
     /**
      * 获取所有的记录
      **/
-    List<ClientExcelDTO> getAllRecordByStaffId(@Param("tempName") String tempName, @Param("staffId") int staffId);
+    List<ClientExcelNewsDTO> getAllRecordByStaffId(@Param("tempName") String tempName, @Param("staffId") int staffId);
 
     /**
      * 获取与info表重复的记录
      **/
-    List<ClientExcelDTO> getRepeatRecord(@Param("tempName") String tempName, @Param("tableName") String tableName,
+    List<ClientExcelNewsDTO> getRepeatRecord(@Param("tempName") String tempName, @Param("tableName") String tableName,
                                          @Param("staffId") int staffId);
 
     /**
      * 获取Excel重复的记录
      **/
-    List<ClientExcelDTO> getExcelRepeatRecord(@Param("tempName") String tempName, @Param("staffId") int staffId);
+    List<ClientExcelNewsDTO> getExcelRepeatRecord(@Param("tempName") String tempName, @Param("staffId") int staffId);
 
     /**
      * 添加客资基础信息ByStaffId

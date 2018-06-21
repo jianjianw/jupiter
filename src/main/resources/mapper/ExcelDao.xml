@@ -49,12 +49,83 @@
         <result column="MEMO" jdbcType="VARCHAR" property="remark"/>
     </resultMap>
 
+    <resultMap id="baseNewsMap" type="com.qiein.jupiter.web.entity.dto.ClientExcelNewsDTO">
+        <result column="KZID" jdbcType="VARCHAR" property="kzId"/>
+        <result column="TYPEID" jdbcType="INTEGER" property="typeId"/>
+        <result column="TYPENAME" jdbcType="VARCHAR" property="typeName"/>
+        <result column="CLASSID" jdbcType="INTEGER" property="classId"/>
+        <result column="CLASSNAME" jdbcType="VARCHAR" property="className"/>
+        <result column="STATUSID" jdbcType="INTEGER" property="statusId"/>
+        <result column="STATUSNAME" jdbcType="VARCHAR" property="statusName"/>
+        <result column="CHANNELID" jdbcType="INTEGER" property="channelId"/>
+        <result column="CHANNELNAME" jdbcType="VARCHAR" property="channelName"/>
+        <result column="SOURCEID" jdbcType="INTEGER" property="sourceId"/>
+        <result column="SOURCENAME" jdbcType="VARCHAR" property="sourceName"/>
+        <result column="ZXSTYLE" jdbcType="VARCHAR" property="zxStyle"/>
+        <result column="KZNAME" jdbcType="VARCHAR" property="kzName"/>
+        <result column="SEXNAME" jdbcType="VARCHAR" property="sex"/>
+        <result column="KZPHONE" jdbcType="VARCHAR" property="kzPhone"/>
+        <result column="KZWECHAT" jdbcType="VARCHAR" property="kzWechat"/>
+        <result column="KZQQ" jdbcType="VARCHAR" property="kzQq"/>
+        <result column="KZWW" jdbcType="VARCHAR" property="kzWw"/>
+        <result column="COLLECTORID" jdbcType="INTEGER" property="collectorId"/>
+        <result column="COLLECTORNAME" jdbcType="VARCHAR" property="collectorName"/>
+        <result column="APPOINTORID" jdbcType="INTEGER" property="appointorId"/>
+        <result column="APPOINTNAME" jdbcType="VARCHAR" property="appointName"/>
+        <result column="APPOINTTIME" jdbcType="VARCHAR" property="appointTime"/>
+        <result column="UPDATETIME" jdbcType="VARCHAR" property="updateTime"/>
+        <result column="CREATETIME" jdbcType="VARCHAR" property="createTime"/>
+        <result column="SHOPID" jdbcType="INTEGER" property="shopId"/>
+        <result column="SHOPNAME" jdbcType="VARCHAR" property="shopName"/>
+        <result column="AMOUNT" jdbcType="VARCHAR" property="amout"/>
+        <result column="COMPANYID" jdbcType="INTEGER" property="companyId"/>
+        <result column="VALIDTIME" jdbcType="VARCHAR" property="validTime"/>
+        <result column="COMESHOPTIME" jdbcType="VARCHAR" property="comeShopTime"/>
+        <result column="SUCCESSTIME" jdbcType="VARCHAR" property="successTime"/>
+        <result column="TRACETIME" jdbcType="VARCHAR" property="traceTime"/>
+        <result column="RECEIVETIME" jdbcType="VARCHAR" property="receiveTime"/>
+        <result column="MARRYTIME" jdbcType="INTEGER" property="marryTime"/>
+        <result column="YPTIME" jdbcType="INTEGER" property="ypTime"/>
+        <result column="ADADDRESS" jdbcType="VARCHAR" property="adAddress"/>
+        <result column="ADID" jdbcType="VARCHAR" property="adId"/>
+        <result column="OPERAID" jdbcType="INTEGER" property="operaId"/>
+        <result column="ADDRESS" jdbcType="VARCHAR" property="address"/>
+        <result column="GROUPNAME" jdbcType="VARCHAR" property="groupName"/>
+        <result column="GROUPID" jdbcType="VARCHAR" property="groupId"/>
+        <result column="KEYWORD" jdbcType="VARCHAR" property="keyWord"/>
+        <result column="MEMO" jdbcType="VARCHAR" property="remark"/>
+        <result column="OLDKZNAME" jdbcType="VARCHAR" property="oldKzName"/>
+        <result column="OLDKZPHONE" jdbcType="VARCHAR" property="oldKzPhone"/>
+        <result column="RECEPTORNAME" jdbcType="VARCHAR" property="receptorName"></result>
+        <result column="RECEPTORID" jdbcType="VARCHAR" property="receptorId"></result>
+        <result column="MATENAME" jdbcType="VARCHAR" property="mateName"></result>
+        <result column="MATEPHONE" jdbcType="VARCHAR" property="matePhone"></result>
+        <result column="MATEWECHAT" jdbcType="VARCHAR" property="mateWeChat"></result>
+        <result column="MATEQQ" jdbcType="VARCHAR" property="mateQq"></result>
+        <result column="YXLEVEL" jdbcType="INTEGER" property="yxLevel"></result>
+        <result column="FILMINGCODE" jdbcType="VARCHAR" property="filmingCode"></result>
+        <result column="FILMINGAREA" jdbcType="VARCHAR" property="filmingArea"></result>
+        <result column="YSRANGE" jdbcType="INTEGER" property="ysRange"></result>
+        <result column="STAYAMOUNT" jdbcType="INTEGER" property="stayaMount"></result>
+        <result column="HTNUM" jdbcType="VARCHAR" property="htNum"></result>
+        <result column="MARRYTIME" jdbcType="INTEGER" property="marryTime"></result>
+    </resultMap>
+
+
     <sql id="Base_Column_List">
         temp.KZID, temp.TYPEID, temp.CLASSID, temp.TYPENAME, temp.STATUSID, temp.STATUSNAME, temp.SRCTYPE, temp.CHANNELID, temp.CHANNELNAME,
         temp.SOURCEID, temp.SOURCENAME, temp.ZXSTYLE, temp.KZNAME, temp.SEXNAME, temp.KZPHONE, temp.KZWECHAT, temp.KZQQ, temp.KZWW, temp.COLLECTORID, temp.COLLECTORNAME,
         temp.APPOINTORID, temp.APPOINTNAME, temp.APPOINTTIME, temp.MEMO, temp.CREATETIME, temp.SHOPID, temp.SHOPNAME,
         temp.COMPANYID, temp.ADADDRESS, temp.ADID, temp.OPERAID, temp.ADDRESS, temp.GROUPID, temp.GROUPNAME, temp.KEYWORD, temp.MEMO
     </sql>
+    <sql id="Base_Column_News_List">
+        temp.KZID, temp.TYPEID, temp.CLASSID, temp.TYPENAME, temp.STATUSID, temp.STATUSNAME, temp.SRCTYPE, temp.CHANNELID, temp.CHANNELNAME,
+        temp.SOURCEID, temp.SOURCENAME, temp.ZXSTYLE, temp.KZNAME, temp.SEXNAME, temp.KZPHONE, temp.KZWECHAT, temp.KZQQ, temp.KZWW, temp.COLLECTORID, temp.COLLECTORNAME,
+        temp.APPOINTORID, temp.APPOINTNAME, temp.APPOINTTIME, temp.MEMO, temp.CREATETIME, temp.SHOPID, temp.SHOPNAME,
+        temp.COMPANYID, temp.ADADDRESS, temp.ADID, temp.OPERAID, temp.ADDRESS, temp.GROUPID, temp.GROUPNAME, temp.KEYWORD, temp.MEMO,temp.YXLEVEL,temp.YSRANGE,temp.YPTIME,
+        temp.STAYAMOUNT,temp.AMOUNT,temp.MARRYTIME,temp.RECEPTORID,temp.RECEPTORNAME,temp.HTNUM
+    </sql>
+
 
     <!-- 删除员工客资缓存记录 -->
     <delete id="deleteTempByStaffId" parameterType="map">
@@ -272,18 +343,18 @@
     </update>
 
     <!--获取导入的所有客资列表-->
-    <select id="getAllRecordByStaffId" parameterType="map" resultMap="baseMap">
+    <select id="getAllRecordByStaffId" parameterType="map" resultMap="baseNewsMap">
         SELECT
-        <include refid="Base_Column_List"/>
+        <include refid="Base_Column_News_List"/>
         FROM ${tempName} temp
         WHERE temp.OPERAID = #{staffId};
     </select>
 
     <!--获取重复客资列表-->
-    <select id="getRepeatRecord" parameterType="map" resultMap="baseMap">
+    <select id="getRepeatRecord" parameterType="map" resultMap="baseNewsMap">
         SELECT
         DISTINCT
-        <include refid="Base_Column_List"/>
+        <include refid="Base_Column_News_List"/>
         FROM ${tempName} temp
         LEFT JOIN ${tableName} info
         ON INSTR( CONCAT('-',IFNULL(info.KZPHONE,''), '-', IFNULL(info.KZWECHAT,''), '-', IFNULL(info.KZQQ,''), '-'
@@ -301,9 +372,9 @@
     </select>
 
     <!--获取excel中重复客资列表-->
-    <select id="getExcelRepeatRecord" parameterType="map" resultMap="baseMap">
+    <select id="getExcelRepeatRecord" parameterType="map" resultMap="baseNewsMap">
         SELECT
-        <include refid="Base_Column_List"/>
+        <include refid="Base_Column_News_List"/>
         FROM ${tempName} temp
         WHERE
         (

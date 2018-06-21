@@ -1,6 +1,8 @@
 package com.qiein.jupiter.web.entity.dto;
 
 import cn.afterturn.easypoi.excel.annotation.Excel;
+import com.qiein.jupiter.util.NumUtil;
+import com.qiein.jupiter.util.StringUtil;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -25,7 +27,7 @@ public class ClientExcelNewsDTO implements Serializable {
     /**
      * 类型名称
      */
-    @Excel(name = "咨询类型")
+    @Excel(name = "咨询类型（必填-匹配后台）")
     private String typeName;
     /**
      * 分类ID
@@ -34,7 +36,7 @@ public class ClientExcelNewsDTO implements Serializable {
     /**
      * 分类名称
      */
-    @Excel(name = "状态")
+    @Excel(name = "状态（必填-匹配后台）")
     private String className;
     /**
      * 咨询方式
@@ -91,7 +93,7 @@ public class ClientExcelNewsDTO implements Serializable {
     /**
      * 渠道名
      */
-    @Excel(name = "渠道")
+    @Excel(name = "渠道（必填-匹配后台）")
     private String channelName;
     /**
      * 渠道ID
@@ -348,6 +350,17 @@ public class ClientExcelNewsDTO implements Serializable {
      * 是否设置成当前时间
      */
     private boolean currentTime;
+
+
+    public boolean checkWrongInfo() {
+        if (NumUtil.isNull(getTypeId()) || NumUtil.isNull(getChannelId()) || NumUtil.isNull(getSourceId())
+                || (StringUtil.isEmpty(getKzPhone()) && StringUtil.isEmpty(getKzWechat())
+                && StringUtil.isEmpty(getKzQq()) && StringUtil.isEmpty(getKzWw()))
+                || NumUtil.isNull(getShopId())) {
+            return true;
+        }
+        return false;
+    }
 
     public Date getTime() {
         return time;

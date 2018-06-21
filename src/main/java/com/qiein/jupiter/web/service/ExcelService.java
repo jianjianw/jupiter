@@ -3,6 +3,7 @@ package com.qiein.jupiter.web.service;
 import java.util.HashMap;
 import java.util.List;
 
+import com.qiein.jupiter.web.entity.dto.ClientExcelNewsDTO;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.qiein.jupiter.web.entity.dto.ClientExcelDTO;
@@ -30,7 +31,7 @@ public interface ExcelService {
 	 * @param staffId
 	 * @return
 	 */
-	HashMap<String, List<ClientExcelDTO>> getAllUploadRecord(int companyId, int staffId);
+	HashMap<String, List<ClientExcelNewsDTO>> getAllUploadRecord(int companyId, int staffId);
 
 	/**
 	 * 缓存表客资转移到info表
