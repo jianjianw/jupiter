@@ -102,7 +102,7 @@ public class ExcelServiceImpl implements ExcelService {
             clientExcelDTO.setAppointTime(clientExcelDTO.getAppointTimeDate() == null ? 0 : clientExcelDTO.getAppointTimeDate().getTime() / 1000);
             clientExcelDTO.setComeShopTime(clientExcelDTO.getComeShopTimeDate() == null ? 0 : clientExcelDTO.getComeShopTimeDate().getTime() / 1000);
             try{
-                clientExcelDTO.setAmout(Integer.valueOf(clientExcelDTO.getAmoutStr()));
+                clientExcelDTO.setAmount(Integer.valueOf(clientExcelDTO.getAmountStr()));
                 clientExcelDTO.setStayaMount(Integer.valueOf(clientExcelDTO.getStayaMountStr()));
             }catch (Exception e){
                 throw new RException(ExceptionEnum.UNKNOW_ERROR);
@@ -221,6 +221,9 @@ public class ExcelServiceImpl implements ExcelService {
 
         for (ClientExcelNewsDTO info : all) {
             // 1.格式化时间
+            info.setComeShopTimeStr(TimeUtil.intMillisToTimeStr(Integer.valueOf(String.valueOf(info.getComeShopTime()))));
+            info.setSuccessTimeStr(TimeUtil.intMillisToTimeStr(Integer.valueOf(String.valueOf(info.getSuccessTime()))));
+            info.setAppointTimeStr(TimeUtil.intMillisToTimeStr(Integer.valueOf(String.valueOf(info.getAppointTime()))));
             // 2.查询重复记录
             if (repeatIds.contains(info.getKzId())) {
                 continue;

@@ -77,7 +77,7 @@
         <result column="CREATETIME" jdbcType="VARCHAR" property="createTime"/>
         <result column="SHOPID" jdbcType="INTEGER" property="shopId"/>
         <result column="SHOPNAME" jdbcType="VARCHAR" property="shopName"/>
-        <result column="AMOUNT" jdbcType="VARCHAR" property="amout"/>
+        <result column="AMOUNT" jdbcType="VARCHAR" property="amount"/>
         <result column="COMPANYID" jdbcType="INTEGER" property="companyId"/>
         <result column="VALIDTIME" jdbcType="VARCHAR" property="validTime"/>
         <result column="COMESHOPTIME" jdbcType="VARCHAR" property="comeShopTime"/>
@@ -147,7 +147,7 @@
             (#{item.kzId},#{item.typeName}, #{item.statusId},#{item.channelName},
             #{item.sourceName},#{item.zxStyle},#{item.kzName},#{item.sex},#{item.kzPhone}, #{item.kzWechat},
             #{item.kzQq}, #{item.kzWw}, #{item.collectorName},
-            #{item.appointName},#{item.appointTime},#{item.receptorName},#{item.amout},
+            #{item.appointName},#{item.appointTime},#{item.receptorName},#{item.amount},
             #{item.createTime},unix_timestamp(now()),#{item.comeShopTime},#{item.successTime}, #{item.shopName},
             #{item.companyId},
             #{item.operaId}, #{item.address}, #{item.groupName}, #{item.keyWord},

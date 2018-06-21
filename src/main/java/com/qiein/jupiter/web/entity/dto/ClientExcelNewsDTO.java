@@ -214,12 +214,12 @@ public class ClientExcelNewsDTO implements Serializable {
     /**
      * 成交套系
      */
-    private Integer amout;
+    private Integer amount;
     /**
      * 成交套系金额
      */
     @Excel(name = "成交套系")
-    private String amoutStr;
+    private String amountStr;
     /**
      * 门市id
      */
@@ -350,12 +350,64 @@ public class ClientExcelNewsDTO implements Serializable {
      * 是否设置成当前时间
      */
     private boolean currentTime;
+    /**
+     * 预约进店时间
+     * */
+    private String appointTimeStr;
+    /**
+     * 首次进店时间
+     * */
+    private String comeShopTimeStr;
+    /**
+     * 订单时间
+     * */
+    private String successTimeStr;
 
+
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
+    }
+
+    public String getAmountStr() {
+        return amountStr;
+    }
+
+    public void setAmountStr(String amountStr) {
+        this.amountStr = amountStr;
+    }
+
+    public String getAppointTimeStr() {
+        return appointTimeStr;
+    }
+
+    public void setAppointTimeStr(String appointTimeStr) {
+        this.appointTimeStr = appointTimeStr;
+    }
+
+    public String getComeShopTimeStr() {
+        return comeShopTimeStr;
+    }
+
+    public void setComeShopTimeStr(String comeShopTimeStr) {
+        this.comeShopTimeStr = comeShopTimeStr;
+    }
+
+    public String getSuccessTimeStr() {
+        return successTimeStr;
+    }
+
+    public void setSuccessTimeStr(String successTimeStr) {
+        this.successTimeStr = successTimeStr;
+    }
 
     public boolean checkWrongInfo() {
         if (NumUtil.isNull(getTypeId()) || NumUtil.isNull(getChannelId()) || NumUtil.isNull(getSourceId())
                 || (StringUtil.isEmpty(getKzPhone()) && StringUtil.isEmpty(getKzWechat())
-                && StringUtil.isEmpty(getKzQq()) && StringUtil.isEmpty(getKzWw()))
+                && StringUtil.isEmpty(getKzQq()))
                 || NumUtil.isNull(getShopId())) {
             return true;
         }
@@ -680,21 +732,7 @@ public class ClientExcelNewsDTO implements Serializable {
         this.shopName = shopName;
     }
 
-    public Integer getAmout() {
-        return amout;
-    }
 
-    public void setAmout(Integer amout) {
-        this.amout = amout;
-    }
-
-    public String getAmoutStr() {
-        return amoutStr;
-    }
-
-    public void setAmoutStr(String amoutStr) {
-        this.amoutStr = amoutStr;
-    }
 
     public Integer getReceptorId() {
         return receptorId;
