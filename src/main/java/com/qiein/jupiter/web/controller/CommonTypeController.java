@@ -7,6 +7,7 @@ import com.qiein.jupiter.web.entity.po.CommonTypePO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.CommonTypeChannelShowVO;
 import com.qiein.jupiter.web.entity.vo.CommonTypeChannelVO;
+import com.qiein.jupiter.web.entity.vo.CommonTypeVO;
 import com.qiein.jupiter.web.service.CommonTypeSerivce;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -71,13 +72,19 @@ public class CommonTypeController extends BaseController{
     @GetMapping("/find_common_type_channel")
     public ResultInfo findCommonTypeChannel(@RequestParam String typeId){
         StaffPO staffPO=getCurrentLoginStaff();
-        if(typeId.equals("")){
-            CommonTypeChannelShowVO commonTypeChannelShowVO =commonTypeSerivce.findChannelGroupFirst(staffPO.getCompanyId());
-            return ResultInfoUtil.success(commonTypeChannelShowVO);
-        }
         List<CommonTypeChannelVO> list =commonTypeSerivce.findChannelGroup(Integer.parseInt(typeId),staffPO.getCompanyId());
         return ResultInfoUtil.success(list);
     }
+    /**
+     * 查询拍摄类型
+     */
+    @GetMapping("/find_common_type")
+    public ResultInfo findCommonType(){
+        StaffPO staffPO=getCurrentLoginStaff();
+        List<CommonTypeVO> list=commonTypeSerivce.findCommonType(staffPO.getCompanyId());
+        return ResultInfoUtil.success(list);
+    }
+
 
     /**
      * 根据来源id删除

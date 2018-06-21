@@ -3,6 +3,7 @@ package com.qiein.jupiter.web.service;
 import com.qiein.jupiter.web.entity.po.CommonTypePO;
 import com.qiein.jupiter.web.entity.vo.CommonTypeChannelShowVO;
 import com.qiein.jupiter.web.entity.vo.CommonTypeChannelVO;
+import com.qiein.jupiter.web.entity.vo.CommonTypeVO;
 
 import java.util.List;
 
@@ -46,7 +47,7 @@ public interface CommonTypeSerivce {
      * @param companyId
      * @return
      */
-    CommonTypeChannelShowVO findChannelGroupFirst(Integer companyId);
+   // CommonTypeChannelShowVO findChannelGroupFirst(Integer companyId);
 
     /**
      * 根据来源id删除
@@ -64,6 +65,13 @@ public interface CommonTypeSerivce {
      * @param groupName
      * @return
      */
-    List<CommonTypePO> searchByChannelId(Integer channelId,Integer typeId,Integer companyId,String groupName);
+    List<CommonTypePO> searchByChannelId(Integer channelId, Integer typeId, Integer companyId, String groupName);
+
+    /**
+     * 查询拍摄类型
+     * @param companyId
+     * @return
+     */
+    List<CommonTypeVO> findCommonType(Integer companyId);
 
 }

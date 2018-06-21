@@ -38,7 +38,7 @@ public interface CommonTypeDao {
      * @param typeId
      * @return
      */
-    List<CommonTypePO> findChannelGroup(@Param("typeId")Integer typeId, @Param("companyId")Integer companyId);
+    List<CommonTypeChannelVO> findChannelGroup(@Param("typeId")Integer typeId, @Param("companyId")Integer companyId);
 
     /**
      * 获取拍摄类型
