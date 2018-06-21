@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.service.impl;
 
+import cn.afterturn.easypoi.excel.annotation.Excel;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -25,6 +26,7 @@ import com.sun.org.apache.regexp.internal.RE;
 import org.apache.http.protocol.HttpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -125,6 +127,7 @@ public class GoldDataServiceImpl implements GoldDataService {
      * 金数据接受数据
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void receiveGoldDataForm(JSONObject jsonObject, StaffPO staffPO) {
         Map<String, Object> reqContent = new HashMap<String, Object>();
         //获取金数据表单模板数据
@@ -204,7 +207,7 @@ public class GoldDataServiceImpl implements GoldDataService {
         if ("100000".equals(jsInfo.getString("code"))) {
             goldTempPO.setStatusId(GoldDataConst.IN_FILTER);
             goldTempDao.update(goldTempPO);
-        } else if(CommonConstant.DEFAULT_STRING_ZERO.equalsIgnoreCase(jsInfo.getString("code"))){
+        } else if("130019".equals(jsInfo.getString("code"))){
             goldTempPO.setStatusId(GoldDataConst.HAVA_ENTERED);
             goldTempDao.update(goldTempPO);
         }else {
