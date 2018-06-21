@@ -214,4 +214,65 @@ public class GoldDataServiceImpl implements GoldDataService {
             throw new RException(jsInfo.getString("msg"));
         }
     }
+
+    /**
+     * 筛选
+     * @param goldTempPO
+     */
+    public void addkzByGoldTemp(GoldTempPO goldTempPO){
+        Map<String, Object> reqContent = new HashMap<String, Object>();
+        //获取金数据表单模板数据
+        GoldFingerPO goldFingerPO = goldDataDao.getGoldFingerByFormIdAndFormName(goldTempPO.getFormId(), goldTempPO.getFormName());
+        //获取字段值
+        String[] fieldKeys = StringUtil.isNotEmpty(goldFingerPO.getFieldKey()) ? goldFingerPO.getFieldKey().split(CommonConstant.STR_SEPARATOR) : new String[]{};
+        String[] fieldValues = StringUtil.isNotEmpty(goldFingerPO.getFieldValue()) ? goldFingerPO.getFieldValue().split(CommonConstant.STR_SEPARATOR) : new String[]{};
+        if (fieldKeys.length != fieldValues.length) {
+            throw new RException(ExceptionEnum.UNKNOW_ERROR);
+        }
+        //表单数据
+        /*if (fieldKeys.length != 0 || fieldValues.length != 0){
+            for (int i = 0; i < fieldValues.length; i++) {
+                if ("kzqq".equalsIgnoreCase(fieldValues[i])) {
+                    reqContent.put("kzqq", entry.getString(fieldKeys[i]));
+                    continue;
+                }
+                if ("address".equalsIgnoreCase(fieldValues[i])) {
+                    reqContent.put("address", entry.getJSONObject(fieldKeys[i]).getString("province")+entry.getJSONObject(fieldKeys[i]).getString("city"));
+                }
+            }
+        }*/
+        //获取当前来源
+        SourcePO sourcePO = sourceDao.getByIdAndCid(goldFingerPO.getSrcId(), goldFingerPO.getCompanyId());
+        if (null == sourcePO) {
+            throw new RException(ExceptionEnum.UNKNOW_ERROR);
+        }
+        reqContent.put("companyid", goldFingerPO.getCompanyId());
+        reqContent.put("kzname", goldTempPO.getKzName());
+        reqContent.put("kzphone", goldTempPO.getKzPhone());
+        reqContent.put("channelid", sourcePO.getChannelId());
+        reqContent.put("channelname", sourcePO.getChannelName());
+        reqContent.put("sourceid", goldFingerPO.getSrcId());
+        reqContent.put("srctype", sourcePO.getTypeId());
+        reqContent.put("sourcename", goldFingerPO.getSrcName());
+        reqContent.put("isfilter", goldFingerPO.getIsFilter());
+        reqContent.put("adid", goldFingerPO.getAdId());
+        reqContent.put("adaddress", goldFingerPO.getAdAddress());
+        reqContent.put("typeid", goldFingerPO.getTypeId());
+        reqContent.put("zxstyle", goldFingerPO.getZxStyle());
+        reqContent.put("remark", goldFingerPO.getMemo());
+        reqContent.put("collectorid", goldFingerPO.getCreateorId());
+        reqContent.put("collectorname", goldFingerPO.getCreateorName());
+        String addRstStr = crmBaseApi.doService(reqContent, "clientAddGoldPlug");
+        JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
+
+        if ("100000".equals(jsInfo.getString("code"))) {
+            goldTempPO.setStatusId(GoldDataConst.IN_FILTER);
+            goldTempDao.update(goldTempPO);
+        } else if("130019".equals(jsInfo.getString("code"))){
+            goldTempPO.setStatusId(GoldDataConst.HAVA_ENTERED);
+            goldTempDao.update(goldTempPO);
+        }else {
+            throw new RException(jsInfo.getString("msg"));
+        }
+    }
 }

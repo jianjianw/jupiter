@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.web.entity.dto.GoldCustomerDTO;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.GoldFingerPO;
+import com.qiein.jupiter.web.entity.po.GoldTempPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.GoldCustomerShowVO;
 import com.qiein.jupiter.web.entity.vo.GoldCustomerVO;
@@ -60,4 +61,9 @@ public interface GoldDataService {
      * */
     void receiveGoldDataForm(JSONObject jsonObject, StaffPO staffPO);
 
+    /**
+     * 筛选
+     * @param goldTempPO
+     */
+    void addkzByGoldTemp(GoldTempPO goldTempPO);
 }

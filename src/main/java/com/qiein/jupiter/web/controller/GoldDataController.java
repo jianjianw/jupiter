@@ -13,6 +13,7 @@ import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.dto.GoldCustomerDTO;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.GoldFingerPO;
+import com.qiein.jupiter.web.entity.po.GoldTempPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.GoldCustomerVO;
 import com.qiein.jupiter.web.entity.vo.GoldFingerShowVO;
@@ -141,9 +142,9 @@ public class GoldDataController extends BaseController{
     /**
      * 筛选
      */
-    @GetMapping("/addkz_by_gold_temp")
-    public ResultInfo addkzByGoldTemp(@RequestParam Integer id){
-        //goldDataService.addkzByGoldTemp(id);
+    @PostMapping("/addkz_by_gold_temp")
+    public ResultInfo addkzByGoldTemp(@RequestBody GoldTempPO goldTempPO){
+        goldDataService.addkzByGoldTemp(goldTempPO);
         return  ResultInfoUtil.success(TigMsgEnum.UPDATE_SUCCESS);
     }
 }

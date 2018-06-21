@@ -66,4 +66,10 @@ public interface GoldDataDao {
      * @param formName
      * */
     GoldFingerPO getGoldFingerByFormIdAndFormName(@Param(value="formId") String formId,@Param(value="formName") String formName);
+
+    /**
+     * 筛选
+     * @param id
+     */
+    void addkzByGoldTemp(Integer id);
 }
