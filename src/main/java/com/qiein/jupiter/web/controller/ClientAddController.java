@@ -66,9 +66,6 @@ public class ClientAddController extends BaseController {
             throw new RException(ExceptionEnum.CHANNEL_ID_NULL);
         }
         int shopId = jsonObject.getIntValue("shopId");
-        if (NumUtil.isNull(shopId)) {
-            throw new RException(ExceptionEnum.SHOP_ID_NULL);
-        }
         int typeId = jsonObject.getIntValue("typeId");
         if (NumUtil.isNull(typeId)) {
             throw new RException(ExceptionEnum.TYPEID_IS_NULL);
@@ -76,12 +73,16 @@ public class ClientAddController extends BaseController {
         String adId = StringUtil.nullToStrTrim(jsonObject.getString("adId"));
         String adAddress = StringUtil.nullToStrTrim(jsonObject.getString("adAddress"));
         String groupId = StringUtil.nullToStrTrim(jsonObject.getString("groupId"));
+        int yxLevel = jsonObject.getIntValue("yxLevel");
+        int ysRange = jsonObject.getIntValue("ysRange");
+        int marryTime = jsonObject.getIntValue("marryTime");
+
         int appointId = jsonObject.getIntValue("appointId");
         int zxStyle = jsonObject.getIntValue("zxStyle");
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         JSONObject result = clientAddService.batchAddDsClient(list, channelId, sourceId, shopId, typeId, currentLoginStaff, adId,
-                adAddress, groupId, appointId, zxStyle);
+                adAddress, groupId, appointId, zxStyle,yxLevel,ysRange,marryTime);
         ResultInfo rep = new ResultInfo();
         rep.setCode(result.getInteger("code"));
         rep.setMsg(result.getString("msg"));

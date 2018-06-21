@@ -161,6 +161,7 @@ public class ClientServiceImpl implements ClientService {
             clientDTO.setKzWeChat(clientStatusVoteVO.getKzWeChat());
             clientDTO.setKzPhone(clientStatusVoteVO.getKzPhone());
             clientDTO.setKzName(clientStatusVoteVO.getKzName());
+            clientDTO.setSrcName(clientStatusVoteVO.getSourceName());
             GoEasyUtil.pushInvalidKz(clientStatusVoteVO.getCompanyId(), clientStatusVoteVO.getCollectorId(), clientDTO, clientStatusVoteVO.getContent());
         }
 

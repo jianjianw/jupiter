@@ -26,6 +26,7 @@ import io.goeasy.publish.PublishListener;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * GoEasy消息推送
@@ -194,11 +195,12 @@ public class GoEasyUtil {
         contentJson.put("overtime", overTime);
 
         //TODO
-        String url ="https://crm-jupiter.oss-cn-hangzhou.aliyuncs.com/wechat/index.html?kzId="+kzId+"&logId="+logId+"&uid="+staffId+"&cid="+companyId+"&url="+serverAddress;
+        String url ="http://crm-jupiter.oss-cn-hangzhou.aliyuncs.com/wechat/index.html?kzId="+kzId+"&logId="+logId+"&uid="+staffId+"&cid="+companyId+"&url="+serverAddress;
         System.out.println(url);
         CompanyPO companyPO = companyService.getById(companyId);
         WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(companyId,companyPO.getCompanyName(),staffId,url,"保密","保密",
-                new SimpleDateFormat("YYYY-MM-DD HH:mm").format(overTime)));
+                new SimpleDateFormat("YYYY-MM-DD HH:mm").format(new Date())));
+        
         pushApp(MessageConts.MSG_APP_INFO_REVEIVE, companyId, staffId, contentJson);
     }
 
@@ -777,7 +779,7 @@ public class GoEasyUtil {
 
         sb.delete(0, sb.length());
         sb.append("<br/>无效原因：").append(invalidReason);
-        sb.append("<br/><br/>渠道：").append(StringUtil.nullToStrTrim(info.getChannelSource()));
+        sb.append("<br/><br/>渠道：").append(StringUtil.nullToStrTrim(info.getChannelSource())).append("<br/>");
 
 
         if (StringUtil.isNotEmpty(info.getKzName())) {

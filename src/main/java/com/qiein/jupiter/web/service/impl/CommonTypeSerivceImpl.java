@@ -87,25 +87,23 @@ public class CommonTypeSerivceImpl implements CommonTypeSerivce {
      * @return
      */
     public List<CommonTypeChannelVO> findChannelGroup(Integer typeId, Integer companyId){
-        List<CommonTypeChannelVO>  channelList=commonTypeDao.findChannel(typeId,companyId);
-        List<CommonTypePO> list=commonTypeDao.findChannelGroup(typeId,companyId);
-        for(CommonTypeChannelVO vo:channelList){
-            List<CommonTypePO> commonTypePOList=new ArrayList<>() ;
-            vo.setList(commonTypePOList);
-            for(CommonTypePO po:list){
-                if(vo.getChannelId()==po.getChannelId()){
-                    vo.getList().add(po);
-                }
-            }
-        }
+        List<CommonTypeChannelVO>  channelList=commonTypeDao.findChannelGroup(typeId,companyId);
         return channelList;
+    }
+    /**
+     * 查询拍摄类型
+     * @param companyId
+     * @return
+     */
+   public List<CommonTypeVO> findCommonType(Integer companyId){
+        return commonTypeDao.findCommonType(companyId);
     }
     /**
      * 第一次进入时获取拍摄地渠道小组分类
      * @param companyId
      * @return
      */
-    public CommonTypeChannelShowVO findChannelGroupFirst(Integer companyId){
+   /* public CommonTypeChannelShowVO findChannelGroupFirst(Integer companyId){
         CommonTypeChannelShowVO commonTypeChannelShowVO =new CommonTypeChannelShowVO();
         List<CommonTypeVO> list=commonTypeDao.findCommonType(companyId);
         if(list.size()!=0){
@@ -126,7 +124,7 @@ public class CommonTypeSerivceImpl implements CommonTypeSerivce {
         }
 
         return commonTypeChannelShowVO;
-    }
+    } */
     /**
      * 根据来源id删除
      * @param channelId

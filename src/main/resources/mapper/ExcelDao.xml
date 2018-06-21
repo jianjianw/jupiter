@@ -50,30 +50,38 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-		temp.KZID,temp.TYPEID,temp.CLASSID, temp.TYPENAME, temp.STATUSID,temp.STATUSNAME,temp.SRCTYPE,temp.CHANNELID,temp.CHANNELNAME,
-		temp.SOURCEID, temp.SOURCENAME, temp.ZXSTYLE, temp.KZNAME, temp.SEXNAME, temp.KZPHONE, temp.KZWECHAT, temp.KZQQ,temp.KZWW, temp.COLLECTORID,temp.COLLECTORNAME,
-		 temp.APPOINTORID ,temp.APPOINTNAME, temp.APPOINTTIME , temp.MEMO, temp.CREATETIME , temp.SHOPID, temp.SHOPNAME,
-	 temp.COMPANYID, temp.ADADDRESS, temp.ADID,  temp.OPERAID, temp.ADDRESS, temp.GROUPID, temp.GROUPNAME, temp.KEYWORD,temp.MEMO
-	</sql>
+        temp.KZID, temp.TYPEID, temp.CLASSID, temp.TYPENAME, temp.STATUSID, temp.STATUSNAME, temp.SRCTYPE, temp.CHANNELID, temp.CHANNELNAME,
+        temp.SOURCEID, temp.SOURCENAME, temp.ZXSTYLE, temp.KZNAME, temp.SEXNAME, temp.KZPHONE, temp.KZWECHAT, temp.KZQQ, temp.KZWW, temp.COLLECTORID, temp.COLLECTORNAME,
+        temp.APPOINTORID, temp.APPOINTNAME, temp.APPOINTTIME, temp.MEMO, temp.CREATETIME, temp.SHOPID, temp.SHOPNAME,
+        temp.COMPANYID, temp.ADADDRESS, temp.ADID, temp.OPERAID, temp.ADDRESS, temp.GROUPID, temp.GROUPNAME, temp.KEYWORD, temp.MEMO
+    </sql>
 
     <!-- 删除员工客资缓存记录 -->
     <delete id="deleteTempByStaffId" parameterType="map">
-    	DELETE FROM ${tempName}
-    	WHERE OPERAID = ${operaId};
+        DELETE FROM ${tempName}
+        WHERE OPERAID = ${operaId};
     </delete>
 
     <!-- 批量写入客资临时缓存表 -->
     <insert id="insertExcelClientInfo">
         INSERT INTO ${tempName}
-        (KZID, TYPENAME, STATUSID, CHANNELNAME, SOURCENAME, KZPHONE, KZWECHAT, KZQQ, KZWW, COLLECTORNAME,
-        APPOINTNAME,  CREATETIME, UPDATETIME, SHOPNAME, COMPANYID, OPERAID, ADDRESS, GROUPNAME,KEYWORD,MEMO
-        )
+        (KZID, TYPENAME, STATUSID, CHANNELNAME, SOURCENAME,ZXSTYLE, KZNAME,SEX,KZPHONE, KZWECHAT, KZQQ, KZWW,
+        COLLECTORNAME,
+        APPOINTNAME,APPOINTTIME,RECEPTORNAME,AMOUNT,CREATETIME, UPDATETIME,COMESHOPTIME,SUCCESSTIME, SHOPNAME,
+        COMPANYID, OPERAID, ADDRESS, GROUPNAME,KEYWORD,MEMO
+        ,MATENAME,MATEPHONE,MATEWECHAT,MATEQQ,MARRYTIME,YPTIME,ADADDRESS,ADID,YXLEVEL,INVALIDLABEL,YSRANGE,OLDKZNAME,OLDKZPHONE,STAYAMOUNT,HTNUM)
         VALUES
         <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.kzId},#{item.typeName}, #{item.statusId},#{item.channelName}, #{item.sourceName},#{item.kzPhone}, #{item.kzWechat},
-            #{item.kzQq}, #{item.kzWw}, #{item.collectorName}, #{item.appointName},
-             #{item.createTime},unix_timestamp(now()), #{item.shopName}, #{item.companyId},
-            #{item.operaId}, #{item.address}, #{item.groupName}, #{item.keyWord}, #{item.remark}
+            (#{item.kzId},#{item.typeName}, #{item.statusId},#{item.channelName},
+            #{item.sourceName},#{item.zxStyle},#{item.kzName},#{item.sex},#{item.kzPhone}, #{item.kzWechat},
+            #{item.kzQq}, #{item.kzWw}, #{item.collectorName},
+            #{item.appointName},#{item.appointTime},#{item.receptorName},#{item.amout},
+            #{item.createTime},unix_timestamp(now()),#{item.comeShopTime},#{item.successTime}, #{item.shopName},
+            #{item.companyId},
+            #{item.operaId}, #{item.address}, #{item.groupName}, #{item.keyWord},
+            #{item.remark},#{item.mateName},#{item.matePhone},#{item.mateWeChat},#{item.mateQq},#{item.marryTime},
+            #{item.ypTime},#{item.adAddress},#{item.adId},#{item.yxLevel},#{item.invalidLabel},#{item.ysRange},#{item.oldKzName},#{item.oldKzPhone},
+            #{item.stayaMount},#{item.htNum}
             )
         </foreach>
     </insert>
@@ -85,130 +93,182 @@
 
     <!-- 设置企业ID -->
     <update id="updateCompanyId" parameterType="map">
-		UPDATE ${tempName} temp SET COMPANYID = #{companyId} WHERE temp.OPERAID = #{staffId};
-	</update>
+        UPDATE ${tempName} temp
+        SET COMPANYID = #{companyId}
+        WHERE temp.OPERAID = #{staffId};
+    </update>
 
     <!-- 没有客资ID的，设置UUID -->
     <update id="updateKzid" parameterType="map">
-		UPDATE ${tempName} temp SET KZID = UUID() WHERE ( KZID IS NULL OR KZID = '' ) AND temp.OPERAID = #{staffId};
-	</update>
+        UPDATE ${tempName} temp
+        SET KZID = UUID()
+        WHERE (KZID IS NULL OR KZID = '') AND temp.OPERAID = #{staffId};
+    </update>
 
     <!-- 设置咨询类型ID -->
     <update id="updateType" parameterType="map">
-		UPDATE ${tempName} temp
+        UPDATE ${tempName} temp
         SET temp.TYPEID = (
             CASE
-                    WHEN temp.TYPENAME LIKE '婚纱%' THEN 1
-                    WHEN temp.TYPENAME LIKE '写真%' THEN 2
-                    WHEN temp.TYPENAME LIKE '全家%' THEN 3
-                    WHEN temp.TYPENAME LIKE '宝宝%' THEN 4
-                    WHEN temp.TYPENAME LIKE '孕妇%' THEN 5
-                    WHEN temp.TYPENAME LIKE '亲子%' THEN 6
-                    WHEN temp.TYPENAME LIKE '成长%' THEN 7
-                    WHEN temp.TYPENAME LIKE '外景%' THEN 8
-                    WHEN temp.TYPENAME LIKE '礼服%' THEN 9
-                    WHEN temp.TYPENAME LIKE '纪念%' THEN 10
-                    WHEN temp.TYPENAME LIKE '形象%' THEN 11
-                    WHEN temp.TYPENAME LIKE '闺蜜%' THEN 12
-                    WHEN temp.TYPENAME LIKE '母女%' THEN 13
-                    WHEN temp.TYPENAME LIKE '婚庆%' THEN 14
-                    WHEN temp.TYPENAME LIKE '证件%' THEN 15
-                    WHEN temp.TYPENAME LIKE '补拍%' THEN 98
-                    ELSE 99  END
-                )
+            WHEN temp.TYPENAME LIKE '婚纱%'
+                THEN 1
+            WHEN temp.TYPENAME LIKE '写真%'
+                THEN 2
+            WHEN temp.TYPENAME LIKE '全家%'
+                THEN 3
+            WHEN temp.TYPENAME LIKE '宝宝%'
+                THEN 4
+            WHEN temp.TYPENAME LIKE '孕妇%'
+                THEN 5
+            WHEN temp.TYPENAME LIKE '亲子%'
+                THEN 6
+            WHEN temp.TYPENAME LIKE '成长%'
+                THEN 7
+            WHEN temp.TYPENAME LIKE '外景%'
+                THEN 8
+            WHEN temp.TYPENAME LIKE '礼服%'
+                THEN 9
+            WHEN temp.TYPENAME LIKE '纪念%'
+                THEN 10
+            WHEN temp.TYPENAME LIKE '形象%'
+                THEN 11
+            WHEN temp.TYPENAME LIKE '闺蜜%'
+                THEN 12
+            WHEN temp.TYPENAME LIKE '母女%'
+                THEN 13
+            WHEN temp.TYPENAME LIKE '婚庆%'
+                THEN 14
+            WHEN temp.TYPENAME LIKE '证件%'
+                THEN 15
+            WHEN temp.TYPENAME LIKE '补拍%'
+                THEN 98
+            ELSE 99 END
+        )
         WHERE
             temp.OPERAID = #{staffId};
-	</update>
+    </update>
 
     <!-- 设置状态名称，唯一版 -->
     <update id="updateStatusName" parameterType="map">
-		UPDATE ${tempName} temp SET temp.STATUSNAME = (SELECT sts.STATUSNAME FROM hm_crm_client_status sts WHERE sts.COMPANYID = temp.COMPANYID AND sts.STATUSID = temp.STATUSID )
-		WHERE temp.OPERAID = #{staffId};
-	</update>
+        UPDATE ${tempName} temp
+        SET temp.STATUSNAME = (SELECT sts.STATUSNAME
+                               FROM hm_crm_client_status sts
+                               WHERE sts.COMPANYID = temp.COMPANYID AND sts.STATUSID = temp.STATUSID)
+        WHERE temp.OPERAID = #{staffId};
+    </update>
 
     <!-- 设置客资当前分类ID,唯一版 -->
     <update id="updateClassId" parameterType="map">
-		UPDATE ${tempName} temp SET temp.CLASSID = (SELECT sts.CLASSID FROM hm_crm_client_status sts WHERE sts.COMPANYID = temp.COMPANYID  AND sts.STATUSID = temp.STATUSID )
-		WHERE temp.OPERAID = #{staffId};
-	</update>
+        UPDATE ${tempName} temp
+        SET temp.CLASSID = (SELECT sts.CLASSID
+                            FROM hm_crm_client_status sts
+                            WHERE sts.COMPANYID = temp.COMPANYID AND sts.STATUSID = temp.STATUSID)
+        WHERE temp.OPERAID = #{staffId};
+    </update>
 
     <!-- 设置来源ID -->
     <update id="updateSrcIdAndType" parameterType="map">
-		UPDATE ${tempName} temp
-        INNER JOIN hm_crm_source src  on  temp.SOURCENAME = src.SRCNAME
-        SET temp.SOURCEID = src.ID,temp.SRCTYPE = src.TYPEID
+        UPDATE ${tempName} temp
+            INNER JOIN hm_crm_source src on temp.SOURCENAME = src.SRCNAME
+        SET temp.SOURCEID = src.ID, temp.SRCTYPE = src.TYPEID
         WHERE
             temp.OPERAID = #{staffId};
-	</update>
+    </update>
 
     <!-- 设置来源和渠道-->
     <update id="updateSrcAndChannel" parameterType="map">
-		UPDATE ${tempName} temp
-        INNER JOIN hm_crm_source src  on  temp.SOURCENAME = src.SRCNAME
-        SET temp.SOURCEID = src.ID,temp.SRCTYPE = src.TYPEID,temp.CHANNELNAME = src.CHANNELNAME,temp.CHANNELID =src.CHANNELID
+        UPDATE ${tempName} temp
+            INNER JOIN hm_crm_source src on temp.SOURCENAME = src.SRCNAME
+        SET temp.SOURCEID  = src.ID, temp.SRCTYPE = src.TYPEID, temp.CHANNELNAME = src.CHANNELNAME,
+            temp.CHANNELID = src.CHANNELID
         WHERE
             temp.OPERAID = #{staffId};
-	</update>
+    </update>
 
     <!--设置渠道ID-->
     <update id="updateChannelId" parameterType="map">
         UPDATE ${tempName} temp
-        SET temp.CHANNELID = ( SELECT channel.ID FROM hm_crm_channel channel WHERE channel.COMPANYID = temp.COMPANYID AND channel.ISSHOW = 1 AND channel.CHANNELNAME = temp.CHANNELNAME )
+        SET temp.CHANNELID = (SELECT channel.ID
+                              FROM hm_crm_channel channel
+                              WHERE channel.COMPANYID = temp.COMPANYID AND channel.ISSHOW = 1 AND
+                                    channel.CHANNELNAME = temp.CHANNELNAME)
         WHERE
             temp.OPERAID = #{staffId};
     </update>
 
     <!-- 更新最后跟进时间为当前系统时间 -->
     <update id="updateUpdateTime" parameterType="map">
-		UPDATE ${tempName} temp SET temp.UPDATETIME = unix_timestamp(now()) WHERE temp.OPERAID = #{staffId};
-	</update>
+        UPDATE ${tempName} temp
+        SET temp.UPDATETIME = unix_timestamp(now())
+        WHERE temp.OPERAID = #{staffId};
+    </update>
 
     <!-- 更新提报人ID -->
     <update id="updateCollectorId" parameterType="map">
-		UPDATE ${tempName} temp SET temp.COLLECTORID = ( SELECT sf.ID FROM hm_pub_staff sf WHERE sf.COMPANYID = temp.COMPANYID AND sf.NICKNAME =  temp.COLLECTORNAME AND sf.ISDEL = 0 LIMIT 1 )
-		WHERE temp.OPERAID = #{staffId};
-	</update>
+        UPDATE ${tempName} temp
+        SET temp.COLLECTORID = (SELECT sf.ID
+                                FROM hm_pub_staff sf
+                                WHERE
+                                    sf.COMPANYID = temp.COMPANYID AND sf.NICKNAME = temp.COLLECTORNAME AND sf.ISDEL = 0
+                                LIMIT 1)
+        WHERE temp.OPERAID = #{staffId};
+    </update>
 
     <!-- 更新提报人id是空的记录 -->
     <update id="updateEmptyCollector">
-		UPDATE ${tempName} temp
-		SET temp.COLLECTORNAME = CONCAT("- ",temp.COLLECTORNAME)
-		WHERE temp.COLLECTORID IS NULL
-		AND temp.OPERAID = #{operaId}
-		AND  left(temp.COLLECTORNAME,1)!='-';
-	</update>
+        UPDATE ${tempName} temp
+        SET temp.COLLECTORNAME = CONCAT("- ", temp.COLLECTORNAME)
+        WHERE temp.COLLECTORID IS NULL
+              AND temp.OPERAID = #{operaId}
+              AND left(temp.COLLECTORNAME, 1) != '-';
+    </update>
 
     <!-- 更新邀约员ID -->
     <update id="updateAppointId" parameterType="map">
-		UPDATE ${tempName} temp SET temp.APPOINTORID = ( SELECT sf.ID FROM hm_pub_staff sf WHERE sf.COMPANYID = temp.COMPANYID AND sf.NICKNAME =  temp.APPOINTNAME AND sf.ISDEL = 0 LIMIT 1 )
-		WHERE temp.OPERAID = #{staffId};
-	</update>
+        UPDATE ${tempName} temp
+        SET temp.APPOINTORID = (SELECT sf.ID
+                                FROM hm_pub_staff sf
+                                WHERE sf.COMPANYID = temp.COMPANYID AND sf.NICKNAME = temp.APPOINTNAME AND sf.ISDEL = 0
+                                LIMIT 1)
+        WHERE temp.OPERAID = #{staffId};
+    </update>
 
     <!-- 更新邀约客服id是空的记录 -->
     <update id="updateEmptyAppoint">
-		UPDATE ${tempName} temp
-		SET temp.APPOINTNAME = CONCAT("- ",temp.APPOINTNAME)
-		WHERE temp.APPOINTORID IS NULL
-		AND temp.OPERAID = #{operaId}
-		AND  left(APPOINTNAME,1)!='-';
-	</update>
+        UPDATE ${tempName} temp
+        SET temp.APPOINTNAME = CONCAT("- ", temp.APPOINTNAME)
+        WHERE temp.APPOINTORID IS NULL
+              AND temp.OPERAID = #{operaId}
+              AND left(APPOINTNAME, 1) != '-';
+    </update>
 
     <!-- 更新拍摄地ID -->
     <update id="updateShopId" parameterType="map">
-		UPDATE ${tempName} temp SET temp.SHOPID = ( SELECT sp.ID FROM hm_pub_shop sp WHERE sp.COMPANYID = temp.COMPANYID AND sp.SHOPNAME = temp.SHOPNAME LIMIT 1 )
-		WHERE temp.OPERAID = #{staffId};
-	</update>
+        UPDATE ${tempName} temp
+        SET temp.SHOPID = (SELECT sp.ID
+                           FROM hm_pub_shop sp
+                           WHERE sp.COMPANYID = temp.COMPANYID AND sp.SHOPNAME = temp.SHOPNAME
+                           LIMIT 1)
+        WHERE temp.OPERAID = #{staffId};
+    </update>
 
     <!-- 设置邀约小组ID,唯一版 -->
     <update id="updateGroupId" parameterType="map">
-		UPDATE ${tempName} temp SET temp.GROUPID = (SELECT grp.GROUPID FROM hm_pub_group grp WHERE grp.COMPANYID = temp.COMPANYID  AND grp.GROUPNAME = temp.GROUPNAME )
-		WHERE temp.OPERAID = #{staffId};
-	</update>
+        UPDATE ${tempName} temp
+        SET temp.GROUPID = (SELECT grp.GROUPID
+                            FROM hm_pub_group grp
+                            WHERE grp.COMPANYID = temp.COMPANYID AND grp.GROUPNAME = temp.GROUPNAME)
+        WHERE temp.OPERAID = #{staffId};
+    </update>
 
     <!--更新门市id-->
     <update id="updateReceptorId">
-        update ${tampName}  temp set temp.RECEPTORID = (select sf.ID from hm_pub_staff sf where sf.NICKNAME = temp.RECEPTORNAME and sf.COMPANYID = temp.COMPANYID AND sf.ISDEL = 0 LIMIT 1)
-        where temp.operaid=  #{staffId};
+        update ${tempName} temp
+        set temp.RECEPTORID = (select sf.ID
+                               from hm_pub_staff sf
+                               where sf.NICKNAME = temp.RECEPTORNAME and sf.COMPANYID = temp.COMPANYID AND sf.ISDEL = 0
+                               LIMIT 1)
+        where temp.operaid = #{staffId};
     </update>
 
     <!--获取导入的所有客资列表-->
@@ -222,13 +282,18 @@
     <!--获取重复客资列表-->
     <select id="getRepeatRecord" parameterType="map" resultMap="baseMap">
         SELECT
-        DISTINCT <include refid="Base_Column_List" />
+        DISTINCT
+        <include refid="Base_Column_List"/>
         FROM ${tempName} temp
         LEFT JOIN ${tableName} info
-        ON INSTR( CONCAT('-',IFNULL(info.KZPHONE,''), '-', IFNULL(info.KZWECHAT,''), '-', IFNULL(info.KZQQ,''), '-' ),CONCAT('-',temp.KZPHONE, '-')) != 0
-        OR INSTR( CONCAT('-',IFNULL(info.KZPHONE,''), '-', IFNULL(info.KZWECHAT,''), '-', IFNULL(info.KZQQ,''), '-' ), CONCAT('-',temp.KZWECHAT, '-')) != 0
-        OR INSTR( CONCAT('-',IFNULL(info.KZPHONE,''), '-', IFNULL(info.KZWECHAT,''), '-', IFNULL(info.KZQQ,''), '-' ), CONCAT('-',temp.KZQQ, '-')) != 0
-        OR INSTR( CONCAT('-',IFNULL(info.KZWW,''), '-', IFNULL(info.KZWW,''), '-', IFNULL(info.KZWW,''), '-' ), CONCAT('-',temp.KZWW, '-')) != 0
+        ON INSTR( CONCAT('-',IFNULL(info.KZPHONE,''), '-', IFNULL(info.KZWECHAT,''), '-', IFNULL(info.KZQQ,''), '-'
+        ),CONCAT('-',temp.KZPHONE, '-')) != 0
+        OR INSTR( CONCAT('-',IFNULL(info.KZPHONE,''), '-', IFNULL(info.KZWECHAT,''), '-', IFNULL(info.KZQQ,''), '-' ),
+        CONCAT('-',temp.KZWECHAT, '-')) != 0
+        OR INSTR( CONCAT('-',IFNULL(info.KZPHONE,''), '-', IFNULL(info.KZWECHAT,''), '-', IFNULL(info.KZQQ,''), '-' ),
+        CONCAT('-',temp.KZQQ, '-')) != 0
+        OR INSTR( CONCAT('-',IFNULL(info.KZWW,''), '-', IFNULL(info.KZWW,''), '-', IFNULL(info.KZWW,''), '-' ),
+        CONCAT('-',temp.KZWW, '-')) != 0
         WHERE
         info.KZID IS NOT NULL
         AND info.ISDEL = 0
@@ -238,59 +303,108 @@
     <!--获取excel中重复客资列表-->
     <select id="getExcelRepeatRecord" parameterType="map" resultMap="baseMap">
         SELECT
-          <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         FROM ${tempName} temp
         WHERE
         (
-          (
-            SELECT
-              COUNT(1)
-            FROM  ${tempName} a
-            WHERE
-            (temp.KZPHONE = a.KZPHONE OR temp.KZQQ = a.KZQQ OR temp.KZWECHAT = a.KZWECHAT )
-              AND  temp.OPERAID = #{staffId}
-          ) > 1
+        (
+        SELECT
+        COUNT(1)
+        FROM ${tempName} a
+        WHERE
+        (temp.KZPHONE = a.KZPHONE OR temp.KZQQ = a.KZQQ OR temp.KZWECHAT = a.KZWECHAT )
+        AND temp.OPERAID = #{staffId}
+        ) > 1
         )
         ORDER BY temp.ID DESC
     </select>
 
     <!-- 插入客资基础信息表-->
     <insert id="insertBaseInfoByStaffId" parameterType="map">
-		INSERT INTO ${tabName} (
-			KZID, TYPEID, CLASSID, KZNAME, KZPHONE, KZWECHAT, KZQQ, KZWW, SEX, STATUSID, SRCTYPE,CHANNELID,SOURCEID, COLLECTORID, APPOINTORID,
-			APPOINTTIME,   UPDATETIME, CREATETIME, SHOPID, RECEPTORID, COMPANYID, COMESHOPTIME, SUCCESSTIME, RECEIVETIME,GROUPID
-		)( SELECT temp.KZID, temp.TYPEID,
-				 temp.CLASSID, temp.KZNAME, temp.KZPHONE, temp.KZWECHAT, temp.KZQQ, temp.KZWW, temp.SEX, temp.STATUSID,temp.SRCTYPE,temp.CHANNELID, temp.SOURCEID, temp.COLLECTORID,
-				temp.APPOINTORID,  temp.APPOINTTIME, temp.UPDATETIME, temp.CREATETIME, temp.SHOPID,
-				 temp.RECEPTORID, temp.COMPANYID,  temp.COMESHOPTIME, temp.SUCCESSTIME, temp.RECEIVETIME,temp.GROUPID
-			FROM
-				${tempName} temp
-			WHERE temp.OPERAID = #{staffId}
-		);
-	</insert>
+        INSERT INTO ${tabName} (
+            KZID, TYPEID, CLASSID, KZNAME, KZPHONE, KZWECHAT, KZQQ, KZWW, SEX, STATUSID, SRCTYPE, CHANNELID, SOURCEID, COLLECTORID, APPOINTORID,
+            APPOINTTIME, UPDATETIME, CREATETIME, SHOPID, RECEPTORID, COMPANYID, COMESHOPTIME, SUCCESSTIME, RECEIVETIME, GROUPID
+        ) (SELECT
+               temp.KZID,
+               temp.TYPEID,
+               temp.CLASSID,
+               temp.KZNAME,
+               temp.KZPHONE,
+               temp.KZWECHAT,
+               temp.KZQQ,
+               temp.KZWW,
+               temp.SEX,
+               temp.STATUSID,
+               temp.SRCTYPE,
+               temp.CHANNELID,
+               temp.SOURCEID,
+               temp.COLLECTORID,
+               temp.APPOINTORID,
+               temp.APPOINTTIME,
+               temp.UPDATETIME,
+               temp.CREATETIME,
+               temp.SHOPID,
+               temp.RECEPTORID,
+               temp.COMPANYID,
+               temp.COMESHOPTIME,
+               temp.SUCCESSTIME,
+               temp.RECEIVETIME,
+               temp.GROUPID
+           FROM
+               ${tempName} temp
+           WHERE temp.OPERAID = #{staffId}
+        );
+    </insert>
 
     <!-- 插入客资详情表,唯一版 -->
     <insert id="insertDetailInfoByStaffId" parameterType="map">
-		INSERT INTO ${tabName} (
-			KZID, ZXSTYLE, ADADDRESS, ADID, MARRYTIME, YPTIME, MATENAME, MATEPHONE, MATEWECHAT, MATEQQ,  COMPANYID, YXLAVEL,
-			INVALIDLABEL, YSRANGE, ADDRESS,  GROUPNAME, KEYWORD, COLLECTORNAME,APPOINTNAME,RECEPTORNAME,MEMO,SHOPNAME,  AMOUNT,CREATETIME
-		)( SELECT temp.KZID, temp.ZXSTYLE, temp.ADADDRESS, temp.ADID, temp.MARRYTIME, temp.YPTIME, temp.MATENAME, temp.MATEPHONE, temp.MATEWECHAT, temp.MATEQQ,
-			  temp.COMPANYID, temp.YXLAVEL,  temp.INVALIDLABEL,  temp.YSRANGE, temp.ADDRESS,  temp.GROUPNAME, temp.KEYWORD ,temp.COLLECTORNAME, temp.APPOINTNAME,
-			 temp.RECEPTORNAME,temp.MEMO, temp.SHOPNAME, temp.AMOUNT,temp.CREATETIME
-				FROM ${tempName} temp
-				WHERE temp.OPERAID = #{staffId}
-		 );
-	</insert>
+        INSERT INTO ${tabName} (
+            KZID, ZXSTYLE, ADADDRESS, ADID, MARRYTIME, YPTIME, MATENAME, MATEPHONE, MATEWECHAT, MATEQQ, COMPANYID, YXLAVEL,
+            INVALIDLABEL, YSRANGE, ADDRESS, GROUPNAME, KEYWORD, COLLECTORNAME, APPOINTNAME, RECEPTORNAME, MEMO, SHOPNAME, AMOUNT, CREATETIME
+        ) (SELECT
+               temp.KZID,
+               temp.ZXSTYLE,
+               temp.ADADDRESS,
+               temp.ADID,
+               temp.MARRYTIME,
+               temp.YPTIME,
+               temp.MATENAME,
+               temp.MATEPHONE,
+               temp.MATEWECHAT,
+               temp.MATEQQ,
+               temp.COMPANYID,
+               temp.YXLAVEL,
+               temp.INVALIDLABEL,
+               temp.YSRANGE,
+               temp.ADDRESS,
+               temp.GROUPNAME,
+               temp.KEYWORD,
+               temp.COLLECTORNAME,
+               temp.APPOINTNAME,
+               temp.RECEPTORNAME,
+               temp.MEMO,
+               temp.SHOPNAME,
+               temp.AMOUNT,
+               temp.CREATETIME
+           FROM ${tempName} temp
+           WHERE temp.OPERAID = #{staffId}
+        );
+    </insert>
 
     <!--插入客资备注表-->
     <insert id="addExcelKzRemark" parameterType="map">
         INSERT INTO ${tabName}
-            (KZID,CONTENT,COMPANYID)
-            (SELECT temp.KZID,temp.MEMO,temp.COMPANYID  FROM ${tempName} temp WHERE temp.OPERAID = #{staffId})
+        (KZID, CONTENT, COMPANYID)
+            (SELECT
+                 temp.KZID,
+                 temp.MEMO,
+                 temp.COMPANYID
+             FROM ${tempName} temp
+             WHERE temp.OPERAID = #{staffId})
     </insert>
 
     <!-- 批量删除员工客资缓存记录 -->
-    <delete id="batchDeleteTemp" parameterType="map" >
+    <delete id="batchDeleteTemp" parameterType="map">
         DELETE FROM ${tempName}
         WHERE OPERAID = #{operaId}
         AND KZID IN
@@ -336,12 +450,11 @@
     <!--设置状态ID和classId-->
     <update id="updateStatusIdAndClassId" parameterType="map">
         UPDATE ${tempName} temp
-        LEFT JOIN hm_crm_client_status sts  on sts.COMPANYID = temp.COMPANYID AND sts.STATUSNAME = temp.STATUSNAME
-        SET temp.STATUSID = sts.STATUSID ,temp.CLASSID = sts.CLASSID
+            LEFT JOIN hm_crm_client_status sts on sts.COMPANYID = temp.COMPANYID AND sts.STATUSNAME = temp.STATUSNAME
+        SET temp.STATUSID = sts.STATUSID, temp.CLASSID = sts.CLASSID
         WHERE
             temp.OPERAID = #{operaId}
     </update>
-
 
 
 </mapper>

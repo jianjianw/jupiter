@@ -137,4 +137,13 @@ public class GoldDataController extends BaseController{
         return ResultInfoUtil.success();
     }
 
+
+    /**
+     * 筛选
+     */
+    @GetMapping("/addkz_by_gold_temp")
+    public ResultInfo addkzByGoldTemp(@RequestParam Integer id){
+        //goldDataService.addkzByGoldTemp(id);
+        return  ResultInfoUtil.success(TigMsgEnum.UPDATE_SUCCESS);
+    }
 }

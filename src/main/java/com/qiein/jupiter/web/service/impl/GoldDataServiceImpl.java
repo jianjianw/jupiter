@@ -1,18 +1,20 @@
 package com.qiein.jupiter.web.service.impl;
 
+import cn.afterturn.easypoi.excel.annotation.Excel;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.mzlion.core.http.IPUtils;
 import com.mzlion.core.lang.StringUtils;
+import com.qiein.jupiter.constant.ClientStatusConst;
 import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.constant.GoldDataConst;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.http.CrmBaseApi;
 import com.qiein.jupiter.util.JsonFmtUtil;
 import com.qiein.jupiter.util.StringUtil;
-import com.qiein.jupiter.web.dao.ChannelDao;
-import com.qiein.jupiter.web.dao.GoldDataDao;
-import com.qiein.jupiter.web.dao.SourceDao;
+import com.qiein.jupiter.web.dao.*;
 import com.qiein.jupiter.web.entity.dto.ClientPushDTO;
 import com.qiein.jupiter.web.entity.dto.GoldCustomerDTO;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
@@ -24,6 +26,7 @@ import com.sun.org.apache.regexp.internal.RE;
 import org.apache.http.protocol.HttpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -40,11 +43,11 @@ public class GoldDataServiceImpl implements GoldDataService {
     @Autowired
     private GoldDataDao goldDataDao;
     @Autowired
-    private ChannelDao channelDao;
-    @Autowired
     private SourceDao sourceDao;
     @Autowired
     private CrmBaseApi crmBaseApi;
+    @Autowired
+    private GoldTempDao goldTempDao;
 
     /**
      * 添加表单
@@ -124,6 +127,7 @@ public class GoldDataServiceImpl implements GoldDataService {
      * 金数据接受数据
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void receiveGoldDataForm(JSONObject jsonObject, StaffPO staffPO) {
         Map<String, Object> reqContent = new HashMap<String, Object>();
         //获取金数据表单模板数据
@@ -170,13 +174,43 @@ public class GoldDataServiceImpl implements GoldDataService {
         reqContent.put("collectorname", goldFingerPO.getCreateorName());
 
 
+        //插入记录
+        GoldTempPO goldTempPO = new GoldTempPO();
+        goldTempPO.setFormId(goldFingerPO.getFormId());
+        goldTempPO.setFormName(goldFingerPO.getFormName());
+        goldTempPO.setSrcId(goldFingerPO.getSrcId());
+        goldTempPO.setSrcName(goldFingerPO.getSrcName());
+        goldTempPO.setTypeId(goldFingerPO.getTypeId());
+        goldTempPO.setTypeName(goldFingerPO.getTypeName());
+        goldTempPO.setMemo(goldFingerPO.getMemo());
+        goldTempPO.setCollecterId(goldFingerPO.getCreateorId());
+        goldTempPO.setCollecterName(goldFingerPO.getCreateorName());
+        goldTempPO.setAdId(goldFingerPO.getAdId());
+        goldTempPO.setAdAddress(goldFingerPO.getAdAddress());
+        goldTempPO.setKzName(entry.getString(goldFingerPO.getKzNameField()));
+        goldTempPO.setKzPhone(entry.getString(goldFingerPO.getKzPhoneField()));
+        goldTempPO.setCompanyId(goldFingerPO.getCompanyId());
+        if(reqContent.containsKey("address")){
+            goldTempPO.setAdAddress(reqContent.get("address").toString());
+        }
+        if(StringUtil.isNotEmpty(goldFingerPO.getKzWechatField())){
+            goldTempPO.setWechat(entry.getString(goldFingerPO.getKzWechatField()));
+        }
+        //TODO  ip，ipAddress，remark
+        goldTempDao.insert(goldTempPO);
+
+
 
         String addRstStr = crmBaseApi.doService(reqContent, "clientAddGoldPlug");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
 
         if ("100000".equals(jsInfo.getString("code"))) {
-            //TODO 是否需要推送客资
-        } else {
+            goldTempPO.setStatusId(GoldDataConst.IN_FILTER);
+            goldTempDao.update(goldTempPO);
+        } else if("130019".equals(jsInfo.getString("code"))){
+            goldTempPO.setStatusId(GoldDataConst.HAVA_ENTERED);
+            goldTempDao.update(goldTempPO);
+        }else {
             throw new RException(jsInfo.getString("msg"));
         }
     }

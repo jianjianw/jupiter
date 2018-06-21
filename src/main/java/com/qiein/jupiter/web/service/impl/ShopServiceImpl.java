@@ -154,4 +154,15 @@ public class ShopServiceImpl implements ShopService {
         return shopMap;
     }
 
+    /**
+     * 获取所在小组承接拍摄地
+     * @param companyId
+     * @param groupId
+     * @return
+     */
+    @Override
+    public List<ShopPO> getShopListByStaffGroup(int companyId, String groupId) {
+        return shopDao.getShopListByStaffGroup(companyId, groupId);
+    }
+
 }

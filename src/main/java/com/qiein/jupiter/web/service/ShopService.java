@@ -83,4 +83,12 @@ public interface ShopService {
      * 获取拍摄地的字典
      */
     Map<String, ShopDictVO> getShopDictByCid(int companyId);
+
+    /**
+     * 获取所在组的拍摄地列表
+     * @param companyId
+     * @param groupId
+     * @return
+     */
+    List<ShopPO> getShopListByStaffGroup(int companyId,String groupId);
 }

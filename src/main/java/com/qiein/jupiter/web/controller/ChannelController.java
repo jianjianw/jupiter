@@ -14,6 +14,7 @@ import com.qiein.jupiter.web.entity.po.SystemLog;
 import com.qiein.jupiter.web.service.ChannelService;
 import com.qiein.jupiter.web.service.SourceService;
 import com.qiein.jupiter.web.service.SystemLogService;
+import org.apache.commons.collections4.Get;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -217,5 +218,16 @@ public class ChannelController extends BaseController {
         // 获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         return ResultInfoUtil.success(channelService.getChannelSourceListByType(currentLoginStaff.getCompanyId(), role));
+    }
+
+    /**
+     * 根据员工所在小组获取该组承接的渠道列表
+     * @return
+     */
+    @GetMapping("/get_my_group_channel_list")
+    public ResultInfo getChannelListByStaffGroup(String groupId){
+        // 获取当前登录用户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        return ResultInfoUtil.success(channelService.getChannelListByStaffGroup(currentLoginStaff.getCompanyId(),groupId));
     }
 }

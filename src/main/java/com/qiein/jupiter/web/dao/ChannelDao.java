@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.dao;
 
 import com.qiein.jupiter.web.entity.po.ChannelPO;
+import com.qiein.jupiter.web.entity.po.SourcePO;
 import com.qiein.jupiter.web.entity.vo.ChannelVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -114,4 +115,11 @@ public interface ChannelDao extends BaseDao<ChannelPO> {
      * */
     ChannelPO getChannelByGroupParentId(@Param(value="parentId") String parentId,@Param(value="companyId") Integer companyId);
 
+    /**
+     *  根据员工id获取员工所在小组的承接渠道列表
+     * @param companyId
+     * @param groupId
+     * @return
+     */
+    List<ChannelPO> getChannelListByStaffGroup(@Param("companyId") int companyId, @Param("groupId") String groupId);
 }

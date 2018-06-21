@@ -116,11 +116,7 @@
     <update id="updatePriority" parameterType="Integer">
         UPDATE
         hm_crm_channel
-        <set>
-            <if test="priority != null and priority !=''">
-                PRIORITY = #{priority}
-            </if>
-        </set>
+        SET PRIORITY = #{priority}
         WHERE
         COMPANYID = #{companyId} AND ID = #{id}
     </update>
@@ -272,4 +268,16 @@
         select id,CHANNELNAME,CHANNELIMG,TYPEID,BRANDID,BRANDNAME,PUSHRULE,PRIORITY,ISSHOW,COMPANYID from hm_crm_channel where  CHANNELNAME = (select GROUPNAME from hm_pub_group where GROUPID = #{parentId})and COMPANYID = #{companyId}
     </select>
 
+    <!--根据员工id获取员工所在小组的承接渠道列表-->
+    <select id="getChannelListByStaffGroup" parameterType="map" resultMap="baseMap">
+        SELECT
+        c.ID,c.CHANNELNAME,c.CHANNELIMG,c.TYPEID,c.BRANDID,c.BRANDNAME,c.PUSHRULE,c.COMPANYID,c.ISSHOW
+        FROM
+        hm_crm_shop_channel_group_rela scgr
+        LEFT JOIN
+        hm_crm_channel c ON c.COMPANYID = scgr.COMPANYID AND c.ID = scgr.CHANNELID
+        WHERE
+        scgr.COMPANYID = #{companyId} and scgr.GROUPID = #{groupId} AND c.ISSHOW = 1
+        GROUP BY c.CHANNELNAME
+    </select>
 </mapper>
