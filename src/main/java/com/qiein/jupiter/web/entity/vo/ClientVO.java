@@ -212,20 +212,28 @@ public class ClientVO implements Serializable {
     private int packageCode;
     /**
      * 配偶姓名
-     * */
+     */
     private String mateName;
     /**
      * 配偶电话
-     * */
+     */
     private String matePhone;
     /**
      * 配偶微信
-     * */
+     */
     private String mateWeChat;
     /**
      * 配偶QQ
-     * */
+     */
     private String mateQq;
+    /**
+     * 预约时间
+     */
+    private int appointTime;
+    /**
+     * 收款时间
+     */
+    private int stayTime;
 
 
     public String getMateName() {
@@ -650,5 +658,21 @@ public class ClientVO implements Serializable {
 
     public void setPackageCode(int packageCode) {
         this.packageCode = packageCode;
+    }
+
+    public int getAppointTime() {
+        return appointTime;
+    }
+
+    public void setAppointTime(int appointTime) {
+        this.appointTime = appointTime;
+    }
+
+    public int getStayTime() {
+        return stayTime;
+    }
+
+    public void setStayTime(int stayTime) {
+        this.stayTime = stayTime;
     }
 }
