@@ -78,4 +78,12 @@ public interface ChannelService {
      * @return
      */
     Map<String, ChannelDictVO> getChannelDict(int companyId);
+
+    /**
+     * 根据员工id获取员工所在小组的承接渠道列表
+     * @param companyId
+     * @param groupId
+     * @return
+     */
+    List<ChannelPO> getChannelListByStaffGroup(int companyId , String groupId);
 }

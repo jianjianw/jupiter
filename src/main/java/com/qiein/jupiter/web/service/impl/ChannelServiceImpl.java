@@ -172,4 +172,15 @@ public class ChannelServiceImpl implements ChannelService {
         return map;
     }
 
+    /**
+     * 根据员工id获取员工所在小组的承接渠道列表
+     * @param companyId
+     * @param groupId
+     * @return
+     */
+    @Override
+    public List<ChannelPO> getChannelListByStaffGroup(int companyId, String groupId) {
+        return channelDao.getChannelListByStaffGroup(companyId, groupId);
+    }
+
 }

@@ -142,4 +142,13 @@ public class ShopController extends BaseController {
         return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
     }
 
+    /**
+     * 获取所在小组承接拍摄地
+     * @return
+     */
+    @GetMapping("/get_my_group_shop_list")
+    public ResultInfo getShopListByStaffGroup(String groupId){
+        StaffPO staffPO = getCurrentLoginStaff();
+        return ResultInfoUtil.success(shopService.getShopListByStaffGroup(staffPO.getCompanyId(),groupId));
+    }
 }
