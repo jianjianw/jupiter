@@ -116,11 +116,7 @@
     <update id="updatePriority" parameterType="Integer">
         UPDATE
         hm_crm_channel
-        <set>
-            <if test="priority != null and priority !=''">
-                PRIORITY = #{priority}
-            </if>
-        </set>
+        SET PRIORITY = #{priority}
         WHERE
         COMPANYID = #{companyId} AND ID = #{id}
     </update>
