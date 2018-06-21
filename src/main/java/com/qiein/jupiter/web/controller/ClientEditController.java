@@ -1,5 +1,7 @@
 package com.qiein.jupiter.web.controller;
 
+import com.qiein.jupiter.constant.ClientStatusConst;
+import com.qiein.jupiter.util.NumUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +16,7 @@ import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.ClientVO;
 import com.qiein.jupiter.web.service.ClientEditService;
+import sun.plugin.ClassLoaderInfo;
 
 /**
  * 客资编辑
@@ -35,7 +38,7 @@ public class ClientEditController extends BaseController {
         if (StringUtil.isAllEmpty(clientVO.getKzPhone(), clientVO.getKzWechat(), clientVO.getKzQq(), clientVO.getKzWw())) {
             return ResultInfoUtil.error(ExceptionEnum.KZ_CONTACT_INFORMATION);
         }
-        if (StringUtil.isEmpty(clientVO.getKzId())){
+        if (StringUtil.isEmpty(clientVO.getKzId())) {
             return ResultInfoUtil.error(ExceptionEnum.KZ_ID_IS_NULL);
         }
         //获取当前登录账户
@@ -55,8 +58,32 @@ public class ClientEditController extends BaseController {
         if (StringUtil.isAllEmpty(clientVO.getKzPhone(), clientVO.getKzWechat(), clientVO.getKzQq(), clientVO.getKzWw())) {
             return ResultInfoUtil.error(ExceptionEnum.KZ_CONTACT_INFORMATION);
         }
-        if (StringUtil.isEmpty(clientVO.getKzId())){
+        if (StringUtil.isEmpty(clientVO.getKzId())) {
             return ResultInfoUtil.error(ExceptionEnum.KZ_ID_IS_NULL);
+        }
+        //预约到店
+        if (ClientStatusConst.BE_COMFIRM == clientVO.getYyRst() && NumUtil.isInValid(clientVO.getShopId())) {
+            return ResultInfoUtil.error(ExceptionEnum.SHOP_ID_IS_NULL);
+        }
+        if (ClientStatusConst.BE_COMFIRM == clientVO.getYyRst() && NumUtil.isInValid(clientVO.getAppointTime())) {
+            return ResultInfoUtil.error(ExceptionEnum.APPOINT_TIME_IS_NULL);
+        }
+        // 在线订单
+        if (ClientStatusConst.ONLINE_SUCCESS == clientVO.getYyRst() && NumUtil.isInValid(clientVO.getAmount())) {
+            return ResultInfoUtil.error(ExceptionEnum.AMOUNT_IS_NULL);
+        }
+        if (ClientStatusConst.ONLINE_SUCCESS == clientVO.getYyRst() && NumUtil.isInValid(clientVO.getStayAmount())) {
+            return ResultInfoUtil.error(ExceptionEnum.STAY_AMOUNT_IS_NULL);
+        }
+        if (ClientStatusConst.ONLINE_SUCCESS == clientVO.getYyRst() && NumUtil.isInValid(clientVO.getSuccessTime())) {
+            return ResultInfoUtil.error(ExceptionEnum.SUCCESS_TIME_IS_NULL);
+        }
+        //在线保留
+        if (ClientStatusConst.ONLINE_STAY == clientVO.getYyRst() && NumUtil.isInValid(clientVO.getStayAmount())) {
+            return ResultInfoUtil.error(ExceptionEnum.STAY_AMOUNT_IS_NULL);
+        }
+        if (ClientStatusConst.ONLINE_STAY == clientVO.getYyRst() && NumUtil.isInValid(clientVO.getStayTime())) {
+            return ResultInfoUtil.error(ExceptionEnum.STAY_TIME_IS_NULL);
         }
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
@@ -75,7 +102,7 @@ public class ClientEditController extends BaseController {
         if (StringUtil.isAllEmpty(clientVO.getKzPhone(), clientVO.getKzWechat(), clientVO.getKzQq(), clientVO.getKzWw())) {
             return ResultInfoUtil.error(ExceptionEnum.KZ_CONTACT_INFORMATION);
         }
-        if (StringUtil.isEmpty(clientVO.getKzId())){
+        if (StringUtil.isEmpty(clientVO.getKzId())) {
             return ResultInfoUtil.error(ExceptionEnum.KZ_ID_IS_NULL);
         }
         //获取当前登录账户
