@@ -7,15 +7,13 @@ import com.mzlion.core.http.IPUtils;
 import com.mzlion.core.lang.StringUtils;
 import com.qiein.jupiter.constant.ClientStatusConst;
 import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.constant.GoldDataConst;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.http.CrmBaseApi;
 import com.qiein.jupiter.util.JsonFmtUtil;
 import com.qiein.jupiter.util.StringUtil;
-import com.qiein.jupiter.web.dao.ChannelDao;
-import com.qiein.jupiter.web.dao.GoldDataDao;
-import com.qiein.jupiter.web.dao.GoldTempDao;
-import com.qiein.jupiter.web.dao.SourceDao;
+import com.qiein.jupiter.web.dao.*;
 import com.qiein.jupiter.web.entity.dto.ClientPushDTO;
 import com.qiein.jupiter.web.entity.dto.GoldCustomerDTO;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
@@ -42,8 +40,6 @@ public class GoldDataServiceImpl implements GoldDataService {
 
     @Autowired
     private GoldDataDao goldDataDao;
-    @Autowired
-    private ChannelDao channelDao;
     @Autowired
     private SourceDao sourceDao;
     @Autowired
@@ -174,6 +170,7 @@ public class GoldDataServiceImpl implements GoldDataService {
         reqContent.put("collectorid", goldFingerPO.getCreateorId());
         reqContent.put("collectorname", goldFingerPO.getCreateorName());
 
+
         //插入记录
         GoldTempPO goldTempPO = new GoldTempPO();
         goldTempPO.setFormId(goldFingerPO.getFormId());
@@ -189,7 +186,6 @@ public class GoldDataServiceImpl implements GoldDataService {
         goldTempPO.setAdAddress(goldFingerPO.getAdAddress());
         goldTempPO.setKzName(entry.getString(goldFingerPO.getKzNameField()));
         goldTempPO.setKzPhone(entry.getString(goldFingerPO.getKzPhoneField()));
-        goldTempPO.setStatusId(ClientStatusConst.BE_HAVE_MAKE_ORDER);
         goldTempPO.setCompanyId(goldFingerPO.getCompanyId());
         if(reqContent.containsKey("address")){
             goldTempPO.setAdAddress(reqContent.get("address").toString());
@@ -200,12 +196,18 @@ public class GoldDataServiceImpl implements GoldDataService {
         //TODO  ip，ipAddress，remark
         goldTempDao.insert(goldTempPO);
 
+
+
         String addRstStr = crmBaseApi.doService(reqContent, "clientAddGoldPlug");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
 
         if ("100000".equals(jsInfo.getString("code"))) {
-            //TODO 是否需要推送客资
-        } else {
+            goldTempPO.setStatusId(GoldDataConst.IN_FILTER);
+            goldTempDao.update(goldTempPO);
+        } else if(CommonConstant.DEFAULT_STRING_ZERO.equalsIgnoreCase(jsInfo.getString("code"))){
+            goldTempPO.setStatusId(GoldDataConst.HAVA_ENTERED);
+            goldTempDao.update(goldTempPO);
+        }else {
             throw new RException(jsInfo.getString("msg"));
         }
     }

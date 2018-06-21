@@ -4,12 +4,77 @@
     <insert id="insert" parameterType="com.qiein.jupiter.web.entity.po.GoldTempPO" useGeneratedKeys="true"
             keyProperty="id">
         insert into hm_crm_gold_temp (FORMID, FORMNAME, SRCID, SRCNAME, TYPEID,
-                                      TYPENAME, MEMO, COLLECTERID, COLLECTERNAME, CREATETIME, ADID,
+                                      TYPENAME, MEMO, COLLECTERID, COLLECTERNAME, ADID,
                                       ADADDRESS, KZNAME, KZPHONE, WECHAT, ADDRESS,
-                                      REMARK, IP, IPADDRESS, COMPANYID, STATUSID)
-                values (#{formId},#{formName},#{srcId},#{srcName},#{typeId}
-                #{typeName},#{memo},#{collecterId},#{collecterName},#{createTime},#{adId},
-                #{adAddress},#{kzName},#{kzPhone},#{wechat},#{address},
-                #{remark},#{ip},#{ipAddress},#{companyId},#{statusId})
+                                      REMARK, IP, IPADDRESS, COMPANYID, STATUSID, CREATETIME)
+        values (#{formId}, #{formName}, #{srcId}, #{srcName}, #{typeId},
+            #{typeName}, #{memo}, #{collecterId}, #{collecterName}, #{adId},
+            #{adAddress}, #{kzName}, #{kzPhone}, #{wechat}, #{address},
+            #{remark}, #{ip}, #{ipAddress}, #{companyId}, #{statusId}, unix_timestamp(now()))
     </insert>
+
+    <update id="update" parameterType="com.qiein.jupiter.web.entity.po.GoldTempPO">
+        update hm_crm_gold_temp set
+        <if test="formId != null and formId != ''">
+            FORMID = #{formId},
+        </if>
+        <if test="formName != null and formName != ''">
+            FORMNAME = #{formName},
+        </if>
+        <if test="srcId != null">
+            SRCID = #{srcId},
+        </if>
+        <if test="srcName != null and srcName != ''">
+            SRCNAME = #{srcName},
+        </if>
+        <if test="typeId != null">
+            TYPEID = #{typeId},
+        </if>
+        <if test="typeName != null and typeName != ''">
+            TYPENAME = #{typeName},
+        </if>
+        <if test="memo != null and memo != ''">
+            MEMO = #{memo},
+        </if>
+        <if test="collecterId != null">
+            COLLECTERID = #{collecterId},
+        </if>
+        <if test="collecterName != null collecterName != ''">
+            COLLECTERNAME = #{collecterName},
+        </if>
+        <if test="adId != null and adId != ''">
+            ADID = #{adId},
+        </if>
+        <if test="adAddress != null and adAddress != ''">
+            ADADDRESS = #{adAddress},
+        </if>
+        <if test="kzName != null and kzName != ''">
+            KZNAME = #{kzName},
+        </if>
+        <if test="kzPhone != null and kzPhone != ''">
+            KZPHONE = #{kzPhone},
+        </if>
+        <if test="wechat != null and wechat != ''">
+            WECHAT = #{wechat},
+        </if>
+        <if test="address != null and address!= ''">
+            ADDRESS = #{address},
+        </if>
+        <if test="remark != null and remark != ''">
+            REMARK = #{remark},
+        </if>
+        <if test="ip != null and ip != ''">
+            ip = #{ip},
+        </if>
+        <if test="ipAddress != null and ipAddress != ''">
+            IPADDRESS = #{ipAddress},
+        </if>
+        <if test="companyId != null">
+            COMPANYID = #{companyId},
+        </if>
+        <if test="statusId != null">
+            STATUSID = #{statusId}
+        </if>
+        where id = #{id}
+    </update>
 </mapper>
