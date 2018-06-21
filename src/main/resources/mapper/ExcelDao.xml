@@ -431,7 +431,7 @@
     <!-- 插入客资详情表,唯一版 -->
     <insert id="insertDetailInfoByStaffId" parameterType="map">
         INSERT INTO ${tabName} (
-            KZID, ZXSTYLE, ADADDRESS, ADID, MARRYTIME, YPTIME, MATENAME, MATEPHONE, MATEWECHAT, MATEQQ, COMPANYID, YXLAVEL,
+            KZID, ZXSTYLE, ADADDRESS, ADID, MARRYTIME, YPTIME, MATENAME, MATEPHONE, MATEWECHAT, MATEQQ, COMPANYID, YXLEVEL,
             INVALIDLABEL, YSRANGE, ADDRESS, GROUPNAME, KEYWORD, COLLECTORNAME, APPOINTNAME, RECEPTORNAME, MEMO, SHOPNAME,
             AMOUNT, CREATETIME, OLDKZNAME, OLDKZPHONE, STAYAMOUNT
         ) (SELECT
@@ -446,7 +446,7 @@
                temp.MATEWECHAT,
                temp.MATEQQ,
                temp.COMPANYID,
-               temp.YXLAVEL,
+               temp.YXLEVEL,
                temp.INVALIDLABEL,
                temp.YSRANGE,
                temp.ADDRESS,

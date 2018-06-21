@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.entity.dto;
 
 import cn.afterturn.easypoi.excel.annotation.Excel;
 import com.qiein.jupiter.util.NumUtil;
+import com.qiein.jupiter.util.RegexUtil;
 import com.qiein.jupiter.util.StringUtil;
 
 import java.io.Serializable;
@@ -406,9 +407,12 @@ public class ClientExcelNewsDTO implements Serializable {
 
     public boolean checkWrongInfo() {
         if (NumUtil.isNull(getTypeId()) || NumUtil.isNull(getChannelId()) || NumUtil.isNull(getSourceId())
-                || (StringUtil.isEmpty(getKzPhone()) && StringUtil.isEmpty(getKzWechat())
+                || (StringUtil.isEmpty(getKzPhone())  && StringUtil.isEmpty(getKzWechat())
                 && StringUtil.isEmpty(getKzQq()))
                 || NumUtil.isNull(getShopId())) {
+            return true;
+        }
+        if(StringUtil.checkWeChat(getKzWechat()) || RegexUtil.checkMobile(getKzPhone()) || StringUtil.isQQCorrect(getKzQq())){
             return true;
         }
         return false;
