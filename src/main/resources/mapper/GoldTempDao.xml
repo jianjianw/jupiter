@@ -39,7 +39,7 @@
         <if test="collecterId != null">
             COLLECTERID = #{collecterId},
         </if>
-        <if test="collecterName != null collecterName != ''">
+        <if test="collecterName != null and collecterName != ''">
             COLLECTERNAME = #{collecterName},
         </if>
         <if test="adId != null and adId != ''">

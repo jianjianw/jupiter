@@ -168,4 +168,8 @@
         <include refid="formList"/>
         from hm_crm_gold_plug_setting where formId = #{formId} and formName = #{formName}
     </select>
+
+    <update id="addkzByGoldTemp">
+        UPDATE hm_crm_gold_temp SET statusId=#{statusId} where id=#{id}
+    </update>
 </mapper>

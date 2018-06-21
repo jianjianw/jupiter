@@ -101,8 +101,12 @@ public class ExcelServiceImpl implements ExcelService {
             clientExcelDTO.setSuccessTime(clientExcelDTO.getSuccessTimeDate() == null ? 0 : clientExcelDTO.getSuccessTimeDate().getTime() / 1000);
             clientExcelDTO.setAppointTime(clientExcelDTO.getAppointTimeDate() == null ? 0 : clientExcelDTO.getAppointTimeDate().getTime() / 1000);
             clientExcelDTO.setComeShopTime(clientExcelDTO.getComeShopTimeDate() == null ? 0 : clientExcelDTO.getComeShopTimeDate().getTime() / 1000);
-
-
+            try{
+                clientExcelDTO.setAmount(Integer.valueOf(clientExcelDTO.getAmountStr()));
+                clientExcelDTO.setStayaMount(Integer.valueOf(clientExcelDTO.getStayaMountStr()));
+            }catch (Exception e){
+                throw new RException(ExceptionEnum.UNKNOW_ERROR);
+            }
             //设置字典表
             DictionaryPO dictionaryPO = dictionaryDao.getDicByTypeAndName(currentLoginStaff.getCompanyId(), DictionaryConstant.ZX_STYLE, clientExcelDTO.getZxStyleStr());
             clientExcelDTO.setZxStyle(dictionaryPO == null ? null : dictionaryPO.getDicCode());
@@ -193,30 +197,33 @@ public class ExcelServiceImpl implements ExcelService {
     /**
      * 获取错误记录
      **/
-    public HashMap<String, List<ClientExcelDTO>> getAllUploadRecord(int companyId, int staffId) {
-        HashMap<String, List<ClientExcelDTO>> map = new HashMap<>();
-        List<ClientExcelDTO> wrongs = new LinkedList<>();
-        List<ClientExcelDTO> rights = new LinkedList<>();
-        List<ClientExcelDTO> all = excelDao.getAllRecordByStaffId(DBSplitUtil.getTable(TableEnum.temp, companyId), staffId);
-        List<ClientExcelDTO> dbRepeats = excelDao.getRepeatRecord(DBSplitUtil.getTable(TableEnum.temp, companyId),
+    public HashMap<String, List<ClientExcelNewsDTO>> getAllUploadRecord(int companyId, int staffId) {
+        HashMap<String, List<ClientExcelNewsDTO>> map = new HashMap<>();
+        List<ClientExcelNewsDTO> wrongs = new LinkedList<>();
+        List<ClientExcelNewsDTO> rights = new LinkedList<>();
+        List<ClientExcelNewsDTO> all = excelDao.getAllRecordByStaffId(DBSplitUtil.getTable(TableEnum.temp, companyId), staffId);
+        List<ClientExcelNewsDTO> dbRepeats = excelDao.getRepeatRecord(DBSplitUtil.getTable(TableEnum.temp, companyId),
                 DBSplitUtil.getTable(TableEnum.info, companyId), staffId);
         String repeatIds = "";
         if (CollectionUtils.isNotEmpty(dbRepeats)) {
-            for (ClientExcelDTO info : dbRepeats) {
+            for (ClientExcelNewsDTO info : dbRepeats) {
                 repeatIds += info.getKzId() + CommonConstant.STR_SEPARATOR;
             }
         }
-        List<ClientExcelDTO> excelEepeats = excelDao.getExcelRepeatRecord(DBSplitUtil.getTable(TableEnum.temp, companyId),
+        List<ClientExcelNewsDTO> excelEepeats = excelDao.getExcelRepeatRecord(DBSplitUtil.getTable(TableEnum.temp, companyId),
                 staffId);
         if (CollectionUtils.isNotEmpty(excelEepeats)) {
             dbRepeats.addAll(excelEepeats);
-            for (ClientExcelDTO info : excelEepeats) {
+            for (ClientExcelNewsDTO info : excelEepeats) {
                 repeatIds += info.getKzId() + CommonConstant.STR_SEPARATOR;
             }
         }
 
-        for (ClientExcelDTO info : all) {
+        for (ClientExcelNewsDTO info : all) {
             // 1.格式化时间
+            info.setComeShopTimeStr(TimeUtil.intMillisToTimeStr(Integer.valueOf(String.valueOf(info.getComeShopTime()))));
+            info.setSuccessTimeStr(TimeUtil.intMillisToTimeStr(Integer.valueOf(String.valueOf(info.getSuccessTime()))));
+            info.setAppointTimeStr(TimeUtil.intMillisToTimeStr(Integer.valueOf(String.valueOf(info.getAppointTime()))));
             // 2.查询重复记录
             if (repeatIds.contains(info.getKzId())) {
                 continue;
