@@ -16,6 +16,7 @@ import com.qiein.jupiter.web.entity.po.ChannelPO;
 import com.qiein.jupiter.web.entity.po.SourcePO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.ClientVO;
+import com.qiein.jupiter.web.entity.vo.CompanyVO;
 import com.qiein.jupiter.web.entity.vo.ShopVO;
 import com.qiein.jupiter.web.service.ClientEditService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,8 @@ public class ClientEditServiceImpl implements ClientEditService {
     private StaffDao staffDao;
     @Autowired
     private NewsDao newsDao;
+    @Autowired
+    private CompanyDao companyDao;
 
     /**
      * 电商推广修改客资
@@ -196,7 +199,8 @@ public class ClientEditServiceImpl implements ClientEditService {
             ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(clientVO.getKzId(),
                     DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
                     DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
-            if (ClientStatusConst.ONLINE_SUCCESS == clientVO.getYyRst()) {
+            CompanyVO companyVO = companyDao.getVOById(staffPO.getCompanyId());
+            if (ClientStatusConst.ONLINE_SUCCESS == clientVO.getYyRst() && companyVO.getAllScreen()) {
                 // 成功订单爆彩
                 StaffPO appoint = staffDao.getByIdAndCid(info.getAppointorId(), staffPO.getCompanyId());
                 if (appoint == null) {

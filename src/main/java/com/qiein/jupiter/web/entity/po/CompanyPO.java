@@ -178,5 +178,4 @@ public class CompanyPO extends BaseEntity {
         this.kzInterval = kzInterval;
     }
 
-
 }
