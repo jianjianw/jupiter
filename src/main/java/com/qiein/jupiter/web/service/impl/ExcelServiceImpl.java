@@ -258,9 +258,9 @@ public class ExcelServiceImpl implements ExcelService {
     @Transactional(rollbackFor = Exception.class)
     public void tempKzMoveToInfo(int companyId, int staffId) {
         //添加客资基本表
-        excelDao.insertBaseInfoByStaffId(DBSplitUtil.getInfoTabName(companyId), DBSplitUtil.getTable(TableEnum.temp, companyId), staffId);
+        excelDao.insertBaseInfoByStaffId(DBSplitUtil.getInfoTabName(companyId), DBSplitUtil.getTable(TableEnum.temp, companyId),DBSplitUtil.getTable(TableEnum.info,companyId),  staffId);
         //添加客资详情表
-        excelDao.insertDetailInfoByStaffId(DBSplitUtil.getDetailTabName(companyId), DBSplitUtil.getTable(TableEnum.temp, companyId), staffId);
+        excelDao.insertDetailInfoByStaffId(DBSplitUtil.getDetailTabName(companyId), DBSplitUtil.getTable(TableEnum.temp, companyId),DBSplitUtil.getTable(TableEnum.info,companyId), staffId);
         //添加备注
         excelDao.addExcelKzRemark(DBSplitUtil.getRemarkTabName(companyId), DBSplitUtil.getTable(TableEnum.temp, companyId), staffId);
         // 删除缓存表记录
