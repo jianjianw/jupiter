@@ -53,7 +53,7 @@
             hm_pub_shop shop
         WHERE
         shop.SHOPNAME = #{shopName}
-        AND shop.TYPEID = 2
+        AND shop.TYPEID = 1
          AND shop.COMPANYID = #{companyId}
     </select>
 
@@ -103,7 +103,7 @@
             hm_pub_shop shop
         WHERE
             shop.COMPANYID = #{companyId}
-        AND shop.TYPEID = 2
+        AND shop.TYPEID = 1
         AND shop.ISSHOW = 1
         ORDER BY shop.ISSHOW DESC,shop.PRIORITY,shop.ID
     </select>
@@ -116,7 +116,7 @@
             hm_pub_shop shop
         WHERE
             shop.COMPANYID = #{companyId}
-        AND shop.TYPEID = 2
+        AND shop.TYPEID = 1
         AND shop.ISSHOW = 1
         AND shop.ID = #{id}
     </select>
