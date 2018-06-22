@@ -221,7 +221,7 @@ public class GoldDataServiceImpl implements GoldDataService {
         reqContent.put("collectorname", goldFingerPO.getCreateorName());
         reqContent.put("address", address);
         reqContent.put("remark",sb.toString());
-
+ 
 
         //插入记录
         GoldTempPO goldTempPO = new GoldTempPO();
