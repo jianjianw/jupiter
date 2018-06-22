@@ -254,7 +254,6 @@ public class GoldDataServiceImpl implements GoldDataService {
         reqContent.put("sourceid", goldFingerPO.getSrcId());
         reqContent.put("srctype", sourcePO.getTypeId());
         reqContent.put("sourcename", goldFingerPO.getSrcName());
-        reqContent.put("isfilter", goldFingerPO.getIsFilter());
         reqContent.put("adid", goldFingerPO.getAdId());
         reqContent.put("adaddress", goldFingerPO.getAdAddress());
         reqContent.put("typeid", goldFingerPO.getTypeId());
