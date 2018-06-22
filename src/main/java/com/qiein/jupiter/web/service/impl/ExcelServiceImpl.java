@@ -208,6 +208,7 @@ public class ExcelServiceImpl implements ExcelService {
         String repeatIds = "";
         if (CollectionUtils.isNotEmpty(dbRepeats)) {
             for (ClientExcelNewsDTO info : dbRepeats) {
+                //1.时间格式化
                 info.setComeShopTimeStr(TimeUtil.intMillisToTimeStr(Integer.valueOf(String.valueOf(info.getComeShopTime()))));
                 info.setSuccessTimeStr(TimeUtil.intMillisToTimeStr(Integer.valueOf(String.valueOf(info.getSuccessTime()))));
                 info.setAppointTimeStr(TimeUtil.intMillisToTimeStr(Integer.valueOf(String.valueOf(info.getAppointTime()))));

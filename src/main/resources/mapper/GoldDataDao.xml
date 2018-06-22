@@ -163,10 +163,10 @@
     </select>
 
     <!--获取金数据表单-->
-    <select id="getGoldFingerByFormIdAndFormName" resultMap="goldData">
+    <select id="getGoldFingerByFormId" resultMap="goldData">
         select
         <include refid="formList"/>
-        from hm_crm_gold_plug_setting where formId = #{formId} and formName = #{formName}
+        from hm_crm_gold_plug_setting where formId = #{formId}
     </select>
 
     <update id="addkzByGoldTemp">
