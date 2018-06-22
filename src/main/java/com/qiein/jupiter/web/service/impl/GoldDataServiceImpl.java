@@ -12,10 +12,7 @@ import com.qiein.jupiter.constant.GoldDataConst;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.http.CrmBaseApi;
-import com.qiein.jupiter.util.JsonFmtUtil;
-import com.qiein.jupiter.util.MobileLocationUtil;
-import com.qiein.jupiter.util.NumUtil;
-import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.dao.*;
 import com.qiein.jupiter.web.entity.dto.GoldCustomerDTO;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
@@ -23,6 +20,7 @@ import com.qiein.jupiter.web.entity.po.*;
 import com.qiein.jupiter.web.entity.vo.GoldCustomerShowVO;
 import com.qiein.jupiter.web.entity.vo.GoldCustomerVO;
 import com.qiein.jupiter.web.service.GoldDataService;
+import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -133,11 +131,14 @@ public class GoldDataServiceImpl implements GoldDataService {
         String formId = jsonObject.getString("form");
         String formName = jsonObject.getString("formName");
         GoldFingerPO goldFingerPO = goldDataDao.getGoldFingerByFormId(formId);
-        String kzPhone = StringUtil.nullToStrTrim(String.valueOf(entry.get(goldFingerPO.getKzPhoneField())));
-        String kzName = StringUtil.nullToStrTrim(String.valueOf(entry.get(goldFingerPO.getKzNameField())));
-        String weChat = StringUtil.nullToStrTrim(String.valueOf(entry.get(goldFingerPO.getKzWechatField())));
+        String kzPhone = StringUtil.nullToStrTrim(entry.getString(goldFingerPO.getKzPhoneField()));
+        if(!RegexUtil.checkMobile(kzPhone)){
+            throw new RException(ExceptionEnum.PHONE_ERROR);
+        }
+        String kzName = StringUtil.nullToStrTrim(entry.getString(goldFingerPO.getKzNameField()));
+        String weChat = StringUtil.nullToStrTrim(entry.getString(goldFingerPO.getKzWechatField()));
         String address = MobileLocationUtil.getPhoneLocation(kzPhone);
-
+        System.out.println(kzPhone);
         //获取金数据表单模板数据
         if (null == goldFingerPO) {
             throw new RException(ExceptionEnum.FORM_NOT_EXISTS);
