@@ -106,7 +106,7 @@ public class ClientEditController extends BaseController {
         }
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        clientEditService.editClientByDsyy(clientVO, currentLoginStaff);
+        clientEditService.editClientByMsjd(clientVO, currentLoginStaff);
         return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
     }
 
