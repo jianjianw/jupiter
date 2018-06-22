@@ -395,7 +395,7 @@ public class ExcelServiceImpl implements ExcelService {
             case 3:
                 //重复客资
                 PageHelper.startPage(page,pageSize);
-                excelDao.getRepeatRecord(DBSplitUtil.getTable(TableEnum.temp, staffPO.getCompanyId()),
+                clientExcelNewsDTOS = excelDao.getRepeatRecord(DBSplitUtil.getTable(TableEnum.temp, staffPO.getCompanyId()),
                         DBSplitUtil.getTable(TableEnum.info, staffPO.getCompanyId()), staffPO.getId());
                 break;
         }
