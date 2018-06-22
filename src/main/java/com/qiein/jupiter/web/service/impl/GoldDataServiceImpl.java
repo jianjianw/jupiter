@@ -17,21 +17,16 @@ import com.qiein.jupiter.util.MobileLocationUtil;
 import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.*;
-import com.qiein.jupiter.web.entity.dto.ClientPushDTO;
 import com.qiein.jupiter.web.entity.dto.GoldCustomerDTO;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.*;
 import com.qiein.jupiter.web.entity.vo.GoldCustomerShowVO;
 import com.qiein.jupiter.web.entity.vo.GoldCustomerVO;
 import com.qiein.jupiter.web.service.GoldDataService;
-import com.sun.org.apache.regexp.internal.RE;
-import javafx.scene.control.ScrollPane;
-import org.apache.http.protocol.HttpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -221,7 +216,7 @@ public class GoldDataServiceImpl implements GoldDataService {
         reqContent.put("collectorname", goldFingerPO.getCreateorName());
         reqContent.put("address", address);
         reqContent.put("remark",sb.toString());
- 
+
 
         //插入记录
         GoldTempPO goldTempPO = new GoldTempPO();
