@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CostServiceImpl implements CostService {
@@ -19,7 +20,7 @@ public class CostServiceImpl implements CostService {
      * @param companyId
      * @return
      */
-    public List<CostShowVO> costList(String month, Integer companyId){
+    public  List<Map> costList(String month, Integer companyId){
         return costDao.costList(month,companyId);
     }
 

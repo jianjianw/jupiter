@@ -5,6 +5,7 @@ import com.qiein.jupiter.web.entity.vo.CostShowVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface CostDao {
     /**
@@ -13,7 +14,7 @@ public interface CostDao {
      * @param companyId
      * @return
      */
-     List<CostShowVO> costList(@Param("month") String month,@Param("companyId") Integer companyId);
+     List<Map> costList(@Param("month") String month, @Param("companyId") Integer companyId);
     /**
      * 添加花费
      * @param costPO

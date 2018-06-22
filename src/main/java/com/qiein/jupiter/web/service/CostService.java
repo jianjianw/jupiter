@@ -4,6 +4,7 @@ import com.qiein.jupiter.web.entity.po.CostPO;
 import com.qiein.jupiter.web.entity.vo.CostShowVO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 电商渠道花费
@@ -16,7 +17,7 @@ public interface CostService {
      * @param companyId
      * @return
      */
-    List<CostShowVO> costList(String month,Integer companyId);
+    List<Map> costList(String month, Integer companyId);
 
     /**
      * 添加花费

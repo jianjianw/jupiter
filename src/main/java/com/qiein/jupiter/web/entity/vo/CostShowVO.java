@@ -4,6 +4,7 @@ import com.qiein.jupiter.web.entity.po.CostPO;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 public class CostShowVO {
     //来源ID
@@ -12,6 +13,16 @@ public class CostShowVO {
     private BigDecimal totalCost;
     //花费详情
     private List<CostPO> costPOS;
+
+    private Map<String,Integer> map;
+
+    public Map<String, Integer> getMap() {
+        return map;
+    }
+
+    public void setMap(Map<String, Integer> map) {
+        this.map = map;
+    }
 
     public Integer getSrcId() {
         return srcId;
