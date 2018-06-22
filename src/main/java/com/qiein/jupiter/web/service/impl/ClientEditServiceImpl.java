@@ -72,12 +72,15 @@ public class ClientEditServiceImpl implements ClientEditService {
             throw new RException(ExceptionEnum.SOURCE_NOT_FOUND);
         }
         reqContent.put("sourcename", sourcePO.getSrcName());
-        // 获取拍摄地名
-        ShopVO shopVO = shopDao.getShowShopById(staffPO.getCompanyId(), clientVO.getShopId());
-        if (shopVO == null) {
-            throw new RException(ExceptionEnum.SHOP_NOT_FOUND);
+        if (NumUtil.isValid(clientVO.getShopId())) {
+            // 获取拍摄地名
+            ShopVO shopVO = shopDao.getShowShopById(staffPO.getCompanyId(), clientVO.getShopId());
+            if (shopVO == null) {
+                throw new RException(ExceptionEnum.SHOP_NOT_FOUND);
+            }
+            reqContent.put("shopid", clientVO.getShopId());
+            reqContent.put("shopname", shopVO.getShopName());
         }
-        reqContent.put("shopname", shopVO.getShopName());
         reqContent.put("yxlevel", clientVO.getYxLevel());
         reqContent.put("ysrange", clientVO.getYsRange());
         reqContent.put("marrytime", clientVO.getMarryTime());
@@ -91,7 +94,6 @@ public class ClientEditServiceImpl implements ClientEditService {
         reqContent.put("channelid", clientVO.getChannelId());
         reqContent.put("sourceid", clientVO.getSourceId());
         reqContent.put("srctype", sourcePO.getTypeId());
-        reqContent.put("shopid", clientVO.getShopId());
         reqContent.put("keyword", clientVO.getKeyWord());
         reqContent.put("adaddress", clientVO.getAdAddress());
         reqContent.put("adid", clientVO.getAdId());
@@ -340,14 +342,15 @@ public class ClientEditServiceImpl implements ClientEditService {
         reqContent.put("kzwechat", clientVO.getKzWechat());
         reqContent.put("kzqq", clientVO.getKzQq());
         reqContent.put("kzww", clientVO.getKzWw());
-        // 获取拍摄地名
-        ShopVO shopVO = shopDao.getShowShopById(staffPO.getCompanyId(), clientVO.getShopId());
-        if (shopVO == null) {
-            throw new RException(ExceptionEnum.SHOP_NOT_FOUND);
+        if (NumUtil.isValid(clientVO.getShopId())) {
+            // 获取拍摄地名
+            ShopVO shopVO = shopDao.getShowShopById(staffPO.getCompanyId(), clientVO.getShopId());
+            if (shopVO == null) {
+                throw new RException(ExceptionEnum.SHOP_NOT_FOUND);
+            }
+            reqContent.put("shopid", clientVO.getShopId());
+            reqContent.put("shopname", shopVO.getShopName());
         }
-        reqContent.put("shopid", clientVO.getShopId());
-        reqContent.put("shopname", shopVO.getShopName());
-
         // 纠错信息
         reqContent.put("sourceid", clientVO.getSourceId());
         // 获取来源名
