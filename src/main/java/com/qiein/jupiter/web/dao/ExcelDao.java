@@ -136,12 +136,12 @@ public interface ExcelDao {
     /**
      * 添加客资基础信息ByStaffId
      */
-    void insertBaseInfoByStaffId(@Param("tabName") String tabName, @Param("tempName") String tempName, @Param("staffId") Integer staffId);
+    void insertBaseInfoByStaffId(@Param("tabName") String tabName, @Param("tempName") String tempName,@Param("tableName") String tableName, @Param("staffId") Integer staffId);
 
     /**
      * 添加客资详细信息 ByStaffId
      */
-    void insertDetailInfoByStaffId(@Param("tabName") String tabName, @Param("tempName") String tempName, @Param("staffId") Integer staffId);
+    void insertDetailInfoByStaffId(@Param("tabName") String tabName, @Param("tempName") String tempName,@Param("tableName") String tableName, @Param("staffId") Integer staffId);
 
     /**
      * 插入客资备注表

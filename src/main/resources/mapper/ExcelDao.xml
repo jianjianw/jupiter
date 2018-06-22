@@ -431,7 +431,7 @@
            WHERE NOT EXISTS
            (
                    SELECT *
-                   FROM ${tabName} info
+                   FROM ${tableName} info
                    where (info.KZPHONE = temp.KZPHONE or info.KZWECHAT = temp.KZWECHAT or info.KZQQ = temp.KZQQ)
                          and ISDEL = 0
                          and CREATETIME + 10 > 2
@@ -477,8 +477,8 @@
            WHERE NOT EXISTS
            (
                    SELECT *
-                   FROM ${tabName} info
-                   where (info.KZPHONE = temp.KZPHONE or info.KZWECHAT = temp.KZWECHAT or info.KZQQ = temp.KZQQ)
+                   FROM ${tabName} tab
+                   where (tab.KZID = temp.KZID )
                          and ISDEL = 0
                          and CREATETIME + 10 > 2
            ) and temp.OPERAID = #{staffId}
@@ -680,13 +680,12 @@
         ) b,
         (
         SELECT DISTINCT
-        count(1) AS recept
+        count(1) AS repeats
         FROM
         ${tempName} temp
         LEFT JOIN ${tableName} info ON info.kzPhone = temp.KZPHONE
         OR info.KZWECHAT = temp.KZWECHAT
         OR info.KZQQ = temp.KZQQ
-        OR info.KZWW = temp.kzww
         WHERE
         info.KZID IS NOT NULL
         AND info.ISDEL = 0
