@@ -99,7 +99,7 @@ public class GoldDataController extends BaseController{
         StaffPO staff=getCurrentLoginStaff();
         List<GoldFingerPO> list = goldDataService.select(staff.getCompanyId());
         HttpServletRequest request = ((ServletRequestAttributes)      RequestContextHolder.getRequestAttributes()).getRequest();
-        String postUrl = request.getRequestURL().substring(0, request.getRequestURL().lastIndexOf("/")) + "/add_client_info";
+        String postUrl = request.getRequestURL().substring(0, request.getRequestURL().lastIndexOf("/")) + "/receive_gold_data_form";
         GoldFingerShowVO goldFingerShowVO=new GoldFingerShowVO();
         goldFingerShowVO.setList(list);
         goldFingerShowVO.setPostUrl(postUrl);
