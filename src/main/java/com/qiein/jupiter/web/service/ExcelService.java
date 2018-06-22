@@ -3,7 +3,9 @@ package com.qiein.jupiter.web.service;
 import java.util.HashMap;
 import java.util.List;
 
+import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.web.entity.dto.ClientExcelNewsDTO;
+import com.qiein.jupiter.web.entity.dto.ClientSortCountDTO;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.qiein.jupiter.web.entity.dto.ClientExcelDTO;
@@ -74,4 +76,15 @@ public interface ExcelService {
 	 * @return
 	 */
 	List<ClientExportVO> Export(StaffPO staffPO, ClientExportDTO clientExportDTO);
+
+	/**
+	 * 获取分类客资个数
+	 * @param staffPO
+	 * */
+	ClientSortCountDTO getMultipleKzStatusCount(StaffPO staffPO);
+
+	/**
+	 * 根据类型获取上传的客资
+	 * */
+	PageInfo getUploadRecordByType(StaffPO currentLoginStaff, Integer type,Integer page,Integer pageSize);
 }
