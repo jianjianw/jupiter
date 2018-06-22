@@ -2,10 +2,7 @@ package com.qiein.jupiter.web.dao;
 
 
 import com.qiein.jupiter.web.entity.dto.StaffMarsDTO;
-import com.qiein.jupiter.web.entity.vo.GroupBaseStaffVO;
-import com.qiein.jupiter.web.entity.vo.GroupStaffVO;
-import com.qiein.jupiter.web.entity.vo.GroupsInfoVO;
-import com.qiein.jupiter.web.entity.vo.StaffVO;
+import com.qiein.jupiter.web.entity.vo.*;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -122,4 +119,12 @@ public interface GroupStaffDao {
      * @param staffIdArr
      */
     void batchInsertGroupStaff(@Param("companyId") int companyId, @Param("groupId") String groupId, @Param("staffIdArr") String[] staffIdArr);
+
+    /**
+     * 获取门市下面的所有人员列表
+     *
+     * @param companyId
+     * @return
+     */
+    List<BaseStaffVO> getMsjdStaffList(@Param("companyId") int companyId);
 }

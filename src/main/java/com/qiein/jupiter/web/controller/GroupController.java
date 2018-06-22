@@ -139,4 +139,12 @@ public class GroupController extends BaseController {
     public ResultInfo getDsyyGroupStaffList() {
         return ResultInfoUtil.success(groupService.getDsyyGroupStaffList(getCurrentLoginStaff().getCompanyId()));
     }
+
+    /**
+     * 获取门市下面的所有人员列表
+     */
+    @GetMapping("/get_msjd_staff_list")
+    public ResultInfo getMsjdStaffList() {
+        return ResultInfoUtil.success(groupService.getMsjdStaffList(getCurrentLoginStaff().getCompanyId()));
+    }
 }

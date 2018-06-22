@@ -43,17 +43,6 @@
         </collection>
     </resultMap>
 
-    <!--<resultMap id="groupMap" type="com.qiein.jupiter.web.entity.vo.GroupStaffVO">-->
-    <!--<id column="GROUPID" property="groupId" jdbcType="VARCHAR"/>-->
-    <!--<result column="GROUPNAME" property="groupName" jdbcType="VARCHAR"/>-->
-    <!--<result column="PARENTID" property="parentId" jdbcType="VARCHAR"/>-->
-    <!--<result column="GROUPTYPE" property="groupType" jdbcType="VARCHAR"/>-->
-    <!--<result column="COMPANYID" property="companyId" jdbcType="VARCHAR"/>-->
-    <!--<result column="CHIEFIDS" property="chiefIds" jdbcType="VARCHAR"/>-->
-    <!--<result column="CHIEFNAMES" property="chiefNames" jdbcType="VARCHAR"/>-->
-    <!--<collection property="groupList" ofType="com.qiein.jupiter.web.entity.vo.GroupStaffVO" resultMap="groupMap"/>-->
-    <!--<collection property="staffList" ofType="com.qiein.jupiter.web.entity.po.StaffPO" resultMap="staffPOMap"/>-->
-    <!--</resultMap>-->
     <resultMap id="staffPOMap" type="com.qiein.jupiter.web.entity.po.StaffPO">
         <id column="ID" property="id" jdbcType="INTEGER"/>
         <result column="NICKNAME" property="nickName" jdbcType="VARCHAR"/>
@@ -109,6 +98,11 @@
             <result column="STATUSFLAG" property="statusFlag" jdbcType="INTEGER"/>
             <result column="ISLOCK" property="lockFlag" jdbcType="BOOLEAN"/>
         </collection>
+    </resultMap>
+
+    <resultMap id="baseStaffMap" type="com.qiein.jupiter.web.entity.vo.BaseStaffVO">
+        <result column="STAFFID" property="staffId" jdbcType="INTEGER"/>
+        <result column="NICKNAME" property="staffName" jdbcType="VARCHAR"/>
     </resultMap>
 
     <!--网销排班员工详情信息-->
@@ -355,6 +349,21 @@
             AND grp.PARENTID != '0'
             AND sf.ISDEL = 0
         ORDER BY grp.GROUPNAME, grp.ID, sf.ISLOCK, sf.STATUSFLAG DESC, sf.ID
+    </select>
+
+    <!--获取门市下的所有人员列表-->
+    <select id="getMsjdStaffList" parameterType="map" resultMap="baseStaffMap">
+        SELECT
+            rela.STAFFID,sf.NICKNAME
+        FROM
+            hm_pub_group_staff  rela
+        LEFT JOIN hm_pub_group grp ON grp.GROUPID = rela.GROUPID AND rela.COMPANYID = grp.COMPANYID
+        LEFT JOIN hm_pub_staff sf ON sf.ID = rela.STAFFID AND rela.COMPANYID = sf.COMPANYID
+        WHERE
+            rela.COMPANYID = #{companyId}
+            AND grp.GROUPTYPE = 'msjd'
+            AND sf.ISDEL = 0
+	        AND sf.ISLOCK = 0
     </select>
 
 </mapper>
