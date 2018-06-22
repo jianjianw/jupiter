@@ -189,6 +189,10 @@ public class ExcelController extends BaseController {
      * */
     @GetMapping("/get_upload_record_by_type")
     public ResultInfo getUploadRecordByType(Integer type,Integer page,Integer pageSize){
+        if(NumUtil.isInValid(page) || NumUtil.isInValid(pageSize)){
+            page = 1;
+            pageSize = 20;
+        }
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         return ResultInfoUtil.success(excelService.getUploadRecordByType(currentLoginStaff,type,page,pageSize));
