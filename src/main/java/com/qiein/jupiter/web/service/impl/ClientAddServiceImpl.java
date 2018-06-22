@@ -55,6 +55,8 @@ public class ClientAddServiceImpl implements ClientAddService {
         reqContent.put("companyid", staffPO.getCompanyId());
         reqContent.put("collectorid", staffPO.getId());
         reqContent.put("collectorname", staffPO.getNickName());
+        reqContent.put("operaid", staffPO.getId());
+        reqContent.put("operaname", staffPO.getNickName());
         // 获取渠道名
         ChannelPO channelPO = channelDao.getShowChannelById(staffPO.getCompanyId(), clientVO.getChannelId());
         if (channelPO == null) {
