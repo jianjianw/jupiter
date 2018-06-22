@@ -246,6 +246,14 @@ public class ClientVO implements Serializable {
      * 到店时间
      */
     private int comeShopTime;
+    /**
+     * 老客姓名
+     */
+    private String oldKzName;
+    /**
+     * 老客手机号
+     */
+    private String oldKzPhone;
 
 
     public String getMateName() {

@@ -16,6 +16,14 @@ public interface ClientAddService {
     void addDsClient(ClientVO clientVO, StaffPO staffPO);
 
     /**
+     * 添加转介绍客资
+     *
+     * @param clientVO
+     * @param staffPO
+     */
+    void addZjsClient(ClientVO clientVO, StaffPO staffPO);
+
+    /**
      * 批量录入信息解析
      *
      * @param text
@@ -28,5 +36,7 @@ public interface ClientAddService {
      * @param list
      */
     JSONObject batchAddDsClient(String list, int channelId, int sourceId, int shopId, int typeId, StaffPO staffPO,
-                                String adId, String adAddress, String groupId, int appointId, int zxStyle,int yxLevel,int ysRange,int marryTime);
+                                String adId, String adAddress, String groupId, int appointId, int zxStyle, int yxLevel, int ysRange, int marryTime);
+
+
 }

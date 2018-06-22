@@ -46,6 +46,23 @@ public class ClientAddController extends BaseController {
     }
 
     /**
+     * 录入转介绍客资
+     *
+     * @return
+     */
+    @PostMapping("/add_zjs_client")
+    public ResultInfo addZjsClient(@RequestBody ClientVO clientVO) {
+        if (StringUtil.isAllEmpty(clientVO.getKzPhone(), clientVO.getKzWechat(), clientVO.getKzQq(),
+                clientVO.getKzWw())) {
+            return ResultInfoUtil.error(ExceptionEnum.KZ_CONTACT_INFORMATION);
+        }
+        // 获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        clientAddService.addDsClient(clientVO, currentLoginStaff);
+        return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
+    }
+
+    /**
      * 批量录入
      *
      * @param jsonObject

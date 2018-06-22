@@ -121,9 +121,96 @@ public class ClientAddServiceImpl implements ClientAddService {
         reqContent.put("matename", clientVO.getMateName());
         reqContent.put("matewechat", clientVO.getMateWeChat());
         reqContent.put("mateqq", clientVO.getMateQq());
-        reqContent.put("yxlevel",clientVO.getYxLevel());
-        reqContent.put("ysrange",clientVO.getYsRange());
-        reqContent.put("marrytime",clientVO.getMarryTime());
+        reqContent.put("yxlevel", clientVO.getYxLevel());
+        reqContent.put("ysrange", clientVO.getYsRange());
+        reqContent.put("marrytime", clientVO.getMarryTime());
+
+        String addRstStr = crmBaseApi.doService(reqContent, "addClientInfoPcHs");
+        JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
+        if ("100000".equals(jsInfo.getString("code"))) {
+            CompanyPO companyPO = companyDao.getById(staffPO.getCompanyId());
+            tpm.pushInfo(new ClientPushDTO(pushService, channelPO.getPushRule(), staffPO.getCompanyId(),
+                    JsonFmtUtil.strContentToJsonObj(addRstStr).getString("kzid"), clientVO.getShopId(),
+                    channelPO.getId(), channelPO.getTypeId(), companyPO.getOvertime(), companyPO.getKzInterval()));
+        } else {
+            throw new RException(jsInfo.getString("msg"));
+        }
+    }
+
+    /**
+     * 添加转介绍客资
+     *
+     * @param clientVO
+     * @param staffPO
+     */
+    public void addZjsClient(ClientVO clientVO, StaffPO staffPO) {
+        Map<String, Object> reqContent = new HashMap<String, Object>();
+        reqContent.put("companyid", staffPO.getCompanyId());
+        reqContent.put("collectorid", staffPO.getId());
+        reqContent.put("collectorname", staffPO.getNickName());
+        reqContent.put("operaid", staffPO.getId());
+        reqContent.put("operaname", staffPO.getNickName());
+        // 获取渠道名
+        ChannelPO channelPO = channelDao.getShowChannelById(staffPO.getCompanyId(), clientVO.getChannelId());
+        if (channelPO == null) {
+            throw new RException(ExceptionEnum.CHANNEL_NOT_FOUND);
+        }
+        reqContent.put("channelname", channelPO.getChannelName());
+        // 获取来源名
+        SourcePO sourcePO = sourceDao.getShowSourceById(staffPO.getCompanyId(), clientVO.getSourceId());
+        if (sourcePO == null) {
+            throw new RException(ExceptionEnum.SOURCE_NOT_FOUND);
+        }
+        reqContent.put("sourcename", sourcePO.getSrcName());
+        if (NumUtil.isValid(clientVO.getShopId())) {
+            // 获取拍摄地名
+            ShopVO shopVO = shopDao.getShowShopById(sourcePO.getCompanyId(), clientVO.getShopId());
+            if (shopVO == null) {
+                throw new RException(ExceptionEnum.SHOP_NOT_FOUND);
+            }
+            reqContent.put("shopname", shopVO.getShopName());
+        }
+        // 获取邀约客服名称
+        if (NumUtil.isNotNull(clientVO.getAppointId())) {
+            StaffPO appoint = staffDao.getById(clientVO.getAppointId());
+            if (appoint == null) {
+                throw new RException(ExceptionEnum.APPOINT_NOT_FOUND);
+            }
+            reqContent.put("appointid", clientVO.getAppointId());
+            reqContent.put("appointname", appoint.getNickName());
+        }
+        // 获取邀约客服组名称
+        if (StringUtil.isNotEmpty(clientVO.getGroupId())) {
+            GroupPO groupPO = groupDao.getGroupById(sourcePO.getCompanyId(), clientVO.getGroupId());
+            if (groupPO == null) {
+                throw new RException(ExceptionEnum.APPOINT_GROUP_NOT_FOUND);
+            }
+            reqContent.put("groupid", clientVO.getGroupId());
+            reqContent.put("groupname", groupPO.getGroupName());
+        }
+
+        reqContent.put("sex", clientVO.getSex());
+        reqContent.put("kzname", clientVO.getKzName());
+        reqContent.put("kzphone", clientVO.getKzPhone());
+        reqContent.put("kzwechat", clientVO.getKzWechat());
+        reqContent.put("kzqq", clientVO.getKzQq());
+        reqContent.put("kzww", clientVO.getKzWw());
+        reqContent.put("channelid", clientVO.getChannelId());
+        reqContent.put("sourceid", clientVO.getSourceId());
+        reqContent.put("srctype", sourcePO.getTypeId());
+        reqContent.put("isfilter", sourcePO.getIsFilter());
+        reqContent.put("typeid", clientVO.getTypeId());
+        reqContent.put("address",
+                StringUtil.isNotEmpty(clientVO.getAddress()) ? clientVO.getAddress()
+                        : MobileLocationUtil.getAddressByContactInfo(clientVO.getKzPhone(), clientVO.getKzWechat(),
+                        clientVO.getKzQq()));
+        reqContent.put("remark", clientVO.getRemark());
+        reqContent.put("matephone", clientVO.getMatePhone());
+        reqContent.put("matename", clientVO.getMateName());
+        reqContent.put("matewechat", clientVO.getMateWeChat());
+        reqContent.put("mateqq", clientVO.getMateQq());
+        reqContent.put("marrytime", clientVO.getMarryTime());
+        reqContent.put("yptime", clientVO.getYpTime());
 
         String addRstStr = crmBaseApi.doService(reqContent, "addClientInfoPcHs");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
@@ -226,7 +313,7 @@ public class ClientAddServiceImpl implements ClientAddService {
      * @param list
      */
     public JSONObject batchAddDsClient(String list, int channelId, int sourceId, int shopId, int typeId,
-                                       StaffPO staffPO, String adId, String adAddress, String groupId, int appointId, int zxStyle,int yxLevel,int ysRange,int marryTime) {
+                                       StaffPO staffPO, String adId, String adAddress, String groupId, int appointId, int zxStyle, int yxLevel, int ysRange, int marryTime) {
         // 获取邀约客服名称
         String appointName = "";
         if (NumUtil.isNotNull(appointId)) {
@@ -315,5 +402,6 @@ public class ClientAddServiceImpl implements ClientAddService {
         result.put("code", errorCount == 0 ? CommonConstant.DEFAULT_SUCCESS_CODE : CommonConstant.DEFAULT_ERROR_CODE);
         return result;
     }
+
 
 }
