@@ -387,7 +387,7 @@ public class ClientEditServiceImpl implements ClientEditService {
         reqContent.put("amount", clientVO.getAmount());// 成交套系金额
         reqContent.put("memo", clientVO.getMemo());
         reqContent.put("packageCode", clientVO.getPackageCode());// 套系名称编码
-        String addRstStr = crmBaseApi.doService(reqContent, "clientEditCwzxHs");
+        String addRstStr = crmBaseApi.doService(reqContent, "clientEditCwzxLp");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if (!"100000".equals(jsInfo.getString("code"))) {
             throw new RException(jsInfo.getString("msg"));
