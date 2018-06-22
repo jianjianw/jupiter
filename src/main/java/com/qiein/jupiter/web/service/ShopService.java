@@ -17,7 +17,7 @@ public interface ShopService {
      * @param companyId
      * @return
      */
-    List<ShopVO> getCompanyShopList(int companyId);
+    List<ShopPO> getCompanyShopList(int companyId);
 
     /**
      * 新增拍摄地

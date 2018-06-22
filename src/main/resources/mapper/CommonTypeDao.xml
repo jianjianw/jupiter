@@ -7,7 +7,6 @@
         <result column="DICTYPE" jdbcType="VARCHAR" property="dicType"/>
         <result column="ISSHOW" jdbcType="INTEGER" property="isShow"/>
         <result column="COMPANYID" jdbcType="INTEGER" property="companyId"/>
-
     </resultMap>
 
     <resultMap id="commonTypeChannel" type="com.qiein.jupiter.web.entity.vo.CommonTypeChannelVO">

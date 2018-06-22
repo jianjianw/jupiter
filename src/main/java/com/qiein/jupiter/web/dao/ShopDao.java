@@ -16,7 +16,7 @@ public interface ShopDao extends BaseDao<ShopPO> {
      * @param companyId
      * @return
      */
-    List<ShopVO> getCompanyShopList(@Param("companyId") int companyId);
+    List<ShopPO> getCompanyShopList(@Param("companyId") int companyId);
 
     /**
      * 拍摄地名称

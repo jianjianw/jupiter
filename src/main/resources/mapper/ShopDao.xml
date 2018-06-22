@@ -25,14 +25,14 @@
     </sql>
 
     <!--获取企业所有拍摄地-->
-    <select id="getCompanyShopList" parameterType="map" resultMap="VOMap">
+    <select id="getCompanyShopList" parameterType="map" resultMap="baseMap">
         SELECT
-            shop.ID,shop.SHOPNAME,shop.ISSHOW,shop.PRIORITY,shop.COMPANYID
+            shop.ID,shop.SHOPNAME,shop.ISSHOW,shop.PRIORITY,shop.COMPANYID,shop.ADDRESS, shop.SERVICEPHONE
         FROM
             hm_pub_shop shop
         WHERE
             shop.COMPANYID = #{companyId}
-        AND shop.TYPEID = 2
+        AND shop.TYPEID = 1
         ORDER BY shop.ISSHOW DESC,shop.PRIORITY,shop.ID
     </select>
 

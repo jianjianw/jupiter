@@ -35,7 +35,7 @@ public class ShopServiceImpl implements ShopService {
      * @param companyId
      * @return
      */
-    public List<ShopVO> getCompanyShopList(int companyId) {
+    public List<ShopPO> getCompanyShopList(int companyId) {
         return shopDao.getCompanyShopList(companyId);
     }
 
@@ -51,7 +51,7 @@ public class ShopServiceImpl implements ShopService {
             throw new RException(ExceptionEnum.SHOP_EXIST);
         }
         //2.新增
-        shopPO.setTypeId(ShopTypeEnum.SHOOTING.getShopType());
+        shopPO.setTypeId(ShopTypeEnum.SHOP.getShopType());
         shopPO.setShowFlag(true);
         shopDao.insert(shopPO);
     }
@@ -140,9 +140,9 @@ public class ShopServiceImpl implements ShopService {
      */
     @Override
     public Map<String, ShopDictVO> getShopDictByCid(int companyId) {
-        List<ShopVO> companyShopList = shopDao.getCompanyShopList(companyId);
+        List<ShopPO> companyShopList = shopDao.getCompanyShopList(companyId);
         Map<String, ShopDictVO> shopMap = new HashMap<>();
-        for (ShopVO shopVO : companyShopList) {
+        for (ShopPO shopVO : companyShopList) {
             ShopDictVO shopDictVO = new ShopDictVO();
             shopDictVO.setId(shopVO.getId());
             //名称
