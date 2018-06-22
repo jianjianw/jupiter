@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.dao;
 
 import com.qiein.jupiter.web.entity.dto.ClientExcelDTO;
 import com.qiein.jupiter.web.entity.dto.ClientExcelNewsDTO;
+import com.qiein.jupiter.web.entity.dto.ClientSortCountDTO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -120,6 +121,7 @@ public interface ExcelDao {
      **/
     List<ClientExcelNewsDTO> getAllRecordByStaffId(@Param("tempName") String tempName, @Param("staffId") int staffId);
 
+
     /**
      * 获取与info表重复的记录
      **/
@@ -176,5 +178,28 @@ public interface ExcelDao {
      */
     void updateStatusIdAndClassId(@Param("tempName") String tempName, @Param("operaId") int operaId);
 
+    /**
+     * 获取错误客资
+     * @param tempName
+     * @param staffId
+     * @return
+     * */
+    List<ClientExcelNewsDTO> getExcelErrorClient(@Param("tempName") String tempName, @Param("staffId") int staffId);
 
+
+    /**
+     * 获取正常客资
+     * @param tempName
+     * @param staffId
+     * @return
+     * */
+    List<ClientExcelNewsDTO> getExcelSuccessClient(@Param("tempName") String tempName, @Param("tableName") String tableName,
+                                                   @Param("staffId") int staffId);
+
+
+    /**
+     * 获取可知数量
+     * */
+    ClientSortCountDTO getMultipleKzStatusCount(@Param("tempName") String tempName, @Param("tableName") String tableName,
+                                                @Param("staffId") int staffId);
 }

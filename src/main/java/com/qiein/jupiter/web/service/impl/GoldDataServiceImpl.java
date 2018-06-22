@@ -138,7 +138,6 @@ public class GoldDataServiceImpl implements GoldDataService {
         String kzName = StringUtil.nullToStrTrim(entry.getString(goldFingerPO.getKzNameField()));
         String weChat = StringUtil.nullToStrTrim(entry.getString(goldFingerPO.getKzWechatField()));
         String address = MobileLocationUtil.getPhoneLocation(kzPhone);
-        System.out.println(kzPhone);
         //获取金数据表单模板数据
         if (null == goldFingerPO) {
             throw new RException(ExceptionEnum.FORM_NOT_EXISTS);
