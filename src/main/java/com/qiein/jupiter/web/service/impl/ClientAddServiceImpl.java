@@ -162,14 +162,6 @@ public class ClientAddServiceImpl implements ClientAddService {
             throw new RException(ExceptionEnum.SOURCE_NOT_FOUND);
         }
         reqContent.put("sourcename", sourcePO.getSrcName());
-        if (NumUtil.isValid(clientVO.getShopId())) {
-            // 获取拍摄地名
-            ShopVO shopVO = shopDao.getShowShopById(sourcePO.getCompanyId(), clientVO.getShopId());
-            if (shopVO == null) {
-                throw new RException(ExceptionEnum.SHOP_NOT_FOUND);
-            }
-            reqContent.put("shopname", shopVO.getShopName());
-        }
         // 获取邀约客服名称
         if (NumUtil.isNotNull(clientVO.getAppointId())) {
             StaffPO appoint = staffDao.getById(clientVO.getAppointId());
