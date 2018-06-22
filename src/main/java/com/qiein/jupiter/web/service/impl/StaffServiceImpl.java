@@ -351,10 +351,6 @@ public class StaffServiceImpl implements StaffService {
      */
     @Override
     public WeChatUserDTO checkWXBind(Integer companyId, Integer staffId) {
-//        boolean flag = staffDao.checkBindWeChat(companyId, staffId);
-//        System.out.println(flag);
-//        if (flag){
-            System.out.println(WeChatPushUtil.APOLLO_URL);
             String resultJsonStr = HttpClient.get(WeChatPushUtil.APOLLO_URL+"/wechat/get_user_info")
                     .queryString("companyId",companyId)
                     .queryString("staffId",staffId)
@@ -362,15 +358,12 @@ public class StaffServiceImpl implements StaffService {
             JSONObject resultJson = JSONObject.parseObject(resultJsonStr);
             if (StringUtil.isEmpty(resultJson.getString("data")) && resultJson.getIntValue("code")==100000)
                 log.info(ExceptionEnum.WX_NOT_BIND.getMsg());
-//                throw new RException (ExceptionEnum.WX_NOT_BIND);
             if (resultJson.getIntValue("code")!=100000)
                 throw new RException(ExceptionEnum.GET_WX_INFO_FAIL);
 
             WeChatUserDTO weChatUserDTO =JSONObject.parseObject(resultJson.getString("data"),WeChatUserDTO.class);
-            System.out.println(weChatUserDTO);
+            log.info(weChatUserDTO.toString());
             return weChatUserDTO;
-//        }
-//        return null;
     }
 
     @Override

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiein.jupiter.web.dao.CostDao">
+    <resultMap id="Cost" type="com.qiein.jupiter.web.entity.vo.CostShowVO">
+        <result column="TOTALCOST" jdbcType="DECIMAL" property="totalCost"/>
+        <result column="SRCID" jdbcType="INTEGER" property="srcId" />
+        <collection property="costPOS" ofType="com.qiein.jupiter.web.entity.po.CostPO">
+            <id column="ID" jdbcType="VARCHAR" property="id" />
+            <result column="COST" jdbcType="DECIMAL" property="cost" />
+            <result column="COSTTIME" jdbcType="VARCHAR" property="costTime" />
+            <result column="COMPANYID" jdbcType="INTEGER" property="companyId" />
+        </collection>
+    </resultMap>
+    <select id="costList" resultMap="Cost">
+        SELECT
+            ID,
+            COST,
+            SRCID,
+            FROM_UNIXTIME(a.COSTTIME, '%Y/%m/%d') COSTTIME,
+            (
+                SELECT
+                    SUM(COST)
+                FROM
+                    hm_crm_cost b
+                WHERE
+                    a.SRCID = b.SRCID
+            ) TOTALCOST
+        FROM
+            hm_crm_cost a
+        where FROM_UNIXTIME(a.COSTTIME, '%Y/%m/%d %H:%i:%s') like CONCAT("%",#{month},"%") and COMPANYID=#{companyId}
+    </select>
+
+    <insert id="insert">
+        insert into hm_crm_cost(SRCID,COMPANYID,UPDATETIME,CREATETIME,COSTTIME,COST) values(#{srcId},#{companyId},UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(#{costTime}),#{cost})
+    </insert>
+    <update id="editCost">
+        update hm_crm_cost set cost=#{cost},UPDATETIME=UNIX_TIMESTAMP(now()) WHERE ID=#{id}
+    </update>
+</mapper>
