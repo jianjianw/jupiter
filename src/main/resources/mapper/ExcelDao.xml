@@ -562,7 +562,16 @@
         or temp.TYPEID is null
         or temp.CHANNELID is NULL
         or temp.SOURCEID is NULL
-        or (temp.KZPHONE is null and temp.KZWECHAT is null and temp.KZQQ is null) or temp.SHOPID is null
+        or temp.COLLECTORID IS NULL
+        or temp.CREATETIME IS NULL
+        or (temp.KZPHONE is null and temp.KZWECHAT is null and temp.KZQQ is null and temp.KZWW is null)
+        or (temp.SHOPID is null and temp.SHOPNAME is not null)
+        or (temp.APPOINTORID is null and temp.APPOINTNAME is not null)
+        or (temp.RECEPTORID is null and temp.RECEPTORNAME IS not null)
+        or (temp.CLASSID != 1 AND temp.APPOINTORID IS NULL )
+        or (temp.CLASSID = 4 AND (temp.SHOPID IS NULL OR temp.COMESHOPTIME IS NULL OR temp.RECEPTORID IS NULL))
+        or (temp.CLASSID = 3 AND (temp.APPOINTTIME IS NULL OR temp.SHOPID IS NULL))
+        or (temp.CLASSID = 5 AND (temp.SHOPID IS NULL or temp.RECEPTORID IS NULL or temp.SUCCESSTIME IS NULL or temp.AMOUNT IS NULL))
     </select>
 
     <!--获取正常客资-->
@@ -590,13 +599,23 @@
         left join
         (select
         <include refid="Base_Column_News_List"/>
-        from ${tempName} temp where temp.KZPHONE NOT REGEXP '^[1][35678][0-9]{9}$'
+        from ${tempName} temp where
+        temp.KZPHONE NOT REGEXP '^[1][3456789][0-9]{9}$'
         or temp.KZWECHAT NOT REGEXP '^[a-zA-Z0-9]{1}[-_a-zA-Z0-9]{5,30}$'
         or temp.kzqq not REGEXP '[1-9][0-9]{4,9}'
         or temp.TYPEID is null
         or temp.CHANNELID is NULL
         or temp.SOURCEID is NULL
-        or (temp.KZPHONE is null and temp.KZWECHAT is null and temp.KZQQ is null) or temp.SHOPID is null)c
+        or temp.COLLECTORID IS NULL
+        or temp.CREATETIME IS NULL
+        or (temp.KZPHONE is null and temp.KZWECHAT is null and temp.KZQQ is null and temp.KZWW is null)
+        or (temp.SHOPID is null and temp.SHOPNAME is not null)
+        or (temp.APPOINTORID is null and temp.APPOINTNAME is not null)
+        or (temp.RECEPTORID is null and temp.RECEPTORNAME IS not null)
+        or (temp.CLASSID != 1 AND temp.APPOINTORID IS NULL )
+        or (temp.CLASSID = 4 AND (temp.SHOPID IS NULL OR temp.COMESHOPTIME IS NULL OR temp.RECEPTORID IS NULL))
+        or (temp.CLASSID = 3 AND (temp.APPOINTTIME IS NULL OR temp.SHOPID IS NULL))
+        or (temp.CLASSID = 5 AND (temp.SHOPID IS NULL or temp.RECEPTORID IS NULL or temp.SUCCESSTIME IS NULL or temp.AMOUNT IS NULL)))c
         on temp.KZID = c.KZID
         where c.KZID is null
     </select>
@@ -642,18 +661,22 @@
         FROM
         ${tempName} temp
         WHERE
-        temp.KZPHONE NOT REGEXP '^[1][35678][0-9]{9}$'
-        OR temp.KZWECHAT NOT REGEXP '^[a-zA-Z0-9]{1}[-_a-zA-Z0-9]{5,30}$'
-        OR temp.kzqq NOT REGEXP '[1-9][0-9]{4,9}'
-        OR temp.TYPEID IS NULL
-        OR temp.CHANNELID IS NULL
-        OR temp.SOURCEID IS NULL
-        OR (
-        temp.KZPHONE IS NULL
-        AND temp.KZWECHAT IS NULL
-        AND temp.KZQQ IS NULL
-        )
-        OR temp.SHOPID IS NULL
+        temp.KZPHONE NOT REGEXP '^[1][3456789][0-9]{9}$'
+        or temp.KZWECHAT NOT REGEXP '^[a-zA-Z0-9]{1}[-_a-zA-Z0-9]{5,30}$'
+        or temp.kzqq not REGEXP '[1-9][0-9]{4,9}'
+        or temp.TYPEID is null
+        or temp.CHANNELID is NULL
+        or temp.SOURCEID is NULL
+        or temp.COLLECTORID IS NULL
+        or temp.CREATETIME IS NULL
+        or (temp.KZPHONE is null and temp.KZWECHAT is null and temp.KZQQ is null and temp.KZWW is null)
+        or (temp.SHOPID is null and temp.SHOPNAME is not null)
+        or (temp.APPOINTORID is null and temp.APPOINTNAME is not null)
+        or (temp.RECEPTORID is null and temp.RECEPTORNAME IS not null)
+        or (temp.CLASSID != 1 AND temp.APPOINTORID IS NULL )
+        or (temp.CLASSID = 4 AND (temp.SHOPID IS NULL OR temp.COMESHOPTIME IS NULL OR temp.RECEPTORID IS NULL))
+        or (temp.CLASSID = 3 AND (temp.APPOINTTIME IS NULL OR temp.SHOPID IS NULL))
+        or (temp.CLASSID = 5 AND (temp.SHOPID IS NULL or temp.RECEPTORID IS NULL or temp.SUCCESSTIME IS NULL or temp.AMOUNT IS NULL))
         ) c ON temp.kzid = c.kzid
         WHERE
         c.kzid IS NULL
@@ -665,18 +688,22 @@
         FROM
         ${tempName} temp
         WHERE
-        temp.KZPHONE NOT REGEXP '^[1][35678][0-9]{9}$'
-        OR temp.KZWECHAT NOT REGEXP '^[a-zA-Z0-9]{1}[-_a-zA-Z0-9]{5,30}$'
-        OR temp.kzqq NOT REGEXP '[1-9][0-9]{4,9}'
-        OR temp.TYPEID IS NULL
-        OR temp.CHANNELID IS NULL
-        OR temp.SOURCEID IS NULL
-        OR (
-        temp.KZPHONE IS NULL
-        AND temp.KZWECHAT IS NULL
-        AND temp.KZQQ IS NULL
-        )
-        OR temp.SHOPID IS NULL
+        temp.KZPHONE NOT REGEXP '^[1][3456789][0-9]{9}$'
+        or temp.KZWECHAT NOT REGEXP '^[a-zA-Z0-9]{1}[-_a-zA-Z0-9]{5,30}$'
+        or temp.kzqq not REGEXP '[1-9][0-9]{4,9}'
+        or temp.TYPEID is null
+        or temp.CHANNELID is NULL
+        or temp.SOURCEID is NULL
+        or temp.COLLECTORID IS NULL
+        or temp.CREATETIME IS NULL
+        or (temp.KZPHONE is null and temp.KZWECHAT is null and temp.KZQQ is null and temp.KZWW is null)
+        or (temp.SHOPID is null and temp.SHOPNAME is not null)
+        or (temp.APPOINTORID is null and temp.APPOINTNAME is not null)
+        or (temp.RECEPTORID is null and temp.RECEPTORNAME IS not null)
+        or (temp.CLASSID != 1 AND temp.APPOINTORID IS NULL )
+        or (temp.CLASSID = 4 AND (temp.SHOPID IS NULL OR temp.COMESHOPTIME IS NULL OR temp.RECEPTORID IS NULL))
+        or (temp.CLASSID = 3 AND (temp.APPOINTTIME IS NULL OR temp.SHOPID IS NULL))
+        or (temp.CLASSID = 5 AND (temp.SHOPID IS NULL or temp.RECEPTORID IS NULL or temp.SUCCESSTIME IS NULL or temp.AMOUNT IS NULL))
         ) b,
         (
         SELECT DISTINCT

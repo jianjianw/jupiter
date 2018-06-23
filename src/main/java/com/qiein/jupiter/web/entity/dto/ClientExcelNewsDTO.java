@@ -149,7 +149,7 @@ public class ClientExcelNewsDTO implements Serializable {
     /**
      * 录入时间接收格式
      */
-    @Excel(name = "录入时间", databaseFormat = "MM月dd日", format = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "提报时间", databaseFormat = "MM月dd日", format = "yyyy-MM-dd HH:mm:ss")
     private Date time;
     /**
      * 预约时间接受格式

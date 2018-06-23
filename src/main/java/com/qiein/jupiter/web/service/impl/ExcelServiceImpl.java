@@ -401,6 +401,13 @@ public class ExcelServiceImpl implements ExcelService {
             default:
                 break;
         }
+        for (ClientExcelNewsDTO info : clientExcelNewsDTOS) {
+            //1.时间格式化
+            info.setComeShopTimeStr(TimeUtil.intMillisToTimeStr(Integer.valueOf(String.valueOf(info.getComeShopTime()))));
+            info.setSuccessTimeStr(TimeUtil.intMillisToTimeStr(Integer.valueOf(String.valueOf(info.getSuccessTime()))));
+            info.setAppointTimeStr(TimeUtil.intMillisToTimeStr(Integer.valueOf(String.valueOf(info.getAppointTime()))));
+        }
+
         return new PageInfo<>(clientExcelNewsDTOS);
     }
 
