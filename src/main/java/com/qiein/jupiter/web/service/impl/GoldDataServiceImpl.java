@@ -12,6 +12,8 @@ import com.qiein.jupiter.constant.GoldDataConst;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.http.CrmBaseApi;
+import com.qiein.jupiter.msg.goeasy.ClientDTO;
+import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
 import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.dao.*;
 import com.qiein.jupiter.web.entity.dto.GoldCustomerDTO;
@@ -165,9 +167,11 @@ public class GoldDataServiceImpl implements GoldDataService {
                     reqContent.put("kzqq", entry.getString(fieldKeys[i]));
                     continue;
                 }
-                Object value = entry.get(fieldValues[i]);
+                String value = entry.getString(fieldValues[i]);
                 if (entry.get(fieldValues[i]) != null && !"".equals(value)) {
-                    sb.append(fieldKeys[i] + "：" + entry.get(fieldKeys[i]) + "<br/>");
+                    if(StringUtil.isNotEmpty(value)){
+                        sb.append(fieldKeys[i] + "：" + StringUtil.nullToStrTrim(value) + "<br/>");
+                    }
                 }
             }
             if(StringUtil.isNotEmpty(kzName)){
@@ -226,7 +230,7 @@ public class GoldDataServiceImpl implements GoldDataService {
         goldTempPO.setSrcName(goldFingerPO.getSrcName());
         goldTempPO.setTypeId(goldFingerPO.getTypeId());
         goldTempPO.setTypeName(goldFingerPO.getTypeName());
-        goldTempPO.setMemo(goldFingerPO.getMemo());
+        goldTempPO.setMemo(jsonObject.toJSONString());
         goldTempPO.setCollecterId(goldFingerPO.getCreateorId());
         goldTempPO.setCollecterName(goldFingerPO.getCreateorName());
         goldTempPO.setAdId(goldFingerPO.getAdId());
@@ -238,12 +242,10 @@ public class GoldDataServiceImpl implements GoldDataService {
         goldTempPO.setWechat(weChat);
         goldTempPO.setRemark(sb.toString());
 
-        //TODO  ip，ipAddress，remark
         goldTempDao.insert(goldTempPO);
 
         //重复拦截
         GoldTempPO goldTemp = goldTempDao.getByKzNameOrKzPhoneOrKzWechat(formId, kzPhone);
-
         if (null != goldTemp) {
             goldTempPO.setStatusId(GoldDataConst.REPEATED_SCREEN);
             goldTempDao.update(goldTempPO);
@@ -255,8 +257,17 @@ public class GoldDataServiceImpl implements GoldDataService {
 
 
         if ("100000".equals(jsInfo.getString("code"))) {
+            //更新状态
             goldTempPO.setStatusId(GoldDataConst.IN_FILTER);
             goldTempDao.update(goldTempPO);
+            //发送消息
+            ClientDTO info = new ClientDTO();
+            info.setKzName(goldTempPO.getKzName());
+            info.setKzPhone(goldTempPO.getKzPhone());
+            info.setKzWeChat(weChat);
+            info.setSrcName(goldFingerPO.getSrcName());
+            info.setChannelName(sourcePO.getChannelName());
+            GoEasyUtil.pushGoldDataKz(goldFingerPO.getCompanyId(),goldFingerPO.getCreateorId(),info);
         } else if ("130019".equals(jsInfo.getString("code"))) {
             goldTempPO.setStatusId(GoldDataConst.HAVA_ENTERED);
             goldTempDao.update(goldTempPO);
