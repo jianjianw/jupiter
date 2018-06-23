@@ -719,4 +719,20 @@ public class ClientVO implements Serializable {
     public void setComeShopTime(int comeShopTime) {
         this.comeShopTime = comeShopTime;
     }
+
+    public String getOldKzName() {
+        return oldKzName;
+    }
+
+    public void setOldKzName(String oldKzName) {
+        this.oldKzName = oldKzName;
+    }
+
+    public String getOldKzPhone() {
+        return oldKzPhone;
+    }
+
+    public void setOldKzPhone(String oldKzPhone) {
+        this.oldKzPhone = oldKzPhone;
+    }
 }
