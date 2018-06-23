@@ -230,7 +230,7 @@ public class GoldDataServiceImpl implements GoldDataService {
         goldTempPO.setSrcName(goldFingerPO.getSrcName());
         goldTempPO.setTypeId(goldFingerPO.getTypeId());
         goldTempPO.setTypeName(goldFingerPO.getTypeName());
-        goldTempPO.setMemo(jsonObject.toJSONString());
+//        goldTempPO.setMemo(jsonObject.toJSONString());
         goldTempPO.setCollecterId(goldFingerPO.getCreateorId());
         goldTempPO.setCollecterName(goldFingerPO.getCreateorName());
         goldTempPO.setAdId(goldFingerPO.getAdId());
