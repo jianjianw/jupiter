@@ -15,10 +15,11 @@
         <result column="PRIORITY" jdbcType="INTEGER" property="priority"/>
         <result column="ISFILTER" jdbcType="BOOLEAN" property="isFilter"/>
         <result column="ISSHOW" jdbcType="BOOLEAN" property="isShow"/>
+        <result column="PUSHRULE" jdbcType="INTEGER" property="pushRule"/>
     </resultMap>
 
     <sql id="baseColumn">
-        ID,SRCNAME,TYPEID,CHANNELID,CHANNELNAME,SRCIMG,BRANDID,BRANDNAME,PRIORITY,ISSHOW,ISFILTER,COMPANYID
+        ID,SRCNAME,TYPEID,CHANNELID,CHANNELNAME,SRCIMG,BRANDID,BRANDNAME,PRIORITY,ISSHOW,ISFILTER,COMPANYID, PUSHRULE
     </sql>
 
     <select id="getByIdAndCid" parameterType="Integer" resultMap="baseMap">

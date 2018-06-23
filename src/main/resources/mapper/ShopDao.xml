@@ -60,7 +60,7 @@
     <!--编辑拍摄地-->
     <update id="update" parameterType="com.qiein.jupiter.web.entity.po.ShopPO">
         UPDATE hm_pub_shop
-        SET SHOPNAME = #{shopName}
+        SET SHOPNAME = #{shopName}, ADDRESS = #{address}, SERVICEPHONE = #{servicePhone}
         WHERE COMPANYID = #{companyId}
         AND ID = #{id}
     </update>

@@ -13,214 +13,229 @@ import com.qiein.jupiter.web.service.impl.ClientPushServiceImpl;
  */
 public class ClientPushDTO implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * 推送时间间隔
-	 */
-	private int pushInterval;
+    /**
+     * 推送时间间隔
+     */
+    private int pushInterval;
 
-	/**
-	 * 客资领取超时时间
-	 */
-	private int overTime;
+    /**
+     * 客资领取超时时间
+     */
+    private int overTime;
 
-	/**
-	 * 企业ID
-	 */
-	private int companyId;
+    /**
+     * 企业ID
+     */
+    private int companyId;
 
-	/**
-	 * 主键ID
-	 */
-	private int id;
+    /**
+     * 主键ID
+     */
+    private int id;
 
-	/**
-	 * 客资ID
-	 */
-	private String kzId;
+    /**
+     * 客资ID
+     */
+    private String kzId;
 
-	/**
-	 * 状态ID
-	 */
-	private int statusId;
+    /**
+     * 状态ID
+     */
+    private int statusId;
 
-	/**
-	 * 推广ID
-	 */
-	private int collectorId;
+    /**
+     * 推广ID
+     */
+    private int collectorId;
 
-	/**
-	 * 客服ID
-	 */
-	private int appointorId;
-	/**
-	 * 来源ID
-	 */
-	private int sourceId;
+    /**
+     * 客服ID
+     */
+    private int appointorId;
+    /**
+     * 来源ID
+     */
+    private int sourceId;
 
-	/**
-	 * 推送规则
-	 */
-	private int pushRule;
+    /**
+     * 推送规则
+     */
+    private int pushRule;
 
-	/**
-	 * 拍摄地ID
-	 */
-	private int shopId;
+    /**
+     * 拍摄地ID
+     */
+    private int shopId;
 
-	/**
-	 * 渠道ID
-	 */
-	private int channelId;
+    /**
+     * 渠道ID
+     */
+    private int channelId;
 
-	/**
-	 * 渠道类型
-	 */
-	private int channelTypeId;
+    /**
+     * 渠道类型
+     */
+    private int channelTypeId;
+    /**
+     * 来源ID
+     */
+    private int srcId;
 
-	private ClientPushServiceImpl service;
+    private ClientPushServiceImpl service;
 
-	public ClientPushDTO(ClientPushServiceImpl service, Integer pushRule, int companyId, String kzId, int shopId,
-			int channelId, Integer channelTypeId, int overtime, int kzInterval) {
-		this.pushRule = pushRule;
-		this.companyId = companyId;
-		this.kzId = kzId;
-		this.shopId = shopId;
-		this.channelId = channelId;
-		this.channelTypeId = channelTypeId;
-		this.overTime = overtime;
-		this.pushInterval = kzInterval;
-		this.service = service;
-	}
+    public ClientPushDTO(ClientPushServiceImpl service, Integer pushRule, int companyId, String kzId, int shopId,
+                         int channelId, Integer channelTypeId, int overtime, int kzInterval, int srcId) {
+        this.pushRule = pushRule;
+        this.companyId = companyId;
+        this.kzId = kzId;
+        this.shopId = shopId;
+        this.channelId = channelId;
+        this.channelTypeId = channelTypeId;
+        this.overTime = overtime;
+        this.pushInterval = kzInterval;
+        this.service = service;
+        this.srcId = srcId;
+    }
 
-	public ClientPushDTO() {
-		super();
-	}
+    public ClientPushDTO() {
+        super();
+    }
 
-	public boolean isNotEmpty() {
-		return (service != null && NumUtil.isValid(this.pushRule) && NumUtil.isValid(this.companyId)
-				&& StringUtil.isValid(this.kzId) && NumUtil.isValid(this.shopId) && NumUtil.isValid(this.channelId)
-				&& NumUtil.isValid(this.channelTypeId));
-	}
+    public boolean isNotEmpty() {
+        return (service != null && NumUtil.isValid(this.pushRule) && NumUtil.isValid(this.companyId)
+                && StringUtil.isValid(this.kzId) && NumUtil.isValid(this.shopId) && NumUtil.isValid(this.channelId)
+                && NumUtil.isValid(this.channelTypeId));
+    }
 
-	public int getCollectorId() {
-		return collectorId;
-	}
+    public int getCollectorId() {
+        return collectorId;
+    }
 
-	public void setCollectorId(int collectorId) {
-		this.collectorId = collectorId;
-	}
+    public void setCollectorId(int collectorId) {
+        this.collectorId = collectorId;
+    }
 
-	public ClientPushServiceImpl getService() {
-		return service;
-	}
+    public ClientPushServiceImpl getService() {
+        return service;
+    }
 
-	public void setService(ClientPushServiceImpl service) {
-		this.service = service;
-	}
+    public void setService(ClientPushServiceImpl service) {
+        this.service = service;
+    }
 
-	public int getPushInterval() {
-		return pushInterval;
-	}
+    public int getPushInterval() {
+        return pushInterval;
+    }
 
-	public void setPushInterval(int pushInterval) {
-		this.pushInterval = pushInterval;
-	}
+    public void setPushInterval(int pushInterval) {
+        this.pushInterval = pushInterval;
+    }
 
-	public int getOverTime() {
-		return overTime;
-	}
+    public int getOverTime() {
+        return overTime;
+    }
 
-	public void setOverTime(int overTime) {
-		this.overTime = overTime;
-	}
+    public void setOverTime(int overTime) {
+        this.overTime = overTime;
+    }
 
-	public int getCompanyId() {
-		return companyId;
-	}
+    public int getCompanyId() {
+        return companyId;
+    }
 
-	public void setCompanyId(int companyId) {
-		this.companyId = companyId;
-	}
+    public void setCompanyId(int companyId) {
+        this.companyId = companyId;
+    }
 
-	public int getId() {
-		return id;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public String getKzId() {
-		return kzId;
-	}
+    public String getKzId() {
+        return kzId;
+    }
 
-	public void setKzId(String kzId) {
-		this.kzId = kzId;
-	}
+    public void setKzId(String kzId) {
+        this.kzId = kzId;
+    }
 
-	public int getStatusId() {
-		return statusId;
-	}
+    public int getStatusId() {
+        return statusId;
+    }
 
-	public void setStatusId(int statusId) {
-		this.statusId = statusId;
-	}
+    public void setStatusId(int statusId) {
+        this.statusId = statusId;
+    }
 
-	public int getAppointorId() {
-		return appointorId;
-	}
+    public int getAppointorId() {
+        return appointorId;
+    }
 
-	public void setAppointorId(int appointorId) {
-		this.appointorId = appointorId;
-	}
+    public void setAppointorId(int appointorId) {
+        this.appointorId = appointorId;
+    }
 
-	public int getSourceId() {
-		return sourceId;
-	}
+    public int getSourceId() {
+        return sourceId;
+    }
 
-	public void setSourceId(int sourceId) {
-		this.sourceId = sourceId;
-	}
+    public void setSourceId(int sourceId) {
+        this.sourceId = sourceId;
+    }
 
-	public int getPushRule() {
-		return pushRule;
-	}
+    public int getPushRule() {
+        return pushRule;
+    }
 
-	public void setPushRule(int pushRule) {
-		this.pushRule = pushRule;
-	}
+    public void setPushRule(int pushRule) {
+        this.pushRule = pushRule;
+    }
 
-	public int getShopId() {
-		return shopId;
-	}
+    public int getShopId() {
+        return shopId;
+    }
 
-	public void setShopId(int shopId) {
-		this.shopId = shopId;
-	}
+    public void setShopId(int shopId) {
+        this.shopId = shopId;
+    }
 
-	public int getChannelId() {
-		return channelId;
-	}
+    public int getChannelId() {
+        return channelId;
+    }
 
-	public void setChannelId(int channelId) {
-		this.channelId = channelId;
-	}
+    public void setChannelId(int channelId) {
+        this.channelId = channelId;
+    }
 
-	public int getChannelTypeId() {
-		return channelTypeId;
-	}
+    public int getChannelTypeId() {
+        return channelTypeId;
+    }
 
-	public void setChannelTypeId(int channelTypeId) {
-		this.channelTypeId = channelTypeId;
-	}
+    public void setChannelTypeId(int channelTypeId) {
+        this.channelTypeId = channelTypeId;
+    }
 
-	@Override
-	public String toString() {
-		return "ClientPushDTO [pushInterval=" + pushInterval + ", overTime=" + overTime + ", companyId=" + companyId
-				+ ", id=" + id + ", kzId=" + kzId + ", statusId=" + statusId + ", appointorId=" + appointorId
-				+ ", sourceId=" + sourceId + ", pushRule=" + pushRule + ", shopId=" + shopId + ", channelId="
-				+ channelId + ", channelTypeId=" + channelTypeId + ", service=" + service + "]";
-	}
+    public int getSrcId() {
+        return srcId;
+    }
+
+    public void setSrcId(int srcId) {
+        this.srcId = srcId;
+    }
+
+    @Override
+    public String toString() {
+        return "ClientPushDTO [pushInterval=" + pushInterval + ", overTime=" + overTime + ", companyId=" + companyId
+                + ", id=" + id + ", kzId=" + kzId + ", statusId=" + statusId + ", appointorId=" + appointorId
+                + ", sourceId=" + sourceId + ", pushRule=" + pushRule + ", shopId=" + shopId + ", channelId="
+                + channelId + ", channelTypeId=" + channelTypeId + ", service=" + service + "]";
+    }
+
+
 }

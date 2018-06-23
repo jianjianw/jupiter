@@ -345,7 +345,9 @@
         INNER JOIN hm_pub_staff sf ON sf.COMPANYID = rela.COMPANYID AND rela.STAFFID = sf.ID
         WHERE
             grp.COMPANYID = #{companyId}
-            AND grp.GROUPTYPE = #{type}
+            <if test="type != null and type != '' ">
+                AND grp.GROUPTYPE = #{type}
+            </if>
             AND grp.PARENTID != '0'
             AND sf.ISDEL = 0
         ORDER BY grp.GROUPNAME, grp.ID, sf.ISLOCK, sf.STATUSFLAG DESC, sf.ID

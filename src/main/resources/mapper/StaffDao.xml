@@ -816,4 +816,25 @@
         ${allotLogTab} al ON s.ID = al.STAFFID
 
     </select>
+
+    <!-- 获取转介绍渠道指定员工客服-->
+    <select id="getZjsPushAppoint" parameterType="map" resultMap="pushMap">
+        SELECT
+            rela.STAFFID, sf.NICKNAME, gs.GROUPID, grp.GROUPNAME
+        FROM
+            hm_crm_source_staff rela
+            INNER JOIN hm_pub_staff sf ON sf.ID = rela.STAFFID AND rela.COMPANYID = sf.COMPANYID
+            LEFT JOIN hm_pub_group_staff gs ON gs.STAFFID = sf.ID  AND gs.COMPANYID = sf.COMPANYID
+            LEFT JOIN hm_pub_group grp ON grp.GROUPID = gs.GROUPID AND grp.COMPANYID = gs.COMPANYID
+        WHERE
+            rela.COMPANYID = #{companyId}
+            AND rela.SOURCEID = #{sourceId}
+            AND rela.RELATYPE = 'yy'
+            AND sf.ISDEL = 0
+            AND sf.ISLOCK = 0
+            AND grp.GROUPTYPE = 'zjsyy'
+        ORDER BY
+            sf.LASTPUSHTIME ASC
+            LIMIT 0,1
+    </select>
 </mapper>
