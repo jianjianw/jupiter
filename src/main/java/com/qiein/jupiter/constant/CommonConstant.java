@@ -183,6 +183,11 @@ public class CommonConstant {
     public final static int DEFAULT_ONLINE_TIME = 120;
 
     /**
+     * 分页最大条数
+     * */
+    public final static int  MAX_PAGE_SIZE = 500;
+
+    /**
      * request信息
      */
     public final static String REQUEST_INFO = "requestInfo";
