@@ -147,4 +147,15 @@ public class GroupController extends BaseController {
     public ResultInfo getMsjdStaffList() {
         return ResultInfoUtil.success(groupService.getMsjdStaffList(getCurrentLoginStaff().getCompanyId()));
     }
+
+    /**
+     * 获取全公司小组人员列表
+     */
+    @GetMapping("/get_all_group_staff_list")
+    public ResultInfo getAllGroupStaffList() {
+        // 获取当前登录账户
+        StaffPO staff = getCurrentLoginStaff();
+        return ResultInfoUtil.success(groupService.getAllGroupStaff(staff.getCompanyId()));
+    }
+
 }

@@ -592,4 +592,14 @@ public class GroupServiceImpl implements GroupService {
     public List<BaseStaffVO> getMsjdStaffList(int companyId) {
         return groupStaffDao.getMsjdStaffList(companyId);
     }
+
+    /**
+     * 获取全公司所有小组人员列表
+     *
+     * @param companyId
+     * @return
+     */
+    public List<GroupBaseStaffVO> getAllGroupStaff(int companyId) {
+        return groupStaffDao.getGroupStaffByRole(companyId, null);
+    }
 }
