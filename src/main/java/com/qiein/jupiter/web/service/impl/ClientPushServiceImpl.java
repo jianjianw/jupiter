@@ -64,7 +64,7 @@ public class ClientPushServiceImpl implements ClientPushService {
     @Transactional
     @Override
     public synchronized void pushLp(int rule, int companyId, String kzId, int shopId, int channelId, int channelTypeId,
-                                    int overTime, int interval) {
+                                    int overTime, int interval, int srcId) {
 
         if (NumUtil.haveInvalid(rule, companyId, shopId, channelId, channelTypeId) || StringUtil.isEmpty(kzId)) {
             return;
@@ -147,6 +147,16 @@ public class ClientPushServiceImpl implements ClientPushService {
                     doBlindSelfReceive(companyId, kzId, appointer, allotLog.getId(), overTime);
                     break;
                 }
+            case ChannelConstant.PUSH_RULE_ASSIGN_APPOINT:
+                if (NumUtil.isInValid(srcId)) {
+                    return;
+                }
+                //12.指定客服
+                appointer = staffDao.getZjsPushAppoint(companyId, srcId);
+                // 生成分配日志
+                allotLog = addAllotLog(kzId, appointer.getStaffId(), appointer.getStaffName(), appointer.getGroupId(),
+                        appointer.getGroupName(), ClientConst.ALLOT_SYSTEM_AUTO, companyId);
+                doAssignAppoint(companyId, kzId, appointer, allotLog.getId(), overTime);
             default:
                 break;
         }
@@ -336,6 +346,56 @@ public class ClientPushServiceImpl implements ClientPushService {
         if (1 != updateRstNum) {
             throw new RException(ExceptionEnum.INFO_EDIT_ERROR);
         }
+
+        // 客资日志记录
+        updateRstNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(companyId),
+                new ClientLogPO(kzId,
+                        ClientLogConst.getAutoAllotLog(appointer.getGroupName(), appointer.getStaffName()),
+                        ClientLogConst.INFO_LOGTYPE_ALLOT, companyId));
+        if (1 != updateRstNum) {
+            throw new RException(ExceptionEnum.LOG_ERROR);
+        }
+    }
+
+
+    /**
+     * 客资指定客服
+     *
+     * @param companyId
+     * @param kzId
+     * @param appointer
+     * @param allotLogId
+     * @param overTime
+     */
+    private void doAssignAppoint(int companyId, String kzId, StaffPushDTO appointer, int allotLogId, int overTime) {
+
+        // 客资绑定客服，修改客资状态，客资客服ID，客服名，客资分类，客资客服组信息，最后操作时间，客资最后推送时间
+        int updateRstNum = clientInfoDao.updateClientInfoWhenAllot(companyId, DBSplitUtil.getInfoTabName(companyId),
+                kzId, ClientStatusConst.KZ_CLASS_NEW, ClientStatusConst.BE_HAVE_MAKE_ORDER, appointer.getStaffId(),
+                appointer.getGroupId(), ClientConst.ALLOT_SYSTEM_AUTO);
+        if (1 != updateRstNum) {
+            throw new RException(ExceptionEnum.INFO_STATUS_EDIT_ERROR);
+        }
+
+        updateRstNum = clientInfoDao.updateClientDetailWhenAllot(companyId, DBSplitUtil.getDetailTabName(companyId),
+                kzId, appointer.getStaffName(), appointer.getGroupName());
+        if (1 != updateRstNum) {
+            throw new RException(ExceptionEnum.INFO_EDIT_ERROR);
+        }
+
+        // 修改指定分配日志状态为已领取
+        updateRstNum = clientAllotLogDao.updateAllogLog(DBSplitUtil.getAllotLogTabName(companyId), companyId, kzId,
+                allotLogId, ClientConst.ALLOT_LOG_STATUS_YES, "now");
+        if (1 != updateRstNum) {
+            throw new RException(ExceptionEnum.INFO_STATUS_EDIT_ERROR);
+        }
+        // 修改客资的领取时间
+        updateRstNum = clientInfoDao.updateClientInfoAfterAllot(companyId, DBSplitUtil.getInfoTabName(companyId), kzId);
+        if (1 != updateRstNum) {
+            throw new RException(ExceptionEnum.INFO_EDIT_ERROR);
+        }
+        //修改员工最后推送时间
+        staffDao.updateStaffLastPushTime(companyId, appointer.getStaffId());
 
         // 客资日志记录
         updateRstNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(companyId),
