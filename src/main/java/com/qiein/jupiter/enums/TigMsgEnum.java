@@ -188,7 +188,11 @@ public enum TigMsgEnum {
     /**
      * 分配成功
      */
-    ALLOT_SUCCESS("分配成功");
+    ALLOT_SUCCESS("分配成功"),
+    /**
+     * 录入成功
+     */
+    ENTERING_SUNCCESS("录入成功");
 
     private String desc;
 

@@ -145,6 +145,6 @@ public class GoldDataController extends BaseController{
     @PostMapping("/addkz_by_gold_temp")
     public ResultInfo addkzByGoldTemp(@RequestBody GoldTempPO goldTempPO){
         goldDataService.addkzByGoldTemp(goldTempPO);
-        return  ResultInfoUtil.success(TigMsgEnum.UPDATE_SUCCESS);
+        return  ResultInfoUtil.success(TigMsgEnum.ENTERING_SUNCCESS);
     }
 }
