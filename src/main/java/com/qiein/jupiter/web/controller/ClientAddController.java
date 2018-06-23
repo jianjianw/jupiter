@@ -58,7 +58,7 @@ public class ClientAddController extends BaseController {
         }
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        clientAddService.addDsClient(clientVO, currentLoginStaff);
+        clientAddService.addZjsClient(clientVO, currentLoginStaff);
         return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
     }
 
