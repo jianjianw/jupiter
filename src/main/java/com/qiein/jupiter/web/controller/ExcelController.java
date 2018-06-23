@@ -193,6 +193,9 @@ public class ExcelController extends BaseController {
             page = 1;
             pageSize = 20;
         }
+        if(pageSize > CommonConstant.MAX_PAGE_SIZE){
+            return ResultInfoUtil.error(ExceptionEnum.PAGESIZE_MAX_SIZE_ERROR);
+        }
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         return ResultInfoUtil.success(excelService.getUploadRecordByType(currentLoginStaff,type,page,pageSize));

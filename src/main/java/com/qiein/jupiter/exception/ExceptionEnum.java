@@ -157,7 +157,9 @@ public enum ExceptionEnum {
     GET_WX_INFO_FAIL(2104, "获取用户微信信息失败"),
     //金数据
     FORM_WAS_IN(2201, "表单已存在"),
-    FORM_NOT_EXISTS(2202,"表单不存在");
+    FORM_NOT_EXISTS(2202,"表单不存在"),
+    //分页
+    PAGESIZE_MAX_SIZE_ERROR(2301,"每页最多500条");
 
     private Integer code;
     private String msg;

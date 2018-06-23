@@ -80,11 +80,17 @@ public interface ExcelService {
 	/**
 	 * 获取分类客资个数
 	 * @param staffPO
+	 * @return
 	 * */
 	ClientSortCountDTO getMultipleKzStatusCount(StaffPO staffPO);
 
 	/**
 	 * 根据类型获取上传的客资
+	 * @param currentLoginStaff
+	 * @param type
+	 * @param page
+	 * @param pageSize
+	 * @return
 	 * */
 	PageInfo getUploadRecordByType(StaffPO currentLoginStaff, Integer type,Integer page,Integer pageSize);
 }
