@@ -14,6 +14,15 @@ public class CostPO {
     private Integer companyId;// 公司id
     private String createTime;// 创建时间
     private String updateTime;// 修改时间
+    private String date;
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 
     public Integer getId() {
         return id;

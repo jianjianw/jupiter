@@ -178,19 +178,19 @@ public class GoldDataServiceImpl implements GoldDataService {
                 sb.append( "姓名：").append(kzName).append("<br/>");
             }
             if(StringUtil.isNotEmpty(kzPhone)){
-                sb.append("手机号").append(kzPhone).append("<br/>");
+                sb.append("手机号：").append(kzPhone).append("<br/>");
             }
             if(StringUtil.isNotEmpty(address)){
-                sb.append("归属地").append(address).append("<br/>");
+                sb.append("归属地：").append(address).append("<br/>");
             }
             if(StringUtil.isNotEmpty(weChat)){
-                sb.append("微信号").append(weChat).append("<br/>");
+                sb.append("微信号：").append(weChat).append("<br/>");
             }
             if(StringUtil.isNotEmpty(formId)){
-                sb.append("表单号").append(formId).append("<br/>");
+                sb.append("表单号：").append(formId).append("<br/>");
             }
             if(StringUtil.isNotEmpty(formName)){
-                sb.append("表单名称").append(formName).append("<br/>");
+                sb.append("表单名称：").append(formName).append("<br/>");
             }
         }
 
@@ -215,7 +215,6 @@ public class GoldDataServiceImpl implements GoldDataService {
         reqContent.put("adaddress", goldFingerPO.getAdAddress());
         reqContent.put("typeid", goldFingerPO.getTypeId());
         reqContent.put("zxstyle", goldFingerPO.getZxStyle());
-        reqContent.put("remark", goldFingerPO.getMemo());
         reqContent.put("collectorid", goldFingerPO.getCreateorId());
         reqContent.put("collectorname", goldFingerPO.getCreateorName());
         reqContent.put("address", address);
@@ -230,7 +229,6 @@ public class GoldDataServiceImpl implements GoldDataService {
         goldTempPO.setSrcName(goldFingerPO.getSrcName());
         goldTempPO.setTypeId(goldFingerPO.getTypeId());
         goldTempPO.setTypeName(goldFingerPO.getTypeName());
-//        goldTempPO.setMemo(jsonObject.toJSONString());
         goldTempPO.setCollecterId(goldFingerPO.getCreateorId());
         goldTempPO.setCollecterName(goldFingerPO.getCreateorName());
         goldTempPO.setAdId(goldFingerPO.getAdId());
@@ -240,7 +238,7 @@ public class GoldDataServiceImpl implements GoldDataService {
         goldTempPO.setCompanyId(goldFingerPO.getCompanyId());
         goldTempPO.setAddress(address);
         goldTempPO.setWechat(weChat);
-        goldTempPO.setRemark(sb.toString());
+        goldTempPO.setRemark(jsonObject.toString());
 
         goldTempDao.insert(goldTempPO);
 
