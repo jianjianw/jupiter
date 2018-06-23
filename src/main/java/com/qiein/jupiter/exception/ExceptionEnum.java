@@ -55,6 +55,7 @@ public enum ExceptionEnum {
     PASSWORD_NULL(357, "密码不能为空"),
     STAFF_CAN_NOT_DEL(358, "该员工存在为交接客资，请交接后再删除"),
     ONLY_APP_LOGIN(359, "只允许客户端登录"),
+    COLLECTOR_NOT_FOUND(360, "提报人不存在"),
     //部门
     GROUP_NAME_REPEAT(401, "部门名称重复"),
     GROUP_HAVE_CHILD_GROUP(402, "该部门存在小组，请删除下属小组再进行操作"),
@@ -157,7 +158,7 @@ public enum ExceptionEnum {
     GET_WX_INFO_FAIL(2104, "获取用户微信信息失败"),
     //金数据
     FORM_WAS_IN(2201, "表单已存在"),
-    FORM_NOT_EXISTS(2202,"表单不存在");
+    FORM_NOT_EXISTS(2202, "表单不存在");
 
     private Integer code;
     private String msg;
