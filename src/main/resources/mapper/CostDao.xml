@@ -2,73 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qiein.jupiter.web.dao.CostDao">
     <resultMap id="Cost" type="com.qiein.jupiter.web.entity.vo.CostShowVO">
+        <id column="ID" jdbcType="VARCHAR" property="id" />
         <result column="TOTALCOST" jdbcType="DECIMAL" property="totalCost"/>
         <result column="SRCID" jdbcType="INTEGER" property="srcId" />
+        <result column="SRCNAME" jdbcType="VARCHAR" property="srcName" />
+        <result column="SRCIMG" jdbcType="VARCHAR" property="srcImg" />
         <collection property="costPOS" ofType="com.qiein.jupiter.web.entity.po.CostPO">
-            <id column="ID" jdbcType="VARCHAR" property="id" />
             <result column="COST" jdbcType="DECIMAL" property="cost" />
             <result column="COSTTIME" jdbcType="VARCHAR" property="costTime" />
             <result column="COMPANYID" jdbcType="INTEGER" property="companyId" />
+            <result column="COSTDATE" jdbcType="VARCHAR" property="date" />
         </collection>
     </resultMap>
 
-    <resultMap id="Cost2" type="com.qiein.jupiter.web.entity.vo.CostShowVO">
-        <result column="TOTALCOST" jdbcType="DECIMAL" property="totalCost"/>
-        <result column="SRCID" jdbcType="INTEGER" property="srcId" />
-        <collection property="map" ofType="Map"/>
-    </resultMap>
 
-    <select id="costList" resultType="Map" >
-        SELECT
-            SRCID srcId,
-            SRCNAME srcName,
-            SRCIMG srcImg,
-			SUM(cost.COST) totalcost,
-			SUM(CASE WHEN FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d') = CONCAT(#{month},'/01') THEN cost.COST ELSE 0 END)AS 'D01',
-			SUM(CASE WHEN FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d') = CONCAT(#{month},'/02') THEN cost.COST ELSE 0 END) AS 'D02',
-			SUM(CASE WHEN FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d') = CONCAT(#{month},'/03') THEN cost.COST ELSE 0 END) AS 'D03',
-			SUM(CASE WHEN FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d') = CONCAT(#{month},'/04') THEN cost.COST ELSE 0 END) AS 'D04',
-			SUM(CASE WHEN FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d') = CONCAT(#{month},'/05') THEN cost.COST ELSE 0 END) AS 'D05',
-			SUM(CASE WHEN FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d') = CONCAT(#{month},'/06') THEN cost.COST ELSE 0 END) AS 'D06',
-			SUM(CASE WHEN FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d') = CONCAT(#{month},'/07') THEN cost.COST ELSE 0 END) AS 'D07',
-			SUM(CASE WHEN FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d') = CONCAT(#{month},'/08') THEN cost.COST ELSE 0 END) AS 'D08',
-			SUM(CASE WHEN FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d') = CONCAT(#{month},'/09') THEN cost.COST ELSE 0 END) AS 'D09',
-			SUM(CASE WHEN FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d') = CONCAT(#{month},'/10') THEN cost.COST ELSE 0 END) AS 'D10',
-			SUM(CASE WHEN FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d') = CONCAT(#{month},'/11') THEN cost.COST ELSE 0 END) AS 'D11',
-			SUM(CASE WHEN FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d') = CONCAT(#{month},'/12') THEN cost.COST ELSE 0 END) AS 'D12',
-			SUM(CASE WHEN FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d') = CONCAT(#{month},'/13') THEN cost.COST ELSE 0 END) AS 'D13',
-			SUM(CASE WHEN FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d') = CONCAT(#{month},'/14') THEN cost.COST ELSE 0 END) AS 'D14',
-			SUM(CASE WHEN FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d') = CONCAT(#{month},'/15') THEN cost.COST ELSE 0 END) AS 'D15',
-			SUM(CASE WHEN FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d') = CONCAT(#{month},'/16') THEN cost.COST ELSE 0 END) AS 'D16',
-			SUM(CASE WHEN FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d') = CONCAT(#{month},'/17') THEN cost.COST ELSE 0 END) AS 'D17',
-			SUM(CASE WHEN FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d') = CONCAT(#{month},'/18') THEN cost.COST ELSE 0 END) AS 'D18',
-			SUM(CASE WHEN FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d') = CONCAT(#{month},'/19') THEN cost.COST ELSE 0 END) AS 'D19',
-			SUM(CASE WHEN FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d') = CONCAT(#{month},'/20') THEN cost.COST ELSE 0 END) AS 'D20',
-			SUM(CASE WHEN FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d') = CONCAT(#{month},'/21') THEN cost.COST ELSE 0 END) AS 'D21',
-			SUM(CASE WHEN FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d') = CONCAT(#{month},'/22') THEN cost.COST ELSE 0 END) AS 'D22',
-			SUM(CASE WHEN FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d') = CONCAT(#{month},'/23') THEN cost.COST ELSE 0 END) AS 'D23',
-			SUM(CASE WHEN FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d') = CONCAT(#{month},'/24') THEN cost.COST ELSE 0 END) AS 'D24',
-			SUM(CASE WHEN FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d') = CONCAT(#{month},'/25') THEN cost.COST ELSE 0 END) AS 'D25',
-			SUM(CASE WHEN FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d') = CONCAT(#{month},'/26') THEN cost.COST ELSE 0 END) AS 'D26',
-			SUM(CASE WHEN FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d') = CONCAT(#{month},'/27') THEN cost.COST ELSE 0 END) AS 'D27',
-			SUM(CASE WHEN FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d') = CONCAT(#{month},'/28') THEN cost.COST ELSE 0 END) AS 'D28',
-			SUM(CASE WHEN FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d') = CONCAT(#{month},'/29') THEN cost.COST ELSE 0 END) AS 'D29',
-			SUM(CASE WHEN FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d') = CONCAT(#{month},'/30') THEN cost.COST ELSE 0 END) AS 'D30',
-			SUM(CASE WHEN FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d') = CONCAT(#{month},'/31') THEN cost.COST ELSE 0 END) AS 'D31'
-		FROM
-			hm_crm_cost cost
-			LEFT JOIN hm_crm_source sourse ON  cost.SRCID=sourse.ID
-		WHERE
-			cost.COMPANYID = 1
-        AND FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d') LIKE CONCAT("%",#{month},"%")
-        GROUP BY SRCID
-    </select>
-<!--  <select id="costList" resultMap="Cost">
-        SELECT
-            ID,
-            COST,
+
+
+  <select id="costList" resultMap="Cost">
+         SELECT
+            sourse.ID,
+            SRCNAME,
+            SRCIMG,
+            (SELECT SUM(c.COST) FROM hm_crm_cost c WHERE c.COSTTIME=a.COSTTIME ) COST,
             SRCID,
             FROM_UNIXTIME(a.COSTTIME, '%Y/%m/%d') COSTTIME,
+            FROM_UNIXTIME(a.COSTTIME, '%d ') COSTDATE,
             (
                 SELECT
                     SUM(COST)
@@ -76,11 +34,50 @@
                     hm_crm_cost b
                 WHERE
                     a.SRCID = b.SRCID
+                AND FROM_UNIXTIME(
+                    b.COSTTIME,
+                    '%Y/%m/%d '
+                ) LIKE CONCAT("%", #{month}, "%")
+                AND b.COMPANYID = #{companyId}
             ) TOTALCOST
         FROM
-            hm_crm_cost a
-        where FROM_UNIXTIME(a.COSTTIME, '%Y/%m/%d %H:%i:%s') like CONCAT("%",#{month},"%") and COMPANYID=#{companyId}
-    </select>-->
+            hm_crm_source sourse
+        LEFT JOIN (SELECT * from hm_crm_cost cost where FROM_UNIXTIME(
+                    cost.COSTTIME,
+                    '%Y/%m/%d '
+                ) LIKE CONCAT("%", #{month}, "%") and cost.companyId=#{companyId}) a ON sourse.ID = a.SRCID
+        WHERE
+
+
+        sourse.COMPANYID = #{companyId}
+        GROUP BY
+            ID,
+            COSTTIME
+        UNION
+            SELECT
+                "",
+                "合计",
+                NULL,
+                SUM(a.COST),
+                NULL,
+                FROM_UNIXTIME(a.COSTTIME, '%Y/%m/%d '),
+                FROM_UNIXTIME(a.COSTTIME, '%d '),
+
+                (
+                    SELECT
+                        SUM(COST)
+                    FROM
+                        hm_crm_cost
+                    WHERE
+                        FROM_UNIXTIME(COSTTIME, '%Y/%m/%d ') LIKE CONCAT("%", #{month}, "%") AND COMPANYID=#{companyId}
+                )
+            FROM
+                hm_crm_cost a
+            WHERE
+                FROM_UNIXTIME(a.COSTTIME, '%Y/%m/%d ') LIKE CONCAT("%", #{month}, "%") AND a.COMPANYID=#{companyId}
+            GROUP BY
+                a.COSTTIME
+    </select>
 
     <insert id="insert">
         insert into hm_crm_cost(SRCID,COMPANYID,UPDATETIME,CREATETIME,COSTTIME,COST) values(#{srcId},#{companyId},UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(#{costTime}),#{cost})

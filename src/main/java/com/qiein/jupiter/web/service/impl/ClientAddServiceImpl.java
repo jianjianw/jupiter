@@ -125,7 +125,7 @@ public class ClientAddServiceImpl implements ClientAddService {
         reqContent.put("ysrange", clientVO.getYsRange());
         reqContent.put("marrytime", clientVO.getMarryTime());
 
-        String addRstStr = crmBaseApi.doService(reqContent, "addClientInfoPcHs");
+        String addRstStr = crmBaseApi.doService(reqContent, "addDsClientInfoPcHs");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if ("100000".equals(jsInfo.getString("code"))) {
             CompanyPO companyPO = companyDao.getById(staffPO.getCompanyId());
@@ -204,7 +204,7 @@ public class ClientAddServiceImpl implements ClientAddService {
         reqContent.put("marrytime", clientVO.getMarryTime());
         reqContent.put("yptime", clientVO.getYpTime());
 
-        String addRstStr = crmBaseApi.doService(reqContent, "addClientInfoPcHs");
+        String addRstStr = crmBaseApi.doService(reqContent, "addZjsClientInfoPcHs");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if ("100000".equals(jsInfo.getString("code"))) {
             CompanyPO companyPO = companyDao.getById(staffPO.getCompanyId());
