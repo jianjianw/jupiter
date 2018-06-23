@@ -35,7 +35,6 @@
         <result column="OVERTIME" property="overTime" jdbcType="INTEGER"/>
         <result column="KZINTERVAL" property="kzInterval" jdbcType="INTEGER"/>
         <result column="LIMITDEFAULT" property="limitDefault" jdbcType="INTEGER"/>
-        <result column="ALLSCREEN" property="allScreen" jdbcType="BOOLEAN"/>
     </resultMap>
 
     <sql id="baseColumn">
@@ -107,7 +106,7 @@
     <select id="getVOById" parameterType="map" resultMap="VOMap">
         SELECT
             comp.ID, comp.COMPANYNAME, comp.TYPEID, comp.LOGO, comp.NOTSELFBLIND, comp.UNABLESELFLINE, 
-            comp.UNABLEAPPOINTOR, comp.UNABLEINVALIDRANGE,comp.SSOLIMIT, comp.OVERTIME, comp.KZINTERVAL, comp.LIMITDEFAULT,comp.ALLSCREEN
+            comp.UNABLEAPPOINTOR, comp.UNABLEINVALIDRANGE,comp.SSOLIMIT, comp.OVERTIME, comp.KZINTERVAL, comp.LIMITDEFAULT
         FROM
             hm_pub_company comp
         WHERE 

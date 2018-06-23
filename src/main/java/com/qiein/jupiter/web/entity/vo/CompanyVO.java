@@ -64,10 +64,7 @@ public class CompanyVO extends CompanyPO {
      * 企业左上角菜单栏
      */
     private List<MenuVO> menuList;
-    /**
-     * 是否开启霸屏
-     */
-    private boolean allScreen;
+
 
     public boolean isSsolimit() {
         return ssolimit;
@@ -165,11 +162,5 @@ public class CompanyVO extends CompanyPO {
         this.menuList = menuList;
     }
 
-    public boolean getAllScreen() {
-        return allScreen;
-    }
 
-    public void setAllScreen(boolean allScreen) {
-        this.allScreen = allScreen;
-    }
 }
