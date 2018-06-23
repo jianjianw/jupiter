@@ -1,17 +1,18 @@
 package com.qiein.jupiter.web.service.impl;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.constant.DictionaryConstant;
 import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.dao.*;
 import com.qiein.jupiter.web.entity.dto.ClientExcelNewsDTO;
+import com.qiein.jupiter.web.entity.dto.ClientSortCountDTO;
 import com.qiein.jupiter.web.entity.po.DictionaryPO;
-import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -100,10 +101,10 @@ public class ExcelServiceImpl implements ExcelService {
             clientExcelDTO.setSuccessTime(clientExcelDTO.getSuccessTimeDate() == null ? 0 : clientExcelDTO.getSuccessTimeDate().getTime() / 1000);
             clientExcelDTO.setAppointTime(clientExcelDTO.getAppointTimeDate() == null ? 0 : clientExcelDTO.getAppointTimeDate().getTime() / 1000);
             clientExcelDTO.setComeShopTime(clientExcelDTO.getComeShopTimeDate() == null ? 0 : clientExcelDTO.getComeShopTimeDate().getTime() / 1000);
-            try{
+            try {
                 clientExcelDTO.setAmount(Integer.valueOf(clientExcelDTO.getAmountStr()));
                 clientExcelDTO.setStayaMount(Integer.valueOf(clientExcelDTO.getStayaMountStr()));
-            }catch (Exception e){
+            } catch (Exception e) {
                 throw new RException(ExceptionEnum.UNKNOW_ERROR);
             }
             //设置字典表
@@ -240,6 +241,7 @@ public class ExcelServiceImpl implements ExcelService {
                 rights.add(info);
             }
         }
+
         map.put("wrongs", wrongs);
         map.put("rights", rights);
         map.put("repeats", dbRepeats);
@@ -256,9 +258,9 @@ public class ExcelServiceImpl implements ExcelService {
     @Transactional(rollbackFor = Exception.class)
     public void tempKzMoveToInfo(int companyId, int staffId) {
         //添加客资基本表
-        excelDao.insertBaseInfoByStaffId(DBSplitUtil.getInfoTabName(companyId), DBSplitUtil.getTable(TableEnum.temp, companyId), staffId);
+        excelDao.insertBaseInfoByStaffId(DBSplitUtil.getInfoTabName(companyId), DBSplitUtil.getTable(TableEnum.temp, companyId), DBSplitUtil.getTable(TableEnum.info, companyId), staffId);
         //添加客资详情表
-        excelDao.insertDetailInfoByStaffId(DBSplitUtil.getDetailTabName(companyId), DBSplitUtil.getTable(TableEnum.temp, companyId), staffId);
+        excelDao.insertDetailInfoByStaffId(DBSplitUtil.getDetailTabName(companyId), DBSplitUtil.getTable(TableEnum.temp, companyId), DBSplitUtil.getTable(TableEnum.info, companyId), staffId);
         //添加备注
         excelDao.addExcelKzRemark(DBSplitUtil.getRemarkTabName(companyId), DBSplitUtil.getTable(TableEnum.temp, companyId), staffId);
         // 删除缓存表记录
@@ -364,6 +366,49 @@ public class ExcelServiceImpl implements ExcelService {
         } else {
             throw new RException(jsInfo.getString("msg"));
         }
+    }
+
+    @Override
+    public ClientSortCountDTO getMultipleKzStatusCount(StaffPO staffPO) {
+        //错误个数
+        ClientSortCountDTO clientSortCount = excelDao.getMultipleKzStatusCount(DBSplitUtil.getTable(TableEnum.temp, staffPO.getCompanyId()),
+                DBSplitUtil.getTable(TableEnum.info, staffPO.getCompanyId()), staffPO.getId());
+        System.out.println(clientSortCount);
+        return clientSortCount;
+    }
+
+    @Override
+    public PageInfo getUploadRecordByType(StaffPO staffPO, Integer type, Integer page, Integer pageSize) {
+        List<ClientExcelNewsDTO> clientExcelNewsDTOS = null;
+        switch (type) {
+            case 1:
+                //错误客资
+                PageHelper.startPage(page, pageSize);
+                clientExcelNewsDTOS = excelDao.getExcelErrorClient(DBSplitUtil.getTable(TableEnum.temp, staffPO.getCompanyId()), staffPO.getId());
+                break;
+            case 2:
+                //正常客资
+                PageHelper.startPage(page, pageSize);
+                clientExcelNewsDTOS = excelDao.getExcelSuccessClient(DBSplitUtil.getTable(TableEnum.temp, staffPO.getCompanyId()),
+                        DBSplitUtil.getTable(TableEnum.info, staffPO.getCompanyId()), staffPO.getId());
+                break;
+            case 3:
+                //重复客资
+                PageHelper.startPage(page, pageSize);
+                clientExcelNewsDTOS = excelDao.getRepeatRecord(DBSplitUtil.getTable(TableEnum.temp, staffPO.getCompanyId()),
+                        DBSplitUtil.getTable(TableEnum.info, staffPO.getCompanyId()), staffPO.getId());
+                break;
+            default:
+                break;
+        }
+        for (ClientExcelNewsDTO info : clientExcelNewsDTOS) {
+            //1.时间格式化
+            info.setComeShopTimeStr(TimeUtil.intMillisToTimeStr(Integer.valueOf(String.valueOf(info.getComeShopTime()))));
+            info.setSuccessTimeStr(TimeUtil.intMillisToTimeStr(Integer.valueOf(String.valueOf(info.getSuccessTime()))));
+            info.setAppointTimeStr(TimeUtil.intMillisToTimeStr(Integer.valueOf(String.valueOf(info.getAppointTime()))));
+        }
+
+        return new PageInfo<>(clientExcelNewsDTOS);
     }
 
 }

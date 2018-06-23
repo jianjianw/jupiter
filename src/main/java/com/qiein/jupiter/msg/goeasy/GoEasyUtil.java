@@ -779,7 +779,6 @@ public class GoEasyUtil {
 
         sb.delete(0, sb.length());
         sb.append("<br/>无效原因：").append(invalidReason);
-        sb.append("<br/><br/>渠道：").append(StringUtil.nullToStrTrim(info.getChannelSource())).append("<br/>");
 
 
         if (StringUtil.isNotEmpty(info.getKzName())) {
@@ -799,6 +798,36 @@ public class GoEasyUtil {
 
         String msg = sb.toString();
         pushWarn(companyId, staffId, header, msg);
+    }
+
+
+    /**
+     * 金数据录入客资消息
+     * */
+    public static void pushGoldDataKz(int companyId, int staffId, ClientDTO info){
+        StringBuffer sb = new StringBuffer();
+        sb.append("金数据客资录入成功");
+        String header = sb.toString();
+        sb.delete(0, sb.length());
+
+
+        sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("<br/>");
+        sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSrcName())).append("<br/>");
+        if (StringUtil.isNotEmpty(info.getKzName())) {
+            sb.append("姓名：").append(StringUtil.nullToStrTrim(info.getKzName())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzPhone())) {
+            sb.append("电话：").append(StringUtil.nullToStrTrim(info.getKzPhone())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzWeChat())) {
+            sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWeChat())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzQq())) {
+            sb.append("QQ：").append(StringUtil.nullToStrTrim(info.getKzQq())).append("<br/>");
+        }
+
+
+        pushSuccess(companyId,staffId,header,sb.toString());
     }
 
 

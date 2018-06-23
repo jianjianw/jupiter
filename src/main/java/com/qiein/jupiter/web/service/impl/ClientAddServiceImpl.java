@@ -131,7 +131,7 @@ public class ClientAddServiceImpl implements ClientAddService {
             CompanyPO companyPO = companyDao.getById(staffPO.getCompanyId());
             tpm.pushInfo(new ClientPushDTO(pushService, channelPO.getPushRule(), staffPO.getCompanyId(),
                     JsonFmtUtil.strContentToJsonObj(addRstStr).getString("kzid"), clientVO.getShopId(),
-                    channelPO.getId(), channelPO.getTypeId(), companyPO.getOvertime(), companyPO.getKzInterval()));
+                    channelPO.getId(), channelPO.getTypeId(), companyPO.getOvertime(), companyPO.getKzInterval(), 0));
         } else {
             throw new RException(jsInfo.getString("msg"));
         }
@@ -208,9 +208,9 @@ public class ClientAddServiceImpl implements ClientAddService {
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if ("100000".equals(jsInfo.getString("code"))) {
             CompanyPO companyPO = companyDao.getById(staffPO.getCompanyId());
-            tpm.pushInfo(new ClientPushDTO(pushService, channelPO.getPushRule(), staffPO.getCompanyId(),
+            tpm.pushInfo(new ClientPushDTO(pushService, sourcePO.getPushRule(), staffPO.getCompanyId(),
                     JsonFmtUtil.strContentToJsonObj(addRstStr).getString("kzid"), clientVO.getShopId(),
-                    channelPO.getId(), channelPO.getTypeId(), companyPO.getOvertime(), companyPO.getKzInterval()));
+                    channelPO.getId(), channelPO.getTypeId(), companyPO.getOvertime(), companyPO.getKzInterval(), sourcePO.getId()));
         } else {
             throw new RException(jsInfo.getString("msg"));
         }

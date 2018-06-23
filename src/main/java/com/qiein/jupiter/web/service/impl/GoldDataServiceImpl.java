@@ -12,6 +12,8 @@ import com.qiein.jupiter.constant.GoldDataConst;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.http.CrmBaseApi;
+import com.qiein.jupiter.msg.goeasy.ClientDTO;
+import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
 import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.dao.*;
 import com.qiein.jupiter.web.entity.dto.GoldCustomerDTO;
@@ -124,7 +126,7 @@ public class GoldDataServiceImpl implements GoldDataService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void receiveGoldDataForm(JSONObject jsonObject, StaffPO staffPO) {
+    public void receiveGoldDataForm(JSONObject jsonObject) {
         Map<String, Object> reqContent = new HashMap<String, Object>();
         //表单数据
         JSONObject entry = jsonObject.getJSONObject("entry");
@@ -138,7 +140,6 @@ public class GoldDataServiceImpl implements GoldDataService {
         String kzName = StringUtil.nullToStrTrim(entry.getString(goldFingerPO.getKzNameField()));
         String weChat = StringUtil.nullToStrTrim(entry.getString(goldFingerPO.getKzWechatField()));
         String address = MobileLocationUtil.getPhoneLocation(kzPhone);
-        System.out.println(kzPhone);
         //获取金数据表单模板数据
         if (null == goldFingerPO) {
             throw new RException(ExceptionEnum.FORM_NOT_EXISTS);
@@ -166,28 +167,30 @@ public class GoldDataServiceImpl implements GoldDataService {
                     reqContent.put("kzqq", entry.getString(fieldKeys[i]));
                     continue;
                 }
-                Object value = entry.get(fieldValues[i]);
+                String value = entry.getString(fieldValues[i]);
                 if (entry.get(fieldValues[i]) != null && !"".equals(value)) {
-                    sb.append(fieldKeys[i] + "：" + entry.get(fieldKeys[i]) + "<br/>");
+                    if(StringUtil.isNotEmpty(value)){
+                        sb.append(fieldKeys[i] + "：" + StringUtil.nullToStrTrim(value) + "<br/>");
+                    }
                 }
             }
             if(StringUtil.isNotEmpty(kzName)){
                 sb.append( "姓名：").append(kzName).append("<br/>");
             }
             if(StringUtil.isNotEmpty(kzPhone)){
-                sb.append("手机号").append(kzPhone).append("<br/>");
+                sb.append("手机号：").append(kzPhone).append("<br/>");
             }
             if(StringUtil.isNotEmpty(address)){
-                sb.append("归属地").append(address).append("<br/>");
+                sb.append("归属地：").append(address).append("<br/>");
             }
             if(StringUtil.isNotEmpty(weChat)){
-                sb.append("微信号").append(weChat).append("<br/>");
+                sb.append("微信号：").append(weChat).append("<br/>");
             }
             if(StringUtil.isNotEmpty(formId)){
-                sb.append("表单号").append(formId).append("<br/>");
+                sb.append("表单号：").append(formId).append("<br/>");
             }
             if(StringUtil.isNotEmpty(formName)){
-                sb.append("表单名称").append(formName).append("<br/>");
+                sb.append("表单名称：").append(formName).append("<br/>");
             }
         }
 
@@ -212,7 +215,6 @@ public class GoldDataServiceImpl implements GoldDataService {
         reqContent.put("adaddress", goldFingerPO.getAdAddress());
         reqContent.put("typeid", goldFingerPO.getTypeId());
         reqContent.put("zxstyle", goldFingerPO.getZxStyle());
-        reqContent.put("remark", goldFingerPO.getMemo());
         reqContent.put("collectorid", goldFingerPO.getCreateorId());
         reqContent.put("collectorname", goldFingerPO.getCreateorName());
         reqContent.put("address", address);
@@ -227,7 +229,6 @@ public class GoldDataServiceImpl implements GoldDataService {
         goldTempPO.setSrcName(goldFingerPO.getSrcName());
         goldTempPO.setTypeId(goldFingerPO.getTypeId());
         goldTempPO.setTypeName(goldFingerPO.getTypeName());
-        goldTempPO.setMemo(goldFingerPO.getMemo());
         goldTempPO.setCollecterId(goldFingerPO.getCreateorId());
         goldTempPO.setCollecterName(goldFingerPO.getCreateorName());
         goldTempPO.setAdId(goldFingerPO.getAdId());
@@ -237,14 +238,12 @@ public class GoldDataServiceImpl implements GoldDataService {
         goldTempPO.setCompanyId(goldFingerPO.getCompanyId());
         goldTempPO.setAddress(address);
         goldTempPO.setWechat(weChat);
-        goldTempPO.setRemark(sb.toString());
+        goldTempPO.setRemark(jsonObject.toString());
 
-        //TODO  ip，ipAddress，remark
         goldTempDao.insert(goldTempPO);
 
         //重复拦截
         GoldTempPO goldTemp = goldTempDao.getByKzNameOrKzPhoneOrKzWechat(formId, kzPhone);
-
         if (null != goldTemp) {
             goldTempPO.setStatusId(GoldDataConst.REPEATED_SCREEN);
             goldTempDao.update(goldTempPO);
@@ -256,8 +255,17 @@ public class GoldDataServiceImpl implements GoldDataService {
 
 
         if ("100000".equals(jsInfo.getString("code"))) {
+            //更新状态
             goldTempPO.setStatusId(GoldDataConst.IN_FILTER);
             goldTempDao.update(goldTempPO);
+            //发送消息
+            ClientDTO info = new ClientDTO();
+            info.setKzName(goldTempPO.getKzName());
+            info.setKzPhone(goldTempPO.getKzPhone());
+            info.setKzWeChat(weChat);
+            info.setSrcName(goldFingerPO.getSrcName());
+            info.setChannelName(sourcePO.getChannelName());
+            GoEasyUtil.pushGoldDataKz(goldFingerPO.getCompanyId(),goldFingerPO.getCreateorId(),info);
         } else if ("130019".equals(jsInfo.getString("code"))) {
             goldTempPO.setStatusId(GoldDataConst.HAVA_ENTERED);
             goldTempDao.update(goldTempPO);

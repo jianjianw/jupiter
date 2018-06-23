@@ -28,7 +28,6 @@ import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.ClientExportVO;
 import com.qiein.jupiter.web.service.ExcelService;
 
-import java.sql.Time;
 import java.util.HashMap;
 
 /**
@@ -74,12 +73,13 @@ public class ExcelController extends BaseController {
      * @return
      */
     @GetMapping("/get_all_upload_record")
-    public ResultInfo getAllUploadRecord() {
+    public ResultInfo getAllUploadRecord(Integer type) {
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         return ResultInfoUtil
                 .success(excelService.getAllUploadRecord(currentLoginStaff.getCompanyId(), currentLoginStaff.getId()));
     }
+
 
     /**
      * 保存导入客资
@@ -175,4 +175,28 @@ public class ExcelController extends BaseController {
 
         }
     }
+
+    /**
+     * 统计客制状况及个数
+     * */
+    @GetMapping("/get_multiple_status_kz_count")
+    public ResultInfo getMultipleKzStatusCount(){
+        return ResultInfoUtil.success(excelService.getMultipleKzStatusCount(getCurrentLoginStaff()));
+    }
+
+    /**
+     * 根据type获取客资列表
+     * */
+    @GetMapping("/get_upload_record_by_type")
+    public ResultInfo getUploadRecordByType(Integer type,Integer page,Integer pageSize){
+        if(NumUtil.isInValid(page) || NumUtil.isInValid(pageSize)){
+            page = 1;
+            pageSize = 20;
+        }
+        // 获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        return ResultInfoUtil.success(excelService.getUploadRecordByType(currentLoginStaff,type,page,pageSize));
+    }
+
+
 }

@@ -65,6 +65,7 @@ public class CompanyVO extends CompanyPO {
      */
     private List<MenuVO> menuList;
 
+
     public boolean isSsolimit() {
         return ssolimit;
     }
@@ -160,4 +161,6 @@ public class CompanyVO extends CompanyPO {
     public void setMenuList(List<MenuVO> menuList) {
         this.menuList = menuList;
     }
+
+
 }

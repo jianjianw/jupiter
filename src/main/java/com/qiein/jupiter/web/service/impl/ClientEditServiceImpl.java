@@ -16,6 +16,7 @@ import com.qiein.jupiter.web.entity.po.ChannelPO;
 import com.qiein.jupiter.web.entity.po.SourcePO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.ClientVO;
+import com.qiein.jupiter.web.entity.vo.CompanyVO;
 import com.qiein.jupiter.web.entity.vo.ShopVO;
 import com.qiein.jupiter.web.service.ClientEditService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,8 @@ public class ClientEditServiceImpl implements ClientEditService {
     private StaffDao staffDao;
     @Autowired
     private NewsDao newsDao;
+    @Autowired
+    private CompanyDao companyDao;
 
     /**
      * 电商推广修改客资
@@ -387,7 +390,7 @@ public class ClientEditServiceImpl implements ClientEditService {
         reqContent.put("amount", clientVO.getAmount());// 成交套系金额
         reqContent.put("memo", clientVO.getMemo());
         reqContent.put("packageCode", clientVO.getPackageCode());// 套系名称编码
-        String addRstStr = crmBaseApi.doService(reqContent, "clientEditCwzxLp");
+        String addRstStr = crmBaseApi.doService(reqContent, "clientEditCwzxHs");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if (!"100000".equals(jsInfo.getString("code"))) {
             throw new RException(jsInfo.getString("msg"));

@@ -121,7 +121,7 @@
 	<!-- 获取企业要推送的客资信息 -->	
     <select id="getInfoListBeReadyPush" parameterType="map" resultMap="infoMap">
 		SELECT
-			channel.PUSHRULE, info.KZID, info.COMPANYID, info.SHOPID, info.CHANNELID, channel.TYPEID
+			channel.PUSHRULE, info.KZID, info.COMPANYID, info.SHOPID, info.CHANNELID, channel.TYPEID,info.SOURCEID
 		FROM
 			${infoTabName} info
 		LEFT JOIN hm_crm_channel channel ON info.CHANNELID = channel.ID AND channel.COMPANYID = #{companyId}
