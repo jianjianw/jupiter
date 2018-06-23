@@ -8,6 +8,7 @@
         <result column="SRCNAME" jdbcType="VARCHAR" property="srcName" />
         <result column="SRCIMG" jdbcType="VARCHAR" property="srcImg" />
         <collection property="costPOS" ofType="com.qiein.jupiter.web.entity.po.CostPO">
+            <id column="COSTID" jdbcType="VARCHAR" property="id" />
             <result column="COST" jdbcType="DECIMAL" property="cost" />
             <result column="COSTTIME" jdbcType="VARCHAR" property="costTime" />
             <result column="COMPANYID" jdbcType="INTEGER" property="companyId" />
@@ -20,6 +21,7 @@
 
   <select id="costList" resultMap="Cost">
          SELECT
+            a.ID COSTID,
             sourse.ID,
             SRCNAME,
             SRCIMG,
@@ -56,10 +58,11 @@
         UNION
             SELECT
                 "",
+                "",
                 "合计",
-                NULL,
+                "",
                 SUM(a.COST),
-                NULL,
+                "",
                 FROM_UNIXTIME(a.COSTTIME, '%Y/%m/%d '),
                 FROM_UNIXTIME(a.COSTTIME, '%d '),
 
@@ -83,6 +86,6 @@
         insert into hm_crm_cost(SRCID,COMPANYID,UPDATETIME,CREATETIME,COSTTIME,COST) values(#{srcId},#{companyId},UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(#{costTime}),#{cost})
     </insert>
     <update id="editCost">
-        update hm_crm_cost set cost=#{cost},UPDATETIME=UNIX_TIMESTAMP(now()) WHERE COSTTIME=UNIX_TIMESTAMP(#{costTime})
+        update hm_crm_cost set cost=#{cost},UPDATETIME=UNIX_TIMESTAMP(now()) WHERE id=#{id}
     </update>
 </mapper>
