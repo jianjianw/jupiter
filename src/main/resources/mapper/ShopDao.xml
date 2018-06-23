@@ -140,11 +140,11 @@
         SELECT
         c.ID,c.SHOPNAME,c.TYPEID,c.ISSHOW,c.PRIORITY,c.ADDRESS,c.SERVICEPHONE,c.COMPANYID
         FROM
-        hm_crm_shop_channel_group_rela scgr
+        hm_crm_type_channel_group_rela tcgr
         INNER JOIN
-        hm_pub_shop c ON c.COMPANYID = scgr.COMPANYID AND c.ID = scgr.SHOPID
+        hm_pub_shop c ON c.COMPANYID = tcgr.COMPANYID AND c.ID = tcgr.SHOPID
         WHERE
-        scgr.COMPANYID = #{companyId} and scgr.GROUPID = #{groupId} AND c.ISSHOW =1
+        tcgr.COMPANYID = #{companyId} and tcgr.GROUPID = #{groupId} AND c.ISSHOW =1
         GROUP BY c.SHOPNAME
     </select>
 
