@@ -78,10 +78,6 @@ public class ClientPushDTO implements Serializable {
      * 渠道类型
      */
     private int channelTypeId;
-    /**
-     * 来源ID
-     */
-    private int srcId;
 
     private ClientPushServiceImpl service;
 
@@ -96,7 +92,7 @@ public class ClientPushDTO implements Serializable {
         this.overTime = overtime;
         this.pushInterval = kzInterval;
         this.service = service;
-        this.srcId = srcId;
+        this.sourceId = srcId;
     }
 
     public ClientPushDTO() {
@@ -219,14 +215,6 @@ public class ClientPushDTO implements Serializable {
 
     public void setChannelTypeId(int channelTypeId) {
         this.channelTypeId = channelTypeId;
-    }
-
-    public int getSrcId() {
-        return srcId;
-    }
-
-    public void setSrcId(int srcId) {
-        this.srcId = srcId;
     }
 
     @Override
