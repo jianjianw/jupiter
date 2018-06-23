@@ -373,7 +373,7 @@
         WHERE
         info.KZID IS NOT NULL
         AND info.ISDEL = 0
-        AND temp.OPERAID = #{staffId};
+        AND temp.OPERAID = #{staffId}
     </select>
 
     <!--获取excel中重复客资列表-->
