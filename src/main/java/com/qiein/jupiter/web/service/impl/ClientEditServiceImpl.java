@@ -199,8 +199,7 @@ public class ClientEditServiceImpl implements ClientEditService {
             ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(clientVO.getKzId(),
                     DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
                     DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
-            CompanyVO companyVO = companyDao.getVOById(staffPO.getCompanyId());
-            if (ClientStatusConst.ONLINE_SUCCESS == clientVO.getYyRst() && companyVO.getAllScreen()) {
+            if (ClientStatusConst.ONLINE_SUCCESS == clientVO.getYyRst()) {
                 // 成功订单爆彩
                 StaffPO appoint = staffDao.getByIdAndCid(info.getAppointorId(), staffPO.getCompanyId());
                 if (appoint == null) {
