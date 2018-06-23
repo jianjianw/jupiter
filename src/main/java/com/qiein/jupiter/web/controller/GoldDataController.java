@@ -131,10 +131,10 @@ public class GoldDataController extends BaseController{
     /**
      * 金数据表单回调
      * */
-    @PostMapping("/receive_gold_data_form")
+    @RequestMapping("/receive_gold_data_form")
     public ResultInfo receiveGoldDataForm(@RequestBody JSONObject jsonObject){
         //TODO 获取到数据，存储temp与plugSetting
-        goldDataService.receiveGoldDataForm(jsonObject,getCurrentLoginStaff());
+        goldDataService.receiveGoldDataForm(jsonObject);
         return ResultInfoUtil.success();
     }
 

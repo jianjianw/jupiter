@@ -59,7 +59,7 @@ public interface GoldDataService {
      * 接受金数据表单
      * @param jsonObject
      * */
-    void receiveGoldDataForm(JSONObject jsonObject, StaffPO staffPO);
+    void receiveGoldDataForm(JSONObject jsonObject);
 
     /**
      * 筛选

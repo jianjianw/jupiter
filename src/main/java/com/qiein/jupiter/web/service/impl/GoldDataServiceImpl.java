@@ -124,7 +124,7 @@ public class GoldDataServiceImpl implements GoldDataService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void receiveGoldDataForm(JSONObject jsonObject, StaffPO staffPO) {
+    public void receiveGoldDataForm(JSONObject jsonObject) {
         Map<String, Object> reqContent = new HashMap<String, Object>();
         //表单数据
         JSONObject entry = jsonObject.getJSONObject("entry");
