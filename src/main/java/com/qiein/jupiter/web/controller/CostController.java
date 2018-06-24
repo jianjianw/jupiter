@@ -4,6 +4,7 @@ import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.web.entity.po.CostLogPO;
 import com.qiein.jupiter.web.entity.po.CostPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.service.CostService;
@@ -40,10 +41,23 @@ public class CostController extends BaseController{
         StaffPO staff=getCurrentLoginStaff();
         costPO.setCompanyId(staff.getCompanyId());
         if(StringUtil.haveEmpty(costPO.getId())){
-            costService.insert(costPO);
+            int id=costService.insert(costPO);
+            addCostLog(staff,costPO.getId(),"新增花费："+costPO.getCost());
         }else{
             costService.editCost(costPO);
+            addCostLog(staff,costPO.getId(),"修改花费金额为："+costPO.getCost());
         }
         return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
+    }
+
+    // 添加花费记录
+    private void addCostLog(StaffPO staff, Integer id,String memo) {
+        CostLogPO costLog = new CostLogPO();
+        costLog.setCompanyId(staff.getCompanyId());
+        costLog.setCostId(id);
+        costLog.setOperaId(staff.getId());
+        costLog.setOperaName(staff.getNickName());
+        costLog.setMemo(memo);
+       costService.createCostLog(costLog);
     }
 }
