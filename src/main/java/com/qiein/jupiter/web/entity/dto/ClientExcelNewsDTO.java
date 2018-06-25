@@ -102,7 +102,7 @@ public class ClientExcelNewsDTO implements Serializable {
     /**
      * 渠道名称
      */
-    @Excel(name = "渠道（必填-匹配后台）")
+    @Excel(name = "来源（必填-匹配后台）")
     private String sourceName;
 
     /**

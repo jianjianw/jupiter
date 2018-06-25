@@ -1,15 +1,20 @@
 package com.qiein.jupiter.web.service.impl;
 
+import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.constant.SourceStaffConst;
 import com.qiein.jupiter.enums.RoleChannelEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.CollectionUtils;
 import com.qiein.jupiter.util.DBSplitUtil;
+import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.ChannelDao;
 import com.qiein.jupiter.web.dao.ShopChannelGroupDao;
 import com.qiein.jupiter.web.dao.SourceDao;
+import com.qiein.jupiter.web.dao.SourceStaffDao;
 import com.qiein.jupiter.web.entity.po.ChannelPO;
+import com.qiein.jupiter.web.entity.po.SourceStaffPO;
 import com.qiein.jupiter.web.entity.vo.ChannelDictVO;
 import com.qiein.jupiter.web.entity.vo.ChannelVO;
 import com.qiein.jupiter.web.entity.vo.SrcListVO;
@@ -18,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.channels.Channel;
 import java.util.*;
 
 @Service
@@ -31,6 +37,9 @@ public class ChannelServiceImpl implements ChannelService {
 
     @Autowired
     private ShopChannelGroupDao shopChannelGroupDao;
+
+    @Autowired
+    private SourceStaffDao sourceStaffDao;
 
     /**
      * 新增渠道
@@ -52,7 +61,7 @@ public class ChannelServiceImpl implements ChannelService {
      * @param channelPO
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void editChannel(ChannelPO channelPO) {
         if (StringUtil.isNotEmpty(channelPO.getBrandName())) { // 如果名字为空，可能只是想改显示
             // 检查是否存在
@@ -76,8 +85,23 @@ public class ChannelServiceImpl implements ChannelService {
         }
 
         if (channelPO.getFilterFlag() != null) { //关闭渠道则关闭下属所有来源
-            sourceDao.updateIsFilterByChannelId(channelPO.getId(), channelPO.getCompanyId(),channelPO.getFilterFlag());
+            sourceDao.updateIsFilterByChannelId(channelPO.getId(), channelPO.getCompanyId(), channelPO.getFilterFlag());
         }
+
+        if (null != channelPO.getPushRule()) {
+            if (channelPO.getPushRule().equals(CommonConstant.DEFAULT_ZERO)) {
+                //TODO 指定渠道邀约人员
+                if (StringUtil.isEmpty(channelPO.getYyId())) {
+                    throw new RException(ExceptionEnum.YYID_NOT_EXISTS);
+                }
+                sourceStaffDao.deleteByChannelId(channelPO.getId(),channelPO.getCompanyId());
+                //FIXME 插入语句有问题
+                sourceStaffDao.insertByChannelId(channelPO.getId(),channelPO.getCompanyId(),Arrays.asList(channelPO.getYyId().split(CommonConstant.STR_SEPARATOR)),SourceStaffConst.YY_TYPE);
+            }
+            //TODO 更新所有来源的pushRole
+            sourceDao.updatePushRuleByChannelId(channelPO.getId(), channelPO.getCompanyId(), channelPO.getPushRule());
+        }
+
         channelDao.update(channelPO);
     }
 
@@ -174,6 +198,7 @@ public class ChannelServiceImpl implements ChannelService {
 
     /**
      * 根据员工id获取员工所在小组的承接渠道列表
+     *
      * @param companyId
      * @param groupId
      * @return
