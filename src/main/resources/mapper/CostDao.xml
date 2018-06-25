@@ -8,6 +8,7 @@
         <result column="SRCNAME" jdbcType="VARCHAR" property="srcName" />
         <result column="SRCIMG" jdbcType="VARCHAR" property="srcImg" />
         <collection property="costPOS" ofType="com.qiein.jupiter.web.entity.po.CostPO">
+            <id column="COSTID" jdbcType="VARCHAR" property="id" />
             <result column="COST" jdbcType="DECIMAL" property="cost" />
             <result column="COSTTIME" jdbcType="VARCHAR" property="costTime" />
             <result column="COMPANYID" jdbcType="INTEGER" property="companyId" />
@@ -16,14 +17,25 @@
     </resultMap>
 
 
-
+<sql id="costlog">
+    COSTID,OPERAID,OPERANAME,OPERATIME,COMPANYID,MEMO
+</sql>
 
   <select id="costList" resultMap="Cost">
          SELECT
+            a.ID COSTID,
             sourse.ID,
             SRCNAME,
             SRCIMG,
-            (SELECT SUM(c.COST) FROM hm_crm_cost c WHERE c.COSTTIME=a.COSTTIME ) COST,
+            (
+                SELECT
+                    c.COST
+                FROM
+                    hm_crm_cost c
+                WHERE
+                    c.COSTTIME = a.COSTTIME
+                AND c.SRCID = a.SRCID
+            ) COST,
             SRCID,
             FROM_UNIXTIME(a.COSTTIME, '%Y/%m/%d') COSTTIME,
             FROM_UNIXTIME(a.COSTTIME, '%d ') COSTDATE,
@@ -34,55 +46,67 @@
                     hm_crm_cost b
                 WHERE
                     a.SRCID = b.SRCID
-                AND FROM_UNIXTIME(
-                    b.COSTTIME,
-                    '%Y/%m/%d '
-                ) LIKE CONCAT("%", #{month}, "%")
+                AND FROM_UNIXTIME(b.COSTTIME, '%Y/%m/%d ') LIKE CONCAT("%", #{month}, "%")
                 AND b.COMPANYID = #{companyId}
             ) TOTALCOST
         FROM
             hm_crm_source sourse
-        LEFT JOIN (SELECT * from hm_crm_cost cost where FROM_UNIXTIME(
-                    cost.COSTTIME,
-                    '%Y/%m/%d '
-                ) LIKE CONCAT("%", #{month}, "%") and cost.companyId=#{companyId}) a ON sourse.ID = a.SRCID
+        LEFT JOIN (
+            SELECT
+                ID,SRCID,COSTTIME
+            FROM
+                hm_crm_cost cost
+            WHERE
+                FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d ') LIKE CONCAT("%", #{month}, "%")
+            AND cost.companyId = #{companyId}
+        ) a ON sourse.ID = a.SRCID
         WHERE
-
-
-        sourse.COMPANYID = #{companyId}
+            sourse.COMPANYID = #{companyId}
         GROUP BY
             ID,
             COSTTIME
-        UNION
+            UNION
             SELECT
-                "",
-                "合计",
-                NULL,
-                SUM(a.COST),
-                NULL,
-                FROM_UNIXTIME(a.COSTTIME, '%Y/%m/%d '),
-                FROM_UNIXTIME(a.COSTTIME, '%d '),
-
+                 a.ID COSTID,
+                "" ID,
+                "合计" SRCNAME,
+                "NOIMG" SRCIMG,
+                SUM(a.COST) COST,
+                A.SRCID SRCID,
+                FROM_UNIXTIME(a.COSTTIME, '%Y/%m/%d ') COSTTIME,
+                FROM_UNIXTIME(a.COSTTIME, '%d ') COSTDATE,
                 (
                     SELECT
                         SUM(COST)
                     FROM
                         hm_crm_cost
                     WHERE
-                        FROM_UNIXTIME(COSTTIME, '%Y/%m/%d ') LIKE CONCAT("%", #{month}, "%") AND COMPANYID=#{companyId}
-                )
+                        FROM_UNIXTIME(COSTTIME, '%Y/%m/%d ') LIKE CONCAT("%", #{month}, "%")
+                    AND COMPANYID = #{companyId}
+                ) TOTALCOST
             FROM
                 hm_crm_cost a
             WHERE
-                FROM_UNIXTIME(a.COSTTIME, '%Y/%m/%d ') LIKE CONCAT("%", #{month}, "%") AND a.COMPANYID=#{companyId}
+                FROM_UNIXTIME(a.COSTTIME, '%Y/%m/%d ') LIKE CONCAT("%", #{month}, "%")
+            AND a.COMPANYID = #{companyId}
             GROUP BY
                 a.COSTTIME
     </select>
 
-    <insert id="insert">
+
+
+    <insert id="insert" parameterType="com.qiein.jupiter.web.entity.po.CostPO" useGeneratedKeys="true" keyProperty="id">
         insert into hm_crm_cost(SRCID,COMPANYID,UPDATETIME,CREATETIME,COSTTIME,COST) values(#{srcId},#{companyId},UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(#{costTime}),#{cost})
     </insert>
     <update id="editCost">
-        update hm_crm_cost set cost=#{cost},UPDATETIME=UNIX_TIMESTAMP(now()) WHERE COSTTIME=UNIX_TIMESTAMP(#{costTime})
+        update hm_crm_cost set cost=#{cost},UPDATETIME=UNIX_TIMESTAMP(now()) WHERE id=#{id}
     </update>
+
+    <insert id="createCostLog">
+        INSERT INTO hm_crm_cost_log (
+            <include refid="costlog"/>
+        )
+        VALUES
+            (#{costId}, #{operaId}, #{operaName},UNIX_TIMESTAMP(now()), #{companyId}, #{memo})
+    </insert>
 </mapper>

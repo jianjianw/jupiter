@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.service.impl;
 
 import com.qiein.jupiter.web.dao.CostDao;
+import com.qiein.jupiter.web.entity.po.CostLogPO;
 import com.qiein.jupiter.web.entity.po.CostPO;
 import com.qiein.jupiter.web.entity.vo.CostShowVO;
 import com.qiein.jupiter.web.service.CostService;
@@ -20,7 +21,7 @@ public class CostServiceImpl implements CostService {
      * @param companyId
      * @return
      */
-    public  List<Map> costList(String month, Integer companyId){
+    public  List<CostShowVO> costList(String month, Integer companyId){
         return costDao.costList(month,companyId);
     }
 
@@ -28,8 +29,8 @@ public class CostServiceImpl implements CostService {
      * 添加花费
      * @param costPO
      */
-    public void insert(CostPO costPO){
-        costDao.insert(costPO);
+    public int insert(CostPO costPO){
+       return costDao.insert(costPO);
     }
 
     /**
@@ -37,5 +38,11 @@ public class CostServiceImpl implements CostService {
      */
     public void editCost(CostPO costPO){
         costDao.editCost(costPO);
+    }
+    /**
+     * 添加花费日志
+     */
+    public void createCostLog(CostLogPO costLogPO){
+        costDao.createCostLog(costLogPO);
     }
 }

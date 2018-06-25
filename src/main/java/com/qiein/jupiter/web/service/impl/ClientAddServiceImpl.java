@@ -146,8 +146,17 @@ public class ClientAddServiceImpl implements ClientAddService {
     public void addZjsClient(ClientVO clientVO, StaffPO staffPO) {
         Map<String, Object> reqContent = new HashMap<String, Object>();
         reqContent.put("companyid", staffPO.getCompanyId());
-        reqContent.put("collectorid", staffPO.getId());
-        reqContent.put("collectorname", staffPO.getNickName());
+        if (NumUtil.isValid(clientVO.getCollectorId())) {
+            StaffPO collector = staffDao.getById(clientVO.getCollectorId());
+            if (collector == null) {
+                throw new RException(ExceptionEnum.COLLECTOR_NOT_FOUND);
+            }
+            reqContent.put("collectorid", clientVO.getCollectorId());
+            reqContent.put("collectorname", collector.getNickName());
+        } else {
+            reqContent.put("collectorid", staffPO.getId());
+            reqContent.put("collectorname", staffPO.getNickName());
+        }
         reqContent.put("operaid", staffPO.getId());
         reqContent.put("operaname", staffPO.getNickName());
         // 获取渠道名
@@ -203,6 +212,8 @@ public class ClientAddServiceImpl implements ClientAddService {
         reqContent.put("mateqq", clientVO.getMateQq());
         reqContent.put("marrytime", clientVO.getMarryTime());
         reqContent.put("yptime", clientVO.getYpTime());
+        reqContent.put("oldkzname", clientVO.getOldKzName());
+        reqContent.put("oldkzphone", clientVO.getOldKzPhone());
 
         String addRstStr = crmBaseApi.doService(reqContent, "addZjsClientInfoPcHs");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
