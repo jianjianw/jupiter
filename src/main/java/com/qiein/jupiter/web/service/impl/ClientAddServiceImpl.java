@@ -206,7 +206,7 @@ public class ClientAddServiceImpl implements ClientAddService {
                 StringUtil.isNotEmpty(clientVO.getAddress()) ? clientVO.getAddress()
                         : MobileLocationUtil.getAddressByContactInfo(clientVO.getKzPhone(), clientVO.getKzWechat(),
                         clientVO.getKzQq()));
-        reqContent.put("remark", clientVO.getRemark());
+        reqContent.put("memo", clientVO.getRemark());
         reqContent.put("matephone", clientVO.getMatePhone());
         reqContent.put("matename", clientVO.getMateName());
         reqContent.put("matewechat", clientVO.getMateWeChat());
@@ -262,7 +262,7 @@ public class ClientAddServiceImpl implements ClientAddService {
                 StringUtil.isNotEmpty(clientVO.getAddress()) ? clientVO.getAddress()
                         : MobileLocationUtil.getAddressByContactInfo(clientVO.getKzPhone(), clientVO.getKzWechat(),
                         clientVO.getKzQq()));
-        reqContent.put("remark", clientVO.getRemark());
+        reqContent.put("memo", clientVO.getMemo());
         reqContent.put("matephone", clientVO.getMatePhone());
         reqContent.put("matename", clientVO.getMateName());
         reqContent.put("matewechat", clientVO.getMateWeChat());
