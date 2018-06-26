@@ -42,10 +42,10 @@ public class CostController extends BaseController{
         costPO.setCompanyId(staff.getCompanyId());
         if(StringUtil.haveEmpty(costPO.getId())){
             int id=costService.insert(costPO);
-            addCostLog(staff,costPO.getId(),"新增花费："+costPO.getCost());
+            addCostLog(staff,costPO.getId(),"新增"+costPO.getCostTime()+"花费："+costPO.getCost());
         }else{
             costService.editCost(costPO);
-            addCostLog(staff,costPO.getId(),"修改花费金额为："+costPO.getCost());
+            addCostLog(staff,costPO.getId(),"修改"+costPO.getCostTime()+"花费金额为："+costPO.getCost());
         }
         return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
     }

@@ -165,4 +165,13 @@ public class ShopServiceImpl implements ShopService {
         return shopDao.getShopListByStaffGroup(companyId, groupId);
     }
 
+
+    /**
+     * 根据id获取门店信息
+     * @param shopId
+     * @return
+     */
+    public String findShop(Integer shopId){
+       return  shopDao.findShop(shopId).getShopName();
+    }
 }

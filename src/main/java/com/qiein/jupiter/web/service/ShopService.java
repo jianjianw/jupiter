@@ -91,4 +91,11 @@ public interface ShopService {
      * @return
      */
     List<ShopPO> getShopListByStaffGroup(int companyId,String groupId);
+
+    /**
+     * 根据id获取门店信息
+     * @param shopId
+     * @return
+     */
+    String findShop(Integer shopId);
 }
