@@ -722,6 +722,7 @@ public class ClientPushServiceImpl implements ClientPushService {
         if (CollectionUtils.isEmpty(infoList)) {
             throw new RException(ExceptionEnum.ALLOTED_ERROR);
         }
+        int kzNum = infoList.size();
         // 查询所选客服集合
         List<StaffPushDTO> staffList = staffDao.listStaffInstrIds(companyId, staffIds);
         if (staffList == null || staffList.size() == 0) {
@@ -738,7 +739,6 @@ public class ClientPushServiceImpl implements ClientPushService {
                     if (1 != updateRstNum) {
                         throw new RException(ExceptionEnum.INFO_STATUS_EDIT_ERROR);
                     }
-
                     // 客资修改客资的客服组ID，和客服组名称
                     clientInfoDao.updateClientDetailWhenAllot(companyId, DBSplitUtil.getDetailTabName(companyId),
                             infoList.get(0).getKzId(), staff.getStaffName(), staff.getGroupName());
@@ -749,9 +749,14 @@ public class ClientPushServiceImpl implements ClientPushService {
                 }
             }
         }
-
-        for (StaffPushDTO staff : staffList) {
-            push(companyId, staff.getWillHaveKzidsStrBf(), staff, operaId, operaName);
+        if (kzNum < staffList.size()) {
+            for (int i = 0; i < kzNum; i++) {
+                push(companyId, staffList.get(i).getWillHaveKzidsStrBf(), staffList.get(i), operaId, operaName);
+            }
+        } else {
+            for (StaffPushDTO staff : staffList) {
+                push(companyId, staff.getWillHaveKzidsStrBf(), staff, operaId, operaName);
+            }
         }
     }
 
