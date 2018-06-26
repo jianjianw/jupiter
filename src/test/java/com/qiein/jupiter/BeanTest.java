@@ -3,6 +3,8 @@ package com.qiein.jupiter;
 import com.qiein.jupiter.web.entity.po.GoldFingerPO;
 import org.junit.Test;
 
+import java.lang.reflect.Field;
+
 /**
  * FileName: BeanTest
  *
@@ -17,7 +19,7 @@ public class BeanTest {
         goldFingerPO.setStaffId(2);
         goldFingerPO.setAdId("123");
         goldFingerPO.setAdAddress("https://www.baidu.com");
-        goldFingerPO.setCreateorName("小利");
+        goldFingerPO.setCreateorName("小利       ");
         goldFingerPO.setPostURL("http://114.55.249.156:9091/gold_data/add_client_info");
         goldFingerPO.setIsFilter(0);
         goldFingerPO.setIsShow(0);
@@ -30,5 +32,19 @@ public class BeanTest {
         goldFingerPO.setFieldValue("kzqq,address,kzWw");
         goldFingerPO.setFormId("34654");
         goldFingerPO.setFormName("546");
+
+
+        strString(goldFingerPO);
+    }
+
+    public void strString(Object obj){
+        Field[] declaredFields = obj.getClass().getDeclaredFields();
+        for (Field field: declaredFields){
+            Class<?> type = field.getType();
+            System.out.println(type.getSimpleName());
+            if("String".equals(type.getSimpleName())){
+            }
+        }
+
     }
 }

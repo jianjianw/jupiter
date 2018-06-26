@@ -26,4 +26,18 @@
               COMPANYID = #{companyId}
     </delete>
 
+    <delete id = "deleteBySourceId">
+        delete from hm_crm_source_staff
+        where id in(select SOURCEID
+                    from hm_crm_source source
+                    where source.id = #{sourceId} and source.COMPANYID = #{companyId}) and
+              COMPANYID = #{companyId}
+    </delete>
+
+    <insert id="insertBySourceId">
+        <foreach collection="yyIds" item="item"  >
+            insert hm_crm_source_staff(RELATYPE, STAFFID, SOURCEID, COMPANYID)
+            (select '${relaType}' as RELATYPE,'${item}' AS STAFFID,ID,'${companyId}' AS COMPANYID FROM hm_crm_source  where hm_crm_source.ID = #{sourceId} and COMPANYID = #{companyId});
+        </foreach>
+    </insert>
 </mapper>

@@ -1,9 +1,15 @@
 package com.qiein.jupiter.web.service.impl;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.constant.SourceStaffConst;
+import com.qiein.jupiter.util.NumUtil;
+import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.web.dao.SourceStaffDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +31,8 @@ public class SourceServiceImpl implements SourceService {
     @Autowired
     private SourceDao sourceDao;
 
+    @Autowired
+    private SourceStaffDao sourceStaffDao;
     /**
      * 新增来源
      *
@@ -65,6 +73,14 @@ public class SourceServiceImpl implements SourceService {
             sourceDao.datUpdate(sourceVO, ids);
         }
 
+        if (NumUtil.isNull(sourceVO.getPushRule())) {
+                //指定渠道邀约人员
+                if (StringUtil.isEmpty(sourceVO.getYyId())) {
+                    throw new RException(ExceptionEnum.YYID_NOT_EXISTS);
+                }
+                sourceStaffDao.deleteBySourceId(sourceVO.getId(),sourceVO.getCompanyId());
+                sourceStaffDao.insertBySourceId(sourceVO.getId(),sourceVO.getCompanyId(),Arrays.asList(sourceVO.getYyId().split(CommonConstant.STR_SEPARATOR)),SourceStaffConst.YY_TYPE);
+        }
         sourceDao.update(sourceVO);
     }
 
