@@ -1,5 +1,7 @@
 package com.qiein.jupiter.web.service.impl;
 
+import com.qiein.jupiter.exception.ExceptionEnum;
+import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.web.dao.CostDao;
 import com.qiein.jupiter.web.entity.po.CostLogPO;
 import com.qiein.jupiter.web.entity.po.CostPO;
@@ -30,7 +32,13 @@ public class CostServiceImpl implements CostService {
      * @param costPO
      */
     public int insert(CostPO costPO){
-       return costDao.insert(costPO);
+        int i=0;
+        try{
+            costDao.insert(costPO);
+        }catch (Exception e){
+            throw new RException(ExceptionEnum.EDIT_FAIL);
+        }
+        return i;
     }
 
     /**
