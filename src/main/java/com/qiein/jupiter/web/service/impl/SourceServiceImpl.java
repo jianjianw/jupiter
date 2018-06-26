@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.constant.PushRoleConst;
 import com.qiein.jupiter.constant.SourceStaffConst;
 import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.StringUtil;
@@ -74,7 +76,7 @@ public class SourceServiceImpl implements SourceService {
             sourceDao.datUpdate(sourceVO, ids);
         }
 
-        if (NumUtil.isNull(sourceVO.getPushRule())) {
+        if (PushRoleConst.YY_WEIGHTS_RECEIVE.equals(sourceVO.getPushRule())) {
                 //指定渠道邀约人员
                 if (StringUtil.isEmpty(sourceVO.getYyId())) {
                     throw new RException(ExceptionEnum.YYID_NOT_EXISTS);
@@ -82,6 +84,7 @@ public class SourceServiceImpl implements SourceService {
                 sourceStaffDao.deleteBySourceId(sourceVO.getId(),sourceVO.getCompanyId());
                 sourceStaffDao.insertBySourceId(sourceVO.getId(),sourceVO.getCompanyId(),Arrays.asList(sourceVO.getYyId().split(CommonConstant.STR_SEPARATOR)),SourceStaffConst.YY_TYPE);
         }
+        System.out.println(JSONObject.toJSONString(sourceVO));
         sourceDao.update(sourceVO);
     }
 

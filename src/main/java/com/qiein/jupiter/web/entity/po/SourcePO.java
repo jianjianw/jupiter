@@ -83,6 +83,11 @@ public class SourcePO extends BaseEntity {
     private String yyId;
 
     /**
+     * 名称
+     * */
+    private String nickNames;
+
+    /**
      * 无参构造
      */
     public SourcePO() {
@@ -99,6 +104,15 @@ public class SourcePO extends BaseEntity {
         this.isShow = isShow;
         this.isFilter = isFilter;
     }
+
+    public String getNickNames() {
+        return nickNames;
+    }
+
+    public void setNickNames(String nickNames) {
+        this.nickNames = nickNames;
+    }
+
 
     public String getSrcName() {
         return srcName;
