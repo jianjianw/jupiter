@@ -160,16 +160,25 @@
         (
         SELECT
         a.channelId,
-        b.SOURCEID,
-        b.COMPANYID,
-        GROUP_CONCAT(b.staffId SEPARATOR ',') YYID
+        a.companyId,
+        GROUP_CONCAT(a.staffId SEPARATOR ',') as YYID
+        FROM
+        (
+        SELECT
+        a.channelId,
+        b.STAFFID,
+        b.COMPANYID
         FROM
         hm_crm_source a,
         hm_crm_source_staff b
         WHERE
         a.id = b.SOURCEID
         GROUP BY
-        SOURCEID
+        CHANNELID,
+        staffID
+        ) a
+        GROUP BY
+        channelId
         ) b
         ON a.ID = b.channelId and a.COMPANYID = b.COMPANYID
         WHERE
@@ -191,16 +200,25 @@
             (
                 SELECT
                     a.channelId,
-                    b.SOURCEID,
-                    b.COMPANYID,
-                    GROUP_CONCAT(b.staffId SEPARATOR ',') YYID
+                    a.companyId,
+                    GROUP_CONCAT(a.staffId SEPARATOR ',') as YYID
                 FROM
-                    hm_crm_source a,
-                    hm_crm_source_staff b
-                WHERE
-                    a.id = b.SOURCEID
+                    (
+                        SELECT
+                            a.channelId,
+                            b.STAFFID,
+                            b.COMPANYID
+                        FROM
+                            hm_crm_source a,
+                            hm_crm_source_staff b
+                        WHERE
+                            a.id = b.SOURCEID
+                        GROUP BY
+                            CHANNELID,
+                            staffID
+                    ) a
                 GROUP BY
-                    SOURCEID
+                    channelId
             ) b
             ON a.ID = b.channelId and a.COMPANYID = b.COMPANYID
         WHERE
