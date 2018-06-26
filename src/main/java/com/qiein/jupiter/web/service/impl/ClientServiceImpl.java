@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.service.impl;
 
 import ch.qos.logback.classic.db.names.TableName;
 import com.qiein.jupiter.constant.*;
+import com.qiein.jupiter.enums.TableEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.msg.goeasy.ClientDTO;
@@ -149,8 +150,8 @@ public class ClientServiceImpl implements ClientService {
         } else if (ClientStatusTypeConst.INVALID_TYPE.equals(type)) {
             kzStatusName = ClientConst.KZ_BZ_INVALID_NAME;
 
-            clientStatusVoteVO.setStatusId(ClientStatusConst.BE_FILTER_INVALID);
             ClientStatusPO clientStatusPO = clientStatusDao.getClientStatusByStatusId(ClientStatusConst.BE_WAIT_MAKE_ORDER, clientStatusVoteVO.getCompanyId());
+            clientStatusVoteVO.setStatusId(ClientStatusConst.BE_FILTER_INVALID);
             clientStatusVoteVO.setClassId(clientStatusPO.getClassId());
 
             //无效客资Goeasy推送一条消息
@@ -164,6 +165,7 @@ public class ClientServiceImpl implements ClientService {
             clientDTO.setSrcName(clientStatusVoteVO.getSourceName());
             GoEasyUtil.pushInvalidKz(clientStatusVoteVO.getCompanyId(), clientStatusVoteVO.getCollectorId(), clientDTO, clientStatusVoteVO.getContent());
         }
+
 
         //修改状态id
         clientDao.updateKzValidStatusByKzId(DBSplitUtil.getInfoTabName(clientStatusVoteVO.getCompanyId()), clientStatusVoteVO);
@@ -180,7 +182,7 @@ public class ClientServiceImpl implements ClientService {
                         ClientLogConst.INFO_LOG_EDIT_BE_STATUS + kzStatusName,
                         ClientLogConst.INFO_LOGTYPE_EDIT, clientStatusVoteVO.getCompanyId()));
         if (addLogNum != 1) {
-            log.error("插入客资日志失败");
+            log.error("修改客资状态日志失败");
         }
     }
 

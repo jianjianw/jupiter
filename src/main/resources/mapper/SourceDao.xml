@@ -241,6 +241,7 @@
             a.CHANNELID,
             a.CHANNELNAME,
             a.BRANDID,
+            a.PUSHRULE,
             a.BRANDNAME,
             a.COMPANYID,
             a.PRIORITY,

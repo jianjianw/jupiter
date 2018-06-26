@@ -20,7 +20,7 @@
 
     <delete id="deleteByChannelId">
         delete from hm_crm_source_staff
-        where id in (select SOURCEID
+        where SOURCEID in (select id
                      from hm_crm_source source
                      where source.CHANNELID = #{channelId} and source.COMPANYID = #{companyId}) and
               COMPANYID = #{companyId}
@@ -28,7 +28,7 @@
 
     <delete id = "deleteBySourceId">
         delete from hm_crm_source_staff
-        where id in(select SOURCEID
+        where SOURCEID in(select id
                     from hm_crm_source source
                     where source.id = #{sourceId} and source.COMPANYID = #{companyId}) and
               COMPANYID = #{companyId}

@@ -16,9 +16,9 @@
     </resultMap>
 
     <resultMap type="com.qiein.jupiter.web.entity.vo.StaffNumVO" id="staffMap">
-        <id column="ID" jdbcType="INTEGER" property="staffId" />
-        <result column="NUM" jdbcType="INTEGER" property="num" />
-        <result column="KZID" jdbcType="INTEGER" property="kzId" />
+        <id column="ID" jdbcType="INTEGER" property="staffId"/>
+        <result column="NUM" jdbcType="INTEGER" property="num"/>
+        <result column="KZID" jdbcType="INTEGER" property="kzId"/>
     </resultMap>
 
     <update id="editClientBaseInfo" parameterType="map">
@@ -59,24 +59,28 @@
     <!--修改客资状态-->
     <update id="updateKzValidStatusByKzId">
         update ${tabName} info
-        set info.STATUSID = #{clientStatusVoteVO.statusId},info.classid = #{clientStatusVoteVO.classId}
-        where info.kzid = #{clientStatusVoteVO.kzId} and info.companyid = #{clientStatusVoteVO.companyId}
+        set info.STATUSID   = #{clientStatusVoteVO.statusId}, info.classid = #{clientStatusVoteVO.classId},
+            info.UPDATETIME = UNIX_TIMESTAMP(now()), info.PROMOTORID = #{clientStatusVoteVO.operaId}
+        where info.kzid = #{clientStatusVoteVO.kzId} and info.companyid = #{clientStatusVoteVO.companyId} and
+              info.ISDEL = 0
     </update>
 
     <!-- 客资被转移时统计被转移人的客资数 -->
-    <select id="getOnwerInfoNumByIds" parameterType="map"  resultMap="staffMap">
-		SELECT
-		${type} ID, COUNT(1) NUM, KZID
-		FROM
-		${tabName} info
-		WHERE
-		info.COMPANYID = #{companyId}
-		AND info.ISDEL = 0
-		AND ${type} IS NOT NULL
-		AND (
-		INSTR(#{kzIds}, info.KZID) != 0
-		)
-		GROUP BY ${type}
-	</select>
+    <select id="getOnwerInfoNumByIds" parameterType="map" resultMap="staffMap">
+        SELECT
+            ${type}  ID,
+            COUNT(1) NUM,
+            KZID
+        FROM
+            ${tabName} info
+        WHERE
+            info.COMPANYID = #{companyId}
+            AND info.ISDEL = 0
+            AND ${type} IS NOT NULL
+            AND (
+                INSTR(#{kzIds}, info.KZID) != 0
+            )
+        GROUP BY ${type}
+    </select>
 
 </mapper>

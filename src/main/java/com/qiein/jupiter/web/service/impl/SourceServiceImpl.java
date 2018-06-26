@@ -83,8 +83,10 @@ public class SourceServiceImpl implements SourceService {
                 }
                 sourceStaffDao.deleteBySourceId(sourceVO.getId(),sourceVO.getCompanyId());
                 sourceStaffDao.insertBySourceId(sourceVO.getId(),sourceVO.getCompanyId(),Arrays.asList(sourceVO.getYyId().split(CommonConstant.STR_SEPARATOR)),SourceStaffConst.YY_TYPE);
+        }else{
+            sourceStaffDao.deleteBySourceId(sourceVO.getId(),sourceVO.getCompanyId());
         }
-        System.out.println(JSONObject.toJSONString(sourceVO));
+
         sourceDao.update(sourceVO);
     }
 
