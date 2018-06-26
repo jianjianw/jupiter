@@ -190,6 +190,10 @@ public enum TigMsgEnum {
      */
     ALLOT_SUCCESS("分配成功"),
     /**
+     * 发送成功
+     */
+    SEND_SUCCESS("发送成功"),
+    /**
      * 录入成功
      */
     ENTERING_SUNCCESS("录入成功");
