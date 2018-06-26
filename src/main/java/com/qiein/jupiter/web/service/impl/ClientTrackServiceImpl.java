@@ -140,7 +140,7 @@ public class ClientTrackServiceImpl implements ClientTrackService {
         reqContent.put("tostaffname", toStaff.getNickName());
         reqContent.put("role", role);
 
-        String addRstStr = crmBaseApi.doService(reqContent, "clientBatchTransferLp");
+        String addRstStr = crmBaseApi.doService(reqContent, "clientBatchTransferHs");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if ("100000".equals(jsInfo.getString("code"))) {
             //推送给目标员工
