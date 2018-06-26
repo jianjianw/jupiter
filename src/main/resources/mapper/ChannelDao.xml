@@ -14,6 +14,7 @@
         <result column="ISSHOW" jdbcType="BOOLEAN" property="showFlag"/>
         <result column="ISFILTER" jdbcType="BOOLEAN" property="filterFlag"/>
         <result column="PRIORITY" jdbcType="INTEGER" property="priority"/>
+        <result column="YYID" property="yyId"></result>
     </resultMap>
 
     <resultMap id="ChannelVOMap" type="com.qiein.jupiter.web.entity.vo.ChannelVO">
@@ -152,11 +153,27 @@
     <!--根据粗分类型获取渠道列表-->
     <select id="getChannelListByTypeIds" parameterType="map" resultMap="baseMap">
         SELECT
-        ID,CHANNELNAME,CHANNELIMG,TYPEID,BRANDID,BRANDNAME,PUSHRULE,COMPANYID,PRIORITY,ISSHOW, ISFILTER
+        a.ID,a.CHANNELNAME,a.CHANNELIMG,a.TYPEID,a.BRANDID,a.BRANDNAME,a.PUSHRULE,a.COMPANYID,a.PRIORITY,a.ISSHOW,a. ISFILTER,b.YYID
         FROM
-        hm_crm_channel
+        hm_crm_channel a
+        LEFT JOIN
+        (
+        SELECT
+        a.channelId,
+        b.SOURCEID,
+        b.COMPANYID,
+        GROUP_CONCAT(b.staffId SEPARATOR ',') YYID
+        FROM
+        hm_crm_source a,
+        hm_crm_source_staff b
         WHERE
-        COMPANYID = #{companyId} AND TYPEID IN
+        a.id = b.SOURCEID
+        GROUP BY
+        SOURCEID
+        ) b
+        ON a.ID = b.channelId and a.COMPANYID = b.COMPANYID
+        WHERE
+        a.COMPANYID = #{companyId} AND TYPEID IN
         <foreach collection="typeIds" index="index" item="typeId"
                  open="(" separator="," close=")">
             #{typeId}
@@ -167,11 +184,27 @@
     <!--根据细分类型获取渠道列表-->
     <select id="getListByType" parameterType="Integer" resultMap="baseMap">
         SELECT
-          ID,CHANNELNAME,CHANNELIMG,TYPEID,BRANDID,BRANDNAME,PUSHRULE,COMPANYID,PRIORITY,ISSHOW, ISFILTER
+            a.ID,a.CHANNELNAME,a.CHANNELIMG,a.TYPEID,a.BRANDID,a.BRANDNAME,a.PUSHRULE,a.COMPANYID,a.PRIORITY,a.ISSHOW,a. ISFILTER,b.YYID
         FROM
-          hm_crm_channel
+          hm_crm_channel a
+          LEFT JOIN
+            (
+                SELECT
+                    a.channelId,
+                    b.SOURCEID,
+                    b.COMPANYID,
+                    GROUP_CONCAT(b.staffId SEPARATOR ',') YYID
+                FROM
+                    hm_crm_source a,
+                    hm_crm_source_staff b
+                WHERE
+                    a.id = b.SOURCEID
+                GROUP BY
+                    SOURCEID
+            ) b
+            ON a.ID = b.channelId and a.COMPANYID = b.COMPANYID
         WHERE
-          COMPANYID = #{companyId} AND TYPEID = #{typeId}
+          a.COMPANYID = #{companyId} AND TYPEID = #{typeId}
         ORDER BY ISSHOW DESC, PRIORITY ,TYPEID, ID
     </select>
 

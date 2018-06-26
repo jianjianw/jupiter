@@ -43,6 +43,7 @@ public class BeanTest {
             Class<?> type = field.getType();
             System.out.println(type.getSimpleName());
             if("String".equals(type.getSimpleName())){
+                System.out.println("--------------------"+field.getName());
             }
         }
 
