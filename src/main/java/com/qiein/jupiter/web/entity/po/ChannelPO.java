@@ -67,6 +67,11 @@ public class ChannelPO extends BaseEntity {
      */
     private Boolean filterFlag;
 
+    /**
+     * yyId
+     * */
+    private String yyId;
+
     public ChannelPO() {
     }
 
@@ -76,6 +81,14 @@ public class ChannelPO extends BaseEntity {
         this.pushRule = pushRule;
         this.companyId = companyId;
         this.showFlag = showFlag;
+    }
+
+    public String getYyId() {
+        return yyId;
+    }
+
+    public void setYyId(String yyId) {
+        this.yyId = yyId;
     }
 
     public Boolean getFilterFlag() {

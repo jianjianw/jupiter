@@ -145,4 +145,12 @@ public interface SourceDao extends BaseDao<SourcePO> {
      * */
     SourcePO getSourceBySrcname(@Param(value="srcName") String srcName,@Param(value="companyId") Integer companyId,@Param(value="channelId")Integer channelId);
 
+    /**
+     * 根据渠道id更改来源pushRule
+     * @param channelId
+     * @param companyId
+     * @param pushRule
+     * */
+    void updatePushRuleByChannelId(@Param(value="channelId") int channelId,@Param(value="companyId") Integer companyId,@Param(value="pushRule") Integer pushRule);
+
 }

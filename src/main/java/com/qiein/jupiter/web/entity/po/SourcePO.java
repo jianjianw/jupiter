@@ -78,6 +78,11 @@ public class SourcePO extends BaseEntity {
     private int pushRule;
 
     /**
+     * 邀约id
+     * */
+    private String yyId;
+
+    /**
      * 无参构造
      */
     public SourcePO() {
@@ -97,6 +102,31 @@ public class SourcePO extends BaseEntity {
 
     public String getSrcName() {
         return srcName;
+    }
+
+
+    public Boolean getFilter() {
+        return isFilter;
+    }
+
+    public void setFilter(Boolean filter) {
+        isFilter = filter;
+    }
+
+    public Boolean getShow() {
+        return isShow;
+    }
+
+    public void setShow(Boolean show) {
+        isShow = show;
+    }
+
+    public String getYyId() {
+        return yyId;
+    }
+
+    public void setYyId(String yyId) {
+        this.yyId = yyId;
     }
 
     public void setSrcName(String srcName) {

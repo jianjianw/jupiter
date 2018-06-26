@@ -75,6 +75,7 @@ public enum ExceptionEnum {
     SOURCE_NOT_FOUND(506, "该来源不存在"),
     CHANNEL_HAVE_SOURCE(507, "该渠道下存在来源，请先删除下属所有来源再继续操作"),
     SOURCE_HAVE_KZ(508, "该来源下存在客资，不可删除"),
+    YYID_NOT_EXISTS(509,"邀约人员不存在"),
     //拍摄地
     SHOP_EXIST(601, "拍摄地已存在"),
     SHOP_ID_NULL(602, "拍摄地ID不能为空"),

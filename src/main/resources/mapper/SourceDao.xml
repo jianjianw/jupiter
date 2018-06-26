@@ -19,7 +19,7 @@
     </resultMap>
 
     <sql id="baseColumn">
-        ID,SRCNAME,TYPEID,CHANNELID,CHANNELNAME,SRCIMG,BRANDID,BRANDNAME,PRIORITY,ISSHOW,ISFILTER,COMPANYID, PUSHRULE
+        ID, SRCNAME, TYPEID, CHANNELID, CHANNELNAME, SRCIMG, BRANDID, BRANDNAME, PRIORITY, ISSHOW, ISFILTER, COMPANYID, PUSHRULE
     </sql>
 
     <select id="getByIdAndCid" parameterType="Integer" resultMap="baseMap">
@@ -36,11 +36,22 @@
     <insert id="insert" parameterType="com.qiein.jupiter.web.entity.po.SourcePO" useGeneratedKeys="true"
             keyProperty="id">
         INSERT INTO hm_crm_source
-        (SRCNAME,SRCIMG,TYPEID,CHANNELID,CHANNELNAME,BRANDID,BRANDNAME,COMPANYID,ISFILTER,ISSHOW,PRIORITY)
-        SELECT
-        #{srcName},#{srcImg},#{typeId},#{channelId},#{channelName},#{brandId},
-        #{brandName},#{companyId},#{isFilter},#{isShow},(
-        SELECT IFNULL(MAX(PRIORITY),0)+1 FROM hm_crm_source WHERE COMPANYID = #{companyId} AND CHANNELID = #{channelId})
+        (SRCNAME, SRCIMG, TYPEID, CHANNELID, CHANNELNAME, BRANDID, BRANDNAME, COMPANYID, ISFILTER, ISSHOW, PRIORITY)
+            SELECT
+                #{srcName},
+                #{srcImg},
+                #{typeId},
+                #{channelId},
+                #{channelName},
+                #{brandId},
+                #{brandName},
+                #{companyId},
+                #{isFilter},
+                #{isShow},
+                (
+                    SELECT IFNULL(MAX(PRIORITY), 0) + 1
+                    FROM hm_crm_source
+                    WHERE COMPANYID = #{companyId} AND CHANNELID = #{channelId})
     </insert>
 
     <!--渠道关闭时，同时关闭下属所有来源-->
@@ -140,38 +151,38 @@
     <!--修改向下拖拽排序时波及的来源的排序-->
     <update id="updateDownPriority" parameterType="Integer">
         UPDATE
-          hm_crm_source
+            hm_crm_source
         SET
-          PRIORITY = PRIORITY -1
+            PRIORITY = PRIORITY - 1
         WHERE
-          COMPANYID = #{companyId} AND PRIORITY &gt; #{xPriority} AND PRIORITY &lt;= #{dPriority}
+            COMPANYID = #{companyId} AND PRIORITY &gt; #{xPriority} AND PRIORITY &lt;= #{dPriority}
     </update>
 
     <!--修改向上拖拽排序时波及的来源的排序-->
     <update id="updateUpPriority" parameterType="Integer">
         UPDATE
-        hm_crm_source
+            hm_crm_source
         SET
-        PRIORITY = PRIORITY + 1
+            PRIORITY = PRIORITY + 1
         WHERE
-        COMPANYID = #{companyId} AND PRIORITY &gt;= #{xPriority} AND PRIORITY &lt; #{dPriority}
+            COMPANYID = #{companyId} AND PRIORITY &gt;= #{xPriority} AND PRIORITY &lt; #{dPriority}
     </update>
 
     <!--修改指定来源排序-->
     <update id="updatePriority" parameterType="Integer">
         UPDATE
-        hm_crm_source
+            hm_crm_source
         SET PRIORITY = #{priority}
         WHERE
-        COMPANYID = #{companyId} AND ID = #{id}
+            COMPANYID = #{companyId} AND ID = #{id}
     </update>
 
     <delete id="delete" parameterType="Integer">
         DELETE
         FROM
-        hm_crm_source
+            hm_crm_source
         WHERE
-        COMPANYID = #{companyId} AND ID = #{id}
+            COMPANYID = #{companyId} AND ID = #{id}
 
     </delete>
 
@@ -189,51 +200,62 @@
     <!--批量删除校验是否可删-->
     <select id="datDelCheck" parameterType="map" resultType="Integer">
         SELECT
-          COUNT(1)
+        COUNT(1)
         FROM
-          ${tabName}
+        ${tabName}
         WHERE
-          SOURCEID IN <foreach collection="ids" item="id" index="index" open="(" separator="," close=")">#{id}</foreach>
+        SOURCEID IN
+        <foreach collection="ids" item="id" index="index" open="(" separator="," close=")">#{id}</foreach>
     </select>
 
     <!--同名校验-->
     <select id="checkSource" parameterType="map" resultType="Integer">
-        SELECT
-        COUNT(1)
+        SELECT COUNT(1)
         FROM
-        hm_crm_source
+            hm_crm_source
         WHERE
-        COMPANYID = #{companyId} AND SRCNAME = #{srcName} AND CHANNELID = #{channelId}
+            COMPANYID = #{companyId} AND SRCNAME = #{srcName} AND CHANNELID = #{channelId}
     </select>
 
     <!--根据来源编号和公司编号删除制定记录-->
     <delete id="deleteByIdAndCid" parameterType="Integer">
         DELETE
         FROM
-        hm_crm_source
+            hm_crm_source
         WHERE
-        COMPANYID = #{companyId} AND ID = #{id}
+            COMPANYID = #{companyId} AND ID = #{id}
     </delete>
 
     <!--根据渠道编号获取来源列表-->
     <select id="getSourceListByChannelId" parameterType="Integer" resultMap="baseMap">
         SELECT
-		  ID,SRCNAME,SRCIMG,TYPEID,CHANNELID,CHANNELNAME,BRANDID,BRANDNAME,COMPANYID,PRIORITY,ISFILTER,ISSHOW
+            ID,
+            SRCNAME,
+            SRCIMG,
+            TYPEID,
+            CHANNELID,
+            CHANNELNAME,
+            BRANDID,
+            BRANDNAME,
+            COMPANYID,
+            PRIORITY,
+            ISFILTER,
+            ISSHOW
         FROM
-          hm_crm_source
+            hm_crm_source
         WHERE
-          COMPANYID = #{companyId} AND CHANNELID = #{channelId}
-		ORDER BY ISSHOW DESC,TYPEID ,PRIORITY ,ID
+            COMPANYID = #{companyId} AND CHANNELID = #{channelId}
+        ORDER BY ISSHOW DESC, TYPEID, PRIORITY, ID
     </select>
 
     <!--渠道名变更时下属所有来源的记录也要相应变更-->
     <update id="updateChannelName" parameterType="map">
         UPDATE
-          hm_crm_source
+            hm_crm_source
         SET
-          CHANNELNAME = #{channelName}
+            CHANNELNAME = #{channelName}
         WHERE
-          COMPANYID = #{companyId} AND CHANNELID = #{channelId}
+            COMPANYID = #{companyId} AND CHANNELID = #{channelId}
     </update>
 
     <!--根据来源ID获取显示可用的来源信息-->
@@ -281,11 +303,17 @@
     </select>
 
     <!--根据名称获取来源-->
-    <select id = "getSourceBySrcname" resultMap="baseMap">
-       select
-           <include refid="baseColumn"/>
+    <select id="getSourceBySrcname" resultMap="baseMap">
+        select
+        <include refid="baseColumn"/>
         from hm_crm_source
-       where COMPANYID = #{companyId} and SRCNAME = #{srcName} and CHANNELID = #{channelId}
+        where COMPANYID = #{companyId} and SRCNAME = #{srcName} and CHANNELID = #{channelId}
     </select>
 
+    <!--根据渠道id更改来源pushRule-->
+    <update id="updatePushRuleByChannelId">
+        update hm_crm_source
+        set PUSHRULE = #{pushRule}
+        where CHANNELID = #{channelId} and COMPANYID = #{companyId}
+    </update>
 </mapper>
