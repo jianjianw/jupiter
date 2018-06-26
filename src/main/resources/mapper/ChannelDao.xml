@@ -14,6 +14,8 @@
         <result column="ISSHOW" jdbcType="BOOLEAN" property="showFlag"/>
         <result column="ISFILTER" jdbcType="BOOLEAN" property="filterFlag"/>
         <result column="PRIORITY" jdbcType="INTEGER" property="priority"/>
+        <result column="YYID" jdbcType="VARCHAR" property="yyId"></result>
+        <result column="NICKNAMES" jdbcType="VARCHAR" property="nickNames"></result>
     </resultMap>
 
     <resultMap id="ChannelVOMap" type="com.qiein.jupiter.web.entity.vo.ChannelVO">
@@ -26,7 +28,7 @@
     </resultMap>
 
     <sql id="baseColumn">
-        ID,CHANNELNAME,CHANNELIMG,TYPEID,BRANDID,BRANDNAME,PUSHRULE,COMPANYID,ISSHOW,ISFILTER
+        ID, CHANNELNAME, CHANNELIMG, TYPEID, BRANDID, BRANDNAME, PUSHRULE, COMPANYID, ISSHOW, ISFILTER
     </sql>
 
     <select id="getByIdAndCid" parameterType="Integer" resultMap="baseMap">
@@ -73,10 +75,21 @@
     <insert id="insert" parameterType="com.qiein.jupiter.web.entity.po.ChannelPO" useGeneratedKeys="true"
             keyProperty="id">
         INSERT INTO hm_crm_channel
-        (CHANNELNAME,CHANNELIMG,TYPEID,BRANDID,BRANDNAME,PUSHRULE,COMPANYID,ISSHOW,ISFILTER,PRIORITY)
-        SELECT
-        #{channelName},#{channelImg},#{typeId},#{brandId},#{brandName},#{pushRule},#{companyId},#{showFlag},#{filterFlag},(
-        SELECT IFNULL(MAX(PRIORITY),0)+1 FROM hm_crm_channel WHERE COMPANYID = #{companyId})
+        (CHANNELNAME, CHANNELIMG, TYPEID, BRANDID, BRANDNAME, PUSHRULE, COMPANYID, ISSHOW, ISFILTER, PRIORITY)
+            SELECT
+                #{channelName},
+                #{channelImg},
+                #{typeId},
+                #{brandId},
+                #{brandName},
+                #{pushRule},
+                #{companyId},
+                #{showFlag},
+                #{filterFlag},
+                (
+                    SELECT IFNULL(MAX(PRIORITY), 0) + 1
+                    FROM hm_crm_channel
+                    WHERE COMPANYID = #{companyId})
     </insert>
 
     <update id="update" parameterType="com.qiein.jupiter.web.entity.po.ChannelPO">
@@ -115,48 +128,76 @@
     <!--修改排序-->
     <update id="updatePriority" parameterType="Integer">
         UPDATE
-        hm_crm_channel
+            hm_crm_channel
         SET PRIORITY = #{priority}
         WHERE
-        COMPANYID = #{companyId} AND ID = #{id}
+            COMPANYID = #{companyId} AND ID = #{id}
     </update>
 
     <delete id="delete" parameterType="Integer">
         DELETE
         FROM
-        hm_crm_channel
+            hm_crm_channel
         WHERE
-        COMPANYID = #{companyId} AND ID = #{id}
+            COMPANYID = #{companyId} AND ID = #{id}
 
     </delete>
 
     <!--同名校验-->
     <select id="checkChannel" parameterType="map" resultType="Integer">
-        SELECT
-        COUNT(1)
+        SELECT COUNT(1)
         FROM
-        hm_crm_channel
+            hm_crm_channel
         WHERE
-        CHANNELNAME = #{channelName}
-        AND COMPANYID = #{companyId}
+            CHANNELNAME = #{channelName}
+            AND COMPANYID = #{companyId}
     </select>
 
     <delete id="deleteByIdAndCid" parameterType="Integer">
         DELETE
         FROM
-        hm_crm_channel
+            hm_crm_channel
         WHERE
-        COMPANYID = #{companyId} AND ID = #{id}
+            COMPANYID = #{companyId} AND ID = #{id}
     </delete>
 
     <!--根据粗分类型获取渠道列表-->
     <select id="getChannelListByTypeIds" parameterType="map" resultMap="baseMap">
         SELECT
-        ID,CHANNELNAME,CHANNELIMG,TYPEID,BRANDID,BRANDNAME,PUSHRULE,COMPANYID,PRIORITY,ISSHOW, ISFILTER
+        a.ID,a.CHANNELNAME,a.CHANNELIMG,a.TYPEID,a.BRANDID,a.BRANDNAME,a.PUSHRULE,a.COMPANYID,a.PRIORITY,a.ISSHOW,a.
+        ISFILTER,b.YYID, b.NICKNAMES
         FROM
-        hm_crm_channel
+        hm_crm_channel a
+        LEFT JOIN
+        (
+        SELECT
+        a.channelId,
+        a.companyId,
+        GROUP_CONCAT(a.staffId SEPARATOR ',') as YYID,
+        GROUP_CONCAT(a.nickname SEPARATOR ',') as NICKNAMES
+        FROM
+        (
+        SELECT
+        a.channelId,
+        b.STAFFID,
+        b.COMPANYID,
+        c.NICKNAME
+        FROM
+        hm_crm_source a,
+        hm_crm_source_staff b,
+        hm_pub_staff c
         WHERE
-        COMPANYID = #{companyId} AND TYPEID IN
+        a.id = b.SOURCEID and b.STAFFID = c.ID
+        GROUP BY
+        CHANNELID,
+        staffID
+        ) a
+        GROUP BY
+        channelId
+        ) b
+        ON a.ID = b.channelId and a.COMPANYID = b.COMPANYID
+        WHERE
+        a.COMPANYID = #{companyId} AND TYPEID IN
         <foreach collection="typeIds" index="index" item="typeId"
                  open="(" separator="," close=")">
             #{typeId}
@@ -167,12 +208,52 @@
     <!--根据细分类型获取渠道列表-->
     <select id="getListByType" parameterType="Integer" resultMap="baseMap">
         SELECT
-          ID,CHANNELNAME,CHANNELIMG,TYPEID,BRANDID,BRANDNAME,PUSHRULE,COMPANYID,PRIORITY,ISSHOW, ISFILTER
+            a.ID,
+            a.CHANNELNAME,
+            a.CHANNELIMG,
+            a.TYPEID,
+            a.BRANDID,
+            a.BRANDNAME,
+            a.PUSHRULE,
+            a.COMPANYID,
+            a.PRIORITY,
+            a.ISSHOW,
+            a.ISFILTER,
+            b.YYID,
+            b.NICKNAMES
         FROM
-          hm_crm_channel
+            hm_crm_channel a
+            LEFT JOIN
+            (
+                SELECT
+                    a.channelId,
+                    a.companyId,
+                    GROUP_CONCAT(a.staffId SEPARATOR ',')  as YYID,
+                    GROUP_CONCAT(a.nickname SEPARATOR ',') as NICKNAMES
+                FROM
+                    (
+                        SELECT
+                            a.channelId,
+                            b.STAFFID,
+                            b.COMPANYID,
+                            c.NICKNAME
+                        FROM
+                            hm_crm_source a,
+                            hm_crm_source_staff b,
+                            hm_pub_staff c
+                        WHERE
+                            a.id = b.SOURCEID and b.STAFFID = c.ID
+                        GROUP BY
+                            CHANNELID,
+                            staffID
+                    ) a
+                GROUP BY
+                    channelId
+            ) b
+                ON a.ID = b.channelId and a.COMPANYID = b.COMPANYID
         WHERE
-          COMPANYID = #{companyId} AND TYPEID = #{typeId}
-        ORDER BY ISSHOW DESC, PRIORITY ,TYPEID, ID
+            a.COMPANYID = #{companyId} AND TYPEID = #{typeId}
+        ORDER BY ISSHOW DESC, PRIORITY, TYPEID, ID
     </select>
 
     <!--根据批量渠道编号获取渠道名称列表-->
@@ -189,11 +270,10 @@
     </select>
 
     <select id="checkSrcNumById" parameterType="Integer" resultType="Integer">
-        SELECT
-          COUNT(1)
+        SELECT COUNT(1)
         FROM
-          hm_crm_channel c
-        JOIN hm_crm_source s ON s.CHANNELID = c.ID AND s.CHANNELID = #{channelId} AND s.COMPANYID = #{companyId}
+            hm_crm_channel c
+            JOIN hm_crm_source s ON s.CHANNELID = c.ID AND s.CHANNELID = #{channelId} AND s.COMPANYID = #{companyId}
     </select>
 
     <!--获取各角色渠道组及渠道-->
@@ -251,33 +331,70 @@
     <!--根据公司ID 获取所有的渠道-->
     <select id="getChannelListByCid" resultMap="baseMap">
         SELECT
-        channel.ID,channel.CHANNELNAME,channel.CHANNELIMG,channel.ISSHOW
+            channel.ID,
+            channel.CHANNELNAME,
+            channel.CHANNELIMG,
+            channel.ISSHOW
         FROM
-         hm_crm_channel channel
+            hm_crm_channel channel
         WHERE
-         channel.COMPANYID = #{companyId}
+            channel.COMPANYID = #{companyId}
     </select>
 
     <!--根据组名称获取渠道-->
-    <select id = "getChannelByGroupName" resultMap="baseMap">
-        select id,CHANNELNAME,CHANNELIMG,TYPEID,BRANDID,BRANDNAME,PUSHRULE,PRIORITY,ISSHOW,COMPANYID from hm_crm_channel where  CHANNELNAME = #{groupName} and COMPANYID = #{companyId}
+    <select id="getChannelByGroupName" resultMap="baseMap">
+        select
+            id,
+            CHANNELNAME,
+            CHANNELIMG,
+            TYPEID,
+            BRANDID,
+            BRANDNAME,
+            PUSHRULE,
+            PRIORITY,
+            ISSHOW,
+            COMPANYID
+        from hm_crm_channel
+        where CHANNELNAME = #{groupName} and COMPANYID = #{companyId}
     </select>
 
     <!--根据父节点id获取渠道-->
-    <select id = "getChannelByGroupParentId" resultMap="baseMap">
-        select id,CHANNELNAME,CHANNELIMG,TYPEID,BRANDID,BRANDNAME,PUSHRULE,PRIORITY,ISSHOW,COMPANYID from hm_crm_channel where  CHANNELNAME = (select GROUPNAME from hm_pub_group where GROUPID = #{parentId})and COMPANYID = #{companyId}
+    <select id="getChannelByGroupParentId" resultMap="baseMap">
+        select
+            id,
+            CHANNELNAME,
+            CHANNELIMG,
+            TYPEID,
+            BRANDID,
+            BRANDNAME,
+            PUSHRULE,
+            PRIORITY,
+            ISSHOW,
+            COMPANYID
+        from hm_crm_channel
+        where CHANNELNAME = (select GROUPNAME
+                             from hm_pub_group
+                             where GROUPID = #{parentId}) and COMPANYID = #{companyId}
     </select>
 
     <!--根据员工id获取员工所在小组的承接渠道列表-->
     <select id="getChannelListByStaffGroup" parameterType="map" resultMap="baseMap">
         SELECT
-        c.ID,c.CHANNELNAME,c.CHANNELIMG,c.TYPEID,c.BRANDID,c.BRANDNAME,c.PUSHRULE,c.COMPANYID,c.ISSHOW
+            c.ID,
+            c.CHANNELNAME,
+            c.CHANNELIMG,
+            c.TYPEID,
+            c.BRANDID,
+            c.BRANDNAME,
+            c.PUSHRULE,
+            c.COMPANYID,
+            c.ISSHOW
         FROM
-        hm_crm_shop_channel_group_rela scgr
-        LEFT JOIN
-        hm_crm_channel c ON c.COMPANYID = scgr.COMPANYID AND c.ID = scgr.CHANNELID
+            hm_crm_shop_channel_group_rela scgr
+            LEFT JOIN
+            hm_crm_channel c ON c.COMPANYID = scgr.COMPANYID AND c.ID = scgr.CHANNELID
         WHERE
-        scgr.COMPANYID = #{companyId} and scgr.GROUPID = #{groupId} AND c.ISSHOW = 1
+            scgr.COMPANYID = #{companyId} and scgr.GROUPID = #{groupId} AND c.ISSHOW = 1
         GROUP BY c.CHANNELNAME
     </select>
 
