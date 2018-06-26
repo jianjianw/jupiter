@@ -280,4 +280,5 @@
         scgr.COMPANYID = #{companyId} and scgr.GROUPID = #{groupId} AND c.ISSHOW = 1
         GROUP BY c.CHANNELNAME
     </select>
+
 </mapper>

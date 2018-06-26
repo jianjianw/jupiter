@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.dao;
 
+import com.qiein.jupiter.web.entity.po.ChannelPO;
 import com.qiein.jupiter.web.entity.po.SourcePO;
 import com.qiein.jupiter.web.entity.vo.SourceVO;
 import org.apache.ibatis.annotations.Param;
@@ -153,4 +154,13 @@ public interface SourceDao extends BaseDao<SourcePO> {
      * */
     void updatePushRuleByChannelId(@Param(value="channelId") int channelId,@Param(value="companyId") Integer companyId,@Param(value="pushRule") Integer pushRule);
 
+    /**
+     * 根据来源名，类型获取渠道
+     *
+     * @param companyId
+     * @param typeId
+     * @param srcName
+     * @return
+     */
+    SourcePO getSourceByNameAndType(@Param("companyId") int companyId, @Param("typeId") int typeId, @Param("srcName") String srcName);
 }

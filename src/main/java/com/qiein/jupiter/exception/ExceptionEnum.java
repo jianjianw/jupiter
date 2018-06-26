@@ -75,7 +75,8 @@ public enum ExceptionEnum {
     SOURCE_NOT_FOUND(506, "该来源不存在"),
     CHANNEL_HAVE_SOURCE(507, "该渠道下存在来源，请先删除下属所有来源再继续操作"),
     SOURCE_HAVE_KZ(508, "该来源下存在客资，不可删除"),
-    YYID_NOT_EXISTS(509,"邀约人员不存在"),
+    YYID_NOT_EXISTS(509, "邀约人员不存在"),
+    SHOP_SOURCE_ERROR(510, "门店自然入客渠道配置错误，请联系管理员"),
     //拍摄地
     SHOP_EXIST(601, "拍摄地已存在"),
     SHOP_ID_NULL(602, "拍摄地ID不能为空"),
@@ -159,9 +160,9 @@ public enum ExceptionEnum {
     GET_WX_INFO_FAIL(2104, "获取用户微信信息失败"),
     //金数据
     FORM_WAS_IN(2201, "表单已存在"),
-    FORM_NOT_EXISTS(2202,"表单不存在"),
+    FORM_NOT_EXISTS(2202, "表单不存在"),
     //分页
-    PAGESIZE_MAX_SIZE_ERROR(2301,"每页最多500条");
+    PAGESIZE_MAX_SIZE_ERROR(2301, "每页最多500条");
 
     private Integer code;
     private String msg;

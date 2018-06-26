@@ -24,6 +24,14 @@ public interface ClientAddService {
     void addZjsClient(ClientVO clientVO, StaffPO staffPO);
 
     /**
+     * 添加自然入客客资
+     *
+     * @param clientVO
+     * @param staffPO
+     */
+    void addMsClient(ClientVO clientVO, StaffPO staffPO);
+
+    /**
      * 批量录入信息解析
      *
      * @param text

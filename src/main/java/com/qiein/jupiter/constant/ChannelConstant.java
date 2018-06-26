@@ -45,4 +45,7 @@ public class ChannelConstant {
     public static final int PUSH_RULE_AVG_RECEIVE = 11;
     //12.指定客服
     public static final int PUSH_RULE_ASSIGN_APPOINT = 12;
+
+    // 门店自然入客
+    public static final String SHOP_NATURAL_NAME = "门店自然入客";
 }

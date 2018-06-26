@@ -42,7 +42,7 @@ public class ClientAddController extends BaseController {
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         clientAddService.addDsClient(clientVO, currentLoginStaff);
-        return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
+        return ResultInfoUtil.success(TigMsgEnum.ENTERING_SUNCCESS);
     }
 
     /**
@@ -59,7 +59,24 @@ public class ClientAddController extends BaseController {
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         clientAddService.addZjsClient(clientVO, currentLoginStaff);
-        return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
+        return ResultInfoUtil.success(TigMsgEnum.ENTERING_SUNCCESS);
+    }
+
+    /**
+     * 录入转介绍客资
+     *
+     * @return
+     */
+    @PostMapping("/add_ms_client")
+    public ResultInfo addMsClient(@RequestBody ClientVO clientVO) {
+        if (StringUtil.isAllEmpty(clientVO.getKzPhone(), clientVO.getKzWechat(), clientVO.getKzQq(),
+                clientVO.getKzWw())) {
+            return ResultInfoUtil.error(ExceptionEnum.KZ_CONTACT_INFORMATION);
+        }
+        // 获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        clientAddService.addMsClient(clientVO, currentLoginStaff);
+        return ResultInfoUtil.success(TigMsgEnum.ENTERING_SUNCCESS);
     }
 
     /**
