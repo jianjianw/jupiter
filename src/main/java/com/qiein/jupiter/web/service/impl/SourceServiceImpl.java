@@ -52,6 +52,7 @@ public class SourceServiceImpl implements SourceService {
      * @param sourceVO
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void editSource(SourceVO sourceVO) {
         //先检查是否有多个id
         String[] ids = sourceVO.getIds().split(",");
