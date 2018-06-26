@@ -141,5 +141,26 @@ public class CompanyServiceImpl implements CompanyService {
         return companyDao.getVOById(companyId);
     }
 
+	@Override
+	public void editTypeRepeat(Boolean b, int companyId) {
+		companyDao.editTypeRepeat(b,companyId);
+	}
+
+	@Override
+	public void editTypeSrcRepeat(boolean b, int companyId) {
+		companyDao.editTypeSrcRepeat(b,companyId);
+	}
+
+	@Override
+	public void editKZStutas(String statusIgnore,Integer companyId) {
+		companyDao.editKZStutas(statusIgnore,companyId);
+	}
+
+	@Override
+	public void editKZday(String timeTypeIgnore, String dayIgnore, int companyId) {
+		// TODO Auto-generated method stub
+		companyDao.editKZday(timeTypeIgnore,dayIgnore,companyId);
+	}
+
 
 }

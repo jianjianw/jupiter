@@ -141,4 +141,55 @@
         FROM
        	 hm_pub_company
     </select>
+    
+    <!-- 更改咨询类型 -->
+    <update id="editTypeRepeat" >
+        UPDATE 
+        	hm_pub_company
+        <set>
+            <if test="b != null and b!=0" >
+                TYPEREPEAT = #{b},
+            </if>
+    	</set>
+    	<where>ID = #{companyId}</where>
+    </update>
+    
+    <!-- 更改咨询类型 -->
+    <update id="editTypeSrcRepeat" >
+        UPDATE 
+        	hm_pub_company
+        <set>
+            <if test="b != null and b!=0" >
+                SRCREPEAT = #{b},
+            </if>
+    	</set>
+    	<where>ID = #{companyId}</where>
+    </update>
+    
+    <!-- 更改客资状态是否被重新录入 -->
+    <update id="editKZStutas" >
+        UPDATE 
+        	hm_pub_company
+        <set>
+            <if test="statusIgnore != null and statusIgnore!=0" >
+                STATUSIGNORE = #{statusIgnore},
+            </if>
+    	</set>
+    	<where>ID = #{companyId}</where>
+    </update>
+    
+    <!-- 更改客资状态是否被重新录入 -->
+    <update id="editKZday" >
+        UPDATE 
+        	hm_pub_company
+        <set>
+            <if test="timeTypeIgnore != null and timeTypeIgnore!=0" >
+                TIMETYPEIGNORE = #{timeTypeIgnore},
+            </if>
+            <if test="dayIgnore != null and dayIgnore!=0" >
+                DAYIGNORE = #{dayIgnore},
+            </if>
+    	</set>
+    	<where>ID = #{companyId}</where>
+    </update>
 </mapper>

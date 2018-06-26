@@ -146,4 +146,63 @@ public class CompanyController extends BaseController {
 		return ResultInfoUtil.success(TigMsgEnum.SUCCESS,
 				companyService.getById(getCurrentLoginStaff().getCompanyId()));
 	}
+	
+	/**
+	 * 更改咨询类型(客资校验是否忽略咨询类型)
+	 * 
+	 * @return
+	 */
+	@GetMapping("/editTypeRepeat")
+	public ResultInfo editTypeRepeat(@RequestParam("typeRepeat") boolean typeRepeat) {
+		
+		companyService.editTypeRepeat(typeRepeat,getCurrentLoginStaff().getCompanyId());
+		return ResultInfoUtil.success(TigMsgEnum.SUCCESS);
+	}
+	
+	/**
+	 * 更改渠道类型(客资校验是否忽略渠道类型)
+	 * 
+	 * @return
+	 */
+	@GetMapping("/editSrcRepeat")
+	public ResultInfo editSrcRepeat(@RequestParam("srcRepeat") boolean typeRepeat) {
+		
+		companyService.editTypeSrcRepeat(typeRepeat,getCurrentLoginStaff().getCompanyId());
+		return ResultInfoUtil.success(TigMsgEnum.SUCCESS);
+	}
+	
+	/**
+	 * 更改客资状态(客资校验是否忽略客资状态)
+	 * @return
+	 */
+	@GetMapping("/editKZStutas")
+	public ResultInfo editKZStutas(@RequestParam("statusIgnore") String statusIgnore) {
+		if(statusIgnore==null){
+			 return ResultInfoUtil.error(9999, "未选择");
+		}
+		companyService.editKZStutas(statusIgnore,getCurrentLoginStaff().getCompanyId());
+		
+		return ResultInfoUtil.success(TigMsgEnum.SUCCESS);
+	}
+	
+	/**
+	 * 更改客资录入时间和最后操作时间(客资校验是否忽略客资状态)
+	 * @return
+	 */
+	@GetMapping("/editKZday")
+	public ResultInfo editKZday(@RequestParam("timeTypeIgnore") String timeTypeIgnore,@RequestParam("dayIgnore") String dayIgnore) {
+		if(timeTypeIgnore==null){
+			if(dayIgnore!=null){
+				return ResultInfoUtil.error(9999, "未同时选择两个按钮");
+			}
+		}
+		if(timeTypeIgnore!=null){
+			if(dayIgnore==null){
+				return ResultInfoUtil.error(9999, "未同时选择两个按钮");
+			}
+		}
+		companyService.editKZday(timeTypeIgnore,dayIgnore,getCurrentLoginStaff().getCompanyId());
+		
+		return ResultInfoUtil.success(TigMsgEnum.SUCCESS);
+	}
 }

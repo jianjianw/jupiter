@@ -4,6 +4,7 @@ import com.qiein.jupiter.web.entity.po.ShopPO;
 import com.qiein.jupiter.web.entity.vo.ShopVO;
 import org.apache.ibatis.annotations.Param;
 
+import javax.annotation.security.PermitAll;
 import java.util.List;
 
 /**
@@ -78,4 +79,10 @@ public interface ShopDao extends BaseDao<ShopPO> {
      * @return
      */
     List<ShopPO> getShopListByStaffGroup(@Param("companyId")int companyId,@Param("groupId")String groupId);
+    /**
+     * 根据id获取门店信息
+     * @param id
+     * @return
+     */
+    ShopPO findShop(@Param("id") Integer id);
 }

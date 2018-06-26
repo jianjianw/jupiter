@@ -148,4 +148,8 @@
         GROUP BY c.SHOPNAME
     </select>
 
+    <!--获取门店信息-->
+    <select id="findShop" resultMap="baseMap">
+        SELECT SHOPNAME FROM hm_pub_shop WHERE  ID=#{id}
+    </select>
 </mapper>
