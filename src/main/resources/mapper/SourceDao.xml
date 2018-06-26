@@ -104,6 +104,9 @@
             <if test="isShow != null">
                 ISSHOW = #{isShow},
             </if>
+            <if test="pushRule != null">
+                PUSHRULE = #{pushRule}
+            </if>
         </set>
         WHERE
         ID = #{id}

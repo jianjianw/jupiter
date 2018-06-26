@@ -113,6 +113,7 @@ public class SourcePO extends BaseEntity {
         this.nickNames = nickNames;
     }
 
+
     public String getSrcName() {
         return srcName;
     }

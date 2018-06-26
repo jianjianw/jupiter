@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.service.impl;
 
 import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.constant.PushRoleConst;
 import com.qiein.jupiter.constant.SourceStaffConst;
 import com.qiein.jupiter.enums.RoleChannelEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
@@ -88,17 +89,14 @@ public class ChannelServiceImpl implements ChannelService {
             sourceDao.updateIsFilterByChannelId(channelPO.getId(), channelPO.getCompanyId(), channelPO.getFilterFlag());
         }
 
-        if (null != channelPO.getPushRule()) {
-            if (channelPO.getPushRule().equals(CommonConstant.DEFAULT_ZERO)) {
-                //TODO 指定渠道邀约人员
-                if (StringUtil.isEmpty(channelPO.getYyId())) {
-                    throw new RException(ExceptionEnum.YYID_NOT_EXISTS);
-                }
-                sourceStaffDao.deleteByChannelId(channelPO.getId(),channelPO.getCompanyId());
-                //FIXME 插入语句有问题
-                sourceStaffDao.insertByChannelId(channelPO.getId(),channelPO.getCompanyId(),Arrays.asList(channelPO.getYyId().split(CommonConstant.STR_SEPARATOR)),SourceStaffConst.YY_TYPE);
+        if (PushRoleConst.YY_WEIGHTS_RECEIVE.equals(channelPO.getPushRule())) {
+            //指定渠道邀约人员
+            if (StringUtil.isEmpty(channelPO.getYyId())) {
+                throw new RException(ExceptionEnum.YYID_NOT_EXISTS);
             }
-            //TODO 更新所有来源的pushRole
+            sourceStaffDao.deleteByChannelId(channelPO.getId(), channelPO.getCompanyId());
+            sourceStaffDao.insertByChannelId(channelPO.getId(), channelPO.getCompanyId(), Arrays.asList(channelPO.getYyId().split(CommonConstant.STR_SEPARATOR)), SourceStaffConst.YY_TYPE);
+            //更新所有来源的pushRole
             sourceDao.updatePushRuleByChannelId(channelPO.getId(), channelPO.getCompanyId(), channelPO.getPushRule());
         }
 
