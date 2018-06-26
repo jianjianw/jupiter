@@ -412,11 +412,11 @@ public interface StaffDao extends BaseDao<StaffPO> {
     void resetOffLineWhenLimit();
 
     /**
-     * 获取转介绍渠道指定员工客服
+     * 获取渠道指定员工客服
      *
      * @param companyId
      * @param sourceId
      * @return
      */
-    StaffPushDTO getZjsPushAppoint(@Param("companyId") Integer companyId, @Param("sourceId") int sourceId);
+    StaffPushDTO getPushAppointByRole(@Param("companyId") Integer companyId, @Param("sourceId") int sourceId, @Param("role") String role);
 }

@@ -817,8 +817,8 @@
 
     </select>
 
-    <!-- 获取转介绍渠道指定员工客服-->
-    <select id="getZjsPushAppoint" parameterType="map" resultMap="pushMap">
+    <!-- 获取渠道指定员工客服-->
+    <select id="getPushAppointByRole" parameterType="map" resultMap="pushMap">
         SELECT
             rela.STAFFID, sf.NICKNAME, gs.GROUPID, grp.GROUPNAME
         FROM
@@ -832,7 +832,7 @@
             AND rela.RELATYPE = 'yy'
             AND sf.ISDEL = 0
             AND sf.ISLOCK = 0
-            AND grp.GROUPTYPE = 'zjsyy'
+            AND grp.GROUPTYPE = #{role}
         ORDER BY
             sf.LASTPUSHTIME ASC
             LIMIT 0,1
