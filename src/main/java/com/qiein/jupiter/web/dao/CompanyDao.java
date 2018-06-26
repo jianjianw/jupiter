@@ -55,4 +55,20 @@ public interface CompanyDao extends BaseDao<CompanyPO> {
      * @return
      */
 	List<CompanyPO> listComp();
+	
+	/**
+     * 编辑咨询类型
+     * @return
+     */
+	void editTypeRepeat(@Param("b") Boolean b,@Param("companyId") Integer companyId);
+	
+	/**
+     * 编辑渠道类型
+     * @return
+     */
+	void editTypeSrcRepeat(@Param("b") boolean b, @Param("companyId") int companyId);
+
+	void editKZStutas(@Param("statusIgnore") String statusIgnore, @Param("companyId") int companyId);
+
+	void editKZday(@Param("timeTypeIgnore")String timeTypeIgnore, @Param("dayIgnore") String dayIgnore,@Param("companyId") int companyId);
 }

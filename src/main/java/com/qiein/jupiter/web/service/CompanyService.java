@@ -92,4 +92,12 @@ public interface CompanyService {
      * @return
      */
     CompanyVO getCompanyVO(int companyId);
+
+	void editTypeRepeat(Boolean b, int companyId);
+
+	void editTypeSrcRepeat(boolean parseBoolean, int companyId);
+
+	void editKZStutas(String statusIgnore,Integer companyId);
+
+	void editKZday(String timeTypeIgnore, String dayIgnore, int companyId);
 }
