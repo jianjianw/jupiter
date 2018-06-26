@@ -16,6 +16,8 @@
         <result column="ISFILTER" jdbcType="BOOLEAN" property="isFilter"/>
         <result column="ISSHOW" jdbcType="BOOLEAN" property="isShow"/>
         <result column="PUSHRULE" jdbcType="INTEGER" property="pushRule"/>
+        <result column="YYID" jdbcType="VARCHAR" property="yyId"></result>
+        <result column="NICKNAMES" jdbcType="VARCHAR" property="nickNames"></result>
     </resultMap>
 
     <sql id="baseColumn">
@@ -229,22 +231,49 @@
     <!--根据渠道编号获取来源列表-->
     <select id="getSourceListByChannelId" parameterType="Integer" resultMap="baseMap">
         SELECT
-            ID,
-            SRCNAME,
-            SRCIMG,
-            TYPEID,
-            CHANNELID,
-            CHANNELNAME,
-            BRANDID,
-            BRANDNAME,
-            COMPANYID,
-            PRIORITY,
-            ISFILTER,
-            ISSHOW
+            a.ID,
+            a.SRCNAME,
+            a.SRCIMG,
+            a.TYPEID,
+            a.CHANNELID,
+            a.CHANNELNAME,
+            a.BRANDID,
+            a.BRANDNAME,
+            a.COMPANYID,
+            a.PRIORITY,
+            a.ISFILTER,
+            a.ISSHOW,
+            b.YYID,
+            b.NICKNAMES
         FROM
-            hm_crm_source
+            hm_crm_source a
+        left join (SELECT
+                       a.channelId,
+                       a.companyId,
+                       GROUP_CONCAT(a.staffId SEPARATOR ',')  as YYID,
+                       GROUP_CONCAT(a.nickname SEPARATOR ',') as NICKNAMES
+                   FROM
+                       (
+                           SELECT
+                               a.channelId,
+                               b.STAFFID,
+                               b.COMPANYID,
+                               c.NICKNAME
+                           FROM
+                               hm_crm_source a,
+                               hm_crm_source_staff b,
+                               hm_pub_staff c
+                           WHERE
+                               a.id = b.SOURCEID and b.STAFFID = c.ID
+                           GROUP BY
+                               CHANNELID,
+                               staffID
+                       ) a
+                   GROUP BY
+                       channelId) b
+            on a.channelId = b.channelId
         WHERE
-            COMPANYID = #{companyId} AND CHANNELID = #{channelId}
+            a.COMPANYID = #{companyId} AND a.CHANNELID = #{channelId}
         ORDER BY ISSHOW DESC, TYPEID, PRIORITY, ID
     </select>
 
