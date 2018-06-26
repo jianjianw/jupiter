@@ -132,7 +132,7 @@ public class ClientAddServiceImpl implements ClientAddService {
             CompanyPO companyPO = companyDao.getById(staffPO.getCompanyId());
             tpm.pushInfo(new ClientPushDTO(pushService, channelPO.getPushRule(), staffPO.getCompanyId(),
                     JsonFmtUtil.strContentToJsonObj(addRstStr).getString("kzid"), clientVO.getShopId(),
-                    channelPO.getId(), channelPO.getTypeId(), companyPO.getOvertime(), companyPO.getKzInterval(), 0));
+                    channelPO.getId(), channelPO.getTypeId(), companyPO.getOvertime(), companyPO.getKzInterval(), sourcePO.getId()));
         } else {
             throw new RException(jsInfo.getString("msg"));
         }
@@ -292,7 +292,7 @@ public class ClientAddServiceImpl implements ClientAddService {
                         clientVO.getInvalidLabel() + StringUtil.nullToStrTrim(clientVO.getInvalidMemo()));
             }
             // 进店成交
-            if (ClientStatusConst.BE_SUCCESS == clientVO.getYyRst() || ClientStatusConst.BE_SUCCESS_STAY == clientVO.getYyRst()) {
+            if (ClientStatusConst.BE_SUCCESS == clientVO.getYyRst()) {
                 reqContent.put("amount", clientVO.getAmount());// 成交套系金额
                 reqContent.put("stayamount", clientVO.getStayAmount());// 已收金额
                 reqContent.put("successtime", clientVO.getSuccessTime());// 订单时间

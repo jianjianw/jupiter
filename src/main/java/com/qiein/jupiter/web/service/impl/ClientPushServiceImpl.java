@@ -148,16 +148,17 @@ public class ClientPushServiceImpl implements ClientPushService {
                     break;
                 }
             case ChannelConstant.PUSH_RULE_ASSIGN_APPOINT:
+                if (NumUtil.isInValid(srcId)) {
+                    return;
+                }
                 //电商
                 if (ChannelConstant.DS_TYPE_LIST.contains(channelTypeId)) {
                     //12.指定客服
-                    appointer = staffDao.getPushAppointByRole(companyId, channelId, RoleConstant.DSYY);
+                    appointer = staffDao.getPushAppointByRole(companyId, srcId, RoleConstant.DSYY);
                 }
                 //转介绍
                 if (ChannelConstant.ZJS_TYPE_LIST.contains(channelTypeId)) {
-                    if (NumUtil.isInValid(srcId)) {
-                        return;
-                    }
+
                     //12.指定客服
                     appointer = staffDao.getPushAppointByRole(companyId, srcId, RoleConstant.ZJSYY);
                 }
