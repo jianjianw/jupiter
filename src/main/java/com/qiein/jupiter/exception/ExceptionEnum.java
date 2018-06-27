@@ -162,7 +162,10 @@ public enum ExceptionEnum {
     FORM_WAS_IN(2201, "表单已存在"),
     FORM_NOT_EXISTS(2202, "表单不存在"),
     //分页
-    PAGESIZE_MAX_SIZE_ERROR(2301, "每页最多500条");
+    PAGESIZE_MAX_SIZE_ERROR(2301, "每页最多500条"),
+    //短信
+    TEMPLATE_LOSE(2401,"短信模板获取失败"),
+    TEMPLATE_NOT_IN(2402,"短信模板不存在");
 
     private Integer code;
     private String msg;
