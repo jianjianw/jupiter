@@ -92,6 +92,7 @@
     <resultMap id="GroupStaffMap" type="com.qiein.jupiter.web.entity.vo.GroupBaseStaffVO">
         <result column="GROUPID" property="groupId" jdbcType="VARCHAR"/>
         <result column="GROUPNAME" property="groupName" jdbcType="VARCHAR"/>
+        <result column="GROUPTYPE" property="groupType" jdbcType="VARCHAR"/>
         <collection property="staffList" ofType="com.qiein.jupiter.web.entity.vo.BaseStaffVO">
             <result column="STAFFID" property="staffId" jdbcType="INTEGER"/>
             <result column="NICKNAME" property="staffName" jdbcType="VARCHAR"/>
