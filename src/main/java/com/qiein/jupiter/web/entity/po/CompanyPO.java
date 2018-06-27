@@ -72,7 +72,70 @@ public class CompanyPO extends BaseEntity {
      * 是否锁定
      */
     private boolean lockFlag;
+    /**
+     * 咨询类型
+     */
+    private boolean typeRepeat;
+    /**
+     * 渠道类型
+     */
+    private boolean srcRepeat;
+    /**
+     * 客资状态
+     */
+    private String statusIgnore;
+    /**
+     * 校验重复时间字段
+     */
+    private String timeTypeIgnore;
+    /**
+     * 校验重复时间天数
+     */
+    private Integer dayIgnore;
 
+    
+    
+    public boolean isTypeRepeat() {
+		return typeRepeat;
+	}
+
+	public void setTypeRepeat(boolean typeRepeat) {
+		this.typeRepeat = typeRepeat;
+	}
+
+	public boolean isSrcRepeat() {
+		return srcRepeat;
+	}
+
+	public void setSrcRepeat(boolean srcRepeat) {
+		this.srcRepeat = srcRepeat;
+	}
+
+	public String getStatusIgnore() {
+		return statusIgnore;
+	}
+
+	public void setStatusIgnore(String statusIgnore) {
+		this.statusIgnore = statusIgnore;
+	}
+
+	public String getTimeTypeIgnore() {
+		return timeTypeIgnore;
+	}
+
+	public void setTimeTypeIgnore(String timeTypeIgnore) {
+		this.timeTypeIgnore = timeTypeIgnore;
+	}
+
+	public Integer getDayIgnore() {
+		return dayIgnore;
+	}
+
+	public void setDayIgnore(Integer dayIgnore) {
+		this.dayIgnore = dayIgnore;
+	}
+
+	//
     public boolean isDelFlag() {
         return delFlag;
     }
