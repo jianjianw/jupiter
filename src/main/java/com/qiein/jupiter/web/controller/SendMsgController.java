@@ -83,8 +83,8 @@ public class SendMsgController extends BaseController{
                 .queryString("sign",sign)
                 .asString();
         JSONObject getBack=JSONObject.parseObject(back);
-        String code=(String)getBack.get("code");
-        if(code!="100000"){
+        Integer code=(Integer)getBack.get("code");
+        if(code!=100000){
             throw new RException((String)getBack.get("msg"));
         }
         return ResultInfoUtil.success(TigMsgEnum.SEND_SUCCESS);
@@ -106,8 +106,8 @@ public class SendMsgController extends BaseController{
                 .asString();
         JSONObject json=JSONObject.parseObject(templateText);
         templateText=(String)json.get("data");
-        String backcode=(String)json.get("code");
-        if(backcode!="100000"){
+        Integer backcode=(Integer)json.get("code");
+        if(backcode!=100000){
             throw new RException(ExceptionEnum.TEMPLATE_LOSE);
         }
         Map<String,String> map=sendMsgDTO.getMap();
