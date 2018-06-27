@@ -67,5 +67,5 @@ public class ClientStatusConst {
     public static List<Integer> SUCCESS_STATUS_RANGE = new ArrayList<Integer>(Arrays.asList(9, 30, 40));
     // 待追踪
     public static List<Integer> TRACE_STATUS_RANGE = new ArrayList<Integer>(
-            Arrays.asList(2, 6, 11, 13, 15, 16, 17, 18, 19, 20, 22, 23, 24, 25, 26, 27, 28, 50));
+            Arrays.asList(2, 6, 11, 13, 15, 16, 17, 18, 19, 20, 22, 23, 24, 25, 26, 27, 50));
 }
