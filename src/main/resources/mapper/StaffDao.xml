@@ -769,6 +769,7 @@
 		AND sf.ISDEL = 0
 		AND sf.ISLOCK = 0
 		AND sf.STATUSFLAG = 1
+		AND grp.GROUPTYPE = #{type}
 		AND INSTR(CONCAT(',',#{staffIds},','),CONCAT(',',sf.ID,',')) != 0;
     </select>
     
