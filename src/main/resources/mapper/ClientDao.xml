@@ -84,7 +84,7 @@
     </select>
 
     <select id="findId" resultType="Integer">
-        SELECT  ID FROM #{tableName} WHERE KZID=#{kzId} and COMPANYID=#{companyId}
+        SELECT  ID FROM ${tableName} WHERE KZID=#{kzId} and COMPANYID=#{companyId}
     </select>
 
 
