@@ -193,6 +193,11 @@ public class CommonConstant {
     public final static int GROUP_ID_LENGTH = 3;
 
     /**
+     * 默认1
+     * */
+    public final static int DEFAULT_ONE = 1;
+
+    /**
      * request信息
      */
     public final static String REQUEST_INFO = "requestInfo";

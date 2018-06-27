@@ -63,6 +63,7 @@
         <result column="HEADIMG" property="headImg" jdbcType="VARCHAR"/>
         <result column="ISLOCK" property="lockFlag" jdbcType="BOOLEAN"/>
         <result column="GROUPID" property="groupId" jdbcType="VARCHAR"/>
+        <result column="DELBTFLAG" property="delBtFlag" jdbcType="INTEGER"></result>
         <collection property="roleList" ofType="com.qiein.jupiter.web.entity.vo.RoleVO" resultMap="RoleMap"/>
     </resultMap>
 
@@ -176,6 +177,12 @@
         AND COMPANYID = #{companyId}
     </delete>
 
+    <!--删除指定小组下的员工小组-->
+    <delete id = "deleteByStaffIdAndGroupId">
+        DELETE FROM hm_pub_group_staff
+        where STAFFID = #{staffId} and COMPANYID = #{companyId} and GROUPID = #{groupId}
+    </delete>
+
     <!--批量删除员工小组-->
     <delete id="batchDeleteByStaffArr" parameterType="map">
         DELETE FROM hm_pub_group_staff
@@ -221,12 +228,48 @@
     <!--获取小组人员-->
     <select id="getGroupStaffs" parameterType="map" resultMap="StaffVOMap">
         SELECT
-            rela.GROUPID, sf.ID, sf.NICKNAME, sf.PHONE, sf.USERNAME, sf.HEADIMG, sf.ISLOCK, sf.`PASSWORD`, role_rela.ROLEID,  role.ROLENAME
+            rela.GROUPID, sf.ID, sf.NICKNAME, sf.PHONE, sf.USERNAME, sf.HEADIMG, sf.ISLOCK, sf.`PASSWORD`, role_rela.ROLEID,  role.ROLENAME,result.DELBTFLAG
         FROM
             hm_pub_group_staff rela
             INNER JOIN hm_pub_staff sf ON sf.COMPANYID = rela.COMPANYID AND rela.STAFFID = sf.ID
             LEFT JOIN hm_pub_staff_role role_rela ON sf.ID = role_rela.STAFFID AND sf.COMPANYID = role_rela.COMPANYID
             LEFT JOIN hm_pub_role role ON role_rela.ROLEID = role.ID AND role_rela.COMPANYID = role.COMPANYID
+            LEFT JOIN (SELECT
+                           groupId,
+                           staffId,
+                           companyId,
+                           rownum,
+                           rank,
+                           '1' DELBTFLAG
+                       FROM
+                           (
+                               SELECT
+                                   a.groupId,
+                                   a.staffId,
+                                   a.companyId,
+                                   @rownum :=@rownum + 1 AS rownum,
+
+                                   IF (
+                                           @pdept = a.staffId ,@rank :=@rank + 1 ,@rank := 1
+                                   ) AS rank ,@pdept := a.staffId
+                               FROM
+                                   (
+                                       SELECT
+                                           groupId,
+                                           staffId,
+                                           companyId
+                                       FROM
+                                           hm_pub_group_staff
+                                       ORDER BY
+                                           staffId
+                                   ) a,
+                                   (
+                                       SELECT
+                                           @rownum := 0 ,@pdept := NULL ,@rank := 0
+                                   ) b
+                           ) result
+                       WHERE
+                           rank > 1) result on result.groupId = rela.GROUPID and result.staffId = rela.staffID and result.companyId = rela.companyID
         WHERE
             rela.GROUPID = #{groupId}
             AND rela.COMPANYID = #{companyId}
@@ -390,5 +433,10 @@
     <!--根据公司id和分组id获取分组员工的id集合-->
     <select id = "getGroupStaffIdsStrByCompanyIdAndGroupId" resultType="java.lang.String">
         select group_concat(STAFFID SEPARATOR ',') from hm_pub_group_staff where COMPANYID = #{companyId}  and GROUPID = #{groupId}
+    </select>
+
+    <!--根据员工id查询员工与组的关系-->
+    <select id = "getGroupStaffByStaffId" resultMap="baseMap">
+        select GROUPID,STAFFID,COMPANYID  from  hm_pub_group_staff  where COMPANYID = #{companyId}  and STAFFID = #{staffId}
     </select>
 </mapper>

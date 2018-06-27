@@ -446,7 +446,7 @@
                ${tempName} temp
            WHERE NOT EXISTS
            (
-                   SELECT *
+                   SELECT info.KZPHONE,info.KZWECHAT,info.KZQQ
                    FROM ${tableName} info
                    where (info.KZPHONE = temp.KZPHONE or info.KZWECHAT = temp.KZWECHAT or info.KZQQ = temp.KZQQ)
                          and ISDEL = 0
@@ -492,7 +492,7 @@
            FROM ${tempName} temp
            WHERE NOT EXISTS
            (
-                   SELECT *
+                   SELECT tab.KZID
                    FROM ${tabName} tab
                    where (tab.KZID = temp.KZID )
                          and ISDEL = 0
@@ -639,7 +639,7 @@
     <!--获取客资数量-->
     <select id="getMultipleKzStatusCount" resultMap="countMap">
         SELECT
-        *
+        right_count,wrong_count,repeats
         FROM
         (
         SELECT

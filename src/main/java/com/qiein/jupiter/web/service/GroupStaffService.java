@@ -15,7 +15,14 @@ public interface GroupStaffService {
     /**
      * 插入组与用户的关系
      * @param jsonObject
+     * @param staffPO
      * */
     void insert(JSONObject jsonObject, StaffPO staffPO);
+
+    /**
+     * 移除组与用户的关系
+     * @param groupStaffPO
+     * */
+    void remove(GroupStaffPO groupStaffPO);
 
 }
