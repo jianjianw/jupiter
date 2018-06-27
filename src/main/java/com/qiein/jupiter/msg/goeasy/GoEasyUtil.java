@@ -195,12 +195,12 @@ public class GoEasyUtil {
         contentJson.put("overtime", overTime);
 
         //TODO
-        String url ="http://crm-jupiter.oss-cn-hangzhou.aliyuncs.com/wechat/index.html?kzId="+kzId+"&logId="+logId+"&uid="+staffId+"&cid="+companyId+"&url="+serverAddress;
+        String url = "http://crm-jupiter.oss-cn-hangzhou.aliyuncs.com/wechat/index.html?kzId=" + kzId + "&logId=" + logId + "&uid=" + staffId + "&cid=" + companyId + "&url=" + serverAddress;
         System.out.println(url);
         CompanyPO companyPO = companyService.getById(companyId);
-        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(companyId,companyPO.getCompanyName(),staffId,url,"保密","保密",
+        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(companyId, companyPO.getCompanyName(), staffId, url, "保密", "保密",
                 new SimpleDateFormat("YYYY-MM-DD HH:mm").format(new Date())));
-        
+
         pushApp(MessageConts.MSG_APP_INFO_REVEIVE, companyId, staffId, contentJson);
     }
 
@@ -309,6 +309,7 @@ public class GoEasyUtil {
         contentJson = new JSONObject();
         pushWeb(MessageConts.MSG_TYPE_STATUS_REFRESH, companyId, staffId, contentJson);
     }
+
     /**
      * 发送闪信
      *
@@ -761,8 +762,6 @@ public class GoEasyUtil {
     }
 
 
-
-
     /**
      * 推送无效客资提醒
      *
@@ -803,8 +802,8 @@ public class GoEasyUtil {
 
     /**
      * 金数据录入客资消息
-     * */
-    public static void pushGoldDataKz(int companyId, int staffId, ClientDTO info){
+     */
+    public static void pushGoldDataKz(int companyId, int staffId, ClientDTO info) {
         StringBuffer sb = new StringBuffer();
         sb.append("金数据客资录入成功");
         String header = sb.toString();
@@ -827,8 +826,25 @@ public class GoEasyUtil {
         }
 
 
-        pushSuccess(companyId,staffId,header,sb.toString());
+        pushSuccess(companyId, staffId, header, sb.toString());
     }
 
+
+    /**
+     * 分配客资成功推送
+     *
+     * @param companyId
+     * @param staffId
+     * @param kzNum
+     * @param kzId
+     * @param logId
+     * @param overTime
+     */
+    public static void pushAllotMsg(int companyId, int staffId, int kzNum) {
+        StringBuffer sb = new StringBuffer();
+        sb.append("主管分配给您" + kzNum + "个新的客资");
+        String header = sb.toString();
+        pushSuccess(companyId, staffId, header, sb.toString());
+    }
 
 }

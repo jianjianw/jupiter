@@ -23,13 +23,22 @@ public interface ClientPushService {
                 int interval, int srcId);
 
     /**
-     * 客资批量分配
+     * 客资批量分配给客服
      *
      * @param kzIds
      * @param staffIds
      * @param companyId
      */
     void pushLp(String kzIds, String staffIds, int companyId, int operaId, String operaName);
+
+    /**
+     * 客资批量分配给门市
+     *
+     * @param kzIds
+     * @param staffIds
+     * @param companyId
+     */
+    void allotToMsjd(String kzIds, String staffIds, int companyId, int operaId, String operaName);
 
     /**
      * 定时推送需要下次跟踪的客资

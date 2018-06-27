@@ -6,198 +6,212 @@ import com.qiein.jupiter.constant.ClientConst;
 
 /**
  * 客资分配日志
- * 
- * @author JingChenglong 2018/05/09 11:27
  *
+ * @author JingChenglong 2018/05/09 11:27
  */
 public class AllotLogPO implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * 日志ID
-	 */
-	private int id;
+    /**
+     * 日志ID
+     */
+    private int id;
 
-	/**
-	 * 客资ID
-	 */
-	private String kzId;
+    /**
+     * 客资ID
+     */
+    private String kzId;
 
-	/**
-	 * 分配时间
-	 */
-	private int allotTime;
+    /**
+     * 分配时间
+     */
+    private int allotTime;
 
-	/**
-	 * 员工ID
-	 */
-	private int staffId;
+    /**
+     * 员工ID
+     */
+    private int staffId;
 
-	/**
-	 * 员工姓名
-	 */
-	private String staffName;
+    /**
+     * 员工姓名
+     */
+    private String staffName;
 
-	/**
-	 * 客服组ID
-	 */
-	private String groupId;
+    /**
+     * 客服组ID
+     */
+    private String groupId;
 
-	/**
-	 * 客服组名称
-	 */
-	private String groupName;
+    /**
+     * 客服组名称
+     */
+    private String groupName;
 
-	/**
-	 * 领取状态ID
-	 */
-	private int statusId = ClientConst.ALLOT_LOG_STATUS_NO;
+    /**
+     * 领取状态ID
+     */
+    private int statusId = ClientConst.ALLOT_LOG_STATUS_NO;
 
-	/**
-	 * 领取时间
-	 */
-	private int receiveTime;
+    /**
+     * 领取时间
+     */
+    private int receiveTime;
 
-	/**
-	 * 分配类型
-	 */
-	private int allotType;
+    /**
+     * 分配类型
+     */
+    private int allotType;
 
-	/**
-	 * 企业ID
-	 */
-	private int companyId;
+    /**
+     * 企业ID
+     */
+    private int companyId;
 
-	/**
-	 * 分配人ID
-	 */
-	private int operaId;
+    /**
+     * 分配人ID
+     */
+    private int operaId;
 
-	/**
-	 * 分配人姓名
-	 */
-	private String operaName;
+    /**
+     * 分配人姓名
+     */
+    private String operaName;
 
-	public AllotLogPO(String kzId, int staffId, String staffName, String groupId, String groupName, int allotType,
-			int companyId, int operaId, String operaName) {
-		super();
-		this.kzId = kzId;
-		this.staffId = staffId;
-		this.staffName = staffName;
-		this.groupId = groupId;
-		this.groupName = groupName;
-		this.allotType = allotType;
-		this.companyId = companyId;
-		this.operaId = operaId;
-		this.operaName = operaName;
-	}
+    public AllotLogPO(String kzId, int staffId, String staffName, String groupId, String groupName, int allotType,
+                      int companyId, int operaId, String operaName) {
+        super();
+        this.kzId = kzId;
+        this.staffId = staffId;
+        this.staffName = staffName;
+        this.groupId = groupId;
+        this.groupName = groupName;
+        this.allotType = allotType;
+        this.companyId = companyId;
+        this.operaId = operaId;
+        this.operaName = operaName;
+    }
 
-	public int getOperaId() {
-		return operaId;
-	}
+    public AllotLogPO(String kzId, int staffId, String staffName, String groupId, String groupName, int allotType,
+                      int companyId, int operaId, String operaName, int statusId) {
+        super();
+        this.kzId = kzId;
+        this.staffId = staffId;
+        this.staffName = staffName;
+        this.groupId = groupId;
+        this.groupName = groupName;
+        this.allotType = allotType;
+        this.companyId = companyId;
+        this.operaId = operaId;
+        this.operaName = operaName;
+        this.statusId = statusId;
+    }
 
-	public void setOperaId(int operaId) {
-		this.operaId = operaId;
-	}
+    public int getOperaId() {
+        return operaId;
+    }
 
-	public String getOperaName() {
-		return operaName;
-	}
+    public void setOperaId(int operaId) {
+        this.operaId = operaId;
+    }
 
-	public void setOperaName(String operaName) {
-		this.operaName = operaName;
-	}
+    public String getOperaName() {
+        return operaName;
+    }
 
-	public AllotLogPO() {
-		super();
-	}
+    public void setOperaName(String operaName) {
+        this.operaName = operaName;
+    }
 
-	public int getId() {
-		return id;
-	}
+    public AllotLogPO() {
+        super();
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public String getKzId() {
-		return kzId;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public void setKzId(String kzId) {
-		this.kzId = kzId;
-	}
+    public String getKzId() {
+        return kzId;
+    }
 
-	public int getAllotTime() {
-		return allotTime;
-	}
+    public void setKzId(String kzId) {
+        this.kzId = kzId;
+    }
 
-	public void setAllotTime(int allotTime) {
-		this.allotTime = allotTime;
-	}
+    public int getAllotTime() {
+        return allotTime;
+    }
 
-	public int getStaffId() {
-		return staffId;
-	}
+    public void setAllotTime(int allotTime) {
+        this.allotTime = allotTime;
+    }
 
-	public void setStaffId(int staffId) {
-		this.staffId = staffId;
-	}
+    public int getStaffId() {
+        return staffId;
+    }
 
-	public String getStaffName() {
-		return staffName;
-	}
+    public void setStaffId(int staffId) {
+        this.staffId = staffId;
+    }
 
-	public void setStaffName(String staffName) {
-		this.staffName = staffName;
-	}
+    public String getStaffName() {
+        return staffName;
+    }
 
-	public String getGroupId() {
-		return groupId;
-	}
+    public void setStaffName(String staffName) {
+        this.staffName = staffName;
+    }
 
-	public void setGroupId(String groupId) {
-		this.groupId = groupId;
-	}
+    public String getGroupId() {
+        return groupId;
+    }
 
-	public String getGroupName() {
-		return groupName;
-	}
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
 
-	public void setGroupName(String groupName) {
-		this.groupName = groupName;
-	}
+    public String getGroupName() {
+        return groupName;
+    }
 
-	public int getStatusId() {
-		return statusId;
-	}
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
 
-	public void setStatusId(int statusId) {
-		this.statusId = statusId;
-	}
+    public int getStatusId() {
+        return statusId;
+    }
 
-	public int getReceiveTime() {
-		return receiveTime;
-	}
+    public void setStatusId(int statusId) {
+        this.statusId = statusId;
+    }
 
-	public void setReceiveTime(int receiveTime) {
-		this.receiveTime = receiveTime;
-	}
+    public int getReceiveTime() {
+        return receiveTime;
+    }
 
-	public int getAllotType() {
-		return allotType;
-	}
+    public void setReceiveTime(int receiveTime) {
+        this.receiveTime = receiveTime;
+    }
 
-	public void setAllotType(int allotType) {
-		this.allotType = allotType;
-	}
+    public int getAllotType() {
+        return allotType;
+    }
 
-	public int getCompanyId() {
-		return companyId;
-	}
+    public void setAllotType(int allotType) {
+        this.allotType = allotType;
+    }
 
-	public void setCompanyId(int companyId) {
-		this.companyId = companyId;
-	}
+    public int getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(int companyId) {
+        this.companyId = companyId;
+    }
 }

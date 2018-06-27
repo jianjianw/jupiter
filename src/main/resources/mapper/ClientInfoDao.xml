@@ -69,7 +69,7 @@
 			 info.KZID = #{kzId};
 	</select>
     
-    <!-- 客资分配给客服后修改客资信息 -->
+    <!-- 客资分配给客服后修改客资信息，分配给邀约客服 -->
     <update id="updateClientInfoWhenAllot" parameterType="map">
     	UPDATE ${infoTabName}
 		SET CLASSID = #{classId},
@@ -83,11 +83,34 @@
 			KZID = #{kzId}
 		AND COMPANYID = #{companyId}
     </update>
+
+	<!-- 客资分配给客服后修改客资信息,分配给门市 -->
+	<update id="updateClientInfoWhenAllotMsjd" parameterType="map">
+    	UPDATE ${infoTabName}
+		SET CLASSID = #{classId},
+		 STATUSID = #{statusId},
+		 RECEPTORID = #{receptorId},
+		 LASTPUSHTIME = UNIX_TIMESTAMP(NOW()),
+		 UPDATETIME = UNIX_TIMESTAMP(NOW()),
+		 ALLOTTYPE = #{allotType}
+		WHERE
+			KZID = #{kzId}
+		AND COMPANYID = #{companyId}
+    </update>
     
-    <!-- 客资分配客服后修改客资详情 -->
+    <!-- 客资分配邀约客服后修改客资详情 -->
     <update id="updateClientDetailWhenAllot" parameterType="map">
     	UPDATE ${detailTabName}
 		SET APPOINTNAME = #{appointorName}, GROUPNAME = #{groupName}
+		WHERE
+			KZID = #{kzId}
+		AND COMPANYID = #{companyId}
+    </update>
+
+	<!-- 客资分配门市，后修改客资详情 -->
+	<update id="updateClientDetailWhenAllotMsjd" parameterType="map">
+    	UPDATE ${detailTabName}
+		SET RECEPTORNAME = #{receptorName}
 		WHERE
 			KZID = #{kzId}
 		AND COMPANYID = #{companyId}

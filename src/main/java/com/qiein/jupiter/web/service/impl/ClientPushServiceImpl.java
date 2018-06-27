@@ -709,7 +709,7 @@ public class ClientPushServiceImpl implements ClientPushService {
     }
 
     /**
-     * 客资批量分配
+     * 客资批量分配给客服
      */
     @Override
     public void pushLp(String kzIds, String staffIds, int companyId, int operaId, String operaName) {
@@ -734,7 +734,7 @@ public class ClientPushServiceImpl implements ClientPushService {
                     // 客资修改最后消息推送时间为当前系统时间，绑定客服，修改状态为分配中
                     int updateRstNum = clientInfoDao.updateClientInfoWhenAllot(companyId,
                             DBSplitUtil.getInfoTabName(companyId), infoList.get(0).getKzId(),
-                            ClientStatusConst.KZ_CLASS_NEW, ClientStatusConst.BE_ALLOTING, staff.getStaffId(),
+                            ClientStatusConst.KZ_CLASS_NEW, ClientStatusConst.BE_HAVE_MAKE_ORDER, staff.getStaffId(),
                             staff.getGroupId(), ClientConst.ALLOT_HANDLER);
                     if (1 != updateRstNum) {
                         throw new RException(ExceptionEnum.INFO_STATUS_EDIT_ERROR);
@@ -760,21 +760,72 @@ public class ClientPushServiceImpl implements ClientPushService {
         }
     }
 
-    public void push(int companyId, String kzIds, StaffPushDTO appoint, int operaId, String operaName) {
+    /**
+     * 客资批量分配给门市
+     *
+     * @param kzIds
+     * @param staffIds
+     * @param companyId
+     */
+    public void allotToMsjd(String kzIds, String staffIds, int companyId, int operaId, String operaName) {
+        if (StringUtil.isEmpty(kzIds) || StringUtil.isEmpty(staffIds) || NumUtil.isInValid(companyId)) {
+            throw new RException(ExceptionEnum.ALLOT_ERROR);
+        }
+        // 查询所选客资里面没有分出去的客资
+        List<ClientPushDTO> infoList = clientInfoDao.listClientsInStrKzids(kzIds, companyId,
+                DBSplitUtil.getInfoTabName(companyId));
+        if (CollectionUtils.isEmpty(infoList)) {
+            throw new RException(ExceptionEnum.ALLOTED_ERROR);
+        }
+        int kzNum = infoList.size();
+        // 查询所选客服集合
+        List<StaffPushDTO> staffList = staffDao.listStaffInstrIds(companyId, staffIds);
+        if (staffList == null || staffList.size() == 0) {
+            throw new RException(ExceptionEnum.APPOINTOR_ERROR);
+        }
+        while (infoList.size() != 0) {
+            for (StaffPushDTO staff : staffList) {
+                if (infoList.size() > 0) {
+                    // 客资修改最后消息推送时间为当前系统时间，绑定客服，修改状态为分配中
+                    int updateRstNum = clientInfoDao.updateClientInfoWhenAllotMsjd(companyId,
+                            DBSplitUtil.getInfoTabName(companyId), infoList.get(0).getKzId(),
+                            ClientStatusConst.KZ_CLASS_NEW, ClientStatusConst.BE_HAVE_MAKE_ORDER, staff.getStaffId(), ClientConst.ALLOT_HANDLER);
+                    if (1 != updateRstNum) {
+                        throw new RException(ExceptionEnum.INFO_STATUS_EDIT_ERROR);
+                    }
+                    // 客资修改客资的客服组ID，和客服组名称
+                    clientInfoDao.updateClientDetailWhenAllotMsjd(companyId, DBSplitUtil.getDetailTabName(companyId),
+                            infoList.get(0).getKzId(), staff.getStaffName());
+                    staff.doAddKzIdsWill(infoList.get(0).getKzId());
+                    infoList.remove(0);
+                } else {
+                    break;
+                }
+            }
+        }
+        if (kzNum < staffList.size()) {
+            for (int i = 0; i < kzNum; i++) {
+                push(companyId, staffList.get(i).getWillHaveKzidsStrBf(), staffList.get(i), operaId, operaName);
+            }
+        } else {
+            for (StaffPushDTO staff : staffList) {
+                push(companyId, staff.getWillHaveKzidsStrBf(), staff, operaId, operaName);
+            }
+        }
+    }
 
+    public void push(int companyId, String kzIds, StaffPushDTO appoint, int operaId, String operaName) {
         // 根据每个客资生成对应的分配日志
         String[] kzIdsArr = kzIds.split(",");
         String[] allogIdsArr = new String[kzIdsArr.length];
         for (int i = 0; i < kzIdsArr.length; i++) {
-            // 生成分配日志
+            // 生成分配日志,已领取
             AllotLogPO allotLog = new AllotLogPO(kzIdsArr[i], appoint.getStaffId(), appoint.getStaffName(),
                     appoint.getGroupId(), appoint.getGroupName(), ClientConst.ALLOT_HANDLER, companyId, operaId,
-                    operaName);
+                    operaName, ClientConst.ALLOT_LOG_STATUS_YES);
 
             // 记录分配日志
             clientAllotLogDao.addClientAllogLog(DBSplitUtil.getAllotLogTabName(companyId), allotLog);
-
-            allogIdsArr[i] = String.valueOf(allotLog.getId());
 
             // 客资日志记录
             clientLogDao
@@ -784,15 +835,8 @@ public class ClientPushServiceImpl implements ClientPushService {
                                     appoint.getStaffName(), operaId, operaName),
                                     ClientLogConst.INFO_LOGTYPE_ALLOT, companyId));
         }
-
-        int overTime = companyDao.getById(companyId).getOvertime();
-        if (overTime == 0) {
-            overTime = CommonConstant.DEFAULT_OVERTIME;
-        }
-
         // 推送消息
-        GoEasyUtil.pushAppInfoReceive(companyId, appoint.getStaffId(), kzIdsArr.length, arrToStr(kzIdsArr),
-                arrToStr(allogIdsArr), overTime);
+        GoEasyUtil.pushAllotMsg(companyId, appoint.getStaffId(), kzIdsArr.length);
     }
 
     public static String arrToStr(String[] arr) {
