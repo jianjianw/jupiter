@@ -83,4 +83,9 @@
         GROUP BY ${type}
     </select>
 
+    <select id="findId" resultType="Integer">
+        SELECT  ID FROM hm_crm_client_info_1 WHERE KZID=#{kzId} and COMPANYID=#{companyId}
+    </select>
+
+
 </mapper>

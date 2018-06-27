@@ -171,7 +171,7 @@ public class ShopServiceImpl implements ShopService {
      * @param shopId
      * @return
      */
-    public String findShop(Integer shopId){
-       return  shopDao.findShop(shopId).getShopName();
+    public ShopPO findShop(Integer shopId){
+       return  shopDao.findShop(shopId);
     }
 }

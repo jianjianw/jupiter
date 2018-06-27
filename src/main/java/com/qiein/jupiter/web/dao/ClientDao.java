@@ -60,6 +60,12 @@ public interface ClientDao {
      */
     List<StaffNumVO> getOnwerInfoNumByIds(@Param("tabName") String tabName, @Param("kzIds") String kzIds,
                                           @Param("type") String type, @Param("companyId") Integer companyId);
+    /**
+     * 寻找 kz的主id
+     * @param kzId
+     * @return
+     */
+    Integer findId(@Param("kzId") String kzId,@Param("companyId") Integer companyId);
 
 
 }
