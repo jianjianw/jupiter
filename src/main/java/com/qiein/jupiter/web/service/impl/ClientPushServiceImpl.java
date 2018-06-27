@@ -773,7 +773,7 @@ public class ClientPushServiceImpl implements ClientPushService {
             throw new RException(ExceptionEnum.ALLOT_ERROR);
         }
         // 查询所选客资里面没有分出去的客资
-        List<ClientPushDTO> infoList = clientInfoDao.listClientsInStrKzids(kzIds, companyId,
+        List<ClientPushDTO> infoList = clientInfoDao.listClientsInStrKzids4Msjd(kzIds, companyId,
                 DBSplitUtil.getInfoTabName(companyId));
         if (CollectionUtils.isEmpty(infoList)) {
             throw new RException(ExceptionEnum.ALLOTED_ERROR);

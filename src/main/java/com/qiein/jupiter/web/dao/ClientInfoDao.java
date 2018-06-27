@@ -172,5 +172,16 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
     List<ClientPushDTO> listClientsInStrKzids(@Param("kzIds") String kzIds, @Param("companyId") int companyId,
                                               @Param("infoTabName") String infoTabName);
 
+    /**
+     * 根据客资ID集合查询可以分配给门市的客资集合
+     *
+     * @param kzIds
+     * @param companyId
+     * @param infoTabName
+     * @return
+     */
+    List<ClientPushDTO> listClientsInStrKzids4Msjd(@Param("kzIds") String kzIds, @Param("companyId") int companyId,
+                                                   @Param("infoTabName") String infoTabName);
+
 
 }

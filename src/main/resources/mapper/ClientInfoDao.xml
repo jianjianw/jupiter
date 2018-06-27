@@ -193,4 +193,17 @@
 		AND INSTR(#{kzIds},info.KZID) != 0;
     </select>
 
+	<!-- 根据客资ID集合查询可以分配给门市的客资集合 -->
+	<select id="listClientsInStrKzids4Msjd" parameterType="map" resultMap="infoMap">
+		SELECT
+			info.ID, info.KZID, info.COMPANYID
+		FROM
+			${infoTabName} info
+		WHERE
+			info.COMPANYID = #{companyId}
+		AND info.ISDEL = 0
+		AND info.RECEPTORID IS NULL
+		AND INSTR(#{kzIds},info.KZID) != 0;
+    </select>
+
 </mapper>
