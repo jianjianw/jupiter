@@ -1,21 +1,19 @@
 package com.qiein.jupiter.web.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
-import com.qiein.jupiter.msg.websocket.WebSocketMsgUtil;
 import com.qiein.jupiter.util.HttpUtil;
 import com.qiein.jupiter.util.SmsUtil;
-import com.qiein.jupiter.web.controller.ApolloController;
 import com.qiein.jupiter.web.dao.NewsDao;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.web.dao.SystemLogDao;
 import com.qiein.jupiter.web.entity.po.SystemLog;
 import com.qiein.jupiter.web.service.SystemLogService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
+import java.util.List;
 
 /**
  * 系统日志
@@ -30,7 +28,7 @@ public class SystemLogServiceImpl implements SystemLogService {
 
     @Override
     public void addLog(SystemLog log) {
-        logDao.addSystemLog(DBSplitUtil.getSystemLogTabName(log.getCompanyId()), log);
+        logDao.addSystemLog(log);
     }
 
     /**
@@ -43,8 +41,8 @@ public class SystemLogServiceImpl implements SystemLogService {
      */
     public void checkAbnormalIp(int companyId, int staffId, String ip, String phone) {
         //如果是异常登录，推送该消息
-        if (logDao.getCountByStaffIdAndIp(DBSplitUtil.getSystemLogTabName(companyId), companyId, staffId, null) != 0
-                && logDao.getCountByStaffIdAndIp(DBSplitUtil.getSystemLogTabName(companyId), companyId, staffId, ip) == 0) {
+        if (logDao.getCountByStaffIdAndIp(companyId, staffId, null) != 0
+                && logDao.getCountByStaffIdAndIp(companyId, staffId, ip) == 0) {
             //提醒异地登录
             String address = HttpUtil.getIpLocation(ip);
             GoEasyUtil.pushRemoteLogin(companyId, staffId, ip, address, newsDao);
@@ -53,5 +51,30 @@ public class SystemLogServiceImpl implements SystemLogService {
             //发送短信
             SmsUtil.sendAbnormalSms(companyId, phone, param);
         }
+    }
+
+    /**
+     * 根据日志类型获取日志
+     *
+     * @param companyId
+     * @param typeId
+     * @return
+     */
+    @Override
+    public PageInfo<SystemLog> getLogByType(int pageNum, int pageSize, int companyId, int typeId) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<SystemLog> logByType = logDao.getLogByType(companyId, typeId);
+        return new PageInfo<>(logByType);
+    }
+
+    /**
+     * 定时清空日志
+     *
+     * @param time
+     * @return
+     */
+    @Override
+    public int clearLog(int time) {
+        return logDao.clearLog(time);
     }
 }
