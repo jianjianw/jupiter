@@ -188,6 +188,11 @@ public class CommonConstant {
     public final static int  MAX_PAGE_SIZE = 500;
 
     /**
+     * 小组ID长度
+     * */
+    public final static int GROUP_ID_LENGTH = 3;
+
+    /**
      * request信息
      */
     public final static String REQUEST_INFO = "requestInfo";

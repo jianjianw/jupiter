@@ -2,8 +2,10 @@ package com.qiein.jupiter.web.dao;
 
 
 import com.qiein.jupiter.web.entity.dto.StaffMarsDTO;
+import com.qiein.jupiter.web.entity.po.GroupStaffPO;
 import com.qiein.jupiter.web.entity.vo.*;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
@@ -136,4 +138,13 @@ public interface GroupStaffDao {
      * @return
      */
     List<BaseStaffVO> getMsjdStaffList(@Param("companyId") int companyId);
+
+
+    /**
+     * 根据公司id和分组id获取分组员工的id集合
+     * @param companyId
+     * @param groupId
+     * @return
+     * */
+    String getGroupStaffIdsStrByCompanyIdAndGroupId(@Param(value="companyId") int companyId,@Param(value="groupId") String groupId);
 }
