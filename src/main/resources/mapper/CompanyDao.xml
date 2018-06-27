@@ -45,7 +45,8 @@
 
 	<sql id="baseColumn">
 		ID, COMPANYNAME, TYPEID, LOGO, CORPID, CONFIG, IPLIMIT,
-		SSOLIMIT,OVERTIME,LIMITDEFAULT,KZINTERVAL,ISDEL,ONLYAPP,ISLOCK
+		SSOLIMIT,OVERTIME,LIMITDEFAULT,KZINTERVAL,ISDEL,ONLYAPP,ISLOCK,
+		TYPEREPEAT,SRCREPEAT,STATUSIGNORE,TIMETYPEIGNORE,DAYIGNORE
 	</sql>
 
 	<select id="getById" parameterType="java.lang.Integer"
@@ -156,8 +157,8 @@
 		UPDATE
 			hm_pub_company
 		<set>
-			<if test="b != null ">
-				TYPEREPEAT = #{b},
+			<if test="typeRepeat != null ">
+				TYPEREPEAT = #{typeRepeat},
 			</if>
 		</set>
 		<where>ID = #{companyId}</where>
@@ -166,10 +167,10 @@
 	<!-- 更改咨询类型 -->
 	<update id="editTypeSrcRepeat">
 		UPDATE
-		hm_pub_company
+			hm_pub_company
 		<set>
-			<if test="b != null ">
-				SRCREPEAT = #{b},
+			<if test="srcRepeat != null ">
+				SRCREPEAT = #{srcRepeat},
 			</if>
 		</set>
 		<where>ID = #{companyId}</where>
@@ -179,16 +180,18 @@
 	<update id="editKZday">
 		UPDATE
 			hm_pub_company
-		SET STATUSIGNORE = #{statusIgnore},
-		TIMETYPEIGNORE = #{timeTypeIgnore},
-		DAYIGNORE = #{dayIgnore},
-		WHERE ID = #{companyId}
+		SET 
+			STATUSIGNORE = #{statusIgnore},
+			TIMETYPEIGNORE = #{timeTypeIgnore},
+			DAYIGNORE = #{dayIgnore},
+		WHERE 
+			ID = #{companyId}
 	</update>
 	
 	<!-- 获取重复客资详情 -->
 	<select id="selectAll" parameterType="map" resultMap="baseMap">
 		SELECT
-			TYPEREPEAT,SRCREPEAT,STATUSIGNORE,TIMETYPEIGNORE,DAYIGNORE
+			<include refid="baseColumn" />
 		FROM
 			hm_pub_company
 		WHERE

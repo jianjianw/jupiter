@@ -185,7 +185,7 @@ public class CompanyController extends BaseController {
         if ((StringUtil.isEmpty(timeTypeIgnore) && NumUtil.isValid(dayIgnore)) || (StringUtil.isNotEmpty(timeTypeIgnore) && NumUtil.isInValid(dayIgnore))) {
             return ResultInfoUtil.error(ExceptionEnum.REPEAT_TIME_ERRPR);
         }
-        companyService.editKZday(statusIgnore, timeTypeIgnore, Integer.valueOf(dayIgnore), getCurrentLoginStaff().getCompanyId());
+        companyService.editKZday(statusIgnore, timeTypeIgnore, dayIgnore, getCurrentLoginStaff().getCompanyId());
         return ResultInfoUtil.success(TigMsgEnum.SUCCESS);
     }
 

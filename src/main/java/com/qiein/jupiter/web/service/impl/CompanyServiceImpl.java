@@ -147,8 +147,8 @@ public class CompanyServiceImpl implements CompanyService {
      * @return
      */
     @Override
-    public void editTypeRepeat(Boolean b, int companyId) {
-        companyDao.editTypeRepeat(b, companyId);
+    public void editTypeRepeat(Boolean typeRepeat, int companyId) {
+        companyDao.editTypeRepeat(typeRepeat, companyId);
     }
 
     /**
@@ -157,8 +157,8 @@ public class CompanyServiceImpl implements CompanyService {
      * @return
      */
     @Override
-    public void editTypeSrcRepeat(boolean b, int companyId) {
-        companyDao.editTypeSrcRepeat(b, companyId);
+    public void editTypeSrcRepeat(boolean srcRepeat, int companyId) {
+        companyDao.editTypeSrcRepeat(srcRepeat, companyId);
     }
 
     /**
@@ -173,7 +173,6 @@ public class CompanyServiceImpl implements CompanyService {
 
     /**
      * 查询哪些客资重复被拦截
-     *
      * @return
      */
     @Override

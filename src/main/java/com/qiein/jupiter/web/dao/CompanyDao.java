@@ -60,13 +60,13 @@ public interface CompanyDao extends BaseDao<CompanyPO> {
 	 * 更改咨询类型(客资校验是否忽略咨询类型)
 	 * @return
 	 */
-	void editTypeRepeat(@Param("b") Boolean b,@Param("companyId") Integer companyId);
+	void editTypeRepeat(@Param("typeRepeat") Boolean srcRepeat,@Param("companyId") Integer companyId);
 	
 	/**
 	 * 更改渠道类型(客资校验是否忽略渠道类型)
 	 * @return
 	 */
-	void editTypeSrcRepeat(@Param("b") boolean b, @Param("companyId") int companyId);
+	void editTypeSrcRepeat(@Param("srcRepeat") boolean srcRepeat, @Param("companyId") int companyId);
 
 	/**
 	 * 更改客资录入时间和最后操作时间,客资状态是否可以重复录
