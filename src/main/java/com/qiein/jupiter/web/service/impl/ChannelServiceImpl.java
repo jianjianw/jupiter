@@ -216,7 +216,7 @@ public class ChannelServiceImpl implements ChannelService {
      * @return
      */
     public List<ChannelVO> getAllChannelSourceList(int companyId) {
-        return getAllChannelSourceList(companyId);
+        return channelDao.getAllChannelSourceList(companyId);
     }
 
 }
