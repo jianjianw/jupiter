@@ -183,7 +183,7 @@
 		SET 
 			STATUSIGNORE = #{statusIgnore},
 			TIMETYPEIGNORE = #{timeTypeIgnore},
-			DAYIGNORE = #{dayIgnore},
+			DAYIGNORE = #{dayIgnore}
 		WHERE 
 			ID = #{companyId}
 	</update>
