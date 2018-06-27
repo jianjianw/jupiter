@@ -381,10 +381,6 @@ public class GroupServiceImpl implements GroupService {
         groupPO.setGroupId(groupPO.getParentId() + CommonConstant.ROD_SEPARATOR + groupPO.getId());
         groupDao.update(groupPO);
         //同步转介绍渠道小组
-        //渠道
-        if (StringUtil.isEmpty(groupPO.getGroupType())) {
-            throw new RException(ExceptionEnum.UNKNOW_ERROR);
-        }
         ChannelPO channelPO = channelDao.getChannelByGroupName(groupPO.getGroupName(), groupPO.getCompanyId());
         //渠道不存在
         if (null == channelPO) {

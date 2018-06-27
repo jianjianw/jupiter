@@ -27,6 +27,6 @@ public class ClientPushServiceImplTest {
 	public void pushClientNoticeInfo() {
 		clientPushService.pushLp(
 				"2a548e0f7c1789fe9075741a0fb130a2,5255f8475f0a59995c3eb66fdff4de2,6de81cb93988381a4f50dc110d646b,10e740ac3f0c72f785187b80271a6c",
-				"15,23", 1, 2, "特斯拉");
+				"15,23", 1, 2, "特斯拉","dsyy");
 	}
 }

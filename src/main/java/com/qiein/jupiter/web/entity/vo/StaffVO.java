@@ -47,6 +47,11 @@ public class StaffVO extends StaffPO {
      * 每日接单限额
      */
     private int limitDay;
+    /**
+     * 按钮标记
+     * 0--删除  1---移除
+     * */
+    private int delBtFlag;
 
     /**
      * 角色集合
@@ -70,6 +75,14 @@ public class StaffVO extends StaffPO {
         this.setId(id);
         this.setCompanyId(companyId);
         this.roleId = roleId;
+    }
+
+    public int getDelBtFlag() {
+        return delBtFlag;
+    }
+
+    public void setDelBtFlag(int delBtFlag) {
+        this.delBtFlag = delBtFlag;
     }
 
     public String getGroupId() {

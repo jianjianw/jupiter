@@ -39,4 +39,16 @@ public class GroupStaffController extends BaseController{
         groupStaffService.insert(jsonObject,staffPO);
         return ResultInfoUtil.success();
     }
+
+    /**
+     * 移除
+     * */
+    @PostMapping("/remove")
+    public ResultInfo remove(@RequestBody GroupStaffPO groupStaffPO){
+        StaffPO staffPO = getCurrentLoginStaff();
+        groupStaffPO.setCompanyId(staffPO.getCompanyId());
+        groupStaffService.remove(groupStaffPO);
+        return ResultInfoUtil.success();
+    }
+
 }

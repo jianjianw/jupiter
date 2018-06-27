@@ -89,6 +89,7 @@ public enum ExceptionEnum {
     ROLE_IS_NULL(704, "权限不能为空"),
     //企业配置
     MENU_NULL(801, "企业菜单为空"),
+    REPEAT_TIME_ERRPR(802, "时间类型，天数都不能为空"),
     //角色
     ROLE_ERROR(901, "角色错误"),
     //品牌
@@ -138,7 +139,7 @@ public enum ExceptionEnum {
     ALLOT_LOG_ERROR(1609, "客资分配日志记录错误"),
     STAFF_EDIT_ERROR(1610, "分配流程员工信息标注错误"),
     ALLOT_ERROR(1611, "请选择要分配的客资和客服"),
-    ALLOTED_ERROR(1612, "所选客资已经被分配，不可重新分配"),
+    ALLOTED_ERROR(1612, "所选客资无法进行分配"),
     APPOINTOR_ERROR(1613, "客服信息获取失败"),
     //状态
     STS_COLUMN_ERROR(1701, "状态颜色表示错误"),
@@ -164,8 +165,8 @@ public enum ExceptionEnum {
     //分页
     PAGESIZE_MAX_SIZE_ERROR(2301, "每页最多500条"),
     //短信
-    TEMPLATE_LOSE(2401,"短信模板获取失败"),
-    TEMPLATE_NOT_IN(2402,"短信模板不存在");
+    TEMPLATE_LOSE(2401, "短信模板获取失败"),
+    TEMPLATE_NOT_IN(2402, "短信模板不存在");
 
     private Integer code;
     private String msg;

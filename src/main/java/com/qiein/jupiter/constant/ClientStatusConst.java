@@ -28,6 +28,14 @@ public class ClientStatusConst {
     public static final int BE_TRACE_F = 23;// 待追踪-F--半年内再跟踪
     public static final int BE_TRACE_G = 24;// 待追踪-G--半年内再跟踪
 
+    public static final int BE_TRACK_ZJS_A = 61;// 待追踪-A--转介绍
+    public static final int BE_TRACK_ZJS_B = 62;// 待追踪-B--转介绍
+    public static final int BE_TRACK_ZJS_C = 63;// 待追踪-C--转介绍
+    public static final int BE_TRACE_ZJS_D = 64;// 待追踪-D--转介绍
+    public static final int BE_TRACE_ZJS_E = 65;// 待追踪-E--转介绍
+    public static final int BE_TRACE_ZJS_F = 66;// 待追踪-F--转介绍
+    public static final int BE_TRACE_ZJS_G = 67;// 待追踪-G--转介绍
+
     public static final int INVALID_COME = 39;// 无效到店
 
     public static final int NOT_COME = 50;// 未到店
@@ -67,5 +75,5 @@ public class ClientStatusConst {
     public static List<Integer> SUCCESS_STATUS_RANGE = new ArrayList<Integer>(Arrays.asList(9, 30, 40));
     // 待追踪
     public static List<Integer> TRACE_STATUS_RANGE = new ArrayList<Integer>(
-            Arrays.asList(2, 6, 11, 13, 15, 16, 17, 18, 19, 20, 22, 23, 24, 25, 26, 27, 28, 50));
+            Arrays.asList(2, 6, 11, 13, 15, 16, 17, 18, 19, 20, 22, 23, 24, 25, 26, 27, 61, 62, 63, 64, 65, 66, 67, 50));
 }

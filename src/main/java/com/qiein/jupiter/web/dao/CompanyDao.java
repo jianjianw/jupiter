@@ -57,18 +57,25 @@ public interface CompanyDao extends BaseDao<CompanyPO> {
 	List<CompanyPO> listComp();
 	
 	/**
-     * 编辑咨询类型
-     * @return
-     */
-	void editTypeRepeat(@Param("b") Boolean b,@Param("companyId") Integer companyId);
+	 * 更改咨询类型(客资校验是否忽略咨询类型)
+	 * @return
+	 */
+	void editTypeRepeat(@Param("typeRepeat") Boolean srcRepeat,@Param("companyId") Integer companyId);
 	
 	/**
-     * 编辑渠道类型
-     * @return
-     */
-	void editTypeSrcRepeat(@Param("b") boolean b, @Param("companyId") int companyId);
+	 * 更改渠道类型(客资校验是否忽略渠道类型)
+	 * @return
+	 */
+	void editTypeSrcRepeat(@Param("srcRepeat") boolean srcRepeat, @Param("companyId") int companyId);
 
-	void editKZStutas(@Param("statusIgnore") String statusIgnore, @Param("companyId") int companyId);
-
-	void editKZday(@Param("timeTypeIgnore")String timeTypeIgnore, @Param("dayIgnore") String dayIgnore,@Param("companyId") int companyId);
+	/**
+	 * 更改客资录入时间和最后操作时间,客资状态是否可以重复录
+	 * @return
+	 */
+	void editKZday(@Param("statusIgnore") String statusIgnore,@Param("timeTypeIgnore")String timeTypeIgnore, @Param("dayIgnore") int dayIgnore,@Param("companyId") int companyId);
+	/**
+	 * 查询哪些客资重复被拦截
+	 * @return
+	 */
+	CompanyPO selectAll(@Param("companyId") int companyId);
 }

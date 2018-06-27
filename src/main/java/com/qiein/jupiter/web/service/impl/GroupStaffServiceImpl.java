@@ -69,4 +69,22 @@ public class GroupStaffServiceImpl implements GroupStaffService {
 
 
     }
+
+    @Override
+    public void remove(GroupStaffPO groupStaffPO) {
+        if(NumUtil.isNull(groupStaffPO.getStaffId()) ||StringUtil.isEmpty(groupStaffPO.getGroupId()) ){
+            throw new RException(ExceptionEnum.LOSE_FILED);
+        }
+        List<GroupStaffPO> groupStaffPOS = groupStaffDao.getGroupStaffByStaffId(groupStaffPO.getCompanyId(),groupStaffPO.getStaffId());
+        //只存在一个组
+        if(CollectionUtils.isEmpty(groupStaffPOS) || !(groupStaffPOS.size() > CommonConstant.DEFAULT_ONE)){
+            throw new RException(ExceptionEnum.UNKNOW_ERROR);
+        }
+        //移除关系
+        Integer rows = groupStaffDao.deleteByStaffIdAndGroupId(groupStaffPO.getStaffId(), groupStaffPO.getCompanyId(), groupStaffPO.getGroupId());
+        if(!(rows > CommonConstant.DEFAULT_ZERO)){
+            throw new RException(ExceptionEnum.DELETE_FAIL);
+        }
+    }
+
 }

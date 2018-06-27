@@ -192,7 +192,7 @@ public class ClientServiceImpl implements ClientService {
      * @return
      */
     public Integer findId(String kzId,Integer companyId){
-        return clientDao.findId(kzId,companyId);
+        return clientDao.findId(kzId,companyId,"hm_crm_client_info_"+companyId);
     }
 
 

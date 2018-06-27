@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.management.relation.Role;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -712,7 +713,7 @@ public class ClientPushServiceImpl implements ClientPushService {
      * 客资批量分配给客服
      */
     @Override
-    public void pushLp(String kzIds, String staffIds, int companyId, int operaId, String operaName) {
+    public void pushLp(String kzIds, String staffIds, int companyId, int operaId, String operaName, String role) {
         if (StringUtil.isEmpty(kzIds) || StringUtil.isEmpty(staffIds) || NumUtil.isInValid(companyId)) {
             throw new RException(ExceptionEnum.ALLOT_ERROR);
         }
@@ -724,7 +725,7 @@ public class ClientPushServiceImpl implements ClientPushService {
         }
         int kzNum = infoList.size();
         // 查询所选客服集合
-        List<StaffPushDTO> staffList = staffDao.listStaffInstrIds(companyId, staffIds);
+        List<StaffPushDTO> staffList = staffDao.listStaffInstrIds(companyId, staffIds, role);
         if (staffList == null || staffList.size() == 0) {
             throw new RException(ExceptionEnum.APPOINTOR_ERROR);
         }
@@ -772,14 +773,14 @@ public class ClientPushServiceImpl implements ClientPushService {
             throw new RException(ExceptionEnum.ALLOT_ERROR);
         }
         // 查询所选客资里面没有分出去的客资
-        List<ClientPushDTO> infoList = clientInfoDao.listClientsInStrKzids(kzIds, companyId,
+        List<ClientPushDTO> infoList = clientInfoDao.listClientsInStrKzids4Msjd(kzIds, companyId,
                 DBSplitUtil.getInfoTabName(companyId));
         if (CollectionUtils.isEmpty(infoList)) {
             throw new RException(ExceptionEnum.ALLOTED_ERROR);
         }
         int kzNum = infoList.size();
         // 查询所选客服集合
-        List<StaffPushDTO> staffList = staffDao.listStaffInstrIds(companyId, staffIds);
+        List<StaffPushDTO> staffList = staffDao.listStaffInstrIds(companyId, staffIds, RoleConstant.MSJD);
         if (staffList == null || staffList.size() == 0) {
             throw new RException(ExceptionEnum.APPOINTOR_ERROR);
         }
@@ -793,7 +794,7 @@ public class ClientPushServiceImpl implements ClientPushService {
                     if (1 != updateRstNum) {
                         throw new RException(ExceptionEnum.INFO_STATUS_EDIT_ERROR);
                     }
-                    // 客资修改客资的客服组ID，和客服组名称
+                    // 客资修改客资的接待人姓名
                     clientInfoDao.updateClientDetailWhenAllotMsjd(companyId, DBSplitUtil.getDetailTabName(companyId),
                             infoList.get(0).getKzId(), staff.getStaffName());
                     staff.doAddKzIdsWill(infoList.get(0).getKzId());

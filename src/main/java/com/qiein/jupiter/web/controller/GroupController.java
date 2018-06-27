@@ -153,6 +153,14 @@ public class GroupController extends BaseController {
      */
     @GetMapping("/get_online_staff_list_by_role")
     public ResultInfo getOnLineStaffListByRole(@NotEmptyStr @RequestParam("role") String role) {
+        if (RoleConstant.DSCJ.equals(role) || RoleConstant.DSSX.equals(role)) {
+            role = RoleConstant.DSYY;
+        } else if (RoleConstant.DSYY.equals(role) || RoleConstant.ZJSYY.equals(role)
+                || RoleConstant.MSJD.equals(role) || RoleConstant.CWZX.equals(role)) {
+            role = RoleConstant.MSJD;
+        } else if (RoleConstant.ZJSSX.equals(role)) {
+            role = RoleConstant.ZJSYY;
+        }
         return ResultInfoUtil.success(groupService.getOnLineStaffListByRole(getCurrentLoginStaff().getCompanyId(), role));
     }
 

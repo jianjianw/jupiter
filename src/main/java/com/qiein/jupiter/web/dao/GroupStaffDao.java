@@ -147,4 +147,20 @@ public interface GroupStaffDao {
      * @return
      * */
     String getGroupStaffIdsStrByCompanyIdAndGroupId(@Param(value="companyId") int companyId,@Param(value="groupId") String groupId);
+
+    /**
+     * 根据员工id获取员工与组的关系
+     * @param companyId
+     * @param staffId
+     * */
+    List<GroupStaffPO> getGroupStaffByStaffId(@Param(value="companyId") int companyId,@Param(value="staffId") int staffId);
+
+    /**
+     * 删除指定某个组下员工的联系
+     * @param companyId
+     * @param staffId
+     * @param groupId
+     * */
+    Integer deleteByStaffIdAndGroupId(@Param(value="staffId") int staffId,@Param(value="companyId") int companyId,@Param(value="groupId") String groupId);
+
 }

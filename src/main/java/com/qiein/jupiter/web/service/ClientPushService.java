@@ -29,7 +29,7 @@ public interface ClientPushService {
      * @param staffIds
      * @param companyId
      */
-    void pushLp(String kzIds, String staffIds, int companyId, int operaId, String operaName);
+    void pushLp(String kzIds, String staffIds, int companyId, int operaId, String operaName, String role);
 
     /**
      * 客资批量分配给门市

@@ -1,195 +1,201 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qiein.jupiter.web.dao.CompanyDao">
-    <resultMap id="baseMap" type="com.qiein.jupiter.web.entity.po.CompanyPO">
-        <id column="ID" property="id" jdbcType="BIGINT"/>
-        <result column="COMPANYNAME" property="companyName" jdbcType="VARCHAR"/>
-        <result column="TYPEID" property="typeId" jdbcType="INTEGER"/>
-        <result column="LOGO" property="logo" jdbcType="VARCHAR"/>
-        <result column="CORPID" property="corpId" jdbcType="VARCHAR"/>
-        <result column="CONFIG" property="config" jdbcType="VARCHAR"/>
-        <result column="IPLIMIT" property="ipLimit" jdbcType="BOOLEAN"/>
-        <result column="SSOLIMIT" property="ssoLimit" jdbcType="BOOLEAN"/>
-        <result column="OVERTIME" property="overtime" jdbcType="INTEGER"/>
-        <result column="LIMITDEFAULT" property="limitDefault" jdbcType="INTEGER"/>
-        <result column="KZINTERVAL" property="kzInterval" jdbcType="INTEGER"/>
-        <result column="NOTSELFBLIND" property="notSelfBlind" jdbcType="BOOLEAN"/>
-        <result column="UNABLESELFLINE" property="unableSelfLine" jdbcType="BOOLEAN"/>
-        <result column="UNABLEAPPOINTOR" property="unableAppointor" jdbcType="BOOLEAN"/>
-        <result column="UNABLEINVALIDRANGE" property="unableInvalidRange" jdbcType="INTEGER"/>
-        <result column="ISDEL" property="delFlag" jdbcType="BOOLEAN"/>
-        <result column="ONLYAPP" property="onlyApp" jdbcType="BOOLEAN"/>
-        <result column="ISLOCK" property="lockFlag" jdbcType="BOOLEAN"/>
-    </resultMap>
+	<resultMap id="baseMap" type="com.qiein.jupiter.web.entity.po.CompanyPO">
+		<id column="ID" property="id" jdbcType="BIGINT" />
+		<result column="COMPANYNAME" property="companyName" jdbcType="VARCHAR" />
+		<result column="TYPEID" property="typeId" jdbcType="INTEGER" />
+		<result column="LOGO" property="logo" jdbcType="VARCHAR" />
+		<result column="CORPID" property="corpId" jdbcType="VARCHAR" />
+		<result column="CONFIG" property="config" jdbcType="VARCHAR" />
+		<result column="IPLIMIT" property="ipLimit" jdbcType="BOOLEAN" />
+		<result column="SSOLIMIT" property="ssoLimit" jdbcType="BOOLEAN" />
+		<result column="OVERTIME" property="overtime" jdbcType="INTEGER" />
+		<result column="LIMITDEFAULT" property="limitDefault" jdbcType="INTEGER" />
+		<result column="KZINTERVAL" property="kzInterval" jdbcType="INTEGER" />
+		<result column="NOTSELFBLIND" property="notSelfBlind" jdbcType="BOOLEAN" />
+		<result column="UNABLESELFLINE" property="unableSelfLine" jdbcType="BOOLEAN" />
+		<result column="UNABLEAPPOINTOR" property="unableAppointor" jdbcType="BOOLEAN" />
+		<result column="UNABLEINVALIDRANGE" property="unableInvalidRange" jdbcType="INTEGER" />
+		<result column="ISDEL" property="delFlag" jdbcType="BOOLEAN" />
+		<result column="ONLYAPP" property="onlyApp" jdbcType="BOOLEAN" />
+		<result column="ISLOCK" property="lockFlag" jdbcType="BOOLEAN" />
+		
+		<result column="TYPEREPEAT" property="typeRepeat" jdbcType="BOOLEAN" />
+		<result column="SRCREPEAT" property="srcRepeat" jdbcType="BOOLEAN" />
+		<result column="STATUSIGNORE" property="statusIgnore" jdbcType="VARCHAR" />
+		<result column="TIMETYPEIGNORE" property="timeTypeIgnore" jdbcType="VARCHAR" />
+		<result column="DAYIGNORE" property="dayIgnore" jdbcType="INTEGER" />
+	</resultMap>
 
-    <resultMap id="VOMap" type="com.qiein.jupiter.web.entity.vo.CompanyVO">
-        <id column="ID" property="id" jdbcType="BIGINT"/>
-        <result column="COMPANYNAME" property="companyName" jdbcType="VARCHAR"/>
-        <result column="TYPEID" property="typeId" jdbcType="INTEGER"/>
-        <result column="LOGO" property="logo" jdbcType="VARCHAR"/>
-        <result column="NOTSELFBLIND" property="notSelfBlind" jdbcType="BOOLEAN"/>
-        <result column="UNABLESELFLINE" property="unableSelfLine" jdbcType="BOOLEAN"/>
-        <result column="UNABLEAPPOINTOR" property="unableAppointor" jdbcType="BOOLEAN"/>
-        <result column="UNABLEINVALIDRANGE" property="unableInvalidRange" jdbcType="INTEGER"/>
-        <result column="SSOLIMIT" property="ssolimit" jdbcType="BOOLEAN"/>
-        <result column="OVERTIME" property="overTime" jdbcType="INTEGER"/>
-        <result column="KZINTERVAL" property="kzInterval" jdbcType="INTEGER"/>
-        <result column="LIMITDEFAULT" property="limitDefault" jdbcType="INTEGER"/>
-    </resultMap>
+	<resultMap id="VOMap" type="com.qiein.jupiter.web.entity.vo.CompanyVO">
+		<id column="ID" property="id" jdbcType="BIGINT" />
+		<result column="COMPANYNAME" property="companyName" jdbcType="VARCHAR" />
+		<result column="TYPEID" property="typeId" jdbcType="INTEGER" />
+		<result column="LOGO" property="logo" jdbcType="VARCHAR" />
+		<result column="NOTSELFBLIND" property="notSelfBlind" jdbcType="BOOLEAN" />
+		<result column="UNABLESELFLINE" property="unableSelfLine" jdbcType="BOOLEAN" />
+		<result column="UNABLEAPPOINTOR" property="unableAppointor" jdbcType="BOOLEAN" />
+		<result column="UNABLEINVALIDRANGE" property="unableInvalidRange" jdbcType="INTEGER" />
+		<result column="SSOLIMIT" property="ssolimit" jdbcType="BOOLEAN" />
+		<result column="OVERTIME" property="overTime" jdbcType="INTEGER" />
+		<result column="KZINTERVAL" property="kzInterval" jdbcType="INTEGER" />
+		<result column="LIMITDEFAULT" property="limitDefault" jdbcType="INTEGER" />
+	</resultMap>
 
-    <sql id="baseColumn">
-        ID, COMPANYNAME, TYPEID, LOGO, CORPID, CONFIG, IPLIMIT,
-        SSOLIMIT,OVERTIME,LIMITDEFAULT,KZINTERVAL,ISDEL,ONLYAPP,ISLOCK
-    </sql>
+	<sql id="baseColumn">
+		ID, COMPANYNAME, TYPEID, LOGO, CORPID, CONFIG, IPLIMIT,
+		SSOLIMIT,OVERTIME,LIMITDEFAULT,KZINTERVAL,ISDEL,ONLYAPP,ISLOCK,
+		TYPEREPEAT,SRCREPEAT,STATUSIGNORE,TIMETYPEIGNORE,DAYIGNORE
+	</sql>
 
-    <select id="getById" parameterType="java.lang.Integer" resultMap="baseMap">
-        SELECT
-        <include refid="baseColumn"/>
-        FROM
-        hm_pub_company
-        WHERE ID = #{id}
-    </select>
+	<select id="getById" parameterType="java.lang.Integer"
+		resultMap="baseMap">
+		SELECT
+		<include refid="baseColumn" />
+		FROM
+		hm_pub_company
+		WHERE ID = #{id}
+	</select>
 
-    <insert id="insert" parameterType="com.qiein.jupiter.web.entity.po.CompanyPO"
-            useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO  hm_pub_company
-        (COMPANYNAME, TYPEID, LOGO, CORPID, CONFIG, IPLIMIT,
-        SSOLIMIT,OVERTIME,LIMITDEFAULT,KZINTERVAL,ISDEL)
-        VALUES (
-        #{companyName}, #{typeId}, #{logo}, #{corpId}, #{config}, #{ipLimit},
-        #{ssoLimit}, #{overtime}, #{limitDefault}, #{kzInterval}, #{delFlag}
-        )
-    </insert>
+	<insert id="insert" parameterType="com.qiein.jupiter.web.entity.po.CompanyPO"
+		useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO hm_pub_company
+		(COMPANYNAME, TYPEID, LOGO, CORPID, CONFIG, IPLIMIT,
+		SSOLIMIT,OVERTIME,LIMITDEFAULT,KZINTERVAL,ISDEL)
+		VALUES (
+		#{companyName}, #{typeId}, #{logo}, #{corpId}, #{config}, #{ipLimit},
+		#{ssoLimit}, #{overtime}, #{limitDefault}, #{kzInterval}, #{delFlag}
+		)
+	</insert>
 
-    <update id="update" parameterType="companyPO">
-        UPDATE hm_pub_company
-        <set>
-            <if test="companyName != null">
-                COMPANYNAME = #{companyName},
-            </if>
-            <if test="typeId != null and typeId !=0">
-                TYPEID = #{typeId},
-            </if>
-            <if test="logo != null">
-                LOGO = #{logo},
-            </if>
-            <if test="corpId != null">
-                CORPID = #{corpId},
-            </if>
-            <if test="config != null">
-                CONFIG = #{config},
-            </if>
-            <if test="ipLimit != null">
-                IPLIMIT = #{ipLimit},
-            </if>
-            <if test="ssoLimit != null">
-                SSOLIMIT = #{ssoLimit},
-            </if>
-            <if test="overtime != null and overtime!=0">
-                OVERTIME = #{overtime},
-            </if>
-            <if test="limitDefault != null and limitDefault!=0">
-                LIMITDEFAULT = #{limitDefault},
-            </if>
-            <if test="kzInterval != null and kzInterval!=0">
-                KZINTERVAL = #{kzInterval},
-            </if>
-            <if test="delFlag != null">
-                ISDEL = #{delFlag},
-            </if>
-        </set>
-        WHERE
-        ID = #{id}
-    </update>
+	<update id="update" parameterType="companyPO">
+		UPDATE hm_pub_company
+		<set>
+			<if test="companyName != null">
+				COMPANYNAME = #{companyName},
+			</if>
+			<if test="typeId != null and typeId !=0">
+				TYPEID = #{typeId},
+			</if>
+			<if test="logo != null">
+				LOGO = #{logo},
+			</if>
+			<if test="corpId != null">
+				CORPID = #{corpId},
+			</if>
+			<if test="config != null">
+				CONFIG = #{config},
+			</if>
+			<if test="ipLimit != null">
+				IPLIMIT = #{ipLimit},
+			</if>
+			<if test="ssoLimit != null">
+				SSOLIMIT = #{ssoLimit},
+			</if>
+			<if test="overtime != null and overtime!=0">
+				OVERTIME = #{overtime},
+			</if>
+			<if test="limitDefault != null and limitDefault!=''">
+				LIMITDEFAULT = #{limitDefault},
+			</if>
+			<if test="kzInterval != null and kzInterval!=''">
+				KZINTERVAL = #{kzInterval},
+			</if>
+			<if test="delFlag != null">
+				ISDEL = #{delFlag},
+			</if>
+		</set>
+		WHERE
+		ID = #{id}
+	</update>
 
-    <!--获取企业信息-->
-    <select id="getVOById" parameterType="map" resultMap="VOMap">
-        SELECT
-            comp.ID, comp.COMPANYNAME, comp.TYPEID, comp.LOGO, comp.NOTSELFBLIND, comp.UNABLESELFLINE, 
-            comp.UNABLEAPPOINTOR, comp.UNABLEINVALIDRANGE,comp.SSOLIMIT, comp.OVERTIME, comp.KZINTERVAL, comp.LIMITDEFAULT
-        FROM
-            hm_pub_company comp
-        WHERE 
-        	comp.ID = #{companyId}
-        AND comp.ISDEL = 0;
-    </select>
+	<!--获取企业信息 -->
+	<select id="getVOById" parameterType="map" resultMap="VOMap">
+		SELECT
+		comp.ID, comp.COMPANYNAME, comp.TYPEID, comp.LOGO, comp.NOTSELFBLIND,
+		comp.UNABLESELFLINE,
+		comp.UNABLEAPPOINTOR, comp.UNABLEINVALIDRANGE,comp.SSOLIMIT, comp.OVERTIME,
+		comp.KZINTERVAL, comp.LIMITDEFAULT
+		FROM
+		hm_pub_company comp
+		WHERE
+		comp.ID = #{companyId}
+		AND comp.ISDEL = 0;
+	</select>
 
-    <!-- 编辑自定义设置 -->
-    <update id="updateFlag" parameterType="map">
-        UPDATE hm_pub_company SET ${column} = #{flag} WHERE ID = #{companyId}
-    </update>
+	<!-- 编辑自定义设置 -->
+	<update id="updateFlag" parameterType="map">
+		UPDATE hm_pub_company SET ${column} = #{flag} WHERE ID = #{companyId}
+	</update>
 
-    <!-- 编辑自定义范围 -->
-    <update id="updateRange" parameterType="map">
-        UPDATE hm_pub_company SET ${column} = #{num} WHERE ID = #{companyId}
-    </update>
+	<!-- 编辑自定义范围 -->
+	<update id="updateRange" parameterType="map">
+		UPDATE hm_pub_company SET ${column} = #{num} WHERE ID = #{companyId}
+	</update>
 
-    <!-- 获取iplimit -->
-    <select id="getIpLimit" parameterType="Integer" resultType="Integer">
-       select iplimit  from hm_pub_company where ID = #{companyId}
-    </select>
+	<!-- 获取iplimit -->
+	<select id="getIpLimit" parameterType="Integer" resultType="Integer">
+		select iplimit from hm_pub_company where ID = #{companyId}
+	</select>
 
-    <!--修改IP限制-->
-    <update id="editIpLimit" parameterType="Integer">
-      update hm_pub_company set iplimit=#{ipLimit} where id=#{companyId}
-    </update>
-    
-    <!-- 获取系统中的企业列表 -->
-    <select id="listComp" parameterType="map" resultMap="baseMap">
-        SELECT
-        	<include refid="baseColumn"/>
-        FROM
-       	 hm_pub_company
-    </select>
-    
-    <!-- 更改咨询类型 -->
-    <update id="editTypeRepeat" >
-        UPDATE 
-        	hm_pub_company
-        <set>
-            <if test="b != null and b!=0" >
-                TYPEREPEAT = #{b},
-            </if>
-    	</set>
-    	<where>ID = #{companyId}</where>
-    </update>
-    
-    <!-- 更改咨询类型 -->
-    <update id="editTypeSrcRepeat" >
-        UPDATE 
-        	hm_pub_company
-        <set>
-            <if test="b != null and b!=0" >
-                SRCREPEAT = #{b},
-            </if>
-    	</set>
-    	<where>ID = #{companyId}</where>
-    </update>
-    
-    <!-- 更改客资状态是否被重新录入 -->
-    <update id="editKZStutas" >
-        UPDATE 
-        	hm_pub_company
-        <set>
-            <if test="statusIgnore != null and statusIgnore!=0" >
-                STATUSIGNORE = #{statusIgnore},
-            </if>
-    	</set>
-    	<where>ID = #{companyId}</where>
-    </update>
-    
-    <!-- 更改客资状态是否被重新录入 -->
-    <update id="editKZday" >
-        UPDATE 
-        	hm_pub_company
-        <set>
-            <if test="timeTypeIgnore != null and timeTypeIgnore!=0" >
-                TIMETYPEIGNORE = #{timeTypeIgnore},
-            </if>
-            <if test="dayIgnore != null and dayIgnore!=0" >
-                DAYIGNORE = #{dayIgnore},
-            </if>
-    	</set>
-    	<where>ID = #{companyId}</where>
-    </update>
+	<!--修改IP限制 -->
+	<update id="editIpLimit" parameterType="Integer">
+		update hm_pub_company set iplimit=#{ipLimit} where id=#{companyId}
+	</update>
+
+	<!-- 获取系统中的企业列表 -->
+	<select id="listComp" parameterType="map" resultMap="baseMap">
+		SELECT
+		<include refid="baseColumn" />
+		FROM
+		hm_pub_company
+	</select>
+
+	<!-- 更改咨询类型 -->
+	<update id="editTypeRepeat">
+		UPDATE
+			hm_pub_company
+		<set>
+			<if test="typeRepeat != null ">
+				TYPEREPEAT = #{typeRepeat},
+			</if>
+		</set>
+		<where>ID = #{companyId}</where>
+	</update>
+
+	<!-- 更改咨询类型 -->
+	<update id="editTypeSrcRepeat">
+		UPDATE
+			hm_pub_company
+		<set>
+			<if test="srcRepeat != null ">
+				SRCREPEAT = #{srcRepeat},
+			</if>
+		</set>
+		<where>ID = #{companyId}</where>
+	</update>
+
+	<!-- 更改客资状态是否被重新录入 -->
+	<update id="editKZday">
+		UPDATE
+			hm_pub_company
+		SET 
+			STATUSIGNORE = #{statusIgnore},
+			TIMETYPEIGNORE = #{timeTypeIgnore},
+			DAYIGNORE = #{dayIgnore}
+		WHERE 
+			ID = #{companyId}
+	</update>
+	
+	<!-- 获取重复客资详情 -->
+	<select id="selectAll" parameterType="map" resultMap="baseMap">
+		SELECT
+			<include refid="baseColumn" />
+		FROM
+			hm_pub_company
+		WHERE
+			ID=#{companyId}
+	</select>
+	
 </mapper>
