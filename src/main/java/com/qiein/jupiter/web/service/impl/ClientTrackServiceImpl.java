@@ -1,10 +1,7 @@
 package com.qiein.jupiter.web.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.qiein.jupiter.constant.ClientConst;
-import com.qiein.jupiter.constant.ClientLogConst;
-import com.qiein.jupiter.constant.ClientStatusConst;
-import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.constant.*;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.http.CrmBaseApi;
@@ -192,7 +189,7 @@ public class ClientTrackServiceImpl implements ClientTrackService {
         }
         int kzNum = infoList.size();
         // 查询所选客服集合
-        List<StaffPushDTO> staffList = staffDao.listStaffInstrIds(companyId, staffIds);
+        List<StaffPushDTO> staffList = staffDao.listStaffInstrIds(companyId, staffIds, RoleConstant.DSYY);
         if (staffList == null || staffList.size() == 0) {
             throw new RException(ExceptionEnum.APPOINTOR_ERROR);
         }
