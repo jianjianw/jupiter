@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.dao;
 
+import com.qiein.jupiter.enums.TableEnum;
 import com.qiein.jupiter.web.entity.dto.ClientExcelDTO;
 import com.qiein.jupiter.web.entity.dto.ClientExcelNewsDTO;
 import com.qiein.jupiter.web.entity.dto.ClientSortCountDTO;
@@ -60,6 +61,7 @@ public interface ExcelDao {
 
     /**
      * 设置渠道和来源信息
+     *
      * @param tempName
      * @param staffId
      */
@@ -110,11 +112,12 @@ public interface ExcelDao {
 
     /**
      * 更新门市id
+     *
      * @param tempName
      * @param staffId
-     * */
-    void updateReceptorId(@Param(value="tempName") String tempName,
-                          @Param(value="staffId") int staffId);
+     */
+    void updateReceptorId(@Param(value = "tempName") String tempName,
+                          @Param(value = "staffId") int staffId);
 
     /**
      * 获取所有的记录
@@ -126,7 +129,7 @@ public interface ExcelDao {
      * 获取与info表重复的记录
      **/
     List<ClientExcelNewsDTO> getRepeatRecord(@Param("tempName") String tempName, @Param("tableName") String tableName,
-                                         @Param("staffId") int staffId);
+                                             @Param("staffId") int staffId);
 
     /**
      * 获取Excel重复的记录
@@ -136,12 +139,12 @@ public interface ExcelDao {
     /**
      * 添加客资基础信息ByStaffId
      */
-    void insertBaseInfoByStaffId(@Param("tabName") String tabName, @Param("tempName") String tempName,@Param("tableName") String tableName, @Param("staffId") Integer staffId);
+    void insertBaseInfoByStaffId(@Param("tabName") String tabName, @Param("tempName") String tempName, @Param("tableName") String tableName, @Param("staffId") Integer staffId);
 
     /**
      * 添加客资详细信息 ByStaffId
      */
-    void insertDetailInfoByStaffId(@Param("tabName") String tabName, @Param("tempName") String tempName,@Param("tableName") String tableName, @Param("staffId") Integer staffId);
+    void insertDetailInfoByStaffId(@Param("tabName") String tabName, @Param("tempName") String tempName, @Param("tableName") String tableName, @Param("staffId") Integer staffId);
 
     /**
      * 插入客资备注表
@@ -180,26 +183,76 @@ public interface ExcelDao {
 
     /**
      * 获取错误客资
+     *
      * @param tempName
      * @param staffId
      * @return
-     * */
+     */
     List<ClientExcelNewsDTO> getExcelErrorClient(@Param("tempName") String tempName, @Param("staffId") int staffId);
 
 
     /**
      * 获取正常客资
+     *
      * @param tempName
      * @param staffId
      * @return
-     * */
+     */
     List<ClientExcelNewsDTO> getExcelSuccessClient(@Param("tempName") String tempName, @Param("tableName") String tableName,
                                                    @Param("staffId") int staffId);
 
 
     /**
      * 获取可知数量
-     * */
+     */
     ClientSortCountDTO getMultipleKzStatusCount(@Param("tempName") String tempName, @Param("tableName") String tableName,
                                                 @Param("staffId") int staffId);
+
+    /**
+     * 更新咨询方式的字典编码
+     *
+     * @param tempName
+     * @param staffId
+     * @param dictionaryType
+     */
+    void updateZxStyleDictionaryCode(@Param("tempName") String tempName, @Param("staffId") Integer staffId, @Param(value = "dictionaryType") String dictionaryType);
+
+
+    /**
+     * 更新意向等级的字典编码
+     *
+     * @param tempName
+     * @param staffId
+     * @param dictionaryType
+     */
+    void updateYxLevelDictionaryCode(@Param("tempName") String tempName, @Param("staffId") Integer staffId, @Param(value = "dictionaryType") String dictionaryType);
+
+    /**
+     * 更新预算范围的字典编码
+     *
+     * @param tempName
+     * @param staffId
+     * @param dictionaryType
+     */
+    void updateYsRangeDictionaryCode(@Param("tempName") String tempName, @Param("staffId") Integer staffId, @Param(value = "dictionaryType") String dictionaryType);
+
+
+    /**
+     * 更新预拍时间的字典编码
+     *
+     * @param tempName
+     * @param staffId
+     * @param dictionaryType
+     */
+    void updateYpTimeDictionaryCode(@Param("tempName") String tempName, @Param("staffId") Integer staffId, @Param(value = "dictionaryType") String dictionaryType);
+
+
+    /**
+     * 更新结婚时间的字典编码
+     * @param tempName
+     * @param staffId
+     * @param dictionaryType
+     * */
+    void updateMarryTimeDictionaryCode(@Param("tempName") String tempName, @Param("staffId") Integer staffId, @Param(value = "dictionaryType") String dictionaryType);
+
 }
