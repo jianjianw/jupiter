@@ -87,6 +87,7 @@ public class ExcelServiceImpl implements ExcelService {
             throw new RException(ExceptionEnum.EXCEL_IS_NULL);
         }
         for (ClientExcelNewsDTO clientExcelDTO : clientList) {
+            ObjectUtil.objectStrParamTrim(clientExcelDTO);
             String status = clientExcelDTO.getStatusName();
             clientExcelDTO.setStatusId((StringUtil.isNotEmpty(status) && status.contains("无"))
                     ? ClientStatusConst.BE_INVALID : ClientStatusConst.BE_HAVE_MAKE_ORDER);
