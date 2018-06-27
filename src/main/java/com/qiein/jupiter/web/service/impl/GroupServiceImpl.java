@@ -594,6 +594,16 @@ public class GroupServiceImpl implements GroupService {
     }
 
     /**
+     * 根据角色，获取在线小组人员，用于分配
+     *
+     * @param companyId
+     * @return
+     */
+    public List<GroupBaseStaffVO> getOnLineStaffListByRole(int companyId, String role) {
+        return groupStaffDao.getOnLineStaffListByRole(companyId, role);
+    }
+
+    /**
      * 获取全公司所有小组人员列表
      *
      * @param companyId

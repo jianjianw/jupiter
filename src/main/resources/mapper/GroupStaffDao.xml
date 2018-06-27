@@ -369,4 +369,22 @@
 	        AND sf.ISLOCK = 0
     </select>
 
+    <!--根据不同类型，获取小组及人员-->
+    <select id="getOnLineStaffListByRole" parameterType="map" resultMap="GroupStaffMap">
+        SELECT
+        grp.GROUPID, grp.GROUPNAME,grp.GROUPTYPE, rela.STAFFID, sf.NICKNAME, sf.STATUSFLAG, sf.ISLOCK
+        FROM
+        hm_pub_group grp
+        INNER JOIN hm_pub_group_staff rela ON rela.COMPANYID = grp.COMPANYID AND grp.GROUPID = rela.GROUPID
+        INNER JOIN hm_pub_staff sf ON sf.COMPANYID = rela.COMPANYID AND rela.STAFFID = sf.ID
+        WHERE
+        grp.COMPANYID = #{companyId}
+        AND grp.GROUPTYPE = #{type}
+        AND grp.PARENTID != '0'
+        AND sf.ISDEL = 0
+        AND sf.ISLOCK = 0
+        AND sf.STATUSFLAG = 1
+        ORDER BY grp.GROUPNAME, grp.ID, sf.ISLOCK, sf.STATUSFLAG DESC, sf.ID
+    </select>
+
 </mapper>

@@ -84,6 +84,14 @@ public interface GroupService {
     List<BaseStaffVO> getMsjdStaffList(int companyId);
 
     /**
+     * 根据角色，获取在线小组人员，用于分配
+     *
+     * @param companyId
+     * @return
+     */
+    List<GroupBaseStaffVO> getOnLineStaffListByRole(int companyId, String role);
+
+    /**
      * 获取全公司所有小组人员列表
      *
      * @param companyId

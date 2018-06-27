@@ -112,6 +112,15 @@ public interface GroupStaffDao {
     List<GroupBaseStaffVO> getGroupStaffByRole(@Param("companyId") int companyId, @Param("type") String type);
 
     /**
+     * 根据角色，获取在线小组人员，用于分配
+     *
+     * @param companyId
+     * @param type
+     * @return
+     */
+    List<GroupBaseStaffVO> getOnLineStaffListByRole(@Param("companyId") int companyId, @Param("type") String type);
+
+    /**
      * 批量添加小组人员
      *
      * @param companyId

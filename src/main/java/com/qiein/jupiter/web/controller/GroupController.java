@@ -120,7 +120,7 @@ public class GroupController extends BaseController {
     }
 
     /**
-     * 根据角色，获取小组及人员下拉
+     * 根据角色，权限，获取小组及人员下拉
      */
     @GetMapping("/get_group_staff_by_role")
     public ResultInfo getGroupStaffByRole(@NotEmptyStr @RequestParam("role") String role) {
@@ -146,6 +146,14 @@ public class GroupController extends BaseController {
     @GetMapping("/get_msjd_staff_list")
     public ResultInfo getMsjdStaffList() {
         return ResultInfoUtil.success(groupService.getMsjdStaffList(getCurrentLoginStaff().getCompanyId()));
+    }
+
+    /**
+     * 根据角色，获取在线小组人员，用于分配
+     */
+    @GetMapping("/get_online_staff_list_by_role")
+    public ResultInfo getOnLineStaffListByRole(@NotEmptyStr @RequestParam("role") String role) {
+        return ResultInfoUtil.success(groupService.getOnLineStaffListByRole(getCurrentLoginStaff().getCompanyId(), role));
     }
 
     /**
