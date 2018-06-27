@@ -1,7 +1,9 @@
 package com.qiein.jupiter.web.dao;
 
-import org.apache.ibatis.annotations.Param;
 import com.qiein.jupiter.web.entity.po.SystemLog;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 系统日志
@@ -13,19 +15,33 @@ public interface SystemLogDao extends BaseDao<SystemLogDao> {
     /**
      * 新增操作日志
      *
-     * @param logTabName
      * @param log
      */
-    void addSystemLog(@Param("logTabName") String logTabName, @Param("log") SystemLog log);
+    void addSystemLog(@Param("log") SystemLog log);
 
     /**
      * 查询员工登录ip是否存在
      *
-     * @param logTabName
      * @param companyId
      * @param staffId
      * @param ip
      * @return
      */
-    int getCountByStaffIdAndIp(@Param("logTabName") String logTabName, @Param("companyId") int companyId, @Param("staffId") int staffId, @Param("ip") String ip);
+    int getCountByStaffIdAndIp(@Param("companyId") int companyId, @Param("staffId") int staffId, @Param("ip") String ip);
+
+    /**
+     * 根据类型查询公司的日志
+     *
+     * @param companyId
+     * @param typeId
+     * @return
+     */
+    List<SystemLog> getLogByType(@Param("companyId") int companyId, @Param("typeId") int typeId);
+
+    /**
+     * 清空多久之前的日志
+     *
+     * @param time
+     */
+    int clearLog(int time);
 }

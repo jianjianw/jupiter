@@ -15,19 +15,20 @@
         <result column="MAC" jdbcType="INTEGER" property="mac"/>
         <result column="COMPANYID" jdbcType="INTEGER" property="companyId"/>
     </resultMap>
-    
+
     <sql id="baseColumn">
+        ID, TYPEID, IP, ADDRESS, URL, STAFFID, STAFFNAME, MEMO, LOGTIME, MAC, COMPANYID
     </sql>
-    
+
     <!-- 新增操作日志 -->
     <insert id="addSystemLog" useGeneratedKeys="true" keyProperty="log.id">
         INSERT INTO ${logTabName} (
-			TYPEID, IP, ADDRESS, URL, STAFFID, STAFFNAME, MEMO, LOGTIME, MAC, COMPANYID
-		)
-		VALUES
-			(#{log.typeId}, #{log.ip}, #{log.address}, #{log.url}, #{log.staffId},
-			 #{log.staffName}, #{log.memo}, UNIX_TIMESTAMP(NOW()), #{log.mac}, #{log.companyId}
-		)
+            TYPEID, IP, ADDRESS, URL, STAFFID, STAFFNAME, MEMO, LOGTIME, MAC, COMPANYID
+        )
+        VALUES
+            (#{log.typeId}, #{log.ip}, #{log.address}, #{log.url}, #{log.staffId},
+             #{log.staffName}, #{log.memo}, UNIX_TIMESTAMP(NOW()), #{log.mac}, #{log.companyId}
+            )
     </insert>
 
     <!--查询员工登录ip是否存在-->
@@ -41,4 +42,19 @@
             AND log.IP = #{ip}
         </if>
     </select>
+
+    <!--根据类型获取日志-->
+    <select id="getLogByType" resultMap="logMap">
+        SELECT
+        <include refid="baseColumn"/>
+        FROM hm_pub_system_log log
+        WHERE log.COMPANYID = #{companyId}
+        AND log.TYPEID = #{typeId}
+    </select>
+
+    <!--清空日志-->
+    <delete id="clearLog">
+        DELETE FROM hm_pub_system_log
+        WHERE LOGTIME &lt; #{time}
+    </delete>
 </mapper>
