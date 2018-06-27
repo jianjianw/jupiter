@@ -13,12 +13,20 @@ public class SendMsgDTO {
     private int companyId;
     //短信模板id
     private String templateId;
+    //短信模板类型
+    private String templateType;
     //手机号码
     private String phone;
     //需要短信发送的变量 是具体而定
     private Map<String,String> map;
 
+    public String getTemplateType() {
+        return templateType;
+    }
 
+    public void setTemplateType(String templateType) {
+        this.templateType = templateType;
+    }
 
     public String getPhone() {
         return phone;

@@ -3,12 +3,11 @@ package com.qiein.jupiter.web.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.mzlion.easyokhttp.HttpClient;
+import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
-import com.qiein.jupiter.util.MD5Util;
-import com.qiein.jupiter.util.ResultInfo;
-import com.qiein.jupiter.util.ResultInfoUtil;
+import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.entity.dto.SendMsgDTO;
 import com.qiein.jupiter.web.entity.dto.SendMsgToDTO;
 import com.qiein.jupiter.web.entity.po.ShopPO;
@@ -51,21 +50,22 @@ public class SendMsgController extends BaseController{
         Map<String,String> map=sendMsgDTO.getMap();
         //获取门店信息
         ShopPO shopPO=shopService.findShop(Integer.parseInt(map.get("shopId")));
-        map.put("address",shopPO.getShopName());
+        map.put("address",shopPO.getAddress());
         //判断门店电话是否为空
-        if(shopPO.getServicePhone()==null||shopPO.getServicePhone()==""){
+
+        if( StringUtil.isEmpty(shopPO.getServicePhone())){
             map.put("telno","");
         }else{
             map.put("telno",shopPO.getServicePhone());
         }
-        String templateId=sendMsgService.getTemplateId("YYJD",staff.getCompanyId());
+        String templateId=sendMsgService.getTemplateId(CommonConstant.YYJD,staff.getCompanyId());
         sendMsgDTO.setTemplateId(templateId);
         //获取时间
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        String date_string = sdf.format(new Date(Long.parseLong(map.get("time"))*1000L));
+        String date_string=TimeUtil.intMillisToTimeStr(Integer.parseInt(map.get("time")));
         map.put("time",date_string);
         Integer id=clientService.findId(map.get("kzId"),staff.getCompanyId());
-        map.put("code","YYJD"+id);
+        map.put("code",CommonConstant.YYJD+id);
+        sendMsgDTO.setTemplateType("YYJD");
         SendMsgToDTO sendMsgToDTO=new SendMsgToDTO();
         sendMsgToDTO.setParams(sendMsgDTO);
         String json=JSON.toJSONString(sendMsgToDTO);
@@ -93,11 +93,11 @@ public class SendMsgController extends BaseController{
     public ResultInfo getTemplate(@RequestBody SendMsgDTO sendMsgDTO){
         StaffPO staff=getCurrentLoginStaff();
         sendMsgDTO.setCompanyId(staff.getCompanyId());
-        String templateId=sendMsgService.getTemplateId("YYJD",staff.getCompanyId());
+        String templateId=sendMsgService.getTemplateId(CommonConstant.YYJD,staff.getCompanyId());
         String url="http://114.55.249.156:8286/send_msg/find_company_template";
         String templateText=HttpClient
                 .get(url)
-                .queryString("templateNum", templateId)
+                .queryString("templatetType", CommonConstant.YYJD)
                 .queryString("companyId",sendMsgDTO.getCompanyId())
                 .asString();
         JSONObject json=JSONObject.parseObject(templateText);
@@ -108,16 +108,15 @@ public class SendMsgController extends BaseController{
         }
         Map<String,String> map=sendMsgDTO.getMap();
         ShopPO shopPO=shopService.findShop(Integer.parseInt(sendMsgDTO.getMap().get("shopId")));
-        map.put("address",shopPO.getShopName());
-        if(shopPO.getServicePhone()==null||shopPO.getServicePhone()==""){
+        map.put("address",shopPO.getAddress());
+        if( StringUtil.isEmpty(shopPO.getServicePhone())){
             map.put("telno","");
         }else{
             map.put("telno",shopPO.getServicePhone());
         }
         Integer id=clientService.findId(map.get("kzId"),staff.getCompanyId());
-        map.put("code","YYJD"+id);
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        String date_string = sdf.format(new Date(Long.parseLong(map.get("time"))*1000L));
+        map.put("code",CommonConstant.YYJD+id);
+        String date_string=TimeUtil.intMillisToTimeStr(Integer.parseInt(map.get("time")));
         map.put("time",date_string);
         for(String key:map.keySet()){
             templateText=templateText.replace("${"+key+"}",map.get(key));
