@@ -222,12 +222,26 @@ public class ChannelController extends BaseController {
 
     /**
      * 根据员工所在小组获取该组承接的渠道列表
+     *
      * @return
      */
     @GetMapping("/get_my_group_channel_list")
-    public ResultInfo getChannelListByStaffGroup(String groupId){
+    public ResultInfo getChannelListByStaffGroup(String groupId) {
         // 获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        return ResultInfoUtil.success(channelService.getChannelListByStaffGroup(currentLoginStaff.getCompanyId(),groupId));
+        return ResultInfoUtil.success(channelService.getChannelListByStaffGroup(currentLoginStaff.getCompanyId(), groupId));
+    }
+
+    /**
+     * 获取企业所有渠道列表
+     *
+     * @return
+     */
+    @GetMapping("/get_all_channel_source_select")
+    public ResultInfo getAllChannelSourceSelect() {
+        // 获取当前登录用户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        return ResultInfoUtil
+                .success(channelService.getAllChannelSourceList(currentLoginStaff.getCompanyId()));
     }
 }

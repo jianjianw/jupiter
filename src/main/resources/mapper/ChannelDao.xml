@@ -398,4 +398,18 @@
         GROUP BY c.CHANNELNAME
     </select>
 
+    <!--获取企业所有渠道组及渠道-->
+    <select id="getAllChannelSourceList" parameterType="map" resultMap="ChannelVOMap">
+        SELECT
+        channel.ID, channel.CHANNELNAME, src.ID AS SRCID, src.SRCNAME
+        FROM
+        hm_crm_channel channel
+        LEFT JOIN hm_crm_source src ON src.COMPANYID = channel.COMPANYID AND src.CHANNELID = channel.ID
+        WHERE
+        channel.COMPANYID = #{companyId}
+        AND channel.ISSHOW = 1
+        AND src.ISSHOW = 1
+        ORDER BY channel.TYPEID, channel.PRIORITY, channel.ID, src.PRIORITY, src.ID
+    </select>
+
 </mapper>

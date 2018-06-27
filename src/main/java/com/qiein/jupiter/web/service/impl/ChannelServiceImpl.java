@@ -98,8 +98,8 @@ public class ChannelServiceImpl implements ChannelService {
             sourceStaffDao.insertByChannelId(channelPO.getId(), channelPO.getCompanyId(), Arrays.asList(channelPO.getYyId().split(CommonConstant.STR_SEPARATOR)), SourceStaffConst.YY_TYPE);
             //更新所有来源的pushRole
             sourceDao.updatePushRuleByChannelId(channelPO.getId(), channelPO.getCompanyId(), channelPO.getPushRule());
-        }else{
-            sourceStaffDao.deleteByChannelId(channelPO.getId(),channelPO.getCompanyId());
+        } else {
+            sourceStaffDao.deleteByChannelId(channelPO.getId(), channelPO.getCompanyId());
         }
 
         channelDao.update(channelPO);
@@ -206,6 +206,17 @@ public class ChannelServiceImpl implements ChannelService {
     @Override
     public List<ChannelPO> getChannelListByStaffGroup(int companyId, String groupId) {
         return channelDao.getChannelListByStaffGroup(companyId, groupId);
+    }
+
+
+    /**
+     * 获取企业所有渠道组及渠道
+     *
+     * @param companyId
+     * @return
+     */
+    public List<ChannelVO> getAllChannelSourceList(int companyId) {
+        return getAllChannelSourceList(companyId);
     }
 
 }

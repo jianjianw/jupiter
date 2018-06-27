@@ -124,5 +124,13 @@ public interface ChannelDao extends BaseDao<ChannelPO> {
      */
     List<ChannelPO> getChannelListByStaffGroup(@Param("companyId") int companyId, @Param("groupId") String groupId);
 
+    /**
+     * 获取企业所有渠道组及渠道
+     *
+     * @param companyId
+     * @return
+     */
+    List<ChannelVO> getAllChannelSourceList(@Param("companyId") int companyId);
+
 
 }

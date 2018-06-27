@@ -81,9 +81,18 @@ public interface ChannelService {
 
     /**
      * 根据员工id获取员工所在小组的承接渠道列表
+     *
      * @param companyId
      * @param groupId
      * @return
      */
-    List<ChannelPO> getChannelListByStaffGroup(int companyId , String groupId);
+    List<ChannelPO> getChannelListByStaffGroup(int companyId, String groupId);
+
+    /**
+     * 获取企业所有渠道组及渠道
+     *
+     * @param companyId
+     * @return
+     */
+    List<ChannelVO> getAllChannelSourceList(int companyId);
 }
