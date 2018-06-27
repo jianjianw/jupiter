@@ -92,7 +92,6 @@
     <resultMap id="GroupStaffMap" type="com.qiein.jupiter.web.entity.vo.GroupBaseStaffVO">
         <result column="GROUPID" property="groupId" jdbcType="VARCHAR"/>
         <result column="GROUPNAME" property="groupName" jdbcType="VARCHAR"/>
-        <result column="GROUPTYPE" property="groupType" jdbcType="VARCHAR"/>
         <collection property="staffList" ofType="com.qiein.jupiter.web.entity.vo.BaseStaffVO">
             <result column="STAFFID" property="staffId" jdbcType="INTEGER"/>
             <result column="NICKNAME" property="staffName" jdbcType="VARCHAR"/>
@@ -387,4 +386,8 @@
         ORDER BY grp.GROUPNAME, grp.ID, sf.ISLOCK, sf.STATUSFLAG DESC, sf.ID
     </select>
 
+    <!--根据公司id和分组id获取分组员工的id集合-->
+    <select id = "getGroupStaffIdsStrByCompanyIdAndGroupId" resultType="java.lang.String">
+        select group_concat(STAFFID SEPARATOR ',') from hm_pub_group_staff where COMPANYID = #{companyId}  and GROUPID = #{groupId}
+    </select>
 </mapper>
