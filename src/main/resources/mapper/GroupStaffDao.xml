@@ -432,7 +432,32 @@
 
     <!--根据公司id和分组id获取分组员工的id集合-->
     <select id = "getGroupStaffIdsStrByCompanyIdAndGroupId" resultType="java.lang.String">
-        select group_concat(STAFFID SEPARATOR ',') from hm_pub_group_staff where COMPANYID = #{companyId}  and GROUPID = #{groupId}
+        SELECT
+            group_concat(STAFFID SEPARATOR ',')
+        FROM (
+                 SELECT
+                     GROUPID,STAFFID,COMPANYID
+                 FROM
+                     hm_pub_group_staff
+                 WHERE
+                     COMPANYID = #{companyId}
+                     AND GROUPID IN (
+                         SELECT
+                             GROUPID
+                         FROM
+                             hm_pub_group
+                         WHERE
+                             parentId = (
+                                 SELECT
+                                     parentId
+                                 FROM
+                                     hm_pub_group
+                                 WHERE
+                                     GROUPID = #{groupId} AND COMPANYID = #{companyId}
+                             )
+                     )
+                 group by staffId ) RESULT
+
     </select>
 
     <!--根据员工id查询员工与组的关系-->
