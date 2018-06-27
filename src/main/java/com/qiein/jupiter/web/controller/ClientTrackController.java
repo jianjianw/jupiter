@@ -125,7 +125,8 @@ public class ClientTrackController extends BaseController {
         if (RoleConstant.DSCJ.equals(role) || RoleConstant.DSSX.equals(role) || RoleConstant.ZJSSX.equals(role)) {
             clientPushService.pushLp(kzIds, staffIds, currentStaff.getCompanyId(), currentStaff.getId(),
                     currentStaff.getNickName());
-        } else if (RoleConstant.DSYY.equals(role) || RoleConstant.ZJSYY.equals(role)) {
+        } else if (RoleConstant.DSYY.equals(role) || RoleConstant.ZJSYY.equals(role) ||
+                RoleConstant.MSJD.equals(role) || RoleConstant.CWZX.equals(role)) {
             //分配给门市
             clientPushService.allotToMsjd(kzIds, staffIds, currentStaff.getCompanyId(), currentStaff.getId(),
                     currentStaff.getNickName());
