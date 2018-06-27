@@ -65,7 +65,7 @@ public interface ClientDao {
      * @param kzId
      * @return
      */
-    Integer findId(@Param("kzId") String kzId,@Param("companyId") Integer companyId);
+    Integer findId(@Param("kzId") String kzId,@Param("companyId") Integer companyId,@Param("tableName")String tableName);
 
 
 }
