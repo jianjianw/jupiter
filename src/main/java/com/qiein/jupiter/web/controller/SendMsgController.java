@@ -6,6 +6,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.gson.JsonObject;
 import com.mzlion.easyokhttp.HttpClient;
 import com.qiein.jupiter.enums.TigMsgEnum;
+import com.qiein.jupiter.exception.ExceptionEnum;
+import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.MD5Util;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
@@ -51,8 +53,10 @@ public class SendMsgController extends BaseController{
         StaffPO staff=getCurrentLoginStaff();
         sendMsgDTO.setCompanyId(staff.getCompanyId());
         Map<String,String> map=sendMsgDTO.getMap();
+        //获取门店信息
         ShopPO shopPO=shopService.findShop(Integer.parseInt(map.get("shopId")));
         map.put("address",shopPO.getShopName());
+        //判断门店电话是否为空
         if(shopPO.getServicePhone()==null||shopPO.getServicePhone()==""){
             map.put("telno","");
         }else{
@@ -60,9 +64,12 @@ public class SendMsgController extends BaseController{
         }
         String templateId=sendMsgService.getTemplateId("YYJD",staff.getCompanyId());
         sendMsgDTO.setTemplateId(templateId);
+        //获取时间
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String date_string = sdf.format(new Date(Long.parseLong(map.get("time"))*1000L));
         map.put("time",date_string);
+        Integer id=clientService.findId(map.get("kzId"),staff.getCompanyId());
+        map.put("code","YYJD"+id);
         SendMsgToDTO sendMsgToDTO=new SendMsgToDTO();
         sendMsgToDTO.setParams(sendMsgDTO);
         String json=JSON.toJSONString(sendMsgToDTO);
@@ -75,6 +82,11 @@ public class SendMsgController extends BaseController{
                 .json(json)
                 .queryString("sign",sign)
                 .asString();
+        JSONObject getBack=JSONObject.parseObject(back);
+        String code=(String)getBack.get("code");
+        if(code!="100000"){
+            throw new RException((String)getBack.get("msg"));
+        }
         return ResultInfoUtil.success(TigMsgEnum.SEND_SUCCESS);
     }
 
@@ -94,6 +106,10 @@ public class SendMsgController extends BaseController{
                 .asString();
         JSONObject json=JSONObject.parseObject(templateText);
         templateText=(String)json.get("data");
+        String backcode=(String)json.get("code");
+        if(backcode!="100000"){
+            throw new RException(ExceptionEnum.TEMPLATE_LOSE);
+        }
         Map<String,String> map=sendMsgDTO.getMap();
         ShopPO shopPO=shopService.findShop(Integer.parseInt(sendMsgDTO.getMap().get("shopId")));
         map.put("address",shopPO.getShopName());
