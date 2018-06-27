@@ -13,14 +13,11 @@ import com.qiein.jupiter.web.entity.dto.SendMsgToDTO;
 import com.qiein.jupiter.web.entity.po.ShopPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.service.ClientService;
-import com.qiein.jupiter.web.service.SendMsgService;
 import com.qiein.jupiter.web.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Map;
 
 /**
@@ -35,8 +32,6 @@ public class SendMsgController extends BaseController{
     @Autowired
     private ShopService shopService;
 
-    @Autowired
-    private SendMsgService sendMsgService;
 
     @Autowired
     private ClientService clientService;
@@ -58,14 +53,12 @@ public class SendMsgController extends BaseController{
         }else{
             map.put("telno",shopPO.getServicePhone());
         }
-        String templateId=sendMsgService.getTemplateId(CommonConstant.YYJD,staff.getCompanyId());
-        sendMsgDTO.setTemplateId(templateId);
         //获取时间
         String date_string=TimeUtil.intMillisToTimeStr(Integer.parseInt(map.get("time")));
         map.put("time",date_string);
         Integer id=clientService.findId(map.get("kzId"),staff.getCompanyId());
         map.put("code",CommonConstant.YYJD+id);
-        sendMsgDTO.setTemplateType("YYJD");
+        sendMsgDTO.setTemplateType(CommonConstant.YYJD);
         SendMsgToDTO sendMsgToDTO=new SendMsgToDTO();
         sendMsgToDTO.setParams(sendMsgDTO);
         String json=JSON.toJSONString(sendMsgToDTO);
@@ -93,11 +86,10 @@ public class SendMsgController extends BaseController{
     public ResultInfo getTemplate(@RequestBody SendMsgDTO sendMsgDTO){
         StaffPO staff=getCurrentLoginStaff();
         sendMsgDTO.setCompanyId(staff.getCompanyId());
-        String templateId=sendMsgService.getTemplateId(CommonConstant.YYJD,staff.getCompanyId());
         String url="http://114.55.249.156:8286/send_msg/find_company_template";
         String templateText=HttpClient
                 .get(url)
-                .queryString("templatetType", CommonConstant.YYJD)
+                .queryString("templateType", CommonConstant.YYJD)
                 .queryString("companyId",sendMsgDTO.getCompanyId())
                 .asString();
         JSONObject json=JSONObject.parseObject(templateText);
