@@ -92,6 +92,7 @@
     <resultMap id="GroupStaffMap" type="com.qiein.jupiter.web.entity.vo.GroupBaseStaffVO">
         <result column="GROUPID" property="groupId" jdbcType="VARCHAR"/>
         <result column="GROUPNAME" property="groupName" jdbcType="VARCHAR"/>
+        <result column="GROUPTYPE" property="groupType" jdbcType="VARCHAR"/>
         <collection property="staffList" ofType="com.qiein.jupiter.web.entity.vo.BaseStaffVO">
             <result column="STAFFID" property="staffId" jdbcType="INTEGER"/>
             <result column="NICKNAME" property="staffName" jdbcType="VARCHAR"/>
@@ -338,7 +339,7 @@
     <!--根据不同类型，获取小组及人员-->
     <select id="getGroupStaffByRole" parameterType="map" resultMap="GroupStaffMap">
         SELECT
-            grp.GROUPID, grp.GROUPNAME, rela.STAFFID, sf.NICKNAME, sf.STATUSFLAG, sf.ISLOCK
+            grp.GROUPID, grp.GROUPNAME,grp.GROUPTYPE, rela.STAFFID, sf.NICKNAME, sf.STATUSFLAG, sf.ISLOCK
         FROM
             hm_pub_group grp
         INNER JOIN hm_pub_group_staff rela ON rela.COMPANYID = grp.COMPANYID AND grp.GROUPID = rela.GROUPID

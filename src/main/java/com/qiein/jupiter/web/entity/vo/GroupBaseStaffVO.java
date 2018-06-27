@@ -21,6 +21,10 @@ public class GroupBaseStaffVO implements Serializable {
      */
     private boolean selectFlag;
     /**
+     * 小组类型
+     */
+    private String groupType;
+    /**
      * 小组下的员工
      */
     private List<BaseStaffVO> staffList;
@@ -55,5 +59,13 @@ public class GroupBaseStaffVO implements Serializable {
 
     public void setSelectFlag(boolean selectFlag) {
         this.selectFlag = selectFlag;
+    }
+
+    public String getGroupType() {
+        return groupType;
+    }
+
+    public void setGroupType(String groupType) {
+        this.groupType = groupType;
     }
 }
