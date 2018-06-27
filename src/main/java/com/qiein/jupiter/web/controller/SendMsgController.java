@@ -12,13 +12,18 @@ import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.util.SmsUtil;
 import com.qiein.jupiter.web.entity.dto.SendMsgDTO;
 import com.qiein.jupiter.web.entity.dto.SendMsgToDTO;
+import com.qiein.jupiter.web.entity.po.ShopPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.service.ClientService;
+import com.qiein.jupiter.web.service.SendMsgService;
 import com.qiein.jupiter.web.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.POST;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -32,6 +37,12 @@ public class SendMsgController extends BaseController{
 
     @Autowired
     private ShopService shopService;
+
+    @Autowired
+    private SendMsgService sendMsgService;
+
+    @Autowired
+    private ClientService clientService;
     /**
      * 短信发送（门店预约）
      */
@@ -39,7 +50,19 @@ public class SendMsgController extends BaseController{
     public ResultInfo sendMsg(@RequestBody SendMsgDTO sendMsgDTO){
         StaffPO staff=getCurrentLoginStaff();
         sendMsgDTO.setCompanyId(staff.getCompanyId());
-        sendMsgDTO.getMap().put("address",shopService.findShop(Integer.parseInt(sendMsgDTO.getMap().get("shopId"))));
+        Map<String,String> map=sendMsgDTO.getMap();
+        ShopPO shopPO=shopService.findShop(Integer.parseInt(map.get("shopId")));
+        map.put("address",shopPO.getShopName());
+        if(shopPO.getServicePhone()==null||shopPO.getServicePhone()==""){
+            map.put("telno","");
+        }else{
+            map.put("telno",shopPO.getServicePhone());
+        }
+        String templateId=sendMsgService.getTemplateId("YYJD",staff.getCompanyId());
+        sendMsgDTO.setTemplateId(templateId);
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        String date_string = sdf.format(new Date(Long.parseLong(map.get("time"))*1000L));
+        map.put("time",date_string);
         SendMsgToDTO sendMsgToDTO=new SendMsgToDTO();
         sendMsgToDTO.setParams(sendMsgDTO);
         String json=JSON.toJSONString(sendMsgToDTO);
@@ -62,18 +85,28 @@ public class SendMsgController extends BaseController{
     public ResultInfo getTemplate(@RequestBody SendMsgDTO sendMsgDTO){
         StaffPO staff=getCurrentLoginStaff();
         sendMsgDTO.setCompanyId(staff.getCompanyId());
+        String templateId=sendMsgService.getTemplateId("YYJD",staff.getCompanyId());
         String url="http://114.55.249.156:8286/send_msg/find_company_template";
         String templateText=HttpClient
                 .get(url)
-                .queryString("templateNum", sendMsgDTO.getTemplateId())
+                .queryString("templateNum", templateId)
                 .queryString("companyId",sendMsgDTO.getCompanyId())
                 .asString();
         JSONObject json=JSONObject.parseObject(templateText);
         templateText=(String)json.get("data");
         Map<String,String> map=sendMsgDTO.getMap();
-        map.put("address",shopService.findShop(Integer.parseInt(sendMsgDTO.getMap().get("shopId"))));
-        map.put("code","cs101");
-
+        ShopPO shopPO=shopService.findShop(Integer.parseInt(sendMsgDTO.getMap().get("shopId")));
+        map.put("address",shopPO.getShopName());
+        if(shopPO.getServicePhone()==null||shopPO.getServicePhone()==""){
+            map.put("telno","");
+        }else{
+            map.put("telno",shopPO.getServicePhone());
+        }
+        Integer id=clientService.findId(map.get("kzId"),staff.getCompanyId());
+        map.put("code","YYJD"+id);
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        String date_string = sdf.format(new Date(Long.parseLong(map.get("time"))*1000L));
+        map.put("time",date_string);
         for(String key:map.keySet()){
             templateText=templateText.replace("${"+key+"}",map.get(key));
         }

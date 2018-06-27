@@ -186,5 +186,14 @@ public class ClientServiceImpl implements ClientService {
         }
     }
 
+    /**
+     * 寻找 kz的主id
+     * @param kzId
+     * @return
+     */
+    public Integer findId(String kzId,Integer companyId){
+        return clientDao.findId(kzId,companyId);
+    }
+
 
 }

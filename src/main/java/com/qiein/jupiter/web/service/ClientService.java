@@ -45,4 +45,11 @@ public interface ClientService {
      * @param clientStatusVoteVO
      * */
     void updateKzValidStatus(ClientStatusVoteVO clientStatusVoteVO);
+
+    /**
+     * 寻找 kz的主id
+     * @param kzId
+     * @return
+     */
+    Integer findId(String kzId,Integer companyId);
 }

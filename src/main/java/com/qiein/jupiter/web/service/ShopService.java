@@ -97,5 +97,5 @@ public interface ShopService {
      * @param shopId
      * @return
      */
-    String findShop(Integer shopId);
+    ShopPO findShop(Integer shopId);
 }

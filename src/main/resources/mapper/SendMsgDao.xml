@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiein.jupiter.web.dao.SendMsgDao">
+
+  <select id="getTemplateId" resultType="com.qiein.jupiter.web.entity.dto.SendMsgDTO">
+      select TEMPLATENUM templateId from hm_plat_msg_template where templateType=#{type} and companyId=#{companyId}
+  </select>
+</mapper>
