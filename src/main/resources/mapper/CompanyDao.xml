@@ -14,12 +14,9 @@
 		<result column="LIMITDEFAULT" property="limitDefault" jdbcType="INTEGER" />
 		<result column="KZINTERVAL" property="kzInterval" jdbcType="INTEGER" />
 		<result column="NOTSELFBLIND" property="notSelfBlind" jdbcType="BOOLEAN" />
-		<result column="UNABLESELFLINE" property="unableSelfLine"
-			jdbcType="BOOLEAN" />
-		<result column="UNABLEAPPOINTOR" property="unableAppointor"
-			jdbcType="BOOLEAN" />
-		<result column="UNABLEINVALIDRANGE" property="unableInvalidRange"
-			jdbcType="INTEGER" />
+		<result column="UNABLESELFLINE" property="unableSelfLine" jdbcType="BOOLEAN" />
+		<result column="UNABLEAPPOINTOR" property="unableAppointor" jdbcType="BOOLEAN" />
+		<result column="UNABLEINVALIDRANGE" property="unableInvalidRange" jdbcType="INTEGER" />
 		<result column="ISDEL" property="delFlag" jdbcType="BOOLEAN" />
 		<result column="ONLYAPP" property="onlyApp" jdbcType="BOOLEAN" />
 		<result column="ISLOCK" property="lockFlag" jdbcType="BOOLEAN" />
@@ -37,12 +34,9 @@
 		<result column="TYPEID" property="typeId" jdbcType="INTEGER" />
 		<result column="LOGO" property="logo" jdbcType="VARCHAR" />
 		<result column="NOTSELFBLIND" property="notSelfBlind" jdbcType="BOOLEAN" />
-		<result column="UNABLESELFLINE" property="unableSelfLine"
-			jdbcType="BOOLEAN" />
-		<result column="UNABLEAPPOINTOR" property="unableAppointor"
-			jdbcType="BOOLEAN" />
-		<result column="UNABLEINVALIDRANGE" property="unableInvalidRange"
-			jdbcType="INTEGER" />
+		<result column="UNABLESELFLINE" property="unableSelfLine" jdbcType="BOOLEAN" />
+		<result column="UNABLEAPPOINTOR" property="unableAppointor" jdbcType="BOOLEAN" />
+		<result column="UNABLEINVALIDRANGE" property="unableInvalidRange" jdbcType="INTEGER" />
 		<result column="SSOLIMIT" property="ssolimit" jdbcType="BOOLEAN" />
 		<result column="OVERTIME" property="overTime" jdbcType="INTEGER" />
 		<result column="KZINTERVAL" property="kzInterval" jdbcType="INTEGER" />
@@ -101,10 +95,10 @@
 			<if test="overtime != null and overtime!=0">
 				OVERTIME = #{overtime},
 			</if>
-			<if test="limitDefault != null and limitDefault!=0">
+			<if test="limitDefault != null and limitDefault!=''">
 				LIMITDEFAULT = #{limitDefault},
 			</if>
-			<if test="kzInterval != null and kzInterval!=0">
+			<if test="kzInterval != null and kzInterval!=''">
 				KZINTERVAL = #{kzInterval},
 			</if>
 			<if test="delFlag != null">
@@ -185,18 +179,10 @@
 	<update id="editKZday">
 		UPDATE
 			hm_pub_company
-		<set>
-			<if test="statusIgnore!=0">
-				STATUSIGNORE = #{statusIgnore},
-			</if>
-			<if test="timeTypeIgnore != null and timeTypeIgnore!=0">
-				TIMETYPEIGNORE = #{timeTypeIgnore},
-			</if>
-			<if test="dayIgnore != null and dayIgnore!=0">
-				DAYIGNORE = #{dayIgnore},
-			</if>
-		</set>
-		<where>ID = #{companyId}</where>
+		SET STATUSIGNORE = #{statusIgnore},
+		TIMETYPEIGNORE = #{timeTypeIgnore},
+		DAYIGNORE = #{dayIgnore},
+		WHERE ID = #{companyId}
 	</update>
 	
 	<!-- 获取重复客资详情 -->

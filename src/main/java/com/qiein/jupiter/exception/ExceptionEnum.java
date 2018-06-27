@@ -89,6 +89,7 @@ public enum ExceptionEnum {
     ROLE_IS_NULL(704, "权限不能为空"),
     //企业配置
     MENU_NULL(801, "企业菜单为空"),
+    REPEAT_TIME_ERRPR(802, "时间类型，天数都不能为空"),
     //角色
     ROLE_ERROR(901, "角色错误"),
     //品牌
@@ -164,8 +165,8 @@ public enum ExceptionEnum {
     //分页
     PAGESIZE_MAX_SIZE_ERROR(2301, "每页最多500条"),
     //短信
-    TEMPLATE_LOSE(2401,"短信模板获取失败"),
-    TEMPLATE_NOT_IN(2402,"短信模板不存在");
+    TEMPLATE_LOSE(2401, "短信模板获取失败"),
+    TEMPLATE_NOT_IN(2402, "短信模板不存在");
 
     private Integer code;
     private String msg;
