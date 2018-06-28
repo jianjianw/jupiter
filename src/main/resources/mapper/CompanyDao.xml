@@ -203,7 +203,7 @@
 		UPDATE
 			hm_pub_company
 		SET
-			DDISVALID = #{ddsinvalId}
+			DDISVALID = #{ddIsValid}
 		WHERE
 			ID = #{companyId}
 	</update>
