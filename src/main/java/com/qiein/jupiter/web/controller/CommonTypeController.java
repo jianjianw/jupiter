@@ -111,7 +111,7 @@ public class CommonTypeController extends BaseController{
     }
 
 
-    @PostMapping("edit_weight")
+    @GetMapping("edit_weight")
     public ResultInfo editWeight(@RequestParam String ids,@RequestParam Integer weight){
         commonTypeSerivce.editWeight(ids,weight);
         return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
