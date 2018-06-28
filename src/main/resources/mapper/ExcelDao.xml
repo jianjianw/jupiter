@@ -554,6 +554,21 @@
             <if test="info.currentTime != null and info.currentTime == true ">
                 CREATETIME = unix_timestamp(now()),
             </if>
+            <if test="info.marryTimeStr != null and info.marryTimeStr != ''">
+                MARRYTIMESTR = #{info.marryTimeStr},
+            </if>
+            <if test="info.ypTimeStr != null and info.ypTimeStr != ''">
+                YPTIMESTR = #{info.ypTimeStr},
+            </if>
+            <if test="info.zxStyleStr != null and info.zxStyleStr != ''">
+                ZXSTYLESTR = #{info.zxStyleStr},
+            </if>
+            <if test="info.ysRangeStr != null and info.ysRangeStr != ''">
+                YSRANGESTR = #{info.ysRangeStr},
+            </if>
+            <if test="info.yxLevelStr != null and info.yxLevelStr != ''">
+                yxLevelStr  = #{info.yxLevelStr}
+            </if>
         </set>
         WHERE OPERAID = #{info.operaId}
         AND KZID IN
