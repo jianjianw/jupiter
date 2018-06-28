@@ -98,8 +98,9 @@ public class ChannelServiceImpl implements ChannelService {
             sourceStaffDao.insertByChannelId(channelPO.getId(), channelPO.getCompanyId(), Arrays.asList(channelPO.getYyId().split(CommonConstant.STR_SEPARATOR)), SourceStaffConst.YY_TYPE);
             //更新所有来源的pushRole
             sourceDao.updatePushRuleByChannelId(channelPO.getId(), channelPO.getCompanyId(), channelPO.getPushRule());
-        } else {
+        } else if(null != channelPO.getPushRule()){
             sourceStaffDao.deleteByChannelId(channelPO.getId(), channelPO.getCompanyId());
+            sourceDao.updatePushRuleByChannelId(channelPO.getId(),channelPO.getCompanyId(),channelPO.getPushRule());
         }
 
         channelDao.update(channelPO);
