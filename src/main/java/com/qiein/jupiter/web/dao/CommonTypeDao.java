@@ -70,4 +70,13 @@ public interface CommonTypeDao {
      * @return
      */
     List<CommonTypePO> searchByChannelId(@Param("channelId")Integer channelId,@Param("typeId")Integer typeId,@Param("companyId")Integer companyId,@Param("groupName")String groupName);
+
+    /**
+     * 批量修改
+     * @param list
+     * @param weight
+     * @param typeId
+     * @param channelId
+     */
+    void editWeight(@Param("list")List<String> list,@Param("typeId")Integer typeId,@Param("channelId")Integer channelId,@Param("weight")Integer weight );
 }

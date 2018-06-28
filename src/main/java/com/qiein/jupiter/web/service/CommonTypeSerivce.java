@@ -74,4 +74,10 @@ public interface CommonTypeSerivce {
      */
     List<CommonTypeVO> findCommonType(Integer companyId);
 
+    /**
+     * 批量修改
+     * @param commonTypePO
+     */
+    void editWeight(CommonTypePO commonTypePO);
+
 }

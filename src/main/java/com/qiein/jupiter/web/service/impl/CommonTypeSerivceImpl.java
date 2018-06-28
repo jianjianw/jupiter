@@ -121,4 +121,16 @@ public class CommonTypeSerivceImpl implements CommonTypeSerivce {
         return commonTypeDao.searchByChannelId(channelId,typeId,companyId,groupName);
     }
 
+    /**
+     * 批量修改
+     * @param commonTypePO
+     */
+    public void editWeight(CommonTypePO commonTypePO){
+        List<String> list=new ArrayList<>();
+        for(String channelId:commonTypePO.getGroupId().split(CommonConstant.STR_SEPARATOR)){
+            list.add(channelId);
+        }
+        commonTypeDao.editWeight(list,commonTypePO.getTypeId(),commonTypePO.getChannelId(),commonTypePO.getWeight());
+    }
+
 }

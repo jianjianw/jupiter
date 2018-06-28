@@ -96,6 +96,13 @@ public class CommonTypeController extends BaseController{
         return  ResultInfoUtil.success(TigMsgEnum.DELETE_SUCCESS);
     }
 
+    /**
+     * 根据来源id查找
+     * @param channelId
+     * @param typeId
+     * @param groupName
+     * @return
+     */
     @GetMapping("/search_by_channel_id")
     public ResultInfo searchByChannelId(@RequestParam Integer channelId,@RequestParam Integer typeId,@RequestParam String groupName){
         StaffPO staffPO=getCurrentLoginStaff();
@@ -103,4 +110,10 @@ public class CommonTypeController extends BaseController{
         return ResultInfoUtil.success(commonTypeSerivce.searchByChannelId(channelId,typeId,staffPO.getCompanyId(),groupName));
     }
 
+
+    @PostMapping("edit_weight")
+    public ResultInfo editWeight(@RequestBody CommonTypePO commonTypePO){
+        commonTypeSerivce.editWeight(commonTypePO);
+        return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
+    }
 }
