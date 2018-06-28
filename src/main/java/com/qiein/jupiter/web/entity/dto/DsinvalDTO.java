@@ -1,43 +1,36 @@
 package com.qiein.jupiter.web.entity.dto;
 
-public class DsinvalDTO {
-    private Integer companyId;
-    //无效状态
-    private String dsinvalIdStatus;
-    //待跟踪意向等级
-    private String dsinvalIdLevel;
-    //统计时待定客资是否为有效客资
-    private boolean ddsinvalId;
+import java.io.Serializable;
 
-    public Integer getCompanyId() {
+public class DsinvalDTO implements Serializable {
+    private static final long serialVersionUID = 7643712184216258888L;
+    private int companyId;
+    //无效状态
+    private String dsInvalidStatus;
+    //待跟踪意向等级
+    private String dsInvalidLevel;
+
+    public int getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(Integer companyId) {
+    public void setCompanyId(int companyId) {
         this.companyId = companyId;
     }
 
-    public String getDsinvalIdStatus() {
-        return dsinvalIdStatus;
+    public String getDsInvalidStatus() {
+        return dsInvalidStatus;
     }
 
-    public void setDsinvalIdStatus(String dsinvalIdStatus) {
-        this.dsinvalIdStatus = dsinvalIdStatus;
+    public void setDsInvalidStatus(String dsInvalidStatus) {
+        this.dsInvalidStatus = dsInvalidStatus;
     }
 
-    public String getDsinvalIdLevel() {
-        return dsinvalIdLevel;
+    public String getDsInvalidLevel() {
+        return dsInvalidLevel;
     }
 
-    public void setDsinvalIdLevel(String dsinvalIdLevel) {
-        this.dsinvalIdLevel = dsinvalIdLevel;
-    }
-
-    public boolean isDdsinvalId() {
-        return ddsinvalId;
-    }
-
-    public void setDdsinvalId(boolean ddsinvalId) {
-        this.ddsinvalId = ddsinvalId;
+    public void setDsInvalidLevel(String dsInvalidLevel) {
+        this.dsInvalidLevel = dsInvalidLevel;
     }
 }

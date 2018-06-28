@@ -175,6 +175,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     /**
      * 查询哪些客资重复被拦截
+     *
      * @return
      */
     @Override
@@ -184,18 +185,30 @@ public class CompanyServiceImpl implements CompanyService {
 
     /**
      * 修改无效状态以及待跟踪意向等级
+     *
      * @param dsinvalDTO
      */
-    public void editDsinvalId(DsinvalDTO dsinvalDTO){
-        companyDao.editDsinvalId(dsinvalDTO);
+    public void editDsInvalid(DsinvalDTO dsinvalDTO) {
+        companyDao.editDsInvalid(dsinvalDTO);
+    }
+
+    /**
+     * 修改待定是否计入有效
+     *
+     * @param ddIsValid
+     * @param companyId
+     */
+    public void editDdIsValid(boolean ddIsValid, int companyId) {
+        companyDao.editDdIsValid(ddIsValid, companyId);
     }
 
     /**
      * 搜索无效状态以及跟踪意向等级
+     *
      * @param companyId
      * @return
      */
-    public DsinvalDTO findDsinvalId(@Param("companyId")Integer companyId){
+    public DsinvalDTO findDsinvalId(@Param("companyId") Integer companyId) {
         return companyDao.findDsinvalId(companyId);
     }
 

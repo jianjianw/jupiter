@@ -94,37 +94,54 @@ public interface CompanyService {
      * @return
      */
     CompanyVO getCompanyVO(int companyId);
+
     /**
-	 * 更改咨询类型(客资校验是否忽略咨询类型)
-	 * @return
-	 */
-	void editTypeRepeat(Boolean b, int companyId);
-	/**
-	 * 更改渠道类型(客资校验是否忽略渠道类型)
-	 * @return
-	 */
-	void editTypeSrcRepeat(boolean parseBoolean, int companyId);
-	/**
-	 * 更改客资录入时间和最后操作时间,客资状态是否可以重复录
-	 * @return
-	 */
-	void editKZday(String statusIgnore,String timeTypeIgnore, int dayIgnore, int companyId);
-	/**
-	 * 查询哪些客资重复被拦截
-	 * @return
-	 */
-	CompanyPO selectAll(int companyId);
+     * 更改咨询类型(客资校验是否忽略咨询类型)
+     *
+     * @return
+     */
+    void editTypeRepeat(Boolean b, int companyId);
+
+    /**
+     * 更改渠道类型(客资校验是否忽略渠道类型)
+     *
+     * @return
+     */
+    void editTypeSrcRepeat(boolean parseBoolean, int companyId);
+
+    /**
+     * 更改客资录入时间和最后操作时间,客资状态是否可以重复录
+     *
+     * @return
+     */
+    void editKZday(String statusIgnore, String timeTypeIgnore, int dayIgnore, int companyId);
+
+    /**
+     * 查询哪些客资重复被拦截
+     *
+     * @return
+     */
+    CompanyPO selectAll(int companyId);
 
     /**
      * 修改无效状态以及待跟踪意向等级
+     *
      * @param dsinvalDTO
      */
-    void editDsinvalId(DsinvalDTO dsinvalDTO);
+    void editDsInvalid(DsinvalDTO dsinvalDTO);
+
+    /**
+     * 修改待定是否计入有效
+     *
+     * @param dsinvalDTO
+     */
+    void editDdIsValid(boolean ddIsValid, int companyId);
 
     /**
      * 搜索无效状态以及跟踪意向等级
+     *
      * @param companyId
      * @return
      */
-    DsinvalDTO findDsinvalId(@Param("companyId")Integer companyId);
+    DsinvalDTO findDsinvalId(@Param("companyId") Integer companyId);
 }

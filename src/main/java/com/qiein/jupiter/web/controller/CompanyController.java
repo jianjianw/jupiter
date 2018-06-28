@@ -202,24 +202,40 @@ public class CompanyController extends BaseController {
         CompanyPO companyPo = companyService.selectAll(getCurrentLoginStaff().getCompanyId());
         return ResultInfoUtil.success(TigMsgEnum.SUCCESS, companyPo);
     }
+
     /**
      * 修改无效状态以及待跟踪意向等级
+     *
      * @param dsinvalDTO
      */
-    @PostMapping("edit_dsinval_id")
-    public ResultInfo editDsinvalId(@RequestBody DsinvalDTO dsinvalDTO){
-        StaffPO staff=getCurrentLoginStaff();
+    @PostMapping("edit_ds_invalid")
+    public ResultInfo editDsinvalId(@RequestBody DsinvalDTO dsinvalDTO) {
+        StaffPO staff = getCurrentLoginStaff();
         dsinvalDTO.setCompanyId(staff.getCompanyId());
-        companyService.editDsinvalId(dsinvalDTO);
+        companyService.editDsInvalid(dsinvalDTO);
         return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
     }
+
+    /**
+     * 修改待定是否计入有效
+     *
+     * @param dsinvalDTO
+     */
+    @PostMapping("edit_dd_is_valid")
+    public ResultInfo editDsinvalId(@RequestParam("ddIsValid") boolean ddIsValid) {
+        StaffPO staff = getCurrentLoginStaff();
+        companyService.editDdIsValid(ddIsValid, staff.getCompanyId());
+        return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
+    }
+
     /**
      * 搜索无效状态以及跟踪意向等级
+     *
      * @return
      */
     @GetMapping("find_dsinval_id")
-    public ResultInfo findDsinvalId(){
-        StaffPO staff=getCurrentLoginStaff();
+    public ResultInfo findDsinvalId() {
+        StaffPO staff = getCurrentLoginStaff();
         return ResultInfoUtil.success(companyService.findDsinvalId(staff.getCompanyId()));
     }
 }
