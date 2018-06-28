@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.qiein.jupiter.util.*;
+import com.qiein.jupiter.web.entity.dto.ClientExcelNewsDTO;
 import com.qiein.jupiter.web.entity.dto.RequestInfoDTO;
 import com.qiein.jupiter.web.entity.po.SystemLog;
 import com.qiein.jupiter.web.service.SystemLogService;
@@ -117,7 +118,7 @@ public class ExcelController extends BaseController {
      * @return
      */
     @PostMapping("/batch_edit_temp")
-    public ResultInfo batchEditTemp(@RequestBody ClientExcelDTO info) {
+    public ResultInfo batchEditTemp(@RequestBody ClientExcelNewsDTO info) {
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         info.setOperaId(currentLoginStaff.getId());

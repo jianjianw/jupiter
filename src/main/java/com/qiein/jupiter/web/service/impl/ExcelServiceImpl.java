@@ -283,7 +283,7 @@ public class ExcelServiceImpl implements ExcelService {
      * @param info
      */
     @Transactional(rollbackFor = Exception.class)
-    public void editKz(int companyId, ClientExcelDTO info) {
+    public void editKz(int companyId, ClientExcelNewsDTO info) {
         String[] kzIdArr = info.getKzIds().split(CommonConstant.STR_SEPARATOR);
         excelDao.batchEditTemp(DBSplitUtil.getTable(TableEnum.temp, companyId), kzIdArr, info);
         if (StringUtil.isNotEmpty(info.getTypeName())) {
@@ -310,6 +310,26 @@ public class ExcelServiceImpl implements ExcelService {
         if (StringUtil.isNotEmpty(info.getAppointName())) {
             // 更新邀约员ID
             excelDao.updateAppointId(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId());
+        }
+        if(StringUtil.isNotEmpty(info.getYsRangeStr())){
+            //更新预算范围
+            excelDao.updateYsRangeDictionaryCode(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId(),DictionaryConstant.YS_RANGE);
+        }
+        if(StringUtil.isNotEmpty(info.getYpTimeStr())){
+            //更新预拍时间
+            excelDao.updateYpTimeDictionaryCode(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId(),DictionaryConstant.YP_TIME);
+        }
+        if(StringUtil.isNotEmpty(info.getMarryTimeStr())){
+            //更新结婚时间
+            excelDao.updateMarryTimeDictionaryCode(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId(),DictionaryConstant.MARRY_TIME);
+        }
+        if(StringUtil.isNotEmpty(info.getYxLevelStr())){
+            //更新意向等级
+            excelDao.updateYxLevelDictionaryCode(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId(),DictionaryConstant.YX_RANK);
+        }
+        if(StringUtil.isNotEmpty(info.getZxStyleStr())){
+            //更新咨询方式
+            excelDao.updateZxStyleDictionaryCode(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId(),DictionaryConstant.ZX_STYLE);
         }
     }
 
