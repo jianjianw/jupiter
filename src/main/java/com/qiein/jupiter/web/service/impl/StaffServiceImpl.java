@@ -346,28 +346,29 @@ public class StaffServiceImpl implements StaffService {
 
     /**
      * 检查是否绑定成功，如果绑定成功返回微信公众号用户的所有信息
+     *
      * @param companyId
      * @param staffId
      */
     @Override
     public WeChatUserDTO checkWXBind(Integer companyId, Integer staffId) {
-            String resultJsonStr = HttpClient.get(WeChatPushUtil.APOLLO_URL+"/wechat/get_user_info")
-                    .queryString("companyId",companyId)
-                    .queryString("staffId",staffId)
-                    .asString();
-            JSONObject resultJson = JSONObject.parseObject(resultJsonStr);
-            if (StringUtil.isEmpty(resultJson.getString("data")) && resultJson.getIntValue("code")==100000)
-                log.info(ExceptionEnum.WX_NOT_BIND.getMsg());
-            if (resultJson.getIntValue("code")!=100000)
-                throw new RException(ExceptionEnum.GET_WX_INFO_FAIL);
+        String resultJsonStr = HttpClient.get(WeChatPushUtil.APOLLO_URL + "/wechat/get_user_info")
+                .queryString("companyId", companyId)
+                .queryString("staffId", staffId)
+                .asString();
+        JSONObject resultJson = JSONObject.parseObject(resultJsonStr);
+        if (StringUtil.isEmpty(resultJson.getString("data")) && resultJson.getIntValue("code") == 100000)
+            log.info(ExceptionEnum.WX_NOT_BIND.getMsg());
+        if (resultJson.getIntValue("code") != 100000)
+            throw new RException(ExceptionEnum.GET_WX_INFO_FAIL);
 
-            WeChatUserDTO weChatUserDTO =JSONObject.parseObject(resultJson.getString("data"),WeChatUserDTO.class);
-            log.info(weChatUserDTO.toString());
-            return weChatUserDTO;
+        WeChatUserDTO weChatUserDTO = JSONObject.parseObject(resultJson.getString("data"), WeChatUserDTO.class);
+        log.info(weChatUserDTO.toString());
+        return weChatUserDTO;
     }
 
     @Override
-    public StaffTodayInfoDTO getWXStaffInfo(Integer companyId,Integer staffId) {
+    public StaffTodayInfoDTO getWXStaffInfo(Integer companyId, Integer staffId) {
         //TODO
         return null;
     }
@@ -714,8 +715,8 @@ public class StaffServiceImpl implements StaffService {
      * @param staffId
      * @return
      */
-    public List<StaffVO> getGroupStaffById(int companyId, int staffId) {
-        return staffDao.getGroupStaffById(companyId, staffId);
+    public List<StaffVO> getGroupStaffById(int companyId, int staffId, String groupId) {
+        return staffDao.getGroupStaffById(companyId, staffId, groupId);
     }
 
     /**

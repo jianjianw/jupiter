@@ -250,7 +250,7 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @param staffId
      * @return
      */
-    List<StaffVO> getGroupStaffById(@Param("companyId") int companyId, @Param("staffId") int staffId);
+    List<StaffVO> getGroupStaffById(@Param("companyId") int companyId, @Param("staffId") int staffId, @Param("groupId") String groupId);
 
     /**
      * 根据员工编号获取员工名片

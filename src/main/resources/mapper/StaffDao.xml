@@ -605,6 +605,7 @@
         WHERE
             sf.ID = #{staffId}
             AND rela.COMPANYID = #{companyId}
+            AND rela.GROUPID = #{groupId}
     </select>
 
     <!--获取员工card-->
