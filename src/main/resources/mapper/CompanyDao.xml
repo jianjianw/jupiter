@@ -212,8 +212,8 @@
     <update id="editDsInvalid" parameterType="com.qiein.jupiter.web.entity.dto.DsinvalDTO">
         UPDATE
 			hm_pub_company
-		SET DSINVALIDSTATUS = #{dsinvalIdStatus},
-			DSINVALIDLEVEL=#{dsinvalIdLevel}
+		SET DSINVALIDSTATUS = #{dsInvalidStatus},
+			DSINVALIDLEVEL=#{dsInvalidLevel}
 		WHERE
 			ID = #{companyId}
     </update>

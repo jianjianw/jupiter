@@ -221,7 +221,7 @@ public class CompanyController extends BaseController {
      *
      * @param dsinvalDTO
      */
-    @PostMapping("edit_dd_is_valid")
+    @GetMapping("edit_dd_is_valid")
     public ResultInfo editDsinvalId(@RequestParam("ddIsValid") boolean ddIsValid) {
         StaffPO staff = getCurrentLoginStaff();
         companyService.editDdIsValid(ddIsValid, staff.getCompanyId());
