@@ -171,7 +171,7 @@ public interface ExcelDao {
      * @param kzIdArr
      * @param info
      */
-    void batchEditTemp(@Param("tempName") String tempName, @Param("kzIdArr") String[] kzIdArr, @Param("info") ClientExcelDTO info);
+    void batchEditTemp(@Param("tempName") String tempName, @Param("kzIdArr") String[] kzIdArr, @Param("info") ClientExcelNewsDTO info);
 
     /**
      * 设置状态ID和classId

@@ -235,41 +235,13 @@
             LEFT JOIN hm_pub_staff_role role_rela ON sf.ID = role_rela.STAFFID AND sf.COMPANYID = role_rela.COMPANYID
             LEFT JOIN hm_pub_role role ON role_rela.ROLEID = role.ID AND role_rela.COMPANYID = role.COMPANYID
             LEFT JOIN (SELECT
-                           groupId,
+                           count(1) as staff_count,
                            staffId,
                            companyId,
-                           rownum,
-                           rank,
-                           '1' DELBTFLAG
+                           '1' as DELBTFLAG
                        FROM
-                           (
-                               SELECT
-                                   a.groupId,
-                                   a.staffId,
-                                   a.companyId,
-                                   @rownum :=@rownum + 1 AS rownum,
-
-                                   IF (
-                                           @pdept = a.staffId ,@rank :=@rank + 1 ,@rank := 1
-                                   ) AS rank ,@pdept := a.staffId
-                               FROM
-                                   (
-                                       SELECT
-                                           groupId,
-                                           staffId,
-                                           companyId
-                                       FROM
-                                           hm_pub_group_staff
-                                       ORDER BY
-                                           staffId
-                                   ) a,
-                                   (
-                                       SELECT
-                                           @rownum := 0 ,@pdept := NULL ,@rank := 0
-                                   ) b
-                           ) result
-                       WHERE
-                           rank > 1) result on result.groupId = rela.GROUPID and result.staffId = rela.staffID and result.companyId = rela.companyID
+                           hm_pub_group_staff  group by staffid having staff_count > 1) result
+                    on result.staffId = rela.staffID and result.companyId = rela.companyID
         WHERE
             rela.GROUPID = #{groupId}
             AND rela.COMPANYID = #{companyId}
