@@ -197,5 +197,26 @@
 		WHERE
 			ID=#{companyId}
 	</select>
+
+	<update id="editDsinvalId">
+		UPDATE
+			hm_pub_company
+		SET
+			DSINVALIDSTATUS = #{dsinvalIdStatus},
+			DSINVALIDLEVEL=#{dsinvalIdLevel},
+			DDISVALID=#{ddsinvalId}
+		WHERE
+			ID=#{companyId}
+	</update>
+
+	<select id="findDsinvalId" resultType="com.qiein.jupiter.web.entity.dto.DsinvalDTO">
+		SELECT
+		 	DSINVALIDSTATUS dsinvalIdStatus,
+		 	DSINVALIDLEVEL dsinvalIdLevel,
+		 	DDISVALID ddsinvalId
+		FROM
+			hm_pub_company
+		WHERE ID=#{companyId}
+	</select>
 	
 </mapper>

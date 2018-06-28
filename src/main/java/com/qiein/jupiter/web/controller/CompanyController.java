@@ -5,6 +5,8 @@ import javax.annotation.Resource;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.web.entity.dto.DsinvalDTO;
+import com.qiein.jupiter.web.entity.po.StaffPO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -199,5 +201,25 @@ public class CompanyController extends BaseController {
     public ResultInfo selectAll() {
         CompanyPO companyPo = companyService.selectAll(getCurrentLoginStaff().getCompanyId());
         return ResultInfoUtil.success(TigMsgEnum.SUCCESS, companyPo);
+    }
+    /**
+     * 修改无效状态以及待跟踪意向等级
+     * @param dsinvalDTO
+     */
+    @PostMapping("edit_dsinval_id")
+    public ResultInfo editDsinvalId(@RequestBody DsinvalDTO dsinvalDTO){
+        StaffPO staff=getCurrentLoginStaff();
+        dsinvalDTO.setCompanyId(staff.getCompanyId());
+        companyService.editDsinvalId(dsinvalDTO);
+        return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
+    }
+    /**
+     * 搜索无效状态以及跟踪意向等级
+     * @return
+     */
+    @GetMapping("find_dsinval_id")
+    public ResultInfo findDsinvalId(){
+        StaffPO staff=getCurrentLoginStaff();
+        return ResultInfoUtil.success(companyService.findDsinvalId(staff.getCompanyId()));
     }
 }

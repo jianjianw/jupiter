@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.dao;
 
+import com.qiein.jupiter.web.entity.dto.DsinvalDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.vo.CompanyVO;
 
@@ -78,4 +79,16 @@ public interface CompanyDao extends BaseDao<CompanyPO> {
 	 * @return
 	 */
 	CompanyPO selectAll(@Param("companyId") int companyId);
+	/**
+	 * 修改无效状态以及待跟踪意向等级
+	 * @param dsinvalDTO
+	 */
+	void editDsinvalId(DsinvalDTO dsinvalDTO);
+
+	/**
+	 * 搜索无效状态以及跟踪意向等级
+	 * @param companyId
+	 * @return
+	 */
+	DsinvalDTO findDsinvalId(@Param("companyId")Integer companyId);
 }

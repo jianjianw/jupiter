@@ -4,9 +4,11 @@ import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.web.dao.CompanyDao;
+import com.qiein.jupiter.web.entity.dto.DsinvalDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.vo.CompanyVO;
 import com.qiein.jupiter.web.service.CompanyService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -178,6 +180,23 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public CompanyPO selectAll(int companyId) {
         return companyDao.selectAll(companyId);
+    }
+
+    /**
+     * 修改无效状态以及待跟踪意向等级
+     * @param dsinvalDTO
+     */
+    public void editDsinvalId(DsinvalDTO dsinvalDTO){
+        companyDao.editDsinvalId(dsinvalDTO);
+    }
+
+    /**
+     * 搜索无效状态以及跟踪意向等级
+     * @param companyId
+     * @return
+     */
+    public DsinvalDTO findDsinvalId(@Param("companyId")Integer companyId){
+        return companyDao.findDsinvalId(companyId);
     }
 
 

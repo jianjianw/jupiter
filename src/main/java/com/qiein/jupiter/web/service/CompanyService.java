@@ -1,7 +1,9 @@
 package com.qiein.jupiter.web.service;
 
+import com.qiein.jupiter.web.entity.dto.DsinvalDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.vo.CompanyVO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -112,4 +114,17 @@ public interface CompanyService {
 	 * @return
 	 */
 	CompanyPO selectAll(int companyId);
+
+    /**
+     * 修改无效状态以及待跟踪意向等级
+     * @param dsinvalDTO
+     */
+    void editDsinvalId(DsinvalDTO dsinvalDTO);
+
+    /**
+     * 搜索无效状态以及跟踪意向等级
+     * @param companyId
+     * @return
+     */
+    DsinvalDTO findDsinvalId(@Param("companyId")Integer companyId);
 }
