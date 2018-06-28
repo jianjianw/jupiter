@@ -334,8 +334,8 @@
         FROM
             hm_pub_group_staff rela
             INNER JOIN hm_pub_staff sf ON sf.COMPANYID = rela.COMPANYID AND rela.STAFFID = sf.ID
-            LEFT JOIN hm_pub_group grp ON grp.GROUPID = rela.GROUPID AND rela.COMPANYID = grp.COMPANYID
-            LEFT JOIN hm_pub_group par ON par.GROUPID = grp.PARENTID AND par.COMPANYID = grp.COMPANYID
+            INNER JOIN hm_pub_group grp ON grp.GROUPID = rela.GROUPID AND rela.COMPANYID = grp.COMPANYID
+            INNER JOIN hm_pub_group par ON par.GROUPID = grp.PARENTID AND par.COMPANYID = grp.COMPANYID
         WHERE
             rela.COMPANYID = #{companyId}
             AND sf.ISDEL = 0
