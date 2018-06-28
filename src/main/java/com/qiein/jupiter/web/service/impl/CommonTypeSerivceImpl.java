@@ -125,12 +125,12 @@ public class CommonTypeSerivceImpl implements CommonTypeSerivce {
      * 批量修改
      * @param commonTypePO
      */
-    public void editWeight(CommonTypePO commonTypePO){
-        List<String> list=new ArrayList<>();
-        for(String channelId:commonTypePO.getGroupId().split(CommonConstant.STR_SEPARATOR)){
-            list.add(channelId);
+    public void editWeight(String ids, Integer weight){
+        List<Integer> list=new ArrayList<>();
+        for(String id:ids.split(CommonConstant.STR_SEPARATOR)){
+            list.add(Integer.parseInt(id));
         }
-        commonTypeDao.editWeight(list,commonTypePO.getTypeId(),commonTypePO.getChannelId(),commonTypePO.getWeight());
+        commonTypeDao.editWeight(list,weight);
     }
 
 }

@@ -75,8 +75,6 @@ public interface CommonTypeDao {
      * 批量修改
      * @param list
      * @param weight
-     * @param typeId
-     * @param channelId
      */
-    void editWeight(@Param("list")List<String> list,@Param("typeId")Integer typeId,@Param("channelId")Integer channelId,@Param("weight")Integer weight );
+    void editWeight(@Param("list")List<Integer> list,@Param("weight")Integer weight );
 }

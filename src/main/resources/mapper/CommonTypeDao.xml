@@ -107,11 +107,11 @@
 
     <update id="editWeight">
         UPDATE hm_crm_type_channel_group_rela set WEIGHT=#{weight} where
-        GROUPID in (
+        ID in (
         <foreach collection="list" item="it" separator=",">
             #{it}
         </foreach>
         )
-        AND TYPEID=#{typeId} AND CHANNELID=#{channelId}
+
     </update>
 </mapper>

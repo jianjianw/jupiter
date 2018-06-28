@@ -4,6 +4,7 @@ import com.qiein.jupiter.web.entity.po.CommonTypePO;
 import com.qiein.jupiter.web.entity.vo.CommonTypeChannelShowVO;
 import com.qiein.jupiter.web.entity.vo.CommonTypeChannelVO;
 import com.qiein.jupiter.web.entity.vo.CommonTypeVO;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -76,8 +77,8 @@ public interface CommonTypeSerivce {
 
     /**
      * 批量修改
-     * @param commonTypePO
+     * @param ids
      */
-    void editWeight(CommonTypePO commonTypePO);
+    void editWeight(String ids, Integer weight);
 
 }
