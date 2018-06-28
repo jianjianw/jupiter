@@ -15,6 +15,8 @@ import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.service.ClientService;
 import com.qiein.jupiter.web.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,11 +29,17 @@ import java.util.Map;
 @RestController
 @RequestMapping("/send_msg")
 @Validated
+@PropertySource({"classpath:application-dev.properties"})
 public class SendMsgController extends BaseController{
 
     @Autowired
     private ShopService shopService;
 
+    @Value("${apollo.sendMsg}")
+    private String sendMsgUrl;
+
+    @Value("${apollo.findCompanyTemplate}")
+    private String findCompanyTemplateUrl;
 
     @Autowired
     private ClientService clientService;
@@ -63,10 +71,9 @@ public class SendMsgController extends BaseController{
         sendMsgToDTO.setParams(sendMsgDTO);
         String json=JSON.toJSONString(sendMsgToDTO);
         String sign=MD5Util.getApolloMd5(json);
-        String url="http://114.55.249.156:8286/send_msg/send_msg";
         String back=HttpClient
                 // 请求方式和请求url
-                .textBody(url)
+                .textBody(sendMsgUrl)
                 // post提交json
                 .json(json)
                 .queryString("sign",sign)
@@ -86,9 +93,8 @@ public class SendMsgController extends BaseController{
     public ResultInfo getTemplate(@RequestBody SendMsgDTO sendMsgDTO){
         StaffPO staff=getCurrentLoginStaff();
         sendMsgDTO.setCompanyId(staff.getCompanyId());
-        String url="http://114.55.249.156:8286/send_msg/find_company_template";
         String templateText=HttpClient
-                .get(url)
+                .get(findCompanyTemplateUrl)
                 .queryString("templateType", CommonConstant.YYJD)
                 .queryString("companyId",sendMsgDTO.getCompanyId())
                 .asString();
