@@ -21,6 +21,10 @@ public class SearchStaffVO extends BaseEntity {
      */
     private String userName;
     /**
+     * 小组ID
+     */
+    private String groupId;
+    /**
      * 小组名称
      */
     private String groupName;
@@ -79,5 +83,13 @@ public class SearchStaffVO extends BaseEntity {
 
     public void setCompanyId(int companyId) {
         this.companyId = companyId;
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 }

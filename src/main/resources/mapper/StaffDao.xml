@@ -90,6 +90,7 @@
         <result column="PHONE" property="phone" jdbcType="VARCHAR"/>
         <result column="USERNAME" property="userName" jdbcType="VARCHAR"/>
         <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
+        <result column="GROUPID" property="groupId" jdbcType="VARCHAR"/>
         <result column="GROUPNAME" property="groupName" jdbcType="VARCHAR"/>
         <result column="DEPTNAME" property="deptName" jdbcType="VARCHAR"/>
     </resultMap>
@@ -329,6 +330,7 @@
             sf.NICKNAME,
             sf.PHONE,
             sf.USERNAME,
+            grp.GROUPID,
             grp.GROUPNAME,
             par.GROUPNAME AS DEPTNAME
         FROM
