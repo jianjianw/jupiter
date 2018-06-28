@@ -2,12 +2,15 @@ package com.qiein.jupiter.web.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.constant.ChannelConstant;
 import com.qiein.jupiter.constant.ClientStatusConst;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.http.CrmBaseApi;
+import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
 import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.dao.*;
 import com.qiein.jupiter.web.entity.dto.ClientPushDTO;
@@ -15,6 +18,7 @@ import com.qiein.jupiter.web.entity.po.*;
 import com.qiein.jupiter.web.entity.vo.ClientVO;
 import com.qiein.jupiter.web.entity.vo.ShopVO;
 import com.qiein.jupiter.web.service.ClientAddService;
+import com.qiein.jupiter.web.service.SystemLogService;
 import com.qiein.jupiter.web.service.quene.ThreadTaskPushManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -487,6 +491,5 @@ public class ClientAddServiceImpl implements ClientAddService {
         result.put("code", errorCount == 0 ? CommonConstant.DEFAULT_SUCCESS_CODE : CommonConstant.DEFAULT_ERROR_CODE);
         return result;
     }
-
 
 }

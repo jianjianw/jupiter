@@ -61,7 +61,7 @@ public class GroupStaffServiceImpl implements GroupStaffService {
             if(CollectionUtils.isNotEmpty(ids)){
                 groupStaffDao.batchInsertGroupStaff(staffPO.getCompanyId(),groupId,ids.toArray(new String[] {}));
             }else{
-                throw new RException(ExceptionEnum.ADD_FAIL);
+                throw new RException(ExceptionEnum.GROUP_STAFF_EXISTS);
             }
         }else{
             groupStaffDao.batchInsertGroupStaff(staffPO.getCompanyId(),groupId,idsStr);

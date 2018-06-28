@@ -128,7 +128,7 @@
         temp.APPOINTORID, temp.APPOINTNAME, temp.APPOINTTIME, temp.MEMO, temp.CREATETIME, temp.SHOPID, temp.SHOPNAME,
         temp.COMPANYID, temp.ADADDRESS, temp.ADID, temp.OPERAID, temp.ADDRESS, temp.GROUPID, temp.GROUPNAME, temp.KEYWORD, temp.YXLEVEL, temp.YSRANGE, temp.YPTIME,
         temp.STAYAMOUNT, temp.AMOUNT, temp.MARRYTIME, temp.RECEPTORID, temp.RECEPTORNAME, temp.HTNUM, temp.OLDKZNAME, temp.OLDKZPHONE, temp.MATENAME, temp.MATEPHONE, temp.MATEWECHAT, temp.MATEQQ,
-        temp.COMESHOPTIME, temp.SUCCESSTIME, temp.RECEIVETIME, temp.TRACETIME, temp.INVALIDLABEL, temp.sex
+        temp.COMESHOPTIME, temp.SUCCESSTIME, temp.RECEIVETIME, temp.TRACETIME, temp.INVALIDLABEL, temp.sex,temp.MARRYTIMESTR,temp.YSRANGESTR,temp.YXLEVELSTR,temp.YPTIMESTR,temp.ZXSTYLESTR
     </sql>
 
 
@@ -145,7 +145,8 @@
         COLLECTORNAME,
         APPOINTNAME,APPOINTTIME,RECEPTORNAME,AMOUNT,CREATETIME, UPDATETIME,COMESHOPTIME,SUCCESSTIME, SHOPNAME,
         COMPANYID, OPERAID, ADDRESS, GROUPNAME,KEYWORD,MEMO
-        ,MATENAME,MATEPHONE,MATEWECHAT,MATEQQ,MARRYTIME,YPTIME,ADADDRESS,ADID,YXLEVEL,INVALIDLABEL,YSRANGE,OLDKZNAME,OLDKZPHONE,STAYAMOUNT,HTNUM)
+        ,MATENAME,MATEPHONE,MATEWECHAT,MATEQQ,MARRYTIME,YPTIME,ADADDRESS,ADID,YXLEVEL,INVALIDLABEL,YSRANGE,OLDKZNAME,OLDKZPHONE,STAYAMOUNT,HTNUM
+        ,MARRYTIMESTR,YPTIMESTR,YSRANGESTR,YXLEVELSTR,ZXSTYLESTR)
         VALUES
         <foreach collection="list" item="item" index="index" separator=",">
             (#{item.kzId},#{item.typeName}, #{item.statusId},#{item.channelName},
@@ -157,7 +158,7 @@
             #{item.operaId}, #{item.address}, #{item.groupName}, #{item.keyWord},
             #{item.remark},#{item.mateName},#{item.matePhone},#{item.mateWeChat},#{item.mateQq},#{item.marryTime},
             #{item.ypTime},#{item.adAddress},#{item.adId},#{item.yxLevel},#{item.invalidLabel},#{item.ysRange},#{item.oldKzName},#{item.oldKzPhone},
-            #{item.stayaMount},#{item.htNum}
+            #{item.stayaMount},#{item.htNum},#{item.marryTimeStr},#{item.ypTimeStr},#{item.ysRangeStr},#{item.yxLevelStr},#{item.zxStyleStr}
             )
         </foreach>
     </insert>
@@ -389,7 +390,8 @@
         or (temp.CLASSID != 1 AND temp.APPOINTORID IS NULL )
         or (temp.CLASSID = 4 AND (temp.SHOPID IS NULL OR temp.COMESHOPTIME IS NULL OR temp.RECEPTORID IS NULL))
         or (temp.CLASSID = 3 AND (temp.APPOINTTIME IS NULL OR temp.SHOPID IS NULL))
-        or (temp.CLASSID = 5 AND (temp.SHOPID IS NULL or temp.RECEPTORID IS NULL or temp.SUCCESSTIME IS NULL or temp.AMOUNT IS NULL)))
+        or (temp.CLASSID = 5 AND (temp.SHOPID IS NULL or temp.RECEPTORID IS NULL or temp.SUCCESSTIME IS NULL or
+        temp.AMOUNT IS NULL)))
     </select>
 
     <!--获取excel中重复客资列表-->
@@ -446,7 +448,10 @@
                ${tempName} temp
            WHERE NOT EXISTS
            (
-                   SELECT info.KZPHONE,info.KZWECHAT,info.KZQQ
+                   SELECT
+                       info.KZPHONE,
+                       info.KZWECHAT,
+                       info.KZQQ
                    FROM ${tableName} info
                    where (info.KZPHONE = temp.KZPHONE or info.KZWECHAT = temp.KZWECHAT or info.KZQQ = temp.KZQQ)
                          and ISDEL = 0
@@ -494,7 +499,7 @@
            (
                    SELECT tab.KZID
                    FROM ${tabName} tab
-                   where (tab.KZID = temp.KZID )
+                   where (tab.KZID = temp.KZID)
                          and ISDEL = 0
                          and CREATETIME + 10 > 2
            ) and temp.OPERAID = #{staffId}
@@ -587,7 +592,13 @@
         or (temp.CLASSID != 1 AND temp.APPOINTORID IS NULL )
         or (temp.CLASSID = 4 AND (temp.SHOPID IS NULL OR temp.COMESHOPTIME IS NULL OR temp.RECEPTORID IS NULL))
         or (temp.CLASSID = 3 AND (temp.APPOINTTIME IS NULL OR temp.SHOPID IS NULL))
-        or (temp.CLASSID = 5 AND (temp.SHOPID IS NULL or temp.RECEPTORID IS NULL or temp.SUCCESSTIME IS NULL or temp.AMOUNT IS NULL))
+        or (temp.CLASSID = 5 AND (temp.SHOPID IS NULL or temp.RECEPTORID IS NULL or temp.SUCCESSTIME IS NULL or
+        temp.AMOUNT IS NULL))
+        or (temp.YXLEVELSTR is not null and temp.YXLEVEL IS NULL)
+        Or (temp.YPTIMESTR IS NOT NULL AND temp.YPTIME IS NULL)
+        or (temp.YSRANGESTR IS NOT NULL AND temp.YSRANGE IS NULL)
+        or (temp.MARRYTIMESTR IS NOT NULL AND temp.MARRYTIME IS NULL)
+        or (temp.ZXSTYLESTR IS NOT NULL AND temp.ZXSTYLE IS NULL)
     </select>
 
     <!--获取正常客资-->
@@ -631,7 +642,13 @@
         or (temp.CLASSID != 1 AND temp.APPOINTORID IS NULL )
         or (temp.CLASSID = 4 AND (temp.SHOPID IS NULL OR temp.COMESHOPTIME IS NULL OR temp.RECEPTORID IS NULL))
         or (temp.CLASSID = 3 AND (temp.APPOINTTIME IS NULL OR temp.SHOPID IS NULL))
-        or (temp.CLASSID = 5 AND (temp.SHOPID IS NULL or temp.RECEPTORID IS NULL or temp.SUCCESSTIME IS NULL or temp.AMOUNT IS NULL)))c
+        or (temp.CLASSID = 5 AND (temp.SHOPID IS NULL or temp.RECEPTORID IS NULL or temp.SUCCESSTIME IS NULL or
+        temp.AMOUNT IS NULL))
+        or (temp.YXLEVELSTR is not null and temp.YXLEVEL IS NULL)
+        Or (temp.YPTIMESTR IS NOT NULL AND temp.YPTIME IS NULL)
+        or (temp.YSRANGESTR IS NOT NULL AND temp.YSRANGE IS NULL)
+        or (temp.MARRYTIMESTR IS NOT NULL AND temp.MARRYTIME IS NULL)
+        or (temp.ZXSTYLESTR IS NOT NULL AND temp.ZXSTYLE IS NULL))c
         on temp.KZID = c.KZID
         where c.KZID is null
     </select>
@@ -692,7 +709,13 @@
         or (temp.CLASSID != 1 AND temp.APPOINTORID IS NULL )
         or (temp.CLASSID = 4 AND (temp.SHOPID IS NULL OR temp.COMESHOPTIME IS NULL OR temp.RECEPTORID IS NULL))
         or (temp.CLASSID = 3 AND (temp.APPOINTTIME IS NULL OR temp.SHOPID IS NULL))
-        or (temp.CLASSID = 5 AND (temp.SHOPID IS NULL or temp.RECEPTORID IS NULL or temp.SUCCESSTIME IS NULL or temp.AMOUNT IS NULL))
+        or (temp.CLASSID = 5 AND (temp.SHOPID IS NULL or temp.RECEPTORID IS NULL or temp.SUCCESSTIME IS NULL or
+        temp.AMOUNT IS NULL))
+        or (temp.YXLEVELSTR is not null and temp.YXLEVEL IS NULL)
+        Or (temp.YPTIMESTR IS NOT NULL AND temp.YPTIME IS NULL)
+        or (temp.YSRANGESTR IS NOT NULL AND temp.YSRANGE IS NULL)
+        or (temp.MARRYTIMESTR IS NOT NULL AND temp.MARRYTIME IS NULL)
+        or (temp.ZXSTYLESTR IS NOT NULL AND temp.ZXSTYLE IS NULL)
         ) c ON temp.kzid = c.kzid
         WHERE
         c.kzid IS NULL
@@ -719,7 +742,13 @@
         or (temp.CLASSID != 1 AND temp.APPOINTORID IS NULL )
         or (temp.CLASSID = 4 AND (temp.SHOPID IS NULL OR temp.COMESHOPTIME IS NULL OR temp.RECEPTORID IS NULL))
         or (temp.CLASSID = 3 AND (temp.APPOINTTIME IS NULL OR temp.SHOPID IS NULL))
-        or (temp.CLASSID = 5 AND (temp.SHOPID IS NULL or temp.RECEPTORID IS NULL or temp.SUCCESSTIME IS NULL or temp.AMOUNT IS NULL))
+        or (temp.CLASSID = 5 AND (temp.SHOPID IS NULL or temp.RECEPTORID IS NULL or temp.SUCCESSTIME IS NULL or
+        temp.AMOUNT IS NULL))
+        or (temp.YXLEVELSTR is not null and temp.YXLEVEL IS NULL)
+        Or (temp.YPTIMESTR IS NOT NULL AND temp.YPTIME IS NULL)
+        or (temp.YSRANGESTR IS NOT NULL AND temp.YSRANGE IS NULL)
+        or (temp.MARRYTIMESTR IS NOT NULL AND temp.MARRYTIME IS NULL)
+        or (temp.ZXSTYLESTR IS NOT NULL AND temp.ZXSTYLE IS NULL)
         ) b,
         (
         SELECT DISTINCT
@@ -735,4 +764,55 @@
         AND temp.OPERAID = #{staffId}
         ) c
     </select>
+
+
+    <!--更改咨询方式字典编码-->
+    <update id="updateZxStyleDictionaryCode">
+        UPDATE ${tempName} temp
+        SET temp.ZXSTYLE = (SELECT DICCODE
+                            FROM hm_crm_dictionary dictionary
+                            WHERE dictionary.COMPANYID = temp.COMPANYID AND dictionary.DICNAME = temp.ZXSTYLESTR and
+                                  dictionary.DICTYPE = #{dictionaryType})
+        WHERE temp.OPERAID = #{staffId};
+    </update>
+
+    <!--更改意向等级字典编码-->
+    <update id="updateYxLevelDictionaryCode">
+        UPDATE ${tempName} temp
+        SET temp.YXLEVEL = (SELECT DICCODE
+                            FROM hm_crm_dictionary dictionary
+                            WHERE dictionary.COMPANYID = temp.COMPANYID AND dictionary.DICNAME = temp.YXLEVELSTR and
+                                  dictionary.DICTYPE = #{dictionaryType})
+        WHERE temp.OPERAID = #{staffId};
+    </update>
+
+    <!--更改预算范围字典编码-->
+    <update id="updateYsRangeDictionaryCode">
+        UPDATE ${tempName} temp
+        SET temp.YSRANGE = (SELECT DICCODE
+                            FROM hm_crm_dictionary dictionary
+                            WHERE dictionary.COMPANYID = temp.COMPANYID AND dictionary.DICNAME = temp.YSRANGESTR and
+                                  dictionary.DICTYPE = #{dictionaryType})
+        WHERE temp.OPERAID = #{staffId};
+    </update>
+
+    <!--更新预拍时间的字典编码-->
+    <update id="updateYpTimeDictionaryCode">
+        UPDATE ${tempName} temp
+        SET temp.YPTIME = (SELECT DICCODE
+                           FROM hm_crm_dictionary dictionary
+                           WHERE dictionary.COMPANYID = temp.COMPANYID AND dictionary.DICNAME = temp.YPTIMESTR and
+                                 dictionary.DICTYPE = #{dictionaryType})
+        WHERE temp.OPERAID = #{staffId};
+    </update>
+
+    <!--更新婚期时间的字典编码-->
+    <update id="updateMarryTimeDictionaryCode">
+        UPDATE ${tempName} temp
+        SET temp.MARRYTIME = (SELECT DICCODE
+                              FROM hm_crm_dictionary dictionary
+                              WHERE dictionary.COMPANYID = temp.COMPANYID AND dictionary.DICNAME = temp.MARRYTIMESTR and
+                                    dictionary.DICTYPE = #{dictionaryType})
+        WHERE temp.OPERAID = #{staffId};
+    </update>
 </mapper>

@@ -105,20 +105,10 @@ public class ExcelServiceImpl implements ExcelService {
             try {
                 clientExcelDTO.setAmount(Integer.valueOf(clientExcelDTO.getAmountStr()));
                 clientExcelDTO.setStayaMount(Integer.valueOf(clientExcelDTO.getStayaMountStr()));
-            } catch (Exception e) {
+            } catch (NumberFormatException e) {
                 throw new RException(ExceptionEnum.UNKNOW_ERROR);
             }
-            //设置字典表
-            DictionaryPO dictionaryPO = dictionaryDao.getDicByTypeAndName(currentLoginStaff.getCompanyId(), DictionaryConstant.ZX_STYLE, clientExcelDTO.getZxStyleStr());
-            clientExcelDTO.setZxStyle(dictionaryPO == null ? null : dictionaryPO.getDicCode());
-            dictionaryPO = dictionaryDao.getDicByTypeAndName(currentLoginStaff.getCompanyId(), DictionaryConstant.YS_RANGE, clientExcelDTO.getYsRangeStr());
-            clientExcelDTO.setYsRange(dictionaryPO == null ? null : dictionaryPO.getDicCode());
-            dictionaryPO = dictionaryDao.getDicByTypeAndName(currentLoginStaff.getCompanyId(), DictionaryConstant.MARRY_TIME, clientExcelDTO.getMarryTimeStr());
-            clientExcelDTO.setMarryTime(dictionaryPO == null ? null : dictionaryPO.getDicCode());
-            dictionaryPO = dictionaryDao.getDicByTypeAndName(currentLoginStaff.getCompanyId(), DictionaryConstant.YX_RANK, clientExcelDTO.getYxLevelStr());
-            clientExcelDTO.setYxLevel(dictionaryPO == null ? null : dictionaryPO.getDicCode());
-            dictionaryPO = dictionaryDao.getDicByTypeAndName(currentLoginStaff.getCompanyId(), DictionaryConstant.YP_TIME, clientExcelDTO.getYpTimeStr());
-            clientExcelDTO.setYpTime(dictionaryPO == null ? null : dictionaryPO.getDicCode());
+
         }
         // 1.删除员工客资缓存记录
         excelDao.deleteTempByStaffId(DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()),
@@ -194,6 +184,12 @@ public class ExcelServiceImpl implements ExcelService {
         excelDao.updateSrcAndChannel(DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()),
                 currentLoginStaff.getId());
 
+        //设置意向等级，预算范围，结婚时间，预拍时间的Code
+        excelDao.updateZxStyleDictionaryCode(DBSplitUtil.getTable(TableEnum.temp,currentLoginStaff.getCompanyId()), currentLoginStaff.getId(), DictionaryConstant.ZX_STYLE);
+        excelDao.updateYxLevelDictionaryCode(DBSplitUtil.getTable(TableEnum.temp,currentLoginStaff.getCompanyId()), currentLoginStaff.getId(), DictionaryConstant.YX_RANK);
+        excelDao.updateYsRangeDictionaryCode(DBSplitUtil.getTable(TableEnum.temp,currentLoginStaff.getCompanyId()), currentLoginStaff.getId(), DictionaryConstant.YS_RANGE);
+        excelDao.updateYpTimeDictionaryCode(DBSplitUtil.getTable(TableEnum.temp,currentLoginStaff.getCompanyId()), currentLoginStaff.getId(), DictionaryConstant.YP_TIME);
+        excelDao.updateMarryTimeDictionaryCode(DBSplitUtil.getTable(TableEnum.temp,currentLoginStaff.getCompanyId()), currentLoginStaff.getId(), DictionaryConstant.MARRY_TIME);
     }
 
 
@@ -374,7 +370,6 @@ public class ExcelServiceImpl implements ExcelService {
         //错误个数
         ClientSortCountDTO clientSortCount = excelDao.getMultipleKzStatusCount(DBSplitUtil.getTable(TableEnum.temp, staffPO.getCompanyId()),
                 DBSplitUtil.getTable(TableEnum.info, staffPO.getCompanyId()), staffPO.getId());
-        System.out.println(clientSortCount);
         return clientSortCount;
     }
 
