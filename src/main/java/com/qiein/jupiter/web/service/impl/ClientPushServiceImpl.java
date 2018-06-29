@@ -67,7 +67,7 @@ public class ClientPushServiceImpl implements ClientPushService {
     public synchronized void pushLp(int rule, int companyId, String kzId, int shopId, int channelId, int channelTypeId,
                                     int overTime, int interval, int srcId) {
 
-        if (NumUtil.haveInvalid(rule, companyId, shopId, channelId, channelTypeId) || StringUtil.isEmpty(kzId)) {
+        if (NumUtil.haveInvalid(rule, companyId, channelId, channelTypeId) || StringUtil.isEmpty(kzId)) {
             return;
         }
 
