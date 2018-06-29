@@ -196,7 +196,10 @@ public enum TigMsgEnum {
     /**
      * 录入成功
      */
-    ENTERING_SUNCCESS("录入成功");
+    ENTERING_SUNCCESS("录入成功"),
+
+    OPEN_SUCCESS("开启成功"),
+    CLOSE_SUCCESS("关闭成功");
 
     private String desc;
 

@@ -225,7 +225,7 @@ public class CompanyController extends BaseController {
     public ResultInfo editDsinvalId(@RequestParam("ddIsValid") boolean ddIsValid) {
         StaffPO staff = getCurrentLoginStaff();
         companyService.editDdIsValid(ddIsValid, staff.getCompanyId());
-        return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
+        return ResultInfoUtil.success(ddIsValid ? TigMsgEnum.OPERATE_SUCCESS : TigMsgEnum.CLOSE_SUCCESS);
     }
 
     /**
