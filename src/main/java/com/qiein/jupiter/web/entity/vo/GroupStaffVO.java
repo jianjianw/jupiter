@@ -42,6 +42,11 @@ public class GroupStaffVO implements Serializable {
 	private String chiefNames;
 
 	/**
+	 * 门店id
+	 * */
+	private Integer shopId;
+
+	/**
 	 * 员工集合
 	 */
 	private List<StaffPO> staffList;
@@ -50,6 +55,15 @@ public class GroupStaffVO implements Serializable {
 	 * 组集合
 	 */
 	private List<GroupStaffVO> groupList;
+
+
+	public Integer getShopId() {
+		return shopId;
+	}
+
+	public void setShopId(Integer shopId) {
+		this.shopId = shopId;
+	}
 
 	public int getId() {
 		return id;

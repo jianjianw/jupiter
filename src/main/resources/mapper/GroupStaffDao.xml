@@ -22,6 +22,7 @@
         <result column="UPCHIEFNAMES" property="chiefNames" jdbcType="VARCHAR"/>
         <collection property="groupList" ofType="com.qiein.jupiter.web.entity.vo.GroupStaffVO">
             <id column="ID" property="id" jdbcType="VARCHAR"/>
+            <result column="SHOPID" property="shopId" jdbcType="VARCHAR"></result>
             <result column="GROUPID" property="groupId" jdbcType="VARCHAR"/>
             <result column="GROUPNAME" property="groupName" jdbcType="VARCHAR"/>
             <result column="PARENTID" property="parentId" jdbcType="VARCHAR"/>
@@ -300,7 +301,7 @@
        SELECT
           group_up.ID UPID,group_up.GROUPNAME UPGROUPNAME,group_up.GROUPID UPGROUPID,group_up.PARENTID UPPARENTID,
            group_down.ID, group_down.GROUPNAME,group_down.GROUPID,group_down.PARENTID,
-            staff.id STAFFID,staff.NICKNAME,staff.ISLOCK,staff.ISDEL,staff.WHITEFLAG
+            staff.id STAFFID,staff.NICKNAME,staff.ISLOCK,staff.ISDEL,staff.WHITEFLAG,group_down.SHOPID
         FROM
             hm_pub_group group_up
             LEFT JOIN hm_pub_group group_down ON group_up.COMPANYID = group_down.COMPANYID
