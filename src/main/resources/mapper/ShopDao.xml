@@ -9,6 +9,7 @@
         <result column="PRIORITY" property="priority" jdbcType="INTEGER"/>
         <result column="ADDRESS" property="address" jdbcType="INTEGER"/>
         <result column="SERVICEPHONE" property="servicePhone" jdbcType="VARCHAR"/>
+        <result column="STAFFNAMES" property="staffNames" jdbcType="VARCHAR"/>
         <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
     </resultMap>
 
@@ -27,12 +28,16 @@
     <!--获取企业所有拍摄地-->
     <select id="getCompanyShopList" parameterType="map" resultMap="baseMap">
         SELECT
-            shop.ID,shop.SHOPNAME,shop.ISSHOW,shop.PRIORITY,shop.COMPANYID,shop.ADDRESS, shop.SERVICEPHONE
+            shop.ID,shop.SHOPNAME,shop.ISSHOW,shop.PRIORITY,shop.COMPANYID,shop.ADDRESS, shop.SERVICEPHONE,GROUP_CONCAT( sf.NICKNAME ) AS STAFFNAMES
         FROM
             hm_pub_shop shop
+        LEFT JOIN hm_pub_group grp ON grp.SHOPID = shop.ID  AND shop.COMPANYID = grp.COMPANYID
+        LEFT JOIN hm_pub_group_staff rela ON rela.GROUPID = grp.GROUPID AND rela.COMPANYID = grp.COMPANYID
+        LEFT JOIN hm_pub_staff sf ON sf.ID = rela.STAFFID AND rela.COMPANYID = sf.COMPANYID AND sf.ISDEL = 0
         WHERE
             shop.COMPANYID = #{companyId}
         AND shop.TYPEID = 1
+        GROUP BY shop.ID
         ORDER BY shop.ISSHOW DESC,shop.PRIORITY,shop.ID
     </select>
 

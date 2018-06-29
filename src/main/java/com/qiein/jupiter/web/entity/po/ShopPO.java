@@ -39,7 +39,10 @@ public class ShopPO extends BaseEntity {
 	 * 企业ID
 	 */
 	private int companyId;
-
+	/**
+	 * 门店下所有员工姓名
+	 */
+	private String staffNames;
 	public String getShopName() {
 		return shopName;
 	}
@@ -94,5 +97,13 @@ public class ShopPO extends BaseEntity {
 
 	public void setCompanyId(int companyId) {
 		this.companyId = companyId;
+	}
+
+	public String getStaffNames() {
+		return staffNames;
+	}
+
+	public void setStaffNames(String staffNames) {
+		this.staffNames = staffNames;
 	}
 }
