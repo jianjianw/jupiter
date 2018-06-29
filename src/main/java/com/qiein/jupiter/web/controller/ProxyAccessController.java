@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 /**
+ * 代理访问
+ *
  * @Author: shiTao
  */
 @RequestMapping("/proxy_access")
@@ -31,9 +33,9 @@ public class ProxyAccessController {
      *
      * @return
      */
-    @GetMapping("/get")
+    @PostMapping("/get")
     public ResultInfo get(String url, @RequestBody Map<String, String> param) {
-        String s =HttpClient.get(url).queryString(param).asString();
+        String s = HttpClient.get(url).queryString(param).asString();
         return ResultInfoUtil.success(JSONObject.parse(s));
     }
 }
