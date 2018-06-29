@@ -20,10 +20,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.constant.CommonConstant;
-import com.qiein.jupiter.enums.TigMsgEnum;
+import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
-import com.qiein.jupiter.web.entity.dto.ClientExcelDTO;
 import com.qiein.jupiter.web.entity.dto.ClientExportDTO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.ClientExportVO;
@@ -65,7 +64,7 @@ public class ExcelController extends BaseController {
         } catch (Exception e) {
 
         }
-        return ResultInfoUtil.success(TigMsgEnum.IMPORT_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.IMPORT_SUCCESS);
     }
 
     /**
@@ -92,7 +91,7 @@ public class ExcelController extends BaseController {
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         excelService.tempKzMoveToInfo(currentLoginStaff.getCompanyId(), currentLoginStaff.getId());
-        return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
     }
 
     /**
@@ -109,7 +108,7 @@ public class ExcelController extends BaseController {
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         excelService.batchDeleteTemp(currentLoginStaff.getCompanyId(), currentLoginStaff.getId(), kzIds);
-        return ResultInfoUtil.success(TigMsgEnum.DELETE_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.DELETE_SUCCESS);
     }
 
     /**
@@ -123,7 +122,7 @@ public class ExcelController extends BaseController {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         info.setOperaId(currentLoginStaff.getId());
         excelService.editKz(currentLoginStaff.getCompanyId(), info);
-        return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
 
     /**
@@ -136,7 +135,7 @@ public class ExcelController extends BaseController {
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         excelService.deleteTempByStaffId(currentLoginStaff.getCompanyId(), currentLoginStaff.getId());
-        return ResultInfoUtil.success(TigMsgEnum.DELETE_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.DELETE_SUCCESS);
     }
 
     /**

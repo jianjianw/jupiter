@@ -1,7 +1,7 @@
 package com.qiein.jupiter.web.controller;
 
 import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
-import com.qiein.jupiter.enums.TigMsgEnum;
+import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.util.ObjectUtil;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
@@ -42,7 +42,7 @@ public class BrandController extends BaseController {
         //对象参数去空
         ObjectUtil.objectStrParamTrim(brandPO);
         brandService.createBrand(brandPO);
-        return ResultInfoUtil.success(TigMsgEnum.ADD_BRAND_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.ADD_BRAND_SUCCESS);
     }
 
     /**
@@ -57,7 +57,7 @@ public class BrandController extends BaseController {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         brandService.datDelBrand(ids, currentLoginStaff.getCompanyId());
-        return ResultInfoUtil.success(TigMsgEnum.SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.SUCCESS);
     }
 
     /**
@@ -76,7 +76,7 @@ public class BrandController extends BaseController {
         ObjectUtil.objectStrParamTrim(brandPO);
         brandService.editBrand(brandPO);
 
-        return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
 
     /**
@@ -88,7 +88,7 @@ public class BrandController extends BaseController {
     public ResultInfo getBrandList() {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        return ResultInfoUtil.success(TigMsgEnum.SUCCESS,
+        return ResultInfoUtil.success(TipMsgEnum.SUCCESS,
                 brandService.getBrandList(currentLoginStaff.getCompanyId()));
     }
 }

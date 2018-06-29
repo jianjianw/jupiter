@@ -16,7 +16,7 @@ import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.service.SchedulingService;
 import com.qiein.jupiter.web.service.StaffService;
 
-import com.qiein.jupiter.enums.TigMsgEnum;
+import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.web.entity.vo.GroupsInfoVO;
@@ -50,7 +50,7 @@ public class SchedulingController extends BaseController {
 	public ResultInfo getStaffMarsInfo(String type) {
 		List<GroupsInfoVO> list = groupService.getStaffMarsInfo(type, getCurrentLoginStaff().getId(),
 				getCurrentLoginStaff().getCompanyId());
-		return ResultInfoUtil.success(TigMsgEnum.SUCCESS, list);
+		return ResultInfoUtil.success(TipMsgEnum.SUCCESS, list);
 	}
 
     /**

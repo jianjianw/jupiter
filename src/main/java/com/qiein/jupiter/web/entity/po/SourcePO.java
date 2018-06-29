@@ -75,7 +75,7 @@ public class SourcePO extends BaseEntity {
     /**
      * 推送规则
      */
-    private int pushRule;
+    private Integer pushRule;
 
     /**
      * 邀约id
@@ -227,11 +227,11 @@ public class SourcePO extends BaseEntity {
         isShow = show;
     }
 
-    public int getPushRule() {
+    public Integer getPushRule() {
         return pushRule;
     }
 
-    public void setPushRule(int pushRule) {
+    public void setPushRule(Integer pushRule) {
         this.pushRule = pushRule;
     }
 }

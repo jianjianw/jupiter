@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.constant.ClientStatusConst;
-import com.qiein.jupiter.constant.CommonConstant;
-import com.qiein.jupiter.enums.TigMsgEnum;
+import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.NumUtil;
@@ -47,7 +46,7 @@ public class ClientTrackController extends BaseController {
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         clientTrackService.batchDeleteKzList(kzIds, currentLoginStaff);
-        return ResultInfoUtil.success(TigMsgEnum.DELETE_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.DELETE_SUCCESS);
     }
 
     /**
@@ -72,7 +71,7 @@ public class ClientTrackController extends BaseController {
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         clientTrackService.batchTransferKzList(kzIds, role, toStaffId, currentLoginStaff);
-        return ResultInfoUtil.success(TigMsgEnum.TRANSFER_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.TRANSFER_SUCCESS);
     }
 
     /**
@@ -98,7 +97,7 @@ public class ClientTrackController extends BaseController {
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         clientTrackService.approvalInvalidKzList(kzIds, memo, rst, invalidLabel, currentLoginStaff);
-        return ResultInfoUtil.success(TigMsgEnum.APPROVAL_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.APPROVAL_SUCCESS);
     }
 
     /**
@@ -131,7 +130,7 @@ public class ClientTrackController extends BaseController {
             clientPushService.allotToMsjd(kzIds, staffIds, currentStaff.getCompanyId(), currentStaff.getId(),
                     currentStaff.getNickName());
         }
-        return ResultInfoUtil.success(TigMsgEnum.ALLOT_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.ALLOT_SUCCESS);
     }
 
     /**
@@ -146,6 +145,6 @@ public class ClientTrackController extends BaseController {
             throw new RException(ExceptionEnum.KZ_ID_IS_NULL);
         }
         clientTrackService.batchRestoreKzList(kzIds, getCurrentLoginStaff());
-        return ResultInfoUtil.success(TigMsgEnum.RESTORE_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.RESTORE_SUCCESS);
     }
 }

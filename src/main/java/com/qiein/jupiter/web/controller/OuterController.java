@@ -3,7 +3,7 @@ package com.qiein.jupiter.web.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.aop.validate.annotation.Id;
 import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
-import com.qiein.jupiter.enums.TigMsgEnum;
+import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.MobileLocationUtil;
@@ -32,7 +32,7 @@ public class OuterController {
      */
     @GetMapping("/get_address_by_phone")
     public ResultInfo getAddressByPhone(@NotEmptyStr @RequestParam("phone") String phone) {
-        return ResultInfoUtil.success(TigMsgEnum.SUCCESS, MobileLocationUtil.getPhoneLocation(phone));
+        return ResultInfoUtil.success(TipMsgEnum.SUCCESS, MobileLocationUtil.getPhoneLocation(phone));
     }
 
     /**

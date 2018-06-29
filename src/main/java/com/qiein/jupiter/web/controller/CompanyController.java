@@ -1,26 +1,19 @@
 package com.qiein.jupiter.web.controller;
 
-import javax.annotation.Resource;
-
+import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
+import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.util.NumUtil;
-import com.qiein.jupiter.util.StringUtil;
-import com.qiein.jupiter.web.entity.dto.DsinvalDTO;
-import com.qiein.jupiter.web.entity.po.StaffPO;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
-import com.qiein.jupiter.enums.TigMsgEnum;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
+import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.web.entity.dto.DsinvalDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
+import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.service.CompanyService;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
 
 /**
  * 公司
@@ -41,7 +34,7 @@ public class CompanyController extends BaseController {
     @PostMapping("/edit")
     public ResultInfo editCompanyInfo(@RequestBody CompanyPO companyPO) {
         companyService.update(companyPO);
-        return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
 
     /**
@@ -54,43 +47,38 @@ public class CompanyController extends BaseController {
     public ResultInfo editCompanySsolimit(@NotEmptyStr @RequestParam("flag") String flag) {
         companyService.updateFlag(getCurrentLoginStaff().getCompanyId(), CompanyPO.COLUMN_SSOLIMIT,
                 Boolean.valueOf(flag));
-        return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
 
     /**
      * 客服领取客资倒计时时间
      *
-     * @param flag
      * @return
      */
     @GetMapping("/overtime")
     public ResultInfo editCompanyOvertime(@NotEmptyStr @RequestParam("num") Integer num) {
         companyService.updateRange(getCurrentLoginStaff().getCompanyId(), CompanyPO.COLUMN_OVERTIME, num);
-        return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
 
     /**
      * 客服每日领单默认限额
      *
-     * @param flag
-     * @return
      */
     @GetMapping("/limitdefault")
     public ResultInfo editCompanyLimitdefault(@NotEmptyStr @RequestParam("num") Integer num) {
         companyService.updateRange(getCurrentLoginStaff().getCompanyId(), CompanyPO.COLUMN_LIMITDEFAULT, num);
-        return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
 
     /**
      * 客服领取客资指定时间不能再领取下一个
      *
-     * @param flag
-     * @return
      */
     @GetMapping("/kzinterval")
     public ResultInfo editCompanyKzinterval(@NotEmptyStr @RequestParam("num") Integer num) {
         companyService.updateRange(getCurrentLoginStaff().getCompanyId(), CompanyPO.COLUMN_KZINTERVAL, num);
-        return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
 
     /**
@@ -103,7 +91,7 @@ public class CompanyController extends BaseController {
     public ResultInfo editCompanyNotselfblind(@NotEmptyStr @RequestParam("flag") String flag) {
         companyService.updateFlag(getCurrentLoginStaff().getCompanyId(), CompanyPO.COLUMN_NOTSELFBLIND,
                 Boolean.valueOf(flag));
-        return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
 
     /**
@@ -116,7 +104,7 @@ public class CompanyController extends BaseController {
     public ResultInfo editCompanyUnableselfline(@NotEmptyStr @RequestParam("flag") String flag) {
         companyService.updateFlag(getCurrentLoginStaff().getCompanyId(), CompanyPO.COLUMN_UNABLESELFLINE,
                 Boolean.valueOf(flag));
-        return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
 
     /**
@@ -128,7 +116,7 @@ public class CompanyController extends BaseController {
     public ResultInfo editCompanyUnableappointor(@NotEmptyStr @RequestParam("flag") String flag) {
         companyService.updateFlag(getCurrentLoginStaff().getCompanyId(), CompanyPO.COLUMN_UNABLEAPPOINTOR,
                 Boolean.valueOf(flag));
-        return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
 
     /**
@@ -139,7 +127,7 @@ public class CompanyController extends BaseController {
     @GetMapping("/unableinvalidrange")
     public ResultInfo editCompanyUnableinvalidrange(@NotEmptyStr @RequestParam("num") Integer num) {
         companyService.updateRange(getCurrentLoginStaff().getCompanyId(), CompanyPO.COLUMN_UNABLEINVALIDRANGE, num);
-        return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
 
     /**
@@ -149,7 +137,7 @@ public class CompanyController extends BaseController {
      */
     @GetMapping("/info")
     public ResultInfo getCompanyInfo() {
-        return ResultInfoUtil.success(TigMsgEnum.SUCCESS,
+        return ResultInfoUtil.success(TipMsgEnum.SUCCESS,
                 companyService.getById(getCurrentLoginStaff().getCompanyId()));
     }
 
@@ -162,7 +150,8 @@ public class CompanyController extends BaseController {
     public ResultInfo editTypeRepeat(@RequestParam("typeRepeat") boolean typeRepeat) {
 
         companyService.editTypeRepeat(typeRepeat, getCurrentLoginStaff().getCompanyId());
-        return ResultInfoUtil.success(typeRepeat ? TigMsgEnum.OPEN_SUCCESS : TigMsgEnum.CLOSE_SUCCESS);
+
+        return ResultInfoUtil.success(typeRepeat ? TipMsgEnum.OPEN_SUCCESS : TipMsgEnum.CLOSE_SUCCESS);
     }
 
     /**
@@ -173,7 +162,7 @@ public class CompanyController extends BaseController {
     @GetMapping("/editSrcRepeat")
     public ResultInfo editSrcRepeat(@RequestParam("srcRepeat") boolean srcRepeat) {
         companyService.editTypeSrcRepeat(srcRepeat, getCurrentLoginStaff().getCompanyId());
-        return ResultInfoUtil.success(srcRepeat ? TigMsgEnum.OPEN_SUCCESS : TigMsgEnum.CLOSE_SUCCESS);
+        return ResultInfoUtil.success(srcRepeat ? TipMsgEnum.OPEN_SUCCESS : TipMsgEnum.CLOSE_SUCCESS);
     }
 
     /**
@@ -187,7 +176,7 @@ public class CompanyController extends BaseController {
             return ResultInfoUtil.error(ExceptionEnum.REPEAT_TIME_ERRPR);
         }
         companyService.editKZday(statusIgnore, timeTypeIgnore, dayIgnore, getCurrentLoginStaff().getCompanyId());
-        return ResultInfoUtil.success(TigMsgEnum.SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.SUCCESS);
     }
 
     /**
@@ -199,7 +188,7 @@ public class CompanyController extends BaseController {
     @ResponseBody
     public ResultInfo selectAll() {
         CompanyPO companyPo = companyService.selectAll(getCurrentLoginStaff().getCompanyId());
-        return ResultInfoUtil.success(TigMsgEnum.SUCCESS, companyPo);
+        return ResultInfoUtil.success(TipMsgEnum.SUCCESS, companyPo);
     }
 
     /**
@@ -212,19 +201,18 @@ public class CompanyController extends BaseController {
         StaffPO staff = getCurrentLoginStaff();
         dsinvalDTO.setCompanyId(staff.getCompanyId());
         companyService.editDsInvalid(dsinvalDTO);
-        return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
 
     /**
      * 修改待定是否计入有效
      *
-     * @param dsinvalDTO
      */
     @GetMapping("edit_dd_is_valid")
     public ResultInfo editDsinvalId(@RequestParam("ddIsValid") boolean ddIsValid) {
         StaffPO staff = getCurrentLoginStaff();
         companyService.editDdIsValid(ddIsValid, staff.getCompanyId());
-        return ResultInfoUtil.success(ddIsValid ? TigMsgEnum.OPERATE_SUCCESS : TigMsgEnum.CLOSE_SUCCESS);
+        return ResultInfoUtil.success(ddIsValid ? TipMsgEnum.OPERATE_SUCCESS : TipMsgEnum.CLOSE_SUCCESS);
     }
 
     /**

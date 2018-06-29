@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.enums.OrderSuccessTypeEnum;
-import com.qiein.jupiter.enums.TigMsgEnum;
+import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.enums.WebSocketMsgEnum;
 import com.qiein.jupiter.web.entity.dto.OrderSuccessMsg;
 import com.qiein.jupiter.web.entity.dto.WebSocketMsgDTO;
@@ -81,7 +81,7 @@ public class AllTest {
 
     @Test
     public void testEnum() {
-        System.out.println(TigMsgEnum.ADD_BRAND_SUCCESS);
+        System.out.println(TipMsgEnum.ADD_BRAND_SUCCESS);
     }
 
     @Test

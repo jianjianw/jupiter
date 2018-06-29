@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.qiein.jupiter.enums.TigMsgEnum;
+import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.MD5Util;
@@ -40,7 +40,7 @@ public class ApolloController extends BaseController {
 		checkAccessKey(companyId, accessKey);
 		checkSign(companyId, accessKey, sign);
 
-		return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
+		return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
 	}
 
 	// lock

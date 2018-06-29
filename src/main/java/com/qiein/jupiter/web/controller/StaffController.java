@@ -21,7 +21,7 @@ import com.qiein.jupiter.aop.aspect.annotation.LoginLog;
 import com.qiein.jupiter.aop.validate.annotation.Bool;
 import com.qiein.jupiter.aop.validate.annotation.Id;
 import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
-import com.qiein.jupiter.enums.TigMsgEnum;
+import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.http.CrmBaseApi;
@@ -81,7 +81,7 @@ public class StaffController extends BaseController {
         // 对象参数trim
         ObjectUtil.objectStrParamTrim(staffVO);
         staffService.insert(staffVO);
-        return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
     }
 
     /**
@@ -108,7 +108,7 @@ public class StaffController extends BaseController {
         // 设置cid
         staffVO.setCompanyId(currentLoginStaff.getCompanyId());
         staffService.update(staffVO);
-        return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
     }
 
     /**
@@ -151,7 +151,7 @@ public class StaffController extends BaseController {
         // 获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         staffService.batchEditStaff(currentLoginStaff.getCompanyId(), staffIds, roleIds, password, groupId);
-        return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
     }
 
     /**
@@ -269,7 +269,7 @@ public class StaffController extends BaseController {
         Integer companyId = currentLoginStaff.getCompanyId();
         // 锁定状态
         staffService.setLockState(staffId, companyId, isLock);
-        return ResultInfoUtil.success(TigMsgEnum.OPERATE_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.OPERATE_SUCCESS);
     }
 
     /**
@@ -314,7 +314,7 @@ public class StaffController extends BaseController {
         // 获取操作用户所属公司
         Integer companyId = currentLoginStaff.getCompanyId();
 
-        return ResultInfoUtil.success(TigMsgEnum.SUCCESS, staffService.getChangeList(companyId));
+        return ResultInfoUtil.success(TipMsgEnum.SUCCESS, staffService.getChangeList(companyId));
     }
 
     /**
@@ -335,7 +335,7 @@ public class StaffController extends BaseController {
         // 设置cid
         staffDetailVO.setCompanyId(currentLoginStaff.getCompanyId());
         staffService.update(staffDetailVO);
-        return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
     }
 
     /**
@@ -352,7 +352,7 @@ public class StaffController extends BaseController {
         staffPasswordDTO.setId(currentLoginStaff.getId());
         staffPasswordDTO.setCompanyId(currentLoginStaff.getCompanyId());
         staffService.updatePassword(staffPasswordDTO);
-        return ResultInfoUtil.success(TigMsgEnum.UPDATE_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.UPDATE_SUCCESS);
     }
 
     /**
@@ -381,7 +381,7 @@ public class StaffController extends BaseController {
         // 获取操作用户所属公司
         Integer companyId = currentLoginStaff.getCompanyId();
 
-        return ResultInfoUtil.success(TigMsgEnum.SUCCESS, staffService.getGroupStaffByType(companyId, type));
+        return ResultInfoUtil.success(TipMsgEnum.SUCCESS, staffService.getGroupStaffByType(companyId, type));
     }
 
     /**
@@ -398,7 +398,7 @@ public class StaffController extends BaseController {
         condition.put("companyId", currentLoginStaff.getCompanyId());
         condition.put("delFlag", true);
         queryMapDTO.setCondition(condition);
-        return ResultInfoUtil.success(TigMsgEnum.SUCCESS, staffService.getDelStaffList(queryMapDTO));
+        return ResultInfoUtil.success(TipMsgEnum.SUCCESS, staffService.getDelStaffList(queryMapDTO));
     }
 
     /**
@@ -431,7 +431,7 @@ public class StaffController extends BaseController {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         staffVO.setCompanyId(currentLoginStaff.getCompanyId());
         staffService.restoreDelStaff(staffVO);
-        return ResultInfoUtil.success(TigMsgEnum.RESOTRE_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.RESOTRE_SUCCESS);
     }
 
     /**
@@ -446,7 +446,7 @@ public class StaffController extends BaseController {
         // 获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         staffService.batchRestoreStaff(currentLoginStaff.getCompanyId(), staffIds, roleIds, password, groupId);
-        return ResultInfoUtil.success(TigMsgEnum.RESOTRE_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.RESOTRE_SUCCESS);
     }
 
     /**
@@ -477,10 +477,10 @@ public class StaffController extends BaseController {
                 currentLoginStaff.getId(), currentLoginStaff.getNickName());
         if (status == 0) {
             // 上线
-            return ResultInfoUtil.success(TigMsgEnum.OFFLINE_SUCCESS);
+            return ResultInfoUtil.success(TipMsgEnum.OFFLINE_SUCCESS);
         } else {
             // 下线
-            return ResultInfoUtil.success(TigMsgEnum.ONLINE_SUCCESS);
+            return ResultInfoUtil.success(TipMsgEnum.ONLINE_SUCCESS);
         }
     }
 

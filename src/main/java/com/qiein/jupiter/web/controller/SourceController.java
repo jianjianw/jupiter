@@ -2,7 +2,7 @@ package com.qiein.jupiter.web.controller;
 
 import com.qiein.jupiter.aop.validate.annotation.Id;
 import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
-import com.qiein.jupiter.enums.TigMsgEnum;
+import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.*;
@@ -16,8 +16,6 @@ import com.qiein.jupiter.web.service.SystemLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
 
 /**
  * 来源Controller
@@ -58,7 +56,7 @@ public class SourceController extends BaseController {
         } catch (Exception e) {
 
         }
-        return ResultInfoUtil.success(TigMsgEnum.ADD_SOURCE_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.ADD_SOURCE_SUCCESS);
     }
 
     /**
@@ -78,7 +76,7 @@ public class SourceController extends BaseController {
         if (StringUtil.isEmpty(String.valueOf(sourceVO.getId())))
             throw new RException(ExceptionEnum.SOURCE_ID_NULL);
         sourceService.editSource(sourceVO);
-        return ResultInfoUtil.success(TigMsgEnum.EDIT_SOURCE_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.EDIT_SOURCE_SUCCESS);
     }
 
     /**
@@ -92,7 +90,7 @@ public class SourceController extends BaseController {
     @GetMapping("/tz_priority")
     public ResultInfo editPriority(@Id Integer fPriority, @Id Integer sPriority, @Id Integer id) {
         sourceService.editSourcePriority(fPriority, sPriority, id, getCurrentLoginStaff().getCompanyId());
-        return ResultInfoUtil.success(TigMsgEnum.EDIT_SOURCE_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.EDIT_SOURCE_SUCCESS);
     }
 
     /**
@@ -107,7 +105,7 @@ public class SourceController extends BaseController {
     @GetMapping("/priority")
     public ResultInfo editPriority(Integer fId,Integer fPriority,Integer sId,Integer sPriority) {
         sourceService.editProiority(fId, fPriority, sId, sPriority, getCurrentLoginStaff().getCompanyId());
-        return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
 
     /**
@@ -123,6 +121,6 @@ public class SourceController extends BaseController {
         //获取所属公司编号
         Integer companyId = currentLoginStaff.getCompanyId();
         sourceService.datDelSrc(ids, companyId);
-        return ResultInfoUtil.success(TigMsgEnum.DEL_SOURCE_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.DEL_SOURCE_SUCCESS);
     }
 }

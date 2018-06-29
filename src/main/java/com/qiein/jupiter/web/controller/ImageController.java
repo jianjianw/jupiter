@@ -1,6 +1,6 @@
 package com.qiein.jupiter.web.controller;
 
-import com.qiein.jupiter.enums.TigMsgEnum;
+import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.web.entity.po.StaffPO;
@@ -30,7 +30,7 @@ public class ImageController extends BaseController {
      */
     @GetMapping("/get_by_type")
     public ResultInfo getSrcImgList(@NotEmpty String type) {
-        return ResultInfoUtil.success(TigMsgEnum.SUCCESS, imageService.getSrcImgList(type));
+        return ResultInfoUtil.success(TipMsgEnum.SUCCESS, imageService.getSrcImgList(type));
     }
 
     /**
@@ -39,7 +39,7 @@ public class ImageController extends BaseController {
     @GetMapping("/get_by_type_rpc")
     public ResultInfo getSrcImgListRPC(@NotEmpty String type) {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        return ResultInfoUtil.success(TigMsgEnum.SUCCESS,
+        return ResultInfoUtil.success(TipMsgEnum.SUCCESS,
                 imageService.getSrcImgListRPC(type, currentLoginStaff.getCompanyId()));
     }
 }

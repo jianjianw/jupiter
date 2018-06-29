@@ -2,7 +2,7 @@ package com.qiein.jupiter.web.controller;
 
 import com.qiein.jupiter.aop.validate.annotation.Bool;
 import com.qiein.jupiter.aop.validate.annotation.Id;
-import com.qiein.jupiter.enums.TigMsgEnum;
+import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.ResultInfo;
@@ -46,7 +46,7 @@ public class ShopController extends BaseController {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         shopPO.setCompanyId(currentLoginStaff.getCompanyId());
         shopService.addShop(shopPO);
-        return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
     }
 
     /**
@@ -64,7 +64,7 @@ public class ShopController extends BaseController {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         shopPO.setCompanyId(currentLoginStaff.getCompanyId());
         shopService.editShop(shopPO);
-        return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
     }
 
     /**
@@ -83,7 +83,7 @@ public class ShopController extends BaseController {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         shopService.editShopShowFlag(currentLoginStaff.getCompanyId(), id, showFlag);
-        return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
     }
 
     /**
@@ -110,7 +110,7 @@ public class ShopController extends BaseController {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         shopService.deleteShop(currentLoginStaff.getCompanyId(), id);
-        return ResultInfoUtil.success(TigMsgEnum.DELETE_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.DELETE_SUCCESS);
     }
 
 
@@ -139,7 +139,7 @@ public class ShopController extends BaseController {
     public ResultInfo editPriority(@Id Integer fId, @Id Integer fPriority,
                                    @Id Integer sId, @Id Integer sPriority) {
         shopService.editPriority(fId, fPriority, sId, sPriority, getCurrentLoginStaff().getCompanyId());
-        return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
 
     /**

@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.mzlion.easyokhttp.HttpClient;
 import com.qiein.jupiter.constant.CommonConstant;
-import com.qiein.jupiter.enums.TigMsgEnum;
+import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.*;
@@ -83,7 +83,7 @@ public class SendMsgController extends BaseController{
         if(code!=100000){
             throw new RException((String)getBack.get("msg"));
         }
-        return ResultInfoUtil.success(TigMsgEnum.SEND_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.SEND_SUCCESS);
     }
 
     /**

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.qiein.jupiter.aop.validate.annotation.Id;
 import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
-import com.qiein.jupiter.enums.TigMsgEnum;
+import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.ResultInfo;
@@ -46,7 +46,7 @@ public class RoleController extends BaseController {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         int id = roleService.insert(roleName, currentLoginStaff.getCompanyId());
-        return ResultInfoUtil.success(TigMsgEnum.ADD_ROLE_SUCCESS, id);
+        return ResultInfoUtil.success(TipMsgEnum.ADD_ROLE_SUCCESS, id);
     }
 
     @GetMapping("/role_used")
@@ -61,7 +61,7 @@ public class RoleController extends BaseController {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         roleService.delete(roleId, currentLoginStaff.getCompanyId());
-        return ResultInfoUtil.success(TigMsgEnum.DELETE_ROLE_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.DELETE_ROLE_SUCCESS);
     }
 
     @PostMapping("/edit_role")
@@ -73,7 +73,7 @@ public class RoleController extends BaseController {
         }
         roleVO.setCompanyId(currentLoginStaff.getCompanyId());
         roleService.update(roleVO);
-        return ResultInfoUtil.success(TigMsgEnum.EDIT_ROLE_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.EDIT_ROLE_SUCCESS);
     }
 
     @GetMapping("/get_role_select")
@@ -97,7 +97,7 @@ public class RoleController extends BaseController {
     public ResultInfo editRolePriority(@Id Integer fId, @Id Integer fPriority,
                                        @Id Integer sId, @Id Integer sPriority) {
         roleService.editProiority(fId, fPriority, sId, sPriority, getCurrentLoginStaff().getCompanyId());
-        return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
 
 }
