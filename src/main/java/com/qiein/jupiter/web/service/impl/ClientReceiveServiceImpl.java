@@ -108,7 +108,7 @@ public class ClientReceiveServiceImpl implements ClientReceiveService {
      * @param staffId
      */
     @Transactional
-    private void receive(String kzId, int logId, int companyId, int staffId, String staffName) {
+    public void receive(String kzId, int logId, int companyId, int staffId, String staffName) {
 
         ClientPushDTO info = clientInfoDao.getClientPushDTOById(kzId, DBSplitUtil.getInfoTabName(companyId),
                 DBSplitUtil.getDetailTabName(companyId));
@@ -137,7 +137,7 @@ public class ClientReceiveServiceImpl implements ClientReceiveService {
      * @param staffName
      */
     @Transactional
-    private void updateInfoWhenReceive(int companyId, String kzId, int logId, int staffId, String staffName) {
+    public void updateInfoWhenReceive(int companyId, String kzId, int logId, int staffId, String staffName) {
         // 修改客资状态为未设置
         int updateNum = clientInfoDao.updateClientInfoStatus(companyId, DBSplitUtil.getInfoTabName(companyId), kzId,
                 ClientStatusConst.KZ_CLASS_NEW, ClientStatusConst.BE_HAVE_MAKE_ORDER);
