@@ -25,6 +25,7 @@
         <result column="COMPID" property="companyId" jdbcType="VARCHAR"/>
         <result column="CIDS" property="chiefIds" jdbcType="VARCHAR"/>
         <result column="CNAMES" property="chiefNames" jdbcType="VARCHAR"/>
+        <result column="SHOPID" property="shopId" jdbcType="INTEGER"></result>
     </resultMap>
 
     <!--网销排班部门-->
@@ -123,7 +124,7 @@
     <select id="getCompanyAllDeptList" parameterType="map" resultMap="GroupVOMap">
         SELECT
             par.ID, par.GROUPID, par.GROUPNAME, par.PARENTID, par.GROUPTYPE, par.COMPANYID,par.CHIEFIDS,par.CHIEFNAMES,
-             grp.ID AS GID,grp.GROUPID AS GRPID, grp.GROUPNAME AS GRPNAME,grp.PARENTID AS PARID,grp.GROUPTYPE AS TYPE, grp.COMPANYID AS CMPID, grp.CHIEFIDS AS CIDS, grp.CHIEFNAMES AS CNAMES
+             grp.ID AS GID,grp.GROUPID AS GRPID, grp.GROUPNAME AS GRPNAME,grp.PARENTID AS PARID,grp.GROUPTYPE AS TYPE, grp.COMPANYID AS CMPID, grp.CHIEFIDS AS CIDS, grp.CHIEFNAMES AS CNAMES,grp.SHOPID
         FROM
             hm_pub_group par
             LEFT JOIN hm_pub_group grp ON grp.PARENTID = par.GROUPID
