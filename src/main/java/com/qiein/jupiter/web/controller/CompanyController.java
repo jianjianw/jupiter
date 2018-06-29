@@ -1,26 +1,19 @@
 package com.qiein.jupiter.web.controller;
 
-import javax.annotation.Resource;
-
-import com.qiein.jupiter.exception.ExceptionEnum;
-import com.qiein.jupiter.util.NumUtil;
-import com.qiein.jupiter.util.StringUtil;
-import com.qiein.jupiter.web.entity.dto.DsinvalDTO;
-import com.qiein.jupiter.web.entity.po.StaffPO;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.enums.TipMsgEnum;
+import com.qiein.jupiter.exception.ExceptionEnum;
+import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
+import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.web.entity.dto.DsinvalDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
+import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.service.CompanyService;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
 
 /**
  * 公司
@@ -60,7 +53,6 @@ public class CompanyController extends BaseController {
     /**
      * 客服领取客资倒计时时间
      *
-     * @param flag
      * @return
      */
     @GetMapping("/overtime")
@@ -72,8 +64,6 @@ public class CompanyController extends BaseController {
     /**
      * 客服每日领单默认限额
      *
-     * @param flag
-     * @return
      */
     @GetMapping("/limitdefault")
     public ResultInfo editCompanyLimitdefault(@NotEmptyStr @RequestParam("num") Integer num) {
@@ -84,8 +74,6 @@ public class CompanyController extends BaseController {
     /**
      * 客服领取客资指定时间不能再领取下一个
      *
-     * @param flag
-     * @return
      */
     @GetMapping("/kzinterval")
     public ResultInfo editCompanyKzinterval(@NotEmptyStr @RequestParam("num") Integer num) {
@@ -162,7 +150,8 @@ public class CompanyController extends BaseController {
     public ResultInfo editTypeRepeat(@RequestParam("typeRepeat") boolean typeRepeat) {
 
         companyService.editTypeRepeat(typeRepeat, getCurrentLoginStaff().getCompanyId());
-        return ResultInfoUtil.success(TipMsgEnum.SUCCESS);
+
+        return ResultInfoUtil.success(typeRepeat ? TipMsgEnum.OPEN_SUCCESS : TipMsgEnum.CLOSE_SUCCESS);
     }
 
     /**
@@ -171,10 +160,9 @@ public class CompanyController extends BaseController {
      * @return
      */
     @GetMapping("/editSrcRepeat")
-    public ResultInfo editSrcRepeat(@RequestParam("srcRepeat") boolean typeRepeat) {
-
-        companyService.editTypeSrcRepeat(typeRepeat, getCurrentLoginStaff().getCompanyId());
-        return ResultInfoUtil.success(TipMsgEnum.SUCCESS);
+    public ResultInfo editSrcRepeat(@RequestParam("srcRepeat") boolean srcRepeat) {
+        companyService.editTypeSrcRepeat(srcRepeat, getCurrentLoginStaff().getCompanyId());
+        return ResultInfoUtil.success(srcRepeat ? TipMsgEnum.OPEN_SUCCESS : TipMsgEnum.CLOSE_SUCCESS);
     }
 
     /**
@@ -219,13 +207,12 @@ public class CompanyController extends BaseController {
     /**
      * 修改待定是否计入有效
      *
-     * @param dsinvalDTO
      */
     @GetMapping("edit_dd_is_valid")
     public ResultInfo editDsinvalId(@RequestParam("ddIsValid") boolean ddIsValid) {
         StaffPO staff = getCurrentLoginStaff();
         companyService.editDdIsValid(ddIsValid, staff.getCompanyId());
-        return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
+        return ResultInfoUtil.success(ddIsValid ? TipMsgEnum.OPERATE_SUCCESS : TipMsgEnum.CLOSE_SUCCESS);
     }
 
     /**

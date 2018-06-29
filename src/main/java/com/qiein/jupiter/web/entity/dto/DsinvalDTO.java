@@ -9,6 +9,8 @@ public class DsinvalDTO implements Serializable {
     private String dsInvalidStatus;
     //待跟踪意向等级
     private String dsInvalidLevel;
+    //待定是否计入有效
+    private boolean ddIsValid;
 
     public int getCompanyId() {
         return companyId;
@@ -32,5 +34,13 @@ public class DsinvalDTO implements Serializable {
 
     public void setDsInvalidLevel(String dsInvalidLevel) {
         this.dsInvalidLevel = dsInvalidLevel;
+    }
+
+    public boolean isDdIsValid() {
+        return ddIsValid;
+    }
+
+    public void setDdIsValid(boolean ddIsValid) {
+        this.ddIsValid = ddIsValid;
     }
 }
