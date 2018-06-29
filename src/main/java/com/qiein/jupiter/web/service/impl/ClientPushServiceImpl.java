@@ -155,13 +155,12 @@ public class ClientPushServiceImpl implements ClientPushService {
                 //电商
                 if (ChannelConstant.DS_TYPE_LIST.contains(channelTypeId)) {
                     //12.指定客服
-                    appointer = staffDao.getPushAppointByRole(companyId, srcId, RoleConstant.DSYY);
+                    appointer = staffDao.getPushAppointByRole(DBSplitUtil.getInfoTabName(companyId), companyId, srcId, RoleConstant.DSYY);
                 }
                 //转介绍
                 if (ChannelConstant.ZJS_TYPE_LIST.contains(channelTypeId)) {
-
                     //12.指定客服
-                    appointer = staffDao.getPushAppointByRole(companyId, srcId, RoleConstant.ZJSYY);
+                    appointer = staffDao.getPushAppointByRole(DBSplitUtil.getInfoTabName(companyId), companyId, srcId, RoleConstant.ZJSYY);
                 }
                 // 生成分配日志
                 allotLog = addAllotLog(kzId, appointer.getStaffId(), appointer.getStaffName(), appointer.getGroupId(),

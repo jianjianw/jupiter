@@ -418,5 +418,5 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @param sourceId
      * @return
      */
-    StaffPushDTO getPushAppointByRole(@Param("companyId") Integer companyId, @Param("sourceId") int sourceId, @Param("role") String role);
+    StaffPushDTO getPushAppointByRole(@Param("infoTabName") String infoTabName, @Param("companyId") Integer companyId, @Param("sourceId") int sourceId, @Param("role") String role);
 }

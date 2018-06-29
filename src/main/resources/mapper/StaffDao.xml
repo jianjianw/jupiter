@@ -824,21 +824,25 @@
     <!-- 获取渠道指定员工客服-->
     <select id="getPushAppointByRole" parameterType="map" resultMap="pushMap">
         SELECT
-            rela.STAFFID ID , sf.NICKNAME, gs.GROUPID, grp.GROUPNAME
+            rela.STAFFID ID, sf.NICKNAME, gs.GROUPID, grp.GROUPNAME
         FROM
             hm_crm_source_staff rela
-            INNER JOIN hm_pub_staff sf ON sf.ID = rela.STAFFID AND rela.COMPANYID = sf.COMPANYID
-            LEFT JOIN hm_pub_group_staff gs ON gs.STAFFID = sf.ID  AND gs.COMPANYID = sf.COMPANYID
-            LEFT JOIN hm_pub_group grp ON grp.GROUPID = gs.GROUPID AND grp.COMPANYID = gs.COMPANYID
+        LEFT JOIN ${infoTabName} info ON info.APPOINTORID = rela.STAFFID AND rela.COMPANYID = info.COMPANYID AND rela.SOURCEID = info.SOURCEID
+        INNER JOIN hm_pub_staff sf ON sf.ID = rela.STAFFID AND rela.COMPANYID = sf.COMPANYID
+        LEFT JOIN hm_pub_group_staff gs ON gs.STAFFID = sf.ID AND gs.COMPANYID = sf.COMPANYID
+        LEFT JOIN hm_pub_group grp ON grp.GROUPID = gs.GROUPID AND grp.COMPANYID = gs.COMPANYID
         WHERE
             rela.COMPANYID = #{companyId}
             AND rela.SOURCEID = #{sourceId}
             AND rela.RELATYPE = 'yy'
+            AND info.CREATETIME &gt; UNIX_TIMESTAMP( CAST( SYSDATE( ) AS DATE ) )
+            AND grp.GROUPTYPE = #{role}
             AND sf.ISDEL = 0
             AND sf.ISLOCK = 0
-            AND grp.GROUPTYPE = #{role}
-        ORDER BY
-            sf.LASTPUSHTIME ASC
-            LIMIT 0,1
+            AND sf.STATUSFLAG = 1
+        GROUP BY
+            info.APPOINTORID
+        ORDER BY count( 1 ) ASC
+        LIMIT 0, 1
     </select>
 </mapper>
