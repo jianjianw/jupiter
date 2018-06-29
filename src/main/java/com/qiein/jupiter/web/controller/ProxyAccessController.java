@@ -21,8 +21,8 @@ public class ProxyAccessController {
      * @return
      */
     @PostMapping("/post")
-    public ResultInfo post(String url, @RequestBody JSONObject param) {
-        String s = HttpClient.textBody(url).json(param.toString()).asString();
+    public ResultInfo post(String url, @RequestBody Map<String, String> param) {
+        String s = HttpClient.post(url).queryString(param).asString();
         return ResultInfoUtil.success(JSONObject.parse(s));
     }
 
