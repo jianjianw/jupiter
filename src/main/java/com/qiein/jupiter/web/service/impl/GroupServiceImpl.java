@@ -47,6 +47,8 @@ public class GroupServiceImpl implements GroupService {
     private ChannelDao channelDao;
     @Autowired
     private SourceDao sourceDao;
+    @Autowired
+    private ShopDao shopDao;
 
     /**
      * @param companyId
@@ -258,7 +260,7 @@ public class GroupServiceImpl implements GroupService {
     @Override
     @Transactional
     public GroupPO update(GroupPO groupPO) {
-        if(groupPO == null){
+        if (groupPO == null) {
             throw new RException(ExceptionEnum.UNKNOW_ERROR);
         }
         GroupPO old = groupDao.getGroupById(groupPO.getCompanyId(), groupPO.getGroupId());
@@ -270,8 +272,12 @@ public class GroupServiceImpl implements GroupService {
         if (groupDB != null && groupDB.getId() != groupPO.getId()) {
             throw new RException(ExceptionEnum.GROUP_NAME_REPEAT);
         }
-        if(RoleConstant.MSJD.equalsIgnoreCase(groupPO.getGroupType())){
-            if(!NumUtil.isValid(groupPO.getShopId())){
+        if (RoleConstant.MSJD.equalsIgnoreCase(groupPO.getGroupType())) {
+            if (!NumUtil.isValid(groupPO.getShopId())) {
+                throw new RException(ExceptionEnum.SHOP_ID_NULL);
+            }
+            ShopVO shopVO = shopDao.getShowShopById(groupPO.getCompanyId(), groupPO.getShopId());
+            if (null == shopVO) {
                 throw new RException(ExceptionEnum.SHOP_ID_NULL);
             }
         }
@@ -378,7 +384,7 @@ public class GroupServiceImpl implements GroupService {
     @Override
     @Transactional
     public GroupPO insert(GroupPO groupPO) {
-        if(null == groupPO ){
+        if (null == groupPO) {
             throw new RException(ExceptionEnum.HTTP_PARAMETER_ERROR);
         }
         GroupPO groupDB = groupDao.getByName(groupPO.getGroupName(), groupPO.getCompanyId());
@@ -386,8 +392,12 @@ public class GroupServiceImpl implements GroupService {
         if (groupDB != null) {
             throw new RException(ExceptionEnum.GROUP_NAME_REPEAT);
         }
-        if(RoleConstant.MSJD.equalsIgnoreCase(groupPO.getGroupType())){
-            if(!NumUtil.isValid(groupPO.getShopId())){
+        if (RoleConstant.MSJD.equalsIgnoreCase(groupPO.getGroupType())) {
+            if (!NumUtil.isValid(groupPO.getShopId())) {
+                throw new RException(ExceptionEnum.SHOP_ID_NULL);
+            }
+            ShopVO shopVO = shopDao.getShowShopById(groupPO.getCompanyId(), groupPO.getShopId());
+            if (null == shopVO) {
                 throw new RException(ExceptionEnum.SHOP_ID_NULL);
             }
         }
