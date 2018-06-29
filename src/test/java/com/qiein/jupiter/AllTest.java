@@ -122,4 +122,14 @@ public class AllTest {
     private void doSomething(StaffPO staffPO) {
         staffPO.setPhone("12312321");
     }
+
+
+    @Test
+    public void testList() {
+//        List<Integer> list = null;
+//        for (Integer integer : list) {
+//
+//        }
+
+    }
 }
