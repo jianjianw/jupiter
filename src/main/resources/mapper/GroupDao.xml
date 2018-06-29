@@ -189,7 +189,7 @@
         WHERE
             grp.COMPANYID = #{companyId}
             AND grp.PARENTID != '0'
-            AND (rela.STAFFID = #{staffId} OR INSTR(CONCAT(',',grp.CHIEFIDS,','),CONCAT(',',#{staffId},',')))
+            AND (rela.STAFFID = #{staffId} OR INSTR(CONCAT(',',grp.CHIEFIDS,','),CONCAT(',',#{staffId},','))!= 0)
         GROUP BY grp.GROUPID
     </select>
 
@@ -221,7 +221,8 @@
             grp.COMPANYID = #{companyId}
             AND grp.GROUPTYPE = #{type}
             AND grp.PARENTID != '0'
-            AND rela.STAFFID =#{staffId}
+            AND (rela.STAFFID = #{staffId} OR INSTR(CONCAT(',',grp.CHIEFIDS,','),CONCAT(',',#{staffId},','))!= 0)
+        GROUP BY grp.GROUPID
     </select>
 
     <!--获取员工所在部门-->
