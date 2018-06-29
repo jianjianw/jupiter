@@ -42,6 +42,18 @@ public class GroupPO extends BaseEntity {
      * 主管名称
      */
     private String chiefNames;
+    /**
+     * 门店id
+     * */
+    private Integer shopId;
+
+    public Integer getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(Integer shopId) {
+        this.shopId = shopId;
+    }
 
     public String getGroupId() {
         return groupId;

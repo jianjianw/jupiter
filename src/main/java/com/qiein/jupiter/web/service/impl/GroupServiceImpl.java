@@ -7,6 +7,7 @@ import com.qiein.jupiter.constant.RoleConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.CollectionUtils;
+import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.*;
 import com.qiein.jupiter.web.entity.po.ChannelPO;
@@ -256,6 +257,9 @@ public class GroupServiceImpl implements GroupService {
     @Override
     @Transactional
     public GroupPO update(GroupPO groupPO) {
+        if(groupPO == null){
+            throw new RException(ExceptionEnum.UNKNOW_ERROR);
+        }
         GroupPO old = groupDao.getGroupById(groupPO.getCompanyId(), groupPO.getGroupId());
         if (old == null) {
             throw new RException(ExceptionEnum.GROUP_NOT_EXIT);
@@ -264,6 +268,11 @@ public class GroupServiceImpl implements GroupService {
         // 验证是否存在相同的部门名称
         if (groupDB != null && groupDB.getId() != groupPO.getId()) {
             throw new RException(ExceptionEnum.GROUP_NAME_REPEAT);
+        }
+        if(RoleConstant.MSJD.equalsIgnoreCase(groupPO.getGroupType())){
+            if(!NumUtil.isValid(groupPO.getShopId())){
+                throw new RException(ExceptionEnum.SHOP_ID_NULL);
+            }
         }
         // 判断是否需要设置主管姓名
         checkSetChiefsName(groupPO);
@@ -368,10 +377,18 @@ public class GroupServiceImpl implements GroupService {
     @Override
     @Transactional
     public GroupPO insert(GroupPO groupPO) {
+        if(null == groupPO ){
+            throw new RException(ExceptionEnum.HTTP_PARAMETER_ERROR);
+        }
         GroupPO groupDB = groupDao.getByName(groupPO.getGroupName(), groupPO.getCompanyId());
         // 验证是否存在相同的部门名称
         if (groupDB != null) {
             throw new RException(ExceptionEnum.GROUP_NAME_REPEAT);
+        }
+        if(RoleConstant.MSJD.equalsIgnoreCase(groupPO.getGroupType())){
+            if(!NumUtil.isValid(groupPO.getShopId())){
+                throw new RException(ExceptionEnum.SHOP_ID_NULL);
+            }
         }
         // 判断是否需要设置主管姓名
         checkSetChiefsName(groupPO);

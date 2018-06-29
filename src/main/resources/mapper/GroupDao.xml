@@ -79,9 +79,9 @@
     <insert id="insert" parameterType="com.qiein.jupiter.web.entity.po.GroupPO" useGeneratedKeys="true"
             keyProperty="id">
         INSERT INTO hm_pub_group
-        (GROUPID, GROUPNAME, PARENTID, GROUPTYPE, COMPANYID,CHIEFIDS,CHIEFNAMES)
+        (GROUPID, GROUPNAME, PARENTID, GROUPTYPE, COMPANYID,CHIEFIDS,CHIEFNAMES,SHOPID)
         VALUES (#{groupId}, #{groupName}, #{parentId}, #{groupType}, #{companyId},
-        #{chiefIds},#{chiefNames})
+        #{chiefIds},#{chiefNames},#{shopId})
     </insert>
 
     <update id="update">
@@ -104,6 +104,9 @@
             </if>
             <if test="chiefNames != null">
                 CHIEFNAMES = #{chiefNames},
+            </if>
+            <if test="shopId != null ">
+                SHOPID = #{shopId}
             </if>
         </set>
         WHERE ID = #{id}
