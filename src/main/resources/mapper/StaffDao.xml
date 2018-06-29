@@ -824,7 +824,7 @@
     <!-- 获取渠道指定员工客服-->
     <select id="getPushAppointByRole" parameterType="map" resultMap="pushMap">
         SELECT
-            rela.STAFFID, sf.NICKNAME, gs.GROUPID, grp.GROUPNAME
+            rela.STAFFID ID , sf.NICKNAME, gs.GROUPID, grp.GROUPNAME
         FROM
             hm_crm_source_staff rela
             INNER JOIN hm_pub_staff sf ON sf.ID = rela.STAFFID AND rela.COMPANYID = sf.COMPANYID
