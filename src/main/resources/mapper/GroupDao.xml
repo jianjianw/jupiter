@@ -224,7 +224,7 @@
             AND rela.STAFFID =#{staffId}
     </select>
 
-    <!--获取员工所在部门，你上面那个是获取的小组-->
+    <!--获取员工所在部门-->
     <select id="getDeptByTypeAndStaff" parameterType="map" resultType="String">
         SELECT
             son.PARENTID
@@ -261,6 +261,18 @@
         FROM hm_pub_group
         WHERE COMPANYID = #{companyId}
         AND GROUPID = #{groupId}
+    </select>
+
+    <!--根据类型获取企业小组列表-->
+    <select id="getGroupListByType" parameterType="map" resultMap="baseMap">
+        SELECT
+            grp.GROUPID, grp.GROUPNAME, grp.COMPANYID
+        FROM
+            hm_pub_group grp
+        WHERE
+            grp.COMPANYID = #{companyId}
+            AND grp.GROUPTYPE = #{type}
+            AND grp.PARENTID != '0'
     </select>
 
 </mapper>

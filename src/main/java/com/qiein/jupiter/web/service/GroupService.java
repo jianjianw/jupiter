@@ -98,4 +98,14 @@ public interface GroupService {
      * @return
      */
     List<GroupBaseStaffVO> getAllGroupStaff(int companyId);
+
+    /**
+     * 根据类型获取企业小组列表
+     *
+     * @param companyId
+     * @param type
+     * @return
+     */
+    List<GroupPO> getGroupListByType(int companyId, String type);
+
 }

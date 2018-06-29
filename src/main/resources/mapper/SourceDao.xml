@@ -253,6 +253,7 @@
             hm_crm_source a
         left join (SELECT
                        a.channelId,
+                       a.SOURCEID,
                        a.companyId,
                        GROUP_CONCAT(a.staffId SEPARATOR ',')  as YYID,
                        GROUP_CONCAT(a.nickname SEPARATOR ',') as NICKNAMES
@@ -260,6 +261,7 @@
                        (
                            SELECT
                                a.channelId,
+                               b.SOURCEID,
                                b.STAFFID,
                                b.COMPANYID,
                                c.NICKNAME
@@ -270,12 +272,12 @@
                            WHERE
                                a.id = b.SOURCEID and b.STAFFID = c.ID
                            GROUP BY
-                               CHANNELID,
+                               SOURCEID,
                                staffID
                        ) a
                    GROUP BY
-                       channelId) b
-            on a.channelId = b.channelId
+                       SOURCEID) b
+            on a.id = b.SOURCEID
         WHERE
             a.COMPANYID = #{companyId} AND a.CHANNELID = #{channelId}
         ORDER BY ISSHOW DESC, TYPEID, PRIORITY, ID
