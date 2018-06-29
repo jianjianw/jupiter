@@ -209,7 +209,7 @@
         AND rela.STAFFID = #{staffId}
     </select>
 
-    <!--获取员工所在部门-->
+    <!--获取员工所在部门下的全部小组列表-->
     <select id="getDeptByStaffAndType" parameterType="map" resultType="java.lang.String">
         SELECT
             son.GROUPID
