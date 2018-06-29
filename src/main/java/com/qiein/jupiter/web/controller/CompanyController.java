@@ -162,7 +162,7 @@ public class CompanyController extends BaseController {
     public ResultInfo editTypeRepeat(@RequestParam("typeRepeat") boolean typeRepeat) {
 
         companyService.editTypeRepeat(typeRepeat, getCurrentLoginStaff().getCompanyId());
-        return ResultInfoUtil.success(TigMsgEnum.SUCCESS);
+        return ResultInfoUtil.success(typeRepeat ? TigMsgEnum.OPEN_SUCCESS : TigMsgEnum.CLOSE_SUCCESS);
     }
 
     /**
@@ -171,10 +171,9 @@ public class CompanyController extends BaseController {
      * @return
      */
     @GetMapping("/editSrcRepeat")
-    public ResultInfo editSrcRepeat(@RequestParam("srcRepeat") boolean typeRepeat) {
-
-        companyService.editTypeSrcRepeat(typeRepeat, getCurrentLoginStaff().getCompanyId());
-        return ResultInfoUtil.success(TigMsgEnum.SUCCESS);
+    public ResultInfo editSrcRepeat(@RequestParam("srcRepeat") boolean srcRepeat) {
+        companyService.editTypeSrcRepeat(srcRepeat, getCurrentLoginStaff().getCompanyId());
+        return ResultInfoUtil.success(srcRepeat ? TigMsgEnum.OPEN_SUCCESS : TigMsgEnum.CLOSE_SUCCESS);
     }
 
     /**
