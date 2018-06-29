@@ -6,7 +6,7 @@ import com.alibaba.fastjson.annotation.JSONType;
  * 提示消息枚举类
  */
 @JSONType(serializeEnumAsJavaBean = true)
-public enum TigMsgEnum {
+public enum TipMsgEnum {
     /**
      * 成功
      */
@@ -200,7 +200,7 @@ public enum TigMsgEnum {
 
     private String desc;
 
-    TigMsgEnum(String desc) {
+    TipMsgEnum(String desc) {
         this.desc = desc;
     }
 

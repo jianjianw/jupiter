@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.qiein.jupiter.enums.TigMsgEnum;
+import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
@@ -50,7 +50,7 @@ public class AppController extends BaseController {
 		// 客资领取
 		receiveService.receive(kzId, logId, currentLoginStaff.getCompanyId(), currentLoginStaff.getId(),
 				currentLoginStaff.getNickName());
-		return ResultInfoUtil.success(TigMsgEnum.INFO_RECEIVE_SUCCESS);
+		return ResultInfoUtil.success(TipMsgEnum.INFO_RECEIVE_SUCCESS);
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class AppController extends BaseController {
 		// 客资领取
 		receiveService.receive(kzId, logId, currentLoginStaff.getCompanyId(), currentLoginStaff.getId(),
 				currentLoginStaff.getNickName());
-		return ResultInfoUtil.success(TigMsgEnum.INFO_RECEIVE_SUCCESS);
+		return ResultInfoUtil.success(TipMsgEnum.INFO_RECEIVE_SUCCESS);
 	}
 
 	/**
@@ -90,6 +90,6 @@ public class AppController extends BaseController {
 		// 客资拒接
 		receiveService.refuse(kzId, logId, currentLoginStaff.getCompanyId(), currentLoginStaff.getId(),
 				currentLoginStaff.getNickName());
-		return ResultInfoUtil.success(TigMsgEnum.INFO_REFUSE_SUCCESS);
+		return ResultInfoUtil.success(TipMsgEnum.INFO_REFUSE_SUCCESS);
 	}
 }

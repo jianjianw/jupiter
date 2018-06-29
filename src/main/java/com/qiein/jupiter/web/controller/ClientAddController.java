@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
-import com.qiein.jupiter.enums.TigMsgEnum;
+import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.ResultInfo;
@@ -42,7 +42,7 @@ public class ClientAddController extends BaseController {
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         clientAddService.addDsClient(clientVO, currentLoginStaff);
-        return ResultInfoUtil.success(TigMsgEnum.ENTERING_SUNCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.ENTERING_SUNCCESS);
     }
 
     /**
@@ -59,7 +59,7 @@ public class ClientAddController extends BaseController {
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         clientAddService.addZjsClient(clientVO, currentLoginStaff);
-        return ResultInfoUtil.success(TigMsgEnum.ENTERING_SUNCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.ENTERING_SUNCCESS);
     }
 
     /**
@@ -76,7 +76,7 @@ public class ClientAddController extends BaseController {
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         clientAddService.addMsClient(clientVO, currentLoginStaff);
-        return ResultInfoUtil.success(TigMsgEnum.ENTERING_SUNCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.ENTERING_SUNCCESS);
     }
 
     /**

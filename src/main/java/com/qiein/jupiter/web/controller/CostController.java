@@ -1,6 +1,6 @@
 package com.qiein.jupiter.web.controller;
 
-import com.qiein.jupiter.enums.TigMsgEnum;
+import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.util.StringUtil;
@@ -11,8 +11,6 @@ import com.qiein.jupiter.web.service.CostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.math.BigDecimal;
 
 /**
  * 电商渠道花费
@@ -47,7 +45,7 @@ public class CostController extends BaseController{
             costService.editCost(costPO);
             addCostLog(staff,costPO.getId(),"修改"+costPO.getCostTime()+"花费金额为："+costPO.getCost());
         }
-        return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
 
     // 添加花费记录

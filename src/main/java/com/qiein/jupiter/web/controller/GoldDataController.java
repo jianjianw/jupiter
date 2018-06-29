@@ -1,12 +1,9 @@
 package com.qiein.jupiter.web.controller;
 
-import com.alibaba.druid.Constants;
 import com.alibaba.fastjson.JSONObject;
-import com.google.gson.JsonObject;
-import com.qiein.jupiter.enums.TigMsgEnum;
+import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
-import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.util.StringUtil;
@@ -15,10 +12,8 @@ import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.GoldFingerPO;
 import com.qiein.jupiter.web.entity.po.GoldTempPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
-import com.qiein.jupiter.web.entity.vo.GoldCustomerVO;
 import com.qiein.jupiter.web.entity.vo.GoldFingerShowVO;
 import com.qiein.jupiter.web.service.GoldDataService;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -56,7 +51,7 @@ public class GoldDataController extends BaseController{
         goldFingerPO.setCompanyId(staff.getCompanyId());
         goldDataService.insert(goldFingerPO);
 
-        return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
     }
 
     /**
@@ -71,7 +66,7 @@ public class GoldDataController extends BaseController{
         }catch (Exception e){
             throw new RException(ExceptionEnum.DELETE_FAIL);
         }
-        return ResultInfoUtil.success(TigMsgEnum.DELETE_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.DELETE_SUCCESS);
     }
 
     /**
@@ -88,7 +83,7 @@ public class GoldDataController extends BaseController{
         goldFingerPO.setStaffId(staff.getId());
         goldFingerPO.setCompanyId(staff.getCompanyId());
         goldDataService.update(goldFingerPO);
-        return ResultInfoUtil.success(TigMsgEnum.UPDATE_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.UPDATE_SUCCESS);
     }
 
     /**
@@ -112,7 +107,7 @@ public class GoldDataController extends BaseController{
     @PostMapping("/edit_open_or_close")
     public ResultInfo editOpenOrClose(@RequestBody GoldFingerPO goldFingerPO){
         goldDataService.editOpenOrClose(goldFingerPO);
-        return ResultInfoUtil.success(TigMsgEnum.UPDATE_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.UPDATE_SUCCESS);
     }
 
     /**
@@ -145,6 +140,6 @@ public class GoldDataController extends BaseController{
     @PostMapping("/addkz_by_gold_temp")
     public ResultInfo addkzByGoldTemp(@RequestBody GoldTempPO goldTempPO){
         goldDataService.addkzByGoldTemp(goldTempPO);
-        return  ResultInfoUtil.success(TigMsgEnum.ENTERING_SUNCCESS);
+        return  ResultInfoUtil.success(TipMsgEnum.ENTERING_SUNCCESS);
     }
 }

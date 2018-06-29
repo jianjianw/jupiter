@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.qiein.jupiter.aop.validate.annotation.Id;
 import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
-import com.qiein.jupiter.enums.TigMsgEnum;
+import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.util.ObjectUtil;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
@@ -67,7 +67,7 @@ public class GroupController extends BaseController {
         // 同步修改分配表中的客服组名
         ShopChannelGroupService.updateGroupNameById(groupPO.getGroupName(), groupPO.getGroupId(),
                 groupPO.getCompanyId());
-        return ResultInfoUtil.success(TigMsgEnum.UPDATE_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.UPDATE_SUCCESS);
     }
 
     /**
@@ -90,7 +90,7 @@ public class GroupController extends BaseController {
                 groupPO.getGroupType(), groupPO.getChiefNames()),
                 staff.getCompanyId());
         logService.addLog(log);
-        return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
     }
 
     /**
@@ -108,7 +108,7 @@ public class GroupController extends BaseController {
         logService.addLog(new SystemLog(SysLogUtil.LOG_TYPE_GROUP, requestInfo.getIp(), requestInfo.getUrl(), staff.getId(),
                 staff.getNickName(), SysLogUtil.getRemoveLog(SysLogUtil.LOG_SUP_GROUP, groupPO.getGroupName()),
                 staff.getCompanyId()));
-        return ResultInfoUtil.success(TigMsgEnum.DELETE_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.DELETE_SUCCESS);
     }
 
     /**

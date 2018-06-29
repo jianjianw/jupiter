@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.qiein.jupiter.enums.TigMsgEnum;
+import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
@@ -43,7 +43,7 @@ public class ClientEditController extends BaseController {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         clientEditService.editClientByDscj(clientVO, currentLoginStaff);
-        return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
     }
 
 
@@ -87,7 +87,7 @@ public class ClientEditController extends BaseController {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         clientEditService.editClientByDsyy(clientVO, currentLoginStaff);
-        return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
     }
 
 
@@ -107,7 +107,7 @@ public class ClientEditController extends BaseController {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         clientEditService.editClientByMsjd(clientVO, currentLoginStaff);
-        return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
     }
 
 
@@ -127,7 +127,7 @@ public class ClientEditController extends BaseController {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         clientEditService.editClientByCwzx(clientVO, currentLoginStaff);
-        return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
     }
 
 

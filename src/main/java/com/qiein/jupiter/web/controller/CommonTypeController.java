@@ -1,11 +1,10 @@
 package com.qiein.jupiter.web.controller;
 
-import com.qiein.jupiter.enums.TigMsgEnum;
+import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.web.entity.po.CommonTypePO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
-import com.qiein.jupiter.web.entity.vo.CommonTypeChannelShowVO;
 import com.qiein.jupiter.web.entity.vo.CommonTypeChannelVO;
 import com.qiein.jupiter.web.entity.vo.CommonTypeVO;
 import com.qiein.jupiter.web.service.CommonTypeSerivce;
@@ -32,7 +31,7 @@ public class CommonTypeController extends BaseController{
     public ResultInfo addPhotoType(@RequestParam String commonType){
         StaffPO staff=getCurrentLoginStaff();
         commonTypeSerivce.addPhotoType(commonType,staff.getCompanyId());
-        return ResultInfoUtil.success(TigMsgEnum.SAVE_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
     }
 
     /**
@@ -52,7 +51,7 @@ public class CommonTypeController extends BaseController{
     @GetMapping("/delete_type_channel_group")
     public ResultInfo deleteTypeChannelGroup(@RequestParam String ids){
         commonTypeSerivce.deleteTypeChannelGroup(ids);
-        return ResultInfoUtil.success(TigMsgEnum.DELETE_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.DELETE_SUCCESS);
     }
 
     /**
@@ -63,7 +62,7 @@ public class CommonTypeController extends BaseController{
         StaffPO staff=getCurrentLoginStaff();
         commonTypePO.setCompanyId(staff.getCompanyId());
         commonTypeSerivce.editTypeChannelGroup(commonTypePO);
-        return ResultInfoUtil.success(TigMsgEnum.UPDATE_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.UPDATE_SUCCESS);
     }
 
     /**
@@ -93,7 +92,7 @@ public class CommonTypeController extends BaseController{
     public ResultInfo deleteByChannelId(@RequestParam Integer channelId,@RequestParam Integer typeId){
         StaffPO staffPO=getCurrentLoginStaff();
         commonTypeSerivce.deleteByChannelId(channelId,typeId,staffPO.getCompanyId());
-        return  ResultInfoUtil.success(TigMsgEnum.DELETE_SUCCESS);
+        return  ResultInfoUtil.success(TipMsgEnum.DELETE_SUCCESS);
     }
 
     /**
@@ -114,6 +113,6 @@ public class CommonTypeController extends BaseController{
     @GetMapping("edit_weight")
     public ResultInfo editWeight(@RequestParam String ids,@RequestParam Integer weight){
         commonTypeSerivce.editWeight(ids,weight);
-        return ResultInfoUtil.success(TigMsgEnum.EDIT_SUCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
 }

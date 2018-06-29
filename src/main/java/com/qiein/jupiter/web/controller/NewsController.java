@@ -2,7 +2,7 @@ package com.qiein.jupiter.web.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
-import com.qiein.jupiter.enums.TigMsgEnum;
+import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
@@ -63,7 +63,7 @@ public class NewsController extends BaseController {
 		// 获取当前登录用户
 		StaffPO currentLoginStaff = getCurrentLoginStaff();
 		newsService.batchUpdateNewsReadFlag(ids, currentLoginStaff.getId(), currentLoginStaff.getCompanyId());
-		return ResultInfoUtil.success(TigMsgEnum.UPDATE_SUCCESS);
+		return ResultInfoUtil.success(TipMsgEnum.UPDATE_SUCCESS);
 	}
 
 	/**
@@ -90,7 +90,7 @@ public class NewsController extends BaseController {
 		// 获取当前登录用户
 		StaffPO currentLoginStaff = getCurrentLoginStaff();
 		newsService.setAllNewIsRead(currentLoginStaff.getId(), currentLoginStaff.getCompanyId());
-		return ResultInfoUtil.success(TigMsgEnum.OPERATE_SUCCESS);
+		return ResultInfoUtil.success(TipMsgEnum.OPERATE_SUCCESS);
 	}
 
 	/**
@@ -104,6 +104,6 @@ public class NewsController extends BaseController {
 		// 获取当前登录用户
 		StaffPO currentLoginStaff = getCurrentLoginStaff();
 		newsService.pushInfoNewsInApp(kzId, toStaffId, msg, currentLoginStaff);
-		return ResultInfoUtil.success(TigMsgEnum.OPERATE_SUCCESS);
+		return ResultInfoUtil.success(TipMsgEnum.OPERATE_SUCCESS);
 	}
 }

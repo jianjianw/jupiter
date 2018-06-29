@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.qiein.jupiter.enums.TigMsgEnum;
+import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.util.OSSUtil;
 import com.qiein.jupiter.util.ResultInfo;
@@ -28,7 +28,7 @@ public class OSSController extends BaseController {
 	 */
 	@GetMapping("/get_policy")
 	public ResultInfo getPolicyAndCallback() {
-		return ResultInfoUtil.success(TigMsgEnum.SUCCESS, OSSUtil.getPolicy(OSSUtil.expireTime));
+		return ResultInfoUtil.success(TipMsgEnum.SUCCESS, OSSUtil.getPolicy(OSSUtil.expireTime));
 	}
 
 	/**
@@ -40,7 +40,7 @@ public class OSSController extends BaseController {
 	@GetMapping("/delete")
 	public ResultInfo deleteImg(String imgUrl) {
 		OSSUtil.deleteObject(imgUrl);
-		return ResultInfoUtil.success(TigMsgEnum.SUCCESS);
+		return ResultInfoUtil.success(TipMsgEnum.SUCCESS);
 	}
 
 	/**
@@ -52,7 +52,7 @@ public class OSSController extends BaseController {
 	 */
 	@GetMapping("/upload_net_img")
 	public ResultInfo uploadNetImg(String imgUrl) {
-		return ResultInfoUtil.success(TigMsgEnum.SUCCESS, OSSUtil.uploadWebImage(imgUrl, null));
+		return ResultInfoUtil.success(TipMsgEnum.SUCCESS, OSSUtil.uploadWebImage(imgUrl, null));
 	}
 
 	/**
@@ -97,7 +97,7 @@ public class OSSController extends BaseController {
 			ResultInfoUtil.error(ExceptionEnum.OSS_NO_FILE);
 		}
 
-		return ResultInfoUtil.success(TigMsgEnum.SUCCESS, path);
+		return ResultInfoUtil.success(TipMsgEnum.SUCCESS, path);
 	}
 
 }
