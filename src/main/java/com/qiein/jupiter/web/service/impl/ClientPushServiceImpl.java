@@ -883,7 +883,7 @@ public class ClientPushServiceImpl implements ClientPushService {
                                     ClientLogConst.INFO_LOGTYPE_ALLOT, companyId));
         }
         // 推送消息
-        GoEasyUtil.pushAllotMsg(companyId, appoint.getStaffId(), kzIdsArr.length);
+        GoEasyUtil.pushAllotMsg(companyId, appoint.getStaffId(), kzIdsArr.length, newsDao);
     }
 
     public static String arrToStr(String[] arr) {

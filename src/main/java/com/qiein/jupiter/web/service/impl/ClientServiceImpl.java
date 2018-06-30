@@ -8,10 +8,7 @@ import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.msg.goeasy.ClientDTO;
 import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
 import com.qiein.jupiter.util.DBSplitUtil;
-import com.qiein.jupiter.web.dao.ClientDao;
-import com.qiein.jupiter.web.dao.ClientLogDao;
-import com.qiein.jupiter.web.dao.ClientRemarkDao;
-import com.qiein.jupiter.web.dao.ClientStatusDao;
+import com.qiein.jupiter.web.dao.*;
 import com.qiein.jupiter.web.entity.po.ClientLogPO;
 import com.qiein.jupiter.web.entity.po.ClientRemarkPO;
 import com.qiein.jupiter.web.entity.po.ClientStatusPO;
@@ -45,6 +42,8 @@ public class ClientServiceImpl implements ClientService {
 
     @Autowired
     private ClientStatusDao clientStatusDao;
+    @Autowired
+    private NewsDao newsDao;
 
 
     /**
@@ -163,7 +162,7 @@ public class ClientServiceImpl implements ClientService {
             clientDTO.setKzPhone(clientStatusVoteVO.getKzPhone());
             clientDTO.setKzName(clientStatusVoteVO.getKzName());
             clientDTO.setSrcName(clientStatusVoteVO.getSourceName());
-            GoEasyUtil.pushInvalidKz(clientStatusVoteVO.getCompanyId(), clientStatusVoteVO.getCollectorId(), clientDTO, clientStatusVoteVO.getContent());
+            GoEasyUtil.pushInvalidKz(clientStatusVoteVO.getCompanyId(), clientStatusVoteVO.getCollectorId(), clientDTO, clientStatusVoteVO.getContent(), newsDao);
         }
 
 
@@ -188,11 +187,12 @@ public class ClientServiceImpl implements ClientService {
 
     /**
      * 寻找 kz的主id
+     *
      * @param kzId
      * @return
      */
-    public Integer findId(String kzId,Integer companyId){
-        return clientDao.findId(kzId,companyId,DBSplitUtil.getInfoTabName(companyId));
+    public Integer findId(String kzId, Integer companyId) {
+        return clientDao.findId(kzId, companyId, DBSplitUtil.getInfoTabName(companyId));
     }
 
 

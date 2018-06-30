@@ -47,6 +47,8 @@ public class GoldDataServiceImpl implements GoldDataService {
     private CrmBaseApi crmBaseApi;
     @Autowired
     private GoldTempDao goldTempDao;
+    @Autowired
+    private NewsDao newsDao;
 
     /**
      * 添加表单
@@ -135,7 +137,7 @@ public class GoldDataServiceImpl implements GoldDataService {
         String formName = jsonObject.getString("formName");
         GoldFingerPO goldFingerPO = goldDataDao.getGoldFingerByFormId(formId);
         String kzPhone = StringUtil.nullToStrTrim(entry.getString(goldFingerPO.getKzPhoneField()));
-        if(!RegexUtil.checkMobile(kzPhone)){
+        if (!RegexUtil.checkMobile(kzPhone)) {
             throw new RException(ExceptionEnum.PHONE_ERROR);
         }
         String kzName = StringUtil.nullToStrTrim(entry.getString(goldFingerPO.getKzNameField()));
@@ -170,32 +172,30 @@ public class GoldDataServiceImpl implements GoldDataService {
                 }
                 String value = entry.getString(fieldValues[i]);
                 if (entry.get(fieldValues[i]) != null && !"".equals(value)) {
-                    if(StringUtil.isNotEmpty(value)){
+                    if (StringUtil.isNotEmpty(value)) {
                         sb.append(fieldKeys[i] + "：" + StringUtil.nullToStrTrim(value) + "<br/>");
                     }
                 }
             }
-            if(StringUtil.isNotEmpty(kzName)){
-                sb.append( "姓名：").append(kzName).append("<br/>");
+            if (StringUtil.isNotEmpty(kzName)) {
+                sb.append("姓名：").append(kzName).append("<br/>");
             }
-            if(StringUtil.isNotEmpty(kzPhone)){
+            if (StringUtil.isNotEmpty(kzPhone)) {
                 sb.append("手机号：").append(kzPhone).append("<br/>");
             }
-            if(StringUtil.isNotEmpty(address)){
+            if (StringUtil.isNotEmpty(address)) {
                 sb.append("归属地：").append(address).append("<br/>");
             }
-            if(StringUtil.isNotEmpty(weChat)){
+            if (StringUtil.isNotEmpty(weChat)) {
                 sb.append("微信号：").append(weChat).append("<br/>");
             }
-            if(StringUtil.isNotEmpty(formId)){
+            if (StringUtil.isNotEmpty(formId)) {
                 sb.append("表单号：").append(formId).append("<br/>");
             }
-            if(StringUtil.isNotEmpty(formName)){
+            if (StringUtil.isNotEmpty(formName)) {
                 sb.append("表单名称：").append(formName).append("<br/>");
             }
         }
-
-
 
 
         //获取当前来源
@@ -219,7 +219,7 @@ public class GoldDataServiceImpl implements GoldDataService {
         reqContent.put("collectorid", goldFingerPO.getCreateorId());
         reqContent.put("collectorname", goldFingerPO.getCreateorName());
         reqContent.put("address", address);
-        reqContent.put("remark",sb.toString());
+        reqContent.put("remark", sb.toString());
 
 
         //插入记录
@@ -266,7 +266,7 @@ public class GoldDataServiceImpl implements GoldDataService {
             info.setKzWeChat(weChat);
             info.setSrcName(goldFingerPO.getSrcName());
             info.setChannelName(sourcePO.getChannelName());
-            GoEasyUtil.pushGoldDataKz(goldFingerPO.getCompanyId(),goldFingerPO.getCreateorId(),info);
+            GoEasyUtil.pushGoldDataKz(goldFingerPO.getCompanyId(), goldFingerPO.getCreateorId(), info, newsDao);
         } else if ("130019".equals(jsInfo.getString("code"))) {
             goldTempPO.setStatusId(GoldDataConst.HAVA_ENTERED);
             goldTempDao.update(goldTempPO);
@@ -339,9 +339,10 @@ public class GoldDataServiceImpl implements GoldDataService {
 
     /**
      * 修改表单创建者
+     *
      * @param editCreatorDTO
      */
-    public void editFormCreateor(EditCreatorDTO editCreatorDTO){
+    public void editFormCreateor(EditCreatorDTO editCreatorDTO) {
         goldDataDao.editFormCreateor(editCreatorDTO);
     }
 }
