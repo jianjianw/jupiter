@@ -78,6 +78,16 @@ public class ClientPushServiceImpl implements ClientPushService {
             interval = CommonConstant.DEFAULT_INTERVAL;
         }
 
+        // 区分渠道类型，电商渠道，转介绍渠道
+        String type = "";
+        //电商
+        if (ChannelConstant.DS_TYPE_LIST.contains(channelTypeId)) {
+            type = RoleConstant.DSYY;
+        }
+        //转介绍
+        if (ChannelConstant.ZJS_TYPE_LIST.contains(channelTypeId)) {
+            type = RoleConstant.ZJSYY;
+        }
         // 分配目标客服
         StaffPushDTO appointer = null;
         AllotLogPO allotLog = null;
@@ -139,15 +149,6 @@ public class ClientPushServiceImpl implements ClientPushService {
             case ChannelConstant.PUSH_RULE_SELF:
                 // 5：回馈个人-谁录分给谁
                 if (NumUtil.isValid(clientDTO.getCollectorId())) {
-                    String type = "";
-                    //电商
-                    if (ChannelConstant.DS_TYPE_LIST.contains(channelTypeId)) {
-                        type = RoleConstant.DSYY;
-                    }
-                    //转介绍
-                    if (ChannelConstant.ZJS_TYPE_LIST.contains(channelTypeId)) {
-                        type = RoleConstant.ZJSYY;
-                    }
                     appointer = staffDao.getPushDTOByCidAndUid(clientDTO.getCollectorId(), companyId, type);
                     if (appointer == null) {
                         return;
@@ -164,16 +165,8 @@ public class ClientPushServiceImpl implements ClientPushService {
                 if (NumUtil.isInValid(srcId)) {
                     return;
                 }
-                //电商
-                if (ChannelConstant.DS_TYPE_LIST.contains(channelTypeId)) {
-                    //12.指定客服
-                    appointer = staffDao.getPushAppointByRole(DBSplitUtil.getInfoTabName(companyId), companyId, srcId, RoleConstant.DSYY);
-                }
-                //转介绍
-                if (ChannelConstant.ZJS_TYPE_LIST.contains(channelTypeId)) {
-                    //12.指定客服
-                    appointer = staffDao.getPushAppointByRole(DBSplitUtil.getInfoTabName(companyId), companyId, srcId, RoleConstant.ZJSYY);
-                }
+                //12.指定客服
+                appointer = staffDao.getPushAppointByRole(DBSplitUtil.getInfoTabName(companyId), companyId, srcId, type);
                 if (appointer == null) {
                     return;
                 }
