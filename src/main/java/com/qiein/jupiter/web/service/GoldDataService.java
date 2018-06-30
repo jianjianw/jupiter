@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
+import com.qiein.jupiter.web.entity.dto.EditCreatorDTO;
 import com.qiein.jupiter.web.entity.dto.GoldCustomerDTO;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.GoldFingerPO;
@@ -66,4 +67,10 @@ public interface GoldDataService {
      * @param goldTempPO
      */
     void addkzByGoldTemp(GoldTempPO goldTempPO);
+
+    /**
+     * 修改表单创建者
+     * @param editCreatorDTO
+     */
+    void editFormCreateor(EditCreatorDTO editCreatorDTO);
 }

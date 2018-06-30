@@ -172,4 +172,14 @@
     <update id="addkzByGoldTemp">
         UPDATE hm_crm_gold_temp SET statusId=#{statusId} where id=#{id}
     </update>
+
+    <update id="editFormCreateor" >
+        UPDATE  hm_crm_gold_plug_setting
+        SET CREATEORID=#{createorId} ,CREATEORNAME=#{createorName}
+        WHERE ID in (
+        <foreach collection="list" item="it" separator=",">
+            #{it}
+        </foreach>
+        )
+    </update>
 </mapper>

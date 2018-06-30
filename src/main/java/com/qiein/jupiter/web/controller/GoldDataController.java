@@ -1,12 +1,14 @@
 package com.qiein.jupiter.web.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.web.entity.dto.EditCreatorDTO;
 import com.qiein.jupiter.web.entity.dto.GoldCustomerDTO;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.GoldFingerPO;
@@ -21,6 +23,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -141,5 +144,18 @@ public class GoldDataController extends BaseController{
     public ResultInfo addkzByGoldTemp(@RequestBody GoldTempPO goldTempPO){
         goldDataService.addkzByGoldTemp(goldTempPO);
         return  ResultInfoUtil.success(TipMsgEnum.ENTERING_SUNCCESS);
+    }
+
+
+    @PostMapping("/edit_form_createor")
+    public ResultInfo editFormCreateor(@RequestBody EditCreatorDTO editCreatorDTO){
+        List<Integer> list=new ArrayList<>();
+        String[] ids=editCreatorDTO.getIds().split(CommonConstant.STR_SEPARATOR);
+        for(String id:ids){
+            list.add(Integer.parseInt(id));
+        }
+        editCreatorDTO.setList(list);
+        goldDataService.editFormCreateor(editCreatorDTO);
+        return ResultInfoUtil.success(TipMsgEnum.TRANSFER_SUCCESS);
     }
 }
