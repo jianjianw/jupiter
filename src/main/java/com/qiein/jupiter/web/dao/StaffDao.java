@@ -382,7 +382,7 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @param companyId
      * @return
      */
-    StaffPushDTO getPushDTOByCidAndUid(@Param("id") int id, @Param("companyId") int companyId,@Param("type")String type);
+    StaffPushDTO getPushDTOByCidAndUid(@Param("id") int id, @Param("companyId") int companyId, @Param("type") String type);
 
     /**
      * 编辑个人消息设置
@@ -419,4 +419,13 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @return
      */
     StaffPushDTO getPushAppointByRole(@Param("infoTabName") String infoTabName, @Param("companyId") Integer companyId, @Param("sourceId") int sourceId, @Param("role") String role);
+
+    /**
+     * 获取客服人员列表，转介绍客服，电商客服，用于分配自由领取
+     *
+     * @param companyId
+     * @param role
+     * @return
+     */
+    List<StaffPushDTO> getYyStaffListByRole(@Param("companyId") Integer companyId, @Param("role") String role);
 }

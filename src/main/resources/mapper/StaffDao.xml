@@ -784,7 +784,9 @@
     <!-- 根据ID和企业ID获取推送员工信息 -->
     <select id="getPushDTOByCidAndUid" parameterType="map" resultMap="pushMap">
         SELECT
-			sf.ID, sf.NICKNAME, grp.GROUPID, grp.GROUPNAME
+              CASE WHEN  grp.GROUPTYPE = #{type} THEN 'yy1'
+              WHEN  INSTR(grp.GROUPTYPE,'yy')>0 THEN 'yy2'
+              ELSE 'yy3' END AS GROUPTYPE, sf.ID, sf.NICKNAME, grp.GROUPID, grp.GROUPNAME
 		FROM
 			hm_pub_staff sf
 		LEFT JOIN hm_pub_group_staff rela ON sf.ID = rela.STAFFID AND rela.COMPANYID = #{companyId}
@@ -794,7 +796,7 @@
         AND sf.ISDEL = 0
         AND sf.ISLOCK = 0
 		AND sf.COMPANYID = #{companyId}
-        AND grp.GROUPTYPE = #{type}
+		ORDER BY GROUPTYPE
         LIMIT 0,1
     </select>
 
@@ -849,5 +851,23 @@
             info.APPOINTORID
         ORDER BY count( 1 ) ASC
         LIMIT 0, 1
+    </select>
+
+    <!--获取客服人员列表，转介绍客服，电商客服，用于分配自由领取-->
+    <select id="getYyStaffListByRole" parameterType="map" resultMap="pushMap">
+        SELECT DISTINCT
+            sf.ID sf.NICKNAME, gs.GROUPID, grp.GROUPNAME
+        FROM
+            hm_pub_group_staff gs
+            INNER JOIN hm_pub_group grp ON grp.GROUPID = gs.GROUPID
+            AND grp.COMPANYID = gs.COMPANYID
+            INNER JOIN hm_pub_staff sf ON sf.ID = gs.STAFFID
+            AND gs.COMPANYID = sf.COMPANYID
+        WHERE
+            gs.COMPANYID = #{companyId}
+            AND grp.GROUPTYPE = #{role}
+            AND sf.ISDEL = 0
+            AND sf.ISLOCK = 0
+            AND sf.STATUSFLAG = 1
     </select>
 </mapper>

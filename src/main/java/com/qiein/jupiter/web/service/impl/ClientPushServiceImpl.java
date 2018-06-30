@@ -83,7 +83,7 @@ public class ClientPushServiceImpl implements ClientPushService {
         //电商
         if (ChannelConstant.DS_TYPE_LIST.contains(channelTypeId)) {
             type = RoleConstant.DSYY;
-        }else  if (ChannelConstant.ZJS_TYPE_LIST.contains(channelTypeId)) {
+        } else if (ChannelConstant.ZJS_TYPE_LIST.contains(channelTypeId)) {
             //转介绍
             type = RoleConstant.ZJSYY;
         }
@@ -161,10 +161,10 @@ public class ClientPushServiceImpl implements ClientPushService {
                     break;
                 }
             case ChannelConstant.PUSH_RULE_ASSIGN_APPOINT:
+                //12.指定客服
                 if (NumUtil.isInValid(srcId)) {
                     return;
                 }
-                //12.指定客服
                 appointer = staffDao.getPushAppointByRole(DBSplitUtil.getInfoTabName(companyId), companyId, srcId, type);
                 if (appointer == null) {
                     return;
@@ -173,6 +173,14 @@ public class ClientPushServiceImpl implements ClientPushService {
                 allotLog = addAllotLog(kzId, appointer.getStaffId(), appointer.getStaffName(), appointer.getGroupId(),
                         appointer.getGroupName(), ClientConst.ALLOT_SYSTEM_AUTO, companyId);
                 doAssignAppoint(companyId, kzId, appointer, allotLog.getId(), overTime);
+            case ChannelConstant.PUSH_RULE_EVERYONE_CAN_GET:
+                //13:自由领取
+                List<StaffPushDTO> yyList = staffDao.getYyStaffListByRole(companyId, type);
+                if (CollectionUtils.isEmpty(yyList)) {
+                    return;
+                }
+                //推送给所有邀约人员
+                pushAllYyStaff(kzId, companyId, yyList);
             default:
                 break;
         }
@@ -434,6 +442,23 @@ public class ClientPushServiceImpl implements ClientPushService {
                         ClientLogConst.INFO_LOGTYPE_ALLOT, companyId));
         if (1 != updateRstNum) {
             throw new RException(ExceptionEnum.LOG_ERROR);
+        }
+    }
+
+    /**
+     * 自由领取，推送给所有邀约人员
+     *
+     * @param kzId
+     * @param companyId
+     * @param yyList
+     */
+    private void pushAllYyStaff(String kzId, int companyId, List<StaffPushDTO> yyList) {
+        // 获取客资信息
+        ClientGoEasyDTO infoDTO = clientInfoDao.getClientGoEasyDTOById(kzId, DBSplitUtil.getInfoTabName(companyId),
+                DBSplitUtil.getDetailTabName(companyId));
+        for (StaffPushDTO sf : yyList) {
+            //TODO 推送消息
+            //GoEasyUtil.pushInfoComed(companyId, sf.getStaffId(), infoDTO, newsDao);
         }
     }
 
