@@ -856,7 +856,7 @@
     <!--获取客服人员列表，转介绍客服，电商客服，用于分配自由领取-->
     <select id="getYyStaffListByRole" parameterType="map" resultMap="pushMap">
         SELECT DISTINCT
-            sf.ID sf.NICKNAME, gs.GROUPID, grp.GROUPNAME
+            sf.ID, sf.NICKNAME, gs.GROUPID, grp.GROUPNAME
         FROM
             hm_pub_group_staff gs
             INNER JOIN hm_pub_group grp ON grp.GROUPID = gs.GROUPID
