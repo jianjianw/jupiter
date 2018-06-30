@@ -5,6 +5,7 @@ package com.qiein.jupiter.web.entity.vo;
  */
 public class CommonTypeVO {
     private Integer id;
+    private int dicCode;
     private String dicName;
     private String dicType;
     private Integer companyId;
@@ -48,5 +49,13 @@ public class CommonTypeVO {
 
     public void setIsShow(Integer isShow) {
         this.isShow = isShow;
+    }
+
+    public int getDicCode() {
+        return dicCode;
+    }
+
+    public void setDicCode(int dicCode) {
+        this.dicCode = dicCode;
     }
 }
