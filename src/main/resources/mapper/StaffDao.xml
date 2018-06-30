@@ -791,7 +791,11 @@
 		LEFT JOIN hm_pub_group grp ON rela.GROUPID = grp.GROUPID AND grp.COMPANYID = #{companyId}
 		WHERE
 			sf.ID = #{id}
+        AND sf.ISDEL = 0
+        AND sf.ISLOCK = 0
 		AND sf.COMPANYID = #{companyId}
+        AND grp.GROUPTYPE = #{type}
+        LIMIT 0,1
     </select>
 
     <!--修改消息推送设置-->
@@ -839,7 +843,6 @@
             AND grp.GROUPTYPE = #{role}
             AND sf.ISDEL = 0
             AND sf.ISLOCK = 0
-            AND sf.STATUSFLAG = 1
         GROUP BY
             info.APPOINTORID
         ORDER BY count( 1 ) ASC

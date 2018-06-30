@@ -382,7 +382,7 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @param companyId
      * @return
      */
-    StaffPushDTO getPushDTOByCidAndUid(@Param("id") int id, @Param("companyId") int companyId);
+    StaffPushDTO getPushDTOByCidAndUid(@Param("id") int id, @Param("companyId") int companyId,@Param("type")String type);
 
     /**
      * 编辑个人消息设置

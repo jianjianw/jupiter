@@ -139,7 +139,19 @@ public class ClientPushServiceImpl implements ClientPushService {
             case ChannelConstant.PUSH_RULE_SELF:
                 // 5：回馈个人-谁录分给谁
                 if (NumUtil.isValid(clientDTO.getCollectorId())) {
-                    appointer = staffDao.getPushDTOByCidAndUid(clientDTO.getCollectorId(), companyId);
+                    String type = "";
+                    //电商
+                    if (ChannelConstant.DS_TYPE_LIST.contains(channelTypeId)) {
+                        type = RoleConstant.DSYY;
+                    }
+                    //转介绍
+                    if (ChannelConstant.ZJS_TYPE_LIST.contains(channelTypeId)) {
+                        type = RoleConstant.ZJSYY;
+                    }
+                    appointer = staffDao.getPushDTOByCidAndUid(clientDTO.getCollectorId(), companyId,type);
+                    if (appointer == null) {
+                        return;
+                    }
                     // 生成分配日志
                     allotLog = addAllotLog(kzId, appointer.getStaffId(), appointer.getStaffName(), appointer.getGroupId(),
                             appointer.getGroupName(), ClientConst.ALLOT_SYSTEM_AUTO, companyId);
@@ -161,6 +173,9 @@ public class ClientPushServiceImpl implements ClientPushService {
                 if (ChannelConstant.ZJS_TYPE_LIST.contains(channelTypeId)) {
                     //12.指定客服
                     appointer = staffDao.getPushAppointByRole(DBSplitUtil.getInfoTabName(companyId), companyId, srcId, RoleConstant.ZJSYY);
+                }
+                if (appointer == null) {
+                    return;
                 }
                 // 生成分配日志
                 allotLog = addAllotLog(kzId, appointer.getStaffId(), appointer.getStaffName(), appointer.getGroupId(),
