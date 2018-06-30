@@ -833,7 +833,7 @@
             hm_crm_source_staff rela
         LEFT JOIN ${infoTabName} info ON info.APPOINTORID = rela.STAFFID AND rela.COMPANYID = info.COMPANYID
         AND rela.SOURCEID = info.SOURCEID  AND info.CREATETIME &gt; UNIX_TIMESTAMP( CAST( SYSDATE( ) AS DATE ) )
-        AND info.STATUSID != 0  AND info.STATUSID != 98  AND info.STATUSID != 99
+        AND info.STATUSID != 0  AND info.STATUSID != 98  AND info.STATUSID != 99   AND info.ISDEL = 0
         INNER JOIN hm_pub_staff sf ON sf.ID = rela.STAFFID AND rela.COMPANYID = sf.COMPANYID
         LEFT JOIN hm_pub_group_staff gs ON gs.STAFFID = sf.ID AND gs.COMPANYID = sf.COMPANYID
         LEFT JOIN hm_pub_group grp ON grp.GROUPID = gs.GROUPID AND grp.COMPANYID = gs.COMPANYID
@@ -844,6 +844,7 @@
             AND grp.GROUPTYPE = #{role}
             AND sf.ISDEL = 0
             AND sf.ISLOCK = 0
+            AND sf.TODAYNUM &lt; LIMITDAY
         GROUP BY
             info.APPOINTORID
         ORDER BY count( 1 ) ASC
