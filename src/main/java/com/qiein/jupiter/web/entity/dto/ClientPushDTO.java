@@ -63,9 +63,13 @@ public class ClientPushDTO implements Serializable {
      * 推送规则
      */
     private int pushRule;
-
     /**
      * 门店ID
+     */
+    private int shopId;
+
+    /**
+     * 拍摄类型ID
      */
     private int typeId;
 
@@ -215,6 +219,14 @@ public class ClientPushDTO implements Serializable {
 
     public void setChannelTypeId(int channelTypeId) {
         this.channelTypeId = channelTypeId;
+    }
+
+    public int getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(int shopId) {
+        this.shopId = shopId;
     }
 
     @Override
