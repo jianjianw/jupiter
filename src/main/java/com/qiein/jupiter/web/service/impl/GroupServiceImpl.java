@@ -634,7 +634,7 @@ public class GroupServiceImpl implements GroupService {
      * @return
      */
     public List<GroupBaseStaffVO> getAllGroupStaff(int companyId) {
-        return groupStaffDao.getGroupStaffByRole(companyId, null);
+        return groupStaffDao.getAllGroupStaff(companyId);
     }
 
     /**

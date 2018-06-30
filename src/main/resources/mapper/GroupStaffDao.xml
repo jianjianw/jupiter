@@ -437,4 +437,20 @@
     <select id = "getGroupStaffByStaffId" resultMap="baseMap">
         select GROUPID,STAFFID,COMPANYID  from  hm_pub_group_staff  where COMPANYID = #{companyId}  and STAFFID = #{staffId}
     </select>
+
+    <!--公司所有小组人员-->
+    <select id="getAllGroupStaff" parameterType="map" resultMap="GroupStaffMap">
+        SELECT
+        grp.GROUPID, grp.GROUPNAME,grp.GROUPTYPE, rela.STAFFID, sf.NICKNAME, sf.STATUSFLAG, sf.ISLOCK
+        FROM
+        hm_pub_group grp
+        INNER JOIN hm_pub_group_staff rela ON rela.COMPANYID = grp.COMPANYID AND grp.GROUPID = rela.GROUPID
+        INNER JOIN hm_pub_staff sf ON sf.COMPANYID = rela.COMPANYID AND rela.STAFFID = sf.ID
+        WHERE
+        grp.COMPANYID = #{companyId}
+        AND grp.PARENTID != '0'
+        AND sf.ISDEL = 0
+        AND sf.ISLOCK = 0
+        ORDER BY grp.GROUPNAME, grp.ID, sf.ID
+    </select>
 </mapper>
