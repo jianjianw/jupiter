@@ -710,7 +710,6 @@
 			info.ISDEL = 0
 		AND info.COMPANYID = #{companyId}
 		AND info.APPOINTORID = #{staffId}
-		AND info.STATUSID != 5
 		AND info.STATUSID != 0
 		AND info.STATUSID != 98
 		AND info.STATUSID != 99
