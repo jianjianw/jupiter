@@ -83,9 +83,8 @@ public class ClientPushServiceImpl implements ClientPushService {
         //电商
         if (ChannelConstant.DS_TYPE_LIST.contains(channelTypeId)) {
             type = RoleConstant.DSYY;
-        }
-        //转介绍
-        if (ChannelConstant.ZJS_TYPE_LIST.contains(channelTypeId)) {
+        }else  if (ChannelConstant.ZJS_TYPE_LIST.contains(channelTypeId)) {
+            //转介绍
             type = RoleConstant.ZJSYY;
         }
         // 分配目标客服

@@ -135,7 +135,7 @@ public class ClientAddServiceImpl implements ClientAddService {
         if ("100000".equals(jsInfo.getString("code"))) {
             CompanyPO companyPO = companyDao.getById(staffPO.getCompanyId());
             tpm.pushInfo(new ClientPushDTO(pushService, channelPO.getPushRule(), staffPO.getCompanyId(),
-                    JsonFmtUtil.strContentToJsonObj(addRstStr).getString("kzid"), clientVO.getShopId(),
+                    JsonFmtUtil.strContentToJsonObj(addRstStr).getString("kzid"), clientVO.getTypeId(),
                     channelPO.getId(), channelPO.getTypeId(), companyPO.getOvertime(), companyPO.getKzInterval(), sourcePO.getId()));
         } else {
             throw new RException(jsInfo.getString("msg"));
@@ -225,7 +225,7 @@ public class ClientAddServiceImpl implements ClientAddService {
         if ("100000".equals(jsInfo.getString("code"))) {
             CompanyPO companyPO = companyDao.getById(staffPO.getCompanyId());
             tpm.pushInfo(new ClientPushDTO(pushService, sourcePO.getPushRule(), staffPO.getCompanyId(),
-                    JsonFmtUtil.strContentToJsonObj(addRstStr).getString("kzid"), clientVO.getShopId(),
+                    JsonFmtUtil.strContentToJsonObj(addRstStr).getString("kzid"), clientVO.getTypeId(),
                     channelPO.getId(), channelPO.getTypeId(), companyPO.getOvertime(), companyPO.getKzInterval(), sourcePO.getId()));
         } else {
             throw new RException(jsInfo.getString("msg"));
