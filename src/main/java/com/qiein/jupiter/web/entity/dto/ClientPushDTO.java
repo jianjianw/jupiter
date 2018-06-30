@@ -65,9 +65,9 @@ public class ClientPushDTO implements Serializable {
     private int pushRule;
 
     /**
-     * 拍摄地ID
+     * 门店ID
      */
-    private int shopId;
+    private int typeId;
 
     /**
      * 渠道ID
@@ -81,12 +81,12 @@ public class ClientPushDTO implements Serializable {
 
     private ClientPushServiceImpl service;
 
-    public ClientPushDTO(ClientPushServiceImpl service, Integer pushRule, int companyId, String kzId, int shopId,
+    public ClientPushDTO(ClientPushServiceImpl service, Integer pushRule, int companyId, String kzId, int typeId,
                          int channelId, Integer channelTypeId, int overtime, int kzInterval, int srcId) {
         this.pushRule = pushRule;
         this.companyId = companyId;
         this.kzId = kzId;
-        this.shopId = shopId;
+        this.typeId = typeId;
         this.channelId = channelId;
         this.channelTypeId = channelTypeId;
         this.overTime = overtime;
@@ -193,12 +193,12 @@ public class ClientPushDTO implements Serializable {
         this.pushRule = pushRule;
     }
 
-    public int getShopId() {
-        return shopId;
+    public int getTypeId() {
+        return typeId;
     }
 
-    public void setShopId(int shopId) {
-        this.shopId = shopId;
+    public void setTypeId(int typeId) {
+        this.typeId = typeId;
     }
 
     public int getChannelId() {
@@ -221,7 +221,7 @@ public class ClientPushDTO implements Serializable {
     public String toString() {
         return "ClientPushDTO [pushInterval=" + pushInterval + ", overTime=" + overTime + ", companyId=" + companyId
                 + ", id=" + id + ", kzId=" + kzId + ", statusId=" + statusId + ", appointorId=" + appointorId
-                + ", sourceId=" + sourceId + ", pushRule=" + pushRule + ", shopId=" + shopId + ", channelId="
+                + ", sourceId=" + sourceId + ", pushRule=" + pushRule + ", typeId=" + typeId + ", channelId="
                 + channelId + ", channelTypeId=" + channelTypeId + ", service=" + service + "]";
     }
 

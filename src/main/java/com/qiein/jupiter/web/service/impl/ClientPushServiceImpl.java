@@ -64,10 +64,10 @@ public class ClientPushServiceImpl implements ClientPushService {
      */
     @Transactional
     @Override
-    public synchronized void pushLp(int rule, int companyId, String kzId, int shopId, int channelId, int channelTypeId,
+    public synchronized void pushLp(int rule, int companyId, String kzId, int typeId, int channelId, int channelTypeId,
                                     int overTime, int interval, int srcId) {
 
-        if (NumUtil.haveInvalid(rule, companyId, channelId, channelTypeId) || StringUtil.isEmpty(kzId)) {
+        if (NumUtil.haveInvalid(rule, companyId, typeId, channelId, channelTypeId) || StringUtil.isEmpty(kzId)) {
             return;
         }
 
@@ -108,7 +108,7 @@ public class ClientPushServiceImpl implements ClientPushService {
         switch (rule) {
             case ChannelConstant.PUSH_RULE_AVG_ALLOT:
                 // 1：小组+员工-指定承接小组依据权重比自动分配 - <无需领取>
-                appointer = getStaffGroupStaffAvg(companyId, kzId, shopId, channelId, channelTypeId, overTime, interval);
+                appointer = getStaffGroupStaffAvg(companyId, kzId, typeId, channelId, channelTypeId, overTime, interval);
                 if (appointer == null) {
                     return;
                 }
@@ -125,7 +125,7 @@ public class ClientPushServiceImpl implements ClientPushService {
                 if (NumUtil.isValid(clientDTO.getAppointorId())) {
                     checkOffLine(clientDTO.getAppointorId(), companyId, overTime);
                 }
-                appointer = getStaffGroupStaffAvg(companyId, kzId, shopId, channelId, channelTypeId, overTime, interval);
+                appointer = getStaffGroupStaffAvg(companyId, kzId, typeId, channelId, channelTypeId, overTime, interval);
                 if (appointer == null) {
                     return;
                 }
@@ -148,7 +148,7 @@ public class ClientPushServiceImpl implements ClientPushService {
                     if (ChannelConstant.ZJS_TYPE_LIST.contains(channelTypeId)) {
                         type = RoleConstant.ZJSYY;
                     }
-                    appointer = staffDao.getPushDTOByCidAndUid(clientDTO.getCollectorId(), companyId,type);
+                    appointer = staffDao.getPushDTOByCidAndUid(clientDTO.getCollectorId(), companyId, type);
                     if (appointer == null) {
                         return;
                     }
@@ -465,26 +465,26 @@ public class ClientPushServiceImpl implements ClientPushService {
      *
      * @param companyId
      * @param kzId
-     * @param shopId
+     * @param typeId
      * @param channelId
      * @param channelTypeId
      * @param overTime
      * @param interval
      * @return
      */
-    public StaffPushDTO getStaffGroupStaffAvg(int companyId, String kzId, int shopId, int channelId, int channelTypeId,
+    public StaffPushDTO getStaffGroupStaffAvg(int companyId, String kzId, int typeId, int channelId, int channelTypeId,
                                               int overTime, int interval) {
 
         // 根据拍摄地ID，渠道ID获取要分配的小组ID集合
         List<ShopChannelGroupPO> shopChannelGroupRelaList = shopChannelGroupDao.listShopChannelGroupRela(companyId,
-                shopId, channelId, DBSplitUtil.getInfoTabName(companyId));
+                typeId, channelId, DBSplitUtil.getInfoTabName(companyId));
 
         if (CollectionUtils.isEmpty(shopChannelGroupRelaList)) {
             return null;
         }
 
         // 统计当天该拍摄地和渠道，每个小组的客资分配情况
-        List<GroupKzNumToday> groupKzNumTodayList = groupKzNumTodayDao.getGroupKzNumTodayByShopChannelId(shopId,
+        List<GroupKzNumToday> groupKzNumTodayList = groupKzNumTodayDao.getGroupKzNumTodayByShopChannelId(typeId,
                 channelId, companyId, DBSplitUtil.getInfoTabName(companyId));
 
         // 要分配的目标客服
@@ -499,11 +499,11 @@ public class ClientPushServiceImpl implements ClientPushService {
                 maxDiffPid = doGroupDiffCalc(shopChannelGroupRelaList);
             }
 
-            // 取出差比分析后差比值最大的小组即为要分配的客服组
+            // 取出差比分析后,差比值最大的小组即为要分配的客服组
             ShopChannelGroupPO thisGroup = getCurrentGroup(shopChannelGroupRelaList, maxDiffPid);
 
             // 从当前组找出要可以领取该渠道和拍摄地客资的客服
-            appointor = getAppointorByAllotRule(thisGroup.getGroupId(), companyId, kzId, shopId, channelId,
+            appointor = getAppointorByAllotRule(thisGroup.getGroupId(), companyId, kzId, typeId, channelId,
                     channelTypeId, interval);
 
             // 找不到分配客服就移除改组的分配拣选，重新选组
@@ -526,18 +526,18 @@ public class ClientPushServiceImpl implements ClientPushService {
      * @param groupId
      * @param companyId
      * @param kzId
-     * @param shopId
+     * @param typeId
      * @param channelId
      * @param channelTypeId
      * @param interval
      * @return
      */
-    private StaffPushDTO getAppointorByAllotRule(String groupId, int companyId, String kzId, int shopId, int channelId,
+    private StaffPushDTO getAppointorByAllotRule(String groupId, int companyId, String kzId, int typeId, int channelId,
                                                  int channelTypeId, int interval) {
 
         // 获取可以领取该渠道和拍摄地的在线的客服集合
-        List<StaffPushDTO> staffOnlineList = staffDao.listStaffPushDTOByShopIdAndChannelId(companyId, groupId,
-                channelId, shopId, interval);
+        List<StaffPushDTO> staffOnlineList = staffDao.listStaffPushDTOByTypeIdAndChannelId(companyId, groupId,
+                channelId, typeId, interval);
 
         if (CollectionUtils.isEmpty(staffOnlineList)) {
             return null;
@@ -547,13 +547,13 @@ public class ClientPushServiceImpl implements ClientPushService {
 
         // 获取从当前时间往前退一个小时内所有客服对该渠道和拍摄地的客资的领取情况
         List<StaffPushDTO> staffAllotList = staffDao.listStaffPushDTOByAlloted(DBSplitUtil.getInfoTabName(companyId),
-                companyId, channelId, shopId, calcRange, staffOnlineList);
+                companyId, channelId, typeId, calcRange, staffOnlineList);
 
         while (calcRange <= CommonConstant.ALLOT_RANGE_MAX
                 && (staffAllotList == null || staffAllotList.size() != staffOnlineList.size())) {
             calcRange += CommonConstant.ALLOT_RANGE_INTERVAL;
             staffAllotList = staffDao.listStaffPushDTOByAlloted(DBSplitUtil.getInfoTabName(companyId), companyId,
-                    channelId, shopId, calcRange, staffOnlineList);
+                    channelId, typeId, calcRange, staffOnlineList);
         }
 
         // 值匹配，差比分析

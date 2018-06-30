@@ -536,7 +536,7 @@
     </select>
 
     <!--根据客资的渠道ID和拍摄地ID以及小组ID获取可分配的客服集合-->
-    <select id="listStaffPushDTOByShopIdAndChannelId" parameterType="map" resultMap="pushMap">
+    <select id="listStaffPushDTOByTypeIdAndChannelId" parameterType="map" resultMap="pushMap">
         SELECT
             DISTINCT
             sf.ID,
@@ -554,7 +554,7 @@
             AND sf.ISDEL = 0
             AND sf.ISLOCK = 0
             AND INSTR(sf.LIMITCHANNELIDS, CONCAT(',', #{channelId}, ',')) = 0
-            AND INSTR(sf.LIMITSHOPIDS, CONCAT(',', #{shopId}, ',')) = 0
+            AND INSTR(sf.LIMITSHOPIDS, CONCAT(',', #{typeId}, ',')) = 0
             AND (UNIX_TIMESTAMP(NOW()) - LASTPUSHTIME) &gt; #{interval}
             AND sf.TODAYNUM &lt; LIMITDAY
         ORDER BY sf.LASTPUSHTIME ASC;    
@@ -569,9 +569,8 @@
         WHERE
         info.COMPANYID = #{companyId}
         AND info.ISDEL = 0
-        AND info.SHOPID = #{shopId}
+        AND info.TYPEID = #{typeId}
         AND info.CHANNELID = #{channelId}
-        AND info.STATUSID != 5
         AND info.CREATETIME &gt;= UNIX_TIMESTAMP(CAST(SYSDATE() AS DATE))
         AND ( UNIX_TIMESTAMP(NOW()) - info.CREATETIME ) &lt; ${calcRange}
         AND info.APPOINTORID IN

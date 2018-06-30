@@ -149,18 +149,17 @@
               AND COMPANYID = #{companyId}
     </update>
 
-    <!-- 根据渠道和拍摄地获取关联的客服组集合 -->
+    <!-- 根据渠道和拍摄类型获取关联的客服组集合 -->
     <select id="listShopChannelGroupRela" parameterType="map" resultMap="baseMap">
         SELECT
 			rela.CHANNELID, rela.SHOPID, rela.GROUPID, rela.GROUPNAME, rela.COMPANYID, rela.WEIGHT
 		FROM
-			hm_crm_shop_channel_group_rela rela
+			hm_crm_type_channel_group_rela rela
 		LEFT JOIN ${infoTab} info ON rela.GROUPID = info.GROUPID 
 			AND info.CREATETIME &gt; UNIX_TIMESTAMP(CAST(SYSDATE() AS DATE)) 
-			AND info.STATUSID != 5	
 		WHERE
 			rela.COMPANYID = #{companyId}
-		AND rela.SHOPID = #{shopId}
+		AND rela.TYPEID = #{typeId}
 		AND rela.CHANNELID = #{channelId}
 		GROUP BY rela.GROUPID
 		ORDER BY COUNT(1) ASC;

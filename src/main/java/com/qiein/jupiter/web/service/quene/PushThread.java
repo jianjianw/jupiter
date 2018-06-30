@@ -16,7 +16,7 @@ public class PushThread implements Runnable {
         try {
             if (isNotEmpty()) {
                 this.pushVO.getService().pushLp(pushVO.getPushRule(), pushVO.getCompanyId(), pushVO.getKzId(),
-                        pushVO.getShopId(), pushVO.getChannelId(), pushVO.getChannelTypeId(), pushVO.getOverTime(),
+                        pushVO.getTypeId(), pushVO.getChannelId(), pushVO.getChannelTypeId(), pushVO.getOverTime(),
                         pushVO.getPushInterval(), pushVO.getSourceId());
             } else {
                 log.info("客资信息为空，停止推送");

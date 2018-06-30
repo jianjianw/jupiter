@@ -219,7 +219,7 @@ public interface StaffDao extends BaseDao<StaffPO> {
     List<StaffPO> getDelStaffListBySearchKey(@Param("companyId") int companyId, @Param("searchKey") String searchKey);
 
     /**
-     * 根据客资的渠道ID和拍摄地ID以及小组ID获取可分配的客服集合
+     * 根据客资的渠道ID和拍摄类型ID以及小组ID获取可分配的客服集合
      *
      * @param companyId
      * @param channelId
@@ -227,15 +227,15 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @param interval
      * @return
      */
-    List<StaffPushDTO> listStaffPushDTOByShopIdAndChannelId(@Param("companyId") int companyId,
-                                                            @Param("groupId") String groupId, @Param("channelId") int channelId, @Param("shopId") int shopId,
+    List<StaffPushDTO> listStaffPushDTOByTypeIdAndChannelId(@Param("companyId") int companyId,
+                                                            @Param("groupId") String groupId, @Param("channelId") int channelId, @Param("typeId") int typeId,
                                                             @Param("interval") int interval);
 
     /**
-     * 获取客服指定时间内渠道和拍摄地客资的领取情况
+     * 获取客服指定时间内渠道和拍摄类型客资的领取情况
      */
     List<StaffPushDTO> listStaffPushDTOByAlloted(@Param("infoTabName") String infoTabName,
-                                                 @Param("companyId") int companyId, @Param("channelId") int channelId, @Param("shopId") int shopId,
+                                                 @Param("companyId") int companyId, @Param("channelId") int channelId, @Param("typeId") int typeId,
                                                  @Param("calcRange") int calcRange, @Param("staffList") List<StaffPushDTO> staffList);
 
     /**
