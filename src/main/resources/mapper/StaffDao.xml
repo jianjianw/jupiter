@@ -717,6 +717,7 @@
 		AND (
 			channel.PUSHRULE = 11
 			OR channel.PUSHRULE = 1
+			OR channel.PUSHRULE = 12
 		)
 		AND info.CREATETIME &gt;= UNIX_TIMESTAMP(CAST(SYSDATE() AS DATE))
     </select>
