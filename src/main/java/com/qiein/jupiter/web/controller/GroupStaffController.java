@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.gson.JsonObject;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
+import com.qiein.jupiter.http.CrmBaseApi;
 import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
@@ -12,10 +13,7 @@ import com.qiein.jupiter.web.entity.po.GroupStaffPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.service.GroupStaffService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * FileName: GroupStaffController
@@ -50,5 +48,4 @@ public class GroupStaffController extends BaseController{
         groupStaffService.remove(groupStaffPO);
         return ResultInfoUtil.success();
     }
-
 }
