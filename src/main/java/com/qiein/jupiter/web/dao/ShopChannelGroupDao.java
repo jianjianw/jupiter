@@ -109,14 +109,14 @@ public interface ShopChannelGroupDao {
 			@Param("companyId") int companyId);
 
 	/**
-	 * 根据渠道和拍摄地获取关联的客服组集合
+	 * 根据渠道和拍摄类型获取关联的客服组集合
 	 *
 	 * @param companyId
-	 * @param shopId
+	 * @param typeId
 	 * @param channelId
 	 * @return
 	 */
-	List<ShopChannelGroupPO> listShopChannelGroupRela(@Param("companyId") int companyId, @Param("shopId") int shopId,
+	List<ShopChannelGroupPO> listShopChannelGroupRela(@Param("companyId") int companyId, @Param("typeId") int typeId,
 			@Param("channelId") int channelId, @Param("infoTab") String infoTab);
 
 	/**

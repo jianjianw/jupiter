@@ -771,7 +771,9 @@ public class GoEasyUtil {
      * @param invalidReason
      */
     public static void pushInvalidKz(int companyId, int staffId, ClientDTO info, String invalidReason) {
-
+        if (NumUtil.isNull(staffId) || NumUtil.isNull(companyId) || info == null) {
+            return;
+        }
         StringBuffer sb = new StringBuffer();
         sb.append("无效待审批 ");
         String header = sb.toString();
@@ -804,14 +806,14 @@ public class GoEasyUtil {
      * 金数据录入客资消息
      */
     public static void pushGoldDataKz(int companyId, int staffId, ClientDTO info) {
+        if (NumUtil.isNull(staffId) || NumUtil.isNull(companyId) || info == null) {
+            return;
+        }
         StringBuffer sb = new StringBuffer();
         sb.append("金数据客资录入成功");
         String header = sb.toString();
         sb.delete(0, sb.length());
 
-
-        sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("<br/>");
-        sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSrcName())).append("<br/>");
         if (StringUtil.isNotEmpty(info.getKzName())) {
             sb.append("姓名：").append(StringUtil.nullToStrTrim(info.getKzName())).append("<br/>");
         }
@@ -824,7 +826,8 @@ public class GoEasyUtil {
         if (StringUtil.isNotEmpty(info.getKzQq())) {
             sb.append("QQ：").append(StringUtil.nullToStrTrim(info.getKzQq())).append("<br/>");
         }
-
+        sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("<br/>");
+        sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSrcName())).append("<br/>");
 
         pushSuccess(companyId, staffId, header, sb.toString());
     }
@@ -841,10 +844,40 @@ public class GoEasyUtil {
      * @param overTime
      */
     public static void pushAllotMsg(int companyId, int staffId, int kzNum) {
+        if (NumUtil.isNull(staffId) || NumUtil.isNull(companyId)) {
+            return;
+        }
         StringBuffer sb = new StringBuffer();
         sb.append("主管分配给您" + kzNum + "个新的客资");
         String header = sb.toString();
         pushSuccess(companyId, staffId, header, sb.toString());
+    }
+
+    /*-- 重复客资邀约员提醒消息 --*/
+    public static void pushReClient(int companyId, int staffId, ClientGoEasyDTO info, String operaName) {
+        if (NumUtil.isNull(staffId) || NumUtil.isNull(companyId) || info == null) {
+            return;
+        }
+        String head = "您的客资被" + StringUtil.nullToStrTrim(operaName) + "重复提报，请及时联系该客资";
+        StringBuffer sb = new StringBuffer();
+
+        if (StringUtil.isNotEmpty(info.getKzName())) {
+            sb.append("姓名：").append(StringUtil.nullToStrTrim(info.getKzName())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzPhone())) {
+            sb.append("电话：").append(StringUtil.nullToStrTrim(info.getKzPhone())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzWechat())) {
+            sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWechat())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzQq())) {
+            sb.append("QQ：").append(StringUtil.nullToStrTrim(info.getKzQq())).append("<br/>");
+        }
+        sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("<br/>");
+        sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("<br/>");
+
+        String msg = sb.toString();
+        pushWarn(companyId, staffId, head, msg);
     }
 
 }

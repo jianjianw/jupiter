@@ -10,7 +10,7 @@
         <result column="KZNUM" jdbcType="INTEGER" property="kzNum"/>
     </resultMap>
 
-    <!--查询指定渠道和拍摄地当天各客服组客资分配情况-->
+    <!--查询指定渠道和拍摄类型当天各客服组客资分配情况-->
     <select id="getGroupKzNumTodayByShopChannelId" parameterType="map" resultMap="baseMap">
 		SELECT
 			info.GROUPID, COUNT(1) KZNUM
@@ -19,10 +19,9 @@
 		WHERE
 			info.CREATETIME &gt; UNIX_TIMESTAMP(CAST(SYSDATE() AS DATE))
 		AND info.GROUPID IS NOT NULL
-		AND info.SHOPID = #{shopId}
+		AND info.TYPEID = #{typeId}
 		AND info.CHANNELID = #{channelId}
 		AND info.ISDEL = 0
-		AND info.STATUSID != 5
 		GROUP BY
 			info.GROUPID
     </select>

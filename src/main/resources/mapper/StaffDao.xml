@@ -504,7 +504,8 @@
     <update id="updateStaffLoginInfo">
         UPDATE hm_pub_staff_detail
         SET LASTLOGINTIME = UNIX_TIMESTAMP(now()),
-            LASTLOGINIP   = #{lastLoginIp}
+            LASTLOGINIP   = #{lastLoginIp},
+            IPLOCATION = #{ipLocation}
         WHERE ID = #{id}
               AND COMPANYID = #{companyId}
     </update>
@@ -536,7 +537,7 @@
     </select>
 
     <!--根据客资的渠道ID和拍摄地ID以及小组ID获取可分配的客服集合-->
-    <select id="listStaffPushDTOByShopIdAndChannelId" parameterType="map" resultMap="pushMap">
+    <select id="listStaffPushDTOByTypeIdAndChannelId" parameterType="map" resultMap="pushMap">
         SELECT
             DISTINCT
             sf.ID,
@@ -554,7 +555,7 @@
             AND sf.ISDEL = 0
             AND sf.ISLOCK = 0
             AND INSTR(sf.LIMITCHANNELIDS, CONCAT(',', #{channelId}, ',')) = 0
-            AND INSTR(sf.LIMITSHOPIDS, CONCAT(',', #{shopId}, ',')) = 0
+            AND INSTR(sf.LIMITSHOPIDS, CONCAT(',', #{typeId}, ',')) = 0
             AND (UNIX_TIMESTAMP(NOW()) - LASTPUSHTIME) &gt; #{interval}
             AND sf.TODAYNUM &lt; LIMITDAY
         ORDER BY sf.LASTPUSHTIME ASC;    
@@ -569,9 +570,8 @@
         WHERE
         info.COMPANYID = #{companyId}
         AND info.ISDEL = 0
-        AND info.SHOPID = #{shopId}
+        AND info.TYPEID = #{typeId}
         AND info.CHANNELID = #{channelId}
-        AND info.STATUSID != 5
         AND info.CREATETIME &gt;= UNIX_TIMESTAMP(CAST(SYSDATE() AS DATE))
         AND ( UNIX_TIMESTAMP(NOW()) - info.CREATETIME ) &lt; ${calcRange}
         AND info.APPOINTORID IN
@@ -711,7 +711,6 @@
 			info.ISDEL = 0
 		AND info.COMPANYID = #{companyId}
 		AND info.APPOINTORID = #{staffId}
-		AND info.STATUSID != 5
 		AND info.STATUSID != 0
 		AND info.STATUSID != 98
 		AND info.STATUSID != 99
@@ -719,6 +718,7 @@
 		AND (
 			channel.PUSHRULE = 11
 			OR channel.PUSHRULE = 1
+			OR channel.PUSHRULE = 12
 		)
 		AND info.CREATETIME &gt;= UNIX_TIMESTAMP(CAST(SYSDATE() AS DATE))
     </select>
@@ -833,6 +833,7 @@
             hm_crm_source_staff rela
         LEFT JOIN ${infoTabName} info ON info.APPOINTORID = rela.STAFFID AND rela.COMPANYID = info.COMPANYID
         AND rela.SOURCEID = info.SOURCEID  AND info.CREATETIME &gt; UNIX_TIMESTAMP( CAST( SYSDATE( ) AS DATE ) )
+        AND info.STATUSID != 0  AND info.STATUSID != 98  AND info.STATUSID != 99
         INNER JOIN hm_pub_staff sf ON sf.ID = rela.STAFFID AND rela.COMPANYID = sf.COMPANYID
         LEFT JOIN hm_pub_group_staff gs ON gs.STAFFID = sf.ID AND gs.COMPANYID = sf.COMPANYID
         LEFT JOIN hm_pub_group grp ON grp.GROUPID = gs.GROUPID AND grp.COMPANYID = gs.COMPANYID

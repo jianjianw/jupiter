@@ -49,7 +49,7 @@ public class ClientPushTask {
             }
             for (ClientPushDTO info : infoList) {
                 tpm.pushInfo(new ClientPushDTO(pushService, info.getPushRule(), comp.getId(), info.getKzId(),
-                        info.getShopId(), info.getChannelId(), info.getChannelTypeId(), comp.getOvertime(),
+                        info.getTypeId(), info.getChannelId(), info.getChannelTypeId(), comp.getOvertime(),
                         comp.getKzInterval(), info.getSourceId()));
             }
             log.info("推送了客资：" + infoList.size() + " 个");

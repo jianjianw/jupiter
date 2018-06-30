@@ -51,20 +51,21 @@
 			a.ID id,
 			a.HEADIMG headImg,
 			a.NICKNAME nickName,
-			d.GROUPNAME groupName,
+			a.PHONE phone,
+			GROUP_CONCAT(d.GROUPNAME) groupName,
 			b.CREATETIME createTime,
 			b.LASTLOGINIP lastLoginIp,
 			b.LASTLOGINTIME lastLoginTime,
-			b.LASTLOGINIP lastLoginIp,
 			b.IPLOCATION ipLocation
 		FROM
 			hm_pub_staff a
-		LEFT JOIN hm_pub_staff_detail b ON a.ID = b.ID
+		INNER JOIN hm_pub_staff_detail b ON a.ID = b.ID
 		LEFT JOIN hm_pub_group_staff c ON a.ID = c.STAFFID
 		LEFT JOIN hm_pub_group d ON c.GROUPID = d.GROUPID
 		WHERE
 			a.COMPANYID = #{companyId}
 			AND a.WHITEFLAG = 1
+		GROUP BY a.ID
    	</select>
 
     <select id="findIp" parameterType="Integer" resultType="String">

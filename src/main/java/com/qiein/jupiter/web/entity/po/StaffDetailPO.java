@@ -39,6 +39,10 @@ public class StaffDetailPO extends BaseEntity {
      */
     private String lastLogoutIp;
     /**
+     * 上次登录地址
+     */
+    private String ipLocation;
+    /**
      * Openid
      */
     private String weChatOpenId;
@@ -154,5 +158,13 @@ public class StaffDetailPO extends BaseEntity {
 
     public void setCompanyId(int companyId) {
         this.companyId = companyId;
+    }
+
+    public String getIpLocation() {
+        return ipLocation;
+    }
+
+    public void setIpLocation(String ipLocation) {
+        this.ipLocation = ipLocation;
     }
 }

@@ -12,7 +12,7 @@ public class ThreadTask {
 			vo.setCompanyId(1);
 			vo.setPushRule(1);
 			vo.setKzId("121121");
-			vo.setShopId(12);
+			vo.setTypeId(12);
 			vo.setChannelId(121);
 			vo.setChannelTypeId(12);
 			vo.setKzId(":::客资-" + i);

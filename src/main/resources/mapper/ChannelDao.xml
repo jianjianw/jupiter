@@ -407,9 +407,7 @@
         LEFT JOIN hm_crm_source src ON src.COMPANYID = channel.COMPANYID AND src.CHANNELID = channel.ID
         WHERE
         channel.COMPANYID = #{companyId}
-        AND channel.ISSHOW = 1
-        AND src.ISSHOW = 1
-        ORDER BY channel.TYPEID, channel.PRIORITY, channel.ID, src.PRIORITY, src.ID
+        ORDER BY channel.ISSHOW DESC, channel.TYPEID, channel.PRIORITY, channel.ID, src.ISSHOW DESC, src.PRIORITY, src.ID
     </select>
 
 </mapper>
