@@ -725,6 +725,7 @@ public class ClientPushServiceImpl implements ClientPushService {
         try {
             return clientInfoDao.getInfoListBeReadyPush(DBSplitUtil.getInfoTabName(companyId), companyId, interval);
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }

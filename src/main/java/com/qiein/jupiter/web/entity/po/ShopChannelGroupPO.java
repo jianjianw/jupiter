@@ -12,7 +12,7 @@ public class ShopChannelGroupPO extends BaseEntity {
 	/**
 	 * 拍摄地
 	 */
-	private int shopId;
+	private int typeId;
 
 	/**
 	 * 渠道名
@@ -52,8 +52,8 @@ public class ShopChannelGroupPO extends BaseEntity {
 	public ShopChannelGroupPO() {
 	}
 
-	public ShopChannelGroupPO(int shopId, int channelId, String groupId, String groupName, int weight, int companyId) {
-		this.shopId = shopId;
+	public ShopChannelGroupPO(int typeId, int channelId, String groupId, String groupName, int weight, int companyId) {
+		this.typeId = typeId;
 		this.channelId = channelId;
 		this.groupId = groupId;
 		this.groupName = groupName;
@@ -96,12 +96,12 @@ public class ShopChannelGroupPO extends BaseEntity {
 		this.diffPid = diffPid;
 	}
 
-	public int getShopId() {
-		return shopId;
+	public int getTypeId() {
+		return typeId;
 	}
 
-	public void setShopId(int shopId) {
-		this.shopId = shopId;
+	public void setTypeId(int typeId) {
+		this.typeId = typeId;
 	}
 
 	public int getChannelId() {

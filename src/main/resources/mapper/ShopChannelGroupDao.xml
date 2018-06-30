@@ -3,7 +3,7 @@
 <mapper namespace="com.qiein.jupiter.web.dao.ShopChannelGroupDao">
     <resultMap id="baseMap" type="com.qiein.jupiter.web.entity.po.ShopChannelGroupPO">
         <id column="ID" property="id" jdbcType="BIGINT"/>
-        <result column="SHOPID" property="shopId" jdbcType="INTEGER"/>
+        <result column="TYPEID" property="typeId" jdbcType="INTEGER"/>
         <result column="CHANNELID" property="channelId" jdbcType="INTEGER"/>
         <result column="GROUPNAME" property="groupName" jdbcType="VARCHAR"/>
         <result column="GROUPID" property="groupId" jdbcType="VARCHAR"/>
@@ -152,7 +152,7 @@
     <!-- 根据渠道和拍摄类型获取关联的客服组集合 -->
     <select id="listShopChannelGroupRela" parameterType="map" resultMap="baseMap">
         SELECT
-			rela.CHANNELID, rela.SHOPID, rela.GROUPID, rela.GROUPNAME, rela.COMPANYID, rela.WEIGHT
+			rela.CHANNELID, rela.TYPEID, rela.GROUPID, rela.GROUPNAME, rela.COMPANYID, rela.WEIGHT
 		FROM
 			hm_crm_type_channel_group_rela rela
 		LEFT JOIN ${infoTab} info ON rela.GROUPID = info.GROUPID 
