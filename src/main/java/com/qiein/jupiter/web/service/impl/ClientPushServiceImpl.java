@@ -363,6 +363,12 @@ public class ClientPushServiceImpl implements ClientPushService {
             throw new RException(ExceptionEnum.INFO_EDIT_ERROR);
         }
 
+        // 推送消息
+        ClientGoEasyDTO infoDTO = clientInfoDao.getClientGoEasyDTOById(kzId, DBSplitUtil.getInfoTabName(companyId),
+                DBSplitUtil.getDetailTabName(companyId));
+        GoEasyUtil.pushInfoComed(companyId, appointer.getStaffId(), infoDTO, newsDao);
+        GoEasyUtil.pushInfoRefresh(companyId, appointer.getStaffId());
+
         // 客资日志记录
         updateRstNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(companyId),
                 new ClientLogPO(kzId,
