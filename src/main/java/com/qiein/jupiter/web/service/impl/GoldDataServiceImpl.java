@@ -16,6 +16,7 @@ import com.qiein.jupiter.msg.goeasy.ClientDTO;
 import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
 import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.dao.*;
+import com.qiein.jupiter.web.entity.dto.EditCreatorDTO;
 import com.qiein.jupiter.web.entity.dto.GoldCustomerDTO;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.*;
@@ -334,5 +335,13 @@ public class GoldDataServiceImpl implements GoldDataService {
         } else {
             throw new RException(jsInfo.getString("msg"));
         }
+    }
+
+    /**
+     * 修改表单创建者
+     * @param editCreatorDTO
+     */
+    public void editFormCreateor(EditCreatorDTO editCreatorDTO){
+        goldDataDao.editFormCreateor(editCreatorDTO);
     }
 }

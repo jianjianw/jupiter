@@ -1,7 +1,10 @@
 package com.qiein.jupiter.web.dao;
 
+import com.qiein.jupiter.web.entity.dto.EditCreatorDTO;
 import com.qiein.jupiter.web.entity.po.GoldTempPO;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * FileName: GoldTempDao
@@ -19,4 +22,6 @@ public interface GoldTempDao extends BaseDao<GoldTempPO> {
      */
     GoldTempPO getByKzNameOrKzPhoneOrKzWechat(@Param(value = "formId") String formId,
                                               @Param(value = "kzPhone") String kzPhone);
+
+
 }

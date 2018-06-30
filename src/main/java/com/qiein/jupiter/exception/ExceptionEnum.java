@@ -167,7 +167,9 @@ public enum ExceptionEnum {
     PAGESIZE_MAX_SIZE_ERROR(2301, "每页最多500条"),
     //短信
     TEMPLATE_LOSE(2401, "短信模板获取失败"),
-    TEMPLATE_NOT_IN(2402, "短信模板不存在");
+    TEMPLATE_NOT_IN(2402, "短信模板不存在"),
+    //报表
+    START_TIME_OR_END_TIME_IS_NULL(2501,"开始时间或者结束时间不能为空");
 
     private Integer code;
     private String msg;

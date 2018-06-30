@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.dao;
 
+import com.qiein.jupiter.web.entity.dto.EditCreatorDTO;
 import com.qiein.jupiter.web.entity.dto.GoldCustomerDTO;
 import com.qiein.jupiter.web.entity.po.GoldFingerPO;
 import com.qiein.jupiter.web.entity.vo.GoldCustomerVO;
@@ -71,4 +72,10 @@ public interface GoldDataDao {
      * @param id
      */
     void addkzByGoldTemp(Integer id);
+
+    /**
+     * 修改表单创建者
+     * @param editCreatorDTO
+     */
+    void editFormCreateor(EditCreatorDTO editCreatorDTO);
 }
