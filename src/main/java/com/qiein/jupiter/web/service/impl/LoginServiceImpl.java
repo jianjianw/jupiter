@@ -244,6 +244,7 @@ public class LoginServiceImpl implements LoginService {
         staffDetailPO.setId(staff.getId());
         staffDetailPO.setCompanyId(staff.getCompanyId());
         staffDetailPO.setLastLoginIp(ip);
+        staffDetailPO.setIpLocation(HttpUtil.getIpLocation(ip));
         staffDao.updateStaffLoginInfo(staffDetailPO);
         // 如果当前员工为下线状态，则更新他为上线状态
         if (staff.getStatusFlag() == StaffStatusEnum.OffLine.getStatusId()) {

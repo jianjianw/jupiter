@@ -504,7 +504,8 @@
     <update id="updateStaffLoginInfo">
         UPDATE hm_pub_staff_detail
         SET LASTLOGINTIME = UNIX_TIMESTAMP(now()),
-            LASTLOGINIP   = #{lastLoginIp}
+            LASTLOGINIP   = #{lastLoginIp},
+            IPLOCATION = #{ipLocation}
         WHERE ID = #{id}
               AND COMPANYID = #{companyId}
     </update>
