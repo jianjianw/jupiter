@@ -77,7 +77,7 @@
         DICTYPE = "common_type"
         AND a.TYPEID = #{typeId}
         AND a.COMPANYID = #{companyId}
-
+        ORDER BY a.GROUPNAME
     </select>
 
 

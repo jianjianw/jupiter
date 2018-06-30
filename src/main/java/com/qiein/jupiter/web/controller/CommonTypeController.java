@@ -73,8 +73,7 @@ public class CommonTypeController extends BaseController {
     @GetMapping("/find_common_type_channel")
     public ResultInfo findCommonTypeChannel(@Id @RequestParam("typeId") int typeId) {
         StaffPO staffPO = getCurrentLoginStaff();
-        List<CommonTypeChannelVO> list = commonTypeSerivce.findChannelGroup(typeId, staffPO.getCompanyId());
-        return ResultInfoUtil.success(list);
+        return ResultInfoUtil.success(commonTypeSerivce.findChannelGroup(typeId, staffPO.getCompanyId()));
     }
 
     /**
