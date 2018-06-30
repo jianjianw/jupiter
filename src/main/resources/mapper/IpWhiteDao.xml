@@ -51,6 +51,7 @@
 			a.ID id,
 			a.HEADIMG headImg,
 			a.NICKNAME nickName,
+			a.PHONE,
 			GROUP_CONCAT(d.GROUPNAME) groupName,
 			b.CREATETIME createTime,
 			b.LASTLOGINIP lastLoginIp,
