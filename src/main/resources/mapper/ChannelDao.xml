@@ -222,7 +222,7 @@
         group by CHANNELID,LINKID
         ) a
         group by channelId) c
-        on a.COMPANYID = c.COMPANYID and a.ID = b.channelId
+        on a.COMPANYID = c.COMPANYID and a.ID = c.channelId
         WHERE
         a.COMPANYID = #{companyId} AND TYPEID IN
         <foreach collection="typeIds" index="index" item="typeId"
@@ -246,8 +246,8 @@
             a.PRIORITY,
             a.ISSHOW,
             a.ISFILTER,
-            b.LINKIDS,
-            b.NICKNAMES
+            if(a.PUSHRULE = 12,b.LINKIDS,IF(a.PUSHRULE = 14,c.LINKIDS,null))as LINKIDS,
+            if(a.PUSHRULE = 12,b.NICKNAMES,if(a.PUSHRULE = 14,c.NICKNAMES,null))as nicknames
         FROM
             hm_crm_channel a
             LEFT JOIN
@@ -303,7 +303,7 @@
                   group by CHANNELID, LINKID
                  ) a
              group by channelId) c
-           on a.COMPANYID = c.COMPANYID and a.ID = b.channelId
+           on a.COMPANYID = c.COMPANYID and a.ID = c.channelId
         WHERE
             a.COMPANYID = #{companyId} AND TYPEID = #{typeId}
         ORDER BY ISSHOW DESC, PRIORITY, TYPEID, ID
