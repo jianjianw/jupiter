@@ -94,7 +94,7 @@ public class ClientServiceImpl implements ClientService {
     public void scanWechat(int companyId, String kzId) {
         clientDao.editClientMemoLabel(DBSplitUtil.getDetailTabName(companyId), companyId, kzId, "【微信已扫码】");
         clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(companyId), new ClientLogPO(kzId,
-                CommonConstant.DEFAULT_ZERO, null, "通过扫描二维码复制了微信账号", ClientLogConst.INFO_LOGTYPE_EDIT, companyId));
+                CommonConstant.DEFAULT_ZERO, null, "通过扫描二维码复制了微信账号", ClientLogConst.INFO_LOGTYPE_SCAN_WECAHT, companyId));
     }
 
     /**
