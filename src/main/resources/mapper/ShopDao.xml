@@ -19,6 +19,12 @@
         <result column="ISSHOW" property="showFlag" jdbcType="BOOLEAN"/>
         <result column="PRIORITY" property="priority" jdbcType="INTEGER"/>
         <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
+        <collection property="staffVOList" ofType="com.qiein.jupiter.web.entity.vo.BaseStaffVO" resultMap="staffVOMap"/>
+    </resultMap>
+
+    <resultMap id="staffVOMap" type="com.qiein.jupiter.web.entity.vo.BaseStaffVO">
+        <result column="STAFFID" property="staffId" jdbcType="INTEGER"/>
+        <result column="STAFFNAME" property="staffName" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="baseColumn">
@@ -156,5 +162,17 @@
     <!--获取门店信息-->
     <select id="findShop" resultMap="baseMap">
         SELECT ADDRESS,SERVICEPHONE FROM hm_pub_shop WHERE  ID=#{id}
+    </select>
+
+    <!--获取门店门市列表-->
+    <select id="getShopAndStaffList" parameterType="map" >
+        SELECT shop.ID,shop.SHOPNAME,gs.STAFFID,sf.NICKNAME STAFFNAME
+        FROM hm_pub_shop shop
+        INNER JOIN hm_pub_group grp ON grp.COMPANYID = shop.COMPANYID AND shop.ID = grp.SHOPID
+        INNER JOIN hm_pub_group_staff gs ON gs.COMPANYID = grp.COMPANYID AND grp.GROUPID = gs.GROUPID
+        LEFT JOIN hm_pub_staff sf ON gs.STAFFID = sf.ID AND gs.COMPANYID = sf.COMPANYID
+        WHERE shop.ISSHOW = 1
+        AND shop.COMPANYID = #{companyId}
+        ORDER BY shop.ID
     </select>
 </mapper>

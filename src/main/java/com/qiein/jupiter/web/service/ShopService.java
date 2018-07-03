@@ -86,16 +86,26 @@ public interface ShopService {
 
     /**
      * 获取所在组的拍摄地列表
+     *
      * @param companyId
      * @param groupId
      * @return
      */
-    List<ShopPO> getShopListByStaffGroup(int companyId,String groupId);
+    List<ShopPO> getShopListByStaffGroup(int companyId, String groupId);
 
     /**
      * 根据id获取门店信息
+     *
      * @param shopId
      * @return
      */
     ShopPO findShop(Integer shopId);
+
+    /**
+     * 获取门店门市列表
+     *
+     * @param companyId
+     * @return
+     */
+    List<ShopVO> getShopAndStaffList(int companyId);
 }

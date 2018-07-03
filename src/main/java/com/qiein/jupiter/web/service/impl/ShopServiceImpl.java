@@ -156,6 +156,7 @@ public class ShopServiceImpl implements ShopService {
 
     /**
      * 获取所在小组承接拍摄地
+     *
      * @param companyId
      * @param groupId
      * @return
@@ -168,10 +169,21 @@ public class ShopServiceImpl implements ShopService {
 
     /**
      * 根据id获取门店信息
+     *
      * @param shopId
      * @return
      */
-    public ShopPO findShop(Integer shopId){
-       return  shopDao.findShop(shopId);
+    public ShopPO findShop(Integer shopId) {
+        return shopDao.findShop(shopId);
+    }
+
+    /**
+     * 获取门店门市列表
+     *
+     * @param companyId
+     * @return
+     */
+    public List<ShopVO> getShopAndStaffList(int companyId) {
+        return shopDao.getShopAndStaffList(companyId);
     }
 }

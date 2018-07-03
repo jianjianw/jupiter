@@ -144,11 +144,23 @@ public class ShopController extends BaseController {
 
     /**
      * 获取所在小组承接拍摄地
+     *
      * @return
      */
     @GetMapping("/get_my_group_shop_list")
-    public ResultInfo getShopListByStaffGroup(String groupId){
+    public ResultInfo getShopListByStaffGroup(String groupId) {
         StaffPO staffPO = getCurrentLoginStaff();
-        return ResultInfoUtil.success(shopService.getShopListByStaffGroup(staffPO.getCompanyId(),groupId));
+        return ResultInfoUtil.success(shopService.getShopListByStaffGroup(staffPO.getCompanyId(), groupId));
+    }
+
+    /**
+     * 获取所在小组承接拍摄地
+     *
+     * @return
+     */
+    @GetMapping("/get_shop_staff_list")
+    public ResultInfo getShopStaffList() {
+        StaffPO staffPO = getCurrentLoginStaff();
+        return ResultInfoUtil.success(shopService.getShopAndStaffList(staffPO.getCompanyId()));
     }
 }
