@@ -17,6 +17,16 @@ public interface ClientReceiveService {
      */
     void receive(String kzId, String logId, int companyId, int staffId, String staffName);
 
+
+    /**
+     * 客资领取,pc端，自由领取
+     *
+     * @param kzId
+     * @param companyId
+     * @param staffId
+     */
+    void pcReceive(String kzId, int companyId, int staffId, String staffName);
+
     /**
      * 客资拒接
      *
@@ -25,5 +35,5 @@ public interface ClientReceiveService {
      * @param companyId
      * @param staffId
      */
-	void refuse(String kzId, String logId, int companyId, int staffId, String staffName);
+    void refuse(String kzId, String logId, int companyId, int staffId, String staffName);
 }

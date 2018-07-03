@@ -76,18 +76,14 @@ public class AppController extends BaseController {
      * 客资领取
      *
      * @param kzId
-     * @param logId
      * @return
      */
     @GetMapping("/pc_receive")
-    public ResultInfo pcReveice(@RequestParam String kzId, @RequestParam String logId, @RequestParam Integer staffId) {
+    public ResultInfo pcReveice(@RequestParam String kzId, @RequestParam Integer staffId) {
         // 获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        if (StringUtil.haveEmpty(kzId, logId)) {
-            ResultInfoUtil.error(ExceptionEnum.INFO_ERROR);
-        }
         // 客资领取
-        receiveService.receive(kzId, logId, currentLoginStaff.getCompanyId(), currentLoginStaff.getId(),
+        receiveService.pcReceive(kzId, currentLoginStaff.getCompanyId(), currentLoginStaff.getId(),
                 currentLoginStaff.getNickName());
         return ResultInfoUtil.success(TipMsgEnum.INFO_RECEIVE_SUCCESS);
     }
