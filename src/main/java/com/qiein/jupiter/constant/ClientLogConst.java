@@ -29,6 +29,7 @@ public class ClientLogConst {
     public static final String INFO_LOG_HANDLER_ALLOT_TEMPLATE = "${operaName} 手动分配该客资给 => ${groupName} 的  ${appointorName} ";
     public static final String INFO_LOG_AUTO_REVEICE_TEMPLATE = "推送客资领取消息给 => ${groupName} 的  ${appointorName} ";
     public static final String INFO_LOG_RECEIVE = "在客户端通过客资分配领取了客资";
+    public static final String INFO_LOG_RECEIVE_PC = "通过客资分配领取了客资";
     public static final String INFO_LOG_EDIT_SEX = "将客资性别修改为：";
     public static final String INFO_LOG_EDIT_WCFLAG = "将客资微信标记为：";
     public static final String INFO_LOG_EDIT_BE_STATUS = "将筛选客资状态修改为";

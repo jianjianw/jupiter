@@ -260,7 +260,7 @@ public class ClientReceiveServiceImpl implements ClientReceiveService {
         // 添加客资领取日志
         updateNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(companyId), new
                 ClientLogPO(kzId, staffId,
-                staffName, ClientLogConst.INFO_LOG_RECEIVE, ClientLogConst.INFO_LOGTYPE_RECEIVE, companyId));
+                staffName, ClientLogConst.INFO_LOG_RECEIVE_PC, ClientLogConst.INFO_LOGTYPE_RECEIVE, companyId));
         if (1 != updateNum) {
             throw new RException(ExceptionEnum.LOG_ERROR);
         }
