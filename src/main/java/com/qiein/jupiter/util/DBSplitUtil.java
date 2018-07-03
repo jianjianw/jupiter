@@ -31,6 +31,7 @@ public class DBSplitUtil {
     public static final String TAB_SUFFIX_ACCEPT_LOG = "hm_crm_accept_log_";// 接单日志
     public static final String TAB_SYSLOG_REMARK = "hm_pub_system_log_";// 接单日志
     public static final String TAB_ONLINE_TIME = "hm_crm_online_time_log_";// 在线时长日志
+    public static final String TAB_SUFFIX_EDIT_LOG = "hm_crm_contact_edit_log_";//联系方式修改日志
 
     public static String getNewsTabName(int companyId) throws RException {
 
@@ -103,6 +104,15 @@ public class DBSplitUtil {
         return getTable(TableEnum.online_time, companyId);
     }
 
+    public static String getEditLogTabName(int companyId) throws RException {
+
+        if (NumUtil.isInValid(companyId)) {
+            throw new RException(ExceptionEnum.COMPANYID_NULL);
+        }
+
+        return getTable(TableEnum.edit_log, companyId);
+    }
+
     /*-- 获取表名 --*/
     public static String getTable(TableEnum tableEnum, int companyId) {
 
@@ -159,6 +169,9 @@ public class DBSplitUtil {
                 break;
             case online_time:
                 tableName = TAB_ONLINE_TIME + String.valueOf(companyId);
+                break;
+            case edit_log:
+                tableName = TAB_SUFFIX_EDIT_LOG + String.valueOf(companyId);
                 break;
             default:
                 break;
