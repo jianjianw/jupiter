@@ -116,5 +116,5 @@ public interface GroupService {
      * @param role
      * @return
      */
-    List<GroupPO> getDepartGroupListByType(int companyId, String role);
+    List<GroupVO> getDepartGroupListByType(int companyId, String role);
 }

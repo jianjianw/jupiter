@@ -170,8 +170,8 @@
     <!--根据组id删除-->
     <delete id="deleteByGroupId">
         DELETE FROM hm_pub_group
-          WHERE COMPANYID = #{companyId}
-        AND GROUPID = #{groupId}
+        WHERE COMPANYID = #{companyId}
+              AND GROUPID = #{groupId}
     </delete>
 
     <update id="batchUpdateGroupType">
@@ -289,6 +289,7 @@
         WHERE
             grp.COMPANYID = #{companyId}
             AND grp.GROUPTYPE = #{role}
+        ORDER BY par.GROUPTYPE, par.GROUPNAME, grp.GROUPNAME
     </select>
 
     <!--获取员工所在组-->
