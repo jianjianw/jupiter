@@ -1,6 +1,8 @@
 package com.qiein.jupiter.web.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.constant.ClientStatusConst;
 import com.qiein.jupiter.enums.OrderSuccessTypeEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
@@ -11,10 +13,10 @@ import com.qiein.jupiter.msg.websocket.WebSocketMsgUtil;
 import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.dao.*;
 import com.qiein.jupiter.web.entity.dto.ClientGoEasyDTO;
+import com.qiein.jupiter.web.entity.dto.ClientLogDTO;
 import com.qiein.jupiter.web.entity.dto.OrderSuccessMsg;
-import com.qiein.jupiter.web.entity.po.ChannelPO;
-import com.qiein.jupiter.web.entity.po.SourcePO;
-import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
+import com.qiein.jupiter.web.entity.po.*;
 import com.qiein.jupiter.web.entity.vo.ClientVO;
 import com.qiein.jupiter.web.entity.vo.CompanyVO;
 import com.qiein.jupiter.web.entity.vo.ShopVO;
@@ -23,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -396,4 +399,47 @@ public class ClientEditServiceImpl implements ClientEditService {
             throw new RException(jsInfo.getString("msg"));
         }
     }
+
+    /**
+     * 修改联系方式日志
+     * @param queryMapDTO
+     * @param clientLogDTO
+     * @return
+     */
+    public PageInfo editClientPhoneLog(QueryMapDTO queryMapDTO, ClientLogDTO clientLogDTO){
+        PageHelper.startPage(queryMapDTO.getPageNum(),queryMapDTO.getPageSize());
+        clientLogDTO.setTableEditLog(DBSplitUtil.getEditLogTabName(clientLogDTO.getCompanyId()));
+        clientLogDTO.setTableInfo(DBSplitUtil.getInfoTabName(clientLogDTO.getCompanyId()));
+        clientLogDTO.setTableDetail(DBSplitUtil.getDetailTabName(clientLogDTO.getCompanyId()));
+        List<EditClientPhonePO> list=clientInfoDao.editClientPhoneLog(clientLogDTO);
+        return new PageInfo<>(list);
+
+    }
+
+    /**
+     * 微信扫码日志
+     * @param queryMapDTO
+     * @param clientLogDTO
+     * @return
+     */
+    public PageInfo wechatClientPhoneLog(QueryMapDTO queryMapDTO, ClientLogDTO clientLogDTO){
+        PageHelper.startPage(queryMapDTO.getPageNum(),queryMapDTO.getPageSize());
+        clientLogDTO.setTableInfo(DBSplitUtil.getInfoTabName(clientLogDTO.getCompanyId()));
+        clientLogDTO.setTableDetail(DBSplitUtil.getDetailTabName(clientLogDTO.getCompanyId()));
+        return null;
+    }
+
+    /**
+     * 重复客资记录
+     * @param queryMapDTO
+     * @param clientLogDTO
+     * @return
+     */
+    public PageInfo repateKzLog(QueryMapDTO queryMapDTO, ClientLogDTO clientLogDTO){
+        PageHelper.startPage(queryMapDTO.getPageNum(),queryMapDTO.getPageSize());
+        clientLogDTO.setTableInfo(DBSplitUtil.getInfoTabName(clientLogDTO.getCompanyId()));
+        clientLogDTO.setTableDetail(DBSplitUtil.getDetailTabName(clientLogDTO.getCompanyId()));
+        return null;
+    }
+
 }

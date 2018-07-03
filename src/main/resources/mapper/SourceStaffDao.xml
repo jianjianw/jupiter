@@ -5,15 +5,15 @@
     <resultMap id="baseMap" type="com.qiein.jupiter.web.entity.po.SourceStaffPO">
         <id column="ID" jdbcType="INTEGER" property="id"/>
         <result column="RELATYPE" jdbcType="INTEGER" property="relaType"/>
-        <result column="STAFFID" jdbcType="INTEGER" property="staffId"/>
+        <result column="LINKID" jdbcType="VARCHAR" property="linkId"/>
         <result column="SOURCEID" jdbcType="INTEGER" property="sourceId"/>
         <result column="COMPANYID" jdbcType="INTEGER" property="companyId"/>
     </resultMap>
 
     <insert id = "insertByChannelId">
         <foreach collection="yyIds" item="item"  >
-            insert hm_crm_source_staff(RELATYPE, STAFFID, SOURCEID, COMPANYID)
-            (select '${relaType}' as RELATYPE,'${item}' AS STAFFID,ID,'${companyId}' AS COMPANYID FROM hm_crm_source where CHANNELID = #{channelId} and COMPANYID = #{companyId});
+            insert hm_crm_source_staff(RELATYPE, LINKID, SOURCEID, COMPANYID)
+            (select '${relaType}' as RELATYPE,'${item}' AS LINKID,ID,'${companyId}' AS COMPANYID FROM hm_crm_source where CHANNELID = #{channelId} and COMPANYID = #{companyId});
         </foreach>
     </insert>
 
@@ -36,8 +36,8 @@
 
     <insert id="insertBySourceId">
         <foreach collection="yyIds" item="item"  >
-            insert hm_crm_source_staff(RELATYPE, STAFFID, SOURCEID, COMPANYID)
-            (select '${relaType}' as RELATYPE,'${item}' AS STAFFID,ID,'${companyId}' AS COMPANYID FROM hm_crm_source  where hm_crm_source.ID = #{sourceId} and COMPANYID = #{companyId});
+            insert hm_crm_source_staff(RELATYPE, LINKID, SOURCEID, COMPANYID)
+            (select '${relaType}' as RELATYPE,'${item}' AS LINKID,ID,'${companyId}' AS COMPANYID FROM hm_crm_source  where hm_crm_source.ID = #{sourceId} and COMPANYID = #{companyId});
         </foreach>
     </insert>
 </mapper>

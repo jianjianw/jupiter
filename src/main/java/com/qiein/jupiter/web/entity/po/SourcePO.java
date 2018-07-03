@@ -80,7 +80,7 @@ public class SourcePO extends BaseEntity {
     /**
      * 邀约id
      * */
-    private String yyId;
+    private String linkIds;
 
     /**
      * 名称
@@ -135,12 +135,12 @@ public class SourcePO extends BaseEntity {
         isShow = show;
     }
 
-    public String getYyId() {
-        return yyId;
+    public String getLinkIds() {
+        return linkIds;
     }
 
-    public void setYyId(String yyId) {
-        this.yyId = yyId;
+    public void setLinkIds(String linkIds) {
+        this.linkIds = linkIds;
     }
 
     public void setSrcName(String srcName) {

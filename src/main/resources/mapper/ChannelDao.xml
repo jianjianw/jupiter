@@ -14,7 +14,7 @@
         <result column="ISSHOW" jdbcType="BOOLEAN" property="showFlag"/>
         <result column="ISFILTER" jdbcType="BOOLEAN" property="filterFlag"/>
         <result column="PRIORITY" jdbcType="INTEGER" property="priority"/>
-        <result column="YYID" jdbcType="VARCHAR" property="yyId"></result>
+        <result column="LINKIDS" jdbcType="VARCHAR" property="linkIds"></result>
         <result column="NICKNAMES" jdbcType="VARCHAR" property="nickNames"></result>
     </resultMap>
 
@@ -165,7 +165,7 @@
     <select id="getChannelListByTypeIds" parameterType="map" resultMap="baseMap">
         SELECT
         a.ID,a.CHANNELNAME,a.CHANNELIMG,a.TYPEID,a.BRANDID,a.BRANDNAME,a.PUSHRULE,a.COMPANYID,a.PRIORITY,a.ISSHOW,a.
-        ISFILTER,b.YYID, b.NICKNAMES
+        ISFILTER,b.LINKIDS, b.NICKNAMES
         FROM
         hm_crm_channel a
         LEFT JOIN
@@ -173,13 +173,13 @@
         SELECT
         a.channelId,
         a.companyId,
-        GROUP_CONCAT(a.staffId SEPARATOR ',') as YYID,
+        GROUP_CONCAT(a.LINKID SEPARATOR ',') as LINKIDS,
         GROUP_CONCAT(a.nickname SEPARATOR ',') as NICKNAMES
         FROM
         (
         SELECT
         a.channelId,
-        b.STAFFID,
+        b.LINKID,
         b.COMPANYID,
         c.NICKNAME
         FROM
@@ -187,10 +187,10 @@
         hm_crm_source_staff b,
         hm_pub_staff c
         WHERE
-        a.id = b.SOURCEID and b.STAFFID = c.ID
+        a.id = b.SOURCEID and b.LINKID = c.ID
         GROUP BY
         CHANNELID,
-        staffID
+        LINKID
         ) a
         GROUP BY
         channelId
@@ -219,7 +219,7 @@
             a.PRIORITY,
             a.ISSHOW,
             a.ISFILTER,
-            b.YYID,
+            b.LINKIDS,
             b.NICKNAMES
         FROM
             hm_crm_channel a
@@ -228,13 +228,13 @@
                 SELECT
                     a.channelId,
                     a.companyId,
-                    GROUP_CONCAT(a.staffId SEPARATOR ',')  as YYID,
+                    GROUP_CONCAT(a.LINKID SEPARATOR ',')  as LINKIDS,
                     GROUP_CONCAT(a.nickname SEPARATOR ',') as NICKNAMES
                 FROM
                     (
                         SELECT
                             a.channelId,
-                            b.STAFFID,
+                            b.LINKID,
                             b.COMPANYID,
                             c.NICKNAME
                         FROM
@@ -242,10 +242,10 @@
                             hm_crm_source_staff b,
                             hm_pub_staff c
                         WHERE
-                            a.id = b.SOURCEID and b.STAFFID = c.ID
+                            a.id = b.SOURCEID and b.LINKID = c.ID
                         GROUP BY
                             CHANNELID,
-                            staffID
+                            LINKID
                     ) a
                 GROUP BY
                     channelId
