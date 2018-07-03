@@ -58,7 +58,7 @@ public interface ClientEditService {
 	 * @param clientLogDTO
 	 * @return
 	 */
-	PageInfo wechatClientPhoneLog(QueryMapDTO queryMapDTO, ClientLogDTO clientLogDTO);
+	PageInfo wechatScanCodeLog(QueryMapDTO queryMapDTO, ClientLogDTO clientLogDTO);
 
 	/**
 	 * 重复客资记录

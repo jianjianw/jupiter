@@ -257,7 +257,7 @@
 			AND (log.BEFOREVALUE=#{value} OR log.AFTERVALUE=#{value})
 		</if>
 		<if test="startTime !=null and endTime!=null">
-			AND log.OPERATIME &gt;= #{startTime} AND log.OPERATIME &lt; UNIX_TIMESTAMP(DATE_ADD(FROM_UNIXTIME(#{startTime},'%Y-%m-%d '),INTERVAL 1 DAY))
+			AND log.OPERATIME &gt;= #{startTime} AND log.OPERATIME &lt; UNIX_TIMESTAMP(DATE_ADD(FROM_UNIXTIME(#{endTime},'%Y-%m-%d '),INTERVAL 1 DAY))
 		</if>
 	</select>
 
@@ -276,4 +276,47 @@
 		AND COMPANYID = #{companyId}
     </update>
 
+	<select id="repateKzLog">
+		SELECT
+		log.ID id,
+		info.KZID kzId,
+		info.KZNAME kzName,
+		info.KZPHONE kzPhone,
+		info.KZQQ kzqq,
+		info.KZWECHAT kzWechat,
+		detail.APPOINTNAME appointName,
+		staff.NICKNAME promotor,
+		log.MEMO memo,
+		COUNT(log.KZID) count
+		FROM
+		${tableLog} log
+		LEFT JOIN ${tableInfo} info ON info.KZID = log.KZID
+		LEFT JOIN ${tableDetail} detail ON log.KZID = detail.KZID
+		LEFT JOIN hm_pub_staff staff ON staff.ID = info.PROMOTORID
+		AND staff.COMPANYID = info.COMPANYID
+		WHERE
+		log.COMPANYID = #{companyId}
+		AND log.LOGTYPE = #{logType}
+		GROUP BY
+		log.KZID
+	</select>
+
+	<select id="wechatScanCodeLog">
+		SELECT
+		log.ID id,
+		info.KZID kzId,
+		info.KZNAME kzName,
+		info.KZPHONE kzPhone,
+		FROM_UNIXTIME(log.OPERATIME, '%Y-%m-%d ') createTime,
+		info.KZQQ kzqq,
+		info.KZWECHAT kzWechat,
+		detail.APPOINTNAME appointName
+		FROM
+		${tableLog} log
+		LEFT JOIN ${tableInfo} info ON info.KZID = log.KZID
+		LEFT JOIN ${tableDetail} detail ON log.KZID = detail.KZID
+		WHERE
+		log.COMPANYID = #{companyId}
+		AND log.LOGTYPE = #{logType}
+	</select>
 </mapper>

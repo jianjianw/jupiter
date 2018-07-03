@@ -12,6 +12,15 @@ public class ClientLogDTO {
     private String tableLog;
     private String tableEditLog;
     private String tableDetail;
+    private Integer logType;
+
+    public Integer getLogType() {
+        return logType;
+    }
+
+    public void setLogType(Integer logType) {
+        this.logType = logType;
+    }
 
     public String getTableDetail() {
         return tableDetail;
