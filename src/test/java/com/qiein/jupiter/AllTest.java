@@ -126,10 +126,11 @@ public class AllTest {
 
     @Test
     public void testList() {
-//        List<Integer> list = null;
-//        for (Integer integer : list) {
-//
-//        }
+        HashMap map = new HashMap();
+        map.put("soureid","");
+
+        Object soureid = map.get("soureid");
+        System.out.println("-----"+soureid);
 
     }
 
