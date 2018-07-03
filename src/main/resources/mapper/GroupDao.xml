@@ -280,4 +280,14 @@
             AND grp.PARENTID != '0'
     </select>
 
+    <!--根据类型获取企业部门和小组列表-->
+    <select id = "getDepartGroupListByType" resultMap="baseMap">
+        SELECT
+            grp.GROUPID, grp.GROUPNAME, grp.COMPANYID
+        FROM
+            hm_pub_group grp
+        WHERE
+            grp.COMPANYID = #{companyId}
+            AND grp.GROUPTYPE = #{role}
+    </select>
 </mapper>

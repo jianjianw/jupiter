@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.service;
 
+import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.web.entity.po.GroupPO;
 import com.qiein.jupiter.web.entity.vo.*;
 
@@ -108,4 +109,12 @@ public interface GroupService {
      */
     List<GroupPO> getGroupListByType(int companyId, String type);
 
+    /**
+     * 根据类型获取企业部门和小组列表
+     *
+     * @param companyId
+     * @param role
+     * @return
+     */
+    List<GroupPO> getDepartGroupListByType(int companyId, String role);
 }

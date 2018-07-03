@@ -647,4 +647,9 @@ public class GroupServiceImpl implements GroupService {
     public List<GroupPO> getGroupListByType(int companyId, String type) {
         return groupDao.getGroupListByType(companyId, type);
     }
+
+    @Override
+    public List<GroupPO> getDepartGroupListByType(int companyId, String role) {
+        return groupDao.getDepartGroupListByType(companyId,role);
+    }
 }

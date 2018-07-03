@@ -4,6 +4,7 @@ import com.qiein.jupiter.web.entity.po.GroupPO;
 import com.qiein.jupiter.web.entity.vo.GroupVO;
 import com.qiein.jupiter.web.entity.vo.GroupsInfoVO;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
@@ -135,5 +136,9 @@ public interface GroupDao extends BaseDao<GroupPO> {
      */
     List<GroupPO> getGroupListByType(@Param("companyId") int companyId, @Param("type") String type);
 
+    /**
+     * 根据类型获取企业部门和小组列表
+     * */
+    List<GroupPO> getDepartGroupListByType(@Param("companyId") int companyId,@Param(value="role") String role);
 
 }

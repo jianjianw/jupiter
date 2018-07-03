@@ -184,4 +184,14 @@ public class GroupController extends BaseController {
         return ResultInfoUtil.success(groupService.getGroupListByType(staff.getCompanyId(), role));
     }
 
+    /**
+     * 获取公司下部门和小组
+     * */
+    @GetMapping("/get_depart_group_list_by_type")
+    public ResultInfo getDepartGroupListByType(@NotEmptyStr @RequestParam("role") String role){
+        // 获取当前登录账户
+        StaffPO staff = getCurrentLoginStaff();
+        return ResultInfoUtil.success(groupService.getDepartGroupListByType(staff.getCompanyId(),role));
+    }
+
 }
