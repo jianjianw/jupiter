@@ -222,7 +222,7 @@
         group by CHANNELID,LINKID
         ) a
         group by channelId) c
-        on  a.COMPANYID = c.COMPANYID and a.ID = b.channelId
+        on a.COMPANYID = c.COMPANYID and a.ID = b.channelId
         WHERE
         a.COMPANYID = #{companyId} AND TYPEID IN
         <foreach collection="typeIds" index="index" item="typeId"
@@ -255,7 +255,7 @@
                 SELECT
                     a.channelId,
                     a.companyId,
-                    GROUP_CONCAT(a.LINKID SEPARATOR ',')  as LINKIDS,
+                    GROUP_CONCAT(a.LINKID SEPARATOR ',')   as LINKIDS,
                     GROUP_CONCAT(a.nickname SEPARATOR ',') as NICKNAMES
                 FROM
                     (
@@ -278,6 +278,32 @@
                     channelId
             ) b
                 ON a.ID = b.channelId and a.COMPANYID = b.COMPANYID
+            left join
+            (select
+                 a.channelId,
+                 a.companyid,
+                 a.relatype,
+                 GROUP_CONCAT(a.LINKID SEPARATOR ',')    AS LINKIDS,
+                 GROUP_CONCAT(a.groupName SEPARATOR ',') AS NICKNAMES
+             from
+                 (SELECT
+                      a.CHANNELID,
+                      b.linkid,
+                      b.relatype,
+                      b.COMPANYID,
+                      c.groupName
+                  FROM
+                      hm_crm_source a,
+                      hm_crm_source_staff b,
+                      hm_pub_group c
+
+                  WHERE
+                      a.id = b.SOURCEID
+                      AND b.LINKID = c.GROUPID
+                  group by CHANNELID, LINKID
+                 ) a
+             group by channelId) c
+           on a.COMPANYID = c.COMPANYID and a.ID = b.channelId
         WHERE
             a.COMPANYID = #{companyId} AND TYPEID = #{typeId}
         ORDER BY ISSHOW DESC, PRIORITY, TYPEID, ID
@@ -428,13 +454,17 @@
     <!--获取企业所有渠道组及渠道-->
     <select id="getAllChannelSourceList" parameterType="map" resultMap="ChannelVOMap">
         SELECT
-        channel.ID, channel.CHANNELNAME, src.ID AS SRCID, src.SRCNAME
+            channel.ID,
+            channel.CHANNELNAME,
+            src.ID AS SRCID,
+            src.SRCNAME
         FROM
-        hm_crm_channel channel
-        LEFT JOIN hm_crm_source src ON src.COMPANYID = channel.COMPANYID AND src.CHANNELID = channel.ID
+            hm_crm_channel channel
+            LEFT JOIN hm_crm_source src ON src.COMPANYID = channel.COMPANYID AND src.CHANNELID = channel.ID
         WHERE
-        channel.COMPANYID = #{companyId}
-        ORDER BY channel.ISSHOW DESC, channel.TYPEID, channel.PRIORITY, channel.ID, src.ISSHOW DESC, src.PRIORITY, src.ID
+            channel.COMPANYID = #{companyId}
+        ORDER BY channel.ISSHOW DESC, channel.TYPEID, channel.PRIORITY, channel.ID, src.ISSHOW DESC, src.PRIORITY,
+            src.ID
     </select>
 
 </mapper>
