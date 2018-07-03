@@ -247,37 +247,68 @@
             a.PRIORITY,
             a.ISFILTER,
             a.ISSHOW,
-            b.LINKIDS,
-            b.NICKNAMES
+            if(a.PUSHRULE = 12,b.LINKIDS,IF(a.PUSHRULE = 14,c.LINKIDS,null))as LINKIDS,
+            if(a.PUSHRULE = 12,b.NICKNAMES,if(a.PUSHRULE = 14,c.NICKNAMES,null))as nicknames
         FROM
             hm_crm_source a
-        left join (SELECT
-                       a.channelId,
-                       a.SOURCEID,
-                       a.companyId,
-                       GROUP_CONCAT(a.LINKID SEPARATOR ',')  as LINKIDS,
-                       GROUP_CONCAT(a.nickname SEPARATOR ',') as NICKNAMES
-                   FROM
-                       (
-                           SELECT
-                               a.channelId,
-                               b.SOURCEID,
-                               b.LINKID,
-                               b.COMPANYID,
-                               c.NICKNAME
-                           FROM
-                               hm_crm_source a,
-                               hm_crm_source_staff b,
-                               hm_pub_staff c
-                           WHERE
-                               a.id = b.SOURCEID and b.LINKID = c.ID
-                           GROUP BY
-                               SOURCEID,
-                               LINKID
-                       ) a
-                   GROUP BY
-                       SOURCEID) b
-            on a.id = b.SOURCEID
+            left join (SELECT
+                           a.channelId,
+                           a.SOURCEID,
+                           a.companyId,
+                           GROUP_CONCAT(a.LINKID SEPARATOR ',')   as LINKIDS,
+                           GROUP_CONCAT(a.nickname SEPARATOR ',') as NICKNAMES
+                       FROM
+                           (
+                               SELECT
+                                   a.channelId,
+                                   b.SOURCEID,
+                                   b.LINKID,
+                                   b.COMPANYID,
+                                   c.NICKNAME
+                               FROM
+                                   hm_crm_source a,
+                                   hm_crm_source_staff b,
+                                   hm_pub_staff c
+                               WHERE
+                                   a.id = b.SOURCEID and b.LINKID = c.ID
+                               GROUP BY
+                                   SOURCEID,
+                                   LINKID
+                           ) a
+                       GROUP BY
+                           SOURCEID) b
+                on a.id = b.SOURCEID
+            LEFT JOIN (
+                          SELECT
+                              a.channelId,
+                              a.SOURCEID,
+                              a.companyId,
+                              GROUP_CONCAT(a.LINKID SEPARATOR ',')    AS LINKIDS,
+                              GROUP_CONCAT(a.GROUPNAME SEPARATOR ',') AS NICKNAMES
+                          FROM
+                              (
+                                  SELECT
+                                      a.channelId,
+                                      b.SOURCEID,
+                                      b.LINKID,
+                                      b.COMPANYID,
+                                      c.GROUPNAME
+                                  FROM
+                                      hm_crm_source a,
+                                      hm_crm_source_staff b,
+                                      hm_pub_group c
+                                  WHERE
+                                      a.id = b.SOURCEID
+                                      AND b.LINKID = c.GROUPID
+                                  GROUP BY
+                                      b.SOURCEID,
+                                      b.LINKID
+                              ) a
+                          GROUP BY
+                              SOURCEID
+                      ) c
+                ON a.COMPANYID = c.COMPANYID
+                   AND a.ID = c.sourceid
         WHERE
             a.COMPANYID = #{companyId} AND a.CHANNELID = #{channelId}
         ORDER BY ISSHOW DESC, TYPEID, PRIORITY, ID

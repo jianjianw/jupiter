@@ -165,7 +165,8 @@
     <select id="getChannelListByTypeIds" parameterType="map" resultMap="baseMap">
         SELECT
         a.ID,a.CHANNELNAME,a.CHANNELIMG,a.TYPEID,a.BRANDID,a.BRANDNAME,a.PUSHRULE,a.COMPANYID,a.PRIORITY,a.ISSHOW,a.
-        ISFILTER,b.LINKIDS, b.NICKNAMES
+        ISFILTER,if(a.PUSHRULE = 12,b.LINKIDS,IF(a.PUSHRULE = 14,c.LINKIDS,null))as LINKIDS,
+        if(a.PUSHRULE = 12,b.NICKNAMES,if(a.PUSHRULE = 14,c.NICKNAMES,null))as nicknames
         FROM
         hm_crm_channel a
         LEFT JOIN
@@ -196,6 +197,32 @@
         channelId
         ) b
         ON a.ID = b.channelId and a.COMPANYID = b.COMPANYID
+        LEFT JOIN
+        (select
+        a.channelId,
+        a.companyid,
+        a.relatype,
+        GROUP_CONCAT(a.LINKID SEPARATOR ',') AS LINKIDS,
+        GROUP_CONCAT(a.groupName SEPARATOR ',') AS NICKNAMES
+        from
+        (SELECT
+        a.CHANNELID,
+        b.linkid,
+        b.relatype,
+        b.COMPANYID,
+        c.groupName
+        FROM
+        hm_crm_source a,
+        hm_crm_source_staff b,
+        hm_pub_group c
+
+        WHERE
+        a.id = b.SOURCEID
+        AND b.LINKID = c.GROUPID
+        group by CHANNELID,LINKID
+        ) a
+        group by channelId) c
+        on  a.COMPANYID = c.COMPANYID and a.ID = b.channelId
         WHERE
         a.COMPANYID = #{companyId} AND TYPEID IN
         <foreach collection="typeIds" index="index" item="typeId"
