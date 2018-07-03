@@ -457,7 +457,6 @@ public class ClientPushServiceImpl implements ClientPushService {
         ClientGoEasyDTO infoDTO = clientInfoDao.getClientGoEasyDTOById(kzId, DBSplitUtil.getInfoTabName(companyId),
                 DBSplitUtil.getDetailTabName(companyId));
         for (StaffPushDTO sf : yyList) {
-            GoEasyUtil.pushInfoComed(companyId, sf.getStaffId(), infoDTO, newsDao);
             GoEasyUtil.pushClientReceive(companyId, sf.getStaffId(), infoDTO, newsDao);
         }
     }
