@@ -9,8 +9,8 @@ package com.qiein.jupiter.constant;
 public class SourceStaffConst {
     //关联类型
     /**
-     * 关联类型 0 员工  1 小组
+     * 关联类型 1 员工  2 小组
      * */
-    public static final Integer RELATYPE_STAFF = 0;
-    public static final Integer RELATYPE_GROUP = 1;
+    public static final Integer RELATYPE_STAFF = 1;
+    public static final Integer RELATYPE_GROUP = 2;
 }
