@@ -1,12 +1,12 @@
 package com.qiein.jupiter.web.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.constant.ClientStatusConst;
 import com.qiein.jupiter.util.NumUtil;
+import com.qiein.jupiter.web.entity.dto.ClientLogDTO;
+import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
@@ -130,5 +130,39 @@ public class ClientEditController extends BaseController {
         return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
     }
 
+    /**
+     * 修改联系方式日志
+     */
+    @PostMapping("/edit_client_phone_log")
+    public ResultInfo editClientPhoneLog(@RequestBody JSONObject params) {
+        QueryMapDTO queryMapDTO= JSONObject.parseObject(params.getJSONObject("queryMapDTO").toJSONString(),QueryMapDTO.class) ;
+        ClientLogDTO clientLogDTO=JSONObject.parseObject(params.getJSONObject("clientLogDTO").toJSONString(),ClientLogDTO.class) ;
+        StaffPO staff = getCurrentLoginStaff();
+        clientLogDTO.setCompanyId(staff.getCompanyId());
+        return ResultInfoUtil.success(clientEditService.editClientPhoneLog(queryMapDTO,clientLogDTO));
+    }
 
+    /**
+     * 微信扫码日志
+     */
+    @PostMapping("/wechat_scan_code_log")
+    public ResultInfo wechatClientPhoneLog(@RequestBody JSONObject params){
+        QueryMapDTO queryMapDTO= JSONObject.parseObject(params.getJSONObject("queryMapDTO").toJSONString(),QueryMapDTO.class) ;
+        ClientLogDTO clientLogDTO=JSONObject.parseObject(params.getJSONObject("clientLogDTO").toJSONString(),ClientLogDTO.class) ;
+        StaffPO staff = getCurrentLoginStaff();
+        clientLogDTO.setCompanyId(staff.getCompanyId());
+        return ResultInfoUtil.success(clientEditService.wechatClientPhoneLog(queryMapDTO,clientLogDTO));
+    }
+
+    /**
+     * 重复客资
+     */
+    @PostMapping("/repate_kz_log")
+    public ResultInfo repateKzLog(@RequestBody JSONObject params){
+        QueryMapDTO queryMapDTO= JSONObject.parseObject(params.getJSONObject("queryMapDTO").toJSONString(),QueryMapDTO.class) ;
+        ClientLogDTO clientLogDTO=JSONObject.parseObject(params.getJSONObject("clientLogDTO").toJSONString(),ClientLogDTO.class) ;
+        StaffPO staff = getCurrentLoginStaff();
+        clientLogDTO.setCompanyId(staff.getCompanyId());
+        return ResultInfoUtil.success(clientEditService.repateKzLog(queryMapDTO,clientLogDTO));
+    }
 }

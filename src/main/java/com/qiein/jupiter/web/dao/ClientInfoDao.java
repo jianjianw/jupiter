@@ -1,6 +1,8 @@
 package com.qiein.jupiter.web.dao;
 
 import com.qiein.jupiter.web.entity.dto.ClientGoEasyDTO;
+import com.qiein.jupiter.web.entity.dto.ClientLogDTO;
+import com.qiein.jupiter.web.entity.po.EditClientPhonePO;
 import com.qiein.jupiter.web.entity.vo.StaffChangeVO;
 
 import java.util.List;
@@ -183,5 +185,10 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
     List<ClientPushDTO> listClientsInStrKzids4Msjd(@Param("kzIds") String kzIds, @Param("companyId") int companyId,
                                                    @Param("infoTabName") String infoTabName);
 
-
+    /**
+     * 修改联系方式日志
+     * @param clientLogDTO
+     * @return
+     */
+    List<EditClientPhonePO> editClientPhoneLog(ClientLogDTO clientLogDTO);
 }
