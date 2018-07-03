@@ -832,19 +832,19 @@
     <!-- 获取渠道指定员工客服-->
     <select id="getPushAppointByRole" parameterType="map" resultMap="pushMap">
         SELECT
-            rela.STAFFID ID, sf.NICKNAME, gs.GROUPID, grp.GROUPNAME
+            rela.LINKID ID, sf.NICKNAME, gs.GROUPID, grp.GROUPNAME
         FROM
             hm_crm_source_staff rela
-        LEFT JOIN ${infoTabName} info ON info.APPOINTORID = rela.STAFFID AND rela.COMPANYID = info.COMPANYID
+        LEFT JOIN ${infoTabName} info ON info.APPOINTORID = rela.LINKID AND rela.COMPANYID = info.COMPANYID
         AND rela.SOURCEID = info.SOURCEID  AND info.CREATETIME &gt; UNIX_TIMESTAMP( CAST( SYSDATE( ) AS DATE ) )
         AND info.STATUSID != 0  AND info.STATUSID != 98  AND info.STATUSID != 99   AND info.ISDEL = 0
-        INNER JOIN hm_pub_staff sf ON sf.ID = rela.STAFFID AND rela.COMPANYID = sf.COMPANYID
+        INNER JOIN hm_pub_staff sf ON sf.ID = rela.LINKID AND rela.COMPANYID = sf.COMPANYID
         LEFT JOIN hm_pub_group_staff gs ON gs.STAFFID = sf.ID AND gs.COMPANYID = sf.COMPANYID
         LEFT JOIN hm_pub_group grp ON grp.GROUPID = gs.GROUPID AND grp.COMPANYID = gs.COMPANYID
         WHERE
             rela.COMPANYID = #{companyId}
             AND rela.SOURCEID = #{sourceId}
-            AND rela.RELATYPE = 'yy'
+            AND rela.RELATYPE = 1
             AND grp.GROUPTYPE = #{role}
             AND sf.ISDEL = 0
             AND sf.ISLOCK = 0
@@ -853,6 +853,31 @@
             info.APPOINTORID
         ORDER BY count( 1 ) ASC
         LIMIT 0, 1
+    </select>
+
+    <!--获取小组平均，推送客服-->
+    <select id="getPushAppointByGroupAvg" parameterType="map" resultMap="pushMap">
+        SELECT
+          gs.STAFFID ID, sf.NICKNAME, gs.GROUPID, grp.GROUPNAME
+        FROM
+          hm_crm_source_staff rela
+        INNER JOIN hm_pub_group_staff gs ON gs.GROUPID = rela.LINKID AND gs.COMPANYID = rela.COMPANYID
+        INNER JOIN hm_pub_staff sf ON sf.ID = rela.LINKID AND rela.COMPANYID = sf.COMPANYID
+        LEFT JOIN hm_pub_group grp ON grp.GROUPID = gs.GROUPID AND grp.COMPANYID = gs.COMPANYID
+        LEFT JOIN ${infoTabName} info ON info.APPOINTORID = rela.LINKID AND rela.COMPANYID = info.COMPANYID
+        AND rela.SOURCEID = info.SOURCEID  AND info.CREATETIME &gt; UNIX_TIMESTAMP( CAST( SYSDATE( ) AS DATE ) )
+        AND info.STATUSID != 0  AND info.STATUSID != 98  AND info.STATUSID != 99   AND info.ISDEL = 0
+        WHERE
+            rela.COMPANYID = #{companyId}
+            AND rela.SOURCEID = #{sourceId}
+            AND rela.RELATYPE = 2
+            AND grp.GROUPTYPE = #{role}
+            AND sf.ISDEL = 0
+            AND sf.ISLOCK = 0
+            AND sf.TODAYNUM &lt; LIMITDAY
+            GROUP BY info.APPOINTORID
+            ORDER BY count( 1 ) ASC
+        LIMIT 0, 1;
     </select>
 
     <!--获取客服人员列表，转介绍客服，电商客服，用于分配自由领取-->

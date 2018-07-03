@@ -181,6 +181,19 @@ public class ClientPushServiceImpl implements ClientPushService {
                 }
                 //推送给所有邀约人员
                 pushAllYyStaff(kzId, companyId, yyList);
+            case ChannelConstant.PUSH_RULE_GROUP_AVG:
+                //14.小组平均
+                if (NumUtil.isInValid(srcId)) {
+                    return;
+                }
+                appointer = staffDao.getPushAppointByGroupAvg(DBSplitUtil.getInfoTabName(companyId), companyId, srcId, type);
+                if (appointer == null) {
+                    return;
+                }
+                // 生成分配日志
+                allotLog = addAllotLog(kzId, appointer.getStaffId(), appointer.getStaffName(), appointer.getGroupId(),
+                        appointer.getGroupName(), ClientConst.ALLOT_SYSTEM_AUTO, companyId);
+                doAssignAppoint(companyId, kzId, appointer, allotLog.getId(), overTime);
             default:
                 break;
         }
