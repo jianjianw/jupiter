@@ -649,7 +649,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public List<GroupPO> getDepartGroupListByType(int companyId, String role) {
+    public List<GroupVO> getDepartGroupListByType(int companyId, String role) {
         return groupDao.getDepartGroupListByType(companyId,role);
     }
 }
