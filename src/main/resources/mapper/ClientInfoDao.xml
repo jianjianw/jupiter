@@ -276,7 +276,7 @@
 		AND COMPANYID = #{companyId}
     </update>
 
-	<select id="repateKzLog">
+	<select id="repateKzLog" resultType="com.qiein.jupiter.web.entity.po.RepateKzLogPO">
 		SELECT
 		log.ID id,
 		info.KZID kzId,
@@ -301,7 +301,7 @@
 		log.KZID
 	</select>
 
-	<select id="wechatScanCodeLog">
+	<select id="wechatScanCodeLog"  resultType="com.qiein.jupiter.web.entity.po.WechatScanPO">
 		SELECT
 		log.ID id,
 		info.KZID kzId,
