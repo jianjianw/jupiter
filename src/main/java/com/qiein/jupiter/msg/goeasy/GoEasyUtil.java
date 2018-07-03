@@ -286,7 +286,9 @@ public class GoEasyUtil {
         contentJson = new JSONObject();
         contentJson.put("head", head);
         contentJson.put("kz", info);
-
+        contentJson.put("contact", StringUtil.isNotEmpty(info.getKzPhone()) ? info.getKzPhone() :
+                StringUtil.isNotEmpty(info.getKzWechat()) ? info.getKzWechat() :
+                        StringUtil.isNotEmpty(info.getKzQq()) ? info.getKzQq() : info.getKzWw());
         pushWeb(MessageConts.MSG_TYPE_RECEIVE, companyId, staffId, contentJson);
     }
 
