@@ -283,11 +283,31 @@
     <!--根据类型获取企业部门和小组列表-->
     <select id = "getDepartGroupListByType" resultMap="GroupVOMap">
         SELECT
-            grp.GROUPID, grp.GROUPNAME, grp.COMPANYID
+            par.ID,
+            par.GROUPID,
+            par.GROUPNAME,
+            par.PARENTID,
+            par.GROUPTYPE,
+            par.COMPANYID,
+            par.CHIEFIDS,
+            par.CHIEFNAMES,
+            grp.ID         AS GID,
+            grp.GROUPID    AS GRPID,
+            grp.GROUPNAME  AS GRPNAME,
+            grp.PARENTID   AS PARID,
+            grp.GROUPTYPE  AS TYPE,
+            grp.COMPANYID  AS CMPID,
+            grp.CHIEFIDS   AS CIDS,
+            grp.CHIEFNAMES AS CNAMES,
+            grp.SHOPID
         FROM
-            hm_pub_group grp
+            hm_pub_group par
+            LEFT JOIN hm_pub_group grp ON grp.PARENTID = par.GROUPID
+                                          AND grp.COMPANYID = par.COMPANYID
+                                          AND grp.GROUPTYPE = par.GROUPTYPE
         WHERE
-            grp.COMPANYID = #{companyId}
+            par.COMPANYID = #{companyId}
+            AND par.PARENTID = '0'
             AND grp.GROUPTYPE = #{role}
         ORDER BY par.GROUPTYPE, par.GROUPNAME, grp.GROUPNAME
     </select>
