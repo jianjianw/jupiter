@@ -28,6 +28,7 @@
 		<result column="KZWW" jdbcType="VARCHAR" property="kzWw"/>
 		<result column="MEMO" jdbcType="VARCHAR" property="memo"/>
 		<result column="COLLECTORID" jdbcType="INTEGER" property="collectorId"/>
+		<result column="COLLECTORNAME" jdbcType="VARCHAR" property="collectorName"/>
 		<result column="APPOINTORID" jdbcType="INTEGER" property="appointorId"/>
 		<result column="COMPANYID" jdbcType="INTEGER" property="companyId"/>
 		<result column="SOURCEID" jdbcType="INTEGER" property="sourceId"/>
@@ -61,7 +62,7 @@
 	<select id="getClientGoEasyDTOById" parameterType="map" resultMap="goEasyMap">
 		SELECT
 			info.ID, info.KZID, info.KZNAME, info.KZPHONE, info.KZWECHAT, info.KZWW, info.KZQQ, det.MEMO, info.APPOINTORID,info.COLLECTORID, info.COMPANYID, info.SOURCEID, det.APPOINTNAME, det.FILMINGAREA, src.SRCNAME,
-			src.CHANNELNAME, det.INVALIDLABEL, info.SUCCESSTIME, det.AMOUNT, info.CREATETIME
+			src.CHANNELNAME, det.INVALIDLABEL, info.SUCCESSTIME, det.AMOUNT, info.CREATETIME, det.COLLECTORNAME
 		FROM
 			${infoTabName} info
 		LEFT JOIN ${detailTabName} det ON det.KZID = info.KZID AND info.COMPANYID = det.COMPANYID

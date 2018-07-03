@@ -93,6 +93,10 @@ public class ClientGoEasyDTO implements Serializable {
 	 * 录入时间
 	 */
 	private int createTime;
+	/**
+	 * 录入人姓名
+	 */
+	private String collectorName;
 
 	public String getKzQq() {
 		return kzQq;
@@ -252,5 +256,13 @@ public class ClientGoEasyDTO implements Serializable {
 
 	public void setCreateTime(int createTime) {
 		this.createTime = createTime;
+	}
+
+	public String getCollectorName() {
+		return collectorName;
+	}
+
+	public void setCollectorName(String collectorName) {
+		this.collectorName = collectorName;
 	}
 }
