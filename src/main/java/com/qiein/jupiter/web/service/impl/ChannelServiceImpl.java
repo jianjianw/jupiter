@@ -91,12 +91,19 @@ public class ChannelServiceImpl implements ChannelService {
 
         if (PushRoleConst.YY_WEIGHTS_RECEIVE.equals(channelPO.getPushRule())) {
             //指定渠道邀约人员
-            if (StringUtil.isEmpty(channelPO.getYyId())) {
+            if (StringUtil.isEmpty(channelPO.getLinkIds())) {
                 throw new RException(ExceptionEnum.YYID_NOT_EXISTS);
             }
             sourceStaffDao.deleteByChannelId(channelPO.getId(), channelPO.getCompanyId());
-            sourceStaffDao.insertByChannelId(channelPO.getId(), channelPO.getCompanyId(), Arrays.asList(channelPO.getYyId().split(CommonConstant.STR_SEPARATOR)), SourceStaffConst.YY_TYPE);
+            sourceStaffDao.insertByChannelId(channelPO.getId(), channelPO.getCompanyId(), Arrays.asList(channelPO.getLinkIds().split(CommonConstant.STR_SEPARATOR)), SourceStaffConst.RELATYPE_STAFF);
             //更新所有来源的pushRole
+            sourceDao.updatePushRuleByChannelId(channelPO.getId(), channelPO.getCompanyId(), channelPO.getPushRule());
+        }else if(PushRoleConst.GROUP_AVG_YY_WEIGHTS_RECEIVE.equals(channelPO.getPushRule())){
+            if(StringUtil.isEmpty(channelPO.getLinkIds())){
+                throw new RException(ExceptionEnum.YYID_NOT_EXISTS);
+            }
+            sourceStaffDao.deleteByChannelId(channelPO.getId(), channelPO.getCompanyId());
+            sourceStaffDao.insertByChannelId(channelPO.getId(), channelPO.getCompanyId(), Arrays.asList(channelPO.getLinkIds().split(CommonConstant.STR_SEPARATOR)), SourceStaffConst.RELATYPE_GROUP);
             sourceDao.updatePushRuleByChannelId(channelPO.getId(), channelPO.getCompanyId(), channelPO.getPushRule());
         } else if(null != channelPO.getPushRule()){
             sourceStaffDao.deleteByChannelId(channelPO.getId(), channelPO.getCompanyId());

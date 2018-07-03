@@ -13,14 +13,14 @@ public class SourceStaffPO {
     private Integer id;
 
     /**
-     * 关联类型
+     * 关联类型 0 员工 1 小组
      * */
     private Integer relaType;
 
     /**
      * 渠道id
      * */
-    private Integer staffId;
+    private String linkId;
 
     /**
      * 渠道id
@@ -48,12 +48,12 @@ public class SourceStaffPO {
         this.relaType = relaType;
     }
 
-    public Integer getStaffId() {
-        return staffId;
+    public String getLinkId() {
+        return linkId;
     }
 
-    public void setStaffId(Integer staffId) {
-        this.staffId = staffId;
+    public void setLinkId(String linkId) {
+        this.linkId = linkId;
     }
 
     public Integer getSourceId() {

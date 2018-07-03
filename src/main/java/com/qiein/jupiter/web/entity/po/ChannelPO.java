@@ -68,9 +68,9 @@ public class ChannelPO extends BaseEntity {
     private Boolean filterFlag;
 
     /**
-     * 邀约Id
+     * 关联id
      * */
-    private String yyId;
+    private String linkIds;
 
     /**
      * 名称
@@ -97,12 +97,12 @@ public class ChannelPO extends BaseEntity {
         this.nickNames = nickNames;
     }
 
-    public String getYyId() {
-        return yyId;
+    public String getLinkIds() {
+        return linkIds;
     }
 
-    public void setYyId(String yyId) {
-        this.yyId = yyId;
+    public void setLinkIds(String linkIds) {
+        this.linkIds = linkIds;
     }
 
     public Boolean getFilterFlag() {

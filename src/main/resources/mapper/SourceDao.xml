@@ -16,7 +16,7 @@
         <result column="ISFILTER" jdbcType="BOOLEAN" property="isFilter"/>
         <result column="ISSHOW" jdbcType="BOOLEAN" property="isShow"/>
         <result column="PUSHRULE" jdbcType="INTEGER" property="pushRule"/>
-        <result column="YYID" jdbcType="VARCHAR" property="yyId"></result>
+        <result column="LINKIDS" jdbcType="VARCHAR" property="linkIds"></result>
         <result column="NICKNAMES" jdbcType="VARCHAR" property="nickNames"></result>
     </resultMap>
 
@@ -247,7 +247,7 @@
             a.PRIORITY,
             a.ISFILTER,
             a.ISSHOW,
-            b.YYID,
+            b.LINKIDS,
             b.NICKNAMES
         FROM
             hm_crm_source a
@@ -255,14 +255,14 @@
                        a.channelId,
                        a.SOURCEID,
                        a.companyId,
-                       GROUP_CONCAT(a.staffId SEPARATOR ',')  as YYID,
+                       GROUP_CONCAT(a.LINKID SEPARATOR ',')  as LINKIDS,
                        GROUP_CONCAT(a.nickname SEPARATOR ',') as NICKNAMES
                    FROM
                        (
                            SELECT
                                a.channelId,
                                b.SOURCEID,
-                               b.STAFFID,
+                               b.LINKID,
                                b.COMPANYID,
                                c.NICKNAME
                            FROM
@@ -270,10 +270,10 @@
                                hm_crm_source_staff b,
                                hm_pub_staff c
                            WHERE
-                               a.id = b.SOURCEID and b.STAFFID = c.ID
+                               a.id = b.SOURCEID and b.LINKID = c.ID
                            GROUP BY
                                SOURCEID,
-                               staffID
+                               LINKID
                        ) a
                    GROUP BY
                        SOURCEID) b
