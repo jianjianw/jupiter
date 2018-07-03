@@ -165,7 +165,7 @@
     </select>
 
     <!--获取门店门市列表-->
-    <select id="getShopAndStaffList" parameterType="map" >
+    <select id="getShopAndStaffList" parameterType="map" resultMap="VOMap">
         SELECT shop.ID,shop.SHOPNAME,gs.STAFFID,sf.NICKNAME STAFFNAME
         FROM hm_pub_shop shop
         INNER JOIN hm_pub_group grp ON grp.COMPANYID = shop.COMPANYID AND shop.ID = grp.SHOPID
@@ -173,6 +173,8 @@
         LEFT JOIN hm_pub_staff sf ON gs.STAFFID = sf.ID AND gs.COMPANYID = sf.COMPANYID
         WHERE shop.ISSHOW = 1
         AND shop.COMPANYID = #{companyId}
+        AND sf.ISDEL = 0
+        AND sf.ISLOCK = 0
         ORDER BY shop.ID
     </select>
 </mapper>
