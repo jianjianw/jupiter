@@ -1,14 +1,18 @@
 package com.qiein.jupiter.web.entity.po;
 
 public class RepateKzLogPO {
-    private Integer  id;
+
+
+    private Integer id;
     private String kzId;
     private String kzName;
     private String kzPhone;
     private String kzqq;
     private String kzWechat;
-    private String createTime;
     private String appointName;
+    private String memo;
+    private String promotor;
+    private Integer count;
 
     public Integer getId() {
         return id;
@@ -58,19 +62,35 @@ public class RepateKzLogPO {
         this.kzWechat = kzWechat;
     }
 
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
-    }
-
     public String getAppointName() {
         return appointName;
     }
 
     public void setAppointName(String appointName) {
         this.appointName = appointName;
+    }
+
+    public String getMemo() {
+        return memo;
+    }
+
+    public void setMemo(String memo) {
+        this.memo = memo;
+    }
+
+    public String getPromotor() {
+        return promotor;
+    }
+
+    public void setPromotor(String promotor) {
+        this.promotor = promotor;
+    }
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
     }
 }
