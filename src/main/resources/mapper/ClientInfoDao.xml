@@ -41,6 +41,21 @@
 		<result column="CREATETIME" jdbcType="INTEGER" property="createTime"/>
 	</resultMap>
 
+	<resultMap id="editLog" type="com.qiein.jupiter.web.entity.po.EditClientPhonePO">
+		<id column="ID" jdbcType="INTEGER" property="id"/>
+		<result column="TYPEID" jdbcType="INTEGER" property="typeId"/>
+		<result column="TYPENAME" jdbcType="INTEGER" property="typeName"/>
+		<result column="BEFOREVALUE" jdbcType="INTEGER" property="beforeValue"/>
+		<result column="AFTERVALUE" jdbcType="INTEGER" property="afterValue"/>
+		<result column="OPERANAME" jdbcType="INTEGER" property="operaName"/>
+		<result column="OPERATIME" jdbcType="INTEGER" property="operaTime"/>
+		<result column="KZNAME" jdbcType="INTEGER" property="kzName"/>
+		<result column="STATUSID" jdbcType="INTEGER" property="statusId"/>
+		<result column="CHANNELID" jdbcType="INTEGER" property="channelId"/>
+		<result column="NICKNAME" jdbcType="VARCHAR" property="promotor"/>
+		<result column="APPOINTNAME" jdbcType="VARCHAR" property="appointName"/>
+	</resultMap>
+
     <sql id="baseColumn">
         info.ID, info.KZID, info.STATUSID, info.APPOINTORID, info.COLLECTORID, info.COMPANYID, info.SOURCEID
     </sql>
@@ -206,5 +221,43 @@
 		AND info.RECEPTORID IS NULL
 		AND INSTR(#{kzIds},info.KZID) != 0;
     </select>
+	<!--修改联系方式日志-->
+	<select id="editClientPhoneLog" resultMap="editLog">
+		SELECT
+			log.ID,
+			log.TYPEID,
+			log.TYPENAME,
+			log.BEFOREVALUE,
+			log.AFTERVALUE,
+			log.OPERANAME,
+			log.OPERATIME,
+			info.KZNAME,
+			info.STATUSID,
+			info.CHANNELID,
+			detail.APPOINTNAME,
+			staff.NICKNAME
+		FROM
+			${tableEditLog} log
+		LEFT JOIN ${tableInfo} info ON log.KZID = info.KZID
+		LEFT JOIN ${tableDetail} detail ON log.KZID=detail.KZID
+		LEFT JOIN hm_pub_staff staff on staff.ID=info.PROMOTORID AND staff.COMPANYID=info.COMPANYID
+
+		WHERE log.COMPANYID=#{companyId}
+		<if test="statusId !=null">
+			AND info.STATUSID=#{statusId}
+		</if>
+		<if test="channelId !=null">
+			AND info.CHANNELID=#{channelId}
+		</if>
+		<if test="typeId !=null">
+			AND log.TYPEID=#{typeId}
+		</if>
+		<if test="value !=null">
+			AND (log.BEFOREVALUE=#{value} OR log.AFTERVALUE=#{value})
+		</if>
+		<if test="startTime !=null and endTime!=null">
+
+		</if>
+	</select>
 
 </mapper>
