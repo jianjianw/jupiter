@@ -281,12 +281,11 @@ public class GoEasyUtil {
      * @param head
      * @param msg
      */
-    public static synchronized void pushReceive(int companyId, int staffId, String head, String logId, ClientGoEasyDTO info) {
+    public static synchronized void pushReceive(int companyId, int staffId, String head, ClientGoEasyDTO info) {
 
         contentJson = new JSONObject();
         contentJson.put("head", head);
         contentJson.put("kz", info);
-        contentJson.put("logId", logId);
 
         pushWeb(MessageConts.MSG_TYPE_RECEIVE, companyId, staffId, contentJson);
     }
@@ -907,12 +906,12 @@ public class GoEasyUtil {
     }
 
     /*-- 客资领取消息 --*/
-    public static void pushClientReceive(int companyId, int staffId, ClientGoEasyDTO info, String logId, NewsDao newsDao) {
+    public static void pushClientReceive(int companyId, int staffId, ClientGoEasyDTO info, NewsDao newsDao) {
         if (NumUtil.isNull(staffId) || NumUtil.isNull(companyId) || info == null) {
             return;
         }
         String head = "您有新的客资待领取";
-        pushReceive(companyId, staffId, head, logId, info);
+        pushReceive(companyId, staffId, head, info);
         newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_WARN, head, null, info.getKzId(), staffId, companyId,
                 DBSplitUtil.getNewsTabName(companyId)));
     }
