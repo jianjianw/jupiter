@@ -419,6 +419,8 @@ public class ClientPushServiceImpl implements ClientPushService {
         if (1 != updateRstNum) {
             throw new RException(ExceptionEnum.INFO_STATUS_EDIT_ERROR);
         }
+        //修改客资领取时间
+        clientInfoDao.updateClientInfoAfterAllot(companyId, DBSplitUtil.getInfoTabName(companyId), kzId);
 
         updateRstNum = clientInfoDao.updateClientDetailWhenAllot(companyId, DBSplitUtil.getDetailTabName(companyId),
                 kzId, appointer.getStaffName(), appointer.getGroupName());

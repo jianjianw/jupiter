@@ -914,7 +914,7 @@ public class GoEasyUtil {
         }
         String head = "您有新的客资待领取";
         pushReceive(companyId, staffId, head, info);
-        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_WARN, head, null, info.getKzId(), staffId, companyId,
+        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_RECEIVE, head, null, info.getKzId(), staffId, companyId,
                 DBSplitUtil.getNewsTabName(companyId)));
     }
 
