@@ -3,6 +3,8 @@ package com.qiein.jupiter.web.dao;
 import com.qiein.jupiter.web.entity.dto.ClientGoEasyDTO;
 import com.qiein.jupiter.web.entity.dto.ClientLogDTO;
 import com.qiein.jupiter.web.entity.po.EditClientPhonePO;
+import com.qiein.jupiter.web.entity.po.RepateKzLogPO;
+import com.qiein.jupiter.web.entity.po.WechatScanPO;
 import com.qiein.jupiter.web.entity.vo.StaffChangeVO;
 
 import java.util.List;
@@ -209,4 +211,7 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
     int updateClientInfoWhenReceive(@Param("companyId") int companyId, @Param("infoTabName") String infoTabName,
                                     @Param("kzId") String kzId, @Param("classId") int classId, @Param("statusId") int statusId,
                                     @Param("appointorId") int appointorId, @Param("groupId") String groupId, @Param("allotType") int allotType);
+
+    List<WechatScanPO> wechatScanCodeLog(ClientLogDTO clientLogDTO);
+    List<RepateKzLogPO> repateKzLog(ClientLogDTO clientLogDTO);
 }

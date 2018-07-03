@@ -3,6 +3,7 @@ package com.qiein.jupiter.web.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.qiein.jupiter.constant.ClientLogConst;
 import com.qiein.jupiter.constant.ClientStatusConst;
 import com.qiein.jupiter.enums.OrderSuccessTypeEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
@@ -422,11 +423,14 @@ public class ClientEditServiceImpl implements ClientEditService {
      * @param clientLogDTO
      * @return
      */
-    public PageInfo wechatClientPhoneLog(QueryMapDTO queryMapDTO, ClientLogDTO clientLogDTO){
+    public PageInfo wechatScanCodeLog(QueryMapDTO queryMapDTO, ClientLogDTO clientLogDTO){
         PageHelper.startPage(queryMapDTO.getPageNum(),queryMapDTO.getPageSize());
         clientLogDTO.setTableInfo(DBSplitUtil.getInfoTabName(clientLogDTO.getCompanyId()));
         clientLogDTO.setTableDetail(DBSplitUtil.getDetailTabName(clientLogDTO.getCompanyId()));
-        return null;
+        clientLogDTO.setTableLog(DBSplitUtil.getInfoLogTabName(clientLogDTO.getCompanyId()));
+        clientLogDTO.setLogType(ClientLogConst.INFO_LOGTYPE_SCAN_WECAHT);
+        List<WechatScanPO> list=clientInfoDao.wechatScanCodeLog(clientLogDTO);
+        return new PageInfo<>(list);
     }
 
     /**
@@ -439,7 +443,10 @@ public class ClientEditServiceImpl implements ClientEditService {
         PageHelper.startPage(queryMapDTO.getPageNum(),queryMapDTO.getPageSize());
         clientLogDTO.setTableInfo(DBSplitUtil.getInfoTabName(clientLogDTO.getCompanyId()));
         clientLogDTO.setTableDetail(DBSplitUtil.getDetailTabName(clientLogDTO.getCompanyId()));
-        return null;
+        clientLogDTO.setTableLog(DBSplitUtil.getInfoLogTabName(clientLogDTO.getCompanyId()));
+        clientLogDTO.setLogType(ClientLogConst.INFO_LOGTYPE_REPEAT);
+        List<RepateKzLogPO> list=clientInfoDao.repateKzLog(clientLogDTO);
+        return new PageInfo<>(list);
     }
 
 }
