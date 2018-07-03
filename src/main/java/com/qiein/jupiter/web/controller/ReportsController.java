@@ -48,7 +48,7 @@ public class ReportsController extends BaseController{
         reqContent.put("start",reportsConditionVO.getStart());
         reqContent.put("end",reportsConditionVO.getEnd());
         reqContent.put("companyid",currentLoginStaff.getCompanyId());
-        if(NumUtil.isValid(reportsConditionVO.getSourceId())){
+        if(StringUtil.isNotEmpty(reportsConditionVO.getSourceId())){
             reqContent.put("sourceid",reportsConditionVO.getSourceId());
         }
         if(NumUtil.isValid(reportsConditionVO.getPhoneLimit())){
@@ -57,7 +57,7 @@ public class ReportsController extends BaseController{
         if(NumUtil.isValid(reportsConditionVO.getSparelimit())){
             reqContent.put("sparelimit",reportsConditionVO.getSparelimit());
         }
-        if(NumUtil.isValid(reportsConditionVO.getTypeId())){
+        if(StringUtil.isNotEmpty(reportsConditionVO.getTypeId())){
             reqContent.put("phototype",reportsConditionVO.getTypeId());
         }
         //请求juplat接口

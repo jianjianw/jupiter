@@ -62,6 +62,25 @@ public class ClientReceiveServiceImpl implements ClientReceiveService {
     }
 
     /**
+     * 客资领取,pc端，自由领取
+     *
+     * @param kzId
+     * @param companyId
+     * @param staffId
+     */
+    public void pcReceive(String kzId, int companyId, int staffId, String staffName) {
+        if (StringUtil.isEmpty(kzId) || NumUtil.haveInvalid(companyId, staffId)) {
+            throw new RException(ExceptionEnum.INFO_ERROR);
+        }
+        // 一个客资领取
+        pcReceiveOne(kzId,  companyId, staffId, staffName);
+        // 计算今日客资个数
+        resizeTodayNum(companyId, staffId);
+        // 推送页面重载客资列表
+        GoEasyUtil.pushInfoRefresh(companyId, staffId);
+    }
+
+    /**
      * 客资拒接
      */
     @Override
@@ -190,6 +209,51 @@ public class ClientReceiveServiceImpl implements ClientReceiveService {
             // 推送状态重载消息
             GoEasyUtil.pushStatusRefresh(companyId, staffId);
         }
+    }
+
+    /**
+     * 领取一个客资
+     *
+     * @param kzId
+     * @param logId
+     * @param companyId
+     * @param staffId
+     */
+    @Transactional
+    public void pcReceiveOne(String kzId, int companyId, int staffId, String staffName) {
+
+        ClientPushDTO info = clientInfoDao.getClientPushDTOById(kzId, DBSplitUtil.getInfoTabName(companyId),
+                DBSplitUtil.getDetailTabName(companyId));
+        if (info == null) {
+            throw new RException(ExceptionEnum.INFO_ERROR);
+        }
+        if (NumUtil.isValid(info.getAppointorId())) {
+            throw new RException(ExceptionEnum.INFO_OTHER_APPOINTOR);
+        }
+        if (ClientStatusConst.BE_ALLOTING != info.getStatusId()
+                && ClientStatusConst.BE_WAIT_MAKE_ORDER != info.getStatusId()) {
+            throw new RException(ExceptionEnum.INFO_BE_RECEIVED);
+        }
+        // 修改客资状态为未设置
+        int updateNum = clientInfoDao.updateClientInfoStatus(companyId, DBSplitUtil.getInfoTabName(companyId), kzId,
+                ClientStatusConst.KZ_CLASS_NEW, ClientStatusConst.BE_HAVE_MAKE_ORDER);
+        if (1 != updateNum) {
+            throw new RException(ExceptionEnum.INFO_STATUS_EDIT_ERROR);
+        }
+
+        // 修改客资的领取时间和最后操作时间
+        updateNum = clientInfoDao.updateClientInfoAfterAllot(companyId, DBSplitUtil.getInfoTabName(companyId), kzId);
+        if (1 != updateNum) {
+            throw new RException(ExceptionEnum.INFO_EDIT_ERROR);
+        }
+
+        // 添加客资领取日志
+        updateNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(companyId), new ClientLogPO(kzId, staffId,
+                staffName, ClientLogConst.INFO_LOG_RECEIVE, ClientLogConst.INFO_LOGTYPE_RECEIVE, companyId));
+        if (1 != updateNum) {
+            throw new RException(ExceptionEnum.LOG_ERROR);
+        }
+
     }
 
     /**

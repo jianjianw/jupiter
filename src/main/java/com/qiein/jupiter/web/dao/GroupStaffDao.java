@@ -142,25 +142,35 @@ public interface GroupStaffDao {
 
     /**
      * 根据公司id和分组id获取分组员工的id集合
+     *
      * @param companyId
      * @param groupId
      * @return
-     * */
-    String getGroupStaffIdsStrByCompanyIdAndGroupId(@Param(value="companyId") int companyId,@Param(value="groupId") String groupId);
+     */
+    String getGroupStaffIdsStrByCompanyIdAndGroupId(@Param(value = "companyId") int companyId, @Param(value = "groupId") String groupId);
 
     /**
      * 根据员工id获取员工与组的关系
+     *
      * @param companyId
      * @param staffId
-     * */
-    List<GroupStaffPO> getGroupStaffByStaffId(@Param(value="companyId") int companyId,@Param(value="staffId") int staffId);
+     */
+    List<GroupStaffPO> getGroupStaffByStaffId(@Param(value = "companyId") int companyId, @Param(value = "staffId") int staffId);
 
     /**
      * 删除指定某个组下员工的联系
+     *
      * @param companyId
      * @param staffId
      * @param groupId
-     * */
-    Integer deleteByStaffIdAndGroupId(@Param(value="staffId") int staffId,@Param(value="companyId") int companyId,@Param(value="groupId") String groupId);
+     */
+    Integer deleteByStaffIdAndGroupId(@Param(value = "staffId") int staffId, @Param(value = "companyId") int companyId, @Param(value = "groupId") String groupId);
 
+    /**
+     * 公司所有小组人员
+     *
+     * @param companyId
+     * @return
+     */
+    List<GroupBaseStaffVO> getAllGroupStaff(@Param(value = "companyId") int companyId);
 }

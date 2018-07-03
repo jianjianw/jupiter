@@ -18,11 +18,11 @@ public class ReportsConditionVO {
     /**
      * 照片类型
      * */
-    private Integer typeId;
+    private String typeId;
     /**
      * 来源id
      * */
-    private Integer sourceId;
+    private String sourceId;
     /**
      * 客资联系方式类型
      * */
@@ -48,19 +48,19 @@ public class ReportsConditionVO {
         this.end = end;
     }
 
-    public Integer getTypeId() {
+    public String getTypeId() {
         return typeId;
     }
 
-    public void setTypeId(Integer typeId) {
+    public void setTypeId(String typeId) {
         this.typeId = typeId;
     }
 
-    public Integer getSourceId() {
+    public String getSourceId() {
         return sourceId;
     }
 
-    public void setSourceId(Integer sourceId) {
+    public void setSourceId(String sourceId) {
         this.sourceId = sourceId;
     }
 
