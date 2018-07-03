@@ -255,7 +255,7 @@
         WHERE
         grp.COMPANYID = #{companyId}
         AND grp.PARENTID != '0'
-        AND INSTR(grp.GROUPTYPE,'yy')!=0
+        AND INSTR(grp.GROUPTYPE,'dsyy')!=0
         AND gs.STAFFID = #{staffId}
     </select>
 
@@ -289,5 +289,18 @@
         WHERE
             grp.COMPANYID = #{companyId}
             AND grp.GROUPTYPE = #{role}
+    </select>
+
+    <!--获取员工所在组-->
+    <select id="getGroupByStaffAndRole" parameterType="map" resultMap="baseMap">
+        SELECT grp.GROUPID,grp.GROUPNAME
+        FROM
+        hm_pub_group grp
+        LEFT JOIN hm_pub_group_staff rela ON rela.COMPANYID = grp.COMPANYID AND grp.GROUPID = rela.GROUPID
+        WHERE
+        grp.COMPANYID = #{companyId}
+        AND grp.PARENTID != '0'
+        AND rela.STAFFID = #{staffId}
+        AND grp.GROUPTYPE = #{type}
     </select>
 </mapper>

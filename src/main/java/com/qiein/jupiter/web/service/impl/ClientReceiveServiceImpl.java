@@ -1,9 +1,6 @@
 package com.qiein.jupiter.web.service.impl;
 
-import com.qiein.jupiter.constant.ClientConst;
-import com.qiein.jupiter.constant.ClientLogConst;
-import com.qiein.jupiter.constant.ClientStatusConst;
-import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.constant.*;
 import com.qiein.jupiter.enums.StaffStatusEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
@@ -14,6 +11,7 @@ import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.*;
 import com.qiein.jupiter.web.entity.dto.ClientPushDTO;
 import com.qiein.jupiter.web.entity.po.ClientLogPO;
+import com.qiein.jupiter.web.entity.po.GroupPO;
 import com.qiein.jupiter.web.entity.po.StaffStatusLog;
 import com.qiein.jupiter.web.service.ClientReceiveService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +36,8 @@ public class ClientReceiveServiceImpl implements ClientReceiveService {
     private StaffDao staffDao;
     @Autowired
     private StaffStatusLogDao statusLogDao;
+    @Autowired
+    private GroupDao groupDao;
 
     @Override
     @Transactional
@@ -73,7 +73,7 @@ public class ClientReceiveServiceImpl implements ClientReceiveService {
             throw new RException(ExceptionEnum.INFO_ERROR);
         }
         // 一个客资领取
-        pcReceiveOne(kzId,  companyId, staffId, staffName);
+        pcReceiveOne(kzId, companyId, staffId, staffName);
         // 计算今日客资个数
         resizeTodayNum(companyId, staffId);
         // 推送页面重载客资列表
@@ -234,21 +234,32 @@ public class ClientReceiveServiceImpl implements ClientReceiveService {
                 && ClientStatusConst.BE_WAIT_MAKE_ORDER != info.getStatusId()) {
             throw new RException(ExceptionEnum.INFO_BE_RECEIVED);
         }
+        String type = "";
+        if (ChannelConstant.DS_TYPE_LIST.contains(info.getChannelTypeId())) {
+            type = RoleConstant.DSYY;
+        } else if (ChannelConstant.ZJS_TYPE_LIST.contains(info.getChannelTypeId())) {
+            //转介绍
+            type = RoleConstant.ZJSYY;
+        }
+        GroupPO groupPO = groupDao.getGroupByStaffAndRole(companyId, staffId, type);
+        if (groupPO == null) {
+            throw new RException(ExceptionEnum.APPOINT_GROUP_NOT_FOUND);
+        }
         // 修改客资状态为未设置
-        int updateNum = clientInfoDao.updateClientInfoStatus(companyId, DBSplitUtil.getInfoTabName(companyId), kzId,
-                ClientStatusConst.KZ_CLASS_NEW, ClientStatusConst.BE_HAVE_MAKE_ORDER);
+        int updateNum = clientInfoDao.updateClientInfoWhenReceive(companyId, DBSplitUtil.getInfoTabName(companyId), kzId,
+                ClientStatusConst.KZ_CLASS_NEW, ClientStatusConst.BE_HAVE_MAKE_ORDER, staffId, groupPO.getGroupId(), ClientConst.ALLOT_SYSTEM_AUTO);
         if (1 != updateNum) {
             throw new RException(ExceptionEnum.INFO_STATUS_EDIT_ERROR);
         }
-
+        clientInfoDao.updateClientDetailWhenAllot(companyId, DBSplitUtil.getDetailTabName(companyId), kzId, staffName, groupPO.getGroupName());
         // 修改客资的领取时间和最后操作时间
         updateNum = clientInfoDao.updateClientInfoAfterAllot(companyId, DBSplitUtil.getInfoTabName(companyId), kzId);
         if (1 != updateNum) {
             throw new RException(ExceptionEnum.INFO_EDIT_ERROR);
         }
-
         // 添加客资领取日志
-        updateNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(companyId), new ClientLogPO(kzId, staffId,
+        updateNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(companyId), new
+                ClientLogPO(kzId, staffId,
                 staffName, ClientLogConst.INFO_LOG_RECEIVE, ClientLogConst.INFO_LOGTYPE_RECEIVE, companyId));
         if (1 != updateNum) {
             throw new RException(ExceptionEnum.LOG_ERROR);

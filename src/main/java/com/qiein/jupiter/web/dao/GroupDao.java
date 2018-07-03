@@ -138,7 +138,17 @@ public interface GroupDao extends BaseDao<GroupPO> {
 
     /**
      * 根据类型获取企业部门和小组列表
-     * */
-    List<GroupPO> getDepartGroupListByType(@Param("companyId") int companyId,@Param(value="role") String role);
+     */
+    List<GroupPO> getDepartGroupListByType(@Param("companyId") int companyId, @Param(value = "role") String role);
+
+    /**
+     * 获取员工所在小组ID
+     *
+     * @param companyId
+     * @param staffId
+     * @param type
+     * @return
+     */
+    GroupPO getGroupByStaffAndRole(@Param("companyId") int companyId, @Param("staffId") int staffId, @Param("type") String type);
 
 }

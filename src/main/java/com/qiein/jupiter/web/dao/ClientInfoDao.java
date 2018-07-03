@@ -187,8 +187,26 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
 
     /**
      * 修改联系方式日志
+     *
      * @param clientLogDTO
      * @return
      */
     List<EditClientPhonePO> editClientPhoneLog(ClientLogDTO clientLogDTO);
+
+    /**
+     * pc端领取客资，修改客资基本信息
+     *
+     * @param companyId
+     * @param infoTabName
+     * @param kzId
+     * @param classId
+     * @param statusId
+     * @param appointorId
+     * @param groupId
+     * @param allotType
+     * @return
+     */
+    int updateClientInfoWhenReceive(@Param("companyId") int companyId, @Param("infoTabName") String infoTabName,
+                                    @Param("kzId") String kzId, @Param("classId") int classId, @Param("statusId") int statusId,
+                                    @Param("appointorId") int appointorId, @Param("groupId") String groupId, @Param("allotType") int allotType);
 }
