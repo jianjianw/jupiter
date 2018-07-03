@@ -457,8 +457,10 @@ public class ClientPushServiceImpl implements ClientPushService {
         ClientGoEasyDTO infoDTO = clientInfoDao.getClientGoEasyDTOById(kzId, DBSplitUtil.getInfoTabName(companyId),
                 DBSplitUtil.getDetailTabName(companyId));
         for (StaffPushDTO sf : yyList) {
-            //TODO 推送消息
-            GoEasyUtil.pushClientReceive(companyId, sf.getStaffId(), infoDTO, newsDao);
+            // 生成分配日志
+            AllotLogPO allotLog = addAllotLog(kzId, sf.getStaffId(), sf.getStaffName(), sf.getGroupId(),
+                    sf.getGroupName(), ClientConst.ALLOT_SYSTEM_AUTO, companyId);
+            GoEasyUtil.pushClientReceive(companyId, sf.getStaffId(), infoDTO, String.valueOf(allotLog.getId()), newsDao);
         }
     }
 
