@@ -460,6 +460,7 @@ public class ClientPushServiceImpl implements ClientPushService {
             // 生成分配日志
             AllotLogPO allotLog = addAllotLog(kzId, sf.getStaffId(), sf.getStaffName(), sf.getGroupId(),
                     sf.getGroupName(), ClientConst.ALLOT_SYSTEM_AUTO, companyId);
+            GoEasyUtil.pushInfoComed(companyId, sf.getStaffId(), infoDTO, newsDao);
             GoEasyUtil.pushClientReceive(companyId, sf.getStaffId(), infoDTO, String.valueOf(allotLog.getId()), newsDao);
         }
     }
