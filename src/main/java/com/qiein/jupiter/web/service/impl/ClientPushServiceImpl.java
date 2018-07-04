@@ -274,7 +274,7 @@ public class ClientPushServiceImpl implements ClientPushService {
             Iterator<String> it = groupIdList.iterator();
             while (it.hasNext()) {
                 String groupId = it.next();
-                if (appointGroups.equals(groupId)) {
+                if (appointGrp.equals(groupId)) {
                     result.add(appointGrp);
                     it.remove();
                 }
