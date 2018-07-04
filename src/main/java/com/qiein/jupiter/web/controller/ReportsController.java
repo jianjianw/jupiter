@@ -76,17 +76,7 @@ public class ReportsController extends BaseController{
         return ResultInfoUtil.success(JSONObject.parseObject(json).getJSONObject("response").getJSONObject("content").getJSONArray("data"));
     }
 
-    /**
-     * 修改联系方式日志
-     */
-    @PostMapping("/edit_client_phone_log")
-    public ResultInfo editClientPhoneLog(@RequestBody JSONObject params) {
-        QueryMapDTO queryMapDTO= JSONObject.parseObject(params.getJSONObject("queryMapDTO").toJSONString(),QueryMapDTO.class) ;
-        ClientLogDTO clientLogDTO=JSONObject.parseObject(params.getJSONObject("clientLogDTO").toJSONString(),ClientLogDTO.class) ;
-        StaffPO staff = getCurrentLoginStaff();
-        clientLogDTO.setCompanyId(staff.getCompanyId());
-        return ResultInfoUtil.success(clientEditService.editClientPhoneLog(queryMapDTO,clientLogDTO));
-    }
+
 
 
 }

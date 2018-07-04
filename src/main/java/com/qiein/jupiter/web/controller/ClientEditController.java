@@ -130,6 +130,18 @@ public class ClientEditController extends BaseController {
         return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
     }
     /**
+     * 修改联系方式日志
+     */
+    @PostMapping("/edit_client_phone_log")
+    public ResultInfo editClientPhoneLog(@RequestBody JSONObject params) {
+        QueryMapDTO queryMapDTO= JSONObject.parseObject(params.getJSONObject("queryMapDTO").toJSONString(),QueryMapDTO.class) ;
+        ClientLogDTO clientLogDTO=JSONObject.parseObject(params.getJSONObject("clientLogDTO").toJSONString(),ClientLogDTO.class) ;
+        StaffPO staff = getCurrentLoginStaff();
+        clientLogDTO.setCompanyId(staff.getCompanyId());
+        return ResultInfoUtil.success(clientEditService.editClientPhoneLog(queryMapDTO,clientLogDTO));
+    }
+
+    /**
      * 微信扫码日志
      */
     @PostMapping("/wechat_scan_code_log")
