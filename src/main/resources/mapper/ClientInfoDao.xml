@@ -54,7 +54,7 @@
 		<result column="KZNAME" jdbcType="INTEGER" property="kzName"/>
 		<result column="STATUSID" jdbcType="INTEGER" property="statusId"/>
 		<result column="CHANNELID" jdbcType="INTEGER" property="channelId"/>
-		<result column="NICKNAME" jdbcType="VARCHAR" property="promotor"/>
+		<result column="COLLECTORNAME" jdbcType="VARCHAR" property="promotor"/>
 		<result column="APPOINTNAME" jdbcType="VARCHAR" property="appointName"/>
 	</resultMap>
 
@@ -233,12 +233,12 @@
 			log.BEFOREVALUE,
 			log.AFTERVALUE,
 			log.OPERANAME,
-			log.OPERATIME,
+			FROM_UNIXTIME(log.OPERATIME, '%Y/%m/%d %H:%m:%s ') OPERATIME,
 			info.KZNAME,
 			info.STATUSID,
 			info.CHANNELID,
 			detail.APPOINTNAME,
-			staff.NICKNAME
+			detail.COLLECTORNAME
 		FROM
 			${tableEditLog} log
 		LEFT JOIN ${tableInfo} info ON log.KZID = info.KZID
@@ -249,7 +249,7 @@
 		<if test="statusId !=null">
 			AND info.STATUSID=#{statusId}
 		</if>
-		<if test="channelIds !=null">
+		<if test="channelIds !=null and channelIds!=''">
 			AND info.CHANNELID IN (
 			<foreach collection="list" separator="," item="channelId">
 				#{channelId}
@@ -291,8 +291,10 @@
 		info.KZQQ kzqq,
 		info.KZWECHAT kzWechat,
 		detail.APPOINTNAME appointName,
-		staff.NICKNAME promotor,
+		detail.COLLECTORNAME promotor,
 		log.MEMO memo,
+		info.STATUSID statusId,
+		info.CHANNELID channelId,
 		COUNT(log.KZID) count
 		FROM
 		${tableLog} log
@@ -303,8 +305,12 @@
 		WHERE
 		log.COMPANYID = #{companyId}
 		AND log.LOGTYPE = #{logType}
+		<if test="startTime !=null and endTime!=null">
+			AND log.OPERATIME &gt;= #{startTime} AND log.OPERATIME &lt; UNIX_TIMESTAMP(DATE_ADD(FROM_UNIXTIME(#{endTime},'%Y-%m-%d '),INTERVAL 1 DAY))
+		</if>
 		GROUP BY
 		log.KZID
+
 	</select>
 
 	<select id="wechatScanCodeLog"  resultType="com.qiein.jupiter.web.entity.po.WechatScanPO">
@@ -313,7 +319,7 @@
 		info.KZID kzId,
 		info.KZNAME kzName,
 		info.KZPHONE kzPhone,
-		FROM_UNIXTIME(log.OPERATIME, '%Y-%m-%d ') createTime,
+		FROM_UNIXTIME(log.OPERATIME, '%Y/%m/%d %H:%m:%s ') createTime,
 		info.KZQQ kzqq,
 		info.KZWECHAT kzWechat,
 		detail.APPOINTNAME appointName
@@ -324,5 +330,8 @@
 		WHERE
 		log.COMPANYID = #{companyId}
 		AND log.LOGTYPE = #{logType}
+		<if test="startTime !=null and endTime!=null">
+			AND log.OPERATIME &gt;= #{startTime} AND log.OPERATIME &lt; UNIX_TIMESTAMP(DATE_ADD(FROM_UNIXTIME(#{endTime},'%Y-%m-%d '),INTERVAL 1 DAY))
+		</if>
 	</select>
 </mapper>

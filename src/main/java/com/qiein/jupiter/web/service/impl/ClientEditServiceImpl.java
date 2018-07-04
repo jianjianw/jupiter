@@ -405,55 +405,63 @@ public class ClientEditServiceImpl implements ClientEditService {
 
     /**
      * 修改联系方式日志
+     *
      * @param queryMapDTO
      * @param clientLogDTO
      * @return
      */
-    public PageInfo editClientPhoneLog(QueryMapDTO queryMapDTO, ClientLogDTO clientLogDTO){
-        List<Integer> channelIds=new ArrayList<>();
-        String[] ids=clientLogDTO.getChannelIds().split(CommonConstant.STR_SEPARATOR);
-        for(String id:ids){
-            channelIds.add(Integer.parseInt(id));
+    public PageInfo editClientPhoneLog(QueryMapDTO queryMapDTO, ClientLogDTO clientLogDTO) {
+        List<Integer> channelIds = new ArrayList<>();
+        if (!StringUtil.isEmpty(clientLogDTO.getChannelIds())) {
+            String[] ids = clientLogDTO.getChannelIds().split(CommonConstant.STR_SEPARATOR);
+
+            for (String id : ids) {
+                channelIds.add(Integer.parseInt(id));
+            }
         }
         clientLogDTO.setList(channelIds);
-        PageHelper.startPage(queryMapDTO.getPageNum(),queryMapDTO.getPageSize());
+        PageHelper.startPage(queryMapDTO.getPageNum(), queryMapDTO.getPageSize());
         clientLogDTO.setTableEditLog(DBSplitUtil.getEditLogTabName(clientLogDTO.getCompanyId()));
         clientLogDTO.setTableInfo(DBSplitUtil.getInfoTabName(clientLogDTO.getCompanyId()));
         clientLogDTO.setTableDetail(DBSplitUtil.getDetailTabName(clientLogDTO.getCompanyId()));
-        List<EditClientPhonePO> list=clientInfoDao.editClientPhoneLog(clientLogDTO);
+        List<EditClientPhonePO> list = clientInfoDao.editClientPhoneLog(clientLogDTO);
         return new PageInfo<>(list);
 
     }
 
+
+
     /**
      * 微信扫码日志
+     *
      * @param queryMapDTO
      * @param clientLogDTO
      * @return
      */
-    public PageInfo wechatScanCodeLog(QueryMapDTO queryMapDTO, ClientLogDTO clientLogDTO){
-        PageHelper.startPage(queryMapDTO.getPageNum(),queryMapDTO.getPageSize());
+    public PageInfo wechatScanCodeLog(QueryMapDTO queryMapDTO, ClientLogDTO clientLogDTO) {
+        PageHelper.startPage(queryMapDTO.getPageNum(), queryMapDTO.getPageSize());
         clientLogDTO.setTableInfo(DBSplitUtil.getInfoTabName(clientLogDTO.getCompanyId()));
         clientLogDTO.setTableDetail(DBSplitUtil.getDetailTabName(clientLogDTO.getCompanyId()));
         clientLogDTO.setTableLog(DBSplitUtil.getInfoLogTabName(clientLogDTO.getCompanyId()));
         clientLogDTO.setLogType(ClientLogConst.INFO_LOGTYPE_SCAN_WECAHT);
-        List<WechatScanPO> list=clientInfoDao.wechatScanCodeLog(clientLogDTO);
+        List<WechatScanPO> list = clientInfoDao.wechatScanCodeLog(clientLogDTO);
         return new PageInfo<>(list);
     }
 
     /**
      * 重复客资记录
+     *
      * @param queryMapDTO
      * @param clientLogDTO
      * @return
      */
-    public PageInfo repateKzLog(QueryMapDTO queryMapDTO, ClientLogDTO clientLogDTO){
-        PageHelper.startPage(queryMapDTO.getPageNum(),queryMapDTO.getPageSize());
+    public PageInfo repateKzLog(QueryMapDTO queryMapDTO, ClientLogDTO clientLogDTO) {
+        PageHelper.startPage(queryMapDTO.getPageNum(), queryMapDTO.getPageSize());
         clientLogDTO.setTableInfo(DBSplitUtil.getInfoTabName(clientLogDTO.getCompanyId()));
         clientLogDTO.setTableDetail(DBSplitUtil.getDetailTabName(clientLogDTO.getCompanyId()));
         clientLogDTO.setTableLog(DBSplitUtil.getInfoLogTabName(clientLogDTO.getCompanyId()));
         clientLogDTO.setLogType(ClientLogConst.INFO_LOGTYPE_REPEAT);
-        List<RepateKzLogPO> list=clientInfoDao.repateKzLog(clientLogDTO);
+        List<RepateKzLogPO> list = clientInfoDao.repateKzLog(clientLogDTO);
         return new PageInfo<>(list);
     }
 
