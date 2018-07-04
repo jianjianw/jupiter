@@ -701,7 +701,7 @@
         AND temp.OPERAID = #{staffId}
         ) b ON temp.kzid = b.kzid
         WHERE
-        b.kzid IS NULL
+        temp.OPERAID = #{staffId} and b.kzid IS NULL
         ) temp
         LEFT JOIN (
         SELECT
@@ -733,7 +733,7 @@
         or (temp.ZXSTYLESTR IS NOT NULL AND temp.ZXSTYLE IS NULL))
         ) c ON temp.kzid = c.kzid
         WHERE
-        c.kzid IS NULL
+        temp.OPERAID = #{staffId} and c.kzid IS NULL
         ) tmp_count
         ) a,
         (
