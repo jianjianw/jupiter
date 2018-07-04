@@ -40,7 +40,7 @@ public class ClientPushTask {
     /**
      * 定时任务-推送客资
      */
-  // @Scheduled(initialDelay = 1000, fixedDelay = 60 * 1000)
+   @Scheduled(initialDelay = 1000, fixedDelay = 60 * 1000)
     public void taskPushLp() {
        //先判断下队列是否为空,只有队列为空，才去数据库找客资推送
        if (!lpPushQueue.isEmpty()) {

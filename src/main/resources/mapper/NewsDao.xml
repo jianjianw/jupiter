@@ -120,4 +120,13 @@
         WHERE COMPANYID = #{companyId}
         AND STAFFID = #{staffId}
     </update>
+
+    <!--根据类型获取消息条数-->
+    <select id="getNewsCountByType" parameterType="map" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM ${tableName}
+        WHERE STAFFID = #{staffId}
+        AND COMPANYID = #{companyId}
+        AND TYPE = 'receive'
+    </select>
 </mapper>

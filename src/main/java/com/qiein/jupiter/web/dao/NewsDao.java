@@ -57,4 +57,15 @@ public interface NewsDao extends BaseDao<NewsPO> {
      */
     int setAllNewIsRead(@Param("tableName") String tableName,
                         @Param("staffId") int staffId, @Param("companyId") int companyId);
+
+    /**
+     * 根据类型获取消息条数
+     *
+     * @param tableName
+     * @param staffId
+     * @param companyId
+     * @return
+     */
+    int getNewsCountByType(@Param("tableName") String tableName,
+                           @Param("staffId") int staffId, @Param("companyId") int companyId);
 }
