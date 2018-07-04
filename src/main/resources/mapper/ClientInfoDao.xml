@@ -334,4 +334,18 @@
 			AND log.OPERATIME &gt;= #{startTime} AND log.OPERATIME &lt; UNIX_TIMESTAMP(DATE_ADD(FROM_UNIXTIME(#{endTime},'%Y-%m-%d '),INTERVAL 1 DAY))
 		</if>
 	</select>
+
+	<!--获取KzId时候存在-->
+	<select id = "getKzIdExists" resultMap="infoMap">
+		SELECT
+			info.ID, info.KZID, info.COMPANYID
+		FROM
+			${infoTabName} info
+		WHERE
+			info.COMPANYID = #{companyId}
+			AND info.ISDEL = 0
+			AND	info.STATUSID = 3
+			AND info.CLASSID = 3
+			AND INSTR(#{kzIds},info.KZID) != 0;
+	</select>
 </mapper>

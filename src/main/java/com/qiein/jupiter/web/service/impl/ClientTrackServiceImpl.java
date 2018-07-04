@@ -287,7 +287,7 @@ public class ClientTrackServiceImpl implements ClientTrackService {
     @Override
     public void allotNotArriveShop(String kzId, StaffPO staffPO) {
         //修改客资状态
-        List<ClientPushDTO> clientPushDTOS = clientInfoDao.listClientsInStrKzids(kzId, staffPO.getCompanyId(), DBSplitUtil.getInfoTabName(staffPO.getCompanyId()));
+        List<ClientPushDTO> clientPushDTOS = clientInfoDao.getKzIdExists(kzId, staffPO.getCompanyId(), DBSplitUtil.getInfoTabName(staffPO.getCompanyId()));
         if(CollectionUtils.isEmpty(clientPushDTOS)){
             throw new RException(ExceptionEnum.ALLOTED_ERROR);
         }
