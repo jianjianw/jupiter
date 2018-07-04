@@ -128,5 +128,6 @@
         WHERE STAFFID = #{staffId}
         AND COMPANYID = #{companyId}
         AND TYPE = 'receive'
+        AND KZID = #{kzId}
     </select>
 </mapper>
