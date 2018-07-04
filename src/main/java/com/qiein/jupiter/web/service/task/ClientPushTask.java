@@ -40,7 +40,7 @@ public class ClientPushTask {
     /**
      * 定时任务-推送客资
      */
-   @Scheduled(initialDelay = 1000, fixedDelay = 60 * 1000)
+  // @Scheduled(initialDelay = 1000, fixedDelay = 60 * 1000)
     public void taskPushLp() {
         log.info("执行定时推送任务");
         List<CompanyPO> compList = companyDao.listComp();
