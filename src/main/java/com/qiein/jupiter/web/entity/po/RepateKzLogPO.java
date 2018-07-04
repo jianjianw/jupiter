@@ -13,6 +13,24 @@ public class RepateKzLogPO {
     private String memo;
     private String promotor;
     private Integer count;
+    private Integer statusId;
+    private Integer channelId;
+
+    public Integer getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(Integer statusId) {
+        this.statusId = statusId;
+    }
+
+    public Integer getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(Integer channelId) {
+        this.channelId = channelId;
+    }
 
     public Integer getId() {
         return id;
