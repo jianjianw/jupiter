@@ -879,11 +879,11 @@ public class GoEasyUtil {
     }
 
     /*-- 重复客资邀约员提醒消息 --*/
-    public static void pushReClient(int companyId, int staffId, ClientGoEasyDTO info, String operaName, NewsDao newsDao) {
+    public static void pushRepeatClient(int companyId, int staffId, ClientGoEasyDTO info, String operaName, NewsDao newsDao) {
         if (NumUtil.isNull(staffId) || NumUtil.isNull(companyId) || info == null) {
             return;
         }
-        String head = "您的客资被" + StringUtil.nullToStrTrim(operaName) + "重复提报，请及时联系该客资";
+        String head = "您的客资被" + StringUtil.nullToStrTrim(operaName) + "重复提报，<br/>请及时联系该客资";
         StringBuffer sb = new StringBuffer();
 
         if (StringUtil.isNotEmpty(info.getKzName())) {

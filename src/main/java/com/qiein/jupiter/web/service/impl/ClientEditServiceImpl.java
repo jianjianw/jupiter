@@ -130,6 +130,16 @@ public class ClientEditServiceImpl implements ClientEditService {
                 GoEasyUtil.pushRemark(staffPO.getCompanyId(), info.getAppointorId(), msg, info.getKzId(), newsDao);
             }
 
+        } else if ("130019".equals(jsInfo.getString("code"))) {
+            //重复客资，给邀约推送消息
+            ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(jsInfo.getString("data"),
+                    DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
+                    DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
+            if (NumUtil.isNull(info.getAppointorId())) {
+                return;
+            }
+            GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getAppointorId(), info, staffPO.getNickName(), newsDao);
+            throw new RException("存在重复客资");
         } else {
             throw new RException(jsInfo.getString("msg"));
         }
@@ -226,6 +236,16 @@ public class ClientEditServiceImpl implements ClientEditService {
                 // 如果是无效，发送警告消息给录入人
                 GoEasyUtil.pushYyValidReject(info.getCompanyId(), info.getCollectorId(), info, newsDao);
             }
+        } else if ("130019".equals(jsInfo.getString("code"))) {
+            //重复客资，给邀约推送消息
+            ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(jsInfo.getString("data"),
+                    DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
+                    DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
+            if (NumUtil.isNull(info.getAppointorId())) {
+                return;
+            }
+            GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getAppointorId(), info, staffPO.getNickName(), newsDao);
+            throw new RException("存在重复客资");
         } else {
             throw new RException(jsInfo.getString("msg"));
         }
@@ -318,6 +338,16 @@ public class ClientEditServiceImpl implements ClientEditService {
                 // 如果是无效，发送警告消息给录入人
                 GoEasyUtil.pushYyValidReject(info.getCompanyId(), info.getCollectorId(), info, newsDao);
             }
+        } else if ("130019".equals(jsInfo.getString("code"))) {
+            //重复客资，给邀约推送消息
+            ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(jsInfo.getString("data"),
+                    DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
+                    DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
+            if (NumUtil.isNull(info.getAppointorId())) {
+                return;
+            }
+            GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getAppointorId(), info, staffPO.getNickName(), newsDao);
+            throw new RException("存在重复客资");
         } else {
             throw new RException(jsInfo.getString("msg"));
         }
@@ -428,7 +458,6 @@ public class ClientEditServiceImpl implements ClientEditService {
         return new PageInfo<>(list);
 
     }
-
 
 
     /**
