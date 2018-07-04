@@ -193,7 +193,7 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
      * @param clientLogDTO
      * @return
      */
-    List<EditClientPhonePO> editClientPhoneLog(ClientLogDTO clientLogDTO,@Param("channelIds")List<Integer> channelIds);
+    List<EditClientPhonePO> editClientPhoneLog(ClientLogDTO clientLogDTO);
 
     /**
      * pc端领取客资，修改客资基本信息

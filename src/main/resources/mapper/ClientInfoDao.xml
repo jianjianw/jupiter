@@ -249,8 +249,8 @@
 		</if>
 		<if test="channelId !=null">
 			AND info.CHANNELID IN (
-			<foreach collection="channelIds" separator="," item="channel">
-				#{channel}
+			<foreach collection="list" separator="," item="channelId">
+				#{channelId}
 			</foreach>
 			)
 		</if>

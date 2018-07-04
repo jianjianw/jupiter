@@ -415,11 +415,12 @@ public class ClientEditServiceImpl implements ClientEditService {
         for(String id:ids){
             channelIds.add(Integer.parseInt(id));
         }
+        clientLogDTO.setList(channelIds);
         PageHelper.startPage(queryMapDTO.getPageNum(),queryMapDTO.getPageSize());
         clientLogDTO.setTableEditLog(DBSplitUtil.getEditLogTabName(clientLogDTO.getCompanyId()));
         clientLogDTO.setTableInfo(DBSplitUtil.getInfoTabName(clientLogDTO.getCompanyId()));
         clientLogDTO.setTableDetail(DBSplitUtil.getDetailTabName(clientLogDTO.getCompanyId()));
-        List<EditClientPhonePO> list=clientInfoDao.editClientPhoneLog(clientLogDTO,channelIds);
+        List<EditClientPhonePO> list=clientInfoDao.editClientPhoneLog(clientLogDTO);
         return new PageInfo<>(list);
 
     }
