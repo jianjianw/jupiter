@@ -129,6 +129,29 @@ public class ClientEditController extends BaseController {
         clientEditService.editClientByCwzx(clientVO, currentLoginStaff);
         return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
     }
+    /**
+     * 微信扫码日志
+     */
+    @PostMapping("/wechat_scan_code_log")
+    public ResultInfo wechatScanCodeLog(@RequestBody JSONObject params){
+        QueryMapDTO queryMapDTO= JSONObject.parseObject(params.getJSONObject("queryMapDTO").toJSONString(),QueryMapDTO.class) ;
+        ClientLogDTO clientLogDTO=JSONObject.parseObject(params.getJSONObject("clientLogDTO").toJSONString(),ClientLogDTO.class) ;
+        StaffPO staff = getCurrentLoginStaff();
+        clientLogDTO.setCompanyId(staff.getCompanyId());
+        return ResultInfoUtil.success(clientEditService.wechatScanCodeLog(queryMapDTO,clientLogDTO));
+    }
+
+    /**
+     * 重复客资
+     */
+    @PostMapping("/repate_kz_log")
+    public ResultInfo repateKzLog(@RequestBody JSONObject params){
+        QueryMapDTO queryMapDTO= JSONObject.parseObject(params.getJSONObject("queryMapDTO").toJSONString(),QueryMapDTO.class) ;
+        ClientLogDTO clientLogDTO=JSONObject.parseObject(params.getJSONObject("clientLogDTO").toJSONString(),ClientLogDTO.class) ;
+        StaffPO staff = getCurrentLoginStaff();
+        clientLogDTO.setCompanyId(staff.getCompanyId());
+        return ResultInfoUtil.success(clientEditService.repateKzLog(queryMapDTO,clientLogDTO));
+    }
 
 
 }
