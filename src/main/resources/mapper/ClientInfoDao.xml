@@ -263,7 +263,7 @@
 			AND (log.BEFOREVALUE=#{value} OR log.AFTERVALUE=#{value})
 		</if>
 		<if test="startTime !=null and endTime!=null">
-			AND log.OPERATIME &gt;= #{startTime} AND log.OPERATIME &lt; =#{endTime}
+			AND log.OPERATIME &gt;= #{startTime} AND log.OPERATIME &lt; UNIX_TIMESTAMP(DATE_ADD(FROM_UNIXTIME(#{endTime},'%Y-%m-%d '),INTERVAL 1 DAY))
 		</if>
 	</select>
 
@@ -306,7 +306,7 @@
 		log.COMPANYID = #{companyId}
 		AND log.LOGTYPE = #{logType}
 		<if test="startTime !=null and endTime!=null">
-			AND log.OPERATIME &gt;= #{startTime} AND log.OPERATIME &lt; =#{endTime}
+			AND log.OPERATIME &gt;= #{startTime} AND log.OPERATIME &lt; UNIX_TIMESTAMP(DATE_ADD(FROM_UNIXTIME(#{endTime},'%Y-%m-%d '),INTERVAL 1 DAY))
 		</if>
 		GROUP BY
 		log.KZID
@@ -331,7 +331,7 @@
 		log.COMPANYID = #{companyId}
 		AND log.LOGTYPE = #{logType}
 		<if test="startTime !=null and endTime!=null">
-			AND log.OPERATIME &gt;= #{startTime} AND log.OPERATIME &lt; =#{endTime}
+			AND log.OPERATIME &gt;= #{startTime} AND log.OPERATIME &lt; UNIX_TIMESTAMP(DATE_ADD(FROM_UNIXTIME(#{endTime},'%Y-%m-%d '),INTERVAL 1 DAY))
 		</if>
 	</select>
 </mapper>
