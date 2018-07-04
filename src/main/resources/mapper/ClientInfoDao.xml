@@ -53,7 +53,7 @@
 		<result column="OPERATIME" jdbcType="INTEGER" property="operaTime"/>
 		<result column="KZNAME" jdbcType="INTEGER" property="kzName"/>
 		<result column="STATUSID" jdbcType="INTEGER" property="statusId"/>
-		<result column="SOURSEID" jdbcType="INTEGER" property="sourseId"/>
+		<result column="SOURSEID" jdbcType="INTEGER" property="sourceId"/>
 		<result column="COLLECTORNAME" jdbcType="VARCHAR" property="collectorName"/>
 		<result column="APPOINTNAME" jdbcType="VARCHAR" property="appointName"/>
 	</resultMap>
@@ -236,7 +236,7 @@
 			FROM_UNIXTIME(log.OPERATIME, '%Y/%m/%d %H:%m:%s ') OPERATIME,
 			info.KZNAME,
 			info.STATUSID,
-			info.SOURSEID,
+			info.SOURCEID,
 			detail.APPOINTNAME,
 			detail.COLLECTORNAME
 		FROM
@@ -249,10 +249,10 @@
 		<if test="statusId !=null">
 			AND info.STATUSID=#{statusId}
 		</if>
-		<if test="sourseIds !=null and sourseIds!=''">
-			AND info.CHANNELID IN (
-			<foreach collection="list" separator="," item="sourseId">
-				#{sourseId}
+		<if test="sourceIds !=null and sourceIds!=''">
+			AND info.SOURCEID IN (
+			<foreach collection="list" separator="," item="sourceId">
+				#{sourceId}
 			</foreach>
 			)
 		</if>
@@ -294,7 +294,7 @@
 		detail.COLLECTORNAME collectorName,
 		log.MEMO memo,
 		info.STATUSID statusId,
-		info.SOURSEID sourseId,
+		info.SOURCEID sourceId,
 		COUNT(log.KZID) count
 		FROM
 		${tableLog} log

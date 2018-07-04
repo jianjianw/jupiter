@@ -14,7 +14,7 @@ public class EditClientPhonePO {
     private String operaTime;//修改时间
     private String kzName;//客资姓名
     private Integer statusId;//状态id
-    private Integer sourseId;//来源id
+    private Integer sourceId;//来源id
     private String collectorName;//推广人
     private String appointName;
 
@@ -106,11 +106,11 @@ public class EditClientPhonePO {
         this.statusId = statusId;
     }
 
-    public Integer getSourseId() {
-        return sourseId;
+    public Integer getSourceId() {
+        return sourceId;
     }
 
-    public void setSourseId(Integer sourseId) {
-        this.sourseId = sourseId;
+    public void setSourceId(Integer sourceId) {
+        this.sourceId = sourceId;
     }
 }

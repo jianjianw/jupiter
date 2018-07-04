@@ -14,14 +14,14 @@ public class RepateKzLogPO {
     private String collectorName;
     private Integer count;
     private Integer statusId;
-    private Integer sourseId;
+    private Integer sourceId;
 
-    public Integer getSourseId() {
-        return sourseId;
+    public Integer getSourceId() {
+        return sourceId;
     }
 
-    public void setSourseId(Integer sourseId) {
-        this.sourseId = sourseId;
+    public void setSourceId(Integer sourceId) {
+        this.sourceId = sourceId;
     }
 
     public Integer getStatusId() {
