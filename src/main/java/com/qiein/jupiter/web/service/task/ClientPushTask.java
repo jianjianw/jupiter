@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.service.task;
 
 import java.util.List;
 
+import com.qiein.jupiter.web.service.quene.PushQueue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,8 @@ public class ClientPushTask {
     private ClientPushServiceImpl pushService;
     @Autowired
     private CompanyDao companyDao;
+    @Autowired
+    private PushQueue lpPushQueue;
 
     // 客资推送线程池
     ThreadTaskPushManager tpm = ThreadTaskPushManager.getInstance();
@@ -36,23 +39,36 @@ public class ClientPushTask {
     /**
      * 定时任务-推送客资
      */
-    @Scheduled(initialDelay = 1000, fixedDelay = 30 * 1000)
+    @Scheduled(initialDelay = 1000, fixedDelay = 60 * 1000)
     public void taskPushLp() {
         log.info("执行定时推送任务");
         List<CompanyPO> compList = companyDao.listComp();
         for (CompanyPO comp : compList) {
-            //超时时间设置是秒，但是两个数据库是毫秒时间戳
-            int overTime = comp.getOvertime() * 1000;
+            //超时时间设置是秒
+            int overTime = comp.getOvertime();
             List<ClientPushDTO> infoList = pushService.getInfoListBeReadyPush(comp.getId(), overTime);
             if (CollectionUtils.isEmpty(infoList)) {
                 continue;
             }
             for (ClientPushDTO info : infoList) {
-                tpm.pushInfo(new ClientPushDTO(pushService, info.getPushRule(), comp.getId(), info.getKzId(),
+                pushClient(new ClientPushDTO(pushService, info.getPushRule(), comp.getId(), info.getKzId(),
                         info.getTypeId(), info.getChannelId(), info.getChannelTypeId(), comp.getOvertime(),
                         comp.getKzInterval(), info.getSourceId()));
             }
             log.info("推送了客资：" + infoList.size() + " 个");
         }
+    }
+
+
+    /**
+     * 客资队列分配
+     *
+     * @param info
+     */
+    private void pushClient(ClientPushDTO info) {
+        //老版本推送
+//        tpm.pushInfo(info);
+        //新版本推送
+        lpPushQueue.offer(info);
     }
 }
