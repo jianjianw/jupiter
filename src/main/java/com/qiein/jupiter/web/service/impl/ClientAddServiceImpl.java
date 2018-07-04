@@ -13,6 +13,7 @@ import com.qiein.jupiter.http.CrmBaseApi;
 import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
 import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.dao.*;
+import com.qiein.jupiter.web.entity.dto.ClientGoEasyDTO;
 import com.qiein.jupiter.web.entity.dto.ClientPushDTO;
 import com.qiein.jupiter.web.entity.po.*;
 import com.qiein.jupiter.web.entity.vo.ClientVO;
@@ -45,6 +46,10 @@ public class ClientAddServiceImpl implements ClientAddService {
     private CrmBaseApi crmBaseApi;
     @Autowired
     private CompanyDao companyDao;
+    @Autowired
+    private ClientInfoDao clientInfoDao;
+    @Autowired
+    private NewsDao newsDao;
 
     // 客资推送线程池
     ThreadTaskPushManager tpm = ThreadTaskPushManager.getInstance();
@@ -138,6 +143,16 @@ public class ClientAddServiceImpl implements ClientAddService {
                     JsonFmtUtil.strContentToJsonObj(addRstStr).getString("kzid"), clientVO.getTypeId(),
                     channelPO.getId(), channelPO.getTypeId(), companyPO.getOvertime(), companyPO.getKzInterval(),
                     sourcePO.getId()));
+        } else if ("130019".equals(jsInfo.getString("code"))) {
+            //重复客资，给邀约推送消息
+            ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(jsInfo.getString("data"),
+                    DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
+                    DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
+            if (NumUtil.isNull(info.getAppointorId())) {
+                return;
+            }
+            GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getAppointorId(), info, staffPO.getNickName(), newsDao);
+            throw new RException("存在重复客资");
         } else {
             throw new RException(jsInfo.getString("msg"));
         }
@@ -228,6 +243,16 @@ public class ClientAddServiceImpl implements ClientAddService {
             tpm.pushInfo(new ClientPushDTO(pushService, sourcePO.getPushRule(), staffPO.getCompanyId(),
                     JsonFmtUtil.strContentToJsonObj(addRstStr).getString("kzid"), clientVO.getTypeId(),
                     channelPO.getId(), channelPO.getTypeId(), companyPO.getOvertime(), companyPO.getKzInterval(), sourcePO.getId()));
+        }else if ("130019".equals(jsInfo.getString("code"))) {
+            //重复客资，给邀约推送消息
+            ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(jsInfo.getString("data"),
+                    DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
+                    DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
+            if (NumUtil.isNull(info.getAppointorId())) {
+                return;
+            }
+            GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getAppointorId(), info, staffPO.getNickName(), newsDao);
+            throw new RException("存在重复客资");
         } else {
             throw new RException(jsInfo.getString("msg"));
         }
