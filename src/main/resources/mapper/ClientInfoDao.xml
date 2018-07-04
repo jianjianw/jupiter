@@ -249,7 +249,7 @@
 		<if test="statusId !=null">
 			AND info.STATUSID=#{statusId}
 		</if>
-		<if test="channelIds !=null">
+		<if test="channelIds !=null and channelIds!=''">
 			AND info.CHANNELID IN (
 			<foreach collection="list" separator="," item="channelId">
 				#{channelId}
