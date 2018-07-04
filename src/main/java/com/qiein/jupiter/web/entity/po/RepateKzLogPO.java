@@ -11,10 +11,18 @@ public class RepateKzLogPO {
     private String kzWechat;
     private String appointName;
     private String memo;
-    private String promotor;
+    private String collectorName;
     private Integer count;
     private Integer statusId;
-    private Integer channelId;
+    private Integer sourseId;
+
+    public Integer getSourseId() {
+        return sourseId;
+    }
+
+    public void setSourseId(Integer sourseId) {
+        this.sourseId = sourseId;
+    }
 
     public Integer getStatusId() {
         return statusId;
@@ -24,13 +32,6 @@ public class RepateKzLogPO {
         this.statusId = statusId;
     }
 
-    public Integer getChannelId() {
-        return channelId;
-    }
-
-    public void setChannelId(Integer channelId) {
-        this.channelId = channelId;
-    }
 
     public Integer getId() {
         return id;
@@ -96,12 +97,12 @@ public class RepateKzLogPO {
         this.memo = memo;
     }
 
-    public String getPromotor() {
-        return promotor;
+    public String getCollectorName() {
+        return collectorName;
     }
 
-    public void setPromotor(String promotor) {
-        this.promotor = promotor;
+    public void setCollectorName(String collectorName) {
+        this.collectorName = collectorName;
     }
 
     public Integer getCount() {

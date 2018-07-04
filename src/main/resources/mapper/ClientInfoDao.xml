@@ -53,8 +53,8 @@
 		<result column="OPERATIME" jdbcType="INTEGER" property="operaTime"/>
 		<result column="KZNAME" jdbcType="INTEGER" property="kzName"/>
 		<result column="STATUSID" jdbcType="INTEGER" property="statusId"/>
-		<result column="CHANNELID" jdbcType="INTEGER" property="channelId"/>
-		<result column="COLLECTORNAME" jdbcType="VARCHAR" property="promotor"/>
+		<result column="SOURSEID" jdbcType="INTEGER" property="sourseId"/>
+		<result column="COLLECTORNAME" jdbcType="VARCHAR" property="collectorName"/>
 		<result column="APPOINTNAME" jdbcType="VARCHAR" property="appointName"/>
 	</resultMap>
 
@@ -236,7 +236,7 @@
 			FROM_UNIXTIME(log.OPERATIME, '%Y/%m/%d %H:%m:%s ') OPERATIME,
 			info.KZNAME,
 			info.STATUSID,
-			info.CHANNELID,
+			info.SOURSEID,
 			detail.APPOINTNAME,
 			detail.COLLECTORNAME
 		FROM
@@ -249,10 +249,10 @@
 		<if test="statusId !=null">
 			AND info.STATUSID=#{statusId}
 		</if>
-		<if test="channelIds !=null and channelIds!=''">
+		<if test="sourseIds !=null and sourseIds!=''">
 			AND info.CHANNELID IN (
-			<foreach collection="list" separator="," item="channelId">
-				#{channelId}
+			<foreach collection="list" separator="," item="sourseId">
+				#{sourseId}
 			</foreach>
 			)
 		</if>
@@ -291,10 +291,10 @@
 		info.KZQQ kzqq,
 		info.KZWECHAT kzWechat,
 		detail.APPOINTNAME appointName,
-		detail.COLLECTORNAME promotor,
+		detail.COLLECTORNAME collectorName,
 		log.MEMO memo,
 		info.STATUSID statusId,
-		info.CHANNELID channelId,
+		info.SOURSEID sourseId,
 		COUNT(log.KZID) count
 		FROM
 		${tableLog} log

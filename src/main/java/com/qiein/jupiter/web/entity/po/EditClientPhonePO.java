@@ -14,8 +14,8 @@ public class EditClientPhonePO {
     private String operaTime;//修改时间
     private String kzName;//客资姓名
     private Integer statusId;//状态id
-    private Integer channelId;//来源id
-    private String promotor;//推广人
+    private Integer sourseId;//来源id
+    private String collectorName;//推广人
     private String appointName;
 
     public String getAppointName() {
@@ -26,12 +26,12 @@ public class EditClientPhonePO {
         this.appointName = appointName;
     }
 
-    public String getPromotor() {
-        return promotor;
+    public String getCollectorName() {
+        return collectorName;
     }
 
-    public void setPromotor(String promotor) {
-        this.promotor = promotor;
+    public void setCollectorName(String collectorName) {
+        this.collectorName = collectorName;
     }
 
     public Integer getId() {
@@ -106,11 +106,11 @@ public class EditClientPhonePO {
         this.statusId = statusId;
     }
 
-    public Integer getChannelId() {
-        return channelId;
+    public Integer getSourseId() {
+        return sourseId;
     }
 
-    public void setChannelId(Integer channelId) {
-        this.channelId = channelId;
+    public void setSourseId(Integer sourseId) {
+        this.sourseId = sourseId;
     }
 }

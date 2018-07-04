@@ -411,15 +411,15 @@ public class ClientEditServiceImpl implements ClientEditService {
      * @return
      */
     public PageInfo editClientPhoneLog(QueryMapDTO queryMapDTO, ClientLogDTO clientLogDTO) {
-        List<Integer> channelIds = new ArrayList<>();
-        if (!StringUtil.isEmpty(clientLogDTO.getChannelIds())) {
-            String[] ids = clientLogDTO.getChannelIds().split(CommonConstant.STR_SEPARATOR);
+        List<Integer> sourseIds = new ArrayList<>();
+        if (!StringUtil.isEmpty(clientLogDTO.getSourseIds())) {
+            String[] ids = clientLogDTO.getSourseIds().split(CommonConstant.STR_SEPARATOR);
 
             for (String id : ids) {
-                channelIds.add(Integer.parseInt(id));
+                sourseIds.add(Integer.parseInt(id));
             }
         }
-        clientLogDTO.setList(channelIds);
+        clientLogDTO.setList(sourseIds);
         PageHelper.startPage(queryMapDTO.getPageNum(), queryMapDTO.getPageSize());
         clientLogDTO.setTableEditLog(DBSplitUtil.getEditLogTabName(clientLogDTO.getCompanyId()));
         clientLogDTO.setTableInfo(DBSplitUtil.getInfoTabName(clientLogDTO.getCompanyId()));
