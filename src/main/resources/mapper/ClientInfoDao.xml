@@ -259,7 +259,7 @@
 		<if test="typeId !=null">
 			AND log.TYPEID=#{typeId}
 		</if>
-		<if test="value !=null">
+		<if test="value !=null and value!=''">
 			AND (log.BEFOREVALUE=#{value} OR log.AFTERVALUE=#{value})
 		</if>
 		<if test="startTime !=null and endTime!=null">
