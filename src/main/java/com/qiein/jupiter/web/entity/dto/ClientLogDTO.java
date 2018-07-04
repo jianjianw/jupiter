@@ -4,7 +4,7 @@ import java.util.List;
 
 public class ClientLogDTO {
     private Integer statusId;//状态id
-    private String sourseIds;//渠道id
+    private String sourceIds;//渠道id
     private Integer typeId;//联系方式id
     private String value;//联系方式
     private Integer startTime;//开始时间
@@ -16,6 +16,14 @@ public class ClientLogDTO {
     private String tableDetail;
     private Integer logType;
     private List<Integer> list;
+
+    public String getSourceIds() {
+        return sourceIds;
+    }
+
+    public void setSourceIds(String sourceIds) {
+        this.sourceIds = sourceIds;
+    }
 
     public List<Integer> getList() {
         return list;
@@ -81,13 +89,7 @@ public class ClientLogDTO {
         this.statusId = statusId;
     }
 
-    public String getSourseIds() {
-        return sourseIds;
-    }
 
-    public void setSourseIds(String sourseIds) {
-        this.sourseIds = sourseIds;
-    }
 
     public Integer getTypeId() {
         return typeId;
