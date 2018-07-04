@@ -248,7 +248,11 @@
 			AND info.STATUSID=#{statusId}
 		</if>
 		<if test="channelId !=null">
-			AND info.CHANNELID=#{channelId}
+			AND info.CHANNELID IN (
+			<foreach collection="channelIds" separator="," item="channel">
+				#{channel}
+			</foreach>
+			)
 		</if>
 		<if test="typeId !=null">
 			AND log.TYPEID=#{typeId}

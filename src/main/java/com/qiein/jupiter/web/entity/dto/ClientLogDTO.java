@@ -2,7 +2,7 @@ package com.qiein.jupiter.web.entity.dto;
 
 public class ClientLogDTO {
     private Integer statusId;//状态id
-    private Integer channelId;//渠道id
+    private String channelId;//渠道id
     private Integer typeId;//联系方式id
     private String value;//联系方式
     private Integer startTime;//开始时间
@@ -70,11 +70,11 @@ public class ClientLogDTO {
         this.statusId = statusId;
     }
 
-    public Integer getChannelId() {
+    public String getChannelId() {
         return channelId;
     }
 
-    public void setChannelId(Integer channelId) {
+    public void setChannelId(String channelId) {
         this.channelId = channelId;
     }
 

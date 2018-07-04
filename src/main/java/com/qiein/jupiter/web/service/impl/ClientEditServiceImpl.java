@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.constant.ClientLogConst;
 import com.qiein.jupiter.constant.ClientStatusConst;
+import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.enums.OrderSuccessTypeEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
@@ -25,6 +26,7 @@ import com.qiein.jupiter.web.service.ClientEditService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -408,11 +410,16 @@ public class ClientEditServiceImpl implements ClientEditService {
      * @return
      */
     public PageInfo editClientPhoneLog(QueryMapDTO queryMapDTO, ClientLogDTO clientLogDTO){
+        List<Integer> channelIds=new ArrayList<>();
+        String[] ids=clientLogDTO.getChannelId().split(CommonConstant.STR_SEPARATOR);
+        for(String id:ids){
+            channelIds.add(Integer.parseInt(id));
+        }
         PageHelper.startPage(queryMapDTO.getPageNum(),queryMapDTO.getPageSize());
         clientLogDTO.setTableEditLog(DBSplitUtil.getEditLogTabName(clientLogDTO.getCompanyId()));
         clientLogDTO.setTableInfo(DBSplitUtil.getInfoTabName(clientLogDTO.getCompanyId()));
         clientLogDTO.setTableDetail(DBSplitUtil.getDetailTabName(clientLogDTO.getCompanyId()));
-        List<EditClientPhonePO> list=clientInfoDao.editClientPhoneLog(clientLogDTO);
+        List<EditClientPhonePO> list=clientInfoDao.editClientPhoneLog(clientLogDTO,channelIds);
         return new PageInfo<>(list);
 
     }
