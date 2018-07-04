@@ -7,7 +7,7 @@
 	      hm_pub_staff s , hm_pub_staff_detail sd
         <set>
             <if test="nickName != null and nickName != ''">
-                s.NICKNAME = #{nicakName},
+                s.NICKNAME = #{nickName},
             </if>
             <if test="phone != null and phone != ''">
                 s.PHONE = #{phone},
