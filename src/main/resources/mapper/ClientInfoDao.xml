@@ -233,7 +233,7 @@
 			log.BEFOREVALUE,
 			log.AFTERVALUE,
 			log.OPERANAME,
-			log.OPERATIME,
+			FROM_UNIXTIME(log.OPERATIME, '%Y/%m/%d %H:%m:%s ') OPERATIME,
 			info.KZNAME,
 			info.STATUSID,
 			info.CHANNELID,
