@@ -879,6 +879,7 @@
         AND sf.ISLOCK = 0
         AND sf.STATUSFLAG = 1
         AND sf.TODAYNUM &lt; LIMITDAY
+        ORDER BY sf.LASTPUSHTIME ASC
     </select>
 
     <!-- 获取渠道指定员工,领取客资情况-->
