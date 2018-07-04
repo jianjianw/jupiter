@@ -42,6 +42,11 @@ public class ClientPushTask {
      */
    @Scheduled(initialDelay = 1000, fixedDelay = 60 * 1000)
     public void taskPushLp() {
+       //先判断下队列是否为空,只有队列为空，才去数据库找客资推送
+       if (!lpPushQueue.isEmpty()) {
+           log.info("客资队列不为空，暂不推送...");
+           return;
+       }
         log.info("执行定时推送任务");
         List<CompanyPO> compList = companyDao.listComp();
         for (CompanyPO comp : compList) {
