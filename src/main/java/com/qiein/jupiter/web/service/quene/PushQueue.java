@@ -89,6 +89,14 @@ public class PushQueue implements CommandLineRunner {
                 }
             }
         }, initDelay, period, TimeUnit.SECONDS);
+    }
 
+    /**
+     * 队列是否为空
+     *
+     * @return
+     */
+    public boolean isEmpty() {
+        return queue.isEmpty();
     }
 }
