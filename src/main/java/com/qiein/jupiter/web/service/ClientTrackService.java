@@ -53,4 +53,10 @@ public interface ClientTrackService {
 	 */
 	void batchRestoreKzList(String kzIds, StaffPO staffPO);
 
+	/**
+	 * 分配未到店客资
+	 * @param kzId
+	 * @param staffPO
+	 * */
+    void allotNotArriveShop(String kzId, StaffPO staffPO);
 }

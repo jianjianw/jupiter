@@ -2,10 +2,7 @@ package com.qiein.jupiter.web.controller;
 
 import com.qiein.jupiter.constant.RoleConstant;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.constant.ClientStatusConst;
@@ -147,4 +144,19 @@ public class ClientTrackController extends BaseController {
         clientTrackService.batchRestoreKzList(kzIds, getCurrentLoginStaff());
         return ResultInfoUtil.success(TipMsgEnum.RESTORE_SUCCESS);
     }
+
+    /**
+     * 分配未到店
+     * */
+    @PostMapping("/allot_not_arrive_shop")
+    public ResultInfo allotNotArriveShop(@RequestBody JSONObject jsonObject){
+        String kzId = StringUtil.nullToStrTrim(jsonObject.getString("kzId"));
+        if (StringUtil.isEmpty(kzId)) {
+            throw new RException(ExceptionEnum.ALLOTED_ERROR);
+        }
+        StaffPO staffPO = getCurrentLoginStaff();
+        clientTrackService.allotNotArriveShop(kzId,staffPO);
+        return ResultInfoUtil.success(TipMsgEnum.ALLOT_SUCCESS);
+    }
+
 }
