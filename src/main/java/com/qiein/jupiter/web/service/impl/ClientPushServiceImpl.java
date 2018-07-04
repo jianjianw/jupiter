@@ -165,7 +165,7 @@ public class ClientPushServiceImpl implements ClientPushService {
                 if (NumUtil.isInValid(srcId)) {
                     return;
                 }
-                appointer = staffDao.getPushAppointByRole(DBSplitUtil.getInfoTabName(companyId), companyId, srcId, type);
+                appointer = getAssginAppoint(companyId, srcId, type);
                 if (appointer == null) {
                     return;
                 }
@@ -173,6 +173,7 @@ public class ClientPushServiceImpl implements ClientPushService {
                 allotLog = addAllotLog(kzId, appointer.getStaffId(), appointer.getStaffName(), appointer.getGroupId(),
                         appointer.getGroupName(), ClientConst.ALLOT_SYSTEM_AUTO, companyId);
                 doAssignAppoint(companyId, kzId, appointer, allotLog.getId(), overTime);
+                break;
             case ChannelConstant.PUSH_RULE_EVERYONE_CAN_GET:
                 //13:自由领取
                 List<StaffPushDTO> yyList = staffDao.getYyStaffListByRole(companyId, type);
@@ -181,12 +182,13 @@ public class ClientPushServiceImpl implements ClientPushService {
                 }
                 //推送给所有邀约人员
                 pushAllYyStaff(kzId, companyId, yyList);
+                break;
             case ChannelConstant.PUSH_RULE_GROUP_AVG:
                 //14.小组平均
                 if (NumUtil.isInValid(srcId)) {
                     return;
                 }
-                appointer = staffDao.getPushAppointByGroupAvg(DBSplitUtil.getInfoTabName(companyId), companyId, srcId, type);
+                appointer = getGroupAvgGroup(companyId, srcId, type);
                 if (appointer == null) {
                     return;
                 }
@@ -194,9 +196,97 @@ public class ClientPushServiceImpl implements ClientPushService {
                 allotLog = addAllotLog(kzId, appointer.getStaffId(), appointer.getStaffName(), appointer.getGroupId(),
                         appointer.getGroupName(), ClientConst.ALLOT_SYSTEM_AUTO, companyId);
                 doAssignAppoint(companyId, kzId, appointer, allotLog.getId(), overTime);
+                break;
             default:
                 break;
         }
+    }
+
+    /**
+     * 获取指定客服，本轮次的客服
+     *
+     * @return
+     */
+    private StaffPushDTO getAssginAppoint(int companyId, int srcId, String type) {
+        //1.获取可以领取的客服集合
+        List<StaffPushDTO> staffOnlineList = staffDao.getAssginAppointList(companyId, srcId, type);
+        if (CollectionUtils.isEmpty(staffOnlineList)) {
+            return null;
+        }
+        int calcRange = CommonConstant.ALLOT_RANGE_DEFAULT;
+        // 2.获取从当前时间往前退一个小时内，所有指定客服的领取情况
+        List<StaffPushDTO> appointerList = staffDao.getPushAppointByRole(DBSplitUtil.getInfoTabName(companyId), companyId, srcId, calcRange, staffOnlineList);
+
+        while (calcRange <= CommonConstant.ALLOT_RANGE_MAX
+                && (appointerList == null || appointerList.size() != staffOnlineList.size())) {
+            calcRange += CommonConstant.ALLOT_RANGE_INTERVAL;
+            appointerList = staffDao.getPushAppointByRole(DBSplitUtil.getInfoTabName(companyId), companyId,
+                    srcId, calcRange, staffOnlineList);
+        }
+        // 值匹配，差比分析
+        double maxDiffPid = doAppointDiffCalc(staffOnlineList, appointerList);
+
+        // 取出差比分析后差比值最大的小组即为要分配的客服组
+        return getCurrentAppointor(staffOnlineList, maxDiffPid);
+    }
+
+    /**
+     * 小组平均，获取本轮次的客服
+     *
+     * @return
+     */
+    private StaffPushDTO getGroupAvgGroup(int companyId, int srcId, String type) {
+        int calcRange = CommonConstant.ALLOT_RANGE_DEFAULT;
+        //1.获取可以领取的小组集合
+        List<String> groupIdList = staffDao.getGroupAvgGroupList(companyId, srcId, type);
+        //2.获取从当前时间往前退一个小时内，所有指定小组的领取情况
+        List<String> appointGroups = staffDao.getGroupAvgReceive(DBSplitUtil.getInfoTabName(companyId), companyId, srcId, calcRange, groupIdList);
+        while (calcRange <= CommonConstant.ALLOT_RANGE_MAX
+                && (appointGroups == null || appointGroups.size() != groupIdList.size())) {
+            calcRange += CommonConstant.ALLOT_RANGE_INTERVAL;
+            appointGroups = staffDao.getGroupAvgReceive(DBSplitUtil.getInfoTabName(companyId), companyId, srcId, calcRange, groupIdList);
+        }
+        StaffPushDTO appoint = null;
+        while (CollectionUtils.isNotEmpty(appointGroups)) {
+            appoint = getGroupAvgAppoint(companyId, srcId, type, appointGroups.get(0));
+            if (appoint == null) {
+                appointGroups.remove(0);
+            } else {
+                return appoint;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 小组平均，获取指定小组的可以领取的客服
+     *
+     * @param companyId
+     * @param srcId
+     * @param type
+     * @param groupId
+     * @return
+     */
+    private StaffPushDTO getGroupAvgAppoint(int companyId, int srcId, String type, String groupId) {
+        int calcRange = CommonConstant.ALLOT_RANGE_DEFAULT;
+        //1.获取可以领取的客服集合
+        List<StaffPushDTO> staffOnlineList = staffDao.getGroupAvgAppointList(companyId, type, groupId);
+        if (CollectionUtils.isEmpty(staffOnlineList)) {
+            return null;
+        }
+        // 2.获取从当前时间往前退一个小时内，所有指定客服的领取情况
+        List<StaffPushDTO> appointerList = staffDao.getPushAppointByRole(DBSplitUtil.getInfoTabName(companyId), companyId, srcId, calcRange, staffOnlineList);
+        while (calcRange <= CommonConstant.ALLOT_RANGE_MAX
+                && (appointerList == null || appointerList.size() != staffOnlineList.size())) {
+            calcRange += CommonConstant.ALLOT_RANGE_INTERVAL;
+            appointerList = staffDao.getPushAppointByRole(DBSplitUtil.getInfoTabName(companyId), companyId,
+                    srcId, calcRange, staffOnlineList);
+        }
+        // 值匹配，差比分析
+        double maxDiffPid = doAppointDiffCalc(staffOnlineList, appointerList);
+
+        // 取出差比分析后差比值最大的小组即为要分配的客服组
+        return getCurrentAppointor(staffOnlineList, maxDiffPid);
     }
 
     /**

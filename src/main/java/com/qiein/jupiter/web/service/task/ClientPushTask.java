@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.service.task;
 
 import java.util.List;
 
+import com.qiein.jupiter.util.NumUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +49,7 @@ public class ClientPushTask {
                 continue;
             }
             for (ClientPushDTO info : infoList) {
-                tpm.pushInfo(new ClientPushDTO(pushService, info.getPushRule(), comp.getId(), info.getKzId(),
+                tpm.pushInfo(new ClientPushDTO(pushService, NumUtil.isValid(info.getSrcPushRule()) ? info.getSrcPushRule() : info.getPushRule(), comp.getId(), info.getKzId(),
                         info.getTypeId(), info.getChannelId(), info.getChannelTypeId(), comp.getOvertime(),
                         comp.getKzInterval(), info.getSourceId()));
             }

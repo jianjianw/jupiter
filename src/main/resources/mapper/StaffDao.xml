@@ -826,18 +826,14 @@
         hm_pub_staff s
         LEFT
         ${allotLogTab} al ON s.ID = al.STAFFID
-
     </select>
 
-    <!-- 获取渠道指定员工客服-->
-    <select id="getPushAppointByRole" parameterType="map" resultMap="pushMap">
+    <!--获取指定客服渠道，可以领取的客服集合-->
+    <select id="getAssginAppointList" parameterType="map" resultMap="pushMap">
         SELECT
-            rela.LINKID ID, sf.NICKNAME, gs.GROUPID, grp.GROUPNAME
+            rela.LINKID ID, sf.NICKNAME, sf.WEIGHT, gs.GROUPID, grp.GROUPNAME
         FROM
             hm_crm_source_staff rela
-        LEFT JOIN ${infoTabName} info ON info.APPOINTORID = rela.LINKID AND rela.COMPANYID = info.COMPANYID
-        AND rela.SOURCEID = info.SOURCEID  AND info.RECEIVETIME &gt; UNIX_TIMESTAMP( CAST( SYSDATE( ) AS DATE ) )
-        AND info.STATUSID != 0  AND info.STATUSID != 98  AND info.STATUSID != 99   AND info.ISDEL = 0
         INNER JOIN hm_pub_staff sf ON sf.ID = rela.LINKID AND rela.COMPANYID = sf.COMPANYID
         LEFT JOIN hm_pub_group_staff gs ON gs.STAFFID = sf.ID AND gs.COMPANYID = sf.COMPANYID
         LEFT JOIN hm_pub_group grp ON grp.GROUPID = gs.GROUPID AND grp.COMPANYID = gs.COMPANYID
@@ -848,11 +844,83 @@
             AND grp.GROUPTYPE = #{role}
             AND sf.ISDEL = 0
             AND sf.ISLOCK = 0
+            AND sf.STATUSFLAG = 1
             AND sf.TODAYNUM &lt; LIMITDAY
-        GROUP BY
-            info.APPOINTORID
-        ORDER BY count( 1 ) ASC
-        LIMIT 0, 1
+    </select>
+
+    <!--小组平均，获取可以领取的小组-->
+    <select id="getGroupAvgGroupList" parameterType="map" resultType="java.lang.String">
+        SELECT
+            grp.GROUPID
+        FROM
+            hm_crm_source_staff rela
+            INNER JOIN hm_pub_group grp ON grp.GROUPID = rela.LINKID  AND grp.COMPANYID = rela.COMPANYID
+        WHERE
+            rela.COMPANYID = #{companyId}
+            AND rela.SOURCEID = #{sourceId}
+            AND rela.RELATYPE = 2
+            AND grp.GROUPTYPE = #{role}
+    </select>
+
+    <!--获取小组平均，可以领取的客服集合-->
+    <select id="getGroupAvgAppointList" parameterType="map" resultMap="pushMap">
+        SELECT
+            sf.ID , sf.NICKNAME, sf.WEIGHT, gs.GROUPID, grp.GROUPNAME
+        FROM
+            hm_pub_group_staff gs
+        INNER JOIN hm_pub_staff sf ON sf.ID = gs.STAFFID AND gs.COMPANYID = sf.COMPANYID
+        LEFT JOIN hm_pub_group grp ON grp.GROUPID = gs.GROUPID AND grp.COMPANYID = gs.COMPANYID
+        WHERE
+        gs.COMPANYID = #{companyId}
+        AND gs.GROUPID = #{groupId}
+        AND grp.GROUPTYPE = #{role}
+        AND sf.ISDEL = 0
+        AND sf.ISLOCK = 0
+        AND sf.STATUSFLAG = 1
+        AND sf.TODAYNUM &lt; LIMITDAY
+    </select>
+
+    <!-- 获取渠道指定员工,领取客资情况-->
+    <select id="getPushAppointByRole" parameterType="map" resultMap="pushMap">
+        SELECT
+        info.APPOINTORID ID, COUNT( 1 ) TODAYNUM
+        FROM
+        ${infoTabName} info
+        WHERE
+        info.COMPANYID = #{companyId}
+        AND ( UNIX_TIMESTAMP( NOW( ) ) - info.RECEIVETIME ) &lt; #{calcRange}
+        AND info.STATUSID != 0
+        AND info.STATUSID != 98
+        AND info.STATUSID != 99
+        AND info.ISDEL = 0
+        AND info.SOURCEID = #{sourceId}
+        AND info.APPOINTORID IN
+        <foreach collection="staffOnlineList" item="staff" index="index" open="(" separator="," close=")">
+            #{staff.staffId}
+        </foreach>
+        GROUP BY info.APPOINTORID
+    </select>
+
+    <!-- 获取小组平均,小组领取客资情况-->
+    <select id="getGroupAvgReceive" parameterType="map" resultType="java.lang.String">
+        SELECT
+        info.GROUPID
+        FROM
+        ${infoTabName} info
+        WHERE
+        info.COMPANYID = #{companyId}
+        AND ( UNIX_TIMESTAMP( NOW( ) ) - info.RECEIVETIME ) &lt; #{calcRange}
+        AND info.STATUSID != 0
+        AND info.STATUSID != 98
+        AND info.STATUSID != 99
+        AND info.ISDEL = 0
+        AND info.SOURCEID = #{sourceId}
+        AND info.GROUPID IN
+        <foreach collection="groupIdList" item="groupId" index="index" open="(" separator="," close=")">
+            #{groupId}
+        </foreach>
+        GROUP BY info.GROUPID
+        ORDER BY TODAYNUM
     </select>
 
     <!--获取小组平均，推送客服-->

@@ -82,6 +82,10 @@ public class ClientPushDTO implements Serializable {
      * 渠道类型
      */
     private int channelTypeId;
+    /**
+     * 渠道分配规则
+     */
+    private int srcPushRule;
 
     private ClientPushServiceImpl service;
 
@@ -227,6 +231,14 @@ public class ClientPushDTO implements Serializable {
 
     public void setShopId(int shopId) {
         this.shopId = shopId;
+    }
+
+    public int getSrcPushRule() {
+        return srcPushRule;
+    }
+
+    public void setSrcPushRule(int srcPushRule) {
+        this.srcPushRule = srcPushRule;
     }
 
     @Override

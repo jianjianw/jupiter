@@ -412,13 +412,58 @@ public interface StaffDao extends BaseDao<StaffPO> {
     void resetOffLineWhenLimit();
 
     /**
+     * 小组平均，获取可以领取的小组
+     *
+     * @param companyId
+     * @param sourceId
+     * @param role
+     * @return
+     */
+    List<String> getGroupAvgGroupList(@Param("companyId") Integer companyId, @Param("sourceId") int sourceId, @Param("role") String role);
+
+    /**
+     * 获取小组平均，可以领取的客服集合
+     *
+     * @param companyId
+     * @param role
+     * @param groupIdList
+     * @return
+     */
+    List<StaffPushDTO> getGroupAvgAppointList(@Param("companyId") Integer companyId, @Param("role") String role, @Param("groupId") String groupId);
+
+    /**
+     * 获取小组平均,小组领取客资情况
+     *
+     * @param infoTabName
+     * @param companyId
+     * @param sourceId
+     * @param calcRange
+     * @param groupIdList
+     * @return
+     */
+    List<String> getGroupAvgReceive(@Param("infoTabName") String infoTabName, @Param("companyId") Integer companyId,
+                                    @Param("sourceId") int sourceId, @Param("calcRange") int calcRange,
+                                    @Param("groupIdList") List<String> groupIdList);
+
+    /**
+     * 获取指定客服，可以领取客资的客服列表
+     *
+     * @param companyId
+     * @param sourceId
+     * @return
+     */
+    List<StaffPushDTO> getAssginAppointList(@Param("companyId") Integer companyId, @Param("sourceId") int sourceId, @Param("role") String role);
+
+    /**
      * 获取渠道指定员工客服
      *
      * @param companyId
      * @param sourceId
      * @return
      */
-    StaffPushDTO getPushAppointByRole(@Param("infoTabName") String infoTabName, @Param("companyId") Integer companyId, @Param("sourceId") int sourceId, @Param("role") String role);
+    List<StaffPushDTO> getPushAppointByRole(@Param("infoTabName") String infoTabName, @Param("companyId") Integer companyId,
+                                            @Param("sourceId") int sourceId, @Param("calcRange") int calcRange,
+                                            @Param("staffOnlineList") List<StaffPushDTO> staffOnlineList);
 
     /**
      * 获取客服人员列表，转介绍客服，电商客服，用于分配自由领取
@@ -439,4 +484,6 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @return
      */
     StaffPushDTO getPushAppointByGroupAvg(@Param("infoTabName") String infoTabName, @Param("companyId") Integer companyId, @Param("sourceId") int sourceId, @Param("role") String role);
+
+
 }

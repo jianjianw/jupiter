@@ -16,6 +16,7 @@
         <result column="TYPEID" jdbcType="INTEGER" property="typeId"/>
         <result column="CHANNELID" jdbcType="INTEGER" property="channelId"/>
         <result column="CHANNELTYPEID" jdbcType="INTEGER" property="channelTypeId"/>
+        <result column="SRCPUSHRULE" jdbcType="INTEGER" property="srcPushRule"/>
     </resultMap>
 
 	<resultMap id="goEasyMap" type="com.qiein.jupiter.web.entity.dto.ClientGoEasyDTO">
@@ -161,10 +162,11 @@
 	<!-- 获取企业要推送的客资信息 -->	
     <select id="getInfoListBeReadyPush" parameterType="map" resultMap="infoMap">
 		SELECT
-			channel.PUSHRULE, info.KZID, info.COMPANYID, info.TYPEID, info.CHANNELID, channel.TYPEID CHANNELTYPEID,info.SOURCEID
+			channel.PUSHRULE, info.KZID, info.COMPANYID, info.TYPEID, info.CHANNELID, channel.TYPEID CHANNELTYPEID,info.SOURCEID,src.PUSHRULE SRCPUSHRULE
 		FROM
 			${infoTabName} info
 		LEFT JOIN hm_crm_channel channel ON info.CHANNELID = channel.ID AND channel.COMPANYID = #{companyId}
+		LEFT JOIN hm_crm_source src ON info.SOURCEID = src.ID AND src.COMPANYID = #{companyId}
 		WHERE
 			info.COMPANYID = #{companyId}
 		AND info.ISDEL = 0

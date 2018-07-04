@@ -136,7 +136,8 @@ public class ClientAddServiceImpl implements ClientAddService {
             CompanyPO companyPO = companyDao.getById(staffPO.getCompanyId());
             tpm.pushInfo(new ClientPushDTO(pushService, channelPO.getPushRule(), staffPO.getCompanyId(),
                     JsonFmtUtil.strContentToJsonObj(addRstStr).getString("kzid"), clientVO.getTypeId(),
-                    channelPO.getId(), channelPO.getTypeId(), companyPO.getOvertime(), companyPO.getKzInterval(), sourcePO.getId()));
+                    channelPO.getId(), channelPO.getTypeId(), companyPO.getOvertime(), companyPO.getKzInterval(),
+                    sourcePO.getId()));
         } else {
             throw new RException(jsInfo.getString("msg"));
         }
