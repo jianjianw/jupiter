@@ -52,7 +52,7 @@ public class ClientPushTask {
                 continue;
             }
             for (ClientPushDTO info : infoList) {
-                tpm.pushInfo(new ClientPushDTO(pushService, NumUtil.isValid(info.getSrcPushRule()) ? info.getSrcPushRule() : info.getPushRule(), comp.getId(), info.getKzId(),
+                pushClient(new ClientPushDTO(pushService, NumUtil.isValid(info.getSrcPushRule()) ? info.getSrcPushRule() : info.getPushRule(), comp.getId(), info.getKzId(),
                         info.getTypeId(), info.getChannelId(), info.getChannelTypeId(), comp.getOvertime(),
                         comp.getKzInterval(), info.getSourceId()));
             }
