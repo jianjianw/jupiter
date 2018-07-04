@@ -920,7 +920,7 @@
             #{groupId}
         </foreach>
         GROUP BY info.GROUPID
-        ORDER BY TODAYNUM
+        ORDER BY COUNT( 1 )
     </select>
 
     <!--获取小组平均，推送客服-->
