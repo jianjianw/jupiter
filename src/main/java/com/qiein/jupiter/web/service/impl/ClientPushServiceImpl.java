@@ -25,10 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.management.relation.Role;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 客资推送
@@ -188,7 +185,7 @@ public class ClientPushServiceImpl implements ClientPushService {
                 if (NumUtil.isInValid(srcId)) {
                     return;
                 }
-                appointer = getGroupAvgGroup(companyId, srcId, type);
+                appointer = getGroupAvg(companyId, srcId, type);
                 if (appointer == null) {
                     return;
                 }
@@ -235,17 +232,8 @@ public class ClientPushServiceImpl implements ClientPushService {
      *
      * @return
      */
-    private StaffPushDTO getGroupAvgGroup(int companyId, int srcId, String type) {
-        int calcRange = CommonConstant.ALLOT_RANGE_DEFAULT;
-        //1.获取可以领取的小组集合
-        List<String> groupIdList = staffDao.getGroupAvgGroupList(companyId, srcId, type);
-        //2.获取从当前时间往前退一个小时内，所有指定小组的领取情况
-        List<String> appointGroups = staffDao.getGroupAvgReceive(DBSplitUtil.getInfoTabName(companyId), companyId, srcId, calcRange, groupIdList);
-        while (calcRange <= CommonConstant.ALLOT_RANGE_MAX
-                && (appointGroups == null || appointGroups.size() != groupIdList.size())) {
-            calcRange += CommonConstant.ALLOT_RANGE_INTERVAL;
-            appointGroups = staffDao.getGroupAvgReceive(DBSplitUtil.getInfoTabName(companyId), companyId, srcId, calcRange, groupIdList);
-        }
+    private StaffPushDTO getGroupAvg(int companyId, int srcId, String type) {
+        List<String> appointGroups = getGroupAvgGroup(companyId, srcId, type);
         StaffPushDTO appoint = null;
         while (CollectionUtils.isNotEmpty(appointGroups)) {
             appoint = getGroupAvgAppoint(companyId, srcId, type, appointGroups.get(0));
@@ -256,6 +244,46 @@ public class ClientPushServiceImpl implements ClientPushService {
             }
         }
         return null;
+    }
+
+    /**
+     * 获取小组平均，领取的小组ID
+     *
+     * @param companyId
+     * @param srcId
+     * @param type
+     * @return
+     */
+    private List<String> getGroupAvgGroup(int companyId, int srcId, String type) {
+        int calcRange = CommonConstant.ALLOT_RANGE_DEFAULT;
+        //1.获取可以领取的小组集合
+        List<String> groupIdList = staffDao.getGroupAvgGroupList(companyId, srcId, type);
+        //2.获取从当前时间往前退一个小时内，所有指定小组的领取情况
+        List<String> appointGroups = staffDao.getGroupAvgReceive(DBSplitUtil.getInfoTabName(companyId), companyId, srcId, calcRange, groupIdList);
+        while (calcRange <= CommonConstant.ALLOT_RANGE_MAX
+                && (appointGroups == null || appointGroups.size() != groupIdList.size())) {
+            calcRange += CommonConstant.ALLOT_RANGE_INTERVAL;
+            appointGroups = staffDao.getGroupAvgReceive(DBSplitUtil.getInfoTabName(companyId), companyId, srcId, calcRange, groupIdList);
+        }
+        if (CollectionUtils.isEmpty(appointGroups)) {
+            return groupIdList;
+        }
+        List<String> result = new LinkedList<>();
+        //小组排序
+        for (String appointGrp : appointGroups) {
+            Iterator<String> it = groupIdList.iterator();
+            while (it.hasNext()) {
+                String groupId = it.next();
+                if (appointGroups.equals(groupId)) {
+                    result.add(appointGrp);
+                    it.remove();
+                }
+            }
+        }
+        if (CollectionUtils.isNotEmpty(groupIdList)) {
+            result.addAll(0, groupIdList);
+        }
+        return result;
     }
 
     /**
