@@ -665,7 +665,7 @@
         or (temp.MARRYTIMESTR IS NOT NULL AND temp.MARRYTIME IS NULL)
         or (temp.ZXSTYLESTR IS NOT NULL AND temp.ZXSTYLE IS NULL)))c
         on temp.KZID = c.KZID
-        where c.KZID is null
+        where temp.OPERAID = #{staffId} and c.KZID is null
     </select>
 
     <!--获取客资数量-->
