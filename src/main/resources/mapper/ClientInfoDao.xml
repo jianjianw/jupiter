@@ -53,7 +53,7 @@
 		<result column="OPERATIME" jdbcType="INTEGER" property="operaTime"/>
 		<result column="KZNAME" jdbcType="INTEGER" property="kzName"/>
 		<result column="STATUSID" jdbcType="INTEGER" property="statusId"/>
-		<result column="SOURSEID" jdbcType="INTEGER" property="sourceId"/>
+		<result column="SOURCEID" jdbcType="INTEGER" property="sourceId"/>
 		<result column="COLLECTORNAME" jdbcType="VARCHAR" property="collectorName"/>
 		<result column="APPOINTNAME" jdbcType="VARCHAR" property="appointName"/>
 	</resultMap>

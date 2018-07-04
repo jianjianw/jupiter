@@ -412,8 +412,8 @@ public class ClientEditServiceImpl implements ClientEditService {
      */
     public PageInfo editClientPhoneLog(QueryMapDTO queryMapDTO, ClientLogDTO clientLogDTO) {
         List<Integer> sourseIds = new ArrayList<>();
-        if (!StringUtil.isEmpty(clientLogDTO.getSourseIds())) {
-            String[] ids = clientLogDTO.getSourseIds().split(CommonConstant.STR_SEPARATOR);
+        if (!StringUtil.isEmpty(clientLogDTO.getSourceIds())) {
+            String[] ids = clientLogDTO.getSourceIds().split(CommonConstant.STR_SEPARATOR);
 
             for (String id : ids) {
                 sourseIds.add(Integer.parseInt(id));
