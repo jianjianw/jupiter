@@ -4,7 +4,7 @@ import com.qiein.jupiter.constant.ClientLogConst;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.StringUtil;
-import com.qiein.jupiter.web.dao.ClientLogDao;
+import com.qiein.jupiter.web.dao.ClientInfoDao;
 import com.qiein.jupiter.web.entity.dto.ClientLogDTO;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.EditClientPhonePO;
@@ -14,6 +14,7 @@ import com.qiein.jupiter.web.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.PageHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ import java.util.List;
 @Service
 public class ReportsServiceImpl implements ReportService {
     @Autowired
-    private ClientLogDao clientLogDao;
+    private ClientInfoDao clientInfoDao;
 
     /**
      * 修改联系方式日志
