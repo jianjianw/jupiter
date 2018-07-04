@@ -3,7 +3,9 @@ package com.qiein.jupiter.web.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.qiein.jupiter.constant.ClientLogConst;
 import com.qiein.jupiter.constant.ClientStatusConst;
+import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.enums.OrderSuccessTypeEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
@@ -24,6 +26,7 @@ import com.qiein.jupiter.web.service.ClientEditService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -407,6 +410,12 @@ public class ClientEditServiceImpl implements ClientEditService {
      * @return
      */
     public PageInfo editClientPhoneLog(QueryMapDTO queryMapDTO, ClientLogDTO clientLogDTO){
+        List<Integer> channelIds=new ArrayList<>();
+        String[] ids=clientLogDTO.getChannelIds().split(CommonConstant.STR_SEPARATOR);
+        for(String id:ids){
+            channelIds.add(Integer.parseInt(id));
+        }
+        clientLogDTO.setList(channelIds);
         PageHelper.startPage(queryMapDTO.getPageNum(),queryMapDTO.getPageSize());
         clientLogDTO.setTableEditLog(DBSplitUtil.getEditLogTabName(clientLogDTO.getCompanyId()));
         clientLogDTO.setTableInfo(DBSplitUtil.getInfoTabName(clientLogDTO.getCompanyId()));
@@ -422,11 +431,14 @@ public class ClientEditServiceImpl implements ClientEditService {
      * @param clientLogDTO
      * @return
      */
-    public PageInfo wechatClientPhoneLog(QueryMapDTO queryMapDTO, ClientLogDTO clientLogDTO){
+    public PageInfo wechatScanCodeLog(QueryMapDTO queryMapDTO, ClientLogDTO clientLogDTO){
         PageHelper.startPage(queryMapDTO.getPageNum(),queryMapDTO.getPageSize());
         clientLogDTO.setTableInfo(DBSplitUtil.getInfoTabName(clientLogDTO.getCompanyId()));
         clientLogDTO.setTableDetail(DBSplitUtil.getDetailTabName(clientLogDTO.getCompanyId()));
-        return null;
+        clientLogDTO.setTableLog(DBSplitUtil.getInfoLogTabName(clientLogDTO.getCompanyId()));
+        clientLogDTO.setLogType(ClientLogConst.INFO_LOGTYPE_SCAN_WECAHT);
+        List<WechatScanPO> list=clientInfoDao.wechatScanCodeLog(clientLogDTO);
+        return new PageInfo<>(list);
     }
 
     /**
@@ -439,7 +451,10 @@ public class ClientEditServiceImpl implements ClientEditService {
         PageHelper.startPage(queryMapDTO.getPageNum(),queryMapDTO.getPageSize());
         clientLogDTO.setTableInfo(DBSplitUtil.getInfoTabName(clientLogDTO.getCompanyId()));
         clientLogDTO.setTableDetail(DBSplitUtil.getDetailTabName(clientLogDTO.getCompanyId()));
-        return null;
+        clientLogDTO.setTableLog(DBSplitUtil.getInfoLogTabName(clientLogDTO.getCompanyId()));
+        clientLogDTO.setLogType(ClientLogConst.INFO_LOGTYPE_REPEAT);
+        List<RepateKzLogPO> list=clientInfoDao.repateKzLog(clientLogDTO);
+        return new PageInfo<>(list);
     }
 
 }

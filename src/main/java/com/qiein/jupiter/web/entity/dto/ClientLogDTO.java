@@ -1,8 +1,10 @@
 package com.qiein.jupiter.web.entity.dto;
 
+import java.util.List;
+
 public class ClientLogDTO {
     private Integer statusId;//状态id
-    private Integer channelId;//渠道id
+    private String channelIds;//渠道id
     private Integer typeId;//联系方式id
     private String value;//联系方式
     private Integer startTime;//开始时间
@@ -12,6 +14,24 @@ public class ClientLogDTO {
     private String tableLog;
     private String tableEditLog;
     private String tableDetail;
+    private Integer logType;
+    private List<Integer> list;
+
+    public List<Integer> getList() {
+        return list;
+    }
+
+    public void setList(List<Integer> list) {
+        this.list = list;
+    }
+
+    public Integer getLogType() {
+        return logType;
+    }
+
+    public void setLogType(Integer logType) {
+        this.logType = logType;
+    }
 
     public String getTableDetail() {
         return tableDetail;
@@ -61,12 +81,12 @@ public class ClientLogDTO {
         this.statusId = statusId;
     }
 
-    public Integer getChannelId() {
-        return channelId;
+    public String getChannelIds() {
+        return channelIds;
     }
 
-    public void setChannelId(Integer channelId) {
-        this.channelId = channelId;
+    public void setChannelIds(String channelIds) {
+        this.channelIds = channelIds;
     }
 
     public Integer getTypeId() {
