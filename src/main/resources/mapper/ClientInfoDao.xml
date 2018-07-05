@@ -94,6 +94,7 @@
 		 STATUSID = #{statusId},
 		 APPOINTORID = #{appointorId},
 		 LASTPUSHTIME = UNIX_TIMESTAMP(NOW()),
+		 RECEIVETIME = UNIX_TIMESTAMP(NOW()),
 		 UPDATETIME = UNIX_TIMESTAMP(NOW()),
 		 GROUPID = #{groupId},
 		 ALLOTTYPE = #{allotType}
