@@ -228,7 +228,7 @@ public class ClientReceiveServiceImpl implements ClientReceiveService {
             throw new RException(ExceptionEnum.INFO_ERROR);
         }
         if (NumUtil.isValid(info.getAppointorId())) {
-            throw new RException(ExceptionEnum.INFO_OTHER_APPOINTOR);
+            throw new RException(ExceptionEnum.INFO_BE_RECEIVED);
         }
         if (ClientStatusConst.BE_ALLOTING != info.getStatusId()
                 && ClientStatusConst.BE_WAIT_MAKE_ORDER != info.getStatusId()) {
