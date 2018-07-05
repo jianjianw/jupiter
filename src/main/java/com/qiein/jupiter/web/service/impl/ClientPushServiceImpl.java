@@ -969,7 +969,6 @@ public class ClientPushServiceImpl implements ClientPushService {
                     // 客资修改最后消息推送时间为当前系统时间，绑定客服，修改状态为分配中
                     int updateRstNum = clientInfoDao.updateClientInfoWhenAllotMsjd(companyId,
                             DBSplitUtil.getInfoTabName(companyId), info.getKzId(),
-                            ClientStatusConst.KZ_CLASS_ORDER,
                             ClientStatusConst.BE_COMFIRM == info.getStatusId() ? ClientStatusConst.BE_HAVE_RECEPTOR : info.getStatusId(), staff.getShopId(), staff.getStaffId(), ClientConst.ALLOT_HANDLER);
                     if (1 != updateRstNum) {
                         throw new RException(ExceptionEnum.INFO_STATUS_EDIT_ERROR);

@@ -74,7 +74,7 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
      * @return
      */
     int updateClientInfoWhenAllotMsjd(@Param("companyId") int companyId, @Param("infoTabName") String infoTabName,
-                                      @Param("kzId") String kzId, @Param("classId") int classId, @Param("statusId") int statusId,
+                                      @Param("kzId") String kzId, @Param("statusId") int statusId,
                                       @Param("shopId") int shopId, @Param("receptorId") int receptorId, @Param("allotType") int allotType);
 
     /**

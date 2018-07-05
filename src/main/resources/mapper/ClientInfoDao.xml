@@ -105,8 +105,7 @@
 	<!-- 客资分配给客服后修改客资信息,分配给门市 -->
 	<update id="updateClientInfoWhenAllotMsjd" parameterType="map">
     	UPDATE ${infoTabName}
-		SET CLASSID = #{classId},
-		 STATUSID = #{statusId},
+		SET STATUSID = #{statusId},
 		 SHOPID = #{shopId},
 		 RECEPTORID = #{receptorId},
 		 LASTPUSHTIME = UNIX_TIMESTAMP(NOW()),
