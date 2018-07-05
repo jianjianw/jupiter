@@ -788,7 +788,7 @@
 			hm_pub_staff sf
 		LEFT JOIN hm_pub_group_staff rela ON sf.ID = rela.STAFFID AND rela.COMPANYID = #{companyId}
 		LEFT JOIN hm_pub_group grp ON rela.GROUPID = grp.GROUPID AND grp.COMPANYID = #{companyId}
-		LEFT JOIN hm_pub_shop shop ON shop.COMPANY = grp.COMPANYID AND shop.ID =  grp.SHOPID
+		LEFT JOIN hm_pub_shop shop ON shop.COMPANYID = grp.COMPANYID AND shop.ID =  grp.SHOPID
 		WHERE
 			sf.COMPANYID = #{companyId}
 		AND sf.ISDEL = 0
