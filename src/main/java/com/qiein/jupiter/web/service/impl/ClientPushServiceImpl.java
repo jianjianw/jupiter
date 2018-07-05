@@ -985,11 +985,11 @@ public class ClientPushServiceImpl implements ClientPushService {
         }
         if (kzNum < staffList.size()) {
             for (int i = 0; i < kzNum; i++) {
-                push(companyId, staffList.get(i).getWillHaveKzidsStrBf(), staffList.get(i), operaId, operaName);
+                pushMsjd(companyId, staffList.get(i).getWillHaveKzidsStrBf(), staffList.get(i), operaId, operaName);
             }
         } else {
             for (StaffPushDTO staff : staffList) {
-                push(companyId, staff.getWillHaveKzidsStrBf(), staff, operaId, operaName);
+                pushMsjd(companyId, staff.getWillHaveKzidsStrBf(), staff, operaId, operaName);
             }
         }
     }
@@ -1012,6 +1012,23 @@ public class ClientPushServiceImpl implements ClientPushService {
                     .addInfoLog(DBSplitUtil.getInfoLogTabName(companyId),
                             new ClientLogPO(
                                     kzIdsArr[i], ClientLogConst.getAllotLog(appoint.getGroupName(),
+                                    appoint.getStaffName(), operaId, operaName),
+                                    ClientLogConst.INFO_LOGTYPE_ALLOT, companyId));
+        }
+        // 推送消息
+        GoEasyUtil.pushAllotMsg(companyId, appoint.getStaffId(), kzIdsArr.length, newsDao);
+    }
+
+    public void pushMsjd(int companyId, String kzIds, StaffPushDTO appoint, int operaId, String operaName) {
+        // 根据每个客资生成对应的分配日志
+        String[] kzIdsArr = kzIds.split(",");
+        String[] allogIdsArr = new String[kzIdsArr.length];
+        for (int i = 0; i < kzIdsArr.length; i++) {
+            // 客资日志记录
+            clientLogDao
+                    .addInfoLog(DBSplitUtil.getInfoLogTabName(companyId),
+                            new ClientLogPO(
+                                    kzIdsArr[i], ClientLogConst.getAllotLogMsjd(appoint.getShopName(),
                                     appoint.getStaffName(), operaId, operaName),
                                     ClientLogConst.INFO_LOGTYPE_ALLOT, companyId));
         }

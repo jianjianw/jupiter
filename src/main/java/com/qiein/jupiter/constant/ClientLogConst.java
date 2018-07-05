@@ -27,6 +27,7 @@ public class ClientLogConst {
 
     public static final String INFO_LOG_AUTO_ALLOT_TEMPLATE = "系统自动分配该客资给 => ${groupName} 的  ${appointorName} ";
     public static final String INFO_LOG_HANDLER_ALLOT_TEMPLATE = "${operaName} 手动分配该客资给 => ${groupName} 的  ${appointorName} ";
+    public static final String INFO_LOG_HANDLER_ALLOT_TEMPLATE_MSJD = "${operaName} 手动分配该客资给 => ${shopName} 的  ${appointorName} ";
     public static final String INFO_LOG_AUTO_REVEICE_TEMPLATE = "推送客资领取消息给 => ${groupName} 的  ${appointorName} ";
     public static final String INFO_LOG_RECEIVE = "在客户端通过客资分配领取了客资";
     public static final String INFO_LOG_RECEIVE_PC = "通过客资分配领取了客资";
@@ -77,6 +78,28 @@ public class ClientLogConst {
         }
 
         return INFO_LOG_HANDLER_ALLOT_TEMPLATE.replace("${groupName}", groupName)
+                .replace("${appointorName}", appointorName).replace("${operaName}", operaName);
+    }
+
+    /**
+     * 手动分配日志，分配给门市
+     *
+     * @param shopName
+     * @param appointorName
+     * @param operaId
+     * @param operaName
+     * @return
+     */
+    public static final String getAllotLogMsjd(String shopName, String appointorName, int operaId, String operaName) {
+
+        if (StringUtil.isEmpty(shopName)) {
+            shopName = "-";
+        }
+        if (StringUtil.isEmpty(appointorName)) {
+            appointorName = "-";
+        }
+
+        return INFO_LOG_HANDLER_ALLOT_TEMPLATE_MSJD.replace("${shopName}", shopName)
                 .replace("${appointorName}", appointorName).replace("${operaName}", operaName);
     }
 
