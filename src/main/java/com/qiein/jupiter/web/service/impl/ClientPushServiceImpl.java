@@ -965,10 +965,12 @@ public class ClientPushServiceImpl implements ClientPushService {
         while (infoList.size() != 0) {
             for (StaffPushDTO staff : staffList) {
                 if (infoList.size() > 0) {
+                    ClientPushDTO info = infoList.get(0);
                     // 客资修改最后消息推送时间为当前系统时间，绑定客服，修改状态为分配中
                     int updateRstNum = clientInfoDao.updateClientInfoWhenAllotMsjd(companyId,
-                            DBSplitUtil.getInfoTabName(companyId), infoList.get(0).getKzId(),
-                            ClientStatusConst.KZ_CLASS_NEW, ClientStatusConst.BE_HAVE_MAKE_ORDER, staff.getShopId(), staff.getStaffId(), ClientConst.ALLOT_HANDLER);
+                            DBSplitUtil.getInfoTabName(companyId), info.getKzId(),
+                            ClientStatusConst.KZ_CLASS_ORDER,
+                            ClientStatusConst.BE_COMFIRM == info.getStatusId() ? ClientStatusConst.BE_HAVE_RECEPTOR : info.getStatusId(), staff.getShopId(), staff.getStaffId(), ClientConst.ALLOT_HANDLER);
                     if (1 != updateRstNum) {
                         throw new RException(ExceptionEnum.INFO_STATUS_EDIT_ERROR);
                     }

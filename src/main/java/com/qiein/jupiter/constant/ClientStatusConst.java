@@ -70,6 +70,7 @@ public class ClientStatusConst {
     public static final int ONLINE_STAY = 28;// 线上保留
     /*-- 客资分类 --*/
     public static final int KZ_CLASS_NEW = 1;// 新客资
+    public static final Integer KZ_CLASS_ORDER = 3;// 已预约
 
     // 成交状态
     public static List<Integer> SUCCESS_STATUS_RANGE = new ArrayList<Integer>(Arrays.asList(9, 30, 40));
