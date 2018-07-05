@@ -957,8 +957,8 @@ public class ClientPushServiceImpl implements ClientPushService {
             throw new RException(ExceptionEnum.ALLOTED_ERROR);
         }
         int kzNum = infoList.size();
-        // 查询所选客服集合
-        List<StaffPushDTO> staffList = staffDao.listStaffInstrIds(companyId, staffIds, RoleConstant.MSJD);
+        // 查询所选门市集合
+        List<StaffPushDTO> staffList = staffDao.listStaffInstrIdsMsjd(companyId, staffIds, RoleConstant.MSJD);
         if (staffList == null || staffList.size() == 0) {
             throw new RException(ExceptionEnum.APPOINTOR_ERROR);
         }
@@ -968,13 +968,13 @@ public class ClientPushServiceImpl implements ClientPushService {
                     // 客资修改最后消息推送时间为当前系统时间，绑定客服，修改状态为分配中
                     int updateRstNum = clientInfoDao.updateClientInfoWhenAllotMsjd(companyId,
                             DBSplitUtil.getInfoTabName(companyId), infoList.get(0).getKzId(),
-                            ClientStatusConst.KZ_CLASS_NEW, ClientStatusConst.BE_HAVE_MAKE_ORDER, staff.getStaffId(), ClientConst.ALLOT_HANDLER);
+                            ClientStatusConst.KZ_CLASS_NEW, ClientStatusConst.BE_HAVE_MAKE_ORDER, staff.getShopId(), staff.getStaffId(), ClientConst.ALLOT_HANDLER);
                     if (1 != updateRstNum) {
                         throw new RException(ExceptionEnum.INFO_STATUS_EDIT_ERROR);
                     }
-                    // 客资修改客资的接待人姓名
+                    // 客资修改客资的接待人姓名，门店名
                     clientInfoDao.updateClientDetailWhenAllotMsjd(companyId, DBSplitUtil.getDetailTabName(companyId),
-                            infoList.get(0).getKzId(), staff.getStaffName());
+                            infoList.get(0).getKzId(), staff.getShopName(), staff.getStaffName());
                     staff.doAddKzIdsWill(infoList.get(0).getKzId());
                     infoList.remove(0);
                 } else {

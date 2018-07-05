@@ -75,7 +75,7 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
      */
     int updateClientInfoWhenAllotMsjd(@Param("companyId") int companyId, @Param("infoTabName") String infoTabName,
                                       @Param("kzId") String kzId, @Param("classId") int classId, @Param("statusId") int statusId,
-                                      @Param("receptorId") int receptorId, @Param("allotType") int allotType);
+                                      @Param("shopId") int shopId, @Param("receptorId") int receptorId, @Param("allotType") int allotType);
 
     /**
      * 客资分配给门市后，修改客资信息详情信息
@@ -87,7 +87,7 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
      * @return
      */
     int updateClientDetailWhenAllotMsjd(@Param("companyId") int companyId, @Param("detailTabName") String detailTabName,
-                                        @Param("kzId") String kzId, @Param("receptorName") String receptorName);
+                                        @Param("kzId") String kzId, @Param("shopName") String shopName, @Param("receptorName") String receptorName);
 
     /**
      * 客资分配后修改客资的领取时间和最后操作时间
@@ -213,10 +213,11 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
                                     @Param("appointorId") int appointorId, @Param("groupId") String groupId, @Param("allotType") int allotType);
 
     List<WechatScanPO> wechatScanCodeLog(ClientLogDTO clientLogDTO);
+
     List<RepateKzLogPO> repateKzLog(ClientLogDTO clientLogDTO);
 
     /**
      * 获取Kzid是否存在
-     * */
-    List<ClientPushDTO> getKzIdExists(@Param(value="kzIds") String kzId,@Param(value="companyId") int companyId,@Param(value="infoTabName") String infoTabName);
+     */
+    List<ClientPushDTO> getKzIdExists(@Param(value = "kzIds") String kzId, @Param(value = "companyId") int companyId, @Param(value = "infoTabName") String infoTabName);
 }

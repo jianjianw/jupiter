@@ -82,6 +82,7 @@
         <result column="WEIGHT" property="weight" jdbcType="INTEGER"/>
         <result column="TODAYNUM" property="todayNum" jdbcType="INTEGER"/>
         <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
+        <result column="SHOPID" property="shopId" jdbcType="INTEGER"/>
     </resultMap>
 
     <resultMap id="SearchMap" type="com.qiein.jupiter.web.entity.vo.SearchStaffVO">
@@ -770,6 +771,24 @@
 			hm_pub_staff sf
 		LEFT JOIN hm_pub_group_staff rela ON sf.ID = rela.STAFFID AND rela.COMPANYID = #{companyId}
 		LEFT JOIN hm_pub_group grp ON rela.GROUPID = grp.GROUPID AND grp.COMPANYID = #{companyId}
+		WHERE
+			sf.COMPANYID = #{companyId}
+		AND sf.ISDEL = 0
+		AND sf.ISLOCK = 0
+		AND sf.STATUSFLAG = 1
+		AND grp.GROUPTYPE = #{type}
+		AND INSTR(CONCAT(',',#{staffIds},','),CONCAT(',',sf.ID,',')) != 0;
+    </select>
+
+    <!--查询所选门市所在门店集合-->
+    <select id="listStaffInstrIdsMsjd" parameterType="map" resultMap="pushMap">
+        SELECT
+			sf.ID, sf.NICKNAME, sf.COMPANYID, grp.SHOPID, shop.SHOPNAME
+		FROM
+			hm_pub_staff sf
+		LEFT JOIN hm_pub_group_staff rela ON sf.ID = rela.STAFFID AND rela.COMPANYID = #{companyId}
+		LEFT JOIN hm_pub_group grp ON rela.GROUPID = grp.GROUPID AND grp.COMPANYID = #{companyId}
+		LEFT JOIN hm_pub_shop shop ON shop.COMPANY = grp.COMPANYID AND shop.ID =  grp.SHOPID
 		WHERE
 			sf.COMPANYID = #{companyId}
 		AND sf.ISDEL = 0

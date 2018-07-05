@@ -107,6 +107,7 @@
     	UPDATE ${infoTabName}
 		SET CLASSID = #{classId},
 		 STATUSID = #{statusId},
+		 SHOPID = #{shopId},
 		 RECEPTORID = #{receptorId},
 		 LASTPUSHTIME = UNIX_TIMESTAMP(NOW()),
 		 UPDATETIME = UNIX_TIMESTAMP(NOW()),
@@ -128,7 +129,8 @@
 	<!-- 客资分配门市，后修改客资详情 -->
 	<update id="updateClientDetailWhenAllotMsjd" parameterType="map">
     	UPDATE ${detailTabName}
-		SET RECEPTORNAME = #{receptorName}
+		SET RECEPTORNAME = #{receptorName},
+		SHOPNAME = #{shopName}
 		WHERE
 			KZID = #{kzId}
 		AND COMPANYID = #{companyId}
