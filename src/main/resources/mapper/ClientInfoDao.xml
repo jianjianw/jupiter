@@ -217,7 +217,7 @@
 	<!-- 根据客资ID集合查询可以分配给门市的客资集合 -->
 	<select id="listClientsInStrKzids4Msjd" parameterType="map" resultMap="infoMap">
 		SELECT
-			info.ID, info.KZID, info.COMPANYID
+			info.ID, info.KZID, info.COMPANYID,info.STATUSID
 		FROM
 			${infoTabName} info
 		WHERE
