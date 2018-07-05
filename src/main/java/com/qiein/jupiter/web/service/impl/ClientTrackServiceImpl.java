@@ -13,6 +13,7 @@ import com.qiein.jupiter.web.entity.dto.ClientPushDTO;
 import com.qiein.jupiter.web.entity.dto.StaffPushDTO;
 import com.qiein.jupiter.web.entity.po.AllotLogPO;
 import com.qiein.jupiter.web.entity.po.ClientLogPO;
+import com.qiein.jupiter.web.entity.po.ClientStatusPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.StaffNumVO;
 import com.qiein.jupiter.web.service.ClientTrackService;
@@ -50,6 +51,8 @@ public class ClientTrackServiceImpl implements ClientTrackService {
     private ClientAllotLogDao clientAllotLogDao;
     @Autowired
     private CompanyDao companyDao;
+    @Autowired
+    private ClientStatusDao clientStatusDao;
 
     /**
      * 批量删除客资
@@ -279,5 +282,19 @@ public class ClientTrackServiceImpl implements ClientTrackService {
         if (!"100000".equals(jsInfo.getString("code"))) {
             throw new RException(jsInfo.getString("msg"));
         }
+    }
+
+    @Override
+    public void allotNotArriveShop(String kzId, StaffPO staffPO) {
+        //修改客资状态
+        List<ClientPushDTO> clientPushDTOS = clientInfoDao.getKzIdExists(kzId, staffPO.getCompanyId(), DBSplitUtil.getInfoTabName(staffPO.getCompanyId()));
+        if(CollectionUtils.isEmpty(clientPushDTOS)){
+            throw new RException(ExceptionEnum.ALLOTED_ERROR);
+        }
+        ClientStatusPO clientStatusPO = clientStatusDao.getClientStatusByStatusId(ClientStatusConst.NOT_COME, staffPO.getCompanyId());
+        if(null == clientStatusPO){
+            throw new RException(ExceptionEnum.UNKNOW_ERROR);
+        }
+        clientInfoDao.updateClientInfoStatus(staffPO.getCompanyId(),DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),kzId,clientStatusPO.getClassId(),ClientStatusConst.NOT_COME);
     }
 }

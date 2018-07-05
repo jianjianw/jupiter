@@ -44,29 +44,7 @@ public interface ClientEditService {
 	 */
 	void editClientByCwzx(ClientVO clientVO, StaffPO staffPO);
 
-	/**
-	 * 修改联系方式日志
-	 * @param queryMapDTO
-	 * @param clientLogDTO
-	 * @return
-	 */
-	PageInfo editClientPhoneLog(QueryMapDTO queryMapDTO, ClientLogDTO clientLogDTO);
 
-	/**
-	 * 微信扫码日志
-	 * @param queryMapDTO
-	 * @param clientLogDTO
-	 * @return
-	 */
-	PageInfo wechatScanCodeLog(QueryMapDTO queryMapDTO, ClientLogDTO clientLogDTO);
-
-	/**
-	 * 重复客资记录
-	 * @param queryMapDTO
-	 * @param clientLogDTO
-	 * @return
-	 */
-	PageInfo repateKzLog(QueryMapDTO queryMapDTO, ClientLogDTO clientLogDTO);
 
 
 }

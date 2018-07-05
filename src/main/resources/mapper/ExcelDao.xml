@@ -592,7 +592,7 @@
         select
         <include refid="Base_Column_News_List"/>
         from ${tempName} temp
-        where temp.KZPHONE NOT REGEXP '^[1][3456789][0-9]{9}$'
+        where temp.OPERAID = #{staffId} and  (temp.KZPHONE NOT REGEXP '^[1][3456789][0-9]{9}$'
         or temp.KZWECHAT NOT REGEXP '^[a-zA-Z0-9]{1}[-_a-zA-Z0-9]{5,30}$'
         or temp.kzqq not REGEXP '[1-9][0-9]{4,9}'
         or temp.TYPEID is null
@@ -613,7 +613,7 @@
         Or (temp.YPTIMESTR IS NOT NULL AND temp.YPTIME IS NULL)
         or (temp.YSRANGESTR IS NOT NULL AND temp.YSRANGE IS NULL)
         or (temp.MARRYTIMESTR IS NOT NULL AND temp.MARRYTIME IS NULL)
-        or (temp.ZXSTYLESTR IS NOT NULL AND temp.ZXSTYLE IS NULL)
+        or (temp.ZXSTYLESTR IS NOT NULL AND temp.ZXSTYLE IS NULL))
     </select>
 
     <!--获取正常客资-->
@@ -642,7 +642,7 @@
         (select
         <include refid="Base_Column_News_List"/>
         from ${tempName} temp where
-        temp.KZPHONE NOT REGEXP '^[1][3456789][0-9]{9}$'
+        temp.OPERAID = #{staffId} and (temp.KZPHONE NOT REGEXP '^[1][3456789][0-9]{9}$'
         or temp.KZWECHAT NOT REGEXP '^[a-zA-Z0-9]{1}[-_a-zA-Z0-9]{5,30}$'
         or temp.kzqq not REGEXP '[1-9][0-9]{4,9}'
         or temp.TYPEID is null
@@ -663,9 +663,9 @@
         Or (temp.YPTIMESTR IS NOT NULL AND temp.YPTIME IS NULL)
         or (temp.YSRANGESTR IS NOT NULL AND temp.YSRANGE IS NULL)
         or (temp.MARRYTIMESTR IS NOT NULL AND temp.MARRYTIME IS NULL)
-        or (temp.ZXSTYLESTR IS NOT NULL AND temp.ZXSTYLE IS NULL))c
+        or (temp.ZXSTYLESTR IS NOT NULL AND temp.ZXSTYLE IS NULL)))c
         on temp.KZID = c.KZID
-        where c.KZID is null
+        where temp.OPERAID = #{staffId} and c.KZID is null
     </select>
 
     <!--获取客资数量-->
@@ -701,7 +701,7 @@
         AND temp.OPERAID = #{staffId}
         ) b ON temp.kzid = b.kzid
         WHERE
-        b.kzid IS NULL
+        temp.OPERAID = #{staffId} and b.kzid IS NULL
         ) temp
         LEFT JOIN (
         SELECT
@@ -709,7 +709,7 @@
         FROM
         ${tempName} temp
         WHERE
-        temp.KZPHONE NOT REGEXP '^[1][3456789][0-9]{9}$'
+        temp.OPERAID = #{staffId} and (temp.KZPHONE NOT REGEXP '^[1][3456789][0-9]{9}$'
         or temp.KZWECHAT NOT REGEXP '^[a-zA-Z0-9]{1}[-_a-zA-Z0-9]{5,30}$'
         or temp.kzqq not REGEXP '[1-9][0-9]{4,9}'
         or temp.TYPEID is null
@@ -730,10 +730,10 @@
         Or (temp.YPTIMESTR IS NOT NULL AND temp.YPTIME IS NULL)
         or (temp.YSRANGESTR IS NOT NULL AND temp.YSRANGE IS NULL)
         or (temp.MARRYTIMESTR IS NOT NULL AND temp.MARRYTIME IS NULL)
-        or (temp.ZXSTYLESTR IS NOT NULL AND temp.ZXSTYLE IS NULL)
+        or (temp.ZXSTYLESTR IS NOT NULL AND temp.ZXSTYLE IS NULL))
         ) c ON temp.kzid = c.kzid
         WHERE
-        c.kzid IS NULL
+        temp.OPERAID = #{staffId} and c.kzid IS NULL
         ) tmp_count
         ) a,
         (
@@ -742,7 +742,7 @@
         FROM
         ${tempName} temp
         WHERE
-        temp.KZPHONE NOT REGEXP '^[1][3456789][0-9]{9}$'
+        temp.OPERAID = #{staffId} and (temp.KZPHONE NOT REGEXP '^[1][3456789][0-9]{9}$'
         or temp.KZWECHAT NOT REGEXP '^[a-zA-Z0-9]{1}[-_a-zA-Z0-9]{5,30}$'
         or temp.kzqq not REGEXP '[1-9][0-9]{4,9}'
         or temp.TYPEID is null
@@ -763,7 +763,7 @@
         Or (temp.YPTIMESTR IS NOT NULL AND temp.YPTIME IS NULL)
         or (temp.YSRANGESTR IS NOT NULL AND temp.YSRANGE IS NULL)
         or (temp.MARRYTIMESTR IS NOT NULL AND temp.MARRYTIME IS NULL)
-        or (temp.ZXSTYLESTR IS NOT NULL AND temp.ZXSTYLE IS NULL)
+        or (temp.ZXSTYLESTR IS NOT NULL AND temp.ZXSTYLE IS NULL))
         ) b,
         (
         SELECT DISTINCT

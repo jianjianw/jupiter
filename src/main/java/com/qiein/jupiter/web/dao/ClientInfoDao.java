@@ -214,4 +214,9 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
 
     List<WechatScanPO> wechatScanCodeLog(ClientLogDTO clientLogDTO);
     List<RepateKzLogPO> repateKzLog(ClientLogDTO clientLogDTO);
+
+    /**
+     * 获取Kzid是否存在
+     * */
+    List<ClientPushDTO> getKzIdExists(@Param(value="kzIds") String kzId,@Param(value="companyId") int companyId,@Param(value="infoTabName") String infoTabName);
 }
