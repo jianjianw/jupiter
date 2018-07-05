@@ -296,5 +296,7 @@ public class ClientTrackServiceImpl implements ClientTrackService {
             throw new RException(ExceptionEnum.UNKNOW_ERROR);
         }
         clientInfoDao.updateClientInfoStatus(staffPO.getCompanyId(),DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),kzId,clientStatusPO.getClassId(),ClientStatusConst.NOT_COME);
+        clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(staffPO.getCompanyId()),new ClientLogPO(kzId,staffPO.getId(),staffPO.getNickName()
+                ,ClientLogConst.INFO_LOG_NOT_ARRIVE_SHOP,ClientLogConst.INFO_LOGTYPE_EDIT,staffPO.getCompanyId()));
     }
 }
