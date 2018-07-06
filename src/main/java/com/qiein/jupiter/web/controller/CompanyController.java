@@ -232,7 +232,7 @@ public class CompanyController extends BaseController {
     public ResultInfo editZjsValidStatus(@RequestParam  String zjsValidStatus){
         StaffPO staff=getCurrentLoginStaff();
         companyService.editZjsValidStatus(staff.getCompanyId(),zjsValidStatus);
-        return ResultInfoUtil.success();
+        return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
 
     @GetMapping("find_zjs_valid_status")
