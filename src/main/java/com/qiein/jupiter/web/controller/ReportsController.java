@@ -74,6 +74,28 @@ public class ReportsController extends BaseController {
     }
 
     /**
+     * 电商邀约报表
+     * */
+    @RequestMapping("get_dsyy_group_reports")
+    public ResultInfo getDsyyGroupReports(@RequestParam("start") Integer start,@RequestParam("end")Integer end){
+        if (NumUtil.isInValid(start) || NumUtil.isInValid(end)) {
+            return ResultInfoUtil.error(ExceptionEnum.START_TIME_OR_END_TIME_IS_NULL);
+        }
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        Map<String, Object> reqContent = new HashMap<>();
+
+        reqContent.put("start", start);
+        reqContent.put("end", end);
+        reqContent.put("companyid", currentLoginStaff.getCompanyId());
+        String json = crmBaseApi.doService(reqContent, "dsyyGroupReports");
+
+        if (StringUtil.isEmpty(json) || !"100000".equalsIgnoreCase(JSONObject.parseObject(json).getJSONObject("response").getJSONObject("info").getString("code"))) {
+            return ResultInfoUtil.error(ExceptionEnum.UNKNOW_ERROR);
+        }
+        return ResultInfoUtil.success(JSONObject.parseObject(json).getJSONObject("response").getJSONObject("content").getJSONArray("data"));
+    }
+
+    /**
      * 修改联系方式日志
      */
     @PostMapping("/edit_client_phone_log")
