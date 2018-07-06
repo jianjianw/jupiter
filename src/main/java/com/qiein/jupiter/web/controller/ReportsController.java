@@ -125,4 +125,18 @@ public class ReportsController extends BaseController {
     }
 
 
+    /**
+     * 转介绍来源统计
+     */
+    @RequestMapping("/get_zjs_source_reports")
+    public ResultInfo getZjsSourceReports(@RequestParam("start") int start, @RequestParam("end") int end) {
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        Map<String, Object> reqContent = new HashMap<>();
+        reqContent.put("start", start);
+        reqContent.put("end", end);
+        reqContent.put("companyid", currentLoginStaff.getCompanyId());
+        //请求juplat接口
+        String json = crmBaseApi.doService(reqContent, "zjsentryreports");
+        return ResultInfoUtil.success(JsonFmtUtil.strContentToJsonObj(json).get("analysis"));
+    }
 }
