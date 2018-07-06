@@ -115,4 +115,11 @@ public interface CompanyDao extends BaseDao<CompanyPO> {
      * @param zjsValidStatus
      */
     void editZjsValidStatus(@Param("companyId")Integer companyId,@Param("zjsValidStatus")String zjsValidStatus);
+
+    /**
+     * 转介绍有效指标定义
+     * @param companyId
+     * @return
+     */
+    String findZjsValidStatus(@Param("companyId")Integer companyId);
 }

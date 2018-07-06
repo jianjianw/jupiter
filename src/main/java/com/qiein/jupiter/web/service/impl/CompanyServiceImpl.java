@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.service.impl;
 
+import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.NumUtil;
@@ -12,6 +13,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -220,6 +222,19 @@ public class CompanyServiceImpl implements CompanyService {
    public void editZjsValidStatus(Integer companyId,String zjsValidStatus){
        companyDao.editZjsValidStatus(companyId,zjsValidStatus);
    }
-
+    /**
+     * 转介绍有效指标定义
+     * @param companyId
+     * @return
+     */
+    public  List<String> findZjsValidStatus(Integer companyId){
+        String zjsValidStatus=companyDao.findZjsValidStatus(companyId);
+       String[] zjsValidStatuss=zjsValidStatus.substring(1,zjsValidStatus.length()-1).split(CommonConstant.FILE_SEPARATOR);
+       List<String> list =new ArrayList<>();
+       for(String status:zjsValidStatuss){
+           list.add(status);
+       }
+       return list;
+    }
 
 }

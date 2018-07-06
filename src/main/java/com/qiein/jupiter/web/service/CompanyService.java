@@ -143,7 +143,7 @@ public interface CompanyService {
      * @param companyId
      * @return
      */
-    DsinvalDTO findDsinvalId(@Param("companyId") Integer companyId);
+    DsinvalDTO findDsinvalId(Integer companyId);
 
     /**
      * 修改转介绍有效指标定义
@@ -151,4 +151,11 @@ public interface CompanyService {
      * @param zjsValidStatus
      */
     void editZjsValidStatus(Integer companyId,String zjsValidStatus);
+
+    /**
+     * 转介绍有效指标定义
+     * @param companyId
+     * @return
+     */
+    List<String> findZjsValidStatus(Integer companyId);
 }

@@ -234,4 +234,10 @@ public class CompanyController extends BaseController {
         companyService.editZjsValidStatus(staff.getCompanyId(),zjsValidStatus);
         return ResultInfoUtil.success();
     }
+
+    @GetMapping("find_zjs_valid_status")
+    public ResultInfo findZjsValidStatus(){
+        StaffPO staff = getCurrentLoginStaff();
+        return  ResultInfoUtil.success(companyService.findZjsValidStatus(staff.getCompanyId()));
+    }
 }
