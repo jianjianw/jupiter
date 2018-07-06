@@ -228,4 +228,13 @@
 		WHERE ID=#{companyId}
 	</select>
 
+    <update id="editZjsValidStatus">
+        UPDATE
+            hm_pub_company
+        SET
+            ZJSVALIDSTATUS =#{zjsValidStatus}
+        WHERE
+            ID = #{companyId}
+    </update>
+
 </mapper>

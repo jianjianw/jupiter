@@ -144,4 +144,11 @@ public interface CompanyService {
      * @return
      */
     DsinvalDTO findDsinvalId(@Param("companyId") Integer companyId);
+
+    /**
+     * 修改转介绍有效指标定义
+     * @param companyId
+     * @param zjsValidStatus
+     */
+    void editZjsValidStatus(Integer companyId,String zjsValidStatus);
 }

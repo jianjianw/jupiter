@@ -212,5 +212,14 @@ public class CompanyServiceImpl implements CompanyService {
         return companyDao.findDsinvalId(companyId);
     }
 
+    /**
+     * 修改转介绍有效指标定义
+     * @param companyId
+     * @param zjsValidStatus
+     */
+   public void editZjsValidStatus(Integer companyId,String zjsValidStatus){
+       companyDao.editZjsValidStatus(companyId,zjsValidStatus);
+   }
+
 
 }

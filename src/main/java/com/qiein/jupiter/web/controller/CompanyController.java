@@ -225,4 +225,13 @@ public class CompanyController extends BaseController {
         StaffPO staff = getCurrentLoginStaff();
         return ResultInfoUtil.success(companyService.findDsinvalId(staff.getCompanyId()));
     }
+    /**
+     * 修改转介绍有效指标定义
+     */
+    @GetMapping("/edit_zjs_valid_status")
+    public ResultInfo editZjsValidStatus(@RequestParam  String zjsValidStatus){
+        StaffPO staff=getCurrentLoginStaff();
+        companyService.editZjsValidStatus(staff.getCompanyId(),zjsValidStatus);
+        return ResultInfoUtil.success();
+    }
 }
