@@ -75,9 +75,9 @@ public class ReportsController extends BaseController {
 
     /**
      * 电商邀约报表
-     * */
+     */
     @RequestMapping("get_dsyy_group_reports")
-    public ResultInfo getDsyyGroupReports(@RequestParam("start") Integer start,@RequestParam("end")Integer end){
+    public ResultInfo getDsyyGroupReports(@RequestParam("start") Integer start, @RequestParam("end") Integer end) {
         if (NumUtil.isInValid(start) || NumUtil.isInValid(end)) {
             return ResultInfoUtil.error(ExceptionEnum.START_TIME_OR_END_TIME_IS_NULL);
         }
@@ -176,5 +176,25 @@ public class ReportsController extends BaseController {
         String json = crmBaseApi.doService(reqContent, "zjsinvitereports");
         return ResultInfoUtil.success(JsonFmtUtil.strContentToJsonObj(json).get("analysis"));
     }
+
+    /**
+     * 转介绍邀约统计
+     */
+    @RequestMapping("/get_dstg_invalid_reports")
+    public ResultInfo getDstgInvalidReports(@RequestParam("start") int start, @RequestParam("end") int end) {
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        Map<String, Object> reqContent = new HashMap<>();
+        reqContent.put("start", start);
+        reqContent.put("end", end);
+        reqContent.put("companyid", currentLoginStaff.getCompanyId());
+        //请求juplat接口
+        String json = crmBaseApi.doService(reqContent, "dstginvalidreports");
+
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("title", JsonFmtUtil.strContentToJsonObj(json).get("title"));
+        result.put("analysis", JsonFmtUtil.strContentToJsonObj(json).get("analysis"));
+        return ResultInfoUtil.success(result);
+    }
+
 
 }
