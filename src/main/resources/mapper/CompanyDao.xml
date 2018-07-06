@@ -228,4 +228,17 @@
 		WHERE ID=#{companyId}
 	</select>
 
+    <update id="editZjsValidStatus">
+        UPDATE
+            hm_pub_company
+        SET
+            ZJSVALIDSTATUS =#{zjsValidStatus}
+        WHERE
+            ID = #{companyId}
+    </update>
+
+    <select id="findZjsValidStatus" resultType="String">
+        SELECT  ZJSVALIDSTATUS FROM hm_pub_company  WHERE ID = #{companyId}
+    </select>
+
 </mapper>

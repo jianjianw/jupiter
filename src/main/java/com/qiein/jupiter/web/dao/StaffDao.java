@@ -495,5 +495,12 @@ public interface StaffDao extends BaseDao<StaffPO> {
      */
     StaffPushDTO getPushAppointByGroupAvg(@Param("infoTabName") String infoTabName, @Param("companyId") Integer companyId, @Param("sourceId") int sourceId, @Param("role") String role);
 
+    /**
+     * 编辑员工所属公司的CorpId
+     * @param corpId
+     * @param companyId
+     * @return
+     */
+    int editStaffCorpId(@Param("corpId") String corpId,@Param("companyId")Integer companyId);
 
 }

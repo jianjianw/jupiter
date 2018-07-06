@@ -106,6 +106,9 @@ public class StaffServiceImpl implements StaffService {
         }
         CompanyPO companyPO = companyDao.getById(staffVO.getCompanyId());
         staffVO.setLimitDay(companyPO.getLimitDefault());
+        // 1.给个默认token，钉钉需要
+        String token = JwtUtil.generatorToken();
+        staffVO.setToken(token);
         // 2.插入人员
         staffDao.addStaffVo(staffVO);
         // 3.添加小组人员关联表

@@ -1,9 +1,12 @@
 package com.qiein.jupiter.web.service.impl;
 
+import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.NumUtil;
+import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.CompanyDao;
+import com.qiein.jupiter.web.dao.StaffDao;
 import com.qiein.jupiter.web.entity.dto.DsinvalDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.vo.CompanyVO;
@@ -11,7 +14,9 @@ import com.qiein.jupiter.web.service.CompanyService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +27,9 @@ import java.util.Map;
 public class CompanyServiceImpl implements CompanyService {
     @Autowired
     private CompanyDao companyDao;
+
+    @Autowired
+    private StaffDao staffDao;
 
     /**
      * 根据Id获取
@@ -74,9 +82,14 @@ public class CompanyServiceImpl implements CompanyService {
      * @return
      */
     @Override
+    @Transactional
     public int update(CompanyPO companyPO) {
         if (companyPO.getId() == 0)
             throw new RException(ExceptionEnum.COMPANY_ID_NULL);
+        if (StringUtil.isNotEmpty(companyPO.getCorpId()))
+            //修改corpId时，同时修改所属公司员工的corpId
+            staffDao.editStaffCorpId(companyPO.getCorpId(),companyPO.getId());
+
         return companyDao.update(companyPO);
     }
 
@@ -212,5 +225,27 @@ public class CompanyServiceImpl implements CompanyService {
         return companyDao.findDsinvalId(companyId);
     }
 
+    /**
+     * 修改转介绍有效指标定义
+     * @param companyId
+     * @param zjsValidStatus
+     */
+   public void editZjsValidStatus(Integer companyId,String zjsValidStatus){
+       companyDao.editZjsValidStatus(companyId,zjsValidStatus);
+   }
+    /**
+     * 转介绍有效指标定义
+     * @param companyId
+     * @return
+     */
+    public  List<String> findZjsValidStatus(Integer companyId){
+        String zjsValidStatus=companyDao.findZjsValidStatus(companyId);
+       String[] zjsValidStatuss=zjsValidStatus.substring(1,zjsValidStatus.length()-1).split(CommonConstant.FILE_SEPARATOR);
+       List<String> list =new ArrayList<>();
+       for(String status:zjsValidStatuss){
+           list.add(status);
+       }
+       return list;
+    }
 
 }

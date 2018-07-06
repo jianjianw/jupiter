@@ -986,4 +986,11 @@
             AND sf.ISLOCK = 0
             AND sf.STATUSFLAG = 1
     </select>
+
+    <!--编辑员工所属公司的CorpId-->
+    <update id="editStaffCorpId" parameterType="map">
+        UPDATE hm_pub_staff
+        SET CORPID = #{corpId}
+        WHERE COMPANYID = #{companyId}
+    </update>
 </mapper>
