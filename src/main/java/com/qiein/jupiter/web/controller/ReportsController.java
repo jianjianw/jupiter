@@ -195,14 +195,17 @@ public class ReportsController extends BaseController {
      * 电商推广-推广客资统计
      */
     @GetMapping("/get_dscj_tg_client_info_reports")
-    public ResultInfo getDscjTgClientInfoReports(@RequestParam("start") int start, @RequestParam("end") int end) {
+    public ResultInfo getDscjTgClientInfoReports(@RequestParam("start") int start,
+                                                 @RequestParam("end") int end,
+                                                 @RequestParam("typeIds") String typeIds,
+                                                 @RequestParam("sourceIds") String sourceIds) {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         Map<String, Object> reqContent = new HashMap<>();
         reqContent.put("start", start);
         reqContent.put("end", end);
         reqContent.put("companyid", currentLoginStaff.getCompanyId());
-        reqContent.put("321", currentLoginStaff.getCompanyId());
-        reqContent.put("compa123nyid", currentLoginStaff.getCompanyId());
+        reqContent.put("sourceids", sourceIds);
+        reqContent.put("typeids", typeIds);
         //请求juplat接口
         String json = crmBaseApi.doService(reqContent, "dscjCountReports");
         return ResultInfoUtil.success(JsonFmtUtil.strContentToJsonObj(json).get("analysis"));
