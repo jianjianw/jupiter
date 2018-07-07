@@ -23,7 +23,6 @@ import com.qiein.jupiter.web.entity.po.*;
 import com.qiein.jupiter.web.entity.vo.GoldCustomerShowVO;
 import com.qiein.jupiter.web.entity.vo.GoldCustomerVO;
 import com.qiein.jupiter.web.service.GoldDataService;
-import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
