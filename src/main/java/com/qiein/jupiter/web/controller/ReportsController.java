@@ -1,21 +1,16 @@
 package com.qiein.jupiter.web.controller;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.google.gson.JsonObject;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.http.CrmBaseApi;
 import com.qiein.jupiter.util.*;
-import com.qiein.jupiter.web.dao.ClientLogDao;
 import com.qiein.jupiter.web.entity.dto.ClientLogDTO;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.ReportsConditionVO;
-import com.qiein.jupiter.web.service.ClientEditService;
 import com.qiein.jupiter.web.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 
 import java.util.HashMap;
 import java.util.Map;
@@ -194,6 +189,23 @@ public class ReportsController extends BaseController {
         result.put("title", JsonFmtUtil.strContentToJsonObj(json).get("title"));
         result.put("analysis", JsonFmtUtil.strContentToJsonObj(json).get("analysis"));
         return ResultInfoUtil.success(result);
+    }
+
+    /**
+     * 电商推广-推广客资统计
+     */
+    @GetMapping("/get_dscj_tg_client_info_reports")
+    public ResultInfo getDscjTgClientInfoReports(int start, int end,String typeIds,String sourceIds) {
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        Map<String, Object> reqContent = new HashMap<>();
+        reqContent.put("start", start);
+        reqContent.put("end", end);
+        reqContent.put("companyid", currentLoginStaff.getCompanyId());
+        reqContent.put("sourceids", sourceIds);
+        reqContent.put("typeids", typeIds);
+        //请求juplat接口
+        String json = crmBaseApi.doService(reqContent, "dscjCountReports");
+        return ResultInfoUtil.success(JsonFmtUtil.strContentToJsonObj(json).get("analysis"));
     }
 
 
