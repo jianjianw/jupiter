@@ -208,5 +208,23 @@ public class ReportsController extends BaseController {
         return ResultInfoUtil.success(JsonFmtUtil.strContentToJsonObj(json).get("analysis"));
     }
 
+    /**
+     * 电商推广-推广客资统计
+     */
+    @GetMapping("/get_dscj_tg_client_info_detail_reports")
+    public ResultInfo getDscjTgClientInfoDetailReports(int start, int end,String typeIds,String sourceIds,String groupId) {
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        Map<String, Object> reqContent = new HashMap<>();
+        reqContent.put("start", start);
+        reqContent.put("end", end);
+        reqContent.put("companyid", currentLoginStaff.getCompanyId());
+        reqContent.put("sourceids", sourceIds);
+        reqContent.put("typeids", typeIds);
+        reqContent.put("groupid", groupId);
+        //请求juplat接口
+        String json = crmBaseApi.doService(reqContent, "dscjDetailCountReports");
+        return ResultInfoUtil.success(JsonFmtUtil.strContentToJsonObj(json).get("analysis"));
+    }
+
 
 }
