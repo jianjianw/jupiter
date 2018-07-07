@@ -293,12 +293,12 @@ public class ReportsController extends BaseController {
      * 门市入店统计,,人员明细
      */
     @RequestMapping("/get_mszx_entry_detail_reports")
-    public ResultInfo getMszxEntryDetailReports(int start, int end, int shopId, String sourceIds) {
+    public ResultInfo getMszxEntryDetailReports(int start, int end, int shopid, String sourceIds) {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         Map<String, Object> reqContent = new HashMap<>();
         reqContent.put("start", start);
         reqContent.put("end", end);
-        reqContent.put("shopids", shopId);
+        reqContent.put("shopids", shopid);
         reqContent.put("sourceids", sourceIds);
         reqContent.put("companyid", currentLoginStaff.getCompanyId());
         //请求juplat接口
