@@ -1,9 +1,9 @@
 package com.qiein.jupiter.web.service;
 
+import com.qiein.jupiter.web.entity.dto.CompanyZjsSetDTO;
 import com.qiein.jupiter.web.entity.dto.DsinvalDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.vo.CompanyVO;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -133,7 +133,7 @@ public interface CompanyService {
     /**
      * 修改待定是否计入有效
      *
-     * @param dsinvalDTO
+     * @param
      */
     void editDdIsValid(boolean ddIsValid, int companyId);
 
@@ -158,4 +158,22 @@ public interface CompanyService {
      * @return
      */
     List<String> findZjsValidStatus(Integer companyId);
+
+    /**
+     *
+     * 功能描述:
+     *  获取公司转介绍设置
+     * @auther: Tt(yehuawei)
+     * @date:
+     * @param:
+     * @return:
+     */
+    CompanyZjsSetDTO getCompanyZjsSet(int companyId);
+
+    /**
+     * 公司钉钉转介绍提报自定义设置
+     * @param oldClientZjsSet
+     * @param qyZjsSet
+     */
+    void editCompanyZJSSet(String oldClientZjsSet,String qyZjsSet, int companyId);
 }

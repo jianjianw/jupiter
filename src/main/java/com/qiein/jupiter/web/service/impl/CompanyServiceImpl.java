@@ -7,6 +7,7 @@ import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.CompanyDao;
 import com.qiein.jupiter.web.dao.StaffDao;
+import com.qiein.jupiter.web.entity.dto.CompanyZjsSetDTO;
 import com.qiein.jupiter.web.entity.dto.DsinvalDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.vo.CompanyVO;
@@ -88,7 +89,7 @@ public class CompanyServiceImpl implements CompanyService {
             throw new RException(ExceptionEnum.COMPANY_ID_NULL);
         if (StringUtil.isNotEmpty(companyPO.getCorpId()))
             //修改corpId时，同时修改所属公司员工的corpId
-            staffDao.editStaffCorpId(companyPO.getCorpId(),companyPO.getId());
+            staffDao.editStaffCorpId(companyPO.getCorpId(), companyPO.getId());
 
         return companyDao.update(companyPO);
     }
@@ -227,25 +228,58 @@ public class CompanyServiceImpl implements CompanyService {
 
     /**
      * 修改转介绍有效指标定义
+     *
      * @param companyId
      * @param zjsValidStatus
      */
-   public void editZjsValidStatus(Integer companyId,String zjsValidStatus){
-       companyDao.editZjsValidStatus(companyId,zjsValidStatus);
-   }
+    public void editZjsValidStatus(Integer companyId, String zjsValidStatus) {
+        companyDao.editZjsValidStatus(companyId, zjsValidStatus);
+    }
+
     /**
      * 转介绍有效指标定义
+     *
      * @param companyId
      * @return
      */
-    public  List<String> findZjsValidStatus(Integer companyId){
-        String zjsValidStatus=companyDao.findZjsValidStatus(companyId);
-       String[] zjsValidStatuss=zjsValidStatus.substring(1,zjsValidStatus.length()-1).split(CommonConstant.FILE_SEPARATOR);
-       List<String> list =new ArrayList<>();
-       for(String status:zjsValidStatuss){
-           list.add(status);
-       }
-       return list;
+    public List<String> findZjsValidStatus(Integer companyId) {
+        String zjsValidStatus = companyDao.findZjsValidStatus(companyId);
+        String[] zjsValidStatuss = zjsValidStatus.substring(1, zjsValidStatus.length() - 1).split(CommonConstant.FILE_SEPARATOR);
+        List<String> list = new ArrayList<>();
+        for (String status : zjsValidStatuss) {
+            list.add(status);
+        }
+        return list;
     }
+
+    /**
+     *
+     * 功能描述: 
+     *  获取企业转介绍自定义设置
+     * @auther: Tt(yehuawei)
+     * @date:
+     * @param: 
+     * @return: 
+     */
+    @Override
+    public CompanyZjsSetDTO getCompanyZjsSet(int companyId) {
+        return companyDao.getCompanyZjsSet(companyId);
+    }
+
+    /**
+     * 功能描述:
+     * 公司钉钉转介绍提报自定义设置
+     *
+     * @auther: Tt(yehuawei)
+     * @date:
+     * @param:
+     * @return:
+     */
+    @Override
+    public void editCompanyZJSSet(String oldClientZjsSet, String qyZjsSet, int companyId) {
+        if (companyDao.editCompanyZJSSet(oldClientZjsSet, qyZjsSet, companyId) == 0)
+            throw new RException(ExceptionEnum.COMPANY_EDIT_ZJS_SET);
+    }
+
 
 }

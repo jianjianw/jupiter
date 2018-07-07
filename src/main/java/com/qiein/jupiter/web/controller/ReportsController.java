@@ -91,6 +91,29 @@ public class ReportsController extends BaseController {
     }
 
     /**
+     * 电商邀约客服详细报表
+     * */
+    @RequestMapping("get_dsyy_group_detail_reports")
+    public ResultInfo getDsyyGroupReports(@RequestParam("start") Integer start, @RequestParam("end") Integer end,@RequestParam("groupId") String groupId) {
+        if (NumUtil.isInValid(start) || NumUtil.isInValid(end)) {
+            return ResultInfoUtil.error(ExceptionEnum.START_TIME_OR_END_TIME_IS_NULL);
+        }
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        Map<String, Object> reqContent = new HashMap<>();
+
+        reqContent.put("start", start);
+        reqContent.put("end", end);
+        reqContent.put("groupid", groupId);
+        reqContent.put("companyid", currentLoginStaff.getCompanyId());
+        String json = crmBaseApi.doService(reqContent, "dsyyGroupDetailReports");
+
+        if (StringUtil.isEmpty(json) || !"100000".equalsIgnoreCase(JSONObject.parseObject(json).getJSONObject("response").getJSONObject("info").getString("code"))) {
+            return ResultInfoUtil.error(ExceptionEnum.UNKNOW_ERROR);
+        }
+        return ResultInfoUtil.success(JSONObject.parseObject(json).getJSONObject("response").getJSONObject("content").getJSONArray("data"));
+    }
+
+    /**
      * 修改联系方式日志
      */
     @PostMapping("/edit_client_phone_log")
@@ -209,6 +232,24 @@ public class ReportsController extends BaseController {
     }
 
     /**
+     * 电商推广-推广客资 详情统计
+     */
+    @GetMapping("/get_dscj_tg_client_info_detail_reports")
+    public ResultInfo getDscjTgClientInfoDetailReports(int start, int end, String typeIds, String sourceIds, String groupId) {
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        Map<String, Object> reqContent = new HashMap<>();
+        reqContent.put("start", start);
+        reqContent.put("end", end);
+        reqContent.put("companyid", currentLoginStaff.getCompanyId());
+        reqContent.put("sourceids", sourceIds);
+        reqContent.put("typeids", typeIds);
+        reqContent.put("groupid", groupId);
+        //请求juplat接口
+        String json = crmBaseApi.doService(reqContent, "dscjDetailCountReports");
+        return ResultInfoUtil.success(JsonFmtUtil.strContentToJsonObj(json).get("analysis"));
+    }
+
+    /*
      * 门市入店统计
      */
     @RequestMapping("/get_mszx_entry_reports")
