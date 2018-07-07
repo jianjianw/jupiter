@@ -195,10 +195,7 @@ public class ReportsController extends BaseController {
      * 电商推广-推广客资统计
      */
     @GetMapping("/get_dscj_tg_client_info_reports")
-    public ResultInfo getDscjTgClientInfoReports(@RequestParam("start") int start,
-                                                 @RequestParam("end") int end,
-                                                 @RequestParam("typeIds") String typeIds,
-                                                 @RequestParam("sourceIds") String sourceIds) {
+    public ResultInfo getDscjTgClientInfoReports(int start, int end,String typeIds,String sourceIds) {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         Map<String, Object> reqContent = new HashMap<>();
         reqContent.put("start", start);
