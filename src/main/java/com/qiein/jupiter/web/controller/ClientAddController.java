@@ -63,7 +63,7 @@ public class ClientAddController extends BaseController {
     }
 
     /**
-     * 录入转介绍客资
+     * 录入门市客资
      *
      * @return
      */

@@ -243,7 +243,7 @@ public class ClientAddServiceImpl implements ClientAddService {
             tpm.pushInfo(new ClientPushDTO(pushService, sourcePO.getPushRule(), staffPO.getCompanyId(),
                     JsonFmtUtil.strContentToJsonObj(addRstStr).getString("kzid"), clientVO.getTypeId(),
                     channelPO.getId(), channelPO.getTypeId(), companyPO.getOvertime(), companyPO.getKzInterval(), sourcePO.getId()));
-        }else if ("130019".equals(jsInfo.getString("code"))) {
+        } else if ("130019".equals(jsInfo.getString("code"))) {
             //重复客资，给邀约推送消息
             ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(jsInfo.getString("data"),
                     DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
@@ -270,23 +270,26 @@ public class ClientAddServiceImpl implements ClientAddService {
         reqContent.put("companyid", staffPO.getCompanyId());
         reqContent.put("collectorid", staffPO.getId());
         reqContent.put("collectorname", staffPO.getNickName());
-        //获取来源
-        SourcePO sourcePO = sourceDao.getSourceByNameAndType(staffPO.getCompanyId(), ChannelConstant.SHOP_NATURAL, ChannelConstant.SHOP_NATURAL_NAME);
-        if (sourcePO == null) {
+        try {
+            //获取来源
+            SourcePO sourcePO = sourceDao.getSourceByType(staffPO.getCompanyId(), ChannelConstant.SHOP_NATURAL);
+            if (sourcePO == null) {
+                throw new RException(ExceptionEnum.SHOP_SOURCE_ERROR);
+            }
+            reqContent.put("channelid", sourcePO.getChannelId());
+            reqContent.put("channelname", sourcePO.getChannelName());
+            reqContent.put("sourceid", sourcePO.getId());
+            reqContent.put("sourcename", sourcePO.getSrcName());
+            reqContent.put("srctype", sourcePO.getTypeId());
+        } catch (Exception e) {
             throw new RException(ExceptionEnum.SHOP_SOURCE_ERROR);
         }
-        reqContent.put("channelid", sourcePO.getChannelId());
-        reqContent.put("channelname", sourcePO.getChannelName());
-        reqContent.put("sourceid", sourcePO.getId());
-        reqContent.put("sourcename", sourcePO.getSrcName());
-        reqContent.put("srctype", sourcePO.getTypeId());
         reqContent.put("sex", clientVO.getSex());
         reqContent.put("kzname", clientVO.getKzName());
         reqContent.put("kzphone", clientVO.getKzPhone());
         reqContent.put("kzwechat", clientVO.getKzWechat());
         reqContent.put("kzqq", clientVO.getKzQq());
         reqContent.put("kzww", clientVO.getKzWw());
-
         reqContent.put("typeid", clientVO.getTypeId());
         reqContent.put("address",
                 StringUtil.isNotEmpty(clientVO.getAddress()) ? clientVO.getAddress()

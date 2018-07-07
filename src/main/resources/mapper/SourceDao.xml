@@ -384,14 +384,12 @@
     </update>
 
     <!--根据来源名，类型获取渠道-->
-    <select id="getSourceByNameAndType" parameterType="map" resultMap="baseMap">
+    <select id="getSourceByType" parameterType="map" resultMap="baseMap">
         SELECT
         <include refid="baseColumn"/>
         FROM
         hm_crm_source
-        WHERE
-        SRCNAME = #{srcName}
-        AND COMPANYID = #{companyId}
+        WHERE COMPANYID = #{companyId}
         AND TYPEID = #{typeId}
         AND ISSHOW = 1
     </select>

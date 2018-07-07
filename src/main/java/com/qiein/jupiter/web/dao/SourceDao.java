@@ -159,8 +159,7 @@ public interface SourceDao extends BaseDao<SourcePO> {
      *
      * @param companyId
      * @param typeId
-     * @param srcName
      * @return
      */
-    SourcePO getSourceByNameAndType(@Param("companyId") int companyId, @Param("typeId") int typeId, @Param("srcName") String srcName);
+    SourcePO getSourceByType(@Param("companyId") int companyId, @Param("typeId") int typeId);
 }
