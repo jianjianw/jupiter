@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.controller;
 
 import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
+import com.qiein.jupiter.constant.ClientZjsMenuConst;
 import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.util.NumUtil;
@@ -63,7 +64,6 @@ public class CompanyController extends BaseController {
 
     /**
      * 客服每日领单默认限额
-     *
      */
     @GetMapping("/limitdefault")
     public ResultInfo editCompanyLimitdefault(@NotEmptyStr @RequestParam("num") Integer num) {
@@ -73,7 +73,6 @@ public class CompanyController extends BaseController {
 
     /**
      * 客服领取客资指定时间不能再领取下一个
-     *
      */
     @GetMapping("/kzinterval")
     public ResultInfo editCompanyKzinterval(@NotEmptyStr @RequestParam("num") Integer num) {
@@ -206,7 +205,6 @@ public class CompanyController extends BaseController {
 
     /**
      * 修改待定是否计入有效
-     *
      */
     @GetMapping("edit_dd_is_valid")
     public ResultInfo editDsinvalId(@RequestParam("ddIsValid") boolean ddIsValid) {
@@ -225,6 +223,7 @@ public class CompanyController extends BaseController {
         StaffPO staff = getCurrentLoginStaff();
         return ResultInfoUtil.success(companyService.findDsinvalId(staff.getCompanyId()));
     }
+
     /**
      * 修改转介绍有效指标定义
      */
@@ -236,8 +235,38 @@ public class CompanyController extends BaseController {
     }
 
     @GetMapping("find_zjs_valid_status")
-    public ResultInfo findZjsValidStatus(){
+    public ResultInfo findZjsValidStatus() {
         StaffPO staff = getCurrentLoginStaff();
-        return  ResultInfoUtil.success(companyService.findZjsValidStatus(staff.getCompanyId()));
+        return ResultInfoUtil.success(companyService.findZjsValidStatus(staff.getCompanyId()));
+    }
+
+    /**
+     * 功能描述:
+     * 获取转介绍录入自定义菜单
+     *
+     * @auther: Tt(yehuawei)
+     * @date:
+     * @param:
+     * @return:
+     */
+    @GetMapping("/zjs_menu")
+    public ResultInfo getZjsMenu() {
+        return ResultInfoUtil.success(ClientZjsMenuConst.zjsMenu);
+    }
+
+    /**
+     * 功能描述:
+     * 公司钉钉转介绍提报自定义设置
+     *
+     * @auther: Tt(yehuawei)
+     * @date:
+     * @param:
+     * @return:
+     */
+    @PostMapping("/edit_zjs_set")
+    public ResultInfo editCompanyZJSSet(@RequestParam(value = "old", required = false) String oldClentZjsSet,
+                                        @RequestParam(value = "qy", required = false) String qyZjsSet) {
+        //TODO
+        return ResultInfoUtil.success();
     }
 }
