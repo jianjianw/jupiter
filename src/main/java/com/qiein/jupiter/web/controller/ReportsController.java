@@ -232,7 +232,7 @@ public class ReportsController extends BaseController {
     }
 
     /**
-     * 电商推广-推广客资统计
+     * 电商推广-推广客资 详情统计
      */
     @GetMapping("/get_dscj_tg_client_info_detail_reports")
     public ResultInfo getDscjTgClientInfoDetailReports(int start, int end, String typeIds, String sourceIds, String groupId) {
