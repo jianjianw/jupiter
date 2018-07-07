@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.constant.ClientZjsMenuConst;
 import com.qiein.jupiter.enums.TipMsgEnum;
@@ -269,10 +270,10 @@ public class CompanyController extends BaseController {
      * @return:
      */
     @PostMapping("/edit_zjs_set")
-    public ResultInfo editCompanyZJSSet(@RequestParam(value = "old", required = false) String oldClientZjsSet,
-                                        @RequestParam(value = "qy", required = false) String qyZjsSet) {
+    public ResultInfo editCompanyZJSSet(@RequestBody JSONObject jsonObject) {
+        System.out.println(jsonObject);
         //TODO
-        companyService.editCompanyZJSSet(oldClientZjsSet, qyZjsSet, getCurrentLoginStaff().getCompanyId());
+        companyService.editCompanyZJSSet(jsonObject.getString("old"), jsonObject.getString("qy"), getCurrentLoginStaff().getCompanyId());
         return ResultInfoUtil.success();
     }
 }
