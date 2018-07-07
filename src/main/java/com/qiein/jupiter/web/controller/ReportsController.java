@@ -195,7 +195,7 @@ public class ReportsController extends BaseController {
      * 电商推广-推广客资统计
      */
     @GetMapping("/get_dscj_tg_client_info_reports")
-    public ResultInfo getDscjTgClientInfoReports(int start, int end,String typeIds,String sourceIds) {
+    public ResultInfo getDscjTgClientInfoReports(int start, int end, String typeIds, String sourceIds) {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         Map<String, Object> reqContent = new HashMap<>();
         reqContent.put("start", start);
@@ -212,7 +212,7 @@ public class ReportsController extends BaseController {
      * 电商推广-推广客资统计
      */
     @GetMapping("/get_dscj_tg_client_info_detail_reports")
-    public ResultInfo getDscjTgClientInfoDetailReports(int start, int end,String typeIds,String sourceIds,String groupId) {
+    public ResultInfo getDscjTgClientInfoDetailReports(int start, int end, String typeIds, String sourceIds, String groupId) {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         Map<String, Object> reqContent = new HashMap<>();
         reqContent.put("start", start);
@@ -223,6 +223,23 @@ public class ReportsController extends BaseController {
         reqContent.put("groupid", groupId);
         //请求juplat接口
         String json = crmBaseApi.doService(reqContent, "dscjDetailCountReports");
+        return ResultInfoUtil.success(JsonFmtUtil.strContentToJsonObj(json).get("analysis"));
+    }
+
+    /*
+     * 门市入店统计
+     */
+    @RequestMapping("/get_mszx_entry_reports")
+    public ResultInfo getMszxEntryReports(int start, int end, String shopIds, String sourceIds) {
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        Map<String, Object> reqContent = new HashMap<>();
+        reqContent.put("start", start);
+        reqContent.put("end", end);
+        reqContent.put("shopids", shopIds);
+        reqContent.put("sourceids", sourceIds);
+        reqContent.put("companyid", currentLoginStaff.getCompanyId());
+        //请求juplat接口
+        String json = crmBaseApi.doService(reqContent, "mszxShopReports");
         return ResultInfoUtil.success(JsonFmtUtil.strContentToJsonObj(json).get("analysis"));
     }
 
