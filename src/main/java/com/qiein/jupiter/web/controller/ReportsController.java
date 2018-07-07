@@ -217,8 +217,8 @@ public class ReportsController extends BaseController {
         Map<String, Object> reqContent = new HashMap<>();
         reqContent.put("start", start);
         reqContent.put("end", end);
-        reqContent.put("shopIds", shopIds);
-        reqContent.put("sourceIds", sourceIds);
+        reqContent.put("shopids", shopIds);
+        reqContent.put("sourceids", sourceIds);
         reqContent.put("companyid", currentLoginStaff.getCompanyId());
         //请求juplat接口
         String json = crmBaseApi.doService(reqContent, "mszxShopReports");
