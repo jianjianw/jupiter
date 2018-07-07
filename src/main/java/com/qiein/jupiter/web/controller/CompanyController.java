@@ -15,6 +15,8 @@ import com.qiein.jupiter.web.service.CompanyService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 公司
@@ -228,9 +230,9 @@ public class CompanyController extends BaseController {
      * 修改转介绍有效指标定义
      */
     @GetMapping("/edit_zjs_valid_status")
-    public ResultInfo editZjsValidStatus(@RequestParam  String zjsValidStatus){
-        StaffPO staff=getCurrentLoginStaff();
-        companyService.editZjsValidStatus(staff.getCompanyId(),zjsValidStatus);
+    public ResultInfo editZjsValidStatus(@RequestParam String zjsValidStatus) {
+        StaffPO staff = getCurrentLoginStaff();
+        companyService.editZjsValidStatus(staff.getCompanyId(), zjsValidStatus);
         return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
 
@@ -251,7 +253,10 @@ public class CompanyController extends BaseController {
      */
     @GetMapping("/zjs_menu")
     public ResultInfo getZjsMenu() {
-        return ResultInfoUtil.success(ClientZjsMenuConst.zjsMenu);
+        Map<String,Object> resultMap = new HashMap<>();
+        resultMap.put("zjsMenu",ClientZjsMenuConst.zjsMenu);
+        resultMap.put("companySet",companyService.getCompanyZjsSet(getCurrentLoginStaff().getCompanyId()));
+        return ResultInfoUtil.success(resultMap);
     }
 
     /**
@@ -264,9 +269,10 @@ public class CompanyController extends BaseController {
      * @return:
      */
     @PostMapping("/edit_zjs_set")
-    public ResultInfo editCompanyZJSSet(@RequestParam(value = "old", required = false) String oldClentZjsSet,
+    public ResultInfo editCompanyZJSSet(@RequestParam(value = "old", required = false) String oldClientZjsSet,
                                         @RequestParam(value = "qy", required = false) String qyZjsSet) {
         //TODO
+        companyService.editCompanyZJSSet(oldClientZjsSet, qyZjsSet, getCurrentLoginStaff().getCompanyId());
         return ResultInfoUtil.success();
     }
 }
