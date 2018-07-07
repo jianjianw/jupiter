@@ -242,11 +242,11 @@
     </select>
 
     <!--公司钉钉转介绍提报自定义设置-->
-    <update id="editCompanyZJSSet" parameterType="String">
+    <update id="editCompanyZJSSet" parameterType="map">
         UPDATE hm_pub_company
         <set>
-            <if test="oldClient != null and oldClient != ''">LKZJSSET = #{oldClient}</if>
-            <if test="qy != null and qy != ''">QYZJSSET = #{qy}</if>
+            <if test="oldClient != null">LKZJSSET = #{oldClient},</if>
+            <if test="qy != null">QYZJSSET = #{qy}</if>
         </set>
         WHERE ID = #{companyId}
     </update>
