@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.dao;
 
+import com.qiein.jupiter.web.entity.dto.CompanyZjsSetDTO;
 import com.qiein.jupiter.web.entity.dto.DsinvalDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.vo.CompanyVO;
@@ -122,4 +123,26 @@ public interface CompanyDao extends BaseDao<CompanyPO> {
      * @return
      */
     String findZjsValidStatus(@Param("companyId")Integer companyId);
+
+    /**
+     *
+     * 功能描述: 
+     *
+     * @auther: Tt(yehuawei)
+     * @date:  
+     * @param: 
+     * @return: 
+     */
+    int editCompanyZJSSet(@Param("oldClient") String oldClientZjsSet, @Param("qy") String qyZjsSet,@Param("companyId") int companyId);
+
+    /**
+     *
+     * 功能描述: 
+     *  获取企业转介绍自定义设置
+     * @auther: Tt(yehuawei)
+     * @date:
+     * @param: 
+     * @return: 
+     */
+    CompanyZjsSetDTO getCompanyZjsSet(@Param("companyId") int companyId);
 }
