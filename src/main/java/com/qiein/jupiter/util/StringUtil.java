@@ -529,7 +529,7 @@ public class StringUtil {
 		return wechat.matches(regex);
 	}
 
-	// 判断ＱＱ号是否合法
+	// 判断QQ号是否合法
 	public static boolean isQQCorrect(String qq) {
 		qq = nullToStrTrim(qq);
 		String regex = "[1-9][0-9]{4,9}";
