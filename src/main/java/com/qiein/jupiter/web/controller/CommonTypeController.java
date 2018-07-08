@@ -112,7 +112,13 @@ public class CommonTypeController extends BaseController {
         return ResultInfoUtil.success(commonTypeSerivce.searchByChannelId(channelId, typeId, staffPO.getCompanyId(), groupName));
     }
 
-
+    /**
+     * 权重编辑
+     *
+     * @param ids
+     * @param weight
+     * @return
+     */
     @GetMapping("edit_weight")
     public ResultInfo editWeight(@RequestParam String ids, @RequestParam Integer weight) {
         commonTypeSerivce.editWeight(ids, weight);

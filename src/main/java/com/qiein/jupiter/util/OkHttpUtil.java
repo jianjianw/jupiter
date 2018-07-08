@@ -13,68 +13,69 @@ import okhttp3.Response;
 
 public class OkHttpUtil {
 
-	public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-	public static final OkHttpClient okHttpClient = new OkHttpClient().newBuilder().connectTimeout(10, TimeUnit.SECONDS)
-			.readTimeout(20, TimeUnit.SECONDS).build();
+    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+    public static final OkHttpClient okHttpClient = new OkHttpClient().newBuilder().connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(20, TimeUnit.SECONDS).build();
 
-	public static JSONObject doPost(String content, String url) throws IOException {
-		JSONObject reply = null;
-		RequestBody body = RequestBody.create(JSON, content);
-		Request request = new Request.Builder().url(url).post(body).build();
-		Response response = okHttpClient.newCall(request).execute();
-		try {
-			if (response.isSuccessful()) {
-				String ss = response.body().string();
-				reply = JSONObject.parseObject(ss);
-			} else {
-				// throw new IOException("Unexpected code " + response);
-			}
-		} catch (Exception e) {
-			// e.printStackTrace();
-		} finally {
-			if (response != null) {
-				response.body().close();
-				response.close();
-			}
-		}
-		return reply;
-	}
+    public static JSONObject doPost(String content, String url) throws IOException {
+        JSONObject reply = null;
+        RequestBody body = RequestBody.create(JSON, content);
+        Request request = new Request.Builder().url(url).post(body).build();
+        Response response = okHttpClient.newCall(request).execute();
+        try {
+            if (response.isSuccessful()) {
+                String ss = response.body().string();
+                reply = JSONObject.parseObject(ss);
+            } else {
+                // throw new IOException("Unexpected code " + response);
+            }
+        } catch (Exception e) {
+            // e.printStackTrace();
+        } finally {
+            if (response != null) {
+                response.body().close();
+                response.close();
+            }
+        }
+        return reply;
+    }
 
-	public static JSONObject doGet(String url) throws IOException {
-		JSONObject reply = null;
-		Request request = new Request.Builder().url(url).build();
+    public static JSONObject doGet(String url) throws IOException {
+        JSONObject reply = null;
+        Request request = new Request.Builder().url(url).build();
 
-		Response response = okHttpClient.newCall(request).execute();
-		try {
-			if (response.isSuccessful()) {
-				String ss = response.body().string();
-				reply = JSONObject.parseObject(ss);
-			} else {
-				// throw new IOException("Unexpected code " + response);
-			}
-		} catch (Exception e) {
+        Response response = okHttpClient.newCall(request).execute();
+        try {
+            if (response.isSuccessful()) {
+                String ss = response.body().string();
+                reply = JSONObject.parseObject(ss);
+            } else {
+                // throw new IOException("Unexpected code " + response);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (response != null)
+                try {
+                    response.body().close();
+                    response.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+        }
+        return reply;
+    }
 
-		} finally {
-			if (response != null)
-				try {
-					response.body().close();
-					response.close();
-				} catch (Exception e) {
-				}
-		}
-		return reply;
-	}
+    public static void main(String[] args) {
 
-	public static void main(String[] args) {
+        JSONObject json = null;
+        try {
+            json = doGet("http://localhost:8080/hm-crm/test/openStoreMsg");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println(json);
 
-		JSONObject json = null;
-		try {
-			json = doGet("http://localhost:8080/hm-crm/test/openStoreMsg");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		System.out.println(json);
-
-	}
+    }
 
 }

@@ -5,10 +5,7 @@ import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.constant.DictionaryConstant;
 import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
-import com.qiein.jupiter.util.NumUtil;
-import com.qiein.jupiter.util.ResultInfo;
-import com.qiein.jupiter.util.ResultInfoUtil;
-import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.entity.po.DictionaryPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.DictionaryVO;
@@ -244,20 +241,33 @@ public class DictionaryController extends BaseController {
                 dictionaryService.getCommonDicByType(currentLoginStaff.getCompanyId(), DictionaryConstant.YX_RANK));
     }
 
-
+    /**
+     * 编辑名称
+     *
+     * @param dictionaryPO
+     * @return
+     */
     @PostMapping("/edit_name")
     public ResultInfo editName(@RequestBody DictionaryPO dictionaryPO) {
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
+        ObjectUtil.objectStrParamTrim(dictionaryPO);
         dictionaryPO.setCompanyId(currentLoginStaff.getCompanyId());
         dictionaryService.editDictName(dictionaryPO);
         return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
 
+    /**
+     * 字典的停用启用
+     *
+     * @param dictionaryPO
+     * @return
+     */
     @PostMapping("/edit_show_flag")
     public ResultInfo editShowFlag(@RequestBody DictionaryPO dictionaryPO) {
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
+        ObjectUtil.objectStrParamTrim(dictionaryPO);
         dictionaryPO.setCompanyId(currentLoginStaff.getCompanyId());
         dictionaryService.editDictShowFlag(dictionaryPO);
         return ResultInfoUtil.success(TipMsgEnum.OPERATE_SUCCESS);

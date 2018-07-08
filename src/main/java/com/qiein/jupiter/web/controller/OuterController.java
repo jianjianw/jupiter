@@ -15,6 +15,9 @@ import com.qiein.jupiter.web.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * 开放端口 不需要验证
+ */
 @RestController
 @RequestMapping("/outer")
 public class OuterController {
