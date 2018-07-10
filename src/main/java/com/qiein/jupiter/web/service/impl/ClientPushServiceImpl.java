@@ -719,7 +719,6 @@ public class ClientPushServiceImpl implements ClientPushService {
         if (NumUtil.isInValid(calcRange)) {
             calcRange = CommonConstant.ALLOT_RANGE_DEFAULT;
         }
-
         // 获取从当前时间往前退一个小时内所有客服对该渠道和拍摄地的客资的领取情况
         List<StaffPushDTO> staffAllotList = staffDao.listStaffPushDTOByAlloted(DBSplitUtil.getInfoTabName(companyId),
                 companyId, channelId, typeId, calcRange, staffOnlineList);
