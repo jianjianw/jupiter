@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 /**
- * 代理访问
+ * 代理访问，主要是解决前端无法跨域获取的问题
  *
  * @Author: shiTao
  */

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/cost")
 @Validated
-public class CostController extends BaseController{
+public class CostController extends BaseController {
     @Autowired
     private CostService costService;
 
@@ -27,35 +27,42 @@ public class CostController extends BaseController{
      * 获取花费页面信息
      */
     @GetMapping("cost_list")
-    public ResultInfo costList(@RequestParam String month){
-        StaffPO staff=getCurrentLoginStaff();
-        return ResultInfoUtil.success(costService.costList(month,staff.getCompanyId()));
+    public ResultInfo costList(@RequestParam String month) {
+        StaffPO staff = getCurrentLoginStaff();
+        return ResultInfoUtil.success(costService.costList(month, staff.getCompanyId()));
     }
+
     /**
      * 花费修改
      */
     @PostMapping("edit_cost")
-    public ResultInfo editCost(@RequestBody CostPO costPO){
-        StaffPO staff=getCurrentLoginStaff();
+    public ResultInfo editCost(@RequestBody CostPO costPO) {
+        StaffPO staff = getCurrentLoginStaff();
         costPO.setCompanyId(staff.getCompanyId());
-        if(StringUtil.haveEmpty(costPO.getId())){
-            int id=costService.insert(costPO);
-            addCostLog(staff,costPO.getId(),"新增"+costPO.getCostTime()+"花费："+costPO.getCost());
-        }else{
+        if (StringUtil.haveEmpty(costPO.getId())) {
+            int id = costService.insert(costPO);
+            addCostLog(staff, costPO.getId(), "新增" + costPO.getCostTime() + "花费：" + costPO.getCost());
+        } else {
             costService.editCost(costPO);
-            addCostLog(staff,costPO.getId(),"修改"+costPO.getCostTime()+"花费金额为："+costPO.getCost());
+            addCostLog(staff, costPO.getId(), "修改" + costPO.getCostTime() + "花费金额为：" + costPO.getCost());
         }
         return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
 
-    // 添加花费记录
-    private void addCostLog(StaffPO staff, Integer id,String memo) {
+    /**
+     * 添加花费记录
+     *
+     * @param staff
+     * @param id
+     * @param memo
+     */
+    private void addCostLog(StaffPO staff, Integer id, String memo) {
         CostLogPO costLog = new CostLogPO();
         costLog.setCompanyId(staff.getCompanyId());
         costLog.setCostId(id);
         costLog.setOperaId(staff.getId());
         costLog.setOperaName(staff.getNickName());
         costLog.setMemo(memo);
-       costService.createCostLog(costLog);
+        costService.createCostLog(costLog);
     }
 }

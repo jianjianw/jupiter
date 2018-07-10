@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * 页面配置
+ * 页面table 表头的配置
  */
 @RestController
 @RequestMapping("/page_config")
