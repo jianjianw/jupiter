@@ -261,4 +261,14 @@
         ID = #{companyId}
     </select>
 
+    <!--获取平均分配，默认时间范围-->
+    <select id="getAvgDefaultTime" parameterType="map" resultType="java.lang.Integer">
+      SELECT
+        AVGTIME
+      FROM
+        hm_pub_company
+      WHERE
+        ID = #{companyId}
+    </select>
+
 </mapper>

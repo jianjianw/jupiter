@@ -112,37 +112,46 @@ public interface CompanyDao extends BaseDao<CompanyPO> {
 
     /**
      * 修改转介绍有效指标定义
+     *
      * @param companyId
      * @param zjsValidStatus
      */
-    void editZjsValidStatus(@Param("companyId")Integer companyId,@Param("zjsValidStatus")String zjsValidStatus);
+    void editZjsValidStatus(@Param("companyId") Integer companyId, @Param("zjsValidStatus") String zjsValidStatus);
 
     /**
      * 转介绍有效指标定义
+     *
      * @param companyId
      * @return
      */
-    String findZjsValidStatus(@Param("companyId")Integer companyId);
+    String findZjsValidStatus(@Param("companyId") Integer companyId);
 
     /**
+     * 功能描述:
      *
-     * 功能描述: 
-     *
-     * @auther: Tt(yehuawei)
-     * @date:  
-     * @param: 
-     * @return: 
-     */
-    int editCompanyZJSSet(@Param("oldClient") String oldClientZjsSet, @Param("qy") String qyZjsSet,@Param("companyId") int companyId);
-
-    /**
-     *
-     * 功能描述: 
-     *  获取企业转介绍自定义设置
      * @auther: Tt(yehuawei)
      * @date:
-     * @param: 
-     * @return: 
+     * @param:
+     * @return:
+     */
+    int editCompanyZJSSet(@Param("oldClient") String oldClientZjsSet, @Param("qy") String qyZjsSet, @Param("companyId") int companyId);
+
+    /**
+     * 功能描述:
+     * 获取企业转介绍自定义设置
+     *
+     * @auther: Tt(yehuawei)
+     * @date:
+     * @param:
+     * @return:
      */
     CompanyZjsSetDTO getCompanyZjsSet(@Param("companyId") int companyId);
+
+    /**
+     * 获取平均分配默认时间范围
+     *
+     * @param companyId
+     * @return
+     */
+    int getAvgDefaultTime(@Param("companyId") int companyId);
 }

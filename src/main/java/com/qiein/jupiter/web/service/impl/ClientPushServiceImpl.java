@@ -210,7 +210,10 @@ public class ClientPushServiceImpl implements ClientPushService {
         if (CollectionUtils.isEmpty(staffOnlineList)) {
             return null;
         }
-        int calcRange = CommonConstant.ALLOT_RANGE_DEFAULT;
+        int calcRange = companyDao.getAvgDefaultTime(companyId);
+        if (NumUtil.isInValid(calcRange)) {
+            calcRange = CommonConstant.ALLOT_RANGE_DEFAULT;
+        }
         // 2.获取从当前时间往前退一个小时内，所有指定客服的领取情况
         List<StaffPushDTO> appointerList = staffDao.getPushAppointByRole(DBSplitUtil.getInfoTabName(companyId), companyId, srcId, calcRange, staffOnlineList);
 
@@ -255,7 +258,10 @@ public class ClientPushServiceImpl implements ClientPushService {
      * @return
      */
     private List<String> getGroupAvgGroup(int companyId, int srcId, String type) {
-        int calcRange = CommonConstant.ALLOT_RANGE_DEFAULT;
+        int calcRange = companyDao.getAvgDefaultTime(companyId);
+        if (NumUtil.isInValid(calcRange)) {
+            calcRange = CommonConstant.ALLOT_RANGE_DEFAULT;
+        }
         //1.获取可以领取的小组集合
         List<String> groupIdList = staffDao.getGroupAvgGroupList(companyId, srcId, type);
         //2.获取从当前时间往前退一个小时内，所有指定小组的领取情况
@@ -296,7 +302,10 @@ public class ClientPushServiceImpl implements ClientPushService {
      * @return
      */
     private StaffPushDTO getGroupAvgAppoint(int companyId, int srcId, String type, String groupId) {
-        int calcRange = CommonConstant.ALLOT_RANGE_DEFAULT;
+        int calcRange = companyDao.getAvgDefaultTime(companyId);
+        if (NumUtil.isInValid(calcRange)) {
+            calcRange = CommonConstant.ALLOT_RANGE_DEFAULT;
+        }
         //1.获取可以领取的客服集合
         List<StaffPushDTO> staffOnlineList = staffDao.getGroupAvgAppointList(companyId, type, groupId);
         if (CollectionUtils.isEmpty(staffOnlineList)) {
@@ -706,7 +715,10 @@ public class ClientPushServiceImpl implements ClientPushService {
             return null;
         }
 
-        int calcRange = CommonConstant.ALLOT_RANGE_DEFAULT;
+        int calcRange = companyDao.getAvgDefaultTime(companyId);
+        if (NumUtil.isInValid(calcRange)) {
+            calcRange = CommonConstant.ALLOT_RANGE_DEFAULT;
+        }
 
         // 获取从当前时间往前退一个小时内所有客服对该渠道和拍摄地的客资的领取情况
         List<StaffPushDTO> staffAllotList = staffDao.listStaffPushDTOByAlloted(DBSplitUtil.getInfoTabName(companyId),
