@@ -95,7 +95,7 @@ public class ReportsController extends BaseController {
      * 电商邀约客服详细报表
      */
     @RequestMapping("get_dsyy_group_detail_reports")
-    public ResultInfo getDsyyGroupDetailReports(@RequestParam("start") Integer start, @RequestParam("end") Integer end, @RequestParam("groupId") String groupId) {
+    public ResultInfo getDsyyGroupDetailReports(@RequestParam("start") Integer start, @RequestParam("end") Integer end,@RequestParam(value = "groupId",required = false) String groupId) {
         if (NumUtil.isInValid(start) || NumUtil.isInValid(end)) {
             return ResultInfoUtil.error(ExceptionEnum.START_TIME_OR_END_TIME_IS_NULL);
         }
@@ -118,7 +118,7 @@ public class ReportsController extends BaseController {
      * 电商邀约来源详细报表
      */
     @RequestMapping("get_dsyy_group_source_reports")
-    public ResultInfo getDsyyGroupSourceReports(@RequestParam("start") Integer start, @RequestParam("end") Integer end, @RequestParam("groupId") String groupId) {
+    public ResultInfo getDsyyGroupSourceReports(@RequestParam("start") Integer start, @RequestParam("end") Integer end,@RequestParam(value = "groupId",required = false) String groupId) {
         if (NumUtil.isInValid(start) || NumUtil.isInValid(end)) {
             return ResultInfoUtil.error(ExceptionEnum.START_TIME_OR_END_TIME_IS_NULL);
         }
