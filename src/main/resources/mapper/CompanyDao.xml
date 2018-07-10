@@ -150,6 +150,8 @@
         <include refid="baseColumn"/>
         FROM
         hm_pub_company
+        WHERE ISDEL = 0
+        AND ISLOCK = 0
     </select>
 
     <!-- 更改咨询类型 -->
