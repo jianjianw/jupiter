@@ -92,6 +92,7 @@ public class JsonFmtUtil {
             ClientExportVO vo = new ClientExportVO();
             vo.setId(info.getIntValue("id"));
             vo.setGroupName(info.getString("groupname"));
+            vo.setKzSex(info.getString("sex"));
             vo.setCreateTime(TimeUtil.intMillisToTimeStr(info.getIntValue("createtime")));
             vo.setReceiveTime(TimeUtil.intMillisToTimeStr(info.getIntValue("receivetime")));
             vo.setReceivePeriod(getReceivePeriod(info.getIntValue("createtime"), info.getIntValue("receivetime")));//领取周期
