@@ -42,10 +42,11 @@ public class ClientExportVO implements Serializable {
      */
     @Excel(name = "姓名", width = 20, height = 6)
     private String kzName;
-
-    @Excel(name = "客资性别", width = 20, height = 6)
+    /**
+     * 性别
+     * */
+    @Excel(name = "性别", width = 10, height = 6)
     private String kzSex;
-
     /**
      * 客资电话
      */
