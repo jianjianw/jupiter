@@ -9,7 +9,7 @@ import java.util.Map;
  * @Date: 2018/7/7 10:49
  */
 public class ClientZjsMenuConst {
-    public static Map<String,Object> zjsMenu = new HashMap<>();
+    public static Map<String,String> zjsMenu = new HashMap<>();
 
     static {
         zjsMenu.put("kzname","客资姓名");
