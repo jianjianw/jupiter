@@ -295,11 +295,16 @@ public class StaffController extends BaseController {
         map.put("oldstaffname", staffChangeVO.getOldStaffName());
 
         // 直接转发到平台
-        String addRstStr = crmBaseApi.doService(map, "clientMoveLp");
-        JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
-        if (!"100000".equals(jsInfo.getString("code")))
-            throw new RException(jsInfo.getString("msg"));
-        return ResultInfoUtil.success("交接成功");
+        String json = crmBaseApi.doService(map, "clientMoveLp");
+        System.out.println("asd: "+json);
+        JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(json);
+//        if (!"100000".equals(jsInfo.getString("code")))
+//            throw new RException(jsInfo.getString("msg"));
+
+        if (StringUtil.isEmpty(json) || !"100000".equalsIgnoreCase(JSONObject.parseObject(json).getJSONObject("response").getJSONObject("info").getString("code"))) {
+            return ResultInfoUtil.error(ExceptionEnum.UNKNOW_ERROR);
+        }
+        return ResultInfoUtil.success();
     }
 
     /**
