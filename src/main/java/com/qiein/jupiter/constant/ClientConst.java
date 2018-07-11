@@ -39,4 +39,14 @@ public class ClientConst {
 	public static final String KZ_BZ_WATING_NAME = "待定";
 	public static final String KZ_BZ_INVALID_NAME= "无效";
 
+	/**
+	 * 性别
+	 * */
+	public static final String KZ_SEX_UNKNOWN = "未知";
+	public static final String KZ_SEX_UNKNOWN_NUM = "0";
+	public static final String KZ_SEX_BODY = "男";
+	public static final String KZ_SEX_BODY_NUM = "1";
+	public static final String KZ_SEX_GIRL = "女";
+	public static final String KZ_SEX_GIRL_NUM = "2";
+
 }
