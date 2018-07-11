@@ -66,7 +66,7 @@ public class ClientExportVO implements Serializable {
     /**
      * 拍摄地名称
      */
-    @Excel(name = "拍摄地", width = 10, height = 6)
+    @Excel(name = "门店", width = 10, height = 6)
     private String shopName;
     /**
      * 渠道名
