@@ -49,6 +49,19 @@ public class LoginUserVO implements Serializable {
      */
     private String mac;
 
+    /**
+     * 是否移动端
+     */
+    private boolean isMobile;
+
+    public boolean isMobile() {
+        return isMobile;
+    }
+
+    public void setMobile(boolean mobile) {
+        isMobile = mobile;
+    }
+
     public String getMac() {
         return mac;
     }
