@@ -65,6 +65,15 @@ public class CompanyVO extends CompanyPO {
      */
     private List<MenuVO> menuList;
 
+    private boolean kfEditJdRst;
+
+    public boolean isKfEditJdRst() {
+        return kfEditJdRst;
+    }
+
+    public void setKfEditJdRst(boolean kfEditJdRst) {
+        this.kfEditJdRst = kfEditJdRst;
+    }
 
     public boolean isSsolimit() {
         return ssolimit;
