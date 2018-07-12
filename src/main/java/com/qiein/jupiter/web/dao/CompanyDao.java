@@ -154,4 +154,8 @@ public interface CompanyDao extends BaseDao<CompanyPO> {
      * @return
      */
     int getAvgDefaultTime(@Param("companyId") int companyId);
+    /**
+     * 客服编辑接待结果
+     */
+    void editKfEditJdRst(@Param("kfEditJdRst")boolean kfEditJdRst,@Param("companyId")Integer companyId);
 }

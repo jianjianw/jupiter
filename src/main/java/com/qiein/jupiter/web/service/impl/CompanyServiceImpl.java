@@ -281,5 +281,12 @@ public class CompanyServiceImpl implements CompanyService {
             throw new RException(ExceptionEnum.COMPANY_EDIT_ZJS_SET);
     }
 
+    /**
+     * 客服编辑接待结果
+     */
+    public void editKfEditJdRst(boolean kfEditJdRst,Integer companyId){
+        companyDao.editKfEditJdRst(kfEditJdRst,companyId);
+    }
+
 
 }

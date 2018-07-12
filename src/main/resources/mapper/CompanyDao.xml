@@ -272,5 +272,8 @@
       WHERE
         ID = #{companyId}
     </select>
+    <update id="editKfEditJdRst">
+        UPDATE hm_pub_company SET KFEDITJDRST=#{kfEditJdRst} where ID=#{companyId}
+    </update>
 
 </mapper>

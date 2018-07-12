@@ -276,4 +276,15 @@ public class CompanyController extends BaseController {
         companyService.editCompanyZJSSet(jsonObject.getString("old"), jsonObject.getString("qy"), getCurrentLoginStaff().getCompanyId());
         return ResultInfoUtil.success();
     }
+    /**
+     * 客服编辑接待结果
+     */
+    @GetMapping("/edit_kf_edit_jd_rst")
+    public ResultInfo editKfEditJdRst(@RequestParam boolean kfEditJdRst){
+        StaffPO staff=getCurrentLoginStaff();
+        companyService.editKfEditJdRst(kfEditJdRst,staff.getCompanyId());
+        return ResultInfoUtil.success(kfEditJdRst ? TipMsgEnum.OPERATE_SUCCESS : TipMsgEnum.CLOSE_SUCCESS);
+    }
+
+
 }

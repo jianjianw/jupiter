@@ -176,4 +176,9 @@ public interface CompanyService {
      * @param qyZjsSet
      */
     void editCompanyZJSSet(String oldClientZjsSet,String qyZjsSet, int companyId);
+
+    /**
+     * 客服编辑接待结果
+     */
+    void editKfEditJdRst(boolean kfEditJdRst,Integer companyId);
 }
