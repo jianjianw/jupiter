@@ -46,6 +46,10 @@ public class GroupPO extends BaseEntity {
      * 门店id
      * */
     private Integer shopId;
+    /**
+     * 排序
+     */
+    private Integer priority;
 
     public Integer getShopId() {
         return shopId;
@@ -109,5 +113,13 @@ public class GroupPO extends BaseEntity {
 
     public void setChiefNames(String chiefNames) {
         this.chiefNames = chiefNames;
+    }
+
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Integer priority) {
+        this.priority = priority;
     }
 }

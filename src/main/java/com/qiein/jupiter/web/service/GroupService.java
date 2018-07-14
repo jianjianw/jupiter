@@ -125,4 +125,15 @@ public interface GroupService {
      * @return
      */
     List<GroupVO> getDepartGroupListByType(int companyId, String role);
+
+    /**
+     * 修改排序
+     *
+     * @param fId
+     * @param fPriority
+     * @param sId
+     * @param sPriority
+     * @param companyId
+     */
+    void editProiority(Integer fId, Integer fPriority, Integer sId, Integer sPriority, Integer companyId);
 }

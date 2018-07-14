@@ -10,6 +10,7 @@
         <result column="COMPANYID" property="companyId" jdbcType="VARCHAR"/>
         <result column="CHIEFIDS" property="chiefIds" jdbcType="VARCHAR"/>
         <result column="CHIEFNAMES" property="chiefNames" jdbcType="VARCHAR"/>
+        <result column="PRIORITY" property="priority" jdbcType="INTEGER"/>
     </resultMap>
 
     <resultMap id="GroupVOMap" type="com.qiein.jupiter.web.entity.vo.GroupVO" extends="baseMap">
@@ -52,7 +53,7 @@
 
 
     <sql id="baseColumn">
-        ID, GROUPID, GROUPNAME, PARENTID, GROUPTYPE, COMPANYID,CHIEFIDS,CHIEFNAMES
+        ID, GROUPID, GROUPNAME, PARENTID, GROUPTYPE, COMPANYID,CHIEFIDS,CHIEFNAMES,PRIORITY
     </sql>
 
     <select id="getById" parameterType="java.lang.Integer" resultMap="baseMap">
@@ -80,9 +81,9 @@
     <insert id="insert" parameterType="com.qiein.jupiter.web.entity.po.GroupPO" useGeneratedKeys="true"
             keyProperty="id">
         INSERT INTO hm_pub_group
-        (GROUPID, GROUPNAME, PARENTID, GROUPTYPE, COMPANYID,CHIEFIDS,CHIEFNAMES,SHOPID)
-        VALUES (#{groupId}, #{groupName}, #{parentId}, #{groupType}, #{companyId},
-        #{chiefIds},#{chiefNames},#{shopId})
+        (GROUPID, GROUPNAME, PARENTID, GROUPTYPE, COMPANYID,CHIEFIDS,CHIEFNAMES,SHOPID,PRIORITY)
+        SELECT #{groupId}, #{groupName}, #{parentId}, #{groupType}, #{companyId},
+        #{chiefIds},#{chiefNames},#{shopId},(SELECT IFNULL(MAX(PRIORITY),0)+1 FROM hm_pub_group WHERE COMPANYID = #{companyId})
     </insert>
 
     <update id="update">
@@ -123,7 +124,7 @@
     <!--获取公司所有部门和小组-->
     <select id="getCompanyAllDeptList" parameterType="map" resultMap="GroupVOMap">
         SELECT
-            par.ID, par.GROUPID, par.GROUPNAME, par.PARENTID, par.GROUPTYPE, par.COMPANYID,par.CHIEFIDS,par.CHIEFNAMES,
+            par.ID, par.GROUPID, par.GROUPNAME, par.PARENTID, par.GROUPTYPE, par.COMPANYID,par.CHIEFIDS,par.CHIEFNAMES,par.PRIORITY,
              grp.ID AS GID,grp.GROUPID AS GRPID, grp.GROUPNAME AS GRPNAME,grp.PARENTID AS PARID,grp.GROUPTYPE AS TYPE, grp.COMPANYID AS CMPID, grp.CHIEFIDS AS CIDS, grp.CHIEFNAMES AS CNAMES,grp.SHOPID
         FROM
             hm_pub_group par
@@ -324,4 +325,13 @@
         AND rela.STAFFID = #{staffId}
         AND grp.GROUPTYPE = #{type}
     </select>
+
+    <!--修改排序-->
+    <update id="updatePriority" parameterType="Integer">
+        UPDATE
+            hm_pub_group
+        SET PRIORITY = #{priority}
+        WHERE
+            COMPANYID = #{companyId} AND ID = #{id}
+    </update>
 </mapper>

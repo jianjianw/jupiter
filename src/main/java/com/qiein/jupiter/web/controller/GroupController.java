@@ -202,4 +202,10 @@ public class GroupController extends BaseController {
         return ResultInfoUtil.success(groupService.getDepartGroupListByType(staff.getCompanyId(), role));
     }
 
+    @GetMapping("/priority")
+    public ResultInfo editPriority( Integer fId, Integer fPriority, Integer sId, Integer sPriority) {
+        groupService.editProiority(fId, fPriority, sId, sPriority, getCurrentLoginStaff().getCompanyId());
+        return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
+    }
+
 }

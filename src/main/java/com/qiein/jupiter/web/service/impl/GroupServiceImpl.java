@@ -662,4 +662,11 @@ public class GroupServiceImpl implements GroupService {
     public List<GroupVO> getDepartGroupListByType(int companyId, String role) {
         return groupDao.getDepartGroupListByType(companyId, role);
     }
+
+    @Override
+    @Transactional
+    public void editProiority(Integer fId, Integer fPriority, Integer sId, Integer sPriority, Integer companyId) {
+        groupDao.updatePriority(fId, fPriority, companyId);
+        groupDao.updatePriority(sId, sPriority, companyId);
+    }
 }
