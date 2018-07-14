@@ -23,7 +23,7 @@ public class ClientZjsMenuConst {
         zjsMenu.put("matewechat","配偶微信");
         zjsMenu.put("mateqq","配偶qq");
         zjsMenu.put("shopname","门店名称");
-        zjsMenu.put("zxstyle","咨询方式")
+        zjsMenu.put("zxstyle","咨询方式");
         zjsMenu.put("typeid","拍摄类型");
         zjsMenu.put("address","客人地址");
         zjsMenu.put("remark","备注");
