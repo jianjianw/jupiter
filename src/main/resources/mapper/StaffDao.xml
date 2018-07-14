@@ -644,6 +644,7 @@
             hm_pub_group gg ON g.PARENTID = gg.GROUPID
         WHERE
             s.COMPANYID = #{companyId} AND s.ID = #{staffId}
+        LIMIT 0,1
     </select>
 
     <!-- 添加到ip白名单 -->
