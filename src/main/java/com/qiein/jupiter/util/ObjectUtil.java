@@ -2,6 +2,9 @@ package com.qiein.jupiter.util;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import com.qiein.jupiter.constant.ObjectTypeConstant;
 
@@ -25,10 +28,15 @@ public class ObjectUtil {
      * 把对象中属于string类型的参数 trim
      */
     public static void objectStrParamTrim(Object obj) {
-        Class<?> cls = obj.getClass();
-        Field[] fields = cls.getDeclaredFields();
+        Class<?> tempClass = obj.getClass();
+        List<Field> fieldList = new ArrayList<>();
+        //递归获取所有的类
+        while (tempClass != null) {//当父类为null的时候说明到达了最上层的父类(Object类).
+            fieldList.addAll(Arrays.asList(tempClass.getDeclaredFields()));
+            tempClass = tempClass.getSuperclass(); //得到父类,然后赋给自己
+        }
         // 遍历对象
-        for (Field f : fields) {
+        for (Field f : fieldList) {
             f.setAccessible(true);
             Type genericType = f.getGenericType();
             // 如果为空，或者不是String 类型，跳出
