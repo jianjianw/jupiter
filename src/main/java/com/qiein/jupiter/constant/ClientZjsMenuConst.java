@@ -23,10 +23,7 @@ public class ClientZjsMenuConst {
         zjsMenu.put("matewechat","配偶微信");
         zjsMenu.put("mateqq","配偶qq");
         zjsMenu.put("shopname","门店名称");
-        zjsMenu.put("zxstyle","咨询方式");
-        zjsMenu.put("keyword","关键字");
-        zjsMenu.put("adaddress","广告着陆页");
-        zjsMenu.put("adid","广告ID");
+        zjsMenu.put("zxstyle","咨询方式")
         zjsMenu.put("typeid","拍摄类型");
         zjsMenu.put("address","客人地址");
         zjsMenu.put("remark","备注");
@@ -36,6 +33,9 @@ public class ClientZjsMenuConst {
         zjsMenu.put("yptime","预拍时间");
 //        zjsMenu.put("channelname","所属渠道");
 //        zjsMenu.put("sourcename","所属来源");
-//        zjsMenu.put("srctype","来源类型");
+//        zjsMenu.put("srctype","来源类型");;
+////        zjsMenu.put("keyword","关键字");
+////        zjsMenu.put("adaddress","广告着陆页");
+////        zjsMenu.put("adid","广告ID");
     }
 }
