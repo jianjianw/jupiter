@@ -223,7 +223,15 @@ public class CompanyServiceImpl implements CompanyService {
      * @return
      */
     public DsinvalDTO findDsinvalId(@Param("companyId") Integer companyId) {
-        return companyDao.findDsinvalId(companyId);
+        DsinvalDTO dsinvalDTO=companyDao.findDsinvalId(companyId);
+        String zjsValidStatus = dsinvalDTO.getZjsValidStatus();
+        String[] zjsValidStatuss = zjsValidStatus.substring(1, zjsValidStatus.length() - 1).split(CommonConstant.FILE_SEPARATOR);
+        List<String> list = new ArrayList<>();
+        for (String status : zjsValidStatuss) {
+            list.add(status);
+        }
+        dsinvalDTO.setList(list);
+        return dsinvalDTO;
     }
 
     /**
@@ -234,22 +242,6 @@ public class CompanyServiceImpl implements CompanyService {
      */
     public void editZjsValidStatus(Integer companyId, String zjsValidStatus) {
         companyDao.editZjsValidStatus(companyId, zjsValidStatus);
-    }
-
-    /**
-     * 转介绍有效指标定义
-     *
-     * @param companyId
-     * @return
-     */
-    public List<String> findZjsValidStatus(Integer companyId) {
-        String zjsValidStatus = companyDao.findZjsValidStatus(companyId);
-        String[] zjsValidStatuss = zjsValidStatus.substring(1, zjsValidStatus.length() - 1).split(CommonConstant.FILE_SEPARATOR);
-        List<String> list = new ArrayList<>();
-        for (String status : zjsValidStatuss) {
-            list.add(status);
-        }
-        return list;
     }
 
     /**
@@ -279,6 +271,13 @@ public class CompanyServiceImpl implements CompanyService {
     public void editCompanyZJSSet(String oldClientZjsSet, String qyZjsSet, int companyId) {
         if (companyDao.editCompanyZJSSet(oldClientZjsSet, qyZjsSet, companyId) == 0)
             throw new RException(ExceptionEnum.COMPANY_EDIT_ZJS_SET);
+    }
+
+    /**
+     * 客服编辑接待结果
+     */
+    public void editKfEditJdRst(boolean kfEditJdRst,Integer companyId){
+        companyDao.editKfEditJdRst(kfEditJdRst,companyId);
     }
 
 

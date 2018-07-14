@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.qiein.jupiter.constant.ClientConst;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.constant.DictionaryConstant;
 import com.qiein.jupiter.constant.PmsConstant;
@@ -133,6 +134,16 @@ public class JsonFmtUtil {
             vo.setCity(getCity(info.getString("address")));
             vo.setKeyWord(info.getString("keyword"));
             vo.setInvalidLabel(info.getString("invalidlabel"));
+            //设置性别
+            if(StringUtil.isNotEmpty(info.getString("sex")) && ClientConst.KZ_SEX_UNKNOWN_NUM.equalsIgnoreCase(info.getString("sex"))){
+                vo.setKzSex(ClientConst.KZ_SEX_UNKNOWN);
+            }else if (StringUtil.isNotEmpty(info.getString("sex")) && ClientConst.KZ_SEX_BODY_NUM.equalsIgnoreCase(info.getString("sex"))){
+                vo.setKzSex(ClientConst.KZ_SEX_BODY);
+            }else if(StringUtil.isNotEmpty(info.getString("sex")) && ClientConst.KZ_SEX_GIRL_NUM.equalsIgnoreCase(info.getString("sex"))){
+                vo.setKzSex(ClientConst.KZ_SEX_GIRL);
+            }else{
+                vo.setKzSex(ClientConst.KZ_SEX_UNKNOWN);
+            }
             clientList.add(vo);
         }
         return clientList;

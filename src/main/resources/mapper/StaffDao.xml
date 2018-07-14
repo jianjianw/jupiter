@@ -506,7 +506,7 @@
         UPDATE hm_pub_staff_detail
         SET LASTLOGINTIME = UNIX_TIMESTAMP(now()),
             LASTLOGINIP   = #{lastLoginIp},
-            IPLOCATION = #{ipLocation}
+            IPLOCATION    = #{ipLocation}
         WHERE ID = #{id}
               AND COMPANYID = #{companyId}
     </update>
@@ -514,7 +514,7 @@
     <!--更新员工的下线情况-->
     <update id="updateStaffLogoutInfo">
         UPDATE hm_pub_staff_detail
-            SET LASTLOGOUTTIME = UNIX_TIMESTAMP(now()),
+        SET LASTLOGOUTTIME = UNIX_TIMESTAMP(now()),
             LASTLOGOUTIP   = #{lastLogoutIp}
         WHERE ID = #{id}
               AND COMPANYID = #{companyId}
@@ -559,7 +559,7 @@
             AND INSTR(sf.LIMITSHOPIDS, CONCAT(',', #{typeId}, ',')) = 0
             AND (UNIX_TIMESTAMP(NOW()) - LASTPUSHTIME) &gt; #{interval}
             AND sf.TODAYNUM &lt; LIMITDAY
-        ORDER BY sf.LASTPUSHTIME ASC;    
+        ORDER BY sf.LASTPUSHTIME ASC;
     </select>
 
     <!--获取客服指定时间内渠道和拍摄地客资的领取情况-->
@@ -700,126 +700,153 @@
         WHERE id = #{id}
               AND COMPANYID = #{companyId}
     </update>
-    
+
     <!-- 获取员工今日分配的客资数 -->
     <select id="getTodayKzNum" parameterType="map" resultType="Integer">
-        SELECT
-			COUNT(info.KZID) NUM
-		FROM
-			${infoTabName} info
-		LEFT JOIN hm_crm_channel channel ON info.CHANNELID = channel.ID AND channel.COMPANYID = #{companyId}
-		WHERE
-			info.ISDEL = 0
-		AND info.COMPANYID = #{companyId}
-		AND info.APPOINTORID = #{staffId}
-		AND info.STATUSID != 0
-		AND info.STATUSID != 98
-		AND info.STATUSID != 99
-		AND info.STATUSID != 999
-		AND (
-			channel.PUSHRULE = 11
-			OR channel.PUSHRULE = 1
-			OR channel.PUSHRULE = 12
-			OR channel.PUSHRULE = 13
-			OR channel.PUSHRULE = 14
-
-		)
-		AND info.CREATETIME &gt;= UNIX_TIMESTAMP(CAST(SYSDATE() AS DATE))
+        SELECT COUNT(*) AS NUM
+        FROM
+            (
+                SELECT
+                    KZID,
+                    CHANNELID
+                FROM
+                    ${infoTabName}
+                WHERE
+                    ISDEL = 0
+                    AND COMPANYID = #{companyId}
+                    AND APPOINTORID = #{staffId}
+                    AND CAST(STATUSID AS UNSIGNED) &lt;&gt; 5
+                    AND CAST(STATUSID AS UNSIGNED) &lt;&gt; 0
+                    AND CAST(STATUSID AS UNSIGNED) &lt;&gt; 98
+                    AND CAST(STATUSID AS UNSIGNED) &lt;&gt; 99
+                    AND CAST(STATUSID AS UNSIGNED) &lt;&gt; 999
+                    AND CREATETIME >= UNIX_TIMESTAMP(CAST(SYSDATE() AS DATE))
+            ) AS info
+            INNER JOIN (
+                           SELECT *
+                           FROM
+                               hm_crm_channel
+                           WHERE
+                               (CAST(PUSHRULE AS UNSIGNED) = 11 OR CAST(PUSHRULE AS UNSIGNED) = 1)
+                               AND COMPANYID = #{companyId}
+                       ) AS channel ON info.CHANNELID = channel.ID
     </select>
-    
+
     <!-- 修改员工今日领取客资数 -->
     <update id="updateTodatKzNum">
-        UPDATE hm_pub_staff SET TODAYNUM = #{num} WHERE COMPANYID = #{companyId} AND ID = #{staffId};
+        UPDATE hm_pub_staff
+        SET TODAYNUM = #{num}
+        WHERE COMPANYID = #{companyId} AND ID = #{staffId};
     </update>
 
-	<!-- 计算是否满限 -->    
+    <!-- 计算是否满限 -->
     <update id="checkOverFlowToday">
-        UPDATE hm_pub_staff SET STATUSFLAG = 9 WHERE COMPANYID = #{companyId} AND ID = #{staffId} AND TODAYNUM &gt;= LIMITDAY;
+        UPDATE hm_pub_staff
+        SET STATUSFLAG = 9
+        WHERE COMPANYID = #{companyId} AND ID = #{staffId} AND TODAYNUM &gt;= LIMITDAY;
     </update>
-    
+
     <!-- 校验是否有上线后连续三次怠工 -->
     <select id="getSaboteurCheckNum" parameterType="map" resultType="Integer">
-    	SELECT (IFNULL(SUM(a.STATUSID),-1) + COUNT(1) - 3) NUM FROM (
-	    	SELECT
-				log.STATUSID
-			FROM
-				${logTabName} log
-			LEFT JOIN hm_pub_staff_detail sf ON log.STAFFID = sf.ID AND sf.COMPANYID = #{companyId}
-			WHERE
-				log.STAFFID = #{staffId}
-			AND log.COMPANYID = #{companyId}
-			AND log.ALLOTTIME &gt; sf.LASTLOGINTIME
-			AND (
-				UNIX_TIMESTAMP(NOW()) - log.ALLOTTIME
-			) &gt; #{overTime}
-			ORDER BY
-				log.ALLOTTIME DESC
-			LIMIT 3
-		) a	
+        SELECT (IFNULL(SUM(a.STATUSID), -1) + COUNT(1) - 3) NUM
+        FROM (
+                 SELECT log.STATUSID
+                 FROM
+                     ${logTabName} log
+                     LEFT JOIN hm_pub_staff_detail sf ON log.STAFFID = sf.ID AND sf.COMPANYID = #{companyId}
+                 WHERE
+                     log.STAFFID = #{staffId}
+                     AND log.COMPANYID = #{companyId}
+                     AND log.ALLOTTIME &gt; sf.LASTLOGINTIME
+                     AND (
+                             UNIX_TIMESTAMP(NOW()) - log.ALLOTTIME
+                         ) &gt; #{overTime}
+                 ORDER BY
+                     log.ALLOTTIME DESC
+                 LIMIT 3
+             ) a
     </select>
-    
+
     <!-- 修改下线 -->
     <update id="editStatusFlagOffLine" parameterType="map">
-        UPDATE hm_pub_staff SET STATUSFLAG = #{statusFlag} WHERE COMPANYID = #{companyId} AND ID = #{staffId} AND STATUSFLAG = 1;
+        UPDATE hm_pub_staff
+        SET STATUSFLAG = #{statusFlag}
+        WHERE COMPANYID = #{companyId} AND ID = #{staffId} AND STATUSFLAG = 1;
     </update>
-    
+
     <!--查询所选客服集合-->
     <select id="listStaffInstrIds" parameterType="map" resultMap="pushMap">
         SELECT
-			sf.ID, sf.NICKNAME, sf.COMPANYID, grp.GROUPID, grp.GROUPNAME
-		FROM
-			hm_pub_staff sf
-		LEFT JOIN hm_pub_group_staff rela ON sf.ID = rela.STAFFID AND rela.COMPANYID = #{companyId}
-		LEFT JOIN hm_pub_group grp ON rela.GROUPID = grp.GROUPID AND grp.COMPANYID = #{companyId}
-		WHERE
-			sf.COMPANYID = #{companyId}
-		AND sf.ISDEL = 0
-		AND sf.ISLOCK = 0
-		AND sf.STATUSFLAG = 1
-		AND grp.GROUPTYPE = #{type}
-		AND INSTR(CONCAT(',',#{staffIds},','),CONCAT(',',sf.ID,',')) != 0;
+            sf.ID,
+            sf.NICKNAME,
+            sf.COMPANYID,
+            grp.GROUPID,
+            grp.GROUPNAME
+        FROM
+            hm_pub_staff sf
+            LEFT JOIN hm_pub_group_staff rela ON sf.ID = rela.STAFFID AND rela.COMPANYID = #{companyId}
+            LEFT JOIN hm_pub_group grp ON rela.GROUPID = grp.GROUPID AND grp.COMPANYID = #{companyId}
+        WHERE
+            sf.COMPANYID = #{companyId}
+            AND sf.ISDEL = 0
+            AND sf.ISLOCK = 0
+            AND sf.STATUSFLAG = 1
+            AND grp.GROUPTYPE = #{type}
+            AND INSTR(CONCAT(',', #{staffIds}, ','), CONCAT(',', sf.ID, ',')) != 0;
     </select>
 
     <!--查询所选门市所在门店集合-->
     <select id="listStaffInstrIdsMsjd" parameterType="map" resultMap="pushMap">
         SELECT
-			sf.ID, sf.NICKNAME, sf.COMPANYID, grp.SHOPID, shop.SHOPNAME
-		FROM
-			hm_pub_staff sf
-		LEFT JOIN hm_pub_group_staff rela ON sf.ID = rela.STAFFID AND rela.COMPANYID = #{companyId}
-		LEFT JOIN hm_pub_group grp ON rela.GROUPID = grp.GROUPID AND grp.COMPANYID = #{companyId}
-		LEFT JOIN hm_pub_shop shop ON shop.COMPANYID = grp.COMPANYID AND shop.ID =  grp.SHOPID
-		WHERE
-			sf.COMPANYID = #{companyId}
-		AND sf.ISDEL = 0
-		AND sf.ISLOCK = 0
-		AND sf.STATUSFLAG = 1
-		AND grp.GROUPTYPE = #{type}
-		AND INSTR(CONCAT(',',#{staffIds},','),CONCAT(',',sf.ID,',')) != 0;
+            sf.ID,
+            sf.NICKNAME,
+            sf.COMPANYID,
+            grp.SHOPID,
+            shop.SHOPNAME
+        FROM
+            hm_pub_staff sf
+            LEFT JOIN hm_pub_group_staff rela ON sf.ID = rela.STAFFID AND rela.COMPANYID = #{companyId}
+            LEFT JOIN hm_pub_group grp ON rela.GROUPID = grp.GROUPID AND grp.COMPANYID = #{companyId}
+            LEFT JOIN hm_pub_shop shop ON shop.COMPANYID = grp.COMPANYID AND shop.ID = grp.SHOPID
+        WHERE
+            sf.COMPANYID = #{companyId}
+            AND sf.ISDEL = 0
+            AND sf.ISLOCK = 0
+            AND sf.STATUSFLAG = 1
+            AND grp.GROUPTYPE = #{type}
+            AND INSTR(CONCAT(',', #{staffIds}, ','), CONCAT(',', sf.ID, ',')) != 0;
     </select>
-    
+
     <!-- 修改最后上线时间 -->
     <update id="updatLastLoginTime" parameterType="map">
-        UPDATE hm_pub_staff_detail SET LASTLOGINTIME = UNIX_TIMESTAMP() WHERE COMPANYID = #{companyId} AND ID = #{id};
+        UPDATE hm_pub_staff_detail
+        SET LASTLOGINTIME = UNIX_TIMESTAMP()
+        WHERE COMPANYID = #{companyId} AND ID = #{id};
     </update>
-    
+
     <!-- 根据ID和企业ID获取推送员工信息 -->
     <select id="getPushDTOByCidAndUid" parameterType="map" resultMap="pushMap">
         SELECT
-              CASE WHEN  grp.GROUPTYPE = #{type} THEN 'yy1'
-              WHEN  INSTR(grp.GROUPTYPE,'yy')>0 THEN 'yy2'
-              ELSE 'yy3' END AS GROUPTYPE, sf.ID, sf.NICKNAME, grp.GROUPID, grp.GROUPNAME
-		FROM
-			hm_pub_staff sf
-		LEFT JOIN hm_pub_group_staff rela ON sf.ID = rela.STAFFID AND rela.COMPANYID = #{companyId}
-		LEFT JOIN hm_pub_group grp ON rela.GROUPID = grp.GROUPID AND grp.COMPANYID = #{companyId}
-		WHERE
-			sf.ID = #{id}
-        AND sf.ISDEL = 0
-        AND sf.ISLOCK = 0
-		AND sf.COMPANYID = #{companyId}
-		ORDER BY GROUPTYPE
-        LIMIT 0,1
+            CASE WHEN grp.GROUPTYPE = #{type}
+                THEN 'yy1'
+            WHEN INSTR(grp.GROUPTYPE, 'yy') > 0
+                THEN 'yy2'
+            ELSE 'yy3' END AS GROUPTYPE,
+            sf.ID,
+            sf.NICKNAME,
+            grp.GROUPID,
+            grp.GROUPNAME
+        FROM
+            hm_pub_staff sf
+            LEFT JOIN hm_pub_group_staff rela ON sf.ID = rela.STAFFID AND rela.COMPANYID = #{companyId}
+            LEFT JOIN hm_pub_group grp ON rela.GROUPID = grp.GROUPID AND grp.COMPANYID = #{companyId}
+        WHERE
+            sf.ID = #{id}
+            AND sf.ISDEL = 0
+            AND sf.ISLOCK = 0
+            AND sf.COMPANYID = #{companyId}
+        ORDER BY GROUPTYPE
+        LIMIT 0, 1
     </select>
 
     <!--修改消息推送设置-->
@@ -831,32 +858,43 @@
 
     <!-- 重置员工今日接单数 -->
     <update id="resetTodayNum" parameterType="map">
-        UPDATE hm_pub_staff SET TODAYNUM = 0;
+        UPDATE hm_pub_staff
+        SET TODAYNUM = 0;
     </update>
-    
+
     <!-- 满限变离线 -->
     <update id="resetOffLineWhenLimit" parameterType="map">
-        UPDATE hm_pub_staff SET STATUSFLAG = 0 WHERE STATUSFLAG = 9;
+        UPDATE hm_pub_staff
+        SET STATUSFLAG = 0
+        WHERE STATUSFLAG = 9;
     </update>
 
     <select id="getWXStaffInfo" parameterType="Integer" resultType="staffTodayInfoDTO">
         SELECT
-        ID,NICKNAME,STATUSFLAG,TODAYNUM,COUNT(al.STATUSID=1)
+            ID,
+            NICKNAME,
+            STATUSFLAG,
+            TODAYNUM,
+            COUNT(al.STATUSID = 1)
         FROM
-        hm_pub_staff s
-        LEFT
+            hm_pub_staff s
+        LEFT JOIN
         ${allotLogTab} al ON s.ID = al.STAFFID
     </select>
 
     <!--获取指定客服渠道，可以领取的客服集合-->
     <select id="getAssginAppointList" parameterType="map" resultMap="pushMap">
         SELECT
-            rela.LINKID ID, sf.NICKNAME, sf.WEIGHT, gs.GROUPID, grp.GROUPNAME
+            rela.LINKID ID,
+            sf.NICKNAME,
+            sf.WEIGHT,
+            gs.GROUPID,
+            grp.GROUPNAME
         FROM
             hm_crm_source_staff rela
-        INNER JOIN hm_pub_staff sf ON sf.ID = rela.LINKID AND rela.COMPANYID = sf.COMPANYID
-        LEFT JOIN hm_pub_group_staff gs ON gs.STAFFID = sf.ID AND gs.COMPANYID = sf.COMPANYID
-        LEFT JOIN hm_pub_group grp ON grp.GROUPID = gs.GROUPID AND grp.COMPANYID = gs.COMPANYID
+            INNER JOIN hm_pub_staff sf ON sf.ID = rela.LINKID AND rela.COMPANYID = sf.COMPANYID
+            LEFT JOIN hm_pub_group_staff gs ON gs.STAFFID = sf.ID AND gs.COMPANYID = sf.COMPANYID
+            LEFT JOIN hm_pub_group grp ON grp.GROUPID = gs.GROUPID AND grp.COMPANYID = gs.COMPANYID
         WHERE
             rela.COMPANYID = #{companyId}
             AND rela.SOURCEID = #{sourceId}
@@ -870,11 +908,10 @@
 
     <!--小组平均，获取可以领取的小组-->
     <select id="getGroupAvgGroupList" parameterType="map" resultType="java.lang.String">
-        SELECT
-            grp.GROUPID
+        SELECT grp.GROUPID
         FROM
             hm_crm_source_staff rela
-            INNER JOIN hm_pub_group grp ON grp.GROUPID = rela.LINKID  AND grp.COMPANYID = rela.COMPANYID
+            INNER JOIN hm_pub_group grp ON grp.GROUPID = rela.LINKID AND grp.COMPANYID = rela.COMPANYID
         WHERE
             rela.COMPANYID = #{companyId}
             AND rela.SOURCEID = #{sourceId}
@@ -885,19 +922,23 @@
     <!--获取小组平均，可以领取的客服集合-->
     <select id="getGroupAvgAppointList" parameterType="map" resultMap="pushMap">
         SELECT
-            sf.ID , sf.NICKNAME, sf.WEIGHT, gs.GROUPID, grp.GROUPNAME
+            sf.ID,
+            sf.NICKNAME,
+            sf.WEIGHT,
+            gs.GROUPID,
+            grp.GROUPNAME
         FROM
             hm_pub_group_staff gs
-        INNER JOIN hm_pub_staff sf ON sf.ID = gs.STAFFID AND gs.COMPANYID = sf.COMPANYID
-        LEFT JOIN hm_pub_group grp ON grp.GROUPID = gs.GROUPID AND grp.COMPANYID = gs.COMPANYID
+            INNER JOIN hm_pub_staff sf ON sf.ID = gs.STAFFID AND gs.COMPANYID = sf.COMPANYID
+            LEFT JOIN hm_pub_group grp ON grp.GROUPID = gs.GROUPID AND grp.COMPANYID = gs.COMPANYID
         WHERE
-        gs.COMPANYID = #{companyId}
-        AND gs.GROUPID = #{groupId}
-        AND grp.GROUPTYPE = #{role}
-        AND sf.ISDEL = 0
-        AND sf.ISLOCK = 0
-        AND sf.STATUSFLAG = 1
-        AND sf.TODAYNUM &lt; LIMITDAY
+            gs.COMPANYID = #{companyId}
+            AND gs.GROUPID = #{groupId}
+            AND grp.GROUPTYPE = #{role}
+            AND sf.ISDEL = 0
+            AND sf.ISLOCK = 0
+            AND sf.STATUSFLAG = 1
+            AND sf.TODAYNUM &lt; LIMITDAY
         ORDER BY sf.LASTPUSHTIME ASC
     </select>
 
@@ -947,15 +988,20 @@
     <!--获取小组平均，推送客服-->
     <select id="getPushAppointByGroupAvg" parameterType="map" resultMap="pushMap">
         SELECT
-          gs.STAFFID ID, sf.NICKNAME, gs.GROUPID, grp.GROUPNAME
+            gs.STAFFID ID,
+            sf.NICKNAME,
+            gs.GROUPID,
+            grp.GROUPNAME
         FROM
-          hm_crm_source_staff rela
-        INNER JOIN hm_pub_group_staff gs ON gs.GROUPID = rela.LINKID AND gs.COMPANYID = rela.COMPANYID
-        INNER JOIN hm_pub_staff sf ON sf.ID = rela.LINKID AND rela.COMPANYID = sf.COMPANYID
-        LEFT JOIN hm_pub_group grp ON grp.GROUPID = gs.GROUPID AND grp.COMPANYID = gs.COMPANYID
-        LEFT JOIN ${infoTabName} info ON info.APPOINTORID = rela.LINKID AND rela.COMPANYID = info.COMPANYID
-        AND rela.SOURCEID = info.SOURCEID  AND info.CREATETIME &gt; UNIX_TIMESTAMP( CAST( SYSDATE( ) AS DATE ) )
-        AND info.STATUSID != 0  AND info.STATUSID != 98  AND info.STATUSID != 99   AND info.ISDEL = 0
+            hm_crm_source_staff rela
+            INNER JOIN hm_pub_group_staff gs ON gs.GROUPID = rela.LINKID AND gs.COMPANYID = rela.COMPANYID
+            INNER JOIN hm_pub_staff sf ON sf.ID = rela.LINKID AND rela.COMPANYID = sf.COMPANYID
+            LEFT JOIN hm_pub_group grp ON grp.GROUPID = gs.GROUPID AND grp.COMPANYID = gs.COMPANYID
+            LEFT JOIN ${infoTabName} info ON info.APPOINTORID = rela.LINKID AND rela.COMPANYID = info.COMPANYID
+                                             AND rela.SOURCEID = info.SOURCEID AND
+                                             info.CREATETIME &gt; UNIX_TIMESTAMP(CAST(SYSDATE() AS DATE))
+                                             AND info.STATUSID != 0 AND info.STATUSID != 98 AND info.STATUSID != 99 AND
+                                             info.ISDEL = 0
         WHERE
             rela.COMPANYID = #{companyId}
             AND rela.SOURCEID = #{sourceId}
@@ -964,21 +1010,24 @@
             AND sf.ISDEL = 0
             AND sf.ISLOCK = 0
             AND sf.TODAYNUM &lt; LIMITDAY
-            GROUP BY info.APPOINTORID
-            ORDER BY count( 1 ) ASC
+        GROUP BY info.APPOINTORID
+        ORDER BY count(1) ASC
         LIMIT 0, 1;
     </select>
 
     <!--获取客服人员列表，转介绍客服，电商客服，用于分配自由领取-->
     <select id="getYyStaffListByRole" parameterType="map" resultMap="pushMap">
         SELECT DISTINCT
-            sf.ID, sf.NICKNAME, gs.GROUPID, grp.GROUPNAME
+            sf.ID,
+            sf.NICKNAME,
+            gs.GROUPID,
+            grp.GROUPNAME
         FROM
             hm_pub_group_staff gs
             INNER JOIN hm_pub_group grp ON grp.GROUPID = gs.GROUPID
-            AND grp.COMPANYID = gs.COMPANYID
+                                           AND grp.COMPANYID = gs.COMPANYID
             INNER JOIN hm_pub_staff sf ON sf.ID = gs.STAFFID
-            AND gs.COMPANYID = sf.COMPANYID
+                                          AND gs.COMPANYID = sf.COMPANYID
         WHERE
             gs.COMPANYID = #{companyId}
             AND grp.GROUPTYPE = #{role}

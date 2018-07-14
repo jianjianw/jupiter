@@ -43,6 +43,11 @@ public class ClientExportVO implements Serializable {
     @Excel(name = "姓名", width = 20, height = 6)
     private String kzName;
     /**
+     * 性别
+     * */
+    @Excel(name = "性别", width = 10, height = 6)
+    private String kzSex;
+    /**
      * 客资电话
      */
     @Excel(name = "手机号", width = 20, height = 6)
@@ -157,6 +162,15 @@ public class ClientExportVO implements Serializable {
      */
     @Excel(name = "销售备注", width = 40, height = 6)
     private String memo;
+
+
+    public String getKzSex() {
+        return kzSex;
+    }
+
+    public void setKzSex(String kzSex) {
+        this.kzSex = kzSex;
+    }
 
     public int getId() {
         return id;

@@ -152,12 +152,7 @@ public interface CompanyService {
      */
     void editZjsValidStatus(Integer companyId,String zjsValidStatus);
 
-    /**
-     * 转介绍有效指标定义
-     * @param companyId
-     * @return
-     */
-    List<String> findZjsValidStatus(Integer companyId);
+
 
     /**
      *
@@ -176,4 +171,9 @@ public interface CompanyService {
      * @param qyZjsSet
      */
     void editCompanyZJSSet(String oldClientZjsSet,String qyZjsSet, int companyId);
+
+    /**
+     * 客服编辑接待结果
+     */
+    void editKfEditJdRst(boolean kfEditJdRst,Integer companyId);
 }

@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.entity.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class DsinvalDTO implements Serializable {
     private static final long serialVersionUID = 7643712184216258888L;
@@ -11,6 +12,26 @@ public class DsinvalDTO implements Serializable {
     private String dsInvalidLevel;
     //待定是否计入有效
     private boolean ddIsValid;
+
+    private String zjsValidStatus;
+
+    private List<String> list;
+
+    public List<String> getList() {
+        return list;
+    }
+
+    public void setList(List<String> list) {
+        this.list = list;
+    }
+
+    public String getZjsValidStatus() {
+        return zjsValidStatus;
+    }
+
+    public void setZjsValidStatus(String zjsValidStatus) {
+        this.zjsValidStatus = zjsValidStatus;
+    }
 
     public int getCompanyId() {
         return companyId;

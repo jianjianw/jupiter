@@ -41,6 +41,7 @@
         <result column="OVERTIME" property="overTime" jdbcType="INTEGER"/>
         <result column="KZINTERVAL" property="kzInterval" jdbcType="INTEGER"/>
         <result column="LIMITDEFAULT" property="limitDefault" jdbcType="INTEGER"/>
+        <result column="KFEDITJDRST" property="kfEditJdRst" jdbcType="BOOLEAN"/>
     </resultMap>
 
     <sql id="baseColumn">
@@ -116,7 +117,7 @@
 		comp.ID, comp.COMPANYNAME, comp.TYPEID, comp.LOGO, comp.NOTSELFBLIND,
 		comp.UNABLESELFLINE,
 		comp.UNABLEAPPOINTOR, comp.UNABLEINVALIDRANGE,comp.SSOLIMIT, comp.OVERTIME,
-		comp.KZINTERVAL, comp.LIMITDEFAULT
+		comp.KZINTERVAL, comp.LIMITDEFAULT,comp.KFEDITJDRST
 		FROM
 		hm_pub_company comp
 		WHERE
@@ -224,7 +225,8 @@
 		SELECT
 		 	DSINVALIDSTATUS dsInvalidStatus,
 		 	DSINVALIDLEVEL dsInvalidLevel,
-		 	DDISVALID ddIsValid
+		 	DDISVALID ddIsValid,
+		 	ZJSVALIDSTATUS zjsValidStatus
 		FROM
 			hm_pub_company
 		WHERE ID=#{companyId}
@@ -239,9 +241,7 @@
             ID = #{companyId}
     </update>
 
-    <select id="findZjsValidStatus" resultType="String">
-        SELECT  ZJSVALIDSTATUS FROM hm_pub_company  WHERE ID = #{companyId}
-    </select>
+
 
     <!--公司钉钉转介绍提报自定义设置-->
     <update id="editCompanyZJSSet" parameterType="map">
@@ -272,5 +272,8 @@
       WHERE
         ID = #{companyId}
     </select>
+    <update id="editKfEditJdRst">
+        UPDATE hm_pub_company SET KFEDITJDRST=#{kfEditJdRst} where ID=#{companyId}
+    </update>
 
 </mapper>
