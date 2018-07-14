@@ -225,7 +225,8 @@
 		SELECT
 		 	DSINVALIDSTATUS dsInvalidStatus,
 		 	DSINVALIDLEVEL dsInvalidLevel,
-		 	DDISVALID ddIsValid
+		 	DDISVALID ddIsValid,
+		 	ZJSVALIDSTATUS zjsValidStatus
 		FROM
 			hm_pub_company
 		WHERE ID=#{companyId}
@@ -240,9 +241,7 @@
             ID = #{companyId}
     </update>
 
-    <select id="findZjsValidStatus" resultType="String">
-        SELECT  ZJSVALIDSTATUS FROM hm_pub_company  WHERE ID = #{companyId}
-    </select>
+
 
     <!--公司钉钉转介绍提报自定义设置-->
     <update id="editCompanyZJSSet" parameterType="map">

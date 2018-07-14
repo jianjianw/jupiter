@@ -217,7 +217,7 @@ public class CompanyController extends BaseController {
     }
 
     /**
-     * 搜索无效状态以及跟踪意向等级
+     * 搜索无效状态以及跟踪意向等级 转介绍有效指标定义
      *
      * @return
      */
@@ -237,11 +237,6 @@ public class CompanyController extends BaseController {
         return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
 
-    @GetMapping("find_zjs_valid_status")
-    public ResultInfo findZjsValidStatus() {
-        StaffPO staff = getCurrentLoginStaff();
-        return ResultInfoUtil.success(companyService.findZjsValidStatus(staff.getCompanyId()));
-    }
 
     /**
      * 功能描述:
