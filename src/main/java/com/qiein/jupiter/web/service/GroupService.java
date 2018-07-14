@@ -77,6 +77,14 @@ public interface GroupService {
     List<GroupBaseStaffVO> getDsyyGroupStaffList(int companyId);
 
     /**
+     * 获取转介绍邀约客服小组及人员
+     *
+     * @param companyId
+     * @return
+     */
+    List<GroupBaseStaffVO> getZjsyyGroupStaffList(int companyId);
+
+    /**
      * 获取门市下面的所有人员列表
      *
      * @param companyId

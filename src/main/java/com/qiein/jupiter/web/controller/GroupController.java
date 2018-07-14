@@ -141,6 +141,14 @@ public class GroupController extends BaseController {
     }
 
     /**
+     * 获取转介绍邀约客服小组及人员
+     */
+    @GetMapping("/get_zjsyy_group_staff_list")
+    public ResultInfo getZjsyyGroupStaffList() {
+        return ResultInfoUtil.success(groupService.getZjsyyGroupStaffList(getCurrentLoginStaff().getCompanyId()));
+    }
+
+    /**
      * 获取门市下面的所有人员列表
      */
     @GetMapping("/get_msjd_staff_list")
@@ -186,12 +194,12 @@ public class GroupController extends BaseController {
 
     /**
      * 获取公司下部门和小组
-     * */
+     */
     @GetMapping("/get_depart_group_list_by_type")
-    public ResultInfo getDepartGroupListByType(@NotEmptyStr @RequestParam("role") String role){
+    public ResultInfo getDepartGroupListByType(@NotEmptyStr @RequestParam("role") String role) {
         // 获取当前登录账户
         StaffPO staff = getCurrentLoginStaff();
-        return ResultInfoUtil.success(groupService.getDepartGroupListByType(staff.getCompanyId(),role));
+        return ResultInfoUtil.success(groupService.getDepartGroupListByType(staff.getCompanyId(), role));
     }
 
 }

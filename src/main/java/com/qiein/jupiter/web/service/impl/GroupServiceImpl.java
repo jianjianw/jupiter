@@ -607,6 +607,17 @@ public class GroupServiceImpl implements GroupService {
     }
 
     /**
+     * 获取转介绍邀约客服小组及人员
+     *
+     * @param companyId
+     * @return
+     */
+    @Override
+    public List<GroupBaseStaffVO> getZjsyyGroupStaffList(int companyId) {
+        return groupStaffDao.getGroupStaffByRole(companyId, RoleConstant.ZJSYY);
+    }
+
+    /**
      * 获取门市下面的所有人员列表
      *
      * @param companyId
@@ -649,6 +660,6 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public List<GroupVO> getDepartGroupListByType(int companyId, String role) {
-        return groupDao.getDepartGroupListByType(companyId,role);
+        return groupDao.getDepartGroupListByType(companyId, role);
     }
 }
