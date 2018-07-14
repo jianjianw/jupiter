@@ -163,7 +163,7 @@ public class LoginController extends BaseController {
             try {
                 String ip = HttpUtil.getIpAddr(request);
                 //检测是否异地登录
-                logService.checkAbnormalIp(staffPO.getCompanyId(), staffPO.getId(), ip, userName);
+               // logService.checkAbnormalIp(staffPO.getCompanyId(), staffPO.getId(), ip, userName);
                 // 登录日志记录
                 SystemLog log = new SystemLog(SysLogUtil.LOG_TYPE_LOGIN, ip, request.getRequestURI(), staffPO.getId(),
                         staffPO.getNickName(), SysLogUtil.getLog(SysLogUtil.SYS_LOG_PREFIX_DO, SysLogUtil.LOG_SUP_LOGIN, null),
