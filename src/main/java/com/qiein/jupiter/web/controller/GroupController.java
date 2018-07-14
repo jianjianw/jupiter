@@ -141,11 +141,11 @@ public class GroupController extends BaseController {
     }
 
     /**
-     * 获取转介绍邀约客服小组及人员
+     * 根据角色，获取对应的全部小组人员
      */
-    @GetMapping("/get_zjsyy_group_staff_list")
-    public ResultInfo getZjsyyGroupStaffList() {
-        return ResultInfoUtil.success(groupService.getZjsyyGroupStaffList(getCurrentLoginStaff().getCompanyId()));
+    @GetMapping("/get_all_group_staff_by_role")
+    public ResultInfo getAllGroupStaffByRole(@NotEmptyStr String role) {
+        return ResultInfoUtil.success(groupService.getAllGroupStaffByRole(getCurrentLoginStaff().getCompanyId(), role));
     }
 
     /**

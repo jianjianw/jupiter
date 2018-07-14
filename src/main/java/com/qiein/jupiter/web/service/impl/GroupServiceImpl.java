@@ -607,14 +607,14 @@ public class GroupServiceImpl implements GroupService {
     }
 
     /**
-     * 获取转介绍邀约客服小组及人员
+     * 根据角色，获取对应的全部小组人员
      *
      * @param companyId
      * @return
      */
     @Override
-    public List<GroupBaseStaffVO> getZjsyyGroupStaffList(int companyId) {
-        return groupStaffDao.getGroupStaffByRole(companyId, RoleConstant.ZJSYY);
+    public List<GroupBaseStaffVO> getAllGroupStaffByRole(int companyId, String role) {
+        return groupStaffDao.getGroupStaffByRole(companyId, role);
     }
 
     /**
