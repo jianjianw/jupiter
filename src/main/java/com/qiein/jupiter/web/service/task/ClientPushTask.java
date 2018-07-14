@@ -7,6 +7,7 @@ import com.qiein.jupiter.web.service.quene.PushQueue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,9 @@ public class ClientPushTask {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
+    @Value("${spring.profiles.active}")
+    private String active;
+
     @Autowired
     private ClientPushServiceImpl pushService;
     @Autowired
@@ -40,13 +44,18 @@ public class ClientPushTask {
     /**
      * 定时任务-推送客资
      */
-   @Scheduled(initialDelay = 1000, fixedDelay = 60 * 1000)
+    @Scheduled(initialDelay = 1000, fixedDelay = 60 * 1000)
     public void taskPushLp() {
-       //先判断下队列是否为空,只有队列为空，才去数据库找客资推送
-       if (!lpPushQueue.isEmpty()) {
-           log.info("客资队列不为空，暂不推送...");
-           return;
-       }
+        //如果是测试环境，就不再推送
+        if (active.equals("dev")) {
+            log.info("测试环境，暂不推送...");
+            return;
+        }
+        //先判断下队列是否为空,只有队列为空，才去数据库找客资推送
+        if (!lpPushQueue.isEmpty()) {
+            log.info("客资队列不为空，暂不推送...");
+            return;
+        }
         log.info("执行定时推送任务");
         List<CompanyPO> compList = companyDao.listComp();
         for (CompanyPO comp : compList) {
