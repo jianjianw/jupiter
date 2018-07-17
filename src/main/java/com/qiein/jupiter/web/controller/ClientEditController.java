@@ -90,7 +90,7 @@ public class ClientEditController extends BaseController {
 
 
     /**
-     * 邀约编辑客资
+     * 门市编辑客资
      *
      * @return
      */

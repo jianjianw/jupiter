@@ -254,6 +254,18 @@ public class ClientVO implements Serializable {
      * 老客手机号
      */
     private String oldKzPhone;
+    /**
+     * 收款时间
+     */
+    private int payTime;
+    /**
+     * 收款人ID
+     */
+    private int receiptId;
+    /**
+     * 收款人姓名
+     */
+    private String receiptName;
 
 
     public String getMateName() {
@@ -734,5 +746,29 @@ public class ClientVO implements Serializable {
 
     public void setOldKzPhone(String oldKzPhone) {
         this.oldKzPhone = oldKzPhone;
+    }
+
+    public int getPayTime() {
+        return payTime;
+    }
+
+    public void setPayTime(int payTime) {
+        this.payTime = payTime;
+    }
+
+    public int getReceiptId() {
+        return receiptId;
+    }
+
+    public void setReceiptId(int receiptId) {
+        this.receiptId = receiptId;
+    }
+
+    public String getReceiptName() {
+        return receiptName;
+    }
+
+    public void setReceiptName(String receiptName) {
+        this.receiptName = receiptName;
     }
 }
