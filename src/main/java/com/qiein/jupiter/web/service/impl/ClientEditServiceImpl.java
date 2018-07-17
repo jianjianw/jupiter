@@ -455,7 +455,7 @@ public class ClientEditServiceImpl implements ClientEditService {
         //添加收款记录
         cashLogDao.addCahsLog(DBSplitUtil.getTable(TableEnum.cash_log, cashLogPO.getCompanyId()), cashLogPO);
         //修改已收金额
-        clientInfoDao.editStayAmount(DBSplitUtil.getDetailTabName(cashLogPO.getCompanyId()), cashLogPO.getKzId(), cashLogPO.getCompanyId());
+        clientInfoDao.editStayAmount(DBSplitUtil.getDetailTabName(cashLogPO.getCompanyId()), cashLogPO.getKzId(), cashLogPO.getCompanyId(), cashLogPO.getAmount());
     }
 
 

@@ -215,6 +215,7 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
 
     /**
      * 微信扫码记录
+     *
      * @param clientLogDTO
      * @return
      */
@@ -222,6 +223,7 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
 
     /**
      * 重复客资日志
+     *
      * @param clientLogDTO
      * @return
      */
@@ -234,9 +236,10 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
 
     /**
      * 修改已收金额
+     *
      * @param detTabName
      * @param kzId
      * @param companyId
      */
-    void editStayAmount(@Param("detTabName") String detTabName, @Param("kzId") String kzId, @Param("companyId") int companyId);
+    void editStayAmount(@Param("detTabName") String detTabName, @Param("kzId") String kzId, @Param("companyId") int companyId, @Param("amount") int amount);
 }
