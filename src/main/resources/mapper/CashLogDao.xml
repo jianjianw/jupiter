@@ -2,26 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qiein.jupiter.web.dao.ClientLogDao">
 
-    <resultMap id="logMap" type="com.qiein.jupiter.web.entity.po.CashLogPO">
-        <id column="ID" jdbcType="INTEGER" property="id"/>
-        <result column="KZID" jdbcType="VARCHAR" property="kzId"/>
-        <result column="PAYSTYLE" jdbcType="INTEGER" property="payStyle"/>
-        <result column="AMOUNT" jdbcType="INTEGER" property="amount"/>
-        <result column="STAFFID" jdbcType="INTEGER" property="staffId"/>
-        <result column="STAFFNAME" jdbcType="VARCHAR" property="staffName"/>
-        <result column="PAYMENTTIME" jdbcType="INTEGER" property="paymentTime"/>
-        <result column="OPERAID" jdbcType="INTEGER" property="operaId"/>
-        <result column="OPERANAME" jdbcType="VARCHAR" property="operaName"/>
-        <result column="COMPANYID" jdbcType="INTEGER" property="companyId"/>
-        <result column="CREATETIME" jdbcType="INTEGER" property="createTime"/>
-    </resultMap>
-
-    <sql id="baseColumn">
-        log.ID, log.KZID, log.OPERAID, log.OPERANAME, log.MEMO, log.OPERATIME, log.LOGTYPE, log.COMPANYID
-    </sql>
-    
     <!-- 新增客资日志 -->
-    <insert id="addCahsLog" useGeneratedKeys="true" keyProperty="log.id">
+    <insert id="addCahsLog" parameterType="map">
         INSERT INTO ${logTabName} (
 			KZID, PAYSTYLE, AMOUNT,  STAFFID,  STAFFNAME, PAYMENTTIME, OPERAID, OPERANAME,  CREATETIME, COMPANYID
 		)
