@@ -79,7 +79,7 @@ public class ClientEditServiceImpl implements ClientEditService {
         }
         reqContent.put("channelname", channelPO.getChannelName());
         // 获取来源名
-        SourcePO sourcePO = sourceDao.getShowSourceById(staffPO.getCompanyId(), clientVO.getSourceId());
+        SourcePO sourcePO = sourceDao.getByIdAndCid(clientVO.getSourceId(), staffPO.getCompanyId());
         if (sourcePO == null) {
             throw new RException(ExceptionEnum.SOURCE_NOT_FOUND);
         }
