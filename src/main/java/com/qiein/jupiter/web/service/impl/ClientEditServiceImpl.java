@@ -73,7 +73,7 @@ public class ClientEditServiceImpl implements ClientEditService {
         reqContent.put("operaname", staffPO.getNickName());
         reqContent.put("kzid", clientVO.getKzId());
         // 获取渠道名
-        ChannelPO channelPO = channelDao.getShowChannelById(staffPO.getCompanyId(), clientVO.getChannelId());
+        ChannelPO channelPO = channelDao.getByIdAndCid(clientVO.getChannelId(), staffPO.getCompanyId());
         if (channelPO == null) {
             throw new RException(ExceptionEnum.CHANNEL_NOT_FOUND);
         }
