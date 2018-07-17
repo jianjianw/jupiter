@@ -1,3 +1,4 @@
+
 package com.qiein.jupiter.web.dao;
 
 import com.qiein.jupiter.web.entity.dto.ClientGoEasyDTO;
@@ -212,8 +213,18 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
                                     @Param("kzId") String kzId, @Param("classId") int classId, @Param("statusId") int statusId,
                                     @Param("appointorId") int appointorId, @Param("groupId") String groupId, @Param("allotType") int allotType);
 
+    /**
+     * 微信扫码记录
+     * @param clientLogDTO
+     * @return
+     */
     List<WechatScanPO> wechatScanCodeLog(ClientLogDTO clientLogDTO);
 
+    /**
+     * 重复客资日志
+     * @param clientLogDTO
+     * @return
+     */
     List<RepateKzLogPO> repateKzLog(ClientLogDTO clientLogDTO);
 
     /**
