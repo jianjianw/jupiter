@@ -71,10 +71,19 @@ public class ClientEditController extends BaseController {
         if (NumUtil.isValid(clientVO.getYyRst()) && ClientStatusConst.ONLINE_SUCCESS == clientVO.getYyRst() && NumUtil.isInValid(clientVO.getAmount())) {
             return ResultInfoUtil.error(ExceptionEnum.AMOUNT_IS_NULL);
         }
+        if (NumUtil.isValid(clientVO.getYyRst()) && ClientStatusConst.ONLINE_SUCCESS == clientVO.getYyRst() && NumUtil.isInValid(clientVO.getStayAmount())) {
+            return ResultInfoUtil.error(ExceptionEnum.STAY_AMOUNT_IS_NULL);
+        }
         if (NumUtil.isValid(clientVO.getYyRst()) && ClientStatusConst.ONLINE_SUCCESS == clientVO.getYyRst() && NumUtil.isInValid(clientVO.getSuccessTime())) {
             return ResultInfoUtil.error(ExceptionEnum.SUCCESS_TIME_IS_NULL);
         }
         //在线保留
+        if (NumUtil.isValid(clientVO.getYyRst()) && ClientStatusConst.ONLINE_STAY == clientVO.getYyRst() && NumUtil.isInValid(clientVO.getStayAmount())) {
+            return ResultInfoUtil.error(ExceptionEnum.STAY_AMOUNT_IS_NULL);
+        }
+        if (NumUtil.isValid(clientVO.getYyRst()) && ClientStatusConst.ONLINE_STAY == clientVO.getYyRst() && NumUtil.isInValid(clientVO.getStayTime())) {
+            return ResultInfoUtil.error(ExceptionEnum.STAY_TIME_IS_NULL);
+        }
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         clientEditService.editClientByDsyy(clientVO, currentLoginStaff);

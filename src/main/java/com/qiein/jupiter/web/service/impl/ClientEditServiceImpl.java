@@ -202,10 +202,20 @@ public class ClientEditServiceImpl implements ClientEditService {
             // 在线订单
             if (ClientStatusConst.ONLINE_SUCCESS == clientVO.getYyRst()) {
                 reqContent.put("amount", clientVO.getAmount());// 成交套系金额
+                reqContent.put("stayamount", clientVO.getStayAmount());// 已收金额
                 reqContent.put("successtime", clientVO.getSuccessTime());// 订单时间
+                reqContent.put("paystyle", clientVO.getPayStyle());// 付款方式
+                reqContent.put("paytime", clientVO.getPayTime());// 收款时间
+                reqContent.put("payreceiptid", clientVO.getReceiptId());// 收款人id
+                reqContent.put("payreceiptname", clientVO.getReceiptName());// 收款人姓名
             }
             //在线保留
             if (ClientStatusConst.ONLINE_STAY == clientVO.getYyRst()) {
+                reqContent.put("stayamount", clientVO.getStayAmount());// 已收金额
+                reqContent.put("paystyle", clientVO.getPayStyle());// 付款方式
+                reqContent.put("paytime", clientVO.getPayTime());// 收款时间
+                reqContent.put("payreceiptid", clientVO.getReceiptId());// 收款人id
+                reqContent.put("payreceiptname", clientVO.getReceiptName());// 收款人姓名
             }
         }
         reqContent.put("memo", clientVO.getMemo());
@@ -304,8 +314,13 @@ public class ClientEditServiceImpl implements ClientEditService {
             // 进店成交
             if (ClientStatusConst.BE_SUCCESS == clientVO.getYyRst() || ClientStatusConst.BE_SUCCESS_STAY == clientVO.getYyRst()) {
                 reqContent.put("amount", clientVO.getAmount());// 成交套系金额
+                reqContent.put("stayamount", clientVO.getStayAmount());// 已收金额
                 reqContent.put("successtime", clientVO.getSuccessTime());// 订单时间
                 reqContent.put("htnum", clientVO.getHtNum());// 合同编号
+                reqContent.put("paystyle", clientVO.getPayStyle());// 付款方式
+                reqContent.put("paytime", clientVO.getPayTime());// 收款时间
+                reqContent.put("payreceiptid", clientVO.getReceiptId());// 收款人id
+                reqContent.put("payreceiptname", clientVO.getReceiptName());// 收款人姓名
             }
         }
         reqContent.put("memo", clientVO.getMemo());
