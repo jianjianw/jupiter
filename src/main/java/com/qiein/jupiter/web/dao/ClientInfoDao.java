@@ -220,4 +220,12 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
      * 获取Kzid是否存在
      */
     List<ClientPushDTO> getKzIdExists(@Param(value = "kzIds") String kzId, @Param(value = "companyId") int companyId, @Param(value = "infoTabName") String infoTabName);
+
+    /**
+     * 修改已收金额
+     * @param detTabName
+     * @param kzId
+     * @param companyId
+     */
+    void editStayAmount(@Param("detTabName") String detTabName, @Param("kzId") String kzId, @Param("companyId") int companyId);
 }

@@ -32,6 +32,7 @@ public class DBSplitUtil {
     public static final String TAB_SYSLOG_REMARK = "hm_pub_system_log_";// 接单日志
     public static final String TAB_ONLINE_TIME = "hm_crm_online_time_log_";// 在线时长日志
     public static final String TAB_SUFFIX_EDIT_LOG = "hm_crm_contact_edit_log_";//联系方式修改日志
+    public static final String TAB_SUFFIX_CASH_LOG = "hm_crm_cash_log_";//收款记录日志
 
     public static String getNewsTabName(int companyId) throws RException {
 
@@ -172,6 +173,9 @@ public class DBSplitUtil {
                 break;
             case edit_log:
                 tableName = TAB_SUFFIX_EDIT_LOG + String.valueOf(companyId);
+                break;
+            case cash_log:
+                tableName = TAB_SUFFIX_CASH_LOG + String.valueOf(companyId);
                 break;
             default:
                 break;

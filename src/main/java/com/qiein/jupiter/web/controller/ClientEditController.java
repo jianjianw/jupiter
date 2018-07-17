@@ -3,7 +3,9 @@ package com.qiein.jupiter.web.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.constant.ClientStatusConst;
 import com.qiein.jupiter.util.NumUtil;
+import com.qiein.jupiter.web.entity.po.CashLogPO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.qiein.jupiter.enums.TipMsgEnum;
@@ -125,6 +127,22 @@ public class ClientEditController extends BaseController {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         clientEditService.editClientByCwzx(clientVO, currentLoginStaff);
+        return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
+    }
+
+    /**
+     * 添加收款记录
+     *
+     * @return
+     */
+    @PostMapping("/add_cash_log")
+    public ResultInfo addCashLog(@Validated @RequestBody CashLogPO cashLogPO) {
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        cashLogPO.setCompanyId(currentLoginStaff.getCompanyId());
+        cashLogPO.setOperaId(currentLoginStaff.getId());
+        cashLogPO.setOperaName(currentLoginStaff.getNickName());
+        clientEditService.addCashLog(cashLogPO);
         return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
     }
 

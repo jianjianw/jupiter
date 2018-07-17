@@ -7,6 +7,7 @@ import com.qiein.jupiter.constant.ClientLogConst;
 import com.qiein.jupiter.constant.ClientStatusConst;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.enums.OrderSuccessTypeEnum;
+import com.qiein.jupiter.enums.TableEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.http.CrmBaseApi;
@@ -55,6 +56,8 @@ public class ClientEditServiceImpl implements ClientEditService {
     private NewsDao newsDao;
     @Autowired
     private CompanyDao companyDao;
+    @Autowired
+    private CashLogDao cashLogDao;
 
     /**
      * 电商推广修改客资
@@ -441,6 +444,18 @@ public class ClientEditServiceImpl implements ClientEditService {
         if (!"100000".equals(jsInfo.getString("code"))) {
             throw new RException(jsInfo.getString("msg"));
         }
+    }
+
+    /**
+     * 添加收款记录
+     *
+     * @param cashLogPO
+     */
+    public void addCashLog(CashLogPO cashLogPO) {
+        //添加收款记录
+        cashLogDao.addCahsLog(DBSplitUtil.getTable(TableEnum.cash_log, cashLogPO.getCompanyId()), cashLogPO);
+        //修改已收金额
+        clientInfoDao.editStayAmount(DBSplitUtil.getDetailTabName(cashLogPO.getCompanyId()), cashLogPO.getKzId(), cashLogPO.getCompanyId());
     }
 
 
