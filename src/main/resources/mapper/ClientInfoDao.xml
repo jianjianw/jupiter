@@ -350,4 +350,12 @@
 			AND info.CLASSID = 3
 			AND INSTR(#{kzIds},info.KZID) != 0;
 	</select>
+
+	<!--修改已收金额-->
+	<update id="editStayAmount" parameterType="map">
+		UPDATE ${detTabName}
+		SET STAYAMOUNT = IFNULL(STAYAMOUNT,0)+#{amount}
+		WHERE KZID = #{kzId}
+		AND COMPANYID = #{companyId}
+	</update>
 </mapper>

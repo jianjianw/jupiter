@@ -1,3 +1,4 @@
+
 package com.qiein.jupiter.web.dao;
 
 import com.qiein.jupiter.web.entity.dto.ClientGoEasyDTO;
@@ -212,12 +213,33 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
                                     @Param("kzId") String kzId, @Param("classId") int classId, @Param("statusId") int statusId,
                                     @Param("appointorId") int appointorId, @Param("groupId") String groupId, @Param("allotType") int allotType);
 
+    /**
+     * 微信扫码记录
+     *
+     * @param clientLogDTO
+     * @return
+     */
     List<WechatScanPO> wechatScanCodeLog(ClientLogDTO clientLogDTO);
 
+    /**
+     * 重复客资日志
+     *
+     * @param clientLogDTO
+     * @return
+     */
     List<RepateKzLogPO> repateKzLog(ClientLogDTO clientLogDTO);
 
     /**
      * 获取Kzid是否存在
      */
     List<ClientPushDTO> getKzIdExists(@Param(value = "kzIds") String kzId, @Param(value = "companyId") int companyId, @Param(value = "infoTabName") String infoTabName);
+
+    /**
+     * 修改已收金额
+     *
+     * @param detTabName
+     * @param kzId
+     * @param companyId
+     */
+    void editStayAmount(@Param("detTabName") String detTabName, @Param("kzId") String kzId, @Param("companyId") int companyId, @Param("amount") int amount);
 }

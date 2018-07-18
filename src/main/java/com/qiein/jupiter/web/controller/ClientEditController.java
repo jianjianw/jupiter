@@ -3,7 +3,9 @@ package com.qiein.jupiter.web.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.constant.ClientStatusConst;
 import com.qiein.jupiter.util.NumUtil;
+import com.qiein.jupiter.web.entity.po.CashLogPO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.qiein.jupiter.enums.TipMsgEnum;
@@ -128,5 +130,38 @@ public class ClientEditController extends BaseController {
         return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
     }
 
+    /**
+     * 添加收款记录
+     *
+     * @return
+     */
+    @PostMapping("/add_cash_log")
+    public ResultInfo addCashLog(@Validated @RequestBody CashLogPO cashLogPO) {
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        cashLogPO.setCompanyId(currentLoginStaff.getCompanyId());
+        cashLogPO.setOperaId(currentLoginStaff.getId());
+        cashLogPO.setOperaName(currentLoginStaff.getNickName());
+        clientEditService.addCashLog(cashLogPO);
+        return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
+    }
 
+    /**
+     * 修改客资详情
+     *
+     * @return
+     */
+    @PostMapping("/edit_client_detail")
+    public ResultInfo editClientDetail(@RequestBody ClientVO clientVO) {
+        if (StringUtil.isAllEmpty(clientVO.getKzPhone(), clientVO.getKzWechat(), clientVO.getKzQq(), clientVO.getKzWw())) {
+            return ResultInfoUtil.error(ExceptionEnum.KZ_CONTACT_INFORMATION);
+        }
+        if (StringUtil.isEmpty(clientVO.getKzId())) {
+            return ResultInfoUtil.error(ExceptionEnum.KZ_ID_IS_NULL);
+        }
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        clientEditService.editClientDetail(clientVO, currentLoginStaff);
+        return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
+    }
 }

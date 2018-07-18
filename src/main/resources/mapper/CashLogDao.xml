@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiein.jupiter.web.dao.CashLogDao">
+
+    <!-- 新增客资日志 -->
+    <insert id="addCahsLog" parameterType="map">
+        INSERT INTO ${logTabName} (
+			KZID, PAYSTYLE, AMOUNT,  STAFFID,  STAFFNAME, PAYMENTTIME, OPERAID, OPERANAME,  CREATETIME, COMPANYID
+		)
+		VALUES
+			(#{log.kzId}, #{log.payStyle}, #{log.amount}, #{log.staffId},#{log.staffName} ,#{log.paymentTime},#{log.operaId},#{log.operaName}, UNIX_TIMESTAMP(NOW()), #{log.companyId}
+		)
+    </insert>
+</mapper>

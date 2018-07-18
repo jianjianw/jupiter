@@ -7,6 +7,7 @@ import com.qiein.jupiter.constant.ClientLogConst;
 import com.qiein.jupiter.constant.ClientStatusConst;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.enums.OrderSuccessTypeEnum;
+import com.qiein.jupiter.enums.TableEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.http.CrmBaseApi;
@@ -55,6 +56,8 @@ public class ClientEditServiceImpl implements ClientEditService {
     private NewsDao newsDao;
     @Autowired
     private CompanyDao companyDao;
+    @Autowired
+    private CashLogDao cashLogDao;
 
     /**
      * 电商推广修改客资
@@ -70,13 +73,13 @@ public class ClientEditServiceImpl implements ClientEditService {
         reqContent.put("operaname", staffPO.getNickName());
         reqContent.put("kzid", clientVO.getKzId());
         // 获取渠道名
-        ChannelPO channelPO = channelDao.getShowChannelById(staffPO.getCompanyId(), clientVO.getChannelId());
+        ChannelPO channelPO = channelDao.getByIdAndCid(clientVO.getChannelId(), staffPO.getCompanyId());
         if (channelPO == null) {
             throw new RException(ExceptionEnum.CHANNEL_NOT_FOUND);
         }
         reqContent.put("channelname", channelPO.getChannelName());
         // 获取来源名
-        SourcePO sourcePO = sourceDao.getShowSourceById(staffPO.getCompanyId(), clientVO.getSourceId());
+        SourcePO sourcePO = sourceDao.getByIdAndCid(clientVO.getSourceId(), staffPO.getCompanyId());
         if (sourcePO == null) {
             throw new RException(ExceptionEnum.SOURCE_NOT_FOUND);
         }
@@ -437,6 +440,50 @@ public class ClientEditServiceImpl implements ClientEditService {
         reqContent.put("memo", clientVO.getMemo());
         reqContent.put("packageCode", clientVO.getPackageCode());// 套系名称编码
         String addRstStr = crmBaseApi.doService(reqContent, "clientEditCwzxHs");
+        JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
+        if (!"100000".equals(jsInfo.getString("code"))) {
+            throw new RException(jsInfo.getString("msg"));
+        }
+    }
+
+    /**
+     * 添加收款记录
+     *
+     * @param cashLogPO
+     */
+    public void addCashLog(CashLogPO cashLogPO) {
+        //添加收款记录
+        cashLogDao.addCahsLog(DBSplitUtil.getTable(TableEnum.cash_log, cashLogPO.getCompanyId()), cashLogPO);
+        //修改已收金额
+        clientInfoDao.editStayAmount(DBSplitUtil.getDetailTabName(cashLogPO.getCompanyId()), cashLogPO.getKzId(), cashLogPO.getCompanyId(), cashLogPO.getAmount());
+    }
+
+    /**
+     * 修改客资详情
+     *
+     * @param clientVO
+     * @param staffPO
+     */
+    public void editClientDetail(ClientVO clientVO, StaffPO staffPO){
+        Map<String, Object> reqContent = new HashMap<>();
+        reqContent.put("companyid", staffPO.getCompanyId());
+        reqContent.put("operaid", staffPO.getId());
+        reqContent.put("operaname", staffPO.getNickName());
+        reqContent.put("kzid", clientVO.getKzId());
+        // 客资基础信息
+        reqContent.put("sex", clientVO.getSex());
+        reqContent.put("kzname", clientVO.getKzName());
+        reqContent.put("kzphone", clientVO.getKzPhone());
+        reqContent.put("kzwechat", clientVO.getKzWechat());
+        reqContent.put("kzqq", clientVO.getKzQq());
+        reqContent.put("kzww", clientVO.getKzWw());
+        reqContent.put("matename", clientVO.getMateName());
+        reqContent.put("matephone", clientVO.getMatePhone());
+        reqContent.put("matewechat", clientVO.getMateWeChat());
+        reqContent.put("mateqq", clientVO.getMateQq());
+        reqContent.put("oldkzname", clientVO.getOldKzName());
+        reqContent.put("oldkzphone", clientVO.getOldKzPhone());
+        String addRstStr = crmBaseApi.doService(reqContent, "clientEditDetailHs");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if (!"100000".equals(jsInfo.getString("code"))) {
             throw new RException(jsInfo.getString("msg"));
