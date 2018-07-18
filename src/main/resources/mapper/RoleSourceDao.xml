@@ -11,12 +11,17 @@
 
     <!--插入-->
     <insert id="insert">
-        insert into hm_pub_role_source(role_id, source_id, company_id)
-                values(#{roleId},#{sourceId},#{companyId})
+        insert into hm_pub_role_source (role_id, source_id, company_id)
+        values (#{roleId}, #{sourceId}, #{companyId})
     </insert>
 
-
-
+    <!--批量录入权限和员工关系-->
+    <insert id="batchAddRoleSource">
+        insert into hm_pub_role_source(role_id, source_id, company_id) values
+        <foreach collection="sourceIds" item="sourceId" separator=",">
+            (#{roleId},#{sourceId},#{companyId})
+        </foreach>
+    </insert>
 
 
 </mapper>

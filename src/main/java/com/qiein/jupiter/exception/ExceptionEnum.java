@@ -93,6 +93,7 @@ public enum ExceptionEnum {
     REPEAT_TIME_ERRPR(802, "时间类型，天数都不能为空"),
     //角色
     ROLE_ERROR(901, "角色错误"),
+    ROLE_ID_IS_NULL(902,"角色ID不能为空"),
     //品牌
     BRAND_NAME_REPEAT(1001, "该品牌已存在"),
     BRAND_NOT_FOUND(1002, "该品牌不存在"),
