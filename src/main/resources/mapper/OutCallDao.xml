@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiein.jupiter.web.dao.OutCallDao">
+    <resultMap id="baseMap" type="com.qiein.jupiter.web.entity.dto.OutCallUserDTO">
+        <!--<id column="ID" property="id" jdbcType="BIGINT"/>-->
+        <result column="COMPANY_ID" property="companyId" jdbcType="INTEGER"/>
+        <result column="ADMIN_NAME" property="username" jdbcType="VARCHAR"/>
+        <result column="ADMIN_PASSWORD" property="password" jdbcType="VARCHAR"/>
+        <result column="ENTERPRISE_ID" property="enterpriseId" jdbcType="VARCHAR"/>
+        <result column="STAFF_ID" property="staffId" jdbcType="INTEGER"/>
+        <result column="CNO" property="cno" jdbcType="INTEGER"/>
+        <result column="ID" property="id" jdbcType="INTEGER"/>
+        <result column="BIND_TEL" property="bindTel" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--根据企业ID 获取管理员账号-->
+    <select id="getAdminByCompanyId" resultMap="baseMap">
+        SELECT
+            company.ENTERPRISE_ID,
+            company.COMPANY_ID,
+            company.ADMIN_NAME,
+            company.ADMIN_PASSWORD
+        FROM hm_crm_outcall_company company
+        WHERE company.COMPANY_ID = #{companyId}
+    </select>
+
+    <!--新增用户关联-->
+    <insert id="addUserRela">
+        INSERT INTO hm_crm_outcall_rela
+        (ENTERPRISE_ID, COMPANY_ID, STAFF_ID, CNO, ID)
+        VALUES (
+            #{enterpriseId}, #{companyId}, #{staffId}, #{cno}, #{id}
+        )
+    </insert>
+
+    <!--删除用户关联-->
+    <delete id="delUserRela">
+        DELETE FROM hm_crm_outcall_rela
+        WHERE STAFF_ID = #{staffId}
+              AND COMPANY_ID = #{companyId}
+    </delete>
+
+    <!--获取cno集合-->
+    <select id="getCnoArr" resultType="Integer">
+        SELECT CNO
+        FROM hm_crm_outcall_rela
+        WHERE COMPANY_ID = #{companyId}
+    </select>
+
+    <!--根据公司ID和员工ID 获取详情-->
+    <select id="getUserInfoAndAdmin" resultMap="baseMap">
+        SELECT
+            company.ENTERPRISE_ID,
+            company.COMPANY_ID,
+            company.ADMIN_NAME,
+            company.ADMIN_PASSWORD,
+            rela.CNO,
+            rela.STAFF_ID,
+            rela.ID,
+            rela.BIND_TEL
+        FROM hm_crm_outcall_company company
+            LEFT JOIN hm_crm_outcall_rela rela
+                ON company.ENTERPRISE_ID = rela.ENTERPRISE_ID
+        WHERE company.COMPANY_ID = #{companyId}
+              AND rela.STAFF_ID = #{staffId}
+    </select>
+
+    <!--修改绑定手机-->
+    <update id="updateBindTel">
+        UPDATE hm_crm_outcall_rela
+        SET BIND_TEL = #{bindTel}
+        WHERE COMPANY_ID = #{companyId}
+              AND STAFF_ID = #{staffId}
+    </update>
+</mapper>

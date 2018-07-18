@@ -326,4 +326,11 @@ public class AllTest {
 
         System.out.println(sb.toString());
     }
+
+    @Test
+    public void test12321(){
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("result","true" );
+        System.out.println(jsonObject.getBoolean("result"));
+    }
 }

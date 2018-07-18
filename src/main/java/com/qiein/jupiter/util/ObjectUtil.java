@@ -31,9 +31,13 @@ public class ObjectUtil {
         Class<?> tempClass = obj.getClass();
         List<Field> fieldList = new ArrayList<>();
         //递归获取所有的类
-        while (tempClass != null) {//当父类为null的时候说明到达了最上层的父类(Object类).
-            fieldList.addAll(Arrays.asList(tempClass.getDeclaredFields()));
-            tempClass = tempClass.getSuperclass(); //得到父类,然后赋给自己
+        int i = 0;
+        while (i <= 2) {// 为了速度只遍历两层
+            if (tempClass != null) {
+                fieldList.addAll(Arrays.asList(tempClass.getDeclaredFields()));
+                tempClass = tempClass.getSuperclass(); //得到父类,然后赋给自己
+            }
+            i++;
         }
         // 遍历对象
         for (Field f : fieldList) {
