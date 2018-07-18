@@ -458,5 +458,37 @@ public class ClientEditServiceImpl implements ClientEditService {
         clientInfoDao.editStayAmount(DBSplitUtil.getDetailTabName(cashLogPO.getCompanyId()), cashLogPO.getKzId(), cashLogPO.getCompanyId(), cashLogPO.getAmount());
     }
 
+    /**
+     * 修改客资详情
+     *
+     * @param clientVO
+     * @param staffPO
+     */
+    public void editClientDetail(ClientVO clientVO, StaffPO staffPO){
+        Map<String, Object> reqContent = new HashMap<>();
+        reqContent.put("companyid", staffPO.getCompanyId());
+        reqContent.put("operaid", staffPO.getId());
+        reqContent.put("operaname", staffPO.getNickName());
+        reqContent.put("kzid", clientVO.getKzId());
+        // 客资基础信息
+        reqContent.put("sex", clientVO.getSex());
+        reqContent.put("kzname", clientVO.getKzName());
+        reqContent.put("kzphone", clientVO.getKzPhone());
+        reqContent.put("kzwechat", clientVO.getKzWechat());
+        reqContent.put("kzqq", clientVO.getKzQq());
+        reqContent.put("kzww", clientVO.getKzWw());
+        reqContent.put("matename", clientVO.getMateName());
+        reqContent.put("matephone", clientVO.getMatePhone());
+        reqContent.put("matewechat", clientVO.getMateWeChat());
+        reqContent.put("mateqq", clientVO.getMateQq());
+        reqContent.put("oldkzname", clientVO.getOldKzName());
+        reqContent.put("oldkzphone", clientVO.getOldKzPhone());
+        String addRstStr = crmBaseApi.doService(reqContent, "clientEditDetailHs");
+        JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
+        if (!"100000".equals(jsInfo.getString("code"))) {
+            throw new RException(jsInfo.getString("msg"));
+        }
+    }
+
 
 }

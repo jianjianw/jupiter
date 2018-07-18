@@ -52,5 +52,12 @@ public interface ClientEditService {
      */
     void addCashLog(CashLogPO cashLogPO);
 
+    /**
+     * 修改客资详情
+     *
+     * @param clientVO
+     * @param staffPO
+     */
+    void editClientDetail(ClientVO clientVO, StaffPO staffPO);
 
 }

@@ -146,5 +146,22 @@ public class ClientEditController extends BaseController {
         return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
     }
 
-
+    /**
+     * 修改客资详情
+     *
+     * @return
+     */
+    @PostMapping("/edit_client_detail")
+    public ResultInfo editClientDetail(@RequestBody ClientVO clientVO) {
+        if (StringUtil.isAllEmpty(clientVO.getKzPhone(), clientVO.getKzWechat(), clientVO.getKzQq(), clientVO.getKzWw())) {
+            return ResultInfoUtil.error(ExceptionEnum.KZ_CONTACT_INFORMATION);
+        }
+        if (StringUtil.isEmpty(clientVO.getKzId())) {
+            return ResultInfoUtil.error(ExceptionEnum.KZ_ID_IS_NULL);
+        }
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        clientEditService.editClientByCwzx(clientVO, currentLoginStaff);
+        return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
+    }
 }
