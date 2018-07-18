@@ -161,7 +161,7 @@ public class ClientEditController extends BaseController {
         }
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        clientEditService.editClientByCwzx(clientVO, currentLoginStaff);
+        clientEditService.editClientDetail(clientVO, currentLoginStaff);
         return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
     }
 }
