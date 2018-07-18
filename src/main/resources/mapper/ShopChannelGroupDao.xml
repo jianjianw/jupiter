@@ -169,7 +169,7 @@
     <delete id="delByGroupId">
         DELETE
         FROM
-            hm_crm_shop_channel_group_rela
+            hm_crm_type_channel_group_rela
         WHERE
             COMPANYID = #{companyId} AND GROUPID = #{groupId}
     </delete>

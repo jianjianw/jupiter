@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiein.jupiter.web.dao.RoleSourceDao">
+    <resultMap id="baseMap" type="com.qiein.jupiter.web.entity.po.RoleSourcePO">
+        <id column="ID" property="id" jdbcType="INTEGER"/>
+        <result column="role_id" property="roleId" jdbcType="INTEGER"/>
+        <result column="source_id" property="sourceId" jdbcType="INTEGER"/>
+        <result column="company_id" property="companyId" jdbcType="INTEGER"/>
+    </resultMap>
+
+
+    <!--插入-->
+    <insert id="insert">
+        insert into hm_pub_role_source(role_id, source_id, company_id)
+                values(#{roleId},#{sourceId},#{companyId})
+    </insert>
+
+
+
+
+
+</mapper>
