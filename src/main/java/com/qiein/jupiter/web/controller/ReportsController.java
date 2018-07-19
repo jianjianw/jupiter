@@ -9,6 +9,7 @@ import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.ReportsConditionVO;
 import com.qiein.jupiter.web.service.ReportService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -209,12 +210,13 @@ public class ReportsController extends BaseController {
      * 转介绍邀约统计
      */
     @RequestMapping("/get_zjs_invite_reports")
-    public ResultInfo getZjsInviteReports(@RequestParam("start") int start, @RequestParam("end") int end) {
+    public ResultInfo getZjsInviteReports(@RequestParam("start") int start, @RequestParam("end") int end, @Param("groupIds") String groupIds) {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         Map<String, Object> reqContent = new HashMap<>();
         reqContent.put("start", start);
         reqContent.put("end", end);
         reqContent.put("companyid", currentLoginStaff.getCompanyId());
+        reqContent.put("groupids", appogroupIdsintIds);
         //请求juplat接口
         String json = crmBaseApi.doService(reqContent, "zjsinvitereports");
         return ResultInfoUtil.success(JsonFmtUtil.strContentToJsonObj(json).get("analysis"));
