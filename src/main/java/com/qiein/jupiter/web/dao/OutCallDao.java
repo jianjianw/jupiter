@@ -55,4 +55,14 @@ public interface OutCallDao {
      * @return
      */
     int updateBindTel(OutCallUserDTO outCallUserDTO);
+
+    /**
+     * 新增管理员
+     */
+    int addAdmin(OutCallUserDTO outCallUserDTO);
+
+    /**
+     * 修改管理员账号
+     */
+    int updateAdmin(OutCallUserDTO outCallUserDTO);
 }

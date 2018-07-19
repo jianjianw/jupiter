@@ -51,7 +51,7 @@ public interface OutCallService {
     /**
      * 获取通话记录
      */
-    JSONObject getCallRecord(OutCallUserDTO outCallUserDTO);
+    JSONObject getCallRecord(int companyId, String kzId);
 
     /**
      * 根据企业ID 获取绑定的管理员账号
@@ -94,9 +94,8 @@ public interface OutCallService {
      */
     JSONObject addToWhite(int companyId, int staffId, String tel, String key, String validateCode);
 
-
     /**
      * 企业新增外呼管理员
      */
-//    JSONObject addAdmin();
+    int updateAdmin(OutCallUserDTO outCallUserDTO);
 }

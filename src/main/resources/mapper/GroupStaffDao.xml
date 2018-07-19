@@ -237,11 +237,12 @@
             LEFT JOIN hm_pub_role role ON role_rela.ROLEID = role.ID AND role_rela.COMPANYID = role.COMPANYID
             LEFT JOIN (SELECT
                            count(1) as staff_count,
-                           staffId,
-                           companyId,
+                           gp_staff.staffId,
+                           gp_staff.companyId,
                            '1' as DELBTFLAG
                        FROM
-                           hm_pub_group_staff  group by staffid having staff_count > 1) result
+                           hm_pub_group_staff gp_staff,hm_pub_group gp
+                           where  gp.GROUPID = gp_staff.GROUPID group by staffid having staff_count > 1) result
                     on result.staffId = rela.staffID and result.companyId = rela.companyID
         WHERE
             rela.GROUPID = #{groupId}
