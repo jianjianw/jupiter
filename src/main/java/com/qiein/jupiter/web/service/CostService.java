@@ -18,7 +18,7 @@ public interface CostService {
      * @param companyId
      * @return
      */
-    List<CostShowVO> costList(String month, Integer companyId);
+    List<CostShowVO> costList(String month, Integer companyId,Integer staffId);
 
     /**
      * 添加花费
