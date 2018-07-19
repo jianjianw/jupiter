@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.service;
 
+import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.web.entity.po.ChannelPO;
 import com.qiein.jupiter.web.entity.vo.ChannelDictVO;
 import com.qiein.jupiter.web.entity.vo.ChannelVO;
@@ -95,4 +96,11 @@ public interface ChannelService {
      * @return
      */
     List<ChannelVO> getAllChannelSourceList(int companyId);
+
+    /**
+     * 获取电商所有渠道
+     * @param companyId
+     * @return
+     * */
+    List<ChannelVO> getDsAllChannel(int companyId);
 }

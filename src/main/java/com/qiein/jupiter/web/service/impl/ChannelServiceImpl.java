@@ -227,4 +227,9 @@ public class ChannelServiceImpl implements ChannelService {
         return channelDao.getAllChannelSourceList(companyId);
     }
 
+    @Override
+    public List<ChannelVO> getDsAllChannel(int companyId) {
+        return channelDao.getDsAllChannel(companyId);
+    }
+
 }

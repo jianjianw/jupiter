@@ -243,4 +243,13 @@ public class ChannelController extends BaseController {
         return ResultInfoUtil
                 .success(channelService.getAllChannelSourceList(currentLoginStaff.getCompanyId()));
     }
+
+    /**
+     * 获取企业所有电商渠道列表
+     * */
+    @GetMapping("/get_ds_all_channel")
+    public ResultInfo getDsAllChannel(){
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        return ResultInfoUtil.success(channelService.getDsAllChannel(currentLoginStaff.getCompanyId()));
+    }
 }
