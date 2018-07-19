@@ -271,7 +271,7 @@ public class GroupServiceImpl implements GroupService {
         if (groupDB != null && groupDB.getId() != groupPO.getId()) {
             throw new RException(ExceptionEnum.GROUP_NAME_REPEAT);
         }
-        if (RoleConstant.MSJD.equalsIgnoreCase(groupPO.getGroupType())) {
+        if (RoleConstant.MSJD.equalsIgnoreCase(groupPO.getGroupType()) && !CommonConstant.DEFAULT_STRING_ZERO.equalsIgnoreCase(groupPO.getParentId())) {
             if (!NumUtil.isValid(groupPO.getShopId())) {
                 throw new RException(ExceptionEnum.SHOP_ID_NULL);
             }
