@@ -216,7 +216,7 @@ public class ReportsController extends BaseController {
         reqContent.put("start", start);
         reqContent.put("end", end);
         reqContent.put("companyid", currentLoginStaff.getCompanyId());
-        reqContent.put("groupids", appogroupIdsintIds);
+        reqContent.put("groupids", groupIds);
         //请求juplat接口
         String json = crmBaseApi.doService(reqContent, "zjsinvitereports");
         return ResultInfoUtil.success(JsonFmtUtil.strContentToJsonObj(json).get("analysis"));
