@@ -1,10 +1,16 @@
 package com.qiein.jupiter.web.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.qiein.jupiter.enums.TipMsgEnum;
+import com.qiein.jupiter.util.ObjectUtil;
+import com.qiein.jupiter.util.ResultInfo;
+import com.qiein.jupiter.util.ResultInfoUtil;
+import com.qiein.jupiter.web.entity.dto.OutCallUserDTO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.service.OutCallService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -111,4 +117,35 @@ public class TiOutCallController extends BaseController {
         return outCallService.hangupPhone(staff.getCompanyId(), staff.getId());
     }
 
+
+    /**
+     * 查询通话 记录
+     */
+    @GetMapping("/record")
+    public JSONObject record(String kzId) {
+        StaffPO staff = getCurrentLoginStaff();
+        return outCallService.getCallRecord(staff.getCompanyId(), kzId);
+    }
+
+    /**
+     * 修改企业管理员信息
+     */
+    @PostMapping("/update_admin")
+    public ResultInfo updateAdmin(OutCallUserDTO outCallUserDTO) {
+        ObjectUtil.objectStrParamTrim(outCallUserDTO);
+        StaffPO staff = getCurrentLoginStaff();
+        outCallUserDTO.setCompanyId(staff.getCompanyId());
+        outCallService.updateAdmin(outCallUserDTO);
+        return ResultInfoUtil.success(TipMsgEnum.UPDATE_SUCCESS);
+    }
+
+    /**
+     * 获取企业管理员账户
+     *
+     * @return
+     */
+    @GetMapping
+    public ResultInfo getAdminUser() {
+        return ResultInfoUtil.success(outCallService.getAdminByCompanyId(getCurrentLoginStaff().getCompanyId()));
+    }
 }

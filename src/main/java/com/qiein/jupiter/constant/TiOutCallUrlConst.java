@@ -51,9 +51,9 @@ public class TiOutCallUrlConst {
      */
     public static String hangUp = "http://api.clink.cn/interface/HangUp";
     /**
-     * 通话记录
+     * 外呼通话记录
      */
-    public static String recordList = "http://InterfaceServerIp:port /interfaceAction/cdrIbInterface!listCdrIb.action";
+    public static String outRecordList = "http://api.clink.cn/interfaceAction/cdrObInterface!listCdrOb.action";
 
     /**
      * 验证白名单并获取语音验证码
