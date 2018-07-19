@@ -49,7 +49,7 @@ public class TiOutCallUrlConst {
     /**
      * 挂断
      */
-    public static String hangUp = "http://api.clink.cn/interface/entrance/OpenInterfaceEntrance";
+    public static String hangUp = "http://api.clink.cn/interface/HangUp";
     /**
      * 通话记录
      */

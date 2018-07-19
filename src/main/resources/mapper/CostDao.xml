@@ -23,84 +23,107 @@
 
   <select id="costList" resultMap="Cost">
          SELECT
-	a.ID COSTID,
-	sourse.ID,
-	SRCNAME,
-	SRCIMG,
-	(
-		SELECT
-			c.COST
-		FROM
-			hm_crm_cost c
-		WHERE
-			c.COSTTIME = a.COSTTIME
-		AND c.SRCID = a.SRCID
-	) COST,
-	SRCID,
-	FROM_UNIXTIME(a.COSTTIME, '%Y/%m/%d') COSTTIME,
-	FROM_UNIXTIME(a.COSTTIME, '%d ') COSTDATE,
-	(
-		SELECT
-			SUM(COST)
-		FROM
-			hm_crm_cost b
-		WHERE
-			a.SRCID = b.SRCID
-		AND FROM_UNIXTIME(b.COSTTIME, '%Y/%m/%d ') LIKE CONCAT(
-			"%",
-#{month},
- "%"
-)
-		AND b.COMPANYID = #{companyId}
-		) TOTALCOST
-		FROM
-			(select ID,SRCNAME,SRCIMG	 FROM hm_crm_source WHERE COMPANYID = #{companyId} AND (TYPEID=1 OR TYPEID=2)) sourse
+			a.ID COSTID,
+			sourse.ID,
+			SRCNAME,
+			SRCIMG,
+			(
+				SELECT
+					c.COST
+				FROM
+					hm_crm_cost c
+				WHERE
+					c.COSTTIME = a.COSTTIME
+				AND c.SRCID = a.SRCID
+			) COST,
+			SRCID,
+			FROM_UNIXTIME(a.COSTTIME, '%Y/%m/%d') COSTTIME,
+			FROM_UNIXTIME(a.COSTTIME, '%d ') COSTDATE,
+			(
+				SELECT
+					SUM(COST)
+				FROM
+					hm_crm_cost b
+				WHERE
+					a.SRCID = b.SRCID
+				AND FROM_UNIXTIME(b.COSTTIME, '%Y/%m/%d ') LIKE CONCAT(
+					"%",
+		#{month},
+		 "%"
+		)
+				AND b.COMPANYID = #{companyId}
+				) TOTALCOST
+				FROM
+			(
+				SELECT
+					SOURCE_ID
+				FROM
+					hm_pub_role_source
+				WHERE
+					role_ID = #{staffId}
+				AND company_id = #{companyId}
+			) role
 		LEFT JOIN (
 			SELECT
 				ID,
-				SRCID,
-				COSTTIME
+				SRCNAME,
+				SRCIMG
 			FROM
-			hm_crm_cost cost
+				hm_crm_source
 			WHERE
-				FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d ') LIKE CONCAT(
-					"%",
-					#{month}, "%")
-				AND cost.companyId = #{companyId}
-GROUP BY SRCID,COSTTIME
-) a ON sourse.ID = a.SRCID
+				COMPANYID = #{companyId}
+			AND (TYPEID = 1 OR TYPEID = 2)
+		) sourse ON sourse.ID = role.SOURCE_ID
+				LEFT JOIN (
+					SELECT
+						ID,
+						SRCID,
+						COSTTIME
+					FROM
+					hm_crm_cost cost
+					WHERE
+						FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d ') LIKE CONCAT(
+							"%",
+							#{month}, "%")
+						AND cost.companyId = #{companyId}
+		GROUP BY SRCID,COSTTIME
+		) a ON sourse.ID = a.SRCID
 
 
 			UNION
 				SELECT
-					a.ID COSTID,
+					cost.ID COSTID,
 					"" ID,
 					"合计" SRCNAME,
 					"NOIMG" SRCIMG,
-					SUM(a.COST) COST,
-					A.SRCID SRCID,
-					FROM_UNIXTIME(a.COSTTIME, '%Y/%m/%d ') COSTTIME,
-					FROM_UNIXTIME(a.COSTTIME, '%d ') COSTDATE,
+					SUM(cost.COST) COST,
+					cost.SRCID SRCID,
+					FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d ') COSTTIME,
+					FROM_UNIXTIME(cost.COSTTIME, '%d ') COSTDATE,
 					(
 						SELECT
-							SUM(COST)
+							SUM(b.COST)
 						FROM
-							hm_crm_cost
-						WHERE
-							FROM_UNIXTIME(COSTTIME, '%Y/%m/%d ') LIKE CONCAT(
+								hm_pub_role_source a
+
+
+						LEFT JOIN hm_crm_cost b ON b.SRCID=a.source_id AND b.COMPANYID=a.company_id AND FROM_UNIXTIME(b.COSTTIME, '%Y/%m/%d ') LIKE CONCAT(
 								"%",
-								#{month}, "%")
-							AND COMPANYID = #{companyId}
+								#{month}, "%") AND a.role_id=#{staffId}
+						WHERE
+							a.company_id=#{companyId}
 							) TOTALCOST
 						FROM
-							hm_crm_cost a
-						WHERE
-							FROM_UNIXTIME(a.COSTTIME, '%Y/%m/%d ') LIKE CONCAT(
+								hm_pub_role_source role
+
+
+						LEFT JOIN hm_crm_cost cost ON cost.SRCID=role.source_id AND cost.COMPANYID=role.company_id AND FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d ') LIKE CONCAT(
 								"%",
-								#{month}, "%")
-							AND a.COMPANYID = #{companyId}
+								#{month}, "%") AND role.role_id=#{staffId}
+						WHERE
+								role.company_id=#{companyId}
 							GROUP BY
-								a.COSTTIME
+								cost.COSTTIME
     </select>
 
 

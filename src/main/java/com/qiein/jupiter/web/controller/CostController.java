@@ -29,7 +29,7 @@ public class CostController extends BaseController {
     @GetMapping("cost_list")
     public ResultInfo costList(@RequestParam String month) {
         StaffPO staff = getCurrentLoginStaff();
-        return ResultInfoUtil.success(costService.costList(month, staff.getCompanyId()));
+        return ResultInfoUtil.success(costService.costList(month, staff.getCompanyId(),staff.getId()));
     }
 
     /**
