@@ -68,4 +68,9 @@ public interface ClientDao {
     Integer findId(@Param("kzId") String kzId,@Param("companyId") Integer companyId,@Param("tableName")String tableName);
 
 
+    /**
+     * 根据来源id获取客资数量
+     * */
+    Integer getKzNumBySourceId(@Param("tableName")String tableName,@Param(value="sourceId") int sourceId,@Param(value="companyId") Integer companyId);
+
 }
