@@ -19,6 +19,16 @@ public class SendMsgDTO {
     private String phone;
     //需要短信发送的变量 是具体而定
     private Map<String,String> map;
+    //短信内容
+    private String text;
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
 
     public String getTemplateType() {
         return templateType;
