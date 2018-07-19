@@ -32,6 +32,7 @@
       LEFT JOIN hm_pub_permission pms ON pms.PERMISSIONNAME = pg.PLUGINNAME
       WHERE
 	    pg.ISSHOW = 1 AND rela.COMPANYID = #{companyId}  AND rela.ISSHOW = 1
+	  ORDER BY pg.ID
     </select>
 
     <!--新增插件-->

@@ -23,8 +23,8 @@ public class CostServiceImpl implements CostService {
      * @param companyId
      * @return
      */
-    public  List<CostShowVO> costList(String month, Integer companyId){
-        return costDao.costList(month,companyId);
+    public  List<CostShowVO> costList(String month, Integer companyId,Integer staffId){
+        return costDao.costList(month,companyId,staffId);
     }
 
     /**
