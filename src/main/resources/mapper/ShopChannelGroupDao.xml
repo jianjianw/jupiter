@@ -37,7 +37,7 @@
             rela.ID,
             rela.GROUPID
         FROM
-            hm_crm_shop_channel_group_rela rela
+            hm_crm_type_channel_group_rela rela
             LEFT JOIN hm_crm_channel channel ON channel.COMPANYID = rela.COMPANYID AND rela.CHANNELID = channel.ID
         WHERE
             rela.COMPANYID = #{companyId}
@@ -46,7 +46,7 @@
 
     <!--编辑小组权重-->
     <update id="editGroupWeight" parameterType="map">
-        UPDATE hm_crm_shop_channel_group_rela
+        UPDATE hm_crm_type_channel_group_rela
         SET WEIGHT = #{weight}
         WHERE ID = #{relaId}
               AND COMPANYID = #{companyId}
@@ -54,7 +54,7 @@
 
     <!--批量删除拍摄地渠道小组关联-->
     <delete id="batchDeleteGroup" parameterType="map">
-        DELETE FROM hm_crm_shop_channel_group_rela
+        DELETE FROM hm_crm_type_channel_group_rela
         WHERE COMPANYID = #{companyId}
         AND ID IN
         <foreach collection="relaIdArr" item="id" index="index" open="("
@@ -65,7 +65,7 @@
 
     <!--根据渠道拍摄地，删除记录-->
     <delete id="deleteByChannelAndShopId" parameterType="map">
-        DELETE FROM hm_crm_shop_channel_group_rela
+        DELETE FROM hm_crm_type_channel_group_rela
         WHERE COMPANYID = #{companyId}
               AND SHOPID = #{shopId}
               AND CHANNELID = #{channelId}
@@ -75,14 +75,14 @@
     <delete id="delByChannelId" parameterType="Integer">
         DELETE
         FROM
-            hm_crm_shop_channel_group_rela
+            hm_crm_type_channel_group_rela
         WHERE
             COMPANYID = #{companyId} AND CHANNELID = #{channelId}
     </delete>
 
     <!-- 批量添加拍摄地渠道关联-->
     <insert id="batchAddShopChannel" parameterType="com.qiein.jupiter.web.entity.po.ShopChannelGroupPO">
-        INSERT INTO hm_crm_shop_channel_group_rela
+        INSERT INTO hm_crm_type_channel_group_rela
         (SHOPID,CHANNELID,GROUPID,GROUPNAME,WEIGHT,COMPANYID)
         VALUES
         <foreach collection="list" item="po" index="index" separator=",">
@@ -107,7 +107,7 @@
             rela.WEIGHT,
             rela.COMPANYID
         FROM
-            hm_crm_shop_channel_group_rela rela
+            hm_crm_type_channel_group_rela rela
         WHERE
             rela.COMPANYID = #{companyId}
             AND rela.SHOPID = #{shopId}
@@ -117,7 +117,7 @@
 
     <!--编辑客服小组-->
     <update id="editChannelGroup" parameterType="map">
-        UPDATE hm_crm_shop_channel_group_rela
+        UPDATE hm_crm_type_channel_group_rela
         SET GROUPID   = #{groupId},
             GROUPNAME = #{groupName}
         WHERE ID = #{relaId}
@@ -132,7 +132,7 @@
             grp.GROUPNAME,
             rela.GROUPID
         FROM
-            hm_crm_shop_channel_group_rela rela
+            hm_crm_type_channel_group_rela rela
             LEFT JOIN hm_pub_group grp ON rela.GROUPID = grp.GROUPID AND rela.COMPANYID = grp.COMPANYID
         WHERE
             rela.COMPANYID = #{companyId}
@@ -143,7 +143,7 @@
 
     <!--客服组修改名字时联动修改关联分配表中的名字-->
     <update id="updateGroupNameById" parameterType="map">
-        UPDATE hm_crm_shop_channel_group_rela
+        UPDATE hm_crm_type_channel_group_rela
         SET GROUPNAME = #{groupName}
         WHERE GROUPID = #{groupId}
               AND COMPANYID = #{companyId}
