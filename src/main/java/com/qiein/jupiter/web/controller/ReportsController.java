@@ -194,7 +194,7 @@ public class ReportsController extends BaseController {
      * 转介绍提报统计
      */
     @RequestMapping("/get_zjs_source_reports")
-    public ResultInfo getZjsSourceReports(@RequestParam("start") int start, @RequestParam("end") int end, @RequestParam("sourceIds") String sourceIds) {
+    public ResultInfo getZjsSourceReports(@RequestParam("start") int start, @RequestParam("end") int end, String sourceIds) {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         Map<String, Object> reqContent = new HashMap<>();
         reqContent.put("start", start);
@@ -210,7 +210,7 @@ public class ReportsController extends BaseController {
      * 转介绍邀约统计
      */
     @RequestMapping("/get_zjs_invite_reports")
-    public ResultInfo getZjsInviteReports(@RequestParam("start") int start, @RequestParam("end") int end, @Param("groupIds") String groupIds) {
+    public ResultInfo getZjsInviteReports(@RequestParam("start") int start, @RequestParam("end") int end, String groupIds) {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         Map<String, Object> reqContent = new HashMap<>();
         reqContent.put("start", start);
