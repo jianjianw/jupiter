@@ -41,7 +41,7 @@
             LEFT JOIN hm_crm_channel channel ON channel.COMPANYID = rela.COMPANYID AND rela.CHANNELID = channel.ID
         WHERE
             rela.COMPANYID = #{companyId}
-            AND rela.SHOPID = #{shopId}
+            AND rela.TYPEID = #{shopId}
     </select>
 
     <!--编辑小组权重-->
@@ -67,7 +67,7 @@
     <delete id="deleteByChannelAndShopId" parameterType="map">
         DELETE FROM hm_crm_type_channel_group_rela
         WHERE COMPANYID = #{companyId}
-              AND SHOPID = #{shopId}
+              AND TYPEID = #{shopId}
               AND CHANNELID = #{channelId}
     </delete>
 
@@ -83,7 +83,7 @@
     <!-- 批量添加拍摄地渠道关联-->
     <insert id="batchAddShopChannel" parameterType="com.qiein.jupiter.web.entity.po.ShopChannelGroupPO">
         INSERT INTO hm_crm_type_channel_group_rela
-        (SHOPID,CHANNELID,GROUPID,GROUPNAME,WEIGHT,COMPANYID)
+        (TYPEID,CHANNELID,GROUPID,GROUPNAME,WEIGHT,COMPANYID)
         VALUES
         <foreach collection="list" item="po" index="index" separator=",">
             (
@@ -101,7 +101,7 @@
     <select id="getByShopAndChannelAndGroup" parameterType="map" resultMap="baseMap">
         SELECT
             rela.ID,
-            rela.SHOPID,
+            rela.TYPEID,
             rela.CHANNELID,
             rela.GROUPID,
             rela.WEIGHT,
@@ -110,7 +110,7 @@
             hm_crm_type_channel_group_rela rela
         WHERE
             rela.COMPANYID = #{companyId}
-            AND rela.SHOPID = #{shopId}
+            AND rela.TYPEID = #{shopId}
             AND rela.CHANNELID = #{channelId}
             AND rela.GROUPID = #{groupId}
     </select>
@@ -136,7 +136,7 @@
             LEFT JOIN hm_pub_group grp ON rela.GROUPID = grp.GROUPID AND rela.COMPANYID = grp.COMPANYID
         WHERE
             rela.COMPANYID = #{companyId}
-            AND rela.SHOPID = #{shopId}
+            AND rela.TYPEID = #{shopId}
             AND rela.CHANNELID = #{channelId}
             AND grp.GROUPNAME LIKE CONCAT('%', #{searchKey}, '%')
     </select>
