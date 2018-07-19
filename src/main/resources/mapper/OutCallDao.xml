@@ -72,4 +72,22 @@
         WHERE COMPANY_ID = #{companyId}
               AND STAFF_ID = #{staffId}
     </update>
+
+    <!--新增管理员-->
+    <insert id="addAdmin">
+        INSERT INTO hm_crm_outcall_company
+        (COMPANY_ID, ADMIN_NAME, ADMIN_PASSWORD, ENTERPRISE_ID)
+        VALUES (
+            #{companyId}, #{username}, #{password}, #{enterpriseId}
+        )
+    </insert>
+
+    <!-- 更新管理员-->
+    <update id="updateAdmin">
+        UPDATE hm_crm_outcall_company
+        SET ADMIN_NAME     = #{username},
+            ADMIN_PASSWORD = #{password},
+            ENTERPRISE_ID  = #{enterpriseId}
+        WHERE COMPANY_ID = #{companyId}
+    </update>
 </mapper>

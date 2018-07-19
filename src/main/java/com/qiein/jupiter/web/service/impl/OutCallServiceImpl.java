@@ -210,16 +210,42 @@ public class OutCallServiceImpl implements OutCallService {
         return jsonObject;
     }
 
+    /**
+     * 获取通话记录
+     */
     @Override
-    public JSONObject getCallRecord(OutCallUserDTO outCallUserDTO) {
-        return null;
+    public JSONObject getCallRecord(int companyId, String kzId) {
+        OutCallUserDTO admin = outCallDao.getAdminByCompanyId(companyId);
+        //加密一下
+        seedUser(admin, true);
+        Map<String, String> baseMap = getBaseMap(admin, true);
+        baseMap.put("userField", kzId);
+        JSONObject jsonObject = this.postToNet(baseMap, TiOutCallUrlConst.outRecordList, false);
+        return jsonObject;
     }
 
+    /**
+     * 获取公司Admin账户信息
+     *
+     * @param companyId
+     * @return
+     */
     @Override
     public OutCallUserDTO getAdminByCompanyId(int companyId) {
-        return outCallDao.getAdminByCompanyId(companyId);
+        OutCallUserDTO adminByCompanyId = outCallDao.getAdminByCompanyId(companyId);
+        //当企业不存在管理员账户时，给他新增一个空的账户
+        if (adminByCompanyId == null) {
+            adminByCompanyId = new OutCallUserDTO();
+            adminByCompanyId.setCompanyId(companyId);
+            outCallDao.addAdmin(adminByCompanyId);
+            adminByCompanyId = outCallDao.getAdminByCompanyId(companyId);
+        }
+        return adminByCompanyId;
     }
 
+    /**
+     * 获取某个用户的信息
+     */
     @Override
     public OutCallUserDTO getUserInfoAndAdmin(int companyId, int staffId) {
         return outCallDao.getUserInfoAndAdmin(companyId, staffId);
@@ -227,9 +253,6 @@ public class OutCallServiceImpl implements OutCallService {
 
     /**
      * 发送请求
-     *
-     * @param isPost
-     * @return
      */
     @Override
     public JSONObject postToNet(Map<String, String> paramMap, String url, boolean isPost) {
@@ -274,6 +297,9 @@ public class OutCallServiceImpl implements OutCallService {
         return null;
     }
 
+    /**
+     * 获取语音验证
+     */
     @Override
     public JSONObject getValidateCode(int companyId, int staffId, String tel) {
         //TODO NPE
@@ -313,6 +339,17 @@ public class OutCallServiceImpl implements OutCallService {
         baseMap.put("validateCode", validateCode);
         JSONObject jsonObject = this.postToNet(baseMap, TiOutCallUrlConst.validateCode, false);
         return jsonObject;
+    }
+
+    /**
+     * 修改管理账户信息
+     *
+     * @param outCallUserDTO
+     * @return
+     */
+    @Override
+    public int updateAdmin(OutCallUserDTO outCallUserDTO) {
+        return outCallDao.updateAdmin(outCallUserDTO);
     }
 
 

@@ -40,11 +40,6 @@ public class OutCallUserDTO {
     private String bindTel;
 
     /**
-     * 要拨打用户的手机号码
-     */
-    private String customerNumber;
-
-    /**
      * 区号
      */
     private String areaCode;
@@ -79,13 +74,6 @@ public class OutCallUserDTO {
         this.cno = cno;
     }
 
-    public String getCustomerNumber() {
-        return customerNumber;
-    }
-
-    public void setCustomerNumber(String customerNumber) {
-        this.customerNumber = customerNumber;
-    }
 
     public int getStaffId() {
         return staffId;
