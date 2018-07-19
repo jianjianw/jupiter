@@ -15,12 +15,12 @@ public interface OutCallService {
     /**
      * 坐席 上下线
      */
-    JSONObject userOnlineOffline(int companyId, int staffId, boolean online);
+    JSONObject userOnlineOffline(int companyId, int staffId, String phone, boolean online);
 
     /**
      * 创建外呼账户
      */
-    JSONObject createCallAccount(int companyId, int staffId, String tel);
+    JSONObject createCallAccount(int companyId, int staffId, String tel, String cno);
 
     /**
      * 删除外呼账户
@@ -41,12 +41,12 @@ public interface OutCallService {
     /**
      * 拨打电话
      */
-    JSONObject callPhone(int companyId, int staffId, String tel);
+    JSONObject callPhone(int companyId, int staffId, String tel, String kzId);
 
     /**
      * 主动挂断
      */
-    JSONObject hangupPhone(OutCallUserDTO outCallUserDTO);
+    JSONObject hangupPhone(int companyId, int staffId);
 
     /**
      * 获取通话记录
@@ -82,7 +82,7 @@ public interface OutCallService {
      *
      * @return
      */
-    int generateCno(int companyId, String enterpriseId);
+    String generateCno(int companyId, String enterpriseId);
 
     /**
      * 验证白名单并获取语音验证码
@@ -94,4 +94,9 @@ public interface OutCallService {
      */
     JSONObject addToWhite(int companyId, int staffId, String tel, String key, String validateCode);
 
+
+    /**
+     * 企业新增外呼管理员
+     */
+//    JSONObject addAdmin();
 }

@@ -1,7 +1,6 @@
 package com.qiein.jupiter.web.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.qiein.jupiter.web.entity.dto.OutCallUserDTO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.service.OutCallService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
+ * 天润外呼系统
+ *
  * @Author: shiTao
  */
 @RestController
@@ -25,9 +26,9 @@ public class TiOutCallController extends BaseController {
      * @return
      */
     @GetMapping("/online")
-    public JSONObject online() {
+    public JSONObject online(String phone) {
         StaffPO staff = getCurrentLoginStaff();
-        return outCallService.userOnlineOffline(staff.getCompanyId(), staff.getId(), true);
+        return outCallService.userOnlineOffline(staff.getCompanyId(), staff.getId(), phone, true);
     }
 
     /**
@@ -38,7 +39,7 @@ public class TiOutCallController extends BaseController {
     @GetMapping("/offline")
     public JSONObject offline() {
         StaffPO staff = getCurrentLoginStaff();
-        return outCallService.userOnlineOffline(staff.getCompanyId(), staff.getId(), false);
+        return outCallService.userOnlineOffline(staff.getCompanyId(), staff.getId(), null, false);
     }
 
 
@@ -46,9 +47,9 @@ public class TiOutCallController extends BaseController {
      * 增加外呼账户
      */
     @GetMapping("/add_user")
-    public JSONObject addUser(int staffId, String bindPhone) {
+    public JSONObject addUser(int staffId, String bindPhone, String cno) {
         StaffPO staff = getCurrentLoginStaff();
-        return outCallService.createCallAccount(staff.getCompanyId(), staffId, bindPhone);
+        return outCallService.createCallAccount(staff.getCompanyId(), staffId, bindPhone, cno);
     }
 
     /**
@@ -77,9 +78,9 @@ public class TiOutCallController extends BaseController {
      * 拨打电话
      */
     @GetMapping("/call")
-    public JSONObject callPhone(String phone) {
+    public JSONObject callPhone(String phone, String kzId) {
         StaffPO staff = getCurrentLoginStaff();
-        return outCallService.callPhone(staff.getCompanyId(), staff.getId(), phone);
+        return outCallService.callPhone(staff.getCompanyId(), staff.getId(), phone, kzId);
     }
 
     /**
@@ -98,6 +99,16 @@ public class TiOutCallController extends BaseController {
     public JSONObject addToWhite(String phone, String key, String code) {
         StaffPO staff = getCurrentLoginStaff();
         return outCallService.addToWhite(staff.getCompanyId(), staff.getId(), phone, key, code);
+    }
+
+
+    /**
+     * 挂断
+     */
+    @GetMapping("/hangup")
+    public JSONObject hangup() {
+        StaffPO staff = getCurrentLoginStaff();
+        return outCallService.hangupPhone(staff.getCompanyId(), staff.getId());
     }
 
 }

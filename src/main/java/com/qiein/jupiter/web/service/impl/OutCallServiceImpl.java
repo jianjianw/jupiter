@@ -41,7 +41,7 @@ public class OutCallServiceImpl implements OutCallService {
      * @return
      */
     @Override
-    public JSONObject userOnlineOffline(int companyId, int staffId, boolean online) {
+    public JSONObject userOnlineOffline(int companyId, int staffId, String phone, boolean online) {
         OutCallUserDTO userInfoAndAdmin = outCallDao.getUserInfoAndAdmin(companyId, staffId);
         //加密一下
         seedUser(userInfoAndAdmin, true);
@@ -49,9 +49,10 @@ public class OutCallServiceImpl implements OutCallService {
         baseMap.put("cno", String.valueOf(userInfoAndAdmin.getCno()));
         //1. 空闲  2. 置忙
         baseMap.put("status", "1");
-        if (StringUtil.isNotEmpty(userInfoAndAdmin.getBindTel())) {
-            baseMap.put("bindTel", userInfoAndAdmin.getBindTel());
+        if (StringUtil.isEmpty(phone)) {
+            phone = userInfoAndAdmin.getBindTel();
         }
+        baseMap.put("bindTel", phone);
         //电话类型 1. 普通电话 2. 分机 4. 远程座席话机
         baseMap.put("type", "1");
         String url;
@@ -70,7 +71,7 @@ public class OutCallServiceImpl implements OutCallService {
      * @return
      */
     @Override
-    public JSONObject createCallAccount(int companyId, int staffId, String tel) {
+    public JSONObject createCallAccount(int companyId, int staffId, String tel, String cno) {
         OutCallUserDTO admin = outCallDao.getAdminByCompanyId(companyId);
         //加密一下
         seedUser(admin, false);
@@ -79,19 +80,23 @@ public class OutCallServiceImpl implements OutCallService {
             tel = staff.getPhone();
         }
         //如果没有cno则生成
-//        if (cno == 0) {
-//            cno = generateCno(companyId, admin.getEnterpriseId());
-//        }
+        if (StringUtil.isEmpty(cno)) {
+            cno = generateCno(companyId, admin.getEnterpriseId());
+        }
         Map<String, String> baseMap = getBaseMap(admin, false);
-        baseMap.put("cno", String.valueOf(staffId));
+        baseMap.put("cno", cno);
         baseMap.put("name", staff.getNickName());
         //TODO 区号
         baseMap.put("areaCode", "0571");
+        //技能
+        baseMap.put("skillIds", "20827");
+        baseMap.put("skillLevels", "1");
+        //发送请求
         JSONObject jsonObject = postToNet(baseMap, TiOutCallUrlConst.addOrUpdateUser, true);
         //成功则数据库新增
         if (jsonObject.getString("result").equals("success")) {
             admin.setId(jsonObject.getIntValue("id"));
-            admin.setCno(staffId);
+            admin.setCno(Integer.valueOf(cno));
             admin.setStaffId(staffId);
             outCallDao.addUserRela(admin);
         }
@@ -170,16 +175,20 @@ public class OutCallServiceImpl implements OutCallService {
      * @return
      */
     @Override
-    public JSONObject callPhone(int companyId, int staffId, String tel) {
+    public JSONObject callPhone(int companyId, int staffId, String tel, String kzId) {
         OutCallUserDTO user = outCallDao.getUserInfoAndAdmin(companyId, staffId);
         //加密一下
         seedUser(user, false);
         Map<String, String> baseMap = getBaseMap(user, false);
+        //很恶心，这里要用Pwd  md5(密码)
+        baseMap.put("pwd", baseMap.get("password"));
         baseMap.put("cno", String.valueOf(user.getCno()));
         baseMap.put("customerNumber", tel);
         //	是否异步调用：1 同步调用 0：异步调用
-        baseMap.put("sync", "0");
-        JSONObject jsonObject = this.postToNet(baseMap, TiOutCallUrlConst.call, true);
+        baseMap.put("sync", "1");
+        //加入用户自定义字段，方便进行搜索
+        baseMap.put("userField", kzId);
+        JSONObject jsonObject = this.postToNet(baseMap, TiOutCallUrlConst.call, false);
         log.info(jsonObject.toString());
         return jsonObject;
     }
@@ -188,12 +197,17 @@ public class OutCallServiceImpl implements OutCallService {
     /**
      * 挂断
      *
-     * @param outCallUserDTO
      * @return
      */
     @Override
-    public JSONObject hangupPhone(OutCallUserDTO outCallUserDTO) {
-        return null;
+    public JSONObject hangupPhone(int companyId, int staffId) {
+        OutCallUserDTO user = outCallDao.getUserInfoAndAdmin(companyId, staffId);
+        //加密一下
+        seedUser(user, true);
+        Map<String, String> baseMap = getBaseMap(user, true);
+        baseMap.put("cno", String.valueOf(user.getCno()));
+        JSONObject jsonObject = this.postToNet(baseMap, TiOutCallUrlConst.hangUp, false);
+        return jsonObject;
     }
 
     @Override
@@ -239,7 +253,7 @@ public class OutCallServiceImpl implements OutCallService {
      * @return
      */
     @Override
-    public int generateCno(int companyId, String enterpriseId) {
+    public String generateCno(int companyId, String enterpriseId) {
         List<Integer> cnoArr = outCallDao.getCnoArr(companyId);
         Set<Integer> setNum = new HashSet<>(cnoArr);
         int initNum = 2000;
@@ -252,16 +266,17 @@ public class OutCallServiceImpl implements OutCallService {
                         .queryString("cno", i)
                         .asBean(JSONObject.class).getBoolean("result");
                 if (!aBoolean) {
-                    return i;
+                    return String.valueOf(i);
                 }
             }
         }
         //TODO 如果这里还没有找到，可以确定已经用完了
-        return 0;
+        return null;
     }
 
     @Override
     public JSONObject getValidateCode(int companyId, int staffId, String tel) {
+        //TODO NPE
         OutCallUserDTO admin = outCallDao.getUserInfoAndAdmin(companyId, staffId);
         StaffPO staff = staffService.getById(staffId, companyId);
         if (StringUtil.isEmpty(tel)) {

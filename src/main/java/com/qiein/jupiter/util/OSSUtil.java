@@ -50,7 +50,7 @@ public class OSSUtil {
 	/**
 	 * 请求地址
 	 */
-	private static String host = "http://" + BUCKET_NAME + "." + END_POINT;
+	private static String host = "https://" + BUCKET_NAME + "." + END_POINT;
 
 	/**
 	 * 缓冲时间是三十秒,即还有三十秒要过期授权就直接废弃重新申请
