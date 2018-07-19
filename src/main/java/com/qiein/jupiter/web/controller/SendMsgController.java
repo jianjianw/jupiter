@@ -34,10 +34,10 @@ public class SendMsgController extends BaseController{
 
     @Autowired
     private ShopService shopService;
-
+    //apollo发送短信接口
     @Value("${apollo.sendMsg}")
     private String sendMsgUrl;
-
+    //apollo获取模板接口
     @Value("${apollo.findCompanyTemplate}")
     private String findCompanyTemplateUrl;
 
