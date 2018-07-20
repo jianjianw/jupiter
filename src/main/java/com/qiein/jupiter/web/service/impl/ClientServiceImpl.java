@@ -44,6 +44,8 @@ public class ClientServiceImpl implements ClientService {
     private ClientStatusDao clientStatusDao;
     @Autowired
     private NewsDao newsDao;
+    @Autowired
+    private StaffDao staffDao;
 
 
     /**
@@ -162,7 +164,7 @@ public class ClientServiceImpl implements ClientService {
             clientDTO.setKzPhone(clientStatusVoteVO.getKzPhone());
             clientDTO.setKzName(clientStatusVoteVO.getKzName());
             clientDTO.setSrcName(clientStatusVoteVO.getSourceName());
-            GoEasyUtil.pushInvalidKz(clientStatusVoteVO.getCompanyId(), clientStatusVoteVO.getCollectorId(), clientDTO, clientStatusVoteVO.getContent(), newsDao);
+            GoEasyUtil.pushInvalidKz(clientStatusVoteVO.getCompanyId(), clientStatusVoteVO.getCollectorId(), clientDTO, clientStatusVoteVO.getContent(), newsDao, staffDao);
         }
 
 

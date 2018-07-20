@@ -1043,4 +1043,11 @@
         SET CORPID = #{corpId}
         WHERE COMPANYID = #{companyId}
     </update>
+
+    <!--根据员工id和所属公司id获取员工的userId和所在公司corpId-->
+    <select id="getStaffUserIdAndCorpId" resultType="sendDingMsgDTO">
+        SELECT  DINGUSERID userIdList,CORPID corpId
+        FROM hm_pub_staff
+        WHERE COMPANYID = #{companyId} AND ID = #{staffId}
+    </select>
 </mapper>

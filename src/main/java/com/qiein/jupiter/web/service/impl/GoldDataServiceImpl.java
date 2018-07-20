@@ -48,6 +48,8 @@ public class GoldDataServiceImpl implements GoldDataService {
     private GoldTempDao goldTempDao;
     @Autowired
     private NewsDao newsDao;
+    @Autowired
+    private StaffDao staffDao;
 
     /**
      * 添加表单
@@ -269,7 +271,7 @@ public class GoldDataServiceImpl implements GoldDataService {
             info.setKzWeChat(weChat);
             info.setSrcName(goldFingerPO.getSrcName());
             info.setChannelName(sourcePO.getChannelName());
-            GoEasyUtil.pushGoldDataKz(goldFingerPO.getCompanyId(), goldFingerPO.getCreateorId(), info, newsDao);
+            GoEasyUtil.pushGoldDataKz(goldFingerPO.getCompanyId(), goldFingerPO.getCreateorId(), info, newsDao, staffDao);
         } else if ("130019".equals(jsInfo.getString("code"))) {
             goldTempPO.setStatusId(GoldDataConst.HAVA_ENTERED);
             goldTempDao.update(goldTempPO);

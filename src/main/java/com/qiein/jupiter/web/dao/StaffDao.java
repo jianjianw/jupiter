@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.dao;
 
 import java.util.List;
 
+import com.qiein.jupiter.web.entity.dto.SendDingMsgDTO;
 import com.qiein.jupiter.web.entity.dto.StaffTodayInfoDTO;
 import com.qiein.jupiter.web.entity.vo.*;
 import org.apache.ibatis.annotations.Param;
@@ -503,4 +504,14 @@ public interface StaffDao extends BaseDao<StaffPO> {
      */
     int editStaffCorpId(@Param("corpId") String corpId,@Param("companyId")Integer companyId);
 
+    /**
+     *
+     * 功能描述:
+     *  根据员工id和所属公司id获取员工的userId和所在公司corpId
+     * @auther: Tt(yehuawei)
+     * @date:
+     * @param:
+     * @return:
+     */
+    SendDingMsgDTO getStaffUserIdAndCorpId(@Param("companyId") int companyId,@Param("staffId")int staffId);
 }

@@ -12,6 +12,7 @@ import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.http.CrmBaseApi;
 import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
 import com.qiein.jupiter.util.*;
+import com.qiein.jupiter.util.ding.DingMsgSendUtil;
 import com.qiein.jupiter.web.dao.*;
 import com.qiein.jupiter.web.entity.dto.ClientGoEasyDTO;
 import com.qiein.jupiter.web.entity.dto.ClientPushDTO;
@@ -153,7 +154,7 @@ public class ClientAddServiceImpl implements ClientAddService {
             if (NumUtil.isNull(info.getAppointorId())) {
                 return;
             }
-            GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getAppointorId(), info, staffPO.getNickName(), newsDao);
+            GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getAppointorId(), info, staffPO.getNickName(), newsDao, staffDao);
             throw new RException("存在重复客资");
         } else {
             throw new RException(jsInfo.getString("msg"));
@@ -253,7 +254,7 @@ public class ClientAddServiceImpl implements ClientAddService {
             if (NumUtil.isNull(info.getAppointorId())) {
                 return;
             }
-            GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getAppointorId(), info, staffPO.getNickName(), newsDao);
+            GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getAppointorId(), info, staffPO.getNickName(), newsDao, staffDao);
             throw new RException("存在重复客资");
         } else {
             throw new RException(jsInfo.getString("msg"));
@@ -337,8 +338,16 @@ public class ClientAddServiceImpl implements ClientAddService {
         }
         String addRstStr = crmBaseApi.doService(reqContent, "clientAddShopHs");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
-        if ("100000".equals(jsInfo.getString("code"))) {
-            //推送
+        if ("130019".equals(jsInfo.getString("code"))) {
+            //重复客资，给邀约推送消息
+            ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(jsInfo.getString("data"),
+                    DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
+                    DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
+            if (NumUtil.isNull(info.getAppointorId())) {
+                return;
+            }
+            GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getAppointorId(), info, staffPO.getNickName(), newsDao, staffDao);
+            throw new RException("存在重复客资");
         } else {
             throw new RException(jsInfo.getString("msg"));
         }

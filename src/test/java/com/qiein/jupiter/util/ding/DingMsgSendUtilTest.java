@@ -1,8 +1,12 @@
 package com.qiein.jupiter.util.ding;
 
+import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.util.TimeUtil;
+import com.qiein.jupiter.web.dao.StaffDao;
 import com.qiein.jupiter.web.entity.dto.SendDingMsgDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -15,12 +19,24 @@ import static org.junit.Assert.*;
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class DingMsgSendUtilTest {
+    @Autowired
+    private DingMsgSendUtil dingMsgSendUtil;
+    @Autowired
+    private StaffDao staffDao;
 
     @Test
     public void sendDingMsg() {
-        System.out.println(DingMsgSendUtil.dingUrl);
-        for (int i =0 ;i<15;i++){
-            DingMsgSendUtil.sendDingMsg(new SendDingMsgDTO("dinga3bceec769e8167d35c2f4657eb6378f",DingMsgSendUtil.MSG_TYPE_TEXT,"15879,manager258","吴亚武是傻瓜"));
-        }
+        StringBuffer sb = new StringBuffer();
+        sb.append("恭喜您，您的客户在线订单啦<br/>");
+        sb.append("编号：").append("2435325").append("<br/>");
+        sb.append("姓名：").append("而我二").append("<br/>");
+        sb.append("电话：").append("65324324").append("<br/>");
+        sb.append("微信：").append("wecaht").append("<br/>");
+        sb.append("渠道：").append("微博").append("<br/>");
+        sb.append("来源：").append("微博1").append("<br/>");
+        sb.append("客服：").append("叶").append("<br/>");
+        sb.append("成交套系： ¥").append("59999").append("<br/>");
+        sb.append("订单时间：").append("2022/22/22 22:22:22");
+        DingMsgSendUtil.sendDingMsg(sb.toString(), 2, 59, staffDao);
     }
 }
