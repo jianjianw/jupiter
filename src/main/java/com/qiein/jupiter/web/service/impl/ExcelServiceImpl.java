@@ -103,9 +103,12 @@ public class ExcelServiceImpl implements ExcelService {
             clientExcelDTO.setAppointTime(clientExcelDTO.getAppointTimeDate() == null ? 0 : clientExcelDTO.getAppointTimeDate().getTime() / 1000);
             clientExcelDTO.setComeShopTime(clientExcelDTO.getComeShopTimeDate() == null ? 0 : clientExcelDTO.getComeShopTimeDate().getTime() / 1000);
             try {
-                clientExcelDTO.setAmount(Integer.valueOf(clientExcelDTO.getAmountStr()));
-                clientExcelDTO.setStayaMount(Integer.valueOf(clientExcelDTO.getStayaMountStr()));
+                if(NumUtil.isValid(clientExcelDTO.getAmount()) || NumUtil.isValid(clientExcelDTO.getStayaMount()) ){
+                    clientExcelDTO.setAmount(Integer.valueOf(clientExcelDTO.getAmountStr()));
+                    clientExcelDTO.setStayaMount(Integer.valueOf(clientExcelDTO.getStayaMountStr()));
+                }
             } catch (NumberFormatException e) {
+                e.printStackTrace();
                 throw new RException(ExceptionEnum.UNKNOW_ERROR);
             }
 
