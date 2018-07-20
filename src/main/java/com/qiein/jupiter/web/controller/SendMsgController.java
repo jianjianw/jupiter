@@ -40,6 +40,12 @@ public class SendMsgController extends BaseController{
     //apollo获取模板接口
     @Value("${apollo.findCompanyTemplate}")
     private String findCompanyTemplateUrl;
+    //apollo获取用户短信页面管理
+    @Value(("${apollo.msgTemplateLog}"))
+    private String msgTemplateLogUrl;
+    //apollo获取短信发送记录页面
+    @Value(("${apollo.findSendMsg}"))
+    private String findSendMsgUrl;
 
     @Autowired
     private ClientService clientService;
@@ -120,6 +126,38 @@ public class SendMsgController extends BaseController{
             templateText=templateText.replace("${"+key+"}",map.get(key));
         }
         return ResultInfoUtil.success(templateText);
+    }
+
+    /**
+     * 短信账号记录
+     */
+    @GetMapping("/msg_template_log")
+    public ResultInfo msgTemplateLog(@RequestParam String time) {
+        StaffPO staff=getCurrentLoginStaff();
+        String templateText=HttpClient
+                .get(msgTemplateLogUrl)
+                .queryString("time", time)
+                .queryString("companyId",staff.getCompanyId())
+                .asString();
+        JSONObject json=JSONObject.parseObject(templateText);
+        return ResultInfoUtil.success(json);
+    }
+
+    /**
+     * 短信发送记录
+     */
+    @GetMapping("/find_send_msg")
+    public ResultInfo findSendMsg(@RequestParam String sendTime,@RequestParam String phone,@RequestParam String type){
+        StaffPO staff=getCurrentLoginStaff();
+        String templateText=HttpClient
+                .get(findSendMsgUrl)
+                .queryString("sendTime", sendTime)
+                .queryString("companyId",staff.getCompanyId())
+                .queryString("phone", phone)
+                .queryString("type", type)
+                .asString();
+        JSONObject json=JSONObject.parseObject(templateText);
+        return  ResultInfoUtil.success(json);
     }
 
 }
