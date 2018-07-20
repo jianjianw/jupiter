@@ -18,7 +18,10 @@ public class SendDingMsgDTO {
     private String userIdList;//用户id的字符串，多个用，分隔
     private String content;//消息内容
 
-    public SendDingMsgDTO(String corpId,String type, String userIdList, String content) {
+    public SendDingMsgDTO() {
+    }
+
+    public SendDingMsgDTO(String corpId, String type, String userIdList, String content) {
         this.corpId =corpId;
         this.type = type;
         this.userIdList = userIdList;

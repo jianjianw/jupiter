@@ -3,9 +3,11 @@ package com.qiein.jupiter.util.ding;
 
 import com.alibaba.fastjson.JSONObject;
 import com.mzlion.easyokhttp.HttpClient;
+import com.qiein.jupiter.web.dao.StaffDao;
 import com.qiein.jupiter.web.entity.dto.SendDingMsgDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +19,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class DingMsgSendUtil {
 
+    @Autowired
+    private StaffDao staffDao;
+
     private static Logger logger = LoggerFactory.getLogger(DingMsgSendUtil.class);
 
     public static final String MSG_TYPE_TEXT = "text";
@@ -26,6 +31,22 @@ public class DingMsgSendUtil {
     @Value("${ding.baseUrl}")
     public void setDingUrl(String dingUrl) {
         DingMsgSendUtil.dingUrl = dingUrl;
+    }
+
+    /**
+     *
+     * 功能描述:
+     *  发送钉钉企业信息
+     * @auther: Tt(yehuawei)
+     * @date:
+     * @param:
+     * @return:
+     */
+    public void sendDingMsg(String content, int companyId , int staffId){
+        SendDingMsgDTO sendDingMsgDTO = staffDao.getStaffUserIdAndCorpId(companyId, staffId);
+        sendDingMsgDTO.setType(MSG_TYPE_TEXT);
+        sendDingMsgDTO.setContent(content);
+        sendDingMsg(sendDingMsgDTO);
     }
 
     /**
