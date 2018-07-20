@@ -241,5 +241,5 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
      * @param kzId
      * @param companyId
      */
-    void editStayAmount(@Param("detTabName") String detTabName, @Param("kzId") String kzId, @Param("companyId") int companyId, @Param("amount") int amount);
+    void editStayAmount(@Param("detTabName") String detTabName, @Param("cashTabName") String cashTabName, @Param("kzId") String kzId, @Param("companyId") int companyId);
 }

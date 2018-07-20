@@ -354,8 +354,9 @@
 	<!--修改已收金额-->
 	<update id="editStayAmount" parameterType="map">
 		UPDATE ${detTabName}
-		SET STAYAMOUNT = IFNULL(STAYAMOUNT,0)+#{amount}
-		WHERE KZID = #{kzId}
-		AND COMPANYID = #{companyId}
+		SET STAYAMOUNT = ( SELECT IFNULL( SUM( AMOUNT ), 0 ) FROM ${cashTabName} WHERE KZID = #{kzId} AND COMPANYID = #{companyId} )
+		WHERE
+			KZID = #{kzId}
+			AND COMPANYID = #{companyId};
 	</update>
 </mapper>

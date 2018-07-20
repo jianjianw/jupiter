@@ -455,7 +455,7 @@ public class ClientEditServiceImpl implements ClientEditService {
         //添加收款记录
         cashLogDao.addCahsLog(DBSplitUtil.getTable(TableEnum.cash_log, cashLogPO.getCompanyId()), cashLogPO);
         //修改已收金额
-        clientInfoDao.editStayAmount(DBSplitUtil.getDetailTabName(cashLogPO.getCompanyId()), cashLogPO.getKzId(), cashLogPO.getCompanyId(), cashLogPO.getAmount());
+        clientInfoDao.editStayAmount(DBSplitUtil.getDetailTabName(cashLogPO.getCompanyId()), DBSplitUtil.getCashTabName(cashLogPO.getCompanyId()), cashLogPO.getKzId(), cashLogPO.getCompanyId());
     }
 
     /**
@@ -464,7 +464,7 @@ public class ClientEditServiceImpl implements ClientEditService {
      * @param clientVO
      * @param staffPO
      */
-    public void editClientDetail(ClientVO clientVO, StaffPO staffPO){
+    public void editClientDetail(ClientVO clientVO, StaffPO staffPO) {
         Map<String, Object> reqContent = new HashMap<>();
         reqContent.put("companyid", staffPO.getCompanyId());
         reqContent.put("operaid", staffPO.getId());

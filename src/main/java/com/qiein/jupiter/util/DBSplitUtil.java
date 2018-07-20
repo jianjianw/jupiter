@@ -114,6 +114,15 @@ public class DBSplitUtil {
         return getTable(TableEnum.edit_log, companyId);
     }
 
+    public static String getCashTabName(int companyId) throws RException {
+
+        if (NumUtil.isInValid(companyId)) {
+            throw new RException(ExceptionEnum.COMPANYID_NULL);
+        }
+
+        return getTable(TableEnum.cash_log, companyId);
+    }
+
     /*-- 获取表名 --*/
     public static String getTable(TableEnum tableEnum, int companyId) {
 
