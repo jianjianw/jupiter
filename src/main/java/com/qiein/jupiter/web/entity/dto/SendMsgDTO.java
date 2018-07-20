@@ -23,7 +23,15 @@ public class SendMsgDTO {
     private String text;
 
     private Integer staffId;
+    private String staffName;
 
+    public String getStaffName() {
+        return staffName;
+    }
+
+    public void setStaffName(String staffName) {
+        this.staffName = staffName;
+    }
     public Integer getStaffId() {
         return staffId;
     }
