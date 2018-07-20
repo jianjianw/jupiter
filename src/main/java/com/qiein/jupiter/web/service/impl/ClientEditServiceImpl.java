@@ -130,7 +130,7 @@ public class ClientEditServiceImpl implements ClientEditService {
                 }
                 String msg = JsonFmtUtil.strContentToJsonObj(addRstStr).getString("msg");
                 //推送备注修改推送
-                GoEasyUtil.pushRemark(staffPO.getCompanyId(), info.getAppointorId(), msg, info.getKzId(), newsDao);
+                GoEasyUtil.pushRemark(staffPO.getCompanyId(), info.getAppointorId(), msg, info.getKzId(), newsDao, staffDao);
             }
 
         } else if ("130019".equals(jsInfo.getString("code"))) {
@@ -141,7 +141,7 @@ public class ClientEditServiceImpl implements ClientEditService {
             if (NumUtil.isNull(info.getAppointorId())) {
                 return;
             }
-            GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getAppointorId(), info, staffPO.getNickName(), newsDao);
+            GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getAppointorId(), info, staffPO.getNickName(), newsDao, staffDao);
             throw new RException("存在重复客资");
         } else {
             throw new RException(jsInfo.getString("msg"));
@@ -241,10 +241,10 @@ public class ClientEditServiceImpl implements ClientEditService {
                 orderSuccessMsg.setHeadImg(appoint.getHeadImg());
                 webSocketMsgUtil.pushOrderSuccessMsg(orderSuccessMsg);
                 // 发送成功消息给录入人
-                GoEasyUtil.pushSuccessOnline(info.getCompanyId(), info.getCollectorId(), info, newsDao);
+                GoEasyUtil.pushSuccessOnline(info.getCompanyId(), info.getCollectorId(), info, newsDao, staffDao);
             } else if (ClientStatusConst.INVALID_BE_STAY == clientVO.getYyRst()) {
                 // 如果是无效，发送警告消息给录入人
-                GoEasyUtil.pushYyValidReject(info.getCompanyId(), info.getCollectorId(), info, newsDao);
+                GoEasyUtil.pushYyValidReject(info.getCompanyId(), info.getCollectorId(), info, newsDao, staffDao);
             }
         } else if ("130019".equals(jsInfo.getString("code"))) {
             //重复客资，给邀约推送消息
@@ -254,7 +254,7 @@ public class ClientEditServiceImpl implements ClientEditService {
             if (NumUtil.isNull(info.getAppointorId())) {
                 return;
             }
-            GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getAppointorId(), info, staffPO.getNickName(), newsDao);
+            GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getAppointorId(), info, staffPO.getNickName(), newsDao, staffDao);
             throw new RException("存在重复客资");
         } else {
             throw new RException(jsInfo.getString("msg"));
@@ -346,10 +346,10 @@ public class ClientEditServiceImpl implements ClientEditService {
                 orderSuccessMsg.setHeadImg(appoint.getHeadImg());
                 webSocketMsgUtil.pushOrderSuccessMsg(orderSuccessMsg);
                 // 发送成功消息给录入人
-                GoEasyUtil.pushSuccessOnline(info.getCompanyId(), info.getAppointorId(), info, newsDao);
+                GoEasyUtil.pushSuccessOnline(info.getCompanyId(), info.getAppointorId(), info, newsDao, staffDao);
             } else if (ClientStatusConst.INVALID_BE_STAY == clientVO.getYyRst()) {
                 // 如果是无效，发送警告消息给录入人
-                GoEasyUtil.pushYyValidReject(info.getCompanyId(), info.getCollectorId(), info, newsDao);
+                GoEasyUtil.pushYyValidReject(info.getCompanyId(), info.getCollectorId(), info, newsDao, staffDao);
             }
         } else if ("130019".equals(jsInfo.getString("code"))) {
             //重复客资，给邀约推送消息
@@ -359,7 +359,7 @@ public class ClientEditServiceImpl implements ClientEditService {
             if (NumUtil.isNull(info.getAppointorId())) {
                 return;
             }
-            GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getAppointorId(), info, staffPO.getNickName(), newsDao);
+            GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getAppointorId(), info, staffPO.getNickName(), newsDao, staffDao);
             throw new RException("存在重复客资");
         } else {
             throw new RException(jsInfo.getString("msg"));

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * 钉钉企业消息发送工具类
+ *
  * @Auther: Tt(yehuawei)
  * @Date: 2018/7/13 16:03
  */
@@ -34,15 +35,15 @@ public class DingMsgSendUtil {
     }
 
     /**
-     *
      * 功能描述:
-     *  发送钉钉企业信息
+     * 发送钉钉企业信息
+     *
      * @auther: Tt(yehuawei)
      * @date:
      * @param:
      * @return:
      */
-    public void sendDingMsg(String content, int companyId , int staffId){
+    public static void sendDingMsg(String content, int companyId, int staffId, StaffDao staffDao) {
         SendDingMsgDTO sendDingMsgDTO = staffDao.getStaffUserIdAndCorpId(companyId, staffId);
         sendDingMsgDTO.setType(MSG_TYPE_TEXT);
         sendDingMsgDTO.setContent(content);
@@ -51,14 +52,15 @@ public class DingMsgSendUtil {
 
     /**
      * 发送钉钉企业信息
+     *
      * @param sendDingMsgDTO
      */
-    public static void sendDingMsg(SendDingMsgDTO sendDingMsgDTO){
-        String resultJsonStr = HttpClient.textBody(dingUrl+"/ding/send_ding_msg")
+    public static void sendDingMsg(SendDingMsgDTO sendDingMsgDTO) {
+        String resultJsonStr = HttpClient.textBody(dingUrl + "/ding/send_ding_msg")
                 .json(sendDingMsgDTO)
                 .asString();
         if (JSONObject.parseObject(resultJsonStr).getIntValue("code") != 100000)
-            logger.error(sendDingMsgDTO.getContent()+" 》》发送失败");
+            logger.error(sendDingMsgDTO.getContent() + " 》》发送失败");
 
     }
 }

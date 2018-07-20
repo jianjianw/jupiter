@@ -101,7 +101,7 @@ public class ClientPushServiceImpl implements ClientPushService {
                 && clientDTO.getStatusId() == ClientStatusConst.BE_HAVE_MAKE_ORDER) {
             ClientGoEasyDTO infoDTO = clientInfoDao.getClientGoEasyDTOById(clientDTO.getKzId(),
                     DBSplitUtil.getInfoTabName(companyId), DBSplitUtil.getDetailTabName(companyId));
-            GoEasyUtil.pushInfoComed(companyId, clientDTO.getAppointorId(), infoDTO, newsDao);
+            GoEasyUtil.pushInfoComed(companyId, clientDTO.getAppointorId(), infoDTO, newsDao, staffDao);
             GoEasyUtil.pushInfoRefresh(companyId, clientDTO.getAppointorId());
             return;
         }
@@ -347,7 +347,7 @@ public class ClientPushServiceImpl implements ClientPushService {
                 // 推送状态重载消息
                 GoEasyUtil.pushStatusRefresh(companyId, appointId);
                 // 推送连续三次怠工下线消息
-                GoEasyUtil.pushOffLineAuto(companyId, appointId, newsDao);
+                GoEasyUtil.pushOffLineAuto(companyId, appointId, newsDao, staffDao);
             }
         }
     }
@@ -372,7 +372,7 @@ public class ClientPushServiceImpl implements ClientPushService {
         // 推送消息
         ClientGoEasyDTO infoDTO = clientInfoDao.getClientGoEasyDTOById(kzId, DBSplitUtil.getInfoTabName(companyId),
                 DBSplitUtil.getDetailTabName(companyId));
-        GoEasyUtil.pushInfoComed(companyId, appointer.getStaffId(), infoDTO, newsDao);
+        GoEasyUtil.pushInfoComed(companyId, appointer.getStaffId(), infoDTO, newsDao, staffDao);
         GoEasyUtil.pushInfoRefresh(companyId, appointer.getStaffId());
     }
 
@@ -514,7 +514,7 @@ public class ClientPushServiceImpl implements ClientPushService {
         // 推送消息
         ClientGoEasyDTO infoDTO = clientInfoDao.getClientGoEasyDTOById(kzId, DBSplitUtil.getInfoTabName(companyId),
                 DBSplitUtil.getDetailTabName(companyId));
-        GoEasyUtil.pushInfoComed(companyId, appointer.getStaffId(), infoDTO, newsDao);
+        GoEasyUtil.pushInfoComed(companyId, appointer.getStaffId(), infoDTO, newsDao, staffDao);
         GoEasyUtil.pushInfoRefresh(companyId, appointer.getStaffId());
 
         // 客资日志记录
@@ -574,7 +574,7 @@ public class ClientPushServiceImpl implements ClientPushService {
         // 推送消息
         ClientGoEasyDTO infoDTO = clientInfoDao.getClientGoEasyDTOById(kzId, DBSplitUtil.getInfoTabName(companyId),
                 DBSplitUtil.getDetailTabName(companyId));
-        GoEasyUtil.pushInfoComed(companyId, appointer.getStaffId(), infoDTO, newsDao);
+        GoEasyUtil.pushInfoComed(companyId, appointer.getStaffId(), infoDTO, newsDao, staffDao);
         GoEasyUtil.pushInfoRefresh(companyId, appointer.getStaffId());
 
         // 客资日志记录
@@ -599,7 +599,7 @@ public class ClientPushServiceImpl implements ClientPushService {
         ClientGoEasyDTO infoDTO = clientInfoDao.getClientGoEasyDTOById(kzId, DBSplitUtil.getInfoTabName(companyId),
                 DBSplitUtil.getDetailTabName(companyId));
         for (StaffPushDTO sf : yyList) {
-            GoEasyUtil.pushClientReceive(companyId, sf.getStaffId(), infoDTO, newsDao);
+            GoEasyUtil.pushClientReceive(companyId, sf.getStaffId(), infoDTO, newsDao, staffDao);
         }
     }
 
@@ -1027,7 +1027,7 @@ public class ClientPushServiceImpl implements ClientPushService {
                                     ClientLogConst.INFO_LOGTYPE_ALLOT, companyId));
         }
         // 推送消息
-        GoEasyUtil.pushAllotMsg(companyId, appoint.getStaffId(), kzIdsArr.length, newsDao);
+        GoEasyUtil.pushAllotMsg(companyId, appoint.getStaffId(), kzIdsArr.length, newsDao, staffDao);
     }
 
     public void pushMsjd(int companyId, String kzIds, StaffPushDTO appoint, int operaId, String operaName) {
@@ -1044,7 +1044,7 @@ public class ClientPushServiceImpl implements ClientPushService {
                                     ClientLogConst.INFO_LOGTYPE_ALLOT, companyId));
         }
         // 推送消息
-        GoEasyUtil.pushAllotMsg(companyId, appoint.getStaffId(), kzIdsArr.length, newsDao);
+        GoEasyUtil.pushAllotMsg(companyId, appoint.getStaffId(), kzIdsArr.length, newsDao, staffDao);
     }
 
     public static String arrToStr(String[] arr) {

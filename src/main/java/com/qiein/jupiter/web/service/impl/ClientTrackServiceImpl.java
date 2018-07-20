@@ -100,7 +100,7 @@ public class ClientTrackServiceImpl implements ClientTrackService {
                                 DBSplitUtil.getInfoTabName(opera.getCompanyId()),
                                 DBSplitUtil.getDetailTabName(opera.getCompanyId()));
                     }
-                    GoEasyUtil.pushRemove(opera.getCompanyId(), sf.getStaffId(), info, sf.getNum(), type, opera.getNickName(), newsDao);
+                    GoEasyUtil.pushRemove(opera.getCompanyId(), sf.getStaffId(), info, sf.getNum(), type, opera.getNickName(), newsDao, staffDao);
                 }
             }
         }
@@ -144,7 +144,7 @@ public class ClientTrackServiceImpl implements ClientTrackService {
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if ("100000".equals(jsInfo.getString("code"))) {
             //推送给目标员工
-            GoEasyUtil.pushTransfer(staffPO, toStaffId, kzIds, newsDao, clientInfoDao);
+            GoEasyUtil.pushTransfer(staffPO, toStaffId, kzIds, newsDao, clientInfoDao, staffDao);
         } else {
             throw new RException(jsInfo.getString("msg"));
         }
