@@ -132,11 +132,12 @@ public class SendMsgController extends BaseController{
      * 短信账号记录
      */
     @GetMapping("/msg_template_log")
-    public ResultInfo msgTemplateLog(@RequestParam String time) {
+    public ResultInfo msgTemplateLog(@RequestParam String startTime,@RequestParam String endTime) {
         StaffPO staff=getCurrentLoginStaff();
         String templateText=HttpClient
                 .get(msgTemplateLogUrl)
-                .queryString("time", time)
+                .queryString("startTime", startTime)
+                .queryString("endTime", endTime)
                 .queryString("companyId",staff.getCompanyId())
                 .asString();
         JSONObject json=JSONObject.parseObject(templateText);
@@ -147,11 +148,12 @@ public class SendMsgController extends BaseController{
      * 短信发送记录
      */
     @GetMapping("/find_send_msg")
-    public ResultInfo findSendMsg(@RequestParam String sendTime,@RequestParam String phone,@RequestParam String type){
+    public ResultInfo findSendMsg(@RequestParam String startTime,@RequestParam String endTime,@RequestParam String phone,@RequestParam String type){
         StaffPO staff=getCurrentLoginStaff();
         String templateText=HttpClient
                 .get(findSendMsgUrl)
-                .queryString("sendTime", sendTime)
+                .queryString("startTime", startTime)
+                .queryString("endTime", endTime)
                 .queryString("companyId",staff.getCompanyId())
                 .queryString("phone", phone)
                 .queryString("type", type)
