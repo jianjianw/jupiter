@@ -87,5 +87,8 @@
         SELECT  ID FROM ${tableName} WHERE KZID=#{kzId} and COMPANYID=#{companyId}
     </select>
 
+    <select id = "getKzNumBySourceId" resultType="Integer">
+        select count(1) from ${tableName} info where info.SOURCEID = #{sourceId} and info.COMPANYID = #{companyId}
+    </select>
 
 </mapper>

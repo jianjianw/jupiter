@@ -5,9 +5,11 @@ import com.qiein.jupiter.constant.ChannelConstant;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.constant.PmsConstant;
 import com.qiein.jupiter.constant.RoleConstant;
+import com.qiein.jupiter.enums.TableEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.CollectionUtils;
+import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.*;
@@ -22,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.channels.Channel;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -48,6 +51,8 @@ public class GroupServiceImpl implements GroupService {
     private SourceDao sourceDao;
     @Autowired
     private ShopDao shopDao;
+    @Autowired
+    private ClientDao clientDao;
 
     /**
      * @param companyId
@@ -365,8 +370,19 @@ public class GroupServiceImpl implements GroupService {
             if (null != channelPO) {
                 SourcePO sourcePO = sourceDao.getSourceBySrcname(groupPO.getGroupName(), groupPO.getCompanyId(), channelPO.getId());
                 if (null != sourcePO) {
-                    sourcePO.setIsShow(false);
-                    sourceDao.update(sourcePO);
+                    if(channelPO.getTypeId().equals(ChannelConstant.STAFF_ZJS)){
+                        //如果没有客资就删除
+                        Integer kzNum = clientDao.getKzNumBySourceId(DBSplitUtil.getTable(TableEnum.info, sourcePO.getCompanyId()), sourcePO.getId(), sourcePO.getCompanyId());
+                        if(kzNum >0){
+                            sourceDao.update(sourcePO);
+                            sourcePO.setIsShow(false);
+                        }else{
+                            sourceDao.deleteByIdAndCid(sourcePO.getId(),sourcePO.getCompanyId());
+                        }
+                    }else{
+                        sourceDao.update(sourcePO);
+                        sourcePO.setIsShow(false);
+                    }
                 }
             }
         }
