@@ -149,7 +149,7 @@ public class SendMsgController extends BaseController{
      * 短信发送记录
      */
     @GetMapping("/find_send_msg")
-    public ResultInfo findSendMsg(@RequestParam String startTime,@RequestParam String endTime,@RequestParam String phone,@RequestParam String type){
+    public ResultInfo findSendMsg(@RequestParam String startTime,@RequestParam String endTime,@RequestParam String phone,@RequestParam String type,@RequestParam Integer pageNum,@RequestParam Integer pageSize){
         StaffPO staff=getCurrentLoginStaff();
         String templateText=HttpClient
                 .get(findSendMsgUrl)
@@ -158,6 +158,8 @@ public class SendMsgController extends BaseController{
                 .queryString("companyId",staff.getCompanyId())
                 .queryString("phone", phone)
                 .queryString("type", type)
+                .queryString("pageNum", pageNum)
+                .queryString("pageSize", pageSize)
                 .asString();
         JSONObject json=JSONObject.parseObject(templateText);
         return  ResultInfoUtil.success(json);
