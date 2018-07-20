@@ -65,4 +65,9 @@ public interface OutCallDao {
      * 修改管理员账号
      */
     int updateAdmin(OutCallUserDTO outCallUserDTO);
+
+    /**
+     * 获取企业外呼员工列表
+     */
+    List<OutCallUserDTO> getUserList(int companyId);
 }

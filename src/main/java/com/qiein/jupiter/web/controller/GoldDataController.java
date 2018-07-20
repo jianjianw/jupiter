@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
@@ -34,21 +35,22 @@ import java.util.List;
 @RestController
 @RequestMapping("/gold_data")
 @Validated
-public class GoldDataController extends BaseController{
+public class GoldDataController extends BaseController {
     @Autowired
     private GoldDataService goldDataService;
 
     /**
      * 增加金数据表单
+     *
      * @param goldFingerPO
      * @return
      */
     @PostMapping("/insert")
-    public ResultInfo insert(@RequestBody GoldFingerPO goldFingerPO){
-        if(StringUtil.haveEmpty(goldFingerPO.getFormId(),goldFingerPO.getFormName(),goldFingerPO.getSrcName(),goldFingerPO.getTypeName(),goldFingerPO.getZxStyle())){
+    public ResultInfo insert(@RequestBody GoldFingerPO goldFingerPO) {
+        if (StringUtil.haveEmpty(goldFingerPO.getFormId(), goldFingerPO.getFormName(), goldFingerPO.getSrcName(), goldFingerPO.getTypeName(), goldFingerPO.getZxStyle())) {
             throw new RException(ExceptionEnum.LOSE_FILED);
         }
-        StaffPO staff=getCurrentLoginStaff();
+        StaffPO staff = getCurrentLoginStaff();
         goldFingerPO.setStaffId(staff.getId());
         goldFingerPO.setCreateorName(staff.getNickName());
         goldFingerPO.setCompanyId(staff.getCompanyId());
@@ -59,14 +61,15 @@ public class GoldDataController extends BaseController{
 
     /**
      * 删除金数据表单
+     *
      * @param id
      * @return
      */
     @GetMapping("/delete")
-    public ResultInfo delete(@RequestParam Integer id){
+    public ResultInfo delete(@RequestParam Integer id) {
         try {
             goldDataService.delete(id);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RException(ExceptionEnum.DELETE_FAIL);
         }
         return ResultInfoUtil.success(TipMsgEnum.DELETE_SUCCESS);
@@ -74,15 +77,16 @@ public class GoldDataController extends BaseController{
 
     /**
      * 更新金数据表单
+     *
      * @param goldFingerPO
      * @return
      */
     @PostMapping("/update")
-    public ResultInfo update(@RequestBody GoldFingerPO goldFingerPO){
-        if(StringUtil.haveEmpty(goldFingerPO.getFormId(),goldFingerPO.getFormName(),goldFingerPO.getSrcName(),goldFingerPO.getTypeName(),goldFingerPO.getZxStyle())){
+    public ResultInfo update(@RequestBody GoldFingerPO goldFingerPO) {
+        if (StringUtil.haveEmpty(goldFingerPO.getFormId(), goldFingerPO.getFormName(), goldFingerPO.getSrcName(), goldFingerPO.getTypeName(), goldFingerPO.getZxStyle())) {
             throw new RException(ExceptionEnum.LOSE_FILED);
         }
-        StaffPO staff=getCurrentLoginStaff();
+        StaffPO staff = getCurrentLoginStaff();
         goldFingerPO.setStaffId(staff.getId());
         goldFingerPO.setCompanyId(staff.getCompanyId());
         goldDataService.update(goldFingerPO);
@@ -93,44 +97,52 @@ public class GoldDataController extends BaseController{
      * 金数据表单页面显示
      */
     @GetMapping("/select")
-    public ResultInfo select(){
-        StaffPO staff=getCurrentLoginStaff();
-        List<GoldFingerPO> list = goldDataService.select(staff.getCompanyId());
-        HttpServletRequest request = ((ServletRequestAttributes)      RequestContextHolder.getRequestAttributes()).getRequest();
-        String postUrl = request.getRequestURL().substring(0, request.getRequestURL().lastIndexOf("/")) + "/receive_gold_data_form";
-        GoldFingerShowVO goldFingerShowVO=new GoldFingerShowVO();
-        goldFingerShowVO.setList(list);
-        goldFingerShowVO.setPostUrl(postUrl);
-        return ResultInfoUtil.success(goldFingerShowVO);
+    public ResultInfo select(int pageNum, int pageSize,String formName,String formId,int typeId) {
+        StaffPO staff = getCurrentLoginStaff();
+        PageInfo<GoldFingerPO> select = goldDataService.select(staff.getCompanyId(), pageNum, pageSize);
+        return ResultInfoUtil.success(select);
     }
 
     /**
-     *修改开关
+     * 获取post地址
+     *
+     * @param request
+     * @return
+     */
+    @GetMapping("/get_post_url")
+    public ResultInfo getPostUrl(HttpServletRequest request) {
+        String url = request.getRequestURL().substring(0, request.getRequestURL().lastIndexOf("/")) + "/receive_gold_data_form";
+        return ResultInfoUtil.success(url);
+    }
+
+    /**
+     * 修改开关
      */
     @PostMapping("/edit_open_or_close")
-    public ResultInfo editOpenOrClose(@RequestBody GoldFingerPO goldFingerPO){
+    public ResultInfo editOpenOrClose(@RequestBody GoldFingerPO goldFingerPO) {
         goldDataService.editOpenOrClose(goldFingerPO);
         return ResultInfoUtil.success(TipMsgEnum.UPDATE_SUCCESS);
     }
 
     /**
      * 获取日志列表
+     *
      * @param params
      * @return
      */
     @PostMapping("/gold_customer_select")
-    public ResultInfo goldCustomerSelect( @RequestBody JSONObject params){
-        QueryMapDTO queryMapDTO=JSONObject.parseObject(params.getJSONObject("queryMapDTO").toJSONString(),QueryMapDTO.class) ;
-         GoldCustomerDTO goldCustomerDTO=JSONObject.parseObject(params.getJSONObject("goldCustomerDTO").toJSONString(),GoldCustomerDTO.class) ;
-        return ResultInfoUtil.success(goldDataService.goldCustomerSelect(queryMapDTO,goldCustomerDTO));
+    public ResultInfo goldCustomerSelect(@RequestBody JSONObject params) {
+        QueryMapDTO queryMapDTO = JSONObject.parseObject(params.getJSONObject("queryMapDTO").toJSONString(), QueryMapDTO.class);
+        GoldCustomerDTO goldCustomerDTO = JSONObject.parseObject(params.getJSONObject("goldCustomerDTO").toJSONString(), GoldCustomerDTO.class);
+        return ResultInfoUtil.success(goldDataService.goldCustomerSelect(queryMapDTO, goldCustomerDTO));
 
     }
 
     /**
      * 金数据表单回调
-     * */
+     */
     @RequestMapping("/receive_gold_data_form")
-    public ResultInfo receiveGoldDataForm(@RequestBody JSONObject jsonObject){
+    public ResultInfo receiveGoldDataForm(@RequestBody JSONObject jsonObject) {
         //TODO 获取到数据，存储temp与plugSetting
         goldDataService.receiveGoldDataForm(jsonObject);
         return ResultInfoUtil.success();
@@ -141,17 +153,17 @@ public class GoldDataController extends BaseController{
      * 筛选
      */
     @PostMapping("/addkz_by_gold_temp")
-    public ResultInfo addkzByGoldTemp(@RequestBody GoldTempPO goldTempPO){
+    public ResultInfo addkzByGoldTemp(@RequestBody GoldTempPO goldTempPO) {
         goldDataService.addkzByGoldTemp(goldTempPO);
-        return  ResultInfoUtil.success(TipMsgEnum.ENTERING_SUNCCESS);
+        return ResultInfoUtil.success(TipMsgEnum.ENTERING_SUNCCESS);
     }
 
 
     @PostMapping("/edit_form_createor")
-    public ResultInfo editFormCreateor(@RequestBody EditCreatorDTO editCreatorDTO){
-        List<Integer> list=new ArrayList<>();
-        String[] ids=editCreatorDTO.getIds().split(CommonConstant.STR_SEPARATOR);
-        for(String id:ids){
+    public ResultInfo editFormCreateor(@RequestBody EditCreatorDTO editCreatorDTO) {
+        List<Integer> list = new ArrayList<>();
+        String[] ids = editCreatorDTO.getIds().split(CommonConstant.STR_SEPARATOR);
+        for (String id : ids) {
             list.add(Integer.parseInt(id));
         }
         editCreatorDTO.setList(list);

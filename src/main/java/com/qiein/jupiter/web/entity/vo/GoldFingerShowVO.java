@@ -1,20 +1,22 @@
 package com.qiein.jupiter.web.entity.vo;
 
+import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.web.entity.po.GoldFingerPO;
 
 import java.util.List;
 
 public class GoldFingerShowVO {
     //金数据表单的列表
-    private List<GoldFingerPO> list;
+    private PageInfo
+            <GoldFingerPO> list;
     //统一postURL
     private String postUrl;
 
-    public List<GoldFingerPO> getList() {
+    public PageInfo<GoldFingerPO> getList() {
         return list;
     }
 
-    public void setList(List<GoldFingerPO> list) {
+    public void setList(PageInfo<GoldFingerPO> list) {
         this.list = list;
     }
 

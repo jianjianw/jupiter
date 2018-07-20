@@ -92,8 +92,10 @@ public class GoldDataServiceImpl implements GoldDataService {
      * @param companyId
      * @return
      */
-    public List<GoldFingerPO> select(Integer companyId) {
-        return goldDataDao.select(companyId);
+    public PageInfo<GoldFingerPO> select(int companyId, int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<GoldFingerPO> select = goldDataDao.select(companyId);
+        return new PageInfo<>(select);
 
     }
 
@@ -135,6 +137,10 @@ public class GoldDataServiceImpl implements GoldDataService {
         String formId = jsonObject.getString("form");
         String formName = jsonObject.getString("formName");
         GoldFingerPO goldFingerPO = goldDataDao.getGoldFingerByFormId(formId);
+        //获取金数据表单模板数据
+        if (null == goldFingerPO) {
+            throw new RException(ExceptionEnum.FORM_NOT_EXISTS);
+        }
         String kzPhone = StringUtil.nullToStrTrim(entry.getString(goldFingerPO.getKzPhoneField()));
         if (!RegexUtil.checkMobile(kzPhone)) {
             throw new RException(ExceptionEnum.PHONE_ERROR);
@@ -142,10 +148,6 @@ public class GoldDataServiceImpl implements GoldDataService {
         String kzName = StringUtil.nullToStrTrim(entry.getString(goldFingerPO.getKzNameField()));
         String weChat = StringUtil.nullToStrTrim(entry.getString(goldFingerPO.getKzWechatField()));
         String address = MobileLocationUtil.getPhoneLocation(kzPhone);
-        //获取金数据表单模板数据
-        if (null == goldFingerPO) {
-            throw new RException(ExceptionEnum.FORM_NOT_EXISTS);
-        }
         if (NumUtil.isNull(goldFingerPO.getIsShow())) {
             throw new RException(ExceptionEnum.UNKNOW_ERROR);
         }
@@ -163,7 +165,7 @@ public class GoldDataServiceImpl implements GoldDataService {
         //备注放入其他信息
         String remark = "<span style=\"color:#FF8533;\">【金数据】</span>";
         StringBuilder sb = new StringBuilder(remark);
-        if (fieldKeys.length != 0 || fieldValues.length != 0) {
+        if (fieldKeys.length != 0) {
             for (int i = 0; i < fieldValues.length; i++) {
                 if ("kzqq".equalsIgnoreCase(fieldValues[i])) {
                     reqContent.put("kzqq", entry.getString(fieldKeys[i]));
@@ -172,7 +174,9 @@ public class GoldDataServiceImpl implements GoldDataService {
                 String value = entry.getString(fieldValues[i]);
                 if (entry.get(fieldValues[i]) != null && !"".equals(value)) {
                     if (StringUtil.isNotEmpty(value)) {
-                        sb.append(fieldKeys[i] + "：" + StringUtil.nullToStrTrim(value) + "<br/>");
+                        sb.append(fieldKeys[i]).append("：")
+                                .append(StringUtil.nullToStrTrim(value))
+                                .append("<br/>");
                     }
                 }
             }

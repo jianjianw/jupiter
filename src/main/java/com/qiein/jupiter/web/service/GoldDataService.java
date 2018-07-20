@@ -21,36 +21,43 @@ import java.util.List;
 public interface GoldDataService {
     /**
      * 添加表单
+     *
      * @param goldFingerPO
      */
     void insert(GoldFingerPO goldFingerPO);
 
     /**
      * 修改表单
+     *
      * @param goldFingerPO
      */
     void update(GoldFingerPO goldFingerPO);
+
     /**
      * 删除表单
+     *
      * @param id
      */
     void delete(Integer id);
 
     /**
      * 金数据表单页面显示
+     *
      * @param companyId
      * @return
      */
-    List<GoldFingerPO> select(Integer companyId);
+    PageInfo<GoldFingerPO> select(int companyId,int pageNum, int pageSize);
 
     /**
      * 管理开关
+     *
      * @param goldFingerPO
      */
     void editOpenOrClose(GoldFingerPO goldFingerPO);
 
     /**
      * 金数据客资日志
+     *
      * @param goldCustomerDTO
      * @return
      */
@@ -58,18 +65,21 @@ public interface GoldDataService {
 
     /**
      * 接受金数据表单
+     *
      * @param jsonObject
-     * */
+     */
     void receiveGoldDataForm(JSONObject jsonObject);
 
     /**
      * 筛选
+     *
      * @param goldTempPO
      */
     void addkzByGoldTemp(GoldTempPO goldTempPO);
 
     /**
      * 修改表单创建者
+     *
      * @param editCreatorDTO
      */
     void editFormCreateor(EditCreatorDTO editCreatorDTO);

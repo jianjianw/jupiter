@@ -90,4 +90,12 @@
             ENTERPRISE_ID  = #{enterpriseId}
         WHERE COMPANY_ID = #{companyId}
     </update>
+
+    <!--获取企业外呼员工列表-->
+    <select id="getUserList">
+        SELECT rela.STAFF_ID,staff.NICKNAME,staff.
+        FROM hm_crm_outcall_rela rela
+            LEFT JOIN hm_pub_staff staff ON rela.STAFF_ID = staff.ID
+        WHERE rela.COMPANY_ID = #{companyId}
+    </select>
 </mapper>
