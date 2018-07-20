@@ -56,6 +56,7 @@ public class SendMsgController extends BaseController{
     public ResultInfo sendMsg(@RequestBody SendMsgDTO sendMsgDTO){
         StaffPO staff=getCurrentLoginStaff();
         sendMsgDTO.setCompanyId(staff.getCompanyId());
+        sendMsgDTO.setStaffId(staff.getId());
         Map<String,String> map=sendMsgDTO.getMap();
         //获取门店信息
         ShopPO shopPO=shopService.findShop(Integer.parseInt(map.get("shopId")));

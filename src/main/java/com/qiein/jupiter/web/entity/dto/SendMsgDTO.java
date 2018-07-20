@@ -22,6 +22,16 @@ public class SendMsgDTO {
     //短信内容
     private String text;
 
+    private Integer staffId;
+
+    public Integer getStaffId() {
+        return staffId;
+    }
+
+    public void setStaffId(Integer staffId) {
+        this.staffId = staffId;
+    }
+
     public String getText() {
         return text;
     }
