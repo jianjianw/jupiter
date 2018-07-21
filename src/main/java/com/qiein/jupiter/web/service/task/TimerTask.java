@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.service.task;
 
 import com.qiein.jupiter.util.TimeUtil;
+import com.qiein.jupiter.web.service.ApolloService;
 import com.qiein.jupiter.web.service.ClientPushService;
 import com.qiein.jupiter.web.service.StaffService;
 import com.qiein.jupiter.web.service.SystemLogService;
@@ -29,8 +30,8 @@ public class TimerTask {
     @Autowired
     private SystemLogService systemLogService;
 
-//    @Autowired
-//    private ApolloService apolloService;
+    @Autowired
+    private ApolloService apolloService;
 
     @Value("${spring.profiles.active}")
     private String active;
@@ -85,6 +86,6 @@ public class TimerTask {
     @Scheduled(initialDelay = 1000, fixedDelay = 3 * 60 * 1000)
     public void getApolloIp() {
         log.info("定时获取阿波罗地址");
-//        apolloService.getApolloIp();
+        apolloService.getApolloIp();
     }
 }
