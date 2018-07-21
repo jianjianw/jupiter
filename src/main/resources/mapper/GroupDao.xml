@@ -69,6 +69,7 @@
         FROM hm_pub_group
         WHERE PARENTID = #{parentId}
         AND COMPANYID = #{companyId}
+        ORDER BY PRIORITY
     </select>
 
     <select id="findAllByCompanyId" resultMap="baseMap">
@@ -148,7 +149,7 @@
         WHERE
             par.COMPANYID = #{companyId}
             AND par.PARENTID = '0' AND par.GROUPTYPE = #{type}
-        ORDER BY par.ID,grp.ID
+        ORDER BY par.PRIORITY,par.ID,grp.ID
     </select>
 
     <!--添加小组人员关联表-->
@@ -195,7 +196,7 @@
             grp.COMPANYID = #{companyId}
             AND grp.PARENTID != '0'
             AND (rela.STAFFID = #{staffId} OR INSTR(CONCAT(',',grp.CHIEFIDS,','),CONCAT(',',#{staffId},','))!= 0)
-        GROUP BY grp.GROUPID
+        GROUP BY grp.PRIORITY,grp.GROUPID
     </select>
 
     <!--获取员工所在组-->
