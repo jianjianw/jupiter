@@ -66,7 +66,7 @@ public class CrmBaseApi extends BaseApi {
                     .trim();
         } else {
             sign = MD5Util.getMD5(reqcontentStr).toLowerCase();
-            System.out.println("-------------签名生成：reqcontentStr="+reqcontentStr+" ; sign="+sign);
+//            System.out.println("-------------签名生成：reqcontentStr="+reqcontentStr+" ; sign="+sign);
         }
         return sign;
     }
