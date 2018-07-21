@@ -564,7 +564,7 @@ public class GoEasyUtil {
     public static void pushInfoComed(int companyId, int staffId, ClientGoEasyDTO info, NewsDao newsDao, StaffDao staffDao) {
         String head = "新客资来啦^_^";
         StringBuffer sb = new StringBuffer();
-        sb.append("编号：").append(info.getId()).append("<br/><br/>");
+        sb.append("编号：").append(info.getId()).append("<br/>");
         if (StringUtil.isNotEmpty(info.getKzName())) {
             sb.append("姓名：").append(StringUtil.nullToStrTrim(info.getKzName())).append("<br/>");
         }
@@ -655,7 +655,7 @@ public class GoEasyUtil {
             ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(kzArr[0],
                     DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
                     DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
-            sb.append("编号：").append(info.getId()).append("<br/><br/>");
+            sb.append("编号：").append(info.getId()).append("<br/>");
             if (StringUtil.isNotEmpty(info.getKzName())) {
                 sb.append("姓名：").append(StringUtil.nullToStrTrim(info.getKzName())).append("<br/>");
             }
