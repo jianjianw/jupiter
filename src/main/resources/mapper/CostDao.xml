@@ -56,12 +56,12 @@
 				FROM
 			(
 				SELECT
-					SOURCE_ID
+					SOURCEID
 				FROM
 					hm_pub_role_source
 				WHERE
-					role_ID = #{staffId}
-				AND company_id = #{companyId}
+					roleID = #{staffId}
+				AND companyid = #{companyId}
 			) role
 		LEFT JOIN (
 			SELECT
@@ -73,7 +73,7 @@
 			WHERE
 				COMPANYID = #{companyId}
 			AND (TYPEID = 1 OR TYPEID = 2)
-		) sourse ON sourse.ID = role.SOURCE_ID
+		) sourse ON sourse.ID = role.SOURCEID
 				LEFT JOIN (
 					SELECT
 						ID,
@@ -107,21 +107,22 @@
 								hm_pub_role_source a
 
 
-						LEFT JOIN hm_crm_cost b ON b.SRCID=a.source_id AND b.COMPANYID=a.company_id AND FROM_UNIXTIME(b.COSTTIME, '%Y/%m/%d ') LIKE CONCAT(
+						LEFT JOIN hm_crm_cost b ON b.SRCID=a.sourceid AND b.COMPANYID=a.companyid AND FROM_UNIXTIME(b.COSTTIME, '%Y/%m/%d ') LIKE CONCAT(
 								"%",
-								#{month}, "%") AND a.role_id=#{staffId}
+								#{month}, "%") AND a.role
+								id=#{staffId}
 						WHERE
-							a.company_id=#{companyId}
+							a.companyid=#{companyId}
 							) TOTALCOST
 						FROM
 								hm_pub_role_source role
 
 
-						LEFT JOIN hm_crm_cost cost ON cost.SRCID=role.source_id AND cost.COMPANYID=role.company_id AND FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d ') LIKE CONCAT(
+						LEFT JOIN hm_crm_cost cost ON cost.SRCID=role.sourceid AND cost.COMPANYID=role.companyid AND FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d ') LIKE CONCAT(
 								"%",
-								#{month}, "%") AND role.role_id=#{staffId}
+								#{month}, "%") AND role.roleid=#{staffId}
 						WHERE
-								role.company_id=#{companyId}
+								role.companyid=#{companyId}
 							GROUP BY
 								cost.COSTTIME
     </select>

@@ -294,7 +294,7 @@
     <!-- 更新提报人id是空的记录 -->
     <update id="updateEmptyCollector">
         UPDATE ${tempName} temp
-        SET temp.COLLECTORNAME = CONCAT("- ", temp.COLLECTORNAME)
+        SET temp.COLLECTORNAME = CONCAT("", temp.COLLECTORNAME)
         WHERE temp.COLLECTORID IS NULL
               AND temp.OPERAID = #{operaId}
               AND left(temp.COLLECTORNAME, 1) != '-';
@@ -313,7 +313,7 @@
     <!-- 更新邀约客服id是空的记录 -->
     <update id="updateEmptyAppoint">
         UPDATE ${tempName} temp
-        SET temp.APPOINTNAME = CONCAT("- ", temp.APPOINTNAME)
+        SET temp.APPOINTNAME = CONCAT("", temp.APPOINTNAME)
         WHERE temp.APPOINTORID IS NULL
               AND temp.OPERAID = #{operaId}
               AND left(APPOINTNAME, 1) != '-';
