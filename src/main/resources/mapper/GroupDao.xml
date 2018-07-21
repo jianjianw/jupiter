@@ -133,7 +133,7 @@
         WHERE
             par.COMPANYID = #{companyId}
             AND par.PARENTID = '0'
-        ORDER BY par.GROUPTYPE, par.GROUPNAME,grp.GROUPNAME
+        ORDER BY par.PRIORITY, par.GROUPTYPE, par.GROUPNAME,grp.GROUPNAME
     </select>
 
     <!--根据类型获取公司部门和小组-->

@@ -443,7 +443,7 @@
             c.COMPANYID,
             c.ISSHOW
         FROM
-            hm_crm_shop_channel_group_rela scgr
+            hm_crm_type_channel_group_rela scgr
             LEFT JOIN
             hm_crm_channel c ON c.COMPANYID = scgr.COMPANYID AND c.ID = scgr.CHANNELID
         WHERE
