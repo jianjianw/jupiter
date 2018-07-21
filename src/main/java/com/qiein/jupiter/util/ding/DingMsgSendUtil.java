@@ -44,9 +44,10 @@ public class DingMsgSendUtil {
      * @return:
      */
     public static void sendDingMsg(String content, int companyId, int staffId, StaffDao staffDao) {
+        content = content.replaceAll("<br/>", "\n");
         SendDingMsgDTO sendDingMsgDTO = staffDao.getStaffUserIdAndCorpId(companyId, staffId);
-        if (sendDingMsgDTO == null){
-            logger.error("未找到发送对象,companyId: "+companyId+" ,staffId: "+staffId);
+        if (sendDingMsgDTO == null) {
+            logger.error("未找到发送对象,companyId: " + companyId + " ,staffId: " + staffId);
             return;
         }
         sendDingMsgDTO.setType(MSG_TYPE_TEXT);
@@ -60,13 +61,13 @@ public class DingMsgSendUtil {
      * @param sendDingMsgDTO
      */
     public static void sendDingMsg(SendDingMsgDTO sendDingMsgDTO) {
-        try{
+        try {
             String resultJsonStr = HttpClient.textBody(dingUrl + "/ding/send_ding_msg")
                     .json(sendDingMsgDTO)
                     .asString();
             if (JSONObject.parseObject(resultJsonStr).getIntValue("code") != 100000)
                 logger.error(sendDingMsgDTO.getContent() + " 》》发送失败");
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
