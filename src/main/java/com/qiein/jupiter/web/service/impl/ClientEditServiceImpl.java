@@ -330,7 +330,7 @@ public class ClientEditServiceImpl implements ClientEditService {
             ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(clientVO.getKzId(),
                     DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
                     DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
-            if (ClientStatusConst.ONLINE_SUCCESS == clientVO.getYyRst()) {
+            if (ClientStatusConst.BE_SUCCESS == clientVO.getYyRst()) {
                 // 成功订单爆彩
                 StaffPO appoint = staffDao.getByIdAndCid(info.getAppointorId(), staffPO.getCompanyId());
                 if (appoint == null) {
@@ -347,9 +347,6 @@ public class ClientEditServiceImpl implements ClientEditService {
                 webSocketMsgUtil.pushOrderSuccessMsg(orderSuccessMsg);
                 // 发送成功消息给录入人
                 GoEasyUtil.pushSuccessOnline(info.getCompanyId(), info.getAppointorId(), info, newsDao, staffDao);
-            } else if (ClientStatusConst.INVALID_BE_STAY == clientVO.getYyRst()) {
-                // 如果是无效，发送警告消息给录入人
-                GoEasyUtil.pushYyValidReject(info.getCompanyId(), info.getCollectorId(), info, newsDao, staffDao);
             }
         } else if ("130019".equals(jsInfo.getString("code"))) {
             //重复客资，给邀约推送消息
