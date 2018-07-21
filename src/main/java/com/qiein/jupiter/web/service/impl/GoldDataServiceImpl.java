@@ -261,9 +261,11 @@ public class GoldDataServiceImpl implements GoldDataService {
 
 
         if ("100000".equals(jsInfo.getString("code"))) {
-            //更新状态
-            goldTempPO.setStatusId(GoldDataConst.IN_FILTER);
-            goldTempDao.update(goldTempPO);
+            if(null != goldFingerPO.getIsFilter() && !goldFingerPO.getIsFilter().equals(CommonConstant.DEFAULT_ZERO)){
+                //更新状态
+                goldTempPO.setStatusId(GoldDataConst.IN_FILTER);
+                goldTempDao.update(goldTempPO);
+            }
             //发送消息
             ClientDTO info = new ClientDTO();
             info.setKzName(goldTempPO.getKzName());
@@ -273,7 +275,7 @@ public class GoldDataServiceImpl implements GoldDataService {
             info.setChannelName(sourcePO.getChannelName());
             GoEasyUtil.pushGoldDataKz(goldFingerPO.getCompanyId(), goldFingerPO.getCreateorId(), info, newsDao, staffDao);
         } else if ("130019".equals(jsInfo.getString("code"))) {
-            goldTempPO.setStatusId(GoldDataConst.HAVA_ENTERED);
+            goldTempPO.setStatusId(GoldDataConst.REPEATED_SCREEN);
             goldTempDao.update(goldTempPO);
         } else {
             throw new RException(jsInfo.getString("msg"));
