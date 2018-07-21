@@ -95,7 +95,7 @@ public interface OutCallService {
     JSONObject addToWhite(int companyId, int staffId, String tel, String key, String validateCode);
 
     /**
-     * 企业新增外呼管理员
+     * 企业修改外呼管理员
      */
     int updateAdmin(OutCallUserDTO outCallUserDTO);
 }

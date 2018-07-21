@@ -33,9 +33,9 @@ public class WebSocketMsgUtil {
 	 * @param msg
 	 */
 	private void sendMsgAsync(String msg) {
-		HttpClient.post(msgUrl)
+		HttpClient.textBody(msgUrl)
 				// post提交json
-				.param("msg", msg).execute();
+				.json(msg).execute();
 	}
 
 	// /**
@@ -67,6 +67,31 @@ public class WebSocketMsgUtil {
 		msgDTO.setType(WebSocketMsgEnum.OrderSuccess);
 		msgDTO.setCompanyId(orderSuccessMsg.getCompanyId());
 		msgDTO.setContent(JSONObject.toJSONString(orderSuccessMsg));
+		this.sendMsg(msgDTO);
+	}
+
+	/**
+	 * 推送全员刷新的消息
+	 */
+	public void pushAllRefreshMsg(int companyId) {
+		WebSocketMsgDTO msgDTO = new WebSocketMsgDTO();
+		msgDTO.setType(WebSocketMsgEnum.AllReFresh);
+		msgDTO.setCompanyId(companyId);
+		msgDTO.setContent("");
+		this.sendMsg(msgDTO);
+	}
+
+	/**
+	 * 推送 刷新基础信息
+	 */
+	public void pushBaseInfoFresh(int companyId, Integer staffId) {
+		WebSocketMsgDTO msgDTO = new WebSocketMsgDTO();
+		msgDTO.setType(WebSocketMsgEnum.BaseInfoFresh);
+		msgDTO.setCompanyId(companyId);
+		if (staffId != null && staffId != 0) {
+			msgDTO.setStaffId(staffId);
+		}
+		msgDTO.setContent("");
 		this.sendMsg(msgDTO);
 	}
 

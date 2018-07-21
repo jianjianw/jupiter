@@ -12,7 +12,11 @@ public enum WebSocketMsgEnum {
     //闪屏
     Flash(3),
     //微信刷新
-    WeChatCallBack(4);
+    WeChatCallBack(4),
+    //全员刷新
+    AllReFresh(5),
+    //重新获取基础信息
+    BaseInfoFresh(6);
 
     /**
      * 类型

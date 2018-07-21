@@ -144,7 +144,7 @@ public class TiOutCallController extends BaseController {
      *
      * @return
      */
-    @GetMapping
+    @GetMapping("/get_admin_user")
     public ResultInfo getAdminUser() {
         return ResultInfoUtil.success(outCallService.getAdminByCompanyId(getCurrentLoginStaff().getCompanyId()));
     }

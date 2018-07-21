@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import com.qiein.jupiter.msg.websocket.WebSocketMsgUtil;
 import com.qiein.jupiter.web.entity.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -50,6 +51,9 @@ public class StaffController extends BaseController {
 
     @Autowired
     private CrmBaseApi crmBaseApi;
+
+    @Autowired
+    private WebSocketMsgUtil webSocketMsgUtil;
 
     /**
      * 获取列表
@@ -475,6 +479,8 @@ public class StaffController extends BaseController {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         staffService.updateStatusFlag(currentLoginStaff.getId(), currentLoginStaff.getCompanyId(), status,
                 currentLoginStaff.getId(), currentLoginStaff.getNickName());
+        //推送刷新状态
+        webSocketMsgUtil.pushBaseInfoFresh(currentLoginStaff.getCompanyId(), currentLoginStaff.getId());
         if (status == 0) {
             // 上线
             return ResultInfoUtil.success(TipMsgEnum.OFFLINE_SUCCESS);

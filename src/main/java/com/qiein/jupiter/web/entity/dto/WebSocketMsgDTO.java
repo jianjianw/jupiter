@@ -9,41 +9,59 @@ import java.io.Serializable;
  */
 public class WebSocketMsgDTO implements Serializable {
 
-	private static final long serialVersionUID = -5853387409903101083L;
-	/**
-	 * 类型
-	 */
-	private WebSocketMsgEnum type;
-	/**
-	 * 公司ID
-	 */
-	private int companyId;
-	/**
-	 * 内容
-	 */
-	private String content;
+    private static final long serialVersionUID = -5853387409903101083L;
+    /**
+     * 类型
+     */
+    private WebSocketMsgEnum type;
+    /**
+     * 公司ID
+     */
+    private int companyId;
 
-	public WebSocketMsgEnum getType() {
-		return type;
-	}
+    /**
+     * 员工 ID
+     */
+    private int staffId;
+    /**
+     * 内容
+     */
+    private String content;
 
-	public void setType(WebSocketMsgEnum type) {
-		this.type = type;
-	}
+    public WebSocketMsgEnum getType() {
+        return type;
+    }
 
-	public int getCompanyId() {
-		return companyId;
-	}
+    public void setType(WebSocketMsgEnum type) {
+        this.type = type;
+    }
 
-	public void setCompanyId(int companyId) {
-		this.companyId = companyId;
-	}
+    public int getCompanyId() {
+        return companyId;
+    }
 
-	public String getContent() {
-		return content;
-	}
+    public void setCompanyId(int companyId) {
+        this.companyId = companyId;
+    }
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public int getStaffId() {
+        return staffId;
+    }
+
+    public void setStaffId(int staffId) {
+        this.staffId = staffId;
+    }
 }
+
