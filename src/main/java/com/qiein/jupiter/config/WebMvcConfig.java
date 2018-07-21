@@ -26,7 +26,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
                 .excludePathPatterns("/")
                 .excludePathPatterns("/outer/**")
                 //排除apollo
-                .excludePathPatterns("/apollo")
+                .excludePathPatterns("/apollo/**")
                 //login
                 .excludePathPatterns("/login/get_company_list_by_phone")
                 .excludePathPatterns("/login/login_by_phone")
