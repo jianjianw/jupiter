@@ -162,6 +162,7 @@ public class SendMsgController extends BaseController{
                 .queryString("pageNum", pageNum)
                 .queryString("pageSize", pageSize)
                 .asString();
+
         JSONObject json=JSONObject.parseObject(templateText);
         return  ResultInfoUtil.success(json);
     }

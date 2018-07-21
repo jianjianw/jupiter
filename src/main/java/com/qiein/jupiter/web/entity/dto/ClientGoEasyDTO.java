@@ -97,6 +97,14 @@ public class ClientGoEasyDTO implements Serializable {
 	 * 录入人姓名
 	 */
 	private String collectorName;
+	/**
+	 * 接待人姓名
+	 */
+	private String receptorName;
+	/**
+	 * 门店名称
+	 */
+	private String shopName;
 
 	public String getKzQq() {
 		return kzQq;
@@ -264,5 +272,21 @@ public class ClientGoEasyDTO implements Serializable {
 
 	public void setCollectorName(String collectorName) {
 		this.collectorName = collectorName;
+	}
+
+	public String getReceptorName() {
+		return receptorName;
+	}
+
+	public void setReceptorName(String receptorName) {
+		this.receptorName = receptorName;
+	}
+
+	public String getShopName() {
+		return shopName;
+	}
+
+	public void setShopName(String shopName) {
+		this.shopName = shopName;
 	}
 }

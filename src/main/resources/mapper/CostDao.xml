@@ -60,7 +60,7 @@
 				FROM
 					hm_pub_role_source
 				WHERE
-					roleID = #{staffId}
+					roleID = (select staff.ROLEID from hm_pub_staff_role  staff where staff.staffid=#{staffId})
 				AND companyid = #{companyId}
 			) role
 		LEFT JOIN (
@@ -109,7 +109,7 @@
 
 						LEFT JOIN hm_crm_cost b ON b.SRCID=a.sourceid AND b.COMPANYID=a.companyid AND FROM_UNIXTIME(b.COSTTIME, '%Y/%m/%d ') LIKE CONCAT(
 								"%",
-								#{month}, "%") AND a.roleid=#{staffId}
+								#{month}, "%") AND a.roleid=(select staff.ROLEID from hm_pub_staff_role  staff where staff.staffid=#{staffId})
 						WHERE
 							a.companyid=#{companyId}
 							) TOTALCOST
@@ -119,7 +119,7 @@
 
 						LEFT JOIN hm_crm_cost cost ON cost.SRCID=role.sourceid AND cost.COMPANYID=role.companyid AND FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d ') LIKE CONCAT(
 								"%",
-								#{month}, "%") AND role.roleid=#{staffId}
+								#{month}, "%") AND role.roleid=(select staff.ROLEID from hm_pub_staff_role  staff where staff.staffid=#{staffId})
 						WHERE
 								role.companyid=#{companyId}
 							GROUP BY
