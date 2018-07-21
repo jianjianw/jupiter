@@ -118,7 +118,7 @@
             rela.BIND_TEL,
             rela.CNO
         FROM hm_crm_outcall_rela rela
-        WHERE rela.COMPANY_ID = #{}
-              AND rela.STAFF_ID = #{}
+        WHERE rela.COMPANY_ID = #{companyId}
+              AND rela.STAFF_ID = #{staffId}
     </select>
 </mapper>
