@@ -99,7 +99,7 @@
     </update>
 
     <!--获取企业外呼员工列表-->
-    <select id="getUserList" resultMap="">
+    <select id="getUserList" resultMap="staff">
         SELECT
             rela.STAFF_ID,
             staff.NICKNAME,
