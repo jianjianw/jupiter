@@ -23,5 +23,7 @@
         </foreach>
     </insert>
 
-
+    <delete id="delete">
+        DELETE  FROM hm_pub_role_source WHERE  ROLEID=#{id}
+    </delete>
 </mapper>
