@@ -91,9 +91,6 @@
             <if test="ipLimit != null">
                 IPLIMIT = #{ipLimit},
             </if>
-            <if test="ssoLimit != null">
-                SSOLIMIT = #{ssoLimit},
-            </if>
             <if test="overtime != null and overtime!=0">
                 OVERTIME = #{overtime},
             </if>
