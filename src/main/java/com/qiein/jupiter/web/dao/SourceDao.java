@@ -71,19 +71,21 @@ public interface SourceDao extends BaseDao<SourcePO> {
 
     /**
      * 渠道关闭时，同时关闭下属所有来源
+     *
      * @param channelId
      * @param companyId
      * @return
      */
-    Integer updateIsShowByChannelId(@Param("channelId")Integer channelId,@Param("companyId") Integer companyId);
+    Integer updateIsShowByChannelId(@Param("channelId") Integer channelId, @Param("companyId") Integer companyId);
 
     /**
      * 渠道关闭时，同时关闭下属所有来源
+     *
      * @param channelId
      * @param companyId
      * @return
      */
-    Integer updateIsFilterByChannelId(@Param("channelId")Integer channelId,@Param("companyId") Integer companyId,@Param("flag") boolean flag);
+    Integer updateIsFilterByChannelId(@Param("channelId") Integer channelId, @Param("companyId") Integer companyId, @Param("flag") boolean flag);
 
     /**
      * 修改向下拖拽排序时波及的来源的排序
@@ -139,20 +141,22 @@ public interface SourceDao extends BaseDao<SourcePO> {
 
     /**
      * 根据渠道id，来源名称获取来源
+     *
      * @param srcName
      * @param companyId
      * @param channelId
      * @return
-     * */
-    SourcePO getSourceBySrcname(@Param(value="srcName") String srcName,@Param(value="companyId") Integer companyId,@Param(value="channelId")Integer channelId);
+     */
+    SourcePO getSourceBySrcname(@Param(value = "srcName") String srcName, @Param(value = "companyId") Integer companyId, @Param(value = "channelId") Integer channelId);
 
     /**
      * 根据渠道id更改来源pushRule
+     *
      * @param channelId
      * @param companyId
      * @param pushRule
-     * */
-    void updatePushRuleByChannelId(@Param(value="channelId") int channelId,@Param(value="companyId") Integer companyId,@Param(value="pushRule") Integer pushRule);
+     */
+    void updatePushRuleByChannelId(@Param(value = "channelId") int channelId, @Param(value = "companyId") Integer companyId, @Param(value = "pushRule") Integer pushRule);
 
     /**
      * 根据来源名，类型获取渠道
@@ -161,5 +165,5 @@ public interface SourceDao extends BaseDao<SourcePO> {
      * @param typeId
      * @return
      */
-    SourcePO getSourceByType(@Param("companyId") int companyId, @Param("typeId") int typeId);
+    SourcePO getSourceByType(@Param("companyId") int companyId, @Param("typeId") int typeId, @Param("srcName") String srcName);
 }
