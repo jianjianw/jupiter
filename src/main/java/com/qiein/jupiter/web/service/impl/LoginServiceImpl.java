@@ -229,22 +229,15 @@ public class LoginServiceImpl implements LoginService {
                 throw new RException(ExceptionEnum.ONLY_APP_LOGIN);
             }
         }
-        // 如果员工没有token，重新生成
+        // 如果员工没有token，或者重新生成
         if (StringUtil.isEmpty(staff.getToken()) || companyPO.isSsoLimit()) {
-            // 生成token
-            String token = JwtUtil.generatorToken();
-            staff.setToken(token);
-            redisTemplate.opsForValue().set(RedisConstant.getStaffKey(staff.getId(), staff.getCompanyId()), staff,
-                    CommonConstant.DEFAULT_EXPIRE_TIME, TimeUnit.HOURS);
-            // 并更新到数据库
-            staffDao.updateToken(staff);
+            updateToken(staff);
         }
         // 更新登录时间和IP
         StaffDetailPO staffDetailPO = new StaffDetailPO();
         staffDetailPO.setId(staff.getId());
         staffDetailPO.setCompanyId(staff.getCompanyId());
         staffDetailPO.setLastLoginIp(ip);
-        staffDetailPO.setIpLocation(HttpUtil.getIpLocation(ip));
         staffDao.updateStaffLoginInfo(staffDetailPO);
         // 如果当前员工为下线状态，则更新他为上线状态
         if (staff.getStatusFlag() == StaffStatusEnum.OffLine.getStatusId()) {
@@ -261,6 +254,21 @@ public class LoginServiceImpl implements LoginService {
         GoEasyUtil.pushStaffRefresh(staff.getCompanyId(), staff.getId(), ip,
                 HttpUtil.getIpLocation(ip).replace(CommonConstant.STR_SEPARATOR, ""));
         return staff;
+    }
+
+    /**
+     * 更新token
+     */
+    @Override
+    public String updateToken(StaffPO staff) {
+        // 生成token
+        String token = JwtUtil.generatorToken();
+        staff.setToken(token);
+        redisTemplate.opsForValue().set(RedisConstant.getStaffKey(staff.getId(), staff.getCompanyId()), staff,
+                CommonConstant.DEFAULT_EXPIRE_TIME, TimeUnit.HOURS);
+        // 并更新到数据库
+        staffDao.updateToken(staff);
+        return token;
     }
 
     /**

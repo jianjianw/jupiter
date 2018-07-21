@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
+import com.mzlion.easyokhttp.HttpClient;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
@@ -97,11 +98,11 @@ public class GoldDataController extends BaseController {
      * 金数据表单页面显示
      */
     @GetMapping("/select")
-    public ResultInfo select(int pageNum, int pageSize,String formName) {
+    public ResultInfo select(int pageNum, int pageSize,String formId) {
         pageSize=100;
 //    public ResultInfo select(int pageNum, int pageSize,String formName,String formId,int typeId) {
         StaffPO staff = getCurrentLoginStaff();
-        PageInfo<GoldFingerPO> select = goldDataService.select(staff.getCompanyId(), pageNum, pageSize);
+        PageInfo<GoldFingerPO> select = goldDataService.select(staff.getCompanyId(), pageNum, pageSize,formId);
         return ResultInfoUtil.success(select);
     }
 

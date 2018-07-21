@@ -109,7 +109,11 @@
     <select id="select" resultMap="goldData">
         select
         <include refid="formList"/>
-        from hm_crm_gold_plug_setting where companyId=#{companyId} order by id DESC
+        from hm_crm_gold_plug_setting where companyId=#{companyId}
+        <if test="formId != null and formId != ''">
+            AND FORMID = #{formId}
+        </if>
+        order by id DESC
 
     </select>
 

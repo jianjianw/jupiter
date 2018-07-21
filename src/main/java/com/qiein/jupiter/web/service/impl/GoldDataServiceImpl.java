@@ -94,9 +94,9 @@ public class GoldDataServiceImpl implements GoldDataService {
      * @param companyId
      * @return
      */
-    public PageInfo<GoldFingerPO> select(int companyId, int pageNum, int pageSize) {
+    public PageInfo<GoldFingerPO> select(int companyId, int pageNum, int pageSize,String formId) {
         PageHelper.startPage(pageNum, pageSize);
-        List<GoldFingerPO> select = goldDataDao.select(companyId);
+        List<GoldFingerPO> select = goldDataDao.select(companyId,formId);
         return new PageInfo<>(select);
 
     }
