@@ -347,24 +347,19 @@ public class GoEasyUtil {
      */
     public static void pushFlashMsgForInfo(int companyId, int barStaffId, int senderId, String senderName,
                                            String kzName, String kzPhone, int id, String kzId, String kzChannel, String kzSource, String kzMemo, String msg, String createTime) {
-
-        try {
-            JSONObject contentJson = new JSONObject();
-            contentJson.put("senderId", senderId);
-            contentJson.put("senderName", senderName);
-            contentJson.put("kzName", kzName);
-            contentJson.put("kzPhone", kzPhone);
-            contentJson.put("id", id);
-            contentJson.put("createtime", createTime);
-            contentJson.put("kzId", kzId);
-            contentJson.put("kzChannel", kzChannel);
-            contentJson.put("kzSource", kzSource);
-            contentJson.put("kzMemo", kzMemo);
-            contentJson.put("msg", msg);
-            pushWeb(MessageConts.MSG_TYPE_FLASH, companyId, barStaffId, contentJson);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        JSONObject contentJson = new JSONObject();
+        contentJson.put("senderId", senderId);
+        contentJson.put("senderName", senderName);
+        contentJson.put("kzName", kzName);
+        contentJson.put("kzPhone", kzPhone);
+        contentJson.put("id", id);
+        contentJson.put("createtime", createTime);
+        contentJson.put("kzId", kzId);
+        contentJson.put("kzChannel", kzChannel);
+        contentJson.put("kzSource", kzSource);
+        contentJson.put("kzMemo", kzMemo);
+        contentJson.put("msg", msg);
+        pushWeb(MessageConts.MSG_TYPE_FLASH, companyId, barStaffId, contentJson);
     }
 
     /**
@@ -394,27 +389,24 @@ public class GoEasyUtil {
      */
     public static void pushShopMeetRunOff(int companyId, int staffId, ClientDTO info, String reason,
                                           String comeShopTime, String shopName, String receptorName) {
-        try {
-            StringBuffer sb = new StringBuffer();
-            sb.append(" 您的客人在 ");
-            sb.append(StringUtil.nullToStrTrim(shopName));
-            sb.append(" 流失 ");
-            String header = sb.toString();
 
-            sb.delete(0, sb.length());
-            sb.append("<br/><br/>姓名：");
-            sb.append(StringUtil.nullToStrTrim(info.getKzName()));
-            sb.append("<br/>手机：").append(StringUtil.nullToStrTrim(info.getKzPhone()));
-            sb.append("<br/>微信：").append(StringUtil.nullToStrTrim(info.getKzWeChat()));
-            sb.append("<br/><br/>接待门店：").append(StringUtil.nullToStrTrim(shopName));
-            sb.append("<br/>接待门市：").append(StringUtil.nullToStrTrim(receptorName));
-            sb.append("<br/><br/>到店时间：").append(StringUtil.nullToStrTrim(comeShopTime));
-            sb.append("<br/>流失原因：").append(reason);
-            String msg = sb.toString();
-            pushCommon(companyId, staffId, header, msg);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        StringBuffer sb = new StringBuffer();
+        sb.append(" 您的客人在 ");
+        sb.append(StringUtil.nullToStrTrim(shopName));
+        sb.append(" 流失 ");
+        String header = sb.toString();
+
+        sb.delete(0, sb.length());
+        sb.append("<br/><br/>姓名：");
+        sb.append(StringUtil.nullToStrTrim(info.getKzName()));
+        sb.append("<br/>手机：").append(StringUtil.nullToStrTrim(info.getKzPhone()));
+        sb.append("<br/>微信：").append(StringUtil.nullToStrTrim(info.getKzWeChat()));
+        sb.append("<br/><br/>接待门店：").append(StringUtil.nullToStrTrim(shopName));
+        sb.append("<br/>接待门市：").append(StringUtil.nullToStrTrim(receptorName));
+        sb.append("<br/><br/>到店时间：").append(StringUtil.nullToStrTrim(comeShopTime));
+        sb.append("<br/>流失原因：").append(reason);
+        String msg = sb.toString();
+        pushCommon(companyId, staffId, header, msg);
     }
 
     /**
@@ -426,32 +418,28 @@ public class GoEasyUtil {
      * @param newsDao
      */
     public static void pushSuccessOnline(int companyId, int staffId, ClientGoEasyDTO info, NewsDao newsDao, StaffDao staffDao) {
-        try {
-            String head = "恭喜您，您的客户在线订单啦";
-            StringBuffer sb = new StringBuffer();
-            sb.append("编号：").append(info.getId()).append("<br/>");
-            if (StringUtil.isNotEmpty(info.getKzName())) {
-                sb.append("姓名：").append(StringUtil.nullToStrTrim(info.getKzName())).append("<br/>");
-            }
-            if (StringUtil.isNotEmpty(info.getKzPhone())) {
-                sb.append("电话：").append(StringUtil.nullToStrTrim(info.getKzPhone())).append("<br/>");
-            }
-            if (StringUtil.isNotEmpty(info.getKzWechat())) {
-                sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWechat())).append("<br/>");
-            }
-            sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("<br/>");
-            sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("<br/>");
-            sb.append("客服：").append(StringUtil.nullToStrTrim(info.getAppointName())).append("<br/>");
-            sb.append("成交套系： ¥").append(info.getAmount()).append("<br/>");
-            sb.append("订单时间：").append(TimeUtil.intMillisToTimeStr(info.getSuccessTime()));
-            String msg = sb.toString();
-            pushSuccess(companyId, staffId, head, msg);
-            newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_SUCCESS, head, msg.replaceAll("<br/>", "；"), info.getKzId(),
-                    staffId, companyId, DBSplitUtil.getNewsTabName(companyId)));
-            DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), companyId, staffId, staffDao);
-        } catch (Exception e) {
-            e.printStackTrace();
+        String head = "恭喜您，您的客户在线订单啦";
+        StringBuffer sb = new StringBuffer();
+        sb.append("编号：").append(info.getId()).append("<br/>");
+        if (StringUtil.isNotEmpty(info.getKzName())) {
+            sb.append("姓名：").append(StringUtil.nullToStrTrim(info.getKzName())).append("<br/>");
         }
+        if (StringUtil.isNotEmpty(info.getKzPhone())) {
+            sb.append("电话：").append(StringUtil.nullToStrTrim(info.getKzPhone())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzWechat())) {
+            sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWechat())).append("<br/>");
+        }
+        sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("<br/>");
+        sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("<br/>");
+        sb.append("客服：").append(StringUtil.nullToStrTrim(info.getAppointName())).append("<br/>");
+        sb.append("成交套系： ¥").append(info.getAmount()).append("<br/>");
+        sb.append("订单时间：").append(TimeUtil.intMillisToTimeStr(info.getSuccessTime()));
+        String msg = sb.toString();
+        pushSuccess(companyId, staffId, head, msg);
+        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_SUCCESS, head, msg.replaceAll("<br/>", "；"), info.getKzId(),
+                staffId, companyId, DBSplitUtil.getNewsTabName(companyId)));
+        DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), companyId, staffId, staffDao);
     }
 
     /**
@@ -461,17 +449,13 @@ public class GoEasyUtil {
      * @param staffId
      * @param newsDao
      */
-    public static void pushOffLineAuto(int companyId, int staffId, NewsDao newsDao, StaffDao staffDao) {
-        try {
-            String head = ClientLogConst.CONTINUOUS_SABOTEUR_DONW;
-            String msg = "连续三次怠工被系统自动下线<br/>请重新上线或重新登录系统";
-            pushError(companyId, staffId, head, msg);
-            newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_SYSTEM, head, msg.replaceAll("<br/>", "；"), "", staffId,
-                    companyId, DBSplitUtil.getNewsTabName(companyId)));
-            DingMsgSendUtil.sendDingMsg(head + "<br/>", companyId, staffId, staffDao);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public static void pushOffLineAuto(int companyId, int staffId, NewsDao newsDao,StaffDao staffDao) {
+        String head = ClientLogConst.CONTINUOUS_SABOTEUR_DONW;
+        String msg = "连续三次怠工被系统自动下线<br/>请重新上线或重新登录系统";
+        pushError(companyId, staffId, head, msg);
+        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_SYSTEM, head, msg.replaceAll("<br/>", "；"), "", staffId,
+                companyId, DBSplitUtil.getNewsTabName(companyId)));
+        DingMsgSendUtil.sendDingMsg(head + "<br/>", companyId, staffId, staffDao);
     }
 
     /**
@@ -486,31 +470,27 @@ public class GoEasyUtil {
      * @param receptorName
      */
     public static void pushSuccessShop(int companyId, int staffId, ClientDTO info, String successTime, String amount,
-                                       String shopName, String receptorName, StaffDao staffDao) {
-        try {
-            StringBuffer sb = new StringBuffer();
-            sb.append("恭喜您，您的客户在 ");
-            sb.append(StringUtil.nullToStrTrim(shopName));
-            sb.append(" 订单啦");
-            String header = sb.toString();
+                                       String shopName, String receptorName,StaffDao staffDao) {
+        StringBuffer sb = new StringBuffer();
+        sb.append("恭喜您，您的客户在 ");
+        sb.append(StringUtil.nullToStrTrim(shopName));
+        sb.append(" 订单啦");
+        String header = sb.toString();
 
-            sb.delete(0, sb.length());
-            sb.append("<br/><br/>姓名：");
-            sb.append(StringUtil.nullToStrTrim(info.getKzName()));
-            sb.append("<br/>手机：").append(StringUtil.nullToStrTrim(info.getKzPhone()));
-            sb.append("<br/>微信：").append(StringUtil.nullToStrTrim(info.getKzWeChat()));
-            sb.append("<br/>渠道：").append(StringUtil.nullToStrTrim(info.getChannelSource()));
-            sb.append("<br/><br/>接待门店：").append(StringUtil.nullToStrTrim(shopName));
-            sb.append("<br/>接待门市：").append(StringUtil.nullToStrTrim(receptorName));
-            sb.append("<br/><br/>成交套系： ¥").append(amount);
-            sb.append("<br/>订单时间：").append(StringUtil.nullToStrTrim(successTime));
+        sb.delete(0, sb.length());
+        sb.append("<br/><br/>姓名：");
+        sb.append(StringUtil.nullToStrTrim(info.getKzName()));
+        sb.append("<br/>手机：").append(StringUtil.nullToStrTrim(info.getKzPhone()));
+        sb.append("<br/>微信：").append(StringUtil.nullToStrTrim(info.getKzWeChat()));
+        sb.append("<br/>渠道：").append(StringUtil.nullToStrTrim(info.getChannelSource()));
+        sb.append("<br/><br/>接待门店：").append(StringUtil.nullToStrTrim(shopName));
+        sb.append("<br/>接待门市：").append(StringUtil.nullToStrTrim(receptorName));
+        sb.append("<br/><br/>成交套系： ¥").append(amount);
+        sb.append("<br/>订单时间：").append(StringUtil.nullToStrTrim(successTime));
 
-            String msg = sb.toString();
-            pushSuccess(companyId, staffId, header, msg);
-            DingMsgSendUtil.sendDingMsg(header + "<br/>" + sb.toString(), companyId, staffId, staffDao);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        String msg = sb.toString();
+        pushSuccess(companyId, staffId, header, msg);
+        DingMsgSendUtil.sendDingMsg(header + "<br/>" + sb.toString(), companyId, staffId, staffDao);
     }
 
     /**
@@ -521,26 +501,23 @@ public class GoEasyUtil {
      * @param info
      * @param invalidReason
      */
-    public static void pushBeValidCheck(int companyId, int staffId, ClientDTO info, String invalidReason, StaffDao staffDao) {
-        try {
-            StringBuffer sb = new StringBuffer();
-            sb.append("无效待审批 - ");
-            sb.append(invalidReason);
-            String header = sb.toString();
+    public static void pushBeValidCheck(int companyId, int staffId, ClientDTO info, String invalidReason,StaffDao staffDao) {
 
-            sb.delete(0, sb.length());
-            sb.append("<br/><br/>姓名：");
-            sb.append(StringUtil.nullToStrTrim(info.getKzName()));
-            sb.append("<br/>手机：").append(StringUtil.nullToStrTrim(info.getKzPhone()));
-            sb.append("<br/>微信：").append(StringUtil.nullToStrTrim(info.getKzWeChat()));
-            sb.append("<br/><br/>渠道：").append(StringUtil.nullToStrTrim(info.getChannelSource()));
+        StringBuffer sb = new StringBuffer();
+        sb.append("无效待审批 - ");
+        sb.append(invalidReason);
+        String header = sb.toString();
 
-            String msg = sb.toString();
-            pushWarn(companyId, staffId, header, msg);
-            DingMsgSendUtil.sendDingMsg(header + "<br/>" + sb.toString(), companyId, staffId, staffDao);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        sb.delete(0, sb.length());
+        sb.append("<br/><br/>姓名：");
+        sb.append(StringUtil.nullToStrTrim(info.getKzName()));
+        sb.append("<br/>手机：").append(StringUtil.nullToStrTrim(info.getKzPhone()));
+        sb.append("<br/>微信：").append(StringUtil.nullToStrTrim(info.getKzWeChat()));
+        sb.append("<br/><br/>渠道：").append(StringUtil.nullToStrTrim(info.getChannelSource()));
+
+        String msg = sb.toString();
+        pushWarn(companyId, staffId, header, msg);
+        DingMsgSendUtil.sendDingMsg(header + "<br/>" + sb.toString(), companyId, staffId, staffDao);
     }
 
     /**
@@ -551,31 +528,27 @@ public class GoEasyUtil {
      * @param info
      * @param newsDao
      */
-    public static void pushYyValidReject(int companyId, int staffId, ClientGoEasyDTO info, NewsDao newsDao, StaffDao staffDao) {
-        try {
-            String head = "您录入的客资被判为无效";
-            StringBuffer sb = new StringBuffer();
-            sb.append("编号：").append(info.getId()).append("<br/>");
-            if (StringUtil.isNotEmpty(info.getKzName())) {
-                sb.append("姓名：").append(StringUtil.nullToStrTrim(info.getKzName())).append("<br/>");
-            }
-            if (StringUtil.isNotEmpty(info.getKzPhone())) {
-                sb.append("电话：").append(StringUtil.nullToStrTrim(info.getKzPhone())).append("<br/>");
-            }
-            if (StringUtil.isNotEmpty(info.getKzWechat())) {
-                sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWechat())).append("<br/>");
-            }
-            sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("<br/>");
-            sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("<br/>");
-            sb.append("无效原因：").append(StringUtil.nullToStrTrim(info.getInvalidLabel()));
-            String msg = sb.toString();
-            pushWarn(companyId, staffId, head, msg);
-            newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_WARN, head, msg.replaceAll("<br/>", "；"), info.getKzId(),
-                    staffId, companyId, DBSplitUtil.getNewsTabName(companyId)));
-            DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), companyId, staffId, staffDao);
-        } catch (Exception e) {
-            e.printStackTrace();
+    public static void pushYyValidReject(int companyId, int staffId, ClientGoEasyDTO info, NewsDao newsDao,StaffDao staffDao) {
+        String head = "您录入的客资被判为无效";
+        StringBuffer sb = new StringBuffer();
+        sb.append("编号：").append(info.getId()).append("<br/>");
+        if (StringUtil.isNotEmpty(info.getKzName())) {
+            sb.append("姓名：").append(StringUtil.nullToStrTrim(info.getKzName())).append("<br/>");
         }
+        if (StringUtil.isNotEmpty(info.getKzPhone())) {
+            sb.append("电话：").append(StringUtil.nullToStrTrim(info.getKzPhone())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzWechat())) {
+            sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWechat())).append("<br/>");
+        }
+        sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("<br/>");
+        sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("<br/>");
+        sb.append("无效原因：").append(StringUtil.nullToStrTrim(info.getInvalidLabel()));
+        String msg = sb.toString();
+        pushWarn(companyId, staffId, head, msg);
+        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_WARN, head, msg.replaceAll("<br/>", "；"), info.getKzId(),
+                staffId, companyId, DBSplitUtil.getNewsTabName(companyId)));
+        DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), companyId, staffId, staffDao);
     }
 
     /**
@@ -586,37 +559,33 @@ public class GoEasyUtil {
      * @param info
      * @param newsDao
      */
-    public static void pushInfoComed(int companyId, int staffId, ClientGoEasyDTO info, NewsDao newsDao, StaffDao staffDao) {
-        try {
-            String head = "新客资来啦^_^";
-            StringBuffer sb = new StringBuffer();
-            sb.append("编号：").append(info.getId()).append("<br/><br/>");
-            if (StringUtil.isNotEmpty(info.getKzName())) {
-                sb.append("姓名：").append(StringUtil.nullToStrTrim(info.getKzName())).append("<br/>");
-            }
-            if (StringUtil.isNotEmpty(info.getKzPhone())) {
-                sb.append("电话：").append(StringUtil.nullToStrTrim(info.getKzPhone())).append("<br/>");
-            }
-            if (StringUtil.isNotEmpty(info.getKzWechat())) {
-                sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWechat())).append("<br/>");
-            }
-            if (StringUtil.isNotEmpty(info.getKzQq())) {
-                sb.append("QQ：").append(StringUtil.nullToStrTrim(info.getKzQq())).append("<br/>");
-            }
-            if (StringUtil.isNotEmpty(info.getKzWw())) {
-                sb.append("旺旺：").append(StringUtil.nullToStrTrim(info.getKzWw())).append("<br/>");
-            }
-            sb.append("<br/>渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("<br/>");
-            sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("<br/><br/>");
-            sb.append("备注：").append(StringUtil.nullToStrTrim(info.getMemo()));
-            String msg = sb.toString();
-            pushCommon(companyId, staffId, head, msg);
-            newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_COMMON, head, msg.replaceAll("<br/>", "；"), info.getKzId(),
-                    staffId, companyId, DBSplitUtil.getNewsTabName(companyId)));
-            DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), companyId, staffId, staffDao);
-        } catch (Exception e) {
-            e.printStackTrace();
+    public static void pushInfoComed(int companyId, int staffId, ClientGoEasyDTO info, NewsDao newsDao,StaffDao staffDao) {
+        String head = "新客资来啦^_^";
+        StringBuffer sb = new StringBuffer();
+        sb.append("编号：").append(info.getId()).append("<br/><br/>");
+        if (StringUtil.isNotEmpty(info.getKzName())) {
+            sb.append("姓名：").append(StringUtil.nullToStrTrim(info.getKzName())).append("<br/>");
         }
+        if (StringUtil.isNotEmpty(info.getKzPhone())) {
+            sb.append("电话：").append(StringUtil.nullToStrTrim(info.getKzPhone())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzWechat())) {
+            sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWechat())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzQq())) {
+            sb.append("QQ：").append(StringUtil.nullToStrTrim(info.getKzQq())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzWw())) {
+            sb.append("旺旺：").append(StringUtil.nullToStrTrim(info.getKzWw())).append("<br/>");
+        }
+        sb.append("<br/>渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("<br/>");
+        sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("<br/><br/>");
+        sb.append("备注：").append(StringUtil.nullToStrTrim(info.getMemo()));
+        String msg = sb.toString();
+        pushCommon(companyId, staffId, head, msg);
+        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_COMMON, head, msg.replaceAll("<br/>", "；"), info.getKzId(),
+                staffId, companyId, DBSplitUtil.getNewsTabName(companyId)));
+        DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), companyId, staffId, staffDao);
     }
 
     /**
@@ -651,19 +620,15 @@ public class GoEasyUtil {
      * @param kzId
      * @param newsDao
      */
-    public static void pushRemark(int companyId, int staffId, String msg, String kzId, NewsDao newsDao, StaffDao staffDao) {
-        try {
-            if (NumUtil.isNull(staffId) || NumUtil.isNull(companyId)) {
-                return;
-            }
-            String head = "推广备注被修改";
-            pushWarn(companyId, staffId, head, msg);
-            newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_WARN, head, msg, kzId, staffId, companyId,
-                    DBSplitUtil.getNewsTabName(companyId)));
-            DingMsgSendUtil.sendDingMsg(head, companyId, staffId, staffDao);
-        } catch (Exception e) {
-            e.printStackTrace();
+    public static void pushRemark(int companyId, int staffId, String msg, String kzId, NewsDao newsDao,StaffDao staffDao) {
+        if (NumUtil.isNull(staffId) || NumUtil.isNull(companyId)) {
+            return;
         }
+        String head = "推广备注被修改";
+        pushWarn(companyId, staffId, head, msg);
+        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_WARN, head, msg, kzId, staffId, companyId,
+                DBSplitUtil.getNewsTabName(companyId)));
+        DingMsgSendUtil.sendDingMsg(head , companyId, staffId, staffDao);
     }
 
     /**
@@ -677,50 +642,46 @@ public class GoEasyUtil {
      */
 
     public static void pushTransfer(StaffPO staffPO, int toStaffId, String kzIds, NewsDao newsDao,
-                                    ClientInfoDao clientInfoDao, StaffDao staffDao) {
-        try {
-            if (StringUtil.isEmpty(kzIds)) {
-                return;
+                                    ClientInfoDao clientInfoDao,StaffDao staffDao) {
+        if (StringUtil.isEmpty(kzIds)) {
+            return;
+        }
+        String[] kzArr = kzIds.split(CommonConstant.STR_SEPARATOR);
+        String head = staffPO.getNickName() + " 转移给您" + kzArr.length + "个客资";
+        StringBuffer sb = new StringBuffer();
+        if (kzArr.length == 1) {
+            ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(kzArr[0],
+                    DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
+                    DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
+            sb.append("编号：").append(info.getId()).append("<br/><br/>");
+            if (StringUtil.isNotEmpty(info.getKzName())) {
+                sb.append("姓名：").append(StringUtil.nullToStrTrim(info.getKzName())).append("<br/>");
             }
-            String[] kzArr = kzIds.split(CommonConstant.STR_SEPARATOR);
-            String head = staffPO.getNickName() + " 转移给您" + kzArr.length + "个客资";
-            StringBuffer sb = new StringBuffer();
-            if (kzArr.length == 1) {
-                ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(kzArr[0],
-                        DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
-                        DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
-                sb.append("编号：").append(info.getId()).append("<br/><br/>");
-                if (StringUtil.isNotEmpty(info.getKzName())) {
-                    sb.append("姓名：").append(StringUtil.nullToStrTrim(info.getKzName())).append("<br/>");
-                }
-                if (StringUtil.isNotEmpty(info.getKzPhone())) {
-                    sb.append("电话：").append(StringUtil.nullToStrTrim(info.getKzPhone())).append("<br/>");
-                }
-                if (StringUtil.isNotEmpty(info.getKzWechat())) {
-                    sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWechat())).append("<br/>");
-                }
-                if (StringUtil.isNotEmpty(info.getKzQq())) {
-                    sb.append("QQ：").append(StringUtil.nullToStrTrim(info.getKzQq())).append("<br/>");
-                }
-                if (StringUtil.isNotEmpty(info.getKzWw())) {
-                    sb.append("旺旺：").append(StringUtil.nullToStrTrim(info.getKzWw())).append("<br/>");
-                }
-                sb.append("<br/>渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("<br/>");
-                sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("<br/><br/>");
+            if (StringUtil.isNotEmpty(info.getKzPhone())) {
+                sb.append("电话：").append(StringUtil.nullToStrTrim(info.getKzPhone())).append("<br/>");
+            }
+            if (StringUtil.isNotEmpty(info.getKzWechat())) {
+                sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWechat())).append("<br/>");
+            }
+            if (StringUtil.isNotEmpty(info.getKzQq())) {
+                sb.append("QQ：").append(StringUtil.nullToStrTrim(info.getKzQq())).append("<br/>");
+            }
+            if (StringUtil.isNotEmpty(info.getKzWw())) {
+                sb.append("旺旺：").append(StringUtil.nullToStrTrim(info.getKzWw())).append("<br/>");
+            }
+            sb.append("<br/>渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("<br/>");
+            sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("<br/><br/>");
 
-                pushCommon(staffPO.getCompanyId(), toStaffId, head, sb.toString());
-                newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_COMMON, head, sb.toString().replaceAll("<br/>", "；"),
-                        info.getKzId(), toStaffId, staffPO.getCompanyId(),
-                        DBSplitUtil.getNewsTabName(staffPO.getCompanyId())));
-                DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), staffPO.getCompanyId(), toStaffId, staffDao);
-            } else {
-                pushCommon(staffPO.getCompanyId(), toStaffId, head, "");
-                newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_COMMON, head, "", null, toStaffId, staffPO.getCompanyId(),
-                        DBSplitUtil.getNewsTabName(staffPO.getCompanyId())));
-                DingMsgSendUtil.sendDingMsg(head, staffPO.getCompanyId(), toStaffId, staffDao);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+            pushCommon(staffPO.getCompanyId(), toStaffId, head, sb.toString());
+            newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_COMMON, head, sb.toString().replaceAll("<br/>", "；"),
+                    info.getKzId(), toStaffId, staffPO.getCompanyId(),
+                    DBSplitUtil.getNewsTabName(staffPO.getCompanyId())));
+            DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), staffPO.getCompanyId(), toStaffId, staffDao);
+        } else {
+            pushCommon(staffPO.getCompanyId(), toStaffId, head, "");
+            newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_COMMON, head, "", null, toStaffId, staffPO.getCompanyId(),
+                    DBSplitUtil.getNewsTabName(staffPO.getCompanyId())));
+            DingMsgSendUtil.sendDingMsg(head, staffPO.getCompanyId(), toStaffId, staffDao);
         }
     }
 
@@ -733,18 +694,14 @@ public class GoEasyUtil {
      * @param newsDao
      */
     public static void pushRemoteLogin(int companyId, int staffId, String ip, String address, NewsDao newsDao) {
-        try {
-            if (NumUtil.isNull(staffId) || NumUtil.isNull(companyId)) {
-                return;
-            }
-            String head = "账号异常";
-            String msg = "您的账号在" + address + "登录<br/>IP：" + ip + "<br/>如非本人操作，请及时修改密码";
-            pushWarn(companyId, staffId, head, msg);
-            newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_SYSTEM, head, msg.replaceAll("<br/>", "；"), null, staffId, companyId,
-                    DBSplitUtil.getNewsTabName(companyId)));
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (NumUtil.isNull(staffId) || NumUtil.isNull(companyId)) {
+            return;
         }
+        String head = "账号异常";
+        String msg = "您的账号在" + address + "登录<br/>IP：" + ip + "<br/>如非本人操作，请及时修改密码";
+        pushWarn(companyId, staffId, head, msg);
+        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_SYSTEM, head, msg.replaceAll("<br/>", "；"), null, staffId, companyId,
+                DBSplitUtil.getNewsTabName(companyId)));
     }
 
     /**
@@ -757,63 +714,14 @@ public class GoEasyUtil {
      * @param operaId
      * @param newsDao
      */
-    public static void pushRemove(int companyId, int staffId, ClientGoEasyDTO info, int num, String type, String operaName, NewsDao newsDao, StaffDao staffDao) {
-        try {
-            if (NumUtil.isNull(staffId) || NumUtil.isNull(companyId)) {
-                return;
-            }
-            String head = "删除提醒";
-            StringBuffer sb = new StringBuffer();
-            if (num == 1) {
-                sb.append("您好，您有1个" + type + "的客资被 " + operaName + " 删除 <br/>");
-                sb.append("编号：").append(info.getId()).append("<br/>");
-                if (StringUtil.isNotEmpty(info.getKzName())) {
-                    sb.append("姓名：").append(StringUtil.nullToStrTrim(info.getKzName())).append("<br/>");
-                }
-                if (StringUtil.isNotEmpty(info.getKzPhone())) {
-                    sb.append("电话：").append(StringUtil.nullToStrTrim(info.getKzPhone())).append("<br/>");
-                }
-                if (StringUtil.isNotEmpty(info.getKzWechat())) {
-                    sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWechat())).append("<br/>");
-                }
-                if (StringUtil.isNotEmpty(info.getKzQq())) {
-                    sb.append("QQ：").append(StringUtil.nullToStrTrim(info.getKzQq())).append("<br/>");
-                }
-                if (StringUtil.isNotEmpty(info.getKzWw())) {
-                    sb.append("旺旺：").append(StringUtil.nullToStrTrim(info.getKzWw())).append("<br/>");
-                }
-                sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("<br/>");
-                sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("<br/><br/>");
-            } else {
-                sb.append("您好，您有" + num + "个" + type + "的客资被 " + operaName + " 删除 ");
-            }
-            pushWarn(companyId, staffId, head, sb.toString());
-            newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_WARN, head, sb.toString().replaceAll("<br/>", "；"), null, staffId, companyId,
-                    DBSplitUtil.getNewsTabName(companyId)));
-            DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), companyId, staffId, staffDao);
-        } catch (Exception e) {
-            e.printStackTrace();
+    public static void pushRemove(int companyId, int staffId, ClientGoEasyDTO info, int num, String type, String operaName, NewsDao newsDao,StaffDao staffDao) {
+        if (NumUtil.isNull(staffId) || NumUtil.isNull(companyId)) {
+            return;
         }
-    }
-
-    /**
-     * 推送催一次崔二次闪讯
-     *
-     * @param companyId
-     * @param staffId
-     * @param info
-     * @param operaId
-     * @param operaName
-     * @param msg
-     * @param newsDao
-     */
-    public static void pushFlash(int companyId, int staffId, ClientGoEasyDTO info, int operaId, String operaName, String msg, NewsDao newsDao) {
-        try {
-            if (NumUtil.isNull(staffId) || NumUtil.isNull(companyId) || info == null) {
-                return;
-            }
-            String head = "来自 " + operaName + " 的客资消息";
-            StringBuffer sb = new StringBuffer();
+        String head = "删除提醒";
+        StringBuffer sb = new StringBuffer();
+        if (num == 1) {
+            sb.append("您好，您有1个" + type + "的客资被 " + operaName + " 删除 <br/>");
             sb.append("编号：").append(info.getId()).append("<br/>");
             if (StringUtil.isNotEmpty(info.getKzName())) {
                 sb.append("姓名：").append(StringUtil.nullToStrTrim(info.getKzName())).append("<br/>");
@@ -831,16 +739,57 @@ public class GoEasyUtil {
                 sb.append("旺旺：").append(StringUtil.nullToStrTrim(info.getKzWw())).append("<br/>");
             }
             sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("<br/>");
-            sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("<br/>");
-            sb.append("录入时间：" + TimeUtil.intMillisToTimeStr(info.getCreateTime()) + "<br/>");
-            sb.append("消息：" + msg + "<br/>");
-            pushFlashMsgForInfo(companyId, staffId, operaId, operaName, StringUtil.nullToStrTrim(info.getKzName()), StringUtil.nullToStrTrim(info.getKzPhone()), info.getId(),
-                    info.getKzId(), StringUtil.nullToStrTrim(info.getChannelName()), StringUtil.nullToStrTrim(info.getSourceName()), StringUtil.nullToStrTrim(info.getMemo()), msg, TimeUtil.intMillisToTimeStr(info.getCreateTime()));
-            newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_FLASH, head, sb.toString().replaceAll("<br/>", "；"), info.getKzId(), staffId, companyId,
-                    DBSplitUtil.getNewsTabName(companyId)));
-        } catch (Exception e) {
-            e.printStackTrace();
+            sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("<br/><br/>");
+        } else {
+            sb.append("您好，您有" + num + "个" + type + "的客资被 " + operaName + " 删除 ");
         }
+        pushWarn(companyId, staffId, head, sb.toString());
+        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_WARN, head, sb.toString().replaceAll("<br/>", "；"), null, staffId, companyId,
+                DBSplitUtil.getNewsTabName(companyId)));
+        DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), companyId, staffId, staffDao);
+    }
+
+    /**
+     * 推送催一次崔二次闪讯
+     *
+     * @param companyId
+     * @param staffId
+     * @param info
+     * @param operaId
+     * @param operaName
+     * @param msg
+     * @param newsDao
+     */
+    public static void pushFlash(int companyId, int staffId, ClientGoEasyDTO info, int operaId, String operaName, String msg, NewsDao newsDao) {
+        if (NumUtil.isNull(staffId) || NumUtil.isNull(companyId) || info == null) {
+            return;
+        }
+        String head = "来自 " + operaName + " 的客资消息";
+        StringBuffer sb = new StringBuffer();
+        sb.append("编号：").append(info.getId()).append("<br/>");
+        if (StringUtil.isNotEmpty(info.getKzName())) {
+            sb.append("姓名：").append(StringUtil.nullToStrTrim(info.getKzName())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzPhone())) {
+            sb.append("电话：").append(StringUtil.nullToStrTrim(info.getKzPhone())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzWechat())) {
+            sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWechat())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzQq())) {
+            sb.append("QQ：").append(StringUtil.nullToStrTrim(info.getKzQq())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzWw())) {
+            sb.append("旺旺：").append(StringUtil.nullToStrTrim(info.getKzWw())).append("<br/>");
+        }
+        sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("<br/>");
+        sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("<br/>");
+        sb.append("录入时间：" + TimeUtil.intMillisToTimeStr(info.getCreateTime()) + "<br/>");
+        sb.append("消息：" + msg + "<br/>");
+        pushFlashMsgForInfo(companyId, staffId, operaId, operaName, StringUtil.nullToStrTrim(info.getKzName()), StringUtil.nullToStrTrim(info.getKzPhone()), info.getId(),
+                info.getKzId(), StringUtil.nullToStrTrim(info.getChannelName()), StringUtil.nullToStrTrim(info.getSourceName()), StringUtil.nullToStrTrim(info.getMemo()), msg, TimeUtil.intMillisToTimeStr(info.getCreateTime()));
+        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_FLASH, head, sb.toString().replaceAll("<br/>", "；"), info.getKzId(), staffId, companyId,
+                DBSplitUtil.getNewsTabName(companyId)));
     }
 
 
@@ -852,79 +801,71 @@ public class GoEasyUtil {
      * @param info
      * @param invalidReason
      */
-    public static void pushInvalidKz(int companyId, int staffId, ClientDTO info, String invalidReason, NewsDao newsDao, StaffDao staffDao) {
-        try {
-            if (NumUtil.isNull(staffId) || NumUtil.isNull(companyId) || info == null) {
-                return;
-            }
-            StringBuffer sb = new StringBuffer();
-            sb.append("无效待审批 ");
-            String head = sb.toString();
-
-            sb.delete(0, sb.length());
-            sb.append("<br/>无效原因：").append(invalidReason);
-
-            if (StringUtil.isNotEmpty(info.getKzName())) {
-                sb.append("姓名：").append(StringUtil.nullToStrTrim(info.getKzName())).append("<br/>");
-            }
-            if (StringUtil.isNotEmpty(info.getKzPhone())) {
-                sb.append("电话：").append(StringUtil.nullToStrTrim(info.getKzPhone())).append("<br/>");
-            }
-            if (StringUtil.isNotEmpty(info.getKzWeChat())) {
-                sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWeChat())).append("<br/>");
-            }
-            if (StringUtil.isNotEmpty(info.getKzQq())) {
-                sb.append("QQ：").append(StringUtil.nullToStrTrim(info.getKzQq())).append("<br/>");
-            }
-            sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("<br/>");
-            sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSrcName())).append("<br/>");
-
-            String msg = sb.toString();
-            pushWarn(companyId, staffId, head, msg);
-            newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_WARN, head, sb.toString().replaceAll("<br/>", "；"), info.getKzId(), staffId, companyId,
-                    DBSplitUtil.getNewsTabName(companyId)));
-            DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), companyId, staffId, staffDao);
-        } catch (Exception e) {
-            e.printStackTrace();
+    public static void pushInvalidKz(int companyId, int staffId, ClientDTO info, String invalidReason, NewsDao newsDao,StaffDao staffDao) {
+        if (NumUtil.isNull(staffId) || NumUtil.isNull(companyId) || info == null) {
+            return;
         }
+        StringBuffer sb = new StringBuffer();
+        sb.append("无效待审批 ");
+        String head = sb.toString();
+
+        sb.delete(0, sb.length());
+        sb.append("<br/>无效原因：").append(invalidReason);
+
+        if (StringUtil.isNotEmpty(info.getKzName())) {
+            sb.append("姓名：").append(StringUtil.nullToStrTrim(info.getKzName())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzPhone())) {
+            sb.append("电话：").append(StringUtil.nullToStrTrim(info.getKzPhone())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzWeChat())) {
+            sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWeChat())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzQq())) {
+            sb.append("QQ：").append(StringUtil.nullToStrTrim(info.getKzQq())).append("<br/>");
+        }
+        sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("<br/>");
+        sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSrcName())).append("<br/>");
+
+        String msg = sb.toString();
+        pushWarn(companyId, staffId, head, msg);
+        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_WARN, head, sb.toString().replaceAll("<br/>", "；"), info.getKzId(), staffId, companyId,
+                DBSplitUtil.getNewsTabName(companyId)));
+        DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), companyId, staffId, staffDao);
     }
 
 
     /**
      * 金数据录入客资消息
      */
-    public static void pushGoldDataKz(int companyId, int staffId, ClientDTO info, NewsDao newsDao, StaffDao staffDao) {
-        try {
-            if (NumUtil.isNull(staffId) || NumUtil.isNull(companyId) || info == null) {
-                return;
-            }
-            StringBuffer sb = new StringBuffer();
-            sb.append("金数据客资录入成功");
-            String head = sb.toString();
-            sb.delete(0, sb.length());
-
-            if (StringUtil.isNotEmpty(info.getKzName())) {
-                sb.append("姓名：").append(StringUtil.nullToStrTrim(info.getKzName())).append("<br/>");
-            }
-            if (StringUtil.isNotEmpty(info.getKzPhone())) {
-                sb.append("电话：").append(StringUtil.nullToStrTrim(info.getKzPhone())).append("<br/>");
-            }
-            if (StringUtil.isNotEmpty(info.getKzWeChat())) {
-                sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWeChat())).append("<br/>");
-            }
-            if (StringUtil.isNotEmpty(info.getKzQq())) {
-                sb.append("QQ：").append(StringUtil.nullToStrTrim(info.getKzQq())).append("<br/>");
-            }
-            sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("<br/>");
-            sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSrcName())).append("<br/>");
-
-            pushSuccess(companyId, staffId, head, sb.toString());
-            newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_SUCCESS, head, sb.toString().replaceAll("<br/>", "；"), info.getKzId(), staffId, companyId,
-                    DBSplitUtil.getNewsTabName(companyId)));
-            DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), companyId, staffId, staffDao);
-        } catch (Exception e) {
-            e.printStackTrace();
+    public static void pushGoldDataKz(int companyId, int staffId, ClientDTO info, NewsDao newsDao,StaffDao staffDao) {
+        if (NumUtil.isNull(staffId) || NumUtil.isNull(companyId) || info == null) {
+            return;
         }
+        StringBuffer sb = new StringBuffer();
+        sb.append("金数据客资录入成功");
+        String head = sb.toString();
+        sb.delete(0, sb.length());
+
+        if (StringUtil.isNotEmpty(info.getKzName())) {
+            sb.append("姓名：").append(StringUtil.nullToStrTrim(info.getKzName())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzPhone())) {
+            sb.append("电话：").append(StringUtil.nullToStrTrim(info.getKzPhone())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzWeChat())) {
+            sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWeChat())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzQq())) {
+            sb.append("QQ：").append(StringUtil.nullToStrTrim(info.getKzQq())).append("<br/>");
+        }
+        sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("<br/>");
+        sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSrcName())).append("<br/>");
+
+        pushSuccess(companyId, staffId, head, sb.toString());
+        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_SUCCESS, head, sb.toString().replaceAll("<br/>", "；"), info.getKzId(), staffId, companyId,
+                DBSplitUtil.getNewsTabName(companyId)));
+        DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), companyId, staffId, staffDao);
     }
 
 
@@ -938,74 +879,61 @@ public class GoEasyUtil {
      * @param logId
      * @param overTime
      */
-    public static void pushAllotMsg(int companyId, int staffId, int kzNum, NewsDao newsDao, StaffDao staffDao) {
-        try {
-            if (NumUtil.isNull(staffId) || NumUtil.isNull(companyId)) {
-                return;
-            }
-            StringBuffer sb = new StringBuffer();
-            sb.append("主管分配给您" + kzNum + "个新的客资");
-            String head = sb.toString();
-            pushSuccess(companyId, staffId, head, sb.toString());
-            newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_SUCCESS, head, null, null, staffId, companyId,
-                    DBSplitUtil.getNewsTabName(companyId)));
-            DingMsgSendUtil.sendDingMsg(head, companyId, staffId, staffDao);
-        } catch (Exception e) {
-            e.printStackTrace();
+    public static void pushAllotMsg(int companyId, int staffId, int kzNum, NewsDao newsDao,StaffDao staffDao) {
+        if (NumUtil.isNull(staffId) || NumUtil.isNull(companyId)) {
+            return;
         }
+        StringBuffer sb = new StringBuffer();
+        sb.append("主管分配给您" + kzNum + "个新的客资");
+        String head = sb.toString();
+        pushSuccess(companyId, staffId, head, sb.toString());
+        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_SUCCESS, head, null, null, staffId, companyId,
+                DBSplitUtil.getNewsTabName(companyId)));
+        DingMsgSendUtil.sendDingMsg(head, companyId, staffId, staffDao);
     }
 
     /*-- 重复客资邀约员提醒消息 --*/
-    public static void pushRepeatClient(int companyId, int staffId, ClientGoEasyDTO info, String operaName, NewsDao newsDao, StaffDao staffDao) {
-        try {
-            if (NumUtil.isNull(staffId) || NumUtil.isNull(companyId) || info == null) {
-                return;
-            }
-            String head = "您的客资被" + StringUtil.nullToStrTrim(operaName) + "重复提报，<br/>请及时联系该客资";
-            StringBuffer sb = new StringBuffer();
-
-            if (StringUtil.isNotEmpty(info.getKzName())) {
-                sb.append("姓名：").append(StringUtil.nullToStrTrim(info.getKzName())).append("<br/>");
-            }
-            if (StringUtil.isNotEmpty(info.getKzPhone())) {
-                sb.append("电话：").append(StringUtil.nullToStrTrim(info.getKzPhone())).append("<br/>");
-            }
-            if (StringUtil.isNotEmpty(info.getKzWechat())) {
-                sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWechat())).append("<br/>");
-            }
-            if (StringUtil.isNotEmpty(info.getKzQq())) {
-                sb.append("QQ：").append(StringUtil.nullToStrTrim(info.getKzQq())).append("<br/>");
-            }
-            sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("<br/>");
-            sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("<br/>");
-
-            String msg = sb.toString();
-            pushWarn(companyId, staffId, head, msg);
-            newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_WARN, head, sb.toString().replaceAll("<br/>", "；"), info.getKzId(), staffId, companyId,
-                    DBSplitUtil.getNewsTabName(companyId)));
-            DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), companyId, staffId, staffDao);
-        } catch (Exception e) {
-            e.printStackTrace();
+    public static void pushRepeatClient(int companyId, int staffId, ClientGoEasyDTO info, String operaName, NewsDao newsDao,StaffDao staffDao) {
+        if (NumUtil.isNull(staffId) || NumUtil.isNull(companyId) || info == null) {
+            return;
         }
+        String head = "您的客资被" + StringUtil.nullToStrTrim(operaName) + "重复提报，<br/>请及时联系该客资";
+        StringBuffer sb = new StringBuffer();
+
+        if (StringUtil.isNotEmpty(info.getKzName())) {
+            sb.append("姓名：").append(StringUtil.nullToStrTrim(info.getKzName())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzPhone())) {
+            sb.append("电话：").append(StringUtil.nullToStrTrim(info.getKzPhone())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzWechat())) {
+            sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWechat())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzQq())) {
+            sb.append("QQ：").append(StringUtil.nullToStrTrim(info.getKzQq())).append("<br/>");
+        }
+        sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("<br/>");
+        sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("<br/>");
+
+        String msg = sb.toString();
+        pushWarn(companyId, staffId, head, msg);
+        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_WARN, head, sb.toString().replaceAll("<br/>", "；"), info.getKzId(), staffId, companyId,
+                DBSplitUtil.getNewsTabName(companyId)));
+        DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), companyId, staffId, staffDao);
     }
 
     /*-- 客资领取消息 --*/
-    public static void pushClientReceive(int companyId, int staffId, ClientGoEasyDTO info, NewsDao newsDao, StaffDao staffDao) {
-        try {
-            if (NumUtil.isNull(staffId) || NumUtil.isNull(companyId) || info == null) {
-                return;
-            }
-            String head = "您有新的客资待领取";
-            pushReceive(companyId, staffId, head, info);
-            DingMsgSendUtil.sendDingMsg(head, companyId, staffId, staffDao);
-            if (newsDao.getNewsCountByType(DBSplitUtil.getNewsTabName(companyId), staffId, companyId, info.getKzId()) == 0) {
-                newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_RECEIVE, head, null, info.getKzId(), staffId, companyId,
-                        DBSplitUtil.getNewsTabName(companyId)));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+    public static void pushClientReceive(int companyId, int staffId, ClientGoEasyDTO info, NewsDao newsDao,StaffDao staffDao) {
+        if (NumUtil.isNull(staffId) || NumUtil.isNull(companyId) || info == null) {
+            return;
         }
-
+        String head = "您有新的客资待领取";
+        pushReceive(companyId, staffId, head, info);
+        DingMsgSendUtil.sendDingMsg(head, companyId, staffId, staffDao);
+        if (newsDao.getNewsCountByType(DBSplitUtil.getNewsTabName(companyId), staffId, companyId, info.getKzId()) == 0) {
+            newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_RECEIVE, head, null, info.getKzId(), staffId, companyId,
+                    DBSplitUtil.getNewsTabName(companyId)));
+        }
     }
 
 }
