@@ -115,21 +115,23 @@ public class GoEasyUtil {
      * @param content
      */
     private static synchronized void push(String channel, String content) {
-
-        if (goeasyInstance == null) {
-            log.info("LogUtils.log()-->GoEasy实例初始化失败");
-            return;
+        try {
+            if (goeasyInstance == null) {
+                log.info("LogUtils.log()-->GoEasy实例初始化失败");
+                return;
+            }
+            goeasyInstance.publish(channel, content, new PublishListener() {
+                public void onSuccess() {
+                    // log.info("LogUtils.log()-->消息发送成功--[channel : " + "" + " ;
+                    // content :" + "" + channel);
+                }
+                public void onFailed(GoEasyError error) {
+                    log.error("goeasy 发送失败：" + error.getCode() + error.getContent());
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        goeasyInstance.publish(channel, content, new PublishListener() {
-            public void onSuccess() {
-                // log.info("LogUtils.log()-->消息发送成功--[channel : " + "" + " ;
-                // content :" + "" + channel);
-            }
-
-            public void onFailed(GoEasyError error) {
-                log.error("goeasy 发送失败：" + error.getCode() + error.getContent());
-            }
-        });
     }
 
     /**
@@ -449,7 +451,7 @@ public class GoEasyUtil {
      * @param staffId
      * @param newsDao
      */
-    public static void pushOffLineAuto(int companyId, int staffId, NewsDao newsDao,StaffDao staffDao) {
+    public static void pushOffLineAuto(int companyId, int staffId, NewsDao newsDao, StaffDao staffDao) {
         String head = ClientLogConst.CONTINUOUS_SABOTEUR_DONW;
         String msg = "连续三次怠工被系统自动下线<br/>请重新上线或重新登录系统";
         pushError(companyId, staffId, head, msg);
@@ -470,7 +472,7 @@ public class GoEasyUtil {
      * @param receptorName
      */
     public static void pushSuccessShop(int companyId, int staffId, ClientDTO info, String successTime, String amount,
-                                       String shopName, String receptorName,StaffDao staffDao) {
+                                       String shopName, String receptorName, StaffDao staffDao) {
         StringBuffer sb = new StringBuffer();
         sb.append("恭喜您，您的客户在 ");
         sb.append(StringUtil.nullToStrTrim(shopName));
@@ -501,7 +503,7 @@ public class GoEasyUtil {
      * @param info
      * @param invalidReason
      */
-    public static void pushBeValidCheck(int companyId, int staffId, ClientDTO info, String invalidReason,StaffDao staffDao) {
+    public static void pushBeValidCheck(int companyId, int staffId, ClientDTO info, String invalidReason, StaffDao staffDao) {
 
         StringBuffer sb = new StringBuffer();
         sb.append("无效待审批 - ");
@@ -528,7 +530,7 @@ public class GoEasyUtil {
      * @param info
      * @param newsDao
      */
-    public static void pushYyValidReject(int companyId, int staffId, ClientGoEasyDTO info, NewsDao newsDao,StaffDao staffDao) {
+    public static void pushYyValidReject(int companyId, int staffId, ClientGoEasyDTO info, NewsDao newsDao, StaffDao staffDao) {
         String head = "您录入的客资被判为无效";
         StringBuffer sb = new StringBuffer();
         sb.append("编号：").append(info.getId()).append("<br/>");
@@ -559,7 +561,7 @@ public class GoEasyUtil {
      * @param info
      * @param newsDao
      */
-    public static void pushInfoComed(int companyId, int staffId, ClientGoEasyDTO info, NewsDao newsDao,StaffDao staffDao) {
+    public static void pushInfoComed(int companyId, int staffId, ClientGoEasyDTO info, NewsDao newsDao, StaffDao staffDao) {
         String head = "新客资来啦^_^";
         StringBuffer sb = new StringBuffer();
         sb.append("编号：").append(info.getId()).append("<br/><br/>");
@@ -620,7 +622,7 @@ public class GoEasyUtil {
      * @param kzId
      * @param newsDao
      */
-    public static void pushRemark(int companyId, int staffId, String msg, String kzId, NewsDao newsDao,StaffDao staffDao) {
+    public static void pushRemark(int companyId, int staffId, String msg, String kzId, NewsDao newsDao, StaffDao staffDao) {
         if (NumUtil.isNull(staffId) || NumUtil.isNull(companyId)) {
             return;
         }
@@ -628,7 +630,7 @@ public class GoEasyUtil {
         pushWarn(companyId, staffId, head, msg);
         newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_WARN, head, msg, kzId, staffId, companyId,
                 DBSplitUtil.getNewsTabName(companyId)));
-        DingMsgSendUtil.sendDingMsg(head , companyId, staffId, staffDao);
+        DingMsgSendUtil.sendDingMsg(head, companyId, staffId, staffDao);
     }
 
     /**
@@ -642,7 +644,7 @@ public class GoEasyUtil {
      */
 
     public static void pushTransfer(StaffPO staffPO, int toStaffId, String kzIds, NewsDao newsDao,
-                                    ClientInfoDao clientInfoDao,StaffDao staffDao) {
+                                    ClientInfoDao clientInfoDao, StaffDao staffDao) {
         if (StringUtil.isEmpty(kzIds)) {
             return;
         }
@@ -714,7 +716,7 @@ public class GoEasyUtil {
      * @param operaId
      * @param newsDao
      */
-    public static void pushRemove(int companyId, int staffId, ClientGoEasyDTO info, int num, String type, String operaName, NewsDao newsDao,StaffDao staffDao) {
+    public static void pushRemove(int companyId, int staffId, ClientGoEasyDTO info, int num, String type, String operaName, NewsDao newsDao, StaffDao staffDao) {
         if (NumUtil.isNull(staffId) || NumUtil.isNull(companyId)) {
             return;
         }
@@ -801,7 +803,7 @@ public class GoEasyUtil {
      * @param info
      * @param invalidReason
      */
-    public static void pushInvalidKz(int companyId, int staffId, ClientDTO info, String invalidReason, NewsDao newsDao,StaffDao staffDao) {
+    public static void pushInvalidKz(int companyId, int staffId, ClientDTO info, String invalidReason, NewsDao newsDao, StaffDao staffDao) {
         if (NumUtil.isNull(staffId) || NumUtil.isNull(companyId) || info == null) {
             return;
         }
@@ -838,7 +840,7 @@ public class GoEasyUtil {
     /**
      * 金数据录入客资消息
      */
-    public static void pushGoldDataKz(int companyId, int staffId, ClientDTO info, NewsDao newsDao,StaffDao staffDao) {
+    public static void pushGoldDataKz(int companyId, int staffId, ClientDTO info, NewsDao newsDao, StaffDao staffDao) {
         if (NumUtil.isNull(staffId) || NumUtil.isNull(companyId) || info == null) {
             return;
         }
@@ -879,7 +881,7 @@ public class GoEasyUtil {
      * @param logId
      * @param overTime
      */
-    public static void pushAllotMsg(int companyId, int staffId, int kzNum, NewsDao newsDao,StaffDao staffDao) {
+    public static void pushAllotMsg(int companyId, int staffId, int kzNum, NewsDao newsDao, StaffDao staffDao) {
         if (NumUtil.isNull(staffId) || NumUtil.isNull(companyId)) {
             return;
         }
@@ -893,7 +895,7 @@ public class GoEasyUtil {
     }
 
     /*-- 重复客资邀约员提醒消息 --*/
-    public static void pushRepeatClient(int companyId, int staffId, ClientGoEasyDTO info, String operaName, NewsDao newsDao,StaffDao staffDao) {
+    public static void pushRepeatClient(int companyId, int staffId, ClientGoEasyDTO info, String operaName, NewsDao newsDao, StaffDao staffDao) {
         if (NumUtil.isNull(staffId) || NumUtil.isNull(companyId) || info == null) {
             return;
         }
@@ -923,7 +925,7 @@ public class GoEasyUtil {
     }
 
     /*-- 客资领取消息 --*/
-    public static void pushClientReceive(int companyId, int staffId, ClientGoEasyDTO info, NewsDao newsDao,StaffDao staffDao) {
+    public static void pushClientReceive(int companyId, int staffId, ClientGoEasyDTO info, NewsDao newsDao, StaffDao staffDao) {
         if (NumUtil.isNull(staffId) || NumUtil.isNull(companyId) || info == null) {
             return;
         }
