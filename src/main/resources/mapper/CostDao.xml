@@ -109,8 +109,7 @@
 
 						LEFT JOIN hm_crm_cost b ON b.SRCID=a.sourceid AND b.COMPANYID=a.companyid AND FROM_UNIXTIME(b.COSTTIME, '%Y/%m/%d ') LIKE CONCAT(
 								"%",
-								#{month}, "%") AND a.role
-								id=#{staffId}
+								#{month}, "%") AND a.roleid=#{staffId}
 						WHERE
 							a.companyid=#{companyId}
 							) TOTALCOST
