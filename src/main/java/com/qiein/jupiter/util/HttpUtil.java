@@ -145,4 +145,18 @@ public class HttpUtil {
         }
         return area;
     }
+
+    /**
+     * 把Url  结尾加上 /
+     *
+     * @param url
+     * @return
+     */
+    public static String formatEndUrl(String url) {
+        if (url.endsWith("/")) {
+            return url;
+        } else {
+            return url + "/";
+        }
+    }
 }
