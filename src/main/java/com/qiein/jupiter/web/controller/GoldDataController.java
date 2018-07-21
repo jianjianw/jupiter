@@ -7,6 +7,7 @@ import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
+import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.util.StringUtil;
@@ -103,6 +104,12 @@ public class GoldDataController extends BaseController {
      */
     @GetMapping("/select")
     public ResultInfo select(int pageNum, int pageSize, String formId) {
+        if (NumUtil.isInValid(pageNum)){
+            pageNum = 1;
+        }
+        if (NumUtil.isInValid(pageSize)){
+            pageSize = 20;
+        }
         StaffPO staff = getCurrentLoginStaff();
         PageInfo<GoldFingerPO> select = goldDataService.select(staff.getCompanyId(), pageNum, pageSize, formId);
         return ResultInfoUtil.success(select);
