@@ -102,7 +102,9 @@ public class GoldDataController extends BaseController {
      * 金数据表单页面显示
      */
     @GetMapping("/select")
-    public ResultInfo select(int pageNum, int pageSize, String formId) {
+    public ResultInfo select(@RequestParam(defaultValue = "1") int pageNum,
+                             @RequestParam(defaultValue = "20") int pageSize,
+                             String formId) {
         StaffPO staff = getCurrentLoginStaff();
         PageInfo<GoldFingerPO> select = goldDataService.select(staff.getCompanyId(), pageNum, pageSize, formId);
         return ResultInfoUtil.success(select);
