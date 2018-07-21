@@ -15,66 +15,63 @@ import java.util.List;
 public interface GoldDataDao {
     /**
      * 添加表单
+     *
      * @param goldFingerPO
      */
     void insert(GoldFingerPO goldFingerPO);
+
     /**
      * 修改表单
+     *
      * @param goldFingerPO
      */
     void update(GoldFingerPO goldFingerPO);
+
     /**
      * 删除表单
+     *
      * @param id
      */
     void delete(@Param("id") Integer id);
 
     /**
      * 金数据表单页面显示
-     * @param companyId
-     * @return List<GoldFingerPO>
      */
-    List<GoldFingerPO> select(@Param("companyId") Integer companyId);
+    List<GoldFingerPO> select(@Param("companyId") Integer companyId, @Param("formId") String formId);
+
     /**
      * 管理开关
-     * @param goldFingerPO
      */
     void editOpenOrClose(GoldFingerPO goldFingerPO);
+
     /**
      * 金数据客资日志
-     * @param goldCustomerDTO
-     * @return
      */
-    List<GoldCustomerVO> goldCustomerSelect( GoldCustomerDTO goldCustomerDTO);
+    List<GoldCustomerVO> goldCustomerSelect(GoldCustomerDTO goldCustomerDTO);
 
     /**
      * 插入或者修改数据查重
-     * @param goldFingerPO
-     * @return
      */
     List<GoldFingerPO> checkForm(GoldFingerPO goldFingerPO);
 
     /**
      * 查询表单信息
-     * @param formId
-     * @return
      */
     GoldFingerPO findForm(String formId);
 
     /**
      * 获取金数据表单
-     * @param formId
-     * */
-    GoldFingerPO getGoldFingerByFormId(@Param(value="formId") String formId);
+     */
+    GoldFingerPO getGoldFingerByFormId(@Param(value = "formId") String formId);
 
     /**
      * 筛选
-     * @param id
      */
     void addkzByGoldTemp(Integer id);
 
     /**
      * 修改表单创建者
+     *
      * @param editCreatorDTO
      */
     void editFormCreateor(EditCreatorDTO editCreatorDTO);
