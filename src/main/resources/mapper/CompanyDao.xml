@@ -88,9 +88,6 @@
             <if test="config != null">
                 CONFIG = #{config},
             </if>
-            <if test="ipLimit != null">
-                IPLIMIT = #{ipLimit},
-            </if>
             <if test="overtime != null and overtime!=0">
                 OVERTIME = #{overtime},
             </if>
@@ -99,9 +96,6 @@
             </if>
             <if test="kzInterval != null and kzInterval!=''">
                 KZINTERVAL = #{kzInterval},
-            </if>
-            <if test="delFlag != null">
-                ISDEL = #{delFlag},
             </if>
         </set>
         WHERE
