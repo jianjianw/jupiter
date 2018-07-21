@@ -17,6 +17,7 @@ import com.qiein.jupiter.web.entity.po.GoldFingerPO;
 import com.qiein.jupiter.web.entity.po.GoldTempPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.GoldFingerShowVO;
+import com.qiein.jupiter.web.service.ApolloService;
 import com.qiein.jupiter.web.service.GoldDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -39,6 +40,9 @@ import java.util.List;
 public class GoldDataController extends BaseController {
     @Autowired
     private GoldDataService goldDataService;
+
+    @Autowired
+    private ApolloService apolloService;
 
     /**
      * 增加金数据表单
@@ -98,24 +102,24 @@ public class GoldDataController extends BaseController {
      * 金数据表单页面显示
      */
     @GetMapping("/select")
-    public ResultInfo select(int pageNum, int pageSize,String formId) {
-        pageSize=100;
-//    public ResultInfo select(int pageNum, int pageSize,String formName,String formId,int typeId) {
+    public ResultInfo select(int pageNum, int pageSize, String formId) {
         StaffPO staff = getCurrentLoginStaff();
-        PageInfo<GoldFingerPO> select = goldDataService.select(staff.getCompanyId(), pageNum, pageSize,formId);
+        PageInfo<GoldFingerPO> select = goldDataService.select(staff.getCompanyId(), pageNum, pageSize, formId);
         return ResultInfoUtil.success(select);
     }
 
     /**
      * 获取post地址
      *
-     * @param request
      * @return
      */
     @GetMapping("/get_post_url")
-    public ResultInfo getPostUrl(HttpServletRequest request) {
-        String url = request.getRequestURL().substring(0, request.getRequestURL().lastIndexOf("/")) + "/receive_gold_data_form";
-        return ResultInfoUtil.success(url);
+    public ResultInfo getPostUrl() {
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        //从阿波罗 获取地址
+        String crmUrlByCidFromApollo = apolloService.getCrmUrlByCidFromApollo(currentLoginStaff.getCompanyId());
+        String requestURI = crmUrlByCidFromApollo + "gold_data/receive_gold_data_form";
+        return ResultInfoUtil.success(requestURI);
     }
 
     /**

@@ -1,7 +1,11 @@
 package com.qiein.jupiter.web.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.mzlion.easyokhttp.HttpClient;
 import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.exception.ExceptionEnum;
+import com.qiein.jupiter.exception.RException;
+import com.qiein.jupiter.util.HttpUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.dto.VerifyParamDTO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
@@ -26,6 +30,9 @@ public class ApolloServiceImpl implements ApolloService {
 
     @Value("${apollo.getIpUrl}")
     private String getIpUrl = "";
+
+    @Value("${apollo.getCrmUrl}")
+    private String getCrmUrl = "";
 
     private String apolloIps = "";
 
@@ -75,9 +82,21 @@ public class ApolloServiceImpl implements ApolloService {
         this.apolloIps = ip;
     }
 
+    /**
+     * 获取CRM 地址
+     *
+     * @return
+     */
     @Override
-    public String getCrmUrlByCidFromApollo() {
-        return null;
+    public String getCrmUrlByCidFromApollo(int cid) {
+        JSONObject json = HttpClient.get(getCrmUrl)
+                .queryString("cid", cid)
+                .asBean(JSONObject.class);
+        String url = json.getString("data");
+        if (StringUtil.isEmpty(url)) {
+            throw new RException(ExceptionEnum.APOLLO_URL_NOT_SET);
+        }
+        return HttpUtil.formatEndUrl(url);
     }
 
     /**

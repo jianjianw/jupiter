@@ -25,5 +25,5 @@ public interface ApolloService {
     /**
      * 从apollo 获取 CRM 地址
      */
-    String getCrmUrlByCidFromApollo();
+    String getCrmUrlByCidFromApollo(int companyId);
 }

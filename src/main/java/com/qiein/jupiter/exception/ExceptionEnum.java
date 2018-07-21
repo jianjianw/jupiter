@@ -11,6 +11,7 @@ public enum ExceptionEnum {
     DB_SPLIT_ERROR(-9, "系统表分割错误"),
     METHOD_ARGUMENT_TYPE_MISMATCH_ERROR(-10, "方法参数无法转换"),
     CAN_NOT_FIND_USER_FROM_REQ(-11, "未能从请求中获取到用户信息"),
+    APOLLO_URL_NOT_SET(-12, "阿波罗地址未设置"),
     //常用错误
     ADD_FAIL(1, "新增失败"),
     LOSE_FILED(2, "缺少必须条件"),
@@ -66,7 +67,7 @@ public enum ExceptionEnum {
     APPOINT_GROUP_NOT_FOUND(407, "邀约小组不存在"),
     GROUP_NOT_EXIT(408, "部门不存在"),
     GROUP_IS_NULL(409, "小组不能为空"),
-    GROUP_STAFF_EXISTS(410,"小组员工已经存在"),
+    GROUP_STAFF_EXISTS(410, "小组员工已经存在"),
     //渠道&来源
     CHANNEL_NAME_REPEAT(501, "渠道名称重复"),
     CHANNEL_ID_NULL(502, "渠道编号不能为空"),
@@ -93,7 +94,7 @@ public enum ExceptionEnum {
     REPEAT_TIME_ERRPR(802, "时间类型，天数都不能为空"),
     //角色
     ROLE_ERROR(901, "角色错误"),
-    ROLE_ID_IS_NULL(902,"角色ID不能为空"),
+    ROLE_ID_IS_NULL(902, "角色ID不能为空"),
     //品牌
     BRAND_NAME_REPEAT(1001, "该品牌已存在"),
     BRAND_NOT_FOUND(1002, "该品牌不存在"),
@@ -105,7 +106,7 @@ public enum ExceptionEnum {
     //公司
     COMPANY_ID_NULL(1201, "该公司编号不能为空"),
     COMPANY_IS_LOCK(1202, "该公司已经被锁定，请联系平台管理员！"),
-    COMPANY_EDIT_ZJS_SET(1203,"编辑公司转介绍设置"),
+    COMPANY_EDIT_ZJS_SET(1203, "编辑公司转介绍设置"),
     //导入导出
     EXCEL_IS_NULL(1301, "Excel文件是空的"),
     EXCEL_ADD_FAIL(1302, "Excele添加数据库失败"),
@@ -171,7 +172,7 @@ public enum ExceptionEnum {
     TEMPLATE_LOSE(2401, "短信模板获取失败"),
     TEMPLATE_NOT_IN(2402, "短信模板不存在"),
     //报表
-    START_TIME_OR_END_TIME_IS_NULL(2501,"开始时间或者结束时间不能为空");
+    START_TIME_OR_END_TIME_IS_NULL(2501, "开始时间或者结束时间不能为空");
 
     private Integer code;
     private String msg;
