@@ -275,7 +275,7 @@ public class ClientAddServiceImpl implements ClientAddService {
         reqContent.put("collectorname", staffPO.getNickName());
         try {
             //获取来源
-            SourcePO sourcePO = sourceDao.getSourceByType(staffPO.getCompanyId(), ChannelConstant.SHOP_NATURAL);
+            SourcePO sourcePO = sourceDao.getSourceByType(staffPO.getCompanyId(), ChannelConstant.SHOP_NATURAL, ChannelConstant.SOURCE_SHOP_NATURAL_NAME);
             if (sourcePO == null) {
                 throw new RException(ExceptionEnum.SHOP_SOURCE_ERROR);
             }

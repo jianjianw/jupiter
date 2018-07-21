@@ -391,6 +391,7 @@
         hm_crm_source
         WHERE COMPANYID = #{companyId}
         AND TYPEID = #{typeId}
+        AND SRCNAME = #{srcName}
         AND ISSHOW = 1
     </select>
 </mapper>
