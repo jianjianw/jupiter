@@ -23,6 +23,7 @@ import com.qiein.jupiter.web.entity.po.*;
 import com.qiein.jupiter.web.entity.vo.ClientVO;
 import com.qiein.jupiter.web.entity.vo.CompanyVO;
 import com.qiein.jupiter.web.entity.vo.ShopVO;
+import com.qiein.jupiter.web.entity.vo.StaffDetailVO;
 import com.qiein.jupiter.web.service.ClientEditService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -227,8 +228,11 @@ public class ClientEditServiceImpl implements ClientEditService {
                     DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
             if (ClientStatusConst.ONLINE_SUCCESS == clientVO.getYyRst()) {
                 // 成功订单爆彩
-                StaffPO appoint = staffDao.getByIdAndCid(info.getAppointorId(), staffPO.getCompanyId());
+                StaffDetailVO appoint = staffDao.getStaffDetailVO(info.getAppointorId(), staffPO.getCompanyId());
                 if (appoint == null) {
+                    return;
+                }
+                if (StringUtil.isEmpty(appoint.getMsgSet()) || !appoint.getMsgSet().contains("/1/")) {
                     return;
                 }
                 OrderSuccessMsg orderSuccessMsg = new OrderSuccessMsg();
@@ -332,8 +336,11 @@ public class ClientEditServiceImpl implements ClientEditService {
                     DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
             if (ClientStatusConst.BE_SUCCESS == clientVO.getYyRst()) {
                 // 成功订单爆彩
-                StaffPO appoint = staffDao.getByIdAndCid(info.getAppointorId(), staffPO.getCompanyId());
+                StaffDetailVO appoint = staffDao.getStaffDetailVO(info.getAppointorId(), staffPO.getCompanyId());
                 if (appoint == null) {
+                    return;
+                }
+                if (StringUtil.isEmpty(appoint.getMsgSet()) || !appoint.getMsgSet().contains("/1/")) {
                     return;
                 }
                 OrderSuccessMsg orderSuccessMsg = new OrderSuccessMsg();
