@@ -14,6 +14,7 @@ import java.util.List;
  */
 public interface LoginService {
 
+
     /**
      * 微信 获取公司列表
      */
@@ -52,4 +53,11 @@ public interface LoginService {
      * @return
      */
     BaseInfoVO getBaseInfo(int staffId, int companyId);
+
+    /**
+     * 更新token
+     *
+     * @param staffPO
+     */
+    String updateToken(StaffPO staffPO);
 }

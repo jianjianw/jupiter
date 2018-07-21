@@ -46,7 +46,7 @@ public interface GoldDataService {
      * @param companyId
      * @return
      */
-    PageInfo<GoldFingerPO> select(int companyId,int pageNum, int pageSize);
+    PageInfo<GoldFingerPO> select(int companyId,int pageNum, int pageSize,String formId);
 
     /**
      * 管理开关
