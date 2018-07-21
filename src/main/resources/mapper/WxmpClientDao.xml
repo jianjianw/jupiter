@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiein.jupiter.web.dao.WxmpClientDao">
+    <resultMap id="baseMap" type="com.qiein.jupiter.web.entity.vo.ClientVO">
+        <id column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="KZID" jdbcType="INTEGER" property="kzId"/>
+        <result column="TYPEID" jdbcType="INTEGER" property="typeId"/>
+        <result column="STATUSID" jdbcType="INTEGER" property="statusId"/>
+        <result column="KZNAME" jdbcType="VARCHAR" property="kzName"/>
+        <result column="KZPHONE" jdbcType="VARCHAR" property="kzPhone"/>
+        <result column="KZWECHAT" jdbcType="VARCHAR" property="kzWechat"/>
+        <result column="KZQQ" jdbcType="VARCHAR" property="kzQq"/>
+        <result column="KZWW" jdbcType="VARCHAR" property="kzWw"/>
+        <result column="CHANNELID" jdbcType="INTEGER" property="channelId"/>
+        <result column="SOURCEID" jdbcType="INTEGER" property="sourceId"/>
+        <result column="COLLECTORID" jdbcType="INTEGER" property="collectorId"/>
+        <result column="COLLECTORNAME" jdbcType="VARCHAR" property="collectorName"/>
+        <result column="APPOINTORID" jdbcType="INTEGER" property="appointId"/>
+        <result column="APPOINTNAME" jdbcType="VARCHAR" property="appointName"/>
+        <result column="SHOPID" jdbcType="INTEGER" property="shopId"/>
+        <result column="SHOPNAME" jdbcType="VARCHAR" property="shopName"/>
+        <result column="CREATETIME" jdbcType="VARCHAR" property="createTime"/>
+        <result column="RECEIVETIME" jdbcType="VARCHAR" property="receiveTime"/>
+        <result column="ZXSTYLE" jdbcType="INTEGER" property="zxStyle"/>
+        <result column="YXLEVEL" jdbcType="INTEGER" property="yxLevel"/>
+        <result column="GROUPID" jdbcType="VARCHAR" property="groupId"/>
+        <result column="GROUPNAME" jdbcType="VARCHAR" property="groupName"/>
+    </resultMap>
+
+    <sql id="baseSqlAll">
+        info.ID, info.KZID, info.TYPEID, info.CLASSID, info.STATUSID, info.KZNAME, info.KZPHONE, info.KZWECHAT, info.WEFLAG,
+        info.KZQQ, info.KZWW, info.SEX, info.CHANNELID, info.SOURCEID, info.COLLECTORID, det.COLLECTORNAME, info.PROMOTORID, det.PROMOTERNAME, info.APPOINTORID,
+        det.APPOINTNAME, info.RECEPTORID, det.RECEPTORNAME, info.SHOPID, det.SHOPNAME, info.ALLOTTYPE, info.CREATETIME, info.RECEIVETIME, info.TRACETIME, info.APPOINTTIME,
+        info.COMESHOPTIME, info.SUCCESSTIME, info.UPDATETIME, det.MEMO, det.OLDKZNAME, det.OLDKZPHONE, det.AMOUNT, det.STAYAMOUNT, det.TALKIMG, det.ORDERIMG,
+        det.ZXSTYLE, det.YXLEVEL, det.YSRANGE, det.ADADDRESS, det.ADID, det.MARRYTIME, det.YPTIME, det.MATENAME, det.MATEPHONE, det.ADDRESS,
+        info.GROUPID, det.GROUPNAME, det.PAYSTYLE, det.HTNUM, det.INVALIDLABEL, det.KEYWORD, log.CONTENT, det.PACKAGECODE
+    </sql>
+
+    <sql id="baseSqlSimple">
+        info.ID, info.KZID, info.TYPEID, info.STATUSID, info.KZNAME, info.KZPHONE, info.KZWECHAT,
+        info.KZQQ, info.KZWW, info.CHANNELID, info.SOURCEID, info.COLLECTORID, det.COLLECTORNAME,
+        info.APPOINTORID, det.APPOINTNAME, info.SHOPID, det.SHOPNAME, info.CREATETIME, info.RECEIVETIME, info.APPOINTTIME,
+        det.ZXSTYLE, det.YXLEVEL, det.YSRANGE, info.GROUPID, det.GROUPNAME
+    </sql>
+
+    <!--搜索客资-->
+    <select id="searchClient" resultMap="baseMap">
+        SELECT
+        <include refid="baseSqlSimple"/>
+        FROM ${infoTableName} info
+        LEFT JOIN ${detailTableName} det
+        ON info.KZID = det.KZID
+        WHERE info.COMPANYID = #{companyId}
+        AND info.ISDEL = 0
+        AND ( info.ID = #{searchKey} OR info.KZNAME = #{searchKey} OR info.KZPHONE = #{searchKey}
+        OR info.KZWECHAT = #{searchKey} OR info.KZWW = #{searchKey} OR info.KZQQ = #{searchKey}
+        )
+    </select>
+</mapper>
