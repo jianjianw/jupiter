@@ -360,13 +360,13 @@ public class StaffServiceImpl implements StaffService {
                 .queryString("staffId", staffId)
                 .asString();
         JSONObject resultJson = JSONObject.parseObject(resultJsonStr);
+        log.info("微信绑定阿波罗返回： "+resultJsonStr);
         if (StringUtil.isEmpty(resultJson.getString("data")) && resultJson.getIntValue("code") == 100000)
             log.info(ExceptionEnum.WX_NOT_BIND.getMsg());
         if (resultJson.getIntValue("code") != 100000)
             throw new RException(ExceptionEnum.GET_WX_INFO_FAIL);
 
         WeChatUserDTO weChatUserDTO = JSONObject.parseObject(resultJson.getString("data"), WeChatUserDTO.class);
-        log.info(weChatUserDTO.toString());
         return weChatUserDTO;
     }
 
