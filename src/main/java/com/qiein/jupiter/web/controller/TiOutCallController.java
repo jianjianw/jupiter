@@ -148,4 +148,14 @@ public class TiOutCallController extends BaseController {
     public ResultInfo getAdminUser() {
         return ResultInfoUtil.success(outCallService.getAdminByCompanyId(getCurrentLoginStaff().getCompanyId()));
     }
+
+    /**
+     * 获取个人账户信息
+     */
+    @GetMapping("/get_user_info")
+    public ResultInfo getUserInfo() {
+        StaffPO staff = getCurrentLoginStaff();
+        OutCallUserDTO userInfo = outCallService.getUserInfo(staff.getCompanyId(), staff.getId());
+        return ResultInfoUtil.success(userInfo);
+    }
 }

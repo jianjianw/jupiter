@@ -354,6 +354,19 @@ public class OutCallServiceImpl implements OutCallService {
 
 
     /**
+     * 获取用户关联信息
+     *
+     * @param companyId
+     * @param staffId
+     * @return
+     */
+    @Override
+    public OutCallUserDTO getUserInfo(int companyId, int staffId) {
+        return outCallDao.getUserInfo(companyId, staffId);
+    }
+
+
+    /**
      * 给用户账号加密
      *
      * @return

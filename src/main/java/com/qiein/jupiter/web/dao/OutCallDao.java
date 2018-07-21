@@ -70,4 +70,10 @@ public interface OutCallDao {
      * 获取企业外呼员工列表
      */
     List<OutCallUserDTO> getUserList(int companyId);
+
+    /**
+     * 获取关联信息
+     */
+    OutCallUserDTO getUserInfo(@Param("companyId") int companyId, @Param("staffId") int staffId);
+
 }
