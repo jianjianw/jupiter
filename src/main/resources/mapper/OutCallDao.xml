@@ -108,4 +108,17 @@
             LEFT JOIN hm_pub_staff staff ON rela.STAFF_ID = staff.ID
         WHERE rela.COMPANY_ID = #{companyId}
     </select>
+
+    <!--获取用户关联信息-->
+    <select id="getUserInfo" resultMap="baseMap">
+        SELECT
+            rela.COMPANY_ID,
+            rela.STAFF_ID,
+            rela.ENTERPRISE_ID,
+            rela.BIND_TEL,
+            rela.CNO
+        FROM hm_crm_outcall_rela rela
+        WHERE rela.COMPANY_ID = #{}
+              AND rela.STAFF_ID = #{}
+    </select>
 </mapper>

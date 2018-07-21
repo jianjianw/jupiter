@@ -23,7 +23,7 @@ public class WebSocketMsgUtil {
 	 *
 	 * @param msgUrl
 	 */
-	public WebSocketMsgUtil(@Value("${webSocket.msgUrl}") String msgUrl) {
+	public WebSocketMsgUtil(@Value("${apollo.webSocket.msgUrl}") String msgUrl) {
 		this.msgUrl = msgUrl;
 	}
 

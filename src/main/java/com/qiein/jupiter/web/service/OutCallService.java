@@ -98,4 +98,9 @@ public interface OutCallService {
      * 企业修改外呼管理员
      */
     int updateAdmin(OutCallUserDTO outCallUserDTO);
+
+    /**
+     * 获取用户关联信息
+     */
+    OutCallUserDTO getUserInfo(int companyId, int staffId);
 }
