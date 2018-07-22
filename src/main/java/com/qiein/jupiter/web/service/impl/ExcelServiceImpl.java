@@ -88,7 +88,7 @@ public class ExcelServiceImpl implements ExcelService {
         }
         for (ClientExcelNewsDTO clientExcelDTO : clientList) {
             ObjectUtil.objectStrParamTrim(clientExcelDTO);
-            clientExcelDTO.setKzPhone(StringUtil.nullToStrTrim(clientExcelDTO.getKzPhone()));
+            clientExcelDTO.setKzPhone(StringUtil.nullToStrTrim(clientExcelDTO.getKzPhone()).replace("/r","").replace("/n",""));
             String status = clientExcelDTO.getStatusName();
             clientExcelDTO.setStatusId((StringUtil.isNotEmpty(status) && status.contains("无"))
                     ? ClientStatusConst.BE_INVALID : ClientStatusConst.BE_HAVE_MAKE_ORDER);
