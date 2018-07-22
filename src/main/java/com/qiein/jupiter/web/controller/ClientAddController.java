@@ -71,7 +71,7 @@ public class ClientAddController extends BaseController {
     public ResultInfo addMsClient(@RequestBody ClientVO clientVO) {
         if (StringUtil.isAllEmpty(clientVO.getKzPhone(), clientVO.getKzWechat(), clientVO.getKzQq(),
                 clientVO.getKzWw())) {
-            return ResultInfoUtil.error(ExceptionEnum.KZ_CONTACT_INFORMATION);
+            throw new RException(ExceptionEnum.KZ_CONTACT_INFORMATION);
         }
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();

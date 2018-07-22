@@ -338,9 +338,7 @@ public class ClientAddServiceImpl implements ClientAddService {
         }
         String addRstStr = crmBaseApi.doService(reqContent, "clientAddShopHs");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
-        if ("100000".equals(jsInfo.getString("code"))) {
-
-        } else if ("130019".equals(jsInfo.getString("code"))) {
+        if ("130019".equals(jsInfo.getString("code"))) {
             //重复客资，给邀约推送消息
             ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(jsInfo.getString("data"),
                     DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
@@ -350,7 +348,7 @@ public class ClientAddServiceImpl implements ClientAddService {
             }
             GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getAppointorId(), info, staffPO.getNickName(), newsDao, staffDao);
             throw new RException("存在重复客资");
-        } else {
+        } else if (!"100000".equals(jsInfo.getString("code"))) {
             throw new RException(jsInfo.getString("msg"));
         }
     }
