@@ -592,9 +592,9 @@
         select
         <include refid="Base_Column_News_List"/>
         from ${tempName} temp
-        where temp.OPERAID = #{staffId} and  (temp.KZPHONE NOT REGEXP '^[1][3456789][0-9]{9}$'
-        or temp.KZWECHAT NOT REGEXP '^[a-zA-Z0-9]{1}[-_a-zA-Z0-9]{5,30}$'
-        or temp.kzqq not REGEXP '[1-9][0-9]{4,9}'
+        where  ((temp.KZPHONE is not null and temp.KZPONE != '') and temp.KZPHONE NOT REGEXP '^[1][3456789][0-9]{9}$')
+        or ( (temp.KZWECHAT is not null and temp.KZWECHAT != '') and temp.KZWECHAT NOT REGEXP '^[a-zA-Z0-9]{1}[-_a-zA-Z0-9]{5,30}$')
+        or ((temp.kzqq is not null and temp.kzqq ! = '') and temp.kzqq not REGEXP '[1-9][0-9]{4,9}')
         or temp.TYPEID is null
         or temp.CHANNELID is NULL
         or temp.SOURCEID is NULL
@@ -642,9 +642,9 @@
         (select
         <include refid="Base_Column_News_List"/>
         from ${tempName} temp where
-        temp.OPERAID = #{staffId} and (temp.KZPHONE NOT REGEXP '^[1][3456789][0-9]{9}$'
-        or temp.KZWECHAT NOT REGEXP '^[a-zA-Z0-9]{1}[-_a-zA-Z0-9]{5,30}$'
-        or temp.kzqq not REGEXP '[1-9][0-9]{4,9}'
+        temp.OPERAID = #{staffId} and ( ((temp.KZPHONE is not null and temp.KZPONE != '') and temp.KZPHONE NOT REGEXP '^[1][3456789][0-9]{9}$')
+        or ( (temp.KZWECHAT is not null and temp.KZWECHAT != '') and temp.KZWECHAT NOT REGEXP '^[a-zA-Z0-9]{1}[-_a-zA-Z0-9]{5,30}$')
+        or ((temp.kzqq is not null and temp.kzqq ! = '') and temp.kzqq not REGEXP '[1-9][0-9]{4,9}')
         or temp.TYPEID is null
         or temp.CHANNELID is NULL
         or temp.SOURCEID is NULL
@@ -709,9 +709,9 @@
         FROM
         ${tempName} temp
         WHERE
-        temp.OPERAID = #{staffId} and (temp.KZPHONE NOT REGEXP '^[1][3456789][0-9]{9}$'
-        or temp.KZWECHAT NOT REGEXP '^[a-zA-Z0-9]{1}[-_a-zA-Z0-9]{5,30}$'
-        or temp.kzqq not REGEXP '[1-9][0-9]{4,9}'
+        temp.OPERAID = #{staffId} and ( ((temp.KZPHONE is not null and temp.KZPONE != '') and temp.KZPHONE NOT REGEXP '^[1][3456789][0-9]{9}$')
+        or ( (temp.KZWECHAT is not null and temp.KZWECHAT != '') and temp.KZWECHAT NOT REGEXP '^[a-zA-Z0-9]{1}[-_a-zA-Z0-9]{5,30}$')
+        or ((temp.kzqq is not null and temp.kzqq ! = '') and temp.kzqq not REGEXP '[1-9][0-9]{4,9}')
         or temp.TYPEID is null
         or temp.CHANNELID is NULL
         or temp.SOURCEID is NULL
@@ -742,9 +742,9 @@
         FROM
         ${tempName} temp
         WHERE
-        temp.OPERAID = #{staffId} and (temp.KZPHONE NOT REGEXP '^[1][3456789][0-9]{9}$'
-        or temp.KZWECHAT NOT REGEXP '^[a-zA-Z0-9]{1}[-_a-zA-Z0-9]{5,30}$'
-        or temp.kzqq not REGEXP '[1-9][0-9]{4,9}'
+        temp.OPERAID = #{staffId} and ( ((temp.KZPHONE is not null and temp.KZPONE != '') and temp.KZPHONE NOT REGEXP '^[1][3456789][0-9]{9}$')
+        or ( (temp.KZWECHAT is not null and temp.KZWECHAT != '') and temp.KZWECHAT NOT REGEXP '^[a-zA-Z0-9]{1}[-_a-zA-Z0-9]{5,30}$')
+        or ((temp.kzqq is not null and temp.kzqq ! = '') and temp.kzqq not REGEXP '[1-9][0-9]{4,9}')
         or temp.TYPEID is null
         or temp.CHANNELID is NULL
         or temp.SOURCEID is NULL
