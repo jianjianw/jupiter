@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import com.qiein.jupiter.util.TimeUtil;
 import com.qiein.jupiter.web.entity.po.StaffPO;
@@ -329,8 +330,7 @@ public class AllTest {
 
     @Test
     public void test12321(){
-        JSONObject jsonObject=new JSONObject();
-        jsonObject.put("result","true" );
-        System.out.println(jsonObject.getBoolean("result"));
+        boolean matches = "17743124932".matches("^[1][3456789][0-9]{9}$");
+        System.out.println(matches);
     }
 }
