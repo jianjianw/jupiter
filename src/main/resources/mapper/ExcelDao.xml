@@ -709,7 +709,7 @@
         FROM
         ${tempName} temp
         WHERE
-        temp.OPERAID = #{staffId} and not (((temp.KZPHONE is not null and temp.KZPHONE != '') and temp.KZPHONE NOT REGEXP '^[1][3456789][0-9]{9}$')
+        temp.OPERAID = #{staffId} and  (((temp.KZPHONE is not null and temp.KZPHONE != '') and temp.KZPHONE NOT REGEXP '^[1][3456789][0-9]{9}$')
         or ((temp.KZWECHAT IS NOT NULL and temp.KZWECHAT != '') and temp.KZWECHAT NOT REGEXP '^[a-zA-Z0-9]{1}[-_a-zA-Z0-9]{5,30}$')
         or ((temp.kzqq is not null and temp.kzqq != '') and  temp.kzqq not REGEXP '[1-9][0-9]{4,9}')
         or temp.TYPEID is null
