@@ -338,7 +338,9 @@ public class ClientAddServiceImpl implements ClientAddService {
         }
         String addRstStr = crmBaseApi.doService(reqContent, "clientAddShopHs");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
-        if ("130019".equals(jsInfo.getString("code"))) {
+        if ("100000".equals(jsInfo.getString("code"))) {
+
+        } else if ("130019".equals(jsInfo.getString("code"))) {
             //重复客资，给邀约推送消息
             ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(jsInfo.getString("data"),
                     DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
