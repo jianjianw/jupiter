@@ -367,6 +367,29 @@ public class OutCallServiceImpl implements OutCallService {
 
 
     /**
+     * 批量新增
+     */
+    @Override
+    public int batchAddUser(String ids, int companyId) {
+        OutCallUserDTO adminByCompanyId = outCallDao.getAdminByCompanyId(companyId);
+        String[] split = ids.split(",");
+        List<String> staffIds = Arrays.asList(split);
+        return outCallDao.batchAddUser(companyId, adminByCompanyId.getEnterpriseId(), staffIds);
+    }
+
+    /**
+     * 人员列表
+     *
+     * @param companyId
+     * @return
+     */
+    @Override
+    public List<OutCallUserDTO> getUserList(int companyId) {
+        return outCallDao.getUserList(companyId);
+    }
+
+
+    /**
      * 给用户账号加密
      *
      * @return

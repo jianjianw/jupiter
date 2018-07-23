@@ -76,4 +76,12 @@ public interface OutCallDao {
      */
     OutCallUserDTO getUserInfo(@Param("companyId") int companyId, @Param("staffId") int staffId);
 
+
+    /**
+     * 批量新增
+     */
+    int batchAddUser(@Param("companyId") int companyId,
+                     @Param("enterpriseId") String enterpriseId,
+                     @Param("staffIds") List<String> staffIds);
+
 }

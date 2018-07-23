@@ -9,10 +9,7 @@ import com.qiein.jupiter.web.entity.dto.OutCallUserDTO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.service.OutCallService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 天润外呼系统
@@ -131,7 +128,7 @@ public class TiOutCallController extends BaseController {
      * 修改企业管理员信息
      */
     @PostMapping("/update_admin")
-    public ResultInfo updateAdmin(OutCallUserDTO outCallUserDTO) {
+    public ResultInfo updateAdmin(@RequestBody OutCallUserDTO outCallUserDTO) {
         ObjectUtil.objectStrParamTrim(outCallUserDTO);
         StaffPO staff = getCurrentLoginStaff();
         outCallUserDTO.setCompanyId(staff.getCompanyId());
@@ -157,5 +154,30 @@ public class TiOutCallController extends BaseController {
         StaffPO staff = getCurrentLoginStaff();
         OutCallUserDTO userInfo = outCallService.getUserInfo(staff.getCompanyId(), staff.getId());
         return ResultInfoUtil.success(userInfo);
+    }
+
+    /**
+     * 批量新增
+     *
+     * @param staffIds
+     * @return
+     */
+    @GetMapping("/batch_add_user")
+    public ResultInfo batchAddUser(String staffIds) {
+        StaffPO staff = getCurrentLoginStaff();
+        outCallService.batchAddUser(staffIds, staff.getCompanyId());
+        return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
+    }
+
+
+    /**
+     * 获取绑定员工列表
+     *
+     * @return
+     */
+    @GetMapping("/get_user_list")
+    public ResultInfo getUserList() {
+        StaffPO staff = getCurrentLoginStaff();
+        return ResultInfoUtil.success(outCallService.getUserList(staff.getCompanyId()));
     }
 }

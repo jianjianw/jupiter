@@ -3,6 +3,7 @@ package com.qiein.jupiter.web.service;
 import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.web.entity.dto.OutCallUserDTO;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -103,4 +104,15 @@ public interface OutCallService {
      * 获取用户关联信息
      */
     OutCallUserDTO getUserInfo(int companyId, int staffId);
+
+    /**
+     * 批量新增的接口
+     */
+    int batchAddUser(String ids, int companyId);
+
+
+    /**
+     * 获取外呼账户人员列表
+     */
+    List<OutCallUserDTO> getUserList(int companyId);
 }

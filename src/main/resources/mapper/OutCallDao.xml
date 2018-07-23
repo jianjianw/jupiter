@@ -121,4 +121,15 @@
         WHERE rela.COMPANY_ID = #{companyId}
               AND rela.STAFF_ID = #{staffId}
     </select>
+
+
+    <!--新增管理员-->
+    <insert id="batchAddUser">
+        INSERT INTO hm_crm_outcall_rela
+        (COMPANY_ID, ENTERPRISE_ID, STAFF_ID )
+        VALUES
+        <foreach item="staffId" collection="staffIds" separator=",">
+            (#{companyId}, #{enterpriseId}, #{staffId})
+        </foreach>
+    </insert>
 </mapper>
