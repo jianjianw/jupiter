@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.dao;
 
 import java.util.List;
 
+import com.qiein.jupiter.web.entity.dto.DingBindUserDTO;
 import com.qiein.jupiter.web.entity.dto.SendDingMsgDTO;
 import com.qiein.jupiter.web.entity.dto.StaffTodayInfoDTO;
 import com.qiein.jupiter.web.entity.vo.*;
@@ -498,20 +499,32 @@ public interface StaffDao extends BaseDao<StaffPO> {
 
     /**
      * 编辑员工所属公司的CorpId
+     *
      * @param corpId
      * @param companyId
      * @return
      */
-    int editStaffCorpId(@Param("corpId") String corpId,@Param("companyId")Integer companyId);
+    int editStaffCorpId(@Param("corpId") String corpId, @Param("companyId") Integer companyId);
 
     /**
-     *
      * 功能描述:
-     *  根据员工id和所属公司id获取员工的userId和所在公司corpId
+     * 根据员工id和所属公司id获取员工的userId和所在公司corpId
+     *
      * @auther: Tt(yehuawei)
      * @date:
      * @param:
      * @return:
      */
-    SendDingMsgDTO getStaffUserIdAndCorpId(@Param("companyId") int companyId,@Param("staffId")int staffId);
+    SendDingMsgDTO getStaffUserIdAndCorpId(@Param("companyId") int companyId, @Param("staffId") int staffId);
+
+    /**
+     * 功能描述:
+     * 获取未绑定钉钉用户
+     *
+     * @auther: Tt(yehuawei)
+     * @date:
+     * @param:
+     * @return:
+     */
+    List<DingBindUserDTO> getNotBindDingUser(Integer companyId);
 }

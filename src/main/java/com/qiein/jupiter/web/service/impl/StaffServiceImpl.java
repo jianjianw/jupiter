@@ -911,4 +911,18 @@ public class StaffServiceImpl implements StaffService {
         staffDao.resetTodayNum();
         staffDao.resetOffLineWhenLimit();
     }
+
+    /**
+     *
+     * 功能描述:
+     *  获取未绑定钉钉用户
+     * @auther: Tt(yehuawei)
+     * @date:
+     * @param:
+     * @return:
+     */
+    @Override
+    public List<DingBindUserDTO> getNotBindDingUser(Integer companyId) {
+        return staffDao.getNotBindDingUser(companyId);
+    }
 }

@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import com.qiein.jupiter.msg.websocket.WebSocketMsgUtil;
+import com.qiein.jupiter.web.entity.dto.DingBindUserDTO;
 import com.qiein.jupiter.web.entity.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -562,5 +563,23 @@ public class StaffController extends BaseController {
         staffMsg.setCompanyId(getCurrentLoginStaff().getCompanyId());
         staffService.editMsgSet(staffMsg);
         return ResultInfoUtil.success();
+    }
+
+    /**
+     *
+     * 功能描述:
+     *  获取未绑定钉钉的用户
+     * @auther: Tt(yehuawei)
+     * @date:
+     * @param:
+     * @return:
+     */
+    @GetMapping("/get_ding_not_bind")
+    public ResultInfo getNotBindDingUser(){
+        Map<String,Object> map = new HashMap<>();
+        List<DingBindUserDTO> list = staffService.getNotBindDingUser(getCurrentLoginStaff().getCompanyId());
+        map.put("count",list==null?0:list.size());
+        map.put("list",list);
+        return ResultInfoUtil.success(map);
     }
 }
