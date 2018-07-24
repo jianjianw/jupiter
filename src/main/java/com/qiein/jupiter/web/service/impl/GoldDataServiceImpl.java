@@ -205,6 +205,7 @@ public class GoldDataServiceImpl implements GoldDataService {
         reqContent.put("companyid", goldFingerPO.getCompanyId());
         reqContent.put("kzname", kzName);
         reqContent.put("kzphone", kzPhone);
+        reqContent.put("kzwechat",weChat);
         reqContent.put("channelid", sourcePO.getChannelId());
         reqContent.put("channelname", sourcePO.getChannelName());
         reqContent.put("sourceid", goldFingerPO.getSrcId());
