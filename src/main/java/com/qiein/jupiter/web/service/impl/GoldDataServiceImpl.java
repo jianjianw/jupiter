@@ -256,7 +256,7 @@ public class GoldDataServiceImpl implements GoldDataService {
 
         String addRstStr = crmBaseApi.doService(reqContent, "clientAddGoldPlug");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
-        System.out.println(jsInfo);
+        String kzId = jsInfo.getString("data");
 
         if ("100000".equals(jsInfo.getString("code"))) {
             if (null != goldFingerPO.getIsFilter() && goldFingerPO.getIsFilter()) {
@@ -266,6 +266,7 @@ public class GoldDataServiceImpl implements GoldDataService {
             }
             //发送消息
             ClientDTO info = new ClientDTO();
+            info.setKzId(kzId);
             info.setKzName(goldTempPO.getKzName());
             info.setKzPhone(goldTempPO.getKzPhone());
             info.setKzWeChat(weChat);
