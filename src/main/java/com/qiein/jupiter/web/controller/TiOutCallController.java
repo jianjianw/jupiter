@@ -193,4 +193,15 @@ public class TiOutCallController extends BaseController {
         StaffPO staff = getCurrentLoginStaff();
         return ResultInfoUtil.success(outCallService.getUserList(staff.getCompanyId()));
     }
+
+    /**
+     * 返回录音MP3 url连接
+     *
+     * @param url
+     * @return
+     */
+    @GetMapping("/mp3_url")
+    public ResultInfo handleMp3Url(String url) {
+        return ResultInfoUtil.success(outCallService.getMp3Url(getCurrentLoginStaff().getCompanyId(), url));
+    }
 }

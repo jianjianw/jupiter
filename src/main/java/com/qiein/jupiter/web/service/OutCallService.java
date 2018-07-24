@@ -116,4 +116,8 @@ public interface OutCallService {
      */
     List<OutCallUserDTO> getUserList(int companyId);
 
+    /**
+     * 获取mp3
+     */
+    String getMp3Url(int companyId, String url);
 }

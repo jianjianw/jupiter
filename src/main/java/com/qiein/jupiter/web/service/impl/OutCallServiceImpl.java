@@ -391,6 +391,24 @@ public class OutCallServiceImpl implements OutCallService {
         return outCallDao.getUserList(companyId);
     }
 
+    /**
+     * 获取MP3 连接
+     *
+     * @param companyId
+     * @param url
+     * @return
+     */
+    @Override
+    public String getMp3Url(int companyId, String url) {
+        OutCallUserDTO admin = outCallDao.getAdminByCompanyId(companyId);
+        //加密一下
+        seedUser(admin, true);
+        return url + "?enterpriseId=" + admin.getEnterpriseId()
+                + "&userName=" + admin.getUsername()
+                + "&pwd=" + admin.getPassword()
+                + "&seed=" + admin.getSeed();
+    }
+
 
     /**
      * 给用户账号加密

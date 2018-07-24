@@ -31,26 +31,20 @@
             )
     </insert>
 
-    <!--查询员工登录ip是否存在-->
-    <select id="getCountByStaffIdAndIp" parameterType="map" resultType="java.lang.Integer">
-        SELECT COUNT(1)
-        FROM hm_pub_system_log log
-        WHERE log.COMPANYID = #{companyId}
-        AND log.STAFFID = #{staffId}
-        AND log.TYPEID = 1
-        <if test="ip != null and ip != '' ">
-            AND log.IP = #{ip}
-        </if>
-    </select>
-
     <!--根据类型获取日志-->
     <select id="getLogByType" resultMap="logMap">
         SELECT
         <include refid="baseColumn"/>
         FROM hm_pub_system_log log
         WHERE log.COMPANYID = #{companyId}
-        AND log.TYPEID = #{typeId}
+        AND log.LOGTIME &gt; #{startTime}
+        AND log.LOGTIME &lt; #{endTime}
+        <if test="typeId != null and typeId != 0 ">
+            AND log.TYPEID = #{typeId}
+        </if>
+        ORDER BY log.LOGTIME DESC
     </select>
+
 
     <!--清空日志-->
     <delete id="clearLog">
