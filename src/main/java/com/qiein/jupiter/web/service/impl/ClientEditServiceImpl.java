@@ -139,7 +139,7 @@ public class ClientEditServiceImpl implements ClientEditService {
             ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(jsInfo.getString("data"),
                     DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
                     DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
-            if (NumUtil.isNull(info.getAppointorId())) {
+            if (info == null || NumUtil.isNull(info.getAppointorId())) {
                 return;
             }
             GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getAppointorId(), info, staffPO.getNickName(), newsDao, staffDao);
