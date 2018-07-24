@@ -340,4 +340,15 @@ public interface StaffService {
      * 每天晚上初始化员工分客资信息
      */
     void taskClockInit();
+
+    /**
+     * 功能描述:
+     * 获取未绑定钉钉用户
+     *
+     * @auther: Tt(yehuawei)
+     * @date:
+     * @param:
+     * @return:
+     */
+    List<DingBindUserDTO> getNotBindDingUser(Integer companyId);
 }

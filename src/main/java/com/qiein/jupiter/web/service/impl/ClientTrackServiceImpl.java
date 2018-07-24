@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -184,12 +185,13 @@ public class ClientTrackServiceImpl implements ClientTrackService {
         if (StringUtil.isEmpty(kzIds) || StringUtil.isEmpty(staffIds) || NumUtil.isInValid(companyId)) {
             throw new RException(ExceptionEnum.ALLOT_ERROR);
         }
-        // 查询所选客资里面没有分出去的客资
-        List<ClientPushDTO> infoList = clientInfoDao.listClientsInStrKzids(kzIds, companyId,
-                DBSplitUtil.getInfoTabName(companyId));
-        if (CollectionUtils.isEmpty(infoList)) {
-            throw new RException(ExceptionEnum.ALLOTED_ERROR);
-        }
+//        // 查询所选客资里面没有分出去的客资
+//        List<ClientPushDTO> infoList = clientInfoDao.listClientsInStrKzids(kzIds, companyId,
+//                DBSplitUtil.getInfoTabName(companyId));
+//        if (CollectionUtils.isEmpty(infoList)) {
+//            throw new RException(ExceptionEnum.ALLOTED_ERROR);
+//        }
+        List<String> infoList = Arrays.asList(kzIds.split(CommonConstant.STR_SEPARATOR));
         int kzNum = infoList.size();
         // 查询所选客服集合
         List<StaffPushDTO> staffList = staffDao.listStaffInstrIds(companyId, staffIds, RoleConstant.DSYY);
@@ -201,7 +203,7 @@ public class ClientTrackServiceImpl implements ClientTrackService {
                 if (infoList.size() > 0) {
                     // 客资修改最后消息推送时间为当前系统时间，绑定客服，修改状态为分配中
                     int updateRstNum = clientInfoDao.updateClientInfoWhenAllot(companyId,
-                            DBSplitUtil.getInfoTabName(companyId), infoList.get(0).getKzId(),
+                            DBSplitUtil.getInfoTabName(companyId), infoList.get(0),
                             ClientStatusConst.KZ_CLASS_NEW, ClientStatusConst.BE_ALLOTING, staff.getStaffId(),
                             staff.getGroupId(), ClientConst.ALLOT_HANDLER);
                     if (1 != updateRstNum) {
@@ -209,8 +211,8 @@ public class ClientTrackServiceImpl implements ClientTrackService {
                     }
                     // 客资修改客资的客服组ID，和客服组名称
                     clientInfoDao.updateClientDetailWhenAllot(companyId, DBSplitUtil.getDetailTabName(companyId),
-                            infoList.get(0).getKzId(), staff.getStaffName(), staff.getGroupName());
-                    staff.doAddKzIdsWill(infoList.get(0).getKzId());
+                            infoList.get(0), staff.getStaffName(), staff.getGroupName());
+                    staff.doAddKzIdsWill(infoList.get(0));
                     infoList.remove(0);
                 } else {
                     break;
@@ -288,15 +290,15 @@ public class ClientTrackServiceImpl implements ClientTrackService {
     public void allotNotArriveShop(String kzId, StaffPO staffPO) {
         //修改客资状态
         List<ClientPushDTO> clientPushDTOS = clientInfoDao.getKzIdExists(kzId, staffPO.getCompanyId(), DBSplitUtil.getInfoTabName(staffPO.getCompanyId()));
-        if(CollectionUtils.isEmpty(clientPushDTOS)){
+        if (CollectionUtils.isEmpty(clientPushDTOS)) {
             throw new RException(ExceptionEnum.ALLOTED_ERROR);
         }
         ClientStatusPO clientStatusPO = clientStatusDao.getClientStatusByStatusId(ClientStatusConst.NOT_COME, staffPO.getCompanyId());
-        if(null == clientStatusPO){
+        if (null == clientStatusPO) {
             throw new RException(ExceptionEnum.UNKNOW_ERROR);
         }
-        clientInfoDao.updateClientInfoStatus(staffPO.getCompanyId(),DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),kzId,clientStatusPO.getClassId(),ClientStatusConst.NOT_COME);
-        clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(staffPO.getCompanyId()),new ClientLogPO(kzId,staffPO.getId(),staffPO.getNickName()
-                ,ClientLogConst.INFO_LOG_NOT_ARRIVE_SHOP,ClientLogConst.INFO_LOGTYPE_EDIT,staffPO.getCompanyId()));
+        clientInfoDao.updateClientInfoStatus(staffPO.getCompanyId(), DBSplitUtil.getInfoTabName(staffPO.getCompanyId()), kzId, clientStatusPO.getClassId(), ClientStatusConst.NOT_COME);
+        clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(staffPO.getCompanyId()), new ClientLogPO(kzId, staffPO.getId(), staffPO.getNickName()
+                , ClientLogConst.INFO_LOG_NOT_ARRIVE_SHOP, ClientLogConst.INFO_LOGTYPE_EDIT, staffPO.getCompanyId()));
     }
 }

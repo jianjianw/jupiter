@@ -71,7 +71,7 @@ public interface ShopDao extends BaseDao<ShopPO> {
      * @param companyId
      * @return
      */
-    List<String> getLimitShopNamesByIds(@Param("ids") String[] ids, @Param("companyId") int companyId);
+    String getLimitShopNamesByIds(@Param("ids") String[] ids, @Param("companyId") int companyId);
 
     /**
      * 获取所在小组承接拍摄地

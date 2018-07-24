@@ -728,7 +728,8 @@
                            FROM
                                hm_crm_channel
                            WHERE
-                               (CAST(PUSHRULE AS UNSIGNED) = 11 OR CAST(PUSHRULE AS UNSIGNED) = 1)
+                               (CAST(PUSHRULE AS UNSIGNED) = 11 OR CAST(PUSHRULE AS UNSIGNED) = 1 OR CAST(PUSHRULE AS UNSIGNED) = 12
+															 OR CAST(PUSHRULE AS UNSIGNED) = 14 )
                                AND COMPANYID = #{companyId}
                        ) AS channel ON info.CHANNELID = channel.ID
     </select>
@@ -1049,5 +1050,20 @@
         SELECT  DINGUSERID userIdList,CORPID corpId
         FROM hm_pub_staff
         WHERE COMPANYID = #{companyId} AND ID = #{staffId}
+    </select>
+
+    <!--获取未绑定钉钉用户-->
+    <select id="getNotBindDingUser" resultType="dingBindUserDTO">
+        SELECT
+            sf.ID,
+            sf.NICKNAME,
+            sf.PHONE,
+            sf.USERNAME,
+            sf.COMPANYID,
+            gp.GROUPNAME
+        FROM hm_pub_staff sf
+        LEFT JOIN hm_pub_group_staff gs ON sf.COMPANYID = gs.COMPANYID AND sf.ID = gs.STAFFID
+        LEFT JOIN hm_pub_group gp ON sf.COMPANYID = gp.COMPANYID AND gp.GROUPID = gs.GROUPID
+        WHERE sf.COMPANYID = #{companyId} AND sf.ISDEL = 0 AND sf.ISLOCK = 0 AND (sf.DINGUSERID IS NULL OR sf.DINGUSERID = '')
     </select>
 </mapper>

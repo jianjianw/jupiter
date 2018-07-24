@@ -250,7 +250,7 @@ public class CompanyController extends BaseController {
     @GetMapping("/zjs_menu")
     public ResultInfo getZjsMenu() {
         Map<String,Object> resultMap = new HashMap<>();
-        resultMap.put("zjsMenu",ClientZjsMenuConst.zjsMenu);
+        resultMap.put("qy_zjsMenu",ClientZjsMenuConst.QY_ZJS_MENU);
         resultMap.put("companySet",companyService.getCompanyZjsSet(getCurrentLoginStaff().getCompanyId()));
         return ResultInfoUtil.success(resultMap);
     }
