@@ -143,6 +143,7 @@ public class GoldDataController extends BaseController {
     public ResultInfo goldCustomerSelect(@RequestBody JSONObject params) {
         QueryMapDTO queryMapDTO = JSONObject.parseObject(params.getJSONObject("queryMapDTO").toJSONString(), QueryMapDTO.class);
         GoldCustomerDTO goldCustomerDTO = JSONObject.parseObject(params.getJSONObject("goldCustomerDTO").toJSONString(), GoldCustomerDTO.class);
+        goldCustomerDTO.setCompanyId(getCurrentLoginStaff().getCompanyId());
         return ResultInfoUtil.success(goldDataService.goldCustomerSelect(queryMapDTO, goldCustomerDTO));
 
     }
