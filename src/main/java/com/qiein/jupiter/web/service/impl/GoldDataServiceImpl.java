@@ -262,7 +262,7 @@ public class GoldDataServiceImpl implements GoldDataService {
 
 
         if ("100000".equals(jsInfo.getString("code"))) {
-            if (null != goldFingerPO.getIsFilter() && !goldFingerPO.getIsFilter().equals(CommonConstant.DEFAULT_ZERO)) {
+            if (null != goldFingerPO.getIsFilter() && goldFingerPO.getIsFilter()) {
                 //更新状态
                 goldTempPO.setStatusId(GoldDataConst.IN_FILTER);
                 goldTempDao.update(goldTempPO);
