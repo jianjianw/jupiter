@@ -139,6 +139,7 @@ public class GoldDataServiceImpl implements GoldDataService {
         String formId = jsonObject.getString("form");
         String formName = jsonObject.getString("formName");
         GoldFingerPO goldFingerPO = goldDataDao.getGoldFingerByFormId(formId);
+        String ip = StringUtil.nullToStrTrim(entry.getString("info_remote_ip"));
         //获取金数据表单模板数据
         if (null == goldFingerPO) {
             throw new RException(ExceptionEnum.FORM_NOT_EXISTS);
@@ -150,7 +151,6 @@ public class GoldDataServiceImpl implements GoldDataService {
         String kzName = StringUtil.nullToStrTrim(entry.getString(goldFingerPO.getKzNameField()));
         String weChat = StringUtil.nullToStrTrim(entry.getString(goldFingerPO.getKzWechatField()));
         String address = MobileLocationUtil.getPhoneLocation(kzPhone);
-
         //获取字段值
         String[] fieldKeys = StringUtil.isNotEmpty(goldFingerPO.getFieldKey()) ? goldFingerPO.getFieldKey().split(CommonConstant.STR_SEPARATOR) : new String[]{};
         String[] fieldValues = StringUtil.isNotEmpty(goldFingerPO.getFieldValue()) ? goldFingerPO.getFieldValue().split(CommonConstant.STR_SEPARATOR) : new String[]{};
@@ -241,6 +241,8 @@ public class GoldDataServiceImpl implements GoldDataService {
         goldTempPO.setAddress(address);
         goldTempPO.setWechat(weChat);
         goldTempPO.setRemark(jsonObject.toString());
+        goldTempPO.setIp(StringUtil.isEmpty(ip)?"":ip);
+        goldTempPO.setIpAddress(StringUtil.isEmpty(ip)?"":HttpUtil.getIpLocation(ip));
 
         goldTempDao.insert(goldTempPO);
 
