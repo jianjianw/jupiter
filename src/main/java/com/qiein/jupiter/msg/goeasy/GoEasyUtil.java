@@ -125,6 +125,7 @@ public class GoEasyUtil {
                     // log.info("LogUtils.log()-->消息发送成功--[channel : " + "" + " ;
                     // content :" + "" + channel);
                 }
+
                 public void onFailed(GoEasyError error) {
                     log.error("goeasy 发送失败：" + error.getCode() + error.getContent());
                 }
@@ -478,6 +479,7 @@ public class GoEasyUtil {
                 staffId, companyId, DBSplitUtil.getNewsTabName(companyId)));
         DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), companyId, staffId, staffDao);
     }
+
     /**
      * 连续三次怠工自动下线
      *
@@ -632,8 +634,9 @@ public class GoEasyUtil {
      * @param kzId
      * @param msg
      */
-    public static void pushWarnTimer(int companyId, int staffId, String kzId, String msg) {
+    public static void pushWarnTimer(int companyId, int staffId, String kzId, String msg, StaffDao staffDao) {
         pushCommon(companyId, staffId, MessageConts.TO_BE_TRACKED_HEAD, msg);
+        DingMsgSendUtil.sendDingMsg(msg, companyId, staffId, staffDao);
     }
 
 //    public static void main(String[] args) {

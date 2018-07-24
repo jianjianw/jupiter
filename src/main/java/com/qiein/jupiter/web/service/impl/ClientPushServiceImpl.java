@@ -1077,7 +1077,7 @@ public class ClientPushServiceImpl implements ClientPushService {
             for (ClientTimerPO clientTimerPO : allClientTimerList) {
                 // 推送消息
                 GoEasyUtil.pushWarnTimer(clientTimerPO.getCompanyId(), clientTimerPO.getStaffId(),
-                        clientTimerPO.getKzId(), clientTimerPO.getMsg());
+                        clientTimerPO.getKzId(), clientTimerPO.getMsg(), staffDao);
                 idsDel.add(clientTimerPO.getId());
                 // 新加一条消息
                 NewsPO news = new NewsPO();
