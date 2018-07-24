@@ -1027,7 +1027,7 @@ public class ClientPushServiceImpl implements ClientPushService {
                                     ClientLogConst.INFO_LOGTYPE_ALLOT, companyId));
         }
         // 推送消息
-        GoEasyUtil.pushAllotMsg(companyId, appoint.getStaffId(), kzIdsArr.length, newsDao, staffDao);
+        GoEasyUtil.pushAllotMsg(companyId, appoint.getStaffId(), kzIdsArr, newsDao, staffDao);
     }
 
     public void pushMsjd(int companyId, String kzIds, StaffPushDTO appoint, int operaId, String operaName) {
@@ -1044,7 +1044,7 @@ public class ClientPushServiceImpl implements ClientPushService {
                                     ClientLogConst.INFO_LOGTYPE_ALLOT, companyId));
         }
         // 推送消息
-        GoEasyUtil.pushAllotMsg(companyId, appoint.getStaffId(), kzIdsArr.length, newsDao, staffDao);
+        GoEasyUtil.pushAllotMsg(companyId, appoint.getStaffId(), kzIdsArr, newsDao, staffDao);
     }
 
     public static String arrToStr(String[] arr) {
