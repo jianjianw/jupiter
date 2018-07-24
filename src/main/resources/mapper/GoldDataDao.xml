@@ -163,7 +163,7 @@
     <select id="findForm" resultMap="goldData">
         select
         <include refid="formList"/>
-        from hm_crm_gold_plug_setting where formId=#{formId} limit 0,1
+        from hm_crm_gold_plug_setting where formId=#{formId} limit 0,1 AND COMPANYID=#{companyId}
     </select>
 
     <!--获取金数据表单-->
