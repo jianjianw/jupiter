@@ -11,4 +11,8 @@
 			(#{log.kzId}, #{log.payStyle}, #{log.amount}, #{log.staffId},#{log.staffName} ,#{log.paymentTime},#{log.operaId},#{log.operaName}, UNIX_TIMESTAMP(NOW()), #{log.companyId}
 		)
     </insert>
+
+	<update id="editStatus">
+        UPDATE ${table} SET STATUS=0 WHERE ID=#{id}
+    </update>
 </mapper>

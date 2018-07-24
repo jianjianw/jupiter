@@ -1,11 +1,12 @@
 package com.qiein.jupiter.web.service;
 
-import com.qiein.jupiter.web.entity.dto.CashDTO;
+import com.qiein.jupiter.web.entity.po.CashLogPO;
 
 public interface CashService {
     /**
      * 修改付款金额
-     * @param cashDTO
+     *
+     * @param cashLogPO
      */
-    void editCash(CashDTO cashDTO);
+    void editCash(CashLogPO cashLogPO);
 }
