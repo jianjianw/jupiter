@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiein.jupiter.web.dao.CashDao">
+    <resultMap id="CashDTO" type="com.qiein.jupiter.web.entity.dto.CashDTO">
+        <id property="id" jdbcType="INTEGER" column="ID"/>
+        <result property="kzId" jdbcType="VARCHAR" column="KZID"/>
+        <result property="amount" jdbcType="VARCHAR" column="AMOUNT"/>
+        <result property="payStyle" jdbcType="INTEGER" column="PAYSTYLE"/>
+        <result property="staffName" jdbcType="VARCHAR" column="STAFFNAME"/>
+        <result property="staffId" jdbcType="INTEGER" column="STAFFID"/>
+        <result property="payManTime" jdbcType="INTEGER" column="PAYMENTTIME"/>
+        <result property="operaId" jdbcType="INTEGER" column="OPERAID"/>
+        <result property="operaName" jdbcType="VARCHAR" column="OPERANAME"/>
+        <result property="createTime" jdbcType="INTEGER" column="CREATETIME"/>
+        <result property="companyId" jdbcType="INTEGER" column="COMPANYID"/>
+        <result property="status" jdbcType="SMALLINT" column="STATUS"/>
+    </resultMap>
+    <sql id="insertValue">
+        KZID,AMOUNT,STAFFNAME,STAFFID,PAYMENTTIME,OPERAID,OPERANAME,CREATETIME,COMPANYID,PAYSTYLE
+    </sql>
+    <sql id="insertParam">
+        #{kzId},#{amount},#{staffName},#{staffId},#{payMentTime},#{operaId},#{operaName},UNIX_TIMESTAMP(now()),#{companyId},#{payStyle}
+    </sql>
+    <insert id="insert">
+        INSERT INTO ${table}(
+        <include refid="insertValue"/>
+        )
+        VALUES(<include refid="insertParam"/>)
+    </insert>
+
+    <update id="editStatus">
+        UPDATE ${table} SET STATUS=0 WHERE ID=#{id}
+    </update>
+
+</mapper>
