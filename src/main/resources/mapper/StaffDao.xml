@@ -728,7 +728,8 @@
                            FROM
                                hm_crm_channel
                            WHERE
-                               (CAST(PUSHRULE AS UNSIGNED) = 11 OR CAST(PUSHRULE AS UNSIGNED) = 1)
+                               (CAST(PUSHRULE AS UNSIGNED) = 11 OR CAST(PUSHRULE AS UNSIGNED) = 1 OR CAST(PUSHRULE AS UNSIGNED) = 12
+															 OR CAST(PUSHRULE AS UNSIGNED) = 14 )
                                AND COMPANYID = #{companyId}
                        ) AS channel ON info.CHANNELID = channel.ID
     </select>
