@@ -56,7 +56,7 @@ public class ClientStatusConst {
     public static final int BE_COMFIRM = 3;// 确定意向--------------------------------有效
     public static final int BE_HAVE_RECEPTOR = 14;// 已分配门市------------------------有效
 
-    public static final int COME_SHOP_FAIL = 8;// 未到店/定别家/邀约流失------------------有效
+    public static final int COME_SHOP_FAIL = 8;//邀约流失------------------有效
 
     public static final int INVALID_BE_CHECK = 21;// 无效待审核----------------无效
     public static final int INVALID_BE_STAY = 4;// 无效待审批----------------无效
