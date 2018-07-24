@@ -306,7 +306,7 @@ public class OutCallServiceImpl implements OutCallService {
     @Override
     public JSONObject getValidateCode(int companyId, int staffId, String tel, boolean needValidate) {
         //TODO NPE
-        OutCallUserDTO admin = outCallDao.getAdminByCompanyId(companyId);
+        OutCallUserDTO admin = outCallDao.getUserInfoAndAdmin(companyId, staffId);
         if (StringUtil.isEmpty(tel)) {
             StaffPO staff = staffService.getById(staffId, companyId);
             tel = staff.getPhone();
