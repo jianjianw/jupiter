@@ -57,7 +57,7 @@ public interface GoldDataDao {
     /**
      * 查询表单信息
      */
-    GoldFingerPO findForm(String formId);
+    GoldFingerPO findForm(@Param("formId")String formId,@Param("companyId")Integer companyId);
 
     /**
      * 获取金数据表单
