@@ -27,7 +27,7 @@ public class BeanTest {
         goldFingerPO.setCreateorName("小利       ");
         goldFingerPO.setPostURL("    http://114.55.249.156:9091/gold_data/add_client_info");
 //        goldFingerPO.setIsFilter(0);
-        goldFingerPO.setIsShow(0);
+       // goldFingerPO.setIsShow(0);
         goldFingerPO.setZxStyle("   对话咨询");
         goldFingerPO.setTypeId(2);
         goldFingerPO.setTypeName("   写  真   ");
