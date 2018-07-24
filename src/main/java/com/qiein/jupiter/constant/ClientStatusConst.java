@@ -55,6 +55,7 @@ public class ClientStatusConst {
     public static final int INVALID_BE_CHECK = 21;// 无效待审核----------------无效
     public static final int INVALID_BE_STAY = 4;// 无效待审批----------------无效
     public static final int BE_INVALID_REJECT = 7;// 无效驳回
+    public static final int BE_INVALID_ALWAYS = 80;// 永久驳回
     public static final int BE_INVALID = 5;// 无效--------------------------无效
 
     /*-- 算到店 --*/
@@ -76,5 +77,5 @@ public class ClientStatusConst {
     public static List<Integer> SUCCESS_STATUS_RANGE = new ArrayList<Integer>(Arrays.asList(9, 30, 40));
     // 待追踪
     public static List<Integer> TRACE_STATUS_RANGE = new ArrayList<Integer>(
-            Arrays.asList(2, 6, 11, 13, 15, 16, 17, 18, 19, 20, 22, 23, 24, 25, 26, 27, 61, 62, 63, 64, 65, 66, 67, 50));
+            Arrays.asList(2, 6, 11, 13, 15, 16, 17, 18, 19, 20, 22, 23, 24, 25, 26, 27, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 50));
 }
