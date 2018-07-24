@@ -84,4 +84,12 @@ public interface OutCallDao {
                      @Param("enterpriseId") String enterpriseId,
                      @Param("staffIds") List<String> staffIds);
 
+
+    /**
+     * 上下线
+     */
+    int inlineOffLine(@Param("companyId") int companyId,
+                      @Param("staffId") int staffId,
+                      @Param("status") int status);
+
 }

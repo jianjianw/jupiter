@@ -64,6 +64,8 @@ public class OutCallServiceImpl implements OutCallService {
         } else {
             url = TiOutCallUrlConst.userOffLine;
         }
+        //更新在线状态
+        outCallDao.inlineOffLine(companyId, staffId, online ? 1 : 0);
         return this.postToNet(baseMap, url, false);
     }
 
@@ -365,7 +367,16 @@ public class OutCallServiceImpl implements OutCallService {
      */
     @Override
     public OutCallUserDTO getUserInfo(int companyId, int staffId) {
-        return outCallDao.getUserInfo(companyId, staffId);
+        OutCallUserDTO userInfo = outCallDao.getUserInfo(companyId, staffId);
+        //TODO 获取用户信息
+        Map<String, String> baseMap = new HashMap<>();
+        baseMap.put("enterpriseId", String.valueOf(userInfo.getEnterpriseId()));
+        baseMap.put("cno", String.valueOf(userInfo.getCno()));
+        JSONObject jsonObject = this.postToNet(baseMap, TiOutCallUrlConst.getUserInfo, false);
+        if (jsonObject.getString("result").equals("success")) {
+            JSONObject msg = jsonObject.getJSONObject("msg");
+        }
+        return userInfo;
     }
 
 
