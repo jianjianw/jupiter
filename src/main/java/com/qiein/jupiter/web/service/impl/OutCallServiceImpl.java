@@ -64,6 +64,8 @@ public class OutCallServiceImpl implements OutCallService {
         } else {
             url = TiOutCallUrlConst.userOffLine;
         }
+        //更新在线状态
+        outCallDao.inlineOffLine(companyId, staffId, online ? 1 : 0);
         return this.postToNet(baseMap, url, false);
     }
 

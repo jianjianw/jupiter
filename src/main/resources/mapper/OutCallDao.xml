@@ -11,6 +11,7 @@
         <result column="CNO" property="cno" jdbcType="INTEGER"/>
         <result column="ID" property="id" jdbcType="INTEGER"/>
         <result column="BIND_TEL" property="bindTel" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
     </resultMap>
 
     <resultMap id="staff" type="com.qiein.jupiter.web.entity.po.StaffPO">
@@ -116,7 +117,8 @@
             rela.STAFF_ID,
             rela.ENTERPRISE_ID,
             rela.BIND_TEL,
-            rela.CNO
+            rela.CNO,
+            rela.STATUS
         FROM hm_crm_outcall_rela rela
         WHERE rela.COMPANY_ID = #{companyId}
               AND rela.STAFF_ID = #{staffId}
@@ -132,4 +134,12 @@
             (#{companyId}, #{enterpriseId}, #{staffId})
         </foreach>
     </insert>
+
+    <!--修改在线状态-->
+    <update id="inlineOffLine">
+        UPDATE hm_crm_outcall_rela
+        SET STATUS = #{status}
+        WHERE COMPANY_ID = #{companyId}
+        AND STAFF_ID = #{staffId}
+    </update>
 </mapper>
