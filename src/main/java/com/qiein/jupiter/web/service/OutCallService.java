@@ -88,7 +88,7 @@ public interface OutCallService {
     /**
      * 验证白名单并获取语音验证码
      */
-    JSONObject getValidateCode(int companyId, int staffId, String phone);
+    JSONObject getValidateCode(int companyId, int staffId, String phone, boolean needValidate);
 
     /**
      * 添加到白名单
@@ -115,4 +115,5 @@ public interface OutCallService {
      * 获取外呼账户人员列表
      */
     List<OutCallUserDTO> getUserList(int companyId);
+
 }

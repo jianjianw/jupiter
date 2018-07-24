@@ -92,7 +92,20 @@ public class TiOutCallController extends BaseController {
     @GetMapping("/get_validate_code")
     public JSONObject getValidateCode(int staffId, String phone) {
         StaffPO staff = getCurrentLoginStaff();
-        return outCallService.getValidateCode(staff.getCompanyId(), staffId, phone);
+        return outCallService.getValidateCode(staff.getCompanyId(), staffId, phone, true);
+    }
+
+
+    /**
+     * 判断是否需要在白名单
+     *
+     * @param phone
+     * @return
+     */
+    @GetMapping("/is_white")
+    public JSONObject isWhite(String phone) {
+        StaffPO staff = getCurrentLoginStaff();
+        return outCallService.getValidateCode(staff.getCompanyId(), staff.getId(), phone, false);
     }
 
     /**
