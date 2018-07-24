@@ -1075,9 +1075,9 @@ public class ClientPushServiceImpl implements ClientPushService {
             Map<String, List<NewsPO>> companyMap = new HashMap<>();
             for (ClientTimerPO clientTimerPO : allClientTimerList) {
                 // 推送消息
+                clientTimerDao.delAready(clientTimerPO.getId());
                 GoEasyUtil.pushWarnTimer(clientTimerPO.getCompanyId(), clientTimerPO.getStaffId(),
                         clientTimerPO.getKzId(), clientTimerPO.getMsg(), staffDao);
-                clientTimerDao.delAready(clientTimerPO.getId());
                 // 新加一条消息
                 NewsPO news = new NewsPO();
                 news.setStaffId(clientTimerPO.getStaffId());
@@ -1087,7 +1087,7 @@ public class ClientPushServiceImpl implements ClientPushService {
                 news.setMsg(clientTimerPO.getMsg());
                 news.setKzid(clientTimerPO.getKzId());
                 String tableName = DBSplitUtil.getNewsTabName(clientTimerPO.getCompanyId());
-                if (companyMap.get(tableName) == null) {
+                if (!companyMap.containsKey(tableName) || companyMap.get(tableName) == null) {
                     companyMap.put(tableName, new ArrayList<NewsPO>());
                 }
                 companyMap.get(tableName).add(news);
