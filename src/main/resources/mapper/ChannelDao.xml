@@ -312,7 +312,7 @@
     <!--根据批量渠道编号获取渠道名称列表-->
     <select id="getChannelNamesByIds" parameterType="map" resultType="String">
         SELECT
-        CHANNELNAME
+        GROUP_CONCAT(CHANNELNAME)
         FROM
         hm_crm_channel
         WHERE

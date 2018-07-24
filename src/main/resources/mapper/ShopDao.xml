@@ -135,7 +135,7 @@
     <!--根据批量的拍摄地编号获取拍摄地名称列表-->
     <select id="getLimitShopNamesByIds" parameterType="map" resultType="String">
         SELECT
-          shop.SHOPNAME
+        GROUP_CONCAT(shop.SHOPNAME)
         FROM
           hm_pub_shop shop
         WHERE

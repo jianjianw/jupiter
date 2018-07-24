@@ -208,28 +208,21 @@ public class SchedulingServiceImpl implements SchedulingService {
         }
 
         if (staffMarsDTO.getLimitShopIds() != null && staffMarsDTO.getLimitShopIds().trim().length() != 0) { // 如果限制拍摄地，改不接单的拍摄地则同时修改拍摄地名称
-            List<String> list = shopDao.getLimitShopNamesByIds(staffMarsDTO.getLimitShopIds().split(","),
+            String shopNames = shopDao.getLimitShopNamesByIds(staffMarsDTO.getLimitShopIds().split(","),
                     staffMarsDTO.getCompanyId());
-            StringBuilder limitShopNames = new StringBuilder();
-            for (String s : list)
-                limitShopNames.append(s).append(",");
-            staffMarsDTO.setLimitShopNames(limitShopNames.substring(0, limitShopNames.length() - 1));
+            staffMarsDTO.setLimitShopNames(shopNames);
         } else if (staffMarsDTO.getLimitShopIds() != null && staffMarsDTO.getLimitShopIds().trim().length() == 0) { // 如果不限制拍摄地，将拍摄地名称改为空字符串
             staffMarsDTO.setLimitShopNames("");
         }
 
         if (staffMarsDTO.getLimitChannelIds() != null && staffMarsDTO.getLimitChannelIds().trim().length() != 0) { // 如果限制来源，修改不接单的渠道同时修改渠道名称
-            List<String> list = channelDao.getChannelNamesByIds(staffMarsDTO.getCompanyId(),
+            String channelNames = channelDao.getChannelNamesByIds(staffMarsDTO.getCompanyId(),
                     staffMarsDTO.getLimitChannelIds().split(","));
-            StringBuilder limitChannelNames = new StringBuilder();
-            for (String s : list)
-                limitChannelNames.append(s).append(",");
-            staffMarsDTO.setLimitChannelNames(limitChannelNames.substring(0, limitChannelNames.length() - 1));
+            staffMarsDTO.setLimitChannelNames(channelNames);
         } else if (staffMarsDTO.getLimitChannelIds() != null
                 && staffMarsDTO.getLimitChannelIds().trim().length() == 0) {
             staffMarsDTO.setLimitChannelNames("");
         }
-
 
         // 员工详情
         StaffDetailVO staff = staffDao.getStaffDetailVO(staffMarsDTO.getId(), staffMarsDTO.getCompanyId());
