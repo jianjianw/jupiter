@@ -87,7 +87,7 @@ public class ClientTrackController extends BaseController {
         if (NumUtil.isNull(rst)) {
             throw new RException(ExceptionEnum.APPROVAL_RST_IS_NULL);
         }
-        if (ClientStatusConst.BE_INVALID_REJECT == rst && StringUtil.isEmpty(memo)) {
+        if ((ClientStatusConst.BE_INVALID_REJECT == rst || ClientStatusConst.BE_INVALID_ALWAYS == rst) && StringUtil.isEmpty(memo)) {
             throw new RException(ExceptionEnum.APPROVAL_MEMO_IS_NULL);
         }
         String invalidLabel = StringUtil.nullToStrTrim(jsonObject.getString("invalidLabel"));
@@ -147,15 +147,15 @@ public class ClientTrackController extends BaseController {
 
     /**
      * 分配未到店
-     * */
+     */
     @PostMapping("/allot_not_arrive_shop")
-    public ResultInfo allotNotArriveShop(@RequestBody JSONObject jsonObject){
+    public ResultInfo allotNotArriveShop(@RequestBody JSONObject jsonObject) {
         String kzId = StringUtil.nullToStrTrim(jsonObject.getString("kzId"));
         if (StringUtil.isEmpty(kzId)) {
             throw new RException(ExceptionEnum.ALLOTED_ERROR);
         }
         StaffPO staffPO = getCurrentLoginStaff();
-        clientTrackService.allotNotArriveShop(kzId,staffPO);
+        clientTrackService.allotNotArriveShop(kzId, staffPO);
         return ResultInfoUtil.success(TipMsgEnum.ALLOT_SUCCESS);
     }
 
