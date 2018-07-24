@@ -296,6 +296,7 @@ public class LoginServiceImpl implements LoginService {
      */
     @Override
     public BaseInfoVO getBaseInfo(int staffId, int companyId) {
+        //TODO  这里还是可以优化，把页面必须的传回去，字典信息等非必须的二次加载，提高速度
         BaseInfoVO staffBaseInfoVO = new BaseInfoVO();
         // 权限列表 和 map
         List<PermissionPO> permissionPOList = permissionDao.getStaffPermission(staffId, companyId);
@@ -313,6 +314,8 @@ public class LoginServiceImpl implements LoginService {
             staffDetailVO.setSimplePasswordFlag(true);
         }
         staffBaseInfoVO.setStaffDetail(staffDetailVO);
+        //公司插件
+        staffBaseInfoVO.setPluginList(pluginService.getListByCompanyId(companyId));
         // 设置页面字典
         PageDictDTO pageDictDTO = new PageDictDTO();
         // 来源字典
@@ -328,8 +331,6 @@ public class LoginServiceImpl implements LoginService {
         staffBaseInfoVO.setPageDict(pageDictDTO);
         // 消息
         staffBaseInfoVO.setNews(newsService.getNewsTotalAmountAndFlag(staffId, companyId));
-        //公司插件
-        staffBaseInfoVO.setPluginList(pluginService.getListByCompanyId(companyId));
         return staffBaseInfoVO;
     }
 
