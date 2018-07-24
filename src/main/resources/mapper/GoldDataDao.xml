@@ -113,6 +113,7 @@
         <if test="formId != null and formId != ''">
             AND FORMID = #{formId}
         </if>
+        AND ISSHOW=1
         order by id DESC
 
     </select>
