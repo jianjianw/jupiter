@@ -88,6 +88,9 @@ public class LoginServiceImpl implements LoginService {
     @Autowired
     private DingAuthUtil dingAuthUtil;
 
+    @Autowired
+    private PluginService pluginService;
+
     /**
      * 微信获取公司列表
      *
@@ -325,6 +328,8 @@ public class LoginServiceImpl implements LoginService {
         staffBaseInfoVO.setPageDict(pageDictDTO);
         // 消息
         staffBaseInfoVO.setNews(newsService.getNewsTotalAmountAndFlag(staffId, companyId));
+        //公司插件
+        staffBaseInfoVO.setPluginList(pluginService.getListByCompanyId(companyId));
         return staffBaseInfoVO;
     }
 

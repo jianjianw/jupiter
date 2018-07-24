@@ -3,6 +3,7 @@ package com.qiein.jupiter.web.entity.vo;
 
 import com.qiein.jupiter.web.entity.dto.PageDictDTO;
 import com.qiein.jupiter.web.entity.po.PermissionPO;
+import com.qiein.jupiter.web.entity.po.PluginPO;
 
 import java.io.Serializable;
 import java.util.List;
@@ -34,11 +35,22 @@ public class BaseInfoVO implements Serializable {
      * 消息
      */
     private NewsTotalAmountAndFlag news;
-
     /**
      * 权限map
      */
     private Map<String, String> permissionMap;
+    /**
+     * 插件列表
+     */
+    private List<PluginVO> pluginList;
+
+    public List<PluginVO> getPluginList() {
+        return pluginList;
+    }
+
+    public void setPluginList(List<PluginVO> pluginList) {
+        this.pluginList = pluginList;
+    }
 
     public Map<String, String> getPermissionMap() {
         return permissionMap;

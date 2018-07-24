@@ -58,6 +58,9 @@ public class OutCallServiceImpl implements OutCallService {
         String url;
         if (online) {
             url = TiOutCallUrlConst.userOnLine;
+            //更新
+            userInfoAndAdmin.setBindTel(phone);
+            outCallDao.updateBindTel(userInfoAndAdmin);
         } else {
             url = TiOutCallUrlConst.userOffLine;
         }
