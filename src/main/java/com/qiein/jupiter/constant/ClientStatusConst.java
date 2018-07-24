@@ -27,6 +27,9 @@ public class ClientStatusConst {
     public static final int BE_TRACE_E = 22;// 待追踪-E--半年内再跟踪
     public static final int BE_TRACE_F = 23;// 待追踪-F--半年内再跟踪
     public static final int BE_TRACE_G = 24;// 待追踪-G--半年内再跟踪
+    public static final int BE_TRACE_H = 71;// 待追踪-H--半年内再跟踪
+    public static final int BE_TRACE_I = 72;// 待追踪-I--半年内再跟踪
+    public static final int BE_TRACE_J = 73;// 待追踪-J--半年内再跟踪
 
     public static final int BE_TRACK_ZJS_A = 61;// 待追踪-A--转介绍
     public static final int BE_TRACK_ZJS_B = 62;// 待追踪-B--转介绍
@@ -35,6 +38,9 @@ public class ClientStatusConst {
     public static final int BE_TRACE_ZJS_E = 65;// 待追踪-E--转介绍
     public static final int BE_TRACE_ZJS_F = 66;// 待追踪-F--转介绍
     public static final int BE_TRACE_ZJS_G = 67;// 待追踪-G--转介绍
+    public static final int BE_TRACE_ZJS_H = 68;// 待追踪-H--转介绍
+    public static final int BE_TRACE_ZJS_I = 69;// 待追踪-I--转介绍
+    public static final int BE_TRACE_ZJS_J = 70;// 待追踪-J--转介绍
 
     public static final int INVALID_COME = 39;// 无效到店
 
