@@ -22,4 +22,12 @@ public interface ClientTimerDao {
      * 批量删除已经提醒过的
      */
     int batchDelAready(@Param("ids") Integer[] ids);
+
+    /**
+     * 单独删除
+     *
+     * @param id
+     * @return
+     */
+    int delAready(@Param("id") Integer id);
 }

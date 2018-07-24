@@ -1071,14 +1071,13 @@ public class ClientPushServiceImpl implements ClientPushService {
     public void pushClientNoticeInfo() {
         List<ClientTimerPO> allClientTimerList = clientTimerDao.getAll();
         if (CollectionUtils.isNotEmpty(allClientTimerList)) {
-            List<Integer> idsDel = new ArrayList<>();
             // 每个公司一个List
             Map<String, List<NewsPO>> companyMap = new HashMap<>();
             for (ClientTimerPO clientTimerPO : allClientTimerList) {
                 // 推送消息
                 GoEasyUtil.pushWarnTimer(clientTimerPO.getCompanyId(), clientTimerPO.getStaffId(),
                         clientTimerPO.getKzId(), clientTimerPO.getMsg(), staffDao);
-                idsDel.add(clientTimerPO.getId());
+                clientTimerDao.delAready(clientTimerPO.getId());
                 // 新加一条消息
                 NewsPO news = new NewsPO();
                 news.setStaffId(clientTimerPO.getStaffId());
@@ -1093,9 +1092,6 @@ public class ClientPushServiceImpl implements ClientPushService {
                 }
                 companyMap.get(tableName).add(news);
             }
-            // 删掉已经推送的
-            Integer[] idsDelInt = idsDel.toArray(new Integer[idsDel.size()]);
-            clientTimerDao.batchDelAready(idsDelInt);
             // 添加消息记录
             for (String tableName : companyMap.keySet()) {
                 newsDao.batchInsertNews(tableName, companyMap.get(tableName));

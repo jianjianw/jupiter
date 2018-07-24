@@ -22,4 +22,9 @@
             #{id}
         </foreach>
     </delete>
+
+    <delete id="delAready">
+        DELETE FROM hm_crm_timer
+        WHERE ID = #{id}
+    </delete>
 </mapper>
