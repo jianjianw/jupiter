@@ -170,7 +170,7 @@
     <select id="getGoldFingerByFormId" resultMap="goldData">
         select
         <include refid="formList"/>
-        from hm_crm_gold_plug_setting where formId = #{formId}
+        from hm_crm_gold_plug_setting where formId = #{formId} and ISSHOW = 1
     </select>
 
     <update id="addkzByGoldTemp">

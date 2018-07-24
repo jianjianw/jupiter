@@ -153,9 +153,6 @@ public class GoldDataServiceImpl implements GoldDataService {
         if (NumUtil.isNull(goldFingerPO.getIsShow())) {
             throw new RException(ExceptionEnum.UNKNOW_ERROR);
         }
-        if (goldFingerPO.getIsShow().equals(CommonConstant.DEFAULT_ZERO)) {
-            return;
-        }
 
         //获取字段值
         String[] fieldKeys = StringUtil.isNotEmpty(goldFingerPO.getFieldKey()) ? goldFingerPO.getFieldKey().split(CommonConstant.STR_SEPARATOR) : new String[]{};
