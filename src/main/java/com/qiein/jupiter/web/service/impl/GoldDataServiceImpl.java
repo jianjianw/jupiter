@@ -161,7 +161,7 @@ public class GoldDataServiceImpl implements GoldDataService {
         String[] fieldKeys = StringUtil.isNotEmpty(goldFingerPO.getFieldKey()) ? goldFingerPO.getFieldKey().split(CommonConstant.STR_SEPARATOR) : new String[]{};
         String[] fieldValues = StringUtil.isNotEmpty(goldFingerPO.getFieldValue()) ? goldFingerPO.getFieldValue().split(CommonConstant.STR_SEPARATOR) : new String[]{};
         if (fieldKeys.length != fieldValues.length) {
-            throw new RException(ExceptionEnum.UNKNOW_ERROR);
+            throw new RException(ExceptionEnum.GOLD_DATA_ARR_LENGTH_ERROR);
         }
 
         //备注放入其他信息
@@ -206,7 +206,7 @@ public class GoldDataServiceImpl implements GoldDataService {
         //获取当前来源
         SourcePO sourcePO = sourceDao.getByIdAndCid(goldFingerPO.getSrcId(), goldFingerPO.getCompanyId());
         if (null == sourcePO) {
-            throw new RException(ExceptionEnum.UNKNOW_ERROR);
+            throw new RException(ExceptionEnum.SOURCE_NOT_FOUND);
         }
         reqContent.put("companyid", goldFingerPO.getCompanyId());
         reqContent.put("kzname", kzName);
