@@ -18,14 +18,14 @@
         <result column="ADADDRESS" jdbcType="VARCHAR" property="adAddress"/>
         <result column="ZXSTYLE" jdbcType="VARCHAR" property="zxStyle"/>
         <result column="MEMO" jdbcType="VARCHAR" property="memo"/>
-        <result column="ISSHOW" jdbcType="INTEGER" property="isShow"/>
+        <result column="ISSHOW" jdbcType="BIT" property="isShow"/>
         <result column="POSTURL" jdbcType="VARCHAR" property="postURL"/>
-        <result column="CREATEORID" jdbcType="INTEGER" property="createorId"></result>
+        <result column="CREATEORID" jdbcType="INTEGER" property="createorId"/>
         <result column="CREATEORNAME" jdbcType="VARCHAR" property="createorName"/>
         <result column="CREATETIME" jdbcType="INTEGER" property="createTime"/>
-        <result column="AREALIMIT" jdbcType="INTEGER" property="areaLimit"/>
-        <result column="ISFILTER" jdbcType="INTEGER" property="isFilter"/>
-        <result column="PUSHNEWS" jdbcType="INTEGER" property="pushNews"/>
+        <result column="AREALIMIT" jdbcType="BIT" property="areaLimit"/>
+        <result column="ISFILTER" jdbcType="BIT" property="isFilter"/>
+        <result column="PUSHNEWS" jdbcType="BIT" property="pushNews"/>
         <result column="COMPANYID" jdbcType="INTEGER" property="companyId"></result>
     </resultMap>
     <resultMap id="goldCustomer" type="com.qiein.jupiter.web.entity.vo.GoldCustomerVO">
@@ -140,7 +140,7 @@
     <select id="goldCustomerSelect" resultMap="goldCustomer">
         select
         <include refid="goldCustomerlist"/>
-        from hm_crm_gold_temp where formId=#{formId}
+        from hm_crm_gold_temp where formId=#{formId} AND companyId=#{companyId}
         <if test="startTime!=null and startTime!=''">
             and createTime &gt;= #{startTime}
         </if>

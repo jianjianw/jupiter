@@ -41,13 +41,13 @@ public class GoldFingerPO {
     //广告着陆页
     private String  adAddress;
     //是否启用
-    private Integer isShow;
+    private Boolean isShow;
     //是否推送消息
-    private Integer pushNews;
+    private Boolean pushNews;
     //是否过滤
     private Boolean isFilter;
     //异地拦截
-    private Integer areaLimit;
+    private Boolean areaLimit;
     //POST地址
     private String postURL;
     //备注
@@ -68,11 +68,11 @@ public class GoldFingerPO {
         this.createorId = createorId;
     }
 
-    public Integer getIsShow() {
+    public Boolean getIsShow() {
         return isShow;
     }
 
-    public void setIsShow(Integer isShow) {
+    public void setIsShow(Boolean isShow) {
         this.isShow = isShow;
     }
 
@@ -228,19 +228,19 @@ public class GoldFingerPO {
         this.adAddress = adAddress;
     }
 
-    public Integer getEnabled() {
+    public Boolean getEnabled() {
         return isShow;
     }
 
-    public void setEnabled(Integer isShow) {
+    public void setEnabled(Boolean isShow) {
         this.isShow = isShow;
     }
 
-    public Integer getPushNews() {
+    public Boolean getPushNews() {
         return pushNews;
     }
 
-    public void setPushNews(Integer pushNews) {
+    public void setPushNews(Boolean pushNews) {
         this.pushNews = pushNews;
     }
 
@@ -252,11 +252,11 @@ public class GoldFingerPO {
         this.isFilter = isFilter;
     }
 
-    public Integer getAreaLimit() {
+    public Boolean getAreaLimit() {
         return areaLimit;
     }
 
-    public void setAreaLimit(Integer areaLimit) {
+    public void setAreaLimit(Boolean areaLimit) {
         this.areaLimit = areaLimit;
     }
 
