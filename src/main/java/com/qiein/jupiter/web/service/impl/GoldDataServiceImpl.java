@@ -162,20 +162,6 @@ public class GoldDataServiceImpl implements GoldDataService {
         String remark = "<span style=\"color:#FF8533;\">【金数据】</span>";
         StringBuilder sb = new StringBuilder(remark);
         if (fieldKeys.length != 0) {
-            for (int i = 0; i < fieldValues.length; i++) {
-                if ("kzqq".equalsIgnoreCase(fieldValues[i])) {
-                    reqContent.put("kzqq", entry.getString(fieldKeys[i]));
-                    continue;
-                }
-                String value = entry.getString(fieldValues[i]);
-                if (entry.get(fieldValues[i]) != null && !"".equals(value)) {
-                    if (StringUtil.isNotEmpty(value)) {
-                        sb.append(fieldKeys[i]).append("：")
-                                .append(StringUtil.nullToStrTrim(value))
-                                .append("<br/>");
-                    }
-                }
-            }
             if (StringUtil.isNotEmpty(kzName)) {
                 sb.append("姓名：").append(kzName).append("<br/>");
             }
@@ -193,6 +179,20 @@ public class GoldDataServiceImpl implements GoldDataService {
             }
             if (StringUtil.isNotEmpty(formName)) {
                 sb.append("表单名称：").append(formName).append("<br/>");
+            }
+            for (int i = 0; i < fieldValues.length; i++) {
+                if ("kzqq".equalsIgnoreCase(fieldValues[i])) {
+                    reqContent.put("kzqq", entry.getString(fieldKeys[i]));
+                    continue;
+                }
+                String value = entry.getString(fieldValues[i]);
+                if (entry.get(fieldValues[i]) != null && !"".equals(value)) {
+                    if (StringUtil.isNotEmpty(value)) {
+                        sb.append(fieldKeys[i]).append("：")
+                                .append(StringUtil.nullToStrTrim(value))
+                                .append("<br/>");
+                    }
+                }
             }
         }
 
