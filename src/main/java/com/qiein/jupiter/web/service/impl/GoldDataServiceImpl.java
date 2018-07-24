@@ -121,7 +121,7 @@ public class GoldDataServiceImpl implements GoldDataService {
         List<GoldCustomerVO> list = goldDataDao.goldCustomerSelect(goldCustomerDTO);
         GoldCustomerShowVO showVO = new GoldCustomerShowVO();
         showVO.setPageInfo(new PageInfo<>(list));
-        GoldFingerPO goldFingerPO = goldDataDao.findForm(goldCustomerDTO.getFormId());
+        GoldFingerPO goldFingerPO = goldDataDao.findForm(goldCustomerDTO.getFormId(),goldCustomerDTO.getCompanyId());
         showVO.setGoldFingerPO(goldFingerPO);
         return showVO;
     }
