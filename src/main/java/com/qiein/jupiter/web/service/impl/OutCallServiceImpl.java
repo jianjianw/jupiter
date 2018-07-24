@@ -304,11 +304,11 @@ public class OutCallServiceImpl implements OutCallService {
      * 获取语音验证
      */
     @Override
-    public JSONObject getValidateCode(int companyId, int staffId, String tel) {
+    public JSONObject getValidateCode(int companyId, int staffId, String tel, boolean needValidate) {
         //TODO NPE
         OutCallUserDTO admin = outCallDao.getUserInfoAndAdmin(companyId, staffId);
-        StaffPO staff = staffService.getById(staffId, companyId);
         if (StringUtil.isEmpty(tel)) {
+            StaffPO staff = staffService.getById(staffId, companyId);
             tel = staff.getPhone();
         }
         //加密一下
@@ -318,7 +318,7 @@ public class OutCallServiceImpl implements OutCallService {
         baseMap.put("cno", String.valueOf(admin.getCno()));
         baseMap.put("bindTel", tel);
         //是否进行语音验证。 1进行验证，0不验证。默认为1。
-        baseMap.put("getValidateCode", "1");
+        baseMap.put("getValidateCode", needValidate ? "1" : "0");
         JSONObject codeJson = this.postToNet(baseMap, TiOutCallUrlConst.validateAndGetCode, false);
         return codeJson;
     }

@@ -166,6 +166,7 @@ public enum ExceptionEnum {
     //金数据
     FORM_WAS_IN(2201, "表单已存在"),
     FORM_NOT_EXISTS(2202, "表单不存在"),
+    GOLD_DATA_ARR_LENGTH_ERROR(2203,"数组数据错误"),
     //分页
     PAGESIZE_MAX_SIZE_ERROR(2301, "每页最多500条"),
     //短信

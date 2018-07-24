@@ -94,9 +94,9 @@ public class GoldDataServiceImpl implements GoldDataService {
      * @param companyId
      * @return
      */
-    public PageInfo<GoldFingerPO> select(int companyId, int pageNum, int pageSize,String formId) {
+    public PageInfo<GoldFingerPO> select(int companyId, int pageNum, int pageSize, String formId) {
         PageHelper.startPage(pageNum, pageSize);
-        List<GoldFingerPO> select = goldDataDao.select(companyId,formId);
+        List<GoldFingerPO> select = goldDataDao.select(companyId, formId);
         return new PageInfo<>(select);
 
     }
@@ -161,7 +161,7 @@ public class GoldDataServiceImpl implements GoldDataService {
         String[] fieldKeys = StringUtil.isNotEmpty(goldFingerPO.getFieldKey()) ? goldFingerPO.getFieldKey().split(CommonConstant.STR_SEPARATOR) : new String[]{};
         String[] fieldValues = StringUtil.isNotEmpty(goldFingerPO.getFieldValue()) ? goldFingerPO.getFieldValue().split(CommonConstant.STR_SEPARATOR) : new String[]{};
         if (fieldKeys.length != fieldValues.length) {
-            throw new RException(ExceptionEnum.UNKNOW_ERROR);
+            throw new RException(ExceptionEnum.GOLD_DATA_ARR_LENGTH_ERROR);
         }
 
         //备注放入其他信息
@@ -206,7 +206,7 @@ public class GoldDataServiceImpl implements GoldDataService {
         //获取当前来源
         SourcePO sourcePO = sourceDao.getByIdAndCid(goldFingerPO.getSrcId(), goldFingerPO.getCompanyId());
         if (null == sourcePO) {
-            throw new RException(ExceptionEnum.UNKNOW_ERROR);
+            throw new RException(ExceptionEnum.SOURCE_NOT_FOUND);
         }
         reqContent.put("companyid", goldFingerPO.getCompanyId());
         reqContent.put("kzname", kzName);
@@ -216,6 +216,7 @@ public class GoldDataServiceImpl implements GoldDataService {
         reqContent.put("sourceid", goldFingerPO.getSrcId());
         reqContent.put("srctype", sourcePO.getTypeId());
         reqContent.put("sourcename", goldFingerPO.getSrcName());
+        //更新状态
         reqContent.put("isfilter", goldFingerPO.getIsFilter());
         reqContent.put("adid", goldFingerPO.getAdId());
         reqContent.put("adaddress", goldFingerPO.getAdAddress());
@@ -261,7 +262,7 @@ public class GoldDataServiceImpl implements GoldDataService {
 
 
         if ("100000".equals(jsInfo.getString("code"))) {
-            if(null != goldFingerPO.getIsFilter() && !goldFingerPO.getIsFilter().equals(CommonConstant.DEFAULT_ZERO)){
+            if (null != goldFingerPO.getIsFilter() && goldFingerPO.getIsFilter()) {
                 //更新状态
                 goldTempPO.setStatusId(GoldDataConst.IN_FILTER);
                 goldTempDao.update(goldTempPO);
