@@ -45,7 +45,7 @@ public class GoldFingerPO {
     //是否推送消息
     private Integer pushNews;
     //是否过滤
-    private Integer isFilter;
+    private Boolean isFilter;
     //异地拦截
     private Integer areaLimit;
     //POST地址
@@ -244,11 +244,11 @@ public class GoldFingerPO {
         this.pushNews = pushNews;
     }
 
-    public Integer getIsFilter() {
+    public Boolean getIsFilter() {
         return isFilter;
     }
 
-    public void setIsFilter(Integer isFilter) {
+    public void setIsFilter(Boolean isFilter) {
         this.isFilter = isFilter;
     }
 

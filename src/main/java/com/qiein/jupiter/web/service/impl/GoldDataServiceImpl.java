@@ -94,9 +94,9 @@ public class GoldDataServiceImpl implements GoldDataService {
      * @param companyId
      * @return
      */
-    public PageInfo<GoldFingerPO> select(int companyId, int pageNum, int pageSize,String formId) {
+    public PageInfo<GoldFingerPO> select(int companyId, int pageNum, int pageSize, String formId) {
         PageHelper.startPage(pageNum, pageSize);
-        List<GoldFingerPO> select = goldDataDao.select(companyId,formId);
+        List<GoldFingerPO> select = goldDataDao.select(companyId, formId);
         return new PageInfo<>(select);
 
     }
@@ -216,6 +216,7 @@ public class GoldDataServiceImpl implements GoldDataService {
         reqContent.put("sourceid", goldFingerPO.getSrcId());
         reqContent.put("srctype", sourcePO.getTypeId());
         reqContent.put("sourcename", goldFingerPO.getSrcName());
+        //更新状态
         reqContent.put("isfilter", goldFingerPO.getIsFilter());
         reqContent.put("adid", goldFingerPO.getAdId());
         reqContent.put("adaddress", goldFingerPO.getAdAddress());
@@ -261,7 +262,7 @@ public class GoldDataServiceImpl implements GoldDataService {
 
 
         if ("100000".equals(jsInfo.getString("code"))) {
-            if(null != goldFingerPO.getIsFilter() && !goldFingerPO.getIsFilter().equals(CommonConstant.DEFAULT_ZERO)){
+            if (null != goldFingerPO.getIsFilter() && !goldFingerPO.getIsFilter().equals(CommonConstant.DEFAULT_ZERO)) {
                 //更新状态
                 goldTempPO.setStatusId(GoldDataConst.IN_FILTER);
                 goldTempDao.update(goldTempPO);
