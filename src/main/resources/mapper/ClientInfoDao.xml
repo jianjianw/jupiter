@@ -17,6 +17,7 @@
         <result column="CHANNELID" jdbcType="INTEGER" property="channelId"/>
         <result column="CHANNELTYPEID" jdbcType="INTEGER" property="channelTypeId"/>
         <result column="SRCPUSHRULE" jdbcType="INTEGER" property="srcPushRule"/>
+        <result column="SRCTYPE" jdbcType="INTEGER" property="srcType"/>
     </resultMap>
 
 	<resultMap id="goEasyMap" type="com.qiein.jupiter.web.entity.dto.ClientGoEasyDTO">
@@ -362,9 +363,9 @@
 	</update>
 
 	<!-- 获取企业需要分配的筛选中的客资列表 -->
-	<select id="getSkInfoList" parameterType="map" resultType="java.lang.String">
+	<select id="getSkInfoList" parameterType="map" resultMap="infoMap">
 		SELECT
-			info.KZID
+			info.KZID, info.SRCTYPE
 		FROM
 			${infoTabName} info
 		WHERE

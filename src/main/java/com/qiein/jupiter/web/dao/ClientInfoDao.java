@@ -141,7 +141,7 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
      * @param overTime
      * @return
      */
-    List<String> getSkInfoList(@Param("infoTabName") String infoTabName,
+    List<ClientPushDTO> getSkInfoList(@Param("infoTabName") String infoTabName,
                                @Param("companyId") int companyId, @Param("overTime") int overTime);
 
     /**

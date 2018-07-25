@@ -53,5 +53,5 @@ public interface ClientPushService {
      * @param overTime
      * @param interval
      */
-    void pushSk(int companyId, String kzId, int overTime, int interval);
+    void pushSk(int companyId, String kzId, int overTime, int interval,int srcType);
 }
