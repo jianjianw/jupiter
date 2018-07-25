@@ -39,6 +39,14 @@ public class PageConfig implements Serializable {
      */
     private int companyId;
 
+    public String getTitleTxtNo() {
+        return titleTxtNo;
+    }
+
+    public void setTitleTxtNo(String titleTxtNo) {
+        this.titleTxtNo = titleTxtNo;
+    }
+
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
