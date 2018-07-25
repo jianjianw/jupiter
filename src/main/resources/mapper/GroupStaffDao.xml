@@ -370,7 +370,7 @@
                                             AND staff.ISDEL = 0
         WHERE group_up.COMPANYID = #{companyId}
               AND group_up.PARENTID = '0'
-        ORDER BY group_up.GROUPTYPE, group_up.GROUPNAME, group_down.GROUPNAME
+        ORDER BY group_up.PRIORITY, group_up.GROUPTYPE, group_up.GROUPNAME, group_down.GROUPNAME
     </select>
 
     <!--根据组类型获取所有小组及组内人员信息-->
@@ -396,6 +396,7 @@
         WHERE
             s.COMPANYID = #{companyId} AND g.GROUPTYPE = #{type}
             AND s.ISDEL = 0 AND s.ISLOCK = 0
+        ORDER BY g.grp.PRIORITY
     </select>
 
     <!--获取员工所属角色-->
@@ -432,7 +433,7 @@
         </if>
         AND grp.PARENTID != '0'
         AND sf.ISDEL = 0
-        ORDER BY grp.GROUPNAME, grp.ID, sf.ISLOCK, sf.STATUSFLAG DESC, sf.ID
+        ORDER BY grp.PRIORITY, grp.GROUPNAME, grp.ID, sf.ISLOCK, sf.STATUSFLAG DESC, sf.ID
     </select>
 
     <!--获取门市下的所有人员列表-->
@@ -533,6 +534,6 @@
             AND grp.PARENTID != '0'
             AND sf.ISDEL = 0
             AND sf.ISLOCK = 0
-        ORDER BY grp.GROUPNAME, grp.ID, sf.ID
+        ORDER BY grp.PRIORITY, grp.GROUPNAME, grp.ID, sf.ID
     </select>
 </mapper>
