@@ -39,4 +39,20 @@ public class CashController extends BaseController {
         cashService.editCash(cashLogPO);
         return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
+
+    /**
+     * 添加收款记录
+     *
+     * @return
+     */
+    @PostMapping("/add_cash_log")
+    public ResultInfo addCashLog(@Validated @RequestBody CashLogPO cashLogPO) {
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        cashLogPO.setCompanyId(currentLoginStaff.getCompanyId());
+        cashLogPO.setOperaId(currentLoginStaff.getId());
+        cashLogPO.setOperaName(currentLoginStaff.getNickName());
+        cashService.addCashLog(cashLogPO);
+        return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
+    }
 }

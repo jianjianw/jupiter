@@ -46,13 +46,6 @@ public interface ClientEditService {
     void editClientByCwzx(ClientVO clientVO, StaffPO staffPO);
 
     /**
-     * 添加收款记录
-     *
-     * @param cashLogPO
-     */
-    void addCashLog(CashLogPO cashLogPO);
-
-    /**
      * 修改客资详情
      *
      * @param clientVO
