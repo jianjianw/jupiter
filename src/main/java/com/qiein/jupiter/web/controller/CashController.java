@@ -34,8 +34,8 @@ public class CashController extends BaseController {
     public ResultInfo editCash(@RequestBody CashLogPO cashLogPO) {
         StaffPO staff = getCurrentLoginStaff();
         cashLogPO.setCompanyId(staff.getCompanyId());
-        cashLogPO.setOperaId(staff.getId());
-        cashLogPO.setOperaName(staff.getNickName());
+        cashLogPO.setStaffId(staff.getId());
+        cashLogPO.setStaffName(staff.getNickName());
         cashService.editCash(cashLogPO);
         return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
