@@ -180,7 +180,7 @@
 		)
 		AND (
 			UNIX_TIMESTAMP(NOW()) - info.LASTPUSHTIME
-		) &gt;= #{interval}
+		) &gt;= #{overTime}
 		ORDER BY info.ID ASC
     </select>
 
@@ -360,4 +360,41 @@
 			KZID = #{kzId}
 			AND COMPANYID = #{companyId};
 	</update>
+
+	<!-- 获取企业需要分配的筛选中的客资列表 -->
+	<select id="getSkInfoList" parameterType="map" resultType="java.lang.String">
+		SELECT
+			info.KZID
+		FROM
+			${infoTabName} info
+		WHERE
+			info.COMPANYID = #{companyId}
+		AND info.ISDEL = 0
+		AND info.STATUSID = 0
+		AND info.PROMOTORID IS NULL
+		AND (UNIX_TIMESTAMP(NOW()) - info.LASTPUSHTIME) &gt;= #{overTime}
+		ORDER BY info.ID ASC
+    </select>
+
+	<!-- 分配给筛客之后，修改筛选人ID，推送时间 -->
+	<update id="updateSkInfoWhenAllot" parameterType="map">
+    	UPDATE ${infoTabName}
+		SET  PROMOTORID = #{promotorId},
+		 LASTPUSHTIME = UNIX_TIMESTAMP(NOW()),
+		 UPDATETIME = UNIX_TIMESTAMP(NOW())
+		WHERE
+			KZID = #{kzId}
+		AND COMPANYID = #{companyId}
+    </update>
+
+	<!-- 分配给筛客之后，修改筛选人姓名 -->
+	<update id="updateSkDetailWhenAllot" parameterType="map">
+    	UPDATE ${detTabName}
+		SET  PROMOTERNAME = #{promoterName}
+		WHERE
+			KZID = #{kzId}
+		AND COMPANYID = #{companyId}
+    </update>
+
+
 </mapper>

@@ -441,7 +441,7 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @param groupIdList
      * @return
      */
-    List<StaffPushDTO> getGroupAvgAppointList(@Param("companyId") Integer companyId, @Param("role") String role, @Param("groupId") String groupId);
+    List<StaffPushDTO> getGroupAvgAppointList(@Param("companyId") Integer companyId, @Param("role") String role, @Param("groupId") String groupId, @Param("interval") int interval);
 
     /**
      * 获取小组平均,小组领取客资情况
@@ -464,7 +464,7 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @param sourceId
      * @return
      */
-    List<StaffPushDTO> getAssginAppointList(@Param("companyId") Integer companyId, @Param("sourceId") int sourceId, @Param("role") String role);
+    List<StaffPushDTO> getAssginAppointList(@Param("companyId") Integer companyId, @Param("sourceId") int sourceId, @Param("role") String role, @Param("interval") int interval);
 
     /**
      * 获取渠道指定员工客服
@@ -527,4 +527,13 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @return:
      */
     List<DingBindUserDTO> getNotBindDingUser(Integer companyId);
+
+    /**
+     * 获取筛客平均，电商筛选人员
+     *
+     * @param companyId
+     * @param interval
+     * @return
+     */
+    StaffPushDTO getAvgDssxStaff(@Param("companyId") int companyId, @Param("interval") int interval);
 }

@@ -44,4 +44,14 @@ public interface ClientPushService {
      * 定时推送需要下次跟踪的客资
      */
     void pushClientNoticeInfo();
+
+    /**
+     * 筛客平均
+     *
+     * @param companyId
+     * @param kzId
+     * @param overTime
+     * @param interval
+     */
+    void pushSk(int companyId, String kzId, int overTime, int interval);
 }

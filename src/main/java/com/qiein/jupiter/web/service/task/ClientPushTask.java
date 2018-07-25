@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.web.service.quene.PushQueue;
+import com.qiein.jupiter.web.service.quene.PushSkQueue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,8 @@ public class ClientPushTask {
     private CompanyDao companyDao;
     @Autowired
     private PushQueue lpPushQueue;
+    @Autowired
+    private PushSkQueue pushSkQueue;
 
     // 客资推送线程池
     ThreadTaskPushManager tpm = ThreadTaskPushManager.getInstance();
@@ -53,7 +56,7 @@ public class ClientPushTask {
         }
         //先判断下队列是否为空,只有队列为空，才去数据库找客资推送
         if (!lpPushQueue.isEmpty()) {
-            log.info("客资队列不为空，暂不推送...");
+            log.info("客资队列为空，暂不推送...");
             return;
         }
         log.info("执行定时推送任务");
@@ -86,4 +89,35 @@ public class ClientPushTask {
         //新版本推送
         lpPushQueue.offer(info);
     }
+
+    /**
+     * 定时任务-推送客资给筛客
+     */
+    @Scheduled(initialDelay = 1000, fixedDelay = 60 * 1000)
+    public void taskPushTo() {
+        //如果是测试环境，就不再推送
+        if (active.equals("dev")) {
+            log.info("测试环境，暂不推送...");
+            return;
+        }
+        //先判断下队列是否为空,只有队列为空，才去数据库找客资推送
+        if (!pushSkQueue.isEmpty()) {
+            log.info("筛客队列为空，暂不推送...");
+            return;
+        }
+        log.info("执行定时推送筛客任务");
+        List<CompanyPO> compList = companyDao.listSkAvgComp();
+        for (CompanyPO comp : compList) {
+            //超时时间设置是秒
+            List<String> kzList = pushService.getSkInfoList(comp.getId(), comp.getOvertime());
+            if (CollectionUtils.isEmpty(kzList)) {
+                continue;
+            }
+            for (String kzId : kzList) {
+                pushSkQueue.offer(new ClientPushDTO(pushService, comp.getKzInterval(), comp.getOvertime(), kzId, comp.getId()));
+            }
+            log.info("推送了客资：" + kzList.size() + " 个");
+        }
+    }
+
 }

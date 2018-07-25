@@ -60,6 +60,13 @@ public interface CompanyDao extends BaseDao<CompanyPO> {
     List<CompanyPO> listComp();
 
     /**
+     * 获取筛客平均的企业列表
+     *
+     * @return
+     */
+    List<CompanyPO> listSkAvgComp();
+
+    /**
      * 更改咨询类型(客资校验是否忽略咨询类型)
      *
      * @return
@@ -119,7 +126,6 @@ public interface CompanyDao extends BaseDao<CompanyPO> {
     void editZjsValidStatus(@Param("companyId") Integer companyId, @Param("zjsValidStatus") String zjsValidStatus);
 
 
-
     /**
      * 功能描述:
      *
@@ -148,8 +154,9 @@ public interface CompanyDao extends BaseDao<CompanyPO> {
      * @return
      */
     int getAvgDefaultTime(@Param("companyId") int companyId);
+
     /**
      * 客服编辑接待结果
      */
-    void editKfEditJdRst(@Param("kfEditJdRst")boolean kfEditJdRst,@Param("companyId")Integer companyId);
+    void editKfEditJdRst(@Param("kfEditJdRst") boolean kfEditJdRst, @Param("companyId") Integer companyId);
 }

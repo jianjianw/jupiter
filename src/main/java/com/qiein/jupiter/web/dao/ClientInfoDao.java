@@ -131,7 +131,18 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
      * @return
      */
     List<ClientPushDTO> getInfoListBeReadyPush(@Param("infoTabName") String infoTabName,
-                                               @Param("companyId") int companyId, @Param("interval") int interval);
+                                               @Param("companyId") int companyId, @Param("overTime") int overTime);
+
+    /**
+     * 获取企业需要分配的筛选中的客资列表
+     *
+     * @param infoTabName
+     * @param companyId
+     * @param overTime
+     * @return
+     */
+    List<String> getSkInfoList(@Param("infoTabName") String infoTabName,
+                               @Param("companyId") int companyId, @Param("overTime") int overTime);
 
     /**
      * 获取goeasy推送的客资信息
@@ -242,4 +253,27 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
      * @param companyId
      */
     void editStayAmount(@Param("detTabName") String detTabName, @Param("cashTabName") String cashTabName, @Param("kzId") String kzId, @Param("companyId") int companyId);
+
+    /**
+     * 分配给筛客之后，修改筛选人ID，推送时间
+     *
+     * @param infoTabName
+     * @param promotorId
+     * @param kzId
+     * @param companyId
+     * @return
+     */
+    int updateSkInfoWhenAllot(@Param("infoTabName") String infoTabName, @Param("promotorId") int promotorId, @Param("kzId") String kzId, @Param("companyId") int companyId);
+
+    /**
+     * 分配给筛客之后，修改筛选人姓名
+     *
+     * @param detTabName
+     * @param promoterName
+     * @param kzId
+     * @param companyId
+     * @return
+     */
+    int updateSkDetailWhenAllot(@Param("detTabName") String detTabName, @Param("promoterName") String promoterName, @Param("kzId") String kzId, @Param("companyId") int companyId);
+
 }

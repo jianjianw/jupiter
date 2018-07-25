@@ -103,6 +103,14 @@ public class ClientPushDTO implements Serializable {
         this.sourceId = srcId;
     }
 
+    public ClientPushDTO(ClientPushServiceImpl service, int kzInterval, int overTime, String kzId, int companyId) {
+        this.service = service;
+        this.pushInterval = kzInterval;
+        this.overTime = overTime;
+        this.kzId = kzId;
+        this.companyId = companyId;
+    }
+
     public ClientPushDTO() {
         super();
     }
