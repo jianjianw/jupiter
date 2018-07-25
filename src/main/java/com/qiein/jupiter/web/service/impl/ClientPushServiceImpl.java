@@ -92,8 +92,8 @@ public class ClientPushServiceImpl implements ClientPushService {
         ClientPushDTO clientDTO = clientInfoDao.getClientPushDTOById(kzId, DBSplitUtil.getInfoTabName(companyId),
                 DBSplitUtil.getDetailTabName(companyId));
 
-        // 判断客资当前状态-限定客资最后推送时间已经超过分配间隔
-        if (clientDTO == null || (clientDTO.getPushInterval() != 0 && clientDTO.getPushInterval() < interval)) {
+        // 判断客资当前状态-限定客资最后推送时间已经超过分配间隔  //多加5秒防止特殊情况
+        if (clientDTO == null || (clientDTO.getPushInterval() != 0 && clientDTO.getPushInterval() <= (overTime + 5))) {
             return;
         }
         // 判定是否已经预选客服
