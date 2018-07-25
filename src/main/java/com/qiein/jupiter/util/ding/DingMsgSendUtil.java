@@ -3,6 +3,7 @@ package com.qiein.jupiter.util.ding;
 
 import com.alibaba.fastjson.JSONObject;
 import com.mzlion.easyokhttp.HttpClient;
+import com.qiein.jupiter.util.TimeUtil;
 import com.qiein.jupiter.web.dao.StaffDao;
 import com.qiein.jupiter.web.entity.dto.SendDingMsgDTO;
 import org.slf4j.Logger;
@@ -45,6 +46,7 @@ public class DingMsgSendUtil {
      */
     public static void sendDingMsg(String content, int companyId, int staffId, StaffDao staffDao) {
         content = content.replaceAll("<br/>", "\n");
+        content = content + "\n" + "推送时间：" + TimeUtil.getSysTimeClient();
         SendDingMsgDTO sendDingMsgDTO = staffDao.getStaffUserIdAndCorpId(companyId, staffId);
         if (sendDingMsgDTO == null) {
             logger.error("未找到发送对象,companyId: " + companyId + " ,staffId: " + staffId);

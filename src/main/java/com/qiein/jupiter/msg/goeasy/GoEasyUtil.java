@@ -639,17 +639,6 @@ public class GoEasyUtil {
         DingMsgSendUtil.sendDingMsg(MessageConts.TO_BE_TRACKED_HEAD + "\n" + msg, companyId, staffId, staffDao);
     }
 
-//    public static void main(String[] args) {
-//        // ClientGoEasyDTO info = new ClientGoEasyDTO();
-//        // info.setId(668);
-//        // info.setKzWechat("xiangsiyu521");
-//        // info.setSourceName("杭州微博");
-//        // info.setChannelName("微博");
-//        // info.setInvalidLabel("分手了");
-//        // pushYyValidReject(1, 1, info, null);
-//        pushStaffRefresh(2012, 698, "127.0.0.1", "火星");
-//    }
-
     /**
      * 推广备注被修改，推送给客服
      *

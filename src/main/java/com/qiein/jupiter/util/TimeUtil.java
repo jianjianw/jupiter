@@ -291,6 +291,13 @@ public class TimeUtil {
     }
 
     /**
+     * 获取当前系统时间： yyyy/MM/dd HH:mm:ss
+     */
+    public static String getSysTimeClient() {
+        return getSysTime("yyyy/MM/dd HH:mm:ss");
+    }
+
+    /**
      * 获取当前系统时间： yyyy-MM-dd HH:mm:ss
      */
     public static String getSysTime() {
