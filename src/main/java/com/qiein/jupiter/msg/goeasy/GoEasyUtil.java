@@ -918,15 +918,15 @@ public class GoEasyUtil {
      * @param logId
      * @param overTime
      */
-    public static void pushAllotMsg(int companyId, int staffId, int kzNum, NewsDao newsDao, StaffDao staffDao) {
+    public static void pushAllotMsg(int companyId, int staffId, String[] kzIdsArr, NewsDao newsDao, StaffDao staffDao) {
         if (NumUtil.isNull(staffId) || NumUtil.isNull(companyId)) {
             return;
         }
         StringBuffer sb = new StringBuffer();
-        sb.append("主管分配给您" + kzNum + "个新的客资");
+        sb.append("主管分配给您" + kzIdsArr.length + "个新的客资");
         String head = sb.toString();
         pushSuccess(companyId, staffId, head, sb.toString());
-        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_SUCCESS, head, null, null, staffId, companyId,
+        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_SUCCESS, head, null, kzIdsArr.length == 1 ? kzIdsArr[0] : "", staffId, companyId,
                 DBSplitUtil.getNewsTabName(companyId)));
         DingMsgSendUtil.sendDingMsg(head, companyId, staffId, staffDao);
     }

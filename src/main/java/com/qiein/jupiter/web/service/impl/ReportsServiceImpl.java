@@ -2,9 +2,12 @@ package com.qiein.jupiter.web.service.impl;
 
 import com.qiein.jupiter.constant.ClientLogConst;
 import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.constant.RoleConstant;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.ClientInfoDao;
+import com.qiein.jupiter.web.dao.GroupDao;
+import com.qiein.jupiter.web.dao.GroupStaffDao;
 import com.qiein.jupiter.web.entity.dto.ClientLogDTO;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.EditClientPhonePO;
@@ -24,6 +27,8 @@ public class ReportsServiceImpl implements ReportService {
     @Autowired
     private ClientInfoDao clientInfoDao;
 
+    @Autowired
+    private GroupStaffDao groupStaffDao;
     /**
      * 修改联系方式日志
      *
@@ -81,6 +86,17 @@ public class ReportsServiceImpl implements ReportService {
         clientLogDTO.setTableDetail(DBSplitUtil.getDetailTabName(clientLogDTO.getCompanyId()));
         clientLogDTO.setTableLog(DBSplitUtil.getInfoLogTabName(clientLogDTO.getCompanyId()));
         clientLogDTO.setLogType(ClientLogConst.INFO_LOGTYPE_REPEAT);
+
+        // 获取员工角色
+        List<String> roleList = groupStaffDao.getStaffRoleList(clientLogDTO.getCompanyId(), clientLogDTO.getStaffId());
+
+        for (String role : roleList) {
+            // 1.如果是管理中心，全部开放
+            if (RoleConstant.GLZX.equals(role)) {
+                clientLogDTO.setStaffId(CommonConstant.SYSTEM_OPERA_ID);
+                break;
+            }
+        }
         List<RepateKzLogPO> list = clientInfoDao.repateKzLog(clientLogDTO);
         return new PageInfo<>(list);
     }

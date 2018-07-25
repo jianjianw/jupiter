@@ -8,7 +8,7 @@
     </resultMap>
 
     <sql id="baseColumn">
-        GROUPID,STAFFID,COMPANYID
+        GROUPID, STAFFID, COMPANYID
     </sql>
 
     <resultMap id="groupMap" type="com.qiein.jupiter.web.entity.vo.GroupStaffVO">
@@ -20,9 +20,10 @@
         <result column="UPCOMPANYID" property="companyId" jdbcType="VARCHAR"/>
         <result column="UPCHIEFIDS" property="chiefIds" jdbcType="VARCHAR"/>
         <result column="UPCHIEFNAMES" property="chiefNames" jdbcType="VARCHAR"/>
+        <result column="UPGROUPTYPE" property="groupType" jdbcType="VARCHAR"/>
         <collection property="groupList" ofType="com.qiein.jupiter.web.entity.vo.GroupStaffVO">
             <id column="ID" property="id" jdbcType="VARCHAR"/>
-            <result column="SHOPID" property="shopId" jdbcType="VARCHAR"></result>
+            <result column="SHOPID" property="shopId" jdbcType="VARCHAR"/>
             <result column="GROUPID" property="groupId" jdbcType="VARCHAR"/>
             <result column="GROUPNAME" property="groupName" jdbcType="VARCHAR"/>
             <result column="PARENTID" property="parentId" jdbcType="VARCHAR"/>
@@ -30,6 +31,7 @@
             <result column="COMPANYID" property="companyId" jdbcType="VARCHAR"/>
             <result column="CHIEFIDS" property="chiefIds" jdbcType="VARCHAR"/>
             <result column="CHIEFNAMES" property="chiefNames" jdbcType="VARCHAR"/>
+            <result column="GROUPTYPE" property="groupType" jdbcType="VARCHAR"/>
             <collection property="staffList" ofType="com.qiein.jupiter.web.entity.po.StaffPO">
                 <id column="STAFFID" property="id" jdbcType="INTEGER"/>
                 <result column="NICKNAME" property="nickName" jdbcType="VARCHAR"/>
@@ -64,7 +66,7 @@
         <result column="HEADIMG" property="headImg" jdbcType="VARCHAR"/>
         <result column="ISLOCK" property="lockFlag" jdbcType="BOOLEAN"/>
         <result column="GROUPID" property="groupId" jdbcType="VARCHAR"/>
-        <result column="DELBTFLAG" property="delBtFlag" jdbcType="INTEGER"></result>
+        <result column="DELBTFLAG" property="delBtFlag" jdbcType="INTEGER"/>
         <collection property="roleList" ofType="com.qiein.jupiter.web.entity.vo.RoleVO" resultMap="RoleMap"/>
     </resultMap>
 
@@ -134,54 +136,63 @@
 
     <!--获取公司全部的组及下属员工-->
     <select id="getAllGroupAndStaff" resultMap="groupMap">
-		SELECT  ID, GROUPID, GROUPNAME, PARENTID, GROUPTYPE, COMPANYID,CHIEFIDS,CHIEFNAMES
-		FROM hm_pub_group WHERE COMPANYID = #{companyId} AND PARENTID = '0'
+        SELECT
+            ID,
+            GROUPID,
+            GROUPNAME,
+            PARENTID,
+            GROUPTYPE,
+            COMPANYID,
+            CHIEFIDS,
+            CHIEFNAMES
+        FROM hm_pub_group
+        WHERE COMPANYID = #{companyId} AND PARENTID = '0'
     </select>
 
     <!--获取某个组及下属员工-->
     <select id="getGroupStaffListByParentIdAndCid" resultMap="groupMap">
- 		SELECT
-			hm_pub_group.GROUPID,
-			hm_pub_group.GROUPNAME,
-			hm_pub_group.PARENTID,
-			hm_pub_group.GROUPTYPE,
-			hm_pub_group.COMPANYID,
-			hm_pub_group.CHIEFIDS,
-			hm_pub_group.CHIEFNAMES,
-			staff.ID STAFFID,
-			staff.NICKNAME,
-			staff.PHONE,
-			staff.USERNAME,
-			staff.PASSWORD,
-			staff.COMPANYID,
-			staff.CORPID,
-			staff.DINGUSERID,
-			staff.OPENID,
-			staff.HEADIMG,
-			staff.TOKEN,
-			staff.ISSHOW,
-			staff.ISLOCK,
-			staff.ISDEL
-		FROM
-			hm_pub_group
-			LEFT JOIN hm_pub_group_staff rela ON hm_pub_group.GROUPID = rela.GROUPID
-			LEFT JOIN hm_pub_staff staff ON rela.STAFFID = staff.ID
-		WHERE hm_pub_group.PARENTID = #{parentId}
-		AND hm_pub_group.COMPANYID = #{companyId}
-		ORDER BY hm_pub_group.GROUPTYPE, hm_pub_group.GROUPNAME
+        SELECT
+            hm_pub_group.GROUPID,
+            hm_pub_group.GROUPNAME,
+            hm_pub_group.PARENTID,
+            hm_pub_group.GROUPTYPE,
+            hm_pub_group.COMPANYID,
+            hm_pub_group.CHIEFIDS,
+            hm_pub_group.CHIEFNAMES,
+            staff.ID STAFFID,
+            staff.NICKNAME,
+            staff.PHONE,
+            staff.USERNAME,
+            staff.PASSWORD,
+            staff.COMPANYID,
+            staff.CORPID,
+            staff.DINGUSERID,
+            staff.OPENID,
+            staff.HEADIMG,
+            staff.TOKEN,
+            staff.ISSHOW,
+            staff.ISLOCK,
+            staff.ISDEL
+        FROM
+            hm_pub_group
+            LEFT JOIN hm_pub_group_staff rela ON hm_pub_group.GROUPID = rela.GROUPID
+            LEFT JOIN hm_pub_staff staff ON rela.STAFFID = staff.ID
+        WHERE hm_pub_group.PARENTID = #{parentId}
+              AND hm_pub_group.COMPANYID = #{companyId}
+        ORDER BY hm_pub_group.GROUPTYPE, hm_pub_group.GROUPNAME
     </select>
 
     <!--删除员工小组-->
     <delete id="deleteByStaffId" parameterType="map">
-        DELETE FROM  hm_pub_group_staff
+        DELETE FROM hm_pub_group_staff
         WHERE STAFFID = #{staffId}
-        AND COMPANYID = #{companyId}
+              AND COMPANYID = #{companyId}
     </delete>
 
     <!--删除指定小组下的员工小组-->
-    <delete id = "deleteByStaffIdAndGroupId">
+    <delete id="deleteByStaffIdAndGroupId">
         DELETE FROM hm_pub_group_staff
-        where STAFFID = #{staffId} and COMPANYID = #{companyId} and GROUPID = #{groupId}
+        WHERE STAFFID = #{staffId} AND COMPANYID = #{companyId} AND GROUPID = #{groupId}
     </delete>
 
     <!--批量删除员工小组-->
@@ -198,9 +209,9 @@
     <!--添加小组人员关联表-->
     <insert id="insertGroupStaff" parameterType="map">
         INSERT INTO hm_pub_group_staff
-        (GROUPID,STAFFID,COMPANYID)
+        (GROUPID, STAFFID, COMPANYID)
         VALUES
-        (#{groupId},#{staffId},#{companyId})
+            (#{groupId}, #{staffId}, #{companyId})
     </insert>
 
     <!--批量添加小组人员关联表-->
@@ -229,166 +240,187 @@
     <!--获取小组人员-->
     <select id="getGroupStaffs" parameterType="map" resultMap="StaffVOMap">
         SELECT
-            rela.GROUPID, sf.ID, sf.NICKNAME, sf.PHONE, sf.USERNAME, sf.HEADIMG, sf.ISLOCK, sf.`PASSWORD`, role_rela.ROLEID,  role.ROLENAME,result.DELBTFLAG
+            rela.GROUPID,
+            sf.ID,
+            sf.NICKNAME,
+            sf.PHONE,
+            sf.USERNAME,
+            sf.HEADIMG,
+            sf.ISLOCK,
+            sf.`PASSWORD`,
+            role_rela.ROLEID,
+            role.ROLENAME,
+            result.DELBTFLAG
         FROM
             hm_pub_group_staff rela
             INNER JOIN hm_pub_staff sf ON sf.COMPANYID = rela.COMPANYID AND rela.STAFFID = sf.ID
             LEFT JOIN hm_pub_staff_role role_rela ON sf.ID = role_rela.STAFFID AND sf.COMPANYID = role_rela.COMPANYID
             LEFT JOIN hm_pub_role role ON role_rela.ROLEID = role.ID AND role_rela.COMPANYID = role.COMPANYID
             LEFT JOIN (SELECT
-                           count(1) as staff_count,
+                           count(1) AS staff_count,
                            gp_staff.staffId,
                            gp_staff.companyId,
-                           '1' as DELBTFLAG
+                           '1'      AS DELBTFLAG
                        FROM
-                           hm_pub_group_staff gp_staff,hm_pub_group gp
-                           where  gp.GROUPID = gp_staff.GROUPID group by staffid having staff_count > 1) result
-                    on result.staffId = rela.staffID and result.companyId = rela.companyID
+                           hm_pub_group_staff gp_staff, hm_pub_group gp
+                       WHERE gp.GROUPID = gp_staff.GROUPID
+                       GROUP BY staffid
+                       HAVING staff_count > 1) result
+                ON result.staffId = rela.staffID AND result.companyId = rela.companyID
         WHERE
             rela.GROUPID = #{groupId}
             AND rela.COMPANYID = #{companyId}
             AND sf.ISDEL = 0
-        ORDER BY sf.ISLOCK,sf.NICKNAME
+        ORDER BY sf.ISLOCK, sf.NICKNAME
     </select>
 
     <!--获取各小组内人员的接单数和在线人数-->
     <select id="getStaffMarsInfo" parameterType="Integer" resultType="com.qiein.jupiter.web.entity.vo.GroupsInfoVO">
         SELECT
-        base.GROUPID , a.orderNum , b.lineNum
+            base.GROUPID,
+            a.orderNum,
+            b.lineNum
         FROM
-        hm_pub_group_staff base
-        LEFT JOIN
-        (SELECT
-        gs.GROUPID aid, SUM(stf.TODAYNUM) orderNum
-        FROM
-        hm_pub_staff stf
-        JOIN
-        hm_pub_group_staff gs ON stf.COMPANYID = gs.COMPANYID AND stf.ID = gs.STAFFID
-        WHERE stf.COMPANYID = #{companyId}
-        GROUP BY gs.GROUPID) a ON a.aid = base.GROUPID
-        LEFT JOIN
-        (SELECT
-        gs.GROUPID bid, COUNT(stf.STATUSFLAG=1) lineNum
-        FROM
-        hm_pub_staff stf
-        JOIN
-        hm_pub_group_staff gs ON stf.COMPANYID = gs.COMPANYID AND stf.ID = gs.STAFFID
-        WHERE stf.COMPANYID = #{companyId} AND stf.STATUSFLAG = 1
-        GROUP BY gs.GROUPID) b ON b.bid = base.GROUPID
+            hm_pub_group_staff base
+            LEFT JOIN
+            (SELECT
+                 gs.GROUPID        aid,
+                 SUM(stf.TODAYNUM) orderNum
+             FROM
+                 hm_pub_staff stf
+                 JOIN
+                 hm_pub_group_staff gs ON stf.COMPANYID = gs.COMPANYID AND stf.ID = gs.STAFFID
+             WHERE stf.COMPANYID = #{companyId}
+             GROUP BY gs.GROUPID) a ON a.aid = base.GROUPID
+            LEFT JOIN
+            (SELECT
+                 gs.GROUPID                bid,
+                 COUNT(stf.STATUSFLAG = 1) lineNum
+             FROM
+                 hm_pub_staff stf
+                 JOIN
+                 hm_pub_group_staff gs ON stf.COMPANYID = gs.COMPANYID AND stf.ID = gs.STAFFID
+             WHERE stf.COMPANYID = #{companyId} AND stf.STATUSFLAG = 1
+             GROUP BY gs.GROUPID) b ON b.bid = base.GROUPID
         WHERE
-        base.COMPANYID = #{companyId}
+            base.COMPANYID = #{companyId}
         GROUP BY base.GROUPID
     </select>
 
     <!--获取网销排班人员信息详情-->
     <select id="getGroupStaffsDetail" parameterType="map" resultMap="GroupStaffDetailMap">
         SELECT
-	        stf.ID,NICKNAME,PHONE,USERNAME,stf.COMPANYID,HEADIMG,STATUSFLAG,TODAYNUM,
-	        WEIGHT,LIMITDAY,LASTPUSHTIME,LIMITCHANNELIDS,LIMITCHANNELNAMES,LIMITSHOPIDS,
-	        LIMITSHOPNAMES,LASTLOGINTIME,LASTLOGINIP,LASTLOGOUTTIME,LASTLOGOUTIP,GROUPID
+            stf.ID,
+            NICKNAME,
+            PHONE,
+            USERNAME,
+            stf.COMPANYID,
+            HEADIMG,
+            STATUSFLAG,
+            TODAYNUM,
+            WEIGHT,
+            LIMITDAY,
+            LASTPUSHTIME,
+            LIMITCHANNELIDS,
+            LIMITCHANNELNAMES,
+            LIMITSHOPIDS,
+            LIMITSHOPNAMES,
+            LASTLOGINTIME,
+            LASTLOGINIP,
+            LASTLOGOUTTIME,
+            LASTLOGOUTIP,
+            GROUPID
         FROM
-	        hm_pub_group_staff grpstf
-        JOIN
-	        hm_pub_staff stf ON grpstf.STAFFID = stf.ID AND grpstf.COMPANYID = stf.COMPANYID
-        LEFT JOIN
-	        hm_pub_staff_detail sfdet ON sfdet.ID = stf.ID
+            hm_pub_group_staff grpstf
+            JOIN
+            hm_pub_staff stf ON grpstf.STAFFID = stf.ID AND grpstf.COMPANYID = stf.COMPANYID
+            LEFT JOIN
+            hm_pub_staff_detail sfdet ON sfdet.ID = stf.ID
         WHERE
-	        grpstf.GROUPID = #{groupId} AND grpstf.COMPANYID = #{companyId} AND stf.ISDEL = 0 AND  stf.ISLOCK = 0
-        ORDER BY FIELD(STATUSFLAG, 1, 0, 8, 9) , stf.ISLOCK,stf.NICKNAME
+            grpstf.GROUPID = #{groupId} AND grpstf.COMPANYID = #{companyId} AND stf.ISDEL = 0 AND stf.ISLOCK = 0
+        ORDER BY FIELD(STATUSFLAG, 1, 0, 8, 9), stf.ISLOCK, stf.NICKNAME
     </select>
 
     <!--获取公司下所有的部门及员工-->
     <select id="getAllDeptAndStaff" resultMap="groupMap">
-       SELECT
-          group_up.ID UPID,group_up.GROUPNAME UPGROUPNAME,group_up.GROUPID UPGROUPID,group_up.PARENTID UPPARENTID,
-           group_down.ID, group_down.GROUPNAME,group_down.GROUPID,group_down.PARENTID,
-            staff.id STAFFID,staff.NICKNAME,staff.ISLOCK,staff.ISDEL,staff.WHITEFLAG,group_down.SHOPID
+        SELECT
+            group_up.ID        UPID,
+            group_up.GROUPNAME UPGROUPNAME,
+            group_up.GROUPID   UPGROUPID,
+            group_up.PARENTID  UPPARENTID,
+            group_up.GROUPTYPE UPGROUPTYPE,
+            group_down.ID,
+            group_down.GROUPNAME,
+            group_down.GROUPID,
+            group_down.PARENTID,
+            group_down.GROUPTYPE,
+            staff.id           STAFFID,
+            staff.NICKNAME,
+            staff.ISLOCK,
+            staff.ISDEL,
+            staff.WHITEFLAG,
+            group_down.SHOPID
         FROM
             hm_pub_group group_up
             LEFT JOIN hm_pub_group group_down ON group_up.COMPANYID = group_down.COMPANYID
-            AND group_up.GROUPID = group_down.PARENTID
+                                                 AND group_up.GROUPID = group_down.PARENTID
             LEFT JOIN hm_pub_group_staff group_staff ON group_down.GROUPID = group_staff.GROUPID
-            LEFT JOIN hm_pub_staff staff on group_staff.STAFFID=staff.ID
-            AND staff.ISLOCK = 0
-	        AND staff.ISDEL = 0
-          WHERE group_up.COMPANYID = #{companyId}
-          AND group_up.PARENTID = '0'
-          ORDER BY group_up.GROUPTYPE, group_up.GROUPNAME,group_down.GROUPNAME
+            LEFT JOIN hm_pub_staff staff ON group_staff.STAFFID = staff.ID
+                                            AND staff.ISLOCK = 0
+                                            AND staff.ISDEL = 0
+        WHERE group_up.COMPANYID = #{companyId}
+              AND group_up.PARENTID = '0'
+        ORDER BY group_up.PRIORITY, group_up.GROUPTYPE, group_up.GROUPNAME, group_down.GROUPNAME
     </select>
 
     <!--根据组类型获取所有小组及组内人员信息-->
     <select id="getListByGroupType" parameterType="map" resultMap="GroupTypeMap">
         SELECT
-	        g.GROUPID , g.GROUPNAME , g.PARENTID , g.GROUPTYPE , g.COMPANYID , g.CHIEFIDS , g.CHIEFNAMES ,
-			s.ID STAFFID,s.NICKNAME nickName,s.PHONE phone,s.USERNAME userName
+            g.GROUPID,
+            g.GROUPNAME,
+            g.PARENTID,
+            g.GROUPTYPE,
+            g.COMPANYID,
+            g.CHIEFIDS,
+            g.CHIEFNAMES,
+            s.ID       STAFFID,
+            s.NICKNAME nickName,
+            s.PHONE    phone,
+            s.USERNAME userName
         FROM
-	        hm_pub_group g
-        LEFT JOIN
-	        hm_pub_group_staff gs ON gs.GROUPID = g.GROUPID
-        LEFT JOIN
-	        hm_pub_staff s ON gs.STAFFID = s.ID
+            hm_pub_group g
+            LEFT JOIN
+            hm_pub_group_staff gs ON gs.GROUPID = g.GROUPID
+            LEFT JOIN
+            hm_pub_staff s ON gs.STAFFID = s.ID
         WHERE
-	        s.COMPANYID = #{companyId} AND g.GROUPTYPE = #{type}
-	    AND s.ISDEL = 0 AND s.ISLOCK = 0
+            s.COMPANYID = #{companyId} AND g.GROUPTYPE = #{type}
+            AND s.ISDEL = 0 AND s.ISLOCK = 0
+        ORDER BY g.grp.PRIORITY
     </select>
 
     <!--获取员工所属角色-->
     <select id="getStaffRoleList" parameterType="map" resultType="java.lang.String">
-        SELECT
-            grp.GROUPTYPE
+        SELECT grp.GROUPTYPE
         FROM
             hm_pub_group_staff rela
-        LEFT JOIN hm_pub_group grp on grp.COMPANYID =rela.COMPANYID and rela.GROUPID = grp.GROUPID
+            LEFT JOIN hm_pub_group grp ON grp.COMPANYID = rela.COMPANYID AND rela.GROUPID = grp.GROUPID
         WHERE
             rela.STAFFID = #{staffId}
-        AND rela.COMPANYID = #{companyId}
+            AND rela.COMPANYID = #{companyId}
         UNION
         (
-            SELECT
-                grp.GROUPTYPE
+            SELECT grp.GROUPTYPE
             FROM
                 hm_pub_group grp
             WHERE
-                INSTR( CONCAT( ',', grp.CHIEFIDS, ',' ), CONCAT( ',', #{staffId}+ '', ',' ) ) > 0
+                INSTR(CONCAT(',', grp.CHIEFIDS, ','), CONCAT(',', #{staffId} + '', ',')) > 0
         )
     </select>
 
     <!--根据不同类型，获取小组及人员-->
     <select id="getGroupStaffByRole" parameterType="map" resultMap="GroupStaffMap">
         SELECT
-            grp.GROUPID, grp.GROUPNAME,grp.GROUPTYPE, rela.STAFFID, sf.NICKNAME, sf.STATUSFLAG, sf.ISLOCK
-        FROM
-            hm_pub_group grp
-        INNER JOIN hm_pub_group_staff rela ON rela.COMPANYID = grp.COMPANYID AND grp.GROUPID = rela.GROUPID
-        INNER JOIN hm_pub_staff sf ON sf.COMPANYID = rela.COMPANYID AND rela.STAFFID = sf.ID
-        WHERE
-            grp.COMPANYID = #{companyId}
-            <if test="type != null and type != '' ">
-                AND grp.GROUPTYPE = #{type}
-            </if>
-            AND grp.PARENTID != '0'
-            AND sf.ISDEL = 0
-        ORDER BY grp.GROUPNAME, grp.ID, sf.ISLOCK, sf.STATUSFLAG DESC, sf.ID
-    </select>
-
-    <!--获取门市下的所有人员列表-->
-    <select id="getMsjdStaffList" parameterType="map" resultMap="baseStaffMap">
-        SELECT
-            rela.STAFFID,sf.NICKNAME
-        FROM
-            hm_pub_group_staff  rela
-        LEFT JOIN hm_pub_group grp ON grp.GROUPID = rela.GROUPID AND rela.COMPANYID = grp.COMPANYID
-        LEFT JOIN hm_pub_staff sf ON sf.ID = rela.STAFFID AND rela.COMPANYID = sf.COMPANYID
-        WHERE
-            rela.COMPANYID = #{companyId}
-            AND grp.GROUPTYPE = 'msjd'
-            AND sf.ISDEL = 0
-	        AND sf.ISLOCK = 0
-    </select>
-
-    <!--根据不同类型，获取小组及人员-->
-    <select id="getOnLineStaffListByRole" parameterType="map" resultMap="GroupStaffMap">
-        SELECT
         grp.GROUPID, grp.GROUPNAME,grp.GROUPTYPE, rela.STAFFID, sf.NICKNAME, sf.STATUSFLAG, sf.ISLOCK
         FROM
         hm_pub_group grp
@@ -396,62 +428,112 @@
         INNER JOIN hm_pub_staff sf ON sf.COMPANYID = rela.COMPANYID AND rela.STAFFID = sf.ID
         WHERE
         grp.COMPANYID = #{companyId}
-        AND grp.GROUPTYPE = #{type}
+        <if test="type != null and type != '' ">
+            AND grp.GROUPTYPE = #{type}
+        </if>
         AND grp.PARENTID != '0'
         AND sf.ISDEL = 0
-        AND sf.ISLOCK = 0
-        AND sf.STATUSFLAG = 1
+        ORDER BY grp.PRIORITY, grp.GROUPNAME, grp.ID, sf.ISLOCK, sf.STATUSFLAG DESC, sf.ID
+    </select>
+
+    <!--获取门市下的所有人员列表-->
+    <select id="getMsjdStaffList" parameterType="map" resultMap="baseStaffMap">
+        SELECT
+            rela.STAFFID,
+            sf.NICKNAME
+        FROM
+            hm_pub_group_staff rela
+            LEFT JOIN hm_pub_group grp ON grp.GROUPID = rela.GROUPID AND rela.COMPANYID = grp.COMPANYID
+            LEFT JOIN hm_pub_staff sf ON sf.ID = rela.STAFFID AND rela.COMPANYID = sf.COMPANYID
+        WHERE
+            rela.COMPANYID = #{companyId}
+            AND grp.GROUPTYPE = 'msjd'
+            AND sf.ISDEL = 0
+            AND sf.ISLOCK = 0
+    </select>
+
+    <!--根据不同类型，获取小组及人员-->
+    <select id="getOnLineStaffListByRole" parameterType="map" resultMap="GroupStaffMap">
+        SELECT
+            grp.GROUPID,
+            grp.GROUPNAME,
+            grp.GROUPTYPE,
+            rela.STAFFID,
+            sf.NICKNAME,
+            sf.STATUSFLAG,
+            sf.ISLOCK
+        FROM
+            hm_pub_group grp
+            INNER JOIN hm_pub_group_staff rela ON rela.COMPANYID = grp.COMPANYID AND grp.GROUPID = rela.GROUPID
+            INNER JOIN hm_pub_staff sf ON sf.COMPANYID = rela.COMPANYID AND rela.STAFFID = sf.ID
+        WHERE
+            grp.COMPANYID = #{companyId}
+            AND grp.GROUPTYPE = #{type}
+            AND grp.PARENTID != '0'
+            AND sf.ISDEL = 0
+            AND sf.ISLOCK = 0
+            AND sf.STATUSFLAG = 1
         ORDER BY grp.GROUPNAME, grp.ID, sf.ISLOCK, sf.STATUSFLAG DESC, sf.ID
     </select>
 
     <!--根据公司id和分组id获取分组员工的id集合-->
-    <select id = "getGroupStaffIdsStrByCompanyIdAndGroupId" resultType="java.lang.String">
-        SELECT
-            group_concat(STAFFID SEPARATOR ',')
+    <select id="getGroupStaffIdsStrByCompanyIdAndGroupId" resultType="java.lang.String">
+        SELECT group_concat(STAFFID SEPARATOR ',')
         FROM (
                  SELECT
-                     GROUPID,STAFFID,COMPANYID
+                     GROUPID,
+                     STAFFID,
+                     COMPANYID
                  FROM
                      hm_pub_group_staff
                  WHERE
                      COMPANYID = #{companyId}
                      AND GROUPID IN (
-                         SELECT
-                             GROUPID
+                         SELECT GROUPID
                          FROM
                              hm_pub_group
                          WHERE
                              parentId = (
-                                 SELECT
-                                     parentId
+                                 SELECT parentId
                                  FROM
                                      hm_pub_group
                                  WHERE
                                      GROUPID = #{groupId} AND COMPANYID = #{companyId}
                              )
                      )
-                 group by staffId ) RESULT
+                 GROUP BY staffId) RESULT
 
     </select>
 
     <!--根据员工id查询员工与组的关系-->
-    <select id = "getGroupStaffByStaffId" resultMap="baseMap">
-        select GROUPID,STAFFID,COMPANYID  from  hm_pub_group_staff  where COMPANYID = #{companyId}  and STAFFID = #{staffId}
+    <select id="getGroupStaffByStaffId" resultMap="baseMap">
+        SELECT
+            GROUPID,
+            STAFFID,
+            COMPANYID
+        FROM hm_pub_group_staff
+        WHERE COMPANYID = #{companyId} AND STAFFID = #{staffId}
     </select>
 
     <!--公司所有小组人员-->
     <select id="getAllGroupStaff" parameterType="map" resultMap="GroupStaffMap">
         SELECT
-        grp.GROUPID, grp.GROUPNAME,grp.GROUPTYPE, rela.STAFFID, sf.NICKNAME, sf.STATUSFLAG, sf.ISLOCK
+            grp.GROUPID,
+            grp.GROUPNAME,
+            grp.GROUPTYPE,
+            rela.STAFFID,
+            sf.NICKNAME,
+            sf.STATUSFLAG,
+            sf.ISLOCK
         FROM
-        hm_pub_group grp
-        INNER JOIN hm_pub_group_staff rela ON rela.COMPANYID = grp.COMPANYID AND grp.GROUPID = rela.GROUPID
-        INNER JOIN hm_pub_staff sf ON sf.COMPANYID = rela.COMPANYID AND rela.STAFFID = sf.ID
+            hm_pub_group grp
+            INNER JOIN hm_pub_group_staff rela ON rela.COMPANYID = grp.COMPANYID AND grp.GROUPID = rela.GROUPID
+            INNER JOIN hm_pub_staff sf ON sf.COMPANYID = rela.COMPANYID AND rela.STAFFID = sf.ID
         WHERE
-        grp.COMPANYID = #{companyId}
-        AND grp.PARENTID != '0'
-        AND sf.ISDEL = 0
-        AND sf.ISLOCK = 0
-        ORDER BY grp.GROUPNAME, grp.ID, sf.ID
+            grp.COMPANYID = #{companyId}
+            AND grp.PARENTID != '0'
+            AND sf.ISDEL = 0
+            AND sf.ISLOCK = 0
+        ORDER BY grp.PRIORITY, grp.GROUPNAME, grp.ID, sf.ID
     </select>
 </mapper>

@@ -19,4 +19,9 @@ public interface CashLogDao extends BaseDao<CashLogDao> {
      * @return
      */
     int addCahsLog(@Param("logTabName") String logTabName, @Param("log") CashLogPO cashLogPO);
+
+    /**
+     * 修改付款记录的状态
+     */
+    void editStatus(@Param("table") String table, @Param("id") Integer id);
 }

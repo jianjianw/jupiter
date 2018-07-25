@@ -171,6 +171,7 @@ public class ReportsController extends BaseController {
         ClientLogDTO clientLogDTO = JSONObject.parseObject(params.getJSONObject("clientLogDTO").toJSONString(), ClientLogDTO.class);
         StaffPO staff = getCurrentLoginStaff();
         clientLogDTO.setCompanyId(staff.getCompanyId());
+        clientLogDTO.setStaffId(staff.getId());
         return ResultInfoUtil.success(reportService.repateKzLog(queryMapDTO, clientLogDTO));
     }
 

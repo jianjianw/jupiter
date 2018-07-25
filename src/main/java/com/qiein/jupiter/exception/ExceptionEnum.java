@@ -143,7 +143,7 @@ public enum ExceptionEnum {
     ALLOT_LOG_ERROR(1609, "客资分配日志记录错误"),
     STAFF_EDIT_ERROR(1610, "分配流程员工信息标注错误"),
     ALLOT_ERROR(1611, "请选择要分配的客资和客服"),
-    ALLOTED_ERROR(1612, "所选客资已有客服，无法进行分配"),
+    ALLOTED_ERROR(1612, "所选客资无法进行分配"),
     APPOINTOR_ERROR(1613, "客服信息获取失败"),
     //状态
     STS_COLUMN_ERROR(1701, "状态颜色表示错误"),
@@ -174,7 +174,9 @@ public enum ExceptionEnum {
     TEMPLATE_LOSE(2401, "短信模板获取失败"),
     TEMPLATE_NOT_IN(2402, "短信模板不存在"),
     //报表
-    START_TIME_OR_END_TIME_IS_NULL(2501, "开始时间或者结束时间不能为空");
+    START_TIME_OR_END_TIME_IS_NULL(2501, "开始时间或者结束时间不能为空"),
+    //外呼
+    NOT_FOUND_BIND_USER(2601,"未找到绑定用户信息");
 
     private Integer code;
     private String msg;

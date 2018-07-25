@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * 页面设置
  */
-public class PageConfig implements Serializable{
+public class PageConfig implements Serializable {
     private static final long serialVersionUID = -3744290554665818652L;
 
     private int id;
@@ -25,6 +25,11 @@ public class PageConfig implements Serializable{
      * 表头
      */
     private String titleTxt;
+
+    /**
+     * 表头-不展示的
+     */
+    private String titleTxtNo;
     /**
      * 排序
      */
