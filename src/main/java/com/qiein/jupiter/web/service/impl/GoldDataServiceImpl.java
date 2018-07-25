@@ -9,6 +9,7 @@ import com.mzlion.core.lang.StringUtils;
 import com.qiein.jupiter.constant.ClientStatusConst;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.constant.GoldDataConst;
+import com.qiein.jupiter.enums.ZxStyleEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.http.CrmBaseApi;
@@ -216,7 +217,7 @@ public class GoldDataServiceImpl implements GoldDataService {
         reqContent.put("adid", goldFingerPO.getAdId());
         reqContent.put("adaddress", goldFingerPO.getAdAddress());
         reqContent.put("typeid", goldFingerPO.getTypeId());
-        reqContent.put("zxstyle", goldFingerPO.getZxStyle());
+        reqContent.put("zxstyle", ZxStyleEnum.getZxType(goldFingerPO.getZxStyle()));
         reqContent.put("collectorid", goldFingerPO.getCreateorId());
         reqContent.put("collectorname", goldFingerPO.getCreateorName());
         reqContent.put("address", address);

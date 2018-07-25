@@ -86,7 +86,10 @@ public class ClientPushDTO implements Serializable {
      * 渠道分配规则
      */
     private int srcPushRule;
-
+    /**
+     * 来源类型
+     */
+    private int srcType;
     private ClientPushServiceImpl service;
 
     public ClientPushDTO(ClientPushServiceImpl service, Integer pushRule, int companyId, String kzId, int typeId,
@@ -101,6 +104,15 @@ public class ClientPushDTO implements Serializable {
         this.pushInterval = kzInterval;
         this.service = service;
         this.sourceId = srcId;
+    }
+
+    public ClientPushDTO(ClientPushServiceImpl service, int kzInterval, int overTime, String kzId, int companyId, int srcType) {
+        this.service = service;
+        this.pushInterval = kzInterval;
+        this.overTime = overTime;
+        this.kzId = kzId;
+        this.companyId = companyId;
+        this.srcType = srcType;
     }
 
     public ClientPushDTO() {
@@ -239,6 +251,14 @@ public class ClientPushDTO implements Serializable {
 
     public void setSrcPushRule(int srcPushRule) {
         this.srcPushRule = srcPushRule;
+    }
+
+    public int getSrcType() {
+        return srcType;
+    }
+
+    public void setSrcType(int srcType) {
+        this.srcType = srcType;
     }
 
     @Override

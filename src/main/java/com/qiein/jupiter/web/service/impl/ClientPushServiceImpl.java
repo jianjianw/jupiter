@@ -22,6 +22,7 @@ import com.qiein.jupiter.web.service.ClientPushService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sun.awt.image.OffScreenImage;
 
 import javax.management.relation.Role;
 import java.text.SimpleDateFormat;
@@ -162,7 +163,7 @@ public class ClientPushServiceImpl implements ClientPushService {
                 if (NumUtil.isInValid(srcId)) {
                     return;
                 }
-                appointer = getAssginAppoint(companyId, srcId, type);
+                appointer = getAssginAppoint(companyId, srcId, type, interval);
                 if (appointer == null) {
                     return;
                 }
@@ -185,7 +186,7 @@ public class ClientPushServiceImpl implements ClientPushService {
                 if (NumUtil.isInValid(srcId)) {
                     return;
                 }
-                appointer = getGroupAvg(companyId, srcId, type);
+                appointer = getGroupAvg(companyId, srcId, type, interval);
                 if (appointer == null) {
                     return;
                 }
@@ -204,9 +205,9 @@ public class ClientPushServiceImpl implements ClientPushService {
      *
      * @return
      */
-    private StaffPushDTO getAssginAppoint(int companyId, int srcId, String type) {
+    private StaffPushDTO getAssginAppoint(int companyId, int srcId, String type, int interval) {
         //1.获取可以领取的客服集合
-        List<StaffPushDTO> staffOnlineList = staffDao.getAssginAppointList(companyId, srcId, type);
+        List<StaffPushDTO> staffOnlineList = staffDao.getAssginAppointList(companyId, srcId, type, interval);
         if (CollectionUtils.isEmpty(staffOnlineList)) {
             return null;
         }
@@ -235,11 +236,11 @@ public class ClientPushServiceImpl implements ClientPushService {
      *
      * @return
      */
-    private StaffPushDTO getGroupAvg(int companyId, int srcId, String type) {
+    private StaffPushDTO getGroupAvg(int companyId, int srcId, String type, int interval) {
         List<String> appointGroups = getGroupAvgGroup(companyId, srcId, type);
         StaffPushDTO appoint = null;
         while (CollectionUtils.isNotEmpty(appointGroups)) {
-            appoint = getGroupAvgAppoint(companyId, srcId, type, appointGroups.get(0));
+            appoint = getGroupAvgAppoint(companyId, srcId, type, appointGroups.get(0), interval);
             if (appoint == null) {
                 appointGroups.remove(0);
             } else {
@@ -301,13 +302,13 @@ public class ClientPushServiceImpl implements ClientPushService {
      * @param groupId
      * @return
      */
-    private StaffPushDTO getGroupAvgAppoint(int companyId, int srcId, String type, String groupId) {
+    private StaffPushDTO getGroupAvgAppoint(int companyId, int srcId, String type, String groupId, int interval) {
         int calcRange = companyDao.getAvgDefaultTime(companyId);
         if (NumUtil.isInValid(calcRange)) {
             calcRange = CommonConstant.ALLOT_RANGE_DEFAULT;
         }
         //1.获取可以领取的客服集合
-        List<StaffPushDTO> staffOnlineList = staffDao.getGroupAvgAppointList(companyId, type, groupId);
+        List<StaffPushDTO> staffOnlineList = staffDao.getGroupAvgAppointList(companyId, type, groupId, interval);
         if (CollectionUtils.isEmpty(staffOnlineList)) {
             return null;
         }
@@ -560,11 +561,6 @@ public class ClientPushServiceImpl implements ClientPushService {
                 allotLogId, ClientConst.ALLOT_LOG_STATUS_YES, "now");
         if (1 != updateRstNum) {
             throw new RException(ExceptionEnum.INFO_STATUS_EDIT_ERROR);
-        }
-        // 修改客资的领取时间
-        updateRstNum = clientInfoDao.updateClientInfoAfterAllot(companyId, DBSplitUtil.getInfoTabName(companyId), kzId);
-        if (1 != updateRstNum) {
-            throw new RException(ExceptionEnum.INFO_EDIT_ERROR);
         }
         //修改员工最后推送时间
         staffDao.updateStaffLastPushTime(companyId, appointer.getStaffId());
@@ -889,9 +885,24 @@ public class ClientPushServiceImpl implements ClientPushService {
      * @param companyId
      * @return
      */
-    public List<ClientPushDTO> getInfoListBeReadyPush(int companyId, int interval) {
+    public List<ClientPushDTO> getInfoListBeReadyPush(int companyId, int overTime) {
         try {
-            return clientInfoDao.getInfoListBeReadyPush(DBSplitUtil.getInfoTabName(companyId), companyId, interval);
+            return clientInfoDao.getInfoListBeReadyPush(DBSplitUtil.getInfoTabName(companyId), companyId, overTime);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * 获取企业需要分配的筛选中的客资列表
+     *
+     * @param companyId
+     * @return
+     */
+    public List<ClientPushDTO> getSkInfoList(int companyId, int overTime) {
+        try {
+            return clientInfoDao.getSkInfoList(DBSplitUtil.getInfoTabName(companyId), companyId, overTime);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -1097,5 +1108,51 @@ public class ClientPushServiceImpl implements ClientPushService {
                 newsDao.batchInsertNews(tableName, companyMap.get(tableName));
             }
         }
+    }
+
+    /**
+     * 筛客平均
+     */
+    @Transactional
+    @Override
+    public synchronized void pushSk(int companyId, String kzId, int overTime, int interval, int srcType) {
+        String role = "";
+        if (ChannelConstant.DS_TYPE_LIST.contains(srcType)) {
+            role = RoleConstant.DSSX;
+        } else if (ChannelConstant.ZJS_TYPE_LIST.contains(srcType)) {
+            role = RoleConstant.ZJSSX;
+        }
+        //1.获取电商筛选人员，领取时间间隔排除
+        StaffPushDTO staff = staffDao.getAvgDssxStaff(companyId, interval, role);
+        if (staff == null) {
+            return;
+        }
+        //2.修改客资筛选人员ID，姓名，更新时间
+        int updateRstNum = clientInfoDao.updateSkInfoWhenAllot(DBSplitUtil.getInfoTabName(companyId), staff.getStaffId(), kzId, companyId);
+        if (1 != updateRstNum) {
+            throw new RException(ExceptionEnum.INFO_EDIT_ERROR);
+        }
+        updateRstNum = clientInfoDao.updateSkDetailWhenAllot(DBSplitUtil.getDetailTabName(companyId), staff.getStaffName(), kzId, companyId);
+        if (1 != updateRstNum) {
+            throw new RException(ExceptionEnum.INFO_EDIT_ERROR);
+        }
+        //3.更新员工推送时间，今日接单数
+        //修改员工最后推送时间
+        staffDao.updateStaffLastPushTime(companyId, staff.getStaffId());
+
+        // 推送消息
+        ClientGoEasyDTO infoDTO = clientInfoDao.getClientGoEasyDTOById(kzId, DBSplitUtil.getInfoTabName(companyId),
+                DBSplitUtil.getDetailTabName(companyId));
+        GoEasyUtil.pushInfoComed(companyId, staff.getStaffId(), infoDTO, newsDao, staffDao);
+        GoEasyUtil.pushInfoRefresh(companyId, staff.getStaffId());
+
+        // 客资日志记录
+        updateRstNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(companyId),
+                new ClientLogPO(kzId, ClientLogConst.getAutoAllotLog(staff.getGroupName(), staff.getStaffName()),
+                        ClientLogConst.INFO_LOGTYPE_ALLOT, companyId));
+        if (1 != updateRstNum) {
+            throw new RException(ExceptionEnum.LOG_ERROR);
+        }
+
     }
 }

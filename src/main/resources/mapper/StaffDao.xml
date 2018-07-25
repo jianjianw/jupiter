@@ -906,6 +906,7 @@
             AND sf.ISLOCK = 0
             AND sf.STATUSFLAG = 1
             AND sf.TODAYNUM &lt; LIMITDAY
+            AND (UNIX_TIMESTAMP(NOW()) - sf.LASTPUSHTIME) &gt; #{interval}
     </select>
 
     <!--小组平均，获取可以领取的小组-->
@@ -941,6 +942,7 @@
             AND sf.ISLOCK = 0
             AND sf.STATUSFLAG = 1
             AND sf.TODAYNUM &lt; LIMITDAY
+            AND (UNIX_TIMESTAMP(NOW()) - sf.LASTPUSHTIME) &gt; #{interval}
         ORDER BY sf.LASTPUSHTIME ASC
     </select>
 
@@ -1065,5 +1067,26 @@
         LEFT JOIN hm_pub_group_staff gs ON sf.COMPANYID = gs.COMPANYID AND sf.ID = gs.STAFFID
         LEFT JOIN hm_pub_group gp ON sf.COMPANYID = gp.COMPANYID AND gp.GROUPID = gs.GROUPID
         WHERE sf.COMPANYID = #{companyId} AND sf.ISDEL = 0 AND sf.ISLOCK = 0 AND (sf.DINGUSERID IS NULL OR sf.DINGUSERID = '')
+    </select>
+
+    <!--获取筛客平均，电商筛选人员-->
+    <select id="getAvgDssxStaff" parameterType="map" resultMap="pushMap">
+         SELECT
+           sf.ID,sf.NICKNAME,grp.GROUPNAME
+        FROM
+            hm_pub_group_staff gs
+        INNER JOIN hm_pub_group grp ON grp.GROUPID = gs.GROUPID AND grp.COMPANYID = gs.COMPANYID
+        INNER JOIN hm_pub_staff sf ON sf.ID = gs.STAFFID AND gs.COMPANYID = sf.COMPANYID
+        LEFT JOIN hm_crm_client_info_2 info ON info.PROMOTORID = gs.STAFFID AND info.COMPANYID = gs.COMPANYID
+        WHERE
+            gs.COMPANYID = #{companyId}
+            AND grp.GROUPTYPE = #{role}
+            AND sf.ISDEL = 0
+            AND sf.ISLOCK = 0
+            AND sf.STATUSFLAG = 1
+            AND (UNIX_TIMESTAMP(NOW()) - sf.LASTPUSHTIME) &gt; #{interval}
+        GROUP BY sf.ID
+		ORDER BY count(info.KZID) ASC, sf.LASTPUSHTIME ASC
+		LIMIT 0, 1;
     </select>
 </mapper>

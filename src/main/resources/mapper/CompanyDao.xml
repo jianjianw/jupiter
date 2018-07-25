@@ -146,6 +146,19 @@
         AND ISLOCK = 0
     </select>
 
+
+    <!-- 获取筛客平均的企业列表 -->
+    <select id="listSkAvgComp" parameterType="map" resultMap="baseMap">
+        SELECT
+        <include refid="baseColumn"/>
+        FROM
+        hm_pub_company
+        WHERE ISDEL = 0
+        AND ISLOCK = 0
+        AND SKAVG = 1;
+    </select>
+
+
     <!-- 更改咨询类型 -->
     <update id="editTypeRepeat">
         UPDATE
