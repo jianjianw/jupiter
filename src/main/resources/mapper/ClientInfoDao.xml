@@ -309,7 +309,7 @@
 			AND log.OPERATIME &gt;= #{startTime} AND log.OPERATIME &lt; #{endTime}
 		</if>
 		<if test="staffId !=0">
-			AND log.OPERAID=#{staffId}
+			AND info.APPOINTORID=#{staffId}
 		</if>
 		GROUP BY
 		log.KZID
