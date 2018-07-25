@@ -3,6 +3,8 @@ package com.qiein.jupiter.web.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.mzlion.easyokhttp.HttpClient;
 import com.qiein.jupiter.constant.TiOutCallUrlConst;
+import com.qiein.jupiter.exception.ExceptionEnum;
+import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.MD5Util;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.OutCallDao;
@@ -42,7 +44,7 @@ public class OutCallServiceImpl implements OutCallService {
      */
     @Override
     public JSONObject userOnlineOffline(int companyId, int staffId, String phone, boolean online) {
-        OutCallUserDTO userInfoAndAdmin = outCallDao.getUserInfoAndAdmin(companyId, staffId);
+        OutCallUserDTO userInfoAndAdmin = this.getUserInfoAndAdmin(companyId, staffId);
         //加密一下
         seedUser(userInfoAndAdmin, true);
         Map<String, String> baseMap = getBaseMap(userInfoAndAdmin, true);
@@ -117,7 +119,7 @@ public class OutCallServiceImpl implements OutCallService {
      */
     @Override
     public JSONObject delCallAccount(int companyId, int staffId) {
-        OutCallUserDTO admin = outCallDao.getUserInfoAndAdmin(companyId, staffId);
+        OutCallUserDTO admin = this.getUserInfoAndAdmin(companyId, staffId);
         JSONObject jsonObject = new JSONObject();
         if (admin != null) {
             //加密一下
@@ -142,7 +144,7 @@ public class OutCallServiceImpl implements OutCallService {
      */
     @Override
     public JSONObject updateCallAccountPhone(int companyId, int staffId, String tel) {
-        OutCallUserDTO admin = outCallDao.getUserInfoAndAdmin(companyId, staffId);
+        OutCallUserDTO admin = this.getUserInfoAndAdmin(companyId, staffId);
         //加密一下
         seedUser(admin, true);
         Map<String, String> baseMap = getBaseMap(admin, true);
@@ -181,7 +183,7 @@ public class OutCallServiceImpl implements OutCallService {
      */
     @Override
     public JSONObject callPhone(int companyId, int staffId, String tel, String kzId) {
-        OutCallUserDTO user = outCallDao.getUserInfoAndAdmin(companyId, staffId);
+        OutCallUserDTO user = this.getUserInfoAndAdmin(companyId, staffId);
         //加密一下
         seedUser(user, false);
         Map<String, String> baseMap = getBaseMap(user, false);
@@ -206,7 +208,7 @@ public class OutCallServiceImpl implements OutCallService {
      */
     @Override
     public JSONObject hangupPhone(int companyId, int staffId) {
-        OutCallUserDTO user = outCallDao.getUserInfoAndAdmin(companyId, staffId);
+        OutCallUserDTO user = this.getUserInfoAndAdmin(companyId, staffId);
         //加密一下
         seedUser(user, true);
         Map<String, String> baseMap = getBaseMap(user, true);
@@ -253,7 +255,11 @@ public class OutCallServiceImpl implements OutCallService {
      */
     @Override
     public OutCallUserDTO getUserInfoAndAdmin(int companyId, int staffId) {
-        return outCallDao.getUserInfoAndAdmin(companyId, staffId);
+        OutCallUserDTO userInfoAndAdmin = outCallDao.getUserInfoAndAdmin(companyId, staffId);
+        if (userInfoAndAdmin == null) {
+            throw new RException(ExceptionEnum.NOT_FOUND_BIND_USER);
+        }
+        return userInfoAndAdmin;
     }
 
     /**
@@ -308,7 +314,7 @@ public class OutCallServiceImpl implements OutCallService {
     @Override
     public JSONObject getValidateCode(int companyId, int staffId, String tel, boolean needValidate) {
         //TODO NPE
-        OutCallUserDTO admin = outCallDao.getUserInfoAndAdmin(companyId, staffId);
+        OutCallUserDTO admin = this.getUserInfoAndAdmin(companyId, staffId);
         if (StringUtil.isEmpty(tel)) {
             StaffPO staff = staffService.getById(staffId, companyId);
             tel = staff.getPhone();
@@ -330,7 +336,7 @@ public class OutCallServiceImpl implements OutCallService {
      */
     @Override
     public JSONObject addToWhite(int companyId, int staffId, String tel, String key, String validateCode) {
-        OutCallUserDTO admin = outCallDao.getUserInfoAndAdmin(companyId, staffId);
+        OutCallUserDTO admin = this.getUserInfoAndAdmin(companyId, staffId);
         //加密一下
         seedUser(admin, true);
         Map<String, String> baseMap = getBaseMap(admin, true);
@@ -368,6 +374,9 @@ public class OutCallServiceImpl implements OutCallService {
     @Override
     public OutCallUserDTO getUserInfo(int companyId, int staffId) {
         OutCallUserDTO userInfo = outCallDao.getUserInfo(companyId, staffId);
+        if (userInfo == null) {
+            throw new RException(ExceptionEnum.NOT_FOUND_BIND_USER);
+        }
         //TODO 获取用户信息
         Map<String, String> baseMap = new HashMap<>();
         baseMap.put("enterpriseId", String.valueOf(userInfo.getEnterpriseId()));
