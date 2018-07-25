@@ -92,7 +92,7 @@ public class ReportsServiceImpl implements ReportService {
 
         for (String role : roleList) {
             // 1.如果是管理中心，全部开放
-            if (!RoleConstant.GLZX.equals(role)) {
+            if (RoleConstant.GLZX.equals(role)) {
                 clientLogDTO.setStaffId(CommonConstant.SYSTEM_OPERA_ID);
             }
         }
