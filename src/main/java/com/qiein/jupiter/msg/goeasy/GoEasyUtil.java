@@ -667,7 +667,7 @@ public class GoEasyUtil {
         pushWarn(companyId, staffId, head, msg);
         newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_WARN, head, msg, kzId, staffId, companyId,
                 DBSplitUtil.getNewsTabName(companyId)));
-        DingMsgSendUtil.sendDingMsg(head, companyId, staffId, staffDao);
+        //DingMsgSendUtil.sendDingMsg(head, companyId, staffId, staffDao);
     }
 
     /**
