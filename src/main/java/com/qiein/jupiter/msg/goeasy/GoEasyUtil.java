@@ -636,7 +636,7 @@ public class GoEasyUtil {
      */
     public static void pushWarnTimer(int companyId, int staffId, String kzId, String msg, StaffDao staffDao) {
         pushCommon(companyId, staffId, MessageConts.TO_BE_TRACKED_HEAD, msg);
-        DingMsgSendUtil.sendDingMsg(msg, companyId, staffId, staffDao);
+        DingMsgSendUtil.sendDingMsg(MessageConts.TO_BE_TRACKED_HEAD + "\n" + msg, companyId, staffId, staffDao);
     }
 
 //    public static void main(String[] args) {
