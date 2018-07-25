@@ -251,6 +251,7 @@ public class CompanyController extends BaseController {
     public ResultInfo getZjsMenu() {
         Map<String,Object> resultMap = new HashMap<>();
         resultMap.put("qy_zjsMenu",ClientZjsMenuConst.QY_ZJS_MENU);
+        resultMap.put("lk_zjsMenu",ClientZjsMenuConst.LK_ZJS_MENU);
         resultMap.put("companySet",companyService.getCompanyZjsSet(getCurrentLoginStaff().getCompanyId()));
         return ResultInfoUtil.success(resultMap);
     }
@@ -266,11 +267,10 @@ public class CompanyController extends BaseController {
      */
     @PostMapping("/edit_zjs_set")
     public ResultInfo editCompanyZJSSet(@RequestBody JSONObject jsonObject) {
-        System.out.println(jsonObject);
-        //TODO
         companyService.editCompanyZJSSet(jsonObject.getString("old"), jsonObject.getString("qy"), getCurrentLoginStaff().getCompanyId());
         return ResultInfoUtil.success();
     }
+
     /**
      * 客服编辑接待结果
      */

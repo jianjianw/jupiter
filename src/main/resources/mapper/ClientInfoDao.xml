@@ -209,10 +209,9 @@
 		WHERE
 			info.COMPANYID = #{companyId}
 		AND info.ISDEL = 0
-		AND (
-			info.STATUSID = 12
-			OR info.STATUSID = 999
-		)
+		AND info.STATUSID != 98
+		AND info.STATUSID != 99
+		AND info.STATUSID != 0
 		AND INSTR(#{kzIds},info.KZID) != 0;
     </select>
 
@@ -225,7 +224,6 @@
 		WHERE
 			info.COMPANYID = #{companyId}
 		AND info.ISDEL = 0
-		AND info.RECEPTORID IS NULL
 		AND INSTR(#{kzIds},info.KZID) != 0;
     </select>
 	<!--修改联系方式日志-->

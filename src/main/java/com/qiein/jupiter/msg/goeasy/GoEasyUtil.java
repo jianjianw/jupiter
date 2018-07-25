@@ -125,6 +125,7 @@ public class GoEasyUtil {
                     // log.info("LogUtils.log()-->消息发送成功--[channel : " + "" + " ;
                     // content :" + "" + channel);
                 }
+
                 public void onFailed(GoEasyError error) {
                     log.error("goeasy 发送失败：" + error.getCode() + error.getContent());
                 }
@@ -478,6 +479,7 @@ public class GoEasyUtil {
                 staffId, companyId, DBSplitUtil.getNewsTabName(companyId)));
         DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), companyId, staffId, staffDao);
     }
+
     /**
      * 连续三次怠工自动下线
      *
@@ -632,8 +634,9 @@ public class GoEasyUtil {
      * @param kzId
      * @param msg
      */
-    public static void pushWarnTimer(int companyId, int staffId, String kzId, String msg) {
+    public static void pushWarnTimer(int companyId, int staffId, String kzId, String msg, StaffDao staffDao) {
         pushCommon(companyId, staffId, MessageConts.TO_BE_TRACKED_HEAD, msg);
+        DingMsgSendUtil.sendDingMsg(msg, companyId, staffId, staffDao);
     }
 
 //    public static void main(String[] args) {
@@ -915,15 +918,15 @@ public class GoEasyUtil {
      * @param logId
      * @param overTime
      */
-    public static void pushAllotMsg(int companyId, int staffId, int kzNum, NewsDao newsDao, StaffDao staffDao) {
+    public static void pushAllotMsg(int companyId, int staffId, String[] kzIdsArr, NewsDao newsDao, StaffDao staffDao) {
         if (NumUtil.isNull(staffId) || NumUtil.isNull(companyId)) {
             return;
         }
         StringBuffer sb = new StringBuffer();
-        sb.append("主管分配给您" + kzNum + "个新的客资");
+        sb.append("主管分配给您" + kzIdsArr.length + "个新的客资");
         String head = sb.toString();
         pushSuccess(companyId, staffId, head, sb.toString());
-        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_SUCCESS, head, null, null, staffId, companyId,
+        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_SUCCESS, head, null, kzIdsArr.length == 1 ? kzIdsArr[0] : "", staffId, companyId,
                 DBSplitUtil.getNewsTabName(companyId)));
         DingMsgSendUtil.sendDingMsg(head, companyId, staffId, staffDao);
     }

@@ -121,7 +121,7 @@ public class GoldDataServiceImpl implements GoldDataService {
         List<GoldCustomerVO> list = goldDataDao.goldCustomerSelect(goldCustomerDTO);
         GoldCustomerShowVO showVO = new GoldCustomerShowVO();
         showVO.setPageInfo(new PageInfo<>(list));
-        GoldFingerPO goldFingerPO = goldDataDao.findForm(goldCustomerDTO.getFormId());
+        GoldFingerPO goldFingerPO = goldDataDao.findForm(goldCustomerDTO.getFormId(),goldCustomerDTO.getCompanyId());
         showVO.setGoldFingerPO(goldFingerPO);
         return showVO;
     }
@@ -139,6 +139,7 @@ public class GoldDataServiceImpl implements GoldDataService {
         String formId = jsonObject.getString("form");
         String formName = jsonObject.getString("formName");
         GoldFingerPO goldFingerPO = goldDataDao.getGoldFingerByFormId(formId);
+        String ip = StringUtil.nullToStrTrim(entry.getString("info_remote_ip"));
         //获取金数据表单模板数据
         if (null == goldFingerPO) {
             throw new RException(ExceptionEnum.FORM_NOT_EXISTS);
@@ -150,13 +151,6 @@ public class GoldDataServiceImpl implements GoldDataService {
         String kzName = StringUtil.nullToStrTrim(entry.getString(goldFingerPO.getKzNameField()));
         String weChat = StringUtil.nullToStrTrim(entry.getString(goldFingerPO.getKzWechatField()));
         String address = MobileLocationUtil.getPhoneLocation(kzPhone);
-        if (NumUtil.isNull(goldFingerPO.getIsShow())) {
-            throw new RException(ExceptionEnum.UNKNOW_ERROR);
-        }
-        if (goldFingerPO.getIsShow().equals(CommonConstant.DEFAULT_ZERO)) {
-            return;
-        }
-
         //获取字段值
         String[] fieldKeys = StringUtil.isNotEmpty(goldFingerPO.getFieldKey()) ? goldFingerPO.getFieldKey().split(CommonConstant.STR_SEPARATOR) : new String[]{};
         String[] fieldValues = StringUtil.isNotEmpty(goldFingerPO.getFieldValue()) ? goldFingerPO.getFieldValue().split(CommonConstant.STR_SEPARATOR) : new String[]{};
@@ -168,20 +162,6 @@ public class GoldDataServiceImpl implements GoldDataService {
         String remark = "<span style=\"color:#FF8533;\">【金数据】</span>";
         StringBuilder sb = new StringBuilder(remark);
         if (fieldKeys.length != 0) {
-            for (int i = 0; i < fieldValues.length; i++) {
-                if ("kzqq".equalsIgnoreCase(fieldValues[i])) {
-                    reqContent.put("kzqq", entry.getString(fieldKeys[i]));
-                    continue;
-                }
-                String value = entry.getString(fieldValues[i]);
-                if (entry.get(fieldValues[i]) != null && !"".equals(value)) {
-                    if (StringUtil.isNotEmpty(value)) {
-                        sb.append(fieldKeys[i]).append("：")
-                                .append(StringUtil.nullToStrTrim(value))
-                                .append("<br/>");
-                    }
-                }
-            }
             if (StringUtil.isNotEmpty(kzName)) {
                 sb.append("姓名：").append(kzName).append("<br/>");
             }
@@ -200,6 +180,20 @@ public class GoldDataServiceImpl implements GoldDataService {
             if (StringUtil.isNotEmpty(formName)) {
                 sb.append("表单名称：").append(formName).append("<br/>");
             }
+            for (int i = 0; i < fieldValues.length; i++) {
+                if ("kzqq".equalsIgnoreCase(fieldValues[i])) {
+                    reqContent.put("kzqq", entry.getString(fieldKeys[i]));
+                    continue;
+                }
+                String value = entry.getString(fieldValues[i]);
+                if (entry.get(fieldValues[i]) != null && !"".equals(value)) {
+                    if (StringUtil.isNotEmpty(value)) {
+                        sb.append(fieldKeys[i]).append("：")
+                                .append(StringUtil.nullToStrTrim(value))
+                                .append("<br/>");
+                    }
+                }
+            }
         }
 
 
@@ -211,6 +205,7 @@ public class GoldDataServiceImpl implements GoldDataService {
         reqContent.put("companyid", goldFingerPO.getCompanyId());
         reqContent.put("kzname", kzName);
         reqContent.put("kzphone", kzPhone);
+        reqContent.put("kzwechat",weChat);
         reqContent.put("channelid", sourcePO.getChannelId());
         reqContent.put("channelname", sourcePO.getChannelName());
         reqContent.put("sourceid", goldFingerPO.getSrcId());
@@ -246,6 +241,8 @@ public class GoldDataServiceImpl implements GoldDataService {
         goldTempPO.setAddress(address);
         goldTempPO.setWechat(weChat);
         goldTempPO.setRemark(jsonObject.toString());
+        goldTempPO.setIp(StringUtil.isEmpty(ip)?"":ip);
+        goldTempPO.setIpAddress(StringUtil.isEmpty(ip)?"":HttpUtil.getIpLocation(ip));
 
         goldTempDao.insert(goldTempPO);
 
@@ -259,7 +256,7 @@ public class GoldDataServiceImpl implements GoldDataService {
 
         String addRstStr = crmBaseApi.doService(reqContent, "clientAddGoldPlug");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
-
+        String kzId = jsInfo.getString("data");
 
         if ("100000".equals(jsInfo.getString("code"))) {
             if (null != goldFingerPO.getIsFilter() && goldFingerPO.getIsFilter()) {
@@ -269,6 +266,7 @@ public class GoldDataServiceImpl implements GoldDataService {
             }
             //发送消息
             ClientDTO info = new ClientDTO();
+            info.setKzId(kzId);
             info.setKzName(goldTempPO.getKzName());
             info.setKzPhone(goldTempPO.getKzPhone());
             info.setKzWeChat(weChat);

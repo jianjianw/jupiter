@@ -151,8 +151,8 @@ public class ClientAddServiceImpl implements ClientAddService {
             ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(jsInfo.getString("data"),
                     DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
                     DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
-            if (NumUtil.isNull(info.getAppointorId())) {
-                return;
+            if (info == null || NumUtil.isNull(info.getAppointorId())) {
+                throw new RException("存在重复客资");
             }
             GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getAppointorId(), info, staffPO.getNickName(), newsDao, staffDao);
             throw new RException("存在重复客资");
@@ -251,8 +251,8 @@ public class ClientAddServiceImpl implements ClientAddService {
             ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(jsInfo.getString("data"),
                     DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
                     DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
-            if (NumUtil.isNull(info.getAppointorId())) {
-                return;
+            if (info == null || NumUtil.isNull(info.getAppointorId())) {
+                throw new RException("存在重复客资");
             }
             GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getAppointorId(), info, staffPO.getNickName(), newsDao, staffDao);
             throw new RException("存在重复客资");
@@ -343,8 +343,8 @@ public class ClientAddServiceImpl implements ClientAddService {
             ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(jsInfo.getString("data"),
                     DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
                     DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
-            if (NumUtil.isNull(info.getAppointorId())) {
-                return;
+            if (info == null || NumUtil.isNull(info.getAppointorId())) {
+                throw new RException("存在重复客资");
             }
             GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getAppointorId(), info, staffPO.getNickName(), newsDao, staffDao);
             throw new RException("存在重复客资");

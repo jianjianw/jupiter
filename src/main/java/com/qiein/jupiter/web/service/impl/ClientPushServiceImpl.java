@@ -1027,7 +1027,7 @@ public class ClientPushServiceImpl implements ClientPushService {
                                     ClientLogConst.INFO_LOGTYPE_ALLOT, companyId));
         }
         // 推送消息
-        GoEasyUtil.pushAllotMsg(companyId, appoint.getStaffId(), kzIdsArr.length, newsDao, staffDao);
+        GoEasyUtil.pushAllotMsg(companyId, appoint.getStaffId(), kzIdsArr, newsDao, staffDao);
     }
 
     public void pushMsjd(int companyId, String kzIds, StaffPushDTO appoint, int operaId, String operaName) {
@@ -1044,7 +1044,7 @@ public class ClientPushServiceImpl implements ClientPushService {
                                     ClientLogConst.INFO_LOGTYPE_ALLOT, companyId));
         }
         // 推送消息
-        GoEasyUtil.pushAllotMsg(companyId, appoint.getStaffId(), kzIdsArr.length, newsDao, staffDao);
+        GoEasyUtil.pushAllotMsg(companyId, appoint.getStaffId(), kzIdsArr, newsDao, staffDao);
     }
 
     public static String arrToStr(String[] arr) {
@@ -1071,14 +1071,13 @@ public class ClientPushServiceImpl implements ClientPushService {
     public void pushClientNoticeInfo() {
         List<ClientTimerPO> allClientTimerList = clientTimerDao.getAll();
         if (CollectionUtils.isNotEmpty(allClientTimerList)) {
-            List<Integer> idsDel = new ArrayList<>();
             // 每个公司一个List
             Map<String, List<NewsPO>> companyMap = new HashMap<>();
             for (ClientTimerPO clientTimerPO : allClientTimerList) {
                 // 推送消息
+                clientTimerDao.delAready(clientTimerPO.getId());
                 GoEasyUtil.pushWarnTimer(clientTimerPO.getCompanyId(), clientTimerPO.getStaffId(),
-                        clientTimerPO.getKzId(), clientTimerPO.getMsg());
-                idsDel.add(clientTimerPO.getId());
+                        clientTimerPO.getKzId(), clientTimerPO.getMsg(), staffDao);
                 // 新加一条消息
                 NewsPO news = new NewsPO();
                 news.setStaffId(clientTimerPO.getStaffId());
@@ -1088,14 +1087,11 @@ public class ClientPushServiceImpl implements ClientPushService {
                 news.setMsg(clientTimerPO.getMsg());
                 news.setKzid(clientTimerPO.getKzId());
                 String tableName = DBSplitUtil.getNewsTabName(clientTimerPO.getCompanyId());
-                if (companyMap.get(tableName) == null) {
+                if (!companyMap.containsKey(tableName) || companyMap.get(tableName) == null) {
                     companyMap.put(tableName, new ArrayList<NewsPO>());
                 }
                 companyMap.get(tableName).add(news);
             }
-            // 删掉已经推送的
-            Integer[] idsDelInt = idsDel.toArray(new Integer[idsDel.size()]);
-            clientTimerDao.batchDelAready(idsDelInt);
             // 添加消息记录
             for (String tableName : companyMap.keySet()) {
                 newsDao.batchInsertNews(tableName, companyMap.get(tableName));

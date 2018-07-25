@@ -13,6 +13,16 @@ public class GoldCustomerDTO {
     //状态
     private String statusId;
 
+    private Integer companyId;
+
+    public Integer getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
+    }
+
     public Integer getStartTime() {
         return startTime;
     }
