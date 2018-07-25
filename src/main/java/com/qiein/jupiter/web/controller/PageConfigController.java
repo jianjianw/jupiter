@@ -1,15 +1,14 @@
 package com.qiein.jupiter.web.controller;
 
+import com.qiein.jupiter.enums.TipMsgEnum;
+import com.qiein.jupiter.util.ObjectUtil;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.web.entity.po.PageConfig;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.service.PageConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -46,5 +45,20 @@ public class PageConfigController extends BaseController {
         return ResultInfoUtil.success(
                 pageConfigService.getPageFilterMap(curStaff.getCompanyId(), role)
         );
+    }
+
+    /**
+     * 修改页面配置
+     *
+     * @param pageConfig
+     * @return
+     */
+    @PostMapping("/save_page_config")
+    public ResultInfo savePageConfig(@RequestBody PageConfig pageConfig) {
+        ObjectUtil.objectStrParamTrim(pageConfig);
+        StaffPO curStaff = getCurrentLoginStaff();
+        pageConfig.setCompanyId(curStaff.getCompanyId());
+        pageConfigService.updatePageConfig(pageConfig);
+        return ResultInfoUtil.success(TipMsgEnum.UPDATE_SUCCESS);
     }
 }

@@ -26,4 +26,9 @@ public interface PageConfigService {
      * @return
      */
     FilterMapVO getPageFilterMap(int companyId, String role);
+
+    /**
+     * 保存页面配置
+     */
+    int updatePageConfig(PageConfig pageConfig);
 }

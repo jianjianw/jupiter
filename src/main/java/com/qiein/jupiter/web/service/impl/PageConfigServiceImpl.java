@@ -75,6 +75,7 @@ public class PageConfigServiceImpl implements PageConfigService {
      * @param role
      * @return
      */
+    ///TODO 这个方法暂时不会用到
     @Override
     public FilterMapVO getPageFilterMap(int companyId, String role) {
         FilterMapVO pageFilterMap = new FilterMapVO();
@@ -156,6 +157,14 @@ public class PageConfigServiceImpl implements PageConfigService {
         pageFilterMap.setShop(shopFilters);
 
         return pageFilterMap;
+    }
+
+    /**
+     * 保存页面配置
+     */
+    @Override
+    public int updatePageConfig(PageConfig pageConfig) {
+        return pageConfigDao.updatePageConfig(pageConfig);
     }
 
     /**

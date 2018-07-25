@@ -8,6 +8,7 @@
         <result column="ACTION" property="action" jdbcType="VARCHAR"/>
         <result column="MEMO" property="memo" jdbcType="VARCHAR"/>
         <result column="TITLETXT" property="titleTxt" jdbcType="VARCHAR"/>
+        <result column="TITLETXT_NO" property="titleTxtNo" jdbcType="VARCHAR"/>
         <result column="PRIORITY" property="priority" jdbcType="VARCHAR"/>
         <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
     </resultMap>
@@ -15,15 +16,30 @@
     <!--根据公司ID 和 角色获取页面配置-->
     <select id="listPageConfigByCidAndRole" resultMap="baseMap">
         SELECT
-			ID,ROLE,ACTION,MEMO, TITLETXT,
-			PRIORITY,COMPANYID
-		FROM
-			hm_crm_page_conf
-		WHERE
-			COMPANYID = #{companyId}
-			AND ROLE = #{role}
-		  ORDER BY PRIORITY
+            ID,
+            ROLE,
+            ACTION,
+            MEMO,
+            TITLETXT,
+            TITLETXT_NO,
+            PRIORITY,
+            COMPANYID
+        FROM
+            hm_crm_page_conf
+        WHERE
+            COMPANYID = #{companyId}
+            AND ROLE = #{role}
+        ORDER BY PRIORITY
     </select>
+
+    <!--修改页面配置-->
+    <update id="updatePageConfig">
+        UPDATE hm_crm_page_conf conf
+        SET conf.TITLETXT    = #{titleTxt},
+            conf.TITLETXT_NO = #{titleTxtNo}
+        WHERE conf.COMPANYID = #{companyId}
+              AND conf.ID = #{id}
+    </update>
 
 
 </mapper>
