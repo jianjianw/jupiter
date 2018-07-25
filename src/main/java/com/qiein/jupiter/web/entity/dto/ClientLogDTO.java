@@ -16,6 +16,15 @@ public class ClientLogDTO {
     private String tableDetail;
     private Integer logType;
     private List<Integer> list;
+    private Integer staffId;//员工id
+
+    public Integer getStaffId() {
+        return staffId;
+    }
+
+    public void setStaffId(Integer staffId) {
+        this.staffId = staffId;
+    }
 
     public String getSourceIds() {
         return sourceIds;

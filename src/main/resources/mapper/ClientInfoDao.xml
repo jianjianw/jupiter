@@ -310,6 +310,9 @@
 		<if test="startTime !=null and endTime!=null">
 			AND log.OPERATIME &gt;= #{startTime} AND log.OPERATIME &lt; UNIX_TIMESTAMP(DATE_ADD(FROM_UNIXTIME(#{endTime},'%Y-%m-%d '),INTERVAL 1 DAY))
 		</if>
+		<if test="staffId !='0'">
+			AND log.APPOINTORID=#{staffId}
+		</if>
 		GROUP BY
 		log.KZID
 
