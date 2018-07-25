@@ -61,9 +61,9 @@ public class SystemLogServiceImpl implements SystemLogService {
      * @return
      */
     @Override
-    public PageInfo<SystemLog> getLogByType(int pageNum, int pageSize, int companyId, int typeId) {
+    public PageInfo<SystemLog> getLogByType(int pageNum, int pageSize, int companyId, int typeId, int startTime, int endTime) {
         PageHelper.startPage(pageNum, pageSize);
-        List<SystemLog> logByType = logDao.getLogByType(companyId, typeId);
+        List<SystemLog> logByType = logDao.getLogByType(companyId, typeId, startTime, endTime);
         return new PageInfo<>(logByType);
     }
 

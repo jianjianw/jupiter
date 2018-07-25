@@ -33,7 +33,7 @@ public interface SystemLogService {
      * @param companyId
      * @return
      */
-    PageInfo<SystemLog> getLogByType(int pageNum, int pageSize, int companyId, int typeId);
+    PageInfo<SystemLog> getLogByType(int pageNum, int pageSize, int companyId, int typeId, int startTime, int endTime);
 
     /**
      * 定时器清空日志
