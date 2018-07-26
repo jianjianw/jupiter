@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.service.impl;
 
+import com.qiein.jupiter.constant.ChannelConstant;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.constant.PushRoleConst;
 import com.qiein.jupiter.constant.SourceStaffConst;
@@ -230,6 +231,11 @@ public class ChannelServiceImpl implements ChannelService {
     @Override
     public List<ChannelVO> getDsAllChannel(int companyId) {
         return channelDao.getDsAllChannel(companyId);
+    }
+
+    @Override
+    public List<ChannelVO> getCompanyOutZjsChannelAndSource(int companyId) {
+        return channelDao.getChannelSourceListByType(companyId, Arrays.asList(ChannelConstant.STAFF_OUT));
     }
 
 }
