@@ -106,6 +106,11 @@ public class ExcelServiceImpl implements ExcelService {
             clientExcelDTO.setSuccessTime(clientExcelDTO.getSuccessTimeDate() == null ? 0 : clientExcelDTO.getSuccessTimeDate().getTime() / 1000);
             clientExcelDTO.setAppointTime(clientExcelDTO.getAppointTimeDate() == null ? 0 : clientExcelDTO.getAppointTimeDate().getTime() / 1000);
             clientExcelDTO.setComeShopTime(clientExcelDTO.getComeShopTimeDate() == null ? 0 : clientExcelDTO.getComeShopTimeDate().getTime() / 1000);
+            clientExcelDTO.setMarryTime(CommonConstant.DEFAULT_ZERO);
+            clientExcelDTO.setYpTime(CommonConstant.DEFAULT_ZERO);
+            clientExcelDTO.setYxLevel(CommonConstant.DEFAULT_ZERO);
+            clientExcelDTO.setYsRange(CommonConstant.DEFAULT_ZERO);
+            clientExcelDTO.setZxStyle(CommonConstant.DEFAULT_ZERO);
             try {
                 if(NumUtil.isValid(clientExcelDTO.getAmount()) || NumUtil.isValid(clientExcelDTO.getStayaMount()) ){
                     clientExcelDTO.setAmount(Integer.valueOf(clientExcelDTO.getAmountStr()));
