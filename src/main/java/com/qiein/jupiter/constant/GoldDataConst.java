@@ -26,4 +26,14 @@ public class GoldDataConst {
      * 异地拦截
      * */
     public final static Integer INTERCEPTING = 4;
+
+    /**
+     * 录入成功
+     * */
+    public final static Integer IN_SUCCESS = 5;
+
+    /**
+     * 录入失败
+     * */
+    public final static Integer IN_FAIL = 6;
 }
