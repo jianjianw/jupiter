@@ -97,6 +97,7 @@
     <!--获取企业外呼员工列表-->
     <select id="getUserList" resultMap="baseMap">
         SELECT
+            rela.CNO,
             rela.STAFF_ID,
             rela.BIND_TEL,
             staff.NICKNAME NAME,
