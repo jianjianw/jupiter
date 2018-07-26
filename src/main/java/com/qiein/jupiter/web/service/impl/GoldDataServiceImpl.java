@@ -251,14 +251,15 @@ public class GoldDataServiceImpl implements GoldDataService {
         goldTempPO.setRemark(jsonObject.toString());
         goldTempPO.setIp(StringUtil.isEmpty(ip) ? "" : ip);
         goldTempPO.setIpAddress(StringUtil.isEmpty(ip) ? "" : HttpUtil.getIpLocation(ip));
-        //重复拦截
-        GoldTempPO goldTemp = goldTempDao.getByKzNameOrKzPhoneOrKzWechat(formId, kzPhone);
-        if (null != goldTemp) {
-            goldTempPO.setStatusId(GoldDataConst.REPEATED_SCREEN);
-            goldTempDao.update(goldTempPO);
-            return;
-        }
         goldTempDao.insert(goldTempPO);
+        //TODO 重复拦截
+//        GoldTempPO goldTemp = goldTempDao.getByKzNameOrKzPhoneOrKzWechat(formId, kzPhone);
+//        if (null != goldTemp) {
+//            goldTempPO.setStatusId(GoldDataConst.REPEATED_SCREEN);
+//            goldTempDao.update(goldTempPO);
+//            return;
+//        }
+
 
         //TODO 筛选中是否录入数据
         String addRstStr = crmBaseApi.doService(reqContent, "clientAddGoldPlug");
@@ -273,7 +274,7 @@ public class GoldDataServiceImpl implements GoldDataService {
                 goldTempDao.update(goldTempPO);
             } else {
                 //更新状态(录入成功)
-                goldTempPO.setStatusId(GoldDataConst.IN_SUCCESS);
+                goldTempPO.setStatusId(GoldDataConst.HAVA_ENTERED);
                 goldTempDao.update(goldTempPO);
             }
             //发送消息
@@ -358,13 +359,13 @@ public class GoldDataServiceImpl implements GoldDataService {
         String addRstStr = crmBaseApi.doService(reqContent, "clientAddGoldPlug");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
 
-        //重复拦截
-        GoldTempPO goldTemp = goldTempDao.getByKzNameOrKzPhoneOrKzWechat(goldFingerPO.getFormId(), goldTempPO.getKzPhone());
-        if (null != goldTemp) {
-            goldTempPO.setStatusId(GoldDataConst.REPEATED_SCREEN);
-            goldTempDao.update(goldTempPO);
-            return;
-        }
+        //TODO 重复拦截
+//        GoldTempPO goldTemp = goldTempDao.getByKzNameOrKzPhoneOrKzWechat(goldFingerPO.getFormId(), goldTempPO.getKzPhone());
+//        if (null != goldTemp) {
+//            goldTempPO.setStatusId(GoldDataConst.REPEATED_SCREEN);
+//            goldTempDao.update(goldTempPO);
+//            return;
+//        }
 
         if ("100000".equals(jsInfo.getString("code"))) {
             if (null != goldFingerPO.getIsFilter() && goldFingerPO.getIsFilter()) {
@@ -373,7 +374,7 @@ public class GoldDataServiceImpl implements GoldDataService {
                 goldTempDao.update(goldTempPO);
             } else {
                 //更新状态(录入成功)
-                goldTempPO.setStatusId(GoldDataConst.IN_SUCCESS);
+                goldTempPO.setStatusId(GoldDataConst.HAVA_ENTERED);
                 goldTempDao.update(goldTempPO);
             }
         } else if ("130019".equals(jsInfo.getString("code"))) {
