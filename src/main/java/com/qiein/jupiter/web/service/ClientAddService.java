@@ -24,6 +24,17 @@ public interface ClientAddService {
     void addZjsClient(ClientVO clientVO, StaffPO staffPO);
 
     /**
+     *
+     * 功能描述:
+     *  添加外部转介绍客资
+     * @auther: Tt(yehuawei)
+     * @date:
+     * @param:
+     * @return:
+     */
+    void addOutZjsClient(ClientVO clientVO);
+
+    /**
      * 添加自然入客客资
      *
      * @param clientVO

@@ -62,6 +62,23 @@ public class ClientAddController extends BaseController {
         return ResultInfoUtil.success(TipMsgEnum.ENTERING_SUNCCESS);
     }
 
+    @PostMapping("/add_out_zjs_client")
+    public ResultInfo addOutZjsClient(@RequestBody ClientVO clientVO){
+        if (StringUtil.isAllEmpty(clientVO.getKzPhone(), clientVO.getKzWechat()))
+            throw new RException(ExceptionEnum.KZ_CONTACT_INFORMATION);
+
+        if (!StringUtil.isPhone(clientVO.getKzPhone())){
+            if (StringUtil.isWeChat(clientVO.getKzPhone())){
+                clientVO.setKzWechat(clientVO.getKzPhone());
+                clientVO.setKzPhone("");
+            }else
+                throw new RException(ExceptionEnum.IS_NOT_KZ_PHONE_OR_WECHAT);
+        }
+
+        clientAddService.addOutZjsClient(clientVO);
+        return ResultInfoUtil.success();
+    }
+
     /**
      * 录入门市客资
      *
