@@ -249,7 +249,7 @@
             INNER JOIN hm_crm_source src on temp.SOURCENAME = src.SRCNAME
         SET temp.SOURCEID = src.ID, temp.SRCTYPE = src.TYPEID
         WHERE
-            temp.OPERAID = #{staffId};
+            temp.OPERAID = #{staffId} and src.companyId = #{companyId};
     </update>
 
     <!-- 设置来源和渠道-->
