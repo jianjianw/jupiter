@@ -141,7 +141,7 @@
     <!-- 批量写入客资临时缓存表 -->
     <insert id="insertExcelClientInfo">
         INSERT INTO ${tempName}
-        (KZID, TYPENAME, STATUSID, CHANNELNAME, SOURCENAME,ZXSTYLE, KZNAME,SEX,KZPHONE, KZWECHAT, KZQQ, KZWW,
+        (KZID, TYPENAME, STATUSID,STATUSNAME, CHANNELNAME, SOURCENAME,ZXSTYLE, KZNAME,SEX,KZPHONE, KZWECHAT, KZQQ, KZWW,
         COLLECTORNAME,
         APPOINTNAME,APPOINTTIME,RECEPTORNAME,AMOUNT,CREATETIME, UPDATETIME,COMESHOPTIME,SUCCESSTIME, SHOPNAME,
         COMPANYID, OPERAID, ADDRESS, GROUPNAME,KEYWORD,MEMO
@@ -149,7 +149,7 @@
         ,MARRYTIMESTR,YPTIMESTR,YSRANGESTR,YXLEVELSTR,ZXSTYLESTR)
         VALUES
         <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.kzId},#{item.typeName}, #{item.statusId},#{item.channelName},
+            (#{item.kzId},#{item.typeName}, #{item.statusId},#{item.statusName},#{item.channelName},
             #{item.sourceName},#{item.zxStyle},#{item.kzName},#{item.sex},#{item.kzPhone}, #{item.kzWechat},
             #{item.kzQq}, #{item.kzWw}, #{item.collectorName},
             #{item.appointName},#{item.appointTime},#{item.receptorName},#{item.amount},
