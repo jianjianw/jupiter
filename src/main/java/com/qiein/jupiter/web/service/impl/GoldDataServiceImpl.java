@@ -122,7 +122,7 @@ public class GoldDataServiceImpl implements GoldDataService {
         List<GoldCustomerVO> list = goldDataDao.goldCustomerSelect(goldCustomerDTO);
         GoldCustomerShowVO showVO = new GoldCustomerShowVO();
         showVO.setPageInfo(new PageInfo<>(list));
-        GoldFingerPO goldFingerPO = goldDataDao.findForm(goldCustomerDTO.getFormId(),goldCustomerDTO.getCompanyId());
+        GoldFingerPO goldFingerPO = goldDataDao.findForm(goldCustomerDTO.getFormId(), goldCustomerDTO.getCompanyId());
         showVO.setGoldFingerPO(goldFingerPO);
         return showVO;
     }
@@ -206,7 +206,7 @@ public class GoldDataServiceImpl implements GoldDataService {
         reqContent.put("companyid", goldFingerPO.getCompanyId());
         reqContent.put("kzname", kzName);
         reqContent.put("kzphone", kzPhone);
-        reqContent.put("kzwechat",weChat);
+        reqContent.put("kzwechat", weChat);
         reqContent.put("channelid", sourcePO.getChannelId());
         reqContent.put("channelname", sourcePO.getChannelName());
         reqContent.put("sourceid", goldFingerPO.getSrcId());
@@ -242,8 +242,8 @@ public class GoldDataServiceImpl implements GoldDataService {
         goldTempPO.setAddress(address);
         goldTempPO.setWechat(weChat);
         goldTempPO.setRemark(jsonObject.toString());
-        goldTempPO.setIp(StringUtil.isEmpty(ip)?"":ip);
-        goldTempPO.setIpAddress(StringUtil.isEmpty(ip)?"":HttpUtil.getIpLocation(ip));
+        goldTempPO.setIp(StringUtil.isEmpty(ip) ? "" : ip);
+        goldTempPO.setIpAddress(StringUtil.isEmpty(ip) ? "" : HttpUtil.getIpLocation(ip));
 
         goldTempDao.insert(goldTempPO);
 
@@ -254,17 +254,18 @@ public class GoldDataServiceImpl implements GoldDataService {
             goldTempDao.update(goldTempPO);
             return;
         }
-
+        //TODO 筛选中是否录入数据
         String addRstStr = crmBaseApi.doService(reqContent, "clientAddGoldPlug");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         String kzId = jsInfo.getString("data");
+
 
         if ("100000".equals(jsInfo.getString("code"))) {
             if (null != goldFingerPO.getIsFilter() && goldFingerPO.getIsFilter()) {
                 //更新状态
                 goldTempPO.setStatusId(GoldDataConst.IN_FILTER);
                 goldTempDao.update(goldTempPO);
-            }else{
+            } else {
                 //更新状态(录入成功)
                 goldTempPO.setStatusId(GoldDataConst.IN_SUCCESS);
                 goldTempDao.update(goldTempPO);
@@ -323,7 +324,7 @@ public class GoldDataServiceImpl implements GoldDataService {
         reqContent.put("companyid", goldFingerPO.getCompanyId());
         reqContent.put("kzname", goldTempPO.getKzName());
         reqContent.put("kzphone", goldTempPO.getKzPhone());
-        reqContent.put("kzwechat",goldTempPO.getWechat());
+        reqContent.put("kzwechat", goldTempPO.getWechat());
         reqContent.put("channelid", sourcePO.getChannelId());
         reqContent.put("channelname", sourcePO.getChannelName());
         reqContent.put("sourceid", goldFingerPO.getSrcId());
@@ -356,7 +357,7 @@ public class GoldDataServiceImpl implements GoldDataService {
                 //更新状态
                 goldTempPO.setStatusId(GoldDataConst.IN_FILTER);
                 goldTempDao.update(goldTempPO);
-            }else{
+            } else {
                 //更新状态(录入成功)
                 goldTempPO.setStatusId(GoldDataConst.IN_SUCCESS);
                 goldTempDao.update(goldTempPO);
