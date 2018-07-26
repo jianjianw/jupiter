@@ -187,7 +187,7 @@ public class ClientExcelNewsDTO implements Serializable {
     /**
      * 婚期时间
      * */
-    private Integer marryTime;
+    private int marryTime;
     /**
      * 预拍时间
      */
@@ -196,7 +196,7 @@ public class ClientExcelNewsDTO implements Serializable {
     /**
      * 预拍时间
      * */
-    private Integer ypTime;
+    private int ypTime;
 
     /**
      * 录入时间db
@@ -268,7 +268,7 @@ public class ClientExcelNewsDTO implements Serializable {
     /**
      * 意向等级
      */
-    private Integer yxLevel;
+    private int yxLevel;
     /**
      * 企业ID
      */
@@ -319,7 +319,7 @@ public class ClientExcelNewsDTO implements Serializable {
     /**
      * 预算范围
      */
-    private Integer ysRange;
+    private int ysRange;
 
     /**
      * 无效原因
