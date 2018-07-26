@@ -91,6 +91,7 @@ public class ExcelServiceImpl implements ExcelService {
             //此处进行特殊换行符处理
             //TODO 封装到工具类中
             String kzPhone = StringUtil.nullToStrTrim(clientExcelDTO.getKzPhone()).replace("/r", "").replace("/n", "");
+            clientExcelDTO.setStatusName(clientExcelDTO.getClassName());
             clientExcelDTO.setKzPhone(StringUtil.isEmpty(kzPhone)?null:kzPhone);
             clientExcelDTO.setRemark(StringUtil.isEmpty(clientExcelDTO.getRemark())
                     ? CommonConstant.EXCEL_DEFAULT_REMARK
