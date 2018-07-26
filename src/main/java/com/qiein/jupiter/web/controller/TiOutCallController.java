@@ -226,7 +226,7 @@ public class TiOutCallController extends BaseController {
      *
      * @return
      */
-    @PostMapping("/del_bind_user")
+    @GetMapping("/del_bind_user")
     public ResultInfo delBindUser(int staffId) {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         outCallService.delBindUser(currentLoginStaff.getCompanyId(), staffId);
