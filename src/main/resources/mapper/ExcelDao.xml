@@ -784,7 +784,7 @@
     <!--更改咨询方式字典编码-->
     <update id="updateZxStyleDictionaryCode">
         UPDATE ${tempName} temp
-        SET temp.ZXSTYLE = (SELECT DICCODE
+        SET temp.ZXSTYLE = (SELECT if(DICCODE is not null,DICCODE,'0')
                             FROM hm_crm_dictionary dictionary
                             WHERE dictionary.COMPANYID = temp.COMPANYID AND dictionary.DICNAME = temp.ZXSTYLESTR and
                                   dictionary.DICTYPE = #{dictionaryType})
@@ -794,7 +794,7 @@
     <!--更改意向等级字典编码-->
     <update id="updateYxLevelDictionaryCode">
         UPDATE ${tempName} temp
-        SET temp.YXLEVEL = (SELECT DICCODE
+        SET temp.YXLEVEL = (SELECT if(DICCODE is not null,DICCODE,'0')
                             FROM hm_crm_dictionary dictionary
                             WHERE dictionary.COMPANYID = temp.COMPANYID AND dictionary.DICNAME = temp.YXLEVELSTR and
                                   dictionary.DICTYPE = #{dictionaryType})
@@ -804,7 +804,7 @@
     <!--更改预算范围字典编码-->
     <update id="updateYsRangeDictionaryCode">
         UPDATE ${tempName} temp
-        SET temp.YSRANGE = (SELECT DICCODE
+        SET temp.YSRANGE = (SELECT if(DICCODE is not null,DICCODE,'0')
                             FROM hm_crm_dictionary dictionary
                             WHERE dictionary.COMPANYID = temp.COMPANYID AND dictionary.DICNAME = temp.YSRANGESTR and
                                   dictionary.DICTYPE = #{dictionaryType})
@@ -814,7 +814,7 @@
     <!--更新预拍时间的字典编码-->
     <update id="updateYpTimeDictionaryCode">
         UPDATE ${tempName} temp
-        SET temp.YPTIME = (SELECT DICCODE
+        SET temp.YPTIME = (SELECT if(DICCODE is not null,DICCODE,'0')
                            FROM hm_crm_dictionary dictionary
                            WHERE dictionary.COMPANYID = temp.COMPANYID AND dictionary.DICNAME = temp.YPTIMESTR and
                                  dictionary.DICTYPE = #{dictionaryType})
@@ -824,7 +824,7 @@
     <!--更新婚期时间的字典编码-->
     <update id="updateMarryTimeDictionaryCode">
         UPDATE ${tempName} temp
-        SET temp.MARRYTIME = (SELECT DICCODE
+        SET temp.MARRYTIME = (SELECT if(DICCODE is not null,DICCODE,'0')
                               FROM hm_crm_dictionary dictionary
                               WHERE dictionary.COMPANYID = temp.COMPANYID AND dictionary.DICNAME = temp.MARRYTIMESTR and
                                     dictionary.DICTYPE = #{dictionaryType})
