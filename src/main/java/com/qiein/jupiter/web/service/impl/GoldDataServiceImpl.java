@@ -1,15 +1,11 @@
 package com.qiein.jupiter.web.service.impl;
 
-import cn.afterturn.easypoi.excel.annotation.Excel;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.mzlion.core.http.IPUtils;
-import com.mzlion.core.lang.StringUtils;
-import com.qiein.jupiter.constant.ClientStatusConst;
 import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.constant.DictionaryConstant;
 import com.qiein.jupiter.constant.GoldDataConst;
-import com.qiein.jupiter.enums.ZxStyleEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.http.CrmBaseApi;
@@ -51,6 +47,8 @@ public class GoldDataServiceImpl implements GoldDataService {
     private NewsDao newsDao;
     @Autowired
     private StaffDao staffDao;
+    @Autowired
+    private DictionaryDao dictionaryDao;
 
     /**
      * 添加表单
@@ -197,6 +195,13 @@ public class GoldDataServiceImpl implements GoldDataService {
             }
         }
 
+        //设置咨询类型
+        List<DictionaryPO> dictionaryPOS = dictionaryDao.getDicByType(goldFingerPO.getCompanyId(), DictionaryConstant.ZX_STYLE);
+        for (DictionaryPO dictionaryPO:dictionaryPOS){
+            if(dictionaryPO.getDicName().equalsIgnoreCase(goldFingerPO.getZxStyle())){
+                reqContent.put("zxstyle", dictionaryPO.getDicCode());
+            }
+        }
 
         //获取当前来源
         SourcePO sourcePO = sourceDao.getByIdAndCid(goldFingerPO.getSrcId(), goldFingerPO.getCompanyId());
@@ -217,7 +222,6 @@ public class GoldDataServiceImpl implements GoldDataService {
         reqContent.put("adid", goldFingerPO.getAdId());
         reqContent.put("adaddress", goldFingerPO.getAdAddress());
         reqContent.put("typeid", goldFingerPO.getTypeId());
-        reqContent.put("zxstyle", ZxStyleEnum.getZxType(goldFingerPO.getZxStyle()));
         reqContent.put("collectorid", goldFingerPO.getCreateorId());
         reqContent.put("collectorname", goldFingerPO.getCreateorName());
         reqContent.put("address", address);
@@ -321,6 +325,13 @@ public class GoldDataServiceImpl implements GoldDataService {
         if (null == sourcePO) {
             throw new RException(ExceptionEnum.UNKNOW_ERROR);
         }
+        //设置咨询类型
+        List<DictionaryPO> dictionaryPOS = dictionaryDao.getDicByType(goldFingerPO.getCompanyId(), DictionaryConstant.ZX_STYLE);
+        for (DictionaryPO dictionaryPO:dictionaryPOS){
+            if(dictionaryPO.getDicName().equalsIgnoreCase(goldFingerPO.getZxStyle())){
+                reqContent.put("zxstyle", dictionaryPO.getDicCode());
+            }
+        }
         reqContent.put("companyid", goldFingerPO.getCompanyId());
         reqContent.put("kzname", goldTempPO.getKzName());
         reqContent.put("kzphone", goldTempPO.getKzPhone());
@@ -335,7 +346,7 @@ public class GoldDataServiceImpl implements GoldDataService {
         reqContent.put("adid", goldFingerPO.getAdId());
         reqContent.put("adaddress", goldFingerPO.getAdAddress());
         reqContent.put("typeid", goldFingerPO.getTypeId());
-        reqContent.put("zxstyle", ZxStyleEnum.getZxType(goldFingerPO.getZxStyle()));
+
         reqContent.put("collectorid", goldFingerPO.getCreateorId());
         reqContent.put("collectorname", goldFingerPO.getCreateorName());
         reqContent.put("address", goldTempPO.getAddress());
