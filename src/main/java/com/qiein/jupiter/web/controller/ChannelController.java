@@ -262,4 +262,18 @@ public class ChannelController extends BaseController {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         return ResultInfoUtil.success(channelService.getDsAllChannel(currentLoginStaff.getCompanyId()));
     }
+
+    /**
+     *
+     * 功能描述:
+     *  获取外部转介绍渠道及小组
+     * @auther: Tt(yehuawei)
+     * @date:
+     * @param:
+     * @return:
+     */
+    @GetMapping("/get_out_zjs")
+    public ResultInfo getCompanyOutZjsChannelAndSource(){
+        return ResultInfoUtil.success(channelService.getCompanyOutZjsChannelAndSource(getCurrentLoginStaff().getCompanyId()));
+    }
 }

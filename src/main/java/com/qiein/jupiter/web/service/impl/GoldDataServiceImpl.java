@@ -1,15 +1,11 @@
 package com.qiein.jupiter.web.service.impl;
 
-import cn.afterturn.easypoi.excel.annotation.Excel;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.mzlion.core.http.IPUtils;
-import com.mzlion.core.lang.StringUtils;
-import com.qiein.jupiter.constant.ClientStatusConst;
 import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.constant.DictionaryConstant;
 import com.qiein.jupiter.constant.GoldDataConst;
-import com.qiein.jupiter.enums.ZxStyleEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.http.CrmBaseApi;
@@ -51,6 +47,8 @@ public class GoldDataServiceImpl implements GoldDataService {
     private NewsDao newsDao;
     @Autowired
     private StaffDao staffDao;
+    @Autowired
+    private DictionaryDao dictionaryDao;
 
     /**
      * 添加表单
@@ -122,7 +120,7 @@ public class GoldDataServiceImpl implements GoldDataService {
         List<GoldCustomerVO> list = goldDataDao.goldCustomerSelect(goldCustomerDTO);
         GoldCustomerShowVO showVO = new GoldCustomerShowVO();
         showVO.setPageInfo(new PageInfo<>(list));
-        GoldFingerPO goldFingerPO = goldDataDao.findForm(goldCustomerDTO.getFormId(),goldCustomerDTO.getCompanyId());
+        GoldFingerPO goldFingerPO = goldDataDao.findForm(goldCustomerDTO.getFormId(), goldCustomerDTO.getCompanyId());
         showVO.setGoldFingerPO(goldFingerPO);
         return showVO;
     }
@@ -203,10 +201,18 @@ public class GoldDataServiceImpl implements GoldDataService {
         if (null == sourcePO) {
             throw new RException(ExceptionEnum.SOURCE_NOT_FOUND);
         }
+        //设置咨询类型
+        List<DictionaryPO> dictionaryPOS = dictionaryDao.getDicByType(goldFingerPO.getCompanyId(), DictionaryConstant.ZX_STYLE);
+        for (DictionaryPO dictionaryPO:dictionaryPOS){
+            if(dictionaryPO.getDicName().equalsIgnoreCase(goldFingerPO.getZxStyle())){
+                reqContent.put("zxstyle", dictionaryPO.getDicCode());
+                break;
+            }
+        }
         reqContent.put("companyid", goldFingerPO.getCompanyId());
         reqContent.put("kzname", kzName);
         reqContent.put("kzphone", kzPhone);
-        reqContent.put("kzwechat",weChat);
+        reqContent.put("kzwechat", weChat);
         reqContent.put("channelid", sourcePO.getChannelId());
         reqContent.put("channelname", sourcePO.getChannelName());
         reqContent.put("sourceid", goldFingerPO.getSrcId());
@@ -217,11 +223,12 @@ public class GoldDataServiceImpl implements GoldDataService {
         reqContent.put("adid", goldFingerPO.getAdId());
         reqContent.put("adaddress", goldFingerPO.getAdAddress());
         reqContent.put("typeid", goldFingerPO.getTypeId());
-        reqContent.put("zxstyle", ZxStyleEnum.getZxType(goldFingerPO.getZxStyle()));
         reqContent.put("collectorid", goldFingerPO.getCreateorId());
         reqContent.put("collectorname", goldFingerPO.getCreateorName());
         reqContent.put("address", address);
         reqContent.put("remark", sb.toString());
+
+
 
 
         //插入记录
@@ -242,31 +249,32 @@ public class GoldDataServiceImpl implements GoldDataService {
         goldTempPO.setAddress(address);
         goldTempPO.setWechat(weChat);
         goldTempPO.setRemark(jsonObject.toString());
-        goldTempPO.setIp(StringUtil.isEmpty(ip)?"":ip);
-        goldTempPO.setIpAddress(StringUtil.isEmpty(ip)?"":HttpUtil.getIpLocation(ip));
-
+        goldTempPO.setIp(StringUtil.isEmpty(ip) ? "" : ip);
+        goldTempPO.setIpAddress(StringUtil.isEmpty(ip) ? "" : HttpUtil.getIpLocation(ip));
         goldTempDao.insert(goldTempPO);
+        //TODO 重复拦截
+//        GoldTempPO goldTemp = goldTempDao.getByKzNameOrKzPhoneOrKzWechat(formId, kzPhone);
+//        if (null != goldTemp) {
+//            goldTempPO.setStatusId(GoldDataConst.REPEATED_SCREEN);
+//            goldTempDao.update(goldTempPO);
+//            return;
+//        }
 
-        //重复拦截
-        GoldTempPO goldTemp = goldTempDao.getByKzNameOrKzPhoneOrKzWechat(formId, kzPhone);
-        if (null != goldTemp) {
-            goldTempPO.setStatusId(GoldDataConst.REPEATED_SCREEN);
-            goldTempDao.update(goldTempPO);
-            return;
-        }
 
+        //TODO 筛选中是否录入数据
         String addRstStr = crmBaseApi.doService(reqContent, "clientAddGoldPlug");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         String kzId = jsInfo.getString("data");
+
 
         if ("100000".equals(jsInfo.getString("code"))) {
             if (null != goldFingerPO.getIsFilter() && goldFingerPO.getIsFilter()) {
                 //更新状态
                 goldTempPO.setStatusId(GoldDataConst.IN_FILTER);
                 goldTempDao.update(goldTempPO);
-            }else{
+            } else {
                 //更新状态(录入成功)
-                goldTempPO.setStatusId(GoldDataConst.IN_SUCCESS);
+                goldTempPO.setStatusId(GoldDataConst.HAVA_ENTERED);
                 goldTempDao.update(goldTempPO);
             }
             //发送消息
@@ -320,32 +328,61 @@ public class GoldDataServiceImpl implements GoldDataService {
         if (null == sourcePO) {
             throw new RException(ExceptionEnum.UNKNOW_ERROR);
         }
+        //设置咨询类型
+        List<DictionaryPO> dictionaryPOS = dictionaryDao.getDicByType(goldFingerPO.getCompanyId(), DictionaryConstant.ZX_STYLE);
+        for (DictionaryPO dictionaryPO:dictionaryPOS){
+            if(dictionaryPO.getDicName().equalsIgnoreCase(goldFingerPO.getZxStyle())){
+                reqContent.put("zxstyle", dictionaryPO.getDicCode());
+                break;
+            }
+        }
         reqContent.put("companyid", goldFingerPO.getCompanyId());
         reqContent.put("kzname", goldTempPO.getKzName());
         reqContent.put("kzphone", goldTempPO.getKzPhone());
+        reqContent.put("kzwechat", goldTempPO.getWechat());
         reqContent.put("channelid", sourcePO.getChannelId());
         reqContent.put("channelname", sourcePO.getChannelName());
         reqContent.put("sourceid", goldFingerPO.getSrcId());
         reqContent.put("srctype", sourcePO.getTypeId());
         reqContent.put("sourcename", goldFingerPO.getSrcName());
+        //更新状态
+        reqContent.put("isfilter", goldFingerPO.getIsFilter());
         reqContent.put("adid", goldFingerPO.getAdId());
         reqContent.put("adaddress", goldFingerPO.getAdAddress());
         reqContent.put("typeid", goldFingerPO.getTypeId());
-        reqContent.put("zxstyle", goldFingerPO.getZxStyle());
-        reqContent.put("remark", goldFingerPO.getMemo());
+
         reqContent.put("collectorid", goldFingerPO.getCreateorId());
         reqContent.put("collectorname", goldFingerPO.getCreateorName());
+        reqContent.put("address", goldTempPO.getAddress());
+        reqContent.put("remark", goldFingerPO.getMemo());
+
         String addRstStr = crmBaseApi.doService(reqContent, "clientAddGoldPlug");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
 
+        //TODO 重复拦截
+//        GoldTempPO goldTemp = goldTempDao.getByKzNameOrKzPhoneOrKzWechat(goldFingerPO.getFormId(), goldTempPO.getKzPhone());
+//        if (null != goldTemp) {
+//            goldTempPO.setStatusId(GoldDataConst.REPEATED_SCREEN);
+//            goldTempDao.update(goldTempPO);
+//            return;
+//        }
+
         if ("100000".equals(jsInfo.getString("code"))) {
-            goldTempPO.setStatusId(GoldDataConst.IN_FILTER);
-            goldTempDao.update(goldTempPO);
+            if (null != goldFingerPO.getIsFilter() && goldFingerPO.getIsFilter()) {
+                //更新状态
+                goldTempPO.setStatusId(GoldDataConst.IN_FILTER);
+                goldTempDao.update(goldTempPO);
+            } else {
+                //更新状态(录入成功)
+                goldTempPO.setStatusId(GoldDataConst.HAVA_ENTERED);
+                goldTempDao.update(goldTempPO);
+            }
         } else if ("130019".equals(jsInfo.getString("code"))) {
-            goldTempPO.setStatusId(GoldDataConst.HAVA_ENTERED);
+            goldTempPO.setStatusId(GoldDataConst.REPEATED_SCREEN);
             goldTempDao.update(goldTempPO);
         } else {
-            throw new RException(jsInfo.getString("msg"));
+            goldTempPO.setStatusId(GoldDataConst.IN_FAIL);
+            goldTempDao.update(goldTempPO);
         }
     }
 
