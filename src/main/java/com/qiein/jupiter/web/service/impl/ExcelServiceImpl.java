@@ -92,9 +92,6 @@ public class ExcelServiceImpl implements ExcelService {
             //TODO 封装到工具类中
             String kzPhone = StringUtil.nullToStrTrim(clientExcelDTO.getKzPhone()).replace("/r", "").replace("/n", "");
             clientExcelDTO.setKzPhone(StringUtil.isEmpty(kzPhone)?null:kzPhone);
-            String status = clientExcelDTO.getStatusName();
-            clientExcelDTO.setStatusId((StringUtil.isNotEmpty(status) && status.contains("无"))
-                    ? ClientStatusConst.BE_INVALID : ClientStatusConst.BE_HAVE_MAKE_ORDER);
             clientExcelDTO.setRemark(StringUtil.isEmpty(clientExcelDTO.getRemark())
                     ? CommonConstant.EXCEL_DEFAULT_REMARK
                     : CommonConstant.RICH_TEXT_PREFIX + clientExcelDTO.getRemark() + CommonConstant.RICH_TEXT_SUFFIX);
@@ -147,9 +144,9 @@ public class ExcelServiceImpl implements ExcelService {
         excelDao.updateType(DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()),
                 currentLoginStaff.getId());
 
-        // 设置状态名称
-        excelDao.updateStatusName(DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()),
-                currentLoginStaff.getId());
+        //设置状态id
+        excelDao.updateStatusIdAndClassId(DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()),
+                currentLoginStaff.getId(),currentLoginStaff.getCompanyId());
 
         // 设置客资当前分类ID
         excelDao.updateClassId(DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()),
@@ -309,7 +306,7 @@ public class ExcelServiceImpl implements ExcelService {
         }
         if (StringUtil.isNotEmpty(info.getStatusName())) {
             // 设置状态ID和classId
-            excelDao.updateStatusIdAndClassId(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId());
+            excelDao.updateStatusIdAndClassId(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId(),companyId);
         }
         if (StringUtil.isNotEmpty(info.getShopName())) {
             // 更新门店ID

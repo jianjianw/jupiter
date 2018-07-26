@@ -583,7 +583,7 @@
             LEFT JOIN hm_crm_client_status sts on sts.COMPANYID = temp.COMPANYID AND sts.STATUSNAME = temp.STATUSNAME
         SET temp.STATUSID = sts.STATUSID, temp.CLASSID = sts.CLASSID
         WHERE
-            temp.OPERAID = #{operaId}
+            temp.OPERAID = #{operaId} and sts.COMPANYID = #{companyId}
     </update>
 
 

@@ -180,7 +180,7 @@ public interface ExcelDao {
      * @param tempName
      * @param operaId
      */
-    void updateStatusIdAndClassId(@Param("tempName") String tempName, @Param("operaId") int operaId);
+    void updateStatusIdAndClassId(@Param("tempName") String tempName, @Param("operaId") int operaId,@Param("companyId")Integer companyId);
 
     /**
      * 获取错误客资
