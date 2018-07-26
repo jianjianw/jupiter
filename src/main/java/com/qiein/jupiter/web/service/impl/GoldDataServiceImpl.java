@@ -195,18 +195,19 @@ public class GoldDataServiceImpl implements GoldDataService {
             }
         }
 
-        //设置咨询类型
-        List<DictionaryPO> dictionaryPOS = dictionaryDao.getDicByType(goldFingerPO.getCompanyId(), DictionaryConstant.ZX_STYLE);
-        for (DictionaryPO dictionaryPO:dictionaryPOS){
-            if(dictionaryPO.getDicName().equalsIgnoreCase(goldFingerPO.getZxStyle())){
-                reqContent.put("zxstyle", dictionaryPO.getDicCode());
-            }
-        }
 
         //获取当前来源
         SourcePO sourcePO = sourceDao.getByIdAndCid(goldFingerPO.getSrcId(), goldFingerPO.getCompanyId());
         if (null == sourcePO) {
             throw new RException(ExceptionEnum.SOURCE_NOT_FOUND);
+        }
+        //设置咨询类型
+        List<DictionaryPO> dictionaryPOS = dictionaryDao.getDicByType(goldFingerPO.getCompanyId(), DictionaryConstant.ZX_STYLE);
+        for (DictionaryPO dictionaryPO:dictionaryPOS){
+            if(dictionaryPO.getDicName().equalsIgnoreCase(goldFingerPO.getZxStyle())){
+                reqContent.put("zxstyle", dictionaryPO.getDicCode());
+                break;
+            }
         }
         reqContent.put("companyid", goldFingerPO.getCompanyId());
         reqContent.put("kzname", kzName);
@@ -330,6 +331,7 @@ public class GoldDataServiceImpl implements GoldDataService {
         for (DictionaryPO dictionaryPO:dictionaryPOS){
             if(dictionaryPO.getDicName().equalsIgnoreCase(goldFingerPO.getZxStyle())){
                 reqContent.put("zxstyle", dictionaryPO.getDicCode());
+                break;
             }
         }
         reqContent.put("companyid", goldFingerPO.getCompanyId());
