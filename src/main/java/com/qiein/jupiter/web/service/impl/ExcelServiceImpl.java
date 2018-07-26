@@ -157,7 +157,7 @@ public class ExcelServiceImpl implements ExcelService {
 
         // 设置来源ID,和来源类型
         excelDao.updateSrcIdAndType(DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()),
-                currentLoginStaff.getId());
+                currentLoginStaff.getId(),currentLoginStaff.getCompanyId());
 
 
         // 更新最后跟进时间为当前系统时间
@@ -182,19 +182,19 @@ public class ExcelServiceImpl implements ExcelService {
 
         // 更新门店ID
         excelDao.updateShopId(DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()),
-                currentLoginStaff.getId());
+                currentLoginStaff.getId(),currentLoginStaff.getCompanyId());
 
         // 更新邀约小组ID
         excelDao.updateGroupId(DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()),
-                currentLoginStaff.getId());
+                currentLoginStaff.getId(),currentLoginStaff.getCompanyId());
 
         // 更新门市ID
         excelDao.updateReceptorId(DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()),
-                currentLoginStaff.getId());
+                currentLoginStaff.getId(),currentLoginStaff.getCompanyId());
 
         //设置来源和渠道
         excelDao.updateSrcAndChannel(DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()),
-                currentLoginStaff.getId());
+                currentLoginStaff.getId(),currentLoginStaff.getCompanyId());
 
         //设置意向等级，预算范围，结婚时间，预拍时间的Code
         excelDao.updateZxStyleDictionaryCode(DBSplitUtil.getTable(TableEnum.temp,currentLoginStaff.getCompanyId()), currentLoginStaff.getId(), DictionaryConstant.ZX_STYLE);
@@ -305,7 +305,7 @@ public class ExcelServiceImpl implements ExcelService {
         if (StringUtil.isNotEmpty(info.getSourceName())) {
             //设置来源ID，来源类型,渠道ID,渠道名称
             excelDao.updateSrcAndChannel(DBSplitUtil.getTable(TableEnum.temp, companyId),
-                    info.getOperaId());
+                    info.getOperaId(),companyId);
         }
         if (StringUtil.isNotEmpty(info.getStatusName())) {
             // 设置状态ID和classId
@@ -313,7 +313,7 @@ public class ExcelServiceImpl implements ExcelService {
         }
         if (StringUtil.isNotEmpty(info.getShopName())) {
             // 更新门店ID
-            excelDao.updateShopId(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId());
+            excelDao.updateShopId(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId(),companyId);
         }
         if (StringUtil.isNotEmpty(info.getCollectorName())) {
             // 更新提报人ID

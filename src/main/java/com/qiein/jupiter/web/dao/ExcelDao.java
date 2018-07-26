@@ -57,7 +57,7 @@ public interface ExcelDao {
     /**
      * 设置来源ID,和来源类型
      */
-    void updateSrcIdAndType(@Param("tempName") String tempName, @Param("staffId") Integer staffId);
+    void updateSrcIdAndType(@Param("tempName") String tempName, @Param("staffId") Integer staffId,@Param("companyId")Integer companyId);
 
     /**
      * 设置渠道和来源信息
@@ -65,7 +65,7 @@ public interface ExcelDao {
      * @param tempName
      * @param staffId
      */
-    void updateSrcAndChannel(@Param("tempName") String tempName, @Param("staffId") Integer staffId);
+    void updateSrcAndChannel(@Param("tempName") String tempName, @Param("staffId") Integer staffId,@Param("companyId")Integer companyId);
 
     /**
      * 设置渠道ID
@@ -103,12 +103,12 @@ public interface ExcelDao {
     /**
      * 更新拍摄地ID
      */
-    void updateShopId(@Param("tempName") String tempName, @Param("staffId") Integer staffId);
+    void updateShopId(@Param("tempName") String tempName, @Param("staffId") Integer staffId,@Param("companyId")Integer companyId);
 
     /**
      * 更新邀约小组ID
      **/
-    void updateGroupId(@Param("tempName") String tempName, @Param("staffId") Integer staffId);
+    void updateGroupId(@Param("tempName") String tempName, @Param("staffId") Integer staffId,@Param("companyId")Integer companyId);
 
     /**
      * 更新门市id
@@ -117,7 +117,8 @@ public interface ExcelDao {
      * @param staffId
      */
     void updateReceptorId(@Param(value = "tempName") String tempName,
-                          @Param(value = "staffId") int staffId);
+                          @Param(value = "staffId") int staffId,
+                            @Param("companyId")Integer companyId);
 
     /**
      * 获取所有的记录

@@ -259,7 +259,7 @@
         SET temp.SOURCEID  = src.ID, temp.SRCTYPE = src.TYPEID, temp.CHANNELNAME = src.CHANNELNAME,
             temp.CHANNELID = src.CHANNELID
         WHERE
-            temp.OPERAID = #{staffId};
+            temp.OPERAID = #{staffId} and src.companyId = #{companyId};
     </update>
 
     <!--设置渠道ID-->
@@ -326,7 +326,7 @@
                            FROM hm_pub_shop sp
                            WHERE sp.COMPANYID = temp.COMPANYID AND sp.SHOPNAME = temp.SHOPNAME
                            LIMIT 1)
-        WHERE temp.OPERAID = #{staffId};
+        WHERE temp.OPERAID = #{staffId} and temp.companyId = #{companyId};
     </update>
 
     <!-- 设置邀约小组ID,唯一版 -->
@@ -335,7 +335,7 @@
         SET temp.GROUPID = (SELECT grp.GROUPID
                             FROM hm_pub_group grp
                             WHERE grp.COMPANYID = temp.COMPANYID AND grp.GROUPNAME = temp.GROUPNAME)
-        WHERE temp.OPERAID = #{staffId};
+        WHERE temp.OPERAID = #{staffId} and temp.companyId = #{companyId};
     </update>
 
     <!--更新门市id-->
@@ -345,7 +345,7 @@
                                from hm_pub_staff sf
                                where sf.NICKNAME = temp.RECEPTORNAME and sf.COMPANYID = temp.COMPANYID AND sf.ISDEL = 0
                                LIMIT 1)
-        where temp.operaid = #{staffId};
+        where temp.operaid = #{staffId} and temp.companyId = #{companyId};
     </update>
 
     <!--获取导入的所有客资列表-->

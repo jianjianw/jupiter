@@ -323,29 +323,50 @@ public class GoldDataServiceImpl implements GoldDataService {
         reqContent.put("companyid", goldFingerPO.getCompanyId());
         reqContent.put("kzname", goldTempPO.getKzName());
         reqContent.put("kzphone", goldTempPO.getKzPhone());
+        reqContent.put("kzwechat",goldTempPO.getWechat());
         reqContent.put("channelid", sourcePO.getChannelId());
         reqContent.put("channelname", sourcePO.getChannelName());
         reqContent.put("sourceid", goldFingerPO.getSrcId());
         reqContent.put("srctype", sourcePO.getTypeId());
         reqContent.put("sourcename", goldFingerPO.getSrcName());
+        //更新状态
+        reqContent.put("isfilter", goldFingerPO.getIsFilter());
         reqContent.put("adid", goldFingerPO.getAdId());
         reqContent.put("adaddress", goldFingerPO.getAdAddress());
         reqContent.put("typeid", goldFingerPO.getTypeId());
-        reqContent.put("zxstyle", goldFingerPO.getZxStyle());
-        reqContent.put("remark", goldFingerPO.getMemo());
+        reqContent.put("zxstyle", ZxStyleEnum.getZxType(goldFingerPO.getZxStyle()));
         reqContent.put("collectorid", goldFingerPO.getCreateorId());
         reqContent.put("collectorname", goldFingerPO.getCreateorName());
+        reqContent.put("address", goldTempPO.getAddress());
+        reqContent.put("remark", goldFingerPO.getMemo());
+
         String addRstStr = crmBaseApi.doService(reqContent, "clientAddGoldPlug");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
 
-        if ("100000".equals(jsInfo.getString("code"))) {
-            goldTempPO.setStatusId(GoldDataConst.IN_FILTER);
+        //重复拦截
+        GoldTempPO goldTemp = goldTempDao.getByKzNameOrKzPhoneOrKzWechat(goldFingerPO.getFormId(), goldTempPO.getKzPhone());
+        if (null != goldTemp) {
+            goldTempPO.setStatusId(GoldDataConst.REPEATED_SCREEN);
             goldTempDao.update(goldTempPO);
+            return;
+        }
+
+        if ("100000".equals(jsInfo.getString("code"))) {
+            if (null != goldFingerPO.getIsFilter() && goldFingerPO.getIsFilter()) {
+                //更新状态
+                goldTempPO.setStatusId(GoldDataConst.IN_FILTER);
+                goldTempDao.update(goldTempPO);
+            }else{
+                //更新状态(录入成功)
+                goldTempPO.setStatusId(GoldDataConst.IN_SUCCESS);
+                goldTempDao.update(goldTempPO);
+            }
         } else if ("130019".equals(jsInfo.getString("code"))) {
-            goldTempPO.setStatusId(GoldDataConst.HAVA_ENTERED);
+            goldTempPO.setStatusId(GoldDataConst.REPEATED_SCREEN);
             goldTempDao.update(goldTempPO);
         } else {
-            throw new RException(jsInfo.getString("msg"));
+            goldTempPO.setStatusId(GoldDataConst.IN_FAIL);
+            goldTempDao.update(goldTempPO);
         }
     }
 
