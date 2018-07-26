@@ -229,6 +229,8 @@ public class GoldDataServiceImpl implements GoldDataService {
         reqContent.put("remark", sb.toString());
 
 
+
+
         //插入记录
         GoldTempPO goldTempPO = new GoldTempPO();
         goldTempPO.setFormId(goldFingerPO.getFormId());
@@ -249,9 +251,6 @@ public class GoldDataServiceImpl implements GoldDataService {
         goldTempPO.setRemark(jsonObject.toString());
         goldTempPO.setIp(StringUtil.isEmpty(ip) ? "" : ip);
         goldTempPO.setIpAddress(StringUtil.isEmpty(ip) ? "" : HttpUtil.getIpLocation(ip));
-
-        goldTempDao.insert(goldTempPO);
-
         //重复拦截
         GoldTempPO goldTemp = goldTempDao.getByKzNameOrKzPhoneOrKzWechat(formId, kzPhone);
         if (null != goldTemp) {
@@ -259,6 +258,8 @@ public class GoldDataServiceImpl implements GoldDataService {
             goldTempDao.update(goldTempPO);
             return;
         }
+        goldTempDao.insert(goldTempPO);
+
         //TODO 筛选中是否录入数据
         String addRstStr = crmBaseApi.doService(reqContent, "clientAddGoldPlug");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
