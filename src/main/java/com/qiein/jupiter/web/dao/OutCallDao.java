@@ -29,7 +29,7 @@ public interface OutCallDao {
     /**
      * 删除用户
      */
-    int delUserRela(OutCallUserDTO outCallUserDTO);
+    int delUserRela(@Param("companyId") int companyId, @Param("staffId") int staffId);
 
     /**
      * 获取企业所有CNO 集合
