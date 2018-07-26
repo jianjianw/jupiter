@@ -47,7 +47,7 @@ public class ClientExcelNewsDTO implements Serializable {
     /**
      * 咨询方式
      * */
-    private Integer zxStyle;
+    private int zxStyle;
 
     /**
      * 姓名
@@ -363,6 +363,46 @@ public class ClientExcelNewsDTO implements Serializable {
      * */
     private String successTimeStr;
 
+
+    public int getZxStyle() {
+        return zxStyle;
+    }
+
+    public void setZxStyle(int zxStyle) {
+        this.zxStyle = zxStyle;
+    }
+
+    public int getMarryTime() {
+        return marryTime;
+    }
+
+    public void setMarryTime(int marryTime) {
+        this.marryTime = marryTime;
+    }
+
+    public int getYpTime() {
+        return ypTime;
+    }
+
+    public void setYpTime(int ypTime) {
+        this.ypTime = ypTime;
+    }
+
+    public int getYxLevel() {
+        return yxLevel;
+    }
+
+    public void setYxLevel(int yxLevel) {
+        this.yxLevel = yxLevel;
+    }
+
+    public int getYsRange() {
+        return ysRange;
+    }
+
+    public void setYsRange(int ysRange) {
+        this.ysRange = ysRange;
+    }
 
     public Integer getAmount() {
         return amount;
@@ -694,22 +734,6 @@ public class ClientExcelNewsDTO implements Serializable {
         this.successTime = successTime;
     }
 
-    public Integer getMarryTime() {
-        return marryTime;
-    }
-
-    public void setMarryTime(Integer marryTime) {
-        this.marryTime = marryTime;
-    }
-
-
-    public Integer getYpTime() {
-        return ypTime;
-    }
-
-    public void setYpTime(Integer ypTime) {
-        this.ypTime = ypTime;
-    }
 
     public long getCreateTime() {
         return createTime;
@@ -809,13 +833,6 @@ public class ClientExcelNewsDTO implements Serializable {
         this.yxLevelStr = yxLevelStr;
     }
 
-    public Integer getYxLevel() {
-        return yxLevel;
-    }
-
-    public void setYxLevel(Integer yxLevel) {
-        this.yxLevel = yxLevel;
-    }
 
     public int getCompanyId() {
         return companyId;
@@ -897,13 +914,6 @@ public class ClientExcelNewsDTO implements Serializable {
         this.ysRangeStr = ysRangeStr;
     }
 
-    public Integer getYsRange() {
-        return ysRange;
-    }
-
-    public void setYsRange(Integer ysRange) {
-        this.ysRange = ysRange;
-    }
 
     public String getInvalidLabel() {
         return invalidLabel;
@@ -962,11 +972,5 @@ public class ClientExcelNewsDTO implements Serializable {
         this.zxStyleStr = zxStyleStr;
     }
 
-    public Integer getZxStyle() {
-        return zxStyle;
-    }
 
-    public void setZxStyle(Integer zxStyle) {
-        this.zxStyle = zxStyle;
-    }
 }
