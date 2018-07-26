@@ -27,9 +27,9 @@ public class SystemLogController extends BaseController {
      * 根据日志类型查询数据
      */
     @GetMapping("/get_sys_log_by_type")
-    public ResultInfo getLogByType(int pageNum, int pageSize, int typeId) {
+    public ResultInfo getLogByType(int pageNum, int pageSize, int typeId, int startTime, int endTime) {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        PageInfo<SystemLog> logByType = systemLogService.getLogByType(pageNum, pageSize, currentLoginStaff.getCompanyId(), typeId);
+        PageInfo<SystemLog> logByType = systemLogService.getLogByType(pageNum, pageSize, currentLoginStaff.getCompanyId(), typeId, startTime, endTime);
         return ResultInfoUtil.success(logByType);
     }
 }

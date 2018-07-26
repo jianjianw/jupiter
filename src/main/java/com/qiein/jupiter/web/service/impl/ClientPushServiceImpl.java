@@ -22,6 +22,7 @@ import com.qiein.jupiter.web.service.ClientPushService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sun.awt.image.OffScreenImage;
 
 import javax.management.relation.Role;
 import java.text.SimpleDateFormat;
@@ -899,7 +900,7 @@ public class ClientPushServiceImpl implements ClientPushService {
      * @param companyId
      * @return
      */
-    public List<String> getSkInfoList(int companyId, int overTime) {
+    public List<ClientPushDTO> getSkInfoList(int companyId, int overTime) {
         try {
             return clientInfoDao.getSkInfoList(DBSplitUtil.getInfoTabName(companyId), companyId, overTime);
         } catch (Exception e) {
@@ -1114,9 +1115,15 @@ public class ClientPushServiceImpl implements ClientPushService {
      */
     @Transactional
     @Override
-    public synchronized void pushSk(int companyId, String kzId, int overTime, int interval) {
+    public synchronized void pushSk(int companyId, String kzId, int overTime, int interval, int srcType) {
+        String role = "";
+        if (ChannelConstant.DS_TYPE_LIST.contains(srcType)) {
+            role = RoleConstant.DSSX;
+        } else if (ChannelConstant.ZJS_TYPE_LIST.contains(srcType)) {
+            role = RoleConstant.ZJSSX;
+        }
         //1.获取电商筛选人员，领取时间间隔排除
-        StaffPushDTO staff = staffDao.getAvgDssxStaff(companyId, interval);
+        StaffPushDTO staff = staffDao.getAvgDssxStaff(companyId, interval, role);
         if (staff == null) {
             return;
         }

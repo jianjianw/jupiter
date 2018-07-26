@@ -109,12 +109,12 @@ public class ClientPushTask {
         List<CompanyPO> compList = companyDao.listSkAvgComp();
         for (CompanyPO comp : compList) {
             //超时时间设置是秒
-            List<String> kzList = pushService.getSkInfoList(comp.getId(), comp.getOvertime());
+            List<ClientPushDTO> kzList = pushService.getSkInfoList(comp.getId(), comp.getOvertime());
             if (CollectionUtils.isEmpty(kzList)) {
                 continue;
             }
-            for (String kzId : kzList) {
-                pushSkQueue.offer(new ClientPushDTO(pushService, comp.getKzInterval(), comp.getOvertime(), kzId, comp.getId()));
+            for (ClientPushDTO info : kzList) {
+                pushSkQueue.offer(new ClientPushDTO(pushService, comp.getKzInterval(), comp.getOvertime(), info.getKzId(), comp.getId(), info.getSrcType()));
             }
             log.info("推送了客资：" + kzList.size() + " 个");
         }

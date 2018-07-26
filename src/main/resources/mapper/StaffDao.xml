@@ -1080,7 +1080,7 @@
         LEFT JOIN hm_crm_client_info_2 info ON info.PROMOTORID = gs.STAFFID AND info.COMPANYID = gs.COMPANYID
         WHERE
             gs.COMPANYID = #{companyId}
-            AND grp.GROUPTYPE = 'dssx'
+            AND grp.GROUPTYPE = #{role}
             AND sf.ISDEL = 0
             AND sf.ISLOCK = 0
             AND sf.STATUSFLAG = 1

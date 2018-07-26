@@ -636,19 +636,8 @@ public class GoEasyUtil {
      */
     public static void pushWarnTimer(int companyId, int staffId, String kzId, String msg, StaffDao staffDao) {
         pushCommon(companyId, staffId, MessageConts.TO_BE_TRACKED_HEAD, msg);
-        DingMsgSendUtil.sendDingMsg(msg, companyId, staffId, staffDao);
+        DingMsgSendUtil.sendDingMsg(MessageConts.TO_BE_TRACKED_HEAD + "\n" + msg, companyId, staffId, staffDao);
     }
-
-//    public static void main(String[] args) {
-//        // ClientGoEasyDTO info = new ClientGoEasyDTO();
-//        // info.setId(668);
-//        // info.setKzWechat("xiangsiyu521");
-//        // info.setSourceName("杭州微博");
-//        // info.setChannelName("微博");
-//        // info.setInvalidLabel("分手了");
-//        // pushYyValidReject(1, 1, info, null);
-//        pushStaffRefresh(2012, 698, "127.0.0.1", "火星");
-//    }
 
     /**
      * 推广备注被修改，推送给客服
@@ -667,7 +656,7 @@ public class GoEasyUtil {
         pushWarn(companyId, staffId, head, msg);
         newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_WARN, head, msg, kzId, staffId, companyId,
                 DBSplitUtil.getNewsTabName(companyId)));
-        DingMsgSendUtil.sendDingMsg(head, companyId, staffId, staffDao);
+        DingMsgSendUtil.sendDingMsg(head + "\n" + msg, companyId, staffId, staffDao);
     }
 
     /**

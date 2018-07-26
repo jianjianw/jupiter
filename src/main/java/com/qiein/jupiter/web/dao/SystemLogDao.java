@@ -36,7 +36,10 @@ public interface SystemLogDao extends BaseDao<SystemLogDao> {
      * @param typeId
      * @return
      */
-    List<SystemLog> getLogByType(@Param("companyId") int companyId, @Param("typeId") int typeId);
+    List<SystemLog> getLogByType(@Param("companyId") int companyId,
+                                 @Param("typeId") int typeId,
+                                 @Param("startTime") int startTime,
+                                 @Param("endTime") int endTime);
 
     /**
      * 清空多久之前的日志

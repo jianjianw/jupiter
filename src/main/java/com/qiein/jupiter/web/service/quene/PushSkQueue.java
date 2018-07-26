@@ -57,7 +57,7 @@ public class PushSkQueue implements CommandLineRunner {
         try {
             //阻塞获取
             ClientPushDTO take = this.queue.take();
-            take.getService().pushSk(take.getCompanyId(), take.getKzId(), take.getOverTime(), take.getPushInterval());
+            take.getService().pushSk(take.getCompanyId(), take.getKzId(), take.getOverTime(), take.getPushInterval(), take.getSrcType());
             log.info("推送了一条筛客");
             //继续获取
         } catch (InterruptedException e) {

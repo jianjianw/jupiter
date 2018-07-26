@@ -16,4 +16,12 @@ public interface PageConfigDao {
      * @return
      */
     List<PageConfig> listPageConfigByCidAndRole(@Param("companyId") int cid, @Param("role") String role);
+
+    /**
+     * 保存页面配置
+     *
+     * @param pageConfig
+     * @return
+     */
+    int updatePageConfig(PageConfig pageConfig);
 }
