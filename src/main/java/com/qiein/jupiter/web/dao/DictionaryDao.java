@@ -149,4 +149,14 @@ public interface DictionaryDao extends BaseDao<DictionaryPO> {
      * 编辑字典可用状态
      */
     int editDictShowFlag(DictionaryPO dictionaryPO);
+
+    /**
+     * 根据类型，code，获取字典数据
+     */
+    int updateDictNameByTypeAndCode(DictionaryPO dictionaryPO);
+
+    /**
+     * 根据公司ID 和iD 获取
+     */
+    DictionaryPO getByCompanyIdAndId(@Param("companyId") int companyId, @Param("id") int id);
 }

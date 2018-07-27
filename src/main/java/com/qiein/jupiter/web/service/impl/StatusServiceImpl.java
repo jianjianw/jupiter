@@ -1,11 +1,17 @@
 package com.qiein.jupiter.web.service.impl;
 
+import com.qiein.jupiter.constant.ClientStatusConst;
 import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.constant.DictionaryConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.web.dao.StatusDao;
+import com.qiein.jupiter.web.entity.po.DictionaryPO;
 import com.qiein.jupiter.web.entity.po.StatusPO;
+import com.qiein.jupiter.web.service.DictionaryService;
 import com.qiein.jupiter.web.service.StatusService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +26,13 @@ import java.util.Map;
  */
 @Service
 public class StatusServiceImpl implements StatusService {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private StatusDao statusDao;
+
+    @Autowired
+    private DictionaryService dictionaryService;
 
     /**
      * 获取企业状态列表
@@ -42,6 +52,19 @@ public class StatusServiceImpl implements StatusService {
      */
     public void editStatus(StatusPO statusPO) {
         statusDao.editStatus(statusPO);
+        StatusPO statusById = statusDao.getStatusById(statusPO.getCompanyId(), statusPO.getId());
+        //判断是否是待跟踪状态
+        boolean b = statusById.getClassId() == ClientStatusConst.KZ_CLASS_TRACK;
+        if (b) {
+            //如果是，则更新对应的跟踪状态的名称
+            DictionaryPO dictionaryPO = new DictionaryPO();
+            dictionaryPO.setCompanyId(statusPO.getCompanyId());
+            dictionaryPO.setDicType(DictionaryConstant.TRACK_STATUS);
+            dictionaryPO.setDicCode(statusById.getStatusId());
+            dictionaryPO.setDicName(statusById.getStatusName());
+            dictionaryService.updateDictNameByTypeAndCode(dictionaryPO);
+        }
+
     }
 
     /**
@@ -82,5 +105,13 @@ public class StatusServiceImpl implements StatusService {
             map.put(String.valueOf(statusPO.getStatusId()), statusPO);
         }
         return map;
+    }
+
+    /**
+     *
+     */
+    @Override
+    public int editNameByClassIdAndStatusId(StatusPO statusPO) {
+        return statusDao.editNameByClassIdAndStatusId(statusPO);
     }
 }

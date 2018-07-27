@@ -39,4 +39,9 @@ public interface StatusService {
      * 获取企业状态字典
      */
     Map<String, StatusPO> getStatusDictMap(int companyId);
+
+    /**
+     * 根据CLASS  ID  和 statusid 编辑状态名称
+     */
+    int editNameByClassIdAndStatusId(StatusPO statusPO);
 }

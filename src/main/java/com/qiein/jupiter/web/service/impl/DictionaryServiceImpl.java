@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.service.impl;
 
+import com.qiein.jupiter.constant.ClientStatusConst;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.constant.DictionaryConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
@@ -8,16 +9,15 @@ import com.qiein.jupiter.util.CollectionUtils;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.DictionaryDao;
 import com.qiein.jupiter.web.entity.po.DictionaryPO;
+import com.qiein.jupiter.web.entity.po.StatusPO;
 import com.qiein.jupiter.web.entity.vo.DictionaryVO;
 import com.qiein.jupiter.web.service.DictionaryService;
+import com.qiein.jupiter.web.service.StatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 字典业务层
@@ -26,6 +26,9 @@ import java.util.Map;
 public class DictionaryServiceImpl implements DictionaryService {
     @Autowired
     private DictionaryDao dictionaryDao;
+
+    @Autowired
+    private StatusService statusService;
 
     /**
      * 根绝类型,企业自定义地点数据
@@ -144,7 +147,7 @@ public class DictionaryServiceImpl implements DictionaryService {
     @Override
     public Map<String, List<DictionaryPO>> getDictMapByCid(int companyId) {
         List<DictionaryPO> dictByCompanyId = dictionaryDao.getDictByCompanyId(companyId);
-        Map<String, List<DictionaryPO>> map = new HashMap<>();
+        Map<String, List<DictionaryPO>> map = new LinkedHashMap<>();
         //遍历
         for (DictionaryPO dictionaryPO : dictByCompanyId) {
             List<DictionaryPO> dictList;
@@ -219,6 +222,18 @@ public class DictionaryServiceImpl implements DictionaryService {
     }
 
     /**
+     * 根据类型和CODE 修改字典名称
+     *
+     * @param dictionaryPO
+     * @return
+     */
+    @Override
+    public int updateDictNameByTypeAndCode(DictionaryPO dictionaryPO) {
+        return dictionaryDao.updateDictNameByTypeAndCode(dictionaryPO);
+    }
+
+
+    /**
      * 编辑字典排序
      *
      * @param id1
@@ -248,6 +263,20 @@ public class DictionaryServiceImpl implements DictionaryService {
             throw new RException(ExceptionEnum.DICTNAME_EXIST);
         }
         dictionaryDao.editDictName(dictionaryPO);
+
+        //判断是否是待跟踪状态
+        boolean b = dictionaryPO.getDicType().equals(DictionaryConstant.TRACK_STATUS);
+        if (b) {
+            DictionaryPO byCompanyIdAndId = dictionaryDao.getByCompanyIdAndId(dictionaryPO.getCompanyId(), dictionaryPO.getId());
+            //如果是，则更新对应的跟踪状态的名称
+            StatusPO statusPO = new StatusPO();
+            statusPO.setCompanyId(dictionaryPO.getCompanyId());
+            statusPO.setClassId(ClientStatusConst.KZ_CLASS_TRACK);
+            statusPO.setStatusId(byCompanyIdAndId.getDicCode());
+            statusPO.setStatusName(byCompanyIdAndId.getDicName());
+            statusService.editNameByClassIdAndStatusId(statusPO);
+        }
+
     }
 
     /**

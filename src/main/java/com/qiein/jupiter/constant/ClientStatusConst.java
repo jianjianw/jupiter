@@ -78,6 +78,7 @@ public class ClientStatusConst {
     /*-- 客资分类 --*/
     public static final int KZ_CLASS_NEW = 1;// 新客资
     public static final int KZ_CLASS_ORDER = 3;// 已预约
+    public static final int KZ_CLASS_TRACK = 2; //待追踪
 
     // 成交状态
     public static List<Integer> SUCCESS_STATUS_RANGE = new ArrayList<Integer>(Arrays.asList(9, 30, 40));
