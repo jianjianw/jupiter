@@ -376,14 +376,14 @@ public class GroupServiceImpl implements GroupService {
                         //如果没有客资就删除
                         Integer kzNum = clientDao.getKzNumBySourceId(DBSplitUtil.getTable(TableEnum.info, sourcePO.getCompanyId()), sourcePO.getId(), sourcePO.getCompanyId());
                         if (kzNum > 0) {
-                            sourceDao.update(sourcePO);
                             sourcePO.setIsShow(false);
+                            sourceDao.update(sourcePO);
                         } else {
                             sourceDao.deleteByIdAndCid(sourcePO.getId(), sourcePO.getCompanyId());
                         }
                     } else {
-                        sourceDao.update(sourcePO);
                         sourcePO.setIsShow(false);
+                        sourceDao.update(sourcePO);
                     }
                 }
             }
