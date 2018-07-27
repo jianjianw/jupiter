@@ -63,7 +63,7 @@
             rela.BIND_TEL
         FROM hm_crm_outcall_company company
             LEFT JOIN hm_crm_outcall_rela rela
-                ON company.ENTERPRISE_ID = rela.ENTERPRISE_ID
+                ON company.COMPANY_ID = rela.COMPANY_ID
         WHERE company.COMPANY_ID = #{companyId}
               AND rela.STAFF_ID = #{staffId}
     </select>
