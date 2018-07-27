@@ -264,6 +264,10 @@ public class GoldDataServiceImpl implements GoldDataService {
                 //更新状态
                 goldTempPO.setStatusId(GoldDataConst.IN_FILTER);
                 goldTempDao.update(goldTempPO);
+            }else{
+                //更新状态(录入成功)
+                goldTempPO.setStatusId(GoldDataConst.IN_SUCCESS);
+                goldTempDao.update(goldTempPO);
             }
             //发送消息
             ClientDTO info = new ClientDTO();
@@ -278,7 +282,8 @@ public class GoldDataServiceImpl implements GoldDataService {
             goldTempPO.setStatusId(GoldDataConst.REPEATED_SCREEN);
             goldTempDao.update(goldTempPO);
         } else {
-            throw new RException(jsInfo.getString("msg"));
+            goldTempPO.setStatusId(GoldDataConst.IN_FAIL);
+            goldTempDao.update(goldTempPO);
         }
     }
 
