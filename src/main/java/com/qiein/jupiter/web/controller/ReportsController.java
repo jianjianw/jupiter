@@ -194,7 +194,7 @@ public class ReportsController extends BaseController {
     /**
      * 转介绍提报统计
      */
-    @RequestMapping("/get_zjs_source_reports")
+    @GetMapping("/get_zjs_source_reports")
     public ResultInfo getZjsSourceReports(@RequestParam("start") int start, @RequestParam("end") int end, String sourceIds) {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         Map<String, Object> reqContent = new HashMap<>();
@@ -210,7 +210,7 @@ public class ReportsController extends BaseController {
     /**
      * 转介绍邀约统计
      */
-    @RequestMapping("/get_zjs_invite_reports")
+    @GetMapping("/get_zjs_invite_reports")
     public ResultInfo getZjsInviteReports(@RequestParam("start") int start, @RequestParam("end") int end, String groupIds) {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         Map<String, Object> reqContent = new HashMap<>();
@@ -224,9 +224,9 @@ public class ReportsController extends BaseController {
     }
 
     /**
-     * 转介绍邀约统计
+     * 电商推广无效原因统计
      */
-    @RequestMapping("/get_dstg_invalid_reports")
+    @GetMapping("/get_dstg_invalid_reports")
     public ResultInfo getDstgInvalidReports(@RequestParam("start") int start, @RequestParam("end") int end) {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         Map<String, Object> reqContent = new HashMap<>();
@@ -238,6 +238,26 @@ public class ReportsController extends BaseController {
 
         HashMap<String, Object> result = new HashMap<>();
         result.put("title", JsonFmtUtil.strContentToJsonObj(json).get("title"));
+        result.put("analysis", JsonFmtUtil.strContentToJsonObj(json).get("analysis"));
+        return ResultInfoUtil.success(result);
+    }
+
+
+    /**
+     * 转介绍全员提报统计
+     */
+    @GetMapping("/get_zjs_staff_entry_reports")
+    public ResultInfo getZjsStaffEntryReports(@RequestParam("start") int start, @RequestParam("end") int end, String staffIds) {
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        Map<String, Object> reqContent = new HashMap<>();
+        reqContent.put("start", start);
+        reqContent.put("end", end);
+        reqContent.put("companyid", currentLoginStaff.getCompanyId());
+        reqContent.put("staffids", staffIds);
+        //请求juplat接口
+        String json = crmBaseApi.doService(reqContent, "zjsEntryStaffReports");
+
+        HashMap<String, Object> result = new HashMap<>();
         result.put("analysis", JsonFmtUtil.strContentToJsonObj(json).get("analysis"));
         return ResultInfoUtil.success(result);
     }
@@ -280,7 +300,7 @@ public class ReportsController extends BaseController {
     /*
      * 门市入店统计
      */
-    @RequestMapping("/get_mszx_entry_reports")
+    @GetMapping("/get_mszx_entry_reports")
     public ResultInfo getMszxEntryReports(int start, int end, String shopIds, String sourceId) {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         Map<String, Object> reqContent = new HashMap<>();
@@ -297,7 +317,7 @@ public class ReportsController extends BaseController {
     /**
      * 门市入店统计,,人员明细
      */
-    @RequestMapping("/get_mszx_entry_detail_reports")
+    @GetMapping("/get_mszx_entry_detail_reports")
     public ResultInfo getMszxEntryDetailReports(int start, int end, int shopId, String sourceId) {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         Map<String, Object> reqContent = new HashMap<>();

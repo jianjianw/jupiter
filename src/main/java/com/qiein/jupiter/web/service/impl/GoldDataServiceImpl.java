@@ -122,7 +122,7 @@ public class GoldDataServiceImpl implements GoldDataService {
         List<GoldCustomerVO> list = goldDataDao.goldCustomerSelect(goldCustomerDTO);
         GoldCustomerShowVO showVO = new GoldCustomerShowVO();
         showVO.setPageInfo(new PageInfo<>(list));
-        GoldFingerPO goldFingerPO = goldDataDao.findForm(goldCustomerDTO.getFormId(),goldCustomerDTO.getCompanyId());
+        GoldFingerPO goldFingerPO = goldDataDao.findForm(goldCustomerDTO.getFormId(), goldCustomerDTO.getCompanyId());
         showVO.setGoldFingerPO(goldFingerPO);
         return showVO;
     }
@@ -206,7 +206,7 @@ public class GoldDataServiceImpl implements GoldDataService {
         reqContent.put("companyid", goldFingerPO.getCompanyId());
         reqContent.put("kzname", kzName);
         reqContent.put("kzphone", kzPhone);
-        reqContent.put("kzwechat",weChat);
+        reqContent.put("kzwechat", weChat);
         reqContent.put("channelid", sourcePO.getChannelId());
         reqContent.put("channelname", sourcePO.getChannelName());
         reqContent.put("sourceid", goldFingerPO.getSrcId());
@@ -242,8 +242,8 @@ public class GoldDataServiceImpl implements GoldDataService {
         goldTempPO.setAddress(address);
         goldTempPO.setWechat(weChat);
         goldTempPO.setRemark(jsonObject.toString());
-        goldTempPO.setIp(StringUtil.isEmpty(ip)?"":ip);
-        goldTempPO.setIpAddress(StringUtil.isEmpty(ip)?"":HttpUtil.getIpLocation(ip));
+        goldTempPO.setIp(StringUtil.isEmpty(ip) ? "" : ip);
+        goldTempPO.setIpAddress(StringUtil.isEmpty(ip) ? "" : HttpUtil.getIpLocation(ip));
 
         goldTempDao.insert(goldTempPO);
 
