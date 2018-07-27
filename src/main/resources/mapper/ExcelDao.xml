@@ -363,18 +363,14 @@
         <include refid="Base_Column_News_List"/>
         FROM ${tempName} temp
         LEFT JOIN ${tableName} info
-        ON INSTR( CONCAT('-',IFNULL(info.KZPHONE,''), '-', IFNULL(info.KZWECHAT,''), '-', IFNULL(info.KZQQ,''), '-'
-        ),CONCAT('-',temp.KZPHONE, '-')) != 0
-        OR INSTR( CONCAT('-',IFNULL(info.KZPHONE,''), '-', IFNULL(info.KZWECHAT,''), '-', IFNULL(info.KZQQ,''), '-' ),
-        CONCAT('-',temp.KZWECHAT, '-')) != 0
-        OR INSTR( CONCAT('-',IFNULL(info.KZPHONE,''), '-', IFNULL(info.KZWECHAT,''), '-', IFNULL(info.KZQQ,''), '-' ),
-        CONCAT('-',temp.KZQQ, '-')) != 0
-        OR INSTR( CONCAT('-',IFNULL(info.KZWW,''), '-', IFNULL(info.KZWW,''), '-', IFNULL(info.KZWW,''), '-' ),
-        CONCAT('-',temp.KZWW, '-')) != 0
+        ON info.KZID is not null
         WHERE
         info.KZID IS NOT NULL
         AND info.ISDEL = 0
         AND temp.OPERAID = #{staffId}
+        AND (( temp.KZPHONE = info.KZPHONE  or temp.KZPHONE = info.KZWECHAT or temp.KZPHONE = info.KZQQ)
+        or ( temp.KZWECHAT = info.KZPHONE  or temp.KZWECHAT = info.KZWECHAT or temp.KZWECHAT = info.KZQQ)
+        or ( temp.KZQQ = info.KZPHONE  or temp.KZQQ = info.KZWECHAT or temp.KZQQ = info.KZQQ))
         AND NOT( ((temp.KZPHONE is not null and temp.KZPHONE != '') and temp.KZPHONE NOT REGEXP '^[1][3456789][0-9]{9}$')
         or ( (temp.KZWECHAT is not null and temp.KZWECHAT != '') and temp.KZWECHAT NOT REGEXP '^[a-zA-Z0-9]{1}[-_a-zA-Z0-9]{5,30}$')
         or ((temp.kzqq is not null and temp.kzqq != '') and temp.kzqq not REGEXP '[1-9][0-9]{4,9}')
