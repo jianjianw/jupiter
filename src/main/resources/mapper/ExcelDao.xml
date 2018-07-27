@@ -141,7 +141,7 @@
     <!-- 批量写入客资临时缓存表 -->
     <insert id="insertExcelClientInfo">
         INSERT INTO ${tempName}
-        (KZID, TYPENAME, STATUSID, CHANNELNAME, SOURCENAME,ZXSTYLE, KZNAME,SEX,KZPHONE, KZWECHAT, KZQQ, KZWW,
+        (KZID, TYPENAME, STATUSID,STATUSNAME, CHANNELNAME, SOURCENAME,ZXSTYLE, KZNAME,SEX,KZPHONE, KZWECHAT, KZQQ, KZWW,
         COLLECTORNAME,
         APPOINTNAME,APPOINTTIME,RECEPTORNAME,AMOUNT,CREATETIME, UPDATETIME,COMESHOPTIME,SUCCESSTIME, SHOPNAME,
         COMPANYID, OPERAID, ADDRESS, GROUPNAME,KEYWORD,MEMO
@@ -149,7 +149,7 @@
         ,MARRYTIMESTR,YPTIMESTR,YSRANGESTR,YXLEVELSTR,ZXSTYLESTR)
         VALUES
         <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.kzId},#{item.typeName}, #{item.statusId},#{item.channelName},
+            (#{item.kzId},#{item.typeName}, #{item.statusId},#{item.statusName},#{item.channelName},
             #{item.sourceName},#{item.zxStyle},#{item.kzName},#{item.sex},#{item.kzPhone}, #{item.kzWechat},
             #{item.kzQq}, #{item.kzWw}, #{item.collectorName},
             #{item.appointName},#{item.appointTime},#{item.receptorName},#{item.amount},
@@ -249,7 +249,7 @@
             INNER JOIN hm_crm_source src on temp.SOURCENAME = src.SRCNAME
         SET temp.SOURCEID = src.ID, temp.SRCTYPE = src.TYPEID
         WHERE
-            temp.OPERAID = #{staffId};
+            temp.OPERAID = #{staffId} and src.companyId = #{companyId};
     </update>
 
     <!-- 设置来源和渠道-->
@@ -259,7 +259,7 @@
         SET temp.SOURCEID  = src.ID, temp.SRCTYPE = src.TYPEID, temp.CHANNELNAME = src.CHANNELNAME,
             temp.CHANNELID = src.CHANNELID
         WHERE
-            temp.OPERAID = #{staffId};
+            temp.OPERAID = #{staffId} and src.companyId = #{companyId};
     </update>
 
     <!--设置渠道ID-->
@@ -326,7 +326,7 @@
                            FROM hm_pub_shop sp
                            WHERE sp.COMPANYID = temp.COMPANYID AND sp.SHOPNAME = temp.SHOPNAME
                            LIMIT 1)
-        WHERE temp.OPERAID = #{staffId};
+        WHERE temp.OPERAID = #{staffId} and temp.companyId = #{companyId};
     </update>
 
     <!-- 设置邀约小组ID,唯一版 -->
@@ -335,7 +335,7 @@
         SET temp.GROUPID = (SELECT grp.GROUPID
                             FROM hm_pub_group grp
                             WHERE grp.COMPANYID = temp.COMPANYID AND grp.GROUPNAME = temp.GROUPNAME)
-        WHERE temp.OPERAID = #{staffId};
+        WHERE temp.OPERAID = #{staffId} and temp.companyId = #{companyId};
     </update>
 
     <!--更新门市id-->
@@ -345,7 +345,7 @@
                                from hm_pub_staff sf
                                where sf.NICKNAME = temp.RECEPTORNAME and sf.COMPANYID = temp.COMPANYID AND sf.ISDEL = 0
                                LIMIT 1)
-        where temp.operaid = #{staffId};
+        where temp.operaid = #{staffId} and temp.companyId = #{companyId};
     </update>
 
     <!--获取导入的所有客资列表-->
@@ -363,18 +363,14 @@
         <include refid="Base_Column_News_List"/>
         FROM ${tempName} temp
         LEFT JOIN ${tableName} info
-        ON INSTR( CONCAT('-',IFNULL(info.KZPHONE,''), '-', IFNULL(info.KZWECHAT,''), '-', IFNULL(info.KZQQ,''), '-'
-        ),CONCAT('-',temp.KZPHONE, '-')) != 0
-        OR INSTR( CONCAT('-',IFNULL(info.KZPHONE,''), '-', IFNULL(info.KZWECHAT,''), '-', IFNULL(info.KZQQ,''), '-' ),
-        CONCAT('-',temp.KZWECHAT, '-')) != 0
-        OR INSTR( CONCAT('-',IFNULL(info.KZPHONE,''), '-', IFNULL(info.KZWECHAT,''), '-', IFNULL(info.KZQQ,''), '-' ),
-        CONCAT('-',temp.KZQQ, '-')) != 0
-        OR INSTR( CONCAT('-',IFNULL(info.KZWW,''), '-', IFNULL(info.KZWW,''), '-', IFNULL(info.KZWW,''), '-' ),
-        CONCAT('-',temp.KZWW, '-')) != 0
+        ON info.KZID is not null
         WHERE
         info.KZID IS NOT NULL
         AND info.ISDEL = 0
         AND temp.OPERAID = #{staffId}
+        AND (( temp.KZPHONE = info.KZPHONE  or temp.KZPHONE = info.KZWECHAT or temp.KZPHONE = info.KZQQ)
+        or ( temp.KZWECHAT = info.KZPHONE  or temp.KZWECHAT = info.KZWECHAT or temp.KZWECHAT = info.KZQQ)
+        or ( temp.KZQQ = info.KZPHONE  or temp.KZQQ = info.KZWECHAT or temp.KZQQ = info.KZQQ))
         AND NOT( ((temp.KZPHONE is not null and temp.KZPHONE != '') and temp.KZPHONE NOT REGEXP '^[1][3456789][0-9]{9}$')
         or ( (temp.KZWECHAT is not null and temp.KZWECHAT != '') and temp.KZWECHAT NOT REGEXP '^[a-zA-Z0-9]{1}[-_a-zA-Z0-9]{5,30}$')
         or ((temp.kzqq is not null and temp.kzqq != '') and temp.kzqq not REGEXP '[1-9][0-9]{4,9}')
@@ -583,7 +579,7 @@
             LEFT JOIN hm_crm_client_status sts on sts.COMPANYID = temp.COMPANYID AND sts.STATUSNAME = temp.STATUSNAME
         SET temp.STATUSID = sts.STATUSID, temp.CLASSID = sts.CLASSID
         WHERE
-            temp.OPERAID = #{operaId}
+            temp.OPERAID = #{operaId} and sts.COMPANYID = #{companyId}
     </update>
 
 
@@ -794,40 +790,40 @@
     <!--更改意向等级字典编码-->
     <update id="updateYxLevelDictionaryCode">
         UPDATE ${tempName} temp
-        SET temp.YXLEVEL = (SELECT DICCODE
+        SET temp.YXLEVEL = IFNULL((SELECT DICCODE
                             FROM hm_crm_dictionary dictionary
                             WHERE dictionary.COMPANYID = temp.COMPANYID AND dictionary.DICNAME = temp.YXLEVELSTR and
-                                  dictionary.DICTYPE = #{dictionaryType})
+                                  dictionary.DICTYPE = #{dictionaryType}),0)
         WHERE temp.OPERAID = #{staffId};
     </update>
 
     <!--更改预算范围字典编码-->
     <update id="updateYsRangeDictionaryCode">
         UPDATE ${tempName} temp
-        SET temp.YSRANGE = (SELECT DICCODE
+        SET temp.YSRANGE = IFNULL((SELECT DICCODE
                             FROM hm_crm_dictionary dictionary
                             WHERE dictionary.COMPANYID = temp.COMPANYID AND dictionary.DICNAME = temp.YSRANGESTR and
-                                  dictionary.DICTYPE = #{dictionaryType})
+                                  dictionary.DICTYPE = #{dictionaryType}),0)
         WHERE temp.OPERAID = #{staffId};
     </update>
 
     <!--更新预拍时间的字典编码-->
     <update id="updateYpTimeDictionaryCode">
         UPDATE ${tempName} temp
-        SET temp.YPTIME = (SELECT DICCODE
+        SET temp.YPTIME = IFNULL((SELECT DICCODE
                            FROM hm_crm_dictionary dictionary
                            WHERE dictionary.COMPANYID = temp.COMPANYID AND dictionary.DICNAME = temp.YPTIMESTR and
-                                 dictionary.DICTYPE = #{dictionaryType})
+                                 dictionary.DICTYPE = #{dictionaryType}),0)
         WHERE temp.OPERAID = #{staffId};
     </update>
 
     <!--更新婚期时间的字典编码-->
     <update id="updateMarryTimeDictionaryCode">
         UPDATE ${tempName} temp
-        SET temp.MARRYTIME = (SELECT DICCODE
+        SET temp.MARRYTIME = IFNULL((SELECT DICCODE
                               FROM hm_crm_dictionary dictionary
                               WHERE dictionary.COMPANYID = temp.COMPANYID AND dictionary.DICNAME = temp.MARRYTIMESTR and
-                                    dictionary.DICTYPE = #{dictionaryType})
+                                    dictionary.DICTYPE = #{dictionaryType}),0)
         WHERE temp.OPERAID = #{staffId};
     </update>
 </mapper>

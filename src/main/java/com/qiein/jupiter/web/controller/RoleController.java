@@ -2,6 +2,10 @@ package com.qiein.jupiter.web.controller;
 
 import java.util.List;
 
+import com.qiein.jupiter.util.SysLogUtil;
+import com.qiein.jupiter.web.entity.dto.RequestInfoDTO;
+import com.qiein.jupiter.web.entity.po.SystemLog;
+import com.qiein.jupiter.web.service.SystemLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,6 +37,9 @@ public class RoleController extends BaseController {
     @Autowired
     private RoleService roleService;//角色业务层
 
+    @Autowired
+    private SystemLogService logService;//日志业务层
+
     @GetMapping("/get_company_role_list")
     public ResultInfo getCompanyRoleList() {
         //获取当前登录账户
@@ -46,6 +53,17 @@ public class RoleController extends BaseController {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         int id = roleService.insert(roleName, currentLoginStaff.getCompanyId());
+        RequestInfoDTO requestInfo = getRequestInfo();
+        try {
+            // 日志记录
+            SystemLog log = new SystemLog(SysLogUtil.LOG_TYPE_ROLE, requestInfo.getIp(), requestInfo.getUrl(), currentLoginStaff.getId(),
+                    currentLoginStaff.getNickName(), SysLogUtil.getAddLog(SysLogUtil.LOG_SUP_ROLE, roleName),
+                    currentLoginStaff.getCompanyId());
+            logService.addLog(log);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultInfoUtil.success(TipMsgEnum.ADD_ROLE_SUCCESS,id);
+        }
         return ResultInfoUtil.success(TipMsgEnum.ADD_ROLE_SUCCESS, id);
     }
 

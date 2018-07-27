@@ -204,4 +204,32 @@ public class TiOutCallController extends BaseController {
     public ResultInfo handleMp3Url(String url) {
         return ResultInfoUtil.success(outCallService.getMp3Url(getCurrentLoginStaff().getCompanyId(), url));
     }
+
+
+    /**
+     * 新增外呼绑定账号
+     *
+     * @param outCallUserDTO
+     * @return
+     */
+    @PostMapping("/add_bind_user")
+    public ResultInfo addBindUser(@RequestBody OutCallUserDTO outCallUserDTO) {
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        outCallUserDTO.setCompanyId(currentLoginStaff.getCompanyId());
+        outCallService.addBindUser(outCallUserDTO);
+        return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
+    }
+
+
+    /**
+     * 新增外呼绑定账号
+     *
+     * @return
+     */
+    @GetMapping("/del_bind_user")
+    public ResultInfo delBindUser(int staffId) {
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        outCallService.delBindUser(currentLoginStaff.getCompanyId(), staffId);
+        return ResultInfoUtil.success(TipMsgEnum.DELETE_SUCCESS);
+    }
 }

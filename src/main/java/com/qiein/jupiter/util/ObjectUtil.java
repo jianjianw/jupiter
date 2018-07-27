@@ -2,9 +2,7 @@ package com.qiein.jupiter.util;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import com.qiein.jupiter.constant.ObjectTypeConstant;
 
@@ -22,6 +20,23 @@ public class ObjectUtil {
             System.out.println(f.getGenericType());
             System.out.println("属性名:" + f.getName() + " 属性值:" + f.get(obj));
         }
+    }
+
+    /**
+     * 将一个对象转换成一个map
+     * key为属性名，value为属性值
+     * @param obj
+     * @return
+     * @throws IllegalAccessException
+     */
+    public static Map<String,Object> getAttributeMap(Object obj) throws IllegalAccessException {
+        Map<String,Object> attributeMap = new HashMap<>();
+        Field[] fields = obj.getClass().getDeclaredFields();
+        for (Field field:fields){
+            field.setAccessible(true);
+            attributeMap.put(field.getName().toLowerCase(),field.get(obj));
+        }
+        return attributeMap;
     }
 
     /**

@@ -59,7 +59,8 @@ public class ChannelController extends BaseController {
                     currentLoginStaff.getNickName(), SysLogUtil.getAddLog(SysLogUtil.LOG_SUP_CHANNEL, channelPO.getChannelName()), currentLoginStaff.getCompanyId());
             logService.addLog(log);
         } catch (Exception e) {
-
+            e.printStackTrace();
+            return ResultInfoUtil.success(TipMsgEnum.ADD_CHANNEL_SUCCESS);
         }
         return ResultInfoUtil.success(TipMsgEnum.ADD_CHANNEL_SUCCESS);
     }
@@ -112,6 +113,15 @@ public class ChannelController extends BaseController {
         // 获取所属公司编号
         Integer companyId = currentLoginStaff.getCompanyId();
         channelService.delChannel(id, companyId);
+        RequestInfoDTO requestInfo = getRequestInfo();
+        try {
+            logService.addLog(new SystemLog(SysLogUtil.LOG_TYPE_CHANNEL, requestInfo.getIp(), requestInfo.getUrl(), currentLoginStaff.getId(),
+                    currentLoginStaff.getNickName(), SysLogUtil.getRemoveLog(SysLogUtil.LOG_SUP_CHANNEL, id+""),
+                    currentLoginStaff.getCompanyId()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultInfoUtil.success(TipMsgEnum.DEL_CHANNEL_SUCCESS);
+        }
         return ResultInfoUtil.success(TipMsgEnum.DEL_CHANNEL_SUCCESS);
     }
 
@@ -251,5 +261,19 @@ public class ChannelController extends BaseController {
     public ResultInfo getDsAllChannel(){
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         return ResultInfoUtil.success(channelService.getDsAllChannel(currentLoginStaff.getCompanyId()));
+    }
+
+    /**
+     *
+     * 功能描述:
+     *  获取外部转介绍渠道及小组
+     * @auther: Tt(yehuawei)
+     * @date:
+     * @param:
+     * @return:
+     */
+    @GetMapping("/get_out_zjs")
+    public ResultInfo getCompanyOutZjsChannelAndSource(){
+        return ResultInfoUtil.success(channelService.getCompanyOutZjsChannelAndSource(getCurrentLoginStaff().getCompanyId()));
     }
 }

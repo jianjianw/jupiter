@@ -96,6 +96,7 @@ public class OutCallServiceImpl implements OutCallService {
         //TODO 区号
         baseMap.put("areaCode", "0571");
         //技能
+        //TODO 技能
         baseMap.put("skillIds", "20827");
         baseMap.put("skillLevels", "1");
         //发送请求
@@ -128,7 +129,7 @@ public class OutCallServiceImpl implements OutCallService {
             baseMap.put("id", String.valueOf(admin.getId()));
             jsonObject = postToNet(baseMap, TiOutCallUrlConst.delUser, false);
             if (jsonObject.getString("result").equals("success")) {
-                outCallDao.delUserRela(admin);
+                outCallDao.delUserRela(companyId, staffId);
             }
         }
         return jsonObject;
@@ -378,13 +379,13 @@ public class OutCallServiceImpl implements OutCallService {
             throw new RException(ExceptionEnum.NOT_FOUND_BIND_USER);
         }
         //TODO 获取用户信息
-        Map<String, String> baseMap = new HashMap<>();
-        baseMap.put("enterpriseId", String.valueOf(userInfo.getEnterpriseId()));
-        baseMap.put("cno", String.valueOf(userInfo.getCno()));
-        JSONObject jsonObject = this.postToNet(baseMap, TiOutCallUrlConst.getUserInfo, false);
-        if (jsonObject.getString("result").equals("success")) {
-            JSONObject msg = jsonObject.getJSONObject("msg");
-        }
+//        Map<String, String> baseMap = new HashMap<>();
+//        baseMap.put("enterpriseId", String.valueOf(userInfo.getEnterpriseId()));
+//        baseMap.put("cno", String.valueOf(userInfo.getCno()));
+//        JSONObject jsonObject = this.postToNet(baseMap, TiOutCallUrlConst.getUserInfo, false);
+//        if (jsonObject.getString("result").equals("success")) {
+//            JSONObject msg = jsonObject.getJSONObject("msg");
+//        }
         return userInfo;
     }
 
@@ -427,6 +428,30 @@ public class OutCallServiceImpl implements OutCallService {
                 + "&userName=" + admin.getUsername()
                 + "&pwd=" + admin.getPassword()
                 + "&seed=" + admin.getSeed();
+    }
+
+    /**
+     * 新增绑定用户信息
+     *
+     * @param outCallUserDTO
+     * @return
+     */
+    @Override
+    public int addBindUser(OutCallUserDTO outCallUserDTO) {
+        return outCallDao.addUserRela(outCallUserDTO);
+    }
+
+
+    /**
+     * 删除绑定用户信息
+     *
+     * @param companyId
+     * @param staffId
+     * @return
+     */
+    @Override
+    public int delBindUser(int companyId, int staffId) {
+        return outCallDao.delUserRela(companyId, staffId);
     }
 
 

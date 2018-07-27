@@ -8,6 +8,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.qiein.jupiter.constant.CommonConstant;
 
@@ -48,6 +50,64 @@ public class StringUtil {
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * 判断字符串是否为手机号
+	 * @return
+	 */
+	public static boolean isPhone(String phone){
+		boolean falg = isNotEmpty(phone);
+		if (falg&&phone.length()==11){
+			String regex = "^((13[0-9])|(14[5,7,9])|(15([0-3]|[5-9]))|(17[0,1,3,5,6,7,8])|(18[0-9])|(19[8|9]))\\d{8}$";
+			Pattern p = Pattern.compile(regex);
+			Matcher m = p.matcher(phone);
+			boolean isMatch = m.matches();
+			return isMatch;
+		}
+		return false;
+	}
+
+
+	/**
+	 * 验证邮箱地址是否正确
+	 */
+	public static boolean isEmail(String email) {
+
+		boolean flag = false;
+		try {
+			String check = "^([a-z0-9A-Z]+[-|.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?.)+[a-zA-Z]{2,}$";
+			Pattern regex = Pattern.compile(check);
+			Matcher matcher = regex.matcher(email);
+			flag = matcher.matches();
+		} catch (Exception e) {
+			flag = false;
+		}
+		return flag;
+	}
+
+	/**
+	 * 验证是否为微信号
+	 * @param weChat
+	 * @return
+	 */
+	public static boolean isWeChat(String weChat){
+
+		boolean flag = false;
+		if(!StringUtil.isEmpty(weChat)){
+			if(!StringUtil.isEmpty(weChat)){
+				if(weChat.contains("@")){  //验证邮箱号
+					flag = isEmail(weChat);
+				}else {
+					String reg1 = "[1-9]\\d{5,19}";  //qq号 6 - 20
+					String reg2 = "[a-zA-Z][-_a-zA-Z0-9]{5,19}"; //微信号带字母的 6-20
+					flag = weChat.matches(reg1) || isPhone(weChat) || weChat.matches(reg2);
+				}
+			}
+
+		}
+		return flag;
+
 	}
 
 	/**

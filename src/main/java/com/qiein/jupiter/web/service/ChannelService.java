@@ -103,4 +103,15 @@ public interface ChannelService {
      * @return
      * */
     List<ChannelVO> getDsAllChannel(int companyId);
+    
+    /**
+     *
+     * 功能描述: 
+     *  获取外部转介绍渠道及小组
+     * @auther: Tt(yehuawei)
+     * @date:  
+     * @param: 
+     * @return: 
+     */
+    List<ChannelVO> getCompanyOutZjsChannelAndSource(int companyId);
 }

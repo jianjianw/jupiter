@@ -54,7 +54,8 @@ public class SourceController extends BaseController {
                     currentLoginStaff.getNickName(), SysLogUtil.getAddLog(SysLogUtil.LOG_SUP_SOURCE, sourcePO.getSrcName()), currentLoginStaff.getCompanyId());
             logService.addLog(log);
         } catch (Exception e) {
-
+            e.printStackTrace();
+            return ResultInfoUtil.success(TipMsgEnum.ADD_SOURCE_SUCCESS);
         }
         return ResultInfoUtil.success(TipMsgEnum.ADD_SOURCE_SUCCESS);
     }

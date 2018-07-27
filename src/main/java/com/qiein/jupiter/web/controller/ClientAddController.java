@@ -1,11 +1,9 @@
 package com.qiein.jupiter.web.controller;
 
 import com.qiein.jupiter.util.NumUtil;
+import com.qiein.jupiter.web.service.DictionaryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.enums.TipMsgEnum;
@@ -27,6 +25,9 @@ public class ClientAddController extends BaseController {
 
     @Autowired
     private ClientAddService clientAddService;
+
+    @Autowired
+    private DictionaryService dictionaryService;
 
     /**
      * 录入电商客资
@@ -60,6 +61,44 @@ public class ClientAddController extends BaseController {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         clientAddService.addZjsClient(clientVO, currentLoginStaff);
         return ResultInfoUtil.success(TipMsgEnum.ENTERING_SUNCCESS);
+    }
+
+    /**
+     * 外部转介绍录入
+     * @param clientVO
+     * @return
+     */
+    @PostMapping("/add_out_zjs_client")
+    public ResultInfo addOutZjsClient(@RequestBody ClientVO clientVO){
+        if (StringUtil.isAllEmpty(clientVO.getKzPhone(), clientVO.getKzWechat()))
+            throw new RException(ExceptionEnum.KZ_CONTACT_INFORMATION);
+
+        if (!StringUtil.isPhone(clientVO.getKzPhone())){
+            if (StringUtil.isWeChat(clientVO.getKzPhone())){
+                clientVO.setKzWechat(clientVO.getKzPhone());
+                clientVO.setKzPhone("");
+            }else
+                throw new RException(ExceptionEnum.IS_NOT_KZ_PHONE_OR_WECHAT);
+        }
+
+        clientAddService.addOutZjsClient(clientVO);
+        return ResultInfoUtil.success();
+    }
+
+    /**
+     *
+     * 功能描述:
+     *  外部转介绍下拉菜单
+     * @auther: Tt(yehuawei)
+     * @date:
+     * @param:
+     * @return:
+     */
+    @GetMapping("/out_zjs_menu")
+    public ResultInfo OutZjsDorpDownMenu(Integer companyId){
+        if (companyId==null)
+            throw new RException(ExceptionEnum.COMPANY_ID_NULL);
+        return ResultInfoUtil.success(dictionaryService.getDictMapByCid(companyId));
     }
 
     /**

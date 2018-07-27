@@ -358,11 +358,13 @@ public class GroupServiceImpl implements GroupService {
         if (CommonConstant.DEFAULT_STRING_ZERO.equalsIgnoreCase(groupPO.getParentId())) {
             ChannelPO channelPO = channelDao.getChannelByGroupName(groupPO.getGroupName(), groupPO.getCompanyId());
             if (null != channelPO) {
-                channelPO.setShowFlag(false);
-                channelDao.update(channelPO);
                 List<SourcePO> sourcePOS = sourceDao.getSourceListByChannelId(channelPO.getId(), channelPO.getCompanyId());
                 if (CollectionUtils.isNotEmpty(sourcePOS)) {
                     sourceDao.updateIsShowByChannelId(channelPO.getId(), channelPO.getCompanyId());
+                    channelPO.setShowFlag(false);
+                    channelDao.update(channelPO);
+                }else{
+                    channelDao.deleteByIdAndCid(channelPO.getId(),channelPO.getCompanyId());
                 }
             }
         } else {

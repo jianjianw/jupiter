@@ -120,4 +120,14 @@ public interface OutCallService {
      * 获取mp3
      */
     String getMp3Url(int companyId, String url);
+
+    /**
+     * 新增绑定用户
+     */
+    int addBindUser(OutCallUserDTO outCallUserDTO);
+
+    /**
+     * 删除绑定用户
+     */
+    int delBindUser(int companyId, int staffId);
 }

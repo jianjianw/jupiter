@@ -24,6 +24,7 @@ import com.qiein.jupiter.web.service.SystemLogService;
 import com.qiein.jupiter.web.service.quene.ThreadTaskPushManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -259,6 +260,35 @@ public class ClientAddServiceImpl implements ClientAddService {
         } else {
             throw new RException(jsInfo.getString("msg"));
         }
+    }
+
+    /**
+     *
+     * 功能描述:
+     *  新增外部转介绍客资
+     * @auther: Tt(yehuawei)
+     * @date:
+     * @param:
+     * @return:
+     */
+    @Override
+    @Transactional
+    public void addOutZjsClient(ClientVO clientVO) {
+        Map<String,Object> reqContent =null;
+        try {
+            reqContent = ObjectUtil.getAttributeMap(clientVO);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        ChannelPO channelPO = channelDao.getShowChannelById(clientVO.getCompanyId(),clientVO.getChannelId());
+        if (channelPO==null)
+            throw new RException(ExceptionEnum.CHANNEL_NOT_FOUND);
+        reqContent.put("srctype",channelPO.getTypeId());
+        String resultJsonStr = crmBaseApi.doService(reqContent,"addDingClientInfo");
+        JSONObject resultJson = JSONObject.parseObject(resultJsonStr).getJSONObject("response").getJSONObject("info");
+        System.out.println("接口平台返回： "+resultJson);
+        if (resultJson.getIntValue("code") != 100000)
+            throw new RException(resultJson.getString("msg"), resultJson.getIntValue("code"));
     }
 
 
