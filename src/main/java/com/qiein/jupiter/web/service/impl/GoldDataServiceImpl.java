@@ -9,6 +9,7 @@ import com.mzlion.core.lang.StringUtils;
 import com.qiein.jupiter.constant.ClientStatusConst;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.constant.GoldDataConst;
+import com.qiein.jupiter.enums.GoldDataStatusEnum;
 import com.qiein.jupiter.enums.ZxStyleEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
@@ -120,6 +121,9 @@ public class GoldDataServiceImpl implements GoldDataService {
     public GoldCustomerShowVO goldCustomerSelect(QueryMapDTO queryMapDTO, GoldCustomerDTO goldCustomerDTO) {
         PageHelper.startPage(queryMapDTO.getPageNum(), queryMapDTO.getPageSize());
         List<GoldCustomerVO> list = goldDataDao.goldCustomerSelect(goldCustomerDTO);
+        for(GoldCustomerVO goldCustomerVO:list){
+            goldCustomerVO.setStatus(GoldDataStatusEnum.getGoldStatusDesc(goldCustomerVO.getStatusId()));
+        }
         GoldCustomerShowVO showVO = new GoldCustomerShowVO();
         showVO.setPageInfo(new PageInfo<>(list));
         GoldFingerPO goldFingerPO = goldDataDao.findForm(goldCustomerDTO.getFormId(), goldCustomerDTO.getCompanyId());
