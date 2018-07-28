@@ -160,7 +160,7 @@ public class ClientTrackServiceImpl implements ClientTrackService {
      * @param invalidLabel
      * @param staffPO
      */
-    public void approvalInvalidKzList(String kzIds, String memo, int rst, String invalidLabel, StaffPO staffPO) {
+    public int approvalInvalidKzList(String kzIds, String memo, int rst, String invalidLabel, StaffPO staffPO) {
         Map<String, Object> reqContent = new HashMap<>();
         reqContent.put("companyid", staffPO.getCompanyId());
         reqContent.put("operaid", staffPO.getId());
@@ -173,6 +173,8 @@ public class ClientTrackServiceImpl implements ClientTrackService {
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if (!"100000".equals(jsInfo.getString("code"))) {
             throw new RException(jsInfo.getString("msg"));
+        } else {
+            return JsonFmtUtil.strContentToJsonObj(addRstStr).getIntValue("num");
         }
 
     }

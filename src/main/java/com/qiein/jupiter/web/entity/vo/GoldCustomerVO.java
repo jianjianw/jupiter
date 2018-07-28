@@ -50,6 +50,16 @@ public class GoldCustomerVO implements Serializable {
     //录入时间
     private String createTime;
 
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public String getCreateTime() {
         return createTime;
     }

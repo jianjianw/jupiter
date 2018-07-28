@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.controller;
 
+import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.constant.RoleConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -93,8 +94,11 @@ public class ClientTrackController extends BaseController {
         String invalidLabel = StringUtil.nullToStrTrim(jsonObject.getString("invalidLabel"));
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        clientTrackService.approvalInvalidKzList(kzIds, memo, rst, invalidLabel, currentLoginStaff);
-        return ResultInfoUtil.success(TipMsgEnum.APPROVAL_SUCCESS);
+        int num = clientTrackService.approvalInvalidKzList(kzIds, memo, rst, invalidLabel, currentLoginStaff);
+        ResultInfo resultInfo = new ResultInfo();
+        resultInfo.setCode(CommonConstant.DEFAULT_SUCCESS_CODE);
+        resultInfo.setMsg("审批成功" + num + "个");
+        return resultInfo;
     }
 
     /**
