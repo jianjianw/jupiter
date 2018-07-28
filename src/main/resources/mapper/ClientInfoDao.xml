@@ -213,7 +213,7 @@
 		AND info.STATUSID != 98
 		AND info.STATUSID != 99
 		AND info.STATUSID != 0
-		AND INSTR(CONCAT(',',#{kzIds},','),CONCAT(',',info.KZID,',') != 0;
+		AND INSTR(CONCAT(',',#{kzIds},','),CONCAT(',',info.KZID,',')) != 0;
     </select>
 
 	<!-- 根据客资ID集合查询可以分配给门市的客资集合 -->
@@ -225,7 +225,7 @@
 		WHERE
 			info.COMPANYID = #{companyId}
 		AND info.ISDEL = 0
-		AND INSTR(CONCAT(',',#{kzIds},','),CONCAT(',',info.KZID,',') != 0;
+		AND INSTR(CONCAT(',',#{kzIds},','),CONCAT(',',info.KZID,',')) != 0;
     </select>
 	<!--修改联系方式日志-->
 	<select id="editClientPhoneLog" resultMap="editLog">
@@ -400,13 +400,13 @@
 	<!-- 查询已有客服的客资数量，用于分配 -->
 	<select id="listExistAppointClientsNum" parameterType="map" resultType="java.lang.Integer">
 		SELECT
-			COUNT(ID)
+			COUNT(info.ID)
 		FROM
 			${infoTabName} info
 		WHERE
 			info.COMPANYID = #{companyId}
 		AND info.ISDEL = 0
-		AND INSTR(CONCAT(',',#{kzIds},','),CONCAT(',',info.KZID,',') != 0
+		AND INSTR(CONCAT(',',#{kzIds},','),CONCAT(',',info.KZID,',')) != 0
 		AND info.APPOINTORID IS NOT NULL
     </select>
 
