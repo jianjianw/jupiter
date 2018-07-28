@@ -142,7 +142,7 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
      * @return
      */
     List<ClientPushDTO> getSkInfoList(@Param("infoTabName") String infoTabName,
-                               @Param("companyId") int companyId, @Param("overTime") int overTime);
+                                      @Param("companyId") int companyId, @Param("overTime") int overTime);
 
     /**
      * 获取goeasy推送的客资信息
@@ -198,6 +198,17 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
      */
     List<ClientPushDTO> listClientsInStrKzids4Msjd(@Param("kzIds") String kzIds, @Param("companyId") int companyId,
                                                    @Param("infoTabName") String infoTabName);
+
+    /**
+     * 查询已有客服的客资数量，用于分配
+     *
+     * @param kzIds
+     * @param companyId
+     * @param infoTabName
+     * @return
+     */
+    int listExistAppointClientsNum(@Param("kzIds") String kzIds, @Param("companyId") int companyId,
+                                   @Param("infoTabName") String infoTabName);
 
     /**
      * 修改联系方式日志

@@ -42,14 +42,25 @@ public interface ClientService {
 
     /**
      * 修改客资状态
+     *
      * @param clientStatusVoteVO
-     * */
+     */
     void updateKzValidStatus(ClientStatusVoteVO clientStatusVoteVO);
 
     /**
      * 寻找 kz的主id
+     *
      * @param kzId
      * @return
      */
-    Integer findId(String kzId,Integer companyId);
+    Integer findId(String kzId, Integer companyId);
+
+    /**
+     * 查询已有客服的客资数量，用于分配
+     *
+     * @param kzIds
+     * @param companyId
+     * @return
+     */
+    int listExistAppointClientsNum(String kzIds, int companyId);
 }
