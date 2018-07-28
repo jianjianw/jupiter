@@ -29,6 +29,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -932,5 +933,36 @@ public class StaffServiceImpl implements StaffService {
     /**
      * 员工全部下线
      */
+
+
+    /**
+     * 根据ids批量查找员工
+     * @param ids
+     * @param companyId
+     * @return
+     */
+    public List<StaffPO> getByIds(String ids,Integer companyId){
+        String[] idlist=ids.split(CommonConstant.STR_SEPARATOR);
+        List<Integer> list=new ArrayList<>();
+        for(String id:idlist){
+            list.add(Integer.parseInt(id));
+        }
+        return staffDao.getByIds(list,companyId);
+    }
+
+    /**
+     *  根据ids批量查找员工小组
+     * @param ids
+     * @param companyId
+     * @return
+     */
+    public List<SearchStaffVO> getGroupById(String ids,Integer companyId){
+        String[] idlist=ids.split(CommonConstant.STR_SEPARATOR);
+        List<Integer> list=new ArrayList<>();
+        for(String id:idlist){
+            list.add(Integer.parseInt(id));
+        }
+        return staffDao.getGroupById(list,companyId);
+    }
 
 }

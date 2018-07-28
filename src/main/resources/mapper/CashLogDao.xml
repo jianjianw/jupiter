@@ -4,7 +4,7 @@
     <resultMap id="baseMap" type="com.qiein.jupiter.web.entity.vo.CashLogVO">
         <id column="ID" jdbcType="INTEGER" property="id"/>
         <result column="KZID" jdbcType="VARCHAR" property="kzId"/>
-        <result column="PAYSTAYLE" jdbcType="INTEGER" property="payStyle"/>
+        <result column="PAYSTYLE" jdbcType="INTEGER" property="payStyle"/>
         <result column="AMOUNT" jdbcType="INTEGER" property="amount"/>
         <result column="STAFFID" jdbcType="INTEGER" property="staffId"/>
         <result column="STAFFNAME" jdbcType="VARCHAR" property="staffName"/>

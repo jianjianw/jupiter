@@ -536,4 +536,18 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @return
      */
     StaffPushDTO getAvgDssxStaff(@Param("companyId") int companyId, @Param("interval") int interval, @Param("role") String role);
+
+    /**
+     * 根据ids批量查找员工
+     * @param companyId
+     * @return
+     */
+    List<StaffPO> getByIds(@Param("list")List<Integer> list,@Param("companyId")Integer companyId);
+    /**
+     * 根据ids批量查找员工
+     * @param companyId
+     * @return
+     */
+    List<SearchStaffVO> getGroupById(@Param("list")List<Integer> list,@Param("companyId")Integer companyId);
+
 }

@@ -1096,4 +1096,35 @@
         ORDER BY count(info.KZID) ASC, sf.LASTPUSHTIME ASC
         LIMIT 0, 1;
     </select>
+
+    <select id="getByIds" parameterType="java.lang.Integer" resultMap="baseMap">
+        SELECT
+        <include refid="baseColumn"/>
+        FROM hm_pub_staff
+        WHERE ID IN
+        <foreach collection="list" item="id" index="index" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+    
+    <select id="getGroupById" resultMap="SearchMap">
+        SELECT
+            sf.ID,
+            sf.NICKNAME,
+            sf.PHONE,
+            sf.USERNAME,
+            grp.GROUPID,
+            GROUP_CONCAT(`GROUPNAME` SEPARATOR ',') GROUPNAME
+        FROM
+            hm_pub_staff sf
+        INNER JOIN hm_pub_group_staff rela ON sf.COMPANYID = rela.COMPANYID
+        AND rela.STAFFID = sf.ID
+        INNER JOIN hm_pub_group grp ON grp.GROUPID = rela.GROUPID
+        AND rela.COMPANYID = grp.COMPANYID
+        WHERE sf.ID IN
+        <foreach collection="list" item="id" index="index" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        GROUP BY sf.ID
+    </select>
 </mapper>
