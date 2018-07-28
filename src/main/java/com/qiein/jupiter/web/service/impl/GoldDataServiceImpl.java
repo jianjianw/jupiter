@@ -136,7 +136,7 @@ public class GoldDataServiceImpl implements GoldDataService {
      * 金数据接受数据
      */
     @Override
-    @Transactional(rollbackFor = Exception.class)
+//    @Transactional(rollbackFor = Exception.class)
     public void receiveGoldDataForm(JSONObject jsonObject) {
         Map<String, Object> reqContent = new HashMap<String, Object>();
         //表单数据
@@ -248,7 +248,6 @@ public class GoldDataServiceImpl implements GoldDataService {
         goldTempPO.setRemark(jsonObject.toString());
         goldTempPO.setIp(StringUtil.isEmpty(ip) ? "" : ip);
         goldTempPO.setIpAddress(StringUtil.isEmpty(ip) ? "" : HttpUtil.getIpLocation(ip));
-
         goldTempDao.insert(goldTempPO);
 
         //重复拦截
