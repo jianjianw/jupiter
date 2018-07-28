@@ -9,6 +9,7 @@ import com.mzlion.core.lang.StringUtils;
 import com.qiein.jupiter.constant.ClientStatusConst;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.constant.GoldDataConst;
+import com.qiein.jupiter.enums.GoldDataStatusEnum;
 import com.qiein.jupiter.enums.ZxStyleEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
@@ -120,6 +121,9 @@ public class GoldDataServiceImpl implements GoldDataService {
     public GoldCustomerShowVO goldCustomerSelect(QueryMapDTO queryMapDTO, GoldCustomerDTO goldCustomerDTO) {
         PageHelper.startPage(queryMapDTO.getPageNum(), queryMapDTO.getPageSize());
         List<GoldCustomerVO> list = goldDataDao.goldCustomerSelect(goldCustomerDTO);
+        for(GoldCustomerVO goldCustomerVO:list){
+            goldCustomerVO.setStatus(GoldDataStatusEnum.getGoldStatusDesc(goldCustomerVO.getStatusId()));
+        }
         GoldCustomerShowVO showVO = new GoldCustomerShowVO();
         showVO.setPageInfo(new PageInfo<>(list));
         GoldFingerPO goldFingerPO = goldDataDao.findForm(goldCustomerDTO.getFormId(), goldCustomerDTO.getCompanyId());
@@ -260,24 +264,20 @@ public class GoldDataServiceImpl implements GoldDataService {
         String kzId = jsInfo.getString("data");
 
         if ("100000".equals(jsInfo.getString("code"))) {
-            if (null != goldFingerPO.getIsFilter() && goldFingerPO.getIsFilter()) {
-                //更新状态
-                goldTempPO.setStatusId(GoldDataConst.IN_FILTER);
-                goldTempDao.update(goldTempPO);
-            }else{
-                //更新状态(录入成功)
-                goldTempPO.setStatusId(GoldDataConst.IN_SUCCESS);
-                goldTempDao.update(goldTempPO);
-            }
+            //更新状态(录入成功)
+            goldTempPO.setStatusId(GoldDataConst.IN_SUCCESS);
+            goldTempDao.update(goldTempPO);
             //发送消息
-            ClientDTO info = new ClientDTO();
-            info.setKzId(kzId);
-            info.setKzName(goldTempPO.getKzName());
-            info.setKzPhone(goldTempPO.getKzPhone());
-            info.setKzWeChat(weChat);
-            info.setSrcName(goldFingerPO.getSrcName());
-            info.setChannelName(sourcePO.getChannelName());
-            GoEasyUtil.pushGoldDataKz(goldFingerPO.getCompanyId(), goldFingerPO.getCreateorId(), info, newsDao, staffDao);
+            if (goldFingerPO.getPushNews()) {
+                ClientDTO info = new ClientDTO();
+                info.setKzId(kzId);
+                info.setKzName(goldTempPO.getKzName());
+                info.setKzPhone(goldTempPO.getKzPhone());
+                info.setKzWeChat(weChat);
+                info.setSrcName(goldFingerPO.getSrcName());
+                info.setChannelName(sourcePO.getChannelName());
+                GoEasyUtil.pushGoldDataKz(goldFingerPO.getCompanyId(), goldFingerPO.getCreateorId(), info, newsDao, staffDao);
+            }
         } else if ("130019".equals(jsInfo.getString("code"))) {
             goldTempPO.setStatusId(GoldDataConst.REPEATED_SCREEN);
             goldTempDao.update(goldTempPO);
