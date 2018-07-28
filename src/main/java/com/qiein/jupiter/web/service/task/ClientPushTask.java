@@ -56,7 +56,7 @@ public class ClientPushTask {
         }
         //先判断下队列是否为空,只有队列为空，才去数据库找客资推送
         if (!lpPushQueue.isEmpty()) {
-            log.info("客资队列为空，暂不推送...");
+            log.info("客资队列不为空，暂不推送...");
             return;
         }
         log.info("执行定时推送任务");
@@ -102,7 +102,7 @@ public class ClientPushTask {
         }
         //先判断下队列是否为空,只有队列为空，才去数据库找客资推送
         if (!pushSkQueue.isEmpty()) {
-            log.info("筛客队列为空，暂不推送...");
+            log.info("筛客队列不为空，暂不推送...");
             return;
         }
         log.info("执行定时推送筛客任务");
