@@ -351,4 +351,6 @@ public interface StaffService {
      * @return:
      */
     List<DingBindUserDTO> getNotBindDingUser(Integer companyId);
+
+
 }

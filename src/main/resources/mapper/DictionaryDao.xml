@@ -94,7 +94,9 @@
         hm_crm_dictionary dic
         WHERE
         dic.COMPANYID = #{companyId}
-        ORDER BY dic.DICTYPE,dic.PRIORITY
+        ORDER BY dic.DICTYPE,
+        dic.ISSHOW DESC,
+        dic.PRIORITY
     </select>
 
     <!--获取最大编码-->
@@ -233,4 +235,28 @@
         WHERE
             ID = #{id} AND COMPANYID = #{companyId}
     </update>
+
+
+    <!-- 根据类型，code修改字典名称-->
+    <update id="updateDictNameByTypeAndCode">
+        UPDATE
+            hm_crm_dictionary dic
+        SET dic.DICNAME = #{dicName}
+        WHERE
+            dic.COMPANYID = #{companyId}
+            AND dic.DICTYPE = #{dicType}
+            AND dic.DICCODE = #{dicCode}
+    </update>
+
+    <!-- 根据公司ID 获取ID 获取-->
+    <select id="getByCompanyIdAndId" resultMap="baseMap">
+        SELECT
+        <include refid="baseColumn"/>
+        FROM
+        hm_crm_dictionary dic
+        WHERE
+        dic.COMPANYID = #{companyId}
+        AND dic.ID = #{id}
+    </select>
+
 </mapper>

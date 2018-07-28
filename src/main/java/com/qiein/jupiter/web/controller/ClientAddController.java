@@ -81,6 +81,9 @@ public class ClientAddController extends BaseController {
                 throw new RException(ExceptionEnum.IS_NOT_KZ_PHONE_OR_WECHAT);
         }
 
+        if (clientVO.getOldKzPhone()!=null && !StringUtil.isPhone(clientVO.getOldKzPhone()))
+            throw new RException(ExceptionEnum.OLD_CLIENT_PHONE_IS_NOT_LEGAL);
+
         clientAddService.addOutZjsClient(clientVO);
         return ResultInfoUtil.success();
     }

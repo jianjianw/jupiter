@@ -110,13 +110,14 @@ public class ExcelServiceImpl implements ExcelService {
             clientExcelDTO.setYsRange(CommonConstant.DEFAULT_ZERO);
             clientExcelDTO.setZxStyle(CommonConstant.DEFAULT_ZERO);
             try {
-                if(NumUtil.isValid(clientExcelDTO.getAmount()) || NumUtil.isValid(clientExcelDTO.getStayaMount()) ){
+                if(StringUtil.isNotEmpty(clientExcelDTO.getAmountStr()) ){
                     clientExcelDTO.setAmount(Integer.valueOf(clientExcelDTO.getAmountStr()));
+                }
+                if( StringUtil.isNotEmpty(clientExcelDTO.getStayaMountStr())){
                     clientExcelDTO.setStayaMount(Integer.valueOf(clientExcelDTO.getStayaMountStr()));
                 }
             } catch (NumberFormatException e) {
                 e.printStackTrace();
-                throw new RException(ExceptionEnum.UNKNOW_ERROR);
             }
 
         }

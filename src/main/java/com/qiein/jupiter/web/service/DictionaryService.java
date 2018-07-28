@@ -104,6 +104,10 @@ public interface DictionaryService {
      */
     void addCommonType(DictionaryVO dictionaryVO);
 
+    /**
+     * 根据类型和CODE 修改字典名称
+     */
+    int updateDictNameByTypeAndCode(DictionaryPO dictionaryPO);
 
     /**
      * 调换字典的排序

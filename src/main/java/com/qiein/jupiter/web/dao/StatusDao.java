@@ -9,41 +9,46 @@ import java.util.List;
  * 客资状态管理dao
  */
 public interface StatusDao extends BaseDao<StatusPO> {
-	/**
-	 * 获取企业状态列表
-	 *
-	 * @param companyId
-	 * @return
-	 */
-	List<StatusPO> getCompanyStatusList(@Param("companyId") int companyId);
+    /**
+     * 获取企业状态列表
+     *
+     * @param companyId
+     * @return
+     */
+    List<StatusPO> getCompanyStatusList(@Param("companyId") int companyId);
 
-	/**
-	 * 编辑状态
-	 *
-	 * @param statusPO
-	 * @return
-	 */
-	int editStatus(StatusPO statusPO);
+    /**
+     * 编辑状态
+     *
+     * @param statusPO
+     * @return
+     */
+    int editStatus(StatusPO statusPO);
 
-	/**
-	 * 恢复默认状态
-	 *
-	 * @param statusPO
-	 * @return
-	 */
-	int editStatusDefault(StatusPO statusPO);
+    /**
+     * 恢复默认状态
+     *
+     * @param statusPO
+     * @return
+     */
+    int editStatusDefault(StatusPO statusPO);
 
-	/**
-	 * 获取状态信息
-	 * 
-	 * @return
-	 */
-	StatusPO getStatusById(@Param("companyId") int companyId, @Param("id") int id);
+    /**
+     * 获取状态信息
+     *
+     * @return
+     */
+    StatusPO getStatusById(@Param("companyId") int companyId, @Param("id") int id);
 
-	/**
-	 * 获取状态信息
-	 * 
-	 * @return
-	 */
-	StatusPO getStatusByStatusId(@Param("companyId") int companyId, @Param("statusId") int statusId);
+    /**
+     * 获取状态信息
+     *
+     * @return
+     */
+    StatusPO getStatusByStatusId(@Param("companyId") int companyId, @Param("statusId") int statusId);
+
+    /**
+     * 根据CLASS  ID  和 statusid 编辑状态名称
+     */
+    int editNameByClassIdAndStatusId(StatusPO statusPO);
 }

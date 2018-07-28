@@ -595,7 +595,7 @@
         or temp.CHANNELID is NULL
         or temp.SOURCEID is NULL
         or temp.COLLECTORID IS NULL
-        or temp.CREATETIME IS NULL
+        or (temp.CREATETIME IS NULL or temp.CREATETIME = 0)
         or (temp.KZPHONE is null and temp.KZWECHAT is null and temp.KZQQ is null and temp.KZWW is null)
         or (temp.SHOPID is null and temp.SHOPNAME is not null)
         or (temp.APPOINTORID is null and temp.APPOINTNAME is not null)
@@ -645,7 +645,7 @@
         or temp.CHANNELID is NULL
         or temp.SOURCEID is NULL
         or temp.COLLECTORID IS NULL
-        or temp.CREATETIME IS NULL
+        or (temp.CREATETIME IS NULL or temp.CREATETIME = 0)
         or (temp.KZPHONE is null and temp.KZWECHAT is null and temp.KZQQ is null and temp.KZWW is null)
         or (temp.SHOPID is null and temp.SHOPNAME is not null)
         or (temp.APPOINTORID is null and temp.APPOINTNAME is not null)
@@ -712,7 +712,7 @@
         or temp.CHANNELID is NULL
         or temp.SOURCEID is NULL
         or temp.COLLECTORID IS NULL
-        or temp.CREATETIME IS NULL
+        or (temp.CREATETIME IS NULL or temp.CREATETIME = 0)
         or (temp.KZPHONE is null and temp.KZWECHAT is null and temp.KZQQ is null and temp.KZWW is null)
         or (temp.SHOPID is null and temp.SHOPNAME is not null)
         or (temp.APPOINTORID is null and temp.APPOINTNAME is not null)
@@ -745,7 +745,7 @@
         or temp.CHANNELID is NULL
         or temp.SOURCEID is NULL
         or temp.COLLECTORID IS NULL
-        or temp.CREATETIME IS NULL
+        or (temp.CREATETIME IS NULL or temp.CREATETIME = 0)
         or (temp.KZPHONE is null and temp.KZWECHAT is null and temp.KZQQ is null and temp.KZWW is null)
         or (temp.SHOPID is null and temp.SHOPNAME is not null)
         or (temp.APPOINTORID is null and temp.APPOINTNAME is not null)

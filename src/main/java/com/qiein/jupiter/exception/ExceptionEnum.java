@@ -57,6 +57,7 @@ public enum ExceptionEnum {
     STAFF_CAN_NOT_DEL(358, "该员工存在为交接客资，请交接后再删除"),
     ONLY_APP_LOGIN(359, "只允许客户端登录"),
     COLLECTOR_NOT_FOUND(360, "提报人不存在"),
+    OLD_CLIENT_PHONE_IS_NOT_LEGAL(361,"请检查老客手机号是否正确，手机号的格式为11位纯数字"),
     //部门
     GROUP_NAME_REPEAT(401, "部门名称重复"),
     GROUP_HAVE_CHILD_GROUP(402, "该部门存在小组，请删除下属小组再进行操作"),

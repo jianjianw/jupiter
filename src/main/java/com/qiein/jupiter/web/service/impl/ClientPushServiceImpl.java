@@ -19,6 +19,7 @@ import com.qiein.jupiter.web.entity.dto.GroupKzNumToday;
 import com.qiein.jupiter.web.entity.dto.StaffPushDTO;
 import com.qiein.jupiter.web.entity.po.*;
 import com.qiein.jupiter.web.service.ClientPushService;
+import com.qiein.jupiter.web.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,6 +57,9 @@ public class ClientPushServiceImpl implements ClientPushService {
     private ClientTimerDao clientTimerDao;
     @Autowired
     private CompanyDao companyDao;
+
+    @Autowired
+    private StaffService staffService;
 
     /**
      * 根据拍摄地和渠道维度推送客资
@@ -368,7 +372,7 @@ public class ClientPushServiceImpl implements ClientPushService {
         updateInfoWhenReceive(companyId, kzId, allotLogId, appointer);
 
         // 重载客服今日领取客资数
-        resizeTodayNum(companyId, appointer.getStaffId());
+        staffService.resizeTodayNum(companyId, appointer.getStaffId());
 
         // 推送消息
         ClientGoEasyDTO infoDTO = clientInfoDao.getClientGoEasyDTOById(kzId, DBSplitUtil.getInfoTabName(companyId),
@@ -565,7 +569,7 @@ public class ClientPushServiceImpl implements ClientPushService {
         //修改员工最后推送时间
         staffDao.updateStaffLastPushTime(companyId, appointer.getStaffId());
         // 重载客服今日领取客资数
-        resizeTodayNum(companyId, appointer.getStaffId());
+        staffService.resizeTodayNum(companyId, appointer.getStaffId());
 
         // 推送消息
         ClientGoEasyDTO infoDTO = clientInfoDao.getClientGoEasyDTOById(kzId, DBSplitUtil.getInfoTabName(companyId),
@@ -851,32 +855,6 @@ public class ClientPushServiceImpl implements ClientPushService {
         }
 
         return maxDiffPid;
-    }
-
-    /**
-     * 计算员工今日客资数，并校验是否满限状态
-     *
-     * @param companyId
-     * @param staffId
-     */
-    private void resizeTodayNum(int companyId, int staffId) {
-        // 计算客服今日领取客资数
-        int num = staffDao.getTodayKzNum(companyId, staffId, DBSplitUtil.getInfoTabName(companyId));
-        // 修改今日领取客资数
-        int updateNum = staffDao.updateTodatKzNum(companyId, staffId, num);
-        if (1 != updateNum) {
-            throw new RException(ExceptionEnum.STAFF_EDIT_ERROR);
-        }
-        // 计算是否满限
-        updateNum = staffDao.checkOverFlowToday(companyId, staffId);
-        if (1 == updateNum) {
-            // 记录状态修改日志
-            statusLogDao.insert(
-                    new StaffStatusLog(staffId, StaffStatusEnum.LIMIT.getStatusId(), CommonConstant.SYSTEM_OPERA_ID,
-                            CommonConstant.SYSTEM_OPERA_NAME, companyId, ClientLogConst.LIMITDAY_OVERFLOW));
-            // 推送状态重载消息
-            GoEasyUtil.pushStatusRefresh(companyId, staffId);
-        }
     }
 
     /**
