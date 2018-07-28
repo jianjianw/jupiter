@@ -65,13 +65,22 @@ public interface ChannelService {
     List<ChannelPO> getListByType(Integer typeId, Integer companyId);
 
     /**
-     * 获取企业各角色页面，头部渠道组及渠道下拉框筛选
+     * 获取企业各角色页面，头部渠道组及渠道下拉框筛选,只显示开启的渠道来源
      *
      * @param companyId
      * @param role
      * @return
      */
     List<ChannelVO> getChannelSourceListByType(Integer companyId, String role);
+
+    /**
+     * 获取企业各角色页面，头部渠道组及渠道下拉框筛选,包含关闭的渠道来源
+     *
+     * @param companyId
+     * @param role
+     * @return
+     */
+    List<ChannelVO> getAllChannelSourceListByType(Integer companyId, String role);
 
     /**
      * 根据公司ID 获取渠道字典
@@ -99,19 +108,20 @@ public interface ChannelService {
 
     /**
      * 获取电商所有渠道
+     *
      * @param companyId
      * @return
-     * */
+     */
     List<ChannelVO> getDsAllChannel(int companyId);
-    
+
     /**
+     * 功能描述:
+     * 获取外部转介绍渠道及小组
      *
-     * 功能描述: 
-     *  获取外部转介绍渠道及小组
      * @auther: Tt(yehuawei)
-     * @date:  
-     * @param: 
-     * @return: 
+     * @date:
+     * @param:
+     * @return:
      */
     List<ChannelVO> getCompanyOutZjsChannelAndSource(int companyId);
 }

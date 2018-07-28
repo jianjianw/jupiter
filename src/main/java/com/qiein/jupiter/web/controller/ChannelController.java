@@ -116,7 +116,7 @@ public class ChannelController extends BaseController {
         RequestInfoDTO requestInfo = getRequestInfo();
         try {
             logService.addLog(new SystemLog(SysLogUtil.LOG_TYPE_CHANNEL, requestInfo.getIp(), requestInfo.getUrl(), currentLoginStaff.getId(),
-                    currentLoginStaff.getNickName(), SysLogUtil.getRemoveLog(SysLogUtil.LOG_SUP_CHANNEL, id+""),
+                    currentLoginStaff.getNickName(), SysLogUtil.getRemoveLog(SysLogUtil.LOG_SUP_CHANNEL, id + ""),
                     currentLoginStaff.getCompanyId()));
         } catch (Exception e) {
             e.printStackTrace();
@@ -255,25 +255,40 @@ public class ChannelController extends BaseController {
     }
 
     /**
+     * 获取详情渠道下拉框，关闭的也显示
+     *
+     * @param role
+     * @return
+     */
+    @GetMapping("/get_all_source_list_by_role")
+    public ResultInfo getAllSourceListByRole(@NotEmptyStr @RequestParam("role") String role) {
+        // 获取当前登录用户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        return ResultInfoUtil
+                .success(channelService.getAllChannelSourceListByType(currentLoginStaff.getCompanyId(), role));
+    }
+
+
+    /**
      * 获取企业所有电商渠道列表
-     * */
+     */
     @GetMapping("/get_ds_all_channel")
-    public ResultInfo getDsAllChannel(){
+    public ResultInfo getDsAllChannel() {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         return ResultInfoUtil.success(channelService.getDsAllChannel(currentLoginStaff.getCompanyId()));
     }
 
     /**
-     *
      * 功能描述:
-     *  获取外部转介绍渠道及小组
+     * 获取外部转介绍渠道及小组
+     *
      * @auther: Tt(yehuawei)
      * @date:
      * @param:
      * @return:
      */
     @GetMapping("/get_out_zjs")
-    public ResultInfo getCompanyOutZjsChannelAndSource(){
+    public ResultInfo getCompanyOutZjsChannelAndSource() {
         return ResultInfoUtil.success(channelService.getCompanyOutZjsChannelAndSource(getCurrentLoginStaff().getCompanyId()));
     }
 }

@@ -184,6 +184,17 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     /**
+     * 获取企业各角色页面，头部渠道组及渠道下拉框筛选,包含关闭的渠道来源
+     *
+     * @param companyId
+     * @param role
+     * @return
+     */
+    public List<ChannelVO> getAllChannelSourceListByType(Integer companyId, String role){
+        return channelDao.getAllSourceListByType(companyId, RoleChannelEnum.getTypeListByRole(role));
+    }
+
+    /**
      * 获取渠道字典
      *
      * @param companyId

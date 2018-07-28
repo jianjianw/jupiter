@@ -60,7 +60,7 @@ public interface ChannelDao extends BaseDao<ChannelPO> {
     Integer checkSrcNumById(@Param("channelId") Integer channelId, @Param("companyId") Integer companyId);
 
     /**
-     * 获取各角色渠道组及渠道
+     * 获取各角色渠道组及渠道，只显示开启的渠道来源
      *
      * @param companyId
      * @param typeList
@@ -68,6 +68,15 @@ public interface ChannelDao extends BaseDao<ChannelPO> {
      */
     List<ChannelVO> getChannelSourceListByType(@Param("companyId") Integer companyId,
                                                @Param("typeList") List<Integer> typeList);
+
+    /**
+     * 获取各角色渠道组及渠道，包含关闭的渠道来源
+     *
+     * @param companyId
+     * @param typeList
+     * @return
+     */
+    List<ChannelVO> getAllSourceListByType(@Param("companyId") Integer companyId, @Param("typeList") List<Integer> typeList);
 
     /**
      * 根据ID获取显示可用的渠道
@@ -134,8 +143,9 @@ public interface ChannelDao extends BaseDao<ChannelPO> {
 
     /**
      * 获取电商所有渠道来源
+     *
      * @param companyId
      * @return
-     * */
+     */
     List<ChannelVO> getDsAllChannel(int companyId);
 }

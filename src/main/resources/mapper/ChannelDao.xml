@@ -329,7 +329,7 @@
             JOIN hm_crm_source s ON s.CHANNELID = c.ID AND s.CHANNELID = #{channelId} AND s.COMPANYID = #{companyId}
     </select>
 
-    <!--获取各角色渠道组及渠道-->
+    <!--获取各角色渠道组及渠道,只显示开启的渠道来源-->
     <select id="getChannelSourceListByType" parameterType="map" resultMap="ChannelVOMap">
         SELECT
         channel.ID, channel.CHANNELNAME, src.ID AS SRCID, src.SRCNAME
@@ -340,6 +340,22 @@
         channel.COMPANYID = #{companyId}
         AND channel.ISSHOW = 1
         AND src.ISSHOW = 1
+        AND channel.TYPEID IN
+        <foreach collection="typeList" item="typeId" index="index" open="(" close=")" separator=",">
+            #{typeId}
+        </foreach>
+        ORDER BY channel.TYPEID, channel.PRIORITY, channel.ID, src.PRIORITY, src.ID
+    </select>
+
+    <!--获取各角色渠道组及渠道,包含关闭的渠道来源-->
+    <select id="getAllSourceListByType" parameterType="map" resultMap="ChannelVOMap">
+        SELECT
+        channel.ID, channel.CHANNELNAME, src.ID AS SRCID, src.SRCNAME
+        FROM
+        hm_crm_channel channel
+        LEFT JOIN hm_crm_source src ON src.COMPANYID = channel.COMPANYID AND src.CHANNELID = channel.ID
+        WHERE
+        channel.COMPANYID = #{companyId}
         AND channel.TYPEID IN
         <foreach collection="typeList" item="typeId" index="index" open="(" close=")" separator=",">
             #{typeId}
