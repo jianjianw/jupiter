@@ -360,7 +360,7 @@ public class StaffServiceImpl implements StaffService {
                 .queryString("staffId", staffId)
                 .asString();
         JSONObject resultJson = JSONObject.parseObject(resultJsonStr);
-        log.info("微信绑定阿波罗返回： "+resultJsonStr);
+        log.info("微信绑定阿波罗返回： " + resultJsonStr);
         if (StringUtil.isEmpty(resultJson.getString("data")) && resultJson.getIntValue("code") == 100000)
             log.info(ExceptionEnum.WX_NOT_BIND.getMsg());
         if (resultJson.getIntValue("code") != 100000)
@@ -840,6 +840,7 @@ public class StaffServiceImpl implements StaffService {
      * @param companyId
      * @param staffId
      */
+    @Override
     public void resizeTodayNum(int companyId, int staffId) {
         // 计算客服今日领取客资数
         int num = staffDao.getTodayKzNum(companyId, staffId, DBSplitUtil.getInfoTabName(companyId));
@@ -850,7 +851,9 @@ public class StaffServiceImpl implements StaffService {
         }
         // 计算是否满限
         updateNum = staffDao.checkOverFlowToday(companyId, staffId);
-        if (1 == updateNum) {
+        StaffPO byIdAndCid = staffDao.getByIdAndCid(staffId, companyId);
+        //如果满限，并且当前状态不是满限，则记录日志
+        if (1 == updateNum && byIdAndCid.getStatusFlag() != StaffStatusEnum.LIMIT.getStatusId()) {
             // 记录状态修改日志
             statusLogDao.insert(
                     new StaffStatusLog(staffId, StaffStatusEnum.LIMIT.getStatusId(), CommonConstant.SYSTEM_OPERA_ID,
@@ -913,9 +916,9 @@ public class StaffServiceImpl implements StaffService {
     }
 
     /**
-     *
      * 功能描述:
-     *  获取未绑定钉钉用户
+     * 获取未绑定钉钉用户
+     *
      * @auther: Tt(yehuawei)
      * @date:
      * @param:
@@ -925,4 +928,9 @@ public class StaffServiceImpl implements StaffService {
     public List<DingBindUserDTO> getNotBindDingUser(Integer companyId) {
         return staffDao.getNotBindDingUser(companyId);
     }
+
+    /**
+     * 员工全部下线
+     */
+
 }
