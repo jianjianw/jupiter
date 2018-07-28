@@ -352,5 +352,19 @@ public interface StaffService {
      */
     List<DingBindUserDTO> getNotBindDingUser(Integer companyId);
 
+    /**
+     * 根据ids批量查找员工
+     * @param ids
+     * @param companyId
+     * @return
+     */
+    List<StaffPO> getByIds(String ids,Integer companyId);
 
+    /**
+     *  根据ids批量查找员工小组
+     * @param ids
+     * @param companyId
+     * @return
+     */
+    List<SearchStaffVO> getGroupById(String ids,Integer companyId);
 }

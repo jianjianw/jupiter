@@ -19,6 +19,7 @@ public class SysLogUtil {
     public static final int LOG_TYPE_CHANNEL = 4;
     public static final int LOG_TYPE_SOURCE = 5;
     public static final int LOG_TYPE_ROLE=6;
+    public static final int LOG_TYPE_STAFF=10;
     public static final String LOG_SUP_LOGIN = "登录";
     public static final String LOG_SUP_GROUP = "部门";
     public static final String LOG_SUP_CLIENT = "客资";
@@ -26,6 +27,8 @@ public class SysLogUtil {
     public static final String LOG_SUP_SOURCE = "来源";
     public static final String LOG_SUP_ROLE="权限";
     public static final String LOG_SUP_STAFF="员工";
+    public static final String LOG_SUP_LOCK="锁定状态";
+    public static final String LOG_SUP_GIVE="交接";
 
     public static final String SYS_LOG_PREFIX_ADD = "新增了";
     public static final String SYS_LOG_PREFIX_EDIT = "修改了";
@@ -33,8 +36,6 @@ public class SysLogUtil {
     public static final String SYS_LOG_PREFIX_DO = "进行了";
     public static final String SYS_LOG_PREFIX_IMPORT = "导入了";
     public static final String SYS_LOG_PREFIX_EXPORT = "导出了";
-    public static final String SYS_LOG_LOCK="锁定";
-    public static final String SYS_LOG_GIVE="交接";
 
     public static String getAddLog(String supName, String... params) {
 

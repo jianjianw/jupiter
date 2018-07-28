@@ -6,9 +6,15 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import com.fasterxml.jackson.databind.annotation.JsonAppend;
+import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.msg.websocket.WebSocketMsgUtil;
+import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.entity.dto.DingBindUserDTO;
+import com.qiein.jupiter.web.entity.dto.RequestInfoDTO;
+import com.qiein.jupiter.web.entity.po.SystemLog;
 import com.qiein.jupiter.web.entity.vo.*;
+import com.qiein.jupiter.web.service.SystemLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,13 +33,6 @@ import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.http.CrmBaseApi;
-import com.qiein.jupiter.util.JsonFmtUtil;
-import com.qiein.jupiter.util.NumUtil;
-import com.qiein.jupiter.util.ObjectUtil;
-import com.qiein.jupiter.util.RegexUtil;
-import com.qiein.jupiter.util.ResultInfo;
-import com.qiein.jupiter.util.ResultInfoUtil;
-import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.dto.StaffPasswordDTO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
@@ -55,6 +54,9 @@ public class StaffController extends BaseController {
 
     @Autowired
     private WebSocketMsgUtil webSocketMsgUtil;
+
+    @Autowired
+    private SystemLogService logService;
 
     /**
      * 获取列表
@@ -86,6 +88,17 @@ public class StaffController extends BaseController {
         // 对象参数trim
         ObjectUtil.objectStrParamTrim(staffVO);
         staffService.insert(staffVO);
+        //添加日志
+        RequestInfoDTO requestInfo = getRequestInfo();
+        try{
+            SystemLog log = new SystemLog(SysLogUtil.LOG_TYPE_STAFF, requestInfo.getIp(), requestInfo.getUrl(), currentLoginStaff.getId(),
+                    currentLoginStaff.getNickName(), SysLogUtil.getAddLog(SysLogUtil.LOG_SUP_STAFF, staffVO.getNickName()),
+                    currentLoginStaff.getCompanyId());
+            logService.addLog(log);
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
+        }
         return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
     }
 
@@ -155,7 +168,26 @@ public class StaffController extends BaseController {
                                      @NotEmptyStr @RequestParam("groupId") String groupId) {
         // 获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
+        List<SearchStaffVO> staffOld=staffService.getGroupById(staffIds,currentLoginStaff.getCompanyId());
         staffService.batchEditStaff(currentLoginStaff.getCompanyId(), staffIds, roleIds, password, groupId);
+        List<SearchStaffVO> staffNew=staffService.getGroupById(staffIds,currentLoginStaff.getCompanyId());
+        Map<String,String> map=new HashMap<>();
+        String old=CommonConstant.NULL_STR;
+        for(SearchStaffVO staff:staffOld){
+            old+=staff.getNickName()+" "+staff.getGroupName()+CommonConstant.STR_SEPARATOR;
+        }
+        map.put(old,staffNew.get(0).getGroupName());
+        RequestInfoDTO requestInfo = getRequestInfo();
+        try{
+            // 日志记录
+            logService.addLog(new SystemLog(SysLogUtil.LOG_TYPE_STAFF, requestInfo.getIp(), requestInfo.getUrl(), currentLoginStaff.getId(),
+                    currentLoginStaff.getNickName(), SysLogUtil.getEditLog(SysLogUtil.LOG_SUP_STAFF,SysLogUtil.LOG_SUP_STAFF, map),
+                    currentLoginStaff.getCompanyId()));
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
+        }
         return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
     }
 
@@ -229,7 +261,23 @@ public class StaffController extends BaseController {
         staffStateVO.setIds(ids);
         staffStateVO.setDel(true);
         // staffService.batUpdateStaffState(staffStateVO);
+        String staffName= CommonConstant.NULL_STR;
+        List<StaffPO> staff=staffService.getByIds(ids,currentLoginStaff.getCompanyId());
+        for(StaffPO staffPO:staff){
+            staffName+=staffPO.getNickName()+CommonConstant.STR_SEPARATOR;
+        }
         staffService.batDelStaff(staffStateVO);
+        RequestInfoDTO requestInfo = getRequestInfo();
+        try{
+            // 日志记录
+            logService.addLog(new SystemLog(SysLogUtil.LOG_TYPE_STAFF, requestInfo.getIp(), requestInfo.getUrl(), currentLoginStaff.getId(),
+                    currentLoginStaff.getNickName(), SysLogUtil.getRemoveLog(SysLogUtil.LOG_SUP_STAFF, staffName),
+                    currentLoginStaff.getCompanyId()));
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultInfoUtil.success();
+        }
         return ResultInfoUtil.success();
     }
 
@@ -273,7 +321,21 @@ public class StaffController extends BaseController {
         // 获取操作用户所属公司
         Integer companyId = currentLoginStaff.getCompanyId();
         // 锁定状态
+        StaffPO staff=staffService.getById(staffId,currentLoginStaff.getCompanyId());
         staffService.setLockState(staffId, companyId, isLock);
+        Map<String,String> map=new HashMap<>();
+        map.put(staff.getNickName(),CommonConstant.NULL_STR);
+        RequestInfoDTO requestInfo = getRequestInfo();
+        try{
+            // 日志记录
+            logService.addLog(new SystemLog(SysLogUtil.LOG_TYPE_STAFF, requestInfo.getIp(), requestInfo.getUrl(), currentLoginStaff.getId(),
+                    currentLoginStaff.getNickName(), SysLogUtil.getEditLog(SysLogUtil.LOG_SUP_LOCK,SysLogUtil.LOG_SUP_LOCK, map),
+                    currentLoginStaff.getCompanyId()));
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultInfoUtil.success(TipMsgEnum.OPERATE_SUCCESS);
+        }
         return ResultInfoUtil.success(TipMsgEnum.OPERATE_SUCCESS);
     }
 
@@ -303,6 +365,19 @@ public class StaffController extends BaseController {
         String json = crmBaseApi.doService(map, "clientMoveLp");
         if (StringUtil.isEmpty(json) || !"100000".equalsIgnoreCase(JSONObject.parseObject(json).getJSONObject("response").getJSONObject("info").getString("code"))) {
             return ResultInfoUtil.error(ExceptionEnum.UNKNOW_ERROR.getCode(),JSONObject.parseObject(json).getJSONObject("response").getJSONObject("info").getString("msg"));
+        }
+        Map<String,String> editMap=new HashMap<>();
+        map.put(staffChangeVO.getOldStaffName(),staffChangeVO.getToStaffName());
+        RequestInfoDTO requestInfo = getRequestInfo();
+        try{
+            // 日志记录
+            logService.addLog(new SystemLog(SysLogUtil.LOG_TYPE_STAFF, requestInfo.getIp(), requestInfo.getUrl(), staffPO.getId(),
+                    staffPO.getNickName(), SysLogUtil.getEditLog(SysLogUtil.LOG_SUP_GIVE,SysLogUtil.LOG_SUP_GIVE, editMap),
+                    staffPO.getCompanyId()));
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultInfoUtil.success();
         }
         return ResultInfoUtil.success();
     }
