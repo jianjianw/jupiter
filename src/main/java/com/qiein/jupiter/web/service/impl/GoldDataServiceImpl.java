@@ -261,7 +261,7 @@ public class GoldDataServiceImpl implements GoldDataService {
 
         String addRstStr = crmBaseApi.doService(reqContent, "clientAddGoldPlug");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
-        String kzId = jsInfo.getString("data");
+        String kzId = JsonFmtUtil.strContentToJsonObj(addRstStr).getString("kzid");
 
         if ("100000".equals(jsInfo.getString("code"))) {
             //更新状态(录入成功)
