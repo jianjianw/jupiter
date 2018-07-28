@@ -46,6 +46,8 @@ public class ClientServiceImpl implements ClientService {
     private NewsDao newsDao;
     @Autowired
     private StaffDao staffDao;
+    @Autowired
+    private ClientInfoDao clientInfoDao;
 
 
     /**
@@ -197,5 +199,15 @@ public class ClientServiceImpl implements ClientService {
         return clientDao.findId(kzId, companyId, DBSplitUtil.getInfoTabName(companyId));
     }
 
+    /**
+     * 查询已有客服的客资数量，用于分配
+     *
+     * @param kzIds
+     * @param companyId
+     * @return
+     */
+    public int listExistAppointClientsNum(String kzIds, int companyId) {
+        return clientInfoDao.listExistAppointClientsNum(kzIds, companyId, DBSplitUtil.getInfoTabName(companyId));
+    }
 
 }

@@ -1,6 +1,8 @@
 package com.qiein.jupiter.web.controller;
 
+import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.constant.RoleConstant;
+import com.qiein.jupiter.web.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +30,8 @@ public class ClientTrackController extends BaseController {
     private ClientTrackService clientTrackService;
     @Autowired
     private ClientPushService clientPushService;
+    @Autowired
+    private ClientService clientService;
 
     /**
      * 批量删除客资
@@ -93,8 +97,26 @@ public class ClientTrackController extends BaseController {
         String invalidLabel = StringUtil.nullToStrTrim(jsonObject.getString("invalidLabel"));
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        clientTrackService.approvalInvalidKzList(kzIds, memo, rst, invalidLabel, currentLoginStaff);
-        return ResultInfoUtil.success(TipMsgEnum.APPROVAL_SUCCESS);
+        int num = clientTrackService.approvalInvalidKzList(kzIds, memo, rst, invalidLabel, currentLoginStaff);
+        ResultInfo resultInfo = new ResultInfo();
+        resultInfo.setCode(CommonConstant.DEFAULT_SUCCESS_CODE);
+        resultInfo.setMsg("审批成功" + num + "个");
+        return resultInfo;
+    }
+
+    /**
+     * 分配前的校验，提醒已有客服的客资数量
+     *
+     * @return
+     */
+    @PostMapping("/allot_check")
+    public ResultInfo allotCheck(@RequestBody JSONObject jsonObject) {
+        String kzIds = StringUtil.nullToStrTrim(jsonObject.getString("kzIds"));
+        if (StringUtil.isEmpty(kzIds)) {
+            throw new RException(ExceptionEnum.KZ_ID_IS_NULL);
+        }
+        StaffPO currentStaff = getCurrentLoginStaff();
+        return ResultInfoUtil.success(clientService.listExistAppointClientsNum(kzIds, currentStaff.getCompanyId()));
     }
 
     /**

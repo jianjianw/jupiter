@@ -432,7 +432,7 @@ public class ClientEditServiceImpl implements ClientEditService {
         reqContent.put("channelname", channelPO.getChannelName());
         reqContent.put("createtime", clientVO.getCreateTime());
         reqContent.put("statusid", clientVO.getStatusId());
-        reqContent.put("receivetime", clientVO.getReceiveTime());
+        reqContent.put("appointtime", clientVO.getAppointTime());
 
         if (NumUtil.isNotNull(clientVO.getFilmingCode())) {
             // 获取最终拍摄地名
@@ -452,7 +452,17 @@ public class ClientEditServiceImpl implements ClientEditService {
         reqContent.put("packageCode", clientVO.getPackageCode());// 套系名称编码
         String addRstStr = crmBaseApi.doService(reqContent, "clientEditCwzxHs");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
-        if (!"100000".equals(jsInfo.getString("code"))) {
+        if ("130019".equals(jsInfo.getString("code"))) {
+            //重复客资，给邀约推送消息
+            ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(jsInfo.getString("data"),
+                    DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
+                    DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
+            if (info == null || NumUtil.isNull(info.getAppointorId())) {
+                throw new RException("存在重复客资");
+            }
+            GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getAppointorId(), info, staffPO.getNickName(), newsDao, staffDao);
+            throw new RException("存在重复客资");
+        } else if (!"100000".equals(jsInfo.getString("code"))) {
             throw new RException(jsInfo.getString("msg"));
         }
     }
@@ -484,7 +494,17 @@ public class ClientEditServiceImpl implements ClientEditService {
         reqContent.put("oldkzphone", clientVO.getOldKzPhone());
         String addRstStr = crmBaseApi.doService(reqContent, "clientEditDetailHs");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
-        if (!"100000".equals(jsInfo.getString("code"))) {
+        if ("130019".equals(jsInfo.getString("code"))) {
+            //重复客资，给邀约推送消息
+            ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(jsInfo.getString("data"),
+                    DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
+                    DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
+            if (info == null || NumUtil.isNull(info.getAppointorId())) {
+                throw new RException("存在重复客资");
+            }
+            GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getAppointorId(), info, staffPO.getNickName(), newsDao, staffDao);
+            throw new RException("存在重复客资");
+        } else if (!"100000".equals(jsInfo.getString("code"))) {
             throw new RException(jsInfo.getString("msg"));
         }
     }
