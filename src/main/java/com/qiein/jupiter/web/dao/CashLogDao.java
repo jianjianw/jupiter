@@ -2,7 +2,10 @@ package com.qiein.jupiter.web.dao;
 
 import com.qiein.jupiter.web.entity.po.CashLogPO;
 import com.qiein.jupiter.web.entity.po.ClientLogPO;
+import com.qiein.jupiter.web.entity.vo.CashLogVO;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 收款日志
@@ -24,4 +27,11 @@ public interface CashLogDao extends BaseDao<CashLogDao> {
      * 修改付款记录的状态
      */
     void editStatus(@Param("table") String table, @Param("id") Integer id);
+    /**
+     * 付款记录查询页面
+     * @param kzId
+     * @param table
+     * @return
+     */
+    List<CashLogVO> findCashLog(@Param("kzId")String kzId,@Param("table") String table);
 }
