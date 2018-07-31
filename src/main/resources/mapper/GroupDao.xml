@@ -305,9 +305,7 @@
             grp.SHOPID
         FROM
             hm_pub_group par
-            LEFT JOIN hm_pub_group grp ON grp.PARENTID = par.GROUPID
-                                          AND grp.COMPANYID = par.COMPANYID
-                                          AND grp.GROUPTYPE = par.GROUPTYPE
+            LEFT JOIN hm_pub_group grp ON grp.PARENTID = par.GROUPID AND grp.COMPANYID = par.COMPANYID AND grp.GROUPTYPE = par.GROUPTYPE
         WHERE
             par.COMPANYID = #{companyId}
             AND par.PARENTID = '0'
