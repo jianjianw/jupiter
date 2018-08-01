@@ -1,6 +1,6 @@
 package com.qiein.jupiter.web.controller;
 
-import com.qiein.jupiter.constant.ClientZjsMenuConstant;
+import com.qiein.jupiter.constant.ClientZjsMenuConst;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.service.CompanyService;
@@ -15,8 +15,6 @@ import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.ClientVO;
 import com.qiein.jupiter.web.service.ClientAddService;
-
-import java.lang.reflect.Field;
 
 /**
  * 客资录入
@@ -88,7 +86,7 @@ public class ClientAddController extends BaseController {
                 }
                 //属性为空 或者 sex属性等于0时抛出异常
                 if (ObjectUtil.isEmpty(obj) || (fieldName.equals("sex") && (int) obj == 0))
-                    throw new RException(ClientZjsMenuConstant.zjsMenu.get(fieldName) + "不能为空");
+                    throw new RException(ClientZjsMenuConst.LK_ZJS_MENU.get(fieldName) + "不能为空");
                 //减少判断次数
                 break;
             }
