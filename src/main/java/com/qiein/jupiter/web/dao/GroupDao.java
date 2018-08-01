@@ -65,10 +65,11 @@ public interface GroupDao extends BaseDao<GroupPO> {
     /**
      * 批量更新部门
      *
-     * @param groupPOList
      * @return
      */
-    int batchUpdateGroupType(List<GroupPO> groupPOList);
+    int batchUpdateGroupType(@Param("groupType") String groupType,
+                             @Param("parentId") String parentId,
+                             @Param("companyId") int companyId);
 
     /**
      * 获取员工所在组
