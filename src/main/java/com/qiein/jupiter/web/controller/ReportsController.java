@@ -86,7 +86,7 @@ public class ReportsController extends BaseController {
         reqContent.put("end", end);
         reqContent.put("companyid", currentLoginStaff.getCompanyId());
         reqContent.put("typeId",typeId);
-        reqContent.put("groupIds",groupIds);
+        reqContent.put("groupId",groupIds);
         String json = crmBaseApi.doService(reqContent, "dsyyGroupReports");
 
         if (StringUtil.isEmpty(json) || !"100000".equalsIgnoreCase(JSONObject.parseObject(json).getJSONObject("response").getJSONObject("info").getString("code"))) {

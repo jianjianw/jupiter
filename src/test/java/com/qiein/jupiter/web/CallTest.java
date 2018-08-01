@@ -24,8 +24,6 @@ public class CallTest {
         IAcsClient client = new DefaultAcsClient(profile);
         // 创建API请求并设置参数
         DescribeInstancesRequest request = new DescribeInstancesRequest();
-        request.setActionName("StartBack2BackCall");
-        request.setInstanceIds("9cfad875-6260-4a53-ab6e-b13e3fb31f7d");
         request.setPageSize(10);
         // 发起请求并处理应答或异常
         DescribeInstancesResponse response;
