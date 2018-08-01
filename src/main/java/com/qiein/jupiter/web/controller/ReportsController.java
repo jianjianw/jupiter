@@ -75,7 +75,7 @@ public class ReportsController extends BaseController {
      */
     @RequestMapping("get_dsyy_group_reports")
     public ResultInfo getDsyyGroupReports(@RequestParam("start") Integer start, @RequestParam("end") Integer end,
-                                          @RequestParam(value = "typeId",required = false) Integer typeId,@RequestParam(value = "groupIds",required = false)String groupIds) {
+                                          @RequestParam(value = "typeId",required = false) String typeId,@RequestParam(value = "groupIds",required = false)String groupIds) {
         if (NumUtil.isInValid(start) || NumUtil.isInValid(end)) {
             return ResultInfoUtil.error(ExceptionEnum.START_TIME_OR_END_TIME_IS_NULL);
         }
