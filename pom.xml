@@ -137,6 +137,17 @@
             <artifactId>easypoi-spring-boot-starter</artifactId>
             <version>0.2</version>
         </dependency>
+        <!--ali-call-->
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-core</artifactId>
+            <version>3.5.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-ecs</artifactId>
+            <version>3.0.0</version>
+        </dependency>
 
     </dependencies>
 
