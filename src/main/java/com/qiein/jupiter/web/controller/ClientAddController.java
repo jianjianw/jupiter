@@ -79,29 +79,22 @@ public class ClientAddController extends BaseController {
     private static void zjsFilter(ClientVO clientVO, String zjsSet) {
         String[] fieldNames = zjsSet.split(CommonConstant.STR_SEPARATOR);
         for (String fieldName : fieldNames) {
-            try {
-                //获取全部属性对象
-                Field[] fields = clientVO.getClass().getDeclaredFields();
-                //遍历属性对象
-                for (Field field : fields) {
-                    //设置属性可达，否则会报IllegalAccessException
-                    field.setAccessible(true);
-                    //找到这个属性名
-                    if (field.getName().equals(fieldName)) {
-                        //判断是否为空
-                        Object obj = field.get(clientVO);
-                        //属性为空 或者 sex属性等于0时抛出异常
-                        if (ObjectUtil.isEmpty(obj) || (field.getName().equals("sex") && (int) obj == 0))
-                            throw new RException(ClientZjsMenuConstant.zjsMenu.get(field.getName()) + "不能为空");
-                        //减少判断次数
-                        break;
-                    }
+            Object obj = null;
+            if (StringUtil.isNotEmpty(fieldName)) {
+                try {
+                    obj = ObjectUtil.getObjField(clientVO, fieldName);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
+                //属性为空 或者 sex属性等于0时抛出异常
+                if (ObjectUtil.isEmpty(obj) || (fieldName.equals("sex") && (int) obj == 0))
+                    throw new RException(ClientZjsMenuConstant.zjsMenu.get(fieldName) + "不能为空");
+                //减少判断次数
+                break;
             }
         }
     }
+
 
     /**
      * 外部转介绍录入
