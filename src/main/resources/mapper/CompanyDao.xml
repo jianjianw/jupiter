@@ -276,8 +276,16 @@
       WHERE
         ID = #{companyId}
     </select>
+    
     <update id="editKfEditJdRst">
         UPDATE hm_pub_company SET KFEDITJDRST=#{kfEditJdRst} where ID=#{companyId}
     </update>
+
+    <!--获取转介绍提报必填项设置-->
+    <select id="getZjsRequiredField" parameterType="map" resultType="java.lang.String">
+        SELECT LKZJSSET
+        FROM hm_pub_company
+        WHERE ID = #{companyId};
+    </select>
 
 </mapper>

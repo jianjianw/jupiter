@@ -223,7 +223,7 @@ public class CompanyServiceImpl implements CompanyService {
      * @return
      */
     public DsinvalDTO findDsinvalId(@Param("companyId") Integer companyId) {
-        DsinvalDTO dsinvalDTO=companyDao.findDsinvalId(companyId);
+        DsinvalDTO dsinvalDTO = companyDao.findDsinvalId(companyId);
         String zjsValidStatus = dsinvalDTO.getZjsValidStatus();
         String[] zjsValidStatuss = zjsValidStatus.substring(1, zjsValidStatus.length() - 1).split(CommonConstant.FILE_SEPARATOR);
         List<String> list = new ArrayList<>();
@@ -245,13 +245,13 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     /**
+     * 功能描述:
+     * 获取企业转介绍自定义设置
      *
-     * 功能描述: 
-     *  获取企业转介绍自定义设置
      * @auther: Tt(yehuawei)
      * @date:
-     * @param: 
-     * @return: 
+     * @param:
+     * @return:
      */
     @Override
     public CompanyZjsSetDTO getCompanyZjsSet(int companyId) {
@@ -276,9 +276,18 @@ public class CompanyServiceImpl implements CompanyService {
     /**
      * 客服编辑接待结果
      */
-    public void editKfEditJdRst(boolean kfEditJdRst,Integer companyId){
-        companyDao.editKfEditJdRst(kfEditJdRst,companyId);
+    public void editKfEditJdRst(boolean kfEditJdRst, Integer companyId) {
+        companyDao.editKfEditJdRst(kfEditJdRst, companyId);
     }
 
+    /**
+     * 获取转介绍提报必填项设置
+     *
+     * @param companyId
+     * @return
+     */
+    public String getZjsRequiredField(int companyId) {
+        return companyDao.getZjsRequiredField(companyId);
+    }
 
 }

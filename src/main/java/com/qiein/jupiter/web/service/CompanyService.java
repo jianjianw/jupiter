@@ -147,17 +147,17 @@ public interface CompanyService {
 
     /**
      * 修改转介绍有效指标定义
+     *
      * @param companyId
      * @param zjsValidStatus
      */
-    void editZjsValidStatus(Integer companyId,String zjsValidStatus);
-
+    void editZjsValidStatus(Integer companyId, String zjsValidStatus);
 
 
     /**
-     *
      * 功能描述:
-     *  获取公司转介绍设置
+     * 获取公司转介绍设置
+     *
      * @auther: Tt(yehuawei)
      * @date:
      * @param:
@@ -167,13 +167,22 @@ public interface CompanyService {
 
     /**
      * 公司钉钉转介绍提报自定义设置
+     *
      * @param oldClientZjsSet
      * @param qyZjsSet
      */
-    void editCompanyZJSSet(String oldClientZjsSet,String qyZjsSet, int companyId);
+    void editCompanyZJSSet(String oldClientZjsSet, String qyZjsSet, int companyId);
 
     /**
      * 客服编辑接待结果
      */
-    void editKfEditJdRst(boolean kfEditJdRst,Integer companyId);
+    void editKfEditJdRst(boolean kfEditJdRst, Integer companyId);
+
+    /**
+     * 获取转介绍提报必填项设置
+     *
+     * @param companyId
+     * @return
+     */
+    String getZjsRequiredField(int companyId);
 }

@@ -159,4 +159,12 @@ public interface CompanyDao extends BaseDao<CompanyPO> {
      * 客服编辑接待结果
      */
     void editKfEditJdRst(@Param("kfEditJdRst") boolean kfEditJdRst, @Param("companyId") Integer companyId);
+
+    /**
+     * 获取转介绍提报必填项设置
+     *
+     * @param companyId
+     * @return
+     */
+    String getZjsRequiredField(@Param("companyId") int companyId);
 }

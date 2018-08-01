@@ -1,6 +1,9 @@
 package com.qiein.jupiter.web.controller;
 
-import com.qiein.jupiter.util.NumUtil;
+import com.qiein.jupiter.constant.ClientZjsMenuConstant;
+import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.util.*;
+import com.qiein.jupiter.web.service.CompanyService;
 import com.qiein.jupiter.web.service.DictionaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -9,12 +12,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
-import com.qiein.jupiter.util.ResultInfo;
-import com.qiein.jupiter.util.ResultInfoUtil;
-import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.ClientVO;
 import com.qiein.jupiter.web.service.ClientAddService;
+
+import java.lang.reflect.Field;
 
 /**
  * 客资录入
@@ -28,6 +30,8 @@ public class ClientAddController extends BaseController {
 
     @Autowired
     private DictionaryService dictionaryService;
+    @Autowired
+    private CompanyService companyService;
 
     /**
      * 录入电商客资
@@ -59,29 +63,66 @@ public class ClientAddController extends BaseController {
         }
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
+        //转介绍录入时，判断自定义的字段是否为空
+        String zjsFields = companyService.getZjsRequiredField(currentLoginStaff.getCompanyId());
+        zjsFilter(clientVO, zjsFields);
         clientAddService.addZjsClient(clientVO, currentLoginStaff);
         return ResultInfoUtil.success(TipMsgEnum.ENTERING_SUNCCESS);
     }
 
     /**
+     * 转介绍录入时，判断自定义的字段是否为空
+     *
+     * @param clientVO
+     * @param zjsSet
+     */
+    private static void zjsFilter(ClientVO clientVO, String zjsSet) {
+        String[] fieldNames = zjsSet.split(CommonConstant.STR_SEPARATOR);
+        for (String fieldName : fieldNames) {
+            try {
+                //获取全部属性对象
+                Field[] fields = clientVO.getClass().getDeclaredFields();
+                //遍历属性对象
+                for (Field field : fields) {
+                    //设置属性可达，否则会报IllegalAccessException
+                    field.setAccessible(true);
+                    //找到这个属性名
+                    if (field.getName().equals(fieldName)) {
+                        //判断是否为空
+                        Object obj = field.get(clientVO);
+                        //属性为空 或者 sex属性等于0时抛出异常
+                        if (ObjectUtil.isEmpty(obj) || (field.getName().equals("sex") && (int) obj == 0))
+                            throw new RException(ClientZjsMenuConstant.zjsMenu.get(field.getName()) + "不能为空");
+                        //减少判断次数
+                        break;
+                    }
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
      * 外部转介绍录入
+     *
      * @param clientVO
      * @return
      */
     @PostMapping("/add_out_zjs_client")
-    public ResultInfo addOutZjsClient(@RequestBody ClientVO clientVO){
+    public ResultInfo addOutZjsClient(@RequestBody ClientVO clientVO) {
         if (StringUtil.isAllEmpty(clientVO.getKzPhone(), clientVO.getKzWechat()))
             throw new RException(ExceptionEnum.KZ_CONTACT_INFORMATION);
 
-        if (!StringUtil.isPhone(clientVO.getKzPhone())){
-            if (StringUtil.isWeChat(clientVO.getKzPhone())){
+        if (!StringUtil.isPhone(clientVO.getKzPhone())) {
+            if (StringUtil.isWeChat(clientVO.getKzPhone())) {
                 clientVO.setKzWechat(clientVO.getKzPhone());
                 clientVO.setKzPhone("");
-            }else
+            } else
                 throw new RException(ExceptionEnum.IS_NOT_KZ_PHONE_OR_WECHAT);
         }
 
-        if (clientVO.getOldKzPhone()!=null && !StringUtil.isPhone(clientVO.getOldKzPhone()))
+        if (clientVO.getOldKzPhone() != null && !StringUtil.isPhone(clientVO.getOldKzPhone()))
             throw new RException(ExceptionEnum.OLD_CLIENT_PHONE_IS_NOT_LEGAL);
 
         clientAddService.addOutZjsClient(clientVO);
@@ -89,17 +130,17 @@ public class ClientAddController extends BaseController {
     }
 
     /**
-     *
      * 功能描述:
-     *  外部转介绍下拉菜单
+     * 外部转介绍下拉菜单
+     *
      * @auther: Tt(yehuawei)
      * @date:
      * @param:
      * @return:
      */
     @GetMapping("/out_zjs_menu")
-    public ResultInfo OutZjsDorpDownMenu(Integer companyId){
-        if (companyId==null)
+    public ResultInfo OutZjsDorpDownMenu(Integer companyId) {
+        if (companyId == null)
             throw new RException(ExceptionEnum.COMPANY_ID_NULL);
         return ResultInfoUtil.success(dictionaryService.getDictMapByCid(companyId));
     }
@@ -158,7 +199,7 @@ public class ClientAddController extends BaseController {
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         JSONObject result = clientAddService.batchAddDsClient(list, channelId, sourceId, shopId, typeId, currentLoginStaff, adId,
-                adAddress, groupId, appointId, zxStyle,yxLevel,ysRange,marryTime);
+                adAddress, groupId, appointId, zxStyle, yxLevel, ysRange, marryTime);
         ResultInfo rep = new ResultInfo();
         rep.setCode(result.getInteger("code"));
         rep.setMsg(result.getString("msg"));

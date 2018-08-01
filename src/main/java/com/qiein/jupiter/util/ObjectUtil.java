@@ -88,4 +88,16 @@ public class ObjectUtil {
         Field field = cls.getField(fieldName);
         return field.get(obj);
     }
+
+    /**
+     * 判断Object对象是否为空
+     * @param obj
+     * @return
+     */
+    public static boolean isEmpty(Object obj){
+        if (obj == null) {
+            return true;
+        }
+        return false;
+    }
 }
