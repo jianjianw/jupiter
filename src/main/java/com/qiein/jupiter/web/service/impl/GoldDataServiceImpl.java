@@ -338,13 +338,14 @@ public class GoldDataServiceImpl implements GoldDataService {
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
 
         if ("100000".equals(jsInfo.getString("code"))) {
-            goldTempPO.setStatusId(GoldDataConst.IN_FILTER);
+            goldTempPO.setStatusId(GoldDataConst.IN_SUCCESS);
             goldTempDao.update(goldTempPO);
         } else if ("130019".equals(jsInfo.getString("code"))) {
-            goldTempPO.setStatusId(GoldDataConst.HAVA_ENTERED);
+            goldTempPO.setStatusId(GoldDataConst.REPEATED_SCREEN);
             goldTempDao.update(goldTempPO);
         } else {
-            throw new RException(jsInfo.getString("msg"));
+            goldTempPO.setStatusId(GoldDataConst.IN_FAIL);
+            goldTempDao.update(goldTempPO);
         }
     }
 

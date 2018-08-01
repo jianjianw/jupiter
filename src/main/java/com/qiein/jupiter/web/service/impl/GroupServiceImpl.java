@@ -289,13 +289,7 @@ public class GroupServiceImpl implements GroupService {
         checkSetChiefsName(groupPO);
         groupDao.update(groupPO);
         // 把下属的组的类别也更新
-        List<GroupPO> byParentId = groupDao.getByParentId(groupPO.getGroupId(), groupPO.getCompanyId());
-        if (CollectionUtils.isNotEmpty(byParentId)) {
-            for (GroupPO po : byParentId) {
-                po.setGroupType(groupPO.getGroupType());
-            }
-            groupDao.batchUpdateGroupType(byParentId);
-        }
+        groupDao.batchUpdateGroupType(groupPO.getGroupType(), groupPO.getGroupId(), groupPO.getCompanyId());
         //节点不存在
         if (CommonConstant.DEFAULT_STRING_ZERO.equalsIgnoreCase(groupPO.getParentId())) {
             //根节点
@@ -363,8 +357,8 @@ public class GroupServiceImpl implements GroupService {
                     sourceDao.updateIsShowByChannelId(channelPO.getId(), channelPO.getCompanyId());
                     channelPO.setShowFlag(false);
                     channelDao.update(channelPO);
-                }else{
-                    channelDao.deleteByIdAndCid(channelPO.getId(),channelPO.getCompanyId());
+                } else {
+                    channelDao.deleteByIdAndCid(channelPO.getId(), channelPO.getCompanyId());
                 }
             }
         } else {

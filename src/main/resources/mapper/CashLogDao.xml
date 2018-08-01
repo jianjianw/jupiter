@@ -17,7 +17,7 @@
 
     <select id="findCashLog" resultMap="baseMap">
         select <include refid="list"/>
-        FROM  ${table} where KZID=#{kzId}
+        FROM  ${table} where KZID=#{kzId} ORDER BY ID DESC
     </select>
     <!-- 新增客资日志 -->
     <insert id="addCahsLog" parameterType="map">

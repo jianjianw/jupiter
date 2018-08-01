@@ -34,7 +34,8 @@
         <result column="LINENUM" property="lineNum" jdbcType="INTEGER"/>
         <result column="ORDERNUM" property="orderNum" jdbcType="INTEGER"/>
         <result column="SHOWFLAG" property="showFlag" jdbcType="BOOLEAN"/>
-        <collection property="groupList" ofType="com.qiein.jupiter.web.entity.vo.GroupsInfoVO" resultMap="sonGroupsInfoVOMap"/>
+        <collection property="groupList" ofType="com.qiein.jupiter.web.entity.vo.GroupsInfoVO"
+                    resultMap="sonGroupsInfoVOMap"/>
     </resultMap>
     <!--网销排班小组-->
     <resultMap id="sonGroupsInfoVOMap" type="com.qiein.jupiter.web.entity.vo.GroupsInfoVO">
@@ -53,7 +54,7 @@
 
 
     <sql id="baseColumn">
-        ID, GROUPID, GROUPNAME, PARENTID, GROUPTYPE, COMPANYID,CHIEFIDS,CHIEFNAMES,PRIORITY
+        ID, GROUPID, GROUPNAME, PARENTID, GROUPTYPE, COMPANYID, CHIEFIDS, CHIEFNAMES, PRIORITY
     </sql>
 
     <select id="getById" parameterType="java.lang.Integer" resultMap="baseMap">
@@ -83,9 +84,19 @@
     <insert id="insert" parameterType="com.qiein.jupiter.web.entity.po.GroupPO" useGeneratedKeys="true"
             keyProperty="id">
         INSERT INTO hm_pub_group
-        (GROUPID, GROUPNAME, PARENTID, GROUPTYPE, COMPANYID,CHIEFIDS,CHIEFNAMES,SHOPID,PRIORITY)
-        SELECT #{groupId}, #{groupName}, #{parentId}, #{groupType}, #{companyId},
-        #{chiefIds},#{chiefNames},#{shopId},(SELECT IFNULL(MAX(PRIORITY),0)+1 FROM hm_pub_group WHERE COMPANYID = #{companyId})
+        (GROUPID, GROUPNAME, PARENTID, GROUPTYPE, COMPANYID, CHIEFIDS, CHIEFNAMES, SHOPID, PRIORITY)
+            SELECT
+                #{groupId},
+                #{groupName},
+                #{parentId},
+                #{groupType},
+                #{companyId},
+                #{chiefIds},
+                #{chiefNames},
+                #{shopId},
+                (SELECT IFNULL(MAX(PRIORITY), 0) + 1
+                 FROM hm_pub_group
+                 WHERE COMPANYID = #{companyId})
     </insert>
 
     <update id="update">
@@ -126,39 +137,69 @@
     <!--获取公司所有部门和小组-->
     <select id="getCompanyAllDeptList" parameterType="map" resultMap="GroupVOMap">
         SELECT
-            par.ID, par.GROUPID, par.GROUPNAME, par.PARENTID, par.GROUPTYPE, par.COMPANYID,par.CHIEFIDS,par.CHIEFNAMES,par.PRIORITY,
-             grp.ID AS GID,grp.GROUPID AS GRPID, grp.GROUPNAME AS GRPNAME,grp.PARENTID AS PARID,grp.GROUPTYPE AS TYPE, grp.COMPANYID AS CMPID, grp.CHIEFIDS AS CIDS, grp.CHIEFNAMES AS CNAMES,grp.SHOPID
+            par.ID,
+            par.GROUPID,
+            par.GROUPNAME,
+            par.PARENTID,
+            par.GROUPTYPE,
+            par.COMPANYID,
+            par.CHIEFIDS,
+            par.CHIEFNAMES,
+            par.PRIORITY,
+            grp.ID         AS GID,
+            grp.GROUPID    AS GRPID,
+            grp.GROUPNAME  AS GRPNAME,
+            grp.PARENTID   AS PARID,
+            grp.GROUPTYPE  AS TYPE,
+            grp.COMPANYID  AS CMPID,
+            grp.CHIEFIDS   AS CIDS,
+            grp.CHIEFNAMES AS CNAMES,
+            grp.SHOPID
         FROM
             hm_pub_group par
             LEFT JOIN hm_pub_group grp ON grp.PARENTID = par.GROUPID
-            AND grp.COMPANYID = par.COMPANYID
+                                          AND grp.COMPANYID = par.COMPANYID
         WHERE
             par.COMPANYID = #{companyId}
             AND par.PARENTID = '0'
-        ORDER BY par.PRIORITY, par.GROUPTYPE, par.GROUPNAME,grp.GROUPNAME
+        ORDER BY par.PRIORITY, par.GROUPTYPE, par.GROUPNAME, grp.GROUPNAME
     </select>
 
     <!--根据类型获取公司部门和小组-->
     <select id="getCompanyDeptListByType" parameterType="map" resultMap="GroupsInfoVOMap">
         SELECT
-            par.ID, par.GROUPID, par.GROUPNAME, par.PARENTID, par.GROUPTYPE, par.COMPANYID,par.CHIEFIDS,par.CHIEFNAMES,
-             grp.ID AS GID,grp.GROUPID AS GRPID, grp.GROUPNAME AS GRPNAME,grp.PARENTID AS PARID,grp.GROUPTYPE AS TYPE, grp.COMPANYID AS CMPID, grp.CHIEFIDS AS CIDS, grp.CHIEFNAMES AS CNAMES
+            par.ID,
+            par.GROUPID,
+            par.GROUPNAME,
+            par.PARENTID,
+            par.GROUPTYPE,
+            par.COMPANYID,
+            par.CHIEFIDS,
+            par.CHIEFNAMES,
+            grp.ID         AS GID,
+            grp.GROUPID    AS GRPID,
+            grp.GROUPNAME  AS GRPNAME,
+            grp.PARENTID   AS PARID,
+            grp.GROUPTYPE  AS TYPE,
+            grp.COMPANYID  AS CMPID,
+            grp.CHIEFIDS   AS CIDS,
+            grp.CHIEFNAMES AS CNAMES
         FROM
             hm_pub_group par
             LEFT JOIN hm_pub_group grp ON grp.PARENTID = par.GROUPID
-            AND grp.COMPANYID = par.COMPANYID
+                                          AND grp.COMPANYID = par.COMPANYID
         WHERE
             par.COMPANYID = #{companyId}
             AND par.PARENTID = '0' AND par.GROUPTYPE = #{type}
-        ORDER BY par.PRIORITY,par.ID,grp.ID
+        ORDER BY par.PRIORITY, par.ID, grp.ID
     </select>
 
     <!--添加小组人员关联表-->
     <insert id="insertGroupStaff" parameterType="map">
         INSERT INTO hm_pub_group_staff
-        (GROUPID,STAFFID,COMPANYID)
+        (GROUPID, STAFFID, COMPANYID)
         VALUES
-        (#{groupId},#{staffId},#{companyId})
+            (#{groupId}, #{staffId}, #{companyId})
     </insert>
 
     <!--根据名称获取-->
@@ -177,95 +218,90 @@
               AND GROUPID = #{groupId}
     </delete>
 
+    <!--批量更新小组类型-->
     <update id="batchUpdateGroupType">
-        <foreach item="item" collection="list" separator=";">
-            UPDATE hm_pub_group
-            SET GROUPTYPE = #{item.groupType}
-            WHERE ID = #{item.id}
-            AND COMPANYID = #{item.companyId}
-        </foreach>
+        UPDATE hm_pub_group grp
+        SET grp.GROUPTYPE = #{groupType}
+        WHERE grp.PARENTID = #{parentId}
+              AND COMPANYID = #{companyId}
     </update>
 
     <!--获取员工所在组或者主管的小组-->
     <select id="getGroupByStaffAndType" parameterType="map" resultType="java.lang.String">
-        SELECT
-            grp.GROUPID
+        SELECT grp.GROUPID
         FROM
             hm_pub_group grp
             LEFT JOIN hm_pub_group_staff rela ON rela.COMPANYID = grp.COMPANYID AND grp.GROUPID = rela.GROUPID
         WHERE
             grp.COMPANYID = #{companyId}
             AND grp.PARENTID != '0'
-            AND (rela.STAFFID = #{staffId} OR INSTR(CONCAT(',',grp.CHIEFIDS,','),CONCAT(',',#{staffId},','))!= 0)
-        GROUP BY grp.PRIORITY,grp.GROUPID
+            AND (rela.STAFFID = #{staffId} OR INSTR(CONCAT(',', grp.CHIEFIDS, ','), CONCAT(',', #{staffId}, ',')) != 0)
+        GROUP BY grp.PRIORITY, grp.GROUPID
     </select>
 
     <!--获取员工所在组-->
     <select id="getGroupByStaffId" parameterType="map" resultMap="baseMap">
         SELECT
-        grp.id ID,
-        grp.GROUPID GROUPID,
-        grp.GROUPNAME GROUPNAME,
-        grp.GROUPTYPE GROUPTYPE
+            grp.id        ID,
+            grp.GROUPID   GROUPID,
+            grp.GROUPNAME GROUPNAME,
+            grp.GROUPTYPE GROUPTYPE
         FROM
-        hm_pub_group grp
-        LEFT JOIN hm_pub_group_staff rela ON rela.COMPANYID = grp.COMPANYID AND grp.GROUPID = rela.GROUPID
+            hm_pub_group grp
+            LEFT JOIN hm_pub_group_staff rela ON rela.COMPANYID = grp.COMPANYID AND grp.GROUPID = rela.GROUPID
         WHERE
-        grp.COMPANYID = #{companyId}
-        AND grp.PARENTID != '0'
-        AND rela.STAFFID = #{staffId}
+            grp.COMPANYID = #{companyId}
+            AND grp.PARENTID != '0'
+            AND rela.STAFFID = #{staffId}
     </select>
 
     <!--获取员工所在部门下的全部小组列表-->
     <select id="getDeptByStaffAndType" parameterType="map" resultType="java.lang.String">
-        SELECT
-            son.GROUPID
+        SELECT son.GROUPID
         FROM
             hm_pub_group grp
             LEFT JOIN hm_pub_group_staff rela ON rela.COMPANYID = grp.COMPANYID AND grp.GROUPID = rela.GROUPID
-            LEFT JOIN hm_pub_group son on grp.COMPANYID = son.COMPANYID and grp.PARENTID = son.PARENTID
+            LEFT JOIN hm_pub_group son ON grp.COMPANYID = son.COMPANYID AND grp.PARENTID = son.PARENTID
         WHERE
             grp.COMPANYID = #{companyId}
             AND grp.GROUPTYPE = #{type}
             AND grp.PARENTID != '0'
-            AND (rela.STAFFID = #{staffId} OR INSTR(CONCAT(',',grp.CHIEFIDS,','),CONCAT(',',#{staffId},','))!= 0)
+            AND (rela.STAFFID = #{staffId} OR INSTR(CONCAT(',', grp.CHIEFIDS, ','), CONCAT(',', #{staffId}, ',')) != 0)
         GROUP BY son.GROUPID
     </select>
 
     <!--获取员工所在部门-->
     <select id="getDeptByTypeAndStaff" parameterType="map" resultType="String">
-        SELECT
-            son.PARENTID
+        SELECT son.PARENTID
         FROM
             hm_pub_group grp
             LEFT JOIN hm_pub_group_staff rela ON rela.COMPANYID = grp.COMPANYID AND grp.GROUPID = rela.GROUPID
-            LEFT JOIN hm_pub_group son on grp.COMPANYID = son.COMPANYID and grp.PARENTID = son.PARENTID
+            LEFT JOIN hm_pub_group son ON grp.COMPANYID = son.COMPANYID AND grp.PARENTID = son.PARENTID
         WHERE
             grp.COMPANYID = #{companyId}
             AND grp.GROUPTYPE = #{type}
             AND grp.PARENTID != '0'
-            AND (rela.STAFFID =#{staffId} OR INSTR(CONCAT(',',grp.CHIEFIDS,','),CONCAT(',',#{staffId},',')))
+            AND (rela.STAFFID = #{staffId} OR INSTR(CONCAT(',', grp.CHIEFIDS, ','), CONCAT(',', #{staffId}, ',')))
         GROUP BY son.PARENTID
     </select>
 
     <!--获取员工所在电商小组-->
     <select id="getStaffBelongDSGroup" parameterType="map" resultType="String">
-        SELECT
-        grp.GROUPID
+        SELECT grp.GROUPID
         FROM
-        hm_pub_group grp
-        LEFT JOIN hm_pub_group_staff gs ON gs.COMPANYID = grp.COMPANYID AND gs.GROUPID = grp.GROUPID
+            hm_pub_group grp
+            LEFT JOIN hm_pub_group_staff gs ON gs.COMPANYID = grp.COMPANYID AND gs.GROUPID = grp.GROUPID
         WHERE
-        grp.COMPANYID = #{companyId}
-        AND grp.PARENTID != '0'
-        AND INSTR(grp.GROUPTYPE,'dsyy')!=0
-        AND gs.STAFFID = #{staffId}
+            grp.COMPANYID = #{companyId}
+            AND grp.PARENTID != '0'
+            AND INSTR(grp.GROUPTYPE, 'dsyy') != 0
+            AND gs.STAFFID = #{staffId}
     </select>
 
     <!--根据小组ID获取小组信息-->
     <select id="getGroupById" parameterType="map" resultMap="baseMap">
         SELECT
-            <include refid="baseColumn"/>
+        <include refid="baseColumn"/>
         FROM hm_pub_group
         WHERE COMPANYID = #{companyId}
         AND GROUPID = #{groupId}
@@ -274,7 +310,9 @@
     <!--根据类型获取企业小组列表-->
     <select id="getGroupListByType" parameterType="map" resultMap="baseMap">
         SELECT
-            grp.GROUPID, grp.GROUPNAME, grp.COMPANYID
+            grp.GROUPID,
+            grp.GROUPNAME,
+            grp.COMPANYID
         FROM
             hm_pub_group grp
         WHERE
@@ -284,7 +322,7 @@
     </select>
 
     <!--根据类型获取企业部门和小组列表-->
-    <select id = "getDepartGroupListByType" resultMap="GroupVOMap">
+    <select id="getDepartGroupListByType" resultMap="GroupVOMap">
         SELECT
             par.ID,
             par.GROUPID,
@@ -305,7 +343,8 @@
             grp.SHOPID
         FROM
             hm_pub_group par
-            LEFT JOIN hm_pub_group grp ON grp.PARENTID = par.GROUPID AND grp.COMPANYID = par.COMPANYID AND grp.GROUPTYPE = par.GROUPTYPE
+            LEFT JOIN hm_pub_group grp
+                ON grp.PARENTID = par.GROUPID AND grp.COMPANYID = par.COMPANYID AND grp.GROUPTYPE = par.GROUPTYPE
         WHERE
             par.COMPANYID = #{companyId}
             AND par.PARENTID = '0'
@@ -315,15 +354,17 @@
 
     <!--获取员工所在组-->
     <select id="getGroupByStaffAndRole" parameterType="map" resultMap="baseMap">
-        SELECT grp.GROUPID,grp.GROUPNAME
+        SELECT
+            grp.GROUPID,
+            grp.GROUPNAME
         FROM
-        hm_pub_group grp
-        LEFT JOIN hm_pub_group_staff rela ON rela.COMPANYID = grp.COMPANYID AND grp.GROUPID = rela.GROUPID
+            hm_pub_group grp
+            LEFT JOIN hm_pub_group_staff rela ON rela.COMPANYID = grp.COMPANYID AND grp.GROUPID = rela.GROUPID
         WHERE
-        grp.COMPANYID = #{companyId}
-        AND grp.PARENTID != '0'
-        AND rela.STAFFID = #{staffId}
-        AND grp.GROUPTYPE = #{type}
+            grp.COMPANYID = #{companyId}
+            AND grp.PARENTID != '0'
+            AND rela.STAFFID = #{staffId}
+            AND grp.GROUPTYPE = #{type}
     </select>
 
     <!--修改排序-->
