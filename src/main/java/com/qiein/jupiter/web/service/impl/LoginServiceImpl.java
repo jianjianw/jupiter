@@ -221,19 +221,19 @@ public class LoginServiceImpl implements LoginService {
             throw new RException(ExceptionEnum.IP_NOT_IN_SAFETY);
         }
         // 验证公司属性
-        CompanyPO companyPO = companyService.getById(staff.getCompanyId());
+        CompanyVO company = companyService.getCompanyVO(staff.getCompanyId());
         // 被锁定
-        if (companyPO.isLockFlag()) {
+        if (company.isLockFlag()) {
             throw new RException(ExceptionEnum.COMPANY_IS_LOCK);
         }
         //只要客户端登录
-        if (companyPO.isOnlyApp()) {
+        if (company.isOnlyApp()) {
             if (!clientFlag) {
                 throw new RException(ExceptionEnum.ONLY_APP_LOGIN);
             }
         }
         // 如果员工没有token，或者重新生成
-        if (StringUtil.isEmpty(staff.getToken()) || companyPO.isSsoLimit()) {
+        if (StringUtil.isEmpty(staff.getToken()) || company.isSsoLimit()) {
             updateToken(staff);
         }
         // 更新登录时间和IP
@@ -242,17 +242,21 @@ public class LoginServiceImpl implements LoginService {
         staffDetailPO.setCompanyId(staff.getCompanyId());
         staffDetailPO.setLastLoginIp(ip);
         staffDao.updateStaffLoginInfo(staffDetailPO);
-        // 如果当前员工为下线状态，则更新他为上线状态
-        if (staff.getStatusFlag() == StaffStatusEnum.OffLine.getStatusId()) {
-            StaffPO staffPO1 = new StaffPO();
-            staffPO1.setId(staff.getId());
-            staffPO1.setCompanyId(staff.getCompanyId());
-            staffPO1.setStatusFlag(StaffStatusEnum.OnLine.getStatusId());
-            staffDao.updateStatusFlag(staffPO1);
+        //只有当企业允许员工上下线
+        if (company.isUnableSelfLine()) {
+            // 如果当前员工为下线状态，则更新他为上线状态
+            if (staff.getStatusFlag() == StaffStatusEnum.OffLine.getStatusId()) {
+                StaffPO staffPO1 = new StaffPO();
+                staffPO1.setId(staff.getId());
+                staffPO1.setCompanyId(staff.getCompanyId());
+                staffPO1.setStatusFlag(StaffStatusEnum.OnLine.getStatusId());
+                staffDao.updateStatusFlag(staffPO1);
+            }
+            // 新增上线日志
+            staffStatusLogDao.insert(new StaffStatusLog(staff.getId(), StaffStatusEnum.OnLine.getStatusId(), staff.getId(),
+                    staff.getNickName(), staff.getCompanyId(), ""));
         }
-        // 新增上线日志
-        staffStatusLogDao.insert(new StaffStatusLog(staff.getId(), StaffStatusEnum.OnLine.getStatusId(), staff.getId(),
-                staff.getNickName(), staff.getCompanyId(), ""));
+
         // 给特定用户推送上线
         GoEasyUtil.pushStaffRefresh(staff.getCompanyId(), staff.getId(), ip,
                 HttpUtil.getIpLocation(ip).replace(CommonConstant.STR_SEPARATOR, ""));

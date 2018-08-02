@@ -3,6 +3,7 @@ package com.qiein.jupiter.web.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.constant.ClientZjsMenuConst;
+import com.qiein.jupiter.constant.CompanyConst;
 import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.util.NumUtil;
@@ -49,7 +50,7 @@ public class CompanyController extends BaseController {
      */
     @GetMapping("/ssolimit")
     public ResultInfo editCompanySsolimit(@NotEmptyStr @RequestParam("flag") String flag) {
-        companyService.updateFlag(getCurrentLoginStaff().getCompanyId(), CompanyPO.COLUMN_SSOLIMIT,
+        companyService.updateFlag(getCurrentLoginStaff().getCompanyId(), CompanyConst.COLUMN_SSOLIMIT,
                 Boolean.valueOf(flag));
         return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
@@ -61,7 +62,7 @@ public class CompanyController extends BaseController {
      */
     @GetMapping("/overtime")
     public ResultInfo editCompanyOvertime(@NotEmptyStr @RequestParam("num") Integer num) {
-        companyService.updateRange(getCurrentLoginStaff().getCompanyId(), CompanyPO.COLUMN_OVERTIME, num);
+        companyService.updateRange(getCurrentLoginStaff().getCompanyId(), CompanyConst.COLUMN_OVERTIME, num);
         return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
 
@@ -70,7 +71,7 @@ public class CompanyController extends BaseController {
      */
     @GetMapping("/limitdefault")
     public ResultInfo editCompanyLimitdefault(@NotEmptyStr @RequestParam("num") Integer num) {
-        companyService.updateRange(getCurrentLoginStaff().getCompanyId(), CompanyPO.COLUMN_LIMITDEFAULT, num);
+        companyService.updateRange(getCurrentLoginStaff().getCompanyId(), CompanyConst.COLUMN_LIMITDEFAULT, num);
         return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
 
@@ -79,7 +80,7 @@ public class CompanyController extends BaseController {
      */
     @GetMapping("/kzinterval")
     public ResultInfo editCompanyKzinterval(@NotEmptyStr @RequestParam("num") Integer num) {
-        companyService.updateRange(getCurrentLoginStaff().getCompanyId(), CompanyPO.COLUMN_KZINTERVAL, num);
+        companyService.updateRange(getCurrentLoginStaff().getCompanyId(), CompanyConst.COLUMN_KZINTERVAL, num);
         return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
 
@@ -91,7 +92,7 @@ public class CompanyController extends BaseController {
      */
     @GetMapping("/notselfblind")
     public ResultInfo editCompanyNotselfblind(@NotEmptyStr @RequestParam("flag") String flag) {
-        companyService.updateFlag(getCurrentLoginStaff().getCompanyId(), CompanyPO.COLUMN_NOTSELFBLIND,
+        companyService.updateFlag(getCurrentLoginStaff().getCompanyId(), CompanyConst.COLUMN_NOTSELFBLIND,
                 Boolean.valueOf(flag));
         return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
@@ -104,7 +105,7 @@ public class CompanyController extends BaseController {
      */
     @GetMapping("/unableselfline")
     public ResultInfo editCompanyUnableselfline(@NotEmptyStr @RequestParam("flag") String flag) {
-        companyService.updateFlag(getCurrentLoginStaff().getCompanyId(), CompanyPO.COLUMN_UNABLESELFLINE,
+        companyService.updateFlag(getCurrentLoginStaff().getCompanyId(), CompanyConst.COLUMN_UNABLESELFLINE,
                 Boolean.valueOf(flag));
         return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
@@ -116,7 +117,7 @@ public class CompanyController extends BaseController {
      */
     @GetMapping("/unableappointor")
     public ResultInfo editCompanyUnableappointor(@NotEmptyStr @RequestParam("flag") String flag) {
-        companyService.updateFlag(getCurrentLoginStaff().getCompanyId(), CompanyPO.COLUMN_UNABLEAPPOINTOR,
+        companyService.updateFlag(getCurrentLoginStaff().getCompanyId(), CompanyConst.COLUMN_UNABLEAPPOINTOR,
                 Boolean.valueOf(flag));
         return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
@@ -128,7 +129,7 @@ public class CompanyController extends BaseController {
      */
     @GetMapping("/unableinvalidrange")
     public ResultInfo editCompanyUnableinvalidrange(@NotEmptyStr @RequestParam("num") Integer num) {
-        companyService.updateRange(getCurrentLoginStaff().getCompanyId(), CompanyPO.COLUMN_UNABLEINVALIDRANGE, num);
+        companyService.updateRange(getCurrentLoginStaff().getCompanyId(), CompanyConst.COLUMN_UNABLEINVALIDRANGE, num);
         return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
 

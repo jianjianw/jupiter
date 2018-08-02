@@ -749,13 +749,17 @@ public class StaffServiceImpl implements StaffService {
     public void logout(int companyId, int staffId, String staffName) {
         StaffPO staffNow = staffDao.getByIdAndCid(staffId, companyId);
         // 如果员工当前为在线状态，则让他下线
-        if (staffNow.getStatusFlag() == StaffStatusEnum.OnLine.getStatusId()) {
-            // 更新为下线状态，新增日志
-            staffNow.setStatusFlag(StaffStatusEnum.OffLine.getStatusId());
-            staffDao.updateStatusFlag(staffNow);
+        // 验证公司属性
+        CompanyVO company = companyDao.getVOById(companyId);
+        if (company.isUnableSelfLine()) {
+            if (staffNow.getStatusFlag() == StaffStatusEnum.OnLine.getStatusId()) {
+                // 更新为下线状态，新增日志
+                staffNow.setStatusFlag(StaffStatusEnum.OffLine.getStatusId());
+                staffDao.updateStatusFlag(staffNow);
+            }
+            staffStatusLogDao.insert(
+                    new StaffStatusLog(staffId, StaffStatusEnum.OffLine.getStatusId(), staffId, staffName, companyId, ""));
         }
-        staffStatusLogDao.insert(
-                new StaffStatusLog(staffId, StaffStatusEnum.OffLine.getStatusId(), staffId, staffName, companyId, ""));
     }
 
     /**
@@ -937,32 +941,34 @@ public class StaffServiceImpl implements StaffService {
 
     /**
      * 根据ids批量查找员工
+     *
      * @param ids
      * @param companyId
      * @return
      */
-    public List<StaffPO> getByIds(String ids,Integer companyId){
-        String[] idlist=ids.split(CommonConstant.STR_SEPARATOR);
-        List<Integer> list=new ArrayList<>();
-        for(String id:idlist){
+    public List<StaffPO> getByIds(String ids, Integer companyId) {
+        String[] idlist = ids.split(CommonConstant.STR_SEPARATOR);
+        List<Integer> list = new ArrayList<>();
+        for (String id : idlist) {
             list.add(Integer.parseInt(id));
         }
-        return staffDao.getByIds(list,companyId);
+        return staffDao.getByIds(list, companyId);
     }
 
     /**
-     *  根据ids批量查找员工小组
+     * 根据ids批量查找员工小组
+     *
      * @param ids
      * @param companyId
      * @return
      */
-    public List<SearchStaffVO> getGroupById(String ids,Integer companyId){
-        String[] idlist=ids.split(CommonConstant.STR_SEPARATOR);
-        List<Integer> list=new ArrayList<>();
-        for(String id:idlist){
+    public List<SearchStaffVO> getGroupById(String ids, Integer companyId) {
+        String[] idlist = ids.split(CommonConstant.STR_SEPARATOR);
+        List<Integer> list = new ArrayList<>();
+        for (String id : idlist) {
             list.add(Integer.parseInt(id));
         }
-        return staffDao.getGroupById(list,companyId);
+        return staffDao.getGroupById(list, companyId);
     }
 
 }
