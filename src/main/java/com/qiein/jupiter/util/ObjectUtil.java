@@ -84,8 +84,8 @@ public class ObjectUtil {
     public static Object getObjField(Object obj, String fieldName) throws Exception {
         Class<?> cls = obj.getClass();
         //设置访问权限
-//        field.setAccessible(true);
-        Field field = cls.getField(fieldName);
+        Field field = cls.getDeclaredField(fieldName);
+        field.setAccessible(true);
         return field.get(obj);
     }
 
