@@ -173,7 +173,7 @@
         (NICKNAME, PHONE, USERNAME, PASSWORD, COMPANYID, STATUSFLAG, ISLOCK, ISDEL, LIMITDAY, TOKEN ,CORPID)
         SELECT
             #{nickName}, #{phone}, #{userName}, #{password},
-            #{companyId}, #{statusFlag}, #{lockFlag}, #{delFlag}, #{limitDay}, #{token} , (SELECT ID FROM hm_pub_company WHERE CORPID = #{corpId} LIMIT 1)
+            #{companyId}, #{statusFlag}, #{lockFlag}, #{delFlag}, #{limitDay}, #{token} , (SELECT CORPID FROM hm_pub_company WHERE ID = #{companyId} LIMIT 1)
 
     </insert>
 
