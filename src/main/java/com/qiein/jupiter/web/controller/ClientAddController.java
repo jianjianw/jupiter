@@ -28,6 +28,7 @@ public class ClientAddController extends BaseController {
 
     @Autowired
     private DictionaryService dictionaryService;
+
     @Autowired
     private CompanyService companyService;
 

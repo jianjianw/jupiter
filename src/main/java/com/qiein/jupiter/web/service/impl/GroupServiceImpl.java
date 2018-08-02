@@ -529,7 +529,7 @@ public class GroupServiceImpl implements GroupService {
             groupPO.setChiefNames(chiefNames.toString());
         } else {
             //id为空 清空chilefname
-            groupPO.setChiefNames(null);
+            groupPO.setChiefNames("");
         }
     }
 
