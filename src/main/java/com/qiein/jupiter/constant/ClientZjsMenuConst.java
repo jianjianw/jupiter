@@ -21,7 +21,7 @@ public class ClientZjsMenuConst {
         QY_ZJS_MENU.put("kzWw","客资旺旺");
         QY_ZJS_MENU.put("mateName","配偶姓名");
         QY_ZJS_MENU.put("matePhone","配偶电话");
-        QY_ZJS_MENU.put("mateWechat","配偶微信");
+        QY_ZJS_MENU.put("mateWeChat","配偶微信");
         QY_ZJS_MENU.put("mateQq","配偶qq");
         QY_ZJS_MENU.put("shopName","门店名称");
         QY_ZJS_MENU.put("zxStyle","咨询方式");
@@ -42,7 +42,7 @@ public class ClientZjsMenuConst {
         LK_ZJS_MENU.put("sex","客资性别");
         LK_ZJS_MENU.put("mateName","配偶姓名");
         LK_ZJS_MENU.put("matePhone","配偶电话");
-        LK_ZJS_MENU.put("mateWechat","配偶微信");
+        LK_ZJS_MENU.put("mateWeChat","配偶微信");
         LK_ZJS_MENU.put("mateQq","配偶qq");
         LK_ZJS_MENU.put("typeId","拍摄类型");
         LK_ZJS_MENU.put("marryTime","婚期时间");

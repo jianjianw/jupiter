@@ -85,10 +85,9 @@ public class ClientAddController extends BaseController {
                     e.printStackTrace();
                 }
                 //属性为空 或者 sex属性等于0时抛出异常
-                if (ObjectUtil.isEmpty(obj) || (fieldName.equals("sex") && (int) obj == 0))
+                if (ObjectUtil.isEmpty(obj)) {
                     throw new RException(ClientZjsMenuConst.LK_ZJS_MENU.get(fieldName) + "不能为空");
-                //减少判断次数
-                break;
+                }
             }
         }
     }

@@ -25,16 +25,17 @@ public class ObjectUtil {
     /**
      * 将一个对象转换成一个map
      * key为属性名，value为属性值
+     *
      * @param obj
      * @return
      * @throws IllegalAccessException
      */
-    public static Map<String,Object> getAttributeMap(Object obj) throws IllegalAccessException {
-        Map<String,Object> attributeMap = new HashMap<>();
+    public static Map<String, Object> getAttributeMap(Object obj) throws IllegalAccessException {
+        Map<String, Object> attributeMap = new HashMap<>();
         Field[] fields = obj.getClass().getDeclaredFields();
-        for (Field field:fields){
+        for (Field field : fields) {
             field.setAccessible(true);
-            attributeMap.put(field.getName().toLowerCase(),field.get(obj));
+            attributeMap.put(field.getName().toLowerCase(), field.get(obj));
         }
         return attributeMap;
     }
@@ -91,12 +92,19 @@ public class ObjectUtil {
 
     /**
      * 判断Object对象是否为空
+     *
      * @param obj
      * @return
      */
-    public static boolean isEmpty(Object obj){
+    public static boolean isEmpty(Object obj) {
         if (obj == null) {
             return true;
+        }
+        if (obj instanceof String) {
+            return ((String) obj).trim().equals("");
+        }
+        if (obj instanceof Integer) {
+            return (Integer) obj == 0;
         }
         return false;
     }
