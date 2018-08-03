@@ -170,11 +170,11 @@
     <insert id="addStaffVo" parameterType="com.qiein.jupiter.web.entity.vo.StaffVO" useGeneratedKeys="true"
             keyProperty="id">
         INSERT INTO hm_pub_staff
-        (NICKNAME, PHONE, USERNAME, PASSWORD, COMPANYID, STATUSFLAG, ISLOCK, ISDEL, LIMITDAY, TOKEN)
-        VALUES (
+        (NICKNAME, PHONE, USERNAME, PASSWORD, COMPANYID, STATUSFLAG, ISLOCK, ISDEL, LIMITDAY, TOKEN ,CORPID)
+        SELECT
             #{nickName}, #{phone}, #{userName}, #{password},
-            #{companyId}, #{statusFlag}, #{lockFlag}, #{delFlag}, #{limitDay}, #{token}
-        )
+            #{companyId}, #{statusFlag}, #{lockFlag}, #{delFlag}, #{limitDay}, #{token} , (SELECT CORPID FROM hm_pub_company WHERE ID = #{companyId} LIMIT 1)
+
     </insert>
 
 
