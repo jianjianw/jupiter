@@ -455,6 +455,7 @@ public class GroupServiceImpl implements GroupService {
                     sourcePO.setCompanyId(groupPO.getCompanyId());
                     sourcePO.setChannelId(channelPO.getId());
                     sourcePO.setChannelName(channelPO.getChannelName());
+                    sourcePO.setPushRule(CommonConstant.DEFAULT_ZERO);
                     sourcePO.setIsShow(true);
                     sourcePO.setIsFilter(false);
                     sourceDao.insert(sourcePO);
@@ -475,6 +476,7 @@ public class GroupServiceImpl implements GroupService {
                         sourcePO.setChannelName(channelPO.getChannelName());
                         sourcePO.setBrandId(channelPO.getBrandId());
                         sourcePO.setBrandName(channelPO.getBrandName());
+                        sourcePO.setPushRule(CommonConstant.DEFAULT_ZERO);
                         sourcePO.setIsShow(channelPO.getShowFlag());
                         sourcePO.setIsFilter(false);
                         sourceDao.insert(sourcePO);
