@@ -2,6 +2,8 @@ package com.qiein.jupiter.web;
 
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
+import com.aliyuncs.auth.Credential;
+import com.aliyuncs.ccc.model.v20170705.CreateUserRequest;
 import com.aliyuncs.ecs.model.v20140526.DescribeInstancesRequest;
 import com.aliyuncs.ecs.model.v20140526.DescribeInstancesResponse;
 import com.aliyuncs.exceptions.ClientException;
@@ -23,6 +25,7 @@ public class CallTest {
                 "<your-access-key-secret>"); // RAM账号Access Key Secret
         IAcsClient client = new DefaultAcsClient(profile);
         // 创建API请求并设置参数
+        CreateUserRequest createUserRequest = new CreateUserRequest();
         DescribeInstancesRequest request = new DescribeInstancesRequest();
         request.setPageSize(10);
         // 发起请求并处理应答或异常
