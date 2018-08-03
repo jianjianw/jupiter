@@ -476,6 +476,7 @@ public class GroupServiceImpl implements GroupService {
                         sourcePO.setChannelName(channelPO.getChannelName());
                         sourcePO.setBrandId(channelPO.getBrandId());
                         sourcePO.setBrandName(channelPO.getBrandName());
+                        sourcePO.setPushRule(CommonConstant.DEFAULT_ZERO);
                         sourcePO.setIsShow(channelPO.getShowFlag());
                         sourcePO.setIsFilter(false);
                         sourceDao.insert(sourcePO);
