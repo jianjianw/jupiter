@@ -66,10 +66,9 @@ public class ClientPushServiceImpl implements ClientPushService {
      */
     @Transactional
     @Override
-    public synchronized void pushLp(int rule, int companyId, String kzId, int typeId, int channelId, int channelTypeId,
-                                    int overTime, int interval, int srcId) {
+    public synchronized void pushLp(int rule, int companyId, String kzId, int srcType, int overTime, int interval, int srcId) {
 
-        if (NumUtil.haveInvalid(rule, companyId, typeId, channelId, channelTypeId) || StringUtil.isEmpty(kzId)) {
+        if (NumUtil.haveInvalid(rule, companyId, srcType) || StringUtil.isEmpty(kzId)) {
             return;
         }
 
@@ -83,9 +82,9 @@ public class ClientPushServiceImpl implements ClientPushService {
         // 区分渠道类型，电商渠道，转介绍渠道
         String type = "";
         //电商
-        if (ChannelConstant.DS_TYPE_LIST.contains(channelTypeId)) {
+        if (ChannelConstant.DS_TYPE_LIST.contains(srcType)) {
             type = RoleConstant.DSYY;
-        } else if (ChannelConstant.ZJS_TYPE_LIST.contains(channelTypeId)) {
+        } else if (ChannelConstant.ZJS_TYPE_LIST.contains(srcType)) {
             //转介绍
             type = RoleConstant.ZJSYY;
         }
@@ -117,36 +116,36 @@ public class ClientPushServiceImpl implements ClientPushService {
         }
 
         switch (rule) {
-            case ChannelConstant.PUSH_RULE_AVG_ALLOT:
-                // 1：小组+员工-指定承接小组依据权重比自动分配 - <无需领取>
-                appointer = getStaffGroupStaffAvg(companyId, kzId, typeId, channelId, channelTypeId, overTime, interval);
-                if (appointer == null) {
-                    return;
-                }
-                // 生成分配日志
-                allotLog = addAllotLog(kzId, appointer.getStaffId(), appointer.getStaffName(), appointer.getGroupId(),
-                        appointer.getGroupName(), ClientConst.ALLOT_SYSTEM_AUTO, companyId);
-
-                // 客资分配客服
-                doPushAvgAllot(companyId, kzId, appointer, allotLog.getId(), overTime);
-                break;
-            case ChannelConstant.PUSH_RULE_AVG_RECEIVE:
-                // 11：小组+员工-指定承接小组依据权重比自动分配 - <客户端领取>
-                // 校验之前的客服是否连续怠工
-                if (NumUtil.isValid(clientDTO.getAppointorId())) {
-                    checkOffLine(clientDTO.getAppointorId(), companyId, overTime);
-                }
-                appointer = getStaffGroupStaffAvg(companyId, kzId, typeId, channelId, channelTypeId, overTime, interval);
-                if (appointer == null) {
-                    return;
-                }
-                // 生成分配日志
-                allotLog = addAllotLog(kzId, appointer.getStaffId(), appointer.getStaffName(), appointer.getGroupId(),
-                        appointer.getGroupName(), ClientConst.ALLOT_SYSTEM_AUTO, companyId);
-
-                // 客资分配客服
-                doPushAvgReceive(companyId, kzId, appointer, allotLog.getId(), overTime);
-                break;
+//            case ChannelConstant.PUSH_RULE_AVG_ALLOT:
+//                // 1：小组+员工-指定承接小组依据权重比自动分配 - <无需领取>
+//                appointer = getStaffGroupStaffAvg(companyId, kzId, typeId, channelId, channelTypeId, overTime, interval);
+//                if (appointer == null) {
+//                    return;
+//                }
+//                // 生成分配日志
+//                allotLog = addAllotLog(kzId, appointer.getStaffId(), appointer.getStaffName(), appointer.getGroupId(),
+//                        appointer.getGroupName(), ClientConst.ALLOT_SYSTEM_AUTO, companyId);
+//
+//                // 客资分配客服
+//                doPushAvgAllot(companyId, kzId, appointer, allotLog.getId(), overTime);
+//                break;
+//            case ChannelConstant.PUSH_RULE_AVG_RECEIVE:
+//                // 11：小组+员工-指定承接小组依据权重比自动分配 - <客户端领取>
+//                // 校验之前的客服是否连续怠工
+//                if (NumUtil.isValid(clientDTO.getAppointorId())) {
+//                    checkOffLine(clientDTO.getAppointorId(), companyId, overTime);
+//                }
+//                appointer = getStaffGroupStaffAvg(companyId, kzId, typeId, channelId, channelTypeId, overTime, interval);
+//                if (appointer == null) {
+//                    return;
+//                }
+//                // 生成分配日志
+//                allotLog = addAllotLog(kzId, appointer.getStaffId(), appointer.getStaffName(), appointer.getGroupId(),
+//                        appointer.getGroupName(), ClientConst.ALLOT_SYSTEM_AUTO, companyId);
+//
+//                // 客资分配客服
+//                doPushAvgReceive(companyId, kzId, appointer, allotLog.getId(), overTime);
+//                break;
             case ChannelConstant.PUSH_RULE_SELF:
                 // 5：回馈个人-谁录分给谁
                 if (NumUtil.isValid(clientDTO.getCollectorId())) {

@@ -143,9 +143,9 @@ public class ClientAddServiceImpl implements ClientAddService {
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if ("100000".equals(jsInfo.getString("code"))) {
             CompanyPO companyPO = companyDao.getById(staffPO.getCompanyId());
-            tpm.pushInfo(new ClientPushDTO(pushService, channelPO.getPushRule(), staffPO.getCompanyId(),
+            tpm.pushInfo(new ClientPushDTO(pushService, sourcePO.getPushRule(), staffPO.getCompanyId(),
                     JsonFmtUtil.strContentToJsonObj(addRstStr).getString("kzid"), clientVO.getTypeId(),
-                    channelPO.getId(), channelPO.getTypeId(), companyPO.getOvertime(), companyPO.getKzInterval(),
+                    companyPO.getOvertime(), companyPO.getKzInterval(),
                     sourcePO.getId()));
         } else if ("130019".equals(jsInfo.getString("code"))) {
             //重复客资，给邀约推送消息
@@ -245,8 +245,8 @@ public class ClientAddServiceImpl implements ClientAddService {
         if ("100000".equals(jsInfo.getString("code"))) {
             CompanyPO companyPO = companyDao.getById(staffPO.getCompanyId());
             tpm.pushInfo(new ClientPushDTO(pushService, sourcePO.getPushRule(), staffPO.getCompanyId(),
-                    JsonFmtUtil.strContentToJsonObj(addRstStr).getString("kzid"), clientVO.getTypeId(),
-                    channelPO.getId(), channelPO.getTypeId(), companyPO.getOvertime(), companyPO.getKzInterval(), sourcePO.getId()));
+                    JsonFmtUtil.strContentToJsonObj(addRstStr).getString("kzid"), sourcePO.getTypeId(),
+                    companyPO.getOvertime(), companyPO.getKzInterval(), sourcePO.getId()));
         } else if ("130019".equals(jsInfo.getString("code"))) {
             //重复客资，给邀约推送消息
             ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(jsInfo.getString("data"),
@@ -263,9 +263,9 @@ public class ClientAddServiceImpl implements ClientAddService {
     }
 
     /**
-     *
      * 功能描述:
-     *  新增外部转介绍客资
+     * 新增外部转介绍客资
+     *
      * @auther: Tt(yehuawei)
      * @date:
      * @param:
@@ -274,19 +274,19 @@ public class ClientAddServiceImpl implements ClientAddService {
     @Override
     @Transactional
     public void addOutZjsClient(ClientVO clientVO) {
-        Map<String,Object> reqContent =null;
+        Map<String, Object> reqContent = null;
         try {
             reqContent = ObjectUtil.getAttributeMap(clientVO);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
-        ChannelPO channelPO = channelDao.getShowChannelById(clientVO.getCompanyId(),clientVO.getChannelId());
-        if (channelPO==null)
+        ChannelPO channelPO = channelDao.getShowChannelById(clientVO.getCompanyId(), clientVO.getChannelId());
+        if (channelPO == null)
             throw new RException(ExceptionEnum.CHANNEL_NOT_FOUND);
-        reqContent.put("srctype",channelPO.getTypeId());
-        String resultJsonStr = crmBaseApi.doService(reqContent,"addDingClientInfo");
+        reqContent.put("srctype", channelPO.getTypeId());
+        String resultJsonStr = crmBaseApi.doService(reqContent, "addDingClientInfo");
         JSONObject resultJson = JSONObject.parseObject(resultJsonStr).getJSONObject("response").getJSONObject("info");
-        System.out.println("接口平台返回： "+resultJson);
+        System.out.println("接口平台返回： " + resultJson);
         if (resultJson.getIntValue("code") != 100000)
             throw new RException(resultJson.getString("msg"), resultJson.getIntValue("code"));
     }

@@ -235,9 +235,9 @@ public class ClientReceiveServiceImpl implements ClientReceiveService {
             throw new RException(ExceptionEnum.INFO_BE_RECEIVED);
         }
         String type = "";
-        if (ChannelConstant.DS_TYPE_LIST.contains(info.getChannelTypeId())) {
+        if (ChannelConstant.DS_TYPE_LIST.contains(info.getSrcType())) {
             type = RoleConstant.DSYY;
-        } else if (ChannelConstant.ZJS_TYPE_LIST.contains(info.getChannelTypeId())) {
+        } else if (ChannelConstant.ZJS_TYPE_LIST.contains(info.getSrcType())) {
             //转介绍
             type = RoleConstant.ZJSYY;
         }

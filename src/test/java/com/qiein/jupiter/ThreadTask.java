@@ -8,15 +8,15 @@ public class ThreadTask {
 		ThreadTaskPushManager tpm = ThreadTaskPushManager.getInstance();
 		for (int i = 1; i < 100; i++) {
 			ClientPushDTO vo = new ClientPushDTO();
-			vo.setChannelId(1);
-			vo.setCompanyId(1);
-			vo.setPushRule(1);
-			vo.setKzId("121121");
-			vo.setTypeId(12);
-			vo.setChannelId(121);
-			vo.setChannelTypeId(12);
-			vo.setKzId(":::客资-" + i);
-			tpm.pushInfo(vo);
+//			vo.setChannelId(1);
+//			vo.setCompanyId(1);
+//			vo.setPushRule(1);
+//			vo.setKzId("121121");
+//			vo.setTypeId(12);
+//			vo.setChannelId(121);
+//			vo.setChannelTypeId(12);
+//			vo.setKzId(":::客资-" + i);
+//			tpm.pushInfo(vo);
 			try {
 				// Thread.sleep(1000);
 			} catch (Exception e) {

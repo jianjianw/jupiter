@@ -13,14 +13,11 @@ public interface ClientPushService {
      * @param rule-推送规则
      * @param companyId-企业ID
      * @param kzId-客资ID
-     * @param typeId-拍摄类型ID
-     * @param channelId-渠道ID
      * @param overTime-领单超时时间
      * @param interval-领单间隔时间
      * @Param channelTypeId-渠道类型ID
      */
-    void pushLp(int rule, int companyId, String kzId, int typeId, int channelId, int channelTypeId, int overTime,
-                int interval, int srcId);
+    void pushLp(int rule, int companyId, String kzId, int channelTypeId, int overTime, int interval, int srcId);
 
     /**
      * 客资批量分配给客服
@@ -53,5 +50,5 @@ public interface ClientPushService {
      * @param overTime
      * @param interval
      */
-    void pushSk(int companyId, String kzId, int overTime, int interval,int srcType);
+    void pushSk(int companyId, String kzId, int overTime, int interval, int srcType);
 }

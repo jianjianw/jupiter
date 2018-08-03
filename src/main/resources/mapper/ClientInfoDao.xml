@@ -14,9 +14,6 @@
         <result column="PUSHRULE" jdbcType="INTEGER" property="pushRule"/>
         <result column="SHOPID" jdbcType="INTEGER" property="shopId"/>
         <result column="TYPEID" jdbcType="INTEGER" property="typeId"/>
-        <result column="CHANNELID" jdbcType="INTEGER" property="channelId"/>
-        <result column="CHANNELTYPEID" jdbcType="INTEGER" property="channelTypeId"/>
-        <result column="SRCPUSHRULE" jdbcType="INTEGER" property="srcPushRule"/>
         <result column="SRCTYPE" jdbcType="INTEGER" property="srcType"/>
     </resultMap>
 
@@ -167,10 +164,9 @@
 	<!-- 获取企业要推送的客资信息 -->	
     <select id="getInfoListBeReadyPush" parameterType="map" resultMap="infoMap">
 		SELECT
-			channel.PUSHRULE, info.KZID, info.COMPANYID, info.TYPEID, info.CHANNELID, channel.TYPEID CHANNELTYPEID,info.SOURCEID,src.PUSHRULE SRCPUSHRULE
+			info.KZID, info.COMPANYID, info.TYPEID, info.CHANNELID, info.SOURCEID,src.PUSHRULE ,src.TYPEID SRCTYPE
 		FROM
 			${infoTabName} info
-		LEFT JOIN hm_crm_channel channel ON info.CHANNELID = channel.ID AND channel.COMPANYID = #{companyId}
 		LEFT JOIN hm_crm_source src ON info.SOURCEID = src.ID AND src.COMPANYID = #{companyId}
 		WHERE
 			info.COMPANYID = #{companyId}
