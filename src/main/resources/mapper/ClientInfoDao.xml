@@ -65,7 +65,7 @@
     <!--获取要推送的客资信息-->
 	<select id="getClientPushDTOById" parameterType="map" resultMap="infoMap">
 		SELECT
-		<include refid="baseColumn"/>, (UNIX_TIMESTAMP(NOW()) - info.LASTPUSHTIME) PUSHINTERVAL ,info.SRCTYPE CHANNELTYPEID
+		<include refid="baseColumn"/>, (UNIX_TIMESTAMP(NOW()) - info.LASTPUSHTIME) PUSHINTERVAL ,info.SRCTYPE SRCTYPE
 		FROM
 			${infoTabName} info
 		LEFT JOIN ${detailTabName} det ON det.KZID = info.KZID AND info.COMPANYID = det.COMPANYID
