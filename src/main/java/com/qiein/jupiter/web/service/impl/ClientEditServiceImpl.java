@@ -433,6 +433,7 @@ public class ClientEditServiceImpl implements ClientEditService {
         reqContent.put("createtime", clientVO.getCreateTime());
         reqContent.put("statusid", clientVO.getStatusId());
         reqContent.put("appointtime", clientVO.getAppointTime());
+        reqContent.put("comeshoptime", clientVO.getComeShopTime());
 
         if (NumUtil.isNotNull(clientVO.getFilmingCode())) {
             // 获取最终拍摄地名
