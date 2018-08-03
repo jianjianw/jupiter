@@ -57,7 +57,7 @@ public class ExcelController extends BaseController {
         try {
             RequestInfoDTO requestInfo = getRequestInfo();
             // 日志记录
-            SystemLog log = new SystemLog(SysLogUtil.LOG_TYPE_GROUP, requestInfo.getIp(), requestInfo.getUrl(), currentLoginStaff.getId(),
+            SystemLog log = new SystemLog(SysLogUtil.LOG_TYPE_CLIENT, requestInfo.getIp(), requestInfo.getUrl(), currentLoginStaff.getId(),
                     currentLoginStaff.getNickName(), SysLogUtil.getImportLog(null),
                     currentLoginStaff.getCompanyId());
             logService.addLog(log);
