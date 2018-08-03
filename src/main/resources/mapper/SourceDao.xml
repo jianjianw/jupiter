@@ -38,7 +38,7 @@
     <insert id="insert" parameterType="com.qiein.jupiter.web.entity.po.SourcePO" useGeneratedKeys="true"
             keyProperty="id">
         INSERT INTO hm_crm_source
-        (SRCNAME, SRCIMG, TYPEID, CHANNELID, CHANNELNAME, BRANDID, BRANDNAME, COMPANYID, ISFILTER, ISSHOW, PRIORITY,PUSHRULE)
+        (SRCNAME, SRCIMG, TYPEID, CHANNELID, CHANNELNAME, BRANDID,PUSHRULE, BRANDNAME, COMPANYID, ISFILTER, ISSHOW, PRIORITY)
             SELECT
                 #{srcName},
                 #{srcImg},
@@ -46,6 +46,7 @@
                 #{channelId},
                 #{channelName},
                 #{brandId},
+                #{pushRule},
                 #{brandName},
                 #{companyId},
                 #{isFilter},
@@ -53,7 +54,7 @@
                 (
                     SELECT IFNULL(MAX(PRIORITY), 0) + 1
                     FROM hm_crm_source
-                    WHERE COMPANYID = #{companyId} AND CHANNELID = #{channelId}),#{pushRule}
+                    WHERE COMPANYID = #{companyId} AND CHANNELID = #{channelId})
     </insert>
 
     <!--渠道关闭时，同时关闭下属所有来源-->

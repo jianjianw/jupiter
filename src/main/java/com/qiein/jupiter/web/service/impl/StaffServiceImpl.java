@@ -751,7 +751,7 @@ public class StaffServiceImpl implements StaffService {
         // 如果员工当前为在线状态，则让他下线
         // 验证公司属性
         CompanyVO company = companyDao.getVOById(companyId);
-        if (company.isUnableSelfLine()) {
+        if (!company.isUnableSelfLine()) {
             if (staffNow.getStatusFlag() == StaffStatusEnum.OnLine.getStatusId()) {
                 // 更新为下线状态，新增日志
                 staffNow.setStatusFlag(StaffStatusEnum.OffLine.getStatusId());
