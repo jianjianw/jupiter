@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -112,11 +113,13 @@ public class ChannelController extends BaseController {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         // 获取所属公司编号
         Integer companyId = currentLoginStaff.getCompanyId();
+        ChannelPO channelList=channelService.findById(id);
         channelService.delChannel(id, companyId);
         RequestInfoDTO requestInfo = getRequestInfo();
         try {
+
             logService.addLog(new SystemLog(SysLogUtil.LOG_TYPE_CHANNEL, requestInfo.getIp(), requestInfo.getUrl(), currentLoginStaff.getId(),
-                    currentLoginStaff.getNickName(), SysLogUtil.getRemoveLog(SysLogUtil.LOG_SUP_CHANNEL, id + ""),
+                    currentLoginStaff.getNickName(), SysLogUtil.getRemoveLog(SysLogUtil.LOG_SUP_CHANNEL, channelList.getChannelName()),
                     currentLoginStaff.getCompanyId()));
         } catch (Exception e) {
             e.printStackTrace();

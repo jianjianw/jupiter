@@ -31,7 +31,11 @@ public interface ChannelDao extends BaseDao<ChannelPO> {
      * @return
      */
     List<ChannelPO> getChannelListByTypeIds(@Param("companyId") Integer companyId, @Param("typeIds") List<Integer> typeIds);
-
+    /**
+     * 根据id查找
+     * @return
+     */
+    ChannelPO findById(@Param("id") Integer id);
     /**
      * 根据批量渠道名称获取渠道名称列表
      *

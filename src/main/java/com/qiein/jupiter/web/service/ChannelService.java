@@ -55,6 +55,12 @@ public interface ChannelService {
     List<ChannelPO> getChannelList(List<Integer> typeIds, Integer companyId);
 
     /**
+     * 根据id查找
+     * @return
+     */
+    ChannelPO findById(Integer id);
+
+    /**
      * 根据渠道细分类型获取渠道
      * 1:纯电商，2:电商转介绍，3:员工转介绍，4:指名转介绍，5:外部转介绍，6:自然入客，7:门店外展
      *
