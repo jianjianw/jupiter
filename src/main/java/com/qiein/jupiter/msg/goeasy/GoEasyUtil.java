@@ -957,7 +957,21 @@ public class GoEasyUtil {
         }
         String head = "您有新的客资待领取";
         pushReceive(companyId, staffId, head, info);
-        DingMsgSendUtil.sendDingMsg(head, companyId, staffId, staffDao);
+        StringBuffer sb = new StringBuffer();
+        sb.append(head).append("<br/>");
+        sb.append("编号：").append(info.getId()).append("<br/>");
+        if (StringUtil.isNotEmpty(info.getKzName())) {
+            sb.append("姓名：").append(StringUtil.nullToStrTrim(info.getKzName())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzPhone())) {
+            sb.append("电话：").append(StringUtil.nullToStrTrim(info.getKzPhone())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzWechat())) {
+            sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWechat())).append("<br/>");
+        }
+        sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("<br/>");
+        sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("<br/>");
+        DingMsgSendUtil.sendDingMsg(sb.toString(), companyId, staffId, staffDao);
         if (newsDao.getNewsCountByType(DBSplitUtil.getNewsTabName(companyId), staffId, companyId, info.getKzId()) == 0) {
             newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_RECEIVE, head, null, info.getKzId(), staffId, companyId,
                     DBSplitUtil.getNewsTabName(companyId)));
