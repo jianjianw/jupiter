@@ -243,7 +243,7 @@ public class LoginServiceImpl implements LoginService {
         staffDetailPO.setLastLoginIp(ip);
         staffDao.updateStaffLoginInfo(staffDetailPO);
         //只有当企业允许员工上下线
-        if (company.isUnableSelfLine()) {
+        if (!company.isUnableSelfLine()) {
             // 如果当前员工为下线状态，则更新他为上线状态
             if (staff.getStatusFlag() == StaffStatusEnum.OffLine.getStatusId()) {
                 StaffPO staffPO1 = new StaffPO();
