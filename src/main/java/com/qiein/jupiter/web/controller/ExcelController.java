@@ -168,7 +168,7 @@ public class ExcelController extends BaseController {
                         TimeUtil.intMillisToTimeStr(Integer.parseInt(clientExportDTO.getEnd()), TimeUtil.ymdSDFLeft));
             }
             // 日志记录
-            SystemLog log = new SystemLog(SysLogUtil.LOG_TYPE_GROUP, requestInfo.getIp(), requestInfo.getUrl(), currentLoginStaff.getId(),
+            SystemLog log = new SystemLog(SysLogUtil.LOG_TYPE_CLIENT, requestInfo.getIp(), requestInfo.getUrl(), currentLoginStaff.getId(),
                     currentLoginStaff.getNickName(), SysLogUtil.getExportLog(map), currentLoginStaff.getCompanyId());
             logService.addLog(log);
         } catch (Exception e) {
