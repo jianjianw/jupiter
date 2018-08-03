@@ -210,4 +210,14 @@ public class ClientServiceImpl implements ClientService {
         return clientInfoDao.listExistAppointClientsNum(kzIds, companyId, DBSplitUtil.getInfoTabName(companyId));
     }
 
+    /**
+     * 新增客资日志
+     *
+     * @param clientLogPO
+     */
+    @Override
+    public void addClientLog(ClientLogPO clientLogPO) {
+        clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(clientLogPO.getCompanyId()), clientLogPO);
+    }
+
 }

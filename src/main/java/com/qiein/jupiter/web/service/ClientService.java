@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.service;
 
+import com.qiein.jupiter.web.entity.po.ClientLogPO;
 import com.qiein.jupiter.web.entity.vo.ClientStatusVO;
 import com.qiein.jupiter.web.entity.vo.ClientStatusVoteVO;
 
@@ -63,4 +64,11 @@ public interface ClientService {
      * @return
      */
     int listExistAppointClientsNum(String kzIds, int companyId);
+
+    /**
+     * 新增客资日志
+     *
+     * @param clientLogPO
+     */
+    void addClientLog(ClientLogPO clientLogPO);
 }
