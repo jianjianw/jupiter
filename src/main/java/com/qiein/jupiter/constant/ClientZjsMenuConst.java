@@ -1,6 +1,7 @@
 package com.qiein.jupiter.constant;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -9,8 +10,8 @@ import java.util.Map;
  * @Date: 2018/7/7 10:49
  */
 public class ClientZjsMenuConst {
-    public static Map<String,String> QY_ZJS_MENU = new HashMap<>();
-    public static Map<String,String> LK_ZJS_MENU = new HashMap<>();
+    public static Map<String,String> QY_ZJS_MENU = new LinkedHashMap<>();
+    public static Map<String,String> LK_ZJS_MENU = new LinkedHashMap<>();
 
     static {
         QY_ZJS_MENU.put("kzName","客资姓名");
