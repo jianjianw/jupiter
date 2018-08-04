@@ -150,9 +150,9 @@ public class GoldDataServiceImpl implements GoldDataService {
             throw new RException(ExceptionEnum.FORM_NOT_EXISTS);
         }
         String kzPhone = StringUtil.nullToStrTrim(entry.getString(goldFingerPO.getKzPhoneField()));
-        if (!RegexUtil.checkMobile(kzPhone)) {
-            throw new RException(ExceptionEnum.PHONE_ERROR);
-        }
+//        if (!RegexUtil.checkMobile(kzPhone)) {
+//            throw new RException(ExceptionEnum.PHONE_ERROR);
+//        }
         String kzName = StringUtil.nullToStrTrim(entry.getString(goldFingerPO.getKzNameField()));
         String weChat = StringUtil.nullToStrTrim(entry.getString(goldFingerPO.getKzWechatField()));
         String address = MobileLocationUtil.getPhoneLocation(kzPhone);

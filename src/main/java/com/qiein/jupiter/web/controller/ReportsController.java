@@ -333,4 +333,10 @@ public class ReportsController extends BaseController {
         String json = crmBaseApi.doService(reqContent, "mszxShopReportsDetail");
         return ResultInfoUtil.success(JsonFmtUtil.strContentToJsonObj(json).get("analysis"));
     }
+
+    @GetMapping("/receive_ali")
+    public ResultInfo receiveAli(String code,String state){
+        System.out.println(code+"-----------------------------------"+state);
+        return ResultInfoUtil.success();
+    }
 }
