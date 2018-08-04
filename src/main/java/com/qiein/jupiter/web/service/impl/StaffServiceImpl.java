@@ -979,10 +979,10 @@ public class StaffServiceImpl implements StaffService {
      * @return
      */
     @Override
-    public StaffPO getStaffByChangeCid(int companyId, int staffId) {
+    public StaffPO getStaffByChangeCid(int changeCompanyId, int staffId, int companyId) {
         StaffPO byIdAndCid = staffDao.getByIdAndCid(staffId, companyId);
         StaffPO staffByPhoneMd5PwdAndCid = staffDao.getStaffByPhoneMd5PwdAndCid(byIdAndCid.getPhone(),
-                byIdAndCid.getPassword(), byIdAndCid.getCompanyId());
+                byIdAndCid.getPassword(), changeCompanyId);
         if (staffByPhoneMd5PwdAndCid == null) {
             throw new RException(ExceptionEnum.USER_NOT_FOUND);
         }

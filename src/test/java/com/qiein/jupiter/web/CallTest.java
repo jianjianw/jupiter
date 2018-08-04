@@ -20,7 +20,7 @@ public class CallTest {
                 "cn-shanghai",          // 地域ID
                 "LTAIF0wvpMyT9Ood",      // RAM账号的AccessKey ID
                 "vpLFjXHUNcKUVud72qSBLXMZgD9AIo"); // RAM账号Access Key Secret
-
+        DefaultAcsClient defaultAcsClient = new DefaultAcsClient();
         IAcsClient client = new DefaultAcsClient(profile);
 
 

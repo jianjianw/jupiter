@@ -664,6 +664,7 @@ public class StaffController extends BaseController {
     @GetMapping("/change_company")
     public ResultInfo changeCompany(int companyId) {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        return ResultInfoUtil.success(staffService.getStaffByChangeCid(companyId, currentLoginStaff.getId()));
+        return ResultInfoUtil.success(staffService.getStaffByChangeCid(companyId,
+                currentLoginStaff.getId(), currentLoginStaff.getCompanyId()));
     }
 }

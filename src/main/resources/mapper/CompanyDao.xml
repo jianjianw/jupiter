@@ -310,7 +310,10 @@
 
     <!--根据手机号码和加密码  获取对应的公司-->
     <select id="getCompanyListByPhoneAndPwd" resultMap="baseMap">
-        SELECT company.*
+        SELECT
+            company.ID,
+            company.COMPANYNAME,
+            company.LOGO
         FROM hm_pub_company company LEFT JOIN
             hm_pub_staff staff ON company.ID = staff.COMPANYID
         WHERE
