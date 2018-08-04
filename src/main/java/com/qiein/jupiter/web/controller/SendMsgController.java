@@ -12,6 +12,7 @@ import com.qiein.jupiter.web.entity.dto.SendMsgDTO;
 import com.qiein.jupiter.web.entity.dto.SendMsgToDTO;
 import com.qiein.jupiter.web.entity.po.ShopPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.entity.vo.MsgTemplateVO;
 import com.qiein.jupiter.web.service.ClientService;
 import com.qiein.jupiter.web.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,33 +100,42 @@ public class SendMsgController extends BaseController{
      */
     @PostMapping("get_template")
     public ResultInfo getTemplate(@RequestBody SendMsgDTO sendMsgDTO){
-        StaffPO staff=getCurrentLoginStaff();
+        StaffPO staff = getCurrentLoginStaff();
         sendMsgDTO.setCompanyId(staff.getCompanyId());
-        String templateText=HttpClient
+        String msgTemlate = HttpClient
                 .get(findCompanyTemplateUrl)
                 .queryString("templateType", CommonConstant.YYJD)
-                .queryString("companyId",sendMsgDTO.getCompanyId())
+                .queryString("companyId", sendMsgDTO.getCompanyId())
                 .asString();
-        JSONObject json=JSONObject.parseObject(templateText);
-        templateText=(String)json.get("data");
-        Integer backcode=(Integer)json.get("code");
-        if(backcode!=100000){
+        JSONObject json = JSONObject.parseObject(msgTemlate);
+        MsgTemplateVO msgTemplateVO = JSONObject.parseObject(json.getString("data"), MsgTemplateVO.class);
+        String templateText = msgTemplateVO.getTemplateText();
+        Integer backcode = (Integer) json.get("code");
+        if (backcode != 100000) {
             throw new RException(ExceptionEnum.TEMPLATE_LOSE);
         }
-        Map<String,String> map=sendMsgDTO.getMap();
-        ShopPO shopPO=shopService.findShop(Integer.parseInt(sendMsgDTO.getMap().get("shopId")));
-        map.put("address",shopPO.getAddress());
-        if( StringUtil.isEmpty(shopPO.getServicePhone())){
-            map.put("telno","");
-        }else{
-            map.put("telno",shopPO.getServicePhone());
+        Map<String, String> map = sendMsgDTO.getMap();
+        ShopPO shopPO = shopService.findShop(Integer.parseInt(sendMsgDTO.getMap().get("shopId")));
+        map.put("address", shopPO.getAddress());
+        if (msgTemplateVO.getIsSelf() != CommonConstant.SELF) {
+            if (StringUtil.isEmpty(shopPO.getServicePhone())) {
+                map.put("telno", "");
+            } else {
+                map.put("telno", shopPO.getServicePhone());
+            }
+        } else {
+            if (StringUtil.isEmpty(staff.getPhone())) {
+                map.put("telno", "");
+            } else {
+                map.put("telno", staff.getPhone());
+            }
         }
-        Integer id=clientService.findId(map.get("kzId"),staff.getCompanyId());
-        map.put("code",CommonConstant.YYJD+id);
-        String date_string=TimeUtil.intMillisToTimeStr(Integer.parseInt(map.get("time")));
-        map.put("time",date_string);
-        for(String key:map.keySet()){
-            templateText=templateText.replace("${"+key+"}",map.get(key));
+        Integer id = clientService.findId(map.get("kzId"), staff.getCompanyId());
+        map.put("code", CommonConstant.YYJD + id);
+        String date_string = TimeUtil.intMillisToTimeStr(Integer.parseInt(map.get("time")));
+        map.put("time", date_string);
+        for (String key : map.keySet()) {
+            templateText = templateText.replace("${" + key + "}", map.get(key));
         }
         return ResultInfoUtil.success(templateText);
     }

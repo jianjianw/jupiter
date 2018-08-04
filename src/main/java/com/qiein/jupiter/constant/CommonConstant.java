@@ -206,4 +206,5 @@ public class CommonConstant {
     public final static String SYSTEM_OPERA_NAME = "草莓卷机器人";
 
     public  final static String YYJD="yyjd";
+    public  final static String SELF="self";
 }
