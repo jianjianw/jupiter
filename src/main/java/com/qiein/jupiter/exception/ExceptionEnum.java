@@ -54,7 +54,7 @@ public enum ExceptionEnum {
     SIMPLE_PASSWORD(355, "密码不能低于6为位"),
     SIMPLE_NUMBER_PASSWORD(356, "密码不能为纯数字"),
     PASSWORD_NULL(357, "密码不能为空"),
-    STAFF_CAN_NOT_DEL(358, "该员工存在为交接客资，请交接后再删除"),
+    STAFF_CAN_NOT_DEL(358, "该员工存在有客资，请交接后再删除"),
     ONLY_APP_LOGIN(359, "只允许客户端登录"),
     COLLECTOR_NOT_FOUND(360, "提报人不存在"),
     OLD_CLIENT_PHONE_IS_NOT_LEGAL(361,"请检查老客手机号是否正确，手机号的格式为11位纯数字"),
