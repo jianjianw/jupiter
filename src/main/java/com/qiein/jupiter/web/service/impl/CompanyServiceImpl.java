@@ -299,7 +299,7 @@ public class CompanyServiceImpl implements CompanyService {
      */
     @Override
     public List<CompanyVO> getCompanyListByPhoneAndPwd(String phone, String pwd) {
-        return companyDao.getCompanyListByPhoneAndPwd(phone, phone);
+        return companyDao.getCompanyListByPhoneAndPwd(phone, pwd);
     }
 
 }

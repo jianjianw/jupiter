@@ -336,7 +336,7 @@ public class LoginServiceImpl implements LoginService {
         // 消息
         staffBaseInfoVO.setNews(newsService.getNewsTotalAmountAndFlag(staffId, companyId));
         //企业列表
-        companyService.getCompanyListByPhoneAndPwd(staffDetailVO.getPhone(), staffDetailVO.getPassword());
+        staffBaseInfoVO.setCompanyList(companyService.getCompanyListByPhoneAndPwd(staffDetailVO.getPhone(), staffDetailVO.getPassword()));
         return staffBaseInfoVO;
     }
 
