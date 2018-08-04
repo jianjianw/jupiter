@@ -290,4 +290,16 @@ public class CompanyServiceImpl implements CompanyService {
         return companyDao.getZjsRequiredField(companyId);
     }
 
+    /**
+     * 根据手机号码和加密码  获取对应的公司
+     *
+     * @param phone
+     * @param pwd
+     * @return
+     */
+    @Override
+    public List<CompanyVO> getCompanyListByPhoneAndPwd(String phone, String pwd) {
+        return null;
+    }
+
 }

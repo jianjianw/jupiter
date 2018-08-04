@@ -44,6 +44,19 @@ public class BaseInfoVO implements Serializable {
      */
     private List<PluginVO> pluginList;
 
+    /**
+     * 公司列表
+     */
+    private List<CompanyVO> companyList;
+
+    public List<CompanyVO> getCompanyList() {
+        return companyList;
+    }
+
+    public void setCompanyList(List<CompanyVO> companyList) {
+        this.companyList = companyList;
+    }
+
     public List<PluginVO> getPluginList() {
         return pluginList;
     }

@@ -90,12 +90,12 @@ public class StaffController extends BaseController {
         staffService.insert(staffVO);
         //添加日志
         RequestInfoDTO requestInfo = getRequestInfo();
-        try{
+        try {
             SystemLog log = new SystemLog(SysLogUtil.LOG_TYPE_STAFF, requestInfo.getIp(), requestInfo.getUrl(), currentLoginStaff.getId(),
                     currentLoginStaff.getNickName(), SysLogUtil.getAddLog(SysLogUtil.LOG_SUP_STAFF, staffVO.getNickName()),
                     currentLoginStaff.getCompanyId());
             logService.addLog(log);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
         }
@@ -168,23 +168,23 @@ public class StaffController extends BaseController {
                                      @NotEmptyStr @RequestParam("groupId") String groupId) {
         // 获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        List<SearchStaffVO> staffOld=staffService.getGroupById(staffIds,currentLoginStaff.getCompanyId());
+        List<SearchStaffVO> staffOld = staffService.getGroupById(staffIds, currentLoginStaff.getCompanyId());
         staffService.batchEditStaff(currentLoginStaff.getCompanyId(), staffIds, roleIds, password, groupId);
-        List<SearchStaffVO> staffNew=staffService.getGroupById(staffIds,currentLoginStaff.getCompanyId());
-        Map<String,String> map=new HashMap<>();
-        String old=CommonConstant.NULL_STR;
-        for(SearchStaffVO staff:staffOld){
-            old+=staff.getNickName()+" "+staff.getGroupName()+CommonConstant.STR_SEPARATOR;
+        List<SearchStaffVO> staffNew = staffService.getGroupById(staffIds, currentLoginStaff.getCompanyId());
+        Map<String, String> map = new HashMap<>();
+        String old = CommonConstant.NULL_STR;
+        for (SearchStaffVO staff : staffOld) {
+            old += staff.getNickName() + " " + staff.getGroupName() + CommonConstant.STR_SEPARATOR;
         }
-        map.put(old,staffNew.get(0).getGroupName());
+        map.put(old, staffNew.get(0).getGroupName());
         RequestInfoDTO requestInfo = getRequestInfo();
-        try{
+        try {
             // 日志记录
             logService.addLog(new SystemLog(SysLogUtil.LOG_TYPE_STAFF, requestInfo.getIp(), requestInfo.getUrl(), currentLoginStaff.getId(),
-                    currentLoginStaff.getNickName(), SysLogUtil.getEditLog(SysLogUtil.LOG_SUP_STAFF,SysLogUtil.LOG_SUP_STAFF, map),
+                    currentLoginStaff.getNickName(), SysLogUtil.getEditLog(SysLogUtil.LOG_SUP_STAFF, SysLogUtil.LOG_SUP_STAFF, map),
                     currentLoginStaff.getCompanyId()));
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
         }
@@ -261,20 +261,20 @@ public class StaffController extends BaseController {
         staffStateVO.setIds(ids);
         staffStateVO.setDel(true);
         // staffService.batUpdateStaffState(staffStateVO);
-        String staffName= CommonConstant.NULL_STR;
-        List<StaffPO> staff=staffService.getByIds(ids,currentLoginStaff.getCompanyId());
-        for(StaffPO staffPO:staff){
-            staffName+=staffPO.getNickName()+CommonConstant.STR_SEPARATOR;
+        String staffName = CommonConstant.NULL_STR;
+        List<StaffPO> staff = staffService.getByIds(ids, currentLoginStaff.getCompanyId());
+        for (StaffPO staffPO : staff) {
+            staffName += staffPO.getNickName() + CommonConstant.STR_SEPARATOR;
         }
         staffService.batDelStaff(staffStateVO);
         RequestInfoDTO requestInfo = getRequestInfo();
-        try{
+        try {
             // 日志记录
             logService.addLog(new SystemLog(SysLogUtil.LOG_TYPE_STAFF, requestInfo.getIp(), requestInfo.getUrl(), currentLoginStaff.getId(),
                     currentLoginStaff.getNickName(), SysLogUtil.getRemoveLog(SysLogUtil.LOG_SUP_STAFF, staffName),
                     currentLoginStaff.getCompanyId()));
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return ResultInfoUtil.success();
         }
@@ -321,18 +321,18 @@ public class StaffController extends BaseController {
         // 获取操作用户所属公司
         Integer companyId = currentLoginStaff.getCompanyId();
         // 锁定状态
-        StaffPO staff=staffService.getById(staffId,currentLoginStaff.getCompanyId());
+        StaffPO staff = staffService.getById(staffId, currentLoginStaff.getCompanyId());
         staffService.setLockState(staffId, companyId, isLock);
-        Map<String,String> map=new HashMap<>();
-        map.put(staff.getNickName(),CommonConstant.NULL_STR);
+        Map<String, String> map = new HashMap<>();
+        map.put(staff.getNickName(), CommonConstant.NULL_STR);
         RequestInfoDTO requestInfo = getRequestInfo();
-        try{
+        try {
             // 日志记录
             logService.addLog(new SystemLog(SysLogUtil.LOG_TYPE_STAFF, requestInfo.getIp(), requestInfo.getUrl(), currentLoginStaff.getId(),
-                    currentLoginStaff.getNickName(), SysLogUtil.getEditLog(SysLogUtil.LOG_SUP_LOCK,SysLogUtil.LOG_SUP_LOCK, map),
+                    currentLoginStaff.getNickName(), SysLogUtil.getEditLog(SysLogUtil.LOG_SUP_LOCK, SysLogUtil.LOG_SUP_LOCK, map),
                     currentLoginStaff.getCompanyId()));
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return ResultInfoUtil.success(TipMsgEnum.OPERATE_SUCCESS);
         }
@@ -364,18 +364,18 @@ public class StaffController extends BaseController {
         // 直接转发到平台
         String json = crmBaseApi.doService(map, "clientMoveLp");
         if (StringUtil.isEmpty(json) || !"100000".equalsIgnoreCase(JSONObject.parseObject(json).getJSONObject("response").getJSONObject("info").getString("code"))) {
-            return ResultInfoUtil.error(ExceptionEnum.UNKNOW_ERROR.getCode(),JSONObject.parseObject(json).getJSONObject("response").getJSONObject("info").getString("msg"));
+            return ResultInfoUtil.error(ExceptionEnum.UNKNOW_ERROR.getCode(), JSONObject.parseObject(json).getJSONObject("response").getJSONObject("info").getString("msg"));
         }
-        Map<String,String> editMap=new HashMap<>();
-        map.put(staffChangeVO.getOldStaffName(),staffChangeVO.getToStaffName());
+        Map<String, String> editMap = new HashMap<>();
+        map.put(staffChangeVO.getOldStaffName(), staffChangeVO.getToStaffName());
         RequestInfoDTO requestInfo = getRequestInfo();
-        try{
+        try {
             // 日志记录
             logService.addLog(new SystemLog(SysLogUtil.LOG_TYPE_STAFF, requestInfo.getIp(), requestInfo.getUrl(), staffPO.getId(),
-                    staffPO.getNickName(), SysLogUtil.getEditLog(SysLogUtil.LOG_SUP_GIVE,SysLogUtil.LOG_SUP_GIVE, editMap),
+                    staffPO.getNickName(), SysLogUtil.getEditLog(SysLogUtil.LOG_SUP_GIVE, SysLogUtil.LOG_SUP_GIVE, editMap),
                     staffPO.getCompanyId()));
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return ResultInfoUtil.success();
         }
@@ -641,20 +641,29 @@ public class StaffController extends BaseController {
     }
 
     /**
-     *
      * 功能描述:
-     *  获取未绑定钉钉的用户
+     * 获取未绑定钉钉的用户
+     *
      * @auther: Tt(yehuawei)
      * @date:
      * @param:
      * @return:
      */
     @GetMapping("/get_ding_not_bind")
-    public ResultInfo getNotBindDingUser(){
-        Map<String,Object> map = new HashMap<>();
+    public ResultInfo getNotBindDingUser() {
+        Map<String, Object> map = new HashMap<>();
         List<DingBindUserDTO> list = staffService.getNotBindDingUser(getCurrentLoginStaff().getCompanyId());
-        map.put("count",list==null?0:list.size());
-        map.put("list",list);
+        map.put("count", list == null ? 0 : list.size());
+        map.put("list", list);
         return ResultInfoUtil.success(map);
+    }
+
+    /**
+     * 员工切换企业
+     */
+    @GetMapping("/change_company")
+    public ResultInfo changeCompany(int companyId) {
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        return ResultInfoUtil.success(staffService.getStaffByChangeCid(companyId, currentLoginStaff.getId()));
     }
 }

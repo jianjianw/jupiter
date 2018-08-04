@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.web.entity.dto.*;
+import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.PermissionPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.po.StaffStatusLog;
@@ -354,17 +355,26 @@ public interface StaffService {
 
     /**
      * 根据ids批量查找员工
+     *
      * @param ids
      * @param companyId
      * @return
      */
-    List<StaffPO> getByIds(String ids,Integer companyId);
+    List<StaffPO> getByIds(String ids, Integer companyId);
 
     /**
-     *  根据ids批量查找员工小组
+     * 根据ids批量查找员工小组
+     *
      * @param ids
      * @param companyId
      * @return
      */
-    List<SearchStaffVO> getGroupById(String ids,Integer companyId);
+    List<SearchStaffVO> getGroupById(String ids, Integer companyId);
+
+    /**
+     * 根据  员工切换公司
+     *
+     * @return
+     */
+    StaffPO getStaffByChangeCid(int companyId, int staffId);
 }

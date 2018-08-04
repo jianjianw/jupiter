@@ -45,10 +45,10 @@
     </resultMap>
 
     <sql id="baseColumn">
-		ID, COMPANYNAME, TYPEID, LOGO, CORPID, CONFIG, IPLIMIT,
-		SSOLIMIT,OVERTIME,LIMITDEFAULT,KZINTERVAL,ISDEL,ONLYAPP,ISLOCK,
-		TYPEREPEAT,SRCREPEAT,STATUSIGNORE,TIMETYPEIGNORE,DAYIGNORE
-	</sql>
+        ID, COMPANYNAME, TYPEID, LOGO, CORPID, CONFIG, IPLIMIT,
+        SSOLIMIT, OVERTIME, LIMITDEFAULT, KZINTERVAL, ISDEL, ONLYAPP, ISLOCK,
+        TYPEREPEAT, SRCREPEAT, STATUSIGNORE, TIMETYPEIGNORE, DAYIGNORE
+    </sql>
 
     <select id="getById" parameterType="java.lang.Integer"
             resultMap="baseMap">
@@ -61,14 +61,14 @@
 
     <insert id="insert" parameterType="com.qiein.jupiter.web.entity.po.CompanyPO"
             useGeneratedKeys="true" keyProperty="id">
-		INSERT INTO hm_pub_company
-		(COMPANYNAME, TYPEID, LOGO, CORPID, CONFIG, IPLIMIT,
-		SSOLIMIT,OVERTIME,LIMITDEFAULT,KZINTERVAL,ISDEL)
-		VALUES (
-		#{companyName}, #{typeId}, #{logo}, #{corpId}, #{config}, #{ipLimit},
-		#{ssoLimit}, #{overtime}, #{limitDefault}, #{kzInterval}, #{delFlag}
-		)
-	</insert>
+        INSERT INTO hm_pub_company
+        (COMPANYNAME, TYPEID, LOGO, CORPID, CONFIG, IPLIMIT,
+         SSOLIMIT, OVERTIME, LIMITDEFAULT, KZINTERVAL, ISDEL)
+        VALUES (
+            #{companyName}, #{typeId}, #{logo}, #{corpId}, #{config}, #{ipLimit},
+                            #{ssoLimit}, #{overtime}, #{limitDefault}, #{kzInterval}, #{delFlag}
+        )
+    </insert>
 
     <update id="update" parameterType="companyPO">
         UPDATE hm_pub_company
@@ -104,37 +104,54 @@
 
     <!--获取企业信息 -->
     <select id="getVOById" parameterType="map" resultMap="VOMap">
-		SELECT
-		comp.ID, comp.COMPANYNAME, comp.TYPEID, comp.LOGO, comp.NOTSELFBLIND,
-		comp.UNABLESELFLINE,
-		comp.UNABLEAPPOINTOR, comp.UNABLEINVALIDRANGE,comp.SSOLIMIT, comp.OVERTIME,
-		comp.KZINTERVAL, comp.LIMITDEFAULT,comp.KFEDITJDRST
-		FROM
-		hm_pub_company comp
-		WHERE
-		comp.ID = #{companyId}
-		AND comp.ISDEL = 0;
-	</select>
+        SELECT
+            comp.ID,
+            comp.COMPANYNAME,
+            comp.TYPEID,
+            comp.LOGO,
+            comp.NOTSELFBLIND,
+            comp.UNABLESELFLINE,
+            comp.UNABLEAPPOINTOR,
+            comp.UNABLEINVALIDRANGE,
+            comp.SSOLIMIT,
+            comp.OVERTIME,
+            comp.KZINTERVAL,
+            comp.LIMITDEFAULT,
+            comp.KFEDITJDRST
+        FROM
+            hm_pub_company comp
+        WHERE
+            comp.ID = #{companyId}
+            AND comp.ISDEL = 0;
+    </select>
 
     <!-- 编辑自定义设置 -->
     <update id="updateFlag" parameterType="map">
-		UPDATE hm_pub_company SET ${column} = #{flag} WHERE ID = #{companyId}
-	</update>
+        UPDATE hm_pub_company
+        SET ${column} = #{flag}
+        WHERE ID = #{companyId}
+    </update>
 
     <!-- 编辑自定义范围 -->
     <update id="updateRange" parameterType="map">
-		UPDATE hm_pub_company SET ${column} = #{num} WHERE ID = #{companyId}
-	</update>
+        UPDATE hm_pub_company
+        SET ${column} = #{num}
+        WHERE ID = #{companyId}
+    </update>
 
     <!-- 获取iplimit -->
     <select id="getIpLimit" parameterType="Integer" resultType="Integer">
-		select iplimit from hm_pub_company where ID = #{companyId}
-	</select>
+        SELECT iplimit
+        FROM hm_pub_company
+        WHERE ID = #{companyId}
+    </select>
 
     <!--修改IP限制 -->
     <update id="editIpLimit" parameterType="Integer">
-		update hm_pub_company set iplimit=#{ipLimit} where id=#{companyId}
-	</update>
+        UPDATE hm_pub_company
+        SET iplimit = #{ipLimit}
+        WHERE id = #{companyId}
+    </update>
 
     <!-- 获取系统中的企业列表 -->
     <select id="listComp" parameterType="map" resultMap="baseMap">
@@ -185,15 +202,15 @@
 
     <!-- 更改客资状态是否被重新录入 -->
     <update id="editKZday">
-		UPDATE
-			hm_pub_company
-		SET 
-			STATUSIGNORE = #{statusIgnore},
-			TIMETYPEIGNORE = #{timeTypeIgnore},
-			DAYIGNORE = #{dayIgnore}
-		WHERE 
-			ID = #{companyId}
-	</update>
+        UPDATE
+            hm_pub_company
+        SET
+            STATUSIGNORE   = #{statusIgnore},
+            TIMETYPEIGNORE = #{timeTypeIgnore},
+            DAYIGNORE      = #{dayIgnore}
+        WHERE
+            ID = #{companyId}
+    </update>
 
     <!-- 获取重复客资详情 -->
     <select id="selectAll" parameterType="map" resultMap="baseMap">
@@ -207,44 +224,43 @@
 
     <!--修改待定是否计入有效-->
     <update id="editDdIsValid" parameterType="map">
-		UPDATE
-			hm_pub_company
-		SET
-			DDISVALID = #{ddIsValid}
-		WHERE
-			ID = #{companyId}
-	</update>
+        UPDATE
+            hm_pub_company
+        SET
+            DDISVALID = #{ddIsValid}
+        WHERE
+            ID = #{companyId}
+    </update>
 
     <!--修改无效状态以及待跟踪意向等级-->
     <update id="editDsInvalid" parameterType="com.qiein.jupiter.web.entity.dto.DsinvalDTO">
         UPDATE
-			hm_pub_company
-		SET DSINVALIDSTATUS = #{dsInvalidStatus},
-			DSINVALIDLEVEL=#{dsInvalidLevel}
-		WHERE
-			ID = #{companyId}
+            hm_pub_company
+        SET DSINVALIDSTATUS = #{dsInvalidStatus},
+            DSINVALIDLEVEL  = #{dsInvalidLevel}
+        WHERE
+            ID = #{companyId}
     </update>
 
     <select id="findDsinvalId" resultType="com.qiein.jupiter.web.entity.dto.DsinvalDTO">
-		SELECT
-		 	DSINVALIDSTATUS dsInvalidStatus,
-		 	DSINVALIDLEVEL dsInvalidLevel,
-		 	DDISVALID ddIsValid,
-		 	ZJSVALIDSTATUS zjsValidStatus
-		FROM
-			hm_pub_company
-		WHERE ID=#{companyId}
-	</select>
+        SELECT
+            DSINVALIDSTATUS dsInvalidStatus,
+            DSINVALIDLEVEL  dsInvalidLevel,
+            DDISVALID       ddIsValid,
+            ZJSVALIDSTATUS  zjsValidStatus
+        FROM
+            hm_pub_company
+        WHERE ID = #{companyId}
+    </select>
 
     <update id="editZjsValidStatus">
         UPDATE
             hm_pub_company
         SET
-            ZJSVALIDSTATUS =#{zjsValidStatus}
+            ZJSVALIDSTATUS = #{zjsValidStatus}
         WHERE
             ID = #{companyId}
     </update>
-
 
 
     <!--公司钉钉转介绍提报自定义设置-->
@@ -258,27 +274,31 @@
     </update>
 
     <!--获取企业转介绍自定义设置-->
-    <select id="getCompanyZjsSet" parameterType="Integer" resultType="com.qiein.jupiter.web.entity.dto.CompanyZjsSetDTO">
-      SELECT
-        ID,QYZJSSET,LKZJSSET
-      FROM
-        hm_pub_company
-      WHERE
-        ID = #{companyId}
+    <select id="getCompanyZjsSet" parameterType="Integer"
+            resultType="com.qiein.jupiter.web.entity.dto.CompanyZjsSetDTO">
+        SELECT
+            ID,
+            QYZJSSET,
+            LKZJSSET
+        FROM
+            hm_pub_company
+        WHERE
+            ID = #{companyId}
     </select>
 
     <!--获取平均分配，默认时间范围-->
     <select id="getAvgDefaultTime" parameterType="map" resultType="java.lang.Integer">
-      SELECT
-        AVGTIME
-      FROM
-        hm_pub_company
-      WHERE
-        ID = #{companyId}
+        SELECT AVGTIME
+        FROM
+            hm_pub_company
+        WHERE
+            ID = #{companyId}
     </select>
-    
+
     <update id="editKfEditJdRst">
-        UPDATE hm_pub_company SET KFEDITJDRST=#{kfEditJdRst} where ID=#{companyId}
+        UPDATE hm_pub_company
+        SET KFEDITJDRST = #{kfEditJdRst}
+        WHERE ID = #{companyId}
     </update>
 
     <!--获取转介绍提报必填项设置-->
@@ -288,4 +308,15 @@
         WHERE ID = #{companyId};
     </select>
 
+    <!--根据手机号码和加密码  获取对应的公司-->
+    <select id="getCompanyListByPhoneAndPwd" resultMap="baseMap">
+        SELECT company.*
+        FROM hm_pub_company company LEFT JOIN
+            hm_pub_staff staff ON company.ID = staff.COMPANYID
+        WHERE
+            staff.PHONE = #{phone}
+            AND staff.PASSWORD = #{password}
+            AND company.ISLOCK = 0
+            AND company.ISDEL = 0
+    </select>
 </mapper>

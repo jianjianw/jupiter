@@ -335,6 +335,8 @@ public class LoginServiceImpl implements LoginService {
         staffBaseInfoVO.setPageDict(pageDictDTO);
         // 消息
         staffBaseInfoVO.setNews(newsService.getNewsTotalAmountAndFlag(staffId, companyId));
+        //企业列表
+        companyService.getCompanyListByPhoneAndPwd(staffDetailVO.getPhone(), staffDetailVO.getPassword());
         return staffBaseInfoVO;
     }
 

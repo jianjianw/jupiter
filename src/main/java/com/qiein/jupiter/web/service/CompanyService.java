@@ -131,6 +131,11 @@ public interface CompanyService {
     void editDsInvalid(DsinvalDTO dsinvalDTO);
 
     /**
+     * 根据员工手机号和加密密码查找 所在公司
+     */
+    List<CompanyVO> getCompanyListByPhoneAndPwd(String phone, String pwd);
+
+    /**
      * 修改待定是否计入有效
      *
      * @param

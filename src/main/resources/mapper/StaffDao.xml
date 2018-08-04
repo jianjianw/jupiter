@@ -170,10 +170,22 @@
     <insert id="addStaffVo" parameterType="com.qiein.jupiter.web.entity.vo.StaffVO" useGeneratedKeys="true"
             keyProperty="id">
         INSERT INTO hm_pub_staff
-        (NICKNAME, PHONE, USERNAME, PASSWORD, COMPANYID, STATUSFLAG, ISLOCK, ISDEL, LIMITDAY, TOKEN ,CORPID)
-        SELECT
-            #{nickName}, #{phone}, #{userName}, #{password},
-            #{companyId}, #{statusFlag}, #{lockFlag}, #{delFlag}, #{limitDay}, #{token} , (SELECT CORPID FROM hm_pub_company WHERE ID = #{companyId} LIMIT 1)
+        (NICKNAME, PHONE, USERNAME, PASSWORD, COMPANYID, STATUSFLAG, ISLOCK, ISDEL, LIMITDAY, TOKEN, CORPID)
+            SELECT
+                #{nickName},
+                #{phone},
+                #{userName},
+                #{password},
+                #{companyId},
+                #{statusFlag},
+                #{lockFlag},
+                #{delFlag},
+                #{limitDay},
+                #{token},
+                (SELECT CORPID
+                 FROM hm_pub_company
+                 WHERE ID = #{companyId}
+                 LIMIT 1)
 
     </insert>
 
@@ -1106,17 +1118,17 @@
             #{id}
         </foreach>
     </select>
-    
+
     <select id="getGroupById" resultMap="SearchMap">
         SELECT
-            sf.ID,
-            sf.NICKNAME,
-            sf.PHONE,
-            sf.USERNAME,
-            grp.GROUPID,
-            GROUP_CONCAT(`GROUPNAME` SEPARATOR ',') GROUPNAME
+        sf.ID,
+        sf.NICKNAME,
+        sf.PHONE,
+        sf.USERNAME,
+        grp.GROUPID,
+        GROUP_CONCAT(`GROUPNAME` SEPARATOR ',') GROUPNAME
         FROM
-            hm_pub_staff sf
+        hm_pub_staff sf
         INNER JOIN hm_pub_group_staff rela ON sf.COMPANYID = rela.COMPANYID
         AND rela.STAFFID = sf.ID
         INNER JOIN hm_pub_group grp ON grp.GROUPID = rela.GROUPID
@@ -1126,5 +1138,17 @@
             #{id}
         </foreach>
         GROUP BY sf.ID
+    </select>
+
+    <!--根据手机号 加密的密码 公司ID 获取员工信息-->
+    <select id="getStaffByPhoneMd5PwdAndCid" resultMap="baseMap">
+        SELECT
+        <include refid="baseColumn"/>
+        FROM hm_pub_staff staff
+        WHERE staff.PHONE = #{phone}
+        AND staff.PASSWORD = #{password}
+        AND staff.COMPANYID = #{companyId}
+        AND staff.ISDEL=0
+        AND staff.ISLOCK=0
     </select>
 </mapper>

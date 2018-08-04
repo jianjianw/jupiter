@@ -539,15 +539,25 @@ public interface StaffDao extends BaseDao<StaffPO> {
 
     /**
      * 根据ids批量查找员工
+     *
      * @param companyId
      * @return
      */
-    List<StaffPO> getByIds(@Param("list")List<Integer> list,@Param("companyId")Integer companyId);
+    List<StaffPO> getByIds(@Param("list") List<Integer> list, @Param("companyId") Integer companyId);
+
     /**
      * 根据ids批量查找员工
+     *
      * @param companyId
      * @return
      */
-    List<SearchStaffVO> getGroupById(@Param("list")List<Integer> list,@Param("companyId")Integer companyId);
+    List<SearchStaffVO> getGroupById(@Param("list") List<Integer> list, @Param("companyId") Integer companyId);
+
+    /**
+     * 根据手机号 加密的密码 公司ID 获取员工信息
+     */
+    StaffPO getStaffByPhoneMd5PwdAndCid(@Param("phone") String phone,
+                                        @Param("password") String password,
+                                        @Param("companyId") int companyId);
 
 }

@@ -167,4 +167,14 @@ public interface CompanyDao extends BaseDao<CompanyPO> {
      * @return
      */
     String getZjsRequiredField(@Param("companyId") int companyId);
+
+
+    /**
+     * 根据手机号码和加密码  获取对应的公司
+     *
+     * @param phone
+     * @param password
+     * @return
+     */
+    List<CompanyVO> getCompanyListByPhoneAndPwd(@Param("phone") String phone, @Param("password") String password);
 }

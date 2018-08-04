@@ -971,4 +971,23 @@ public class StaffServiceImpl implements StaffService {
         return staffDao.getGroupById(list, companyId);
     }
 
+    /**
+     * 员工切换公司
+     *
+     * @param companyId
+     * @param staffId
+     * @return
+     */
+    @Override
+    public StaffPO getStaffByChangeCid(int companyId, int staffId) {
+        StaffPO byIdAndCid = staffDao.getByIdAndCid(staffId, companyId);
+        StaffPO staffByPhoneMd5PwdAndCid = staffDao.getStaffByPhoneMd5PwdAndCid(byIdAndCid.getPhone(),
+                byIdAndCid.getPassword(), byIdAndCid.getCompanyId());
+        if (staffByPhoneMd5PwdAndCid == null) {
+            throw new RException(ExceptionEnum.USER_NOT_FOUND);
+        }
+        return staffByPhoneMd5PwdAndCid;
+    }
+
+
 }
