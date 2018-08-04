@@ -73,4 +73,12 @@ public interface ClientDao {
      * */
     Integer getKzNumBySourceId(@Param("tableName")String tableName,@Param(value="sourceId") int sourceId,@Param(value="companyId") Integer companyId);
 
+
+    /**
+     * 修改客资渠道Id
+     * @param infoTabName
+     * @param channelId
+     * @param sourceId
+     * */
+    void updateKzChannelId(@Param(value="infoTabName") String infoTabName,@Param(value="channelId") int channelId,@Param(value="sourceId") int sourceId,@Param(value="companyId") Integer companyId);
 }

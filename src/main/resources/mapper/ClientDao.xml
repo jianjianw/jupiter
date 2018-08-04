@@ -91,4 +91,9 @@
         select count(1) from ${tableName} info where info.SOURCEID = #{sourceId} and info.COMPANYID = #{companyId}
     </select>
 
+    <!--修改客资渠道ID-->
+    <update id = "updateKzChannelId">
+        update ${tableName} set info.channelId = #{channelId} where info.sourceId = #{sourceId} and info.companyId = #{companyId}
+    </update>
+
 </mapper>

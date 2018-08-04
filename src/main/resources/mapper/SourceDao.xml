@@ -312,7 +312,7 @@
                    AND a.ID = c.sourceid
         WHERE
             a.COMPANYID = #{companyId} AND a.CHANNELID = #{channelId}
-        ORDER BY ISSHOW DESC, TYPEID, PRIORITY, ID
+        ORDER BY ISSHOW DESC, PRIORITY, TYPEID,  ID
     </select>
 
     <!--渠道名变更时下属所有来源的记录也要相应变更-->
@@ -376,7 +376,13 @@
         from hm_crm_source
         where COMPANYID = #{companyId} and SRCNAME = #{srcName} and CHANNELID = #{channelId}
     </select>
-
+    <!--根据名称获取来源-->
+    <select id = "getSourceByNameAndType" resultMap="baseMap">
+        select
+        <include refid="baseColumn"/>
+        from hm_crm_source
+        where COMPANYID = #{companyId} and SRCNAME = #{srcName} and TYPEID = #{type}
+    </select>
     <!--根据渠道id更改来源pushRule-->
     <update id="updatePushRuleByChannelId">
         update hm_crm_source
@@ -395,4 +401,6 @@
         AND SRCNAME = #{srcName}
         AND ISSHOW = 1
     </select>
+
+
 </mapper>

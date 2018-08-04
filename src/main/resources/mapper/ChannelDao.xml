@@ -232,6 +232,9 @@
         ORDER BY ISSHOW DESC,PRIORITY , TYPEID, ID
     </select>
 
+    <select id="findById" resultMap="baseMap">
+        select CHANNELNAME from hm_crm_channel where id=#{id}
+    </select>
     <!--根据细分类型获取渠道列表-->
     <select id="getListByType" parameterType="Integer" resultMap="baseMap">
         SELECT

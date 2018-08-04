@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.channels.Channel;
+import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -347,7 +348,7 @@ public class GroupServiceImpl implements GroupService {
         //删除拍摄地-渠道-组关联表中的
         shopChannelGroupDao.delByGroupId(companyId, groupPO.getGroupId());
 
-
+        //TODO dstj dsyy dssx
         //节点不存在
         if (CommonConstant.DEFAULT_STRING_ZERO.equalsIgnoreCase(groupPO.getParentId())) {
             ChannelPO channelPO = channelDao.getChannelByGroupName(groupPO.getGroupName(), groupPO.getCompanyId());
@@ -418,79 +419,97 @@ public class GroupServiceImpl implements GroupService {
         // 把组id 设置为父类Id+ 分隔符 + 新增的id
         groupPO.setGroupId(groupPO.getParentId() + CommonConstant.ROD_SEPARATOR + groupPO.getId());
         groupDao.update(groupPO);
-        //同步转介绍渠道小组
-        ChannelPO channelPO = channelDao.getChannelByGroupName(groupPO.getGroupName(), groupPO.getCompanyId());
-        //渠道不存在
-        if (null == channelPO) {
-            //根节点
-            if (CommonConstant.DEFAULT_STRING_ZERO.equalsIgnoreCase(groupPO.getParentId())) {
-                channelPO = new ChannelPO();
-                channelPO.setTypeId(ChannelConstant.STAFF_ZJS);
-                channelPO.setCompanyId(groupPO.getCompanyId());
-                channelPO.setChannelName(groupPO.getGroupName());
-                channelPO.setPriority(CommonConstant.DEFAULT_ZERO);
-                channelPO.setPushRule(CommonConstant.DEFAULT_ZERO);
-                channelPO.setShowFlag(true);
-                channelPO.setFilterFlag(false);
-                channelDao.insert(channelPO);
-            } else {
-                //非根节点
-                channelPO = channelDao.getChannelByGroupParentId(groupPO.getParentId(), groupPO.getCompanyId());
-                if (null == channelPO) {
-                    //渠道不存在
-                    GroupPO groupPOBak = groupDao.getGroupById(groupPO.getCompanyId(), groupPO.getParentId());
+
+        if( !(RoleConstant.DSYY.equalsIgnoreCase(groupPO.getGroupType()) || RoleConstant.DSSX.equalsIgnoreCase(groupPO.getGroupType()) || RoleConstant.DSCJ.equalsIgnoreCase(groupPO.getGroupType()))){
+            //同步转介绍渠道小组
+            ChannelPO channelPO = channelDao.getChannelByGroupName(groupPO.getGroupName(), groupPO.getCompanyId());
+            //渠道不存在
+            if (null == channelPO) {
+                //根节点
+                if (CommonConstant.DEFAULT_STRING_ZERO.equalsIgnoreCase(groupPO.getParentId())) {
                     channelPO = new ChannelPO();
                     channelPO.setTypeId(ChannelConstant.STAFF_ZJS);
                     channelPO.setCompanyId(groupPO.getCompanyId());
-                    channelPO.setChannelName(groupPOBak.getGroupName());
+                    channelPO.setChannelName(groupPO.getGroupName());
                     channelPO.setPriority(CommonConstant.DEFAULT_ZERO);
                     channelPO.setPushRule(CommonConstant.DEFAULT_ZERO);
                     channelPO.setShowFlag(true);
                     channelPO.setFilterFlag(false);
                     channelDao.insert(channelPO);
-                    //来源
-                    SourcePO sourcePO = new SourcePO();
-                    sourcePO.setTypeId(ChannelConstant.STAFF_ZJS);
-                    sourcePO.setSrcName(groupPO.getGroupName());
-                    sourcePO.setCompanyId(groupPO.getCompanyId());
-                    sourcePO.setChannelId(channelPO.getId());
-                    sourcePO.setChannelName(channelPO.getChannelName());
-                    sourcePO.setIsShow(true);
-                    sourcePO.setIsFilter(false);
-                    sourceDao.insert(sourcePO);
                 } else {
-                    //渠道存在
-                    SourcePO sourcePO = sourceDao.getSourceBySrcname(groupPO.getGroupName(), groupPO.getCompanyId(), channelPO.getId());
-                    if (!channelPO.getShowFlag()) {
+                    //非根节点
+                    channelPO = channelDao.getChannelByGroupParentId(groupPO.getParentId(), groupPO.getCompanyId());
+                    if (null == channelPO) {
+                        //渠道不存在
+                        GroupPO groupPOBak = groupDao.getGroupById(groupPO.getCompanyId(), groupPO.getParentId());
+                        channelPO = new ChannelPO();
+                        channelPO.setTypeId(ChannelConstant.STAFF_ZJS);
+                        channelPO.setCompanyId(groupPO.getCompanyId());
+                        channelPO.setChannelName(groupPOBak.getGroupName());
+                        channelPO.setPriority(CommonConstant.DEFAULT_ZERO);
+                        channelPO.setPushRule(CommonConstant.DEFAULT_ZERO);
                         channelPO.setShowFlag(true);
-                        channelDao.update(channelPO);
-                    }
-                    //来源不存在
-                    if (null == sourcePO) {
-                        sourcePO = new SourcePO();
-                        sourcePO.setSrcName(groupPO.getGroupName());
+                        channelPO.setFilterFlag(false);
+                        channelDao.insert(channelPO);
+                        //来源
+                        SourcePO sourcePO = new SourcePO();
                         sourcePO.setTypeId(ChannelConstant.STAFF_ZJS);
+                        sourcePO.setSrcName(groupPO.getGroupName());
                         sourcePO.setCompanyId(groupPO.getCompanyId());
                         sourcePO.setChannelId(channelPO.getId());
                         sourcePO.setChannelName(channelPO.getChannelName());
-                        sourcePO.setBrandId(channelPO.getBrandId());
-                        sourcePO.setBrandName(channelPO.getBrandName());
-                        sourcePO.setIsShow(channelPO.getShowFlag());
+                        sourcePO.setPushRule(CommonConstant.DEFAULT_ZERO);
+                        sourcePO.setIsShow(true);
                         sourcePO.setIsFilter(false);
                         sourceDao.insert(sourcePO);
                     } else {
-                        //来源存在
-                        if (!sourcePO.getIsShow()) {
-                            sourcePO.setIsShow(true);
-                            sourceDao.update(sourcePO);
+                        //渠道存在
+                        //FIXME review code
+                        //TODO 增加迁移功能
+                        SourcePO source = sourceDao.getSourceByNameAndType(groupPO.getGroupName(),groupPO.getCompanyId(),ChannelConstant.STAFF_ZJS);
+                        //判断来源时候需要迁移
+                        if(source != null  &&  !(source.getChannelId().equals(channelPO.getId()))){
+                            //迁移客资到新的渠道
+                            clientDao.updateKzChannelId(DBSplitUtil.getInfoTabName(channelPO.getCompanyId()),channelPO.getId(),source.getId(),channelPO.getCompanyId());
+                            //迁移来源到新的渠道
+                            source.setChannelId(channelPO.getId());
+                            source.setIsShow(true);
+                            sourceDao.update(source);
+                        }else{
+                            SourcePO sourcePO = sourceDao.getSourceBySrcname(groupPO.getGroupName(), groupPO.getCompanyId(), channelPO.getId());
+                            if (!channelPO.getShowFlag()) {
+                                channelPO.setShowFlag(true);
+                                channelDao.update(channelPO);
+                            }
+                            //来源不存在
+                            if (null == sourcePO) {
+                                sourcePO = new SourcePO();
+                                sourcePO.setSrcName(groupPO.getGroupName());
+                                sourcePO.setTypeId(ChannelConstant.STAFF_ZJS);
+                                sourcePO.setCompanyId(groupPO.getCompanyId());
+                                sourcePO.setChannelId(channelPO.getId());
+                                sourcePO.setChannelName(channelPO.getChannelName());
+                                sourcePO.setBrandId(channelPO.getBrandId());
+                                sourcePO.setBrandName(channelPO.getBrandName());
+                                sourcePO.setPushRule(CommonConstant.DEFAULT_ZERO);
+                                sourcePO.setIsShow(channelPO.getShowFlag());
+                                sourcePO.setIsFilter(false);
+                                sourceDao.insert(sourcePO);
+                            } else {
+                                //来源存在
+                                if (!sourcePO.getIsShow()) {
+                                    sourcePO.setIsShow(true);
+                                    sourceDao.update(sourcePO);
+                                }
+                            }
                         }
                     }
                 }
-            }
-        } else {
-            if (!channelPO.getShowFlag()) {
-                channelPO.setShowFlag(true);
-                channelDao.update(channelPO);
+            } else {
+                if (!channelPO.getShowFlag()) {
+                    channelPO.setShowFlag(true);
+                    channelDao.update(channelPO);
+                }
             }
         }
         return groupPO;

@@ -619,8 +619,8 @@
             LEFT JOIN hm_pub_role role ON role_rela.ROLEID = role.ID AND role_rela.COMPANYID = role.COMPANYID
         WHERE
             sf.ID = #{staffId}
-            AND rela.COMPANYID = #{companyId}
-            AND sf.GROUPID = #{groupId}
+            AND sf.COMPANYID = #{companyId}
+            AND rela.GROUPID = #{groupId}
     </select>
 
     <!--获取员工card-->

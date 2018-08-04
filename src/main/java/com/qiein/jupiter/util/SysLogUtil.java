@@ -18,17 +18,17 @@ public class SysLogUtil {
     public static final int LOG_TYPE_CLIENT = 3;
     public static final int LOG_TYPE_CHANNEL = 4;
     public static final int LOG_TYPE_SOURCE = 5;
-    public static final int LOG_TYPE_ROLE=6;
-    public static final int LOG_TYPE_STAFF=10;
+    public static final int LOG_TYPE_ROLE = 6;
+    public static final int LOG_TYPE_STAFF = 10;
     public static final String LOG_SUP_LOGIN = "登录";
     public static final String LOG_SUP_GROUP = "部门";
     public static final String LOG_SUP_CLIENT = "客资";
     public static final String LOG_SUP_CHANNEL = "渠道";
     public static final String LOG_SUP_SOURCE = "来源";
-    public static final String LOG_SUP_ROLE="权限";
-    public static final String LOG_SUP_STAFF="员工";
-    public static final String LOG_SUP_LOCK="锁定状态";
-    public static final String LOG_SUP_GIVE="交接";
+    public static final String LOG_SUP_ROLE = "权限";
+    public static final String LOG_SUP_STAFF = "员工";
+    public static final String LOG_SUP_LOCK = "锁定状态";
+    public static final String LOG_SUP_GIVE = "交接";
 
     public static final String SYS_LOG_PREFIX_ADD = "新增了";
     public static final String SYS_LOG_PREFIX_EDIT = "修改了";
@@ -59,6 +59,9 @@ public class SysLogUtil {
         if (params != null) {
             sb.append("=>[");
             for (String key : params.keySet()) {
+                if (StringUtil.isEmpty(params.get(key))) {
+                    continue;
+                }
                 sb.append(key);
                 sb.append("→");
                 sb.append(params.get(key));
@@ -107,6 +110,9 @@ public class SysLogUtil {
             sb.append(":");
             sb.append("=>[");
             for (String key : params.keySet()) {
+                if (StringUtil.isEmpty(params.get(key))) {
+                    continue;
+                }
                 sb.append(key);
                 sb.append("→");
                 sb.append(params.get(key));
@@ -127,6 +133,9 @@ public class SysLogUtil {
             sb.append(":");
             sb.append("=>[");
             for (String key : params.keySet()) {
+                if (StringUtil.isEmpty(params.get(key))) {
+                    continue;
+                }
                 sb.append(key);
                 sb.append("→");
                 sb.append(params.get(key));

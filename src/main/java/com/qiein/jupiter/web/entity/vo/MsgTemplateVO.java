@@ -9,6 +9,15 @@ public class MsgTemplateVO {
     private String templateText;
     private Integer count;
     private String signName;
+    private String isSelf;
+
+    public String getIsSelf() {
+        return isSelf;
+    }
+
+    public void setIsSelf(String isSelf) {
+        this.isSelf = isSelf;
+    }
 
     public String getSignName() {
         return signName;
