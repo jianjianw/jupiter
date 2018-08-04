@@ -376,5 +376,5 @@ public interface StaffService {
      *
      * @return
      */
-    StaffPO getStaffByChangeCid(int companyId, int staffId);
+    StaffPO getStaffByChangeCid(int changeCompanyId, int staffId, int companyId);
 }
