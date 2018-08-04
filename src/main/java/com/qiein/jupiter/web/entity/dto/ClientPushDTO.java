@@ -114,8 +114,8 @@ public class ClientPushDTO implements Serializable {
 
     public boolean isNotEmpty() {
         return (service != null && NumUtil.isValid(this.pushRule) && NumUtil.isValid(this.companyId)
-                && StringUtil.isValid(this.kzId) && NumUtil.isValid(this.channelId)
-                && NumUtil.isValid(this.channelTypeId));
+                && StringUtil.isValid(this.kzId) && NumUtil.isValid(this.sourceId)
+                && NumUtil.isValid(this.srcType));
     }
 
     public int getCollectorId() {
