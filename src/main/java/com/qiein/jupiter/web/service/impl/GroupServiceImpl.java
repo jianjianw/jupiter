@@ -464,6 +464,7 @@ public class GroupServiceImpl implements GroupService {
                         sourceDao.insert(sourcePO);
                     } else {
                         //渠道存在
+                        //FIXME review code
                         //TODO 增加迁移功能
                         SourcePO source = sourceDao.getSourceByNameAndType(groupPO.getGroupName(),groupPO.getCompanyId(),ChannelConstant.STAFF_ZJS);
                         //判断来源时候需要迁移
