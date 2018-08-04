@@ -312,7 +312,7 @@
                    AND a.ID = c.sourceid
         WHERE
             a.COMPANYID = #{companyId} AND a.CHANNELID = #{channelId}
-        ORDER BY ISSHOW DESC, TYPEID, PRIORITY, ID
+        ORDER BY ISSHOW DESC, PRIORITY, TYPEID,  ID
     </select>
 
     <!--渠道名变更时下属所有来源的记录也要相应变更-->
