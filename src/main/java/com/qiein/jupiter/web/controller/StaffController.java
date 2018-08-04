@@ -367,7 +367,7 @@ public class StaffController extends BaseController {
             return ResultInfoUtil.error(ExceptionEnum.UNKNOW_ERROR.getCode(), JSONObject.parseObject(json).getJSONObject("response").getJSONObject("info").getString("msg"));
         }
         Map<String, String> editMap = new HashMap<>();
-        map.put(staffChangeVO.getOldStaffName(), staffChangeVO.getToStaffName());
+        editMap.put(staffChangeVO.getOldStaffName(), staffChangeVO.getToStaffName());
         RequestInfoDTO requestInfo = getRequestInfo();
         try {
             // 日志记录
