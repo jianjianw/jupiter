@@ -927,7 +927,7 @@ public class GoEasyUtil {
         }
         String head = "您的客资被" + StringUtil.nullToStrTrim(operaName) + "重复提报，<br/>请及时联系该客资";
         StringBuffer sb = new StringBuffer();
-
+        sb.append("编号：").append(info.getId()).append("<br/>");
         if (StringUtil.isNotEmpty(info.getKzName())) {
             sb.append("姓名：").append(StringUtil.nullToStrTrim(info.getKzName())).append("<br/>");
         }
