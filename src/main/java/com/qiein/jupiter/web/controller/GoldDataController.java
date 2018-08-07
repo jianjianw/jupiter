@@ -19,6 +19,8 @@ import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.GoldFingerShowVO;
 import com.qiein.jupiter.web.service.ApolloService;
 import com.qiein.jupiter.web.service.GoldDataService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +40,8 @@ import java.util.List;
 @RequestMapping("/gold_data")
 @Validated
 public class GoldDataController extends BaseController {
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
     @Autowired
     private GoldDataService goldDataService;
 
@@ -154,6 +158,7 @@ public class GoldDataController extends BaseController {
     @RequestMapping("/receive_gold_data_form")
     public ResultInfo receiveGoldDataForm(@RequestBody JSONObject jsonObject) {
         //TODO 获取到数据，存储temp与plugSetting
+        log.info("金数据接收到:"+jsonObject.toString());
         goldDataService.receiveGoldDataForm(jsonObject);
         return ResultInfoUtil.success();
     }
