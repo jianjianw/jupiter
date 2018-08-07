@@ -19,6 +19,16 @@ public class DsinvalDTO implements Serializable {
     //电商待定量自定义状态
     private String dsddStatus;
 
+    private List<String> dsddList;
+
+    public List<String> getDsddList() {
+        return dsddList;
+    }
+
+    public void setDsddList(List<String> dsddList) {
+        this.dsddList = dsddList;
+    }
+
     public String getDsddStatus() {
         return dsddStatus;
     }
