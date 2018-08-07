@@ -177,4 +177,10 @@ public interface CompanyDao extends BaseDao<CompanyPO> {
      * @return
      */
     List<CompanyVO> getCompanyListByPhoneAndPwd(@Param("phone") String phone, @Param("password") String password);
+    /**
+     * 修改电商待定自定义 状态
+     *
+     * @param dsddStatus
+     */
+    void editDsddStatus(@Param("dsddStatus")String dsddStatus,@Param("companyId")Integer companyId);
 }

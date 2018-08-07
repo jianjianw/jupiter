@@ -281,6 +281,16 @@ public class CompanyController extends BaseController {
         companyService.editKfEditJdRst(kfEditJdRst,staff.getCompanyId());
         return ResultInfoUtil.success(kfEditJdRst ? TipMsgEnum.OPERATE_SUCCESS : TipMsgEnum.CLOSE_SUCCESS);
     }
+    /**
+     * 修改电商待定自定义状态
+     * @param dsddStatus
+     * @return
+     */
+    @GetMapping("/edit_dsdd_status")
+    public ResultInfo editDsddStatus(@RequestParam String dsddStatus){
+        companyService.editDsddStatus(dsddStatus,getCurrentLoginStaff().getCompanyId());
+        return ResultInfoUtil.success();
+    }
 
 
 }
