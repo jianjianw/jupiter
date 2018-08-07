@@ -146,9 +146,9 @@ public class GoldDataServiceImpl implements GoldDataService {
         GoldFingerPO goldFingerPO = goldDataDao.getGoldFingerByFormId(formId);
         String ip = StringUtil.nullToStrTrim(entry.getString("info_remote_ip"));
         //获取金数据表单模板数据
-        if (null == goldFingerPO) {
-            throw new RException(ExceptionEnum.FORM_NOT_EXISTS);
-        }
+//        if (null == goldFingerPO) {
+//            throw new RException(ExceptionEnum.FORM_NOT_EXISTS);
+//        }
         String kzPhone = StringUtil.nullToStrTrim(entry.getString(goldFingerPO.getKzPhoneField()));
 //        if (!RegexUtil.checkMobile(kzPhone)) {
 //            throw new RException(ExceptionEnum.PHONE_ERROR);
@@ -204,9 +204,9 @@ public class GoldDataServiceImpl implements GoldDataService {
 
         //获取当前来源
         SourcePO sourcePO = sourceDao.getByIdAndCid(goldFingerPO.getSrcId(), goldFingerPO.getCompanyId());
-        if (null == sourcePO) {
-            throw new RException(ExceptionEnum.SOURCE_NOT_FOUND);
-        }
+//        if (null == sourcePO) {
+//            throw new RException(ExceptionEnum.SOURCE_NOT_FOUND);
+//        }
         reqContent.put("companyid", goldFingerPO.getCompanyId());
         reqContent.put("kzname", kzName);
         reqContent.put("kzphone", kzPhone);
@@ -251,12 +251,12 @@ public class GoldDataServiceImpl implements GoldDataService {
         goldTempDao.insert(goldTempPO);
 
         //重复拦截
-        GoldTempPO goldTemp = goldTempDao.getByKzNameOrKzPhoneOrKzWechat(formId, kzPhone);
-        if (null != goldTemp) {
-            goldTempPO.setStatusId(GoldDataConst.REPEATED_SCREEN);
-            goldTempDao.update(goldTempPO);
-            return;
-        }
+//        GoldTempPO goldTemp = goldTempDao.getByKzNameOrKzPhoneOrKzWechat(formId, kzPhone);
+//        if (null != goldTemp) {
+//            goldTempPO.setStatusId(GoldDataConst.REPEATED_SCREEN);
+//            goldTempDao.update(goldTempPO);
+//            return;
+//        }
 
         String addRstStr = crmBaseApi.doService(reqContent, "clientAddGoldPlug");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);

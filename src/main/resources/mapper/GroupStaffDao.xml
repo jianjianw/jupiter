@@ -134,6 +134,12 @@
         <result column="GROUPID" property="groupId" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <!--StaffGroupVO-->
+    <resultMap id="StaffGroupResultMap" type="com.qiein.jupiter.web.entity.vo.StaffGroupVO">
+        <result column="staffid"  property="staffId"></result>
+        <result column="groupcount" property="groupCount"></result>
+    </resultMap>
+
     <!--获取公司全部的组及下属员工-->
     <select id="getAllGroupAndStaff" resultMap="groupMap">
         SELECT
@@ -535,5 +541,13 @@
             AND sf.ISDEL = 0
             AND sf.ISLOCK = 0
         ORDER BY grp.PRIORITY, grp.GROUPNAME, grp.ID, sf.ID
+    </select>
+
+    <select id ="getGroupStaffCountByStaffIdAndCompanyId" resultMap="StaffGroupResultMap">
+        select staffid,count(groupId) as groupCount  from hm_pub_group_staff where staffid in
+        <foreach collection="staffIds" item="staffId" separator="," open="(" close=")">
+          #{staffId}
+        </foreach>
+        and companyId = #{companyId}
     </select>
 </mapper>

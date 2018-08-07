@@ -173,4 +173,12 @@ public interface GroupStaffDao {
      * @return
      */
     List<GroupBaseStaffVO> getAllGroupStaff(@Param(value = "companyId") int companyId);
+
+    /**
+     * 根据员工id查询 员工小组集合
+     * @param staffIds
+     * @param companyId
+     * @return
+     * */
+    List<StaffGroupVO> getGroupStaffCountByStaffIdAndCompanyId(@Param("staffIds") List<String> staffIds,@Param("companyId") Integer companyId);
 }
