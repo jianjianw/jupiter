@@ -81,4 +81,13 @@ public interface ClientDao {
      * @param sourceId
      * */
     void updateKzChannelId(@Param(value="infoTabName") String infoTabName,@Param(value="channelId") int channelId,@Param(value="sourceId") int sourceId,@Param(value="companyId") Integer companyId);
+
+    /**
+     * 更新客资详情表中的数据
+     * @param detailTabName
+     * @param kzId
+     * @param companyId
+     * @param content
+     * */
+    void updateDetailMemo(@Param(value="detailTabName") String detailTabName,@Param(value = "kzId") String kzId,@Param(value="companyId") Integer companyId,@Param(value="content") String content);
 }

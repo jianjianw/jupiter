@@ -88,4 +88,5 @@ public class TimerTask {
         log.info("定时获取阿波罗地址");
         apolloService.getApolloIp();
     }
+
 }
