@@ -52,7 +52,7 @@ public class DingAuthUtil {
 	/**
 	 * 定时根据appid secret 获取应用 access token（有效期2小时） 每小时执行一次
 	 */
-	@Scheduled(initialDelay = 1000, fixedDelay = 60 * 60 * 1000)
+//	@Scheduled(initialDelay = 1000, fixedDelay = 60 * 60 * 1000)
 	public void timingGetAccessToken() {
 		String resStr = HttpClient.get(accessTokenUrl).queryString("appid", appid).queryString("appsecret", secret)
 				.asString();
