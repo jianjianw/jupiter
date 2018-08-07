@@ -75,7 +75,7 @@ public class ReportsController extends BaseController {
      */
     @RequestMapping("get_dsyy_group_reports")
     public ResultInfo getDsyyGroupReports(@RequestParam("start") Integer start, @RequestParam("end") Integer end,
-                                          @RequestParam(value = "typeId",required = false) String typeId,@RequestParam(value = "groupIds",required = false)String groupIds) {
+                                          @RequestParam(value = "typeId", required = false) String typeId, @RequestParam(value = "groupIds", required = false) String groupIds) {
         if (NumUtil.isInValid(start) || NumUtil.isInValid(end)) {
             return ResultInfoUtil.error(ExceptionEnum.START_TIME_OR_END_TIME_IS_NULL);
         }
@@ -85,8 +85,8 @@ public class ReportsController extends BaseController {
         reqContent.put("start", start);
         reqContent.put("end", end);
         reqContent.put("companyid", currentLoginStaff.getCompanyId());
-        reqContent.put("typeId",typeId);
-        reqContent.put("groupId",groupIds);
+        reqContent.put("typeId", typeId);
+        reqContent.put("groupId", groupIds);
         String json = crmBaseApi.doService(reqContent, "dsyyGroupReports");
 
         if (StringUtil.isEmpty(json) || !"100000".equalsIgnoreCase(JSONObject.parseObject(json).getJSONObject("response").getJSONObject("info").getString("code"))) {
@@ -195,7 +195,7 @@ public class ReportsController extends BaseController {
 
 
     /**
-     * 转介绍提报统计
+     * 转介绍来源统计
      */
     @GetMapping("/get_zjs_source_reports")
     public ResultInfo getZjsSourceReports(@RequestParam("start") int start, @RequestParam("end") int end, String sourceIds) {
@@ -209,6 +209,23 @@ public class ReportsController extends BaseController {
         String json = crmBaseApi.doService(reqContent, "zjsentryreports");
         return ResultInfoUtil.success(JsonFmtUtil.strContentToJsonObj(json).get("analysis"));
     }
+
+    /**
+     * 转介绍来源统计
+     */
+    @GetMapping("/get_zjs_source_reports_detail")
+    public ResultInfo getZjsSourceReportsDetail(@RequestParam("start") int start, @RequestParam("end") int end, int sourceId) {
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        Map<String, Object> reqContent = new HashMap<>();
+        reqContent.put("start", start);
+        reqContent.put("end", end);
+        reqContent.put("companyid", currentLoginStaff.getCompanyId());
+        reqContent.put("sourceid", sourceId);
+        //请求juplat接口
+        String json = crmBaseApi.doService(reqContent, "zjsentryreportsDetail");
+        return ResultInfoUtil.success(JsonFmtUtil.strContentToJsonObj(json).get("analysis"));
+    }
+
 
     /**
      * 转介绍邀约统计
@@ -335,8 +352,8 @@ public class ReportsController extends BaseController {
     }
 
     @GetMapping("/receive_ali")
-    public ResultInfo receiveAli(String code,String state){
-        System.out.println(code+"-----------------------------------"+state);
+    public ResultInfo receiveAli(String code, String state) {
+        System.out.println(code + "-----------------------------------" + state);
         return ResultInfoUtil.success();
     }
 }
