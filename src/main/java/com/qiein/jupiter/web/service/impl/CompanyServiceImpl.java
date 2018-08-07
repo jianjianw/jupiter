@@ -231,7 +231,8 @@ public class CompanyServiceImpl implements CompanyService {
             list.add(status);
         }
         dsinvalDTO.setList(list);
-        String[] dsddStatus=dsinvalDTO.getDsddStatus().substring(1, zjsValidStatus.length() - 1).split(CommonConstant.FILE_SEPARATOR);
+        String dsddStatuss = dsinvalDTO.getZjsValidStatus();
+        String[] dsddStatus=dsddStatuss.substring(1, dsddStatuss.length() - 1).split(CommonConstant.FILE_SEPARATOR);
         List<String> dsddList = new ArrayList<>();
         for (String status : dsddStatus) {
             dsddList.add(status);
