@@ -47,7 +47,7 @@ public class ClientPushTask {
     /**
      * 定时任务-推送客资
      */
-    @Scheduled(initialDelay = 1000, fixedDelay = 2 * 1000)
+    @Scheduled(initialDelay = 1000, fixedDelay = 10 * 1000)
     public void taskPushLp() {
         //如果是测试环境，就不再推送
 //        if (active.equals("dev")) {
