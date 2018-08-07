@@ -1,11 +1,16 @@
 package com.qiein.jupiter.web;
 
 import com.alibaba.fastjson.JSONObject;
+import com.aliyuncs.CommonRequest;
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
+import com.aliyuncs.auth.InstanceProfileCredentialsProvider;
 import com.aliyuncs.ccc.model.v20170705.StartBack2BackCallRequest;
 import com.aliyuncs.ccc.model.v20170705.StartBack2BackCallResponse;
 import com.aliyuncs.profile.DefaultProfile;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * FileName: CallTest
@@ -14,14 +19,13 @@ import com.aliyuncs.profile.DefaultProfile;
  * @Date: 2018-8-1 10:35
  */
 public class CallTest {
-    public static void main(String [] args)throws  Exception{
+    public static void main(String [] args){
         // 创建DefaultAcsClient实例并初始化
-        DefaultProfile profile = DefaultProfile.getProfile(
-                "cn-shanghai",          // 地域ID
-                "LTAIF0wvpMyT9Ood",      // RAM账号的AccessKey ID
-                "vpLFjXHUNcKUVud72qSBLXMZgD9AIo"); // RAM账号Access Key Secret
-        DefaultAcsClient defaultAcsClient = new DefaultAcsClient();
-        IAcsClient client = new DefaultAcsClient(profile);
+        DefaultProfile profile = DefaultProfile.getProfile("cn-hangzhou");
+        InstanceProfileCredentialsProvider provider = new InstanceProfileCredentialsProvider(
+                "yiyanxu@hanmu.onaliyun.com"
+        );
+        DefaultAcsClient client = new DefaultAcsClient(profile, provider);
 
 
         StartBack2BackCallRequest request1 = new StartBack2BackCallRequest();

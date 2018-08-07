@@ -8,6 +8,7 @@ import com.mzlion.core.http.IPUtils;
 import com.mzlion.core.lang.StringUtils;
 import com.qiein.jupiter.constant.ClientStatusConst;
 import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.constant.DictionaryConstant;
 import com.qiein.jupiter.constant.GoldDataConst;
 import com.qiein.jupiter.enums.GoldDataStatusEnum;
 import com.qiein.jupiter.enums.ZxStyleEnum;
@@ -52,6 +53,8 @@ public class GoldDataServiceImpl implements GoldDataService {
     private NewsDao newsDao;
     @Autowired
     private StaffDao staffDao;
+    @Autowired
+    private DictionaryDao dictionaryDao;
 
     /**
      * 添加表单
@@ -146,9 +149,9 @@ public class GoldDataServiceImpl implements GoldDataService {
         GoldFingerPO goldFingerPO = goldDataDao.getGoldFingerByFormId(formId);
         String ip = StringUtil.nullToStrTrim(entry.getString("info_remote_ip"));
         //获取金数据表单模板数据
-        if (null == goldFingerPO) {
-            throw new RException(ExceptionEnum.FORM_NOT_EXISTS);
-        }
+//        if (null == goldFingerPO) {
+//            throw new RException(ExceptionEnum.FORM_NOT_EXISTS);
+//        }
         String kzPhone = StringUtil.nullToStrTrim(entry.getString(goldFingerPO.getKzPhoneField()));
 //        if (!RegexUtil.checkMobile(kzPhone)) {
 //            throw new RException(ExceptionEnum.PHONE_ERROR);
@@ -159,9 +162,9 @@ public class GoldDataServiceImpl implements GoldDataService {
         //获取字段值
         String[] fieldKeys = StringUtil.isNotEmpty(goldFingerPO.getFieldKey()) ? goldFingerPO.getFieldKey().split(CommonConstant.STR_SEPARATOR) : new String[]{};
         String[] fieldValues = StringUtil.isNotEmpty(goldFingerPO.getFieldValue()) ? goldFingerPO.getFieldValue().split(CommonConstant.STR_SEPARATOR) : new String[]{};
-        if (fieldKeys.length != fieldValues.length) {
-            throw new RException(ExceptionEnum.GOLD_DATA_ARR_LENGTH_ERROR);
-        }
+//        if (fieldKeys.length != fieldValues.length) {
+//            throw new RException(ExceptionEnum.GOLD_DATA_ARR_LENGTH_ERROR);
+//        }
 
         //备注放入其他信息
         String remark = "<span style=\"color:#FF8533;\">【金数据】</span>";
@@ -204,9 +207,9 @@ public class GoldDataServiceImpl implements GoldDataService {
 
         //获取当前来源
         SourcePO sourcePO = sourceDao.getByIdAndCid(goldFingerPO.getSrcId(), goldFingerPO.getCompanyId());
-        if (null == sourcePO) {
-            throw new RException(ExceptionEnum.SOURCE_NOT_FOUND);
-        }
+//        if (null == sourcePO) {
+//            throw new RException(ExceptionEnum.SOURCE_NOT_FOUND);
+//        }
         reqContent.put("companyid", goldFingerPO.getCompanyId());
         reqContent.put("kzname", kzName);
         reqContent.put("kzphone", kzPhone);
@@ -221,7 +224,8 @@ public class GoldDataServiceImpl implements GoldDataService {
         reqContent.put("adid", goldFingerPO.getAdId());
         reqContent.put("adaddress", goldFingerPO.getAdAddress());
         reqContent.put("typeid", goldFingerPO.getTypeId());
-        reqContent.put("zxstyle", ZxStyleEnum.getZxType(goldFingerPO.getZxStyle()));
+        DictionaryPO dictionaryPO = dictionaryDao.getDicByTypeAndName(goldFingerPO.getCompanyId(), DictionaryConstant.ZX_STYLE, goldFingerPO.getZxStyle());
+        reqContent.put("zxstyle", dictionaryPO.getDicType());
         reqContent.put("collectorid", goldFingerPO.getCreateorId());
         reqContent.put("collectorname", goldFingerPO.getCreateorName());
         reqContent.put("address", address);
@@ -251,18 +255,20 @@ public class GoldDataServiceImpl implements GoldDataService {
         goldTempDao.insert(goldTempPO);
 
         //重复拦截
-        GoldTempPO goldTemp = goldTempDao.getByKzNameOrKzPhoneOrKzWechat(formId, kzPhone);
-        if (null != goldTemp) {
-            goldTempPO.setStatusId(GoldDataConst.REPEATED_SCREEN);
-            goldTempDao.update(goldTempPO);
-            return;
-        }
+//        GoldTempPO goldTemp = goldTempDao.getByKzNameOrKzPhoneOrKzWechat(formId, kzPhone);
+//        if (null != goldTemp) {
+//            goldTempPO.setStatusId(GoldDataConst.REPEATED_SCREEN);
+//            goldTempDao.update(goldTempPO);
+//            return;
+//        }
 
         String addRstStr = crmBaseApi.doService(reqContent, "clientAddGoldPlug");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
-        String kzId = JsonFmtUtil.strContentToJsonObj(addRstStr).getString("kzid");
+        System.out.println(jsInfo);
+
 
         if ("100000".equals(jsInfo.getString("code"))) {
+            String kzId = JsonFmtUtil.strContentToJsonObj(addRstStr).getString("kzid");
             //更新状态(录入成功)
             goldTempPO.setStatusId(GoldDataConst.IN_SUCCESS);
             goldTempDao.update(goldTempPO);
@@ -330,7 +336,8 @@ public class GoldDataServiceImpl implements GoldDataService {
         reqContent.put("adid", goldFingerPO.getAdId());
         reqContent.put("adaddress", goldFingerPO.getAdAddress());
         reqContent.put("typeid", goldFingerPO.getTypeId());
-        reqContent.put("zxstyle", goldFingerPO.getZxStyle());
+        DictionaryPO dictionaryPO = dictionaryDao.getDicByTypeAndName(goldFingerPO.getCompanyId(), DictionaryConstant.ZX_STYLE, goldFingerPO.getZxStyle());
+        reqContent.put("zxstyle", dictionaryPO.getDicType());
         reqContent.put("remark", goldFingerPO.getMemo());
         reqContent.put("collectorid", goldFingerPO.getCreateorId());
         reqContent.put("collectorname", goldFingerPO.getCreateorName());

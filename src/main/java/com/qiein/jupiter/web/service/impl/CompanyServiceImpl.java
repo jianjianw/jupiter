@@ -231,6 +231,13 @@ public class CompanyServiceImpl implements CompanyService {
             list.add(status);
         }
         dsinvalDTO.setList(list);
+        String dsddStatuss = dsinvalDTO.getDsddStatus();
+        String[] dsddStatus=dsddStatuss.substring(1, dsddStatuss.length() - 1).split(CommonConstant.FILE_SEPARATOR);
+        List<String> dsddList = new ArrayList<>();
+        for (String status : dsddStatus) {
+            dsddList.add(status);
+        }
+        dsinvalDTO.setDsddList(dsddList);
         return dsinvalDTO;
     }
 
@@ -288,6 +295,14 @@ public class CompanyServiceImpl implements CompanyService {
      */
     public String getZjsRequiredField(int companyId) {
         return companyDao.getZjsRequiredField(companyId);
+    }
+    /**
+     * 修改电商待定自定义状态
+     * @param dsddStatus
+     * @return
+     */
+    public void editDsddStatus(String dsddStatus,Integer companyId){
+        companyDao.editDsddStatus(dsddStatus,companyId);
     }
 
     /**

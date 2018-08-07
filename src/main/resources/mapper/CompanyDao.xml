@@ -243,15 +243,16 @@
     </update>
 
     <select id="findDsinvalId" resultType="com.qiein.jupiter.web.entity.dto.DsinvalDTO">
-        SELECT
-            DSINVALIDSTATUS dsInvalidStatus,
-            DSINVALIDLEVEL  dsInvalidLevel,
-            DDISVALID       ddIsValid,
-            ZJSVALIDSTATUS  zjsValidStatus
-        FROM
-            hm_pub_company
-        WHERE ID = #{companyId}
-    </select>
+		SELECT
+		 	DSINVALIDSTATUS dsInvalidStatus,
+		 	DSINVALIDLEVEL dsInvalidLevel,
+		 	DDISVALID ddIsValid,
+		 	ZJSVALIDSTATUS zjsValidStatus,
+		 	DSDDSTATUS dsddStatus
+		FROM
+			hm_pub_company
+		WHERE ID=#{companyId}
+	</select>
 
     <update id="editZjsValidStatus">
         UPDATE
@@ -307,6 +308,16 @@
         FROM hm_pub_company
         WHERE ID = #{companyId};
     </select>
+    <update id="editDsddStatus">
+        UPDATE
+        hm_pub_company
+        SET
+        DSDDSTATUS =#{dsddStatus}
+        WHERE
+        ID = #{companyId}
+    </update>
+
+
 
     <!--根据手机号码和加密码  获取对应的公司-->
     <select id="getCompanyListByPhoneAndPwd" resultMap="baseMap">

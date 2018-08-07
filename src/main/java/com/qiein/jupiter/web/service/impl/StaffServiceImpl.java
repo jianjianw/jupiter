@@ -29,10 +29,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -76,6 +73,7 @@ public class StaffServiceImpl implements StaffService {
 
     @Autowired
     private OnLineTimeDao onLineTimeDao;
+
 
     /**
      * 员工新增
@@ -224,12 +222,21 @@ public class StaffServiceImpl implements StaffService {
     @Transactional
     public void batDelStaff(StaffStateVO staffStateVO) {
         // TODO 清除缓存
-        // 修改删除标识
-        staffDao.batUpdateStaffState(staffStateVO, staffStateVO.getIds().split(","));
-        // 硬删除员工角色
-        staffRoleDao.batchDeleteByStaffIdArr(staffStateVO.getCompanyId(), staffStateVO.getIds().split(","));
-        // 硬删除员工小组
-        groupStaffDao.batchDeleteByStaffArr(staffStateVO.getCompanyId(), staffStateVO.getIds().split(","));
+        // FIXME  此处需要做删除校验
+        List<StaffGroupVO> staffGroupVOS = groupStaffDao.getGroupStaffCountByStaffIdAndCompanyId(Arrays.asList(staffStateVO.getIds().split(CommonConstant.STR_SEPARATOR)),staffStateVO.getCompanyId());
+        for (StaffGroupVO staffGroupVO :staffGroupVOS){
+            if(staffGroupVO.getGroupCount() > 1){
+                //FIXME 此处暂时无法更改
+            }else{
+                // 修改删除标识
+                staffDao.batUpdateStaffState(staffStateVO, staffStateVO.getIds().split(","));
+                // 硬删除员工角色
+                staffRoleDao.batchDeleteByStaffIdArr(staffStateVO.getCompanyId(), staffStateVO.getIds().split(","));
+                // 硬删除员工小组
+                groupStaffDao.batchDeleteByStaffArr(staffStateVO.getCompanyId(), staffStateVO.getIds().split(","));
+            }
+        }
+
     }
 
     /**
