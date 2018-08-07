@@ -1,8 +1,10 @@
 package com.qiein.jupiter.web.service.task;
 
-import java.util.List;
-
-import com.qiein.jupiter.util.NumUtil;
+import com.qiein.jupiter.util.CollectionUtils;
+import com.qiein.jupiter.web.dao.CompanyDao;
+import com.qiein.jupiter.web.entity.dto.ClientPushDTO;
+import com.qiein.jupiter.web.entity.po.CompanyPO;
+import com.qiein.jupiter.web.service.impl.ClientPushServiceImpl;
 import com.qiein.jupiter.web.service.quene.PushQueue;
 import com.qiein.jupiter.web.service.quene.PushSkQueue;
 import org.slf4j.Logger;
@@ -12,12 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import com.qiein.jupiter.util.CollectionUtils;
-import com.qiein.jupiter.web.dao.CompanyDao;
-import com.qiein.jupiter.web.entity.dto.ClientPushDTO;
-import com.qiein.jupiter.web.entity.po.CompanyPO;
-import com.qiein.jupiter.web.service.impl.ClientPushServiceImpl;
-import com.qiein.jupiter.web.service.quene.ThreadTaskPushManager;
+import java.util.List;
 
 /**
  * 定时客资分配
@@ -40,9 +37,6 @@ public class ClientPushTask {
     private PushQueue lpPushQueue;
     @Autowired
     private PushSkQueue pushSkQueue;
-
-    // 客资推送线程池
-    ThreadTaskPushManager tpm = ThreadTaskPushManager.getInstance();
 
     /**
      * 定时任务-推送客资
