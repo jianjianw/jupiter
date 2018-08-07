@@ -72,12 +72,12 @@ public class ClientPushServiceImpl implements ClientPushService {
             return;
         }
 
-        if (overTime == 0) {
-            overTime = CommonConstant.DEFAULT_OVERTIME;
-        }
-        if (interval == 0) {
-            interval = CommonConstant.DEFAULT_INTERVAL;
-        }
+//        if (overTime == 0) {
+//            overTime = CommonConstant.DEFAULT_OVERTIME;
+//        }
+//        if (interval == 0) {
+//            interval = CommonConstant.DEFAULT_INTERVAL;
+//        }
 
         // 区分渠道类型，电商渠道，转介绍渠道
         String type = "";

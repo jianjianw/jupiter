@@ -8,6 +8,7 @@ import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.msg.goeasy.ClientDTO;
 import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
 import com.qiein.jupiter.util.DBSplitUtil;
+import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.*;
 import com.qiein.jupiter.web.entity.po.ClientLogPO;
 import com.qiein.jupiter.web.entity.po.ClientRemarkPO;
@@ -128,13 +129,7 @@ public class ClientServiceImpl implements ClientService {
         //有效或待定，增加到备注表中
         Integer type = clientStatusVoteVO.getType();
         String tabName = DBSplitUtil.getRemarkTabName(clientStatusVoteVO.getCompanyId());
-        //获取客资时候有备注
-        ClientRemarkPO clientRemarkPO = new ClientRemarkPO();
-        clientRemarkPO.setKzId(clientStatusVoteVO.getKzId());
-        clientRemarkPO.setCompanyId(clientStatusVoteVO.getCompanyId());
-        clientRemarkPO.setContent(clientStatusVoteVO.getContent());
 
-        ClientRemarkPO clientRemark = clientRemarkDao.getById(tabName, clientRemarkPO);
         String kzStatusName = "";
         if (ClientStatusTypeConst.VALID_TYPE.equals(type)) {
             //有效
@@ -173,11 +168,23 @@ public class ClientServiceImpl implements ClientService {
         //修改状态id
         clientDao.updateKzValidStatusByKzId(DBSplitUtil.getInfoTabName(clientStatusVoteVO.getCompanyId()), clientStatusVoteVO);
         //是否有备注
-        if (null == clientRemark) {
-            clientRemarkDao.insert(tabName, clientRemarkPO);
-        } else {
-            clientRemarkDao.update(tabName, clientRemarkPO);
+
+        //获取客资时候有备注
+        if(StringUtil.isNotEmpty(clientStatusVoteVO.getContent())){
+            clientDao.updateDetailMemo(DBSplitUtil.getDetailTabName(clientStatusVoteVO.getCompanyId()),clientStatusVoteVO.getKzId(),clientStatusVoteVO.getCompanyId(),clientStatusVoteVO.getContent());
         }
+        //FIXME 废弃代码
+//        ClientRemarkPO clientRemarkPO = new ClientRemarkPO();
+//        clientRemarkPO.setKzId(clientStatusVoteVO.getKzId());
+//        clientRemarkPO.setCompanyId(clientStatusVoteVO.getCompanyId());
+//        clientRemarkPO.setContent(clientStatusVoteVO.getContent());
+//
+//        ClientRemarkPO clientRemark = clientRemarkDao.getById(tabName, clientRemarkPO);
+//        if (null == clientRemark) {
+//            clientRemarkDao.insert(tabName, clientRemarkPO);
+//        } else {
+//            clientRemarkDao.update(tabName, clientRemarkPO);
+//        }
 
         //插入日志
         int addLogNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(clientStatusVoteVO.getCompanyId()),
