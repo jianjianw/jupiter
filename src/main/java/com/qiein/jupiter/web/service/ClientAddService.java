@@ -24,9 +24,9 @@ public interface ClientAddService {
     void addZjsClient(ClientVO clientVO, StaffPO staffPO);
 
     /**
-     *
      * 功能描述:
-     *  添加外部转介绍客资
+     * 添加外部转介绍客资
+     *
      * @auther: Tt(yehuawei)
      * @date:
      * @param:
@@ -56,6 +56,14 @@ public interface ClientAddService {
      */
     JSONObject batchAddDsClient(String list, int channelId, int sourceId, int shopId, int typeId, StaffPO staffPO,
                                 String adId, String adAddress, String groupId, int appointId, int zxStyle, int yxLevel, int ysRange, int marryTime);
+
+    /**
+     * 发送重复录入消息
+     *
+     * @param kzId
+     * @param staffPO
+     */
+    void pushRepeatMsg(String kzId, StaffPO staffPO);
 
 
 }

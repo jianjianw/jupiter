@@ -2,7 +2,9 @@ package com.qiein.jupiter.web.controller;
 
 import com.qiein.jupiter.constant.ClientZjsMenuConst;
 import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
 import com.qiein.jupiter.util.*;
+import com.qiein.jupiter.web.entity.dto.ClientGoEasyDTO;
 import com.qiein.jupiter.web.service.CompanyService;
 import com.qiein.jupiter.web.service.DictionaryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -196,5 +198,16 @@ public class ClientAddController extends BaseController {
         rep.setMsg(result.getString("msg"));
         rep.setData(result);
         return rep;
+    }
+
+    /**
+     * 发送重复录入消息
+     *
+     * @param kzId
+     */
+    @GetMapping("/push_repeat_msg")
+    public void pushRepeatMsg(@RequestParam("kzId") String kzId) {
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        clientAddService.pushRepeatMsg(kzId, currentLoginStaff);
     }
 }

@@ -562,4 +562,21 @@ public class ClientAddServiceImpl implements ClientAddService {
         return result;
     }
 
+    /**
+     * 发送重复录入消息
+     *
+     * @param kzId
+     * @param staffPO
+     */
+    public void pushRepeatMsg(String kzId, StaffPO staffPO) {
+        //重复客资，给邀约推送消息
+        ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(kzId,
+                DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
+                DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
+        if (info == null || NumUtil.isNull(info.getAppointorId())) {
+            throw new RException("存在重复客资");
+        }
+        GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getAppointorId(), info, staffPO.getNickName(), newsDao, staffDao);
+    }
+
 }
