@@ -352,8 +352,9 @@ public class ClientEditServiceImpl implements ClientEditService {
                 orderSuccessMsg.setSrcImg(String.valueOf(info.getSourceId()));
                 orderSuccessMsg.setHeadImg(appoint.getHeadImg());
                 webSocketMsgUtil.pushOrderSuccessMsg(orderSuccessMsg);
-                // 发送成功消息给录入人
+                // 发送成功消息给录入人，邀约人
                 GoEasyUtil.pushSuccessShop(info.getCompanyId(), info.getAppointorId(), info, newsDao, staffDao);
+                GoEasyUtil.pushSuccessShop(info.getCompanyId(), info.getCollectorId(), info, newsDao, staffDao);
             }
         } else if ("130019".equals(jsInfo.getString("code"))) {
             //重复客资，给邀约推送消息
