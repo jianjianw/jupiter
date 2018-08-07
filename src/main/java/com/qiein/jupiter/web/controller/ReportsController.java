@@ -211,7 +211,7 @@ public class ReportsController extends BaseController {
     }
 
     /**
-     * 转介绍来源统计
+     * 转介绍来源统计-详情
      */
     @GetMapping("/get_zjs_source_reports_detail")
     public ResultInfo getZjsSourceReportsDetail(@RequestParam("start") int start, @RequestParam("end") int end, int sourceId) {
