@@ -190,4 +190,10 @@ public interface CompanyService {
      * @return
      */
     String getZjsRequiredField(int companyId);
+    /**
+     * 修改电商待定自定义 状态
+     *
+     * @param dsddStatus
+     */
+    void editDsddStatus(String dsddStatus,Integer companyId);
 }

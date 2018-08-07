@@ -289,6 +289,14 @@ public class CompanyServiceImpl implements CompanyService {
     public String getZjsRequiredField(int companyId) {
         return companyDao.getZjsRequiredField(companyId);
     }
+    /**
+     * 修改电商待定自定义状态
+     * @param dsddStatus
+     * @return
+     */
+    public void editDsddStatus(String dsddStatus,Integer companyId){
+        companyDao.editDsddStatus(dsddStatus,companyId);
+    }
 
     /**
      * 根据手机号码和加密码  获取对应的公司
