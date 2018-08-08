@@ -32,8 +32,6 @@ public class GroupStaffController extends BaseController{
     @PostMapping("/insert")
     public ResultInfo insert(@RequestBody JSONObject jsonObject){
         StaffPO staffPO = getCurrentLoginStaff();
-
-
         groupStaffService.insert(jsonObject,staffPO);
         return ResultInfoUtil.success();
     }
