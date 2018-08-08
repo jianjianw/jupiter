@@ -377,4 +377,11 @@ public interface StaffService {
      * @return
      */
     StaffPO getStaffByChangeCid(int changeCompanyId, int staffId, int companyId);
+
+    /**
+     * 批量获取员工姓名
+     * @param staffIds
+     * @return
+     */
+    List<String> getStaffNames(String staffIds);
 }

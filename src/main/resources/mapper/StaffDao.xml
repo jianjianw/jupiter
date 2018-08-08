@@ -1151,4 +1151,12 @@
         AND staff.ISDEL=0
         AND staff.ISLOCK=0
     </select>
+    <select id="getStaffNames" resultType="String">
+        SELECT NICKNAME FROM hm_pub_staff
+        WHERE
+        ID IN
+        <foreach collection="list" item="id" index="index" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
 </mapper>

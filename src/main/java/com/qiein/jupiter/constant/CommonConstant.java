@@ -79,6 +79,10 @@ public class CommonConstant {
      * 文件分隔符
      */
     public static final String FILE_SEPARATOR = "/";
+    /**
+     *
+     */
+    public static final String ADD_TO = "-->";
 
     /**
      * 多个参数字符串分隔符
