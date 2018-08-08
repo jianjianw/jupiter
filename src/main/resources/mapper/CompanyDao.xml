@@ -10,7 +10,7 @@
         <result column="CONFIG" property="config" jdbcType="VARCHAR"/>
         <result column="IPLIMIT" property="ipLimit" jdbcType="BOOLEAN"/>
         <result column="SSOLIMIT" property="ssoLimit" jdbcType="BOOLEAN"/>
-        <result column="OVERTIME" property="overtime" jdbcType="INTEGER"/>
+        <result column="OVERTIME" property="overTime" jdbcType="INTEGER"/>
         <result column="LIMITDEFAULT" property="limitDefault" jdbcType="INTEGER"/>
         <result column="KZINTERVAL" property="kzInterval" jdbcType="INTEGER"/>
         <result column="NOTSELFBLIND" property="notSelfBlind" jdbcType="BOOLEAN"/>
@@ -37,7 +37,7 @@
         <result column="UNABLESELFLINE" property="unableSelfLine" jdbcType="BOOLEAN"/>
         <result column="UNABLEAPPOINTOR" property="unableAppointor" jdbcType="BOOLEAN"/>
         <result column="UNABLEINVALIDRANGE" property="unableInvalidRange" jdbcType="INTEGER"/>
-        <result column="SSOLIMIT" property="ssolimit" jdbcType="BOOLEAN"/>
+        <result column="SSOLIMIT" property="ssoLimit" jdbcType="BOOLEAN"/>
         <result column="OVERTIME" property="overTime" jdbcType="INTEGER"/>
         <result column="KZINTERVAL" property="kzInterval" jdbcType="INTEGER"/>
         <result column="LIMITDEFAULT" property="limitDefault" jdbcType="INTEGER"/>
@@ -66,7 +66,7 @@
          SSOLIMIT, OVERTIME, LIMITDEFAULT, KZINTERVAL, ISDEL)
         VALUES (
             #{companyName}, #{typeId}, #{logo}, #{corpId}, #{config}, #{ipLimit},
-                            #{ssoLimit}, #{overtime}, #{limitDefault}, #{kzInterval}, #{delFlag}
+                            #{ssoLimit}, #{overTime}, #{limitDefault}, #{kzInterval}, #{delFlag}
         )
     </insert>
 
@@ -88,8 +88,8 @@
             <if test="config != null">
                 CONFIG = #{config},
             </if>
-            <if test="overtime != null and overtime!=0">
-                OVERTIME = #{overtime},
+            <if test="overTime != null and overTime!=0">
+                OVERTIME = #{overTime},
             </if>
             <if test="limitDefault != null and limitDefault!=''">
                 LIMITDEFAULT = #{limitDefault},

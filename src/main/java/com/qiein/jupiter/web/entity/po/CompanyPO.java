@@ -40,7 +40,7 @@ public class CompanyPO extends BaseEntity {
     /**
      * 领取客资超时时间
      */
-    private int overtime;
+    private int overTime;
     /**
      * 默认每日接单限额
      */
@@ -82,49 +82,77 @@ public class CompanyPO extends BaseEntity {
      */
     private Integer dayIgnore;
 
-    
-    
+    /**
+     * 非本人客资脱敏显示
+     */
+    private boolean notSelfBlind;
+
+    /**
+     * 个人中心不能自己上下线
+     */
+    private boolean unableSelfLine;
+    /**
+     * 电商录入时不能直接指定客服
+     */
+    private boolean unableAppointor;
+
+    /**
+     * 电商客资超时不能返无效
+     */
+    private int unableInvalidRange;
+
+    private boolean kfEditJdRst;
+
+
+    public boolean isKfEditJdRst() {
+        return kfEditJdRst;
+    }
+
+    public void setKfEditJdRst(boolean kfEditJdRst) {
+        this.kfEditJdRst = kfEditJdRst;
+    }
+
     public boolean isTypeRepeat() {
-		return typeRepeat;
-	}
+        return typeRepeat;
+    }
 
-	public void setTypeRepeat(boolean typeRepeat) {
-		this.typeRepeat = typeRepeat;
-	}
+    public void setTypeRepeat(boolean typeRepeat) {
+        this.typeRepeat = typeRepeat;
+    }
 
-	public boolean isSrcRepeat() {
-		return srcRepeat;
-	}
+    public boolean isSrcRepeat() {
+        return srcRepeat;
+    }
 
-	public void setSrcRepeat(boolean srcRepeat) {
-		this.srcRepeat = srcRepeat;
-	}
+    public void setSrcRepeat(boolean srcRepeat) {
+        this.srcRepeat = srcRepeat;
+    }
 
-	public String getStatusIgnore() {
-		return statusIgnore;
-	}
+    public String getStatusIgnore() {
+        return statusIgnore;
+    }
 
-	public void setStatusIgnore(String statusIgnore) {
-		this.statusIgnore = statusIgnore;
-	}
+    public void setStatusIgnore(String statusIgnore) {
+        this.statusIgnore = statusIgnore;
+    }
 
-	public String getTimeTypeIgnore() {
-		return timeTypeIgnore;
-	}
+    public String getTimeTypeIgnore() {
+        return timeTypeIgnore;
+    }
 
-	public void setTimeTypeIgnore(String timeTypeIgnore) {
-		this.timeTypeIgnore = timeTypeIgnore;
-	}
+    public void setTimeTypeIgnore(String timeTypeIgnore) {
+        this.timeTypeIgnore = timeTypeIgnore;
+    }
 
-	public Integer getDayIgnore() {
-		return dayIgnore;
-	}
+    public Integer getDayIgnore() {
+        return dayIgnore;
+    }
 
-	public void setDayIgnore(Integer dayIgnore) {
-		this.dayIgnore = dayIgnore;
-	}
+    public void setDayIgnore(Integer dayIgnore) {
+        this.dayIgnore = dayIgnore;
+    }
 
-	//
+    //
     public boolean isDelFlag() {
         return delFlag;
     }
@@ -206,12 +234,12 @@ public class CompanyPO extends BaseEntity {
         this.ssoLimit = ssoLimit;
     }
 
-    public int getOvertime() {
-        return overtime;
+    public int getOverTime() {
+        return overTime;
     }
 
-    public void setOvertime(int overtime) {
-        this.overtime = overtime;
+    public void setOverTime(int overTime) {
+        this.overTime = overTime;
     }
 
     public int getLimitDefault() {
@@ -230,4 +258,39 @@ public class CompanyPO extends BaseEntity {
         this.kzInterval = kzInterval;
     }
 
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public boolean isNotSelfBlind() {
+        return notSelfBlind;
+    }
+
+    public void setNotSelfBlind(boolean notSelfBlind) {
+        this.notSelfBlind = notSelfBlind;
+    }
+
+    public boolean isUnableSelfLine() {
+        return unableSelfLine;
+    }
+
+    public void setUnableSelfLine(boolean unableSelfLine) {
+        this.unableSelfLine = unableSelfLine;
+    }
+
+    public boolean isUnableAppointor() {
+        return unableAppointor;
+    }
+
+    public void setUnableAppointor(boolean unableAppointor) {
+        this.unableAppointor = unableAppointor;
+    }
+
+    public int getUnableInvalidRange() {
+        return unableInvalidRange;
+    }
+
+    public void setUnableInvalidRange(int unableInvalidRange) {
+        this.unableInvalidRange = unableInvalidRange;
+    }
 }
