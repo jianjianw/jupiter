@@ -25,10 +25,10 @@ public interface SourceStaffDao extends BaseDao<SourceStaffPO> {
      *
      * @param channelId
      * @param companyId
-     * @param yyIds
+     * @param linkId
      * @param relaType
      */
-    void insertByChannelId(@Param(value = "channelId") int channelId, @Param(value = "companyId") Integer companyId, @Param("yyIds") List<String> yyIds, @Param(value = "relaType") Integer relaType);
+    void insertByChannelId(@Param(value = "channelId") int channelId, @Param(value = "companyId") Integer companyId, @Param("linkId") String linkId, @Param(value = "relaType") Integer relaType);
 
     /**
      * 根据来源id清除关联信息

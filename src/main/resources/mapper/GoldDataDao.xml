@@ -113,6 +113,20 @@
         <if test="formId != null and formId != ''">
             AND FORMID = #{formId}
         </if>
+        <if test="srcList.size()>0">
+        AND SRCID IN (
+        <foreach collection="srcList" item="src" separator=",">
+            #{src}
+        </foreach>
+        )
+        </if>
+        <if test="staffList.size()>0">
+        AND CREATEOR IN (
+        <foreach collection="staffList" item="staff" separator=",">
+            #{staff}
+        </foreach>
+         )
+        </if>
         AND ISSHOW=1
         order by id DESC
 

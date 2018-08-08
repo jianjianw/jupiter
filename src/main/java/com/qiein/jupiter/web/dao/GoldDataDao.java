@@ -37,7 +37,7 @@ public interface GoldDataDao {
     /**
      * 金数据表单页面显示
      */
-    List<GoldFingerPO> select(@Param("companyId") Integer companyId, @Param("formId") String formId);
+    List<GoldFingerPO> select(@Param("companyId") Integer companyId, @Param("formId") String formId, @Param("srcList")List<Integer> srcList, @Param("staffList")List<Integer> staffList);
 
     /**
      * 管理开关

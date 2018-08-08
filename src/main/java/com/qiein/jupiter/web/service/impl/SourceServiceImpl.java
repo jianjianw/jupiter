@@ -79,20 +79,16 @@ public class SourceServiceImpl implements SourceService {
 
         if (PushRoleConst.YY_WEIGHTS_RECEIVE.equals(sourceVO.getPushRule())) {
             //指定渠道邀约人员
-            if (StringUtil.isEmpty(sourceVO.getLinkIds())) {
-                throw new RException(ExceptionEnum.YYID_NOT_EXISTS);
+            if (StringUtil.isNotEmpty(sourceVO.getLinkIds())) {
+                sourceStaffDao.deleteBySourceId(sourceVO.getId(), sourceVO.getCompanyId());
+                sourceStaffDao.insertBySourceId(sourceVO.getId(), sourceVO.getCompanyId(), Arrays.asList(sourceVO.getLinkIds().split(CommonConstant.STR_SEPARATOR)), SourceStaffConst.RELATYPE_STAFF);
             }
-            sourceStaffDao.deleteBySourceId(sourceVO.getId(), sourceVO.getCompanyId());
-            sourceStaffDao.insertBySourceId(sourceVO.getId(), sourceVO.getCompanyId(), Arrays.asList(sourceVO.getLinkIds().split(CommonConstant.STR_SEPARATOR)), SourceStaffConst.RELATYPE_STAFF);
         } else if (PushRoleConst.GROUP_AVG_YY_WEIGHTS_RECEIVE.equals(sourceVO.getPushRule())) {
             //指定渠道邀约人员
-            if (StringUtil.isEmpty(sourceVO.getLinkIds())) {
-                throw new RException(ExceptionEnum.YYID_NOT_EXISTS);
+            if (StringUtil.isNotEmpty(sourceVO.getLinkIds())) {
+                sourceStaffDao.deleteBySourceId(sourceVO.getId(), sourceVO.getCompanyId());
+                sourceStaffDao.insertBySourceId(sourceVO.getId(), sourceVO.getCompanyId(), Arrays.asList(sourceVO.getLinkIds().split(CommonConstant.STR_SEPARATOR)), SourceStaffConst.RELATYPE_GROUP);
             }
-            sourceStaffDao.deleteBySourceId(sourceVO.getId(), sourceVO.getCompanyId());
-            sourceStaffDao.insertBySourceId(sourceVO.getId(), sourceVO.getCompanyId(), Arrays.asList(sourceVO.getLinkIds().split(CommonConstant.STR_SEPARATOR)), SourceStaffConst.RELATYPE_GROUP);
-        } else {
-            sourceStaffDao.deleteBySourceId(sourceVO.getId(), sourceVO.getCompanyId());
         }
 
         sourceDao.update(sourceVO);
