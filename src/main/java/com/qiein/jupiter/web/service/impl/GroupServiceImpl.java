@@ -704,7 +704,7 @@ public class GroupServiceImpl implements GroupService {
      * @param groupId
      * @return
      */
-    public String getGroupName(String groupId){
-        return groupDao.getGroupName(groupId);
+    public String getGroupName(String groupId,Integer companyId){
+        return groupDao.getGroupName(groupId,companyId);
     }
 }
