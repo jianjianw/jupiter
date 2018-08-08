@@ -54,7 +54,7 @@ public class GroupStaffController extends BaseController{
                 staffNamess.append(staffName+CommonConstant.STR_SEPARATOR);
             }
             SystemLog log = new SystemLog(SysLogUtil.LOG_TYPE_GROUP, requestInfo.getIp(), requestInfo.getUrl(), staffPO.getId(),
-                    staffPO.getNickName(), SysLogUtil.getAddLog(SysLogUtil.LOG_SUP_GROUP_STAFF, groupName,CommonConstant.ADD_TO,staffNamess.toString()),
+                    staffPO.getNickName(), SysLogUtil.getAddLog(SysLogUtil.LOG_SUP_GROUP_STAFF, groupName+SysLogUtil.SYS_LOG_PREFIX_ADD+staffNamess.toString()),
                     staffPO.getCompanyId());
             logService.addLog(log);
         }catch (Exception e){
@@ -78,7 +78,7 @@ public class GroupStaffController extends BaseController{
             String groupName=groupService.getGroupName(groupStaffPO.getGroupId(),staffPO.getCompanyId());
             List<String>  staffNames=staffService.getStaffNames(staffIds);
             SystemLog log = new SystemLog(SysLogUtil.LOG_TYPE_GROUP, requestInfo.getIp(), requestInfo.getUrl(), staffPO.getId(),
-                    staffPO.getNickName(), SysLogUtil.getRemoveLog(SysLogUtil.LOG_SUP_GROUP_STAFF, groupName,CommonConstant.ADD_TO,staffNames.get(0)),
+                    staffPO.getNickName(), SysLogUtil.getRemoveLog(SysLogUtil.LOG_SUP_GROUP_STAFF, groupName+SysLogUtil.SYS_LOG_PREFIX_RE+staffNames.get(0)),
                     staffPO.getCompanyId());
             logService.addLog(log);
         }catch (Exception e){
