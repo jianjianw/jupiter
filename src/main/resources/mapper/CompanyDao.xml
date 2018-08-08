@@ -42,6 +42,8 @@
         <result column="KZINTERVAL" property="kzInterval" jdbcType="INTEGER"/>
         <result column="LIMITDEFAULT" property="limitDefault" jdbcType="INTEGER"/>
         <result column="KFEDITJDRST" property="kfEditJdRst" jdbcType="BOOLEAN"/>
+        <result column="ONLYAPP" property="onlyApp" jdbcType="BOOLEAN"/>
+        <result column="ISLOCK" property="lockFlag" jdbcType="BOOLEAN"/>
     </resultMap>
 
     <sql id="baseColumn">
