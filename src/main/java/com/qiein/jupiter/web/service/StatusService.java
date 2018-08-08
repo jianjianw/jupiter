@@ -51,4 +51,12 @@ public interface StatusService {
      * @param id
      */
     void editClientStatus(boolean showFlag,int id);
+
+    /**
+     * 修改手机是否已加状态
+     * @param kzId
+     * @param kzphoneFlag
+     * @param table
+     */
+    void editKzphoneFlag(String kzId,Integer kzphoneFlag,String table);
 }
