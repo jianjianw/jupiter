@@ -102,10 +102,10 @@
             <if test="isFilter != null">
                 ISFILTER = #{isFilter},
             </if>
-            <if test="isShow != null and isShow != 0">
+            <if test="isShow != null">
                 ISSHOW = #{isShow},
             </if>
-            <if test="pushRule != null and pushRule != 0">
+            <if test="pushRule != null">
                 PUSHRULE = #{pushRule}
             </if>
         </set>
