@@ -147,7 +147,7 @@
                 ISSHOW = #{sv.isShow},
             </if>
             <if test="pushRule != null">
-                PUSHRULE = #{pushRule}
+                PUSHRULE = #{sv.pushRule}
             </if>
         </set>
         WHERE
