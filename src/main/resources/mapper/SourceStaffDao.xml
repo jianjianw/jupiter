@@ -11,10 +11,8 @@
     </resultMap>
 
     <insert id = "insertByChannelId">
-        <foreach collection="yyIds" item="item"  >
             insert hm_crm_source_staff(RELATYPE, LINKID, SOURCEID, COMPANYID)
-            (select '${relaType}' as RELATYPE,'${item}' AS LINKID,ID,'${companyId}' AS COMPANYID FROM hm_crm_source where CHANNELID = #{channelId} and COMPANYID = #{companyId});
-        </foreach>
+            (select '${relaType}' as RELATYPE,'${linkId}' AS LINKID,ID,'${companyId}' AS COMPANYID FROM hm_crm_source where CHANNELID = #{channelId} and COMPANYID = #{companyId});
     </insert>
 
 
