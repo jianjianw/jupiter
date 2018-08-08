@@ -182,6 +182,10 @@ public class ClientVO implements Serializable {
      */
     private int stayAmount;
     /**
+     * 本次收款金额
+     */
+    private int payAmount;
+    /**
      * 支付方式
      */
     private int payStyle;
@@ -770,5 +774,13 @@ public class ClientVO implements Serializable {
 
     public void setReceiptName(String receiptName) {
         this.receiptName = receiptName;
+    }
+
+    public int getPayAmount() {
+        return payAmount;
+    }
+
+    public void setPayAmount(int payAmount) {
+        this.payAmount = payAmount;
     }
 }
