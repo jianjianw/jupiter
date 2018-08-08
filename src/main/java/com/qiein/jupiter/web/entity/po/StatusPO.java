@@ -58,13 +58,13 @@ public class StatusPO extends BaseEntity {
     /**
      * 客资状态有效性
      */
-    private int showFlag;
+    private boolean showFlag;
 
-    public int getShowFlag() {
+    public boolean getShowFlag() {
         return showFlag;
     }
 
-    public void setShowFlag(int showFlag) {
+    public void setShowFlag(boolean showFlag) {
         this.showFlag = showFlag;
     }
 

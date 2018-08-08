@@ -995,6 +995,18 @@ public class StaffServiceImpl implements StaffService {
         }
         return staffByPhoneMd5PwdAndCid;
     }
-
+    /**
+     * 批量获取员工姓名
+     * @param staffIds
+     * @return
+     */
+    public List<String> getStaffNames(String staffIds){
+        String[] staffIdss=staffIds.split(CommonConstant.STR_SEPARATOR);
+        List<String> list=new ArrayList<>();
+        for(String staffId:staffIdss){
+            list.add(staffId);
+        }
+        return staffDao.getStaffNames(list);
+    }
 
 }

@@ -29,6 +29,7 @@ public class SysLogUtil {
     public static final String LOG_SUP_STAFF = "员工";
     public static final String LOG_SUP_LOCK = "锁定状态";
     public static final String LOG_SUP_GIVE = "交接";
+    public static final String LOG_SUP_GROUP_STAFF="小组员工关系";
 
     public static final String SYS_LOG_PREFIX_ADD = "新增了";
     public static final String SYS_LOG_PREFIX_EDIT = "修改了";

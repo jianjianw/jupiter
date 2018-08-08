@@ -233,6 +233,7 @@ public class LoginServiceImpl implements LoginService {
             }
         }
         // 如果员工没有token，或者重新生成
+        System.out.println(company.isSsoLimit());
         if (StringUtil.isEmpty(staff.getToken()) || company.isSsoLimit()) {
             updateToken(staff);
         }

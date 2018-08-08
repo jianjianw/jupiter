@@ -136,4 +136,11 @@ public interface GroupService {
      * @param companyId
      */
     void editProiority(Integer fId, Integer fPriority, Integer sId, Integer sPriority, Integer companyId);
+
+    /**
+     * 获取小组名称
+     * @param groupId
+     * @return
+     */
+    String getGroupName(String groupId);
 }
