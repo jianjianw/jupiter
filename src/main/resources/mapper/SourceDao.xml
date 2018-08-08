@@ -99,7 +99,7 @@
             <if test="priority != null">
                 PRIORITY = #{priority},
             </if>
-            <if test="isFilter != null and isFilter != 0">
+            <if test="isFilter != null">
                 ISFILTER = #{isFilter},
             </if>
             <if test="isShow != null and isShow != 0">
