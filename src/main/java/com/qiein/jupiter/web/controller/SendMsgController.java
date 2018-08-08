@@ -117,7 +117,7 @@ public class SendMsgController extends BaseController{
         Map<String, String> map = sendMsgDTO.getMap();
         ShopPO shopPO = shopService.findShop(Integer.parseInt(sendMsgDTO.getMap().get("shopId")));
         map.put("address", shopPO.getAddress());
-        if (msgTemplateVO.getIsSelf() != CommonConstant.SELF) {
+        if (!msgTemplateVO.getIsSelf().equals(CommonConstant.SELF) ) {
             if (StringUtil.isEmpty(shopPO.getServicePhone())) {
                 map.put("telno", "");
             } else {
