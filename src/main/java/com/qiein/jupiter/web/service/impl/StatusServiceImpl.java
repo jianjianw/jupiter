@@ -5,7 +5,7 @@ import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.constant.DictionaryConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
-import com.qiein.jupiter.web.dao.StatusDao;
+import com.qiein.jupiter.web.dao.ClientStatusDao;
 import com.qiein.jupiter.web.entity.po.DictionaryPO;
 import com.qiein.jupiter.web.entity.po.StatusPO;
 import com.qiein.jupiter.web.service.DictionaryService;
@@ -29,7 +29,7 @@ public class StatusServiceImpl implements StatusService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private StatusDao statusDao;
+    private ClientStatusDao statusDao;
 
     @Autowired
     private DictionaryService dictionaryService;
@@ -113,5 +113,13 @@ public class StatusServiceImpl implements StatusService {
     @Override
     public int editNameByClassIdAndStatusId(StatusPO statusPO) {
         return statusDao.editNameByClassIdAndStatusId(statusPO);
+    }
+    /**
+     * 修改客资状态
+     * @param showFlag
+     * @param id
+     */
+    public void editClientStatus(boolean showFlag,int id){
+        statusDao.editClientStatus(showFlag, id);
     }
 }

@@ -44,4 +44,11 @@ public interface StatusService {
      * 根据CLASS  ID  和 statusid 编辑状态名称
      */
     int editNameByClassIdAndStatusId(StatusPO statusPO);
+
+    /**
+     * 修改客资状态
+     * @param showFlag
+     * @param id
+     */
+    void editClientStatus(boolean showFlag,int id);
 }

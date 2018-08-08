@@ -59,6 +59,8 @@ public class ClientEditServiceImpl implements ClientEditService {
     private CompanyDao companyDao;
     @Autowired
     private CashLogDao cashLogDao;
+    @Autowired
+    private ClientStatusDao clientStatusDao;
 
     /**
      * 电商推广修改客资

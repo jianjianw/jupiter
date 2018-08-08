@@ -39,7 +39,18 @@ public class ClientStatusPO {
      * companyId
      * */
     private Integer companyId;
+    /**
+     * 客资状态有效性
+     */
+    private int showFlag;
 
+    public int getShowFlag() {
+        return showFlag;
+    }
+
+    public void setShowFlag(int showFlag) {
+        this.showFlag = showFlag;
+    }
     public Integer getId() {
         return id;
     }

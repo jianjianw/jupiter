@@ -55,6 +55,18 @@ public class StatusPO extends BaseEntity {
      */
     @JSONField(serialize = false)
     private int companyId;
+    /**
+     * 客资状态有效性
+     */
+    private int showFlag;
+
+    public int getShowFlag() {
+        return showFlag;
+    }
+
+    public void setShowFlag(int showFlag) {
+        this.showFlag = showFlag;
+    }
 
     public StatusPO(int id, String backColor, String fontColor, int companyId) {
         super(id);
