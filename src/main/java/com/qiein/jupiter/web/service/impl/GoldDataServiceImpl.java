@@ -29,7 +29,9 @@ import com.qiein.jupiter.web.service.GoldDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -99,9 +101,21 @@ public class GoldDataServiceImpl implements GoldDataService {
      * @param companyId
      * @return
      */
-    public PageInfo<GoldFingerPO> select(int companyId, int pageNum, int pageSize, String formId) {
+    public PageInfo<GoldFingerPO> select(int companyId, int pageNum, int pageSize, String formId,String staffIds, String srcIds) {
         PageHelper.startPage(pageNum, pageSize);
-        List<GoldFingerPO> select = goldDataDao.select(companyId, formId);
+        List<Integer> srcList=new ArrayList<>();
+        List<Integer> staffList=new ArrayList<>();
+        if(!StringUtil.isEmpty(staffIds)){
+            for(String staff:staffIds.split(CommonConstant.STR_SEPARATOR)){
+                staffList.add(Integer.parseInt(staff));
+            }
+        }
+        if(!StringUtil.isEmpty(srcIds)){
+            for(String src:srcIds.split(CommonConstant.STR_SEPARATOR)){
+                srcList.add(Integer.parseInt(src));
+            }
+        }
+        List<GoldFingerPO> select = goldDataDao.select(companyId, formId,srcList,staffList);
         return new PageInfo<>(select);
 
     }

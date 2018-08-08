@@ -108,9 +108,9 @@ public class GoldDataController extends BaseController {
     @GetMapping("/select")
     public ResultInfo select(@RequestParam(defaultValue = "1") int pageNum,
                              @RequestParam(defaultValue = "20") int pageSize,
-                             String formId) {
+                             @RequestParam String formId,@RequestParam String staffIds,@RequestParam String srcIds) {
         StaffPO staff = getCurrentLoginStaff();
-        PageInfo<GoldFingerPO> select = goldDataService.select(staff.getCompanyId(), pageNum, pageSize, formId);
+        PageInfo<GoldFingerPO> select = goldDataService.select(staff.getCompanyId(), pageNum, pageSize, formId,staffIds,srcIds);
         return ResultInfoUtil.success(select);
     }
 
