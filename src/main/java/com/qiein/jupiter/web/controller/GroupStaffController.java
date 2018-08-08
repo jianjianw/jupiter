@@ -47,7 +47,7 @@ public class GroupStaffController extends BaseController{
         try{
             String staffIds=jsonObject.getString("staffIds");
             String groupId=jsonObject.getString("groupId");
-            String groupName=groupService.getGroupName(Integer.parseInt(groupId));
+            String groupName=groupService.getGroupName(groupId);
             List<String>  staffNames=staffService.getStaffNames(staffIds);
             StringBuffer staffNamess=new StringBuffer();
             for(String staffName:staffNames){
@@ -75,8 +75,7 @@ public class GroupStaffController extends BaseController{
         groupStaffService.remove(groupStaffPO);
         try{
             String staffIds=groupStaffPO.getStaffId()+CommonConstant.NULL_STR;
-            String groupId=groupStaffPO.getGroupId();
-            String groupName=groupService.getGroupName(Integer.parseInt(groupId));
+            String groupName=groupService.getGroupName(groupStaffPO.getGroupId());
             List<String>  staffNames=staffService.getStaffNames(staffIds);
             SystemLog log = new SystemLog(SysLogUtil.LOG_TYPE_GROUP, requestInfo.getIp(), requestInfo.getUrl(), staffPO.getId(),
                     staffPO.getNickName(), SysLogUtil.getRemoveLog(SysLogUtil.LOG_SUP_GROUP_STAFF, groupName,CommonConstant.ADD_TO,staffNames.get(0)),

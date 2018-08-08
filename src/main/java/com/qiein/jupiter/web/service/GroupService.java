@@ -142,5 +142,5 @@ public interface GroupService {
      * @param groupId
      * @return
      */
-    String getGroupName(Integer groupId);
+    String getGroupName(String groupId);
 }
