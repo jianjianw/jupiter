@@ -31,7 +31,7 @@
         hm_crm_source
         WHERE
         ID = #{id}
-        AND COMPANYID = #{companyId}
+        AND COMPANYID =#{companyId}
     </select>
 
     <!--新增来源-->

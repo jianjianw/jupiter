@@ -2,8 +2,6 @@ package com.qiein.jupiter.web.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.constant.ChannelConstant;
 import com.qiein.jupiter.constant.ClientStatusConst;
 import com.qiein.jupiter.constant.CommonConstant;
@@ -12,7 +10,6 @@ import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.http.CrmBaseApi;
 import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
 import com.qiein.jupiter.util.*;
-import com.qiein.jupiter.util.ding.DingMsgSendUtil;
 import com.qiein.jupiter.web.dao.*;
 import com.qiein.jupiter.web.entity.dto.ClientGoEasyDTO;
 import com.qiein.jupiter.web.entity.dto.ClientPushDTO;
@@ -20,8 +17,6 @@ import com.qiein.jupiter.web.entity.po.*;
 import com.qiein.jupiter.web.entity.vo.ClientVO;
 import com.qiein.jupiter.web.entity.vo.ShopVO;
 import com.qiein.jupiter.web.service.ClientAddService;
-import com.qiein.jupiter.web.service.SystemLogService;
-import com.qiein.jupiter.web.service.quene.ThreadTaskPushManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,8 +48,7 @@ public class ClientAddServiceImpl implements ClientAddService {
     @Autowired
     private NewsDao newsDao;
 
-    // 客资推送线程池
-    ThreadTaskPushManager tpm = ThreadTaskPushManager.getInstance();
+
 
     /**
      * 添加电商客资
@@ -143,10 +137,10 @@ public class ClientAddServiceImpl implements ClientAddService {
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if ("100000".equals(jsInfo.getString("code"))) {
             CompanyPO companyPO = companyDao.getById(staffPO.getCompanyId());
-            tpm.pushInfo(new ClientPushDTO(pushService, sourcePO.getPushRule(), staffPO.getCompanyId(),
-                    JsonFmtUtil.strContentToJsonObj(addRstStr).getString("kzid"), clientVO.getTypeId(),
-                    companyPO.getOvertime(), companyPO.getKzInterval(),
-                    sourcePO.getId()));
+//            tpm.pushInfo(new ClientPushDTO(pushService, sourcePO.getPushRule(), staffPO.getCompanyId(),
+//                    JsonFmtUtil.strContentToJsonObj(addRstStr).getString("kzid"), clientVO.getTypeId(),
+//                    companyPO.getOvertime(), companyPO.getKzInterval(),
+//                    sourcePO.getId()));
         } else if ("130019".equals(jsInfo.getString("code"))) {
             //重复客资，给邀约推送消息
             ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(jsInfo.getString("data"),
@@ -244,9 +238,9 @@ public class ClientAddServiceImpl implements ClientAddService {
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if ("100000".equals(jsInfo.getString("code"))) {
             CompanyPO companyPO = companyDao.getById(staffPO.getCompanyId());
-            tpm.pushInfo(new ClientPushDTO(pushService, sourcePO.getPushRule(), staffPO.getCompanyId(),
-                    JsonFmtUtil.strContentToJsonObj(addRstStr).getString("kzid"), sourcePO.getTypeId(),
-                    companyPO.getOvertime(), companyPO.getKzInterval(), sourcePO.getId()));
+//            tpm.pushInfo(new ClientPushDTO(pushService, sourcePO.getPushRule(), staffPO.getCompanyId(),
+//                    JsonFmtUtil.strContentToJsonObj(addRstStr).getString("kzid"), sourcePO.getTypeId(),
+//                    companyPO.getOvertime(), companyPO.getKzInterval(), sourcePO.getId()));
         } else if ("130019".equals(jsInfo.getString("code"))) {
             //重复客资，给邀约推送消息
             ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(jsInfo.getString("data"),

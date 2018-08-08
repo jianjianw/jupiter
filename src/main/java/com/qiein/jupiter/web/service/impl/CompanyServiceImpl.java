@@ -225,17 +225,21 @@ public class CompanyServiceImpl implements CompanyService {
     public DsinvalDTO findDsinvalId(@Param("companyId") Integer companyId) {
         DsinvalDTO dsinvalDTO = companyDao.findDsinvalId(companyId);
         String zjsValidStatus = dsinvalDTO.getZjsValidStatus();
-        String[] zjsValidStatuss = zjsValidStatus.substring(1, zjsValidStatus.length() - 1).split(CommonConstant.FILE_SEPARATOR);
+        String[] zjsValidStatuss = zjsValidStatus.split(CommonConstant.FILE_SEPARATOR);
         List<String> list = new ArrayList<>();
         for (String status : zjsValidStatuss) {
-            list.add(status);
+            if (StringUtil.isNotEmpty(status)) {
+                list.add(status);
+            }
         }
         dsinvalDTO.setList(list);
         String dsddStatuss = dsinvalDTO.getDsddStatus();
-        String[] dsddStatus=dsddStatuss.substring(1, dsddStatuss.length() - 1).split(CommonConstant.FILE_SEPARATOR);
+        String[] dsddStatus = dsddStatuss.split(CommonConstant.FILE_SEPARATOR);
         List<String> dsddList = new ArrayList<>();
         for (String status : dsddStatus) {
-            dsddList.add(status);
+            if (StringUtil.isNotEmpty(status)) {
+                dsddList.add(status);
+            }
         }
         dsinvalDTO.setDsddList(dsddList);
         return dsinvalDTO;
@@ -296,13 +300,15 @@ public class CompanyServiceImpl implements CompanyService {
     public String getZjsRequiredField(int companyId) {
         return companyDao.getZjsRequiredField(companyId);
     }
+
     /**
      * 修改电商待定自定义状态
+     *
      * @param dsddStatus
      * @return
      */
-    public void editDsddStatus(String dsddStatus,Integer companyId){
-        companyDao.editDsddStatus(dsddStatus,companyId);
+    public void editDsddStatus(String dsddStatus, Integer companyId) {
+        companyDao.editDsddStatus(dsddStatus, companyId);
     }
 
     /**

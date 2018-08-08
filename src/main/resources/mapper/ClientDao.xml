@@ -93,7 +93,12 @@
 
     <!--修改客资渠道ID-->
     <update id = "updateKzChannelId">
-        update ${tableName} set info.channelId = #{channelId} where info.sourceId = #{sourceId} and info.companyId = #{companyId}
+        update ${tableName} info set info.channelId = #{channelId} where info.sourceId = #{sourceId} and info.companyId = #{companyId}
+    </update>
+
+    <!--修改客资详情表中的Memo字段-->
+    <update id = "updateDetailMemo">
+        update ${detailTabName} detail set memo = #{content} where detail.kzid = #{kzId} and detail.companyId = #{companyId}
     </update>
 
 </mapper>
