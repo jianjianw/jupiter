@@ -99,13 +99,13 @@
             <if test="priority != null">
                 PRIORITY = #{priority},
             </if>
-            <if test="isFilter != null">
+            <if test="isFilter != null and isFilter != 0">
                 ISFILTER = #{isFilter},
             </if>
-            <if test="isShow != null">
+            <if test="isShow != null and isShow != 0">
                 ISSHOW = #{isShow},
             </if>
-            <if test="pushRule != null">
+            <if test="pushRule != null and pushRule != 0">
                 PUSHRULE = #{pushRule}
             </if>
         </set>
