@@ -32,9 +32,10 @@ public class CashServiceImpl implements CashService {
      */
     public int editCash(CashLogPO cashLogPO) {
         String cashTableName = DBSplitUtil.getCashTabName(cashLogPO.getCompanyId());
+        String infoTableName = DBSplitUtil.getInfoLogTabName(cashLogPO.getCompanyId());
         String detailTableName = DBSplitUtil.getDetailTabName(cashLogPO.getCompanyId());
         String kzId = cashLogPO.getKzId();
-        ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(kzId, cashTableName, detailTableName);
+        ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(kzId, infoTableName, detailTableName);
         if ((info.getStayAmount() + cashLogPO.getAmount()) > info.getAmount()) {
             throw new RException(ExceptionEnum.AMOUNT_ERROR);
         }
@@ -43,7 +44,7 @@ public class CashServiceImpl implements CashService {
         //修改已收金额
         cashLogDao.editAmount(cashTableName, cashLogPO.getAmount(), cashLogPO.getId(), cashLogPO.getCompanyId());
         //添加修改日志
-        clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(cashLogPO.getCompanyId()), new
+        clientLogDao.addInfoLog(infoTableName, new
                 ClientLogPO(kzId, cashLogPO.getOperaId(),
                 cashLogPO.getOperaName(), ClientLogConst.getCashEditLog(cashLogPO, oldCash),
                 ClientLogConst.INFO_LOGTYPE_CASH, cashLogPO.getCompanyId()));
