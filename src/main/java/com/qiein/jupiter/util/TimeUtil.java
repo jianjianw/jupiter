@@ -32,6 +32,8 @@ public class TimeUtil {
     public static SimpleDateFormat yyyyMMddHHmmssSSSLeft = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss,SSS");
     public static SimpleDateFormat yyyyMMddHHmmssSSSNoCut = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 
+    public static int INVALID_RANGE = 60;// 合理时间差
+
     /**
      * 根据指定时间格式格式化系统时间
      *
@@ -541,4 +543,7 @@ public class TimeUtil {
         return utcDate;
     }
 
+    public static boolean checkTimesDifRange(int time, int dbTime) {
+        return Math.abs(time - dbTime) > INVALID_RANGE;
+    }
 }
