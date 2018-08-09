@@ -6,6 +6,7 @@ import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
 import com.qiein.jupiter.msg.goeasy.MessageConts;
+import com.qiein.jupiter.msg.websocket.WebSocketMsgUtil;
 import com.qiein.jupiter.util.CollectionUtils;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.NumUtil;
@@ -60,6 +61,9 @@ public class ClientPushServiceImpl implements ClientPushService {
 
     @Autowired
     private StaffService staffService;
+
+    @Autowired
+    private WebSocketMsgUtil webSocketMsgUtil;
 
     /**
      * 根据拍摄地和渠道维度推送客资
@@ -598,7 +602,7 @@ public class ClientPushServiceImpl implements ClientPushService {
         ClientGoEasyDTO infoDTO = clientInfoDao.getClientGoEasyDTOById(kzId, DBSplitUtil.getInfoTabName(companyId),
                 DBSplitUtil.getDetailTabName(companyId));
         for (StaffPushDTO sf : yyList) {
-            GoEasyUtil.pushClientReceive(companyId, sf.getStaffId(), infoDTO, newsDao, staffDao);
+            GoEasyUtil.pushClientReceive(companyId, sf.getStaffId(), infoDTO, newsDao, staffDao,webSocketMsgUtil);
         }
     }
 

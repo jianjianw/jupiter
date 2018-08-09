@@ -3,6 +3,8 @@ package com.qiein.jupiter.msg.websocket;
 import com.alibaba.fastjson.JSONObject;
 import com.mzlion.easyokhttp.HttpClient;
 import com.qiein.jupiter.enums.WebSocketMsgEnum;
+import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.web.entity.dto.ClientGoEasyDTO;
 import com.qiein.jupiter.web.entity.dto.WebSocketMsgDTO;
 import com.qiein.jupiter.web.entity.dto.OrderSuccessMsg;
 import org.springframework.beans.factory.annotation.Value;
@@ -107,6 +109,23 @@ public class WebSocketMsgUtil {
         }
         msgDTO.setContent(content);
         this.sendMsg(msgDTO);
+    }
+
+    /**
+     * 推送领取客资的消息
+     */
+    public void pushReceiveClient(int companyId, int staffId, String head, ClientGoEasyDTO info) {
+        WebSocketMsgDTO msgDTO = new WebSocketMsgDTO();
+        msgDTO.setType(WebSocketMsgEnum.AlertMsg);
+        msgDTO.setCompanyId(companyId);
+        msgDTO.setStaffId(staffId);
+        JSONObject contentJson = new JSONObject();
+        contentJson.put("head", head);
+        contentJson.put("kz", info);
+        contentJson.put("contact", StringUtil.isNotEmpty(info.getKzPhone()) ? info.getKzPhone() :
+                StringUtil.isNotEmpty(info.getKzWechat()) ? info.getKzWechat() :
+                        StringUtil.isNotEmpty(info.getKzQq()) ? info.getKzQq() : info.getKzWw());
+        msgDTO.setContent(contentJson.toString());
     }
 
 
