@@ -411,6 +411,8 @@ public class ClientEditServiceImpl implements ClientEditService {
             }
             reqContent.put("shopid", clientVO.getShopId());
             reqContent.put("shopname", shopVO.getShopName());
+        }
+        if (NumUtil.isValid(clientVO.getReceptorId())) {
             StaffPO receptor = staffDao.getById(clientVO.getReceptorId());
             if (receptor == null) {
                 throw new RException(ExceptionEnum.STAFF_IS_NOT_EXIST);

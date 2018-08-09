@@ -33,7 +33,7 @@
         SELECT log.OPERAID, log.OPERANAME, sf.HEADIMG, log.MEMO, log.OPERATIME, log.LOGTYPE
         FROM ${logTabName} log
         LEFT JOIN hm_pub_staff sf ON log.OPERAID = sf.ID AND sf.COMPANYID = #{companyId}
-        WHERE log.COMPANYID = #{companyId} AND log.KZID = #{kzId} AND log.LOGTYPE = #{logType} ORDER BY log.OPERATIME DESC, log.ID DESC 
+        WHERE log.COMPANYID = #{companyId} AND log.KZID = #{kzId} AND log.LOGTYPE = #{logType} ORDER BY log.OPERATIME DESC, log.ID DESC
 
     </select>
 </mapper>
