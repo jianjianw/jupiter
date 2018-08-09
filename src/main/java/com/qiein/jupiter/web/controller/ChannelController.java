@@ -113,7 +113,7 @@ public class ChannelController extends BaseController {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         // 获取所属公司编号
         Integer companyId = currentLoginStaff.getCompanyId();
-        ChannelPO channelList=channelService.findById(id);
+        ChannelPO channelList = channelService.findById(id);
         channelService.delChannel(id, companyId);
         RequestInfoDTO requestInfo = getRequestInfo();
         try {
@@ -264,7 +264,7 @@ public class ChannelController extends BaseController {
      * @return
      */
     @GetMapping("/get_all_source_list_by_role")
-    public ResultInfo getAllSourceListByRole(@NotEmptyStr @RequestParam("role") String role) {
+    public ResultInfo getAllSourceListByRole(@RequestParam("role") String role) {
         // 获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         return ResultInfoUtil

@@ -205,10 +205,11 @@ public class ClientEditServiceImpl implements ClientEditService {
             // 在线订单
             if (ClientStatusConst.ONLINE_SUCCESS == clientVO.getYyRst()) {
                 reqContent.put("amount", clientVO.getAmount());// 成交套系金额
-                reqContent.put("stayamount", clientVO.getStayAmount());// 已收金额
+                reqContent.put("payamount", clientVO.getPayAmount());// 本次收款金额
+//                reqContent.put("stayamount", clientVO.getStayAmount());// 已收金额
                 reqContent.put("successtime", clientVO.getSuccessTime());// 订单时间
                 reqContent.put("paystyle", clientVO.getPayStyle());// 付款方式
-                reqContent.put("paytime", clientVO.getPayTime());// 收款时间
+                reqContent.put("paytime", clientVO.getSuccessTime());// 收款时间,就是订单时间
                 reqContent.put("payreceiptid", staffPO.getId());// 收款人id
                 reqContent.put("payreceiptname", staffPO.getNickName());// 收款人姓名
             }

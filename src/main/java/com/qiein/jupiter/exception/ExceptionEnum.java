@@ -123,7 +123,7 @@ public enum ExceptionEnum {
     SHOP_ID_IS_NULL(1408, "门店ID不能为空"),
     APPOINT_TIME_IS_NULL(1409, "预约时间不能为空"),
     AMOUNT_IS_NULL(1410, "套餐金额不能为空"),
-    STAY_AMOUNT_IS_NULL(1411, "已收金额不能为空"),
+    STAY_AMOUNT_IS_NULL(1411, "收款金额不能为空"),
     SUCCESS_TIME_IS_NULL(1412, "订单时间不能为空"),
     STAY_TIME_IS_NULL(1413, "收款时间不能为空"),
     JD_RESULT_IS_NULL(1414, "接待结果不能为空"),
