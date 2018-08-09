@@ -11,7 +11,7 @@ public interface CashService {
      *
      * @param cashLogPO
      */
-    void editCash(CashLogPO cashLogPO);
+    int editCash(CashLogPO cashLogPO);
 
     /**
      * 添加收款记录

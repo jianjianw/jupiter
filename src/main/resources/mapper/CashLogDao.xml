@@ -23,12 +23,13 @@
         <result column="PAYMENTTIME" jdbcType="VARCHAR" property="paymentTime"/>
     </resultMap>
     <sql id="list">
-        ID,KZID,PAYSTYLE,AMOUNT,STAFFID,STAFFNAME,FROM_UNIXTIME(PAYMENTTIME, '%Y/%m/%d %H:%i') PAYMENTTIME,STATUS
+        ID, KZID, PAYSTYLE, AMOUNT, STAFFID, STAFFNAME, FROM_UNIXTIME(PAYMENTTIME, '%Y/%m/%d %H:%i') PAYMENTTIME, STATUS
     </sql>
 
     <select id="findCashLog" resultMap="baseMap">
-        select <include refid="list"/>
-        FROM  ${table}
+        select
+        <include refid="list"/>
+        FROM ${table}
         where KZID=#{kzId}
         AND STATUS = 1
         ORDER BY ID DESC
@@ -36,25 +37,45 @@
     <!-- 新增客资日志 -->
     <insert id="addCahsLog" parameterType="map">
         INSERT INTO ${logTabName} (
-			KZID, PAYSTYLE, AMOUNT,  STAFFID,  STAFFNAME, PAYMENTTIME, OPERAID, OPERANAME,  CREATETIME, COMPANYID
-		)
-		VALUES
-			(#{log.kzId}, #{log.payStyle}, #{log.amount}, #{log.staffId},#{log.staffName} ,#{log.paymentTime},#{log.operaId},#{log.operaName}, UNIX_TIMESTAMP(NOW()), #{log.companyId}
-		)
+            KZID, PAYSTYLE, AMOUNT, STAFFID, STAFFNAME, PAYMENTTIME, OPERAID, OPERANAME, CREATETIME, COMPANYID
+        )
+        VALUES
+            (#{log.kzId}, #{log.payStyle}, #{log.amount}, #{log.staffId}, #{log.staffName}, #{log.paymentTime},
+             #{log.operaId}, #{log.operaName}, UNIX_TIMESTAMP(NOW()), #{log.companyId}
+            )
     </insert>
 
-	<update id="editAmount">
+    <!--修改付款记录的状态-->
+    <update id="editAmount">
         UPDATE ${table}
         SET AMOUNT = #{amount}
         WHERE ID = #{id}
-        AND COMPANYID = #{companyId}
+              AND COMPANYID = #{companyId}
     </update>
 
+    <!--根据ID查询收款记录-->
     <select id="getCashLogById" resultMap="POMap">
-        select log.ID,log.KZID,log.PAYSTYLE,log.AMOUNT,log.STAFFID,log.STAFFNAME, log.PAYMENTTIME, dic.DICNAME AS PAYSTYLENAME
-        FROM  ${table} log
-        LEFT JOIN hm_crm_dictionary dic ON log.PAYSTYLE = dic.DICCODE AND log.COMPANYID = dic.COMPANYID AND dic.DICTYPE = 'pay_style'
+        SELECT
+            log.ID,
+            log.KZID,
+            log.PAYSTYLE,
+            log.AMOUNT,
+            log.STAFFID,
+            log.STAFFNAME,
+            log.PAYMENTTIME,
+            dic.DICNAME AS PAYSTYLENAME
+        FROM ${table} log
+            LEFT JOIN hm_crm_dictionary dic
+                ON log.PAYSTYLE = dic.DICCODE AND log.COMPANYID = dic.COMPANYID AND dic.DICTYPE = 'pay_style'
         WHERE log.ID = #{id}
-        AND log.COMPANYID = #{companyId};
+              AND log.COMPANYID = #{companyId};
+    </select>
+
+    <!--获取某个客资的所有收款记录总和-->
+    <select id="getClientReceivedAmount" resultType="Integer">
+        SELECT COUNT(AMOUNT)
+        FROM ${table} log
+        WHERE log.COMPANYID = #{companyId}
+              AND log.KZID = #{kzId}
     </select>
 </mapper>

@@ -26,21 +26,24 @@ public class CashServiceImpl implements CashService {
 
     /**
      * 修改付款金额
-     *
-     * @param cashDTO
      */
-    public void editCash(CashLogPO cashLogPO) {
+    public int editCash(CashLogPO cashLogPO) {
+        String cashTableName = DBSplitUtil.getCashTabName(cashLogPO.getCompanyId());
+        String kzId = cashLogPO.getKzId();
         //查询旧记录，用于生产修改记录
-        CashLogPO oldCash = cashLogDao.getCashLogById(DBSplitUtil.getCashTabName(cashLogPO.getCompanyId()), cashLogPO.getId(), cashLogPO.getCompanyId());
+        CashLogPO oldCash = cashLogDao.getCashLogById(cashTableName, cashLogPO.getId(), cashLogPO.getCompanyId());
         //修改已收金额
-        cashLogDao.editAmount(DBSplitUtil.getCashTabName(cashLogPO.getCompanyId()), cashLogPO.getAmount(), cashLogPO.getId(), cashLogPO.getCompanyId());
+        cashLogDao.editAmount(cashTableName, cashLogPO.getAmount(), cashLogPO.getId(), cashLogPO.getCompanyId());
         //添加修改日志
         clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(cashLogPO.getCompanyId()), new
-                ClientLogPO(cashLogPO.getKzId(), cashLogPO.getOperaId(),
-                cashLogPO.getOperaName(), ClientLogConst.getCashEditLog(cashLogPO, oldCash), ClientLogConst.INFO_LOGTYPE_CASH, cashLogPO.getCompanyId()));
+                ClientLogPO(kzId, cashLogPO.getOperaId(),
+                cashLogPO.getOperaName(), ClientLogConst.getCashEditLog(cashLogPO, oldCash),
+                ClientLogConst.INFO_LOGTYPE_CASH, cashLogPO.getCompanyId()));
         //修改已收金额
-        clientInfoDao.editStayAmount(DBSplitUtil.getDetailTabName(cashLogPO.getCompanyId()), DBSplitUtil.getCashTabName(cashLogPO.getCompanyId()), cashLogPO.getKzId(), cashLogPO.getCompanyId());
-
+        clientInfoDao.editStayAmount(DBSplitUtil.getDetailTabName(cashLogPO.getCompanyId()), cashTableName,
+                kzId, cashLogPO.getCompanyId());
+        //查询已收金额
+        return cashLogDao.getClientReceivedAmount(cashTableName, kzId);
     }
 
 
