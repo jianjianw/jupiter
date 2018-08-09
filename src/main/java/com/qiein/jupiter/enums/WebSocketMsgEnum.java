@@ -18,7 +18,9 @@ public enum WebSocketMsgEnum {
     //重新获取基础信息
     BaseInfoFresh(6),
     //通知消息
-    AlertMsg(7);
+    AlertMsg(7),
+    //领取客资
+    ReceiveClient(8);
 
     /**
      * 类型
