@@ -12,10 +12,6 @@ public class CashLogVO {
     private String staffName;
     private String paymentTime;
     private int status;
-    /**
-     * 支付方式中文名称
-     */
-    private String payStyleName;
 
     public int getStatus() {
         return status;
@@ -79,13 +75,5 @@ public class CashLogVO {
 
     public void setPaymentTime(String paymentTime) {
         this.paymentTime = paymentTime;
-    }
-
-    public String getPayStyleName() {
-        return payStyleName;
-    }
-
-    public void setPayStyleName(String payStyleName) {
-        this.payStyleName = payStyleName;
     }
 }

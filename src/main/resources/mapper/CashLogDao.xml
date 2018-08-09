@@ -5,6 +5,17 @@
         <id column="ID" jdbcType="INTEGER" property="id"/>
         <result column="KZID" jdbcType="VARCHAR" property="kzId"/>
         <result column="PAYSTYLE" jdbcType="INTEGER" property="payStyle"/>
+        <result column="AMOUNT" jdbcType="INTEGER" property="amount"/>
+        <result column="STAFFID" jdbcType="INTEGER" property="staffId"/>
+        <result column="STAFFNAME" jdbcType="VARCHAR" property="staffName"/>
+        <result column="PAYMENTTIME" jdbcType="VARCHAR" property="paymentTime"/>
+        <result column="STATUS" jdbcType="INTEGER" property="status"/>
+    </resultMap>
+
+    <resultMap id="POMap" type="com.qiein.jupiter.web.entity.po.CashLogPO">
+        <id column="ID" jdbcType="INTEGER" property="id"/>
+        <result column="KZID" jdbcType="VARCHAR" property="kzId"/>
+        <result column="PAYSTYLE" jdbcType="INTEGER" property="payStyle"/>
         <result column="PAYSTYLENAME" jdbcType="VARCHAR" property="payStyleName"/>
         <result column="AMOUNT" jdbcType="INTEGER" property="amount"/>
         <result column="STAFFID" jdbcType="INTEGER" property="staffId"/>
@@ -37,7 +48,7 @@
         AND COMPANYID = #{companyId}
     </update>
 
-    <select id="getCashLogById" resultMap="baseMap">
+    <select id="getCashLogById" resultMap="POMap">
         select log.ID,log.KZID,log.PAYSTYLE,log.AMOUNT,log.STAFFID,log.STAFFNAME,FROM_UNIXTIME(log.PAYMENTTIME, '%Y/%m/%d %H:%i') PAYMENTTIME,log.STATUS, dic.DICNAME AS PAYSTYLENAME
         FROM  ${table} log
         LEFT JOIN hm_crm_dictionary dic ON log.PAYSTYLE = dic.DICCODE AND log.COMPANYID = dic.COMPANYID AND dic.DICTYPE = 'pay_style'
