@@ -1,9 +1,6 @@
 package com.qiein.jupiter.web.service.impl;
 
-import com.qiein.jupiter.constant.ChannelConstant;
-import com.qiein.jupiter.constant.CommonConstant;
-import com.qiein.jupiter.constant.PushRoleConst;
-import com.qiein.jupiter.constant.SourceStaffConst;
+import com.qiein.jupiter.constant.*;
 import com.qiein.jupiter.enums.RoleChannelEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
@@ -201,6 +198,9 @@ public class ChannelServiceImpl implements ChannelService {
      * @return
      */
     public List<ChannelVO> getAllChannelSourceListByType(Integer companyId, String role){
+        if (StringUtil.isEmpty(role)){
+            role = RoleConstant.GLZX;
+        }
         return channelDao.getAllSourceListByType(companyId, RoleChannelEnum.getTypeListByRole(role));
     }
 

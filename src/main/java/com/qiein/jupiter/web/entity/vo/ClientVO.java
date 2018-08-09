@@ -234,10 +234,7 @@ public class ClientVO implements Serializable {
      * 预约时间
      */
     private int appointTime;
-    /**
-     * 收款时间
-     */
-    private int stayTime;
+
     /**
      * 门市接待人ID
      */
@@ -702,14 +699,6 @@ public class ClientVO implements Serializable {
 
     public void setAppointTime(int appointTime) {
         this.appointTime = appointTime;
-    }
-
-    public int getStayTime() {
-        return stayTime;
-    }
-
-    public void setStayTime(int stayTime) {
-        this.stayTime = stayTime;
     }
 
     public int getReceptorId() {

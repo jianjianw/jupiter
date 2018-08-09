@@ -32,12 +32,10 @@ public class CashLogPO extends BaseEntity {
     /**
      * 收款人ID
      */
-    @Id(message = "{cashlog.staffId.null}")
     private int staffId;
     /**
      * 收款人姓名
      */
-    @NotEmptyStr(message = "{cashlog.staffName.null}")
     private String staffName;
     /**
      * 收款时间

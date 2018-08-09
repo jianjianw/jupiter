@@ -222,24 +222,28 @@ public class CompanyServiceImpl implements CompanyService {
      * @param companyId
      * @return
      */
-    public DsinvalDTO findDsinvalId(@Param("companyId") Integer companyId) {
+    public DsinvalDTO findDsinvalId(Integer companyId) {
         DsinvalDTO dsinvalDTO = companyDao.findDsinvalId(companyId);
+        //拼接转介绍自定义list
         String zjsValidStatus = dsinvalDTO.getZjsValidStatus();
+        if (StringUtil.isEmpty(zjsValidStatus)) {
+            zjsValidStatus = ",,/,/,/,/,/,/,";
+        }
         String[] zjsValidStatuss = zjsValidStatus.split(CommonConstant.FILE_SEPARATOR);
         List<String> list = new ArrayList<>();
         for (String status : zjsValidStatuss) {
-            if (StringUtil.isNotEmpty(status)) {
-                list.add(status);
-            }
+            list.add(status);
         }
         dsinvalDTO.setList(list);
+        //拼接电商待定自定义
         String dsddStatuss = dsinvalDTO.getDsddStatus();
+        if (StringUtil.isEmpty(dsddStatuss)) {
+            dsddStatuss = ",,/,/,/,/,/,/,";
+        }
         String[] dsddStatus = dsddStatuss.split(CommonConstant.FILE_SEPARATOR);
         List<String> dsddList = new ArrayList<>();
         for (String status : dsddStatus) {
-            if (StringUtil.isNotEmpty(status)) {
-                dsddList.add(status);
-            }
+            dsddList.add(status);
         }
         dsinvalDTO.setDsddList(dsddList);
         return dsinvalDTO;
