@@ -38,7 +38,7 @@
     </update>
 
     <select id="getCashLogById" resultMap="baseMap">
-        select log.ID,log.KZID,log.PAYSTYLE,log.AMOUNT,log.STAFFID,log.STAFFNAME,log.FROM_UNIXTIME(PAYMENTTIME, '%Y/%m/%d %H:%i') PAYMENTTIME,log.STATUS, dic.DICNAME AS PAYSTYLENAME
+        select log.ID,log.KZID,log.PAYSTYLE,log.AMOUNT,log.STAFFID,log.STAFFNAME,FROM_UNIXTIME(log.PAYMENTTIME, '%Y/%m/%d %H:%i') PAYMENTTIME,log.STATUS, dic.DICNAME AS PAYSTYLENAME
         FROM  ${table} log
         LEFT JOIN hm_crm_dictionary dic ON log.PAYSTYLE = dic.DICCODE AND log.COMPANYID = dic.COMPANYID
         WHERE log.ID = #{id}
