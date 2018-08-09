@@ -126,6 +126,7 @@ public class WebSocketMsgUtil {
                 StringUtil.isNotEmpty(info.getKzWechat()) ? info.getKzWechat() :
                         StringUtil.isNotEmpty(info.getKzQq()) ? info.getKzQq() : info.getKzWw());
         msgDTO.setContent(contentJson.toString());
+        this.sendMsg(msgDTO);
     }
 
 
