@@ -353,7 +353,7 @@ public class ClientPushServiceImpl implements ClientPushService {
                         CommonConstant.SYSTEM_OPERA_ID, CommonConstant.SYSTEM_OPERA_NAME, companyId,
                         ClientLogConst.CONTINUOUS_SABOTEUR_DONW));
                 // 推送状态重载消息
-                GoEasyUtil.pushStatusRefresh(companyId, appointId);
+                GoEasyUtil.pushStatusRefresh(companyId, appointId,webSocketMsgUtil);
                 // 推送连续三次怠工下线消息
                 GoEasyUtil.pushOffLineAuto(companyId, appointId, newsDao, staffDao);
             }

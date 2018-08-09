@@ -211,7 +211,7 @@ public class ClientReceiveServiceImpl implements ClientReceiveService {
                     new StaffStatusLog(staffId, StaffStatusEnum.LIMIT.getStatusId(), CommonConstant.SYSTEM_OPERA_ID,
                             CommonConstant.SYSTEM_OPERA_NAME, companyId, ClientLogConst.LIMITDAY_OVERFLOW));
             // 推送状态重载消息
-            GoEasyUtil.pushStatusRefresh(companyId, staffId);
+            GoEasyUtil.pushStatusRefresh(companyId, staffId,webSocketMsgUtil);
         }
     }
 

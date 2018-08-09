@@ -77,7 +77,7 @@ public class WebSocketMsgUtil {
      */
     public void pushAllRefreshMsg(int companyId) {
         WebSocketMsgDTO msgDTO = new WebSocketMsgDTO();
-        msgDTO.setType(WebSocketMsgEnum.AllReFresh);
+        msgDTO.setType(WebSocketMsgEnum.AllRefresh);
         msgDTO.setCompanyId(companyId);
         msgDTO.setContent("");
         this.sendMsg(msgDTO);
@@ -88,7 +88,7 @@ public class WebSocketMsgUtil {
      */
     public void pushBaseInfoFresh(int companyId, Integer staffId) {
         WebSocketMsgDTO msgDTO = new WebSocketMsgDTO();
-        msgDTO.setType(WebSocketMsgEnum.BaseInfoFresh);
+        msgDTO.setType(WebSocketMsgEnum.BaseInfoRefresh);
         msgDTO.setCompanyId(companyId);
         if (staffId != null && staffId != 0) {
             msgDTO.setStaffId(staffId);
@@ -98,7 +98,7 @@ public class WebSocketMsgUtil {
     }
 
     /**
-     * 推送 刷新基础信息
+     * 推送 信息
      */
     public void pushAlertMsg(int companyId, Integer staffId, String content) {
         WebSocketMsgDTO msgDTO = new WebSocketMsgDTO();
@@ -126,6 +126,19 @@ public class WebSocketMsgUtil {
                 StringUtil.isNotEmpty(info.getKzWechat()) ? info.getKzWechat() :
                         StringUtil.isNotEmpty(info.getKzQq()) ? info.getKzQq() : info.getKzWw());
         msgDTO.setContent(contentJson.toString());
+        this.sendMsg(msgDTO);
+    }
+
+    /**
+     * 发送客资重载
+     */
+    public void pushClientInfoRefresh(int companyId, Integer staffId) {
+        WebSocketMsgDTO msgDTO = new WebSocketMsgDTO();
+        msgDTO.setType(WebSocketMsgEnum.ClientInfoRefresh);
+        msgDTO.setCompanyId(companyId);
+        if (staffId != null && staffId != 0) {
+            msgDTO.setStaffId(staffId);
+        }
         this.sendMsg(msgDTO);
     }
 
