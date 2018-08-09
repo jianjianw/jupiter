@@ -20,7 +20,6 @@ public class DBSplitUtil {
     public static final String TAB_SUFFIX_REMARK = "hm_crm_client_remark_";// 备注富文本
     public static final String TAB_SUFFIX_LOG = " hm_crm_client_log_";// 客资日志表
     public static final String TAB_SUFFIX_INVITA_LOG = " hm_crm_invitation_log_";// 客资邀约记录表
-    public static final String TAB_SUFFIX_SHOP_LOG = " hm_crm_shop_meet_log_";// 客资洽谈记录表
     public static final String TAB_SUFFIX_TEMP = " hm_crm_client_info_temp_";// 客资临时表
     public static final String TAB_SUFFIX_IP_LOG = " hm_crm_ip_log_";// ip日志表
     public static final String TAB_SUFFIX_NEWS = " hm_crm_news_";// 消息表
@@ -139,9 +138,6 @@ public class DBSplitUtil {
                 break;
             case invita:
                 tableName = TAB_SUFFIX_INVITA_LOG + String.valueOf(companyId);
-                break;
-            case shopmeet:
-                tableName = TAB_SUFFIX_SHOP_LOG + String.valueOf(companyId);
                 break;
             case detail:
                 tableName = TAB_SUFFIX_DETAIL + String.valueOf(companyId);
