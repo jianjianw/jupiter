@@ -116,7 +116,7 @@ public class WebSocketMsgUtil {
      */
     public void pushReceiveClient(int companyId, int staffId, String head, ClientGoEasyDTO info) {
         WebSocketMsgDTO msgDTO = new WebSocketMsgDTO();
-        msgDTO.setType(WebSocketMsgEnum.AlertMsg);
+        msgDTO.setType(WebSocketMsgEnum.ReceiveClient);
         msgDTO.setCompanyId(companyId);
         msgDTO.setStaffId(staffId);
         JSONObject contentJson = new JSONObject();
