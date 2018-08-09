@@ -38,6 +38,7 @@
 		<result column="INVALIDLABEL" jdbcType="VARCHAR" property="invalidLabel"/>
 		<result column="SUCCESSTIME" jdbcType="INTEGER" property="successTime"/>
 		<result column="AMOUNT" jdbcType="INTEGER" property="amount"/>
+		<result column="STAYAMOUNT" jdbcType="INTEGER" property="stayAmount"/>
 		<result column="CREATETIME" jdbcType="INTEGER" property="createTime"/>
 		<result column="RECEPTORNAME" jdbcType="VARCHAR" property="receptorName"/>
 		<result column="SHOPNAME" jdbcType="VARCHAR" property="shopName"/>
@@ -78,7 +79,7 @@
 	<select id="getClientGoEasyDTOById" parameterType="map" resultMap="goEasyMap">
 		SELECT
 			info.ID, info.KZID, info.KZNAME, info.KZPHONE, info.KZWECHAT, info.KZWW, info.KZQQ, det.MEMO, info.APPOINTORID,info.COLLECTORID, info.COMPANYID, info.SOURCEID, det.APPOINTNAME, det.FILMINGAREA, src.SRCNAME,
-			src.CHANNELNAME, det.INVALIDLABEL, info.SUCCESSTIME, det.AMOUNT, info.CREATETIME, det.COLLECTORNAME,det.SHOPNAME,det.RECEPTORNAME
+			src.CHANNELNAME, det.INVALIDLABEL, info.SUCCESSTIME, det.AMOUNT, info.CREATETIME, det.COLLECTORNAME,det.SHOPNAME,det.RECEPTORNAME, det.AMOUNT, det.STAYAMOUNT
 		FROM
 			${infoTabName} info
 		LEFT JOIN ${detailTabName} det ON det.KZID = info.KZID AND info.COMPANYID = det.COMPANYID
