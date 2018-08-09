@@ -117,7 +117,7 @@ public class SendMsgController extends BaseController{
         Map<String, String> map = sendMsgDTO.getMap();
         ShopPO shopPO = shopService.findShop(Integer.parseInt(sendMsgDTO.getMap().get("shopId")));
         map.put("address", shopPO.getAddress());
-        if (msgTemplateVO.getIsSelf() != CommonConstant.SELF) {
+        if (!msgTemplateVO.getIsSelf().equals(CommonConstant.SELF) ) {
             if (StringUtil.isEmpty(shopPO.getServicePhone())) {
                 map.put("telno", "");
             } else {
@@ -131,7 +131,7 @@ public class SendMsgController extends BaseController{
             }
         }
         Integer id = clientService.findId(map.get("kzId"), staff.getCompanyId());
-        map.put("code", CommonConstant.YYJD + id);
+        map.put("code",  id+CommonConstant.NULL_STR);
         String date_string = TimeUtil.intMillisToTimeStr(Integer.parseInt(map.get("time")));
         map.put("time", date_string);
         for (String key : map.keySet()) {

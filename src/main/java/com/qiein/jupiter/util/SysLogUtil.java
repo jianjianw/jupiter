@@ -37,6 +37,7 @@ public class SysLogUtil {
     public static final String SYS_LOG_PREFIX_DO = "进行了";
     public static final String SYS_LOG_PREFIX_IMPORT = "导入了";
     public static final String SYS_LOG_PREFIX_EXPORT = "导出了";
+    public static final String SYS_LOG_PREFIX_RE="移出";
 
     public static String getAddLog(String supName, String... params) {
 

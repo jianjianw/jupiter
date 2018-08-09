@@ -405,6 +405,8 @@
 		AND INSTR(CONCAT(',',#{kzIds},','),CONCAT(',',info.KZID,',')) != 0
 		AND info.APPOINTORID IS NOT NULL
     </select>
-
+	<update id="editKzphoneFlag">
+		UPDATE ${table} SET  KZPHONE_FLAG=#{kzphoneFlag} WHERE KZID=#{kzId}
+	</update>
 
 </mapper>

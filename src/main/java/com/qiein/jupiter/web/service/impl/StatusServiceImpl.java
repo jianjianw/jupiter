@@ -5,6 +5,7 @@ import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.constant.DictionaryConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
+import com.qiein.jupiter.web.dao.ClientInfoDao;
 import com.qiein.jupiter.web.dao.ClientStatusDao;
 import com.qiein.jupiter.web.entity.po.DictionaryPO;
 import com.qiein.jupiter.web.entity.po.StatusPO;
@@ -33,6 +34,9 @@ public class StatusServiceImpl implements StatusService {
 
     @Autowired
     private DictionaryService dictionaryService;
+
+    @Autowired
+    private ClientInfoDao clientInfoDao;
 
     /**
      * 获取企业状态列表
@@ -121,5 +125,14 @@ public class StatusServiceImpl implements StatusService {
      */
     public void editClientStatus(boolean showFlag,int id){
         statusDao.editClientStatus(showFlag, id);
+    }
+    /**
+     * 修改手机是否已加状态
+     * @param kzId
+     * @param kzphoneFlag
+     * @param table
+     */
+    public void editKzphoneFlag(String kzId,Integer kzphoneFlag,String table){
+        clientInfoDao.editKzphoneFlag(kzId,kzphoneFlag,table);
     }
 }

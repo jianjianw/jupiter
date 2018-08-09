@@ -47,14 +47,14 @@ public class GroupStaffController extends BaseController{
         try{
             String staffIds=jsonObject.getString("staffIds");
             String groupId=jsonObject.getString("groupId");
-            String groupName=groupService.getGroupName(groupId);
+            String groupName=groupService.getGroupName(groupId,staffPO.getCompanyId());
             List<String>  staffNames=staffService.getStaffNames(staffIds);
             StringBuffer staffNamess=new StringBuffer();
             for(String staffName:staffNames){
                 staffNamess.append(staffName+CommonConstant.STR_SEPARATOR);
             }
             SystemLog log = new SystemLog(SysLogUtil.LOG_TYPE_GROUP, requestInfo.getIp(), requestInfo.getUrl(), staffPO.getId(),
-                    staffPO.getNickName(), SysLogUtil.getAddLog(SysLogUtil.LOG_SUP_GROUP_STAFF, groupName,CommonConstant.ADD_TO,staffNamess.toString()),
+                    staffPO.getNickName(), SysLogUtil.getAddLog(SysLogUtil.LOG_SUP_GROUP_STAFF, groupName+SysLogUtil.SYS_LOG_PREFIX_ADD+staffNamess.toString()),
                     staffPO.getCompanyId());
             logService.addLog(log);
         }catch (Exception e){
@@ -75,10 +75,10 @@ public class GroupStaffController extends BaseController{
         groupStaffService.remove(groupStaffPO);
         try{
             String staffIds=groupStaffPO.getStaffId()+CommonConstant.NULL_STR;
-            String groupName=groupService.getGroupName(groupStaffPO.getGroupId());
+            String groupName=groupService.getGroupName(groupStaffPO.getGroupId(),staffPO.getCompanyId());
             List<String>  staffNames=staffService.getStaffNames(staffIds);
             SystemLog log = new SystemLog(SysLogUtil.LOG_TYPE_GROUP, requestInfo.getIp(), requestInfo.getUrl(), staffPO.getId(),
-                    staffPO.getNickName(), SysLogUtil.getRemoveLog(SysLogUtil.LOG_SUP_GROUP_STAFF, groupName,CommonConstant.ADD_TO,staffNames.get(0)),
+                    staffPO.getNickName(), SysLogUtil.getRemoveLog(SysLogUtil.LOG_SUP_GROUP_STAFF, groupName+SysLogUtil.SYS_LOG_PREFIX_RE+staffNames.get(0)),
                     staffPO.getCompanyId());
             logService.addLog(log);
         }catch (Exception e){

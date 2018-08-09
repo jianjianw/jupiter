@@ -286,5 +286,11 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
      * @return
      */
     int updateSkDetailWhenAllot(@Param("detTabName") String detTabName, @Param("promoterName") String promoterName, @Param("kzId") String kzId, @Param("companyId") int companyId);
-
+    /**
+     * 修改手机是否已加状态
+     * @param kzId
+     * @param kzphoneFlag
+     * @param table
+     */
+    void editKzphoneFlag(@Param("kzId")String kzId,@Param("kzphoneFlag")Integer kzphoneFlag,@Param("table")String table);
 }

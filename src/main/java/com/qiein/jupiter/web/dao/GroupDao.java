@@ -156,6 +156,6 @@ public interface GroupDao extends BaseDao<GroupPO> {
      * @param groupId
      * @return
      */
-    String getGroupName(@Param("groupId")String groupId);
+    String getGroupName(@Param("groupId")String groupId,@Param("companyId")Integer companyId);
 
 }
