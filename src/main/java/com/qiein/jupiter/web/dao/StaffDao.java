@@ -559,5 +559,11 @@ public interface StaffDao extends BaseDao<StaffPO> {
     StaffPO getStaffByPhoneMd5PwdAndCid(@Param("phone") String phone,
                                         @Param("password") String password,
                                         @Param("companyId") int companyId);
+    /**
+     * 批量获取员工姓名
+     * @param staffIds
+     * @return
+     */
+    List<String> getStaffNames(@Param("list")List<String> list);
 
 }

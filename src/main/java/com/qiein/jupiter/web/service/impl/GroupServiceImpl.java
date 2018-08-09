@@ -699,4 +699,12 @@ public class GroupServiceImpl implements GroupService {
         groupDao.updatePriority(fId, fPriority, companyId);
         groupDao.updatePriority(sId, sPriority, companyId);
     }
+    /**
+     * 获取小组名称
+     * @param groupId
+     * @return
+     */
+    public String getGroupName(String groupId,Integer companyId){
+        return groupDao.getGroupName(groupId,companyId);
+    }
 }

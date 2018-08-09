@@ -233,8 +233,12 @@ public class LoginServiceImpl implements LoginService {
             }
         }
         // 如果员工没有token，或者重新生成
+        System.out.println(company.isSsoLimit());
         if (StringUtil.isEmpty(staff.getToken()) || company.isSsoLimit()) {
             updateToken(staff);
+            // 给特定用户推送上线
+            GoEasyUtil.pushStaffRefresh(staff.getCompanyId(), staff.getId(), ip,
+                    HttpUtil.getIpLocation(ip).replace(CommonConstant.STR_SEPARATOR, ""));
         }
         // 更新登录时间和IP
         StaffDetailPO staffDetailPO = new StaffDetailPO();
@@ -256,10 +260,6 @@ public class LoginServiceImpl implements LoginService {
             staffStatusLogDao.insert(new StaffStatusLog(staff.getId(), StaffStatusEnum.OnLine.getStatusId(), staff.getId(),
                     staff.getNickName(), staff.getCompanyId(), ""));
         }
-
-        // 给特定用户推送上线
-        GoEasyUtil.pushStaffRefresh(staff.getCompanyId(), staff.getId(), ip,
-                HttpUtil.getIpLocation(ip).replace(CommonConstant.STR_SEPARATOR, ""));
         return staff;
     }
 

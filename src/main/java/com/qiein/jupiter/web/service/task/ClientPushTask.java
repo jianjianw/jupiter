@@ -57,13 +57,13 @@ public class ClientPushTask {
         List<CompanyPO> compList = companyDao.listComp();
         for (CompanyPO comp : compList) {
             //超时时间设置是秒
-            int overTime = comp.getOvertime();
+            int overTime = comp.getOverTime();
             List<ClientPushDTO> infoList = pushService.getInfoListBeReadyPush(comp.getId(), overTime);
             if (CollectionUtils.isEmpty(infoList)) {
                 continue;
             }
             for (ClientPushDTO info : infoList) {
-                pushClient(new ClientPushDTO(pushService, info.getPushRule(), comp.getId(), info.getKzId(), info.getSrcType(), comp.getOvertime(),
+                pushClient(new ClientPushDTO(pushService, info.getPushRule(), comp.getId(), info.getKzId(), info.getSrcType(), comp.getOverTime(),
                         comp.getKzInterval(), info.getSourceId()));
             }
             log.info("推送了客资：" + infoList.size() + " 个");
@@ -102,12 +102,12 @@ public class ClientPushTask {
         List<CompanyPO> compList = companyDao.listSkAvgComp();
         for (CompanyPO comp : compList) {
             //超时时间设置是秒
-            List<ClientPushDTO> kzList = pushService.getSkInfoList(comp.getId(), comp.getOvertime());
+            List<ClientPushDTO> kzList = pushService.getSkInfoList(comp.getId(), comp.getOverTime());
             if (CollectionUtils.isEmpty(kzList)) {
                 continue;
             }
             for (ClientPushDTO info : kzList) {
-                pushSkQueue.offer(new ClientPushDTO(pushService, comp.getKzInterval(), comp.getOvertime(), info.getKzId(), comp.getId(), info.getSrcType()));
+                pushSkQueue.offer(new ClientPushDTO(pushService, comp.getKzInterval(), comp.getOverTime(), info.getKzId(), comp.getId(), info.getSrcType()));
             }
             log.info("推送了客资：" + kzList.size() + " 个");
         }

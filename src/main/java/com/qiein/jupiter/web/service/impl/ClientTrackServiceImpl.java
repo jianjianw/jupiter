@@ -257,7 +257,7 @@ public class ClientTrackServiceImpl implements ClientTrackService {
                                     ClientLogConst.INFO_LOGTYPE_ALLOT, companyId));
         }
 
-        int overTime = companyDao.getById(companyId).getOvertime();
+        int overTime = companyDao.getById(companyId).getOverTime();
         if (overTime == 0) {
             overTime = CommonConstant.DEFAULT_OVERTIME;
         }

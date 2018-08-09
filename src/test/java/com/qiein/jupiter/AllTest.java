@@ -7,8 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import com.alibaba.fastjson.JSON;
 import com.qiein.jupiter.util.TimeUtil;
 import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.entity.vo.CompanyVO;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.junit.Test;
 
@@ -332,5 +334,13 @@ public class AllTest {
     public void test12321(){
         boolean matches = "17743124932".matches("^[1][3456789][0-9]{9}$");
         System.out.println(matches);
+    }
+
+
+
+    @Test
+    public void test123123(){
+        CompanyVO companyVO=new CompanyVO();
+        System.out.println(JSON.toJSON(companyVO));
     }
 }

@@ -375,4 +375,7 @@
         WHERE
             COMPANYID = #{companyId} AND ID = #{id}
     </update>
+    <select id="getGroupName" resultType="String">
+        SELECT GROUPNAME FROM hm_pub_group WHERE GROUPID=#{groupId} AND  COMPANYID=#{companyId}
+    </select>
 </mapper>

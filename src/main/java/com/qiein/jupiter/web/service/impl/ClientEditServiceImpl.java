@@ -59,6 +59,8 @@ public class ClientEditServiceImpl implements ClientEditService {
     private CompanyDao companyDao;
     @Autowired
     private CashLogDao cashLogDao;
+    @Autowired
+    private ClientStatusDao clientStatusDao;
 
     /**
      * 电商推广修改客资
@@ -207,16 +209,17 @@ public class ClientEditServiceImpl implements ClientEditService {
                 reqContent.put("successtime", clientVO.getSuccessTime());// 订单时间
                 reqContent.put("paystyle", clientVO.getPayStyle());// 付款方式
                 reqContent.put("paytime", clientVO.getPayTime());// 收款时间
-                reqContent.put("payreceiptid", clientVO.getReceiptId());// 收款人id
-                reqContent.put("payreceiptname", clientVO.getReceiptName());// 收款人姓名
+                reqContent.put("payreceiptid", staffPO.getId());// 收款人id
+                reqContent.put("payreceiptname", staffPO.getNickName());// 收款人姓名
             }
             //在线保留
             if (ClientStatusConst.ONLINE_STAY == clientVO.getYyRst()) {
-                reqContent.put("stayamount", clientVO.getStayAmount());// 已收金额
+//                reqContent.put("stayamount", clientVO.getStayAmount());// 已收金额
+                reqContent.put("payamount", clientVO.getPayAmount());// 本次收款金额
                 reqContent.put("paystyle", clientVO.getPayStyle());// 付款方式
                 reqContent.put("paytime", clientVO.getPayTime());// 收款时间
-                reqContent.put("payreceiptid", clientVO.getReceiptId());// 收款人id
-                reqContent.put("payreceiptname", clientVO.getReceiptName());// 收款人姓名
+                reqContent.put("payreceiptid", staffPO.getId());// 收款人id
+                reqContent.put("payreceiptname", staffPO.getNickName());// 收款人姓名
             }
         }
         reqContent.put("memo", clientVO.getMemo());
