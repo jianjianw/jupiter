@@ -31,29 +31,30 @@ public class CashServiceImpl implements CashService {
      * 修改付款金额
      */
     public int editCash(CashLogPO cashLogPO) {
-        String cashTableName = DBSplitUtil.getCashTabName(cashLogPO.getCompanyId());
-        String infoTableName = DBSplitUtil.getInfoTabName(cashLogPO.getCompanyId());
-        String infoLogTableName = DBSplitUtil.getInfoLogTabName(cashLogPO.getCompanyId());
-        String detailTableName = DBSplitUtil.getDetailTabName(cashLogPO.getCompanyId());
+        int companyId = cashLogPO.getCompanyId();
+        String cashTableName = DBSplitUtil.getCashTabName(companyId);
+        String infoTableName = DBSplitUtil.getInfoTabName(companyId);
+        String infoLogTableName = DBSplitUtil.getInfoLogTabName(companyId);
+        String detailTableName = DBSplitUtil.getDetailTabName(companyId);
         String kzId = cashLogPO.getKzId();
         ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(kzId, infoTableName, detailTableName);
         if ((info.getStayAmount() + cashLogPO.getAmount()) > info.getAmount()) {
             throw new RException(ExceptionEnum.AMOUNT_ERROR);
         }
         //查询旧记录，用于生产修改记录
-        CashLogPO oldCash = cashLogDao.getCashLogById(cashTableName, cashLogPO.getId(), cashLogPO.getCompanyId());
+        CashLogPO oldCash = cashLogDao.getCashLogById(cashTableName, cashLogPO.getId(), companyId);
         //修改已收金额
-        cashLogDao.editAmount(cashTableName, cashLogPO.getAmount(), cashLogPO.getId(), cashLogPO.getCompanyId());
+        cashLogDao.editAmount(cashTableName, cashLogPO.getAmount(), cashLogPO.getId(), companyId);
         //添加修改日志
         clientLogDao.addInfoLog(infoLogTableName, new
                 ClientLogPO(kzId, cashLogPO.getOperaId(),
                 cashLogPO.getOperaName(), ClientLogConst.getCashEditLog(cashLogPO, oldCash),
-                ClientLogConst.INFO_LOGTYPE_CASH, cashLogPO.getCompanyId()));
+                ClientLogConst.INFO_LOGTYPE_CASH, companyId));
         //修改已收金额
         clientInfoDao.editStayAmount(detailTableName, cashTableName,
                 kzId, cashLogPO.getCompanyId());
         //查询已收金额
-        return cashLogDao.getClientReceivedAmount(cashTableName, kzId);
+        return cashLogDao.getClientReceivedAmount(companyId,cashTableName, kzId);
     }
 
 
