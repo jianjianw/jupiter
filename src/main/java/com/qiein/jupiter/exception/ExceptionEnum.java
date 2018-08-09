@@ -178,7 +178,8 @@ public enum ExceptionEnum {
     //报表
     START_TIME_OR_END_TIME_IS_NULL(2501, "开始时间或者结束时间不能为空"),
     //外呼
-    NOT_FOUND_BIND_USER(2601,"未找到绑定用户信息");
+    NOT_FOUND_BIND_USER(2601,"未找到绑定用户信息"),
+    CALLER_OR_CALLEE_IS_NULL(2602,"主叫或者被叫电话为空");
 
     private Integer code;
     private String msg;

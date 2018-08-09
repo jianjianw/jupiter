@@ -188,17 +188,17 @@ public class CommonConstant {
 
     /**
      * 分页最大条数
-     * */
-    public final static int  MAX_PAGE_SIZE = 500;
+     */
+    public final static int MAX_PAGE_SIZE = 500;
 
     /**
      * 小组ID长度
-     * */
+     */
     public final static int GROUP_ID_LENGTH = 3;
 
     /**
      * 默认1
-     * */
+     */
     public final static int DEFAULT_ONE = 1;
 
     /**
@@ -208,7 +208,17 @@ public class CommonConstant {
 
     public final static int SYSTEM_OPERA_ID = 0;
     public final static String SYSTEM_OPERA_NAME = "草莓卷机器人";
+    /**
+     * 发送短信类型（预约进店）
+     */
+    public final static String YYJD = "yyjd";
+    /**
+     * 发送短信时判断使用门店电话还是客服电话
+     */
+    public final static String SELF = "self";
+    /**
+     * 转介绍以及电商待定自定义时的空数据处理
+     */
+    public final static String zdy = " ,,/,/,/,/,/,/,";
 
-    public  final static String YYJD="yyjd";
-    public  final static String SELF="self";
 }
