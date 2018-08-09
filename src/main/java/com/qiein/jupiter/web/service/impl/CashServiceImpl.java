@@ -54,7 +54,7 @@ public class CashServiceImpl implements CashService {
         clientInfoDao.editStayAmount(detailTableName, cashTableName,
                 kzId, cashLogPO.getCompanyId());
         //查询已收金额
-        return cashLogDao.getClientReceivedAmount(companyId,cashTableName, kzId);
+        return cashLogDao.getClientReceivedAmount(companyId, cashTableName, kzId);
     }
 
 
@@ -63,11 +63,17 @@ public class CashServiceImpl implements CashService {
      *
      * @param cashLogPO
      */
-    public void addCashLog(CashLogPO cashLogPO) {
+    public int addCashLog(CashLogPO cashLogPO) {
+        int companyId = cashLogPO.getCompanyId();
+        String kzId = cashLogPO.getKzId();
+        String cashTableName = DBSplitUtil.getCashTabName(companyId);
         //添加收款记录
-        cashLogDao.addCahsLog(DBSplitUtil.getCashTabName(cashLogPO.getCompanyId()), cashLogPO);
+        cashLogDao.addCahsLog(cashTableName, cashLogPO);
         //修改已收金额
-        clientInfoDao.editStayAmount(DBSplitUtil.getDetailTabName(cashLogPO.getCompanyId()), DBSplitUtil.getCashTabName(cashLogPO.getCompanyId()), cashLogPO.getKzId(), cashLogPO.getCompanyId());
+        clientInfoDao.editStayAmount(DBSplitUtil.getDetailTabName(cashLogPO.getCompanyId()), cashTableName,
+                kzId, companyId);
+        //查询已收金额
+        return cashLogDao.getClientReceivedAmount(companyId, cashTableName, kzId);
     }
 
     /**
