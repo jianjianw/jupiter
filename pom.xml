@@ -143,7 +143,12 @@
             <artifactId>aliyun-java-sdk-ccc</artifactId>
             <version>1.0.7</version>
         </dependency>
-
+        <!--httpClient-->
+        <dependency>
+            <groupId>apache-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+            <version>3.1</version>
+        </dependency>
     </dependencies>
 
     <build>
