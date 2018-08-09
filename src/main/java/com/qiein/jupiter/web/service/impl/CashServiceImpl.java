@@ -1,10 +1,13 @@
 package com.qiein.jupiter.web.service.impl;
 
+import com.qiein.jupiter.constant.ClientLogConst;
 import com.qiein.jupiter.enums.TableEnum;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.web.dao.CashLogDao;
 import com.qiein.jupiter.web.dao.ClientInfoDao;
+import com.qiein.jupiter.web.dao.ClientLogDao;
 import com.qiein.jupiter.web.entity.po.CashLogPO;
+import com.qiein.jupiter.web.entity.po.ClientLogPO;
 import com.qiein.jupiter.web.entity.vo.CashLogVO;
 import com.qiein.jupiter.web.service.CashService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,8 @@ public class CashServiceImpl implements CashService {
     private CashLogDao cashLogDao;
     @Autowired
     private ClientInfoDao clientInfoDao;
+    @Autowired
+    private ClientLogDao clientLogDao;
 
     /**
      * 修改付款金额
@@ -25,9 +30,14 @@ public class CashServiceImpl implements CashService {
      * @param cashDTO
      */
     public void editCash(CashLogPO cashLogPO) {
+        //查询旧记录，用于生产修改记录
+        CashLogPO oldCash = cashLogDao.getCashLogById(DBSplitUtil.getCashTabName(cashLogPO.getCompanyId()), cashLogPO.getId(), cashLogPO.getCompanyId());
         //修改已收金额
         cashLogDao.editAmount(DBSplitUtil.getCashTabName(cashLogPO.getCompanyId()), cashLogPO.getAmount(), cashLogPO.getId(), cashLogPO.getCompanyId());
         //添加修改日志
+        clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(cashLogPO.getCompanyId()), new
+                ClientLogPO(cashLogPO.getKzId(), cashLogPO.getOperaId(),
+                cashLogPO.getOperaName(), ClientLogConst.getCashEditLog(cashLogPO, oldCash), ClientLogConst.INFO_LOGTYPE_CASH, cashLogPO.getCompanyId()));
         //修改已收金额
         clientInfoDao.editStayAmount(DBSplitUtil.getDetailTabName(cashLogPO.getCompanyId()), DBSplitUtil.getCashTabName(cashLogPO.getCompanyId()), cashLogPO.getKzId(), cashLogPO.getCompanyId());
 

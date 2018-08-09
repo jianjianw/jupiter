@@ -36,4 +36,15 @@ public interface CashLogDao extends BaseDao<CashLogDao> {
      * @return
      */
     List<CashLogVO> findCashLog(@Param("kzId") String kzId, @Param("table") String table);
+
+    /**
+     * 根据ID查询收款记录
+     *
+     * @param table
+     * @param id
+     * @param companyId
+     * @return
+     */
+    CashLogPO getCashLogById(@Param("table") String table, @Param("id") int id, @Param("companyId") int companyId);
+
 }

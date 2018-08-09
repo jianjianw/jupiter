@@ -5,6 +5,7 @@
         <id column="ID" jdbcType="INTEGER" property="id"/>
         <result column="KZID" jdbcType="VARCHAR" property="kzId"/>
         <result column="PAYSTYLE" jdbcType="INTEGER" property="payStyle"/>
+        <result column="PAYSTYLENAME" jdbcType="VARCHAR" property="payStyleName"/>
         <result column="AMOUNT" jdbcType="INTEGER" property="amount"/>
         <result column="STAFFID" jdbcType="INTEGER" property="staffId"/>
         <result column="STAFFNAME" jdbcType="VARCHAR" property="staffName"/>
@@ -35,4 +36,12 @@
         WHERE ID = #{id}
         AND COMPANYID = #{companyId}
     </update>
+
+    <select id="getCashLogById" resultMap="baseMap">
+        select log.ID,log.KZID,log.PAYSTYLE,log.AMOUNT,log.STAFFID,log.STAFFNAME,log.FROM_UNIXTIME(PAYMENTTIME, '%Y/%m/%d %H:%i') PAYMENTTIME,log.STATUS, dic.DICNAME AS PAYSTYLENAME
+        FROM  ${table} log
+        LEFT JOIN hm_crm_dictionary dic ON log.PAYSTYLE = dic.DICCODE AND log.COMPANYID = dic.COMPANYID
+        WHERE log.ID = #{id}
+        AND log.COMPANYID = #{companyId};
+    </select>
 </mapper>

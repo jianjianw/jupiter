@@ -1,6 +1,9 @@
 package com.qiein.jupiter.constant;
 
+import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.util.TimeUtil;
+import com.qiein.jupiter.web.entity.po.CashLogPO;
 
 /**
  * 客资日志操作常量
@@ -24,6 +27,7 @@ public class ClientLogConst {
     public static final int INFO_LOGTYPE_REMOVE = 10;// 删除
     public static final int INFO_LOGTYPE_RECEIVE = 11;// 领取
     public static final int INFO_LOGTYPE_SCAN_WECAHT = 12;// 微信二维码扫描
+    public static final int INFO_LOGTYPE_CASH = 13;// 客资收款收款记录
 
     public static final String INFO_LOG_AUTO_ALLOT_TEMPLATE = "系统自动分配该客资给 => ${groupName} 的  ${appointorName} ";
     public static final String INFO_LOG_HANDLER_ALLOT_TEMPLATE = "${operaName} 手动分配该客资给 => ${groupName} 的  ${appointorName} ";
@@ -121,6 +125,34 @@ public class ClientLogConst {
 
         return INFO_LOG_AUTO_REVEICE_TEMPLATE.replace("${groupName}", groupName).replace("${appointorName}",
                 appointorName);
+    }
+
+    /**
+     * 生成收款记录修改日志
+     *
+     * @param newCash
+     * @param oldCash
+     * @return
+     */
+    public static final String getCashEditLog(CashLogPO newCash, CashLogPO oldCash) {
+        if (NumUtil.isInValid(newCash.getId())) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append(newCash.getOperaName() + " 修改了编号为 " + newCash.getId() + " 的收款记录");
+        if (NumUtil.isValid(newCash.getAmount())) {
+            sb.append("，收款金额由 " + oldCash.getAmount() + "改为：" + newCash.getAmount());
+        }
+        if (StringUtil.isNotEmpty(newCash.getPayStyleName())) {
+            sb.append("，收款方式由 " + oldCash.getPayStyleName() + "改为：" + newCash.getPayStyleName());
+        }
+        if (NumUtil.isValid(newCash.getPaymentTime())) {
+            sb.append("，收款时间由 " + TimeUtil.intMillisToTimeStr(oldCash.getPaymentTime()) + "改为：" + TimeUtil.intMillisToTimeStr(newCash.getPaymentTime()));
+        }
+        if (StringUtil.isNotEmpty(newCash.getStaffName())) {
+            sb.append("，收款人由 " + oldCash.getStaffName() + "改为：" + newCash.getStaffName());
+        }
+        return sb.toString();
     }
 
 }
