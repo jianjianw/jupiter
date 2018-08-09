@@ -1,12 +1,9 @@
 package com.qiein.jupiter.web.controller;
 
+import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.web.entity.vo.ClientStatusVoteVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
@@ -66,9 +63,9 @@ public class ClientController extends BaseController {
 
     /**
      * 客资有效，无效，待定的判定
-     * */
+     */
     @PostMapping("update_kz_valid_status")
-    public ResultInfo updateKzValidStatus(@RequestBody ClientStatusVoteVO clientStatusVoteVO){
+    public ResultInfo updateKzValidStatus(@RequestBody ClientStatusVoteVO clientStatusVoteVO) {
         clientStatusVoteVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
         clientStatusVoteVO.setOperaId(getCurrentLoginStaff().getId());
         clientStatusVoteVO.setOperaName(getCurrentLoginStaff().getNickName());
@@ -76,5 +73,13 @@ public class ClientController extends BaseController {
         return ResultInfoUtil.success();
     }
 
-
+    /**
+     * 查询客资收款修改日志
+     *
+     * @return
+     */
+    @GetMapping("/get_cash_edit_log")
+    public ResultInfo getCashEditLog(@NotEmptyStr @RequestParam("kzId") String kzId) {
+        return ResultInfoUtil.success(clientService.getCashEditLog(getCurrentLoginStaff().getCompanyId(), kzId));
+    }
 }
