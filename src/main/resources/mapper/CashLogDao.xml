@@ -29,7 +29,10 @@
 		)
     </insert>
 
-	<update id="editStatus">
-        UPDATE ${table} SET STATUS=0 WHERE ID=#{id}
+	<update id="editAmount">
+        UPDATE ${table}
+        SET AMOUNT = #{amount}
+        WHERE ID = #{id}
+        AND COMPANYID = #{companyId}
     </update>
 </mapper>

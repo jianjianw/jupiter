@@ -26,12 +26,14 @@ public interface CashLogDao extends BaseDao<CashLogDao> {
     /**
      * 修改付款记录的状态
      */
-    void editStatus(@Param("table") String table, @Param("id") Integer id);
+    void editAmount(@Param("table") String table, @Param("amount") int amount, @Param("id") int id, @Param("companyId") int companyId);
+
     /**
      * 付款记录查询页面
+     *
      * @param kzId
      * @param table
      * @return
      */
-    List<CashLogVO> findCashLog(@Param("kzId")String kzId,@Param("table") String table);
+    List<CashLogVO> findCashLog(@Param("kzId") String kzId, @Param("table") String table);
 }

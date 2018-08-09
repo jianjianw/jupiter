@@ -25,10 +25,9 @@ public class CashServiceImpl implements CashService {
      * @param cashDTO
      */
     public void editCash(CashLogPO cashLogPO) {
-        //修改原本付款记录的状态
-        cashLogDao.editStatus(DBSplitUtil.getCashTabName(cashLogPO.getCompanyId()), cashLogPO.getId());
-        //新增修改完成的付款记录
-        cashLogDao.addCahsLog(DBSplitUtil.getCashTabName(cashLogPO.getCompanyId()), cashLogPO);
+        //修改已收金额
+        cashLogDao.editAmount(DBSplitUtil.getCashTabName(cashLogPO.getCompanyId()), cashLogPO.getAmount(), cashLogPO.getId(), cashLogPO.getCompanyId());
+        //添加修改日志
         //修改已收金额
         clientInfoDao.editStayAmount(DBSplitUtil.getDetailTabName(cashLogPO.getCompanyId()), DBSplitUtil.getCashTabName(cashLogPO.getCompanyId()), cashLogPO.getKzId(), cashLogPO.getCompanyId());
 
@@ -46,14 +45,16 @@ public class CashServiceImpl implements CashService {
         //修改已收金额
         clientInfoDao.editStayAmount(DBSplitUtil.getDetailTabName(cashLogPO.getCompanyId()), DBSplitUtil.getCashTabName(cashLogPO.getCompanyId()), cashLogPO.getKzId(), cashLogPO.getCompanyId());
     }
+
     /**
      * 付款记录查询页面
+     *
      * @param kzId
      * @param table
      * @return
      */
-    public List<CashLogVO> findCashLog(String kzId, String table){
-        return cashLogDao.findCashLog(kzId,table);
+    public List<CashLogVO> findCashLog(String kzId, String table) {
+        return cashLogDao.findCashLog(kzId, table);
     }
 
 }
