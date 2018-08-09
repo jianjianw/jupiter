@@ -2,10 +2,13 @@ package com.qiein.jupiter.web.service.impl;
 
 import com.qiein.jupiter.constant.ClientLogConst;
 import com.qiein.jupiter.enums.TableEnum;
+import com.qiein.jupiter.exception.ExceptionEnum;
+import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.web.dao.CashLogDao;
 import com.qiein.jupiter.web.dao.ClientInfoDao;
 import com.qiein.jupiter.web.dao.ClientLogDao;
+import com.qiein.jupiter.web.entity.dto.ClientGoEasyDTO;
 import com.qiein.jupiter.web.entity.po.CashLogPO;
 import com.qiein.jupiter.web.entity.po.ClientLogPO;
 import com.qiein.jupiter.web.entity.vo.CashLogVO;
@@ -30,6 +33,10 @@ public class CashServiceImpl implements CashService {
      * @param cashDTO
      */
     public void editCash(CashLogPO cashLogPO) {
+        ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(cashLogPO.getKzId(), DBSplitUtil.getInfoTabName(cashLogPO.getCompanyId()), DBSplitUtil.getDetailTabName(cashLogPO.getCompanyId()));
+        if ((info.getStayAmount() + cashLogPO.getAmount()) > info.getAmount()) {
+            throw new RException(ExceptionEnum.AMOUNT_ERROR);
+        }
         //查询旧记录，用于生产修改记录
         CashLogPO oldCash = cashLogDao.getCashLogById(DBSplitUtil.getCashTabName(cashLogPO.getCompanyId()), cashLogPO.getId(), cashLogPO.getCompanyId());
         //修改已收金额
