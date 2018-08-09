@@ -304,7 +304,7 @@ public class GoEasyUtil {
      * @param staffId
      */
     public static void pushInfoRefresh(int companyId, int staffId,WebSocketMsgUtil webSocketMsgUtil) {
-        webSocketMsgUtil.pushBaseInfoFresh(companyId, staffId);
+        webSocketMsgUtil.pushClientInfoRefresh(companyId,staffId);
 //        JSONObject contentJson = new JSONObject();
 //        pushWeb(MessageConts.MSG_TYPE_INFO_REFRESH, companyId, staffId, contentJson);
     }
@@ -329,10 +329,10 @@ public class GoEasyUtil {
      * @param companyId
      * @param staffId
      */
-    public static void pushStatusRefresh(int companyId, int staffId) {
-
-        JSONObject contentJson = new JSONObject();
-        pushWeb(MessageConts.MSG_TYPE_STATUS_REFRESH, companyId, staffId, contentJson);
+    public static void pushStatusRefresh(int companyId, int staffId,WebSocketMsgUtil webSocketMsgUtil) {
+        webSocketMsgUtil.pushBaseInfoFresh(companyId, staffId);
+//        JSONObject contentJson = new JSONObject();
+//        pushWeb(MessageConts.MSG_TYPE_STATUS_REFRESH, companyId, staffId, contentJson);
     }
 
     /**
