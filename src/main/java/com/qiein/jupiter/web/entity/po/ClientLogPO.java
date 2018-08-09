@@ -48,6 +48,10 @@ public class ClientLogPO implements Serializable {
 	 * 企业ID
 	 */
 	private int companyId;
+	/**
+	 * 头像
+	 */
+	private String headImg;
 
 	public ClientLogPO(String kzId, int operaId, String operaName, String memo, int logType, int companyId) {
 		super();
@@ -126,5 +130,13 @@ public class ClientLogPO implements Serializable {
 
 	public void setCompanyId(int companyId) {
 		this.companyId = companyId;
+	}
+
+	public String getHeadImg() {
+		return headImg;
+	}
+
+	public void setHeadImg(String headImg) {
+		this.headImg = headImg;
 	}
 }

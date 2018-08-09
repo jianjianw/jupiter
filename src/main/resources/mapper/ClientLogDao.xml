@@ -7,6 +7,7 @@
         <result column="KZID" jdbcType="VARCHAR" property="kzId"/>
         <result column="OPERAID" jdbcType="INTEGER" property="operaId"/>
         <result column="OPERANAME" jdbcType="VARCHAR" property="operaName"/>
+        <result column="HEADIMG" jdbcType="VARCHAR" property="headImg"/>
         <result column="MEMO" jdbcType="VARCHAR" property="memo"/>
         <result column="OPERATIME" jdbcType="INTEGER" property="kzId"/>
         <result column="LOGTYPE" jdbcType="INTEGER" property="logType"/>
@@ -26,4 +27,13 @@
 			(#{log.kzId}, #{log.operaId}, #{log.operaName}, #{log.memo}, UNIX_TIMESTAMP(NOW()), #{log.logType}, #{log.companyId}
 		)
     </insert>
+
+    <!--查询客资收款修改日志-->
+    <select id="getCashEditLog" parameterType="map" resultMap="logMap">
+        SELECT log.OPERAID, log.OPERANAME, sf.HEADIMG, log.MEMO, log.OPERATIME, log.LOGTYPE
+        FROM ${logTabName} log
+        LEFT JOIN hm_pub_staff sf ON log.OPERAID = sf.ID AND sf.COMPANYID = #{companyId}
+        WHERE log.COMPANYID = #{companyId} AND log.KZID = #{kzId} AND log.LOGTYPE = #{logType} ORDER BY log.OPERATIME DESC, log.ID DESC ");
+
+    </select>
 </mapper>

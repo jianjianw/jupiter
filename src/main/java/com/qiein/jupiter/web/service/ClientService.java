@@ -5,6 +5,7 @@ import com.qiein.jupiter.web.entity.vo.ClientStatusVO;
 import com.qiein.jupiter.web.entity.vo.ClientStatusVoteVO;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by Tt on 2018/5/15 0015.
@@ -71,4 +72,15 @@ public interface ClientService {
      * @param clientLogPO
      */
     void addClientLog(ClientLogPO clientLogPO);
+
+    /**
+     * 查询客资收款修改日志
+     *
+     * @param logTabName
+     * @param companyId
+     * @param kzId
+     * @param logType
+     * @return
+     */
+    List<ClientLogPO> getCashEditLog(int companyId, String kzId);
 }
