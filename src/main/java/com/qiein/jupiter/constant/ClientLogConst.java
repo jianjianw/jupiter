@@ -142,16 +142,16 @@ public class ClientLogConst {
         StringBuilder sb = new StringBuilder();
         sb.append(newCash.getOperaName() + " 修改了编号为 " + newCash.getId() + " 的收款记录");
         if (NumUtil.isValid(newCash.getAmount()) && NumUtil.isValid(oldCash.getAmount()) && oldCash.getAmount() != newCash.getAmount()) {
-            sb.append("，收款金额由 " + oldCash.getAmount() + "改为：" + newCash.getAmount());
+            sb.append("，收款金额由 " + oldCash.getAmount() + " 改为：" + newCash.getAmount());
         }
         if (StringUtil.isNotEmpty(newCash.getPayStyleName()) && StringUtil.isNotEmpty(oldCash.getPayStyleName()) && !oldCash.getPayStyleName().equals(newCash.getPayStyleName())) {
-            sb.append("，收款方式由 " + oldCash.getPayStyleName() + "改为：" + newCash.getPayStyleName());
+            sb.append("，收款方式由 " + oldCash.getPayStyleName() + " 改为：" + newCash.getPayStyleName());
         }
         if (NumUtil.isValid(newCash.getPaymentTime()) && NumUtil.isValid(oldCash.getPaymentTime()) && TimeUtil.checkTimesDifRange(newCash.getPaymentTime(), oldCash.getPaymentTime())) {
-            sb.append("，收款时间由 " + TimeUtil.intMillisToTimeStr(oldCash.getPaymentTime()) + "改为：" + TimeUtil.intMillisToTimeStr(newCash.getPaymentTime()));
+            sb.append("，收款时间由 " + TimeUtil.intMillisToTimeStr(oldCash.getPaymentTime()) + " 改为：" + TimeUtil.intMillisToTimeStr(newCash.getPaymentTime()));
         }
         if (StringUtil.isNotEmpty(newCash.getStaffName()) && StringUtil.isNotEmpty(oldCash.getStaffName()) && !newCash.getStaffName().equals(oldCash.getStaffName())) {
-            sb.append("，收款人由 " + oldCash.getStaffName() + "改为：" + newCash.getStaffName());
+            sb.append("，收款人由 " + oldCash.getStaffName() + " 改为：" + newCash.getStaffName());
         }
         return sb.toString();
     }
