@@ -24,14 +24,14 @@ import java.util.Map;
 public class DstgGoldDataReportsDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private CommonReportsDao commonReportsDao;
 
     /**
      * 获取电商推广广告信息汇总报表
      */
-    public List<DstgGoldDataReportsVO> getDstgGoldDataReprots(ReportsParamVO reportsParamVO) {
+    public List<DstgGoldDataReportsVO> getDstgGoldDataReprots(ReportsParamVO reportsParamVO,DsInvalidVO invalidConfig) {
         List<DstgGoldDataReportsVO> dstgGoldDataReportsVOS = new ArrayList<>();
-        //获取无效指标定义
-        DsInvalidVO invalidConfig = getInvalidConfig(reportsParamVO.getCompanyId());
         // 获取总客资
         getAllClientCount(reportsParamVO, dstgGoldDataReportsVOS);
         //获取待定量
@@ -41,7 +41,7 @@ public class DstgGoldDataReportsDao {
 
 
     /**
-     * 获取广告
+     * 获取广告总量
      */
     private void getAllClientCount(ReportsParamVO reportsParamVO, List<DstgGoldDataReportsVO> dstgGoldDataReportsVOS) {
         StringBuilder sb = new StringBuilder();
@@ -113,30 +113,5 @@ public class DstgGoldDataReportsDao {
     }
 
 
-    /**
-     * 获取无效等指标定义
-     */
-    private DsInvalidVO getInvalidConfig(int companyId) {
-        StringBuilder sb = new StringBuilder();
-
-        if (NumUtil.isInValid(companyId)) {
-            return null;
-        }
-        sb.append(" SELECT comp.DSINVALIDSTATUS, comp.DSINVALIDLEVEL, comp.DDISVALID, comp.DSDDSTATUS  FROM hm_pub_company comp WHERE comp.ID = ? AND comp.ISDEL = 0 ");
-        DsInvalidVO dsInvalidVO = jdbcTemplate.queryForObject(sb.toString(),
-                new Object[]{companyId},
-                new RowMapper<DsInvalidVO>() {
-                    @Override
-                    public DsInvalidVO mapRow(ResultSet rs, int i) throws SQLException {
-                        DsInvalidVO dsInvalidVO = new DsInvalidVO();
-                        dsInvalidVO.setDsInvalidStatus(rs.getString("DSINVALIDSTATUS"));
-                        dsInvalidVO.setDsInvalidLevel(rs.getString("DSINVALIDLEVEL"));
-                        dsInvalidVO.setDdIsValid(rs.getBoolean("DDISVALID"));
-                        dsInvalidVO.setDsDdStatus(rs.getString("DSDDSTATUS"));
-                        return dsInvalidVO;
-                    }
-                });
-        return dsInvalidVO;
-    }
 
 }

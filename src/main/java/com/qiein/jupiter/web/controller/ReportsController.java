@@ -353,6 +353,10 @@ public class ReportsController extends BaseController {
         return ResultInfoUtil.success(JsonFmtUtil.strContentToJsonObj(json).get("analysis"));
     }
 
+
+    /**
+     * 获取电商推广广告报表
+     * */
     @GetMapping("/get_dstg_ad_reports")
     public ResultInfo getDstgAdReports(Integer start,Integer end){
         StaffPO staffPO = getCurrentLoginStaff();

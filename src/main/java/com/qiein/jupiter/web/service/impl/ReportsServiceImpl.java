@@ -13,8 +13,10 @@ import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.EditClientPhonePO;
 import com.qiein.jupiter.web.entity.po.RepateKzLogPO;
 import com.qiein.jupiter.web.entity.po.WechatScanPO;
+import com.qiein.jupiter.web.entity.vo.DsInvalidVO;
 import com.qiein.jupiter.web.entity.vo.DstgGoldDataReportsVO;
 import com.qiein.jupiter.web.entity.vo.ReportsParamVO;
+import com.qiein.jupiter.web.repository.CommonReportsDao;
 import com.qiein.jupiter.web.repository.DstgGoldDataReportsDao;
 import com.qiein.jupiter.web.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,10 @@ public class ReportsServiceImpl implements ReportService {
 
     @Autowired
     private DstgGoldDataReportsDao dstgGoldDataReportsDao;
+
+    @Autowired
+    private CommonReportsDao commonReportsDao;
+
     /**
      * 修改联系方式日志
      *
@@ -107,6 +113,13 @@ public class ReportsServiceImpl implements ReportService {
         return new PageInfo<>(list);
     }
 
+
+    /**
+     * 获取电商推广广告报表
+     * @param start
+     * @param end
+     * @param companyId
+     * */
     @Override
     public List<DstgGoldDataReportsVO> getDstgAdReports(Integer start, Integer end, Integer companyId) {
        //封装对应的参数
@@ -114,8 +127,9 @@ public class ReportsServiceImpl implements ReportService {
         reportsParamVO.setStart(start);
         reportsParamVO.setEnd(end);
         reportsParamVO.setCompanyId(companyId);
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         //获取数据
-        List<DstgGoldDataReportsVO> dstgGoldDataReprots = dstgGoldDataReportsDao.getDstgGoldDataReprots(reportsParamVO);
+        List<DstgGoldDataReportsVO> dstgGoldDataReprots = dstgGoldDataReportsDao.getDstgGoldDataReprots(reportsParamVO,invalidConfig);
         return dstgGoldDataReprots;
     }
 }
