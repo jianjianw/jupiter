@@ -108,7 +108,15 @@
             dic.DICTYPE = #{dicType}
             AND dic.COMPANYID = #{companyId}
     </select>
-
+    <!--获取最大顺序-->
+    <select id="getMaxPriority" parameterType="map" resultType="java.lang.Integer">
+        SELECT IFNULL(MAX(dic.PRIORITY), 0)
+        FROM
+        hm_crm_dictionary dic
+        WHERE
+        dic.DICTYPE = #{dicType}
+        AND dic.COMPANYID = #{companyId}
+    </select>
     <!--新增字典记录-->
     <insert id="createDict" parameterType="dictionaryPO">
         INSERT INTO

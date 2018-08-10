@@ -15,6 +15,7 @@ import com.qiein.jupiter.web.entity.po.ClientLogPO;
 import com.qiein.jupiter.web.entity.po.GroupPO;
 import com.qiein.jupiter.web.entity.po.StaffStatusLog;
 import com.qiein.jupiter.web.service.ClientReceiveService;
+import com.qiein.jupiter.web.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,6 +44,9 @@ public class ClientReceiveServiceImpl implements ClientReceiveService {
     @Autowired
     private WebSocketMsgUtil webSocketMsgUtil;
 
+    @Autowired
+    private StaffService staffService;
+
     @Override
     @Transactional
     public void receive(String kzId, String logId, int companyId, int staffId, String staffName) {
@@ -62,7 +66,7 @@ public class ClientReceiveServiceImpl implements ClientReceiveService {
         resizeTodayNum(companyId, staffId);
 
         // 推送页面重载客资列表
-        GoEasyUtil.pushInfoRefresh(companyId, staffId,webSocketMsgUtil);
+        GoEasyUtil.pushInfoRefresh(companyId, staffId, webSocketMsgUtil);
     }
 
     /**
@@ -81,7 +85,7 @@ public class ClientReceiveServiceImpl implements ClientReceiveService {
         // 计算今日客资个数
         resizeTodayNum(companyId, staffId);
         // 推送页面重载客资列表
-        GoEasyUtil.pushInfoRefresh(companyId, staffId,webSocketMsgUtil);
+        GoEasyUtil.pushInfoRefresh(companyId, staffId, webSocketMsgUtil);
     }
 
     /**
@@ -196,23 +200,7 @@ public class ClientReceiveServiceImpl implements ClientReceiveService {
      * @param staffId
      */
     private void resizeTodayNum(int companyId, int staffId) {
-        // 计算客服今日领取客资数
-        int num = staffDao.getTodayKzNum(companyId, staffId, DBSplitUtil.getInfoTabName(companyId));
-        // 修改今日领取客资数
-        int updateNum = staffDao.updateTodatKzNum(companyId, staffId, num);
-        if (1 != updateNum) {
-            throw new RException(ExceptionEnum.STAFF_EDIT_ERROR);
-        }
-        // 计算是否满限
-        updateNum = staffDao.checkOverFlowToday(companyId, staffId);
-        if (1 == updateNum) {
-            // 记录状态修改日志
-            statusLogDao.insert(
-                    new StaffStatusLog(staffId, StaffStatusEnum.LIMIT.getStatusId(), CommonConstant.SYSTEM_OPERA_ID,
-                            CommonConstant.SYSTEM_OPERA_NAME, companyId, ClientLogConst.LIMITDAY_OVERFLOW));
-            // 推送状态重载消息
-            GoEasyUtil.pushStatusRefresh(companyId, staffId,webSocketMsgUtil);
-        }
+        staffService.resizeTodayNum(companyId, staffId);
     }
 
     /**

@@ -145,6 +145,7 @@ public class ClientEditServiceImpl implements ClientEditService {
                 throw new RException("存在重复客资");
             }
             GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getAppointorId(), info, staffPO.getNickName(), newsDao, staffDao);
+            GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getCollectorId(), info, staffPO.getNickName(), newsDao, staffDao);
             throw new RException("存在重复客资");
         } else {
             throw new RException(jsInfo.getString("msg"));
@@ -250,6 +251,7 @@ public class ClientEditServiceImpl implements ClientEditService {
                 webSocketMsgUtil.pushOrderSuccessMsg(orderSuccessMsg);
                 // 发送成功消息给录入人
                 GoEasyUtil.pushSuccessOnline(info.getCompanyId(), info.getCollectorId(), info, newsDao, staffDao);
+                GoEasyUtil.pushSuccessOnline(info.getCompanyId(), info.getAppointorId(), info, newsDao, staffDao);
             } else if (ClientStatusConst.INVALID_BE_STAY == clientVO.getYyRst()) {
                 // 如果是无效，发送警告消息给录入人
                 GoEasyUtil.pushYyValidReject(info.getCompanyId(), info.getCollectorId(), info, newsDao, staffDao);
@@ -263,6 +265,7 @@ public class ClientEditServiceImpl implements ClientEditService {
                 throw new RException("存在重复客资");
             }
             GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getAppointorId(), info, staffPO.getNickName(), newsDao, staffDao);
+            GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getCollectorId(), info, staffPO.getNickName(), newsDao, staffDao);
             throw new RException("存在重复客资");
         } else {
             throw new RException(jsInfo.getString("msg"));
@@ -369,6 +372,7 @@ public class ClientEditServiceImpl implements ClientEditService {
                 throw new RException("存在重复客资");
             }
             GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getAppointorId(), info, staffPO.getNickName(), newsDao, staffDao);
+            GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getCollectorId(), info, staffPO.getNickName(), newsDao, staffDao);
             throw new RException("存在重复客资");
         } else {
             throw new RException(jsInfo.getString("msg"));
@@ -469,6 +473,7 @@ public class ClientEditServiceImpl implements ClientEditService {
                 throw new RException("存在重复客资");
             }
             GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getAppointorId(), info, staffPO.getNickName(), newsDao, staffDao);
+            GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getCollectorId(), info, staffPO.getNickName(), newsDao, staffDao);
             throw new RException("存在重复客资");
         } else if (!"100000".equals(jsInfo.getString("code"))) {
             throw new RException(jsInfo.getString("msg"));
@@ -511,6 +516,7 @@ public class ClientEditServiceImpl implements ClientEditService {
                 throw new RException("存在重复客资");
             }
             GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getAppointorId(), info, staffPO.getNickName(), newsDao, staffDao);
+            GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getCollectorId(), info, staffPO.getNickName(), newsDao, staffDao);
             throw new RException("存在重复客资");
         } else if (!"100000".equals(jsInfo.getString("code"))) {
             throw new RException(jsInfo.getString("msg"));

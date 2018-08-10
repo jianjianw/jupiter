@@ -73,6 +73,15 @@ public interface DictionaryDao extends BaseDao<DictionaryPO> {
     int getMaxDicCode(@Param("companyId") int companyId, @Param("dicType") String dicType);
 
     /**
+     * 获取最大顺序
+     *
+     * @param companyId
+     * @param dicType
+     * @return
+     */
+    int getMaxPriority(@Param("companyId") int companyId, @Param("dicType") String dicType);
+
+    /**
      * 新增字典记录
      *
      * @param dictionaryPO
