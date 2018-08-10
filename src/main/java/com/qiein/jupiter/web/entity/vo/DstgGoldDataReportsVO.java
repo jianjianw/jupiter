@@ -13,42 +13,42 @@ public class DstgGoldDataReportsVO {
     /**
      * 总客资
      * */
-    private Integer allClientCount;
+    private int allClientCount;
 
     /**
      * 客资量
      * */
-    private Integer clientCount;
+    private int clientCount;
 
     /**
      * 有效量
      * */
-    private Integer validClientCount;
+    private int validClientCount;
 
     /**
      * 无效量
      * */
-    private Integer inValidClientCount;
+    private int inValidClientCount;
 
     /**
      * 待定量
      * */
-    private Integer waitClientCount;
+    private int waitClientCount;
 
     /**
      * 已预约数量
      * */
-    private Integer appointClientCount;
+    private int appointClientCount;
 
     /**
      * 入店量
      * */
-    private Integer comeShopClientCount;
+    private int comeShopClientCount;
 
     /**
      * 成交量
      * */
-    private Integer successClientCount;
+    private int successClientCount;
 
     /**
      * 有效率 (有效量 / 客资量)
@@ -109,67 +109,67 @@ public class DstgGoldDataReportsVO {
         this.adId = adId;
     }
 
-    public Integer getAllClientCount() {
+    public int getAllClientCount() {
         return allClientCount;
     }
 
-    public void setAllClientCount(Integer allClientCount) {
+    public void setAllClientCount(int allClientCount) {
         this.allClientCount = allClientCount;
     }
 
-    public Integer getClientCount() {
+    public int getClientCount() {
         return clientCount;
     }
 
-    public void setClientCount(Integer clientCount) {
+    public void setClientCount(int clientCount) {
         this.clientCount = clientCount;
     }
 
-    public Integer getValidClientCount() {
+    public int getValidClientCount() {
         return validClientCount;
     }
 
-    public void setValidClientCount(Integer validClientCount) {
+    public void setValidClientCount(int validClientCount) {
         this.validClientCount = validClientCount;
     }
 
-    public Integer getInValidClientCount() {
+    public int getInValidClientCount() {
         return inValidClientCount;
     }
 
-    public void setInValidClientCount(Integer inValidClientCount) {
+    public void setInValidClientCount(int inValidClientCount) {
         this.inValidClientCount = inValidClientCount;
     }
 
-    public Integer getWaitClientCount() {
+    public int getWaitClientCount() {
         return waitClientCount;
     }
 
-    public void setWaitClientCount(Integer waitClientCount) {
+    public void setWaitClientCount(int waitClientCount) {
         this.waitClientCount = waitClientCount;
     }
 
-    public Integer getAppointClientCount() {
+    public int getAppointClientCount() {
         return appointClientCount;
     }
 
-    public void setAppointClientCount(Integer appointClientCount) {
+    public void setAppointClientCount(int appointClientCount) {
         this.appointClientCount = appointClientCount;
     }
 
-    public Integer getComeShopClientCount() {
+    public int getComeShopClientCount() {
         return comeShopClientCount;
     }
 
-    public void setComeShopClientCount(Integer comeShopClientCount) {
+    public void setComeShopClientCount(int comeShopClientCount) {
         this.comeShopClientCount = comeShopClientCount;
     }
 
-    public Integer getSuccessClientCount() {
+    public int getSuccessClientCount() {
         return successClientCount;
     }
 
-    public void setSuccessClientCount(Integer successClientCount) {
+    public void setSuccessClientCount(int successClientCount) {
         this.successClientCount = successClientCount;
     }
 
