@@ -50,6 +50,8 @@ public class DictionaryServiceImpl implements DictionaryService {
     public void addInvalidReason(DictionaryPO dictionaryPO) {
         dictionaryPO.setDicType(DictionaryConstant.INVALID_REASON);
         int dicCode = dictionaryDao.getMaxDicCode(dictionaryPO.getCompanyId(), dictionaryPO.getDicType());
+        int priority = dictionaryDao.getMaxPriority(dictionaryPO.getCompanyId(), dictionaryPO.getDicType());
+        dictionaryPO.setPriority(priority + 1);
         dictionaryPO.setDicCode(dicCode + 1);
         //1.去重
         DictionaryPO exist = dictionaryDao.getDicByTypeAndName(dictionaryPO.getCompanyId(), dictionaryPO.getDicType(), dictionaryPO.getDicName());
