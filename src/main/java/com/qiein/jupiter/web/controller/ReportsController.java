@@ -7,6 +7,7 @@ import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.entity.dto.ClientLogDTO;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.entity.vo.DstgGoldDataReportsVO;
 import com.qiein.jupiter.web.entity.vo.ReportsConditionVO;
 import com.qiein.jupiter.web.service.ReportService;
 import org.apache.ibatis.annotations.Param;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -351,9 +353,18 @@ public class ReportsController extends BaseController {
         return ResultInfoUtil.success(JsonFmtUtil.strContentToJsonObj(json).get("analysis"));
     }
 
+    @GetMapping("/get_dstg_ad_reports")
+    public ResultInfo getDstgAdReports(Integer start,Integer end){
+        StaffPO staffPO = getCurrentLoginStaff();
+        List<DstgGoldDataReportsVO> dstgGoldDataReportsVO = reportService.getDstgAdReports(start,end,staffPO.getCompanyId());
+        return ResultInfoUtil.success(dstgGoldDataReportsVO);
+    }
+
+
     @GetMapping("/receive_ali")
     public ResultInfo receiveAli(String code, String state) {
         System.out.println(code + "-----------------------------------" + state);
         return ResultInfoUtil.success();
     }
+
 }

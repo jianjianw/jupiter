@@ -2,17 +2,14 @@ package com.qiein.jupiter.web.controller;
 
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
-import com.qiein.jupiter.util.StringUtil;
-import com.qiein.jupiter.web.dao.StaffDao;
 import com.qiein.jupiter.web.entity.po.CallCustomerPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.repository.DstgGoldDataReportsDao;
 import com.qiein.jupiter.web.service.CallService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 /**
  * @author: yyx
@@ -23,6 +20,8 @@ import java.util.List;
 public class CallController extends BaseController{
     @Autowired
     private CallService callService;
+    @Autowired
+    private DstgGoldDataReportsDao dstgGoldDataReportsDao;
     /**
      * 添加客服
      * */

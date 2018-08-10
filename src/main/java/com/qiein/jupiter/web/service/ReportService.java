@@ -3,6 +3,9 @@ package com.qiein.jupiter.web.service;
 import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.web.entity.dto.ClientLogDTO;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
+import com.qiein.jupiter.web.entity.vo.DstgGoldDataReportsVO;
+
+import java.util.List;
 
 public interface ReportService {
     /**
@@ -28,4 +31,14 @@ public interface ReportService {
      * @return
      */
     PageInfo repateKzLog(QueryMapDTO queryMapDTO, ClientLogDTO clientLogDTO);
+
+    /**
+     * 获取电商推广报表
+     * @param start
+     * @param end
+     * @param companyId
+     * @return
+     * */
+    List<DstgGoldDataReportsVO> getDstgAdReports(Integer start, Integer end, Integer companyId);
+
 }
