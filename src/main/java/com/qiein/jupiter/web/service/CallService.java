@@ -3,6 +3,8 @@ package com.qiein.jupiter.web.service;
 import com.qiein.jupiter.web.entity.po.CallCustomerPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 
+import java.util.List;
+
 /**
  * @author: yyx
  * @Date: 2018-8-9
@@ -30,5 +32,12 @@ public interface CallService {
      * @param staffPO
      * */
     void editCustomer(StaffPO staffPO, CallCustomerPO callCustomerPO);
+
+    /**
+     * 获取客服列表
+     * @param staffPO
+     * @return
+     * */
+    List<CallCustomerPO> customerList(StaffPO staffPO);
 
 }

@@ -23,6 +23,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author: yyx
  * @Date: 2018-8-9
@@ -143,6 +145,12 @@ public class CallServiceImpl implements CallService {
         callCustomerPO.setStaffId(staffPO.getId());
         callCustomerPO.setCompanyId(staffPO.getCompanyId());
         callCustomerDao.update(callCustomerPO);
+    }
+
+    @Override
+    public List<CallCustomerPO> customerList(StaffPO staffPO) {
+        List<CallCustomerPO> callCustomerPOS = callCustomerDao.getCallCustomerListByCompanyId(staffPO.getCompanyId());
+        return callCustomerPOS;
     }
 
 }

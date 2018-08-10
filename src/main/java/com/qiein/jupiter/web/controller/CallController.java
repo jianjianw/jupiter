@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * @author: yyx
  * @Date: 2018-8-9
@@ -38,6 +40,15 @@ public class CallController extends BaseController{
         StaffPO staffPO = getCurrentLoginStaff();
         callService.editCustomer(staffPO,callCustomerPO);
         return ResultInfoUtil.success();
+    }
+
+    /**
+     * 客服列表
+     * */
+    @RequestMapping("/customer_list")
+    public ResultInfo customerList(){
+        StaffPO staffPO = getCurrentLoginStaff();
+        return ResultInfoUtil.success(callService.customerList(staffPO));
     }
 
     /**

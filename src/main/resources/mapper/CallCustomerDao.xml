@@ -40,4 +40,8 @@
          where id = #{id}
     </update>
 
+    <select id = "getCallCustomerListByCompanyId" resultMap="BaseResultMap">
+        select  id,staff_id,companyid,call_id,phone,createtime from hm_crm_all_customer where companyid = #{companyId}
+    </select>
+
 </mapper>
