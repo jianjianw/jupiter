@@ -150,6 +150,7 @@ public class ClientAddServiceImpl implements ClientAddService {
                 throw new RException("存在重复客资");
             }
             GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getAppointorId(), info, staffPO.getNickName(), newsDao, staffDao);
+            GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getCollectorId(), info, staffPO.getNickName(), newsDao, staffDao);
             throw new RException("存在重复客资");
         } else {
             throw new RException(jsInfo.getString("msg"));
@@ -250,6 +251,7 @@ public class ClientAddServiceImpl implements ClientAddService {
                 throw new RException("存在重复客资");
             }
             GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getAppointorId(), info, staffPO.getNickName(), newsDao, staffDao);
+            GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getCollectorId(), info, staffPO.getNickName(), newsDao, staffDao);
             throw new RException("存在重复客资");
         } else {
             throw new RException(jsInfo.getString("msg"));
@@ -374,6 +376,7 @@ public class ClientAddServiceImpl implements ClientAddService {
                 throw new RException("存在重复客资");
             }
             GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getAppointorId(), info, staffPO.getNickName(), newsDao, staffDao);
+            GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getCollectorId(), info, staffPO.getNickName(), newsDao, staffDao);
             throw new RException("存在重复客资");
         } else if (!"100000".equals(jsInfo.getString("code"))) {
             throw new RException(jsInfo.getString("msg"));
@@ -574,6 +577,7 @@ public class ClientAddServiceImpl implements ClientAddService {
             throw new RException("存在重复客资");
         }
         GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getAppointorId(), info, staffPO.getNickName(), newsDao, staffDao);
+        GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getCollectorId(), info, staffPO.getNickName(), newsDao, staffDao);
     }
 
 }
