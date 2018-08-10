@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.service;
 
 import com.qiein.jupiter.web.entity.po.CallCustomerPO;
+import com.qiein.jupiter.web.entity.po.CallPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 
 import java.util.List;
@@ -39,5 +40,12 @@ public interface CallService {
      * @return
      * */
     List<CallCustomerPO> customerList(StaffPO staffPO);
+
+    /**
+     * 实例列表
+     * @param staffPO
+     * @return
+     * */
+    CallPO instanceList(StaffPO staffPO);
 
 }

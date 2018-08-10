@@ -3,6 +3,7 @@ package com.qiein.jupiter.web.controller;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.web.dao.StaffDao;
 import com.qiein.jupiter.web.entity.po.CallCustomerPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.service.CallService;
@@ -49,6 +50,15 @@ public class CallController extends BaseController{
     public ResultInfo customerList(){
         StaffPO staffPO = getCurrentLoginStaff();
         return ResultInfoUtil.success(callService.customerList(staffPO));
+    }
+
+    /**
+     * 实例列表
+     * */
+    @RequestMapping("/instance_list")
+    public ResultInfo instanceList(){
+        StaffPO staffPO = getCurrentLoginStaff();
+        return ResultInfoUtil.success(callService.instanceList(staffPO));
     }
 
     /**

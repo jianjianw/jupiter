@@ -160,4 +160,18 @@ public class CallServiceImpl implements CallService {
         return callCustomerPOS;
     }
 
+    @Override
+    public CallPO instanceList(StaffPO staffPO) {
+        String sign = MD5Util.getApolloMd5(String.valueOf(staffPO.getCompanyId()));
+        //Appollo接口获取用户信息
+        String usreJson = HttpClient
+                // 请求方式和请求url
+                .get(appoloBaseUrl.concat(AppolloUrlConst.GET_CALL_USER))
+                // post提交json
+                .queryString("companyId", staffPO.getCompanyId())
+                .queryString("sign", sign)
+                .asString();
+        return null;
+    }
+
 }
