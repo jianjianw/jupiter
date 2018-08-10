@@ -11,10 +11,7 @@ import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.util.alicloud.BatchTokenRetrieval;
 import com.qiein.jupiter.util.alicloud.RandomString;
-import com.qiein.jupiter.web.dao.CallCustomerDao;
-import com.qiein.jupiter.web.dao.ClientDao;
-import com.qiein.jupiter.web.dao.ClientInfoDao;
-import com.qiein.jupiter.web.dao.ClientLogDao;
+import com.qiein.jupiter.web.dao.*;
 import com.qiein.jupiter.web.entity.po.*;
 import com.qiein.jupiter.web.entity.vo.AliOauthVO;
 import com.qiein.jupiter.web.service.CallService;
@@ -41,6 +38,8 @@ public class CallServiceImpl implements CallService {
     private ClientInfoDao clientInfoDao;
     @Autowired
     private CallCustomerDao callCustomerDao;
+    @Autowired
+    private StaffDao staffDao;
 
 
     @Override
@@ -122,11 +121,19 @@ public class CallServiceImpl implements CallService {
         if(StringUtil.isEmpty(callCustomerPO.getPhone())){
             throw new RException(ExceptionEnum.CALL_CONSUMER_PHONE_IS_NULL);
         }
+        if(NumUtil.isInValid(callCustomerPO.getStaffId())){
+            throw new RException(ExceptionEnum.STAFF_ID_NULL);
+        }
         CallCustomerPO callCustomer = callCustomerDao.getCallCustomerByStaffIdAndCompanyId(staffPO.getId(), staffPO.getCompanyId());
         if(null != callCustomer){
             throw new RException(ExceptionEnum.CALL_CONSUMER_IS_EXISTS);
         }
-        callCustomerPO.setStaffId(staffPO.getId());
+        StaffPO staff = staffDao.getByIdAndCid(callCustomerPO.getStaffId(), staffPO.getCompanyId());
+        if(null == staff){
+            throw new RException(ExceptionEnum.STAFF_IS_NOT_EXIST);
+        }
+        callCustomerPO.setStaffId(staff.getId());
+        callCustomerPO.setNickName(staff.getNickName());
         callCustomerPO.setCompanyId(staffPO.getCompanyId());
         callCustomerDao.insert(callCustomerPO);
     }

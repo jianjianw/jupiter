@@ -16,6 +16,11 @@ public class CallCustomerPO {
     private Integer staffId;
 
     /**
+     * 员工姓名
+     * */
+    private String nickName;
+
+    /**
      * 公司id
      * */
     private Integer companyId;
@@ -34,6 +39,15 @@ public class CallCustomerPO {
      * 创建时间
      * */
     private Integer createTime;
+
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
 
     public Integer getCallId() {
         return callId;
