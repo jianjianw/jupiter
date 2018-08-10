@@ -1022,7 +1022,7 @@ public class ClientPushServiceImpl implements ClientPushService {
         GoEasyUtil.pushAllotMsg(companyId, appoint.getStaffId(), kzIdsArr, newsDao, staffDao);
     }
 
-    public void pushMsjd(int companyId, String kzIds, StaffPushDTO appoint, int operaId, String operaName) {
+    private void pushMsjd(int companyId, String kzIds, StaffPushDTO appoint, int operaId, String operaName) {
         // 根据每个客资生成对应的分配日志
         String[] kzIdsArr = kzIds.split(",");
         String[] allogIdsArr = new String[kzIdsArr.length];
