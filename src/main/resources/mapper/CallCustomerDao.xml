@@ -20,7 +20,7 @@
 
     <!--根据员工id公司id获取客服对象-->
     <select id = "getCallCustomerByStaffIdAndCompanyId" resultMap="BaseResultMap">
-      select id,staff_id,companyid,call_id,phone,createtime from hm_crm_all_customer where staff_id = #{staffId} and companyid = #{companyId}
+      select id,staff_id,nickname,companyid,call_id,phone,createtime from hm_crm_all_customer where staff_id = #{staffId} and companyid = #{companyId}
     </select>
 
     <!--update-->
@@ -42,7 +42,7 @@
     </update>
 
     <select id = "getCallCustomerListByCompanyId" resultMap="BaseResultMap">
-        select  id,staff_id,companyid,call_id,phone,createtime from hm_crm_call_customer where companyid = #{companyId}
+        select  id,staff_id,nickname,companyid,call_id,phone,createtime from hm_crm_call_customer where companyid = #{companyId}
     </select>
 
 </mapper>
