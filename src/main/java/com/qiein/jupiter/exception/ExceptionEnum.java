@@ -180,7 +180,11 @@ public enum ExceptionEnum {
     START_TIME_OR_END_TIME_IS_NULL(2501, "开始时间或者结束时间不能为空"),
     //外呼
     NOT_FOUND_BIND_USER(2601,"未找到绑定用户信息"),
-    CALLER_OR_CALLEE_IS_NULL(2602,"主叫或者被叫电话为空");
+    CALLER_OR_CALLEE_IS_NULL(2602,"主叫或者被叫电话为空"),
+    CALL_ID_IS_NULL(2603,"实例ID不能为空"),
+    CALL_CONSUMER_PHONE_IS_NULL(2604,"客服电话不能为空"),
+    CALL_CONSUMER_IS_EXISTS(2605,"客服已经存在"),
+    CALL_CONSUMER_ID_IS_NULL(2606,"客服id为空");
 
     private Integer code;
     private String msg;

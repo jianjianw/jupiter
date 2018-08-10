@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiein.jupiter.web.dao.CallCustomerDao">
+    <!--结果集-->
+    <resultMap id="BaseResultMap" type="com.qiein.jupiter.web.entity.po.CallCustomerPO">
+        <id column="id" property="id"></id>
+        <result property="staffId" column="staff_id"></result>
+        <result property="companyId" column="companyid"></result>
+        <result property="callId" column="call_id"></result>
+        <result property="phone" column="phone"></result>
+        <result property="createTime" column="createtime"></result>
+    </resultMap>
+
+    <!--insert-->
+    <insert id = "insert" parameterType="com.qiein.jupiter.web.entity.po.CallCustomerPO">
+        insert into hm_crm_call_customer ( staff_id,call_id,companyid,phone,createtime)
+        values(#{staffId},#{callId},#{companyId},#{phone},UNIX_TIMESTAMP(NOW()))
+    </insert>
+
+    <!--根据员工id公司id获取客服对象-->
+    <select id = "getCallCustomerByStaffIdAndCompanyId" resultMap="BaseResultMap">
+      select id,staff_id,companyid,call_id,phone,createtime from hm_crm_all_customer where staff_id = #{staffId} and companyid = #{companyId}
+    </select>
+
+    <!--update-->
+    <update id = "update" parameterType="com.qiein.jupiter.web.entity.po.CallCustomerPO">
+        update hm_crm_call_customer set updatetime = UNIX_TIMESTAMP(NOW())
+        <if test="staffId != null ans staffId != 0">
+            ,staff_id = #{staffId}
+        </if>
+        <if test="companyid != null nad companyid != 0">
+            , companyid = #{companyId}
+        </if>
+        <if test="callId != null and callId != 0">
+            , call_id = #{callId}
+        </if>
+        <if test="phone != null and phone != ''">
+            ,#{phone} = #{phone}
+        </if>
+         where id = #{id}
+    </update>
+
+</mapper>

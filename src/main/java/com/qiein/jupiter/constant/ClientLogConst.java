@@ -29,6 +29,7 @@ public class ClientLogConst {
     public static final int INFO_LOGTYPE_RECEIVE = 11;// 领取
     public static final int INFO_LOGTYPE_SCAN_WECAHT = 12;// 微信二维码扫描
     public static final int INFO_LOGTYPE_CASH = 13;// 客资收款收款记录
+    public static final int INFO_LOG_TYPE_CALL = 14;//通话
 
     public static final String INFO_LOG_AUTO_ALLOT_TEMPLATE = "系统自动分配该客资给 => ${groupName} 的  ${appointorName} ";
     public static final String INFO_LOG_HANDLER_ALLOT_TEMPLATE = "${operaName} 手动分配该客资给 => ${groupName} 的  ${appointorName} ";
@@ -42,6 +43,7 @@ public class ClientLogConst {
     public static final String INFO_LOG_NOT_ARRIVE_SHOP = "将客资状态标记为未到店";
     public static final String CONTINUOUS_SABOTEUR_DONW = "连续怠工三次自动下线ಥ﹏ಥ";
     public static final String LIMITDAY_OVERFLOW = "今日领取客资数达到最大限额";
+    public static final String INFO_LOG_CALL_PHONE = "已拨打客资电话";
 
 
     /**

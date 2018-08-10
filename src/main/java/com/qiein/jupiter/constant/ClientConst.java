@@ -49,4 +49,14 @@ public class ClientConst {
 	public static final String KZ_SEX_GIRL = "女";
 	public static final String KZ_SEX_GIRL_NUM = "2";
 
+	/**
+	 *  手机拨打状态
+	 * */
+	public static final Integer NOT_DIALED = 0;
+	public static final Integer DIALED = 1;
+	public static final Integer ANSWERED = 2;
+	public static final Integer NOT_ANSWERED = 3;
+
+
+
 }
