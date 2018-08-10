@@ -5,7 +5,7 @@
     <resultMap id="BaseResultMap" type="com.qiein.jupiter.web.entity.po.CallCustomerPO">
         <id column="id" property="id"></id>
         <result property="staffId" column="staff_id"></result>
-        <result property="nickname" column="nickname"></result>
+        <result property="nickName" column="nickname"></result>
         <result property="companyId" column="companyid"></result>
         <result property="callId" column="call_id"></result>
         <result property="phone" column="phone"></result>
