@@ -15,6 +15,8 @@ import com.qiein.jupiter.web.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 /**
  * 开放端口 不需要验证
  */
@@ -65,6 +67,12 @@ public class OuterController {
     public ResultInfo scanWechat(@Id int companyId, @NotEmptyStr String kzId) {
         clientService.scanWechat(companyId, kzId);
         return ResultInfoUtil.success();
+    }
+
+    @GetMapping("/get_uuid")
+    public ResultInfo getUUId() {
+        String uuid = UUID.randomUUID().toString().replace("-","" );
+        return ResultInfoUtil.success(uuid);
     }
 
 
