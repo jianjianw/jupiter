@@ -617,10 +617,16 @@
             LEFT JOIN hm_pub_group_staff rela ON sf.COMPANYID = rela.COMPANYID AND rela.STAFFID = sf.ID
             LEFT JOIN hm_pub_staff_role role_rela ON sf.ID = role_rela.STAFFID AND sf.COMPANYID = role_rela.COMPANYID
             LEFT JOIN hm_pub_role role ON role_rela.ROLEID = role.ID AND role_rela.COMPANYID = role.COMPANYID
-        WHERE
+        <where>
             sf.ID = #{staffId}
             AND sf.COMPANYID = #{companyId}
-            AND rela.GROUPID = #{groupId}
+            <if test="groupId != null and groupId != ''">
+                AND rela.GROUPID = #{groupId}
+            </if>
+            <if test="groupId == null or groupId == ''">
+                AND rela.GROUPID IS NULL
+            </if>
+        </where>
     </select>
 
     <!--获取员工card-->
