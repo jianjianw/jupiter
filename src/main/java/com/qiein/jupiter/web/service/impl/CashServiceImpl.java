@@ -15,6 +15,7 @@ import com.qiein.jupiter.web.entity.vo.CashLogVO;
 import com.qiein.jupiter.web.service.CashService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class CashServiceImpl implements CashService {
     /**
      * 修改付款金额
      */
+    @Transactional
     public int editCash(CashLogPO cashLogPO) {
         int companyId = cashLogPO.getCompanyId();
         String cashTableName = DBSplitUtil.getCashTabName(companyId);
@@ -37,10 +39,6 @@ public class CashServiceImpl implements CashService {
         String infoLogTableName = DBSplitUtil.getInfoLogTabName(companyId);
         String detailTableName = DBSplitUtil.getDetailTabName(companyId);
         String kzId = cashLogPO.getKzId();
-        ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(kzId, infoTableName, detailTableName);
-        if ((info.getStayAmount() + cashLogPO.getAmount()) > info.getAmount()) {
-            throw new RException(ExceptionEnum.AMOUNT_ERROR);
-        }
         //查询旧记录，用于生产修改记录
         CashLogPO oldCash = cashLogDao.getCashLogById(cashTableName, cashLogPO.getId(), companyId);
         //修改已收金额
@@ -53,8 +51,14 @@ public class CashServiceImpl implements CashService {
         //修改已收金额
         clientInfoDao.editStayAmount(detailTableName, cashTableName,
                 kzId, cashLogPO.getCompanyId());
+        ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(kzId, infoTableName, detailTableName);
+        //判断已收是否大于总额，一旦大于 异常回滚
+        if (info.getStayAmount() > info.getAmount()) {
+            throw new RException(ExceptionEnum.AMOUNT_ERROR);
+        }
+
         //查询已收金额
-        return cashLogDao.getClientReceivedAmount(companyId, cashTableName, kzId);
+        return info.getStayAmount();
     }
 
 
@@ -63,17 +67,25 @@ public class CashServiceImpl implements CashService {
      *
      * @param cashLogPO
      */
+    @Transactional
     public int addCashLog(CashLogPO cashLogPO) {
         int companyId = cashLogPO.getCompanyId();
         String kzId = cashLogPO.getKzId();
         String cashTableName = DBSplitUtil.getCashTabName(companyId);
+        String infoTableName = DBSplitUtil.getInfoTabName(companyId);
+        String detailTableName = DBSplitUtil.getDetailTabName(companyId);
         //添加收款记录
         cashLogDao.addCahsLog(cashTableName, cashLogPO);
         //修改已收金额
         clientInfoDao.editStayAmount(DBSplitUtil.getDetailTabName(cashLogPO.getCompanyId()), cashTableName,
                 kzId, companyId);
+        ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(kzId, infoTableName, detailTableName);
+        //判断已收是否大于总额，一旦大于 异常回滚
+        if (info.getStayAmount() > info.getAmount()) {
+            throw new RException(ExceptionEnum.AMOUNT_ERROR);
+        }
         //查询已收金额
-        return cashLogDao.getClientReceivedAmount(companyId, cashTableName, kzId);
+        return info.getStayAmount();
     }
 
     /**
