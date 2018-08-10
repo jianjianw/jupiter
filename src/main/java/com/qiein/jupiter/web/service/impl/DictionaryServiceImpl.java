@@ -97,7 +97,7 @@ public class DictionaryServiceImpl implements DictionaryService {
     public void addRunoffReason(int companyId, String dicName) {
         int dicCode = dictionaryDao.getMaxDicCode(companyId, DictionaryConstant.RUN_OFF_REASON);
         int priority = dictionaryDao.getMaxPriority(companyId, DictionaryConstant.RUN_OFF_REASON);
-        DictionaryPO dictionaryPO = new DictionaryPO(DictionaryConstant.RUN_OFF_REASON, dicCode + 1, dicName, priority, companyId);
+        DictionaryPO dictionaryPO = new DictionaryPO(DictionaryConstant.RUN_OFF_REASON, dicCode + 1, dicName, priority+1, companyId);
         //1.去重
         DictionaryPO exist = dictionaryDao.getDicByTypeAndName(dictionaryPO.getCompanyId(), dictionaryPO.getDicType(), dictionaryPO.getDicName());
         if (exist != null) {
