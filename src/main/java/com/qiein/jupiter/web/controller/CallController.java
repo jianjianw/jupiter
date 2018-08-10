@@ -29,6 +29,17 @@ public class CallController extends BaseController{
         callService.addCustomer(staffPO,callCustomerPO);
         return ResultInfoUtil.success();
     }
+
+    /**
+     * 更改客服信息
+     * */
+    @RequestMapping("/edit_customer")
+    public ResultInfo editCustomer(@RequestBody CallCustomerPO callCustomerPO){
+        StaffPO staffPO = getCurrentLoginStaff();
+        callService.editCustomer(staffPO,callCustomerPO);
+        return ResultInfoUtil.success();
+    }
+
     /**
      * 双呼
      * */

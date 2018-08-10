@@ -46,8 +46,11 @@ public class CallServiceImpl implements CallService {
         if (StringUtil.isEmpty(caller) || StringUtil.isEmpty(callee)) {
             throw new RException(ExceptionEnum.CALLER_OR_CALLEE_IS_NULL);
         }
-        //TODO 验证手机号是否绑定了客服
-
+        //验证手机号是否绑定了客服
+        CallCustomerPO callCustomer = callCustomerDao.getCallCustomerByStaffIdAndCompanyId(staffPO.getId(), staffPO.getCompanyId());
+        if(null == callCustomer){
+            throw new RException(ExceptionEnum.NOT_FOUND_BIND_USER);
+        }
 
         String sign = MD5Util.getApolloMd5(String.valueOf(staffPO.getCompanyId()));
         //Appollo接口获取用户信息
@@ -117,9 +120,29 @@ public class CallServiceImpl implements CallService {
         if(StringUtil.isEmpty(callCustomerPO.getPhone())){
             throw new RException(ExceptionEnum.CALL_CONSUMER_PHONE_IS_NULL);
         }
+        CallCustomerPO callCustomer = callCustomerDao.getCallCustomerByStaffIdAndCompanyId(staffPO.getId(), staffPO.getCompanyId());
+        if(null != callCustomer){
+            throw new RException(ExceptionEnum.CALL_CONSUMER_IS_EXISTS);
+        }
         callCustomerPO.setStaffId(staffPO.getId());
         callCustomerPO.setCompanyId(staffPO.getCompanyId());
         callCustomerDao.insert(callCustomerPO);
+    }
+
+    @Override
+    public void editCustomer(StaffPO staffPO, CallCustomerPO callCustomerPO) {
+        if(NumUtil.isInValid(callCustomerPO.getId())){
+            throw new RException(ExceptionEnum.CALL_CONSUMER_ID_IS_NULL);
+        }
+        if(NumUtil.isInValid(callCustomerPO.getCallId())){
+            throw new RException(ExceptionEnum.CALL_ID_IS_NULL);
+        }
+        if(StringUtil.isEmpty(callCustomerPO.getPhone())){
+            throw new RException(ExceptionEnum.CALL_CONSUMER_PHONE_IS_NULL);
+        }
+        callCustomerPO.setStaffId(staffPO.getId());
+        callCustomerPO.setCompanyId(staffPO.getCompanyId());
+        callCustomerDao.update(callCustomerPO);
     }
 
 }

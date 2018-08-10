@@ -17,5 +17,27 @@
         values(#{staffId},#{callId},#{companyId},#{phone},UNIX_TIMESTAMP(NOW()))
     </insert>
 
+    <!--根据员工id公司id获取客服对象-->
+    <select id = "getCallCustomerByStaffIdAndCompanyId" resultMap="BaseResultMap">
+      select id,staff_id,companyid,call_id,phone,createtime from hm_crm_all_customer where staff_id = #{staffId} and companyid = #{companyId}
+    </select>
+
+    <!--update-->
+    <update id = "update" parameterType="com.qiein.jupiter.web.entity.po.CallCustomerPO">
+        update hm_crm_call_customer set updatetime = UNIX_TIMESTAMP(NOW())
+        <if test="staffId != null ans staffId != 0">
+            ,staff_id = #{staffId}
+        </if>
+        <if test="companyid != null nad companyid != 0">
+            , companyid = #{companyId}
+        </if>
+        <if test="callId != null and callId != 0">
+            , call_id = #{callId}
+        </if>
+        <if test="phone != null and phone != ''">
+            ,#{phone} = #{phone}
+        </if>
+         where id = #{id}
+    </update>
 
 </mapper>

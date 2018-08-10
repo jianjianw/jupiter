@@ -23,4 +23,12 @@ public interface CallService {
      * @param staffPO
      * */
     void addCustomer(StaffPO staffPO, CallCustomerPO callCustomerPO);
+
+    /**
+     * 修改客服
+     * @param callCustomerPO
+     * @param staffPO
+     * */
+    void editCustomer(StaffPO staffPO, CallCustomerPO callCustomerPO);
+
 }
