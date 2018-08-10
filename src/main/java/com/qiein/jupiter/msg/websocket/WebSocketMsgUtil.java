@@ -3,6 +3,8 @@ package com.qiein.jupiter.msg.websocket;
 import com.alibaba.fastjson.JSONObject;
 import com.mzlion.easyokhttp.HttpClient;
 import com.qiein.jupiter.enums.WebSocketMsgEnum;
+import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.web.entity.dto.ClientGoEasyDTO;
 import com.qiein.jupiter.web.entity.dto.WebSocketMsgDTO;
 import com.qiein.jupiter.web.entity.dto.OrderSuccessMsg;
 import org.springframework.beans.factory.annotation.Value;
@@ -75,7 +77,7 @@ public class WebSocketMsgUtil {
      */
     public void pushAllRefreshMsg(int companyId) {
         WebSocketMsgDTO msgDTO = new WebSocketMsgDTO();
-        msgDTO.setType(WebSocketMsgEnum.AllReFresh);
+        msgDTO.setType(WebSocketMsgEnum.AllRefresh);
         msgDTO.setCompanyId(companyId);
         msgDTO.setContent("");
         this.sendMsg(msgDTO);
@@ -86,7 +88,7 @@ public class WebSocketMsgUtil {
      */
     public void pushBaseInfoFresh(int companyId, Integer staffId) {
         WebSocketMsgDTO msgDTO = new WebSocketMsgDTO();
-        msgDTO.setType(WebSocketMsgEnum.BaseInfoFresh);
+        msgDTO.setType(WebSocketMsgEnum.BaseInfoRefresh);
         msgDTO.setCompanyId(companyId);
         if (staffId != null && staffId != 0) {
             msgDTO.setStaffId(staffId);
@@ -96,7 +98,7 @@ public class WebSocketMsgUtil {
     }
 
     /**
-     * 推送 刷新基础信息
+     * 推送 信息
      */
     public void pushAlertMsg(int companyId, Integer staffId, String content) {
         WebSocketMsgDTO msgDTO = new WebSocketMsgDTO();
@@ -106,6 +108,37 @@ public class WebSocketMsgUtil {
             msgDTO.setStaffId(staffId);
         }
         msgDTO.setContent(content);
+        this.sendMsg(msgDTO);
+    }
+
+    /**
+     * 推送领取客资的消息
+     */
+    public void pushReceiveClient(int companyId, int staffId, String head, ClientGoEasyDTO info) {
+        WebSocketMsgDTO msgDTO = new WebSocketMsgDTO();
+        msgDTO.setType(WebSocketMsgEnum.ReceiveClient);
+        msgDTO.setCompanyId(companyId);
+        msgDTO.setStaffId(staffId);
+        JSONObject contentJson = new JSONObject();
+        contentJson.put("head", head);
+        contentJson.put("kz", info);
+        contentJson.put("contact", StringUtil.isNotEmpty(info.getKzPhone()) ? info.getKzPhone() :
+                StringUtil.isNotEmpty(info.getKzWechat()) ? info.getKzWechat() :
+                        StringUtil.isNotEmpty(info.getKzQq()) ? info.getKzQq() : info.getKzWw());
+        msgDTO.setContent(contentJson.toString());
+        this.sendMsg(msgDTO);
+    }
+
+    /**
+     * 发送客资重载
+     */
+    public void pushClientInfoRefresh(int companyId, Integer staffId) {
+        WebSocketMsgDTO msgDTO = new WebSocketMsgDTO();
+        msgDTO.setType(WebSocketMsgEnum.ClientInfoRefresh);
+        msgDTO.setCompanyId(companyId);
+        if (staffId != null && staffId != 0) {
+            msgDTO.setStaffId(staffId);
+        }
         this.sendMsg(msgDTO);
     }
 

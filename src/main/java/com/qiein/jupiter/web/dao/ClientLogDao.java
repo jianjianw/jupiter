@@ -4,6 +4,9 @@ import org.apache.ibatis.annotations.Param;
 
 import com.qiein.jupiter.web.entity.po.ClientLogPO;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * 客资日志
  *
@@ -19,4 +22,16 @@ public interface ClientLogDao extends BaseDao<ClientLogDao> {
      * @return
      */
     int addInfoLog(@Param("logTabName") String logTabName, @Param("log") ClientLogPO clientLogPO);
+
+    /**
+     * 查询客资收款修改日志
+     *
+     * @param logTabName
+     * @param companyId
+     * @param kzId
+     * @param logType
+     * @return
+     */
+    List<ClientLogPO> getCashEditLog(@Param("logTabName") String logTabName, @Param("companyId") int companyId,
+                                     @Param("kzId") String kzId, @Param("logType") int logType);
 }

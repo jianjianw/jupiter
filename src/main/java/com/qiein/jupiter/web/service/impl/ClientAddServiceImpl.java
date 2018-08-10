@@ -354,10 +354,13 @@ public class ClientAddServiceImpl implements ClientAddService {
             // 进店成交
             if (ClientStatusConst.BE_SUCCESS == clientVO.getYyRst()) {
                 reqContent.put("amount", clientVO.getAmount());// 成交套系金额
-                reqContent.put("stayamount", clientVO.getStayAmount());// 已收金额
+                reqContent.put("payamount", clientVO.getPayAmount());// 本次收款金额
                 reqContent.put("successtime", clientVO.getSuccessTime());// 订单时间
+                reqContent.put("paytime", clientVO.getSuccessTime());// 收款时间
                 reqContent.put("paystyle", clientVO.getPayStyle());// 付款方式
                 reqContent.put("htnum", clientVO.getHtNum());// 合同编号
+                reqContent.put("payreceiptid", clientVO.getReceiptId());// 收款人id
+                reqContent.put("payreceiptname", clientVO.getReceiptName());// 收款人姓名
             }
         }
         String addRstStr = crmBaseApi.doService(reqContent, "clientAddShopHs");

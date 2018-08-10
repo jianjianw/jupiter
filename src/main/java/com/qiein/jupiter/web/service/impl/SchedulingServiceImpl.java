@@ -3,6 +3,7 @@ package com.qiein.jupiter.web.service.impl;
 import java.util.Arrays;
 import java.util.List;
 
+import com.qiein.jupiter.msg.websocket.WebSocketMsgUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,6 +54,9 @@ public class SchedulingServiceImpl implements SchedulingService {
 
     @Autowired
     private StaffStatusLogDao staffStatusLogDao;
+
+    @Autowired
+    private WebSocketMsgUtil webSocketMsgUtil;
 
     /**
      * 根据类型获取部门列表
@@ -278,6 +282,6 @@ public class SchedulingServiceImpl implements SchedulingService {
         }
 
         // 推送状态重载消息
-        GoEasyUtil.pushStatusRefresh(staffMarsDTO.getCompanyId(), staffMarsDTO.getId());
+        GoEasyUtil.pushStatusRefresh(staffMarsDTO.getCompanyId(), staffMarsDTO.getId(),webSocketMsgUtil);
     }
 }

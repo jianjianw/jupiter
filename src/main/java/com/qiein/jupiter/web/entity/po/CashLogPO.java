@@ -6,6 +6,7 @@ import com.qiein.jupiter.web.entity.BaseEntity;
 
 /**
  * 收款记录
+ *
  * @author gaoxiaoli 2018/7/17
  */
 
@@ -25,6 +26,10 @@ public class CashLogPO extends BaseEntity {
     @Id(message = "{cashlog.payStyle.null}")
     private int payStyle;
     /**
+     * 支付方式中文名称
+     */
+    private String payStyleName;
+    /**
      * 收款金额
      */
     @Id(message = "{cashlog.amount.null}")
@@ -32,12 +37,10 @@ public class CashLogPO extends BaseEntity {
     /**
      * 收款人ID
      */
-    @Id(message = "{cashlog.staffId.null}")
     private int staffId;
     /**
      * 收款人姓名
      */
-    @NotEmptyStr(message = "{cashlog.staffName.null}")
     private String staffName;
     /**
      * 收款时间
@@ -49,7 +52,7 @@ public class CashLogPO extends BaseEntity {
      */
     private int operaId;
     /**
-     *操作人姓名
+     * 操作人姓名
      */
     private String operaName;
     /**
@@ -149,5 +152,13 @@ public class CashLogPO extends BaseEntity {
 
     public void setCompanyId(int companyId) {
         this.companyId = companyId;
+    }
+
+    public String getPayStyleName() {
+        return payStyleName;
+    }
+
+    public void setPayStyleName(String payStyleName) {
+        this.payStyleName = payStyleName;
     }
 }

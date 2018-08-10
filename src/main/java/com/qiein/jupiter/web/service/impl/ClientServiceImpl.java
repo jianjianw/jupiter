@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by Tt on 2018/5/15 0015.
@@ -170,8 +171,8 @@ public class ClientServiceImpl implements ClientService {
         //是否有备注
 
         //获取客资时候有备注
-        if(StringUtil.isNotEmpty(clientStatusVoteVO.getContent())){
-            clientDao.updateDetailMemo(DBSplitUtil.getDetailTabName(clientStatusVoteVO.getCompanyId()),clientStatusVoteVO.getKzId(),clientStatusVoteVO.getCompanyId(),clientStatusVoteVO.getContent());
+        if (StringUtil.isNotEmpty(clientStatusVoteVO.getContent())) {
+            clientDao.updateDetailMemo(DBSplitUtil.getDetailTabName(clientStatusVoteVO.getCompanyId()), clientStatusVoteVO.getKzId(), clientStatusVoteVO.getCompanyId(), clientStatusVoteVO.getContent());
         }
         //FIXME 废弃代码
 //        ClientRemarkPO clientRemarkPO = new ClientRemarkPO();
@@ -225,6 +226,19 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public void addClientLog(ClientLogPO clientLogPO) {
         clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(clientLogPO.getCompanyId()), clientLogPO);
+    }
+
+    /**
+     * 查询客资收款修改日志
+     *
+     * @param logTabName
+     * @param companyId
+     * @param kzId
+     * @param logType
+     * @return
+     */
+    public List<ClientLogPO> getCashEditLog(int companyId, String kzId) {
+        return clientLogDao.getCashEditLog(DBSplitUtil.getInfoLogTabName(companyId), companyId, kzId, ClientLogConst.INFO_LOGTYPE_CASH);
     }
 
 }

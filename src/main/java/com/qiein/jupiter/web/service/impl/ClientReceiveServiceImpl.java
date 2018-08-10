@@ -5,6 +5,7 @@ import com.qiein.jupiter.enums.StaffStatusEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
+import com.qiein.jupiter.msg.websocket.WebSocketMsgUtil;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.StringUtil;
@@ -39,6 +40,9 @@ public class ClientReceiveServiceImpl implements ClientReceiveService {
     @Autowired
     private GroupDao groupDao;
 
+    @Autowired
+    private WebSocketMsgUtil webSocketMsgUtil;
+
     @Override
     @Transactional
     public void receive(String kzId, String logId, int companyId, int staffId, String staffName) {
@@ -58,7 +62,7 @@ public class ClientReceiveServiceImpl implements ClientReceiveService {
         resizeTodayNum(companyId, staffId);
 
         // 推送页面重载客资列表
-        GoEasyUtil.pushInfoRefresh(companyId, staffId);
+        GoEasyUtil.pushInfoRefresh(companyId, staffId,webSocketMsgUtil);
     }
 
     /**
@@ -77,7 +81,7 @@ public class ClientReceiveServiceImpl implements ClientReceiveService {
         // 计算今日客资个数
         resizeTodayNum(companyId, staffId);
         // 推送页面重载客资列表
-        GoEasyUtil.pushInfoRefresh(companyId, staffId);
+        GoEasyUtil.pushInfoRefresh(companyId, staffId,webSocketMsgUtil);
     }
 
     /**
@@ -207,7 +211,7 @@ public class ClientReceiveServiceImpl implements ClientReceiveService {
                     new StaffStatusLog(staffId, StaffStatusEnum.LIMIT.getStatusId(), CommonConstant.SYSTEM_OPERA_ID,
                             CommonConstant.SYSTEM_OPERA_NAME, companyId, ClientLogConst.LIMITDAY_OVERFLOW));
             // 推送状态重载消息
-            GoEasyUtil.pushStatusRefresh(companyId, staffId);
+            GoEasyUtil.pushStatusRefresh(companyId, staffId,webSocketMsgUtil);
         }
     }
 
@@ -215,7 +219,6 @@ public class ClientReceiveServiceImpl implements ClientReceiveService {
      * 领取一个客资
      *
      * @param kzId
-     * @param logId
      * @param companyId
      * @param staffId
      */

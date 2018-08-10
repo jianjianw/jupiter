@@ -6,6 +6,7 @@ import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
 import com.qiein.jupiter.msg.goeasy.MessageConts;
+import com.qiein.jupiter.msg.websocket.WebSocketMsgUtil;
 import com.qiein.jupiter.util.CollectionUtils;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.NumUtil;
@@ -61,6 +62,9 @@ public class ClientPushServiceImpl implements ClientPushService {
     @Autowired
     private StaffService staffService;
 
+    @Autowired
+    private WebSocketMsgUtil webSocketMsgUtil;
+
     /**
      * 根据拍摄地和渠道维度推送客资
      */
@@ -106,7 +110,7 @@ public class ClientPushServiceImpl implements ClientPushService {
             ClientGoEasyDTO infoDTO = clientInfoDao.getClientGoEasyDTOById(clientDTO.getKzId(),
                     DBSplitUtil.getInfoTabName(companyId), DBSplitUtil.getDetailTabName(companyId));
             GoEasyUtil.pushInfoComed(companyId, clientDTO.getAppointorId(), infoDTO, newsDao, staffDao);
-            GoEasyUtil.pushInfoRefresh(companyId, clientDTO.getAppointorId());
+            GoEasyUtil.pushInfoRefresh(companyId, clientDTO.getAppointorId(),webSocketMsgUtil);
             return;
         }
         // 限定客资状态为分配中，可领取，未接入
@@ -349,7 +353,7 @@ public class ClientPushServiceImpl implements ClientPushService {
                         CommonConstant.SYSTEM_OPERA_ID, CommonConstant.SYSTEM_OPERA_NAME, companyId,
                         ClientLogConst.CONTINUOUS_SABOTEUR_DONW));
                 // 推送状态重载消息
-                GoEasyUtil.pushStatusRefresh(companyId, appointId);
+                GoEasyUtil.pushStatusRefresh(companyId, appointId,webSocketMsgUtil);
                 // 推送连续三次怠工下线消息
                 GoEasyUtil.pushOffLineAuto(companyId, appointId, newsDao, staffDao);
             }
@@ -377,7 +381,7 @@ public class ClientPushServiceImpl implements ClientPushService {
         ClientGoEasyDTO infoDTO = clientInfoDao.getClientGoEasyDTOById(kzId, DBSplitUtil.getInfoTabName(companyId),
                 DBSplitUtil.getDetailTabName(companyId));
         GoEasyUtil.pushInfoComed(companyId, appointer.getStaffId(), infoDTO, newsDao, staffDao);
-        GoEasyUtil.pushInfoRefresh(companyId, appointer.getStaffId());
+        GoEasyUtil.pushInfoRefresh(companyId, appointer.getStaffId(),webSocketMsgUtil);
     }
 
     /**
@@ -519,7 +523,7 @@ public class ClientPushServiceImpl implements ClientPushService {
         ClientGoEasyDTO infoDTO = clientInfoDao.getClientGoEasyDTOById(kzId, DBSplitUtil.getInfoTabName(companyId),
                 DBSplitUtil.getDetailTabName(companyId));
         GoEasyUtil.pushInfoComed(companyId, appointer.getStaffId(), infoDTO, newsDao, staffDao);
-        GoEasyUtil.pushInfoRefresh(companyId, appointer.getStaffId());
+        GoEasyUtil.pushInfoRefresh(companyId, appointer.getStaffId(),webSocketMsgUtil);
 
         // 客资日志记录
         updateRstNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(companyId),
@@ -574,7 +578,7 @@ public class ClientPushServiceImpl implements ClientPushService {
         ClientGoEasyDTO infoDTO = clientInfoDao.getClientGoEasyDTOById(kzId, DBSplitUtil.getInfoTabName(companyId),
                 DBSplitUtil.getDetailTabName(companyId));
         GoEasyUtil.pushInfoComed(companyId, appointer.getStaffId(), infoDTO, newsDao, staffDao);
-        GoEasyUtil.pushInfoRefresh(companyId, appointer.getStaffId());
+        GoEasyUtil.pushInfoRefresh(companyId, appointer.getStaffId(),webSocketMsgUtil);
 
         // 客资日志记录
         updateRstNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(companyId),
@@ -598,7 +602,7 @@ public class ClientPushServiceImpl implements ClientPushService {
         ClientGoEasyDTO infoDTO = clientInfoDao.getClientGoEasyDTOById(kzId, DBSplitUtil.getInfoTabName(companyId),
                 DBSplitUtil.getDetailTabName(companyId));
         for (StaffPushDTO sf : yyList) {
-            GoEasyUtil.pushClientReceive(companyId, sf.getStaffId(), infoDTO, newsDao, staffDao);
+            GoEasyUtil.pushClientReceive(companyId, sf.getStaffId(), infoDTO, newsDao, staffDao,webSocketMsgUtil);
         }
     }
 
@@ -1121,7 +1125,7 @@ public class ClientPushServiceImpl implements ClientPushService {
         ClientGoEasyDTO infoDTO = clientInfoDao.getClientGoEasyDTOById(kzId, DBSplitUtil.getInfoTabName(companyId),
                 DBSplitUtil.getDetailTabName(companyId));
         GoEasyUtil.pushInfoComed(companyId, staff.getStaffId(), infoDTO, newsDao, staffDao);
-        GoEasyUtil.pushInfoRefresh(companyId, staff.getStaffId());
+        GoEasyUtil.pushInfoRefresh(companyId, staff.getStaffId(),webSocketMsgUtil);
 
         // 客资日志记录
         updateRstNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(companyId),

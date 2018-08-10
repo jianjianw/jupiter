@@ -1,6 +1,7 @@
 package com.qiein.jupiter.msg.goeasy;
 
 import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.msg.websocket.WebSocketMsgUtil;
 import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.util.ding.DingMsgSendUtil;
 import com.qiein.jupiter.util.wechat.WeChatPushMsgDTO;
@@ -78,11 +79,12 @@ public class GoEasyUtil {
      */
     private static GoEasy goeasyInstance = null;
 
+
     /**
      * 消息内容体封装
      */
-    private static JSONObject messageJson = null;
-    private static JSONObject contentJson = null;
+//    private static JSONObject messageJson = null;
+//    private static JSONObject contentJson = null;
 
     static {
         goeasyKey = PropertiesUtil.getValue("goeasy.key");
@@ -144,7 +146,7 @@ public class GoEasyUtil {
      * @param content
      */
     private static synchronized void pushWeb(String type, int companyId, int staffId, JSONObject content) {
-        messageJson = new JSONObject();
+        JSONObject messageJson = new JSONObject();
         messageJson.put("cid", companyId);
         messageJson.put("uid", staffId);
         messageJson.put("type", type);
@@ -167,7 +169,7 @@ public class GoEasyUtil {
      * @param content
      */
     private static synchronized void pushApp(String type, int companyId, int staffId, JSONObject content) {
-        messageJson = new JSONObject();
+        JSONObject messageJson = new JSONObject();
         messageJson.put("cid", companyId);
         messageJson.put("uid", staffId);
         messageJson.put("type", type);
@@ -193,7 +195,7 @@ public class GoEasyUtil {
      */
     public static synchronized void pushAppInfoReceive(int companyId, int staffId, int kzNum, String kzId, String logId,
                                                        int overTime) {
-        contentJson = new JSONObject();
+        JSONObject contentJson = new JSONObject();
         contentJson.put("kzid", kzId);
         contentJson.put("logid", logId);
         contentJson.put("kznum", kzNum);
@@ -219,7 +221,7 @@ public class GoEasyUtil {
      */
     private static synchronized void pushCommon(int companyId, int staffId, String head, String msg) {
 
-        contentJson = new JSONObject();
+        JSONObject contentJson = new JSONObject();
         contentJson.put("head", head);
         contentJson.put("msg", msg);
 
@@ -236,7 +238,7 @@ public class GoEasyUtil {
      */
     private static synchronized void pushSuccess(int companyId, int staffId, String head, String msg) {
 
-        contentJson = new JSONObject();
+        JSONObject contentJson = new JSONObject();
         contentJson.put("head", head);
         contentJson.put("msg", msg);
 
@@ -253,7 +255,7 @@ public class GoEasyUtil {
      */
     private static synchronized void pushWarn(int companyId, int staffId, String head, String msg) {
 
-        contentJson = new JSONObject();
+        JSONObject contentJson = new JSONObject();
         contentJson.put("head", head);
         contentJson.put("msg", msg);
 
@@ -270,7 +272,7 @@ public class GoEasyUtil {
      */
     public static synchronized void pushError(int companyId, int staffId, String head, String msg) {
 
-        contentJson = new JSONObject();
+        JSONObject contentJson = new JSONObject();
         contentJson.put("head", head);
         contentJson.put("msg", msg);
 
@@ -283,11 +285,10 @@ public class GoEasyUtil {
      * @param companyId
      * @param staffId
      * @param head
-     * @param msg
      */
     public static synchronized void pushReceive(int companyId, int staffId, String head, ClientGoEasyDTO info) {
 
-        contentJson = new JSONObject();
+        JSONObject contentJson = new JSONObject();
         contentJson.put("head", head);
         contentJson.put("kz", info);
         contentJson.put("contact", StringUtil.isNotEmpty(info.getKzPhone()) ? info.getKzPhone() :
@@ -302,10 +303,10 @@ public class GoEasyUtil {
      * @param companyId
      * @param staffId
      */
-    public static void pushInfoRefresh(int companyId, int staffId) {
-
-        contentJson = new JSONObject();
-        pushWeb(MessageConts.MSG_TYPE_INFO_REFRESH, companyId, staffId, contentJson);
+    public static void pushInfoRefresh(int companyId, int staffId,WebSocketMsgUtil webSocketMsgUtil) {
+        webSocketMsgUtil.pushClientInfoRefresh(companyId,staffId);
+//        JSONObject contentJson = new JSONObject();
+//        pushWeb(MessageConts.MSG_TYPE_INFO_REFRESH, companyId, staffId, contentJson);
     }
 
     /**
@@ -316,7 +317,7 @@ public class GoEasyUtil {
      */
     public static void pushStaffRefresh(int companyId, int staffId, String ip, String address) {
 
-        contentJson = new JSONObject();
+        JSONObject contentJson = new JSONObject();
         contentJson.put("ip", ip);
         contentJson.put("address", address);
         pushWeb(MessageConts.MSG_TYPE_STAFF_REFRESH, companyId, staffId, contentJson);
@@ -328,10 +329,10 @@ public class GoEasyUtil {
      * @param companyId
      * @param staffId
      */
-    public static void pushStatusRefresh(int companyId, int staffId) {
-
-        contentJson = new JSONObject();
-        pushWeb(MessageConts.MSG_TYPE_STATUS_REFRESH, companyId, staffId, contentJson);
+    public static void pushStatusRefresh(int companyId, int staffId,WebSocketMsgUtil webSocketMsgUtil) {
+        webSocketMsgUtil.pushBaseInfoFresh(companyId, staffId);
+//        JSONObject contentJson = new JSONObject();
+//        pushWeb(MessageConts.MSG_TYPE_STATUS_REFRESH, companyId, staffId, contentJson);
     }
 
     /**
@@ -374,7 +375,7 @@ public class GoEasyUtil {
      */
     public static synchronized void pushInfoReceive(int companyId, int staffId, ClientDTO info) {
 
-        contentJson = new JSONObject();
+        JSONObject contentJson = new JSONObject();
         contentJson.put("info", info);
         pushWeb(MessageConts.MSG_TYPE_RECEIVE, companyId, staffId, contentJson);
     }
@@ -739,7 +740,6 @@ public class GoEasyUtil {
      * @param staffId
      * @param info
      * @param type
-     * @param operaId
      * @param newsDao
      */
     public static void pushRemove(int companyId, int staffId, ClientGoEasyDTO info, int num, String type, String operaName, NewsDao newsDao, StaffDao staffDao) {
@@ -899,13 +899,6 @@ public class GoEasyUtil {
 
     /**
      * 分配客资成功推送
-     *
-     * @param companyId
-     * @param staffId
-     * @param kzNum
-     * @param kzId
-     * @param logId
-     * @param overTime
      */
     public static void pushAllotMsg(int companyId, int staffId, String[] kzIdsArr, NewsDao newsDao, StaffDao staffDao) {
         if (NumUtil.isNull(staffId) || NumUtil.isNull(companyId)) {
@@ -951,12 +944,15 @@ public class GoEasyUtil {
     }
 
     /*-- 客资领取消息 --*/
-    public static void pushClientReceive(int companyId, int staffId, ClientGoEasyDTO info, NewsDao newsDao, StaffDao staffDao) {
+    public static void pushClientReceive(int companyId, int staffId, ClientGoEasyDTO info, NewsDao newsDao, StaffDao staffDao, WebSocketMsgUtil webSocketMsgUtil) {
         if (NumUtil.isNull(staffId) || NumUtil.isNull(companyId) || info == null) {
             return;
         }
         String head = "您有新的客资待领取";
-        pushReceive(companyId, staffId, head, info);
+        //goeasy消息
+//        pushReceive(companyId, staffId, head, info);
+        //使用原生领取客资
+        webSocketMsgUtil.pushReceiveClient(companyId, staffId, head, info);
         StringBuffer sb = new StringBuffer();
         sb.append(head).append("<br/>");
         sb.append("编号：").append(info.getId()).append("<br/>");

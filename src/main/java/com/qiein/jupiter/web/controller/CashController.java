@@ -35,8 +35,7 @@ public class CashController extends BaseController {
         cashLogPO.setCompanyId(staff.getCompanyId());
         cashLogPO.setOperaId(staff.getId());
         cashLogPO.setOperaName(staff.getNickName());
-        cashService.editCash(cashLogPO);
-        return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
+        return ResultInfoUtil.success(cashService.editCash(cashLogPO));
     }
 
     /**
@@ -51,8 +50,8 @@ public class CashController extends BaseController {
         cashLogPO.setCompanyId(currentLoginStaff.getCompanyId());
         cashLogPO.setOperaId(currentLoginStaff.getId());
         cashLogPO.setOperaName(currentLoginStaff.getNickName());
-        cashService.addCashLog(cashLogPO);
-        return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
+
+        return ResultInfoUtil.success(cashService.addCashLog(cashLogPO));
     }
 
     /**

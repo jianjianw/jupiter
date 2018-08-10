@@ -205,10 +205,11 @@ public class ClientEditServiceImpl implements ClientEditService {
             // 在线订单
             if (ClientStatusConst.ONLINE_SUCCESS == clientVO.getYyRst()) {
                 reqContent.put("amount", clientVO.getAmount());// 成交套系金额
-                reqContent.put("stayamount", clientVO.getStayAmount());// 已收金额
+                reqContent.put("payamount", clientVO.getPayAmount());// 本次收款金额
+//                reqContent.put("stayamount", clientVO.getStayAmount());// 已收金额
                 reqContent.put("successtime", clientVO.getSuccessTime());// 订单时间
                 reqContent.put("paystyle", clientVO.getPayStyle());// 付款方式
-                reqContent.put("paytime", clientVO.getPayTime());// 收款时间
+                reqContent.put("paytime", clientVO.getSuccessTime());// 收款时间,就是订单时间
                 reqContent.put("payreceiptid", staffPO.getId());// 收款人id
                 reqContent.put("payreceiptname", staffPO.getNickName());// 收款人姓名
             }
@@ -321,11 +322,11 @@ public class ClientEditServiceImpl implements ClientEditService {
             // 进店成交
             if (ClientStatusConst.BE_SUCCESS == clientVO.getYyRst() || ClientStatusConst.BE_SUCCESS_STAY == clientVO.getYyRst()) {
                 reqContent.put("amount", clientVO.getAmount());// 成交套系金额
-                reqContent.put("stayamount", clientVO.getStayAmount());// 已收金额
+                reqContent.put("payamount", clientVO.getPayAmount());// 本次收款金额
                 reqContent.put("successtime", clientVO.getSuccessTime());// 订单时间
                 reqContent.put("htnum", clientVO.getHtNum());// 合同编号
                 reqContent.put("paystyle", clientVO.getPayStyle());// 付款方式
-                reqContent.put("paytime", clientVO.getPayTime());// 收款时间
+                reqContent.put("paytime", clientVO.getSuccessTime());// 收款时间
                 reqContent.put("payreceiptid", clientVO.getReceiptId());// 收款人id
                 reqContent.put("payreceiptname", clientVO.getReceiptName());// 收款人姓名
             }
@@ -410,6 +411,8 @@ public class ClientEditServiceImpl implements ClientEditService {
             }
             reqContent.put("shopid", clientVO.getShopId());
             reqContent.put("shopname", shopVO.getShopName());
+        }
+        if (NumUtil.isValid(clientVO.getReceptorId())) {
             StaffPO receptor = staffDao.getById(clientVO.getReceptorId());
             if (receptor == null) {
                 throw new RException(ExceptionEnum.STAFF_IS_NOT_EXIST);

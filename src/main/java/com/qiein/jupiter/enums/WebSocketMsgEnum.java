@@ -14,11 +14,15 @@ public enum WebSocketMsgEnum {
     //微信刷新
     WeChatCallBack(4),
     //全员刷新
-    AllReFresh(5),
+    AllRefresh(5),
     //重新获取基础信息
-    BaseInfoFresh(6),
+    BaseInfoRefresh(6),
     //通知消息
-    AlertMsg(7);
+    AlertMsg(7),
+    //领取客资
+    ReceiveClient(8),
+    //客资信息重新获取
+    ClientInfoRefresh(9);
 
     /**
      * 类型

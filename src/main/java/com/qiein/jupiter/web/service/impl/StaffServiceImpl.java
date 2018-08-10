@@ -11,6 +11,7 @@ import com.qiein.jupiter.enums.StaffStatusEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
+import com.qiein.jupiter.msg.websocket.WebSocketMsgUtil;
 import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.util.ding.DingAuthUtil;
 import com.qiein.jupiter.util.wechat.WeChatAuthUtil;
@@ -73,6 +74,9 @@ public class StaffServiceImpl implements StaffService {
 
     @Autowired
     private OnLineTimeDao onLineTimeDao;
+
+    @Autowired
+    private WebSocketMsgUtil webSocketMsgUtil;
 
 
     /**
@@ -871,7 +875,7 @@ public class StaffServiceImpl implements StaffService {
                     new StaffStatusLog(staffId, StaffStatusEnum.LIMIT.getStatusId(), CommonConstant.SYSTEM_OPERA_ID,
                             CommonConstant.SYSTEM_OPERA_NAME, companyId, ClientLogConst.LIMITDAY_OVERFLOW));
             // 推送状态重载消息
-            GoEasyUtil.pushStatusRefresh(companyId, staffId);
+            GoEasyUtil.pushStatusRefresh(companyId, staffId,webSocketMsgUtil);
         }
     }
 

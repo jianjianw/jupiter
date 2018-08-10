@@ -11,20 +11,21 @@ public interface CashService {
      *
      * @param cashLogPO
      */
-    void editCash(CashLogPO cashLogPO);
+    int editCash(CashLogPO cashLogPO);
 
     /**
      * 添加收款记录
      *
      * @param cashLogPO
      */
-    void addCashLog(CashLogPO cashLogPO);
+    int addCashLog(CashLogPO cashLogPO);
 
     /**
      * 付款记录查询页面
+     *
      * @param kzId
      * @param table
      * @return
      */
-    List<CashLogVO> findCashLog(String kzId,String table);
+    List<CashLogVO> findCashLog(String kzId, String table);
 }
