@@ -5,21 +5,17 @@ import com.mzlion.easyokhttp.HttpClient;
 import com.qiein.jupiter.constant.AppolloUrlConst;
 import com.qiein.jupiter.constant.CallUrlConst;
 import com.qiein.jupiter.constant.ClientConst;
+import com.qiein.jupiter.constant.ClientLogConst;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
-import com.qiein.jupiter.util.DBSplitUtil;
-import com.qiein.jupiter.util.MD5Util;
-import com.qiein.jupiter.util.StringUtil;
-import com.qiein.jupiter.util.TimeUtil;
+import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.util.alicloud.BatchTokenRetrieval;
 import com.qiein.jupiter.util.alicloud.RandomString;
+import com.qiein.jupiter.web.dao.CallCustomerDao;
 import com.qiein.jupiter.web.dao.ClientDao;
 import com.qiein.jupiter.web.dao.ClientInfoDao;
 import com.qiein.jupiter.web.dao.ClientLogDao;
-import com.qiein.jupiter.web.entity.po.CallPO;
-import com.qiein.jupiter.web.entity.po.CallUserPO;
-import com.qiein.jupiter.web.entity.po.ClientLogPO;
-import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.entity.po.*;
 import com.qiein.jupiter.web.entity.vo.AliOauthVO;
 import com.qiein.jupiter.web.service.CallService;
 import com.qiein.jupiter.web.service.StatusService;
@@ -41,6 +37,9 @@ public class CallServiceImpl implements CallService {
     private ClientLogDao clientLogDao;
     @Autowired
     private ClientInfoDao clientInfoDao;
+    @Autowired
+    private CallCustomerDao callCustomerDao;
+
 
     @Override
     public void startBack2BackCall(String kzId,String caller, String callee, StaffPO staffPO) {
@@ -96,15 +95,31 @@ public class CallServiceImpl implements CallService {
         //修改客资状态为已拨打
         clientInfoDao.editKzphoneFlag(kzId, ClientConst.DIALED, DBSplitUtil.getInfoTabName(staffPO.getCompanyId()));
 
-        //TODO 存储电话日志
+        //存储电话日志
         ClientLogPO clientLogPO = new ClientLogPO();
         clientLogPO.setOperaId(staffPO.getId());
         clientLogPO.setOperaName(staffPO.getNickName());
         clientLogPO.setCompanyId(staffPO.getCompanyId());
-//        clientLogDao.addInfoLog()
+        clientLogPO.setLogType(ClientLogConst.INFO_LOG_TYPE_CALL);
+        clientLogPO.setKzId(kzId);
+        clientLogPO.setMemo(ClientLogConst.INFO_LOG_CALL_PHONE);
+        clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(staffPO.getCompanyId()),clientLogPO);
 
         //TODO 通话记录
 
+    }
+
+    @Override
+    public void addCustomer(StaffPO staffPO, CallCustomerPO callCustomerPO) {
+        if(NumUtil.isInValid(callCustomerPO.getCallId())){
+            throw new RException(ExceptionEnum.CALL_ID_IS_NULL);
+        }
+        if(StringUtil.isEmpty(callCustomerPO.getPhone())){
+            throw new RException(ExceptionEnum.CALL_CONSUMER_PHONE_IS_NULL);
+        }
+        callCustomerPO.setStaffId(staffPO.getId());
+        callCustomerPO.setCompanyId(staffPO.getCompanyId());
+        callCustomerDao.insert(callCustomerPO);
     }
 
 }
