@@ -22,9 +22,9 @@ public class CallController extends BaseController{
      * 双呼
      * */
     @RequestMapping("/start_back_2_back_call")
-    public ResultInfo startBack2BackCall(String caller, String callee){
+    public ResultInfo startBack2BackCall(String kzId,String caller, String callee){
         StaffPO staffPO = getCurrentLoginStaff();
-        callService.startBack2BackCall(caller,callee,staffPO);
+        callService.startBack2BackCall(kzId,caller,callee,staffPO);
         return ResultInfoUtil.success();
     }
 

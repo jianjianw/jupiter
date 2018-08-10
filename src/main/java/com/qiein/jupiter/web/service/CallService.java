@@ -9,8 +9,9 @@ import com.qiein.jupiter.web.entity.po.StaffPO;
 public interface CallService {
     /**
      * 外呼
+     * @param kzId
      * @param caller
      * @param callee
      * */
-    void startBack2BackCall(String caller, String callee, StaffPO staffPO);
+    void startBack2BackCall(String kzId,String caller, String callee, StaffPO staffPO);
 }
