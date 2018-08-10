@@ -18,40 +18,40 @@ import com.qiein.jupiter.web.service.NewsService;
 @SpringBootTest
 public class NewsServiceImplTest {
 
-	@Autowired
-	private NewsDao newsDao;
+    @Autowired
+    private NewsDao newsDao;
 
-	@Autowired
-	private NewsService newsService;
+    @Autowired
+    private NewsService newsService;
 
-	@Test
-	public void getAllList() {
-		List<NewsPO> list = new ArrayList<>();
-		NewsPO newsPO = new NewsPO();
-		newsPO.setCompanyId(1);
-		newsPO.setHead("12312321312312312");
-		newsPO.setStaffId(123);
-		newsPO.setType("11");
-		list.add(newsPO);
-		NewsPO newsPO2 = new NewsPO();
-		newsPO2.setCompanyId(1);
-		newsPO2.setHead("12312sadasdsadsadasd");
-		newsPO2.setStaffId(131);
-		newsPO2.setType("22");
-		list.add(newsPO2);
-		newsDao.batchInsertNews(DBSplitUtil.getNewsTabName(1), list);
-	}
+    @Test
+    public void getAllList() {
+        List<NewsPO> list = new ArrayList<>();
+        NewsPO newsPO = new NewsPO();
+        newsPO.setCompanyId(2);
+        newsPO.setHead("公司2");
+        newsPO.setStaffId(123);
+        newsPO.setType("11");
+        list.add(newsPO);
+        NewsPO newsPO2 = new NewsPO();
+        newsPO2.setCompanyId(1);
+        newsPO2.setHead("公司1");
+        newsPO2.setStaffId(131);
+        newsPO2.setType("22");
+        list.add(newsPO2);
+        newsDao.batchInsertNews(list);
+    }
 
-	@Test
-	public void getNotReadList() {
-	}
+    @Test
+    public void getNotReadList() {
+    }
 
-	@Test
-	public void batchUpdateNewsReadFlag() {
-	}
+    @Test
+    public void batchUpdateNewsReadFlag() {
+    }
 
-	@Test
-	public void getNewsTotalAmountAndFlag() {
-		newsService.getNewsTotalAmountAndFlag(1, 1);
-	}
+    @Test
+    public void getNewsTotalAmountAndFlag() {
+        newsService.getNewsTotalAmountAndFlag(1, 1);
+    }
 }

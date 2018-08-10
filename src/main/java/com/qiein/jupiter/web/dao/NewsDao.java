@@ -17,7 +17,7 @@ public interface NewsDao extends BaseDao<NewsPO> {
      * @param newsPOList
      * @return
      */
-    int batchInsertNews(@Param("tableName") String tableName, @Param("list") List<NewsPO> newsPOList);
+    int batchInsertNews(@Param("list") List<NewsPO> newsPOList);
 
     /**
      * 获取员工的所有消息

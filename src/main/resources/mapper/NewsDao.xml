@@ -21,7 +21,7 @@
     <select id="getAllByStaffIdAndCid" resultMap="baseMap">
         SELECT
         <include refid="baseColumn"/>
-        FROM ${tableName}
+        FROM hm_crm_news
         WHERE STAFFID = #{staffId}
         AND COMPANYID = #{companyId}
         <if test="type != null and type == 1">
@@ -44,7 +44,7 @@
     <select id="getNotReadByStaffIdAndCid" resultMap="baseMap">
         SELECT
         <include refid="baseColumn"/>
-        FROM ${tableName}
+        FROM hm_crm_news
         WHERE STAFFID = #{staffId}
         AND COMPANYID = #{companyId}
         AND ISREAD = 0
@@ -64,7 +64,7 @@
 
     <!--新增消息-->
     <insert id="insert">
-        INSERT INTO ${tableName}
+        INSERT INTO hm_crm_news
         (TYPE,HEAD,MSG,KZID,STAFFID,CREATETIME,COMPANYID,ISREAD)
         VALUES (
         #{type}, #{head}, #{msg}, #{kzid}, #{staffId}, UNIX_TIMESTAMP(now()), #{companyId},0
@@ -73,7 +73,7 @@
 
     <!--批量插入-->
     <insert id="batchInsertNews">
-        INSERT INTO ${tableName}
+        INSERT INTO hm_crm_news
         (TYPE,HEAD,MSG,KZID,STAFFID,CREATETIME,COMPANYID,ISREAD)
         VALUES
         <foreach item="item" collection="list" separator=",">
@@ -84,7 +84,7 @@
 
     <!--批量更新消息为已读-->
     <update id="batchUpdateNewsReadFlag">
-        UPDATE ${tableName}
+        UPDATE hm_crm_news
         SET ISREAD = 1
         WHERE COMPANYID = #{companyId}
         AND STAFFID = #{staffId}
@@ -98,7 +98,7 @@
     <select id="getDiffTypeMsgAmount" resultType="int">
         SELECT
         count(*)
-        FROM ${tableName}
+        FROM hm_crm_news
         WHERE STAFFID = #{staffId}
         AND COMPANYID = #{companyId}
         AND ISREAD = #{readFlag}
@@ -115,7 +115,7 @@
     </select>
 
     <update id="setAllNewIsRead">
-      UPDATE ${tableName}
+      UPDATE hm_crm_news
         SET ISREAD = 1
         WHERE COMPANYID = #{companyId}
         AND STAFFID = #{staffId}
@@ -124,7 +124,7 @@
     <!--根据类型获取消息条数-->
     <select id="getNewsCountByType" parameterType="map" resultType="java.lang.Integer">
         SELECT COUNT(1)
-        FROM ${tableName}
+        FROM hm_crm_news
         WHERE STAFFID = #{staffId}
         AND COMPANYID = #{companyId}
         AND TYPE = 'receive'
