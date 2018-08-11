@@ -25,7 +25,7 @@ public class DstgZxStyleReportsDao {
     private JdbcTemplate jdbcTemplate;
 
     /**
-     * 获取电商推广广告信息汇总报表
+     * 获取电商推广咨询方式汇总报表
      */
     public List<DstgZxStyleReportsVO> getDstgGoldDataReprots(ReportsParamVO reportsParamVO, DsInvalidVO invalidConfig) {
         //TODO 缺少添加条件
