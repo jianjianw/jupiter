@@ -8,87 +8,47 @@ import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.web.entity.po.BrandPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.service.BrandService;
+import com.qiein.jupiter.web.service.FastMemoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
 /**
- * 品牌
- * Created by Tt(叶华葳)
- * on 2018/4/24 0024.
+ * 快捷备注
+ *
+ * @author gaoxiaoli 2018/8/11
  */
 @RestController
-@RequestMapping("/brand")
+@RequestMapping("/memo")
 @Validated
-public class BrandController extends BaseController {
+public class FastMemoController extends BaseController {
 
     @Autowired
-    private BrandService brandService;
+    private FastMemoService fastMemoService;
 
     /**
-     * 新增品牌
+     * 获取快捷备注列表
      *
-     * @param brandPO
      * @return
      */
-    @PostMapping("/add")
-    public ResultInfo addBrand(@RequestBody @Validated BrandPO brandPO) {
-
+    @GetMapping("/get_fast_memo_list")
+    public ResultInfo getFastMemoList() {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        //设置cid
-        brandPO.setCompanyId(currentLoginStaff.getCompanyId());
-        //对象参数去空
-        ObjectUtil.objectStrParamTrim(brandPO);
-        brandService.createBrand(brandPO);
-        return ResultInfoUtil.success(TipMsgEnum.ADD_BRAND_SUCCESS);
+        return ResultInfoUtil.success(fastMemoService.getMemoListById(currentLoginStaff.getId(), currentLoginStaff.getCompanyId()));
     }
 
     /**
-     * 删除品牌
-     *
-     * @param ids
-     * @return
-     */
-    @GetMapping("/del")
-    public ResultInfo delBrand(@NotEmptyStr String ids) {
-
-        //获取当前登录用户
-        StaffPO currentLoginStaff = getCurrentLoginStaff();
-        brandService.datDelBrand(ids, currentLoginStaff.getCompanyId());
-        return ResultInfoUtil.success(TipMsgEnum.SUCCESS);
-    }
-
-    /**
-     * 编辑品牌
-     *
-     * @param brandPO
-     * @return
-     */
-    @PostMapping("/edit")
-    public ResultInfo editBrand(@RequestBody BrandPO brandPO) {
-        //获取当前登录用户
-        StaffPO currentLoginStaff = getCurrentLoginStaff();
-        //设置cid
-        brandPO.setCompanyId(currentLoginStaff.getCompanyId());
-        //对象参数去空
-        ObjectUtil.objectStrParamTrim(brandPO);
-        brandService.editBrand(brandPO);
-
-        return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
-    }
-
-    /**
-     * 获取品牌列表
+     * 新增快捷备注
      *
      * @return
      */
-    @GetMapping("/get_list")
-    public ResultInfo getBrandList() {
+    @GetMapping("/add_fast_memo")
+    public ResultInfo addFastMemo(@NotEmptyStr String memo) {
         //获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        return ResultInfoUtil.success(TipMsgEnum.SUCCESS,
-                brandService.getBrandList(currentLoginStaff.getCompanyId()));
+        fastMemoService.addFastMemo(currentLoginStaff.getId(), currentLoginStaff.getCompanyId(), memo);
+        return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
     }
 }
