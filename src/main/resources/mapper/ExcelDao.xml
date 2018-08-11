@@ -371,23 +371,6 @@
         AND (( temp.KZPHONE = info.KZPHONE  or temp.KZPHONE = info.KZWECHAT or temp.KZPHONE = info.KZQQ)
         or ( temp.KZWECHAT = info.KZPHONE  or temp.KZWECHAT = info.KZWECHAT or temp.KZWECHAT = info.KZQQ)
         or ( temp.KZQQ = info.KZPHONE  or temp.KZQQ = info.KZWECHAT or temp.KZQQ = info.KZQQ))
-        AND NOT( ((temp.KZPHONE is not null and temp.KZPHONE != '') and temp.KZPHONE NOT REGEXP '^[1][3456789][0-9]{9}$')
-        or ( (temp.KZWECHAT is not null and temp.KZWECHAT != '') -- and temp.KZWECHAT NOT REGEXP '^[a-zA-Z0-9]{1}[-_a-zA-Z0-9]{5,30}$')
-        or ((temp.kzqq is not null and temp.kzqq != '') and temp.kzqq not REGEXP '[1-9][0-9]{4,9}')
-        or temp.TYPEID is null
-        or temp.CHANNELID is NULL
-        or temp.SOURCEID is NULL
-        or temp.COLLECTORID IS NULL
-        or temp.CREATETIME IS NULL
-        or (temp.KZPHONE is null and temp.KZWECHAT is null and temp.KZQQ is null and temp.KZWW is null)
-        or (temp.SHOPID is null and temp.SHOPNAME is not null)
-        or (temp.APPOINTORID is null and temp.APPOINTNAME is not null)
-        or (temp.RECEPTORID is null and temp.RECEPTORNAME IS not null)
-        or (temp.CLASSID != 1 AND temp.APPOINTORID IS NULL )
-        or (temp.CLASSID = 4 AND (temp.SHOPID IS NULL OR temp.COMESHOPTIME IS NULL OR temp.RECEPTORID IS NULL))
-        or (temp.CLASSID = 3 AND (temp.APPOINTTIME IS NULL OR temp.SHOPID IS NULL))
-        or (temp.CLASSID = 5 AND (temp.SHOPID IS NULL or temp.RECEPTORID IS NULL or temp.SUCCESSTIME IS NULL or
-        temp.AMOUNT IS NULL)))
     </select>
 
     <!--获取excel中重复客资列表-->
@@ -589,7 +572,7 @@
         <include refid="Base_Column_News_List"/>
         from ${tempName} temp
         where temp.OPERAID = #{staffId} and (((temp.KZPHONE is not null and temp.KZPHONE != '') and temp.KZPHONE NOT REGEXP '^[1][3456789][0-9]{9}$')
-        or ( (temp.KZWECHAT is not null and temp.KZWECHAT != '') -- and temp.KZWECHAT NOT REGEXP '^[a-zA-Z0-9]{1}[-_a-zA-Z0-9]{5,30}$')
+        -- or ( (temp.KZWECHAT is not null and temp.KZWECHAT != '')  and temp.KZWECHAT NOT REGEXP '^[a-zA-Z0-9]{1}[-_a-zA-Z0-9]{5,30}$')
         or  ((temp.kzqq is not null and temp.kzqq != '') and temp.kzqq not REGEXP '[1-9][0-9]{4,9}')
         or (temp.CLASSID IS NULL OR temp.CLASSID = 0)
         or temp.TYPEID is null
@@ -604,8 +587,8 @@
         or (temp.CLASSID != 1 AND temp.APPOINTORID IS NULL )
         or (temp.CLASSID = 4 AND (temp.SHOPID IS NULL OR temp.COMESHOPTIME IS NULL OR temp.RECEPTORID IS NULL))
         or (temp.CLASSID = 3 AND (temp.APPOINTTIME IS NULL OR temp.SHOPID IS NULL))
-        or (temp.CLASSID = 5 AND (temp.SHOPID IS NULL or temp.RECEPTORID IS NULL or temp.SUCCESSTIME IS NULL or
-        temp.AMOUNT IS NULL))
+--         or (temp.CLASSID = 5 AND (temp.SHOPID IS NULL or temp.RECEPTORID IS NULL or temp.SUCCESSTIME IS NULL or
+--         temp.AMOUNT IS NULL))
         or (temp.YXLEVELSTR is not null and temp.YXLEVEL IS NULL)
         Or (temp.YPTIMESTR IS NOT NULL AND temp.YPTIME IS NULL)
         or (temp.YSRANGESTR IS NOT NULL AND temp.YSRANGE IS NULL)
@@ -640,7 +623,7 @@
         <include refid="Base_Column_News_List"/>
         from ${tempName} temp where
         temp.OPERAID = #{staffId} and ( ((temp.KZPHONE is not null and temp.KZPHONE != '') and temp.KZPHONE NOT REGEXP '^[1][3456789][0-9]{9}$')
-        or ( (temp.KZWECHAT is not null and temp.KZWECHAT != '') -- and temp.KZWECHAT NOT REGEXP '^[a-zA-Z0-9]{1}[-_a-zA-Z0-9]{5,30}$')
+        -- or ( (temp.KZWECHAT is not null and temp.KZWECHAT != '') and temp.KZWECHAT NOT REGEXP '^[a-zA-Z0-9]{1}[-_a-zA-Z0-9]{5,30}$')
         or ((temp.kzqq is not null and temp.kzqq   != '') and temp.kzqq not REGEXP '[1-9][0-9]{4,9}')
         or (temp.CLASSID IS NULL OR temp.CLASSID = 0)
         or temp.TYPEID is null
@@ -655,8 +638,8 @@
         or (temp.CLASSID != 1 AND temp.APPOINTORID IS NULL )
         or (temp.CLASSID = 4 AND (temp.SHOPID IS NULL OR temp.COMESHOPTIME IS NULL OR temp.RECEPTORID IS NULL))
         or (temp.CLASSID = 3 AND (temp.APPOINTTIME IS NULL OR temp.SHOPID IS NULL))
-        or (temp.CLASSID = 5 AND (temp.SHOPID IS NULL or temp.RECEPTORID IS NULL or temp.SUCCESSTIME IS NULL or
-        temp.AMOUNT IS NULL))
+--         or (temp.CLASSID = 5 AND (temp.SHOPID IS NULL or temp.RECEPTORID IS NULL or temp.SUCCESSTIME IS NULL or
+--         temp.AMOUNT IS NULL))
         or (temp.YXLEVELSTR is not null and temp.YXLEVEL IS NULL)
         Or (temp.YPTIMESTR IS NOT NULL AND temp.YPTIME IS NULL)
         or (temp.YSRANGESTR IS NOT NULL AND temp.YSRANGE IS NULL)
@@ -708,7 +691,7 @@
         ${tempName} temp
         WHERE
         temp.OPERAID = #{staffId} and  (((temp.KZPHONE is not null and temp.KZPHONE != '') and temp.KZPHONE NOT REGEXP '^[1][3456789][0-9]{9}$')
-        or ((temp.KZWECHAT IS NOT NULL and temp.KZWECHAT != '') -- and temp.KZWECHAT NOT REGEXP '^[a-zA-Z0-9]{1}[-_a-zA-Z0-9]{5,30}$')
+        -- or ((temp.KZWECHAT IS NOT NULL and temp.KZWECHAT != '') and temp.KZWECHAT NOT REGEXP '^[a-zA-Z0-9]{1}[-_a-zA-Z0-9]{5,30}$')
         or ((temp.kzqq is not null and temp.kzqq != '') and  temp.kzqq not REGEXP '[1-9][0-9]{4,9}')
         or (temp.CLASSID IS NULL OR temp.CLASSID = 0)
         or temp.TYPEID is null
@@ -723,8 +706,8 @@
         or (temp.CLASSID != 1 AND temp.APPOINTORID IS NULL )
         or (temp.CLASSID = 4 AND (temp.SHOPID IS NULL OR temp.COMESHOPTIME IS NULL OR temp.RECEPTORID IS NULL))
         or (temp.CLASSID = 3 AND (temp.APPOINTTIME IS NULL OR temp.SHOPID IS NULL))
-        or (temp.CLASSID = 5 AND (temp.SHOPID IS NULL or temp.RECEPTORID IS NULL or temp.SUCCESSTIME IS NULL or
-        temp.AMOUNT IS NULL))
+--         or (temp.CLASSID = 5 AND (temp.SHOPID IS NULL or temp.RECEPTORID IS NULL or temp.SUCCESSTIME IS NULL or
+--         temp.AMOUNT IS NULL))
         or (temp.YXLEVELSTR is not null and temp.YXLEVEL IS NULL)
         Or (temp.YPTIMESTR IS NOT NULL AND temp.YPTIME IS NULL)
         or (temp.YSRANGESTR IS NOT NULL AND temp.YSRANGE IS NULL)
@@ -742,7 +725,7 @@
         ${tempName} temp
         WHERE
         temp.OPERAID = #{staffId} and (((temp.KZPHONE is not null and temp.KZPHONE != '') and temp.KZPHONE NOT REGEXP '^[1][3456789][0-9]{9}$')
-        or ((temp.KZWECHAT IS NOT NULL and temp.KZWECHAT != '') -- and temp.KZWECHAT NOT REGEXP '^[a-zA-Z0-9]{1}[-_a-zA-Z0-9]{5,30}$')
+        -- or ((temp.KZWECHAT IS NOT NULL and temp.KZWECHAT != '') and temp.KZWECHAT NOT REGEXP '^[a-zA-Z0-9]{1}[-_a-zA-Z0-9]{5,30}$')
         or ((temp.kzqq is not null and temp.kzqq != '') and  temp.kzqq not REGEXP '[1-9][0-9]{4,9}')
         or (temp.CLASSID IS NULL OR temp.CLASSID = 0)
         or temp.TYPEID is null
@@ -757,8 +740,8 @@
         or (temp.CLASSID != 1 AND temp.APPOINTORID IS NULL )
         or (temp.CLASSID = 4 AND (temp.SHOPID IS NULL OR temp.COMESHOPTIME IS NULL OR temp.RECEPTORID IS NULL))
         or (temp.CLASSID = 3 AND (temp.APPOINTTIME IS NULL OR temp.SHOPID IS NULL))
-        or (temp.CLASSID = 5 AND (temp.SHOPID IS NULL or temp.RECEPTORID IS NULL or temp.SUCCESSTIME IS NULL or
-        temp.AMOUNT IS NULL))
+--         or (temp.CLASSID = 5 AND (temp.SHOPID IS NULL or temp.RECEPTORID IS NULL or temp.SUCCESSTIME IS NULL or
+--         temp.AMOUNT IS NULL))
         or (temp.YXLEVELSTR is not null and temp.YXLEVEL IS NULL)
         Or (temp.YPTIMESTR IS NOT NULL AND temp.YPTIME IS NULL)
         or (temp.YSRANGESTR IS NOT NULL AND temp.YSRANGE IS NULL)
