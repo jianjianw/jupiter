@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.service.impl;
 
 import com.qiein.jupiter.web.dao.FastMemoDao;
+import com.qiein.jupiter.web.entity.vo.FastMemoVO;
 import com.qiein.jupiter.web.service.FastMemoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class FastMemoServiceImpl implements FastMemoService {
      * @return
      */
     @Override
-    public List<String> getMemoListById(int staffId, int companyId) {
+    public List<FastMemoVO> getMemoListById(int staffId, int companyId) {
         return fastMemoDao.getMemoListById(staffId, companyId);
     }
 

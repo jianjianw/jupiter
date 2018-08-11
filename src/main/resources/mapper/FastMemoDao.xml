@@ -2,8 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qiein.jupiter.web.dao.FastMemoDao">
 
+    <resultMap id="baseMap" type="com.qiein.jupiter.web.entity.vo.FastMemoVO">
+        <id column="ID" jdbcType="INTEGER" property="id" />
+        <result column="MEMO" jdbcType="VARCHAR" property="memo"/>
+    </resultMap>
     <!--根据员工ID，获取快捷备注列表-->
-   <select id="getMemoListById" parameterType="map" resultType="java.lang.String">
+   <select id="getMemoListById" parameterType="map" resultMap="baseMap">
        SELECT MEMO
        FROM hm_crm_fast_memo
        WHERE STAFFID = #{staffId}

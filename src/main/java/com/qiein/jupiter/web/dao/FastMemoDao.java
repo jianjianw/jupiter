@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.dao;
 
 import com.qiein.jupiter.web.entity.po.BrandPO;
+import com.qiein.jupiter.web.entity.vo.FastMemoVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public interface FastMemoDao extends BaseDao<BrandPO> {
      * @param companyId
      * @return
      */
-    List<String> getMemoListById(@Param("staffId") int staffId, @Param("companyId") int companyId);
+    List<FastMemoVO> getMemoListById(@Param("staffId") int staffId, @Param("companyId") int companyId);
 
     /**
      * 添加快捷备注

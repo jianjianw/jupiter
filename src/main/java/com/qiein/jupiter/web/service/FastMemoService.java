@@ -1,5 +1,7 @@
 package com.qiein.jupiter.web.service;
 
+import com.qiein.jupiter.web.entity.vo.FastMemoVO;
+
 import java.util.List;
 
 /**
@@ -17,7 +19,7 @@ public interface FastMemoService {
      * @param companyId
      * @return
      */
-    List<String> getMemoListById(int staffId, int companyId);
+    List<FastMemoVO> getMemoListById(int staffId, int companyId);
 
     /**
      * 添加快捷备注
