@@ -32,7 +32,7 @@ public class InvalidReasonReportsDao {
      */
     public List<Map<String, Object>> getInvalidReasonReports(List<DictionaryPO> list, String tableInfo, String tableDetail, Integer companyId, String sourceIds, String startTime, String endTime, String typeIds) {
         StringBuilder sql = new StringBuilder();
-        sql.append("SELECT src.SRCNAME");
+        sql.append("SELECT src.SRCNAME,src.SRCIMG");
         sql.append(",(SELECT count(detail.ID) FROM " + tableDetail + " detail LEFT JOIN " + tableInfo + " info ON info.KZID = detail.KZID WHERE src.ID = info.SOURCEID");
         if(StringUtil.isNotEmpty(typeIds)){
             sql.append(" AND info.TYPEID IN ("+typeIds+")");
@@ -65,7 +65,7 @@ public class InvalidReasonReportsDao {
         System.out.println(sql.toString());
         List<Map<String, Object>> invalidalbel = jdbcTemplate.queryForList(sql.toString(), new Object[]{companyId});
         StringBuilder hjsql = new StringBuilder();
-        hjsql.append("SELECT '合计' SRCNAME");
+        hjsql.append("SELECT '合计' SRCNAME,'' SRCIMG");
         hjsql.append(",(SELECT count(detail.ID) FROM " + tableDetail + " detail LEFT JOIN " + tableInfo + " info ON detail.KZID=info.KZID " );
         if(StringUtil.isNotEmpty(typeIds)){
             sql.append(" AND info.TYPEID IN ("+typeIds+")");
