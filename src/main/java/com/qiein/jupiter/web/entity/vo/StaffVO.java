@@ -16,7 +16,10 @@ public class StaffVO extends StaffPO {
      * 小组ID
      */
     private String groupId;
-
+    /**
+     * 小组id(old)
+     * */
+    private String oldGroupId;
     /**
      * 角色ID
      */
@@ -58,6 +61,13 @@ public class StaffVO extends StaffPO {
      */
     private List<RoleVO> roleList;
 
+    public String getOldGroupId() {
+        return oldGroupId;
+    }
+
+    public void setOldGroupId(String oldGroupId) {
+        this.oldGroupId = oldGroupId;
+    }
 
     /**
      * 获取员工是否初始密码标识，并置空密码

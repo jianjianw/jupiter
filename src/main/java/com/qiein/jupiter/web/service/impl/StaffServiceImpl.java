@@ -305,7 +305,7 @@ public class StaffServiceImpl implements StaffService {
         // 2.修改员工信息
         staffDao.updateStaff(staffVO);
         // 3.更新小组关联表
-        groupStaffDao.deleteByStaffId(staffVO.getCompanyId(), staffVO.getId());
+        groupStaffDao.deleteByStaffIdAndGroupId(staffVO.getCompanyId(), staffVO.getId(),staffVO.getOldGroupId());
         groupStaffDao.insertGroupStaff(staffVO.getCompanyId(), staffVO.getGroupId(), staffVO.getId());
         // 4.删除权限关联表
         staffRoleDao.deleteByStaffId(staffVO.getId(), staffVO.getCompanyId());
@@ -314,6 +314,8 @@ public class StaffServiceImpl implements StaffService {
             String[] roleArr = staffVO.getRoleIds().split(CommonConstant.STR_SEPARATOR);
             staffRoleDao.batchInsertStaffRole(staffVO.getId(), staffVO.getCompanyId(), roleArr);
         }
+        //TODO 员工编辑日志
+
         // 6.清缓存
         // redisTemplate.opsForValue().getAndSet(RedisConstant.getStaffKey(staffVO.getId(),
         // staffVO.getCompanyId()), staffVO);

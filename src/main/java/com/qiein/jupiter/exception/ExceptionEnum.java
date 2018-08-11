@@ -69,6 +69,7 @@ public enum ExceptionEnum {
     GROUP_NOT_EXIT(408, "部门不存在"),
     GROUP_IS_NULL(409, "小组不能为空"),
     GROUP_STAFF_EXISTS(410, "小组员工已经存在"),
+    GROUP_STAFF_NOT_EXISTS(411,"小组员工不存在"),
     //渠道&来源
     CHANNEL_NAME_REPEAT(501, "渠道名称重复"),
     CHANNEL_ID_NULL(502, "渠道编号不能为空"),
