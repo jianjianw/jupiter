@@ -97,6 +97,7 @@ public class ClientServiceImpl implements ClientService {
      * @param kzId
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void scanWechat(int companyId, String kzId) {
         clientDao.editClientMemoLabel(DBSplitUtil.getDetailTabName(companyId), companyId, kzId, "【微信已扫码】");
         clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(companyId), new ClientLogPO(kzId,
@@ -129,7 +130,7 @@ public class ClientServiceImpl implements ClientService {
         }
         //有效或待定，增加到备注表中
         Integer type = clientStatusVoteVO.getType();
-        String tabName = DBSplitUtil.getRemarkTabName(clientStatusVoteVO.getCompanyId());
+//        String tabName = DBSplitUtil.getRemarkTabName(clientStatusVoteVO.getCompanyId());
 
         String kzStatusName = "";
         if (ClientStatusTypeConst.VALID_TYPE.equals(type)) {

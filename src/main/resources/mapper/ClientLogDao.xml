@@ -36,4 +36,12 @@
         WHERE log.COMPANYID = #{companyId} AND log.KZID = #{kzId} AND log.LOGTYPE = #{logType} ORDER BY log.OPERATIME DESC, log.ID DESC
 
     </select>
+
+    <!--添加邀约记录-->
+    <insert id="addInvitationLog" parameterType="map">
+        INSERT INTO ${tabName}
+		(  KZID, YYMEMO, STAFFID, CREATETIME, COMPANYID )
+		VALUES
+		( #{kzId}, #{yyMemo}, #{staffId}, UNIX_TIMESTAMP(NOW()), #{companyId})
+    </insert>
 </mapper>

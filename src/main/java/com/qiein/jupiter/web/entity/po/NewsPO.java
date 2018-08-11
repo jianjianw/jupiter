@@ -40,30 +40,18 @@ public class NewsPO extends BaseEntity {
      * 是否已读
      */
     private boolean readFlag;
-    /**
-     * 分表名称
-     */
-    private String tableName;
+
 
     public NewsPO() {
     }
 
-    public NewsPO(String type, String head, String msg, String kzid, int staffId, int companyId, String tableName) {
+    public NewsPO(String type, String head, String msg, String kzid, int staffId, int companyId) {
         this.type = type;
         this.head = head;
         this.msg = msg;
         this.kzid = kzid;
         this.staffId = staffId;
         this.companyId = companyId;
-        this.tableName = tableName;
-    }
-
-    public String getTableName() {
-        return tableName;
-    }
-
-    public void setTableName(String tableName) {
-        this.tableName = tableName;
     }
 
     public String getType() {

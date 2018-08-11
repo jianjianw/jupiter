@@ -27,6 +27,7 @@ import com.qiein.jupiter.web.entity.vo.StaffDetailVO;
 import com.qiein.jupiter.web.service.ClientEditService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -61,6 +62,10 @@ public class ClientEditServiceImpl implements ClientEditService {
     private CashLogDao cashLogDao;
     @Autowired
     private ClientStatusDao clientStatusDao;
+    @Autowired
+    private ClientDao clientDao;
+    @Autowired
+    private ClientLogDao clientLogDao;
 
     /**
      * 电商推广修改客资
@@ -521,6 +526,24 @@ public class ClientEditServiceImpl implements ClientEditService {
         } else if (!"100000".equals(jsInfo.getString("code"))) {
             throw new RException(jsInfo.getString("msg"));
         }
+    }
+
+    /**
+     * 快捷备注
+     *
+     * @param kzId
+     * @param memo
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void editFastMemo(String kzId, String memo, StaffPO staffPO) {
+        //修改备注
+        clientDao.editClientMemoLabel(DBSplitUtil.getDetailTabName(staffPO.getCompanyId()), staffPO.getCompanyId(), kzId, memo);
+        memo = "快捷备注：" + memo;
+        //添加客资操作日志
+        clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(staffPO.getCompanyId()), new ClientLogPO(kzId,
+                staffPO.getId(), staffPO.getNickName(), memo, ClientLogConst.INFO_LOGTYPE_EDIT, staffPO.getCompanyId()));
+        //添加邀约记录
+        clientLogDao.addInvitationLog(DBSplitUtil.getInvitaLogTabName(staffPO.getCompanyId()), kzId, memo, staffPO.getId(), staffPO.getCompanyId());
     }
 
 

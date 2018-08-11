@@ -38,8 +38,7 @@ public interface NewsDao extends BaseDao<NewsPO> {
      *
      * @return
      */
-    int batchUpdateNewsReadFlag(@Param("tableName") String tableName, @Param("staffId") int staffId,
-                                @Param("newIds") String[] msgIds, @Param("companyId") int companyId);
+    int batchUpdateNewsReadFlag(@Param("staffId") int staffId, @Param("newIds") String[] msgIds, @Param("companyId") int companyId);
 
     /**
      * 获取不同的消息的数量
@@ -55,17 +54,14 @@ public interface NewsDao extends BaseDao<NewsPO> {
      * @param companyId
      * @return
      */
-    int setAllNewIsRead(@Param("tableName") String tableName,
-                        @Param("staffId") int staffId, @Param("companyId") int companyId);
+    int setAllNewIsRead(@Param("staffId") int staffId, @Param("companyId") int companyId);
 
     /**
      * 根据类型获取消息条数
      *
-     * @param tableName
      * @param staffId
      * @param companyId
      * @return
      */
-    int getNewsCountByType(@Param("tableName") String tableName,
-                           @Param("staffId") int staffId, @Param("companyId") int companyId, @Param("kzId") String kzId);
+    int getNewsCountByType(@Param("staffId") int staffId, @Param("companyId") int companyId, @Param("kzId") String kzId);
 }

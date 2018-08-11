@@ -53,5 +53,13 @@ public interface ClientEditService {
      */
     void editClientDetail(ClientVO clientVO, StaffPO staffPO);
 
+    /**
+     * 快捷备注
+     *
+     * @param kzId
+     * @param memo
+     */
+    void editFastMemo(String kzId, String memo, StaffPO staffPO);
+
 
 }

@@ -51,15 +51,12 @@ public class NewsServiceImpl implements NewsService {
      */
     @Override
     public PageInfo<NewsPO> getAllList(QueryMapDTO queryMapDTO, int uid, int cid) {
-        // 根据公司获取表名
-        String tableName = DBSplitUtil.getNewsTabName(cid);
         // 获取类型
         Integer type = queryMapDTO.getCondition() == null ? 1 : (Integer) queryMapDTO.getCondition().get("type");
         NewsPO newsPO = new NewsPO();
         newsPO.setStaffId(uid);
         newsPO.setCompanyId(cid);
         newsPO.setType(String.valueOf(type));
-        newsPO.setTableName(tableName);
         PageHelper.startPage(queryMapDTO.getPageNum(), queryMapDTO.getPageSize());
         List<NewsPO> allByStaffIdAndCid = newsDao.getAllByStaffIdAndCid(newsPO);
         return new PageInfo<>(allByStaffIdAndCid);
@@ -76,15 +73,12 @@ public class NewsServiceImpl implements NewsService {
      */
     @Override
     public PageInfo<NewsPO> getNotReadList(QueryMapDTO queryMapDTO, int uid, int cid) {
-        // 根据公司获取表名
-        String tableName = DBSplitUtil.getNewsTabName(cid);
         // 获取类型
         Integer type = queryMapDTO.getCondition() == null ? 1 : (Integer) queryMapDTO.getCondition().get("type");
         NewsPO newsPO = new NewsPO();
         newsPO.setStaffId(uid);
         newsPO.setCompanyId(cid);
         newsPO.setType(String.valueOf(type));
-        newsPO.setTableName(tableName);
         PageHelper.startPage(queryMapDTO.getPageNum(), queryMapDTO.getPageSize());
         List<NewsPO> allByStaffIdAndCid = newsDao.getNotReadByStaffIdAndCid(newsPO);
         return new PageInfo<>(allByStaffIdAndCid);
@@ -99,14 +93,12 @@ public class NewsServiceImpl implements NewsService {
      */
     @Override
     public int batchUpdateNewsReadFlag(String msgIds, int staffId, int cid) {
-        // 根据公司获取表名
-        String tableName = DBSplitUtil.getNewsTabName(cid);
         if (StringUtil.isEmpty(msgIds)) {
             return 0;
         }
         // ids数组
         String[] msgIdsArr = msgIds.split(CommonConstant.STR_SEPARATOR);
-        return newsDao.batchUpdateNewsReadFlag(tableName, staffId, msgIdsArr, cid);
+        return newsDao.batchUpdateNewsReadFlag(staffId, msgIdsArr, cid);
     }
 
     /**
@@ -118,23 +110,9 @@ public class NewsServiceImpl implements NewsService {
      */
     @Override
     public NewsTotalAmountAndFlag getNewsTotalAmountAndFlag(final int uid, final int cid) {
-        // 根据公司获取表名
-        final String tableName = DBSplitUtil.getNewsTabName(cid);
         NewsPO newsPO = new NewsPO();
-        newsPO.setTableName(tableName);
         newsPO.setStaffId(uid);
         newsPO.setCompanyId(cid);
-        // 获取所有的消息的数量
-//		long allAmount = PageHelper.count(new ISelect() {
-//			@Override
-//			public void doSelect() {
-//				NewsPO newsPO = new NewsPO();
-//				newsPO.setTableName(tableName);
-//				newsPO.setStaffId(uid);
-//				newsPO.setCompanyId(cid);
-//				newsDao.getAllByStaffIdAndCid(newsPO);
-//			}
-//		});
         // 获取其他三种未读消息的数量
         newsPO.setReadFlag(false);
         newsPO.setType("1");
@@ -162,9 +140,7 @@ public class NewsServiceImpl implements NewsService {
      */
     @Override
     public int setAllNewIsRead(int uid, int cid) {
-        // 根据公司获取表名
-        String tableName = DBSplitUtil.getNewsTabName(cid);
-        return newsDao.setAllNewIsRead(tableName, uid, cid);
+        return newsDao.setAllNewIsRead(uid, cid);
     }
 
     /**

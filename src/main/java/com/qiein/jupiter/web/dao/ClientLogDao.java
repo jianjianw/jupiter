@@ -34,4 +34,17 @@ public interface ClientLogDao extends BaseDao<ClientLogDao> {
      */
     List<ClientLogPO> getCashEditLog(@Param("logTabName") String logTabName, @Param("companyId") int companyId,
                                      @Param("kzId") String kzId, @Param("logType") int logType);
+
+    /**
+     * 添加邀约记录
+     *
+     * @param logTabName
+     * @param kzId
+     * @param yyMemo
+     * @param staffId
+     * @param companyId
+     * @return
+     */
+    int addInvitationLog(@Param("logTabName") String logTabName, @Param("kzId") String kzId, @Param("yyMemo") String yyMemo,
+                         @Param("staffId") int staffId, @Param("companyId") int companyId);
 }

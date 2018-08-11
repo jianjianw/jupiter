@@ -22,7 +22,6 @@ public class DBSplitUtil {
     public static final String TAB_SUFFIX_INVITA_LOG = " hm_crm_invitation_log_";// 客资邀约记录表
     public static final String TAB_SUFFIX_TEMP = " hm_crm_client_info_temp_";// 客资临时表
     public static final String TAB_SUFFIX_IP_LOG = " hm_crm_ip_log_";// ip日志表
-    public static final String TAB_SUFFIX_NEWS = " hm_crm_news_";// 消息表
     public static final String TAB_SUFFIX_GOLD_TEMP = " hm_crm_gold_data_temp_";// 金数据缓存表
     public static final String TAB_SUFFIX_ALLOT_LOG = " hm_crm_allot_log_";// 客资分配日志表
     public static final String TAB_SUFFIX_LINE_LOG = "hm_crm_line_log_";// 上下线日志表
@@ -31,15 +30,6 @@ public class DBSplitUtil {
     public static final String TAB_ONLINE_TIME = "hm_crm_online_time_log_";// 在线时长日志
     public static final String TAB_SUFFIX_EDIT_LOG = "hm_crm_contact_edit_log_";//联系方式修改日志
     public static final String TAB_SUFFIX_CASH_LOG = "hm_crm_cash_log_";//收款记录日志
-
-    public static String getNewsTabName(int companyId) throws RException {
-
-        if (NumUtil.isInValid(companyId)) {
-            throw new RException(ExceptionEnum.COMPANYID_NULL);
-        }
-
-        return getTable(TableEnum.news, companyId);
-    }
 
     public static String getInfoTabName(int companyId) throws RException {
 
@@ -121,6 +111,15 @@ public class DBSplitUtil {
         return getTable(TableEnum.cash_log, companyId);
     }
 
+    public static String getInvitaLogTabName(int companyId) throws RException {
+
+        if (NumUtil.isInValid(companyId)) {
+            throw new RException(ExceptionEnum.COMPANYID_NULL);
+        }
+
+        return getTable(TableEnum.invita, companyId);
+    }
+
     /*-- 获取表名 --*/
     public static String getTable(TableEnum tableEnum, int companyId) {
 
@@ -147,9 +146,6 @@ public class DBSplitUtil {
                 break;
             case ip_log:
                 tableName = TAB_SUFFIX_IP_LOG + String.valueOf(companyId);
-                break;
-            case news:
-                tableName = TAB_SUFFIX_NEWS + String.valueOf(companyId);
                 break;
             case gold_temp:
                 tableName = TAB_SUFFIX_GOLD_TEMP + String.valueOf(companyId);
