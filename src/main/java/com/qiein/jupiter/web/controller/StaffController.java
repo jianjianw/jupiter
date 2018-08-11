@@ -213,7 +213,7 @@ public class StaffController extends BaseController {
      * @return
      */
     @GetMapping("/get_group_staff_by_id")
-    public ResultInfo getGroupStaffById(@Id @RequestParam("staffId") int staffId, @NotEmptyStr @RequestParam("groupId") String groupId) {
+    public ResultInfo getGroupStaffById(@Id @RequestParam("staffId") int staffId, @RequestParam("groupId") String groupId) {
         // 获取当前登录用户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         return ResultInfoUtil.success(staffService.getGroupStaffById(currentLoginStaff.getCompanyId(), staffId, groupId));
