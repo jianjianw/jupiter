@@ -38,13 +38,13 @@ public interface ClientLogDao extends BaseDao<ClientLogDao> {
     /**
      * 添加邀约记录
      *
-     * @param logTabName
+     * @param tabName
      * @param kzId
      * @param yyMemo
      * @param staffId
      * @param companyId
      * @return
      */
-    int addInvitationLog(@Param("logTabName") String logTabName, @Param("kzId") String kzId, @Param("yyMemo") String yyMemo,
+    int addInvitationLog(@Param("tabName") String tabName, @Param("kzId") String kzId, @Param("yyMemo") String yyMemo,
                          @Param("staffId") int staffId, @Param("companyId") int companyId);
 }

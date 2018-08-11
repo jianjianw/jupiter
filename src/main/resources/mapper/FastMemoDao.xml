@@ -8,7 +8,7 @@
     </resultMap>
     <!--根据员工ID，获取快捷备注列表-->
    <select id="getMemoListById" parameterType="map" resultMap="baseMap">
-       SELECT MEMO
+       SELECT ID, MEMO
        FROM hm_crm_fast_memo
        WHERE STAFFID = #{staffId}
        AND COMPANYID = #{companyId};
