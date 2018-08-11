@@ -371,6 +371,7 @@
         AND (( temp.KZPHONE = info.KZPHONE  or temp.KZPHONE = info.KZWECHAT or temp.KZPHONE = info.KZQQ)
         or ( temp.KZWECHAT = info.KZPHONE  or temp.KZWECHAT = info.KZWECHAT or temp.KZWECHAT = info.KZQQ)
         or ( temp.KZQQ = info.KZPHONE  or temp.KZQQ = info.KZWECHAT or temp.KZQQ = info.KZQQ))
+
     </select>
 
     <!--获取excel中重复客资列表-->
