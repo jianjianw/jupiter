@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.constant.ClientStatusConst;
 import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.web.entity.po.CashLogPO;
@@ -143,6 +144,19 @@ public class ClientEditController extends BaseController {
         //获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         clientEditService.editClientDetail(clientVO, currentLoginStaff);
+        return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
+    }
+
+    /**
+     * 快捷备注
+     *
+     * @return
+     */
+    @GetMapping("/edit_fast_memo")
+    public ResultInfo editFastMemo(@NotEmptyStr String kzId, @NotEmptyStr String memo) {
+        //获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        clientEditService.editFastMemo(kzId, memo, currentLoginStaff);
         return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
     }
 

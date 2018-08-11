@@ -303,8 +303,8 @@ public class GoEasyUtil {
      * @param companyId
      * @param staffId
      */
-    public static void pushInfoRefresh(int companyId, int staffId,WebSocketMsgUtil webSocketMsgUtil) {
-        webSocketMsgUtil.pushClientInfoRefresh(companyId,staffId);
+    public static void pushInfoRefresh(int companyId, int staffId, WebSocketMsgUtil webSocketMsgUtil) {
+        webSocketMsgUtil.pushClientInfoRefresh(companyId, staffId);
 //        JSONObject contentJson = new JSONObject();
 //        pushWeb(MessageConts.MSG_TYPE_INFO_REFRESH, companyId, staffId, contentJson);
     }
@@ -329,7 +329,7 @@ public class GoEasyUtil {
      * @param companyId
      * @param staffId
      */
-    public static void pushStatusRefresh(int companyId, int staffId,WebSocketMsgUtil webSocketMsgUtil) {
+    public static void pushStatusRefresh(int companyId, int staffId, WebSocketMsgUtil webSocketMsgUtil) {
         webSocketMsgUtil.pushBaseInfoFresh(companyId, staffId);
 //        JSONObject contentJson = new JSONObject();
 //        pushWeb(MessageConts.MSG_TYPE_STATUS_REFRESH, companyId, staffId, contentJson);
@@ -442,7 +442,7 @@ public class GoEasyUtil {
         String msg = sb.toString();
         pushSuccess(companyId, staffId, head, msg);
         newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_SUCCESS, head, msg.replaceAll("<br/>", "；"), info.getKzId(),
-                staffId, companyId, DBSplitUtil.getNewsTabName(companyId)));
+                staffId, companyId));
         DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), companyId, staffId, staffDao);
     }
 
@@ -477,7 +477,7 @@ public class GoEasyUtil {
         String msg = sb.toString();
         pushSuccess(companyId, staffId, head, msg);
         newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_SUCCESS, head, msg.replaceAll("<br/>", "；"), info.getKzId(),
-                staffId, companyId, DBSplitUtil.getNewsTabName(companyId)));
+                staffId, companyId));
         DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), companyId, staffId, staffDao);
     }
 
@@ -493,7 +493,7 @@ public class GoEasyUtil {
         String msg = "连续三次怠工被系统自动下线<br/>请重新上线或重新登录系统";
         pushError(companyId, staffId, head, msg);
         newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_SYSTEM, head, msg.replaceAll("<br/>", "；"), "", staffId,
-                companyId, DBSplitUtil.getNewsTabName(companyId)));
+                companyId));
         DingMsgSendUtil.sendDingMsg(head + "<br/>", companyId, staffId, staffDao);
     }
 
@@ -586,7 +586,7 @@ public class GoEasyUtil {
         String msg = sb.toString();
         pushWarn(companyId, staffId, head, msg);
         newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_WARN, head, msg.replaceAll("<br/>", "；"), info.getKzId(),
-                staffId, companyId, DBSplitUtil.getNewsTabName(companyId)));
+                staffId, companyId));
         DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), companyId, staffId, staffDao);
     }
 
@@ -623,7 +623,7 @@ public class GoEasyUtil {
         String msg = sb.toString();
         pushCommon(companyId, staffId, head, msg);
         newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_COMMON, head, msg.replaceAll("<br/>", "；"), info.getKzId(),
-                staffId, companyId, DBSplitUtil.getNewsTabName(companyId)));
+                staffId, companyId));
         DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), companyId, staffId, staffDao);
     }
 
@@ -655,8 +655,7 @@ public class GoEasyUtil {
         }
         String head = "推广备注被修改";
         pushWarn(companyId, staffId, head, msg);
-        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_WARN, head, msg, kzId, staffId, companyId,
-                DBSplitUtil.getNewsTabName(companyId)));
+        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_WARN, head, msg, kzId, staffId, companyId));
         DingMsgSendUtil.sendDingMsg(head + "\n" + msg, companyId, staffId, staffDao);
     }
 
@@ -703,13 +702,11 @@ public class GoEasyUtil {
 
             pushCommon(staffPO.getCompanyId(), toStaffId, head, sb.toString());
             newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_COMMON, head, sb.toString().replaceAll("<br/>", "；"),
-                    info.getKzId(), toStaffId, staffPO.getCompanyId(),
-                    DBSplitUtil.getNewsTabName(staffPO.getCompanyId())));
+                    info.getKzId(), toStaffId, staffPO.getCompanyId()));
             DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), staffPO.getCompanyId(), toStaffId, staffDao);
         } else {
             pushCommon(staffPO.getCompanyId(), toStaffId, head, "");
-            newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_COMMON, head, "", null, toStaffId, staffPO.getCompanyId(),
-                    DBSplitUtil.getNewsTabName(staffPO.getCompanyId())));
+            newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_COMMON, head, "", null, toStaffId, staffPO.getCompanyId()));
             DingMsgSendUtil.sendDingMsg(head, staffPO.getCompanyId(), toStaffId, staffDao);
         }
     }
@@ -729,8 +726,7 @@ public class GoEasyUtil {
         String head = "账号异常";
         String msg = "您的账号在" + address + "登录<br/>IP：" + ip + "<br/>如非本人操作，请及时修改密码";
         pushWarn(companyId, staffId, head, msg);
-        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_SYSTEM, head, msg.replaceAll("<br/>", "；"), null, staffId, companyId,
-                DBSplitUtil.getNewsTabName(companyId)));
+        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_SYSTEM, head, msg.replaceAll("<br/>", "；"), null, staffId, companyId));
     }
 
     /**
@@ -772,8 +768,7 @@ public class GoEasyUtil {
             sb.append("您好，您有" + num + "个" + type + "的客资被 " + operaName + " 删除 ");
         }
         pushWarn(companyId, staffId, head, sb.toString());
-        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_WARN, head, sb.toString().replaceAll("<br/>", "；"), null, staffId, companyId,
-                DBSplitUtil.getNewsTabName(companyId)));
+        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_WARN, head, sb.toString().replaceAll("<br/>", "；"), null, staffId, companyId));
         DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), companyId, staffId, staffDao);
     }
 
@@ -816,8 +811,7 @@ public class GoEasyUtil {
         sb.append("消息：" + msg + "<br/>");
         pushFlashMsgForInfo(companyId, staffId, operaId, operaName, StringUtil.nullToStrTrim(info.getKzName()), StringUtil.nullToStrTrim(info.getKzPhone()), info.getId(),
                 info.getKzId(), StringUtil.nullToStrTrim(info.getChannelName()), StringUtil.nullToStrTrim(info.getSourceName()), StringUtil.nullToStrTrim(info.getMemo()), msg, TimeUtil.intMillisToTimeStr(info.getCreateTime()));
-        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_FLASH, head, sb.toString().replaceAll("<br/>", "；"), info.getKzId(), staffId, companyId,
-                DBSplitUtil.getNewsTabName(companyId)));
+        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_FLASH, head, sb.toString().replaceAll("<br/>", "；"), info.getKzId(), staffId, companyId));
     }
 
 
@@ -857,8 +851,7 @@ public class GoEasyUtil {
 
         String msg = sb.toString();
         pushWarn(companyId, staffId, head, msg);
-        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_WARN, head, sb.toString().replaceAll("<br/>", "；"), info.getKzId(), staffId, companyId,
-                DBSplitUtil.getNewsTabName(companyId)));
+        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_WARN, head, sb.toString().replaceAll("<br/>", "；"), info.getKzId(), staffId, companyId));
         DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), companyId, staffId, staffDao);
     }
 
@@ -891,8 +884,7 @@ public class GoEasyUtil {
         sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSrcName())).append("<br/>");
 
         pushSuccess(companyId, staffId, head, sb.toString());
-        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_SUCCESS, head, sb.toString().replaceAll("<br/>", "；"), info.getKzId(), staffId, companyId,
-                DBSplitUtil.getNewsTabName(companyId)));
+        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_SUCCESS, head, sb.toString().replaceAll("<br/>", "；"), info.getKzId(), staffId, companyId));
         DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), companyId, staffId, staffDao);
     }
 
@@ -908,8 +900,7 @@ public class GoEasyUtil {
         sb.append("主管分配给您" + kzIdsArr.length + "个新的客资");
         String head = sb.toString();
         pushSuccess(companyId, staffId, head, sb.toString());
-        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_SUCCESS, head, null, kzIdsArr.length == 1 ? kzIdsArr[0] : "", staffId, companyId,
-                DBSplitUtil.getNewsTabName(companyId)));
+        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_SUCCESS, head, null, kzIdsArr.length == 1 ? kzIdsArr[0] : "", staffId, companyId));
         DingMsgSendUtil.sendDingMsg(head, companyId, staffId, staffDao);
     }
 
@@ -938,8 +929,7 @@ public class GoEasyUtil {
 
         String msg = sb.toString();
         pushWarn(companyId, staffId, head, msg);
-        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_WARN, head, sb.toString().replaceAll("<br/>", "；"), info.getKzId(), staffId, companyId,
-                DBSplitUtil.getNewsTabName(companyId)));
+        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_WARN, head, sb.toString().replaceAll("<br/>", "；"), info.getKzId(), staffId, companyId));
         DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), companyId, staffId, staffDao);
     }
 
@@ -968,9 +958,8 @@ public class GoEasyUtil {
         sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("<br/>");
         sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("<br/>");
         DingMsgSendUtil.sendDingMsg(sb.toString(), companyId, staffId, staffDao);
-        if (newsDao.getNewsCountByType(DBSplitUtil.getNewsTabName(companyId), staffId, companyId, info.getKzId()) == 0) {
-            newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_RECEIVE, head, null, info.getKzId(), staffId, companyId,
-                    DBSplitUtil.getNewsTabName(companyId)));
+        if (newsDao.getNewsCountByType(staffId, companyId, info.getKzId()) == 0) {
+            newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_RECEIVE, head, null, info.getKzId(), staffId, companyId));
         }
     }
 

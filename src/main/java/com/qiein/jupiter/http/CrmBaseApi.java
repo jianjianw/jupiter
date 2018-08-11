@@ -35,7 +35,7 @@ public class CrmBaseApi extends BaseApi {
     public CrmBaseApi(@Value("${crmInterface.url}") String url,
                       @Value("${crmInterface.accessid}") String accessid,
                       @Value("${crmInterface.key}") String key) {
-        this.url = url;
+        this.url = "http://127.0.0.1:8080/juplat/http/HttpService";
         this.accessid = accessid;
         this.key = key;
     }
