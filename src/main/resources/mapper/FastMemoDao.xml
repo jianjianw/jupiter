@@ -16,7 +16,7 @@
 
     <!--添加快捷备注-->
     <insert id="addFastMemo" parameterType="map">
-        INSERT INTO (MEMO, STAFFID, COMPANYID )
+        INSERT INTO hm_crm_fast_memo (MEMO, STAFFID, COMPANYID )
         VALUES (#{memo}, #{staffId}, #{companyId})
     </insert>
 
