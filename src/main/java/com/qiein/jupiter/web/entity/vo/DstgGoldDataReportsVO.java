@@ -33,12 +33,23 @@ public class DstgGoldDataReportsVO {
     /**
      * 待定量
      * */
-    private int waitClientCount;
+    private int pendingClientCount;
 
     /**
-     * 已预约数量
+     * 筛选待定
      * */
-    private int appointClientCount;
+    private int filterPendingClientCount;
+
+    /**
+     * 筛选中
+     * */
+    private int filterInClientCount;
+
+    /**
+     * 筛选无效
+     * */
+    private int filterInValidClientCount;
+
 
     /**
      * 入店量
@@ -53,52 +64,52 @@ public class DstgGoldDataReportsVO {
     /**
      * 有效率 (有效量 / 客资量)
      * */
-    private Double validRate;
+    private double validRate;
 
     /**
      * 无效率 (无效量 / 客资量)
      * */
-    private Double inValidRate;
+    private double inValidRate;
 
     /**
      * 待定率 (待定量 / 客资量)
      * */
-    private Double waitRate;
+    private double waitRate;
 
     /**
      * 毛客资入店率 (入店量 / 总客资)
      * */
-    private Double clientComeShopRate;
+    private double clientComeShopRate;
 
     /**
      * 有效客资入店率 (入店量 / 有效量 )
      * */
-    private Double validClientComeShopRate;
+    private double validClientComeShopRate;
 
     /**
      * 入店成交率(成交量 / 入店量)
      * */
-    private Double comeShopSuccessRate;
+    private double comeShopSuccessRate;
 
     /**
      *  毛客资成交率 (成交量 / 总客资)
      * */
-    private Double clientSuccessRate;
+    private double clientSuccessRate;
 
     /**
      * 有效客资成交率 (有效量 / 成交量)
      * */
-    private Double validClientSuccessRate;
+    private double validClientSuccessRate;
 
     /**
      * 成交均价
      * */
-    private Double avgAmount;
+    private double avgAmount;
 
     /**
      * 营业额
      * */
-    private Double amount;
+    private double amount;
 
 
     public String getAdId() {
@@ -141,21 +152,14 @@ public class DstgGoldDataReportsVO {
         this.inValidClientCount = inValidClientCount;
     }
 
-    public int getWaitClientCount() {
-        return waitClientCount;
+    public int getPendingClientCount() {
+        return pendingClientCount;
     }
 
-    public void setWaitClientCount(int waitClientCount) {
-        this.waitClientCount = waitClientCount;
+    public void setPendingClientCount(int pendingClientCount) {
+        this.pendingClientCount = pendingClientCount;
     }
 
-    public int getAppointClientCount() {
-        return appointClientCount;
-    }
-
-    public void setAppointClientCount(int appointClientCount) {
-        this.appointClientCount = appointClientCount;
-    }
 
     public int getComeShopClientCount() {
         return comeShopClientCount;
@@ -173,83 +177,107 @@ public class DstgGoldDataReportsVO {
         this.successClientCount = successClientCount;
     }
 
-    public Double getValidRate() {
+    public double getValidRate() {
         return validRate;
     }
 
-    public void setValidRate(Double validRate) {
+    public void setValidRate(double validRate) {
         this.validRate = validRate;
     }
 
-    public Double getInValidRate() {
+    public double getInValidRate() {
         return inValidRate;
     }
 
-    public void setInValidRate(Double inValidRate) {
+    public void setInValidRate(double inValidRate) {
         this.inValidRate = inValidRate;
     }
 
-    public Double getWaitRate() {
+    public double getWaitRate() {
         return waitRate;
     }
 
-    public void setWaitRate(Double waitRate) {
+    public void setWaitRate(double waitRate) {
         this.waitRate = waitRate;
     }
 
-    public Double getClientComeShopRate() {
+    public double getClientComeShopRate() {
         return clientComeShopRate;
     }
 
-    public void setClientComeShopRate(Double clientComeShopRate) {
+    public void setClientComeShopRate(double clientComeShopRate) {
         this.clientComeShopRate = clientComeShopRate;
     }
 
-    public Double getValidClientComeShopRate() {
+    public double getValidClientComeShopRate() {
         return validClientComeShopRate;
     }
 
-    public void setValidClientComeShopRate(Double validClientComeShopRate) {
+    public void setValidClientComeShopRate(double validClientComeShopRate) {
         this.validClientComeShopRate = validClientComeShopRate;
     }
 
-    public Double getComeShopSuccessRate() {
+    public double getComeShopSuccessRate() {
         return comeShopSuccessRate;
     }
 
-    public void setComeShopSuccessRate(Double comeShopSuccessRate) {
+    public void setComeShopSuccessRate(double comeShopSuccessRate) {
         this.comeShopSuccessRate = comeShopSuccessRate;
     }
 
-    public Double getClientSuccessRate() {
+    public double getClientSuccessRate() {
         return clientSuccessRate;
     }
 
-    public void setClientSuccessRate(Double clientSuccessRate) {
+    public void setClientSuccessRate(double clientSuccessRate) {
         this.clientSuccessRate = clientSuccessRate;
     }
 
-    public Double getValidClientSuccessRate() {
+    public double getValidClientSuccessRate() {
         return validClientSuccessRate;
     }
 
-    public void setValidClientSuccessRate(Double validClientSuccessRate) {
+    public void setValidClientSuccessRate(double validClientSuccessRate) {
         this.validClientSuccessRate = validClientSuccessRate;
     }
 
-    public Double getAvgAmount() {
+    public double getAvgAmount() {
         return avgAmount;
     }
 
-    public void setAvgAmount(Double avgAmount) {
+    public void setAvgAmount(double avgAmount) {
         this.avgAmount = avgAmount;
     }
 
-    public Double getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(Double amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
+    }
+
+    public int getFilterPendingClientCount() {
+        return filterPendingClientCount;
+    }
+
+    public void setFilterPendingClientCount(int filterPendingClientCount) {
+        this.filterPendingClientCount = filterPendingClientCount;
+    }
+
+    public int getFilterInClientCount() {
+        return filterInClientCount;
+    }
+
+    public void setFilterInClientCount(int filterInClientCount) {
+        this.filterInClientCount = filterInClientCount;
+    }
+
+    public int getFilterInValidClientCount() {
+        return filterInValidClientCount;
+    }
+
+    public void setFilterInValidClientCount(int filterInValidClientCount) {
+        this.filterInValidClientCount = filterInValidClientCount;
     }
 }
