@@ -102,6 +102,6 @@ public class InvalidReasonReportsDao {
         System.out.println(hjsql.toString());
         List<Map<String, Object>> hjInvalidalbel = jdbcTemplate.queryForList(hjsql.toString(), new Object[]{companyId});
         hjInvalidalbel.addAll(invalidalbel);
-        return invalidalbel;
+        return hjInvalidalbel;
     }
 }
