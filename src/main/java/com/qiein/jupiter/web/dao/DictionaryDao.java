@@ -168,4 +168,8 @@ public interface DictionaryDao extends BaseDao<DictionaryPO> {
      * 根据公司ID 和iD 获取
      */
     DictionaryPO getByCompanyIdAndId(@Param("companyId") int companyId, @Param("id") int id);
+    /**
+     * 根据公司id和type获取
+     */
+    List<DictionaryPO> getInvaildReasons(@Param("companyId") Integer companyId, @Param("type") String type);
 }
