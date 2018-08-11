@@ -601,6 +601,8 @@ public class DstgGoldDataReportsDao {
         //成交均价
         double avgAmount = dstgReportsTotal.getAmount() /dstgReportsTotal.getSuccessClientCount();
         dstgReportsTotal.setAvgAmount(parseDouble(((Double.isNaN(avgAmount) || Double.isInfinite(avgAmount)) ? 0.0 : avgAmount) * 100));
+
+        dstgGoldDataReportsVOS.add(0,dstgReportsTotal);
     }
 
     /**

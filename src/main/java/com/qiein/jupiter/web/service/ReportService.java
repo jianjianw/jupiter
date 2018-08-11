@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.web.entity.dto.ClientLogDTO;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.vo.DstgGoldDataReportsVO;
+import com.qiein.jupiter.web.entity.vo.DstgZxStyleReportsVO;
 
 import java.util.List;
 
@@ -41,4 +42,12 @@ public interface ReportService {
      * */
     List<DstgGoldDataReportsVO> getDstgAdReports(Integer start, Integer end, Integer companyId);
 
+    /**
+     * 电商推广咨询信息方式报表
+     * @param start
+     * @param end
+     * @param companyId
+     * @return
+     * */
+    List<DstgZxStyleReportsVO> getDstgZxStyleReports(Integer start, Integer end, int companyId);
 }

@@ -15,9 +15,11 @@ import com.qiein.jupiter.web.entity.po.RepateKzLogPO;
 import com.qiein.jupiter.web.entity.po.WechatScanPO;
 import com.qiein.jupiter.web.entity.vo.DsInvalidVO;
 import com.qiein.jupiter.web.entity.vo.DstgGoldDataReportsVO;
+import com.qiein.jupiter.web.entity.vo.DstgZxStyleReportsVO;
 import com.qiein.jupiter.web.entity.vo.ReportsParamVO;
 import com.qiein.jupiter.web.repository.CommonReportsDao;
 import com.qiein.jupiter.web.repository.DstgGoldDataReportsDao;
+import com.qiein.jupiter.web.repository.DstgZxStyleReportsDao;
 import com.qiein.jupiter.web.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +39,10 @@ public class ReportsServiceImpl implements ReportService {
 
     @Autowired
     private DstgGoldDataReportsDao dstgGoldDataReportsDao;
+
+    @Autowired
+    private DstgZxStyleReportsDao zxStyleReportsDao;
+
 
     @Autowired
     private CommonReportsDao commonReportsDao;
@@ -131,5 +137,18 @@ public class ReportsServiceImpl implements ReportService {
         //获取数据
         List<DstgGoldDataReportsVO> dstgGoldDataReprots = dstgGoldDataReportsDao.getDstgGoldDataReprots(reportsParamVO,invalidConfig);
         return dstgGoldDataReprots;
+    }
+
+    @Override
+    public List<DstgZxStyleReportsVO> getDstgZxStyleReports(Integer start, Integer end, int companyId) {
+        //封装对应的参数
+        ReportsParamVO reportsParamVO = new ReportsParamVO();
+        reportsParamVO.setStart(start);
+        reportsParamVO.setEnd(end);
+        reportsParamVO.setCompanyId(companyId);
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
+        //获取数据
+        List<DstgZxStyleReportsVO> dstgZxStyleReportsVOS = zxStyleReportsDao.getDstgGoldDataReprots(reportsParamVO,invalidConfig);
+        return dstgZxStyleReportsVOS;
     }
 }
