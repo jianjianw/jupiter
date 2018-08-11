@@ -29,4 +29,12 @@ public interface FastMemoDao extends BaseDao<BrandPO> {
      */
     int addFastMemo(@Param("staffId") int staffId, @Param("companyId") int companyId, @Param("memo") String memo);
 
+    /**
+     * 删除快捷备注
+     *
+     * @param id
+     * @return
+     */
+    int deleteFastMemo(@Param("id") int id);
+
 }

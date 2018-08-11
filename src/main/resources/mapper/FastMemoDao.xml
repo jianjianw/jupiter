@@ -19,4 +19,10 @@
         INSERT INTO (MEMO, STAFFID, COMPANYID )
         VALUES (#{memo}, #{staffId}, #{companyId})
     </insert>
+
+    <!--删除快捷备注-->
+    <delete id="deleteFastMemo" parameterType="map">
+        DELETE FROM hm_crm_fast_memo
+        WHERE  ID = #{id}
+    </delete>
 </mapper>

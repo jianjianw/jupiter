@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.controller;
 
+import com.qiein.jupiter.aop.validate.annotation.Id;
 import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.util.ObjectUtil;
@@ -50,5 +51,18 @@ public class FastMemoController extends BaseController {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         fastMemoService.addFastMemo(currentLoginStaff.getId(), currentLoginStaff.getCompanyId(), memo);
         return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
+    }
+
+    /**
+     * 删除快捷备注
+     *
+     * @return
+     */
+    @GetMapping("/delete_fast_memo")
+    public ResultInfo deleteFastMemo(@Id int id) {
+        //获取当前登录用户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        fastMemoService.deleteFastMemo(id);
+        return ResultInfoUtil.success(TipMsgEnum.DELETE_SUCCESS);
     }
 }

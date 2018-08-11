@@ -30,4 +30,12 @@ public interface FastMemoService {
      * @return
      */
     void addFastMemo(int staffId, int companyId, String memo);
+
+    /**
+     * 删除快捷备注
+     *
+     * @param id
+     * @return
+     */
+    void deleteFastMemo(int id);
 }

@@ -42,4 +42,14 @@ public class FastMemoServiceImpl implements FastMemoService {
     public void addFastMemo(int staffId, int companyId, String memo) {
         fastMemoDao.addFastMemo(staffId, companyId, memo);
     }
+
+    /**
+     * 删除快捷备注
+     *
+     * @param id
+     * @return
+     */
+    public void deleteFastMemo(int id) {
+        fastMemoDao.deleteFastMemo(id);
+    }
 }
