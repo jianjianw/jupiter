@@ -266,5 +266,15 @@
         dic.COMPANYID = #{companyId}
         AND dic.ID = #{id}
     </select>
-
+    <!--根据公司id和type获取-->
+    <select id="getInvaildReasons"  resultMap="baseMap">
+        SELECT
+        CONCAT(DICTYPE, DICCODE) DICTYPE,
+        DICNAME
+        FROM
+        hm_crm_dictionary
+        WHERE
+        COMPANYID = #{companyId}
+        AND DICTYPE = #{type}
+    </select>
 </mapper>

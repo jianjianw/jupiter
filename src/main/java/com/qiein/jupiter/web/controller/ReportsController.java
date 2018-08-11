@@ -380,5 +380,11 @@ public class ReportsController extends BaseController {
         System.out.println(code + "-----------------------------------" + state);
         return ResultInfoUtil.success();
     }
-
+    /**
+     * 无效原因报表
+     */
+    @GetMapping("/invalid_reason_reports")
+    public ResultInfo invalidReasonReports(@RequestParam String sourceIds,@RequestParam String startTime,@RequestParam String endTime,@RequestParam String typeIds){
+        return ResultInfoUtil.success(reportService.invalidReasonReports(getCurrentLoginStaff().getCompanyId(),sourceIds,startTime,endTime,typeIds));
+    }
 }

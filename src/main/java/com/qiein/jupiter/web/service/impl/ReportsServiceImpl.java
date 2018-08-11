@@ -2,24 +2,26 @@ package com.qiein.jupiter.web.service.impl;
 
 import com.qiein.jupiter.constant.ClientLogConst;
 import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.constant.DictionaryConstant;
 import com.qiein.jupiter.constant.RoleConstant;
+import com.qiein.jupiter.enums.TableEnum;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.ClientInfoDao;
+import com.qiein.jupiter.web.dao.DictionaryDao;
 import com.qiein.jupiter.web.dao.GroupDao;
 import com.qiein.jupiter.web.dao.GroupStaffDao;
 import com.qiein.jupiter.web.entity.dto.ClientLogDTO;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
+import com.qiein.jupiter.web.entity.po.DictionaryPO;
 import com.qiein.jupiter.web.entity.po.EditClientPhonePO;
 import com.qiein.jupiter.web.entity.po.RepateKzLogPO;
 import com.qiein.jupiter.web.entity.po.WechatScanPO;
-import com.qiein.jupiter.web.entity.vo.DsInvalidVO;
-import com.qiein.jupiter.web.entity.vo.DstgGoldDataReportsVO;
-import com.qiein.jupiter.web.entity.vo.DstgZxStyleReportsVO;
-import com.qiein.jupiter.web.entity.vo.ReportsParamVO;
+import com.qiein.jupiter.web.entity.vo.*;
 import com.qiein.jupiter.web.repository.CommonReportsDao;
 import com.qiein.jupiter.web.repository.DstgGoldDataReportsDao;
 import com.qiein.jupiter.web.repository.DstgZxStyleReportsDao;
+import com.qiein.jupiter.web.repository.InvalidReasonReportsDao;
 import com.qiein.jupiter.web.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,9 +45,13 @@ public class ReportsServiceImpl implements ReportService {
     @Autowired
     private DstgZxStyleReportsDao zxStyleReportsDao;
 
+    @Autowired
+    private DictionaryDao dictionaryDao;
 
     @Autowired
     private CommonReportsDao commonReportsDao;
+    @Autowired
+    private InvalidReasonReportsDao invalidReasonReportsDao;
 
     /**
      * 修改联系方式日志
@@ -150,5 +156,20 @@ public class ReportsServiceImpl implements ReportService {
         //获取数据
         List<DstgZxStyleReportsVO> dstgZxStyleReportsVOS = zxStyleReportsDao.getDstgGoldDataReprots(reportsParamVO,invalidConfig);
         return dstgZxStyleReportsVOS;
+    }
+    /**
+     * 获取无效原因客资报表
+     * @param companyId
+     * @return
+     */
+    public InvalidReasonReportsVO invalidReasonReports(Integer companyId,String sourceIds,String startTime,String endTime,String typeIds){
+        InvalidReasonReportsVO invalidReasonReportsVO=new InvalidReasonReportsVO();
+        List<DictionaryPO> list=dictionaryDao.getInvaildReasons(companyId, DictionaryConstant.INVALID_REASON);
+        DictionaryPO dictionaryPO=new DictionaryPO();
+        dictionaryPO.setDicType("hj");
+        dictionaryPO.setDicName("合计");
+        invalidReasonReportsVO.setInvalidReasons(list);
+        invalidReasonReportsVO.setInvalidReasonKz(invalidReasonReportsDao.getInvalidReasonReports(list,DBSplitUtil.getTable(TableEnum.info,companyId),DBSplitUtil.getTable(TableEnum.detail,companyId),companyId,sourceIds,startTime,endTime,typeIds));
+        return invalidReasonReportsVO;
     }
 }
