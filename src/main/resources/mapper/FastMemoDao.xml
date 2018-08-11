@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiein.jupiter.web.dao.BrandDao">
+
+    <resultMap id="baseMap" type="com.qiein.jupiter.web.entity.po.BrandPO">
+        <id column="ID" jdbcType="INTEGER" property="id"/>
+        <result column="BRANDNAME" jdbcType="VARCHAR" property="brandName"/>
+        <result column="COMPANYID" jdbcType="INTEGER" property="companyId"/>
+    </resultMap>
+
+    <sql id="baseColumn">
+        ID,BRANDNAME,COMPANYID
+    </sql>
+
+    <!--检查是否存在同名品牌-->
+    <select id="checkBrandName" parameterType="map" resultType="Integer">
+        SELECT
+          COUNT(1)
+        FROM
+          hm_crm_brand
+        WHERE
+        BRANDNAME = #{brandName}
+        AND   COMPANYID = #{companyId}
+    </select>
+
+    <!--检查品牌下属存在多少渠道-->
+    <select id="checkBrandHaveChannel" parameterType="map" resultType="Integer">
+        SELECT
+          COUNT(1)
+        FROM
+          hm_crm_channel
+        WHERE
+          COMPANYID = #{companyId} AND  BRANDID IN
+          <foreach collection="ids" item="id" index="index" open="(" separator="," close=")">
+              #{id}
+          </foreach>
+    </select>
+
+    <!--根据id获取品牌信息-->
+    <select id="getByIdAndCid" parameterType="Integer" resultMap="baseMap">
+        SELECT
+          <include refid="baseColumn"/>
+        FROM
+          hm_crm_brand
+        WHERE
+        ID = #{id}
+        AND COMPANYID = #{companyId}
+    </select>
+
+    <!--添加品牌-->
+    <insert id="insert" parameterType="brandPO"  useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO hm_crm_brand
+        (BRANDNAME , COMPANYID)
+        VALUES
+        (#{brandName} , #{companyId})
+    </insert>
+
+    <!--删除品牌-->
+    <delete id="deleteByIdAndCid" parameterType="Integer">
+        DELETE
+        FROM
+          hm_crm_brand
+        WHERE
+          ID = #{id} AND COMPANYID = #{companyId}
+    </delete>
+
+    <!--批量删除品牌-->
+    <delete id="datDelBrand" parameterType="map">
+        DELETE
+        FROM
+          hm_crm_brand
+        WHERE
+          COMPANYID = #{companyId}
+          AND ID IN
+          <foreach collection="ids" item="id" separator="," open="(" close=")" index="index">
+              #{id}
+          </foreach>
+    </delete>
+
+    <!--编辑品牌-->
+    <update id="update" parameterType="brandPO">
+        UPDATE
+          hm_crm_brand
+        <set>
+            <if test="brandName!=null and brandName !=''">
+                BRANDNAME = #{brandName}
+            </if>
+        </set>
+        WHERE
+          COMPANYID = #{companyId} AND ID = #{id}
+    </update>
+
+    <!--编辑品牌下属渠道来源中的品牌信息-->
+    <update id="updateBrandInfo" parameterType="brandPO">
+      UPDATE
+        hm_crm_channel c,hm_crm_source s
+      <set>
+          <if test="brandName != null and brandName != ''">
+              c.BRANDNAME = #{brandName} , s.BRANDNAME = #{brandName}
+          </if>
+      </set>
+      WHERE
+        c.COMPANYID = #{companyId} AND c.BRANDID = #{id} AND s.COMPANYID = #{companyId} AND s.BRANDID = #{id}
+    </update>
+
+    <!--获取品牌列表-->
+    <select id="getBrandList" parameterType="Integer" resultMap="baseMap">
+        SELECT
+          <include refid="baseColumn"/>
+        FROM
+          hm_crm_brand
+        WHERE
+          COMPANYID = #{companyId}
+    </select>
+</mapper>
