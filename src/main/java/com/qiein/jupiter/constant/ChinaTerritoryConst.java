@@ -23,6 +23,8 @@ public class ChinaTerritoryConst {
     public static final Map<String, String> TERRITORY_MAP = new LinkedHashMap<>();
 
     public static void main(String[] args) {
+        System.out.println(CITY_LIST);
+        System.out.println(PROVINCE_LIST);
         System.out.println(TERRITORY_MAP);
     }
 
