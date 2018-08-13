@@ -64,7 +64,7 @@ public class DingMsgSendUtil {
      */
     public static void sendDingMsg(SendDingMsgDTO sendDingMsgDTO) {
         try {
-            String resultJsonStr = HttpClient.textBody(dingUrl + "/ding/send_ding_msg")
+            String resultJsonStr = HttpClient.textBody(dingUrl + "/send_ding_msg")
                     .json(sendDingMsgDTO)
                     .asString();
             if (JSONObject.parseObject(resultJsonStr).getIntValue("code") != 100000)

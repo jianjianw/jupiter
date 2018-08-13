@@ -192,11 +192,11 @@ public class ExcelServiceImpl implements ExcelService {
                 currentLoginStaff.getId(),currentLoginStaff.getCompanyId());
 
         //设置意向等级，预算范围，结婚时间，预拍时间的Code
-        excelDao.updateZxStyleDictionaryCode(DBSplitUtil.getTable(TableEnum.temp,currentLoginStaff.getCompanyId()), currentLoginStaff.getId(), DictionaryConstant.ZX_STYLE);
-        excelDao.updateYxLevelDictionaryCode(DBSplitUtil.getTable(TableEnum.temp,currentLoginStaff.getCompanyId()), currentLoginStaff.getId(), DictionaryConstant.YX_RANK);
-        excelDao.updateYsRangeDictionaryCode(DBSplitUtil.getTable(TableEnum.temp,currentLoginStaff.getCompanyId()), currentLoginStaff.getId(), DictionaryConstant.YS_RANGE);
-        excelDao.updateYpTimeDictionaryCode(DBSplitUtil.getTable(TableEnum.temp,currentLoginStaff.getCompanyId()), currentLoginStaff.getId(), DictionaryConstant.YP_TIME);
-        excelDao.updateMarryTimeDictionaryCode(DBSplitUtil.getTable(TableEnum.temp,currentLoginStaff.getCompanyId()), currentLoginStaff.getId(), DictionaryConstant.MARRY_TIME);
+        excelDao.updateZxStyleDictionaryCode(DBSplitUtil.getTable(TableEnum.temp,currentLoginStaff.getCompanyId()), currentLoginStaff.getId(),currentLoginStaff.getCompanyId(), DictionaryConstant.ZX_STYLE);
+        excelDao.updateYxLevelDictionaryCode(DBSplitUtil.getTable(TableEnum.temp,currentLoginStaff.getCompanyId()), currentLoginStaff.getId(),currentLoginStaff.getCompanyId(), DictionaryConstant.YX_RANK);
+        excelDao.updateYsRangeDictionaryCode(DBSplitUtil.getTable(TableEnum.temp,currentLoginStaff.getCompanyId()), currentLoginStaff.getId(),currentLoginStaff.getCompanyId(), DictionaryConstant.YS_RANGE);
+        excelDao.updateYpTimeDictionaryCode(DBSplitUtil.getTable(TableEnum.temp,currentLoginStaff.getCompanyId()), currentLoginStaff.getId(),currentLoginStaff.getCompanyId(), DictionaryConstant.YP_TIME);
+        excelDao.updateMarryTimeDictionaryCode(DBSplitUtil.getTable(TableEnum.temp,currentLoginStaff.getCompanyId()), currentLoginStaff.getId(),currentLoginStaff.getCompanyId(), DictionaryConstant.MARRY_TIME);
     }
 
 
@@ -320,23 +320,23 @@ public class ExcelServiceImpl implements ExcelService {
         }
         if(StringUtil.isNotEmpty(info.getYsRangeStr())){
             //更新预算范围
-            excelDao.updateYsRangeDictionaryCode(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId(),DictionaryConstant.YS_RANGE);
+            excelDao.updateYsRangeDictionaryCode(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId(),companyId,DictionaryConstant.YS_RANGE);
         }
         if(StringUtil.isNotEmpty(info.getYpTimeStr())){
             //更新预拍时间
-            excelDao.updateYpTimeDictionaryCode(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId(),DictionaryConstant.YP_TIME);
+            excelDao.updateYpTimeDictionaryCode(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId(),companyId,DictionaryConstant.YP_TIME);
         }
         if(StringUtil.isNotEmpty(info.getMarryTimeStr())){
             //更新结婚时间
-            excelDao.updateMarryTimeDictionaryCode(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId(),DictionaryConstant.MARRY_TIME);
+            excelDao.updateMarryTimeDictionaryCode(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId(),companyId,DictionaryConstant.MARRY_TIME);
         }
         if(StringUtil.isNotEmpty(info.getYxLevelStr())){
             //更新意向等级
-            excelDao.updateYxLevelDictionaryCode(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId(),DictionaryConstant.YX_RANK);
+            excelDao.updateYxLevelDictionaryCode(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId(),companyId,DictionaryConstant.YX_RANK);
         }
         if(StringUtil.isNotEmpty(info.getZxStyleStr())){
             //更新咨询方式
-            excelDao.updateZxStyleDictionaryCode(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId(),DictionaryConstant.ZX_STYLE);
+            excelDao.updateZxStyleDictionaryCode(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId(),companyId,DictionaryConstant.ZX_STYLE);
         }
     }
 

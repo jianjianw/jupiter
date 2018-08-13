@@ -5,6 +5,9 @@ import java.util.Map;
 
 import java.util.List;
 
+/**
+ * author xiangliang
+ */
 public class InvalidReasonReportsVO {
     /**
      * 无效原因
