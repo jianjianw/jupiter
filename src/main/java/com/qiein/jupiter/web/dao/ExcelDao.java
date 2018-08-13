@@ -216,7 +216,7 @@ public interface ExcelDao {
      * @param staffId
      * @param dictionaryType
      */
-    void updateZxStyleDictionaryCode(@Param("tempName") String tempName, @Param("staffId") Integer staffId, @Param(value = "dictionaryType") String dictionaryType);
+    void updateZxStyleDictionaryCode(@Param("tempName") String tempName, @Param("staffId") Integer staffId,@Param("companyId")Integer companyId, @Param(value = "dictionaryType") String dictionaryType);
 
 
     /**
@@ -226,7 +226,7 @@ public interface ExcelDao {
      * @param staffId
      * @param dictionaryType
      */
-    void updateYxLevelDictionaryCode(@Param("tempName") String tempName, @Param("staffId") Integer staffId, @Param(value = "dictionaryType") String dictionaryType);
+    void updateYxLevelDictionaryCode(@Param("tempName") String tempName, @Param("staffId") Integer staffId,@Param("companyId")Integer companyId, @Param(value = "dictionaryType") String dictionaryType);
 
     /**
      * 更新预算范围的字典编码
@@ -235,7 +235,7 @@ public interface ExcelDao {
      * @param staffId
      * @param dictionaryType
      */
-    void updateYsRangeDictionaryCode(@Param("tempName") String tempName, @Param("staffId") Integer staffId, @Param(value = "dictionaryType") String dictionaryType);
+    void updateYsRangeDictionaryCode(@Param("tempName") String tempName, @Param("staffId") Integer staffId,@Param("companyId")Integer companyId, @Param(value = "dictionaryType") String dictionaryType);
 
 
     /**
@@ -245,7 +245,7 @@ public interface ExcelDao {
      * @param staffId
      * @param dictionaryType
      */
-    void updateYpTimeDictionaryCode(@Param("tempName") String tempName, @Param("staffId") Integer staffId, @Param(value = "dictionaryType") String dictionaryType);
+    void updateYpTimeDictionaryCode(@Param("tempName") String tempName, @Param("staffId") Integer staffId,@Param("companyId")Integer companyId, @Param(value = "dictionaryType") String dictionaryType);
 
 
     /**
@@ -254,6 +254,6 @@ public interface ExcelDao {
      * @param staffId
      * @param dictionaryType
      * */
-    void updateMarryTimeDictionaryCode(@Param("tempName") String tempName, @Param("staffId") Integer staffId, @Param(value = "dictionaryType") String dictionaryType);
+    void updateMarryTimeDictionaryCode(@Param("tempName") String tempName, @Param("staffId") Integer staffId,@Param("companyId")Integer companyId, @Param(value = "dictionaryType") String dictionaryType);
 
 }
