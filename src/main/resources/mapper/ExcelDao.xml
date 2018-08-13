@@ -771,7 +771,7 @@
         SET temp.ZXSTYLE = (SELECT DICCODE
                             FROM hm_crm_dictionary dictionary
                             WHERE dictionary.COMPANYID = temp.COMPANYID AND dictionary.DICNAME = temp.ZXSTYLESTR and
-                                  dictionary.DICTYPE = #{dictionaryType} and dictionary.COMPANYID = #{companyId})
+                                  dictionary.DICTYPE = #{dictionaryType} and dictionary.COMPANYID = #{companyId} and dictionary.ISSHOW = 1)
         WHERE temp.OPERAID = #{staffId};
     </update>
 
@@ -781,7 +781,7 @@
         SET temp.YXLEVEL = IFNULL((SELECT DICCODE
                             FROM hm_crm_dictionary dictionary
                             WHERE dictionary.COMPANYID = temp.COMPANYID AND dictionary.DICNAME = temp.YXLEVELSTR and
-                                  dictionary.DICTYPE = #{dictionaryType} and dictionary.COMPANYID = #{companyId}),0)
+                                  dictionary.DICTYPE = #{dictionaryType} and dictionary.COMPANYID = #{companyId} and dictionary.ISSHOW = 1),0)
         WHERE temp.OPERAID = #{staffId};
     </update>
 
@@ -791,7 +791,7 @@
         SET temp.YSRANGE = IFNULL((SELECT DICCODE
                             FROM hm_crm_dictionary dictionary
                             WHERE dictionary.COMPANYID = temp.COMPANYID AND dictionary.DICNAME = temp.YSRANGESTR and
-                                  dictionary.DICTYPE = #{dictionaryType} and dictionary.COMPANYID = #{companyId}),0)
+                                  dictionary.DICTYPE = #{dictionaryType} and dictionary.COMPANYID = #{companyId} and dictionary.ISSHOW = 1),0)
         WHERE temp.OPERAID = #{staffId};
     </update>
 
@@ -801,7 +801,7 @@
         SET temp.YPTIME = IFNULL((SELECT DICCODE
                            FROM hm_crm_dictionary dictionary
                            WHERE dictionary.COMPANYID = temp.COMPANYID AND dictionary.DICNAME = temp.YPTIMESTR and
-                                 dictionary.DICTYPE = #{dictionaryType} and dictionary.COMPANYID = #{companyId}),0)
+                                 dictionary.DICTYPE = #{dictionaryType} and dictionary.COMPANYID = #{companyId} and dictionary.ISSHOW = 1),0)
         WHERE temp.OPERAID = #{staffId};
     </update>
 
@@ -811,7 +811,7 @@
         SET temp.MARRYTIME = IFNULL((SELECT DICCODE
                               FROM hm_crm_dictionary dictionary
                               WHERE dictionary.COMPANYID = temp.COMPANYID AND dictionary.DICNAME = temp.MARRYTIMESTR and
-                                    dictionary.DICTYPE = #{dictionaryType} and dictionary.COMPANYID = #{companyId}),0)
+                                    dictionary.DICTYPE = #{dictionaryType} and dictionary.COMPANYID = #{companyId} and dictionary.ISSHOW = 1),0)
         WHERE temp.OPERAID = #{staffId};
     </update>
 </mapper>
