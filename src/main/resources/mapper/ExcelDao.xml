@@ -781,7 +781,7 @@
         SET temp.YXLEVEL = IFNULL((SELECT DICCODE
                             FROM hm_crm_dictionary dictionary
                             WHERE dictionary.COMPANYID = temp.COMPANYID AND dictionary.DICNAME = temp.YXLEVELSTR and
-                                  dictionary.DICTYPE = #{dictionaryType and dictionary.COMPANYID = #{companyId}),0)
+                                  dictionary.DICTYPE = #{dictionaryType} and dictionary.COMPANYID = #{companyId}),0)
         WHERE temp.OPERAID = #{staffId};
     </update>
 
