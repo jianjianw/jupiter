@@ -1,14 +1,13 @@
 package com.qiein.jupiter.web.service.impl;
 
-import cn.afterturn.easypoi.excel.annotation.Excel;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.mzlion.core.http.IPUtils;
-import com.mzlion.core.lang.StringUtils;
-import com.qiein.jupiter.constant.*;
+import com.qiein.jupiter.constant.ClientConst;
+import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.constant.DictionaryConstant;
+import com.qiein.jupiter.constant.GoldDataConst;
 import com.qiein.jupiter.enums.GoldDataStatusEnum;
-import com.qiein.jupiter.enums.ZxStyleEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.http.CrmBaseApi;
@@ -25,8 +24,6 @@ import com.qiein.jupiter.web.entity.vo.GoldCustomerVO;
 import com.qiein.jupiter.web.service.GoldDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.HashMap;
