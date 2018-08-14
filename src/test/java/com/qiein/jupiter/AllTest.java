@@ -1,5 +1,6 @@
 package com.qiein.jupiter;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -342,5 +343,18 @@ public class AllTest {
     public void test123123(){
         CompanyVO companyVO=new CompanyVO();
         System.out.println(JSON.toJSON(companyVO));
+    }
+
+
+    @Test
+    public void test1123(){
+        String str = "2018-7-31  16:52:34";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try{
+            Date parse = simpleDateFormat.parse(str);
+            System.out.println(parse);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
