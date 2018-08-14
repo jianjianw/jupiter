@@ -154,7 +154,7 @@ public class ClientExcelNewsDTO implements Serializable {
     /**
      * 预约时间接受格式
      */
-    @Excel(name = "预约时间", databaseFormat = "MM月dd日", format = "yyyy-MM-dd HH:mm:ss,yyyy/MM/dd HH:mm:ss,yyyy-MM-dd HH:mm,yyyy-MM-dd H:mm,yyyy-M-dd HH:mm,yyyy-M-dd H:mm,yyyy-M-d H:mm,yyyy-M-dd HH:mm:ss")
+    @Excel(name = "预约时间", databaseFormat = "MM月dd日", format = "yyyy-MM-dd HH:mm:ss,yyyy-M-dd HH:mm:ss,yyyy/MM/dd HH:mm:ss,yyyy-MM-dd HH:mm,yyyy-MM-dd H:mm,yyyy-M-dd HH:mm,yyyy-M-dd H:mm,yyyy-M-d H:mm")
     private Date appointTimeDate;
     /**
      * 预约时间
@@ -163,7 +163,7 @@ public class ClientExcelNewsDTO implements Serializable {
     /**
      * 入店时间接受格式
      */
-    @Excel(name = "入店时间 (首次入店时间，邀约计算业绩)", databaseFormat = "MM月dd日", format = "yyyy-MM-dd HH:mm:ss,yyyy/MM/dd HH:mm:ss,yyyy-MM-dd HH:mm,yyyy-MM-dd H:mm,yyyy-M-dd HH:mm,yyyy-M-dd H:mm,yyyy-M-d H:mm,yyyy-M-dd HH:mm:ss")
+    @Excel(name = "入店时间 (首次入店时间，邀约计算业绩)", databaseFormat = "MM月dd日", format = "yyyy-MM-dd HH:mm:ss,yyyy-M-dd HH:mm:ss,yyyy/MM/dd HH:mm:ss,yyyy-MM-dd HH:mm,yyyy-MM-dd H:mm,yyyy-M-dd HH:mm,yyyy-M-dd H:mm,yyyy-M-d H:mm")
     private Date comeShopTimeDate;
 
     /**
@@ -173,7 +173,7 @@ public class ClientExcelNewsDTO implements Serializable {
     /**
      * 成交时间接受格式
      */
-    @Excel(name = "成交时间", databaseFormat = "MM月dd日", format = "yyyy-MM-dd HH:mm:ss,yyyy/MM/dd HH:mm:ss,yyyy-MM-dd HH:mm,yyyy-MM-dd H:mm,yyyy-M-dd HH:mm,yyyy-M-dd H:mm,yyyy-M-d H:mm,yyyy-M-dd HH:mm:ss")
+    @Excel(name = "成交时间", databaseFormat = "MM月dd日", format = "yyyy-MM-dd HH:mm:ss,yyyy-M-dd HH:mm:ss,yyyy/MM/dd HH:mm:ss,yyyy-MM-dd HH:mm,yyyy-MM-dd H:mm,yyyy-M-dd HH:mm,yyyy-M-dd H:mm,yyyy-M-d H:mm")
     private Date successTimeDate;
     /**
      * 成交时间
