@@ -1,8 +1,11 @@
 package com.qiein.jupiter.web.repository;
 
+import com.qiein.jupiter.web.entity.vo.DsyyStatusReportsVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @author: yyx
@@ -13,5 +16,8 @@ public class DsyyStatusReportsDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-
+    /**
+     * 获取电商邀约状态报表
+     * */
+//    public List<DsyyStatusReportsVO>
 }
