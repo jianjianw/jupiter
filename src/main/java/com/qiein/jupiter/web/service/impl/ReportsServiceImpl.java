@@ -9,7 +9,6 @@ import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.ClientInfoDao;
 import com.qiein.jupiter.web.dao.DictionaryDao;
-import com.qiein.jupiter.web.dao.GroupDao;
 import com.qiein.jupiter.web.dao.GroupStaffDao;
 import com.qiein.jupiter.web.entity.dto.ClientLogDTO;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
@@ -18,10 +17,7 @@ import com.qiein.jupiter.web.entity.po.EditClientPhonePO;
 import com.qiein.jupiter.web.entity.po.RepateKzLogPO;
 import com.qiein.jupiter.web.entity.po.WechatScanPO;
 import com.qiein.jupiter.web.entity.vo.*;
-import com.qiein.jupiter.web.repository.CommonReportsDao;
-import com.qiein.jupiter.web.repository.DstgGoldDataReportsDao;
-import com.qiein.jupiter.web.repository.DstgZxStyleReportsDao;
-import com.qiein.jupiter.web.repository.InvalidReasonReportsDao;
+import com.qiein.jupiter.web.repository.*;
 import com.qiein.jupiter.web.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +26,7 @@ import com.github.pagehelper.PageHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ReportsServiceImpl implements ReportService {
@@ -52,6 +49,8 @@ public class ReportsServiceImpl implements ReportService {
     private CommonReportsDao commonReportsDao;
     @Autowired
     private InvalidReasonReportsDao invalidReasonReportsDao;
+    @Autowired
+    private ZjskzOfMonthDao zjskzOfMonthDao;
 
     /**
      * 修改联系方式日志
@@ -174,5 +173,16 @@ public class ReportsServiceImpl implements ReportService {
         list.addAll(DicList);
         invalidReasonReportsVO.setInvalidReasons(list);
         return invalidReasonReportsVO;
+    }
+
+    /**
+     * 获取转介绍月底客资报表
+     */
+    public ZjskzOfMonthVO ZjskzOfMonth(Integer companyId,String month,String type,String sourceIds){
+        ZjskzOfMonthVO zjskzOfMonthVO= new ZjskzOfMonthVO();
+        List<Map<String,Object>> list=zjskzOfMonthDao.getDayOfMonth(Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[0]),Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[1]),DBSplitUtil.getTable(TableEnum.info,companyId));
+        zjskzOfMonthVO.setHeadList(list);
+        zjskzOfMonthVO.setList(zjskzOfMonthDao.getzjskzOfMonth(list,month.replace(CommonConstant.ROD_SEPARATOR,CommonConstant.FILE_SEPARATOR),companyId,DBSplitUtil.getTable(TableEnum.info,companyId),String ));
+        return zjskzOfMonthVO;
     }
 }
