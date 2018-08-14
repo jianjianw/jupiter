@@ -29,14 +29,14 @@
     <select id="findCashLog" resultMap="baseMap">
         select
         <include refid="list"/>
-        FROM ${table}
+        FROM hm_crm_cash_log
         where KZID=#{kzId}
         AND STATUS = 1
         ORDER BY ID DESC
     </select>
     <!-- 新增客资日志 -->
     <insert id="addCahsLog" parameterType="map">
-        INSERT INTO ${logTabName} (
+        INSERT INTO hm_crm_cash_log (
             KZID, PAYSTYLE, AMOUNT, STAFFID, STAFFNAME, PAYMENTTIME, OPERAID, OPERANAME, CREATETIME, COMPANYID
         )
         VALUES
@@ -47,7 +47,7 @@
 
     <!--修改付款记录的状态-->
     <update id="editAmount">
-        UPDATE ${table}
+        UPDATE hm_crm_cash_log
         SET AMOUNT = #{amount}
         WHERE ID = #{id}
               AND COMPANYID = #{companyId}
@@ -64,7 +64,7 @@
             log.STAFFNAME,
             log.PAYMENTTIME,
             dic.DICNAME AS PAYSTYLENAME
-        FROM ${table} log
+        FROM hm_crm_cash_log log
             LEFT JOIN hm_crm_dictionary dic
                 ON log.PAYSTYLE = dic.DICCODE AND log.COMPANYID = dic.COMPANYID AND dic.DICTYPE = 'pay_style'
         WHERE log.ID = #{id}
@@ -74,7 +74,7 @@
     <!--获取某个客资的所有收款记录总和-->
     <select id="getClientReceivedAmount" resultType="Integer">
         SELECT SUM(log.AMOUNT)
-        FROM ${table} log
+        FROM hm_crm_cash_log log
         WHERE log.COMPANYID = #{companyId}
               AND log.KZID = #{kzId}
     </select>

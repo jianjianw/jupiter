@@ -47,16 +47,17 @@ public interface StatusService {
 
     /**
      * 修改客资状态
+     *
      * @param showFlag
      * @param id
      */
-    void editClientStatus(boolean showFlag,int id);
+    void editClientStatus(boolean showFlag, int id);
 
     /**
      * 修改手机是否已加状态
+     *
      * @param kzId
      * @param kzphoneFlag
-     * @param table
      */
-    void editKzphoneFlag(String kzId,Integer kzphoneFlag,String table);
+    void editKzphoneFlag(String kzId, Integer kzphoneFlag);
 }

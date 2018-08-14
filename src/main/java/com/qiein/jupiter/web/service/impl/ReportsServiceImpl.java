@@ -4,12 +4,9 @@ import com.qiein.jupiter.constant.ClientLogConst;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.constant.DictionaryConstant;
 import com.qiein.jupiter.constant.RoleConstant;
-import com.qiein.jupiter.enums.TableEnum;
-import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.ClientInfoDao;
 import com.qiein.jupiter.web.dao.DictionaryDao;
-import com.qiein.jupiter.web.dao.GroupDao;
 import com.qiein.jupiter.web.dao.GroupStaffDao;
 import com.qiein.jupiter.web.entity.dto.ClientLogDTO;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
@@ -71,9 +68,6 @@ public class ReportsServiceImpl implements ReportService {
         }
         clientLogDTO.setList(sourseIds);
         PageHelper.startPage(queryMapDTO.getPageNum(), queryMapDTO.getPageSize());
-        clientLogDTO.setTableEditLog(DBSplitUtil.getEditLogTabName(clientLogDTO.getCompanyId()));
-        clientLogDTO.setTableInfo(DBSplitUtil.getInfoTabName(clientLogDTO.getCompanyId()));
-        clientLogDTO.setTableDetail(DBSplitUtil.getDetailTabName(clientLogDTO.getCompanyId()));
         List<EditClientPhonePO> list = clientInfoDao.editClientPhoneLog(clientLogDTO);
         return new PageInfo<>(list);
 
@@ -89,9 +83,6 @@ public class ReportsServiceImpl implements ReportService {
      */
     public PageInfo wechatScanCodeLog(QueryMapDTO queryMapDTO, ClientLogDTO clientLogDTO) {
         PageHelper.startPage(queryMapDTO.getPageNum(), queryMapDTO.getPageSize());
-        clientLogDTO.setTableInfo(DBSplitUtil.getInfoTabName(clientLogDTO.getCompanyId()));
-        clientLogDTO.setTableDetail(DBSplitUtil.getDetailTabName(clientLogDTO.getCompanyId()));
-        clientLogDTO.setTableLog(DBSplitUtil.getInfoLogTabName(clientLogDTO.getCompanyId()));
         clientLogDTO.setLogType(ClientLogConst.INFO_LOGTYPE_SCAN_WECAHT);
         List<WechatScanPO> list = clientInfoDao.wechatScanCodeLog(clientLogDTO);
         return new PageInfo<>(list);
@@ -106,9 +97,6 @@ public class ReportsServiceImpl implements ReportService {
      */
     public PageInfo repateKzLog(QueryMapDTO queryMapDTO, ClientLogDTO clientLogDTO) {
         PageHelper.startPage(queryMapDTO.getPageNum(), queryMapDTO.getPageSize());
-        clientLogDTO.setTableInfo(DBSplitUtil.getInfoTabName(clientLogDTO.getCompanyId()));
-        clientLogDTO.setTableDetail(DBSplitUtil.getDetailTabName(clientLogDTO.getCompanyId()));
-        clientLogDTO.setTableLog(DBSplitUtil.getInfoLogTabName(clientLogDTO.getCompanyId()));
         clientLogDTO.setLogType(ClientLogConst.INFO_LOGTYPE_REPEAT);
 
         // 获取员工角色
@@ -128,20 +116,21 @@ public class ReportsServiceImpl implements ReportService {
 
     /**
      * 获取电商推广广告报表
+     *
      * @param start
      * @param end
      * @param companyId
-     * */
+     */
     @Override
     public List<DstgGoldDataReportsVO> getDstgAdReports(Integer start, Integer end, Integer companyId) {
-       //封装对应的参数
+        //封装对应的参数
         ReportsParamVO reportsParamVO = new ReportsParamVO();
         reportsParamVO.setStart(start);
         reportsParamVO.setEnd(end);
         reportsParamVO.setCompanyId(companyId);
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         //获取数据
-        List<DstgGoldDataReportsVO> dstgGoldDataReprots = dstgGoldDataReportsDao.getDstgGoldDataReprots(reportsParamVO,invalidConfig);
+        List<DstgGoldDataReportsVO> dstgGoldDataReprots = dstgGoldDataReportsDao.getDstgGoldDataReprots(reportsParamVO, invalidConfig);
         return dstgGoldDataReprots;
     }
 
@@ -154,22 +143,24 @@ public class ReportsServiceImpl implements ReportService {
         reportsParamVO.setCompanyId(companyId);
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         //获取数据
-        List<DstgZxStyleReportsVO> dstgZxStyleReportsVOS = zxStyleReportsDao.getDstgGoldDataReprots(reportsParamVO,invalidConfig);
+        List<DstgZxStyleReportsVO> dstgZxStyleReportsVOS = zxStyleReportsDao.getDstgGoldDataReprots(reportsParamVO, invalidConfig);
         return dstgZxStyleReportsVOS;
     }
+
     /**
      * 获取无效原因客资报表
+     *
      * @param companyId
      * @return
      */
-    public InvalidReasonReportsVO invalidReasonReports(Integer companyId,String sourceIds,String startTime,String endTime,String typeIds){
-        InvalidReasonReportsVO invalidReasonReportsVO=new InvalidReasonReportsVO();
-        List<DictionaryPO> list=new ArrayList<>();
-        DictionaryPO dictionaryPO=new DictionaryPO();
+    public InvalidReasonReportsVO invalidReasonReports(Integer companyId, String sourceIds, String startTime, String endTime, String typeIds) {
+        InvalidReasonReportsVO invalidReasonReportsVO = new InvalidReasonReportsVO();
+        List<DictionaryPO> list = new ArrayList<>();
+        DictionaryPO dictionaryPO = new DictionaryPO();
         dictionaryPO.setDicType("hj");
         dictionaryPO.setDicName("合计");
-        List<DictionaryPO> DicList=dictionaryDao.getInvaildReasons(companyId, DictionaryConstant.INVALID_REASON);
-        invalidReasonReportsVO.setInvalidReasonKz(invalidReasonReportsDao.getInvalidReasonReports(DicList,DBSplitUtil.getTable(TableEnum.info,companyId),DBSplitUtil.getTable(TableEnum.detail,companyId),companyId,sourceIds,startTime,endTime,typeIds));
+        List<DictionaryPO> DicList = dictionaryDao.getInvaildReasons(companyId, DictionaryConstant.INVALID_REASON);
+        invalidReasonReportsVO.setInvalidReasonKz(invalidReasonReportsDao.getInvalidReasonReports(DicList, companyId, sourceIds, startTime, endTime, typeIds));
         list.add(dictionaryPO);
         list.addAll(DicList);
         invalidReasonReportsVO.setInvalidReasons(list);

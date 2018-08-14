@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.web.dao.NewsDao;
 import com.qiein.jupiter.web.entity.po.NewsPO;
 import com.qiein.jupiter.web.service.NewsService;

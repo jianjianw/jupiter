@@ -24,8 +24,7 @@ public interface CashService {
      * 付款记录查询页面
      *
      * @param kzId
-     * @param table
      * @return
      */
-    List<CashLogVO> findCashLog(String kzId, String table);
+    List<CashLogVO> findCashLog(String kzId);
 }

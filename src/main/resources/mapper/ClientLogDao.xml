@@ -20,7 +20,7 @@
     
     <!-- 新增客资日志 -->
     <insert id="addInfoLog" useGeneratedKeys="true" keyProperty="log.id">
-        INSERT INTO ${logTabName} (
+        INSERT INTO hm_crm_client_log (
 			KZID, OPERAID, OPERANAME, MEMO, OPERATIME, LOGTYPE, COMPANYID
 		)
 		VALUES
@@ -31,7 +31,7 @@
     <!--查询客资收款修改日志-->
     <select id="getCashEditLog" parameterType="map" resultMap="logMap">
         SELECT log.OPERAID, log.OPERANAME, sf.HEADIMG, log.MEMO, log.OPERATIME, log.LOGTYPE
-        FROM ${logTabName} log
+        FROM hm_crm_client_log log
         LEFT JOIN hm_pub_staff sf ON log.OPERAID = sf.ID AND sf.COMPANYID = #{companyId}
         WHERE log.COMPANYID = #{companyId} AND log.KZID = #{kzId} AND log.LOGTYPE = #{logType} ORDER BY log.OPERATIME DESC, log.ID DESC
 
@@ -39,7 +39,7 @@
 
     <!--添加邀约记录-->
     <insert id="addInvitationLog" parameterType="map">
-        INSERT INTO ${tabName}
+        INSERT INTO hm_crm_invitation_log
 		(  KZID, YYMEMO, STAFFID, CREATETIME, COMPANYID )
 		VALUES
 		( #{kzId}, #{yyMemo}, #{staffId}, UNIX_TIMESTAMP(NOW()), #{companyId})

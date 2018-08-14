@@ -210,8 +210,7 @@
     <select id="datDelCheck" parameterType="map" resultType="Integer">
         SELECT
         COUNT(1)
-        FROM
-        ${tabName}
+        FROM hm_crm_client_info
         WHERE
         SOURCEID IN
         <foreach collection="ids" item="id" index="index" open="(" separator="," close=")">#{id}</foreach>
@@ -345,7 +344,7 @@
         SELECT
         src.ID
         FROM
-        ${tableName} info
+        hm_crm_client_info info
         LEFT JOIN hm_crm_source src ON src.COMPANYID = info.COMPANYID AND src.ID = info.SOURCEID
         WHERE
         info.ISDEL = 0

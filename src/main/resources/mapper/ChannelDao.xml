@@ -382,8 +382,7 @@
     <select id="getHistoryChannelSort" parameterType="map" resultMap="ChannelVOMap">
         SELECT
         src.CHANNELID ID, src.CHANNELNAME, src.ID AS SRCID, src.SRCNAME
-        FROM
-        ${tableName} info
+        FROM hm_crm_client_remark info
         LEFT JOIN hm_crm_source src ON info.SOURCEID = src.ID AND src.COMPANYID = #{companyId}
         WHERE
         info.ISDEL = 0

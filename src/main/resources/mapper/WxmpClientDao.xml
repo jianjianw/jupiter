@@ -47,8 +47,8 @@
     <select id="searchClient" resultMap="baseMap">
         SELECT
         <include refid="baseSqlSimple"/>
-        FROM ${infoTableName} info
-        LEFT JOIN ${detailTableName} det
+        FROM hm_crm_client_info info
+        LEFT JOIN hm_crm_client_detail det
         ON info.KZID = det.KZID
         WHERE info.COMPANYID = #{companyId}
         AND info.ISDEL = 0

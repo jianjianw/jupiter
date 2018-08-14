@@ -18,18 +18,17 @@ public interface ClientDao {
      *
      * @param clientStatusVO
      */
-    void editClientBaseInfo(@Param("clientStatusVO") ClientStatusVO clientStatusVO, @Param("tabName") String tabName);
+    void editClientBaseInfo(@Param("clientStatusVO") ClientStatusVO clientStatusVO);
 
     /**
      * 快速添加备注标签
      *
-     * @param tabName
      * @param companyId
      * @param kzId
      * @param label
      * @return
      */
-    int editClientMemoLabel(@Param("tabName") String tabName, @Param("companyId") int companyId,
+    int editClientMemoLabel(@Param("companyId") int companyId,
                             @Param("kzId") String kzId, @Param("label") String label);
 
     /**
@@ -37,57 +36,57 @@ public interface ClientDao {
      *
      * @param statusId
      * @param companyId
-     * @param tableName
      * @return
      */
-    public int getKzNumByStatusId(@Param("statusId") int statusId, @Param("companyId") Integer companyId,
-                                  @Param("tableName") String tableName);
+    public int getKzNumByStatusId(@Param("statusId") int statusId, @Param("companyId") Integer companyId);
+
     /**
      * 根据客资Id修改客资状态
-     * @param tabName
+     *
      * @param clientStatusVoteVO
-     * */
-    void updateKzValidStatusByKzId(@Param("tabName") String tabName,@Param(value="clientStatusVoteVO") ClientStatusVoteVO clientStatusVoteVO);
+     */
+    void updateKzValidStatusByKzId(@Param(value = "clientStatusVoteVO") ClientStatusVoteVO clientStatusVoteVO);
 
     /**
      * 客资被转移时统计被转移人的客资数
      *
-     * @param tabName
      * @param kzIds
      * @param type
      * @param companyId
      * @return
      */
-    List<StaffNumVO> getOnwerInfoNumByIds(@Param("tabName") String tabName, @Param("kzIds") String kzIds,
+    List<StaffNumVO> getOnwerInfoNumByIds(@Param("kzIds") String kzIds,
                                           @Param("type") String type, @Param("companyId") Integer companyId);
+
     /**
      * 寻找 kz的主id
+     *
      * @param kzId
      * @return
      */
-    Integer findId(@Param("kzId") String kzId,@Param("companyId") Integer companyId,@Param("tableName")String tableName);
+    Integer findId(@Param("kzId") String kzId, @Param("companyId") Integer companyId);
 
 
     /**
      * 根据来源id获取客资数量
-     * */
-    Integer getKzNumBySourceId(@Param("tableName")String tableName,@Param(value="sourceId") int sourceId,@Param(value="companyId") Integer companyId);
+     */
+    Integer getKzNumBySourceId(@Param(value = "sourceId") int sourceId, @Param(value = "companyId") Integer companyId);
 
 
     /**
      * 修改客资渠道Id
-     * @param infoTabName
+     *
      * @param channelId
      * @param sourceId
-     * */
-    void updateKzChannelId(@Param(value="infoTabName") String infoTabName,@Param(value="channelId") int channelId,@Param(value="sourceId") int sourceId,@Param(value="companyId") Integer companyId);
+     */
+    void updateKzChannelId(@Param(value = "channelId") int channelId, @Param(value = "sourceId") int sourceId, @Param(value = "companyId") Integer companyId);
 
     /**
      * 更新客资详情表中的数据
-     * @param detailTabName
+     *
      * @param kzId
      * @param companyId
      * @param content
-     * */
-    void updateDetailMemo(@Param(value="detailTabName") String detailTabName,@Param(value = "kzId") String kzId,@Param(value="companyId") Integer companyId,@Param(value="content") String content);
+     */
+    void updateDetailMemo(@Param(value = "kzId") String kzId, @Param(value = "companyId") Integer companyId, @Param(value = "content") String content);
 }

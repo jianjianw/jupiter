@@ -18,7 +18,7 @@
 
     <!-- 新增在线时长日志 -->
     <insert id="addOnLineTimeLog" parameterType="map">
-        INSERT INTO ${logTabName} (
+        INSERT INTO hm_crm_online_time_log (
 			STAFFID, STAFFNAME, ONLINETIME, LASTHEARTTIME, COMPANYID, LINEDAY
 		)
 		VALUES
@@ -28,7 +28,7 @@
 
     <!--修改在线时长时间-->
     <update id="updateOnLineTime" parameterType="map">
-        UPDATE ${logTabName}
+        UPDATE hm_crm_online_time_log
         SET LASTHEARTTIME  = UNIX_TIMESTAMP(now()), ONLINETIME = ONLINETIME + #{time}
         WHERE COMPANYID = #{companyId}
         AND STAFFID = #{staffId}
@@ -39,7 +39,7 @@
     <select id="getLogByStaffAndDay" parameterType="map" resultMap="timeMap">
         SELECT
         <include refid="baseColumn"/>
-        FROM ${logTabName} log
+        FROM hm_crm_online_time_log log
         WHERE COMPANYID = #{companyId}
         AND STAFFID = #{staffId}
         AND LINEDAY = UNIX_TIMESTAMP(CAST(SYSDATE()AS DATE))
@@ -47,7 +47,7 @@
 
     <!--更新上次心跳时间-->
     <update id="updateLastHeartTime" parameterType="map">
-        UPDATE ${logTabName}
+        UPDATE hm_crm_online_time_log
         SET LASTHEARTTIME  = UNIX_TIMESTAMP(now())
         WHERE COMPANYID = #{companyId}
         AND STAFFID = #{staffId}
@@ -58,7 +58,7 @@
     <select id="getLastHeartTime" parameterType="map" resultType="java.lang.Integer">
         SELECT
           UNIX_TIMESTAMP(now())-log.LASTHEARTTIME
-        FROM ${logTabName} log
+        FROM hm_crm_online_time_log log
         WHERE COMPANYID = #{companyId}
         AND STAFFID = #{staffId}
         ORDER BY LINEDAY DESC

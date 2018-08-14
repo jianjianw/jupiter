@@ -1,15 +1,12 @@
 package com.qiein.jupiter.web.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.constant.ChannelConstant;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.constant.PmsConstant;
 import com.qiein.jupiter.constant.RoleConstant;
-import com.qiein.jupiter.enums.TableEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.CollectionUtils;
-import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.*;
@@ -19,14 +16,10 @@ import com.qiein.jupiter.web.entity.po.SourcePO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.*;
 import com.qiein.jupiter.web.service.GroupService;
-import io.jsonwebtoken.lang.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.nio.channels.Channel;
-import java.security.acl.Group;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -369,7 +362,7 @@ public class GroupServiceImpl implements GroupService {
                 if (null != sourcePO) {
                     if (channelPO.getTypeId().equals(ChannelConstant.STAFF_ZJS)) {
                         //如果没有客资就删除
-                        Integer kzNum = clientDao.getKzNumBySourceId(DBSplitUtil.getTable(TableEnum.info, sourcePO.getCompanyId()), sourcePO.getId(), sourcePO.getCompanyId());
+                        Integer kzNum = clientDao.getKzNumBySourceId(sourcePO.getId(), sourcePO.getCompanyId());
                         if (kzNum > 0) {
                             sourcePO.setIsShow(false);
                             sourceDao.update(sourcePO);
@@ -420,7 +413,7 @@ public class GroupServiceImpl implements GroupService {
         groupPO.setGroupId(groupPO.getParentId() + CommonConstant.ROD_SEPARATOR + groupPO.getId());
         groupDao.update(groupPO);
 
-        if( !(RoleConstant.DSYY.equalsIgnoreCase(groupPO.getGroupType()) || RoleConstant.DSSX.equalsIgnoreCase(groupPO.getGroupType()) || RoleConstant.DSCJ.equalsIgnoreCase(groupPO.getGroupType()))){
+        if (!(RoleConstant.DSYY.equalsIgnoreCase(groupPO.getGroupType()) || RoleConstant.DSSX.equalsIgnoreCase(groupPO.getGroupType()) || RoleConstant.DSCJ.equalsIgnoreCase(groupPO.getGroupType()))) {
             //同步转介绍渠道小组
             ChannelPO channelPO = channelDao.getChannelByGroupName(groupPO.getGroupName(), groupPO.getCompanyId());
             //渠道不存在
@@ -466,16 +459,16 @@ public class GroupServiceImpl implements GroupService {
                         //渠道存在
                         //FIXME review code
                         //TODO 增加迁移功能
-                        SourcePO source = sourceDao.getSourceByNameAndType(groupPO.getGroupName(),groupPO.getCompanyId(),ChannelConstant.STAFF_ZJS);
+                        SourcePO source = sourceDao.getSourceByNameAndType(groupPO.getGroupName(), groupPO.getCompanyId(), ChannelConstant.STAFF_ZJS);
                         //判断来源时候需要迁移
-                        if(source != null  &&  !(source.getChannelId().equals(channelPO.getId()))){
+                        if (source != null && !(source.getChannelId().equals(channelPO.getId()))) {
                             //迁移客资到新的渠道
-                            clientDao.updateKzChannelId(DBSplitUtil.getInfoTabName(channelPO.getCompanyId()),channelPO.getId(),source.getId(),channelPO.getCompanyId());
+                            clientDao.updateKzChannelId(channelPO.getId(), source.getId(), channelPO.getCompanyId());
                             //迁移来源到新的渠道
                             source.setChannelId(channelPO.getId());
                             source.setIsShow(true);
                             sourceDao.update(source);
-                        }else{
+                        } else {
                             SourcePO sourcePO = sourceDao.getSourceBySrcname(groupPO.getGroupName(), groupPO.getCompanyId(), channelPO.getId());
                             if (!channelPO.getShowFlag()) {
                                 channelPO.setShowFlag(true);
@@ -699,12 +692,14 @@ public class GroupServiceImpl implements GroupService {
         groupDao.updatePriority(fId, fPriority, companyId);
         groupDao.updatePriority(sId, sPriority, companyId);
     }
+
     /**
      * 获取小组名称
+     *
      * @param groupId
      * @return
      */
-    public String getGroupName(String groupId,Integer companyId){
-        return groupDao.getGroupName(groupId,companyId);
+    public String getGroupName(String groupId, Integer companyId) {
+        return groupDao.getGroupName(groupId, companyId);
     }
 }

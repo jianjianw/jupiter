@@ -678,9 +678,7 @@ public class GoEasyUtil {
         String head = staffPO.getNickName() + " 转移给您" + kzArr.length + "个客资";
         StringBuffer sb = new StringBuffer();
         if (kzArr.length == 1) {
-            ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(kzArr[0],
-                    DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
-                    DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
+            ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(kzArr[0]);
             sb.append("编号：").append(info.getId()).append("<br/>");
             if (StringUtil.isNotEmpty(info.getKzName())) {
                 sb.append("姓名：").append(StringUtil.nullToStrTrim(info.getKzName())).append("<br/>");

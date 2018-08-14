@@ -1,10 +1,8 @@
 package com.qiein.jupiter.web.service.impl;
 
 import com.qiein.jupiter.constant.ClientLogConst;
-import com.qiein.jupiter.enums.TableEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
-import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.web.dao.CashLogDao;
 import com.qiein.jupiter.web.dao.ClientInfoDao;
 import com.qiein.jupiter.web.dao.ClientLogDao;
@@ -34,24 +32,19 @@ public class CashServiceImpl implements CashService {
     @Transactional
     public int editCash(CashLogPO cashLogPO) {
         int companyId = cashLogPO.getCompanyId();
-        String cashTableName = DBSplitUtil.getCashTabName(companyId);
-        String infoTableName = DBSplitUtil.getInfoTabName(companyId);
-        String infoLogTableName = DBSplitUtil.getInfoLogTabName(companyId);
-        String detailTableName = DBSplitUtil.getDetailTabName(companyId);
         String kzId = cashLogPO.getKzId();
         //查询旧记录，用于生产修改记录
-        CashLogPO oldCash = cashLogDao.getCashLogById(cashTableName, cashLogPO.getId(), companyId);
+        CashLogPO oldCash = cashLogDao.getCashLogById(cashLogPO.getId(), companyId);
         //修改已收金额
-        cashLogDao.editAmount(cashTableName, cashLogPO.getAmount(), cashLogPO.getId(), companyId);
+        cashLogDao.editAmount(cashLogPO.getAmount(), cashLogPO.getId(), companyId);
         //添加修改日志
-        clientLogDao.addInfoLog(infoLogTableName, new
+        clientLogDao.addInfoLog(new
                 ClientLogPO(kzId, cashLogPO.getOperaId(),
                 cashLogPO.getOperaName(), ClientLogConst.getCashEditLog(cashLogPO, oldCash),
                 ClientLogConst.INFO_LOGTYPE_CASH, companyId));
         //修改已收金额
-        clientInfoDao.editStayAmount(detailTableName, cashTableName,
-                kzId, cashLogPO.getCompanyId());
-        ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(kzId, infoTableName, detailTableName);
+        clientInfoDao.editStayAmount(kzId, cashLogPO.getCompanyId());
+        ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(kzId);
         //判断已收是否大于总额，一旦大于 异常回滚
         if (info.getStayAmount() > info.getAmount()) {
             throw new RException(ExceptionEnum.AMOUNT_ERROR);
@@ -69,17 +62,11 @@ public class CashServiceImpl implements CashService {
      */
     @Transactional
     public int addCashLog(CashLogPO cashLogPO) {
-        int companyId = cashLogPO.getCompanyId();
-        String kzId = cashLogPO.getKzId();
-        String cashTableName = DBSplitUtil.getCashTabName(companyId);
-        String infoTableName = DBSplitUtil.getInfoTabName(companyId);
-        String detailTableName = DBSplitUtil.getDetailTabName(companyId);
         //添加收款记录
-        cashLogDao.addCahsLog(cashTableName, cashLogPO);
+        cashLogDao.addCahsLog(cashLogPO);
         //修改已收金额
-        clientInfoDao.editStayAmount(DBSplitUtil.getDetailTabName(cashLogPO.getCompanyId()), cashTableName,
-                kzId, companyId);
-        ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(kzId, infoTableName, detailTableName);
+        clientInfoDao.editStayAmount(cashLogPO.getKzId(), cashLogPO.getCompanyId());
+        ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(cashLogPO.getKzId());
         //判断已收是否大于总额，一旦大于 异常回滚
         if (info.getStayAmount() > info.getAmount()) {
             throw new RException(ExceptionEnum.AMOUNT_ERROR);
@@ -95,8 +82,8 @@ public class CashServiceImpl implements CashService {
      * @param table
      * @return
      */
-    public List<CashLogVO> findCashLog(String kzId, String table) {
-        return cashLogDao.findCashLog(kzId, table);
+    public List<CashLogVO> findCashLog(String kzId) {
+        return cashLogDao.findCashLog(kzId);
     }
 
 }

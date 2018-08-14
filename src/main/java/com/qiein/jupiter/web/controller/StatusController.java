@@ -1,7 +1,5 @@
 package com.qiein.jupiter.web.controller;
 
-import com.qiein.jupiter.enums.TableEnum;
-import com.qiein.jupiter.util.DBSplitUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -69,20 +67,22 @@ public class StatusController extends BaseController {
         statusService.editColorToDefault(getCurrentLoginStaff().getCompanyId(), statusPO.getId(), statusPO.getColumn());
         return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
+
     /**
      * 修改客资状态
      */
     @GetMapping("/edit_client_status")
-    public ResultInfo editClientStatus(@RequestParam boolean showFlag, @RequestParam int id){
-        statusService.editClientStatus(showFlag,id);
+    public ResultInfo editClientStatus(@RequestParam boolean showFlag, @RequestParam int id) {
+        statusService.editClientStatus(showFlag, id);
         return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
+
     /**
      * 修改客资状态
      */
     @GetMapping("/edit_kzphone_flag")
-    public ResultInfo editKzphoneFlag(@RequestParam String kzId,@RequestParam int kzphoneFlag){
-        statusService.editKzphoneFlag(kzId,kzphoneFlag, DBSplitUtil.getTable(TableEnum.info,getCurrentLoginStaff().getCompanyId()));
-        return  ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
+    public ResultInfo editKzphoneFlag(@RequestParam String kzId, @RequestParam int kzphoneFlag) {
+        statusService.editKzphoneFlag(kzId, kzphoneFlag);
+        return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
 }

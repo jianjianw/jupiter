@@ -155,8 +155,7 @@
 			rela.CHANNELID, rela.TYPEID, rela.GROUPID, rela.GROUPNAME, rela.COMPANYID, rela.WEIGHT
 		FROM
 			hm_crm_type_channel_group_rela rela
-		LEFT JOIN ${infoTab} info ON rela.GROUPID = info.GROUPID 
-			AND info.CREATETIME &gt; UNIX_TIMESTAMP(CAST(SYSDATE() AS DATE)) 
+		LEFT JOIN hm_crm_client_info info ON rela.GROUPID = info.GROUPID AND info.CREATETIME &gt; UNIX_TIMESTAMP(CAST(SYSDATE() AS DATE))
 		WHERE
 			rela.COMPANYID = #{companyId}
 		AND rela.TYPEID = #{typeId}

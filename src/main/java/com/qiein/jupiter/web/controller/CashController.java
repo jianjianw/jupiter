@@ -1,8 +1,5 @@
 package com.qiein.jupiter.web.controller;
 
-import com.qiein.jupiter.enums.TableEnum;
-import com.qiein.jupiter.enums.TipMsgEnum;
-import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.web.entity.po.CashLogPO;
@@ -61,6 +58,6 @@ public class CashController extends BaseController {
      */
     @GetMapping("/find_cash_log")
     public ResultInfo findCashLog(@RequestParam String kzId){
-        return  ResultInfoUtil.success(cashService.findCashLog(kzId, DBSplitUtil.getTable(TableEnum.cash_log,getCurrentLoginStaff().getCompanyId())));
+        return  ResultInfoUtil.success(cashService.findCashLog(kzId));
     }
 }
