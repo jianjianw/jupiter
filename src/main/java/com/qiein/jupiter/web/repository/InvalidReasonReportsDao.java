@@ -76,9 +76,9 @@ public class InvalidReasonReportsDao {
         }
         hjsql.append( " where info.SOURCEID IN (select ID from hm_crm_source where COMPANYID=? and TYPEID IN (1,2)");
         if(StringUtil.isNotEmpty(sourceIds)){
-            hjsql.append(" AND src.ID IN ("+sourceIds);
+            hjsql.append(" AND src.ID IN ("+sourceIds+")");
         }
-        hjsql.append("))AND(");
+        hjsql.append(")AND(");
         hjsql.append("detail.INVALIDLABEL='" + list.get(0).getDicName() + "'");
         for (int i = 1; i < list.size(); i++) {
             hjsql.append("OR detail.INVALIDLABEL='" + list.get(i).getDicName() + "'");
