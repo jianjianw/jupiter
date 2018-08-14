@@ -18,10 +18,7 @@ import com.qiein.jupiter.web.entity.po.EditClientPhonePO;
 import com.qiein.jupiter.web.entity.po.RepateKzLogPO;
 import com.qiein.jupiter.web.entity.po.WechatScanPO;
 import com.qiein.jupiter.web.entity.vo.*;
-import com.qiein.jupiter.web.repository.CommonReportsDao;
-import com.qiein.jupiter.web.repository.DstgGoldDataReportsDao;
-import com.qiein.jupiter.web.repository.DstgZxStyleReportsDao;
-import com.qiein.jupiter.web.repository.InvalidReasonReportsDao;
+import com.qiein.jupiter.web.repository.*;
 import com.qiein.jupiter.web.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,6 +49,8 @@ public class ReportsServiceImpl implements ReportService {
     private CommonReportsDao commonReportsDao;
     @Autowired
     private InvalidReasonReportsDao invalidReasonReportsDao;
+    @Autowired
+    private DsyyStatusReportsDao dsyyStatusReportsDao;
 
     /**
      * 修改联系方式日志
@@ -174,5 +173,16 @@ public class ReportsServiceImpl implements ReportService {
         list.addAll(DicList);
         invalidReasonReportsVO.setInvalidReasons(list);
         return invalidReasonReportsVO;
+    }
+
+    @Override
+    public List<DsyyStatusReportsVO> getDsyyStatusReports(Integer start, Integer end, int companyId) {
+        ReportsParamVO reportsParamVO = new ReportsParamVO();
+        reportsParamVO.setStart(start);
+        reportsParamVO.setEnd(end);
+        reportsParamVO.setCompanyId(companyId);
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
+        List<DsyyStatusReportsVO> dsyyStatusReports = dsyyStatusReportsDao.getDsyyStatusReports(reportsParamVO, invalidConfig);
+        return dsyyStatusReports;
     }
 }

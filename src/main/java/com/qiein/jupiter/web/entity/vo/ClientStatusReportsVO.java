@@ -1,10 +1,12 @@
 package com.qiein.jupiter.web.entity.vo;
 
+import java.io.Serializable;
+
 /**
  * @author: yyx
  * @Date: 2018-8-14
  */
-public class ClientStatusReportsVO {
+public class ClientStatusReportsVO implements Serializable {
     /**
      * 状态id
      * */
@@ -43,4 +45,6 @@ public class ClientStatusReportsVO {
     public void setKzNum(int kzNum) {
         this.kzNum = kzNum;
     }
+
+
 }

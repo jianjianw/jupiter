@@ -5,6 +5,7 @@ import com.qiein.jupiter.web.entity.dto.ClientLogDTO;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.vo.DstgGoldDataReportsVO;
 import com.qiein.jupiter.web.entity.vo.DstgZxStyleReportsVO;
+import com.qiein.jupiter.web.entity.vo.DsyyStatusReportsVO;
 import com.qiein.jupiter.web.entity.vo.InvalidReasonReportsVO;
 
 import java.util.List;
@@ -57,4 +58,14 @@ public interface ReportService {
      * @return
      */
     InvalidReasonReportsVO invalidReasonReports(Integer companyId, String sourceIds, String startTime, String endTime, String typeIds);
+
+    /**
+     * 获取电商邀约状态统计报表
+     * @param start
+     * @param end
+     * @param companyId
+     * @return
+     * */
+    List<DsyyStatusReportsVO> getDsyyStatusReports(Integer start, Integer end, int companyId);
+
 }

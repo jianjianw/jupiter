@@ -9,6 +9,7 @@ import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.DstgGoldDataReportsVO;
 import com.qiein.jupiter.web.entity.vo.DstgZxStyleReportsVO;
+import com.qiein.jupiter.web.entity.vo.DsyyStatusReportsVO;
 import com.qiein.jupiter.web.entity.vo.ReportsConditionVO;
 import com.qiein.jupiter.web.service.ReportService;
 import org.apache.ibatis.annotations.Param;
@@ -373,6 +374,16 @@ public class ReportsController extends BaseController {
         StaffPO staffPO = getCurrentLoginStaff();
         List<DstgZxStyleReportsVO> dstgGoldDataReportsVO = reportService.getDstgZxStyleReports(start,end,staffPO.getCompanyId());
         return ResultInfoUtil.success(dstgGoldDataReportsVO);
+    }
+
+    /**
+     * 客资各状态转发统计
+     * */
+    @GetMapping("/get_dsyy_status_reports")
+    public ResultInfo getDSyyStatusReports(Integer start,Integer end){
+        StaffPO staffPO = getCurrentLoginStaff();
+        List<DsyyStatusReportsVO> dsyyStatusReportsVOS = reportService.getDsyyStatusReports(start,end,staffPO.getCompanyId());
+        return ResultInfoUtil.success(dsyyStatusReportsVOS);
     }
 
     @GetMapping("/receive_ali")
