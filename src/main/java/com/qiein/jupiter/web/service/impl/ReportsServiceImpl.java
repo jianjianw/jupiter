@@ -51,6 +51,8 @@ public class ReportsServiceImpl implements ReportService {
     private InvalidReasonReportsDao invalidReasonReportsDao;
     @Autowired
     private ZjskzOfMonthDao zjskzOfMonthDao;
+    @Autowired
+    private DsyyStatusReportsDao dsyyStatusReportsDao;
 
     /**
      * 修改联系方式日志
