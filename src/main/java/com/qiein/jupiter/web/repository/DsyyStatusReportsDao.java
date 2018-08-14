@@ -3,6 +3,7 @@ package com.qiein.jupiter.web.repository;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.qiein.jupiter.util.CollectionUtils;
+import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,6 @@ public class DsyyStatusReportsDao {
                         return dsyyStatusReportsVO;
                     }
                 });
-
         dsyyStatusReportsVOS.addAll(dsyyStatusReports);
     }
 
@@ -75,13 +75,13 @@ public class DsyyStatusReportsDao {
                         return clientStatusReportsVO;
                     }
                 });
+
         for (DsyyStatusReportsVO dsyyStatusReportsVO :dsyyStatusReportsVOS){
             // TODO list深拷贝问题，需要查看源码
             String jsonString = JSONObject.toJSONString(clientStatusReportsVOS);
             List<ClientStatusReportsVO> clientStatusReports = JSONObject.parseArray(jsonString, ClientStatusReportsVO.class);
             dsyyStatusReportsVO.setClientStatusReportsVOS(clientStatusReports);
         }
-
     }
 
     /**
@@ -89,8 +89,11 @@ public class DsyyStatusReportsDao {
      * */
     public void getStatusClientCount(ReportsParamVO reportsParamVO, final List<DsyyStatusReportsVO> dsyyStatusReportsVOS){
         StringBuilder sb = new StringBuilder();
-        sb.append(" select STATUSID,groupid,count(id) client_count from hm_crm_client_info_2 where companyid = ? and isdel = 0 and groupid is not null group by STATUSID,groupid ");
-        jdbcTemplate.query(sb.toString(), new Object[]{reportsParamVO.getCompanyId()}, new RowMapper<DsyyStatusReportsVO>() {
+        String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
+        String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
+        sb.append(" select STATUSID,groupid,count(id) client_count from "+ infoTabName +" info  where info.companyid = ? and info.isdel = 0 and info.groupid is not null group by info.STATUSID,info.groupid ");
+        sb.append(" and info.SUCCESSTIME BETWEEN ? AND ?");
+        jdbcTemplate.query(sb.toString(), new Object[]{reportsParamVO.getCompanyId(),reportsParamVO.getStart(),reportsParamVO.getEnd()}, new RowMapper<DsyyStatusReportsVO>() {
             @Override
             public DsyyStatusReportsVO mapRow(ResultSet rs, int i) throws SQLException {
                 for (DsyyStatusReportsVO dsyyStatusReports:dsyyStatusReportsVOS){
