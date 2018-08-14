@@ -63,11 +63,8 @@ public class DstgGoldDataReportsDao {
      * */
     private void getAdidList(ReportsParamVO reportsParamVO, List<DstgGoldDataReportsVO> dstgGoldDataReportsVOS){
         StringBuilder sb = new StringBuilder();
-        String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
-        String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
         sb.append(" select distinct IFNULL(detail.adid,'其他') as adid");
-        sb.append(" from");
-        sb.append(infoTabName + " info ," + detailTabName + " detail");
+        sb.append(" from hm_crm_client_info info , hm_crm_client_detail detail");
         sb.append(" where");
         sb.append(" info.kzid = detail.kzid");
         sb.append(" and info.isdel = 0");
@@ -92,14 +89,13 @@ public class DstgGoldDataReportsDao {
 
     }
 
-    private StringBuilder getCommonsql(StringBuilder sb,String infoTabName,String detailTabName) {
+    private StringBuilder getCommonsql(StringBuilder sb ) {
         sb.append(" select IFNULL(detail.adid,'其他') as adid,count(detail.kzid) as client_count ");
-        sb.append(" from");
-        sb.append(infoTabName + " info ," + detailTabName + " detail");
-        sb.append(" where");
-        sb.append(" info.kzid = detail.kzid");
-        sb.append(" and info.isdel = 0");
-        sb.append(" and info.companyid = ?");
+        sb.append(" from hm_crm_client_info info , hm_crm_client_detail detail ");
+        sb.append(" where ");
+        sb.append(" info.kzid = detail.kzid ");
+        sb.append(" and info.isdel = 0 ");
+        sb.append(" and info.companyid = ? ");
         return sb;
     }
 
@@ -108,11 +104,9 @@ public class DstgGoldDataReportsDao {
      */
     private void getAllClientCount(ReportsParamVO reportsParamVO, List<DstgGoldDataReportsVO> dstgGoldDataReportsVOS) {
         StringBuilder sb = new StringBuilder();
-        String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
-        String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
-        sb =  getCommonsql(sb,infoTabName,detailTabName);
-        sb.append(" and (info.CREATETIME BETWEEN ? AND ? or info.COMESHOPTIME BETWEEN ? AND ? or info.SUCCESSTIME BETWEEN ? AND ?)");
-        sb.append(" group by detail.adid");
+        sb =  getCommonsql(sb);
+        sb.append(" and (info.CREATETIME BETWEEN ? AND ? or info.COMESHOPTIME BETWEEN ? AND ? or info.SUCCESSTIME BETWEEN ? AND ?) ");
+        sb.append(" group by detail.adid ");
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(),
                         reportsParamVO.getStart(),
@@ -147,9 +141,7 @@ public class DstgGoldDataReportsDao {
      */
     private void getPendingClientCount(ReportsParamVO reportsParamVO, List<DstgGoldDataReportsVO> dstgGoldDataReportsVOS,DsInvalidVO dsInvalidVO) {
         StringBuilder sb = new StringBuilder();
-        String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
-        String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
-        sb = getCommonsql(sb, infoTabName, detailTabName);
+        sb = getCommonsql(sb );
         sb.append(" and (info.CREATETIME BETWEEN ? AND ? or info.COMESHOPTIME BETWEEN ? AND ? or info.SUCCESSTIME BETWEEN ? AND ?)");
         sb.append(" AND INSTR( ?, CONCAT(',',info.STATUSID + '',',')) != 0");
         sb.append(" group by detail.adid");
@@ -188,9 +180,7 @@ public class DstgGoldDataReportsDao {
      * */
     private void getFilterWaitClientCount(ReportsParamVO reportsParamVO, List<DstgGoldDataReportsVO> dstgGoldDataReportsVOS){
         StringBuilder sb = new StringBuilder();
-        String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
-        String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
-        sb = getCommonsql(sb, infoTabName, detailTabName);
+        sb = getCommonsql(sb );
         sb.append(" and (info.CREATETIME BETWEEN ? AND ? or info.COMESHOPTIME BETWEEN ? AND ? or info.SUCCESSTIME BETWEEN ? AND ?)");
         sb.append(" and info.CLASSID = 1 and info.STATUSID = 98 ");
         sb.append(" group by detail.adid");
@@ -228,9 +218,7 @@ public class DstgGoldDataReportsDao {
      * */
     private void getFilterInValidClientCount(ReportsParamVO reportsParamVO, List<DstgGoldDataReportsVO> dstgGoldDataReportsVOS){
         StringBuilder sb = new StringBuilder();
-        String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
-        String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
-        sb = getCommonsql(sb, infoTabName, detailTabName);
+        sb = getCommonsql(sb);
         sb.append(" and (info.CREATETIME BETWEEN ? AND ? or info.COMESHOPTIME BETWEEN ? AND ? or info.SUCCESSTIME BETWEEN ? AND ?)");
         sb.append(" and info.CLASSID = 6 and info.STATUSID = 99");
         sb.append(" group by detail.adid");
@@ -269,9 +257,7 @@ public class DstgGoldDataReportsDao {
      * */
     private void getFilterInClientCount(ReportsParamVO reportsParamVO, List<DstgGoldDataReportsVO> dstgGoldDataReportsVOS){
         StringBuilder sb = new StringBuilder();
-        String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
-        String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
-        sb = getCommonsql(sb, infoTabName, detailTabName);
+        sb = getCommonsql(sb);
         sb.append(" and (info.CREATETIME BETWEEN ? AND ? or info.COMESHOPTIME BETWEEN ? AND ? or info.SUCCESSTIME BETWEEN ? AND ?)");
         sb.append(" and info.CLASSID = 1 and info.STATUSID = 0");
         sb.append(" group by detail.adid");
@@ -313,9 +299,7 @@ public class DstgGoldDataReportsDao {
             return ;
         }
         StringBuilder sb = new StringBuilder();
-        String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
-        String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
-        sb = getCommonsql(sb, infoTabName, detailTabName);
+        sb = getCommonsql(sb);
         sb.append(" and (info.CREATETIME BETWEEN ? AND ? or info.COMESHOPTIME BETWEEN ? AND ? or info.SUCCESSTIME BETWEEN ? AND ?)");
         if(StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidStatus()) && StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidLevel())){
             sb.append(" and (info.STATUSID in("+ dsInvalidVO.getDsInvalidStatus()+") or");
@@ -365,9 +349,7 @@ public class DstgGoldDataReportsDao {
      * */
     private void getComeShopClientCount(ReportsParamVO reportsParamVO, List<DstgGoldDataReportsVO> dstgGoldDataReportsVOS){
         StringBuilder sb = new StringBuilder();
-        String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
-        String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
-        sb = getCommonsql(sb, infoTabName, detailTabName);
+        sb = getCommonsql(sb);
         sb.append(" and info.COMESHOPTIME BETWEEN ? AND ?");
         sb.append(" group by detail.adid");
 
@@ -401,9 +383,7 @@ public class DstgGoldDataReportsDao {
      * */
     private void getSuccessClientCount(ReportsParamVO reportsParamVO, List<DstgGoldDataReportsVO> dstgGoldDataReportsVOS){
         StringBuilder sb = new StringBuilder();
-        String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
-        String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
-        sb = getCommonsql(sb, infoTabName, detailTabName);
+        sb = getCommonsql(sb);
         sb.append(" and info.SUCCESSTIME BETWEEN ? AND ?");
         sb.append(" group by detail.adid");
 
@@ -437,11 +417,8 @@ public class DstgGoldDataReportsDao {
      * */
     private void getAvgAmount(ReportsParamVO reportsParamVO, List<DstgGoldDataReportsVO> dstgGoldDataReportsVOS){
         StringBuilder sb = new StringBuilder();
-        String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
-        String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
         sb.append(" select IFNULL(detail.adid,'其他') as adid,avg(detail.AMOUNT) as avg_amount ");
-        sb.append(" from");
-        sb.append(infoTabName + " info ," + detailTabName + " detail");
+        sb.append(" from hm_crm_client_info info , hm_crm_client_detail detail");
         sb.append(" where");
         sb.append(" info.kzid = detail.kzid");
         sb.append(" and info.isdel = 0");
@@ -479,11 +456,8 @@ public class DstgGoldDataReportsDao {
      * */
     private void getAmount(ReportsParamVO reportsParamVO, List<DstgGoldDataReportsVO> dstgGoldDataReportsVOS){
         StringBuilder sb = new StringBuilder();
-        String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
-        String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
         sb.append(" select IFNULL(detail.adid,'其他') as adid,sum(detail.AMOUNT) as sum_amount ");
-        sb.append(" from");
-        sb.append(infoTabName + " info ," + detailTabName + " detail");
+        sb.append(" from hm_crm_client_info info , hm_crm_client_detail detail");
         sb.append(" where");
         sb.append(" info.kzid = detail.kzid");
         sb.append(" and info.isdel = 0");
