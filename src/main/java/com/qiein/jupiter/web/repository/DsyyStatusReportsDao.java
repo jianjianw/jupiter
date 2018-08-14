@@ -22,6 +22,12 @@ public class DsyyStatusReportsDao {
      * 获取电商邀约状态报表
      * */
     public List<DsyyStatusReportsVO> getDsyyStatusReports(ReportsParamVO reportsParamVO, DsInvalidVO invalidConfig){
+        //获取状态列表
+
+        //获取小组列表
+
+
+
         return null;
     }
 }
