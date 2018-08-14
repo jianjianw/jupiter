@@ -164,7 +164,9 @@ public interface GroupStaffDao {
      * @param staffId
      * @param groupId
      */
-    Integer deleteByStaffIdAndGroupId(@Param(value = "staffId") int staffId, @Param(value = "companyId") int companyId, @Param(value = "groupId") String groupId);
+    Integer deleteByStaffIdAndGroupId(@Param(value = "staffId") int staffId,
+                                      @Param(value = "companyId") int companyId,
+                                      @Param(value = "groupId") String groupId);
 
     /**
      * 公司所有小组人员
