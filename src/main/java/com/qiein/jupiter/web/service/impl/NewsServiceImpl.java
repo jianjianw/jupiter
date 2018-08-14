@@ -151,9 +151,7 @@ public class NewsServiceImpl implements NewsService {
      * @param opera
      */
     public void pushInfoNewsInApp(String kzId, int toStaffId, String msg, StaffPO opera) {
-        ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(kzId,
-                DBSplitUtil.getInfoTabName(opera.getCompanyId()),
-                DBSplitUtil.getDetailTabName(opera.getCompanyId()));
+        ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(kzId);
         if (info == null) {
             throw new RException(ExceptionEnum.INFO_ERROR);
         }
@@ -164,11 +162,10 @@ public class NewsServiceImpl implements NewsService {
         //推送闪信
         GoEasyUtil.pushFlash(opera.getCompanyId(), toStaffId, info, opera.getId(), opera.getNickName(), msg, newsDao);
         //添加备注
-        clientDao.editClientMemoLabel(DBSplitUtil.getDetailTabName(opera.getCompanyId()), opera.getCompanyId(), kzId, "【" + msg + "】");
+        clientDao.editClientMemoLabel(opera.getCompanyId(), kzId, "【" + msg + "】");
         // 客资日志记录
-        clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(opera.getCompanyId()),
-                new ClientLogPO(kzId, opera.getId(), opera.getNickName(), ("来自应用内闪信" + " - 发送给->" + toStaff.getNickName()) + msg,
-                        ClientLogConst.INFO_LOGTYPE_INVITE, opera.getCompanyId()));
+        clientLogDao.addInfoLog(new ClientLogPO(kzId, opera.getId(), opera.getNickName(), ("来自应用内闪信" + " - 发送给->" + toStaff.getNickName()) + msg,
+                ClientLogConst.INFO_LOGTYPE_INVITE, opera.getCompanyId()));
     }
 
 }

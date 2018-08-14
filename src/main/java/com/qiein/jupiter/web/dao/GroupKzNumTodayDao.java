@@ -19,10 +19,7 @@ public interface GroupKzNumTodayDao extends BaseDao<GroupKzNumTodayDao> {
      * @param typeId
      * @param channelId
      * @param companyId
-     * @param infoTabName
      * @return
      */
-    List<GroupKzNumToday> getGroupKzNumTodayByShopChannelId(@Param("typeId") int typeId,
-                                                            @Param("channelId") int channelId, @Param("companyId") int companyId,
-                                                            @Param("infoTabName") String infoTabName);
+    List<GroupKzNumToday> getGroupKzNumTodayByShopChannelId(@Param("typeId") int typeId, @Param("channelId") int channelId, @Param("companyId") int companyId);
 }

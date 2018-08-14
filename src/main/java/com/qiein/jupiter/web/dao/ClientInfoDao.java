@@ -29,7 +29,7 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
      * @param typeId
      * @return
      */
-    ClientPushDTO getClientPushDTOById(@Param("kzId") String kzId, @Param("detailTabName") String detailTabName);
+    ClientPushDTO getClientPushDTOById(@Param("kzId") String kzId);
 
     /**
      * 客资分配给邀约客服后修改客资信息
@@ -154,8 +154,7 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
      * @param filmingCode
      * @return
      */
-    int getKzNumByFilmingCode(@Param("detailName") String detailName, @Param("companyId") int companyId,
-                              @Param("filmingCode") int filmingCode);
+    int getKzNumByFilmingCode(@Param("companyId") int companyId, @Param("filmingCode") int filmingCode);
 
     /**
      * 根据客资ID集合查询客资信息

@@ -236,8 +236,7 @@ public interface StaffDao extends BaseDao<StaffPO> {
     /**
      * 获取客服指定时间内渠道和拍摄类型客资的领取情况
      */
-    List<StaffPushDTO> listStaffPushDTOByAlloted(@Param("infoTabName") String infoTabName,
-                                                 @Param("companyId") int companyId, @Param("channelId") int channelId, @Param("typeId") int typeId,
+    List<StaffPushDTO> listStaffPushDTOByAlloted( @Param("companyId") int companyId, @Param("channelId") int channelId, @Param("typeId") int typeId,
                                                  @Param("calcRange") int calcRange, @Param("staffList") List<StaffPushDTO> staffList);
 
     /**
@@ -316,8 +315,7 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @param staffId
      * @return
      */
-    int getTodayKzNum(@Param("companyId") int companyId, @Param("staffId") int staffId,
-                      @Param("infoTabName") String infoTabName);
+    int getTodayKzNum(@Param("companyId") int companyId, @Param("staffId") int staffId );
 
     /**
      * 修改员工今日领取客资数
@@ -347,8 +345,7 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @param overTime
      * @return
      */
-    int getSaboteurCheckNum(@Param("logTabName") String logTabName, @Param("companyId") int companyId,
-                            @Param("staffId") int staffId, @Param("overTime") int overTime);
+    int getSaboteurCheckNum(@Param("companyId") int companyId, @Param("staffId") int staffId, @Param("overTime") int overTime);
 
     /**
      * 修改员工当前状态
@@ -453,7 +450,7 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @param groupIdList
      * @return
      */
-    List<String> getGroupAvgReceive(@Param("infoTabName") String infoTabName, @Param("companyId") Integer companyId,
+    List<String> getGroupAvgReceive(@Param("companyId") Integer companyId,
                                     @Param("sourceId") int sourceId, @Param("calcRange") int calcRange,
                                     @Param("groupIdList") List<String> groupIdList);
 
@@ -473,7 +470,7 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @param sourceId
      * @return
      */
-    List<StaffPushDTO> getPushAppointByRole(@Param("infoTabName") String infoTabName, @Param("companyId") Integer companyId,
+    List<StaffPushDTO> getPushAppointByRole(@Param("companyId") Integer companyId,
                                             @Param("sourceId") int sourceId, @Param("calcRange") int calcRange,
                                             @Param("staffOnlineList") List<StaffPushDTO> staffOnlineList);
 
@@ -495,7 +492,7 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @param role
      * @return
      */
-    StaffPushDTO getPushAppointByGroupAvg(@Param("infoTabName") String infoTabName, @Param("companyId") Integer companyId, @Param("sourceId") int sourceId, @Param("role") String role);
+    StaffPushDTO getPushAppointByGroupAvg(@Param("companyId") Integer companyId, @Param("sourceId") int sourceId, @Param("role") String role);
 
     /**
      * 编辑员工所属公司的CorpId
@@ -559,11 +556,13 @@ public interface StaffDao extends BaseDao<StaffPO> {
     StaffPO getStaffByPhoneMd5PwdAndCid(@Param("phone") String phone,
                                         @Param("password") String password,
                                         @Param("companyId") int companyId);
+
     /**
      * 批量获取员工姓名
+     *
      * @param staffIds
      * @return
      */
-    List<String> getStaffNames(@Param("list")List<String> list);
+    List<String> getStaffNames(@Param("list") List<String> list);
 
 }

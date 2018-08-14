@@ -49,7 +49,6 @@ public class ClientAddServiceImpl implements ClientAddService {
     private NewsDao newsDao;
 
 
-
     /**
      * 添加电商客资
      *
@@ -143,9 +142,7 @@ public class ClientAddServiceImpl implements ClientAddService {
 //                    sourcePO.getId()));
         } else if ("130019".equals(jsInfo.getString("code"))) {
             //重复客资，给邀约推送消息
-            ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(jsInfo.getString("data"),
-                    DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
-                    DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
+            ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(jsInfo.getString("data"));
             if (info == null || NumUtil.isNull(info.getAppointorId())) {
                 throw new RException("存在重复客资");
             }
@@ -244,9 +241,7 @@ public class ClientAddServiceImpl implements ClientAddService {
 //                    companyPO.getOvertime(), companyPO.getKzInterval(), sourcePO.getId()));
         } else if ("130019".equals(jsInfo.getString("code"))) {
             //重复客资，给邀约推送消息
-            ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(jsInfo.getString("data"),
-                    DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
-                    DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
+            ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(jsInfo.getString("data"));
             if (info == null || NumUtil.isNull(info.getAppointorId())) {
                 throw new RException("存在重复客资");
             }
@@ -369,9 +364,7 @@ public class ClientAddServiceImpl implements ClientAddService {
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if ("130019".equals(jsInfo.getString("code"))) {
             //重复客资，给邀约推送消息
-            ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(jsInfo.getString("data"),
-                    DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
-                    DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
+            ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(jsInfo.getString("data"));
             if (info == null || NumUtil.isNull(info.getAppointorId())) {
                 throw new RException("存在重复客资");
             }
@@ -570,9 +563,7 @@ public class ClientAddServiceImpl implements ClientAddService {
      */
     public void pushRepeatMsg(String kzId, StaffPO staffPO) {
         //重复客资，给邀约推送消息
-        ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(kzId,
-                DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
-                DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
+        ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(kzId);
         if (info == null || NumUtil.isNull(info.getAppointorId())) {
             throw new RException("存在重复客资");
         }

@@ -97,9 +97,7 @@ public class ClientTrackServiceImpl implements ClientTrackService {
                 if (!sf.isEmpty()) {
                     ClientGoEasyDTO info = null;
                     if (sf.getNum() == 1) {
-                        info = clientInfoDao.getClientGoEasyDTOById(sf.getKzId(),
-                                DBSplitUtil.getInfoTabName(opera.getCompanyId()),
-                                DBSplitUtil.getDetailTabName(opera.getCompanyId()));
+                        info = clientInfoDao.getClientGoEasyDTOById(sf.getKzId());
                     }
                     GoEasyUtil.pushRemove(opera.getCompanyId(), sf.getStaffId(), info, sf.getNum(), type, opera.getNickName(), newsDao, staffDao);
                 }
@@ -116,7 +114,7 @@ public class ClientTrackServiceImpl implements ClientTrackService {
      * @return
      */
     private List<StaffNumVO> getOnwerStaffList(String type, int companyId, String kzIds) {
-        return clientDao.getOnwerInfoNumByIds(DBSplitUtil.getInfoTabName(companyId), kzIds, " info." + type + " ", companyId);
+        return clientDao.getOnwerInfoNumByIds(kzIds, " info." + type + " ", companyId);
     }
 
     /**
@@ -204,16 +202,14 @@ public class ClientTrackServiceImpl implements ClientTrackService {
             for (StaffPushDTO staff : staffList) {
                 if (infoList.size() > 0) {
                     // 客资修改最后消息推送时间为当前系统时间，绑定客服，修改状态为分配中
-                    int updateRstNum = clientInfoDao.updateClientInfoWhenAllot(companyId,
-                            DBSplitUtil.getInfoTabName(companyId), infoList.get(0),
+                    int updateRstNum = clientInfoDao.updateClientInfoWhenAllot(companyId, infoList.get(0),
                             ClientStatusConst.KZ_CLASS_NEW, ClientStatusConst.BE_ALLOTING, staff.getStaffId(),
                             staff.getGroupId(), ClientConst.ALLOT_HANDLER);
                     if (1 != updateRstNum) {
                         throw new RException(ExceptionEnum.INFO_STATUS_EDIT_ERROR);
                     }
                     // 客资修改客资的客服组ID，和客服组名称
-                    clientInfoDao.updateClientDetailWhenAllot(companyId, DBSplitUtil.getDetailTabName(companyId),
-                            infoList.get(0), staff.getStaffName(), staff.getGroupName());
+                    clientInfoDao.updateClientDetailWhenAllot(companyId, infoList.get(0), staff.getStaffName(), staff.getGroupName());
                     staff.doAddKzIdsWill(infoList.get(0));
                     infoList.remove(0);
                 } else {
@@ -244,17 +240,16 @@ public class ClientTrackServiceImpl implements ClientTrackService {
                     operaName);
 
             // 记录分配日志
-            clientAllotLogDao.addClientAllogLog(DBSplitUtil.getAllotLogTabName(companyId), allotLog);
+            clientAllotLogDao.addClientAllogLog(allotLog);
 
             allogIdsArr[i] = String.valueOf(allotLog.getId());
 
             // 客资日志记录
             clientLogDao
-                    .addInfoLog(DBSplitUtil.getInfoLogTabName(companyId),
-                            new ClientLogPO(
-                                    kzIdsArr[i], ClientLogConst.getAllotLog(appoint.getGroupName(),
-                                    appoint.getStaffName(), operaId, operaName),
-                                    ClientLogConst.INFO_LOGTYPE_ALLOT, companyId));
+                    .addInfoLog(new ClientLogPO(
+                            kzIdsArr[i], ClientLogConst.getAllotLog(appoint.getGroupName(),
+                            appoint.getStaffName(), operaId, operaName),
+                            ClientLogConst.INFO_LOGTYPE_ALLOT, companyId));
         }
 
         int overTime = companyDao.getById(companyId).getOverTime();
@@ -291,7 +286,7 @@ public class ClientTrackServiceImpl implements ClientTrackService {
     @Override
     public void allotNotArriveShop(String kzId, StaffPO staffPO) {
         //修改客资状态
-        List<ClientPushDTO> clientPushDTOS = clientInfoDao.getKzIdExists(kzId, staffPO.getCompanyId(), DBSplitUtil.getInfoTabName(staffPO.getCompanyId()));
+        List<ClientPushDTO> clientPushDTOS = clientInfoDao.getKzIdExists(kzId, staffPO.getCompanyId());
         if (CollectionUtils.isEmpty(clientPushDTOS)) {
             throw new RException(ExceptionEnum.ALLOTED_ERROR);
         }
@@ -299,8 +294,8 @@ public class ClientTrackServiceImpl implements ClientTrackService {
         if (null == clientStatusPO) {
             throw new RException(ExceptionEnum.UNKNOW_ERROR);
         }
-        clientInfoDao.updateClientInfoStatus(staffPO.getCompanyId(), DBSplitUtil.getInfoTabName(staffPO.getCompanyId()), kzId, clientStatusPO.getClassId(), ClientStatusConst.NOT_COME);
-        clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(staffPO.getCompanyId()), new ClientLogPO(kzId, staffPO.getId(), staffPO.getNickName()
+        clientInfoDao.updateClientInfoStatus(staffPO.getCompanyId(), kzId, clientStatusPO.getClassId(), ClientStatusConst.NOT_COME);
+        clientLogDao.addInfoLog(new ClientLogPO(kzId, staffPO.getId(), staffPO.getNickName()
                 , ClientLogConst.INFO_LOG_NOT_ARRIVE_SHOP, ClientLogConst.INFO_LOGTYPE_EDIT, staffPO.getCompanyId()));
     }
 }

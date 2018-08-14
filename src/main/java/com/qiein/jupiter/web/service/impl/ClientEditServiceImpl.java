@@ -121,9 +121,7 @@ public class ClientEditServiceImpl implements ClientEditService {
         if ("100000".equals(jsInfo.getString("code"))) {
             String flag = JsonFmtUtil.strContentToJsonObj(addRstStr).getString("flag");
             if (StringUtil.isNotEmpty(flag) && Boolean.parseBoolean(flag)) {
-                ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(clientVO.getKzId(),
-                        DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
-                        DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
+                ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(clientVO.getKzId());
                 if (NumUtil.isNull(info.getAppointorId())) {
                     return;
                 }
@@ -134,9 +132,7 @@ public class ClientEditServiceImpl implements ClientEditService {
 
         } else if ("130019".equals(jsInfo.getString("code"))) {
             //重复客资，给邀约推送消息
-            ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(jsInfo.getString("data"),
-                    DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
-                    DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
+            ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(jsInfo.getString("data"));
             if (info == null || NumUtil.isNull(info.getAppointorId())) {
                 throw new RException("存在重复客资");
             }
@@ -224,9 +220,7 @@ public class ClientEditServiceImpl implements ClientEditService {
         String addRstStr = crmBaseApi.doService(reqContent, "clientEditDsyyHs");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if ("100000".equals(jsInfo.getString("code"))) {
-            ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(clientVO.getKzId(),
-                    DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
-                    DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
+            ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(clientVO.getKzId());
             if (ClientStatusConst.ONLINE_SUCCESS == clientVO.getYyRst()) {
                 // 成功订单爆彩
                 StaffDetailVO appoint = staffDao.getStaffDetailVO(info.getAppointorId(), staffPO.getCompanyId());
@@ -254,9 +248,7 @@ public class ClientEditServiceImpl implements ClientEditService {
             }
         } else if ("130019".equals(jsInfo.getString("code"))) {
             //重复客资，给邀约推送消息
-            ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(jsInfo.getString("data"),
-                    DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
-                    DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
+            ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(jsInfo.getString("data"));
             if (info == null || NumUtil.isNull(info.getAppointorId())) {
                 throw new RException("存在重复客资");
             }
@@ -334,9 +326,7 @@ public class ClientEditServiceImpl implements ClientEditService {
         String addRstStr = crmBaseApi.doService(reqContent, "clientEditMsjdHs");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if ("100000".equals(jsInfo.getString("code"))) {
-            ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(clientVO.getKzId(),
-                    DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
-                    DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
+            ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(clientVO.getKzId());
             if (ClientStatusConst.BE_SUCCESS == clientVO.getYyRst()) {
                 // 成功订单爆彩
                 StaffDetailVO appoint = staffDao.getStaffDetailVO(info.getAppointorId(), staffPO.getCompanyId());
@@ -361,9 +351,7 @@ public class ClientEditServiceImpl implements ClientEditService {
             }
         } else if ("130019".equals(jsInfo.getString("code"))) {
             //重复客资，给邀约推送消息
-            ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(jsInfo.getString("data"),
-                    DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
-                    DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
+            ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(jsInfo.getString("data"));
             if (info == null || NumUtil.isNull(info.getAppointorId())) {
                 throw new RException("存在重复客资");
             }
@@ -462,9 +450,7 @@ public class ClientEditServiceImpl implements ClientEditService {
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if ("130019".equals(jsInfo.getString("code"))) {
             //重复客资，给邀约推送消息
-            ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(jsInfo.getString("data"),
-                    DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
-                    DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
+            ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(jsInfo.getString("data"));
             if (info == null || NumUtil.isNull(info.getAppointorId())) {
                 throw new RException("存在重复客资");
             }
@@ -505,9 +491,7 @@ public class ClientEditServiceImpl implements ClientEditService {
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if ("130019".equals(jsInfo.getString("code"))) {
             //重复客资，给邀约推送消息
-            ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(jsInfo.getString("data"),
-                    DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
-                    DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
+            ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(jsInfo.getString("data"));
             if (info == null || NumUtil.isNull(info.getAppointorId())) {
                 throw new RException("存在重复客资");
             }
@@ -528,13 +512,13 @@ public class ClientEditServiceImpl implements ClientEditService {
     @Transactional(rollbackFor = Exception.class)
     public void editFastMemo(String kzId, String memo, StaffPO staffPO) {
         //修改备注
-        clientDao.editClientMemoLabel(DBSplitUtil.getDetailTabName(staffPO.getCompanyId()), staffPO.getCompanyId(), kzId, memo);
+        clientDao.editClientMemoLabel(staffPO.getCompanyId(), kzId, memo);
         memo = "快捷备注：" + memo;
         //添加客资操作日志
-        clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(staffPO.getCompanyId()), new ClientLogPO(kzId,
+        clientLogDao.addInfoLog(new ClientLogPO(kzId,
                 staffPO.getId(), staffPO.getNickName(), memo, ClientLogConst.INFO_LOGTYPE_EDIT, staffPO.getCompanyId()));
         //添加邀约记录
-        clientLogDao.addInvitationLog(DBSplitUtil.getInvitaLogTabName(staffPO.getCompanyId()), kzId, memo, staffPO.getId(), staffPO.getCompanyId());
+        clientLogDao.addInvitationLog(kzId, memo, staffPO.getId(), staffPO.getCompanyId());
     }
 
 

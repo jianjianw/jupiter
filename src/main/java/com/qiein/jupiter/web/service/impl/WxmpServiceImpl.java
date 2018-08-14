@@ -29,8 +29,7 @@ public class WxmpServiceImpl implements WxmpService {
     @Override
     public PageInfo<ClientVO> searchClient(int companyId, String searchKey, int page, int size) {
         PageHelper.startPage(page, size);
-        List<ClientVO> searchList = wxmpClientDao.searchClient(DBSplitUtil.getInfoTabName(companyId),
-                DBSplitUtil.getDetailTabName(companyId), companyId, searchKey);
+        List<ClientVO> searchList = wxmpClientDao.searchClient(  companyId, searchKey);
         return new PageInfo<> (searchList);
     }
 
