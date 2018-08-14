@@ -606,6 +606,7 @@ public class ClientPushServiceImpl implements ClientPushService {
         }
         //修改客资最后推送时间
         clientInfoDao.updateLastPushTime(companyId, DBSplitUtil.getInfoTabName(companyId), kzId);
+
         for (StaffPushDTO sf : yyList) {
             GoEasyUtil.pushClientReceive(companyId, sf.getStaffId(), infoDTO, newsDao, staffDao, webSocketMsgUtil);
         }

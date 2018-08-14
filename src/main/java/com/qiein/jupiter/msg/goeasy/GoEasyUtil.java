@@ -938,6 +938,9 @@ public class GoEasyUtil {
         if (NumUtil.isNull(staffId) || NumUtil.isNull(companyId) || info == null) {
             return;
         }
+        if (newsDao.getNewsCountByType(staffId, companyId, info.getKzId()) > 0) {
+            return;
+        }
         String head = "您有新的客资待领取";
         //goeasy消息
 //        pushReceive(companyId, staffId, head, info);
@@ -958,9 +961,7 @@ public class GoEasyUtil {
         sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("<br/>");
         sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("<br/>");
         DingMsgSendUtil.sendDingMsg(sb.toString(), companyId, staffId, staffDao);
-        if (newsDao.getNewsCountByType(staffId, companyId, info.getKzId()) == 0) {
-            newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_RECEIVE, head, null, info.getKzId(), staffId, companyId));
-        }
+        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_RECEIVE, head, null, info.getKzId(), staffId, companyId));
     }
 
 }
