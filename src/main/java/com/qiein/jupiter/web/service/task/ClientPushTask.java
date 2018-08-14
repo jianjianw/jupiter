@@ -44,10 +44,10 @@ public class ClientPushTask {
     @Scheduled(initialDelay = 1000, fixedDelay = 10 * 1000)
     public void taskPushLp() {
         //如果是测试环境，就不再推送
-//        if (active.equals("dev")) {
-//            log.info("测试环境，暂不推送...");
-//            return;
-//        }
+        if (active.equals("dev")) {
+            log.info("测试环境，暂不推送...");
+            return;
+        }
         //先判断下队列是否为空,只有队列为空，才去数据库找客资推送
         if (!lpPushQueue.isEmpty()) {
             log.info("客资队列不为空，暂不推送...");

@@ -109,6 +109,10 @@ public class ClientGoEasyDTO implements Serializable {
      * 已收金额
      */
     private int stayAmount;
+    /**
+     * 上次推送时间
+     */
+    private int lastPushTime;
 
     public String getKzQq() {
         return kzQq;
@@ -300,5 +304,13 @@ public class ClientGoEasyDTO implements Serializable {
 
     public void setStayAmount(int stayAmount) {
         this.stayAmount = stayAmount;
+    }
+
+    public int getLastPushTime() {
+        return lastPushTime;
+    }
+
+    public void setLastPushTime(int lastPushTime) {
+        this.lastPushTime = lastPushTime;
     }
 }
