@@ -168,10 +168,10 @@ public class ReportsServiceImpl implements ReportService {
         DictionaryPO dictionaryPO=new DictionaryPO();
         dictionaryPO.setDicType("hj");
         dictionaryPO.setDicName("合计");
-        list.add(dictionaryPO);
         list.addAll(dictionaryDao.getInvaildReasons(companyId, DictionaryConstant.INVALID_REASON));
-        invalidReasonReportsVO.setInvalidReasons(list);
         invalidReasonReportsVO.setInvalidReasonKz(invalidReasonReportsDao.getInvalidReasonReports(list,DBSplitUtil.getTable(TableEnum.info,companyId),DBSplitUtil.getTable(TableEnum.detail,companyId),companyId,sourceIds,startTime,endTime,typeIds));
+        list.add(dictionaryPO);
+        invalidReasonReportsVO.setInvalidReasons(list);
         return invalidReasonReportsVO;
     }
 }
