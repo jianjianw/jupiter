@@ -9,7 +9,6 @@ import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.ClientInfoDao;
 import com.qiein.jupiter.web.dao.DictionaryDao;
-import com.qiein.jupiter.web.dao.GroupDao;
 import com.qiein.jupiter.web.dao.GroupStaffDao;
 import com.qiein.jupiter.web.entity.dto.ClientLogDTO;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
@@ -27,6 +26,7 @@ import com.github.pagehelper.PageHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ReportsServiceImpl implements ReportService {
@@ -50,7 +50,7 @@ public class ReportsServiceImpl implements ReportService {
     @Autowired
     private InvalidReasonReportsDao invalidReasonReportsDao;
     @Autowired
-    private DsyyStatusReportsDao dsyyStatusReportsDao;
+    private ZjskzOfMonthDao zjskzOfMonthDao;
 
     /**
      * 修改联系方式日志
@@ -173,6 +173,17 @@ public class ReportsServiceImpl implements ReportService {
         list.addAll(DicList);
         invalidReasonReportsVO.setInvalidReasons(list);
         return invalidReasonReportsVO;
+    }
+
+    /**
+     * 获取转介绍月底客资报表
+     */
+    public ZjskzOfMonthVO ZjskzOfMonth(Integer companyId,String month,String type,String sourceIds){
+        ZjskzOfMonthVO zjskzOfMonthVO= new ZjskzOfMonthVO();
+        List<Map<String,Object>> list=zjskzOfMonthDao.getDayOfMonth(Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[0]),Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[1]),DBSplitUtil.getTable(TableEnum.info,companyId));
+        zjskzOfMonthVO.setHeadList(list);
+        zjskzOfMonthVO.setList(zjskzOfMonthDao.getzjskzOfMonth(list,month.replace(CommonConstant.ROD_SEPARATOR,CommonConstant.FILE_SEPARATOR),companyId,DBSplitUtil.getTable(TableEnum.info,companyId),sourceIds,type ));
+        return zjskzOfMonthVO;
     }
 
     @Override

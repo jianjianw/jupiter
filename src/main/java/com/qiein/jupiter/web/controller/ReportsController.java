@@ -398,4 +398,11 @@ public class ReportsController extends BaseController {
     public ResultInfo invalidReasonReports(@RequestParam String sourceIds,@RequestParam String startTime,@RequestParam String endTime,@RequestParam String typeIds){
         return ResultInfoUtil.success(reportService.invalidReasonReports(getCurrentLoginStaff().getCompanyId(),sourceIds,startTime,endTime,typeIds));
     }
+    /**
+     * 转介绍月底客资报表
+     */
+    @GetMapping("/zjs_kz_of_month")
+    public ResultInfo ZjskzOfMonth(@RequestParam String month,@RequestParam String type,@RequestParam String srcIds){
+        return ResultInfoUtil.success(reportService.ZjskzOfMonth(getCurrentLoginStaff().getCompanyId(),month,type,srcIds));
+    }
 }
