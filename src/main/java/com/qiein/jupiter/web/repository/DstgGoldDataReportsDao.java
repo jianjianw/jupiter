@@ -149,7 +149,8 @@ public class DstgGoldDataReportsDao {
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(),
                         reportsParamVO.getStart(),
-                        reportsParamVO.getEnd() });
+                        reportsParamVO.getEnd(),
+                        dsInvalidVO.getDsDdStatus()});
 
         // 处理数据
         List<DstgGoldDataReportsVO> dstgGoldDataReportsBak = new LinkedList<>();
