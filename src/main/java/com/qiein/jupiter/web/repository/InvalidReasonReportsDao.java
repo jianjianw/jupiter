@@ -74,7 +74,7 @@ public class InvalidReasonReportsDao {
             hjsql.append(" AND info.CREATETIME > "+startTime);
             hjsql.append(" AND info.CREATETIME < "+endTime);
         }
-        hjsql.append( " where info.SOURCEID IN (select ID from hm_crm_source where COMPANYID=? and TYPEID IN (1,2)");
+        hjsql.append( " where info.SOURCEID IN (select ID from hm_crm_source src where COMPANYID=? and TYPEID IN (1,2)");
         if(StringUtil.isNotEmpty(sourceIds)){
             hjsql.append(" AND src.ID IN ("+sourceIds+")");
         }
@@ -93,7 +93,7 @@ public class InvalidReasonReportsDao {
                 hjsql.append(" AND info.CREATETIME > "+startTime);
                 hjsql.append(" AND info.CREATETIME < "+endTime);
             }
-            hjsql.append(" WHERE info.SOURCEID IN (select ID from hm_crm_source where COMPANYID="+companyId+" and TYPEID IN (1,2)");
+            hjsql.append(" WHERE info.SOURCEID IN (select ID from hm_crm_source src  where COMPANYID="+companyId+" and TYPEID IN (1,2)");
             if(StringUtil.isNotEmpty(sourceIds)){
                 hjsql.append(" AND src.ID IN ("+sourceIds+")");
             }
