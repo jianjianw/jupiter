@@ -170,8 +170,8 @@ public class ReportsServiceImpl implements ReportService {
         dictionaryPO.setDicName("合计");
         List<DictionaryPO> DicList=dictionaryDao.getInvaildReasons(companyId, DictionaryConstant.INVALID_REASON);
         invalidReasonReportsVO.setInvalidReasonKz(invalidReasonReportsDao.getInvalidReasonReports(DicList,DBSplitUtil.getTable(TableEnum.info,companyId),DBSplitUtil.getTable(TableEnum.detail,companyId),companyId,sourceIds,startTime,endTime,typeIds));
-        list.addAll(DicList);
         list.add(dictionaryPO);
+        list.addAll(DicList);
         invalidReasonReportsVO.setInvalidReasons(list);
         return invalidReasonReportsVO;
     }
