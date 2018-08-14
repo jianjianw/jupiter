@@ -113,10 +113,6 @@ public class DstgZxStyleReportsDao {
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(),
                         reportsParamVO.getStart(),
-                        reportsParamVO.getEnd(),
-                        reportsParamVO.getStart(),
-                        reportsParamVO.getEnd(),
-                        reportsParamVO.getStart(),
                         reportsParamVO.getEnd()});
 
         List<DstgZxStyleReportsVO> dstgGoldDataReportsBak = new LinkedList<>();
@@ -153,10 +149,6 @@ public class DstgZxStyleReportsDao {
         sb.append(" group by detail.ZXSTYLE");
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(),
-                        reportsParamVO.getStart(),
-                        reportsParamVO.getEnd(),
-                        reportsParamVO.getStart(),
-                        reportsParamVO.getEnd(),
                         reportsParamVO.getStart(),
                         reportsParamVO.getEnd(),
                         dsInvalidVO.getDsDdStatus() });
@@ -196,11 +188,8 @@ public class DstgZxStyleReportsDao {
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(),
                         reportsParamVO.getStart(),
-                        reportsParamVO.getEnd(),
-                        reportsParamVO.getStart(),
-                        reportsParamVO.getEnd(),
-                        reportsParamVO.getStart(),
-                        reportsParamVO.getEnd()});
+                        reportsParamVO.getEnd()
+                       });
 
 
         // 处理数据
@@ -236,10 +225,6 @@ public class DstgZxStyleReportsDao {
         sb.append(" group by detail.ZXSTYLE");
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(),
-                        reportsParamVO.getStart(),
-                        reportsParamVO.getEnd(),
-                        reportsParamVO.getStart(),
-                        reportsParamVO.getEnd(),
                         reportsParamVO.getStart(),
                         reportsParamVO.getEnd()});
 
@@ -278,10 +263,6 @@ public class DstgZxStyleReportsDao {
         sb.append(" group by detail.ZXSTYLE");
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(),
-                        reportsParamVO.getStart(),
-                        reportsParamVO.getEnd(),
-                        reportsParamVO.getStart(),
-                        reportsParamVO.getEnd(),
                         reportsParamVO.getStart(),
                         reportsParamVO.getEnd()});
 
@@ -333,10 +314,6 @@ public class DstgZxStyleReportsDao {
 
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(),
-                        reportsParamVO.getStart(),
-                        reportsParamVO.getEnd(),
-                        reportsParamVO.getStart(),
-                        reportsParamVO.getEnd(),
                         reportsParamVO.getStart(),
                         reportsParamVO.getEnd()});
 
