@@ -68,15 +68,15 @@ public class InvalidReasonReportsDao {
         hjsql.append("SELECT '合计' SRCNAME,'' SRCIMG");
         hjsql.append(",(SELECT count(detail.ID) FROM " + tableDetail + " detail LEFT JOIN " + tableInfo + " info ON detail.KZID=info.KZID " );
         if(StringUtil.isNotEmpty(typeIds)){
-            sql.append(" AND info.TYPEID IN ("+typeIds+")");
+            hjsql.append(" AND info.TYPEID IN ("+typeIds+")");
         }
         if(StringUtil.isNotEmpty(startTime)&&StringUtil.isNotEmpty(endTime)){
-            sql.append(" AND info.CREATETIME > "+startTime);
-            sql.append(" AND info.CREATETIME < "+endTime);
+            hjsql.append(" AND info.CREATETIME > "+startTime);
+            hjsql.append(" AND info.CREATETIME < "+endTime);
         }
         hjsql.append( " where info.SOURCEID IN (select ID from hm_crm_source where COMPANYID=? and TYPEID IN (1,2)");
         if(StringUtil.isNotEmpty(sourceIds)){
-            sql.append(" AND src.ID IN ("+sourceIds);
+            hjsql.append(" AND src.ID IN ("+sourceIds);
         }
         hjsql.append(") AND(");
         hjsql.append("detail.INVALIDLABEL='" + list.get(0).getDicName() + "'");
@@ -87,15 +87,15 @@ public class InvalidReasonReportsDao {
         for (DictionaryPO dictionaryPO : list) {
             hjsql.append(",(SELECT count(detail.ID) FROM " + tableDetail + " detail LEFT JOIN " + tableInfo + " info ON detail.KZID=info.KZID " );
             if(StringUtil.isNotEmpty(typeIds)){
-                sql.append(" AND info.TYPEID IN ("+typeIds+")");
+                hjsql.append(" AND info.TYPEID IN ("+typeIds+")");
             }
             if(StringUtil.isNotEmpty(startTime)&&StringUtil.isNotEmpty(endTime)){
-                sql.append(" AND info.CREATETIME > "+startTime);
-                sql.append(" AND info.CREATETIME < "+endTime);
+                hjsql.append(" AND info.CREATETIME > "+startTime);
+                hjsql.append(" AND info.CREATETIME < "+endTime);
             }
             hjsql.append(" WHERE info.SOURCEID IN (select ID from hm_crm_source where COMPANYID="+companyId+" and TYPEID IN (1,2)");
             if(StringUtil.isNotEmpty(sourceIds)){
-                sql.append(" AND src.ID IN ("+sourceIds+")");
+                hjsql.append(" AND src.ID IN ("+sourceIds+")");
             }
             hjsql.append(") AND detail.INVALIDLABEL ='" + dictionaryPO.getDicName() + "') " + dictionaryPO.getDicType());
         }
