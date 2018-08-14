@@ -108,7 +108,7 @@ public class DstgZxStyleReportsDao {
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
         sb =  getCommonsql(sb,infoTabName,detailTabName);
-        sb.append(" and (info.CREATETIME BETWEEN ? AND ? or info.COMESHOPTIME BETWEEN ? AND ? or info.SUCCESSTIME BETWEEN ? AND ?)");
+        sb.append(" and info.CREATETIME BETWEEN ? AND ? ");
         sb.append(" group by detail.ZXSTYLE");
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(),
@@ -148,7 +148,7 @@ public class DstgZxStyleReportsDao {
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
         sb = getCommonsql(sb, infoTabName, detailTabName);
-        sb.append(" and (info.CREATETIME BETWEEN ? AND ? or info.COMESHOPTIME BETWEEN ? AND ? or info.SUCCESSTIME BETWEEN ? AND ?)");
+        sb.append(" and info.CREATETIME BETWEEN ? AND ?");
         sb.append(" AND INSTR( ?, CONCAT(',',info.STATUSID + '',',')) != 0");
         sb.append(" group by detail.ZXSTYLE");
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
@@ -190,7 +190,7 @@ public class DstgZxStyleReportsDao {
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
         sb = getCommonsql(sb, infoTabName, detailTabName);
-        sb.append(" and (info.CREATETIME BETWEEN ? AND ? or info.COMESHOPTIME BETWEEN ? AND ? or info.SUCCESSTIME BETWEEN ? AND ?)");
+        sb.append(" and info.CREATETIME BETWEEN ? AND ?");
         sb.append(" and info.CLASSID = 1 and info.STATUSID = 98 ");
         sb.append(" group by detail.ZXSTYLE");
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
@@ -231,7 +231,7 @@ public class DstgZxStyleReportsDao {
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
         sb = getCommonsql(sb, infoTabName, detailTabName);
-        sb.append(" and (info.CREATETIME BETWEEN ? AND ? or info.COMESHOPTIME BETWEEN ? AND ? or info.SUCCESSTIME BETWEEN ? AND ?)");
+        sb.append(" and info.CREATETIME BETWEEN ? AND ?");
         sb.append(" and info.CLASSID = 6 and info.STATUSID = 99");
         sb.append(" group by detail.ZXSTYLE");
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
@@ -273,7 +273,7 @@ public class DstgZxStyleReportsDao {
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
         sb = getCommonsql(sb, infoTabName, detailTabName);
-        sb.append(" and (info.CREATETIME BETWEEN ? AND ? or info.COMESHOPTIME BETWEEN ? AND ? or info.SUCCESSTIME BETWEEN ? AND ?)");
+        sb.append(" and info.CREATETIME BETWEEN ? AND ?");
         sb.append(" and info.CLASSID = 1 and info.STATUSID = 0");
         sb.append(" group by detail.ZXSTYLE");
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
@@ -318,7 +318,7 @@ public class DstgZxStyleReportsDao {
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
         sb = getCommonsql(sb, infoTabName, detailTabName);
-        sb.append(" and (info.CREATETIME BETWEEN ? AND ? or info.COMESHOPTIME BETWEEN ? AND ? or info.SUCCESSTIME BETWEEN ? AND ?)");
+        sb.append(" and info.CREATETIME BETWEEN ? AND ?");
         if(StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidStatus()) && StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidLevel())){
             sb.append(" and (info.STATUSID in("+ dsInvalidVO.getDsInvalidStatus()+") or");
             sb.append("   dtl.YXLEVEL IN("+ dsInvalidVO.getDsInvalidLevel()  +") )");
