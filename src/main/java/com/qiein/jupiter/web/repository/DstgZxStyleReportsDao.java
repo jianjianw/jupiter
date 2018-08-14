@@ -321,13 +321,13 @@ public class DstgZxStyleReportsDao {
         sb.append(" and info.CREATETIME BETWEEN ? AND ?");
         if(StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidStatus()) && StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidLevel())){
             sb.append(" and (info.STATUSID in("+ dsInvalidVO.getDsInvalidStatus()+") or");
-            sb.append("   dtl.YXLEVEL IN("+ dsInvalidVO.getDsInvalidLevel()  +") )");
+            sb.append("   detail.YXLEVEL IN("+ dsInvalidVO.getDsInvalidLevel()  +") )");
         }
         if(StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidStatus()) && StringUtil.isEmpty(dsInvalidVO.getDsInvalidLevel())){
             sb.append(" and info.STATUSID in ("+ dsInvalidVO.getDsInvalidStatus()+")");
         }
         if(StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidLevel()) && StringUtil.isEmpty(dsInvalidVO.getDsInvalidStatus())){
-            sb.append(" and dtl.YXLEVEL IN("+ dsInvalidVO.getDsInvalidLevel()  +") ");
+            sb.append(" and detail.YXLEVEL IN("+ dsInvalidVO.getDsInvalidLevel()  +") ");
         }
         sb.append(" group by detail.ZXSTYLE");
 
