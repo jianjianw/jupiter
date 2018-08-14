@@ -182,7 +182,7 @@ public class ReportsServiceImpl implements ReportService {
         ZjskzOfMonthVO zjskzOfMonthVO= new ZjskzOfMonthVO();
         List<Map<String,Object>> list=zjskzOfMonthDao.getDayOfMonth(Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[0]),Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[1]),DBSplitUtil.getTable(TableEnum.info,companyId));
         zjskzOfMonthVO.setHeadList(list);
-        zjskzOfMonthVO.setList(zjskzOfMonthDao.getzjskzOfMonth(list,month.replace(CommonConstant.ROD_SEPARATOR,CommonConstant.FILE_SEPARATOR),companyId,DBSplitUtil.getTable(TableEnum.info,companyId),String ));
+        zjskzOfMonthVO.setList(zjskzOfMonthDao.getzjskzOfMonth(list,month.replace(CommonConstant.ROD_SEPARATOR,CommonConstant.FILE_SEPARATOR),companyId,DBSplitUtil.getTable(TableEnum.info,companyId),sourceIds,type ));
         return zjskzOfMonthVO;
     }
 }

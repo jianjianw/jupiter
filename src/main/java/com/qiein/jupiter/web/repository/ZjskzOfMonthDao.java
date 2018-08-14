@@ -49,21 +49,50 @@ public class ZjskzOfMonthDao {
      * 获取报表数据
      * @return
      */
-    public List<Map<String, Object>> getzjskzOfMonth(List<Map<String, Object>> dayList,String month,Integer companyId,String tableInfo,String sourceIds){
+    public List<Map<String, Object>> getzjskzOfMonth(List<Map<String, Object>> dayList,String month,Integer companyId,String tableInfo,String sourceIds,String type){
         StringBuilder sql=new StringBuilder();
-        sql.append("SELECT src.SRCNAME,");
-        sql.append("(select COUNT(info.ID) from "+tableInfo+" info where info.SOURCEID=src.ID AND FROM_UNIXTIME(CREATETIME, '%Y/%m')='"+month+"') hj,  ");
+        sql.append("SELECT src.SRCNAME srcName,");
+        sql.append("(select COUNT(info.ID) from "+tableInfo+" info where info.SOURCEID=src.ID AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m')='"+month+"') hj,  ");
+
         for(Map<String,Object> day:dayList){
-            sql.append("(select count(info.ID) from "+tableInfo+" info where info.SOURCEID=src.ID AND FROM_UNIXTIME(CREATETIME, '%Y/%m/%d')='"+day.get("day")+"') "+day.get("dayKey")+",");
+            sql.append("(select count(info.ID) from "+tableInfo+" info where info.SOURCEID=src.ID AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d')='"+day.get("day")+"') "+day.get("dayKey")+",");
         }
-        sql.append("src.SRCIMG ");
+        sql.append("src.SRCIMG srcImg ");
         sql.append("FROM hm_crm_source src WHERE src.COMPANYID = ? AND TYPEID IN (3, 4, 5) ");
         if(StringUtil.isNotEmpty(sourceIds)){
             sql.append("AND src.ID IN ("+sourceIds+")");
         }
-        System.out.println(sql.toString());
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{companyId});
+        String sqlString=sql.toString();
+        //入店量
+        if(type.equals("type")){
+            sqlString.replace("CREATETIME","ComeShopTime");
+        }
+        //成交量
+        if(type.equals("success")){
+            sqlString.replace("CREATETIME","SuccessTime");
+        }
+        System.out.println(sqlString);
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sqlString, new Object[]{companyId});
         StringBuilder hjsql=new StringBuilder();
-        return list;
+        hjsql.append("SELECT '合计' srcName ,");
+        hjsql.append("(select COUNT(info.ID) from "+tableInfo+" info where  FROM_UNIXTIME(info.CREATETIME, '%Y/%m')='"+month+"' AND info.SOURCEID IN (SELECT src.ID FROM hm_crm_source src WHERE COMPANYID = "+companyId+" AND TYPEID IN (3, 4, 5))) hj,  ");
+
+        for(Map<String,Object> day:dayList){
+            hjsql.append("(select count(info.ID) from "+tableInfo+" info where FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d')='"+day.get("day")+"' AND info.SOURCEID IN (SELECT src.ID FROM hm_crm_source src WHERE COMPANYID = "+companyId+" AND TYPEID IN (3, 4, 5))) "+day.get("dayKey")+",");
+        }
+        hjsql.append("'' srcImg ");
+        sqlString=hjsql.toString();
+        //入店量
+        if(type.equals("type")){
+            sqlString.replace("CREATETIME","ComeShopTime");
+        }
+        //成交量
+        if(type.equals("success")){
+            sqlString.replace("CREATETIME","SuccessTime");
+        }
+        System.out.println(sqlString);
+        List<Map<String, Object>> hjList = jdbcTemplate.queryForList(sqlString, new Object[]{});
+        hjList.addAll(list);
+        return hjList;
     }
 }
