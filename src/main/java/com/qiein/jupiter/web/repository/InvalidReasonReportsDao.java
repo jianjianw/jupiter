@@ -58,7 +58,7 @@ public class InvalidReasonReportsDao {
             }
             sql.append(" AND detail.INVALIDLABEL ='" + dictionaryPO.getDicName() + "') " + dictionaryPO.getDicType());
         }
-        sql.append(" FROM hm_crm_source src WHERE src.COMPANYID = ? AND src.TYPEID=1");
+        sql.append(" FROM hm_crm_source src WHERE src.COMPANYID = ? AND src.TYPEID IN (1,2)");
         if(StringUtil.isNotEmpty(sourceIds)){
             sql.append("AND src.ID IN ("+sourceIds+")");
         }
