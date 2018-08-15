@@ -754,13 +754,14 @@
         count(1) AS repeats
         FROM
         ${tempName} temp
-        LEFT JOIN  ${tableName} info  ON info.kzPhone = temp.KZPHONE
-        OR info.KZWECHAT = temp.KZWECHAT
-        OR info.KZQQ = temp.KZQQ
+        LEFT JOIN  ${tableName} info  ON info.KZID is not null
         WHERE
         info.KZID IS NOT NULL
         AND info.ISDEL = 0
         AND temp.OPERAID = #{staffId}
+        AND (( temp.KZPHONE = info.KZPHONE  or temp.KZPHONE = info.KZWECHAT or temp.KZPHONE = info.KZQQ)
+        or ( temp.KZWECHAT = info.KZPHONE  or temp.KZWECHAT = info.KZWECHAT or temp.KZWECHAT = info.KZQQ)
+        or ( temp.KZQQ = info.KZPHONE  or temp.KZQQ = info.KZWECHAT or temp.KZQQ = info.KZQQ))
         ) c
     </select>
 
