@@ -41,6 +41,58 @@ public class SourceOrderDataReportsVO {
      */
     private String roi;
 
+    /**
+     * 订单比例
+     */
+    private String orderRate;
+
+    /**
+     * 套系比例
+     */
+    private String txRate;
+
+    /**
+     * 订单方式
+     */
+    private String orderStyleRate;
+
+    /**
+     * 付款方式
+     */
+    private String payStyleRate;
+
+
+    public String getOrderRate() {
+        return orderRate;
+    }
+
+    public void setOrderRate(String orderRate) {
+        this.orderRate = orderRate;
+    }
+
+    public String getTxRate() {
+        return txRate;
+    }
+
+    public void setTxRate(String txRate) {
+        this.txRate = txRate;
+    }
+
+    public String getOrderStyleRate() {
+        return orderStyleRate;
+    }
+
+    public void setOrderStyleRate(String orderStyleRate) {
+        this.orderStyleRate = orderStyleRate;
+    }
+
+    public String getPayStyleRate() {
+        return payStyleRate;
+    }
+
+    public void setPayStyleRate(String payStyleRate) {
+        this.payStyleRate = payStyleRate;
+    }
 
     public String getSrcName() {
         return srcName;
