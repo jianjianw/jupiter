@@ -7,10 +7,7 @@ import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.entity.dto.ClientLogDTO;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
-import com.qiein.jupiter.web.entity.vo.DstgGoldDataReportsVO;
-import com.qiein.jupiter.web.entity.vo.DstgZxStyleReportsVO;
-import com.qiein.jupiter.web.entity.vo.DsyyStatusReportsVO;
-import com.qiein.jupiter.web.entity.vo.ReportsConditionVO;
+import com.qiein.jupiter.web.entity.vo.*;
 import com.qiein.jupiter.web.service.ReportService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -399,10 +396,17 @@ public class ReportsController extends BaseController {
         return ResultInfoUtil.success(reportService.invalidReasonReports(getCurrentLoginStaff().getCompanyId(),sourceIds,startTime,endTime,typeIds));
     }
     /**
-     * 转介绍月底客资报表
+     * 转介绍每月客资报表
      */
     @GetMapping("/zjs_kz_of_month")
     public ResultInfo ZjskzOfMonth(@RequestParam String month,@RequestParam String type,@RequestParam String srcIds){
         return ResultInfoUtil.success(reportService.ZjskzOfMonth(getCurrentLoginStaff().getCompanyId(),month,type,srcIds));
+    }
+    /**
+     * 转介绍每月客资报表内表详情
+     */
+    @GetMapping("/zjs_kz_of_month_in")
+    public ResultInfo ZjskzOfMonthIn( String sourceId, String month){
+        return ResultInfoUtil.success(reportService.ZjskzOfMonthIn(getCurrentLoginStaff().getCompanyId(), sourceId, month));
     }
 }

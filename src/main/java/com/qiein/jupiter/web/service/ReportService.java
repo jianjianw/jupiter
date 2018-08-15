@@ -3,11 +3,7 @@ package com.qiein.jupiter.web.service;
 import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.web.entity.dto.ClientLogDTO;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
-import com.qiein.jupiter.web.entity.vo.DstgGoldDataReportsVO;
-import com.qiein.jupiter.web.entity.vo.DstgZxStyleReportsVO;
-import com.qiein.jupiter.web.entity.vo.DsyyStatusReportsVO;
-import com.qiein.jupiter.web.entity.vo.InvalidReasonReportsVO;
-import com.qiein.jupiter.web.entity.vo.ZjskzOfMonthVO;
+import com.qiein.jupiter.web.entity.vo.*;
 
 import java.util.List;
 
@@ -81,4 +77,8 @@ public interface ReportService {
      * 获取转介绍月底客资报表
      */
     ZjskzOfMonthVO ZjskzOfMonth(Integer companyId, String month, String type, String sourceIds);
+    /**
+     * 转介绍每月客资报表内表详情
+     */
+    List<ZjskzOfMonthReportsVO> ZjskzOfMonthIn(Integer companyId, String sourceId, String month);
 }

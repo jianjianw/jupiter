@@ -131,20 +131,21 @@ public class ReportsServiceImpl implements ReportService {
 
     /**
      * 获取电商推广广告报表
+     *
      * @param start
      * @param end
      * @param companyId
-     * */
+     */
     @Override
     public List<DstgGoldDataReportsVO> getDstgAdReports(Integer start, Integer end, Integer companyId) {
-       //封装对应的参数
+        //封装对应的参数
         ReportsParamVO reportsParamVO = new ReportsParamVO();
         reportsParamVO.setStart(start);
         reportsParamVO.setEnd(end);
         reportsParamVO.setCompanyId(companyId);
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         //获取数据
-        List<DstgGoldDataReportsVO> dstgGoldDataReprots = dstgGoldDataReportsDao.getDstgGoldDataReprots(reportsParamVO,invalidConfig);
+        List<DstgGoldDataReportsVO> dstgGoldDataReprots = dstgGoldDataReportsDao.getDstgGoldDataReprots(reportsParamVO, invalidConfig);
         return dstgGoldDataReprots;
     }
 
@@ -157,22 +158,24 @@ public class ReportsServiceImpl implements ReportService {
         reportsParamVO.setCompanyId(companyId);
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         //获取数据
-        List<DstgZxStyleReportsVO> dstgZxStyleReportsVOS = zxStyleReportsDao.getDstgGoldDataReprots(reportsParamVO,invalidConfig);
+        List<DstgZxStyleReportsVO> dstgZxStyleReportsVOS = zxStyleReportsDao.getDstgGoldDataReprots(reportsParamVO, invalidConfig);
         return dstgZxStyleReportsVOS;
     }
+
     /**
      * 获取无效原因客资报表
+     *
      * @param companyId
      * @return
      */
-    public InvalidReasonReportsVO invalidReasonReports(Integer companyId,String sourceIds,String startTime,String endTime,String typeIds){
-        InvalidReasonReportsVO invalidReasonReportsVO=new InvalidReasonReportsVO();
-        List<DictionaryPO> list=new ArrayList<>();
-        DictionaryPO dictionaryPO=new DictionaryPO();
+    public InvalidReasonReportsVO invalidReasonReports(Integer companyId, String sourceIds, String startTime, String endTime, String typeIds) {
+        InvalidReasonReportsVO invalidReasonReportsVO = new InvalidReasonReportsVO();
+        List<DictionaryPO> list = new ArrayList<>();
+        DictionaryPO dictionaryPO = new DictionaryPO();
         dictionaryPO.setDicType("hj");
         dictionaryPO.setDicName("合计");
-        List<DictionaryPO> DicList=dictionaryDao.getInvaildReasons(companyId, DictionaryConstant.INVALID_REASON);
-        invalidReasonReportsVO.setInvalidReasonKz(invalidReasonReportsDao.getInvalidReasonReports(DicList,DBSplitUtil.getTable(TableEnum.info,companyId),DBSplitUtil.getTable(TableEnum.detail,companyId),companyId,sourceIds,startTime,endTime,typeIds));
+        List<DictionaryPO> DicList = dictionaryDao.getInvaildReasons(companyId, DictionaryConstant.INVALID_REASON);
+        invalidReasonReportsVO.setInvalidReasonKz(invalidReasonReportsDao.getInvalidReasonReports(DicList, DBSplitUtil.getTable(TableEnum.info, companyId), DBSplitUtil.getTable(TableEnum.detail, companyId), companyId, sourceIds, startTime, endTime, typeIds));
         list.add(dictionaryPO);
         list.addAll(DicList);
         invalidReasonReportsVO.setInvalidReasons(list);
@@ -182,17 +185,17 @@ public class ReportsServiceImpl implements ReportService {
     /**
      * 获取转介绍月底客资报表
      */
-    public ZjskzOfMonthVO ZjskzOfMonth(Integer companyId,String month,String type,String sourceIds){
-        ZjskzOfMonthVO zjskzOfMonthVO= new ZjskzOfMonthVO();
-        List<Map<String,Object>>  newList=zjskzOfMonthDao.getDayOfMonth(Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[0]),Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[1]),DBSplitUtil.getTable(TableEnum.info,companyId));
-        Map<String,Object> map=new HashMap<String, Object>();
-        map.put("dayName","合计");
-        map.put("dayKey","hj");
-        List<Map<String,Object>> list=new ArrayList<>();
+    public ZjskzOfMonthVO ZjskzOfMonth(Integer companyId, String month, String type, String sourceIds) {
+        ZjskzOfMonthVO zjskzOfMonthVO = new ZjskzOfMonthVO();
+        List<Map<String, Object>> newList = zjskzOfMonthDao.getDayOfMonth(Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[0]), Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[1]), DBSplitUtil.getTable(TableEnum.info, companyId));
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("dayName", "合计");
+        map.put("dayKey", "hj");
+        List<Map<String, Object>> list = new ArrayList<>();
         list.add(map);
         list.addAll(newList);
         zjskzOfMonthVO.setHeadList(list);
-        zjskzOfMonthVO.setList(zjskzOfMonthDao.getzjskzOfMonth(newList,month.replace(CommonConstant.ROD_SEPARATOR,CommonConstant.FILE_SEPARATOR),companyId,DBSplitUtil.getTable(TableEnum.info,companyId),sourceIds,type ));
+        zjskzOfMonthVO.setList(zjskzOfMonthDao.getzjskzOfMonth(newList, month.replace(CommonConstant.ROD_SEPARATOR, CommonConstant.FILE_SEPARATOR), companyId, DBSplitUtil.getTable(TableEnum.info, companyId), sourceIds, type));
         return zjskzOfMonthVO;
     }
 
@@ -205,5 +208,15 @@ public class ReportsServiceImpl implements ReportService {
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         List<DsyyStatusReportsVO> dsyyStatusReports = dsyyStatusReportsDao.getDsyyStatusReports(reportsParamVO, invalidConfig);
         return dsyyStatusReports;
+    }
+
+    /**
+     * 转介绍每月客资报表内表详情
+     */
+    public List<ZjskzOfMonthReportsVO> ZjskzOfMonthIn(Integer companyId, String sourceId, String month) {
+        List<Map<String, Object>> newList = zjskzOfMonthDao.getDayOfMonth(Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[0]), Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[1]), DBSplitUtil.getTable(TableEnum.info, companyId));
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
+        month=month.replace(CommonConstant.ROD_SEPARATOR,CommonConstant.FILE_SEPARATOR);
+        return zjskzOfMonthDao.ZjskzOfMonthIn(newList, companyId, month, sourceId,invalidConfig);
     }
 }
