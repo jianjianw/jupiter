@@ -824,8 +824,6 @@
         FROM ${tempName} temp
         WHERE
         temp.kzid in (select kzid from (select kzid,count(1) as client_count from ${tempName} a group by kzphone,kzqq,kzwechat having client_count> 1) result)
-        ) b
-        ON temp.kzid = b.kzid
         ) c
     </select>
 
