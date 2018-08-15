@@ -5,157 +5,220 @@ package com.qiein.jupiter.web.entity.vo;
  * @Date: 2018/8/11 18:23
  */
 public class RegionReportsVO {
-    private int 总客资;
-    private int 客资量;
-    private int 有效量;
-    private int 无效量;
-    private int 待定量;
-    private int 入店量;
-    private int 成交量;
-    private double 有效率;
-    private double 无效率;
-    private double 待定率;
-    private double 毛客资入客率;
-    private double 有效客资入店率;
-    private double 入店成交率;
-    private double 毛客资成交率;
-    private double 有效客资成交率;
-    private double 成交均价;
-    private double 营业额;
+    private String regionName;                    //区域名称
+    private int allClientCount;                 //总客资
+    private int clientCount;                    //客资量
+    private int validClientCount;               //有效量
+    private int inValidClientCount;             //无效量
+    private int comeShopClientCount;            //入店量
+    private int successClientCount;             //成交量
+    private int pendingClientCount;             //待定量
+    private int filterInClientCount;            //筛选中
+    private int filterInValidClientCount;       //筛选无效
+    private int filterPendingClientCount;       //筛选待定
+    private double validRate;                   //有效率 (有效量 / 客资量)
+    private double inValidRate;                 //无效率 (无效量 / 客资量)
+    private double waitRate;                    //待定率 (待定量 / 客资量)
+    private double clientComeShopRate;          //毛客资入店率 (入店量 / 总客资)
+    private double validClientComeShopRate;     //有效客资入店率 (入店量 / 有效量 )
+    private double comeShopSuccessRate;         //入店成交率（成交量/入店量）
+    private double clientSuccessRate;           //毛客资成交率（成交量/总客资）
+    private double validClientSuccessRate;      //有效客资成交率（有效量/成交量）
+    private double avgAmount;                   //成交均价
+    private double amount;                      //营业额
 
-    public int get总客资() {
-        return 总客资;
+    public String getRegionName() {
+        return regionName;
     }
 
-    public void set总客资(int 总客资) {
-        this.总客资 = 总客资;
+    public void setRegionName(String regionName) {
+        this.regionName = regionName;
     }
 
-    public int get客资量() {
-        return 客资量;
+    public int getFilterInClientCount() {
+        return filterInClientCount;
     }
 
-    public void set客资量(int 客资量) {
-        this.客资量 = 客资量;
+    public void setFilterInClientCount(int filterInClientCount) {
+        this.filterInClientCount = filterInClientCount;
     }
 
-    public int get有效量() {
-        return 有效量;
+    public int getFilterInValidClientCount() {
+        return filterInValidClientCount;
     }
 
-    public void set有效量(int 有效量) {
-        this.有效量 = 有效量;
+    public void setFilterInValidClientCount(int filterInValidClientCount) {
+        this.filterInValidClientCount = filterInValidClientCount;
     }
 
-    public int get无效量() {
-        return 无效量;
+    public int getFilterPendingClientCount() {
+        return filterPendingClientCount;
     }
 
-    public void set无效量(int 无效量) {
-        this.无效量 = 无效量;
+    public void setFilterPendingClientCount(int filterPendingClientCount) {
+        this.filterPendingClientCount = filterPendingClientCount;
     }
 
-    public int get待定量() {
-        return 待定量;
+    public int getAllClientCount() {
+        return allClientCount;
     }
 
-    public void set待定量(int 待定量) {
-        this.待定量 = 待定量;
+    public void setAllClientCount(int allClientCount) {
+        this.allClientCount = allClientCount;
     }
 
-    public int get入店量() {
-        return 入店量;
+    public int getClientCount() {
+        return clientCount;
     }
 
-    public void set入店量(int 入店量) {
-        this.入店量 = 入店量;
+    public void setClientCount(int clientCount) {
+        this.clientCount = clientCount;
     }
 
-    public int get成交量() {
-        return 成交量;
+    public int getValidClientCount() {
+        return validClientCount;
     }
 
-    public void set成交量(int 成交量) {
-        this.成交量 = 成交量;
+    public void setValidClientCount(int validClientCount) {
+        this.validClientCount = validClientCount;
     }
 
-    public double get有效率() {
-        return 有效率;
+    public int getInValidClientCount() {
+        return inValidClientCount;
     }
 
-    public void set有效率(double 有效率) {
-        this.有效率 = 有效率;
+    public void setInValidClientCount(int inValidClientCount) {
+        this.inValidClientCount = inValidClientCount;
     }
 
-    public double get无效率() {
-        return 无效率;
+    public int getPendingClientCount() {
+        return pendingClientCount;
     }
 
-    public void set无效率(double 无效率) {
-        this.无效率 = 无效率;
+    public void setPendingClientCount(int pendingClientCount) {
+        this.pendingClientCount = pendingClientCount;
     }
 
-    public double get待定率() {
-        return 待定率;
+    public int getComeShopClientCount() {
+        return comeShopClientCount;
     }
 
-    public void set待定率(double 待定率) {
-        this.待定率 = 待定率;
+    public void setComeShopClientCount(int comeShopClientCount) {
+        this.comeShopClientCount = comeShopClientCount;
     }
 
-    public double get毛客资入客率() {
-        return 毛客资入客率;
+    public int getSuccessClientCount() {
+        return successClientCount;
     }
 
-    public void set毛客资入客率(double 毛客资入客率) {
-        this.毛客资入客率 = 毛客资入客率;
+    public void setSuccessClientCount(int successClientCount) {
+        this.successClientCount = successClientCount;
     }
 
-    public double get有效客资入店率() {
-        return 有效客资入店率;
+    public double getValidRate() {
+        return validRate;
     }
 
-    public void set有效客资入店率(double 有效客资入店率) {
-        this.有效客资入店率 = 有效客资入店率;
+    public void setValidRate(double validRate) {
+        this.validRate = validRate;
     }
 
-    public double get入店成交率() {
-        return 入店成交率;
+    public double getInValidRate() {
+        return inValidRate;
     }
 
-    public void set入店成交率(double 入店成交率) {
-        this.入店成交率 = 入店成交率;
+    public void setInValidRate(double inValidRate) {
+        this.inValidRate = inValidRate;
     }
 
-    public double get毛客资成交率() {
-        return 毛客资成交率;
+    public double getWaitRate() {
+        return waitRate;
     }
 
-    public void set毛客资成交率(double 毛客资成交率) {
-        this.毛客资成交率 = 毛客资成交率;
+    public void setWaitRate(double waitRate) {
+        this.waitRate = waitRate;
     }
 
-    public double get有效客资成交率() {
-        return 有效客资成交率;
+    public double getClientComeShopRate() {
+        return clientComeShopRate;
     }
 
-    public void set有效客资成交率(double 有效客资成交率) {
-        this.有效客资成交率 = 有效客资成交率;
+    public void setClientComeShopRate(double clientComeShopRate) {
+        this.clientComeShopRate = clientComeShopRate;
     }
 
-    public double get成交均价() {
-        return 成交均价;
+    public double getValidClientComeShopRate() {
+        return validClientComeShopRate;
     }
 
-    public void set成交均价(double 成交均价) {
-        this.成交均价 = 成交均价;
+    public void setValidClientComeShopRate(double validClientComeShopRate) {
+        this.validClientComeShopRate = validClientComeShopRate;
     }
 
-    public double get营业额() {
-        return 营业额;
+    public double getComeShopSuccessRate() {
+        return comeShopSuccessRate;
     }
 
-    public void set营业额(double 营业额) {
-        this.营业额 = 营业额;
+    public void setComeShopSuccessRate(double comeShopSuccessRate) {
+        this.comeShopSuccessRate = comeShopSuccessRate;
+    }
+
+    public double getClientSuccessRate() {
+        return clientSuccessRate;
+    }
+
+    public void setClientSuccessRate(double clientSuccessRate) {
+        this.clientSuccessRate = clientSuccessRate;
+    }
+
+    public double getValidClientSuccessRate() {
+        return validClientSuccessRate;
+    }
+
+    public void setValidClientSuccessRate(double validClientSuccessRate) {
+        this.validClientSuccessRate = validClientSuccessRate;
+    }
+
+    public double getAvgAmount() {
+        return avgAmount;
+    }
+
+    public void setAvgAmount(double avgAmount) {
+        this.avgAmount = avgAmount;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    @Override
+    public String toString() {
+        return "RegionReportsVO{" +
+                "regionName='" + regionName + '\'' +
+                ", allClientCount=" + allClientCount +
+                ", clientCount=" + clientCount +
+                ", validClientCount=" + validClientCount +
+                ", inValidClientCount=" + inValidClientCount +
+                ", comeShopClientCount=" + comeShopClientCount +
+                ", successClientCount=" + successClientCount +
+                ", pendingClientCount=" + pendingClientCount +
+                ", filterInClientCount=" + filterInClientCount +
+                ", filterInValidClientCount=" + filterInValidClientCount +
+                ", filterPendingClientCount=" + filterPendingClientCount +
+                ", validRate=" + validRate +
+                ", inValidRate=" + inValidRate +
+                ", waitRate=" + waitRate +
+                ", clientComeShopRate=" + clientComeShopRate +
+                ", validClientComeShopRate=" + validClientComeShopRate +
+                ", comeShopSuccessRate=" + comeShopSuccessRate +
+                ", clientSuccessRate=" + clientSuccessRate +
+                ", validClientSuccessRate=" + validClientSuccessRate +
+                ", avgAmount=" + avgAmount +
+                ", amount=" + amount +
+                '}';
     }
 }

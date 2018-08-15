@@ -239,6 +239,7 @@ public class ExcelServiceImpl implements ExcelService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void tempKzMoveToInfo(int companyId, int staffId) {
+        //TODO 程序来做校验 去除重复客资
         //添加客资基本表
         excelDao.insertBaseInfoByStaffId(staffId);
         //添加客资详情表

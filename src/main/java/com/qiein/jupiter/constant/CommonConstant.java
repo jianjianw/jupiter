@@ -221,4 +221,9 @@ public class CommonConstant {
      */
     public final static String zdy = " ,,/,/,/,/,/,/,";
 
+    /**
+     * 合计
+     */
+    public final static String totalAll = "合计";
+
 }

@@ -21,9 +21,22 @@ public class ReportsParamVO {
     private Integer type;
 
     /**
+     * groupid
+     * */
+    private String groupId;
+
+    /**
      * 公司id
      * */
     private Integer companyId;
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
 
     public Integer getCompanyId() {
         return companyId;

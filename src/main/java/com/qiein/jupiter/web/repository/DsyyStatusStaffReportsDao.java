@@ -21,7 +21,7 @@ import java.util.*;
  * @Date: 2018-8-11
  */
 @Repository
-public class DsyyStatusReportsDao {
+public class DsyyStatusStaffReportsDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -49,15 +49,18 @@ public class DsyyStatusReportsDao {
      * */
     private void getGroupList(ReportsParamVO reportsParamVO,List<DsyyStatusReportsVO> dsyyStatusReportsVOS) {
         StringBuilder sb = new StringBuilder();
-        sb.append("select groupid,GROUPNAME,GROUPTYPE from hm_pub_group where companyid = ? and GROUPTYPE = 'dsyy' and PARENTID != '0' order by groupid");
+        sb.append(" select staff.id,staff.nickname from hm_pub_group gp,hm_pub_group_staff group_staff,hm_pub_staff staff ");
+        sb.append("  where");
+        sb.append(" gp.groupid = group_staff.groupid and staff.id = group_staff.staffid and gp.groupid = ? and ");
+        sb.append(" gp.companyid = ? and gp.GROUPTYPE = 'dsyy' and gp.PARENTID != '0' order by gp.groupid");
 
-        List<DsyyStatusReportsVO> dsyyStatusReports = jdbcTemplate.query(sb.toString(), new Object[]{reportsParamVO.getCompanyId()},
+        List<DsyyStatusReportsVO> dsyyStatusReports = jdbcTemplate.query(sb.toString(), new Object[]{reportsParamVO.getGroupId(),reportsParamVO.getCompanyId()},
                 new RowMapper<DsyyStatusReportsVO>() {
                     @Override
                     public DsyyStatusReportsVO mapRow(ResultSet rs, int i) throws SQLException {
                         DsyyStatusReportsVO dsyyStatusReportsVO = new DsyyStatusReportsVO();
-                        dsyyStatusReportsVO.setGroupId(rs.getString("groupid"));
-                        dsyyStatusReportsVO.setGrouoName(rs.getString("GROUPNAME"));
+                        dsyyStatusReportsVO.setGroupId(rs.getString("id"));
+                        dsyyStatusReportsVO.setGrouoName(rs.getString("nickname"));
                         return dsyyStatusReportsVO;
                     }
                 });
@@ -98,16 +101,16 @@ public class DsyyStatusReportsDao {
         StringBuilder sb = new StringBuilder();
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
-        sb.append(" select STATUSID,groupid,count(id) client_count from "+ infoTabName +" info  where info.companyid = ? and info.isdel = 0 and info.groupid is not null group by info.STATUSID,info.groupid ");
+        sb.append(" select STATUSID,APPOINTORID,count(id) client_count from "+ infoTabName +" info  where info.companyid = ? and info.isdel = 0 and info.groupid is not null group by info.STATUSID,info.APPOINTORID ");
         sb.append(" and info.SUCCESSTIME BETWEEN ? AND ?");
         jdbcTemplate.query(sb.toString(), new Object[]{reportsParamVO.getCompanyId(),reportsParamVO.getStart(),reportsParamVO.getEnd()}, new RowMapper<DsyyStatusReportsVO>() {
             @Override
             public DsyyStatusReportsVO mapRow(ResultSet rs, int i) throws SQLException {
                 for (DsyyStatusReportsVO dsyyStatusReports:dsyyStatusReportsVOS){
                     //遍历组
-                    if(StringUtil.isNotEmpty(rs.getString("groupid")) && dsyyStatusReports.getGroupId().equalsIgnoreCase(rs.getString("groupid"))){
+                    if(StringUtil.isNotEmpty(rs.getString("APPOINTORID")) && dsyyStatusReports.getGroupId().equalsIgnoreCase(rs.getString("APPOINTORID"))){
                         for (ClientStatusReportsVO clientStatusReportsVO:dsyyStatusReports.getClientStatusReportsVOS()){
-                            if(clientStatusReportsVO.getStatusId().equals(rs.getInt("STATUSID"))){
+                            if(clientStatusReportsVO.getStatusId().equals(rs.getInt("APPOINTORID"))){
                                 clientStatusReportsVO.setKzNum(rs.getInt("client_count"));
                                 break;
                             }
