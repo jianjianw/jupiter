@@ -36,7 +36,6 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
      * 客资分配给邀约客服后修改客资信息
      *
      * @param companyId
-     * @param infoTabName
      * @param kzId
      * @param classId
      * @param statusId
@@ -52,7 +51,6 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
      * 客资分配客服后修改客资详情
      *
      * @param companyId
-     * @param detailTabName
      * @param kzId
      * @param appointorName
      * @param groupName
@@ -66,7 +64,6 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
      * 客资分配给门市后，修改客资信息
      *
      * @param companyId
-     * @param infoTabName
      * @param kzId
      * @param classId
      * @param statusId
@@ -82,7 +79,6 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
      * 客资分配给门市后，修改客资信息详情信息
      *
      * @param companyId
-     * @param detailTabName
      * @param kzId
      * @param receptorName
      * @return
@@ -94,7 +90,6 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
      * 客资分配后修改客资的领取时间和最后操作时间
      *
      * @param companyId
-     * @param infoTabName
      * @param kzId
      * @return
      */
@@ -106,7 +101,6 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
      * 修改客资状态
      *
      * @param companyId
-     * @param infoTabName
      * @param kzId
      * @param classId
      * @param statusId
@@ -126,7 +120,6 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
     /**
      * 获取当前企业要推送的客资
      *
-     * @param infoTabName
      * @param companyId
      * @return
      */
@@ -136,7 +129,6 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
     /**
      * 获取企业需要分配的筛选中的客资列表
      *
-     * @param infoTabName
      * @param companyId
      * @param overTime
      * @return
@@ -148,7 +140,6 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
      * 获取goeasy推送的客资信息
      *
      * @param kzId
-     * @param infoTabName
      * @param detailTabName
      * @return
      */
@@ -158,7 +149,6 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
     /**
      * 根据拍摄地获取客资数量
      *
-     * @param infoTabName
      * @param companyId
      * @param shopId
      * @return
@@ -182,33 +172,27 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
      *
      * @param kzIds
      * @param companyId
-     * @param infoTabName
      * @return
      */
-    List<ClientPushDTO> listClientsInStrKzids(@Param("kzIds") String kzIds, @Param("companyId") int companyId,
-                                              @Param("infoTabName") String infoTabName);
+    List<ClientPushDTO> listClientsInStrKzids(@Param("kzIds") String kzIds, @Param("companyId") int companyId);
 
     /**
      * 根据客资ID集合查询可以分配给门市的客资集合
      *
      * @param kzIds
      * @param companyId
-     * @param infoTabName
      * @return
      */
-    List<ClientPushDTO> listClientsInStrKzids4Msjd(@Param("kzIds") String kzIds, @Param("companyId") int companyId,
-                                                   @Param("infoTabName") String infoTabName);
+    List<ClientPushDTO> listClientsInStrKzids4Msjd(@Param("kzIds") String kzIds, @Param("companyId") int companyId);
 
     /**
      * 查询已有客服的客资数量，用于分配
      *
      * @param kzIds
      * @param companyId
-     * @param infoTabName
      * @return
      */
-    int listExistAppointClientsNum(@Param("kzIds") String kzIds, @Param("companyId") int companyId,
-                                   @Param("infoTabName") String infoTabName);
+    int listExistAppointClientsNum(@Param("kzIds") String kzIds, @Param("companyId") int companyId);
 
     /**
      * 修改联系方式日志
@@ -222,7 +206,6 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
      * pc端领取客资，修改客资基本信息
      *
      * @param companyId
-     * @param infoTabName
      * @param kzId
      * @param classId
      * @param statusId
@@ -231,7 +214,7 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
      * @param allotType
      * @return
      */
-    int updateClientInfoWhenReceive(@Param("companyId") int companyId, @Param("infoTabName") String infoTabName,
+    int updateClientInfoWhenReceive(@Param("companyId") int companyId,
                                     @Param("kzId") String kzId, @Param("classId") int classId, @Param("statusId") int statusId,
                                     @Param("appointorId") int appointorId, @Param("groupId") String groupId, @Param("allotType") int allotType);
 
@@ -254,7 +237,7 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
     /**
      * 获取Kzid是否存在
      */
-    List<ClientPushDTO> getKzIdExists(@Param(value = "kzIds") String kzId, @Param(value = "companyId") int companyId, @Param(value = "infoTabName") String infoTabName);
+    List<ClientPushDTO> getKzIdExists(@Param(value = "kzIds") String kzId, @Param(value = "companyId") int companyId);
 
     /**
      * 修改已收金额
@@ -263,45 +246,41 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
      * @param kzId
      * @param companyId
      */
-    void editStayAmount(@Param("detTabName") String detTabName, @Param("cashTabName") String cashTabName, @Param("kzId") String kzId, @Param("companyId") int companyId);
+    void editStayAmount(@Param("kzId") String kzId, @Param("companyId") int companyId);
 
     /**
      * 分配给筛客之后，修改筛选人ID，推送时间
      *
-     * @param infoTabName
      * @param promotorId
      * @param kzId
      * @param companyId
      * @return
      */
-    int updateSkInfoWhenAllot(@Param("infoTabName") String infoTabName, @Param("promotorId") int promotorId, @Param("kzId") String kzId, @Param("companyId") int companyId);
+    int updateSkInfoWhenAllot(@Param("promotorId") int promotorId, @Param("kzId") String kzId, @Param("companyId") int companyId);
 
     /**
      * 分配给筛客之后，修改筛选人姓名
      *
-     * @param detTabName
      * @param promoterName
      * @param kzId
      * @param companyId
      * @return
      */
-    int updateSkDetailWhenAllot(@Param("detTabName") String detTabName, @Param("promoterName") String promoterName, @Param("kzId") String kzId, @Param("companyId") int companyId);
+    int updateSkDetailWhenAllot(@Param("promoterName") String promoterName, @Param("kzId") String kzId, @Param("companyId") int companyId);
 
     /**
      * 修改手机是否已加状态
      *
      * @param kzId
      * @param kzphoneFlag
-     * @param table
      */
-    void editKzphoneFlag(@Param("kzId") String kzId, @Param("kzphoneFlag") Integer kzphoneFlag, @Param("table") String table);
+    void editKzphoneFlag(@Param("kzId") String kzId, @Param("kzphoneFlag") Integer kzphoneFlag);
 
     /**
      * 修改客资上次推送时间
      *
      * @param companyId
-     * @param infoTabName
      * @param kzId
      */
-    void updateLastPushTime(@Param("companyId") int companyId, @Param("infoTabName") String infoTabName, @Param("kzId") String kzId);
+    void updateLastPushTime(@Param("companyId") int companyId, @Param("kzId") String kzId);
 }

@@ -1,14 +1,13 @@
 package com.qiein.jupiter.web.service.impl;
 
-import cn.afterturn.easypoi.excel.annotation.Excel;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.mzlion.core.http.IPUtils;
-import com.mzlion.core.lang.StringUtils;
-import com.qiein.jupiter.constant.*;
+import com.qiein.jupiter.constant.ClientConst;
+import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.constant.DictionaryConstant;
+import com.qiein.jupiter.constant.GoldDataConst;
 import com.qiein.jupiter.enums.GoldDataStatusEnum;
-import com.qiein.jupiter.enums.ZxStyleEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.http.CrmBaseApi;
@@ -25,8 +24,6 @@ import com.qiein.jupiter.web.entity.vo.GoldCustomerVO;
 import com.qiein.jupiter.web.service.GoldDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -100,21 +97,21 @@ public class GoldDataServiceImpl implements GoldDataService {
      * @param companyId
      * @return
      */
-    public PageInfo<GoldFingerPO> select(int companyId, int pageNum, int pageSize, String formId,String staffIds, String srcIds) {
+    public PageInfo<GoldFingerPO> select(int companyId, int pageNum, int pageSize, String formId, String staffIds, String srcIds) {
         PageHelper.startPage(pageNum, pageSize);
-        List<Integer> srcList=new ArrayList<>();
-        List<Integer> staffList=new ArrayList<>();
-        if(!StringUtil.isEmpty(staffIds)){
-            for(String staff:staffIds.split(CommonConstant.STR_SEPARATOR)){
+        List<Integer> srcList = new ArrayList<>();
+        List<Integer> staffList = new ArrayList<>();
+        if (!StringUtil.isEmpty(staffIds)) {
+            for (String staff : staffIds.split(CommonConstant.STR_SEPARATOR)) {
                 staffList.add(Integer.parseInt(staff));
             }
         }
-        if(!StringUtil.isEmpty(srcIds)){
-            for(String src:srcIds.split(CommonConstant.STR_SEPARATOR)){
+        if (!StringUtil.isEmpty(srcIds)) {
+            for (String src : srcIds.split(CommonConstant.STR_SEPARATOR)) {
                 srcList.add(Integer.parseInt(src));
             }
         }
-        List<GoldFingerPO> select = goldDataDao.select(companyId, formId,srcList,staffList);
+        List<GoldFingerPO> select = goldDataDao.select(companyId, formId, srcList, staffList);
         return new PageInfo<>(select);
 
     }
@@ -137,7 +134,7 @@ public class GoldDataServiceImpl implements GoldDataService {
     public GoldCustomerShowVO goldCustomerSelect(QueryMapDTO queryMapDTO, GoldCustomerDTO goldCustomerDTO) {
         PageHelper.startPage(queryMapDTO.getPageNum(), queryMapDTO.getPageSize());
         List<GoldCustomerVO> list = goldDataDao.goldCustomerSelect(goldCustomerDTO);
-        for(GoldCustomerVO goldCustomerVO:list){
+        for (GoldCustomerVO goldCustomerVO : list) {
             goldCustomerVO.setStatus(GoldDataStatusEnum.getGoldStatusDesc(goldCustomerVO.getStatusId()));
         }
         GoldCustomerShowVO showVO = new GoldCustomerShowVO();
@@ -268,7 +265,6 @@ public class GoldDataServiceImpl implements GoldDataService {
         goldTempDao.insert(goldTempPO);
 
 
-
         //重复拦截
 //        GoldTempPO goldTemp = goldTempDao.getByKzNameOrKzPhoneOrKzWechat(formId, kzPhone);
 //        if (null != goldTemp) {
@@ -307,7 +303,7 @@ public class GoldDataServiceImpl implements GoldDataService {
             clientLogPO.setOperaId(goldFingerPO.getStaffId());
             StaffPO staffPO = staffDao.getByIdAndCid(goldFingerPO.getStaffId(), goldFingerPO.getCompanyId());
             clientLogPO.setOperaName(staffPO.getNickName());
-            clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(goldFingerPO.getCompanyId()),clientLogPO);
+            clientLogDao.addInfoLog(clientLogPO);
 
         } else if ("130019".equals(jsInfo.getString("code"))) {
             goldTempPO.setStatusId(GoldDataConst.REPEATED_SCREEN);

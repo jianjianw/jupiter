@@ -60,12 +60,11 @@ public class ClientServiceImpl implements ClientService {
     @Override
     @Transactional
     public void editClientSex(ClientStatusVO clientStatusVO) {
-        clientDao.editClientBaseInfo(clientStatusVO, DBSplitUtil.getInfoTabName(clientStatusVO.getCompanyId()));
+        clientDao.editClientBaseInfo(clientStatusVO);
 
-        int addLogNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(clientStatusVO.getCompanyId()),
-                new ClientLogPO(clientStatusVO.getKzId(), clientStatusVO.getOperaId(), clientStatusVO.getOperaName(),
-                        ClientLogConst.INFO_LOG_EDIT_SEX + (clientStatusVO.getSex() == 1 ? "先生" : "女士"),
-                        ClientLogConst.INFO_LOGTYPE_EDIT, clientStatusVO.getCompanyId()));
+        int addLogNum = clientLogDao.addInfoLog(new ClientLogPO(clientStatusVO.getKzId(), clientStatusVO.getOperaId(), clientStatusVO.getOperaName(),
+                ClientLogConst.INFO_LOG_EDIT_SEX + (clientStatusVO.getSex() == 1 ? "先生" : "女士"),
+                ClientLogConst.INFO_LOGTYPE_EDIT, clientStatusVO.getCompanyId()));
         if (addLogNum != 1) {
             log.error("插入客资日志失败");
         }
@@ -79,12 +78,11 @@ public class ClientServiceImpl implements ClientService {
     @Override
     @Transactional
     public void editClientWCFlag(ClientStatusVO clientStatusVO) {
-        clientDao.editClientBaseInfo(clientStatusVO, DBSplitUtil.getInfoTabName(clientStatusVO.getCompanyId()));
+        clientDao.editClientBaseInfo(clientStatusVO);
 
-        int addLogNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(clientStatusVO.getCompanyId()),
-                new ClientLogPO(clientStatusVO.getKzId(), clientStatusVO.getOperaId(), clientStatusVO.getOperaName(),
-                        ClientLogConst.INFO_LOG_EDIT_WCFLAG + (clientStatusVO.getWeFlag() == 1 ? "已添加" : "没加上"),
-                        ClientLogConst.INFO_LOGTYPE_EDIT, clientStatusVO.getCompanyId()));
+        int addLogNum = clientLogDao.addInfoLog(new ClientLogPO(clientStatusVO.getKzId(), clientStatusVO.getOperaId(), clientStatusVO.getOperaName(),
+                ClientLogConst.INFO_LOG_EDIT_WCFLAG + (clientStatusVO.getWeFlag() == 1 ? "已添加" : "没加上"),
+                ClientLogConst.INFO_LOGTYPE_EDIT, clientStatusVO.getCompanyId()));
         if (addLogNum != 1) {
             log.error("插入客资日志失败");
         }
@@ -99,8 +97,8 @@ public class ClientServiceImpl implements ClientService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void scanWechat(int companyId, String kzId) {
-        clientDao.editClientMemoLabel(DBSplitUtil.getDetailTabName(companyId), companyId, kzId, "【微信已扫码】");
-        clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(companyId), new ClientLogPO(kzId,
+        clientDao.editClientMemoLabel(companyId, kzId, "【微信已扫码】");
+        clientLogDao.addInfoLog(new ClientLogPO(kzId,
                 CommonConstant.DEFAULT_ZERO, null, "通过扫描二维码复制了微信账号", ClientLogConst.INFO_LOGTYPE_SCAN_WECAHT, companyId));
     }
 
@@ -113,8 +111,8 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public HashMap<String, Integer> getKzNumByStatusId(int companyId) {
         HashMap<String, Integer> result = new HashMap<>();
-        result.put("notAllot", clientDao.getKzNumByStatusId(ClientStatusConst.BE_WAIT_MAKE_ORDER, companyId, DBSplitUtil.getInfoTabName(companyId)));
-        result.put("beAlloting", clientDao.getKzNumByStatusId(ClientStatusConst.BE_ALLOTING, companyId, DBSplitUtil.getInfoTabName(companyId)));
+        result.put("notAllot", clientDao.getKzNumByStatusId(ClientStatusConst.BE_WAIT_MAKE_ORDER, companyId));
+        result.put("beAlloting", clientDao.getKzNumByStatusId(ClientStatusConst.BE_ALLOTING, companyId));
         return result;
     }
 
@@ -168,12 +166,12 @@ public class ClientServiceImpl implements ClientService {
 
 
         //修改状态id
-        clientDao.updateKzValidStatusByKzId(DBSplitUtil.getInfoTabName(clientStatusVoteVO.getCompanyId()), clientStatusVoteVO);
+        clientDao.updateKzValidStatusByKzId(clientStatusVoteVO);
         //是否有备注
 
         //获取客资时候有备注
         if (StringUtil.isNotEmpty(clientStatusVoteVO.getContent())) {
-            clientDao.updateDetailMemo(DBSplitUtil.getDetailTabName(clientStatusVoteVO.getCompanyId()), clientStatusVoteVO.getKzId(), clientStatusVoteVO.getCompanyId(), clientStatusVoteVO.getContent());
+            clientDao.updateDetailMemo(clientStatusVoteVO.getKzId(), clientStatusVoteVO.getCompanyId(), clientStatusVoteVO.getContent());
         }
         //FIXME 废弃代码
 //        ClientRemarkPO clientRemarkPO = new ClientRemarkPO();
@@ -189,10 +187,9 @@ public class ClientServiceImpl implements ClientService {
 //        }
 
         //插入日志
-        int addLogNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(clientStatusVoteVO.getCompanyId()),
-                new ClientLogPO(clientStatusVoteVO.getKzId(), clientStatusVoteVO.getOperaId(), clientStatusVoteVO.getOperaName(),
-                        ClientLogConst.INFO_LOG_EDIT_BE_STATUS + kzStatusName,
-                        ClientLogConst.INFO_LOGTYPE_EDIT, clientStatusVoteVO.getCompanyId()));
+        int addLogNum = clientLogDao.addInfoLog(new ClientLogPO(clientStatusVoteVO.getKzId(), clientStatusVoteVO.getOperaId(), clientStatusVoteVO.getOperaName(),
+                ClientLogConst.INFO_LOG_EDIT_BE_STATUS + kzStatusName,
+                ClientLogConst.INFO_LOGTYPE_EDIT, clientStatusVoteVO.getCompanyId()));
         if (addLogNum != 1) {
             log.error("修改客资状态日志失败");
         }
@@ -205,7 +202,7 @@ public class ClientServiceImpl implements ClientService {
      * @return
      */
     public Integer findId(String kzId, Integer companyId) {
-        return clientDao.findId(kzId, companyId, DBSplitUtil.getInfoTabName(companyId));
+        return clientDao.findId(kzId, companyId);
     }
 
     /**
@@ -216,7 +213,7 @@ public class ClientServiceImpl implements ClientService {
      * @return
      */
     public int listExistAppointClientsNum(String kzIds, int companyId) {
-        return clientInfoDao.listExistAppointClientsNum(kzIds, companyId, DBSplitUtil.getInfoTabName(companyId));
+        return clientInfoDao.listExistAppointClientsNum(kzIds, companyId);
     }
 
     /**
@@ -226,7 +223,7 @@ public class ClientServiceImpl implements ClientService {
      */
     @Override
     public void addClientLog(ClientLogPO clientLogPO) {
-        clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(clientLogPO.getCompanyId()), clientLogPO);
+        clientLogDao.addInfoLog(clientLogPO);
     }
 
     /**
@@ -239,7 +236,7 @@ public class ClientServiceImpl implements ClientService {
      * @return
      */
     public List<ClientLogPO> getCashEditLog(int companyId, String kzId) {
-        return clientLogDao.getCashEditLog(DBSplitUtil.getInfoLogTabName(companyId), companyId, kzId, ClientLogConst.INFO_LOGTYPE_CASH);
+        return clientLogDao.getCashEditLog(companyId, kzId, ClientLogConst.INFO_LOGTYPE_CASH);
     }
 
 }

@@ -4,12 +4,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.http.CrmBaseApi;
 import com.qiein.jupiter.util.*;
+import com.qiein.jupiter.web.entity.dto.CitiesAnalysisParamDTO;
 import com.qiein.jupiter.web.entity.dto.ClientLogDTO;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
-import com.qiein.jupiter.web.entity.vo.DstgGoldDataReportsVO;
-import com.qiein.jupiter.web.entity.vo.DstgZxStyleReportsVO;
-import com.qiein.jupiter.web.entity.vo.ReportsConditionVO;
+import com.qiein.jupiter.web.entity.vo.*;
 import com.qiein.jupiter.web.service.ReportService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -375,6 +374,27 @@ public class ReportsController extends BaseController {
         return ResultInfoUtil.success(dstgGoldDataReportsVO);
     }
 
+    /**
+     * 客资各状态转发统计
+     * */
+    @GetMapping("/get_dsyy_status_reports")
+    public ResultInfo getDSyyStatusReports(Integer start,Integer end){
+        StaffPO staffPO = getCurrentLoginStaff();
+        DsyyStatusReportsHeaderVO dsyyStatusReports = reportService.getDsyyStatusReports(start, end, staffPO.getCompanyId());
+        return ResultInfoUtil.success(dsyyStatusReports);
+    }
+
+    /**
+     * 电商邀约详细统计
+     * */
+    @GetMapping("/get_dsyy_status_detail_reports")
+    public ResultInfo getDsyyStatusReports(Integer start,Integer end,String groupId){
+        StaffPO staffPO = getCurrentLoginStaff();
+        DsyyStatusReportsHeaderVO dsyyStatusReportsHeaderVO = reportService.getDsyyStatusDetailReports(start,end,groupId,staffPO.getCompanyId());
+        return ResultInfoUtil.success(dsyyStatusReportsHeaderVO);
+    }
+
+
     @GetMapping("/receive_ali")
     public ResultInfo receiveAli(String code, String state) {
         System.out.println(code + "-----------------------------------" + state);
@@ -386,5 +406,78 @@ public class ReportsController extends BaseController {
     @GetMapping("/invalid_reason_reports")
     public ResultInfo invalidReasonReports(@RequestParam String sourceIds,@RequestParam String startTime,@RequestParam String endTime,@RequestParam String typeIds){
         return ResultInfoUtil.success(reportService.invalidReasonReports(getCurrentLoginStaff().getCompanyId(),sourceIds,startTime,endTime,typeIds));
+    }
+    /**
+     * 转介绍每月客资报表
+     */
+    @GetMapping("/zjs_kz_of_month")
+    public ResultInfo ZjskzOfMonth(@RequestParam String month,@RequestParam String type,@RequestParam String srcIds){
+        return ResultInfoUtil.success(reportService.ZjskzOfMonth(getCurrentLoginStaff().getCompanyId(),month,type,srcIds));
+    }
+    /**
+     * 转介绍每月客资报表内表详情
+     */
+    @GetMapping("/zjs_kz_of_month_in")
+    public ResultInfo ZjskzOfMonthIn( String sourceId, String month){
+        return ResultInfoUtil.success(reportService.ZjskzOfMonthIn(getCurrentLoginStaff().getCompanyId(), sourceId, month));
+    }
+
+
+    /**
+     * 获取市域分析报表
+     * @param searchKey
+     * @return
+     */
+    @GetMapping("/get_cities_analysis_report")
+    public ResultInfo getCitiesAnalysisReport(CitiesAnalysisParamDTO searchKey){
+        //TODO 给默认时间
+        if (searchKey.getStart() == null){
+            searchKey.setStart(0);
+        }
+        if (searchKey.getEnd() == null){
+            searchKey.setEnd(2000000000);
+        }
+        if (searchKey.getSearchClientType() == null){
+            searchKey.setSearchClientType(1);
+        }
+        searchKey.setCompanyId(getCurrentLoginStaff().getCompanyId());
+        return ResultInfoUtil.success(reportService.getCityReport(searchKey));
+    }
+    
+    /**
+     * 电商推广月度客资汇总报表--Hjf
+     * */
+    @GetMapping("/get_dstg_src_month_reports")
+    public ResultInfo getDSTGSrcMonthReports(@RequestParam("start") Integer start, @RequestParam("end") Integer end, @RequestParam("typeId") String typeId, @RequestParam("sourceId") String sourceId, @RequestParam("kzZB") String kzZB){
+        StaffPO staffPO = getCurrentLoginStaff();
+        //查询总客资
+        if(StringUtil.isNotEmpty(kzZB) && "sum".equals(kzZB)){
+        	List<DstgReportsSrcMonthVO> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsSum(start,end,typeId,sourceId,staffPO.getCompanyId());
+        	
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+      //查询客资量
+        if(StringUtil.isNotEmpty(kzZB) && "all".equals(kzZB)){
+        	List<DstgReportsSrcMonthVO> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsAll(start,end,typeId,sourceId,staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+      //查询待定客资
+        if(StringUtil.isNotEmpty(kzZB) && "ddnum".equals(kzZB)){
+        	List<DstgReportsSrcMonthVO> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsDdNum(start,end,typeId,sourceId,staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+        
+       //查询无效客资
+        if(StringUtil.isNotEmpty(kzZB) && "invalid".equals(kzZB)){
+        	List<DstgReportsSrcMonthVO> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsInvalid(start,end,typeId,sourceId,staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+		
+		//查询有效客资
+        if(StringUtil.isNotEmpty(kzZB) && "valid".equals(kzZB)){ 
+        	List<DstgReportsSrcMonthVO> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsvalid(start,end,typeId,sourceId,staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+		return ResultInfoUtil.error(9999, "查询失败");
     }
 }

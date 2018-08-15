@@ -7,6 +7,14 @@ package com.qiein.jupiter.web.entity.vo;
  */
 public class SourceOrderDataReportsVO {
     /**
+     * 类型
+     */
+    private int srcType;
+    /**
+     * 类型名称
+     */
+    private String srcName;
+    /**
      * 订单总量
      */
     private int orderAmount;
@@ -21,7 +29,7 @@ public class SourceOrderDataReportsVO {
     /**
      * 销售均价
      */
-    private int saleAvg;
+    private String saleAvg;
 
     /**
      * 总花费
@@ -31,7 +39,76 @@ public class SourceOrderDataReportsVO {
     /**
      * 投入产出比
      */
-    private double roi;
+    private String roi;
+
+    /**
+     * 订单比例
+     */
+    private String orderRate;
+
+    /**
+     * 套系比例
+     */
+    private String txRate;
+
+    /**
+     * 订单方式
+     */
+    private String orderStyleRate;
+
+    /**
+     * 付款方式
+     */
+    private String payStyleRate;
+
+
+    public String getOrderRate() {
+        return orderRate;
+    }
+
+    public void setOrderRate(String orderRate) {
+        this.orderRate = orderRate;
+    }
+
+    public String getTxRate() {
+        return txRate;
+    }
+
+    public void setTxRate(String txRate) {
+        this.txRate = txRate;
+    }
+
+    public String getOrderStyleRate() {
+        return orderStyleRate;
+    }
+
+    public void setOrderStyleRate(String orderStyleRate) {
+        this.orderStyleRate = orderStyleRate;
+    }
+
+    public String getPayStyleRate() {
+        return payStyleRate;
+    }
+
+    public void setPayStyleRate(String payStyleRate) {
+        this.payStyleRate = payStyleRate;
+    }
+
+    public String getSrcName() {
+        return srcName;
+    }
+
+    public void setSrcName(String srcName) {
+        this.srcName = srcName;
+    }
+
+    public int getSrcType() {
+        return srcType;
+    }
+
+    public void setSrcType(int srcType) {
+        this.srcType = srcType;
+    }
 
     public int getOrderAmount() {
         return orderAmount;
@@ -57,11 +134,11 @@ public class SourceOrderDataReportsVO {
         this.totalYsAmount = totalYsAmount;
     }
 
-    public int getSaleAvg() {
+    public String getSaleAvg() {
         return saleAvg;
     }
 
-    public void setSaleAvg(int saleAvg) {
+    public void setSaleAvg(String saleAvg) {
         this.saleAvg = saleAvg;
     }
 
@@ -73,11 +150,11 @@ public class SourceOrderDataReportsVO {
         this.totalSpend = totalSpend;
     }
 
-    public double getRoi() {
+    public String getRoi() {
         return roi;
     }
 
-    public void setRoi(double roi) {
+    public void setRoi(String roi) {
         this.roi = roi;
     }
 }

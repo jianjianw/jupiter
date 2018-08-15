@@ -119,8 +119,7 @@ public class ClientReceiveServiceImpl implements ClientReceiveService {
      */
     private void refuse(String kzId, int logId, int companyId, int staffId, String staffName) {
         // 修改客资分配日志状态为已拒绝
-        int updateNum = clientAllotLogDao.updateAllogLog(DBSplitUtil.getAllotLogTabName(companyId), companyId, kzId,
-                logId, ClientConst.ALLOT_LOG_STATUS_REFUSE, "");
+        int updateNum = clientAllotLogDao.updateAllogLog(companyId, kzId, logId, ClientConst.ALLOT_LOG_STATUS_REFUSE, "");
         if (1 != updateNum) {
             throw new RException(ExceptionEnum.ALLOT_LOG_ERROR);
         }
@@ -137,8 +136,7 @@ public class ClientReceiveServiceImpl implements ClientReceiveService {
     @Transactional
     public void receive(String kzId, int logId, int companyId, int staffId, String staffName) {
 
-        ClientPushDTO info = clientInfoDao.getClientPushDTOById(kzId, DBSplitUtil.getInfoTabName(companyId),
-                DBSplitUtil.getDetailTabName(companyId));
+        ClientPushDTO info = clientInfoDao.getClientPushDTOById(kzId);
         if (info == null) {
             throw new RException(ExceptionEnum.INFO_ERROR);
         }
@@ -166,27 +164,27 @@ public class ClientReceiveServiceImpl implements ClientReceiveService {
     @Transactional
     public void updateInfoWhenReceive(int companyId, String kzId, int logId, int staffId, String staffName) {
         // 修改客资状态为未设置
-        int updateNum = clientInfoDao.updateClientInfoStatus(companyId, DBSplitUtil.getInfoTabName(companyId), kzId,
+        int updateNum = clientInfoDao.updateClientInfoStatus(companyId, kzId,
                 ClientStatusConst.KZ_CLASS_NEW, ClientStatusConst.BE_HAVE_MAKE_ORDER);
         if (1 != updateNum) {
             throw new RException(ExceptionEnum.INFO_STATUS_EDIT_ERROR);
         }
 
         // 修改客资的领取时间和最后操作时间
-        updateNum = clientInfoDao.updateClientInfoAfterAllot(companyId, DBSplitUtil.getInfoTabName(companyId), kzId);
+        updateNum = clientInfoDao.updateClientInfoAfterAllot(companyId, kzId);
         if (1 != updateNum) {
             throw new RException(ExceptionEnum.INFO_EDIT_ERROR);
         }
 
         // 添加客资领取日志
-        updateNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(companyId), new ClientLogPO(kzId, staffId,
+        updateNum = clientLogDao.addInfoLog(new ClientLogPO(kzId, staffId,
                 staffName, ClientLogConst.INFO_LOG_RECEIVE, ClientLogConst.INFO_LOGTYPE_RECEIVE, companyId));
         if (1 != updateNum) {
             throw new RException(ExceptionEnum.LOG_ERROR);
         }
 
         // 修改客资分配日志状态为已领取
-        updateNum = clientAllotLogDao.updateAllogLog(DBSplitUtil.getAllotLogTabName(companyId), companyId, kzId, logId,
+        updateNum = clientAllotLogDao.updateAllogLog(companyId, kzId, logId,
                 ClientConst.ALLOT_LOG_STATUS_YES, "now");
         if (1 != updateNum) {
             throw new RException(ExceptionEnum.ALLOT_LOG_ERROR);
@@ -213,8 +211,7 @@ public class ClientReceiveServiceImpl implements ClientReceiveService {
     @Transactional
     public void pcReceiveOne(String kzId, int companyId, int staffId, String staffName) {
 
-        ClientPushDTO info = clientInfoDao.getClientPushDTOById(kzId, DBSplitUtil.getInfoTabName(companyId),
-                DBSplitUtil.getDetailTabName(companyId));
+        ClientPushDTO info = clientInfoDao.getClientPushDTOById(kzId);
         if (info == null) {
             throw new RException(ExceptionEnum.INFO_ERROR);
         }
@@ -237,20 +234,19 @@ public class ClientReceiveServiceImpl implements ClientReceiveService {
             throw new RException(ExceptionEnum.APPOINT_GROUP_NOT_FOUND);
         }
         // 修改客资状态为未设置
-        int updateNum = clientInfoDao.updateClientInfoWhenReceive(companyId, DBSplitUtil.getInfoTabName(companyId), kzId,
+        int updateNum = clientInfoDao.updateClientInfoWhenReceive(companyId, kzId,
                 ClientStatusConst.KZ_CLASS_NEW, ClientStatusConst.BE_HAVE_MAKE_ORDER, staffId, groupPO.getGroupId(), ClientConst.ALLOT_SYSTEM_AUTO);
         if (1 != updateNum) {
             throw new RException(ExceptionEnum.INFO_STATUS_EDIT_ERROR);
         }
-        clientInfoDao.updateClientDetailWhenAllot(companyId, DBSplitUtil.getDetailTabName(companyId), kzId, staffName, groupPO.getGroupName());
+        clientInfoDao.updateClientDetailWhenAllot(companyId, kzId, staffName, groupPO.getGroupName());
         // 修改客资的领取时间和最后操作时间
-        updateNum = clientInfoDao.updateClientInfoAfterAllot(companyId, DBSplitUtil.getInfoTabName(companyId), kzId);
+        updateNum = clientInfoDao.updateClientInfoAfterAllot(companyId, kzId);
         if (1 != updateNum) {
             throw new RException(ExceptionEnum.INFO_EDIT_ERROR);
         }
         // 添加客资领取日志
-        updateNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(companyId), new
-                ClientLogPO(kzId, staffId,
+        updateNum = clientLogDao.addInfoLog(new ClientLogPO(kzId, staffId,
                 staffName, ClientLogConst.INFO_LOG_RECEIVE_PC, ClientLogConst.INFO_LOGTYPE_RECEIVE, companyId));
         if (1 != updateNum) {
             throw new RException(ExceptionEnum.LOG_ERROR);

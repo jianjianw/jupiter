@@ -30,7 +30,9 @@ public class JsonConvertConfig extends WebMvcConfigurerAdapter {
                 //将字符串类型字段的空值输出为空字符串 ""
                 SerializerFeature.WriteNullStringAsEmpty,
                 //使用enum的toString方法序列化
-                SerializerFeature.WriteEnumUsingToString
+                SerializerFeature.WriteEnumUsingToString,
+                //避免循环引用
+                SerializerFeature.DisableCircularReferenceDetect
         );
         converter.setFastJsonConfig(fastJsonConfig);
         converters.add(converter);
