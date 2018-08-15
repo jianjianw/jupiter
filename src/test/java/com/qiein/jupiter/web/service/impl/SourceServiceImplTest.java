@@ -21,8 +21,8 @@ public class SourceServiceImplTest {
 
     @Test
     public void datDelSrc() throws Exception {
-        int i=sourceDao.datDelCheck("1,2,3".split(","),"hm_crm_client_info_1");
-        System.out.println(i);
+//       // int i=sourceDao.datDelCheck("1,2,3".split(","),"hm_crm_client_info_1");
+//        System.out.println(i);
     }
 
 }

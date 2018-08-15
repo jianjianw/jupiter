@@ -156,7 +156,7 @@ public class ReportsServiceImpl implements ReportService {
         reportsParamVO.setCompanyId(companyId);
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         //获取数据
-        List<DstgGoldDataReportsVO> dstgGoldDataReprots = dstgGoldDataReportsDao.getDstgGoldDataReprots(reportsParamVO, invalidConfig);
+        List<DstgGoldDataReportsVO> dstgGoldDataReprots = dstgGoldDataReportsDao.getDstgGoldDataReprots(reportsParamVO,invalidConfig);
         return dstgGoldDataReprots;
     }
 
@@ -169,7 +169,7 @@ public class ReportsServiceImpl implements ReportService {
         reportsParamVO.setCompanyId(companyId);
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         //获取数据
-        List<DstgZxStyleReportsVO> dstgZxStyleReportsVOS = zxStyleReportsDao.getDstgGoldDataReprots(reportsParamVO, invalidConfig);
+        List<DstgZxStyleReportsVO> dstgZxStyleReportsVOS = zxStyleReportsDao.getDstgGoldDataReprots(reportsParamVO,invalidConfig);
         return dstgZxStyleReportsVOS;
     }
 
@@ -179,14 +179,14 @@ public class ReportsServiceImpl implements ReportService {
      * @param companyId
      * @return
      */
-    public InvalidReasonReportsVO invalidReasonReports(Integer companyId, String sourceIds, String startTime, String endTime, String typeIds) {
-        InvalidReasonReportsVO invalidReasonReportsVO = new InvalidReasonReportsVO();
-        List<DictionaryPO> list = new ArrayList<>();
-        DictionaryPO dictionaryPO = new DictionaryPO();
+    public InvalidReasonReportsVO invalidReasonReports(Integer companyId,String sourceIds,String startTime,String endTime,String typeIds){
+        InvalidReasonReportsVO invalidReasonReportsVO=new InvalidReasonReportsVO();
+        List<DictionaryPO> list=new ArrayList<>();
+        DictionaryPO dictionaryPO=new DictionaryPO();
         dictionaryPO.setDicType("hj");
         dictionaryPO.setDicName("合计");
-        List<DictionaryPO> DicList = dictionaryDao.getInvaildReasons(companyId, DictionaryConstant.INVALID_REASON);
-        invalidReasonReportsVO.setInvalidReasonKz(invalidReasonReportsDao.getInvalidReasonReports(DicList, DBSplitUtil.getTable(TableEnum.info, companyId), DBSplitUtil.getTable(TableEnum.detail, companyId), companyId, sourceIds, startTime, endTime, typeIds));
+        List<DictionaryPO> DicList=dictionaryDao.getInvaildReasons(companyId, DictionaryConstant.INVALID_REASON);
+        invalidReasonReportsVO.setInvalidReasonKz(invalidReasonReportsDao.getInvalidReasonReports(DicList,DBSplitUtil.getTable(TableEnum.info,companyId),DBSplitUtil.getTable(TableEnum.detail,companyId),companyId,sourceIds,startTime,endTime,typeIds));
         list.add(dictionaryPO);
         list.addAll(DicList);
         invalidReasonReportsVO.setInvalidReasons(list);
