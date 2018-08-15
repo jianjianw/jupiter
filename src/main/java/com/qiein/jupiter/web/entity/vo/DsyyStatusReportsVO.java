@@ -18,7 +18,6 @@ public class DsyyStatusReportsVO {
      * 小组名称
      * */
     private String grouoName;
-
     /**
      * StatusReports
      * */

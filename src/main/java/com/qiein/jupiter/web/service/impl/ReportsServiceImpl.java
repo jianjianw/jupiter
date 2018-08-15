@@ -202,13 +202,13 @@ public class ReportsServiceImpl implements ReportService {
     }
 
     @Override
-    public List<DsyyStatusReportsVO> getDsyyStatusReports(Integer start, Integer end, int companyId) {
+    public DsyyStatusReportsHeaderVO getDsyyStatusReports(Integer start, Integer end, int companyId) {
         ReportsParamVO reportsParamVO = new ReportsParamVO();
         reportsParamVO.setStart(start);
         reportsParamVO.setEnd(end);
         reportsParamVO.setCompanyId(companyId);
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
-        List<DsyyStatusReportsVO> dsyyStatusReports = dsyyStatusReportsDao.getDsyyStatusReports(reportsParamVO, invalidConfig);
+        DsyyStatusReportsHeaderVO dsyyStatusReports = dsyyStatusReportsDao.getDsyyStatusReports(reportsParamVO, invalidConfig);
         return dsyyStatusReports;
     }
 }

@@ -71,7 +71,7 @@ public interface ReportService {
      * @param companyId
      * @return
      * */
-    List<DsyyStatusReportsVO> getDsyyStatusReports(Integer start, Integer end, int companyId);
+    DsyyStatusReportsHeaderVO getDsyyStatusReports(Integer start, Integer end, int companyId);
 
 
     /**

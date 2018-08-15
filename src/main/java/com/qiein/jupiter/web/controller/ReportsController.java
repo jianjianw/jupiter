@@ -8,10 +8,7 @@ import com.qiein.jupiter.web.entity.dto.CitiesAnalysisParamDTO;
 import com.qiein.jupiter.web.entity.dto.ClientLogDTO;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
-import com.qiein.jupiter.web.entity.vo.DstgGoldDataReportsVO;
-import com.qiein.jupiter.web.entity.vo.DstgZxStyleReportsVO;
-import com.qiein.jupiter.web.entity.vo.DsyyStatusReportsVO;
-import com.qiein.jupiter.web.entity.vo.ReportsConditionVO;
+import com.qiein.jupiter.web.entity.vo.*;
 import com.qiein.jupiter.web.service.ReportService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -383,8 +380,8 @@ public class ReportsController extends BaseController {
     @GetMapping("/get_dsyy_status_reports")
     public ResultInfo getDSyyStatusReports(Integer start,Integer end){
         StaffPO staffPO = getCurrentLoginStaff();
-        List<DsyyStatusReportsVO> dsyyStatusReportsVOS = reportService.getDsyyStatusReports(start,end,staffPO.getCompanyId());
-        return ResultInfoUtil.success(dsyyStatusReportsVOS);
+        DsyyStatusReportsHeaderVO dsyyStatusReports = reportService.getDsyyStatusReports(start, end, staffPO.getCompanyId());
+        return ResultInfoUtil.success(dsyyStatusReports);
     }
 
     @GetMapping("/receive_ali")

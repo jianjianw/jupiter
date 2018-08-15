@@ -28,15 +28,17 @@ public class DsyyStatusReportsDao {
     /**
      * 获取电商邀约状态报表
      */
-    public List<DsyyStatusReportsVO> getDsyyStatusReports(ReportsParamVO reportsParamVO, DsInvalidVO invalidConfig) {
+    public  DsyyStatusReportsHeaderVO  getDsyyStatusReports(ReportsParamVO reportsParamVO, DsInvalidVO invalidConfig) {
+        DsyyStatusReportsHeaderVO dsyyStatusReportsHeaderVO = new DsyyStatusReportsHeaderVO();
         List<DsyyStatusReportsVO> dsyyStatusReportsVOS = new ArrayList<>();
         //获取小组列表
         getGroupList(reportsParamVO,dsyyStatusReportsVOS);
         //获取状态列表
-        getStatusList(reportsParamVO,dsyyStatusReportsVOS);
+        getStatusList(dsyyStatusReportsHeaderVO,reportsParamVO,dsyyStatusReportsVOS);
         //获取客资数量
         getStatusClientCount(reportsParamVO,dsyyStatusReportsVOS);
-        return dsyyStatusReportsVOS;
+        dsyyStatusReportsHeaderVO.setDsyyStatusReportsHeaderVOS(dsyyStatusReportsVOS);
+        return dsyyStatusReportsHeaderVO;
     }
 
     /**
@@ -62,7 +64,7 @@ public class DsyyStatusReportsDao {
     /**
      * 获取状态列表
      * */
-    public void getStatusList(ReportsParamVO reportsParamVO,List<DsyyStatusReportsVO> dsyyStatusReportsVOS) {
+    public void getStatusList(DsyyStatusReportsHeaderVO dsyyStatusReportsHeaderVO,ReportsParamVO reportsParamVO,List<DsyyStatusReportsVO> dsyyStatusReportsVOS) {
         StringBuilder sb = new StringBuilder();
         sb.append(" select distinct client_status.STATUSID,client_status.STATUSNAME from hm_crm_client_status client_status where companyid = ? ");
 
@@ -76,7 +78,8 @@ public class DsyyStatusReportsDao {
                         return clientStatusReportsVO;
                     }
                 });
-
+        //设置表头
+        dsyyStatusReportsHeaderVO.setClientStatusReportsVOList(clientStatusReportsVOS);
         for (DsyyStatusReportsVO dsyyStatusReportsVO :dsyyStatusReportsVOS){
             // TODO list深拷贝问题，需要查看源码
             String jsonString = JSONObject.toJSONString(clientStatusReportsVOS);
@@ -113,20 +116,5 @@ public class DsyyStatusReportsDao {
         });
     }
 
-    /**
-     * 处理数据
-     * */
-    public void dataHandle(List<DsyyStatusReportsVO> dsyyStatusReportsVOS){
-        //数据处理
-        List<GroupReportsVO> groupReportsVOS = new ArrayList<>();
-        for (DsyyStatusReportsVO dsyyStatusReportsVO:dsyyStatusReportsVOS){
-            GroupReportsVO groupReportsVO = new GroupReportsVO();
-            groupReportsVO.setGroupId(dsyyStatusReportsVO.getGroupId());
-            groupReportsVO.setGrouoName(dsyyStatusReportsVO.getGrouoName());
-            groupReportsVOS.add(groupReportsVO);
-        }
-        //数字处理
-
-    }
 
 }
