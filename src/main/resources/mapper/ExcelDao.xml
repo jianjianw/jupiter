@@ -532,7 +532,6 @@
         ON detail.KZID is not null
         WHERE
         detail.KZID IS NOT NULL
-        AND info.ISDEL = 0
         AND temp.OPERAID = #{staffId}
         AND temp.kzid = detail.kzid
         union
