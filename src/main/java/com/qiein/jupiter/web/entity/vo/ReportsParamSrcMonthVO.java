@@ -14,17 +14,47 @@ public class ReportsParamSrcMonthVO {
     /**
      * 拍摄类型
      * */
-    private Integer typeId;
+    private String typeId;
     
     /**
      * 渠道来源
      * */
-    private Integer sourceId;
+    private String sourceId;
     
     /**
      * 客资指标
      * */
     private String kzZB;
+    
+    /**
+     * 公司id
+     * */
+    private Integer companyId;
+
+    
+	public String getTypeId() {
+		return typeId;
+	}
+
+	public void setTypeId(String typeId) {
+		this.typeId = typeId;
+	}
+
+	public String getSourceId() {
+		return sourceId;
+	}
+
+	public void setSourceId(String sourceId) {
+		this.sourceId = sourceId;
+	}
+
+	public Integer getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(Integer companyId) {
+		this.companyId = companyId;
+	}
 
 	public Integer getStart() {
 		return start;
@@ -40,22 +70,6 @@ public class ReportsParamSrcMonthVO {
 
 	public void setEnd(Integer end) {
 		this.end = end;
-	}
-
-	public Integer getTypeId() {
-		return typeId;
-	}
-
-	public void setTypeId(Integer typeId) {
-		this.typeId = typeId;
-	}
-
-	public Integer getSourceId() {
-		return sourceId;
-	}
-
-	public void setSourceId(Integer sourceId) {
-		this.sourceId = sourceId;
 	}
 
 	public String getKzZB() {
