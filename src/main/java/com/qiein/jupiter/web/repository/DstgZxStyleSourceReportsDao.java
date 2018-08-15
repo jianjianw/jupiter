@@ -556,7 +556,6 @@ public class DstgZxStyleSourceReportsDao {
             //入店成交率
             double comeShopSuccessRate = (double) DstgZxStyleReportsVO.getSuccessClientCount() / DstgZxStyleReportsVO.getComeShopClientCount();
             DstgZxStyleReportsVO.setComeShopSuccessRate(parseDouble(((Double.isNaN(comeShopSuccessRate) || Double.isInfinite(comeShopSuccessRate)) ? 0.0 : comeShopSuccessRate) * 100));
-
         }
     }
 

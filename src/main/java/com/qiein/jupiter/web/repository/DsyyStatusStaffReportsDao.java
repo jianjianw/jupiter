@@ -50,10 +50,13 @@ public class DsyyStatusStaffReportsDao {
      * */
     private void getGroupList(ReportsParamVO reportsParamVO,List<DsyyStatusReportsVO> dsyyStatusReportsVOS) {
         StringBuilder sb = new StringBuilder();
-        sb.append(" select staff.id,staff.nickname from hm_pub_group gp,hm_pub_group_staff group_staff,hm_pub_staff staff ");
+        String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
+        sb.append(" select staff.nickname,info.APPOINTORID from "+infoTabName+" info,hm_pub_staff staff");
         sb.append("  where");
-        sb.append(" gp.groupid = group_staff.groupid and staff.id = group_staff.staffid and gp.groupid = ? and ");
-        sb.append(" gp.companyid = ? and gp.GROUPTYPE = 'dsyy' and gp.PARENTID != '0' order by gp.groupid");
+        sb.append(" info.APPOINTORID = staff.id  ");
+        sb.append(" and info.isdel = 0  ");
+        sb.append(" and info.srctype in (1,2) ");
+        sb.append(" group by info.APPOINTORID");
 
         List<DsyyStatusReportsVO> dsyyStatusReports = jdbcTemplate.query(sb.toString(), new Object[]{reportsParamVO.getGroupId(),reportsParamVO.getCompanyId()},
                 new RowMapper<DsyyStatusReportsVO>() {
@@ -103,6 +106,7 @@ public class DsyyStatusStaffReportsDao {
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
         sb.append(" select STATUSID,APPOINTORID,count(id) client_count from "+ infoTabName +" info  where info.companyid = ? and info.isdel = 0 and info.groupid is not null  ");
+        sb.append(" and info.srctype in (1,2) ");
         sb.append(" and info.CREATETIME BETWEEN ? AND ?");
         //TODO 此处需要添加条件
         sb.append(" group by info.STATUSID,info.APPOINTORID");
