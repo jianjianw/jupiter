@@ -809,8 +809,12 @@
         SELECT DISTINCT
         count(1) AS repeats
         FROM
-        ${tempName} temp
-        LEFT JOIN  ${tableName} info  ON info.KZID is not null
+        (SELECT
+        DISTINCT
+        <include refid="Base_Column_News_List"/>
+        FROM ${tempName} temp
+        inner join ${tableName} info
+        ON info.KZID is not null
         WHERE
         info.KZID IS NOT NULL
         AND info.ISDEL = 0
@@ -824,6 +828,7 @@
         FROM ${tempName} temp
         WHERE
         temp.kzid in (select kzid from (select kzid,count(1) as client_count from ${tempName} a group by kzphone,kzqq,kzwechat having client_count> 1) result)
+        ) b
         ) c
     </select>
 
