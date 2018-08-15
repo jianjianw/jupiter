@@ -431,4 +431,16 @@ public class ReportsController extends BaseController {
         searchKey.setCompanyId(getCurrentLoginStaff().getCompanyId());
         return ResultInfoUtil.success(reportService.getCityReport(searchKey));
     }
+
+    /**
+     * 老客信息汇总报表
+     * @param startTime
+     * @param endTime
+     * @param kzNameOrPhone
+     * @return
+     */
+    @GetMapping("/get_old_kz_reports")
+    public ResultInfo getOldKzReports(@RequestParam String startTime,@RequestParam String endTime,@RequestParam String kzNameOrPhone){
+        return ResultInfoUtil.success(reportService.getOldKzReports(getCurrentLoginStaff().getCompanyId(),startTime,endTime,kzNameOrPhone));
+    }
 }

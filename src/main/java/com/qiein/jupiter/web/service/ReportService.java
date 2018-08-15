@@ -88,5 +88,9 @@ public interface ReportService {
     /**
      * 转介绍每月客资报表内表详情
      */
-    List<ZjskzOfMonthReportsVO> ZjskzOfMonthIn(Integer companyId, String sourceId, String month);
+    ZjskzOfMonthMapVO ZjskzOfMonthIn(Integer companyId, String sourceId, String month);
+    /**
+     * 老客信息汇总报表
+     */
+    List<OldKzReportsVO> getOldKzReports(Integer companyId,String startTime,String endTime,String kzNameOrPhone);
 }

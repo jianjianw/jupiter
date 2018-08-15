@@ -4,10 +4,7 @@ import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.enums.TableEnum;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.StringUtil;
-import com.qiein.jupiter.web.entity.vo.DsInvalidVO;
-import com.qiein.jupiter.web.entity.vo.DstgGoldDataReportsVO;
-import com.qiein.jupiter.web.entity.vo.ReportsParamVO;
-import com.qiein.jupiter.web.entity.vo.ZjskzOfMonthReportsVO;
+import com.qiein.jupiter.web.entity.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -112,7 +109,7 @@ public class ZjskzOfMonthDao {
     /**
     * 获取报表详情数据
     */
-    public List<ZjskzOfMonthReportsVO> ZjskzOfMonthIn(List<Map<String, Object>> dayList,Integer companyId,String month,String sourceId,DsInvalidVO dsInvalidVO){
+    public ZjskzOfMonthMapVO ZjskzOfMonthIn(List<Map<String, Object>> dayList,Integer companyId,String month,String sourceId,DsInvalidVO dsInvalidVO){
         List<ZjskzOfMonthReportsVO> zjskzOfMonthReportsVOS=new ArrayList<>();
         String tableInfo= DBSplitUtil.getTable(TableEnum.info,companyId);
         //总客资
@@ -132,7 +129,56 @@ public class ZjskzOfMonthDao {
         //成交量
         getSuccessClient(dayList,tableInfo,month,zjskzOfMonthReportsVOS,sourceId,companyId);
         computerRate(zjskzOfMonthReportsVOS,dsInvalidVO);
-        return zjskzOfMonthReportsVOS;
+        ZjskzOfMonthMapVO zjskzOfMonthMapVO=new ZjskzOfMonthMapVO();
+        Map<String,Object> clientCountMap=new HashMap<>();
+        for(ZjskzOfMonthReportsVO zjskzOfMonthReportsVO:zjskzOfMonthReportsVOS){
+            clientCountMap.put(zjskzOfMonthReportsVO.getDayId(),zjskzOfMonthReportsVO.getClientCount());
+
+        }
+        zjskzOfMonthMapVO.setClientCountMap(clientCountMap);
+        Map<String,Object> validClientCountMap=new HashMap<>();
+        for(ZjskzOfMonthReportsVO zjskzOfMonthReportsVO:zjskzOfMonthReportsVOS){
+            validClientCountMap.put(zjskzOfMonthReportsVO.getDayId(),zjskzOfMonthReportsVO.getValidClientCount());
+
+        }
+        zjskzOfMonthMapVO.setValidClientCountMap(validClientCountMap);
+        Map<String,Object> comeShopClientCountMap=new HashMap<>();
+        for(ZjskzOfMonthReportsVO zjskzOfMonthReportsVO:zjskzOfMonthReportsVOS){
+            comeShopClientCountMap.put(zjskzOfMonthReportsVO.getDayId(),zjskzOfMonthReportsVO.getComeShopClientCount());
+
+        }
+        zjskzOfMonthMapVO.setComeShopClientCountMap(comeShopClientCountMap);
+        Map<String,Object> successClientCountMap=new HashMap<>();
+        for(ZjskzOfMonthReportsVO zjskzOfMonthReportsVO:zjskzOfMonthReportsVOS){
+            successClientCountMap.put(zjskzOfMonthReportsVO.getDayId(),zjskzOfMonthReportsVO.getSuccessClientCount());
+
+        }
+        zjskzOfMonthMapVO.setSuccessClientCountMap(successClientCountMap);
+        Map<String,Object> validRateMap=new HashMap<>();
+        for(ZjskzOfMonthReportsVO zjskzOfMonthReportsVO:zjskzOfMonthReportsVOS){
+            validRateMap.put(zjskzOfMonthReportsVO.getDayId(),zjskzOfMonthReportsVO.getValidRate());
+
+        }
+        zjskzOfMonthMapVO.setValidRateMap(validRateMap);
+        Map<String,Object> inValidRateMap=new HashMap<>();
+        for(ZjskzOfMonthReportsVO zjskzOfMonthReportsVO:zjskzOfMonthReportsVOS){
+            inValidRateMap.put(zjskzOfMonthReportsVO.getDayId(),zjskzOfMonthReportsVO.getInValidRate());
+
+        }
+        zjskzOfMonthMapVO.setInValidRateMap(inValidRateMap);
+        Map<String,Object> validClientComeShopRateMap=new HashMap<>();
+        for(ZjskzOfMonthReportsVO zjskzOfMonthReportsVO:zjskzOfMonthReportsVOS){
+            validClientComeShopRateMap.put(zjskzOfMonthReportsVO.getDayId(),zjskzOfMonthReportsVO.getValidClientComeShopRate());
+
+        }
+        zjskzOfMonthMapVO.setValidClientComeShopRateMap(validClientComeShopRateMap);
+        Map<String,Object> comeShopSuccessRateMap=new HashMap<>();
+        for(ZjskzOfMonthReportsVO zjskzOfMonthReportsVO:zjskzOfMonthReportsVOS){
+            comeShopSuccessRateMap.put(zjskzOfMonthReportsVO.getDayId(),zjskzOfMonthReportsVO.getComeShopSuccessRate());
+
+        }
+       zjskzOfMonthMapVO.setComeShopSuccessRateMap(comeShopSuccessRateMap);
+        return zjskzOfMonthMapVO;
     }
     /**
      * 总客资
