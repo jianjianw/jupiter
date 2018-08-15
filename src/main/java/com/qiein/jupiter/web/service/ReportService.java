@@ -89,4 +89,40 @@ public interface ReportService {
      * 转介绍每月客资报表内表详情
      */
     List<ZjskzOfMonthReportsVO> ZjskzOfMonthIn(Integer companyId, String sourceId, String month);
+    
+    /**
+     * 查询所有客资--电商月度客资汇总报表
+     * @param companyId
+     * @return
+     */
+	List<DstgReportsSrcMonthVO> getDSTGSrcMonthReportsSum(Integer start, Integer end, String typeId, String sourceId,int companyId);
+	/**
+     * 查询总客资量--电商月度客资汇总报表
+     * @param companyId
+     * @return
+     */
+	List<DstgReportsSrcMonthVO> getDSTGSrcMonthReportsAll(Integer start, Integer end, String typeId, String sourceId,
+			int companyId);
+	/**
+     * 查询待定客资量--电商月度客资汇总报表
+     * @param companyId
+     * @return
+     */
+	List<DstgReportsSrcMonthVO> getDSTGSrcMonthReportsDdNum(Integer start, Integer end, String typeId,
+			String sourceId, int companyId);
+	/**
+     * 查询无效客资量--电商月度客资汇总报表
+     * @param companyId
+     * @return
+     */
+	List<DstgReportsSrcMonthVO> getDSTGSrcMonthReportsInvalid(Integer start, Integer end, String typeId,
+			String sourceId, int companyId);
+	/**
+     * 查询有客资量--电商月度客资汇总报表
+     * @param companyId
+     * @return
+     */
+	List<DstgReportsSrcMonthVO> getDSTGSrcMonthReportsvalid(Integer start, Integer end, String typeId,
+			String sourceId, int companyId);
+    
 }
