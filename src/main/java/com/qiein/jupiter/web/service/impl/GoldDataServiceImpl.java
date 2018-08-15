@@ -97,21 +97,21 @@ public class GoldDataServiceImpl implements GoldDataService {
      * @param companyId
      * @return
      */
-    public PageInfo<GoldFingerPO> select(int companyId, int pageNum, int pageSize, String formId, String staffIds, String srcIds) {
+    public PageInfo<GoldFingerPO> select(int companyId, int pageNum, int pageSize, String formId,String staffIds, String srcIds) {
         PageHelper.startPage(pageNum, pageSize);
-        List<Integer> srcList = new ArrayList<>();
-        List<Integer> staffList = new ArrayList<>();
-        if (!StringUtil.isEmpty(staffIds)) {
-            for (String staff : staffIds.split(CommonConstant.STR_SEPARATOR)) {
+        List<Integer> srcList=new ArrayList<>();
+        List<Integer> staffList=new ArrayList<>();
+        if(!StringUtil.isEmpty(staffIds)){
+            for(String staff:staffIds.split(CommonConstant.STR_SEPARATOR)){
                 staffList.add(Integer.parseInt(staff));
             }
         }
-        if (!StringUtil.isEmpty(srcIds)) {
-            for (String src : srcIds.split(CommonConstant.STR_SEPARATOR)) {
+        if(!StringUtil.isEmpty(srcIds)){
+            for(String src:srcIds.split(CommonConstant.STR_SEPARATOR)){
                 srcList.add(Integer.parseInt(src));
             }
         }
-        List<GoldFingerPO> select = goldDataDao.select(companyId, formId, srcList, staffList);
+        List<GoldFingerPO> select = goldDataDao.select(companyId, formId,srcList,staffList);
         return new PageInfo<>(select);
 
     }
@@ -134,7 +134,7 @@ public class GoldDataServiceImpl implements GoldDataService {
     public GoldCustomerShowVO goldCustomerSelect(QueryMapDTO queryMapDTO, GoldCustomerDTO goldCustomerDTO) {
         PageHelper.startPage(queryMapDTO.getPageNum(), queryMapDTO.getPageSize());
         List<GoldCustomerVO> list = goldDataDao.goldCustomerSelect(goldCustomerDTO);
-        for (GoldCustomerVO goldCustomerVO : list) {
+        for(GoldCustomerVO goldCustomerVO:list){
             goldCustomerVO.setStatus(GoldDataStatusEnum.getGoldStatusDesc(goldCustomerVO.getStatusId()));
         }
         GoldCustomerShowVO showVO = new GoldCustomerShowVO();
@@ -265,6 +265,7 @@ public class GoldDataServiceImpl implements GoldDataService {
         goldTempDao.insert(goldTempPO);
 
 
+
         //重复拦截
 //        GoldTempPO goldTemp = goldTempDao.getByKzNameOrKzPhoneOrKzWechat(formId, kzPhone);
 //        if (null != goldTemp) {
@@ -303,7 +304,7 @@ public class GoldDataServiceImpl implements GoldDataService {
             clientLogPO.setOperaId(goldFingerPO.getStaffId());
             StaffPO staffPO = staffDao.getByIdAndCid(goldFingerPO.getStaffId(), goldFingerPO.getCompanyId());
             clientLogPO.setOperaName(staffPO.getNickName());
-            clientLogDao.addInfoLog(clientLogPO);
+            clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(goldFingerPO.getCompanyId()),clientLogPO);
 
         } else if ("130019".equals(jsInfo.getString("code"))) {
             goldTempPO.setStatusId(GoldDataConst.REPEATED_SCREEN);

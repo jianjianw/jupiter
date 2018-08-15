@@ -832,16 +832,21 @@ public class StaffServiceImpl implements StaffService {
         // 如果在线，
         if (staffPO.getStatusFlag() == StaffStatusEnum.OnLine.getStatusId()) {
             // 查是否有记录，没有则添加，
-            OnLineTimePO onLineTimePO = onLineTimeDao.getLogByStaffAndDay(staffPO.getId(), staffPO.getCompanyId() );
+            OnLineTimePO onLineTimePO = onLineTimeDao.getLogByStaffAndDay(staffPO.getId(), staffPO.getCompanyId(),
+                    DBSplitUtil.getOnLineTimeLogTabName(staffPO.getCompanyId()));
             if (onLineTimePO == null) {
-                onLineTimeDao.addOnLineTimeLog(staffPO.getId(), staffPO.getCompanyId(), staffPO.getNickName() );
+                onLineTimeDao.addOnLineTimeLog(staffPO.getId(), staffPO.getCompanyId(), staffPO.getNickName(),
+                        DBSplitUtil.getOnLineTimeLogTabName(staffPO.getCompanyId()));
             }
             // 判断距离上次时间间隔，超过120秒，当第一次上线，只修改上次心跳时间
-            int interval = onLineTimeDao.getLastHeartTime(staffPO.getId(), staffPO.getCompanyId() );
+            int interval = onLineTimeDao.getLastHeartTime(staffPO.getId(), staffPO.getCompanyId(),
+                    DBSplitUtil.getOnLineTimeLogTabName(staffPO.getCompanyId()));
             if (interval > CommonConstant.DEFAULT_ONLINE_TIME) {
-                onLineTimeDao.updateLastHeartTime(staffPO.getId(), staffPO.getCompanyId() );
+                onLineTimeDao.updateLastHeartTime(staffPO.getId(), staffPO.getCompanyId(),
+                        DBSplitUtil.getOnLineTimeLogTabName(staffPO.getCompanyId()));
             } else {
-                onLineTimeDao.updateOnLineTime(staffPO.getId(), staffPO.getCompanyId(),  interval);
+                onLineTimeDao.updateOnLineTime(staffPO.getId(), staffPO.getCompanyId(),
+                        DBSplitUtil.getOnLineTimeLogTabName(staffPO.getCompanyId()), interval);
             }
         }
         return ipWhiteService.checkIpLimit(staffPO.getId(), staffPO.getCompanyId(), ip);
@@ -856,7 +861,7 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public void resizeTodayNum(int companyId, int staffId) {
         // 计算客服今日领取客资数
-        int num = staffDao.getTodayKzNum(companyId, staffId );
+        int num = staffDao.getTodayKzNum(companyId, staffId, DBSplitUtil.getInfoTabName(companyId));
         // 修改今日领取客资数
         int updateNum = staffDao.updateTodatKzNum(companyId, staffId, num);
         if (1 != updateNum) {

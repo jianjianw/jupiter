@@ -16,41 +16,46 @@ public interface OnLineTimeDao extends BaseDao<OnLineTimePO> {
      * @param staffId
      * @param companyId
      * @param staffName
+     * @param logTabName
      */
-    void addOnLineTimeLog(@Param("staffId") int staffId, @Param("companyId") int companyId, @Param("staffName") String staffName);
+    void addOnLineTimeLog(@Param("staffId") int staffId, @Param("companyId") int companyId, @Param("staffName") String staffName, @Param("logTabName") String logTabName);
 
     /**
      * 修改在线时长
      *
      * @param staffId
      * @param companyId
+     * @param logTabName
      * @param time
      */
-    void updateOnLineTime(@Param("staffId") int staffId, @Param("companyId") int companyId, @Param("time") int time);
+    void updateOnLineTime(@Param("staffId") int staffId, @Param("companyId") int companyId, @Param("logTabName") String logTabName, @Param("time") int time);
 
     /**
      * 根据员工ID和日期，查询日志
      *
      * @param staffId
      * @param companyId
+     * @param logTabName
      * @return
      */
-    OnLineTimePO getLogByStaffAndDay(@Param("staffId") int staffId, @Param("companyId") int companyId);
+    OnLineTimePO getLogByStaffAndDay(@Param("staffId") int staffId, @Param("companyId") int companyId, @Param("logTabName") String logTabName);
 
     /**
      * 获取上一次心跳时间
      *
      * @param staffId
      * @param companyId
+     * @param logTabName
      * @return
      */
-    int getLastHeartTime(@Param("staffId") int staffId, @Param("companyId") int companyId);
+    int getLastHeartTime(@Param("staffId") int staffId, @Param("companyId") int companyId, @Param("logTabName") String logTabName);
 
     /**
      * 更新上次心跳时间
      *
      * @param staffId
      * @param companyId
+     * @param logTabName
      */
-    void updateLastHeartTime(@Param("staffId") int staffId, @Param("companyId") int companyId);
+    void updateLastHeartTime(@Param("staffId") int staffId, @Param("companyId") int companyId, @Param("logTabName") String logTabName);
 }

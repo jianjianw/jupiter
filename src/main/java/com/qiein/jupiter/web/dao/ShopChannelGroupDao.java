@@ -117,7 +117,7 @@ public interface ShopChannelGroupDao {
      * @return
      */
     List<ShopChannelGroupPO> listShopChannelGroupRela(@Param("companyId") int companyId, @Param("typeId") int typeId,
-                                                      @Param("channelId") int channelId);
+                                                      @Param("channelId") int channelId, @Param("infoTab") String infoTab);
 
     /**
      * 当一个组被删除时，需要把对应的关联设置删掉

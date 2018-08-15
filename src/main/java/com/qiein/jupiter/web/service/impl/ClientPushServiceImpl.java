@@ -97,7 +97,8 @@ public class ClientPushServiceImpl implements ClientPushService {
         AllotLogPO allotLog = null;
 
         // 获取客资信息
-        ClientPushDTO clientDTO = clientInfoDao.getClientPushDTOById(kzId);
+        ClientPushDTO clientDTO = clientInfoDao.getClientPushDTOById(kzId, DBSplitUtil.getInfoTabName(companyId),
+                DBSplitUtil.getDetailTabName(companyId));
 
         // 判断客资当前状态-限定客资最后推送时间已经超过分配间隔  //多加5秒防止特殊情况
         if (clientDTO == null || (clientDTO.getPushInterval() != 0 && clientDTO.getPushInterval() <= (overTime + 5))) {
@@ -106,7 +107,8 @@ public class ClientPushServiceImpl implements ClientPushService {
         // 判定是否已经预选客服
         if (NumUtil.isValid(clientDTO.getAppointorId())
                 && clientDTO.getStatusId() == ClientStatusConst.BE_HAVE_MAKE_ORDER) {
-            ClientGoEasyDTO infoDTO = clientInfoDao.getClientGoEasyDTOById(clientDTO.getKzId());
+            ClientGoEasyDTO infoDTO = clientInfoDao.getClientGoEasyDTOById(clientDTO.getKzId(),
+                    DBSplitUtil.getInfoTabName(companyId), DBSplitUtil.getDetailTabName(companyId));
             GoEasyUtil.pushInfoComed(companyId, clientDTO.getAppointorId(), infoDTO, newsDao, staffDao);
             GoEasyUtil.pushInfoRefresh(companyId, clientDTO.getAppointorId(), webSocketMsgUtil);
             return;
@@ -221,12 +223,12 @@ public class ClientPushServiceImpl implements ClientPushService {
             calcRange = CommonConstant.ALLOT_RANGE_DEFAULT;
         }
         // 2.获取从当前时间往前退一个小时内，所有指定客服的领取情况
-        List<StaffPushDTO> appointerList = staffDao.getPushAppointByRole(companyId, srcId, calcRange, staffOnlineList);
+        List<StaffPushDTO> appointerList = staffDao.getPushAppointByRole(DBSplitUtil.getInfoTabName(companyId), companyId, srcId, calcRange, staffOnlineList);
 
         while (calcRange <= CommonConstant.ALLOT_RANGE_MAX
                 && (appointerList == null || appointerList.size() != staffOnlineList.size())) {
             calcRange += CommonConstant.ALLOT_RANGE_INTERVAL;
-            appointerList = staffDao.getPushAppointByRole(companyId,
+            appointerList = staffDao.getPushAppointByRole(DBSplitUtil.getInfoTabName(companyId), companyId,
                     srcId, calcRange, staffOnlineList);
         }
         // 值匹配，差比分析
@@ -271,11 +273,11 @@ public class ClientPushServiceImpl implements ClientPushService {
         //1.获取可以领取的小组集合
         List<String> groupIdList = staffDao.getGroupAvgGroupList(companyId, srcId, type);
         //2.获取从当前时间往前退一个小时内，所有指定小组的领取情况
-        List<String> appointGroups = staffDao.getGroupAvgReceive(companyId, srcId, calcRange, groupIdList);
+        List<String> appointGroups = staffDao.getGroupAvgReceive(DBSplitUtil.getInfoTabName(companyId), companyId, srcId, calcRange, groupIdList);
         while (calcRange <= CommonConstant.ALLOT_RANGE_MAX
                 && (appointGroups == null || appointGroups.size() != groupIdList.size())) {
             calcRange += CommonConstant.ALLOT_RANGE_INTERVAL;
-            appointGroups = staffDao.getGroupAvgReceive(companyId, srcId, calcRange, groupIdList);
+            appointGroups = staffDao.getGroupAvgReceive(DBSplitUtil.getInfoTabName(companyId), companyId, srcId, calcRange, groupIdList);
         }
         if (CollectionUtils.isEmpty(appointGroups)) {
             return groupIdList;
@@ -318,11 +320,11 @@ public class ClientPushServiceImpl implements ClientPushService {
             return null;
         }
         // 2.获取从当前时间往前退一个小时内，所有指定客服的领取情况
-        List<StaffPushDTO> appointerList = staffDao.getPushAppointByRole(companyId, srcId, calcRange, staffOnlineList);
+        List<StaffPushDTO> appointerList = staffDao.getPushAppointByRole(DBSplitUtil.getInfoTabName(companyId), companyId, srcId, calcRange, staffOnlineList);
         while (calcRange <= CommonConstant.ALLOT_RANGE_MAX
                 && (appointerList == null || appointerList.size() != staffOnlineList.size())) {
             calcRange += CommonConstant.ALLOT_RANGE_INTERVAL;
-            appointerList = staffDao.getPushAppointByRole(companyId,
+            appointerList = staffDao.getPushAppointByRole(DBSplitUtil.getInfoTabName(companyId), companyId,
                     srcId, calcRange, staffOnlineList);
         }
         // 值匹配，差比分析
@@ -340,7 +342,8 @@ public class ClientPushServiceImpl implements ClientPushService {
      * @param overTime
      */
     private void checkOffLine(int appointId, int companyId, int overTime) {
-        int checkNum = staffDao.getSaboteurCheckNum(companyId, appointId, overTime);
+        int checkNum = staffDao.getSaboteurCheckNum(DBSplitUtil.getAllotLogTabName(companyId), companyId, appointId,
+                overTime);
         if (0 == checkNum) {
             // 连续三次怠工，强制下线
             int i = staffDao.editStatusFlagOffLine(companyId, appointId, StaffStatusEnum.OffLine.getStatusId());
@@ -375,7 +378,8 @@ public class ClientPushServiceImpl implements ClientPushService {
         staffService.resizeTodayNum(companyId, appointer.getStaffId());
 
         // 推送消息
-        ClientGoEasyDTO infoDTO = clientInfoDao.getClientGoEasyDTOById(kzId);
+        ClientGoEasyDTO infoDTO = clientInfoDao.getClientGoEasyDTOById(kzId, DBSplitUtil.getInfoTabName(companyId),
+                DBSplitUtil.getDetailTabName(companyId));
         GoEasyUtil.pushInfoComed(companyId, appointer.getStaffId(), infoDTO, newsDao, staffDao);
         GoEasyUtil.pushInfoRefresh(companyId, appointer.getStaffId(), webSocketMsgUtil);
     }
@@ -390,28 +394,28 @@ public class ClientPushServiceImpl implements ClientPushService {
      */
     private void updateInfoWhenReceive(int companyId, String kzId, int allotLogId, StaffPushDTO appointer) {
         // 客资绑定客服，修改客资状态，客资客服ID，客服名，客资分类，客资客服组信息，最后操作时间，客资最后推送时间
-        int updateRstNum = clientInfoDao.updateClientInfoWhenAllot(companyId,
+        int updateRstNum = clientInfoDao.updateClientInfoWhenAllot(companyId, DBSplitUtil.getInfoTabName(companyId),
                 kzId, ClientStatusConst.KZ_CLASS_NEW, ClientStatusConst.BE_HAVE_MAKE_ORDER, appointer.getStaffId(),
                 appointer.getGroupId(), ClientConst.ALLOT_SYSTEM_AUTO);
         if (1 != updateRstNum) {
             throw new RException(ExceptionEnum.INFO_STATUS_EDIT_ERROR);
         }
 
-        updateRstNum = clientInfoDao.updateClientDetailWhenAllot(companyId,
+        updateRstNum = clientInfoDao.updateClientDetailWhenAllot(companyId, DBSplitUtil.getDetailTabName(companyId),
                 kzId, appointer.getStaffName(), appointer.getGroupName());
         if (1 != updateRstNum) {
             throw new RException(ExceptionEnum.INFO_EDIT_ERROR);
         }
 
         // 修改指定分配日志状态为已领取
-        updateRstNum = clientAllotLogDao.updateAllogLog(companyId, kzId,
+        updateRstNum = clientAllotLogDao.updateAllogLog(DBSplitUtil.getAllotLogTabName(companyId), companyId, kzId,
                 allotLogId, ClientConst.ALLOT_LOG_STATUS_YES, "now");
         if (1 != updateRstNum) {
             throw new RException(ExceptionEnum.INFO_STATUS_EDIT_ERROR);
         }
 
         // 修改客资的领取时间
-        updateRstNum = clientInfoDao.updateClientInfoAfterAllot(companyId, kzId);
+        updateRstNum = clientInfoDao.updateClientInfoAfterAllot(companyId, DBSplitUtil.getInfoTabName(companyId), kzId);
         if (1 != updateRstNum) {
             throw new RException(ExceptionEnum.INFO_EDIT_ERROR);
         }
@@ -423,9 +427,10 @@ public class ClientPushServiceImpl implements ClientPushService {
         }
 
         // 客资日志记录
-        updateRstNum = clientLogDao.addInfoLog(new ClientLogPO(kzId,
-                ClientLogConst.getAutoAllotLog(appointer.getGroupName(), appointer.getStaffName()),
-                ClientLogConst.INFO_LOGTYPE_ALLOT, companyId));
+        updateRstNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(companyId),
+                new ClientLogPO(kzId,
+                        ClientLogConst.getAutoAllotLog(appointer.getGroupName(), appointer.getStaffName()),
+                        ClientLogConst.INFO_LOGTYPE_ALLOT, companyId));
         if (1 != updateRstNum) {
             throw new RException(ExceptionEnum.LOG_ERROR);
         }
@@ -443,14 +448,14 @@ public class ClientPushServiceImpl implements ClientPushService {
     private void doPushAvgReceive(int companyId, String kzId, StaffPushDTO appointer, int allotLogId, int overTime) {
 
         // 客资绑定客服，修改客资状态，客资客服ID，客服名，客资分类，客资客服组信息，最后操作时间，客资最后推送时间
-        int updateRstNum = clientInfoDao.updateClientInfoWhenAllot(companyId,
+        int updateRstNum = clientInfoDao.updateClientInfoWhenAllot(companyId, DBSplitUtil.getInfoTabName(companyId),
                 kzId, ClientStatusConst.KZ_CLASS_NEW, ClientStatusConst.BE_ALLOTING, appointer.getStaffId(),
                 appointer.getGroupId(), ClientConst.ALLOT_SYSTEM_AUTO);
         if (1 != updateRstNum) {
             throw new RException(ExceptionEnum.INFO_STATUS_EDIT_ERROR);
         }
 
-        updateRstNum = clientInfoDao.updateClientDetailWhenAllot(companyId,
+        updateRstNum = clientInfoDao.updateClientDetailWhenAllot(companyId, DBSplitUtil.getDetailTabName(companyId),
                 kzId, appointer.getStaffName(), appointer.getGroupName());
         if (1 != updateRstNum) {
             throw new RException(ExceptionEnum.INFO_EDIT_ERROR);
@@ -463,9 +468,10 @@ public class ClientPushServiceImpl implements ClientPushService {
         }
 
         // 客资日志记录
-        updateRstNum = clientLogDao.addInfoLog(new ClientLogPO(kzId,
-                ClientLogConst.getAutoReceiveLog(appointer.getGroupName(), appointer.getStaffName()),
-                ClientLogConst.INFO_LOGTYPE_ALLOT, companyId));
+        updateRstNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(companyId),
+                new ClientLogPO(kzId,
+                        ClientLogConst.getAutoReceiveLog(appointer.getGroupName(), appointer.getStaffName()),
+                        ClientLogConst.INFO_LOGTYPE_ALLOT, companyId));
         if (1 != updateRstNum) {
             throw new RException(ExceptionEnum.LOG_ERROR);
         }
@@ -487,41 +493,43 @@ public class ClientPushServiceImpl implements ClientPushService {
     private void doBlindSelfReceive(int companyId, String kzId, StaffPushDTO appointer, int allotLogId, int overTime) {
 
         // 客资绑定客服，修改客资状态，客资客服ID，客服名，客资分类，客资客服组信息，最后操作时间，客资最后推送时间
-        int updateRstNum = clientInfoDao.updateClientInfoWhenAllot(companyId,
+        int updateRstNum = clientInfoDao.updateClientInfoWhenAllot(companyId, DBSplitUtil.getInfoTabName(companyId),
                 kzId, ClientStatusConst.KZ_CLASS_NEW, ClientStatusConst.BE_HAVE_MAKE_ORDER, appointer.getStaffId(),
                 appointer.getGroupId(), ClientConst.ALLOT_SYSTEM_AUTO);
         if (1 != updateRstNum) {
             throw new RException(ExceptionEnum.INFO_STATUS_EDIT_ERROR);
         }
 
-        updateRstNum = clientInfoDao.updateClientDetailWhenAllot(companyId,
+        updateRstNum = clientInfoDao.updateClientDetailWhenAllot(companyId, DBSplitUtil.getDetailTabName(companyId),
                 kzId, appointer.getStaffName(), appointer.getGroupName());
         if (1 != updateRstNum) {
             throw new RException(ExceptionEnum.INFO_EDIT_ERROR);
         }
 
         // 修改指定分配日志状态为已领取
-        updateRstNum = clientAllotLogDao.updateAllogLog(companyId, kzId,
+        updateRstNum = clientAllotLogDao.updateAllogLog(DBSplitUtil.getAllotLogTabName(companyId), companyId, kzId,
                 allotLogId, ClientConst.ALLOT_LOG_STATUS_YES, "now");
         if (1 != updateRstNum) {
             throw new RException(ExceptionEnum.INFO_STATUS_EDIT_ERROR);
         }
 
         // 修改客资的领取时间
-        updateRstNum = clientInfoDao.updateClientInfoAfterAllot(companyId, kzId);
+        updateRstNum = clientInfoDao.updateClientInfoAfterAllot(companyId, DBSplitUtil.getInfoTabName(companyId), kzId);
         if (1 != updateRstNum) {
             throw new RException(ExceptionEnum.INFO_EDIT_ERROR);
         }
 
         // 推送消息
-        ClientGoEasyDTO infoDTO = clientInfoDao.getClientGoEasyDTOById(kzId);
+        ClientGoEasyDTO infoDTO = clientInfoDao.getClientGoEasyDTOById(kzId, DBSplitUtil.getInfoTabName(companyId),
+                DBSplitUtil.getDetailTabName(companyId));
         GoEasyUtil.pushInfoComed(companyId, appointer.getStaffId(), infoDTO, newsDao, staffDao);
         GoEasyUtil.pushInfoRefresh(companyId, appointer.getStaffId(), webSocketMsgUtil);
 
         // 客资日志记录
-        updateRstNum = clientLogDao.addInfoLog(new ClientLogPO(kzId,
-                ClientLogConst.getAutoAllotLog(appointer.getGroupName(), appointer.getStaffName()),
-                ClientLogConst.INFO_LOGTYPE_ALLOT, companyId));
+        updateRstNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(companyId),
+                new ClientLogPO(kzId,
+                        ClientLogConst.getAutoAllotLog(appointer.getGroupName(), appointer.getStaffName()),
+                        ClientLogConst.INFO_LOGTYPE_ALLOT, companyId));
         if (1 != updateRstNum) {
             throw new RException(ExceptionEnum.LOG_ERROR);
         }
@@ -540,23 +548,23 @@ public class ClientPushServiceImpl implements ClientPushService {
     private void doAssignAppoint(int companyId, String kzId, StaffPushDTO appointer, int allotLogId, int overTime) {
 
         // 客资绑定客服，修改客资状态，客资客服ID，客服名，客资分类，客资客服组信息，最后操作时间，客资最后推送时间
-        int updateRstNum = clientInfoDao.updateClientInfoWhenAllot(companyId,
+        int updateRstNum = clientInfoDao.updateClientInfoWhenAllot(companyId, DBSplitUtil.getInfoTabName(companyId),
                 kzId, ClientStatusConst.KZ_CLASS_NEW, ClientStatusConst.BE_HAVE_MAKE_ORDER, appointer.getStaffId(),
                 appointer.getGroupId(), ClientConst.ALLOT_SYSTEM_AUTO);
         if (1 != updateRstNum) {
             throw new RException(ExceptionEnum.INFO_STATUS_EDIT_ERROR);
         }
         //修改客资领取时间
-        clientInfoDao.updateClientInfoAfterAllot(companyId, kzId);
+        clientInfoDao.updateClientInfoAfterAllot(companyId, DBSplitUtil.getInfoTabName(companyId), kzId);
 
-        updateRstNum = clientInfoDao.updateClientDetailWhenAllot(companyId,
+        updateRstNum = clientInfoDao.updateClientDetailWhenAllot(companyId, DBSplitUtil.getDetailTabName(companyId),
                 kzId, appointer.getStaffName(), appointer.getGroupName());
         if (1 != updateRstNum) {
             throw new RException(ExceptionEnum.INFO_EDIT_ERROR);
         }
 
         // 修改指定分配日志状态为已领取
-        updateRstNum = clientAllotLogDao.updateAllogLog(companyId, kzId,
+        updateRstNum = clientAllotLogDao.updateAllogLog(DBSplitUtil.getAllotLogTabName(companyId), companyId, kzId,
                 allotLogId, ClientConst.ALLOT_LOG_STATUS_YES, "now");
         if (1 != updateRstNum) {
             throw new RException(ExceptionEnum.INFO_STATUS_EDIT_ERROR);
@@ -567,14 +575,16 @@ public class ClientPushServiceImpl implements ClientPushService {
         staffService.resizeTodayNum(companyId, appointer.getStaffId());
 
         // 推送消息
-        ClientGoEasyDTO infoDTO = clientInfoDao.getClientGoEasyDTOById(kzId);
+        ClientGoEasyDTO infoDTO = clientInfoDao.getClientGoEasyDTOById(kzId, DBSplitUtil.getInfoTabName(companyId),
+                DBSplitUtil.getDetailTabName(companyId));
         GoEasyUtil.pushInfoComed(companyId, appointer.getStaffId(), infoDTO, newsDao, staffDao);
         GoEasyUtil.pushInfoRefresh(companyId, appointer.getStaffId(), webSocketMsgUtil);
 
         // 客资日志记录
-        updateRstNum = clientLogDao.addInfoLog(new ClientLogPO(kzId,
-                ClientLogConst.getAutoAllotLog(appointer.getGroupName(), appointer.getStaffName()),
-                ClientLogConst.INFO_LOGTYPE_ALLOT, companyId));
+        updateRstNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(companyId),
+                new ClientLogPO(kzId,
+                        ClientLogConst.getAutoAllotLog(appointer.getGroupName(), appointer.getStaffName()),
+                        ClientLogConst.INFO_LOGTYPE_ALLOT, companyId));
         if (1 != updateRstNum) {
             throw new RException(ExceptionEnum.LOG_ERROR);
         }
@@ -589,12 +599,13 @@ public class ClientPushServiceImpl implements ClientPushService {
      */
     private void pushAllYyStaff(String kzId, int companyId, List<StaffPushDTO> yyList) {
         // 获取客资信息
-        ClientGoEasyDTO infoDTO = clientInfoDao.getClientGoEasyDTOById(kzId);
+        ClientGoEasyDTO infoDTO = clientInfoDao.getClientGoEasyDTOById(kzId, DBSplitUtil.getInfoTabName(companyId),
+                DBSplitUtil.getDetailTabName(companyId));
         if (NumUtil.isValid(infoDTO.getLastPushTime())) {
             return;
         }
         //修改客资最后推送时间
-        clientInfoDao.updateLastPushTime(companyId, kzId);
+        clientInfoDao.updateLastPushTime(companyId, DBSplitUtil.getInfoTabName(companyId), kzId);
 
         for (StaffPushDTO sf : yyList) {
             GoEasyUtil.pushClientReceive(companyId, sf.getStaffId(), infoDTO, newsDao, staffDao, webSocketMsgUtil);
@@ -621,7 +632,7 @@ public class ClientPushServiceImpl implements ClientPushService {
                 CommonConstant.SYSTEM_OPERA_ID, CommonConstant.SYSTEM_OPERA_NAME);
 
         // 记录分配日志
-        clientAllotLogDao.addClientAllogLog(allotLog);
+        clientAllotLogDao.addClientAllogLog(DBSplitUtil.getAllotLogTabName(companyId), allotLog);
 
         if (NumUtil.isInValid(allotLog.getId())) {
             throw new RException(ExceptionEnum.ALLOT_LOG_ERROR);
@@ -647,7 +658,7 @@ public class ClientPushServiceImpl implements ClientPushService {
 
         // 根据拍摄地ID，渠道ID获取要分配的小组ID集合
         List<ShopChannelGroupPO> shopChannelGroupRelaList = shopChannelGroupDao.listShopChannelGroupRela(companyId,
-                typeId, channelId);
+                typeId, channelId, DBSplitUtil.getInfoTabName(companyId));
 
         if (CollectionUtils.isEmpty(shopChannelGroupRelaList)) {
             return null;
@@ -655,7 +666,7 @@ public class ClientPushServiceImpl implements ClientPushService {
 
         // 统计当天该拍摄地和渠道，每个小组的客资分配情况
         List<GroupKzNumToday> groupKzNumTodayList = groupKzNumTodayDao.getGroupKzNumTodayByShopChannelId(typeId,
-                channelId, companyId);
+                channelId, companyId, DBSplitUtil.getInfoTabName(companyId));
 
         // 要分配的目标客服
         StaffPushDTO appointor = null;
@@ -718,12 +729,14 @@ public class ClientPushServiceImpl implements ClientPushService {
             calcRange = CommonConstant.ALLOT_RANGE_DEFAULT;
         }
         // 获取从当前时间往前退一个小时内所有客服对该渠道和拍摄地的客资的领取情况
-        List<StaffPushDTO> staffAllotList = staffDao.listStaffPushDTOByAlloted(companyId, channelId, typeId, calcRange, staffOnlineList);
+        List<StaffPushDTO> staffAllotList = staffDao.listStaffPushDTOByAlloted(DBSplitUtil.getInfoTabName(companyId),
+                companyId, channelId, typeId, calcRange, staffOnlineList);
 
         while (calcRange <= CommonConstant.ALLOT_RANGE_MAX
                 && (staffAllotList == null || staffAllotList.size() != staffOnlineList.size())) {
             calcRange += CommonConstant.ALLOT_RANGE_INTERVAL;
-            staffAllotList = staffDao.listStaffPushDTOByAlloted(companyId, channelId, typeId, calcRange, staffOnlineList);
+            staffAllotList = staffDao.listStaffPushDTOByAlloted(DBSplitUtil.getInfoTabName(companyId), companyId,
+                    channelId, typeId, calcRange, staffOnlineList);
         }
 
         // 值匹配，差比分析
@@ -861,7 +874,7 @@ public class ClientPushServiceImpl implements ClientPushService {
      */
     public List<ClientPushDTO> getInfoListBeReadyPush(int companyId, int overTime) {
         try {
-            return clientInfoDao.getInfoListBeReadyPush(companyId, overTime);
+            return clientInfoDao.getInfoListBeReadyPush(DBSplitUtil.getInfoTabName(companyId), companyId, overTime);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -876,7 +889,7 @@ public class ClientPushServiceImpl implements ClientPushService {
      */
     public List<ClientPushDTO> getSkInfoList(int companyId, int overTime) {
         try {
-            return clientInfoDao.getSkInfoList(companyId, overTime);
+            return clientInfoDao.getSkInfoList(DBSplitUtil.getInfoTabName(companyId), companyId, overTime);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -892,7 +905,8 @@ public class ClientPushServiceImpl implements ClientPushService {
             throw new RException(ExceptionEnum.ALLOT_ERROR);
         }
         // 查询所选客资里面没有分出去的客资
-        List<ClientPushDTO> infoList = clientInfoDao.listClientsInStrKzids(kzIds, companyId);
+        List<ClientPushDTO> infoList = clientInfoDao.listClientsInStrKzids(kzIds, companyId,
+                DBSplitUtil.getInfoTabName(companyId));
         if (CollectionUtils.isEmpty(infoList)) {
             throw new RException(ExceptionEnum.ALLOTED_ERROR);
         }
@@ -906,14 +920,15 @@ public class ClientPushServiceImpl implements ClientPushService {
             for (StaffPushDTO staff : staffList) {
                 if (infoList.size() > 0) {
                     // 客资修改最后消息推送时间为当前系统时间，绑定客服，修改状态为分配中
-                    int updateRstNum = clientInfoDao.updateClientInfoWhenAllot(companyId, infoList.get(0).getKzId(),
+                    int updateRstNum = clientInfoDao.updateClientInfoWhenAllot(companyId,
+                            DBSplitUtil.getInfoTabName(companyId), infoList.get(0).getKzId(),
                             ClientStatusConst.KZ_CLASS_NEW, ClientStatusConst.BE_HAVE_MAKE_ORDER, staff.getStaffId(),
                             staff.getGroupId(), ClientConst.ALLOT_HANDLER);
                     if (1 != updateRstNum) {
                         throw new RException(ExceptionEnum.INFO_STATUS_EDIT_ERROR);
                     }
                     // 客资修改客资的客服组ID，和客服组名称
-                    clientInfoDao.updateClientDetailWhenAllot(companyId,
+                    clientInfoDao.updateClientDetailWhenAllot(companyId, DBSplitUtil.getDetailTabName(companyId),
                             infoList.get(0).getKzId(), staff.getStaffName(), staff.getGroupName());
                     staff.doAddKzIdsWill(infoList.get(0).getKzId());
                     infoList.remove(0);
@@ -945,7 +960,8 @@ public class ClientPushServiceImpl implements ClientPushService {
             throw new RException(ExceptionEnum.ALLOT_ERROR);
         }
         // 查询所选客资里面没有分出去的客资
-        List<ClientPushDTO> infoList = clientInfoDao.listClientsInStrKzids4Msjd(kzIds, companyId);
+        List<ClientPushDTO> infoList = clientInfoDao.listClientsInStrKzids4Msjd(kzIds, companyId,
+                DBSplitUtil.getInfoTabName(companyId));
         if (CollectionUtils.isEmpty(infoList)) {
             throw new RException(ExceptionEnum.ALLOTED_ERROR);
         }
@@ -960,13 +976,14 @@ public class ClientPushServiceImpl implements ClientPushService {
                 if (infoList.size() > 0) {
                     ClientPushDTO info = infoList.get(0);
                     // 客资修改最后消息推送时间为当前系统时间，绑定客服，修改状态为分配中
-                    int updateRstNum = clientInfoDao.updateClientInfoWhenAllotMsjd(companyId, info.getKzId(),
+                    int updateRstNum = clientInfoDao.updateClientInfoWhenAllotMsjd(companyId,
+                            DBSplitUtil.getInfoTabName(companyId), info.getKzId(),
                             ClientStatusConst.BE_COMFIRM == info.getStatusId() ? ClientStatusConst.BE_HAVE_RECEPTOR : info.getStatusId(), staff.getShopId(), staff.getStaffId(), ClientConst.ALLOT_HANDLER);
                     if (1 != updateRstNum) {
                         throw new RException(ExceptionEnum.INFO_STATUS_EDIT_ERROR);
                     }
                     // 客资修改客资的接待人姓名，门店名
-                    clientInfoDao.updateClientDetailWhenAllotMsjd(companyId,
+                    clientInfoDao.updateClientDetailWhenAllotMsjd(companyId, DBSplitUtil.getDetailTabName(companyId),
                             infoList.get(0).getKzId(), staff.getShopName(), staff.getStaffName());
                     staff.doAddKzIdsWill(infoList.get(0).getKzId());
                     infoList.remove(0);
@@ -997,11 +1014,11 @@ public class ClientPushServiceImpl implements ClientPushService {
                     operaName, ClientConst.ALLOT_LOG_STATUS_YES);
 
             // 记录分配日志
-            clientAllotLogDao.addClientAllogLog(allotLog);
+            clientAllotLogDao.addClientAllogLog(DBSplitUtil.getAllotLogTabName(companyId), allotLog);
 
             // 客资日志记录
             clientLogDao
-                    .addInfoLog(
+                    .addInfoLog(DBSplitUtil.getInfoLogTabName(companyId),
                             new ClientLogPO(
                                     kzIdsArr[i], ClientLogConst.getAllotLog(appoint.getGroupName(),
                                     appoint.getStaffName(), operaId, operaName),
@@ -1018,7 +1035,7 @@ public class ClientPushServiceImpl implements ClientPushService {
         for (int i = 0; i < kzIdsArr.length; i++) {
             // 客资日志记录
             clientLogDao
-                    .addInfoLog(
+                    .addInfoLog(DBSplitUtil.getInfoLogTabName(companyId),
                             new ClientLogPO(
                                     kzIdsArr[i], ClientLogConst.getAllotLogMsjd(appoint.getShopName(),
                                     appoint.getStaffName(), operaId, operaName),
@@ -1093,11 +1110,11 @@ public class ClientPushServiceImpl implements ClientPushService {
             return;
         }
         //2.修改客资筛选人员ID，姓名，更新时间
-        int updateRstNum = clientInfoDao.updateSkInfoWhenAllot(staff.getStaffId(), kzId, companyId);
+        int updateRstNum = clientInfoDao.updateSkInfoWhenAllot(DBSplitUtil.getInfoTabName(companyId), staff.getStaffId(), kzId, companyId);
         if (1 != updateRstNum) {
             throw new RException(ExceptionEnum.INFO_EDIT_ERROR);
         }
-        updateRstNum = clientInfoDao.updateSkDetailWhenAllot(staff.getStaffName(), kzId, companyId);
+        updateRstNum = clientInfoDao.updateSkDetailWhenAllot(DBSplitUtil.getDetailTabName(companyId), staff.getStaffName(), kzId, companyId);
         if (1 != updateRstNum) {
             throw new RException(ExceptionEnum.INFO_EDIT_ERROR);
         }
@@ -1106,13 +1123,15 @@ public class ClientPushServiceImpl implements ClientPushService {
         staffDao.updateStaffLastPushTime(companyId, staff.getStaffId());
 
         // 推送消息
-        ClientGoEasyDTO infoDTO = clientInfoDao.getClientGoEasyDTOById(kzId);
+        ClientGoEasyDTO infoDTO = clientInfoDao.getClientGoEasyDTOById(kzId, DBSplitUtil.getInfoTabName(companyId),
+                DBSplitUtil.getDetailTabName(companyId));
         GoEasyUtil.pushInfoComed(companyId, staff.getStaffId(), infoDTO, newsDao, staffDao);
         GoEasyUtil.pushInfoRefresh(companyId, staff.getStaffId(), webSocketMsgUtil);
 
         // 客资日志记录
-        updateRstNum = clientLogDao.addInfoLog(new ClientLogPO(kzId, ClientLogConst.getAutoAllotLog(staff.getGroupName(), staff.getStaffName()),
-                ClientLogConst.INFO_LOGTYPE_ALLOT, companyId));
+        updateRstNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(companyId),
+                new ClientLogPO(kzId, ClientLogConst.getAutoAllotLog(staff.getGroupName(), staff.getStaffName()),
+                        ClientLogConst.INFO_LOGTYPE_ALLOT, companyId));
         if (1 != updateRstNum) {
             throw new RException(ExceptionEnum.LOG_ERROR);
         }
