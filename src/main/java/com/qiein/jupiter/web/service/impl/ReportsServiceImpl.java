@@ -20,7 +20,6 @@ import com.qiein.jupiter.web.entity.po.WechatScanPO;
 import com.qiein.jupiter.web.entity.vo.*;
 import com.qiein.jupiter.web.repository.*;
 import com.qiein.jupiter.web.service.ReportService;
-import com.sun.javafx.collections.MappingChange;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.github.pagehelper.PageInfo;
