@@ -118,7 +118,7 @@ public class DsyyStatusStaffReportsDao {
                     //遍历组
                     if(StringUtil.isNotEmpty(rs.getString("APPOINTORID")) && dsyyStatusReports.getGroupId().equalsIgnoreCase(rs.getString("APPOINTORID"))){
                         for (ClientStatusReportsVO clientStatusReportsVO:dsyyStatusReports.getClientStatusReportsVOS()){
-                            if(clientStatusReportsVO.getStatusId().equals(rs.getInt("APPOINTORID"))){
+                            if(clientStatusReportsVO.getStatusId().equals(rs.getInt("STATUSID"))){
                                 clientStatusReportsVO.setKzNum(rs.getInt("client_count"));
                                 break;
                             }
