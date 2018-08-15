@@ -23,18 +23,17 @@ public class DsyyStatusReportsVO {
     /**
      * Map
      * */
-    private List<Map<Integer,Integer>> mapList;
+    private Map<String,Integer> mapList;
     /**
      * StatusReports
      * */
     private List<ClientStatusReportsVO> clientStatusReportsVOS;
 
-
-    public List<Map<Integer, Integer>> getMapList() {
+    public Map<String, Integer> getMapList() {
         return mapList;
     }
 
-    public void setMapList(List<Map<Integer, Integer>> mapList) {
+    public void setMapList(Map<String, Integer> mapList) {
         this.mapList = mapList;
     }
 

@@ -121,13 +121,11 @@ public class DsyyStatusReportsDao {
 
     public void dataHandle(DsyyStatusReportsHeaderVO dsyyStatusReportsHeaderVO){
         for (DsyyStatusReportsVO dsyyStatusReportsVO :dsyyStatusReportsHeaderVO.getDsyyStatusReportsHeaderVOS()){
-            List<Map<Integer,Integer>> mapList =  new ArrayList<>();
+            Map kzNumMap = new HashMap();
             for (ClientStatusReportsVO clientStatusReportsVO:dsyyStatusReportsVO.getClientStatusReportsVOS()){
-                Map kzNumMap = new HashMap();
-                kzNumMap.put(clientStatusReportsVO.getStatusId(),clientStatusReportsVO.getKzNum());
-                mapList.add(kzNumMap);
+                kzNumMap.put(String.valueOf(clientStatusReportsVO.getStatusId()),clientStatusReportsVO.getKzNum());
             }
-            dsyyStatusReportsVO.setMapList(mapList);
+            dsyyStatusReportsVO.setMapList(kzNumMap);
             dsyyStatusReportsVO.setClientStatusReportsVOS(null);
         }
     }
