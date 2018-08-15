@@ -10,13 +10,13 @@
 
     <!--增加备注-->
     <insert id="insert">
-        insert into hm_crm_client_remark (kzid, content, companyid)
+        insert into ${tabName} (kzid, content, companyid)
         values (#{clientRemarkPO.kzId}, #{clientRemarkPO.content}, #{clientRemarkPO.companyId})
     </insert>
 
     <!--修改备注-->
     <update id="update">
-        update hm_crm_client_remark remark
+        update ${tabName} remark
         set remark.content = #{clientRemarkPO.content}
         where remark.kzid = #{clientRemarkPO.kzId} and remark.companyid = #{clientRemarkPO.companyId}
     </update>
@@ -28,7 +28,7 @@
             kzid,
             content,
             COMPANYID
-        from hm_crm_client_remark remark
+        from ${tabName} remark
         where remark.kzid = #{clientRemarkPO.kzId} and remark.companyid = #{clientRemarkPO.companyId}
     </select>
 </mapper>

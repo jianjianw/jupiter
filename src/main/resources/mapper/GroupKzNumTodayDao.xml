@@ -15,7 +15,7 @@
 		SELECT
 			info.GROUPID, COUNT(1) KZNUM
 		FROM
-			hm_crm_client_info info
+			${infoTabName} info
 		WHERE
 			info.CREATETIME &gt; UNIX_TIMESTAMP(CAST(SYSDATE() AS DATE))
 		AND info.GROUPID IS NOT NULL

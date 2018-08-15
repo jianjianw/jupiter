@@ -23,7 +23,7 @@
 
     <update id="editClientBaseInfo" parameterType="map">
         UPDATE
-        hm_crm_client_info
+        ${tabName}
         <set>
             <if test="clientStatusVO.weFlag != null">
                 WEFLAG = #{clientStatusVO.weFlag},
@@ -39,7 +39,7 @@
     <!-- 快速添加备注标签 -->
     <update id="editClientMemoLabel" parameterType="map">
         UPDATE
-            hm_crm_client_info
+            ${tabName}
         SET
             MEMO = CONCAT(#{label}, IFNULL(MEMO, ''))
         WHERE
@@ -50,7 +50,7 @@
     <!-- 根据状态筛选客资数量 -->
     <select id="getKzNumByStatusId" parameterType="map" resultType="java.lang.Integer">
         SELECT COUNT(1)
-        FROM hm_crm_client_info info
+        FROM ${tableName} info
         WHERE info.ISDEL = 0
               AND info.STATUSID = #{statusId}
               AND info.COMPANYID = #{companyId}
@@ -58,7 +58,7 @@
 
     <!--修改客资状态-->
     <update id="updateKzValidStatusByKzId">
-        update hm_crm_client_info info
+        update ${tabName} info
         set info.STATUSID   = #{clientStatusVoteVO.statusId}, info.classid = #{clientStatusVoteVO.classId},
             info.UPDATETIME = UNIX_TIMESTAMP(now()), info.PROMOTORID = #{clientStatusVoteVO.operaId}
         where info.kzid = #{clientStatusVoteVO.kzId} and info.companyid = #{clientStatusVoteVO.companyId} and
@@ -72,7 +72,7 @@
             COUNT(1) NUM,
             KZID
         FROM
-            hm_crm_client_info info
+            ${tabName} info
         WHERE
             info.COMPANYID = #{companyId}
             AND info.ISDEL = 0
@@ -84,21 +84,21 @@
     </select>
 
     <select id="findId" resultType="Integer">
-        SELECT  ID FROM hm_crm_client_info WHERE KZID=#{kzId} and COMPANYID=#{companyId}
+        SELECT  ID FROM ${tableName} WHERE KZID=#{kzId} and COMPANYID=#{companyId}
     </select>
 
     <select id = "getKzNumBySourceId" resultType="Integer">
-        select count(1) from hm_crm_client_info info where info.SOURCEID = #{sourceId} and info.COMPANYID = #{companyId}
+        select count(1) from ${tableName} info where info.SOURCEID = #{sourceId} and info.COMPANYID = #{companyId}
     </select>
 
     <!--修改客资渠道ID-->
     <update id = "updateKzChannelId">
-        update hm_crm_client_info info set info.channelId = #{channelId} where info.sourceId = #{sourceId} and info.companyId = #{companyId}
+        update ${tableName} info set info.channelId = #{channelId} where info.sourceId = #{sourceId} and info.companyId = #{companyId}
     </update>
 
     <!--修改客资详情表中的Memo字段-->
     <update id = "updateDetailMemo">
-        update hm_crm_client_detail detail set memo = #{content} where detail.kzid = #{kzId} and detail.companyId = #{companyId}
+        update ${detailTabName} detail set memo = #{content} where detail.kzid = #{kzId} and detail.companyId = #{companyId}
     </update>
 
 </mapper>

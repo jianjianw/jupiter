@@ -578,14 +578,15 @@
     <select id="listStaffPushDTOByAlloted" parameterType="map" resultMap="pushMap">
         SELECT
         info.APPOINTORID ID, COUNT(1) TODAYNUM
-        FROM hm_crm_client_info info
+        FROM
+        ${infoTabName} info
         WHERE
         info.COMPANYID = #{companyId}
         AND info.ISDEL = 0
         AND info.TYPEID = #{typeId}
         AND info.CHANNELID = #{channelId}
         AND info.CREATETIME &gt;= UNIX_TIMESTAMP(CAST(SYSDATE() AS DATE))
-        AND ( UNIX_TIMESTAMP(NOW()) - info.CREATETIME ) &lt; #{calcRange}
+        AND ( UNIX_TIMESTAMP(NOW()) - info.CREATETIME ) &lt; ${calcRange}
         AND info.APPOINTORID IN
         <foreach collection="staffList" item="staff" index="index" open="(" separator="," close=")">
             #{staff.staffId}
@@ -728,7 +729,7 @@
                     KZID,
                     CHANNELID
                 FROM
-                    hm_crm_client_info
+                    ${infoTabName}
                 WHERE
                     ISDEL = 0
                     AND COMPANYID = #{companyId}
@@ -773,7 +774,7 @@
         FROM (
                  SELECT log.STATUSID
                  FROM
-                     hm_crm_allot_log log
+                     ${logTabName} log
                      LEFT JOIN hm_pub_staff_detail sf ON log.STAFFID = sf.ID AND sf.COMPANYID = #{companyId}
                  WHERE
                      log.STAFFID = #{staffId}
@@ -899,7 +900,8 @@
             COUNT(al.STATUSID = 1)
         FROM
             hm_pub_staff s
-        LEFT JOIN hm_crm_allot_log al ON s.ID = al.STAFFID
+            LEFT JOIN
+            ${allotLogTab} al ON s.ID = al.STAFFID
     </select>
 
     <!--获取指定客服渠道，可以领取的客服集合-->
@@ -969,7 +971,7 @@
         SELECT
         info.APPOINTORID ID, COUNT( 1 ) TODAYNUM
         FROM
-        hm_crm_client_info info
+        ${infoTabName} info
         WHERE
         info.COMPANYID = #{companyId}
         AND ( UNIX_TIMESTAMP( NOW( ) ) - info.RECEIVETIME ) &lt; #{calcRange}
@@ -990,7 +992,7 @@
         SELECT
         info.GROUPID
         FROM
-        hm_crm_client_info info
+        ${infoTabName} info
         WHERE
         info.COMPANYID = #{companyId}
         AND ( UNIX_TIMESTAMP( NOW( ) ) - info.RECEIVETIME ) &lt; #{calcRange}
@@ -1019,7 +1021,7 @@
             INNER JOIN hm_pub_group_staff gs ON gs.GROUPID = rela.LINKID AND gs.COMPANYID = rela.COMPANYID
             INNER JOIN hm_pub_staff sf ON sf.ID = rela.LINKID AND rela.COMPANYID = sf.COMPANYID
             LEFT JOIN hm_pub_group grp ON grp.GROUPID = gs.GROUPID AND grp.COMPANYID = gs.COMPANYID
-            LEFT JOIN hm_crm_client_info info ON info.APPOINTORID = rela.LINKID AND rela.COMPANYID = info.COMPANYID
+            LEFT JOIN ${infoTabName} info ON info.APPOINTORID = rela.LINKID AND rela.COMPANYID = info.COMPANYID
                                              AND rela.SOURCEID = info.SOURCEID AND
                                              info.CREATETIME &gt; UNIX_TIMESTAMP(CAST(SYSDATE() AS DATE))
                                              AND info.STATUSID != 0 AND info.STATUSID != 98 AND info.STATUSID != 99 AND

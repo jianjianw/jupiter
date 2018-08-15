@@ -69,8 +69,8 @@
 		SELECT
 		<include refid="baseColumn"/>, (UNIX_TIMESTAMP(NOW()) - info.LASTPUSHTIME) PUSHINTERVAL ,info.SRCTYPE SRCTYPE
 		FROM
-		hm_crm_client_remark info
-		LEFT JOIN hm_crm_client_detail det ON det.KZID = info.KZID AND info.COMPANYID = det.COMPANYID
+			${infoTabName} info
+		LEFT JOIN ${detailTabName} det ON det.KZID = info.KZID AND info.COMPANYID = det.COMPANYID
 		WHERE
 			info.ISDEL = 0
 		AND info.KZID = #{kzId};
@@ -82,8 +82,8 @@
 			info.ID, info.KZID, info.KZNAME, info.KZPHONE, info.KZWECHAT, info.KZWW, info.KZQQ, det.MEMO, info.APPOINTORID,info.COLLECTORID, info.COMPANYID, info.SOURCEID, det.APPOINTNAME, det.FILMINGAREA, src.SRCNAME,
 			src.CHANNELNAME, det.INVALIDLABEL, info.SUCCESSTIME, det.AMOUNT, info.CREATETIME, det.COLLECTORNAME,det.SHOPNAME,det.RECEPTORNAME, det.AMOUNT, det.STAYAMOUNT, info.LASTPUSHTIME
 		FROM
-			hm_crm_client_info info
-		LEFT JOIN hm_crm_client_detail det ON det.KZID = info.KZID AND info.COMPANYID = det.COMPANYID
+			${infoTabName} info
+		LEFT JOIN ${detailTabName} det ON det.KZID = info.KZID AND info.COMPANYID = det.COMPANYID
 		LEFT JOIN hm_crm_source src ON src.COMPANYID =  info.COMPANYID AND src.ID = info.SOURCEID
 		WHERE
 			 info.KZID = #{kzId};
@@ -91,7 +91,7 @@
     
     <!-- 客资分配给客服后修改客资信息，分配给邀约客服 -->
     <update id="updateClientInfoWhenAllot" parameterType="map">
-    	UPDATE hm_crm_client_info
+    	UPDATE ${infoTabName}
 		SET CLASSID = #{classId},
 		 STATUSID = #{statusId},
 		 APPOINTORID = #{appointorId},
@@ -107,7 +107,7 @@
 
 	<!-- 客资分配给客服后修改客资信息,分配给门市 -->
 	<update id="updateClientInfoWhenAllotMsjd" parameterType="map">
-    	UPDATE hm_crm_client_info
+    	UPDATE ${infoTabName}
 		SET STATUSID = #{statusId},
 		 SHOPID = #{shopId},
 		 RECEPTORID = #{receptorId},
@@ -121,7 +121,7 @@
     
     <!-- 客资分配邀约客服后修改客资详情 -->
     <update id="updateClientDetailWhenAllot" parameterType="map">
-    	UPDATE hm_crm_client_detail
+    	UPDATE ${detailTabName}
 		SET APPOINTNAME = #{appointorName}, GROUPNAME = #{groupName}
 		WHERE
 			KZID = #{kzId}
@@ -130,7 +130,7 @@
 
 	<!-- 客资分配门市，后修改客资详情 -->
 	<update id="updateClientDetailWhenAllotMsjd" parameterType="map">
-    	UPDATE hm_crm_client_detail
+    	UPDATE ${detailTabName}
 		SET RECEPTORNAME = #{receptorName},
 		SHOPNAME = #{shopName}
 		WHERE
@@ -140,7 +140,7 @@
     
     <!-- 客资分配后修改客资的领取时间和最后操作时间 -->
     <update id="updateClientInfoAfterAllot" parameterType="map">
-    	UPDATE hm_crm_client_info
+    	UPDATE ${infoTabName}
 		SET RECEIVETIME = UNIX_TIMESTAMP(NOW()), UPDATETIME = UNIX_TIMESTAMP(NOW())
 		WHERE
 			KZID = #{kzId}
@@ -149,7 +149,7 @@
     
     <!-- 修改客资状态 -->
     <update id="updateClientInfoStatus" parameterType="map">
-    	UPDATE hm_crm_client_info
+    	UPDATE ${infoTabName}
 		SET STATUSID = #{statusId},
 			CLASSID = #{classId},
 		 	UPDATETIME = UNIX_TIMESTAMP(NOW())
@@ -158,13 +158,17 @@
 		AND COMPANYID = #{companyId}
     </update>
 
+	<!--交接客资-->
+	<update id="changeStaff" parameterType="staffChangeVO">
+
+	</update>
 
 	<!-- 获取企业要推送的客资信息 -->	
     <select id="getInfoListBeReadyPush" parameterType="map" resultMap="infoMap">
 		SELECT
 			info.KZID, info.COMPANYID, info.TYPEID, info.CHANNELID, info.SOURCEID,src.PUSHRULE ,src.TYPEID SRCTYPE
 		FROM
-			hm_crm_client_info info
+			${infoTabName} info
 		LEFT JOIN hm_crm_source src ON info.SOURCEID = src.ID AND src.COMPANYID = #{companyId}
 		WHERE
 			info.COMPANYID = #{companyId}
@@ -182,7 +186,7 @@
 	<!--根据拍摄地获取客资数量-->
 	<select id="getKzNumByShopId" parameterType="map" resultType="java.lang.Integer">
 		SELECT COUNT(1)
-		FROM hm_crm_client_info info
+		FROM ${infoTabName} info
 		WHERE info.SHOPID = #{shopId} AND info.ISDEL = 0
 		AND info.COMPANYID = #{companyId}
 	</select>
@@ -190,7 +194,7 @@
 	<!--根据最终拍摄地获取客资数量-->
 	<select id="getKzNumByFilmingCode" parameterType="map" resultType="java.lang.Integer">
 		SELECT COUNT(1)
-		FROM hm_crm_client_detail det
+		FROM ${detailName} det
 		WHERE det.FILMINGCODE = #{filmingCode} AND det.ISDEL = 0
 		AND det.COMPANYID = #{companyId}
 	</select>
@@ -200,7 +204,7 @@
 		SELECT
 			info.ID, info.KZID, info.COMPANYID
 		FROM
-			hm_crm_client_info info
+			${infoTabName} info
 		WHERE
 			info.COMPANYID = #{companyId}
 		AND info.ISDEL = 0
@@ -215,7 +219,7 @@
 		SELECT
 			info.ID, info.KZID, info.COMPANYID,info.STATUSID
 		FROM
-			hm_crm_client_info info
+			${infoTabName} info
 		WHERE
 			info.COMPANYID = #{companyId}
 		AND info.ISDEL = 0
@@ -236,9 +240,10 @@
 			info.SOURCEID,
 			detail.APPOINTNAME,
 			detail.COLLECTORNAME
-		FROM hm_crm_client_log log
-		LEFT JOIN hm_crm_client_info info ON log.KZID = info.KZID
-		LEFT JOIN hm_crm_client_detail detail ON log.KZID=detail.KZID
+		FROM
+			${tableEditLog} log
+		LEFT JOIN ${tableInfo} info ON log.KZID = info.KZID
+		LEFT JOIN ${tableDetail} detail ON log.KZID=detail.KZID
 		LEFT JOIN hm_pub_staff staff on staff.ID=info.PROMOTORID AND staff.COMPANYID=info.COMPANYID
 
 		WHERE log.COMPANYID=#{companyId}
@@ -266,7 +271,7 @@
 
 	<!-- pc端领取客资，修改客资基本信息 -->
 	<update id="updateClientInfoWhenReceive" parameterType="map">
-    	UPDATE hm_crm_client_info
+    	UPDATE ${infoTabName}
 		SET CLASSID = #{classId},
 		 STATUSID = #{statusId},
 		 APPOINTORID = #{appointorId},
@@ -292,9 +297,10 @@
 		info.STATUSID statusId,
 		info.SOURCEID sourceId,
 		COUNT(log.KZID) count
-		FROM hm_crm_client_log log
-		LEFT JOIN hm_crm_client_info info ON info.KZID = log.KZID
-		LEFT JOIN hm_crm_client_detail detail ON log.KZID = detail.KZID
+		FROM
+		${tableLog} log
+		LEFT JOIN ${tableInfo} info ON info.KZID = log.KZID
+		LEFT JOIN ${tableDetail} detail ON log.KZID = detail.KZID
 		WHERE
 		log.COMPANYID = #{companyId}
 		AND log.LOGTYPE = #{logType}
@@ -319,9 +325,10 @@
 		info.KZQQ kzqq,
 		info.KZWECHAT kzWechat,
 		detail.APPOINTNAME appointName
-		FROM hm_crm_client_log log
-		LEFT JOIN hm_crm_client_info info ON info.KZID = log.KZID
-		LEFT JOIN hm_crm_client_detail detail ON log.KZID = detail.KZID
+		FROM
+		${tableLog} log
+		LEFT JOIN ${tableInfo} info ON info.KZID = log.KZID
+		LEFT JOIN ${tableDetail} detail ON log.KZID = detail.KZID
 		WHERE
 		log.COMPANYID = #{companyId}
 		AND log.LOGTYPE = #{logType}
@@ -335,7 +342,7 @@
 		SELECT
 			info.ID, info.KZID, info.COMPANYID
 		FROM
-			hm_crm_client_info info
+			${infoTabName} info
 		WHERE
 			info.COMPANYID = #{companyId}
 			AND info.ISDEL = 0
@@ -346,8 +353,8 @@
 
 	<!--修改已收金额-->
 	<update id="editStayAmount" parameterType="map">
-		UPDATE hm_crm_client_detail
-		SET STAYAMOUNT = ( SELECT IFNULL( SUM( AMOUNT ), 0 ) FROM hm_crm_cash_log WHERE KZID = #{kzId} AND COMPANYID = #{companyId} AND STATUS = 1 )
+		UPDATE ${detTabName}
+		SET STAYAMOUNT = ( SELECT IFNULL( SUM( AMOUNT ), 0 ) FROM ${cashTabName} WHERE KZID = #{kzId} AND COMPANYID = #{companyId} AND STATUS = 1 )
 		WHERE
 			KZID = #{kzId}
 			AND COMPANYID = #{companyId};
@@ -358,7 +365,7 @@
 		SELECT
 			info.KZID, info.SRCTYPE
 		FROM
-			hm_crm_client_info info
+			${infoTabName} info
 		WHERE
 			info.COMPANYID = #{companyId}
 		AND info.ISDEL = 0
@@ -370,7 +377,7 @@
 
 	<!-- 分配给筛客之后，修改筛选人ID，推送时间 -->
 	<update id="updateSkInfoWhenAllot" parameterType="map">
-    	UPDATE hm_crm_client_info
+    	UPDATE ${infoTabName}
 		SET  PROMOTORID = #{promotorId},
 		 LASTPUSHTIME = UNIX_TIMESTAMP(NOW()),
 		 UPDATETIME = UNIX_TIMESTAMP(NOW())
@@ -381,7 +388,7 @@
 
 	<!-- 分配给筛客之后，修改筛选人姓名 -->
 	<update id="updateSkDetailWhenAllot" parameterType="map">
-    	UPDATE hm_crm_client_detail
+    	UPDATE ${detTabName}
 		SET  PROMOTERNAME = #{promoterName}
 		WHERE
 			KZID = #{kzId}
@@ -393,7 +400,7 @@
 		SELECT
 			COUNT(info.ID)
 		FROM
-			hm_crm_client_info info
+			${infoTabName} info
 		WHERE
 			info.COMPANYID = #{companyId}
 		AND info.ISDEL = 0
@@ -402,12 +409,12 @@
     </select>
 
 	<update id="editKzphoneFlag">
-		UPDATE hm_crm_client_info SET  KZPHONE_FLAG = #{kzphoneFlag} WHERE KZID=#{kzId}
+		UPDATE ${table} SET  KZPHONE_FLAG=#{kzphoneFlag} WHERE KZID=#{kzId}
 	</update>
 
 	<!-- 修改客资推送时间 -->
 	<update id="updateLastPushTime" parameterType="map">
-    	UPDATE hm_crm_client_info
+    	UPDATE ${infoTabName}
 		SET LASTPUSHTIME = UNIX_TIMESTAMP(NOW()),
 		 UPDATETIME = UNIX_TIMESTAMP(NOW())
 		WHERE

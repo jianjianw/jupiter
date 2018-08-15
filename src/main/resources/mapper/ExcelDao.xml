@@ -134,13 +134,13 @@
 
     <!-- 删除员工客资缓存记录 -->
     <delete id="deleteTempByStaffId" parameterType="map">
-        DELETE FROM hm_crm_client_info_temp
-        WHERE OPERAID = #{operaId};
+        DELETE FROM ${tempName}
+        WHERE OPERAID = ${operaId};
     </delete>
 
     <!-- 批量写入客资临时缓存表 -->
     <insert id="insertExcelClientInfo">
-        INSERT INTO hm_crm_client_info_temp
+        INSERT INTO ${tempName}
         (KZID, TYPENAME, STATUSID,STATUSNAME, CHANNELNAME, SOURCENAME,ZXSTYLE, KZNAME,SEX,KZPHONE, KZWECHAT, KZQQ, KZWW,
         COLLECTORNAME,
         APPOINTNAME,APPOINTTIME,RECEPTORNAME,AMOUNT,CREATETIME, UPDATETIME,COMESHOPTIME,SUCCESSTIME, SHOPNAME,
@@ -165,26 +165,26 @@
 
     <!-- 清空缓存表 -->
     <update id="truncateTempTable">
-        TRUNCATE TABLE hm_crm_client_info_temp;
+        TRUNCATE TABLE ${tempName};
     </update>
 
     <!-- 设置企业ID -->
     <update id="updateCompanyId" parameterType="map">
-        UPDATE hm_crm_client_info_temp temp
+        UPDATE ${tempName} temp
         SET COMPANYID = #{companyId}
         WHERE temp.OPERAID = #{staffId};
     </update>
 
     <!-- 没有客资ID的，设置UUID -->
     <update id="updateKzid" parameterType="map">
-        UPDATE hm_crm_client_info_temp temp
+        UPDATE ${tempName} temp
         SET KZID = UUID()
         WHERE (KZID IS NULL OR KZID = '') AND temp.OPERAID = #{staffId};
     </update>
 
     <!-- 设置咨询类型ID -->
     <update id="updateType" parameterType="map">
-        UPDATE hm_crm_client_info_temp temp
+        UPDATE ${tempName} temp
         SET temp.TYPEID = (
             CASE
             WHEN temp.TYPENAME LIKE '婚纱%'
@@ -227,7 +227,7 @@
 
     <!-- 设置状态名称，唯一版 -->
     <update id="updateStatusName" parameterType="map">
-        UPDATE hm_crm_client_info_temp temp
+        UPDATE ${tempName} temp
         SET temp.STATUSNAME = (SELECT sts.STATUSNAME
                                FROM hm_crm_client_status sts
                                WHERE sts.COMPANYID = temp.COMPANYID AND sts.STATUSID = temp.STATUSID)
@@ -236,7 +236,7 @@
 
     <!-- 设置客资当前分类ID,唯一版 -->
     <update id="updateClassId" parameterType="map">
-        UPDATE hm_crm_client_info_temp temp
+        UPDATE ${tempName} temp
         SET temp.CLASSID = (SELECT sts.CLASSID
                             FROM hm_crm_client_status sts
                             WHERE sts.COMPANYID = temp.COMPANYID AND sts.STATUSID = temp.STATUSID)
@@ -245,7 +245,7 @@
 
     <!-- 设置来源ID -->
     <update id="updateSrcIdAndType" parameterType="map">
-        UPDATE hm_crm_client_info_temp temp
+        UPDATE ${tempName} temp
             INNER JOIN hm_crm_source src on temp.SOURCENAME = src.SRCNAME
         SET temp.SOURCEID = src.ID, temp.SRCTYPE = src.TYPEID
         WHERE
@@ -254,7 +254,7 @@
 
     <!-- 设置来源和渠道-->
     <update id="updateSrcAndChannel" parameterType="map">
-        UPDATE hm_crm_client_info_temp temp
+        UPDATE ${tempName} temp
             INNER JOIN hm_crm_source src on temp.SOURCENAME = src.SRCNAME
         SET temp.SOURCEID  = src.ID, temp.SRCTYPE = src.TYPEID, temp.CHANNELNAME = src.CHANNELNAME,
             temp.CHANNELID = src.CHANNELID
@@ -264,7 +264,7 @@
 
     <!--设置渠道ID-->
     <update id="updateChannelId" parameterType="map">
-        UPDATE hm_crm_client_info_temp temp
+        UPDATE ${tempName} temp
         SET temp.CHANNELID = (SELECT channel.ID
                               FROM hm_crm_channel channel
                               WHERE channel.COMPANYID = temp.COMPANYID AND channel.ISSHOW = 1 AND
@@ -275,14 +275,14 @@
 
     <!-- 更新最后跟进时间为当前系统时间 -->
     <update id="updateUpdateTime" parameterType="map">
-        UPDATE hm_crm_client_info_temp temp
+        UPDATE ${tempName} temp
         SET temp.UPDATETIME = unix_timestamp(now())
         WHERE temp.OPERAID = #{staffId};
     </update>
 
     <!-- 更新提报人ID -->
     <update id="updateCollectorId" parameterType="map">
-        UPDATE hm_crm_client_info_temp temp
+        UPDATE ${tempName} temp
         SET temp.COLLECTORID = (SELECT sf.ID
                                 FROM hm_pub_staff sf
                                 WHERE
@@ -293,7 +293,7 @@
 
     <!-- 更新提报人id是空的记录 -->
     <update id="updateEmptyCollector">
-        UPDATE hm_crm_client_info_temp temp
+        UPDATE ${tempName} temp
         SET temp.COLLECTORNAME = CONCAT("", temp.COLLECTORNAME)
         WHERE temp.COLLECTORID IS NULL
               AND temp.OPERAID = #{operaId}
@@ -302,7 +302,7 @@
 
     <!-- 更新邀约员ID -->
     <update id="updateAppointId" parameterType="map">
-        UPDATE hm_crm_client_info_temp temp
+        UPDATE ${tempName} temp
         SET temp.APPOINTORID = (SELECT sf.ID
                                 FROM hm_pub_staff sf
                                 WHERE sf.COMPANYID = temp.COMPANYID AND sf.NICKNAME = temp.APPOINTNAME AND sf.ISDEL = 0
@@ -312,7 +312,7 @@
 
     <!-- 更新邀约客服id是空的记录 -->
     <update id="updateEmptyAppoint">
-        UPDATE hm_crm_client_info_temp temp
+        UPDATE ${tempName} temp
         SET temp.APPOINTNAME = CONCAT("", temp.APPOINTNAME)
         WHERE temp.APPOINTORID IS NULL
               AND temp.OPERAID = #{operaId}
@@ -321,7 +321,7 @@
 
     <!-- 更新拍摄地ID -->
     <update id="updateShopId" parameterType="map">
-        UPDATE hm_crm_client_info_temp temp
+        UPDATE ${tempName} temp
         SET temp.SHOPID = (SELECT sp.ID
                            FROM hm_pub_shop sp
                            WHERE sp.COMPANYID = temp.COMPANYID AND sp.SHOPNAME = temp.SHOPNAME
@@ -331,7 +331,7 @@
 
     <!-- 设置邀约小组ID,唯一版 -->
     <update id="updateGroupId" parameterType="map">
-        UPDATE hm_crm_client_info_temp temp
+        UPDATE ${tempName} temp
         SET temp.GROUPID = (SELECT grp.GROUPID
                             FROM hm_pub_group grp
                             WHERE grp.COMPANYID = temp.COMPANYID AND grp.GROUPNAME = temp.GROUPNAME)
@@ -340,7 +340,7 @@
 
     <!--更新门市id-->
     <update id="updateReceptorId">
-        update hm_crm_client_info_temp temp
+        update ${tempName} temp
         set temp.RECEPTORID = (select sf.ID
                                from hm_pub_staff sf
                                where sf.NICKNAME = temp.RECEPTORNAME and sf.COMPANYID = temp.COMPANYID AND sf.ISDEL = 0
@@ -352,7 +352,7 @@
     <select id="getAllRecordByStaffId" parameterType="map" resultMap="baseNewsMap">
         SELECT
         <include refid="Base_Column_News_List"/>
-        FROM hm_crm_client_info_temp temp
+        FROM ${tempName} temp
         WHERE temp.OPERAID = #{staffId};
     </select>
 
@@ -361,8 +361,8 @@
         SELECT
         DISTINCT
         <include refid="Base_Column_News_List"/>
-        FROM hm_crm_client_info_temp temp
-        LEFT JOIN hm_crm_client_info info
+        FROM ${tempName} temp
+        LEFT JOIN ${tableName} info
         ON info.KZID is not null
         WHERE
         info.KZID IS NOT NULL
@@ -378,13 +378,13 @@
     <select id="getExcelRepeatRecord" parameterType="map" resultMap="baseNewsMap">
         SELECT
         <include refid="Base_Column_News_List"/>
-        FROM hm_crm_client_info_temp temp
+        FROM ${tempName} temp
         WHERE
         (
         (
         SELECT
         COUNT(1)
-        FROM hm_crm_client_info_temp a
+        FROM ${tempName} a
         WHERE
         (temp.KZPHONE = a.KZPHONE OR temp.KZQQ = a.KZQQ OR temp.KZWECHAT = a.KZWECHAT )
         AND temp.OPERAID = #{staffId}
@@ -395,7 +395,7 @@
 
     <!-- 插入客资基础信息表-->
     <insert id="insertBaseInfoByStaffId" parameterType="map">
-        INSERT INTO hm_crm_client_info (
+        INSERT INTO ${tabName} (
             KZID, TYPEID, CLASSID, KZNAME, KZPHONE, KZWECHAT, KZQQ, KZWW, SEX, STATUSID, SRCTYPE, CHANNELID, SOURCEID, COLLECTORID, APPOINTORID,
             APPOINTTIME, UPDATETIME, CREATETIME, SHOPID, RECEPTORID, COMPANYID, COMESHOPTIME, SUCCESSTIME, RECEIVETIME, GROUPID
         ) (SELECT
@@ -425,14 +425,14 @@
                temp.RECEIVETIME,
                temp.GROUPID
            FROM
-               hm_crm_client_info_temp temp
+               ${tempName} temp
            WHERE NOT EXISTS
            (
                    SELECT
                        info.KZPHONE,
                        info.KZWECHAT,
                        info.KZQQ
-                   FROM hm_crm_client_info info
+                   FROM ${tableName} info
                    where (info.KZPHONE = temp.KZPHONE or info.KZWECHAT = temp.KZWECHAT or info.KZQQ = temp.KZQQ)
                          and ISDEL = 0
                          and CREATETIME + 10 > 2
@@ -442,7 +442,7 @@
 
     <!-- 插入客资详情表,唯一版 -->
     <insert id="insertDetailInfoByStaffId" parameterType="map">
-        INSERT INTO hm_crm_client_info (
+        INSERT INTO ${tabName} (
             KZID, ZXSTYLE, ADADDRESS, ADID, MARRYTIME, YPTIME, MATENAME, MATEPHONE, MATEWECHAT, MATEQQ, COMPANYID, YXLEVEL,
             INVALIDLABEL, YSRANGE, ADDRESS, GROUPNAME, KEYWORD, COLLECTORNAME, APPOINTNAME, RECEPTORNAME, MEMO, SHOPNAME,
             AMOUNT, CREATETIME, OLDKZNAME, OLDKZPHONE, STAYAMOUNT
@@ -474,11 +474,11 @@
                temp.OLDKZNAME,
                temp.OLDKZPHONE,
                temp.STAYAMOUNT
-           FROM hm_crm_client_info_temp temp
+           FROM ${tempName} temp
            WHERE NOT EXISTS
            (
                    SELECT tab.KZID
-                   FROM hm_crm_client_info tab
+                   FROM ${tabName} tab
                    where (tab.KZID = temp.KZID)
                          and ISDEL = 0
                          and CREATETIME + 10 > 2
@@ -488,19 +488,19 @@
 
     <!--插入客资备注表-->
     <insert id="addExcelKzRemark" parameterType="map">
-        INSERT INTO hm_crm_client_remark
+        INSERT INTO ${tabName}
         (KZID, CONTENT, COMPANYID)
             (SELECT
                  temp.KZID,
                  temp.MEMO,
                  temp.COMPANYID
-             FROM hm_crm_client_info_temp temp
+             FROM ${tempName} temp
              WHERE temp.OPERAID = #{staffId})
     </insert>
 
     <!-- 批量删除员工客资缓存记录 -->
     <delete id="batchDeleteTemp" parameterType="map">
-        DELETE FROM hm_crm_client_info_temp
+        DELETE FROM ${tempName}
         WHERE OPERAID = #{operaId}
         AND KZID IN
         <foreach collection="kzIdArr" item="kzid" index="index"
@@ -511,7 +511,7 @@
 
     <!--批量编辑客资缓存记录-->
     <update id="batchEditTemp" parameterType="map">
-        UPDATE hm_crm_client_info_temp
+        UPDATE ${tempName}
         <set>
             <if test="info.typeName != null and info.typeName != ''">
                 TYPENAME = #{info.typeName},
@@ -559,7 +559,7 @@
 
     <!--设置状态ID和classId-->
     <update id="updateStatusIdAndClassId" parameterType="map">
-        UPDATE hm_crm_client_info_temp temp
+        UPDATE ${tempName} temp
             LEFT JOIN hm_crm_client_status sts on sts.COMPANYID = temp.COMPANYID AND sts.STATUSNAME = temp.STATUSNAME
         SET temp.STATUSID = sts.STATUSID, temp.CLASSID = sts.CLASSID
         WHERE
@@ -571,7 +571,7 @@
     <select id="getExcelErrorClient" resultMap="baseNewsMap">
         select
         <include refid="Base_Column_News_List"/>
-        from hm_crm_client_info_temp temp
+        from ${tempName} temp
         where temp.OPERAID = #{staffId} and (((temp.KZPHONE is not null and temp.KZPHONE != '') and temp.KZPHONE NOT REGEXP '^[1][3456789][0-9]{9}$')
         -- or ( (temp.KZWECHAT is not null and temp.KZWECHAT != '')  and temp.KZWECHAT NOT REGEXP '^[a-zA-Z0-9]{1}[-_a-zA-Z0-9]{5,30}$')
         or  ((temp.kzqq is not null and temp.kzqq != '') and temp.kzqq not REGEXP '[1-9][0-9]{4,9}')
@@ -603,13 +603,13 @@
         <include refid="Base_Column_News_List"/>
         from (select
         <include refid="Base_Column_News_List"/>
-        from hm_crm_client_info_temp temp
+        from ${tempName} temp
         left join
         (SELECT
         DISTINCT
         <include refid="Base_Column_News_List"/>
-        FROM hm_crm_client_info_temp temp
-        LEFT JOIN hm_crm_client_info info
+        FROM ${tempName} temp
+        LEFT JOIN ${tableName} info
         ON info.kzPhone = temp.KZPHONE
         OR info.KZWECHAT = temp.KZWECHAT
         OR info.KZQQ = temp.KZQQ
@@ -622,7 +622,7 @@
         left join
         (select
         <include refid="Base_Column_News_List"/>
-        from hm_crm_client_info_temp temp where
+        from ${tempName} temp where
         temp.OPERAID = #{staffId} and ( ((temp.KZPHONE is not null and temp.KZPHONE != '') and temp.KZPHONE NOT REGEXP '^[1][3456789][0-9]{9}$')
         -- or ( (temp.KZWECHAT is not null and temp.KZWECHAT != '') and temp.KZWECHAT NOT REGEXP '^[a-zA-Z0-9]{1}[-_a-zA-Z0-9]{5,30}$')
         or ((temp.kzqq is not null and temp.kzqq   != '') and temp.kzqq not REGEXP '[1-9][0-9]{4,9}')
@@ -667,13 +667,13 @@
         SELECT
         <include refid="Base_Column_News_List"/>
         FROM
-        hm_crm_client_info_temp temp
+        ${tempName} temp
         LEFT JOIN (
         SELECT DISTINCT
         <include refid="Base_Column_News_List"/>
         FROM
-        hm_crm_client_info_temp temp
-        LEFT JOIN hm_crm_client_info info ON info.kzPhone = temp.KZPHONE
+        ${tempName} temp
+        LEFT JOIN ${tableName} info ON info.kzPhone = temp.KZPHONE
         OR info.KZWECHAT = temp.KZWECHAT
         OR info.KZQQ = temp.KZQQ
         OR info.KZWW = temp.kzww
@@ -689,7 +689,7 @@
         SELECT
         <include refid="Base_Column_News_List"/>
         FROM
-        hm_crm_client_info_temp temp
+        ${tempName} temp
         WHERE
         temp.OPERAID = #{staffId} and  (((temp.KZPHONE is not null and temp.KZPHONE != '') and temp.KZPHONE NOT REGEXP '^[1][3456789][0-9]{9}$')
         -- or ((temp.KZWECHAT IS NOT NULL and temp.KZWECHAT != '') and temp.KZWECHAT NOT REGEXP '^[a-zA-Z0-9]{1}[-_a-zA-Z0-9]{5,30}$')
@@ -723,7 +723,7 @@
         SELECT
         count(1) AS wrong_count
         FROM
-        hm_crm_client_info_temp temp
+        ${tempName} temp
         WHERE
         temp.OPERAID = #{staffId} and (((temp.KZPHONE is not null and temp.KZPHONE != '') and temp.KZPHONE NOT REGEXP '^[1][3456789][0-9]{9}$')
         -- or ((temp.KZWECHAT IS NOT NULL and temp.KZWECHAT != '') and temp.KZWECHAT NOT REGEXP '^[a-zA-Z0-9]{1}[-_a-zA-Z0-9]{5,30}$')
@@ -753,8 +753,8 @@
         SELECT DISTINCT
         count(1) AS repeats
         FROM
-        hm_crm_client_info_temp temp
-        LEFT JOIN hm_crm_client_info info ON info.kzPhone = temp.KZPHONE
+        ${tempName} temp
+        LEFT JOIN ${tableName} info ON info.kzPhone = temp.KZPHONE
         OR info.KZWECHAT = temp.KZWECHAT
         OR info.KZQQ = temp.KZQQ
         WHERE
@@ -767,7 +767,7 @@
 
     <!--更改咨询方式字典编码-->
     <update id="updateZxStyleDictionaryCode">
-        UPDATE hm_crm_client_info_temp temp
+        UPDATE ${tempName} temp
         SET temp.ZXSTYLE = (SELECT DICCODE
                             FROM hm_crm_dictionary dictionary
                             WHERE dictionary.COMPANYID = temp.COMPANYID AND dictionary.DICNAME = temp.ZXSTYLESTR and
@@ -777,7 +777,7 @@
 
     <!--更改意向等级字典编码-->
     <update id="updateYxLevelDictionaryCode">
-        UPDATE hm_crm_client_info_temp temp
+        UPDATE ${tempName} temp
         SET temp.YXLEVEL = IFNULL((SELECT DICCODE
                             FROM hm_crm_dictionary dictionary
                             WHERE dictionary.COMPANYID = temp.COMPANYID AND dictionary.DICNAME = temp.YXLEVELSTR and
@@ -787,7 +787,7 @@
 
     <!--更改预算范围字典编码-->
     <update id="updateYsRangeDictionaryCode">
-        UPDATE hm_crm_client_info_temp temp
+        UPDATE ${tempName} temp
         SET temp.YSRANGE = IFNULL((SELECT DICCODE
                             FROM hm_crm_dictionary dictionary
                             WHERE dictionary.COMPANYID = temp.COMPANYID AND dictionary.DICNAME = temp.YSRANGESTR and
@@ -797,7 +797,7 @@
 
     <!--更新预拍时间的字典编码-->
     <update id="updateYpTimeDictionaryCode">
-        UPDATE hm_crm_client_info_temp temp
+        UPDATE ${tempName} temp
         SET temp.YPTIME = IFNULL((SELECT DICCODE
                            FROM hm_crm_dictionary dictionary
                            WHERE dictionary.COMPANYID = temp.COMPANYID AND dictionary.DICNAME = temp.YPTIMESTR and
@@ -807,7 +807,7 @@
 
     <!--更新婚期时间的字典编码-->
     <update id="updateMarryTimeDictionaryCode">
-        UPDATE hm_crm_client_info_temp temp
+        UPDATE ${tempName} temp
         SET temp.MARRYTIME = IFNULL((SELECT DICCODE
                               FROM hm_crm_dictionary dictionary
                               WHERE dictionary.COMPANYID = temp.COMPANYID AND dictionary.DICNAME = temp.MARRYTIMESTR and

@@ -118,24 +118,21 @@ public class StatusServiceImpl implements StatusService {
     public int editNameByClassIdAndStatusId(StatusPO statusPO) {
         return statusDao.editNameByClassIdAndStatusId(statusPO);
     }
-
     /**
      * 修改客资状态
-     *
      * @param showFlag
      * @param id
      */
-    public void editClientStatus(boolean showFlag, int id) {
+    public void editClientStatus(boolean showFlag,int id){
         statusDao.editClientStatus(showFlag, id);
     }
-
     /**
      * 修改手机是否已加状态
-     *
      * @param kzId
      * @param kzphoneFlag
+     * @param table
      */
-    public void editKzphoneFlag(String kzId, Integer kzphoneFlag) {
-        clientInfoDao.editKzphoneFlag(kzId, kzphoneFlag);
+    public void editKzphoneFlag(String kzId,Integer kzphoneFlag,String table){
+        clientInfoDao.editKzphoneFlag(kzId,kzphoneFlag,table);
     }
 }

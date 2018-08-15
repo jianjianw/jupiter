@@ -19,7 +19,7 @@
     
     <!-- 新增分配日志 -->
     <insert id="addClientAllogLog" useGeneratedKeys="true" keyProperty="allotLog.id">
-        INSERT INTO hm_crm_allot_log (
+        INSERT INTO ${allotLogTabName} (
 			KZID, ALLOTTIME, STAFFID, STAFFNAME, GROUPID, GROUPNAME, STATUSID, ALLOTTYPE, COMPANYID, OPERAID, OPERANAME
 		)
 		VALUES
@@ -30,7 +30,7 @@
     
     <!-- 修改客资分配日志 -->
     <update id="updateAllogLog" parameterType="map">
-    	UPDATE hm_crm_allot_log
+    	UPDATE ${allotLogTabName}
 		SET STATUSID = #{statusId}
 			<if test="receiveFlag != null and receiveFlag != '' ">
                 ,RECEIVETIME = UNIX_TIMESTAMP(NOW())
