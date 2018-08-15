@@ -63,9 +63,12 @@ public class DstgZxStyleReportsDao {
      * */
     private void getZxStyleList(ReportsParamVO reportsParamVO, List<DstgZxStyleReportsVO> DstgZxStyleReportsVOS){
         StringBuilder sb = new StringBuilder();
+        String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
+        String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
         sb.append(" select distinct  ifnull(ZXSTYLE,99) as zx_code,ifnull(dictionary.DICNAME,'其他') as zx_style");
-        sb.append(" from hm_crm_client_info info ");
-        sb.append(" left join hm_crm_client_detail detail on info.kzid = detail.kzid");
+        sb.append(" from ");
+        sb.append(infoTabName + " info ");
+        sb.append(" left join "+detailTabName+" detail on info.kzid = detail.kzid");
         sb.append(" left join hm_crm_dictionary dictionary on detail.ZXSTYLE = dictionary.DICCODE and dictionary.DICTYPE = 'zx_style'");
         sb.append(" where");
         sb.append("  info.isdel = 0");
@@ -84,10 +87,11 @@ public class DstgZxStyleReportsDao {
 
     }
 
-    private StringBuilder getCommonsql(StringBuilder sb ) {
+    private StringBuilder getCommonsql(StringBuilder sb,String infoTabName,String detailTabName) {
         sb.append(" select  ifnull(ZXSTYLE,99)  as zx_code,ifnull(dictionary.DICNAME,'其他') as zx_style,count(info.id) as client_count ");
-        sb.append(" from hm_crm_client_info info ");
-        sb.append(" left join hm_crm_client_detail detail on info.kzid = detail.kzid");
+        sb.append(" from");
+        sb.append(infoTabName + " info ");
+        sb.append(" left join "+detailTabName+" detail on info.kzid = detail.kzid");
         sb.append(" left join hm_crm_dictionary dictionary on detail.ZXSTYLE = dictionary.DICCODE and dictionary.DICTYPE = 'zx_style'");
         sb.append(" where");
         sb.append("  info.isdel = 0");
@@ -100,7 +104,9 @@ public class DstgZxStyleReportsDao {
      */
     private void getAllClientCount(ReportsParamVO reportsParamVO, List<DstgZxStyleReportsVO> DstgZxStyleReportsVOS) {
         StringBuilder sb = new StringBuilder();
-        sb =  getCommonsql(sb);
+        String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
+        String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
+        sb =  getCommonsql(sb,infoTabName,detailTabName);
         sb.append(" and (info.CREATETIME BETWEEN ? AND ? or info.COMESHOPTIME BETWEEN ? AND ? or info.SUCCESSTIME BETWEEN ? AND ?)");
         sb.append(" group by detail.ZXSTYLE");
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
@@ -138,7 +144,9 @@ public class DstgZxStyleReportsDao {
      */
     private void getPendingClientCount(ReportsParamVO reportsParamVO, List<DstgZxStyleReportsVO> DstgZxStyleReportsVOS,DsInvalidVO dsInvalidVO) {
         StringBuilder sb = new StringBuilder();
-        sb = getCommonsql(sb );
+        String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
+        String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
+        sb = getCommonsql(sb, infoTabName, detailTabName);
         sb.append(" and (info.CREATETIME BETWEEN ? AND ? or info.COMESHOPTIME BETWEEN ? AND ? or info.SUCCESSTIME BETWEEN ? AND ?)");
         sb.append(" AND INSTR( ?, CONCAT(',',info.STATUSID + '',',')) != 0");
         sb.append(" group by detail.ZXSTYLE");
@@ -178,7 +186,9 @@ public class DstgZxStyleReportsDao {
      * */
     private void getFilterWaitClientCount(ReportsParamVO reportsParamVO, List<DstgZxStyleReportsVO> DstgZxStyleReportsVOS){
         StringBuilder sb = new StringBuilder();
-        sb = getCommonsql(sb);
+        String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
+        String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
+        sb = getCommonsql(sb, infoTabName, detailTabName);
         sb.append(" and (info.CREATETIME BETWEEN ? AND ? or info.COMESHOPTIME BETWEEN ? AND ? or info.SUCCESSTIME BETWEEN ? AND ?)");
         sb.append(" and info.CLASSID = 1 and info.STATUSID = 98 ");
         sb.append(" group by detail.ZXSTYLE");
@@ -217,7 +227,9 @@ public class DstgZxStyleReportsDao {
      * */
     private void getFilterInValidClientCount(ReportsParamVO reportsParamVO, List<DstgZxStyleReportsVO> DstgZxStyleReportsVOS){
         StringBuilder sb = new StringBuilder();
-        sb = getCommonsql(sb);
+        String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
+        String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
+        sb = getCommonsql(sb, infoTabName, detailTabName);
         sb.append(" and (info.CREATETIME BETWEEN ? AND ? or info.COMESHOPTIME BETWEEN ? AND ? or info.SUCCESSTIME BETWEEN ? AND ?)");
         sb.append(" and info.CLASSID = 6 and info.STATUSID = 99");
         sb.append(" group by detail.ZXSTYLE");
@@ -257,7 +269,9 @@ public class DstgZxStyleReportsDao {
      * */
     private void getFilterInClientCount(ReportsParamVO reportsParamVO, List<DstgZxStyleReportsVO> DstgZxStyleReportsVOS){
         StringBuilder sb = new StringBuilder();
-        sb = getCommonsql(sb);
+        String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
+        String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
+        sb = getCommonsql(sb, infoTabName, detailTabName);
         sb.append(" and (info.CREATETIME BETWEEN ? AND ? or info.COMESHOPTIME BETWEEN ? AND ? or info.SUCCESSTIME BETWEEN ? AND ?)");
         sb.append(" and info.CLASSID = 1 and info.STATUSID = 0");
         sb.append(" group by detail.ZXSTYLE");
@@ -300,7 +314,9 @@ public class DstgZxStyleReportsDao {
             return ;
         }
         StringBuilder sb = new StringBuilder();
-        sb = getCommonsql(sb);
+        String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
+        String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
+        sb = getCommonsql(sb, infoTabName, detailTabName);
         sb.append(" and (info.CREATETIME BETWEEN ? AND ? or info.COMESHOPTIME BETWEEN ? AND ? or info.SUCCESSTIME BETWEEN ? AND ?)");
         if(StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidStatus()) && StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidLevel())){
             sb.append(" and (info.STATUSID in("+ dsInvalidVO.getDsInvalidStatus()+") or");
@@ -351,7 +367,9 @@ public class DstgZxStyleReportsDao {
      * */
     private void getComeShopClientCount(ReportsParamVO reportsParamVO, List<DstgZxStyleReportsVO> DstgZxStyleReportsVOS){
         StringBuilder sb = new StringBuilder();
-        sb = getCommonsql(sb);
+        String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
+        String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
+        sb = getCommonsql(sb, infoTabName, detailTabName);
         sb.append(" and info.COMESHOPTIME BETWEEN ? AND ?");
         sb.append(" group by detail.ZXSTYLE");
 
@@ -386,7 +404,9 @@ public class DstgZxStyleReportsDao {
      * */
     private void getSuccessClientCount(ReportsParamVO reportsParamVO, List<DstgZxStyleReportsVO> DstgZxStyleReportsVOS){
         StringBuilder sb = new StringBuilder();
-        sb = getCommonsql(sb);
+        String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
+        String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
+        sb = getCommonsql(sb, infoTabName, detailTabName);
         sb.append(" and info.SUCCESSTIME BETWEEN ? AND ?");
         sb.append(" group by detail.ZXSTYLE");
 
@@ -421,9 +441,12 @@ public class DstgZxStyleReportsDao {
      * */
     private void getAvgAmount(ReportsParamVO reportsParamVO, List<DstgZxStyleReportsVO> DstgZxStyleReportsVOS){
         StringBuilder sb = new StringBuilder();
+        String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
+        String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
         sb.append(" select  ifnull(ZXSTYLE,99)  as zx_code,ifnull(dictionary.DICNAME,'其他') as zx_style,avg(detail.AMOUNT) as avg_amount ");
-        sb.append(" from hm_crm_client_info info ");
-        sb.append(" left join hm_crm_client_detail detail on info.kzid = detail.kzid");
+        sb.append(" from");
+        sb.append(infoTabName + " info ");
+        sb.append(" left join "+detailTabName+" detail on info.kzid = detail.kzid");
         sb.append(" left join hm_crm_dictionary dictionary on detail.ZXSTYLE = dictionary.DICCODE and dictionary.DICTYPE = 'zx_style'");
         sb.append(" where");
         sb.append("  info.isdel = 0");
@@ -462,9 +485,12 @@ public class DstgZxStyleReportsDao {
      * */
     private void getAmount(ReportsParamVO reportsParamVO, List<DstgZxStyleReportsVO> DstgZxStyleReportsVOS){
         StringBuilder sb = new StringBuilder();
+        String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
+        String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
         sb.append(" select  ifnull(ZXSTYLE,99)  as zx_code,ifnull(dictionary.DICNAME,'其他') as zx_style,sum(detail.AMOUNT) as sum_amount ");
-        sb.append(" from hm_crm_client_info info ");
-        sb.append(" left join hm_crm_client_detail detail on info.kzid = detail.kzid");
+        sb.append(" from");
+        sb.append(infoTabName + " info ");
+        sb.append(" left join "+detailTabName+" detail on info.kzid = detail.kzid");
         sb.append(" left join hm_crm_dictionary dictionary on detail.ZXSTYLE = dictionary.DICCODE and dictionary.DICTYPE = 'zx_style'");
         sb.append(" where");
         sb.append("  info.isdel = 0");
