@@ -1,5 +1,7 @@
 package com.qiein.jupiter.web.repository;
 
+import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.enums.SourceTypeEnum;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.web.entity.vo.ReportsParamVO;
@@ -42,13 +44,17 @@ public class SourceOrderDataReportsDao {
         countTotalYsAmount(reportsList, reportsParamVO);
 
         //统计销售均价
-        countSaleAvg(reportsList, reportsParamVO);
+        countSaleAvg(reportsList);
 
         //统计总花费
         countTotalSpend(reportsList, reportsParamVO);
 
         //统计ROI
-        countRoi(reportsList, reportsParamVO);
+        countRoi(reportsList);
+
+        //统计合计并赋予中文名称
+        countAll(reportsList);
+
         return reportsList;
     }
 
@@ -156,7 +162,7 @@ public class SourceOrderDataReportsDao {
     /**
      * 销售均价
      */
-    private void countSaleAvg(List<SourceOrderDataReportsVO> reportsList, ReportsParamVO reportsParamVO) {
+    private void countSaleAvg(List<SourceOrderDataReportsVO> reportsList) {
         for (SourceOrderDataReportsVO reportsVO : reportsList) {
             String saleAvg = NumUtil.keep2Point(reportsVO.getTxTotalAmount() / reportsVO.getOrderAmount());
             reportsVO.setSaleAvg(saleAvg);
@@ -199,17 +205,59 @@ public class SourceOrderDataReportsDao {
     /**
      * ROI
      */
-    private void countRoi(List<SourceOrderDataReportsVO> reportsList, ReportsParamVO reportsParamVO) {
+    private void countRoi(List<SourceOrderDataReportsVO> reportsList) {
         for (SourceOrderDataReportsVO reportsVO : reportsList) {
             //套系总金额/花费
-            String saleAvg;
-            if (reportsVO.getTotalSpend() == 0) {
-                saleAvg = "0";
-            } else {
-                saleAvg = NumUtil.keep2Point(reportsVO.getTxTotalAmount() / reportsVO.getTotalSpend());
-            }
+            String saleAvg = reportsVO.getTotalSpend() == 0 ? "0" :
+                    NumUtil.keep2Point(reportsVO.getTxTotalAmount() / reportsVO.getTotalSpend());
             reportsVO.setRoi(saleAvg);
         }
+    }
+
+    /**
+     * 统计各种率
+     */
+    private void countRate(List<SourceOrderDataReportsVO> reportsList) {
+        //TODO 是否需要？
+    }
+
+    /**
+     * 统计合计 并且设置中文名称
+     */
+    private void countAll(List<SourceOrderDataReportsVO> reportsList) {
+        int orderAll = 0;
+        int txAll = 0;
+        int zysAll = 0;
+        double saleAvgAll = 0.0;
+        int costAll = 0;
+        double roiAll = 0.0;
+        for (SourceOrderDataReportsVO reportsVO : reportsList) {
+            //总订单
+            orderAll += reportsVO.getOrderAmount();
+            //总套系
+            txAll += reportsVO.getTxTotalAmount();
+            //总已收
+            zysAll += reportsVO.getTotalYsAmount();
+            //总销售均价
+            saleAvgAll += Double.valueOf(reportsVO.getSaleAvg());
+            //总花费
+            costAll += reportsVO.getTotalSpend();
+            //roi
+            roiAll += Double.valueOf(reportsVO.getRoi());
+            //设置来源的中文
+            reportsVO.setSrcName(SourceTypeEnum.switchName(reportsVO.getSrcType()));
+        }
+        //总的合计
+        SourceOrderDataReportsVO allReportsVO = new SourceOrderDataReportsVO();
+        allReportsVO.setOrderAmount(orderAll);
+        allReportsVO.setTxTotalAmount(txAll);
+        allReportsVO.setTotalYsAmount(zysAll);
+        allReportsVO.setSaleAvg(String.valueOf(saleAvgAll));
+        allReportsVO.setTotalSpend(costAll);
+        allReportsVO.setRoi(String.valueOf(roiAll));
+        allReportsVO.setSrcType(-1);
+        allReportsVO.setSrcName(CommonConstant.totalAll);
+        reportsList.add(0, allReportsVO);
     }
 
 
