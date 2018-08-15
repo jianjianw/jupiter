@@ -375,6 +375,16 @@ public class ReportsController extends BaseController {
     }
 
     /**
+     * 电商推广咨询方式来源报表
+     * */
+    @GetMapping("/get_dstg_zx_style_source_reports")
+    public ResultInfo getDstgZxStyleSourceReports(Integer start,Integer end,String zxStyleCode){
+        StaffPO staffPO = getCurrentLoginStaff();
+        List<DstgZxStyleReportsVO> dstgZxStyleReportsVOS = reportService.getDstgZxStyleSourceRerports(start,end,zxStyleCode,staffPO.getCompanyId());
+        return ResultInfoUtil.success(dstgZxStyleReportsVOS);
+    }
+
+    /**
      * 客资各状态转发统计
      * */
     @GetMapping("/get_dsyy_status_reports")

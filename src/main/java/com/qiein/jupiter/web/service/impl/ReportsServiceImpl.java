@@ -64,6 +64,8 @@ public class ReportsServiceImpl implements ReportService {
     private DstgReportsSrcMonthDao dstgReportsSrcMonthDao;
     @Autowired
     private DsyyStatusStaffReportsDao dsyyStatusStaffReportsDao;
+    @Autowired
+    private DstgZxStyleSourceReportsDao dstgZxStyleSourceReportsDao;
 
     /**
      * 修改联系方式日志
@@ -346,7 +348,8 @@ public class ReportsServiceImpl implements ReportService {
 
     @Override
     public DsyyStatusReportsHeaderVO getDsyyStatusDetailReports(Integer start, Integer end, String groupId, int companyId) {
-        if(StringUtil.isEmpty(groupId)){
+        //FIXME 此处有问题
+	    if(StringUtil.isEmpty(groupId)){
             throw new RException(ExceptionEnum.GROUP_IS_NULL);
         }
         ReportsParamVO reportsParamVO = new ReportsParamVO();
@@ -357,5 +360,17 @@ public class ReportsServiceImpl implements ReportService {
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         DsyyStatusReportsHeaderVO dsyyStatusReports = dsyyStatusStaffReportsDao.getDsyyStatusReports(reportsParamVO, invalidConfig);
         return dsyyStatusReports;
+    }
+
+    @Override
+    public List<DstgZxStyleReportsVO> getDstgZxStyleSourceRerports(Integer start, Integer end, String zxStyleCode, int companyId) {
+        ReportsParamVO reportsParamVO = new ReportsParamVO();
+        reportsParamVO.setStart(start);
+        reportsParamVO.setEnd(end);
+        reportsParamVO.setCompanyId(companyId);
+        reportsParamVO.setZxStyleCode(zxStyleCode);
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
+        List<DstgZxStyleReportsVO> dstgGoldDataReprots = dstgZxStyleSourceReportsDao.getDstgGoldDataReprots(reportsParamVO, invalidConfig);
+        return dstgGoldDataReprots;
     }
 }

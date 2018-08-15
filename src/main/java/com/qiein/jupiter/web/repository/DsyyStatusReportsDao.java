@@ -98,8 +98,9 @@ public class DsyyStatusReportsDao {
         StringBuilder sb = new StringBuilder();
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
-        sb.append(" select STATUSID,groupid,count(id) client_count from "+ infoTabName +" info  where info.companyid = ? and info.isdel = 0 and info.groupid is not null group by info.STATUSID,info.groupid ");
-        sb.append(" and info.SUCCESSTIME BETWEEN ? AND ?");
+        sb.append(" select STATUSID,groupid,count(id) client_count from "+ infoTabName +" info  where info.companyid = ? and info.isdel = 0 and info.groupid is not null ");
+        sb.append(" and info.CREATETIME BETWEEN ? AND ?");
+        sb.append(" group by info.STATUSID,info.groupid ");
         jdbcTemplate.query(sb.toString(), new Object[]{reportsParamVO.getCompanyId(),reportsParamVO.getStart(),reportsParamVO.getEnd()}, new RowMapper<DsyyStatusReportsVO>() {
             @Override
             public DsyyStatusReportsVO mapRow(ResultSet rs, int i) throws SQLException {
