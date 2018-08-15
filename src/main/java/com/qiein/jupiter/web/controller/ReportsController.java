@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.http.CrmBaseApi;
 import com.qiein.jupiter.util.*;
+import com.qiein.jupiter.web.entity.dto.CitiesAnalysisParamDTO;
 import com.qiein.jupiter.web.entity.dto.ClientLogDTO;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
@@ -379,8 +380,8 @@ public class ReportsController extends BaseController {
     @GetMapping("/get_dsyy_status_reports")
     public ResultInfo getDSyyStatusReports(Integer start,Integer end){
         StaffPO staffPO = getCurrentLoginStaff();
-        List<DsyyStatusReportsVO> dsyyStatusReportsVOS = reportService.getDsyyStatusReports(start,end,staffPO.getCompanyId());
-        return ResultInfoUtil.success(dsyyStatusReportsVOS);
+        DsyyStatusReportsHeaderVO dsyyStatusReports = reportService.getDsyyStatusReports(start, end, staffPO.getCompanyId());
+        return ResultInfoUtil.success(dsyyStatusReports);
     }
 
     @GetMapping("/receive_ali")
@@ -408,5 +409,26 @@ public class ReportsController extends BaseController {
     @GetMapping("/zjs_kz_of_month_in")
     public ResultInfo ZjskzOfMonthIn( String sourceId, String month){
         return ResultInfoUtil.success(reportService.ZjskzOfMonthIn(getCurrentLoginStaff().getCompanyId(), sourceId, month));
+    }
+
+    /**
+     * 获取市域分析报表
+     * @param searchKey
+     * @return
+     */
+    @GetMapping("/get_cities_analysis_report")
+    public ResultInfo getCitiesAnalysisReport(CitiesAnalysisParamDTO searchKey){
+        //TODO 给默认时间
+        if (searchKey.getStart() == null){
+            searchKey.setStart(0);
+        }
+        if (searchKey.getEnd() == null){
+            searchKey.setEnd(2000000000);
+        }
+        if (searchKey.getSearchClientType() == null){
+            searchKey.setSearchClientType(1);
+        }
+        searchKey.setCompanyId(getCurrentLoginStaff().getCompanyId());
+        return ResultInfoUtil.success(reportService.getCityReport(searchKey));
     }
 }

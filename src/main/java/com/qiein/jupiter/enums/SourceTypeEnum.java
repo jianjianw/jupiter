@@ -32,4 +32,19 @@ public enum SourceTypeEnum {
     public String getTypeName() {
         return typeName;
     }
+
+    /**
+     * 根据ID 获取 name
+     *
+     * @param typeId
+     * @return
+     */
+    public static String switchName(int typeId) {
+        for (SourceTypeEnum state : values()) {
+            if (state.getTypeId() == typeId) {
+                return state.typeName;
+            }
+        }
+        return null;
+    }
 }

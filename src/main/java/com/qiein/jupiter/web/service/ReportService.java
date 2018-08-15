@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.service;
 
 import com.github.pagehelper.PageInfo;
+import com.qiein.jupiter.web.entity.dto.CitiesAnalysisParamDTO;
 import com.qiein.jupiter.web.entity.dto.ClientLogDTO;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.vo.*;
@@ -70,13 +71,20 @@ public interface ReportService {
      * @param companyId
      * @return
      * */
-    List<DsyyStatusReportsVO> getDsyyStatusReports(Integer start, Integer end, int companyId);
+    DsyyStatusReportsHeaderVO getDsyyStatusReports(Integer start, Integer end, int companyId);
 
 
     /**
      * 获取转介绍月底客资报表
      */
     ZjskzOfMonthVO ZjskzOfMonth(Integer companyId, String month, String type, String sourceIds);
+
+    /**
+     * 市域报表分析
+     * @param citiesAnalysisParamDTO
+     * @return
+     */
+    List<RegionReportsVO> getCityReport(CitiesAnalysisParamDTO citiesAnalysisParamDTO);
     /**
      * 转介绍每月客资报表内表详情
      */

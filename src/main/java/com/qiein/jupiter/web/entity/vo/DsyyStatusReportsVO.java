@@ -1,5 +1,7 @@
 package com.qiein.jupiter.web.entity.vo;
 
+import com.qiein.jupiter.web.entity.po.GroupReportsVO;
+
 import java.util.List;
 
 /**
@@ -16,7 +18,6 @@ public class DsyyStatusReportsVO {
      * 小组名称
      * */
     private String grouoName;
-
     /**
      * StatusReports
      * */

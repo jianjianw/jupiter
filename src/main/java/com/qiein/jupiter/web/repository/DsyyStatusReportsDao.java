@@ -5,6 +5,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.qiein.jupiter.util.CollectionUtils;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.web.entity.po.GroupReportsVO;
 import com.qiein.jupiter.web.entity.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -27,23 +28,25 @@ public class DsyyStatusReportsDao {
     /**
      * 获取电商邀约状态报表
      */
-    public List<DsyyStatusReportsVO> getDsyyStatusReports(ReportsParamVO reportsParamVO, DsInvalidVO invalidConfig) {
+    public  DsyyStatusReportsHeaderVO  getDsyyStatusReports(ReportsParamVO reportsParamVO, DsInvalidVO invalidConfig) {
+        DsyyStatusReportsHeaderVO dsyyStatusReportsHeaderVO = new DsyyStatusReportsHeaderVO();
         List<DsyyStatusReportsVO> dsyyStatusReportsVOS = new ArrayList<>();
         //获取小组列表
         getGroupList(reportsParamVO,dsyyStatusReportsVOS);
         //获取状态列表
-        getStatusList(reportsParamVO,dsyyStatusReportsVOS);
+        getStatusList(dsyyStatusReportsHeaderVO,reportsParamVO,dsyyStatusReportsVOS);
         //获取客资数量
         getStatusClientCount(reportsParamVO,dsyyStatusReportsVOS);
-        return dsyyStatusReportsVOS;
+        dsyyStatusReportsHeaderVO.setDsyyStatusReportsHeaderVOS(dsyyStatusReportsVOS);
+        return dsyyStatusReportsHeaderVO;
     }
 
     /**
-     * 获取小组列表
+     * 获取小组下客服列表
      * */
     private void getGroupList(ReportsParamVO reportsParamVO,List<DsyyStatusReportsVO> dsyyStatusReportsVOS) {
         StringBuilder sb = new StringBuilder();
-        sb.append("select groupid,GROUPNAME,GROUPTYPE from hm_pub_group where companyid = ? and GROUPTYPE = 'dsyy' and PARENTID != '0'");
+        sb.append("select groupid,GROUPNAME,GROUPTYPE from hm_pub_group where companyid = ? and GROUPTYPE = 'dsyy' and PARENTID != '0' order by groupid");
 
         List<DsyyStatusReportsVO> dsyyStatusReports = jdbcTemplate.query(sb.toString(), new Object[]{reportsParamVO.getCompanyId()},
                 new RowMapper<DsyyStatusReportsVO>() {
@@ -61,7 +64,7 @@ public class DsyyStatusReportsDao {
     /**
      * 获取状态列表
      * */
-    public void getStatusList(ReportsParamVO reportsParamVO,List<DsyyStatusReportsVO> dsyyStatusReportsVOS) {
+    public void getStatusList(DsyyStatusReportsHeaderVO dsyyStatusReportsHeaderVO,ReportsParamVO reportsParamVO,List<DsyyStatusReportsVO> dsyyStatusReportsVOS) {
         StringBuilder sb = new StringBuilder();
         sb.append(" select distinct client_status.STATUSID,client_status.STATUSNAME from hm_crm_client_status client_status where companyid = ? ");
 
@@ -75,7 +78,8 @@ public class DsyyStatusReportsDao {
                         return clientStatusReportsVO;
                     }
                 });
-
+        //设置表头
+        dsyyStatusReportsHeaderVO.setClientStatusReportsVOList(clientStatusReportsVOS);
         for (DsyyStatusReportsVO dsyyStatusReportsVO :dsyyStatusReportsVOS){
             // TODO list深拷贝问题，需要查看源码
             String jsonString = JSONObject.toJSONString(clientStatusReportsVOS);
@@ -111,5 +115,6 @@ public class DsyyStatusReportsDao {
             }
         });
     }
+
 
 }
