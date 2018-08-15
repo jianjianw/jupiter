@@ -97,7 +97,7 @@ public class CallServiceImpl implements CallService {
 
 
         //修改客资状态为已拨打
-        clientInfoDao.editKzphoneFlag(kzId, ClientConst.DIALED);
+        clientInfoDao.editKzphoneFlag(kzId, ClientConst.DIALED, DBSplitUtil.getInfoTabName(staffPO.getCompanyId()));
 
         //存储电话日志
         ClientLogPO clientLogPO = new ClientLogPO();
@@ -107,7 +107,7 @@ public class CallServiceImpl implements CallService {
         clientLogPO.setLogType(ClientLogConst.INFO_LOG_TYPE_CALL);
         clientLogPO.setKzId(kzId);
         clientLogPO.setMemo(ClientLogConst.INFO_LOG_CALL_PHONE);
-        clientLogDao.addInfoLog(clientLogPO);
+        clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(staffPO.getCompanyId()),clientLogPO);
 
         //TODO 通话记录
 
