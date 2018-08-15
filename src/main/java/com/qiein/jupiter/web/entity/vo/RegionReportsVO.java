@@ -5,6 +5,7 @@ package com.qiein.jupiter.web.entity.vo;
  * @Date: 2018/8/11 18:23
  */
 public class RegionReportsVO {
+    private String regionName;                    //区域名称
     private int allClientCount;                 //总客资
     private int clientCount;                    //客资量
     private int validClientCount;               //有效量
@@ -25,6 +26,14 @@ public class RegionReportsVO {
     private double validClientSuccessRate;      //有效客资成交率（有效量/成交量）
     private double avgAmount;                   //成交均价
     private double amount;                      //营业额
+
+    public String getRegionName() {
+        return regionName;
+    }
+
+    public void setRegionName(String regionName) {
+        this.regionName = regionName;
+    }
 
     public int getFilterInClientCount() {
         return filterInClientCount;
@@ -184,5 +193,32 @@ public class RegionReportsVO {
 
     public void setAmount(double amount) {
         this.amount = amount;
+    }
+
+    @Override
+    public String toString() {
+        return "RegionReportsVO{" +
+                "regionName='" + regionName + '\'' +
+                ", allClientCount=" + allClientCount +
+                ", clientCount=" + clientCount +
+                ", validClientCount=" + validClientCount +
+                ", inValidClientCount=" + inValidClientCount +
+                ", comeShopClientCount=" + comeShopClientCount +
+                ", successClientCount=" + successClientCount +
+                ", pendingClientCount=" + pendingClientCount +
+                ", filterInClientCount=" + filterInClientCount +
+                ", filterInValidClientCount=" + filterInValidClientCount +
+                ", filterPendingClientCount=" + filterPendingClientCount +
+                ", validRate=" + validRate +
+                ", inValidRate=" + inValidRate +
+                ", waitRate=" + waitRate +
+                ", clientComeShopRate=" + clientComeShopRate +
+                ", validClientComeShopRate=" + validClientComeShopRate +
+                ", comeShopSuccessRate=" + comeShopSuccessRate +
+                ", clientSuccessRate=" + clientSuccessRate +
+                ", validClientSuccessRate=" + validClientSuccessRate +
+                ", avgAmount=" + avgAmount +
+                ", amount=" + amount +
+                '}';
     }
 }

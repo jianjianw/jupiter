@@ -10,6 +10,7 @@ import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.ClientInfoDao;
 import com.qiein.jupiter.web.dao.DictionaryDao;
 import com.qiein.jupiter.web.dao.GroupStaffDao;
+import com.qiein.jupiter.web.entity.dto.CitiesAnalysisParamDTO;
 import com.qiein.jupiter.web.entity.dto.ClientLogDTO;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.DictionaryPO;
@@ -30,6 +31,9 @@ import java.util.Map;
 
 @Service
 public class ReportsServiceImpl implements ReportService {
+    @Autowired
+    private CityReportsDao cityReportsDao;
+
     @Autowired
     private ClientInfoDao clientInfoDao;
 
@@ -186,6 +190,15 @@ public class ReportsServiceImpl implements ReportService {
         zjskzOfMonthVO.setHeadList(list);
         zjskzOfMonthVO.setList(zjskzOfMonthDao.getzjskzOfMonth(list,month.replace(CommonConstant.ROD_SEPARATOR,CommonConstant.FILE_SEPARATOR),companyId,DBSplitUtil.getTable(TableEnum.info,companyId),sourceIds,type ));
         return zjskzOfMonthVO;
+    }
+
+    @Override
+    public List<RegionReportsVO> getCityReport(CitiesAnalysisParamDTO citiesAnalysisParamDTO) {
+        //获取公司自定义的无效设置
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(citiesAnalysisParamDTO.getCompanyId());
+        //获取市域分析报表
+        List<RegionReportsVO> cityReport = cityReportsDao.getCityReport(citiesAnalysisParamDTO,invalidConfig);
+        return cityReport;
     }
 
     @Override
