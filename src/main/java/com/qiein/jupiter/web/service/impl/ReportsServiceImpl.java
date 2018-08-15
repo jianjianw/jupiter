@@ -53,6 +53,8 @@ public class ReportsServiceImpl implements ReportService {
     private InvalidReasonReportsDao invalidReasonReportsDao;
     @Autowired
     private ZjskzOfMonthDao zjskzOfMonthDao;
+    @Autowired
+    private DsyyStatusReportsDao dsyyStatusReportsDao;
 
     /**
      * 修改联系方式日志
@@ -192,5 +194,16 @@ public class ReportsServiceImpl implements ReportService {
         zjskzOfMonthVO.setHeadList(list);
         zjskzOfMonthVO.setList(zjskzOfMonthDao.getzjskzOfMonth(newList,month.replace(CommonConstant.ROD_SEPARATOR,CommonConstant.FILE_SEPARATOR),companyId,DBSplitUtil.getTable(TableEnum.info,companyId),sourceIds,type ));
         return zjskzOfMonthVO;
+    }
+
+    @Override
+    public List<DsyyStatusReportsVO> getDsyyStatusReports(Integer start, Integer end, int companyId) {
+        ReportsParamVO reportsParamVO = new ReportsParamVO();
+        reportsParamVO.setStart(start);
+        reportsParamVO.setEnd(end);
+        reportsParamVO.setCompanyId(companyId);
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
+        List<DsyyStatusReportsVO> dsyyStatusReports = dsyyStatusReportsDao.getDsyyStatusReports(reportsParamVO, invalidConfig);
+        return dsyyStatusReports;
     }
 }

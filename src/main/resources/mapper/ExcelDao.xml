@@ -608,8 +608,8 @@
         (SELECT
         DISTINCT
         <include refid="Base_Column_News_List"/>
-        FROM ${tempName} temp
-        LEFT JOIN ${tableName} info
+        FROM ${tableName} info
+        LEFT JOIN ${tempName} temp
         ON info.kzPhone = temp.KZPHONE
         OR info.KZWECHAT = temp.KZWECHAT
         OR info.KZQQ = temp.KZQQ
@@ -630,7 +630,7 @@
         or temp.TYPEID is null
         or temp.CHANNELID is NULL
         or temp.SOURCEID is NULL
-        or temp.COLLECTORID IS NULL
+--         or temp.COLLECTORID IS NULL
         or (temp.CREATETIME IS NULL or temp.CREATETIME = 0)
         or (temp.KZPHONE is null and temp.KZWECHAT is null and temp.KZQQ is null and temp.KZWW is null)
 --         or (temp.SHOPID is null and temp.SHOPNAME is not null)
@@ -672,8 +672,8 @@
         SELECT DISTINCT
         <include refid="Base_Column_News_List"/>
         FROM
-        ${tempName} temp
-        LEFT JOIN ${tableName} info ON info.kzPhone = temp.KZPHONE
+        ${tableName} info
+        LEFT JOIN ${tempName} temp  ON info.kzPhone = temp.KZPHONE
         OR info.KZWECHAT = temp.KZWECHAT
         OR info.KZQQ = temp.KZQQ
         OR info.KZWW = temp.kzww
@@ -698,7 +698,7 @@
         or temp.TYPEID is null
         or temp.CHANNELID is NULL
         or temp.SOURCEID is NULL
-        or temp.COLLECTORID IS NULL
+--         or temp.COLLECTORID IS NULL
         or (temp.CREATETIME IS NULL or temp.CREATETIME = 0)
         or (temp.KZPHONE is null and temp.KZWECHAT is null and temp.KZQQ is null and temp.KZWW is null)
 --         or (temp.SHOPID is null and temp.SHOPNAME is not null)
@@ -732,7 +732,7 @@
         or temp.TYPEID is null
         or temp.CHANNELID is NULL
         or temp.SOURCEID is NULL
-        or temp.COLLECTORID IS NULL
+--         or temp.COLLECTORID IS NULL
         or (temp.CREATETIME IS NULL or temp.CREATETIME = 0)
         or (temp.KZPHONE is null and temp.KZWECHAT is null and temp.KZQQ is null and temp.KZWW is null)
 --         or (temp.SHOPID is null and temp.SHOPNAME is not null)
@@ -753,8 +753,8 @@
         SELECT DISTINCT
         count(1) AS repeats
         FROM
-        ${tempName} temp
-        LEFT JOIN ${tableName} info ON info.kzPhone = temp.KZPHONE
+        ${tableName} info
+        LEFT JOIN ${tempName} temp  ON info.kzPhone = temp.KZPHONE
         OR info.KZWECHAT = temp.KZWECHAT
         OR info.KZQQ = temp.KZQQ
         WHERE

@@ -20,7 +20,7 @@ public class DsyyStatusReportsVO {
     /**
      * StatusReports
      * */
-    private List<DsyyStatusReportsVO> dsyyStatusReportsVOS;
+    private List<ClientStatusReportsVO> clientStatusReportsVOS;
 
 
     public String getGroupId() {
@@ -39,12 +39,12 @@ public class DsyyStatusReportsVO {
         this.grouoName = grouoName;
     }
 
-    public List<DsyyStatusReportsVO> getDsyyStatusReportsVOS() {
-        return dsyyStatusReportsVOS;
+    public List<ClientStatusReportsVO> getClientStatusReportsVOS() {
+        return clientStatusReportsVOS;
     }
 
-    public void setDsyyStatusReportsVOS(List<DsyyStatusReportsVO> dsyyStatusReportsVOS) {
-        this.dsyyStatusReportsVOS = dsyyStatusReportsVOS;
+    public void setClientStatusReportsVOS(List<ClientStatusReportsVO> clientStatusReportsVOS) {
+        this.clientStatusReportsVOS = clientStatusReportsVOS;
     }
 }
 
