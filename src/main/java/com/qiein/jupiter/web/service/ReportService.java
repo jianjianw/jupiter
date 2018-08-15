@@ -135,4 +135,13 @@ public interface ReportService {
      * */
     DsyyStatusReportsHeaderVO getDsyyStatusDetailReports(Integer start, Integer end,String groupId, int companyId);
 
+    /**
+     * 电商推广咨询方式来源详细报表
+     * @param start
+     * @param end
+     * @param zxStyleCode
+     * @param companyId
+     * @return
+     * */
+    List<DstgZxStyleReportsVO> getDstgZxStyleSourceRerports(Integer start, Integer end, String zxStyleCode, int companyId);
 }

@@ -26,9 +26,23 @@ public class ReportsParamVO {
     private String groupId;
 
     /**
+     * 咨询方式code
+     * */
+    private String zxStyleCode;
+
+    /**
      * 公司id
      * */
     private Integer companyId;
+
+
+    public String getZxStyleCode() {
+        return zxStyleCode;
+    }
+
+    public void setZxStyleCode(String zxStyleCode) {
+        this.zxStyleCode = zxStyleCode;
+    }
 
     public String getGroupId() {
         return groupId;
