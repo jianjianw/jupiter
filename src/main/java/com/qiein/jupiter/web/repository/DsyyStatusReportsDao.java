@@ -5,6 +5,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.qiein.jupiter.util.CollectionUtils;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.web.entity.po.GroupReportsVO;
 import com.qiein.jupiter.web.entity.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -39,11 +40,11 @@ public class DsyyStatusReportsDao {
     }
 
     /**
-     * 获取小组列表
+     * 获取小组下客服列表
      * */
     private void getGroupList(ReportsParamVO reportsParamVO,List<DsyyStatusReportsVO> dsyyStatusReportsVOS) {
         StringBuilder sb = new StringBuilder();
-        sb.append("select groupid,GROUPNAME,GROUPTYPE from hm_pub_group where companyid = ? and GROUPTYPE = 'dsyy' and PARENTID != '0'");
+        sb.append("select groupid,GROUPNAME,GROUPTYPE from hm_pub_group where companyid = ? and GROUPTYPE = 'dsyy' and PARENTID != '0' order by groupid");
 
         List<DsyyStatusReportsVO> dsyyStatusReports = jdbcTemplate.query(sb.toString(), new Object[]{reportsParamVO.getCompanyId()},
                 new RowMapper<DsyyStatusReportsVO>() {
@@ -110,6 +111,22 @@ public class DsyyStatusReportsDao {
                 return null;
             }
         });
+    }
+
+    /**
+     * 处理数据
+     * */
+    public void dataHandle(List<DsyyStatusReportsVO> dsyyStatusReportsVOS){
+        //数据处理
+        List<GroupReportsVO> groupReportsVOS = new ArrayList<>();
+        for (DsyyStatusReportsVO dsyyStatusReportsVO:dsyyStatusReportsVOS){
+            GroupReportsVO groupReportsVO = new GroupReportsVO();
+            groupReportsVO.setGroupId(dsyyStatusReportsVO.getGroupId());
+            groupReportsVO.setGrouoName(dsyyStatusReportsVO.getGrouoName());
+            groupReportsVOS.add(groupReportsVO);
+        }
+        //数字处理
+
     }
 
 }

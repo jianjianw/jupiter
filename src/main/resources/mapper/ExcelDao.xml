@@ -371,7 +371,12 @@
         AND (( temp.KZPHONE = info.KZPHONE  or temp.KZPHONE = info.KZWECHAT or temp.KZPHONE = info.KZQQ)
         or ( temp.KZWECHAT = info.KZPHONE  or temp.KZWECHAT = info.KZWECHAT or temp.KZWECHAT = info.KZQQ)
         or ( temp.KZQQ = info.KZPHONE  or temp.KZQQ = info.KZWECHAT or temp.KZQQ = info.KZQQ))
-
+        union
+        SELECT
+        <include refid="Base_Column_News_List"/>
+        FROM ${tempName} temp
+        WHERE
+        temp.kzid in (select kzid from (select kzid,count(1) as client_count from ${tempName} a group by kzphone,kzqq,kzwechat having client_count> 1) result)
     </select>
 
     <!--获取excel中重复客资列表-->
@@ -446,43 +451,88 @@
             KZID, ZXSTYLE, ADADDRESS, ADID, MARRYTIME, YPTIME, MATENAME, MATEPHONE, MATEWECHAT, MATEQQ, COMPANYID, YXLEVEL,
             INVALIDLABEL, YSRANGE, ADDRESS, GROUPNAME, KEYWORD, COLLECTORNAME, APPOINTNAME, RECEPTORNAME, MEMO, SHOPNAME,
             AMOUNT, CREATETIME, OLDKZNAME, OLDKZPHONE, STAYAMOUNT
-        ) (SELECT
-               temp.KZID,
-               temp.ZXSTYLE,
-               temp.ADADDRESS,
-               temp.ADID,
-               temp.MARRYTIME,
-               temp.YPTIME,
-               temp.MATENAME,
-               temp.MATEPHONE,
-               temp.MATEWECHAT,
-               temp.MATEQQ,
-               temp.COMPANYID,
-               temp.YXLEVEL,
-               temp.INVALIDLABEL,
-               temp.YSRANGE,
-               temp.ADDRESS,
-               temp.GROUPNAME,
-               temp.KEYWORD,
-               temp.COLLECTORNAME,
-               temp.APPOINTNAME,
-               temp.RECEPTORNAME,
-               temp.MEMO,
-               temp.SHOPNAME,
-               temp.AMOUNT,
-               temp.CREATETIME,
-               temp.OLDKZNAME,
-               temp.OLDKZPHONE,
-               temp.STAYAMOUNT
-           FROM ${tempName} temp
-           WHERE NOT EXISTS
-           (
-                   SELECT tab.KZID
-                   FROM ${tabName} tab
-                   where (tab.KZID = temp.KZID)
-                         and ISDEL = 0
-                         and CREATETIME + 10 > 2
-           ) and temp.OPERAID = #{staffId}
+        ) (select    temp.KZID,
+        temp.ZXSTYLE,
+        temp.ADADDRESS,
+        temp.ADID,
+        temp.MARRYTIME,
+        temp.YPTIME,
+        temp.MATENAME,
+        temp.MATEPHONE,
+        temp.MATEWECHAT,
+        temp.MATEQQ,
+        temp.COMPANYID,
+        temp.YXLEVEL,
+        temp.INVALIDLABEL,
+        temp.YSRANGE,
+        temp.ADDRESS,
+        temp.GROUPNAME,
+        temp.KEYWORD,
+        temp.COLLECTORNAME,
+        temp.APPOINTNAME,
+        temp.RECEPTORNAME,
+        temp.MEMO,
+        temp.SHOPNAME,
+        temp.AMOUNT,
+        temp.CREATETIME,
+        temp.OLDKZNAME,
+        temp.OLDKZPHONE,
+        temp.STAYAMOUNT
+        from ${tempName} temp
+
+        left join
+        -- 重复客资
+        (SELECT
+        DISTINCT
+        <include refid="Base_Column_News_List"/>
+        FROM ${tempName} temp
+        inner join ${tabName} info
+        ON info.KZID is not null
+        WHERE
+        info.KZID IS NOT NULL
+        AND info.ISDEL = 0
+        AND temp.OPERAID = #{staffId}
+        AND (( temp.KZPHONE = info.KZPHONE  or temp.KZPHONE = info.KZWECHAT or temp.KZPHONE = info.KZQQ)
+        or ( temp.KZWECHAT = info.KZPHONE  or temp.KZWECHAT = info.KZWECHAT or temp.KZWECHAT = info.KZQQ)
+        or ( temp.KZQQ = info.KZPHONE  or temp.KZQQ = info.KZWECHAT or temp.KZQQ = info.KZQQ))
+        union
+        SELECT
+        <include refid="Base_Column_News_List"/>
+        FROM ${tempName} temp
+        WHERE
+        temp.kzid in (select kzid from (select kzid,count(1) as client_count from ${tempName} a group by kzphone,kzqq,kzwechat having client_count> 1) result)
+        ) b
+        ON temp.kzid = b.kzid
+        left join
+        -- 错误客资
+        (select
+        <include refid="Base_Column_News_List"/>
+        from ${tempName} temp
+        where temp.OPERAID = #{staffId} and (((temp.KZPHONE is not null and temp.KZPHONE != '') and temp.KZPHONE NOT REGEXP '^[1][3456789][0-9]{9}$')
+        -- or ( (temp.KZWECHAT is not null and temp.KZWECHAT != '')  and temp.KZWECHAT NOT REGEXP '^[a-zA-Z0-9]{1}[-_a-zA-Z0-9]{5,30}$')
+        or  ((temp.kzqq is not null and temp.kzqq != '') and temp.kzqq not REGEXP '[1-9][0-9]{4,9}')
+        or (temp.CLASSID IS NULL OR temp.CLASSID = 0)
+        or temp.TYPEID is null
+        or temp.CHANNELID is NULL
+        or temp.SOURCEID is NULL
+        --         or temp.COLLECTORID IS NULL
+        or (temp.CREATETIME IS NULL or temp.CREATETIME = 0)
+        or (temp.KZPHONE is null and temp.KZWECHAT is null and temp.KZQQ is null and temp.KZWW is null)
+        --         or (temp.SHOPID is null and temp.SHOPNAME is not null)
+        or (temp.APPOINTORID is null and temp.APPOINTNAME is not null)
+        --         or (temp.RECEPTORID is null and temp.RECEPTORNAME IS not null)
+        or (temp.CLASSID != 1 AND temp.APPOINTORID IS NULL )
+        or (temp.CLASSID = 4 AND (temp.SHOPID IS NULL OR temp.COMESHOPTIME IS NULL OR temp.RECEPTORID IS NULL))
+        or (temp.CLASSID = 3 AND (temp.APPOINTTIME IS NULL OR temp.SHOPID IS NULL))
+        --         or (temp.CLASSID = 5 AND (temp.SHOPID IS NULL or temp.RECEPTORID IS NULL or temp.SUCCESSTIME IS NULL or
+        --         temp.AMOUNT IS NULL))
+        or (temp.YXLEVELSTR is not null and temp.YXLEVEL IS NULL)
+        Or (temp.YPTIMESTR IS NOT NULL AND temp.YPTIME IS NULL)
+        or (temp.YSRANGESTR IS NOT NULL AND temp.YSRANGE IS NULL)
+        or (temp.MARRYTIMESTR IS NOT NULL AND temp.MARRYTIME IS NULL)
+        or (temp.ZXSTYLESTR IS NOT NULL AND temp.ZXSTYLE IS NULL))) c
+        ON temp.kzid = c.kzid
+        where temp.OPERAID = #{staffId} and b.KZID is null and c.kzid is null
         );
     </insert>
 
@@ -599,55 +649,62 @@
 
     <!--获取正常客资-->
     <select id="getExcelSuccessClient" resultMap="baseNewsMap">
-        select
-        <include refid="Base_Column_News_List"/>
-        from (select
-        <include refid="Base_Column_News_List"/>
+        -- 所有客资
+        select  <include refid="Base_Column_News_List"/>
         from ${tempName} temp
         left join
+        -- 重复客资
         (SELECT
         DISTINCT
         <include refid="Base_Column_News_List"/>
         FROM ${tempName} temp
-        LEFT JOIN ${tableName} info
-        ON info.kzPhone = temp.KZPHONE
-        OR info.KZWECHAT = temp.KZWECHAT
-        OR info.KZQQ = temp.KZQQ
-        OR info.KZWW = temp.kzww
+        inner join ${tableName} info
+        ON info.KZID is not null
         WHERE
         info.KZID IS NOT NULL
         AND info.ISDEL = 0
-        AND temp.OPERAID = #{staffId}) b
-        on temp.KZID = b.kzid where b.KZID is null) temp
+        AND temp.OPERAID = #{staffId}
+        AND (( temp.KZPHONE = info.KZPHONE  or temp.KZPHONE = info.KZWECHAT or temp.KZPHONE = info.KZQQ)
+        or ( temp.KZWECHAT = info.KZPHONE  or temp.KZWECHAT = info.KZWECHAT or temp.KZWECHAT = info.KZQQ)
+        or ( temp.KZQQ = info.KZPHONE  or temp.KZQQ = info.KZWECHAT or temp.KZQQ = info.KZQQ))
+        union
+        SELECT
+        <include refid="Base_Column_News_List"/>
+        FROM ${tempName} temp
+        WHERE
+        temp.kzid in (select kzid from (select kzid,count(1) as client_count from ${tempName} a group by kzphone,kzqq,kzwechat having client_count> 1) result)
+        ) b
+        ON temp.kzid = b.kzid
         left join
+        -- 错误客资
         (select
         <include refid="Base_Column_News_List"/>
-        from ${tempName} temp where
-        temp.OPERAID = #{staffId} and ( ((temp.KZPHONE is not null and temp.KZPHONE != '') and temp.KZPHONE NOT REGEXP '^[1][3456789][0-9]{9}$')
-        -- or ( (temp.KZWECHAT is not null and temp.KZWECHAT != '') and temp.KZWECHAT NOT REGEXP '^[a-zA-Z0-9]{1}[-_a-zA-Z0-9]{5,30}$')
-        or ((temp.kzqq is not null and temp.kzqq   != '') and temp.kzqq not REGEXP '[1-9][0-9]{4,9}')
+        from ${tempName} temp
+        where temp.OPERAID = #{staffId} and (((temp.KZPHONE is not null and temp.KZPHONE != '') and temp.KZPHONE NOT REGEXP '^[1][3456789][0-9]{9}$')
+        -- or ( (temp.KZWECHAT is not null and temp.KZWECHAT != '')  and temp.KZWECHAT NOT REGEXP '^[a-zA-Z0-9]{1}[-_a-zA-Z0-9]{5,30}$')
+        or  ((temp.kzqq is not null and temp.kzqq != '') and temp.kzqq not REGEXP '[1-9][0-9]{4,9}')
         or (temp.CLASSID IS NULL OR temp.CLASSID = 0)
         or temp.TYPEID is null
         or temp.CHANNELID is NULL
         or temp.SOURCEID is NULL
---         or temp.COLLECTORID IS NULL
+        --         or temp.COLLECTORID IS NULL
         or (temp.CREATETIME IS NULL or temp.CREATETIME = 0)
         or (temp.KZPHONE is null and temp.KZWECHAT is null and temp.KZQQ is null and temp.KZWW is null)
---         or (temp.SHOPID is null and temp.SHOPNAME is not null)
+        --         or (temp.SHOPID is null and temp.SHOPNAME is not null)
         or (temp.APPOINTORID is null and temp.APPOINTNAME is not null)
---         or (temp.RECEPTORID is null and temp.RECEPTORNAME IS not null)
+        --         or (temp.RECEPTORID is null and temp.RECEPTORNAME IS not null)
         or (temp.CLASSID != 1 AND temp.APPOINTORID IS NULL )
         or (temp.CLASSID = 4 AND (temp.SHOPID IS NULL OR temp.COMESHOPTIME IS NULL OR temp.RECEPTORID IS NULL))
         or (temp.CLASSID = 3 AND (temp.APPOINTTIME IS NULL OR temp.SHOPID IS NULL))
---         or (temp.CLASSID = 5 AND (temp.SHOPID IS NULL or temp.RECEPTORID IS NULL or temp.SUCCESSTIME IS NULL or
---         temp.AMOUNT IS NULL))
+        --         or (temp.CLASSID = 5 AND (temp.SHOPID IS NULL or temp.RECEPTORID IS NULL or temp.SUCCESSTIME IS NULL or
+        --         temp.AMOUNT IS NULL))
         or (temp.YXLEVELSTR is not null and temp.YXLEVEL IS NULL)
         Or (temp.YPTIMESTR IS NOT NULL AND temp.YPTIME IS NULL)
         or (temp.YSRANGESTR IS NOT NULL AND temp.YSRANGE IS NULL)
         or (temp.MARRYTIMESTR IS NOT NULL AND temp.MARRYTIME IS NULL)
-        or (temp.ZXSTYLESTR IS NOT NULL AND temp.ZXSTYLE IS NULL)))c
-        on temp.KZID = c.KZID
-        where temp.OPERAID = #{staffId} and c.KZID is null
+        or (temp.ZXSTYLESTR IS NOT NULL AND temp.ZXSTYLE IS NULL))) c
+        ON temp.kzid = c.kzid
+        where temp.OPERAID = #{staffId} and b.KZID is null and c.kzid is null
     </select>
 
     <!--获取客资数量-->
@@ -660,63 +717,62 @@
         count(1) AS right_count
         FROM
         (
-        SELECT
+        -- 所有客资
+        select  <include refid="Base_Column_News_List"/>
+        from ${tempName} temp
+        left join
+        -- 重复客资
+        (SELECT
+        DISTINCT
         <include refid="Base_Column_News_List"/>
-        FROM
-        (
-        SELECT
-        <include refid="Base_Column_News_List"/>
-        FROM
-        ${tempName} temp
-        LEFT JOIN (
-        SELECT DISTINCT
-        <include refid="Base_Column_News_List"/>
-        FROM
-        ${tempName} temp
-        LEFT JOIN ${tableName} info  ON info.kzPhone = temp.KZPHONE
-        OR info.KZWECHAT = temp.KZWECHAT
-        OR info.KZQQ = temp.KZQQ
-        OR info.KZWW = temp.kzww
+        FROM ${tempName} temp
+        inner join ${tableName} info
+        ON info.KZID is not null
         WHERE
         info.KZID IS NOT NULL
         AND info.ISDEL = 0
         AND temp.OPERAID = #{staffId}
-        ) b ON temp.kzid = b.kzid
-        WHERE
-        temp.OPERAID = #{staffId} and b.kzid IS NULL
-        ) temp
-        LEFT JOIN (
+        AND (( temp.KZPHONE = info.KZPHONE  or temp.KZPHONE = info.KZWECHAT or temp.KZPHONE = info.KZQQ)
+        or ( temp.KZWECHAT = info.KZPHONE  or temp.KZWECHAT = info.KZWECHAT or temp.KZWECHAT = info.KZQQ)
+        or ( temp.KZQQ = info.KZPHONE  or temp.KZQQ = info.KZWECHAT or temp.KZQQ = info.KZQQ))
+        union
         SELECT
         <include refid="Base_Column_News_List"/>
-        FROM
-        ${tempName} temp
+        FROM ${tempName} temp
         WHERE
-        temp.OPERAID = #{staffId} and  (((temp.KZPHONE is not null and temp.KZPHONE != '') and temp.KZPHONE NOT REGEXP '^[1][3456789][0-9]{9}$')
-        -- or ((temp.KZWECHAT IS NOT NULL and temp.KZWECHAT != '') and temp.KZWECHAT NOT REGEXP '^[a-zA-Z0-9]{1}[-_a-zA-Z0-9]{5,30}$')
-        or ((temp.kzqq is not null and temp.kzqq != '') and  temp.kzqq not REGEXP '[1-9][0-9]{4,9}')
+        temp.kzid in (select kzid from (select kzid,count(1) as client_count from ${tempName} a group by kzphone,kzqq,kzwechat having client_count> 1) result)
+        ) b
+        ON temp.kzid = b.kzid
+        left join
+        -- 错误客资
+        (select
+        <include refid="Base_Column_News_List"/>
+        from ${tempName} temp
+        where temp.OPERAID = #{staffId} and (((temp.KZPHONE is not null and temp.KZPHONE != '') and temp.KZPHONE NOT REGEXP '^[1][3456789][0-9]{9}$')
+        -- or ( (temp.KZWECHAT is not null and temp.KZWECHAT != '')  and temp.KZWECHAT NOT REGEXP '^[a-zA-Z0-9]{1}[-_a-zA-Z0-9]{5,30}$')
+        or  ((temp.kzqq is not null and temp.kzqq != '') and temp.kzqq not REGEXP '[1-9][0-9]{4,9}')
         or (temp.CLASSID IS NULL OR temp.CLASSID = 0)
         or temp.TYPEID is null
         or temp.CHANNELID is NULL
         or temp.SOURCEID is NULL
---         or temp.COLLECTORID IS NULL
+        --         or temp.COLLECTORID IS NULL
         or (temp.CREATETIME IS NULL or temp.CREATETIME = 0)
         or (temp.KZPHONE is null and temp.KZWECHAT is null and temp.KZQQ is null and temp.KZWW is null)
---         or (temp.SHOPID is null and temp.SHOPNAME is not null)
+        --         or (temp.SHOPID is null and temp.SHOPNAME is not null)
         or (temp.APPOINTORID is null and temp.APPOINTNAME is not null)
---         or (temp.RECEPTORID is null and temp.RECEPTORNAME IS not null)
+        --         or (temp.RECEPTORID is null and temp.RECEPTORNAME IS not null)
         or (temp.CLASSID != 1 AND temp.APPOINTORID IS NULL )
         or (temp.CLASSID = 4 AND (temp.SHOPID IS NULL OR temp.COMESHOPTIME IS NULL OR temp.RECEPTORID IS NULL))
         or (temp.CLASSID = 3 AND (temp.APPOINTTIME IS NULL OR temp.SHOPID IS NULL))
---         or (temp.CLASSID = 5 AND (temp.SHOPID IS NULL or temp.RECEPTORID IS NULL or temp.SUCCESSTIME IS NULL or
---         temp.AMOUNT IS NULL))
+        --         or (temp.CLASSID = 5 AND (temp.SHOPID IS NULL or temp.RECEPTORID IS NULL or temp.SUCCESSTIME IS NULL or
+        --         temp.AMOUNT IS NULL))
         or (temp.YXLEVELSTR is not null and temp.YXLEVEL IS NULL)
         Or (temp.YPTIMESTR IS NOT NULL AND temp.YPTIME IS NULL)
         or (temp.YSRANGESTR IS NOT NULL AND temp.YSRANGE IS NULL)
         or (temp.MARRYTIMESTR IS NOT NULL AND temp.MARRYTIME IS NULL)
-        or (temp.ZXSTYLESTR IS NOT NULL AND temp.ZXSTYLE IS NULL))
-        ) c ON temp.kzid = c.kzid
-        WHERE
-        temp.OPERAID = #{staffId} and c.kzid IS NULL
+        or (temp.ZXSTYLESTR IS NOT NULL AND temp.ZXSTYLE IS NULL))) c
+        ON temp.kzid = c.kzid
+        where temp.OPERAID = #{staffId} and b.KZID is null and c.kzid is null
         ) tmp_count
         ) a,
         (
@@ -762,6 +818,14 @@
         AND (( temp.KZPHONE = info.KZPHONE  or temp.KZPHONE = info.KZWECHAT or temp.KZPHONE = info.KZQQ)
         or ( temp.KZWECHAT = info.KZPHONE  or temp.KZWECHAT = info.KZWECHAT or temp.KZWECHAT = info.KZQQ)
         or ( temp.KZQQ = info.KZPHONE  or temp.KZQQ = info.KZWECHAT or temp.KZQQ = info.KZQQ))
+        union
+        SELECT
+        <include refid="Base_Column_News_List"/>
+        FROM ${tempName} temp
+        WHERE
+        temp.kzid in (select kzid from (select kzid,count(1) as client_count from ${tempName} a group by kzphone,kzqq,kzwechat having client_count> 1) result)
+        ) b
+        ON temp.kzid = b.kzid
         ) c
     </select>
 

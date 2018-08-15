@@ -1,5 +1,7 @@
 package com.qiein.jupiter.web.entity.vo;
 
+import com.qiein.jupiter.web.entity.po.GroupReportsVO;
+
 import java.util.List;
 
 /**
