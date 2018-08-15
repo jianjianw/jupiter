@@ -443,4 +443,41 @@ public class ReportsController extends BaseController {
         searchKey.setCompanyId(getCurrentLoginStaff().getCompanyId());
         return ResultInfoUtil.success(reportService.getCityReport(searchKey));
     }
+    
+    /**
+     * 电商推广月度客资汇总报表--Hjf
+     * */
+    @GetMapping("/get_dstg_src_month_reports")
+    public ResultInfo getDSTGSrcMonthReports(@RequestParam("start") Integer start, @RequestParam("end") Integer end, @RequestParam("typeId") String typeId, @RequestParam("sourceId") String sourceId, @RequestParam("kzZB") String kzZB){
+        StaffPO staffPO = getCurrentLoginStaff();
+        //查询总客资
+        if(StringUtil.isNotEmpty(kzZB) && "sum".equals(kzZB)){
+        	List<DstgReportsSrcMonthVO> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsSum(start,end,typeId,sourceId,staffPO.getCompanyId());
+        	
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+      //查询客资量
+        if(StringUtil.isNotEmpty(kzZB) && "all".equals(kzZB)){
+        	List<DstgReportsSrcMonthVO> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsAll(start,end,typeId,sourceId,staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+      //查询待定客资
+        if(StringUtil.isNotEmpty(kzZB) && "ddnum".equals(kzZB)){
+        	List<DstgReportsSrcMonthVO> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsDdNum(start,end,typeId,sourceId,staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+        
+       //查询无效客资
+        if(StringUtil.isNotEmpty(kzZB) && "invalid".equals(kzZB)){
+        	List<DstgReportsSrcMonthVO> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsInvalid(start,end,typeId,sourceId,staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+		
+		//查询有效客资
+        if(StringUtil.isNotEmpty(kzZB) && "valid".equals(kzZB)){ 
+        	List<DstgReportsSrcMonthVO> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsvalid(start,end,typeId,sourceId,staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+		return ResultInfoUtil.error(9999, "查询失败");
+    }
 }
