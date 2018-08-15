@@ -1105,7 +1105,7 @@ public class ClientPushServiceImpl implements ClientPushService {
             role = RoleConstant.ZJSSX;
         }
         //1.获取电商筛选人员，领取时间间隔排除
-        StaffPushDTO staff = staffDao.getAvgDssxStaff(companyId, interval, role);
+        StaffPushDTO staff = staffDao.getAvgDssxStaff(companyId, interval, role, DBSplitUtil.getInfoTabName(companyId));
         if (staff == null) {
             return;
         }

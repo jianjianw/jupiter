@@ -1102,7 +1102,7 @@
             hm_pub_group_staff gs
             INNER JOIN hm_pub_group grp ON grp.GROUPID = gs.GROUPID AND grp.COMPANYID = gs.COMPANYID
             INNER JOIN hm_pub_staff sf ON sf.ID = gs.STAFFID AND gs.COMPANYID = sf.COMPANYID
-            LEFT JOIN hm_crm_client_info_2 info ON info.PROMOTORID = gs.STAFFID AND info.COMPANYID = gs.COMPANYID
+            LEFT JOIN ${infoTab} info ON info.PROMOTORID = gs.STAFFID AND info.COMPANYID = gs.COMPANYID
         WHERE
             gs.COMPANYID = #{companyId}
             AND grp.GROUPTYPE = #{role}
