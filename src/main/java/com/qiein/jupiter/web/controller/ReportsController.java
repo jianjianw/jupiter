@@ -384,6 +384,17 @@ public class ReportsController extends BaseController {
         return ResultInfoUtil.success(dsyyStatusReports);
     }
 
+    /**
+     * 电商邀约详细统计
+     * */
+    @GetMapping("/get_dsyy_status_detail_reports")
+    public ResultInfo getDsyyStatusReports(Integer start,Integer end,String groupId){
+        StaffPO staffPO = getCurrentLoginStaff();
+        DsyyStatusReportsHeaderVO dsyyStatusReportsHeaderVO = reportService.getDsyyStatusDetailReports(start,end,groupId,staffPO.getCompanyId());
+        return ResultInfoUtil.success(dsyyStatusReportsHeaderVO);
+    }
+
+
     @GetMapping("/receive_ali")
     public ResultInfo receiveAli(String code, String state) {
         System.out.println(code + "-----------------------------------" + state);
@@ -410,6 +421,7 @@ public class ReportsController extends BaseController {
     public ResultInfo ZjskzOfMonthIn( String sourceId, String month){
         return ResultInfoUtil.success(reportService.ZjskzOfMonthIn(getCurrentLoginStaff().getCompanyId(), sourceId, month));
     }
+
 
     /**
      * 获取市域分析报表

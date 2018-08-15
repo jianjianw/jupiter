@@ -89,4 +89,14 @@ public interface ReportService {
      * 转介绍每月客资报表内表详情
      */
     List<ZjskzOfMonthReportsVO> ZjskzOfMonthIn(Integer companyId, String sourceId, String month);
+
+    /**
+     * 电商邀约详细报表
+     * @param start
+     * @param end
+     * @param groupId
+     * @param companyId
+     * */
+    DsyyStatusReportsHeaderVO getDsyyStatusDetailReports(Integer start, Integer end,String groupId, int companyId);
+
 }

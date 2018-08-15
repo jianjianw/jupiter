@@ -5,6 +5,8 @@ import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.constant.DictionaryConstant;
 import com.qiein.jupiter.constant.RoleConstant;
 import com.qiein.jupiter.enums.TableEnum;
+import com.qiein.jupiter.exception.ExceptionEnum;
+import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.ClientInfoDao;
@@ -58,6 +60,8 @@ public class ReportsServiceImpl implements ReportService {
     private ZjskzOfMonthDao zjskzOfMonthDao;
     @Autowired
     private DsyyStatusReportsDao dsyyStatusReportsDao;
+    @Autowired
+    private DsyyStatusStaffReportsDao dsyyStatusStaffReportsDao;
 
     /**
      * 修改联系方式日志
@@ -230,5 +234,20 @@ public class ReportsServiceImpl implements ReportService {
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         month=month.replace(CommonConstant.ROD_SEPARATOR,CommonConstant.FILE_SEPARATOR);
         return zjskzOfMonthDao.ZjskzOfMonthIn(newList, companyId, month, sourceId,invalidConfig);
+    }
+
+    @Override
+    public DsyyStatusReportsHeaderVO getDsyyStatusDetailReports(Integer start, Integer end, String groupId, int companyId) {
+        if(StringUtil.isEmpty(groupId)){
+            throw new RException(ExceptionEnum.GROUP_IS_NULL);
+        }
+        ReportsParamVO reportsParamVO = new ReportsParamVO();
+        reportsParamVO.setStart(start);
+        reportsParamVO.setEnd(end);
+        reportsParamVO.setGroupId(groupId);
+        reportsParamVO.setCompanyId(companyId);
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
+        DsyyStatusReportsHeaderVO dsyyStatusReports = dsyyStatusStaffReportsDao.getDsyyStatusReports(reportsParamVO, invalidConfig);
+        return dsyyStatusReports;
     }
 }
