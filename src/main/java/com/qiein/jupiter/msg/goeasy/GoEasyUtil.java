@@ -945,7 +945,7 @@ public class GoEasyUtil {
         //goeasy消息
 //        pushReceive(companyId, staffId, head, info);
         //使用原生领取客资
-
+        webSocketMsgUtil.pushReceiveClient(companyId, staffId, head, info);
         StringBuffer sb = new StringBuffer();
         sb.append(head).append("<br/>");
         sb.append("编号：").append(info.getId()).append("<br/>");
@@ -960,9 +960,8 @@ public class GoEasyUtil {
         }
         sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("<br/>");
         sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("<br/>");
-        webSocketMsgUtil.pushReceiveClient(companyId, staffId, sb.toString(), info);
         DingMsgSendUtil.sendDingMsg(sb.toString(), companyId, staffId, staffDao);
-        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_RECEIVE, head, sb.toString(), info.getKzId(), staffId, companyId));
+        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_RECEIVE, head, null, info.getKzId(), staffId, companyId));
     }
 
 }
