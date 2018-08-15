@@ -85,4 +85,8 @@ public interface ReportService {
      * @return
      */
     List<RegionReportsVO> getCityReport(CitiesAnalysisParamDTO citiesAnalysisParamDTO);
+    /**
+     * 转介绍每月客资报表内表详情
+     */
+    List<ZjskzOfMonthReportsVO> ZjskzOfMonthIn(Integer companyId, String sourceId, String month);
 }
