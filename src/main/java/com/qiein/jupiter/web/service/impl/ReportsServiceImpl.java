@@ -19,12 +19,14 @@ import com.qiein.jupiter.web.entity.po.WechatScanPO;
 import com.qiein.jupiter.web.entity.vo.*;
 import com.qiein.jupiter.web.repository.*;
 import com.qiein.jupiter.web.service.ReportService;
+import com.sun.javafx.collections.MappingChange;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.PageHelper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -180,9 +182,15 @@ public class ReportsServiceImpl implements ReportService {
      */
     public ZjskzOfMonthVO ZjskzOfMonth(Integer companyId,String month,String type,String sourceIds){
         ZjskzOfMonthVO zjskzOfMonthVO= new ZjskzOfMonthVO();
-        List<Map<String,Object>> list=zjskzOfMonthDao.getDayOfMonth(Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[0]),Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[1]),DBSplitUtil.getTable(TableEnum.info,companyId));
+        List<Map<String,Object>>  newList=zjskzOfMonthDao.getDayOfMonth(Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[0]),Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[1]),DBSplitUtil.getTable(TableEnum.info,companyId));
+        Map<String,Object> map=new HashMap<String, Object>();
+        map.put("dayName","合计");
+        map.put("dayKey","hj");
+        List<Map<String,Object>> list=new ArrayList<>();
+        list.add(map);
+        list.addAll(newList);
         zjskzOfMonthVO.setHeadList(list);
-        zjskzOfMonthVO.setList(zjskzOfMonthDao.getzjskzOfMonth(list,month.replace(CommonConstant.ROD_SEPARATOR,CommonConstant.FILE_SEPARATOR),companyId,DBSplitUtil.getTable(TableEnum.info,companyId),sourceIds,type ));
+        zjskzOfMonthVO.setList(zjskzOfMonthDao.getzjskzOfMonth(newList,month.replace(CommonConstant.ROD_SEPARATOR,CommonConstant.FILE_SEPARATOR),companyId,DBSplitUtil.getTable(TableEnum.info,companyId),sourceIds,type ));
         return zjskzOfMonthVO;
     }
 }

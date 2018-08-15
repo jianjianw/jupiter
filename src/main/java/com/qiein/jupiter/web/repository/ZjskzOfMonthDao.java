@@ -51,7 +51,7 @@ public class ZjskzOfMonthDao {
      */
     public List<Map<String, Object>> getzjskzOfMonth(List<Map<String, Object>> dayList,String month,Integer companyId,String tableInfo,String sourceIds,String type){
         StringBuilder sql=new StringBuilder();
-        sql.append("SELECT src.SRCNAME srcName,");
+        sql.append("SELECT src.SRCNAME srcName,src.ID srcId,");
         sql.append("(select COUNT(info.ID) from "+tableInfo+" info where info.SOURCEID=src.ID AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m')='"+month+"') hj,  ");
 
         for(Map<String,Object> day:dayList){
@@ -74,7 +74,7 @@ public class ZjskzOfMonthDao {
         System.out.println(sqlString);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sqlString, new Object[]{companyId});
         StringBuilder hjsql=new StringBuilder();
-        hjsql.append("SELECT '合计' srcName ,");
+        hjsql.append("SELECT '合计' srcName ,'' srcId,");
         hjsql.append("(select COUNT(info.ID) from "+tableInfo+" info where  FROM_UNIXTIME(info.CREATETIME, '%Y/%m')='"+month+"' AND info.SOURCEID IN (SELECT src.ID FROM hm_crm_source src WHERE COMPANYID = "+companyId+" AND TYPEID IN (3, 4, 5))) hj,  ");
 
         for(Map<String,Object> day:dayList){
@@ -95,4 +95,16 @@ public class ZjskzOfMonthDao {
         hjList.addAll(list);
         return hjList;
     }
+
+    /**
+     * 有效量
+     */
+
+    /**
+     * 入店量
+     */
+
+    /**
+     * 成交量
+     */
 }
