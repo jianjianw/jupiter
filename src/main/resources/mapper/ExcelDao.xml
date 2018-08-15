@@ -608,8 +608,8 @@
         (SELECT
         DISTINCT
         <include refid="Base_Column_News_List"/>
-        FROM ${tableName} info
-        LEFT JOIN ${tempName} temp
+        FROM ${tempName} temp
+        LEFT JOIN ${tableName} info
         ON info.kzPhone = temp.KZPHONE
         OR info.KZWECHAT = temp.KZWECHAT
         OR info.KZQQ = temp.KZQQ
@@ -672,8 +672,8 @@
         SELECT DISTINCT
         <include refid="Base_Column_News_List"/>
         FROM
-        ${tableName} info
-        LEFT JOIN ${tempName} temp  ON info.kzPhone = temp.KZPHONE
+        ${tempName} temp
+        LEFT JOIN ${tableName} info  ON info.kzPhone = temp.KZPHONE
         OR info.KZWECHAT = temp.KZWECHAT
         OR info.KZQQ = temp.KZQQ
         OR info.KZWW = temp.kzww
@@ -753,8 +753,8 @@
         SELECT DISTINCT
         count(1) AS repeats
         FROM
-        ${tableName} info
-        LEFT JOIN ${tempName} temp  ON info.kzPhone = temp.KZPHONE
+        ${tempName} temp
+        LEFT JOIN  ${tableName} info  ON info.kzPhone = temp.KZPHONE
         OR info.KZWECHAT = temp.KZWECHAT
         OR info.KZQQ = temp.KZQQ
         WHERE
