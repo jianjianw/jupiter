@@ -31,6 +31,7 @@ public class DsyyStatusReportsDao {
     public  DsyyStatusReportsHeaderVO  getDsyyStatusReports(ReportsParamVO reportsParamVO, DsInvalidVO invalidConfig) {
         DsyyStatusReportsHeaderVO dsyyStatusReportsHeaderVO = new DsyyStatusReportsHeaderVO();
         List<DsyyStatusReportsVO> dsyyStatusReportsVOS = new ArrayList<>();
+
         //获取小组列表
         getGroupList(reportsParamVO,dsyyStatusReportsVOS);
         //获取状态列表
@@ -38,6 +39,8 @@ public class DsyyStatusReportsDao {
         //获取客资数量
         getStatusClientCount(reportsParamVO,dsyyStatusReportsVOS);
         dsyyStatusReportsHeaderVO.setDsyyStatusReportsHeaderVOS(dsyyStatusReportsVOS);
+        dataHandle(dsyyStatusReportsHeaderVO);
+
         return dsyyStatusReportsHeaderVO;
     }
 
@@ -116,5 +119,17 @@ public class DsyyStatusReportsDao {
         });
     }
 
+    public void dataHandle(DsyyStatusReportsHeaderVO dsyyStatusReportsHeaderVO){
+        for (DsyyStatusReportsVO dsyyStatusReportsVO :dsyyStatusReportsHeaderVO.getDsyyStatusReportsHeaderVOS()){
+            List<Map<Integer,Integer>> mapList =  new ArrayList<>();
+            for (ClientStatusReportsVO clientStatusReportsVO:dsyyStatusReportsVO.getClientStatusReportsVOS()){
+                Map kzNumMap = new HashMap();
+                kzNumMap.put(clientStatusReportsVO.getStatusId(),clientStatusReportsVO.getKzNum());
+                mapList.add(kzNumMap);
+            }
+            dsyyStatusReportsVO.setMapList(mapList);
+            dsyyStatusReportsVO.setClientStatusReportsVOS(null);
+        }
+    }
 
 }
