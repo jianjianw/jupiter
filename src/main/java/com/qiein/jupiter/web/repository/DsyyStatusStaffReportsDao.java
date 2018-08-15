@@ -64,7 +64,7 @@ public class DsyyStatusStaffReportsDao {
                     @Override
                     public DsyyStatusReportsVO mapRow(ResultSet rs, int i) throws SQLException {
                         DsyyStatusReportsVO dsyyStatusReportsVO = new DsyyStatusReportsVO();
-                        dsyyStatusReportsVO.setGroupId(rs.getString("id"));
+                        dsyyStatusReportsVO.setGroupId(rs.getString("APPOINTORID"));
                         dsyyStatusReportsVO.setGrouoName(rs.getString("nickname"));
                         return dsyyStatusReportsVO;
                     }
