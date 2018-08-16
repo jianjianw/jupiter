@@ -180,4 +180,15 @@ public interface ReportService {
      * @return
      */
     List<JSONObject> getClientStatusTranslateForGroup(ReportsParamVO reportsParamVO);
+
+    /**
+     * 关键词报表
+     * @param startTime
+     * @param endTime
+     * @param typeIds
+     * @param keyWord
+     * @param companyId
+     * @return
+     */
+    List<KeyWordReportsVO> getKeyWordReports(String startTime,String endTime,String typeIds,String keyWord,Integer companyId);
 }

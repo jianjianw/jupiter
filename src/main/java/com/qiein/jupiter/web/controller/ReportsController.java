@@ -532,4 +532,11 @@ public class ReportsController extends BaseController {
         reportsParamVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
         return ResultInfoUtil.success(reportService.getClientStatusTranslateForGroup(reportsParamVO));
     }
+    /**
+     * 关键词报表
+     */
+    @GetMapping("/get_key_word_reports")
+    public ResultInfo getKeyWordReports(@RequestParam String startTime,@RequestParam String endTime,@RequestParam String keyWord,@RequestParam String typeIds){
+        return ResultInfoUtil.success(reportService.getKeyWordReports(startTime,endTime,keyWord,typeIds,getCurrentLoginStaff().getCompanyId()));
+    }
 }
