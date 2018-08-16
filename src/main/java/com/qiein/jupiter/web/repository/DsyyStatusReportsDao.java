@@ -172,6 +172,9 @@ public class DsyyStatusReportsDao {
         for(DsyyStatusReportsVO dsyyStatusReports:dsyyStatusReportsHeaderVO.getDsyyStatusReportsHeaderVOS()){
             for (ClientStatusReportsVO clientStatusReportsVO : dsyyStatusReports.getClientStatusReportsVOS()) {
                 Integer kzNum = dsyyStatusReportsVO.getMapList().get(clientStatusReportsVO.getStatusId());
+                if(kzNum == null){
+                    kzNum = 0;
+                }
                 kzNumMap.put(clientStatusReportsVO.getStatusId(), clientStatusReportsVO.getKzNum() + kzNum);
             }
         }
