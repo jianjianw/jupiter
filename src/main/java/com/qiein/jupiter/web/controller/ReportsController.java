@@ -480,6 +480,7 @@ public class ReportsController extends BaseController {
        //查询无效客资
         if(StringUtil.isNotEmpty(kzZB) && "invalid".equals(kzZB)){
         	List<DstgReportsSrcMonthVO> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsInvalid(start,end,typeId,sourceId,staffPO.getCompanyId());
+        	
             return ResultInfoUtil.success(dstgReportsSrcMonthVO);
         }
 		
