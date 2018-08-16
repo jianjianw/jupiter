@@ -392,10 +392,6 @@ public class ReportsServiceImpl implements ReportService {
 
     @Override
     public DsyyStatusReportsHeaderVO getDsyyStatusDetailReports(Integer start, Integer end, String groupId, int companyId,String type) {
-        //FIXME 此处有问题
-        if (StringUtil.isEmpty(groupId)) {
-            throw new RException(ExceptionEnum.GROUP_IS_NULL);
-        }
         ReportsParamVO reportsParamVO = new ReportsParamVO();
         reportsParamVO.setStart(start);
         reportsParamVO.setEnd(end);
