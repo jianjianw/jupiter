@@ -174,5 +174,11 @@ public interface SourceDao extends BaseDao<SourcePO> {
      */
     SourcePO getSourceByType(@Param("companyId") int companyId, @Param("typeId") int typeId, @Param("srcName") String srcName);
 
+    /**
+     * 查询所属公司所有显示的渠道
+     * @param companyId
+     * @return
+     */
+    String getAllSourceIdStr(@Param("companyId")int companyId);
 
 }

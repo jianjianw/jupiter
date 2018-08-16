@@ -53,6 +53,7 @@ public class CityReportsDao {
                         regionName, start, end,
                         regionName, start, end,
                         regionName, start, end,
+                        regionName, start, end,
                         regionName, start, end,};
                 resultContent.addAll(jdbcTemplate.query(getCityReportSQL(citiesAnalysisParamDTO, dsInvalidVO, regionName),
                         objs,
@@ -75,6 +76,7 @@ public class CityReportsDao {
                                 regionReportsVO.setFilterInValidClientCount(rs.getInt("filterInValidClientCount"));
                                 regionReportsVO.setComeShopClientCount(rs.getInt("comeShopClientCount"));
                                 regionReportsVO.setSuccessClientCount(rs.getInt("successClientCount"));
+                                regionReportsVO.setFilterInClientCount(rs.getInt("filterInClientCount"));
                                 regionReportsVO.setAvgAmount(rs.getInt(("avgAmount")));
                                 regionReportsVO.setAmount(rs.getInt("amount"));
                                 return regionReportsVO;
@@ -99,11 +101,12 @@ public class CityReportsDao {
         StringBuilder sql = new StringBuilder();
         //总客资  待定量 筛选待定 无效量 筛选无效量 入店量 成交量 成交均价 营业额
         sql.append("SELECT ")
-                .append("'" + regionName + "' regionName ,zkz.allClientCount , ddl.pendingClientCount , sxdd.filterPendingClientCount , wxl.inValidClientCount , sxwxl.filterInValidClientCount , rdl.comeShopClientCount , cjl.successClientCount , cjjj.avgAmount , yye.amount ")
+                .append("'" + regionName + "' regionName ,zkz.allClientCount , ddl.pendingClientCount , sxdd.filterPendingClientCount ,sxz.filterInClientCount , wxl.inValidClientCount , sxwxl.filterInValidClientCount , rdl.comeShopClientCount , cjl.successClientCount , cjjj.avgAmount , yye.amount ")
                 .append(" FROM ")
                 .append("(" + getAllClientCount(citiesAnalysisParamDTO.getCompanyId()) + ") zkz ,") //总客资
                 .append("(" + getPendingClientCount(citiesAnalysisParamDTO.getCompanyId(), dsInvalidVO) + ") ddl ,") //待定量
                 .append("(" + getFilterPendingClientCount(citiesAnalysisParamDTO.getCompanyId()) + ") sxdd ,") //筛选待定
+                .append("(" + getFilterInClientCount(citiesAnalysisParamDTO.getCompanyId()) + ") sxz ,") //筛选中
                 .append("(" + getInValidClientCount(citiesAnalysisParamDTO.getCompanyId(), dsInvalidVO) + ") wxl ,") //无效量
                 .append("(" + getFilterInValidClientCount(citiesAnalysisParamDTO.getCompanyId()) + ") sxwxl ,")   //筛选无效量
                 .append("(" + getComeShopClientCount(citiesAnalysisParamDTO.getCompanyId()) + ") rdl ,") //入店量
@@ -139,7 +142,6 @@ public class CityReportsDao {
         StringBuilder allClientSQL = new StringBuilder();
         //获取基础sql 子句
         getBaseSQL(allClientSQL, companyId, "allClientCount");
-        //TODO 后续sql 留在笔记本的navicat里，白天加上
         allClientSQL.append(" AND INSTR(detail.ADDRESS, ? )>0 ")
                 .append(" AND info.CREATETIME BETWEEN ? AND ? ")
                 .append(PLACEHOLDER);
@@ -176,6 +178,20 @@ public class CityReportsDao {
                 .append(" AND (info.CREATETIME BETWEEN ? AND ?) ")
                 .append(PLACEHOLDER);
         return filterPendingClientSQL;
+    }
+
+    /**
+     * 筛选中
+     * @param companyId
+     * @return
+     */
+    private StringBuilder getFilterInClientCount(int companyId){
+        StringBuilder filterInClientSQL = new StringBuilder();
+        getBaseSQL(filterInClientSQL,companyId,"filterInClientCount");
+        filterInClientSQL.append(" AND INSTR(detail.ADDRESS, ? )>0 ")
+                .append(" and info.CLASSID = 1 and info.STATUSID = 0 ")
+                .append(" AND info.CREATETIME BETWEEN ? AND ?");
+        return filterInClientSQL;
     }
 
     /**
@@ -291,65 +307,65 @@ public class CityReportsDao {
      */
     private StringBuilder setConditionSQL(StringBuilder sb, CitiesAnalysisParamDTO searchKey) {//查询的客资类型 1所有客资 2 电话客资 3 微信客资 4 qq客资 5 有电话有微信 6 无电话 7.无微信 8 只有电话 9只有微信 10 只有qq
 
-        String condition =StringUtil.isNotEmpty(searchKey.getDicCodes())?" AND info.TYPEID IN ("+searchKey.getDicCodes()+") ":"";
+        StringBuilder condition = new StringBuilder(StringUtil.isNotEmpty(searchKey.getDicCodes())?" AND info.TYPEID IN ("+searchKey.getDicCodes()+") ":"");
         switch (searchKey.getSearchClientType()) {
             case 1: //1所有客资
                 while (sb.indexOf(PLACEHOLDER) >= 0) {
-                    sb.replace(sb.indexOf(PLACEHOLDER), sb.indexOf(PLACEHOLDER) + PLACEHOLDER.length(), condition);
+                    sb.replace(sb.indexOf(PLACEHOLDER), sb.indexOf(PLACEHOLDER) + PLACEHOLDER.length(), condition.toString());
                 }
                 break;
             case 2: //2电话客资
-                condition = " AND (info.KZPHONE IS NOT NULL AND info.KZPHONE != '') ";
+                condition.append(" AND (info.KZPHONE IS NOT NULL AND info.KZPHONE != '') ");
                 while (sb.indexOf(PLACEHOLDER) >= 0) {
-                    sb.replace(sb.indexOf(PLACEHOLDER), sb.indexOf(PLACEHOLDER) + PLACEHOLDER.length(), condition);
+                    sb.replace(sb.indexOf(PLACEHOLDER), sb.indexOf(PLACEHOLDER) + PLACEHOLDER.length(), condition.toString());
                 }
                 break;
             case 3: //3微信客资
-                condition = " AND (info.KZWECHAT IS NOT NULL AND info.KZWECHAT != '') ";
+                condition.append(" AND (info.KZWECHAT IS NOT NULL AND info.KZWECHAT != '') ");
                 while (sb.indexOf(PLACEHOLDER) >= 0) {
-                    sb.replace(sb.indexOf(PLACEHOLDER), sb.indexOf(PLACEHOLDER) + PLACEHOLDER.length(), condition);
+                    sb.replace(sb.indexOf(PLACEHOLDER), sb.indexOf(PLACEHOLDER) + PLACEHOLDER.length(), condition.toString());
                 }
                 break;
             case 4: //4qq客资
-                condition = " AND (info.KZQQ IS NOT NULL AND info.KZQQ != '') ";
+                condition.append(" AND (info.KZQQ IS NOT NULL AND info.KZQQ != '') ");
                 while (sb.indexOf(PLACEHOLDER) >= 0) {
-                    sb.replace(sb.indexOf(PLACEHOLDER), sb.indexOf(PLACEHOLDER) + PLACEHOLDER.length(), condition);
+                    sb.replace(sb.indexOf(PLACEHOLDER), sb.indexOf(PLACEHOLDER) + PLACEHOLDER.length(), condition.toString());
                 }
                 break;
             case 5: //5有电话有微信
-                condition = " AND (info.KZPHONE IS NOT NULL AND info.KZPHONE != '') AND (info.KZWECHAT IS NOT NULL AND info.KZWECHAT != '') ";
+                condition.append(" AND (info.KZPHONE IS NOT NULL AND info.KZPHONE != '') AND (info.KZWECHAT IS NOT NULL AND info.KZWECHAT != '') ");
                 while (sb.indexOf(PLACEHOLDER) >= 0) {
-                    sb.replace(sb.indexOf(PLACEHOLDER), sb.indexOf(PLACEHOLDER) + PLACEHOLDER.length(), condition);
+                    sb.replace(sb.indexOf(PLACEHOLDER), sb.indexOf(PLACEHOLDER) + PLACEHOLDER.length(), condition.toString());
                 }
                 break;
             case 6: //无电话
-                condition = " AND (info.KZPHONE IS NULL OR info.KZPHONE == '') ";
+                condition.append(" AND (info.KZPHONE IS NULL OR info.KZPHONE = '') ");
                 while (sb.indexOf(PLACEHOLDER) >= 0) {
-                    sb.replace(sb.indexOf(PLACEHOLDER), sb.indexOf(PLACEHOLDER) + PLACEHOLDER.length(), condition);
+                    sb.replace(sb.indexOf(PLACEHOLDER), sb.indexOf(PLACEHOLDER) + PLACEHOLDER.length(), condition.toString());
                 }
                 break;
             case 7: //7无微信
-                condition = " AND (info.KZWECHAT IS NULL OR info.KZWECHAT == '') ";
+                condition.append(" AND (info.KZWECHAT IS NULL OR info.KZWECHAT = '') ");
                 while (sb.indexOf(PLACEHOLDER) >= 0) {
-                    sb.replace(sb.indexOf(PLACEHOLDER), sb.indexOf(PLACEHOLDER) + PLACEHOLDER.length(), condition);
+                    sb.replace(sb.indexOf(PLACEHOLDER), sb.indexOf(PLACEHOLDER) + PLACEHOLDER.length(), condition.toString());
                 }
                 break;
             case 8: //8只有电话
-                condition = " AND (info.KZPHONE IS NOT NULL AND info.KZPHONE != '') AND (info.KZWECHAT IS NULL OR info.KZWECHAT == '') AND (info.KZQQ IS NULL OR info.KZQQ == '')";
+                condition.append(" AND (info.KZPHONE IS NOT NULL AND info.KZPHONE != '') AND (info.KZWECHAT IS NULL OR info.KZWECHAT = '') AND (info.KZQQ IS NULL OR info.KZQQ = '')");
                 while (sb.indexOf(PLACEHOLDER) >= 0) {
-                    sb.replace(sb.indexOf(PLACEHOLDER), sb.indexOf(PLACEHOLDER) + PLACEHOLDER.length(), condition);
+                    sb.replace(sb.indexOf(PLACEHOLDER), sb.indexOf(PLACEHOLDER) + PLACEHOLDER.length(), condition.toString());
                 }
                 break;
             case 9: //9只有微信
-                condition = " AND (info.KZWECHAT IS NOT NULL AND info.KZWECHAT != '') AND (info.KZPHONE IS NULL OR info.KZPHONE == '') AND (info.KZQQ IS NULL OR info.KZQQ == '')";
+                condition.append(" AND (info.KZWECHAT IS NOT NULL AND info.KZWECHAT != '') AND (info.KZPHONE IS NULL OR info.KZPHONE = '') AND (info.KZQQ IS NULL OR info.KZQQ = '')");
                 while (sb.indexOf(PLACEHOLDER) >= 0) {
-                    sb.replace(sb.indexOf(PLACEHOLDER), sb.indexOf(PLACEHOLDER) + PLACEHOLDER.length(), condition);
+                    sb.replace(sb.indexOf(PLACEHOLDER), sb.indexOf(PLACEHOLDER) + PLACEHOLDER.length(), condition.toString());
                 }
                 break;
             case 10://10只有qq
-                condition = " AND (info.KZQQ IS NOT NULL AND info.KZQQ != '') AND (info.KZPHONE IS NULL OR info.KZPHONE == '') AND (info.KZWECHAT IS NULL OR info.KZWECHAT == '')";
+                condition.append(" AND (info.KZQQ IS NOT NULL AND info.KZQQ != '') AND (info.KZPHONE IS NULL OR info.KZPHONE = '') AND (info.KZWECHAT IS NULL OR info.KZWECHAT = '')");
                 while (sb.indexOf(PLACEHOLDER) >= 0) {
-                    sb.replace(sb.indexOf(PLACEHOLDER), sb.indexOf(PLACEHOLDER) + PLACEHOLDER.length(), condition);
+                    sb.replace(sb.indexOf(PLACEHOLDER), sb.indexOf(PLACEHOLDER) + PLACEHOLDER.length(), condition.toString());
                 }
                 break;
             default:
@@ -358,7 +374,7 @@ public class CityReportsDao {
         System.out.println("输出本次最终sql: " + sb.toString());
         return sb;
     }
-
+//缺筛选中
     /**
      *  计算 有效量 各种率 合计
      */
