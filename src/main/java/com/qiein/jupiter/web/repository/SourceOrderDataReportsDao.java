@@ -262,7 +262,7 @@ public class SourceOrderDataReportsDao {
         whereSql.append(" WHERE info.COMPANYID = ? ")
                 .append(" AND  info.ISDEL = 0 ")
                 .append(" AND info.CREATETIME BETWEEN  ? AND ? ")
-                .append(" AND info.GROUPID = :groupId ");
+                .append(" AND info.GROUPID = ? ");
         return whereSql.toString();
     }
 

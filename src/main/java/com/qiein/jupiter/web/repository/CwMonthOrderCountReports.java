@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.repository;
 
+import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.TimeUtil;
 import com.qiein.jupiter.web.entity.vo.ReportsParamVO;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +32,9 @@ public class CwMonthOrderCountReports {
      * @param reportsParamVO
      */
     public void getCwMonthOrderCountReports(ReportsParamVO reportsParamVO) {
+
+        List<JSONObject> reportsList = new ArrayList<>();
+
         int cid = reportsParamVO.getCompanyId();
         String infoTableName = DBSplitUtil.getInfoTabName(cid);
         //封装参数
@@ -42,10 +47,23 @@ public class CwMonthOrderCountReports {
         //拼接groupBy
         baseSql.append(getBaseGroupBySql());
 
+        //要处理的
+        final Map<Integer, List<JSONObject>> rMap = new HashMap<>();
+
         namedJdbc.query(baseSql.toString(), stringObjectMap, new RowCallbackHandler() {
             @Override
             public void processRow(ResultSet resultSet) throws SQLException {
-
+//                String srcType = resultSet.getString("SRCTYPE");
+//                JSONObject rJson = new JSONObject();
+//                rJson.put("srcType", srcType);
+//                rJson.put("groupName", resultSet.getString("GROUPNAME"));
+//                rJson.put("statusId", resultSet.getString("STATUSID"));
+//                rJson.put("count", resultSet.getInt("COUNT"));
+//                //如果为空，则新增一个组
+//                if (rMap.get(groupId) == null) {
+//                    rMap.put(groupId, new ArrayList<JSONObject>());
+//                }
+//                rMap.get(groupId).add(rJson);
             }
         });
 
