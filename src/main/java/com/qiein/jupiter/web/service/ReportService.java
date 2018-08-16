@@ -111,7 +111,13 @@ public interface ReportService {
      */
     DsyyStatusReportsHeaderVO getDsyyStatusDetailReports(Integer start, Integer end, String groupId, int companyId);
 
-
+    /**
+     * 转介绍月底客资汇总报表详情
+     * @param companyId
+     * @param sourceId
+     * @param month
+     * @return
+     */
     ZjskzOfMonthMapVO ZjskzOfMonthIn(Integer companyId, String sourceId, String month);
 
     /**

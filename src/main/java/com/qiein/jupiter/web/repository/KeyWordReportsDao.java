@@ -5,7 +5,6 @@ import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.vo.DsInvalidVO;
 import com.qiein.jupiter.web.entity.vo.KeyWordReportsVO;
-import com.qiein.jupiter.web.entity.vo.OldKzReportsVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -77,7 +76,7 @@ public class KeyWordReportsDao {
             KeyWordReportsVO keyWordReportsVO = new KeyWordReportsVO();
             keyWordReportsVO.setPendingClientCount(Integer.parseInt(Long.toString((Long) (map.get("count")))));
             keyWordReportsVO.setKeyWord((String) map.get("keyWord"));
-            keyWordReportsVOS.add(keyWordReportsVO);
+            keyWordReportsBak.add(keyWordReportsVO);
         }
         for (KeyWordReportsVO keyWordReportsVO : keyWordReportsVOS) {
             for (KeyWordReportsVO keyWordReportsVO1 : keyWordReportsBak) {
@@ -104,7 +103,7 @@ public class KeyWordReportsDao {
             KeyWordReportsVO keyWordReportsVO = new KeyWordReportsVO();
             keyWordReportsVO.setComeShopClientCount(Integer.parseInt(Long.toString((Long) (map.get("count")))));
             keyWordReportsVO.setKeyWord((String) map.get("keyWord"));
-            keyWordReportsVOS.add(keyWordReportsVO);
+            keyWordReportsBak.add(keyWordReportsVO);
         }
         for (KeyWordReportsVO keyWordReportsVO : keyWordReportsVOS) {
             for (KeyWordReportsVO keyWordReportsVO1 : keyWordReportsBak) {
@@ -131,7 +130,7 @@ public class KeyWordReportsDao {
             KeyWordReportsVO keyWordReportsVO = new KeyWordReportsVO();
             keyWordReportsVO.setSuccessClientCount(Integer.parseInt(Long.toString((Long) (map.get("count")))));
             keyWordReportsVO.setKeyWord((String) map.get("keyWord"));
-            keyWordReportsVOS.add(keyWordReportsVO);
+            keyWordReportsBak.add(keyWordReportsVO);
         }
         for (KeyWordReportsVO keyWordReportsVO : keyWordReportsVOS) {
             for (KeyWordReportsVO keyWordReportsVO1 : keyWordReportsBak) {
@@ -160,7 +159,7 @@ public class KeyWordReportsDao {
             KeyWordReportsVO keyWordReportsVO = new KeyWordReportsVO();
             keyWordReportsVO.setFilterPendingClientCount(Integer.parseInt(Long.toString((Long) (map.get("count")))));
             keyWordReportsVO.setKeyWord((String) map.get("keyWord"));
-            keyWordReportsVOS.add(keyWordReportsVO);
+            keyWordReportsBak.add(keyWordReportsVO);
         }
         for (KeyWordReportsVO keyWordReportsVO : keyWordReportsVOS) {
             for (KeyWordReportsVO keyWordReportsVO1 : keyWordReportsBak) {
@@ -188,7 +187,7 @@ public class KeyWordReportsDao {
             KeyWordReportsVO keyWordReportsVO = new KeyWordReportsVO();
             keyWordReportsVO.setFilterInValidClientCount(Integer.parseInt(Long.toString((Long) (map.get("count")))));
             keyWordReportsVO.setKeyWord((String) map.get("keyWord"));
-            keyWordReportsVOS.add(keyWordReportsVO);
+            keyWordReportsBak.add(keyWordReportsVO);
         }
         for (KeyWordReportsVO keyWordReportsVO : keyWordReportsVOS) {
             for (KeyWordReportsVO keyWordReportsVO1 : keyWordReportsBak) {
@@ -216,7 +215,7 @@ public class KeyWordReportsDao {
             KeyWordReportsVO keyWordReportsVO = new KeyWordReportsVO();
             keyWordReportsVO.setFilterInClientCount(Integer.parseInt(Long.toString((Long) (map.get("count")))));
             keyWordReportsVO.setKeyWord((String) map.get("keyWord"));
-            keyWordReportsVOS.add(keyWordReportsVO);
+            keyWordReportsBak.add(keyWordReportsVO);
         }
         for (KeyWordReportsVO keyWordReportsVO : keyWordReportsVOS) {
             for (KeyWordReportsVO keyWordReportsVO1 : keyWordReportsBak) {
@@ -253,7 +252,7 @@ public class KeyWordReportsDao {
             KeyWordReportsVO keyWordReportsVO = new KeyWordReportsVO();
             keyWordReportsVO.setInValidClientCount(Integer.parseInt(Long.toString((Long) (map.get("count")))));
             keyWordReportsVO.setKeyWord((String) map.get("keyWord"));
-            keyWordReportsVOS.add(keyWordReportsVO);
+            keyWordReportsBak.add(keyWordReportsVO);
         }
         for (KeyWordReportsVO keyWordReportsVO : keyWordReportsVOS) {
             for (KeyWordReportsVO keyWordReportsVO1 : keyWordReportsBak) {
@@ -288,7 +287,7 @@ public class KeyWordReportsDao {
             KeyWordReportsVO keyWordReportsVO = new KeyWordReportsVO();
             keyWordReportsVO.setAvgAmount(((BigDecimal) map.get("avg_amount")).doubleValue());
             keyWordReportsVO.setKeyWord((String) map.get("keyWord"));
-            keyWordReportsVOS.add(keyWordReportsVO);
+            keyWordReportsBak.add(keyWordReportsVO);
         }
         for (KeyWordReportsVO keyWordReportsVO : keyWordReportsVOS) {
             for (KeyWordReportsVO keyWordReportsVO1 : keyWordReportsBak) {
@@ -322,7 +321,7 @@ public class KeyWordReportsDao {
             KeyWordReportsVO keyWordReportsVO = new KeyWordReportsVO();
             keyWordReportsVO.setAmount(((BigDecimal) map.get("sum_amount")).doubleValue());
             keyWordReportsVO.setKeyWord((String) map.get("keyWord"));
-            keyWordReportsVOS.add(keyWordReportsVO);
+            keyWordReportsBak.add(keyWordReportsVO);
         }
         for (KeyWordReportsVO keyWordReportsVO : keyWordReportsVOS) {
             for (KeyWordReportsVO keyWordReportsVO1 : keyWordReportsBak) {
@@ -422,7 +421,7 @@ public class KeyWordReportsDao {
         oldKzReportsTotal.setComeShopSuccessRate(parseDouble(((Double.isNaN(comeShopSuccessRate) || Double.isInfinite(comeShopSuccessRate)) ? 0.0 : comeShopSuccessRate) * 100));
         //成交均价
         double avgAmount = oldKzReportsTotal.getAmount() / oldKzReportsTotal.getSuccessClientCount();
-        oldKzReportsTotal.setAvgAmount(parseDouble(((Double.isNaN(avgAmount) || Double.isInfinite(avgAmount)) ? 0.0 : avgAmount) * 100));
+        oldKzReportsTotal.setAvgAmount(parseDouble(((Double.isNaN(avgAmount) || Double.isInfinite(avgAmount)) ? 0.0 : avgAmount) ));
 
         oldKzReportsVOS.add(0, oldKzReportsTotal);
     }

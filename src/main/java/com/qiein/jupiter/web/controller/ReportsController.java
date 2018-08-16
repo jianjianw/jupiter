@@ -537,6 +537,6 @@ public class ReportsController extends BaseController {
      */
     @GetMapping("/get_key_word_reports")
     public ResultInfo getKeyWordReports(@RequestParam String startTime,@RequestParam String endTime,@RequestParam String keyWord,@RequestParam String typeIds){
-        return ResultInfoUtil.success(reportService.getKeyWordReports(startTime,endTime,keyWord,typeIds,getCurrentLoginStaff().getCompanyId()));
+        return ResultInfoUtil.success(reportService.getKeyWordReports(startTime,endTime,typeIds,keyWord,getCurrentLoginStaff().getCompanyId()));
     }
 }
