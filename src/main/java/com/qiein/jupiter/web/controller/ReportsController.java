@@ -453,7 +453,7 @@ public class ReportsController extends BaseController {
         searchKey.setCompanyId(getCurrentLoginStaff().getCompanyId());
         return ResultInfoUtil.success(reportService.getCityReport(searchKey));
     }
-    
+
     /**
      * 电商推广月度客资汇总报表--Hjf
      * */
@@ -463,7 +463,7 @@ public class ReportsController extends BaseController {
         //查询总客资
         if(StringUtil.isNotEmpty(kzZB) && "sum".equals(kzZB)){
         	List<DstgReportsSrcMonthVO> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsSum(start,end,typeId,sourceId,staffPO.getCompanyId());
-        	
+
             return ResultInfoUtil.success(dstgReportsSrcMonthVO);
         }
       //查询客资量
@@ -476,19 +476,33 @@ public class ReportsController extends BaseController {
         	List<DstgReportsSrcMonthVO> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsDdNum(start,end,typeId,sourceId,staffPO.getCompanyId());
             return ResultInfoUtil.success(dstgReportsSrcMonthVO);
         }
-        
+
        //查询无效客资
         if(StringUtil.isNotEmpty(kzZB) && "invalid".equals(kzZB)){
         	List<DstgReportsSrcMonthVO> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsInvalid(start,end,typeId,sourceId,staffPO.getCompanyId());
-        	
+
             return ResultInfoUtil.success(dstgReportsSrcMonthVO);
         }
-		
+
 		//查询有效客资
-        if(StringUtil.isNotEmpty(kzZB) && "valid".equals(kzZB)){ 
+        if(StringUtil.isNotEmpty(kzZB) && "valid".equals(kzZB)){
         	List<DstgReportsSrcMonthVO> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsvalid(start,end,typeId,sourceId,staffPO.getCompanyId());
             return ResultInfoUtil.success(dstgReportsSrcMonthVO);
         }
 		return ResultInfoUtil.error(9999, "查询失败");
     }
+
+    /**
+     * 老客信息汇总报表
+     * @param startTime
+     * @param endTime
+     * @param kzNameOrPhone
+     * @return
+     */
+    @GetMapping("/get_old_kz_reports")
+    public ResultInfo getOldKzReports(@RequestParam String startTime,@RequestParam String endTime,@RequestParam String kzNameOrPhone){
+        return ResultInfoUtil.success(reportService.getOldKzReports(getCurrentLoginStaff().getCompanyId(),startTime,endTime,kzNameOrPhone));
+    }
+
+
 }

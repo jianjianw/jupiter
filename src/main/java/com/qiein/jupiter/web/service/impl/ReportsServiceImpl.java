@@ -61,6 +61,8 @@ public class ReportsServiceImpl implements ReportService {
     @Autowired
     private DsyyStatusReportsDao dsyyStatusReportsDao;
     @Autowired
+    private OldKzReportsDao oldKzReportsDao;
+    @Autowired
     private DstgReportsSrcMonthDao dstgReportsSrcMonthDao;
     @Autowired
     private DsyyStatusStaffReportsDao dsyyStatusStaffReportsDao;
@@ -233,11 +235,18 @@ public class ReportsServiceImpl implements ReportService {
     /**
      * 转介绍每月客资报表内表详情
      */
-    public List<ZjskzOfMonthReportsVO> ZjskzOfMonthIn(Integer companyId, String sourceId, String month) {
+    public ZjskzOfMonthMapVO ZjskzOfMonthIn(Integer companyId, String sourceId, String month) {
         List<Map<String, Object>> newList = zjskzOfMonthDao.getDayOfMonth(Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[0]), Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[1]), DBSplitUtil.getTable(TableEnum.info, companyId));
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         month=month.replace(CommonConstant.ROD_SEPARATOR,CommonConstant.FILE_SEPARATOR);
         return zjskzOfMonthDao.ZjskzOfMonthIn(newList, companyId, month, sourceId,invalidConfig);
+    }
+    /**
+     * 老客信息汇总报表
+     */
+    public List<OldKzReportsVO> getOldKzReports(Integer companyId,String startTime,String endTime,String kzNameOrPhone){
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
+        return oldKzReportsDao.getReports(companyId,startTime,endTime,kzNameOrPhone,invalidConfig);
     }
 
     /**
