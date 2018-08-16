@@ -97,7 +97,7 @@ public class SourceOrderDataReportsDao {
         String detailTableName = DBSplitUtil.getDetailTabName(cid);
         //拼接SQL
         StringBuilder baseSql = new StringBuilder();
-        baseSql.append(" SELECT info.SRCTYPE,COUNT(det.AMOUNT) COUNT FROM ");
+        baseSql.append(" SELECT info.SRCTYPE,SUM(det.AMOUNT) COUNT FROM ");
         baseSql.append(infoTableName).append(" info ")
                 .append(" LEFT JOIN ").append(detailTableName).append(" det ")
                 .append(" ON info.KZID = det.KZID AND info.COMPANYID = det.COMPANYID ");
@@ -133,7 +133,7 @@ public class SourceOrderDataReportsDao {
         String detailTableName = DBSplitUtil.getDetailTabName(cid);
         //拼接SQL
         StringBuilder baseSql = new StringBuilder();
-        baseSql.append(" SELECT info.SRCTYPE,COUNT(det.STAYAMOUNT) COUNT FROM ");
+        baseSql.append(" SELECT info.SRCTYPE,SUM(det.STAYAMOUNT) COUNT FROM ");
         baseSql.append(infoTableName).append(" info ")
                 .append(" LEFT JOIN ").append(detailTableName).append(" det ")
                 .append(" ON info.KZID = det.KZID AND info.COMPANYID = det.COMPANYID ");
