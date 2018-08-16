@@ -69,8 +69,10 @@ public class SourceOrderDataReportsDao {
         StringBuilder baseSql = new StringBuilder();
         baseSql.append(" SELECT info.SRCTYPE,COUNT(*) COUNT FROM ");
         baseSql.append(infoTableName).append(" info ");
-        baseSql.append(getWhereSql());
-        baseSql.append(" GROUP BY info.SRCTYPE ");
+        baseSql.append(" WHERE info.ISDEL = 0 ")
+                .append(" AND info.COMPANYID = ? ")
+                .append(" AND info.SUCCESSTIME BETWEEN ? AND ? ")
+                .append(" GROUP BY info.SRCTYPE ");
         //处理结果集
         jdbcTemplate.query(baseSql.toString(),
                 new RowCallbackHandler() {
@@ -99,9 +101,10 @@ public class SourceOrderDataReportsDao {
         baseSql.append(infoTableName).append(" info ")
                 .append(" LEFT JOIN ").append(detailTableName).append(" det ")
                 .append(" ON info.KZID = det.KZID AND info.COMPANYID = det.COMPANYID ");
-        baseSql.append(getWhereSql());
-
-        baseSql.append(" GROUP BY info.SRCTYPE ");
+        baseSql.append(" WHERE info.ISDEL = 0 ")
+                .append(" AND info.COMPANYID = ? ")
+                .append(" AND info.SUCCESSTIME BETWEEN ? AND ? ")
+                .append(" GROUP BY info.SRCTYPE ");
 
         final Map<Integer, Integer> map = new HashMap<>();
         jdbcTemplate.query(baseSql.toString(),
@@ -134,9 +137,10 @@ public class SourceOrderDataReportsDao {
         baseSql.append(infoTableName).append(" info ")
                 .append(" LEFT JOIN ").append(detailTableName).append(" det ")
                 .append(" ON info.KZID = det.KZID AND info.COMPANYID = det.COMPANYID ");
-        baseSql.append(getWhereSql());
-
-        baseSql.append(" GROUP BY info.SRCTYPE ");
+        baseSql.append(" WHERE info.ISDEL = 0 ")
+                .append(" AND info.COMPANYID = ? ")
+                .append(" AND info.SUCCESSTIME BETWEEN ? AND ? ")
+                .append(" GROUP BY info.SRCTYPE ");
 
         final Map<Integer, Integer> map = new HashMap<>();
         jdbcTemplate.query(baseSql.toString(),
@@ -254,16 +258,6 @@ public class SourceOrderDataReportsDao {
         allReportsVO.setSrcType(-1);
         allReportsVO.setSrcName(CommonConstant.totalAll);
         reportsList.add(0, allReportsVO);
-    }
-
-
-    private String getWhereSql() {
-        StringBuilder whereSql = new StringBuilder();
-        whereSql.append(" WHERE info.COMPANYID = ? ")
-                .append(" AND  info.ISDEL = 0 ")
-                .append(" AND info.CREATETIME BETWEEN  ? AND ? ")
-                .append(" AND info.GROUPID = ? ");
-        return whereSql.toString();
     }
 
 
