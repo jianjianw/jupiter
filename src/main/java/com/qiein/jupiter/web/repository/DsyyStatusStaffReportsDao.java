@@ -156,7 +156,6 @@ public class DsyyStatusStaffReportsDao {
                 kzNumMap.put(String.valueOf(clientStatusReportsVO.getStatusId()),clientStatusReportsVO.getKzNum());
             }
             dsyyStatusReportsVO.setMapList(kzNumMap);
-            dsyyStatusReportsVO.setClientStatusReportsVOS(null);
         }
     }
 
