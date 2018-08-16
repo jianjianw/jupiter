@@ -479,7 +479,7 @@
             AND sf.ISDEL = 0
             AND sf.ISLOCK = 0
             AND sf.STATUSFLAG = 1
-        ORDER BY grp.GROUPNAME, grp.ID, sf.ISLOCK, sf.STATUSFLAG DESC, sf.ID
+        ORDER BY grp.PRIORITY, sf.ID
     </select>
 
     <!--根据公司id和分组id获取分组员工的id集合-->
