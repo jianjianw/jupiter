@@ -1,6 +1,8 @@
 package com.qiein.jupiter.web.repository;
 
 import com.qiein.jupiter.constant.ChinaTerritoryConst;
+import com.qiein.jupiter.exception.ExceptionEnum;
+import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.dto.CitiesAnalysisParamDTO;
@@ -369,7 +371,7 @@ public class CityReportsDao {
                 }
                 break;
             default:
-                break;
+                throw new RException(ExceptionEnum.SEARCH_CLIENT_TYPE_IS_UNKNOW);
         }
         System.out.println("输出本次最终sql: " + sb.toString());
         return sb;
