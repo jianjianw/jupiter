@@ -124,6 +124,7 @@ public class JsonFmtUtil {
             vo.setAmount(info.getIntValue("amount"));
             vo.setStayAmount(info.getIntValue("stayamount"));
             vo.setPackageName(getDicNameByCode(info.getIntValue("packagecode"), DictionaryConstant.TX_NAME, dicMap));
+            vo.setComeShopTime(TimeUtil.intMillisToTimeStr(info.getIntValue("comeshoptime")));
             vo.setSuccessTime(TimeUtil.intMillisToTimeStr(info.getIntValue("successtime")));
             vo.setSuccessPeriod(getSuccessPeriod(info.getIntValue("createtime"), info.getIntValue("successtime")));
             vo.setAppointName(info.getString("appointname"));
