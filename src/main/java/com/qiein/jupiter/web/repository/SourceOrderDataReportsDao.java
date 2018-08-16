@@ -71,7 +71,7 @@ public class SourceOrderDataReportsDao {
         baseSql.append(infoTableName).append(" info ");
         baseSql.append(" WHERE info.ISDEL = 0 ")
                 .append(" AND info.COMPANYID = ? ")
-                .append(" AND info.CREATETIME BETWEEN ? AND ? ")
+                .append(" AND info.SUCCESSTIME BETWEEN ? AND ? ")
                 .append(" GROUP BY info.SRCTYPE ");
         //处理结果集
         jdbcTemplate.query(baseSql.toString(),
@@ -103,7 +103,7 @@ public class SourceOrderDataReportsDao {
                 .append(" ON info.KZID = det.KZID AND info.COMPANYID = det.COMPANYID ");
         baseSql.append(" WHERE info.ISDEL = 0 ")
                 .append(" AND info.COMPANYID = ? ")
-                .append(" AND info.CREATETIME BETWEEN ? AND ? ")
+                .append(" AND info.SUCCESSTIME BETWEEN ? AND ? ")
                 .append(" GROUP BY info.SRCTYPE ");
 
         final Map<Integer, Integer> map = new HashMap<>();
@@ -139,7 +139,7 @@ public class SourceOrderDataReportsDao {
                 .append(" ON info.KZID = det.KZID AND info.COMPANYID = det.COMPANYID ");
         baseSql.append(" WHERE info.ISDEL = 0 ")
                 .append(" AND info.COMPANYID = ? ")
-                .append(" AND info.CREATETIME BETWEEN ? AND ? ")
+                .append(" AND info.SUCCESSTIME BETWEEN ? AND ? ")
                 .append(" GROUP BY info.SRCTYPE ");
 
         final Map<Integer, Integer> map = new HashMap<>();
@@ -182,7 +182,7 @@ public class SourceOrderDataReportsDao {
 
         baseSql.append(" LEFT JOIN hm_crm_source source ")
                 .append(" ON source.ID = cost.SRCID ");
-        baseSql.append(" WHERE  cost.COMPANYID = ? AND cost.CREATETIME  BETWEEN ? AND ? ");
+        baseSql.append(" WHERE  cost.COMPANYID = ? AND cost.SUCCESSTIME  BETWEEN ? AND ? ");
         baseSql.append(" GROUP BY source.TYPEID ");
 
         final Map<Integer, Integer> map = new HashMap<>();
