@@ -67,7 +67,8 @@ public class DstgZxStyleReportsDao {
         StringBuilder sb = new StringBuilder();
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
-        sb.append(" select distinct  cast(ifnull(ZXSTYLE,99) as SIGNED ) as zx_code,ifnull(dictionary.DICNAME,'其他') as zx_style");
+        sb.append(" select * from (");
+        sb.append(" select distinct  cast(ifnull(ZXSTYLE,0) as SIGNED ) as zx_code,ifnull(dictionary.DICNAME,'其他') as zx_style");
         sb.append(" from ");
         sb.append(infoTabName + " info ");
         sb.append(" left join "+detailTabName+" detail on info.kzid = detail.kzid");
@@ -77,13 +78,13 @@ public class DstgZxStyleReportsDao {
         sb.append(" and (info.srctype = 1 or info.srctype = 2)");
         sb.append(" and info.companyid = ?");
         sb.append(" group by detail.ZXSTYLE");
-
+        sb.append(" ) a group by zx_code");
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(),reportsParamVO.getCompanyId()});
 
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgZxStyleReportsVO DstgZxStyleReportsVO = new DstgZxStyleReportsVO();
-            DstgZxStyleReportsVO.setZxStyleCode((Integer)dstgGoldDataReport.get("zx_code"));
+            DstgZxStyleReportsVO.setZxStyleCode(String.valueOf(dstgGoldDataReport.get("zx_code").toString()));
             DstgZxStyleReportsVO.setZxStyle((String) dstgGoldDataReport.get("zx_style"));
             DstgZxStyleReportsVOS.add(DstgZxStyleReportsVO);
         }
@@ -101,7 +102,8 @@ public class DstgZxStyleReportsDao {
 
 
     private StringBuilder getCommonsql(StringBuilder sb,String infoTabName,String detailTabName) {
-        sb.append(" select  cast(ifnull(ZXSTYLE,99) as SIGNED)  as zx_code,ifnull(dictionary.DICNAME,'其他') as zx_style,count(info.id) as client_count ");
+
+        sb.append(" select  cast(ifnull(ZXSTYLE,0) as SIGNED)  as zx_code,ifnull(dictionary.DICNAME,'其他') as zx_style,count(info.id) as client_count ");
         sb.append(" from");
         sb.append(infoTabName + " info ");
         sb.append(" left join "+detailTabName+" detail on info.kzid = detail.kzid");
@@ -134,14 +136,14 @@ public class DstgZxStyleReportsDao {
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgZxStyleReportsVO DstgZxStyleReportsVO = new DstgZxStyleReportsVO();
             DstgZxStyleReportsVO.setZxStyle((String) dstgGoldDataReport.get("zx_style"));
-            DstgZxStyleReportsVO.setZxStyleCode(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("zx_code").toString())));
+            DstgZxStyleReportsVO.setZxStyleCode(String.valueOf(dstgGoldDataReport.get("zx_code").toString()));
             DstgZxStyleReportsVO.setAllClientCount(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("client_count"))));
             dstgGoldDataReportsBak.add(DstgZxStyleReportsVO);
         }
 
         for (DstgZxStyleReportsVO DstgZxStyleReportsVO : DstgZxStyleReportsVOS) {
             for (DstgZxStyleReportsVO dstgGoldDataReport : dstgGoldDataReportsBak) {
-                if (DstgZxStyleReportsVO.getZxStyleCode() == dstgGoldDataReport.getZxStyleCode()) {
+                if (DstgZxStyleReportsVO.getZxStyleCode().equalsIgnoreCase(dstgGoldDataReport.getZxStyleCode())) {
                     DstgZxStyleReportsVO.setAllClientCount(dstgGoldDataReport.getAllClientCount());
                     break;
                 }
@@ -173,14 +175,14 @@ public class DstgZxStyleReportsDao {
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgZxStyleReportsVO DstgZxStyleReportsVO = new DstgZxStyleReportsVO();
             DstgZxStyleReportsVO.setZxStyle((String) dstgGoldDataReport.get("zx_style"));
-            DstgZxStyleReportsVO.setZxStyleCode(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("zx_code").toString())));
+            DstgZxStyleReportsVO.setZxStyleCode(String.valueOf(dstgGoldDataReport.get("zx_code").toString()));
             DstgZxStyleReportsVO.setPendingClientCount(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("client_count"))));
             dstgGoldDataReportsBak.add(DstgZxStyleReportsVO);
         }
 
         for (DstgZxStyleReportsVO DstgZxStyleReportsVO : DstgZxStyleReportsVOS) {
             for (DstgZxStyleReportsVO dstgGoldDataReport : dstgGoldDataReportsBak) {
-                if (DstgZxStyleReportsVO.getZxStyleCode() == dstgGoldDataReport.getZxStyleCode()) {
+                if (DstgZxStyleReportsVO.getZxStyleCode().equalsIgnoreCase(dstgGoldDataReport.getZxStyleCode())) {
                     DstgZxStyleReportsVO.setPendingClientCount(dstgGoldDataReport.getPendingClientCount());
                     break;
                 }
@@ -212,7 +214,7 @@ public class DstgZxStyleReportsDao {
         List<DstgZxStyleReportsVO> dstgGoldDataReportsBak = new LinkedList<>();
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgZxStyleReportsVO DstgZxStyleReportsVO = new DstgZxStyleReportsVO();
-            DstgZxStyleReportsVO.setZxStyleCode(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("zx_code").toString())));
+            DstgZxStyleReportsVO.setZxStyleCode(String.valueOf(dstgGoldDataReport.get("zx_code").toString()));
             DstgZxStyleReportsVO.setZxStyle((String) dstgGoldDataReport.get("zx_style"));
             DstgZxStyleReportsVO.setFilterPendingClientCount(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("client_count"))));
             dstgGoldDataReportsBak.add(DstgZxStyleReportsVO);
@@ -220,7 +222,7 @@ public class DstgZxStyleReportsDao {
 
         for (DstgZxStyleReportsVO DstgZxStyleReportsVO : DstgZxStyleReportsVOS) {
             for (DstgZxStyleReportsVO dstgGoldDataReport : dstgGoldDataReportsBak) {
-                if (DstgZxStyleReportsVO.getZxStyleCode() == dstgGoldDataReport.getZxStyleCode()) {
+                if (DstgZxStyleReportsVO.getZxStyleCode().equalsIgnoreCase(dstgGoldDataReport.getZxStyleCode())) {
                     DstgZxStyleReportsVO.setFilterPendingClientCount(dstgGoldDataReport.getFilterPendingClientCount());
                     break;
                 }
@@ -251,14 +253,14 @@ public class DstgZxStyleReportsDao {
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgZxStyleReportsVO DstgZxStyleReportsVO = new DstgZxStyleReportsVO();
             DstgZxStyleReportsVO.setZxStyle((String) dstgGoldDataReport.get("zx_style"));
-            DstgZxStyleReportsVO.setZxStyleCode(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("zx_code").toString())));
+            DstgZxStyleReportsVO.setZxStyleCode(String.valueOf(dstgGoldDataReport.get("zx_code").toString()));
             DstgZxStyleReportsVO.setFilterInValidClientCount(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("client_count"))));
             dstgGoldDataReportsBak.add(DstgZxStyleReportsVO);
         }
 
         for (DstgZxStyleReportsVO DstgZxStyleReportsVO : DstgZxStyleReportsVOS) {
             for (DstgZxStyleReportsVO dstgGoldDataReport : dstgGoldDataReportsBak) {
-                if (DstgZxStyleReportsVO.getZxStyleCode() == dstgGoldDataReport.getZxStyleCode()) {
+                if (DstgZxStyleReportsVO.getZxStyleCode().equalsIgnoreCase(dstgGoldDataReport.getZxStyleCode())) {
                     DstgZxStyleReportsVO.setFilterInValidClientCount(dstgGoldDataReport.getFilterInValidClientCount());
                     break;
                 }
@@ -290,14 +292,14 @@ public class DstgZxStyleReportsDao {
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgZxStyleReportsVO DstgZxStyleReportsVO = new DstgZxStyleReportsVO();
             DstgZxStyleReportsVO.setZxStyle((String) dstgGoldDataReport.get("zx_style"));
-            DstgZxStyleReportsVO.setZxStyleCode(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("zx_code").toString())));
+            DstgZxStyleReportsVO.setZxStyleCode(String.valueOf(dstgGoldDataReport.get("zx_code").toString()));
             DstgZxStyleReportsVO.setFilterInClientCount(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("client_count"))));
             dstgGoldDataReportsBak.add(DstgZxStyleReportsVO);
         }
 
         for (DstgZxStyleReportsVO DstgZxStyleReportsVO : DstgZxStyleReportsVOS) {
             for (DstgZxStyleReportsVO dstgGoldDataReport : dstgGoldDataReportsBak) {
-                if (DstgZxStyleReportsVO.getZxStyleCode() == dstgGoldDataReport.getZxStyleCode()) {
+                if (DstgZxStyleReportsVO.getZxStyleCode().equalsIgnoreCase(dstgGoldDataReport.getZxStyleCode())) {
                     DstgZxStyleReportsVO.setFilterInClientCount(dstgGoldDataReport.getFilterInClientCount());
                     break;
                 }
@@ -341,14 +343,14 @@ public class DstgZxStyleReportsDao {
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgZxStyleReportsVO DstgZxStyleReportsVO = new DstgZxStyleReportsVO();
             DstgZxStyleReportsVO.setZxStyle((String) dstgGoldDataReport.get("zx_style"));
-            DstgZxStyleReportsVO.setZxStyleCode(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("zx_code").toString())));
+            DstgZxStyleReportsVO.setZxStyleCode(String.valueOf(dstgGoldDataReport.get("zx_code").toString()));
             DstgZxStyleReportsVO.setInValidClientCount(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("client_count"))));
             dstgGoldDataReportsBak.add(DstgZxStyleReportsVO);
         }
 
         for (DstgZxStyleReportsVO DstgZxStyleReportsVO : DstgZxStyleReportsVOS) {
             for (DstgZxStyleReportsVO dstgGoldDataReport : dstgGoldDataReportsBak) {
-                if (DstgZxStyleReportsVO.getZxStyleCode() == dstgGoldDataReport.getZxStyleCode()) {
+                if (DstgZxStyleReportsVO.getZxStyleCode().equalsIgnoreCase(dstgGoldDataReport.getZxStyleCode())) {
                     DstgZxStyleReportsVO.setInValidClientCount(dstgGoldDataReport.getInValidClientCount());
                     break;
                 }
@@ -381,14 +383,14 @@ public class DstgZxStyleReportsDao {
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgZxStyleReportsVO DstgZxStyleReportsVO = new DstgZxStyleReportsVO();
             DstgZxStyleReportsVO.setZxStyle((String) dstgGoldDataReport.get("zx_style"));
-            DstgZxStyleReportsVO.setZxStyleCode(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("zx_code").toString())));
+            DstgZxStyleReportsVO.setZxStyleCode(String.valueOf(dstgGoldDataReport.get("zx_code").toString()));
             DstgZxStyleReportsVO.setComeShopClientCount(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("client_count"))));
             dstgGoldDataReportsBak.add(DstgZxStyleReportsVO);
         }
 
         for (DstgZxStyleReportsVO DstgZxStyleReportsVO : DstgZxStyleReportsVOS) {
             for (DstgZxStyleReportsVO dstgGoldDataReport : dstgGoldDataReportsBak) {
-                if (DstgZxStyleReportsVO.getZxStyleCode() == dstgGoldDataReport.getZxStyleCode()) {
+                if (DstgZxStyleReportsVO.getZxStyleCode().equalsIgnoreCase(dstgGoldDataReport.getZxStyleCode())) {
                     DstgZxStyleReportsVO.setComeShopClientCount(dstgGoldDataReport.getComeShopClientCount());
                     break;
                 }
@@ -419,14 +421,14 @@ public class DstgZxStyleReportsDao {
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgZxStyleReportsVO DstgZxStyleReportsVO = new DstgZxStyleReportsVO();
             DstgZxStyleReportsVO.setZxStyle((String) dstgGoldDataReport.get("zx_style"));
-            DstgZxStyleReportsVO.setZxStyleCode(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("zx_code").toString())));
+            DstgZxStyleReportsVO.setZxStyleCode(String.valueOf(dstgGoldDataReport.get("zx_code").toString()));
             DstgZxStyleReportsVO.setSuccessClientCount(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("client_count"))));
             dstgGoldDataReportsBak.add(DstgZxStyleReportsVO);
         }
 
         for (DstgZxStyleReportsVO DstgZxStyleReportsVO : DstgZxStyleReportsVOS) {
             for (DstgZxStyleReportsVO dstgGoldDataReport : dstgGoldDataReportsBak) {
-                if (DstgZxStyleReportsVO.getZxStyleCode() == dstgGoldDataReport.getZxStyleCode()) {
+                if (DstgZxStyleReportsVO.getZxStyleCode().equalsIgnoreCase(dstgGoldDataReport.getZxStyleCode())) {
                     DstgZxStyleReportsVO.setSuccessClientCount(dstgGoldDataReport.getSuccessClientCount());
                     break;
                 }
@@ -442,7 +444,7 @@ public class DstgZxStyleReportsDao {
         StringBuilder sb = new StringBuilder();
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
-        sb.append(" select  cast(ifnull(ZXSTYLE,99) as SIGNED)  as zx_code,ifnull(dictionary.DICNAME,'其他') as zx_style,avg(detail.AMOUNT) as avg_amount ");
+        sb.append(" select  cast(ifnull(ZXSTYLE,0) as SIGNED)  as zx_code,ifnull(dictionary.DICNAME,'其他') as zx_style,avg(detail.AMOUNT) as avg_amount ");
         sb.append(" from");
         sb.append(infoTabName + " info ");
         sb.append(" left join "+detailTabName+" detail on info.kzid = detail.kzid");
@@ -466,14 +468,14 @@ public class DstgZxStyleReportsDao {
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgZxStyleReportsVO DstgZxStyleReportsVO = new DstgZxStyleReportsVO();
             DstgZxStyleReportsVO.setZxStyle((String) dstgGoldDataReport.get("zx_style"));
-            DstgZxStyleReportsVO.setZxStyleCode(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("zx_code").toString())));
+            DstgZxStyleReportsVO.setZxStyleCode(String.valueOf(dstgGoldDataReport.get("zx_code").toString()));
             DstgZxStyleReportsVO.setAvgAmount(((BigDecimal) dstgGoldDataReport.get("avg_amount")).doubleValue());
             dstgGoldDataReportsBak.add(DstgZxStyleReportsVO);
         }
 
         for (DstgZxStyleReportsVO DstgZxStyleReportsVO : DstgZxStyleReportsVOS) {
             for (DstgZxStyleReportsVO dstgGoldDataReport : dstgGoldDataReportsBak) {
-                if (DstgZxStyleReportsVO.getZxStyleCode() == dstgGoldDataReport.getZxStyleCode()) {
+                if (DstgZxStyleReportsVO.getZxStyleCode().equalsIgnoreCase(dstgGoldDataReport.getZxStyleCode())) {
                     DstgZxStyleReportsVO.setAvgAmount(dstgGoldDataReport.getAvgAmount());
                     break;
                 }
@@ -488,7 +490,7 @@ public class DstgZxStyleReportsDao {
         StringBuilder sb = new StringBuilder();
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
-        sb.append(" select  cast(ifnull(ZXSTYLE,99) as SIGNED )  as zx_code,ifnull(dictionary.DICNAME,'其他') as zx_style,sum(detail.AMOUNT) as sum_amount ");
+        sb.append(" select  cast(ifnull(ZXSTYLE,0) as SIGNED )  as zx_code,ifnull(dictionary.DICNAME,'其他') as zx_style,sum(detail.AMOUNT) as sum_amount ");
         sb.append(" from");
         sb.append(infoTabName + " info ");
         sb.append(" left join "+detailTabName+" detail on info.kzid = detail.kzid");
@@ -511,13 +513,13 @@ public class DstgZxStyleReportsDao {
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgZxStyleReportsVO DstgZxStyleReportsVO = new DstgZxStyleReportsVO();
             DstgZxStyleReportsVO.setZxStyle((String) dstgGoldDataReport.get("zx_style"));
-            DstgZxStyleReportsVO.setZxStyleCode(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("zx_code").toString())));
+            DstgZxStyleReportsVO.setZxStyleCode(String.valueOf(dstgGoldDataReport.get("zx_code").toString()));
             DstgZxStyleReportsVO.setAmount(((BigDecimal) dstgGoldDataReport.get("sum_amount")).doubleValue());
             dstgGoldDataReportsBak.add(DstgZxStyleReportsVO);
         }
         for (DstgZxStyleReportsVO DstgZxStyleReportsVO : DstgZxStyleReportsVOS) {
             for (DstgZxStyleReportsVO dstgGoldDataReport : dstgGoldDataReportsBak) {
-                if (DstgZxStyleReportsVO.getZxStyleCode() == dstgGoldDataReport.getZxStyleCode()) {
+                if (DstgZxStyleReportsVO.getZxStyleCode().equalsIgnoreCase(dstgGoldDataReport.getZxStyleCode())) {
                     DstgZxStyleReportsVO.setAmount(dstgGoldDataReport.getAmount());
                     break;
                 }

@@ -16,4 +16,6 @@ public interface ReportsService防冲突 {
     List<RegionReportsVO> getCityReport(CitiesAnalysisParamDTO citiesAnalysisParamDTO);
 
     List<ProvinceReportsVO2> getProvinceReport(ProvinceAnalysisParamDTO provinceAnalysisParamDTO);
+
+    List<>
 }

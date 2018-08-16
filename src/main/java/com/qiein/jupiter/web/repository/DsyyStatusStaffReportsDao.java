@@ -75,6 +75,7 @@ public class DsyyStatusStaffReportsDao {
         sb.append(" and info.isdel = 0  ");
         sb.append(" and info.srctype in (1,2) ");
         sb.append(" and info.companyid = ?");
+        addConditionByTypeAndGroupId(reportsParamVO,sb);
         sb.append(" group by info.APPOINTORID");
 
         List<DsyyStatusReportsVO> dsyyStatusReports = jdbcTemplate.query(sb.toString(), new Object[]{reportsParamVO.getCompanyId()},
@@ -156,7 +157,6 @@ public class DsyyStatusStaffReportsDao {
                 kzNumMap.put(String.valueOf(clientStatusReportsVO.getStatusId()),clientStatusReportsVO.getKzNum());
             }
             dsyyStatusReportsVO.setMapList(kzNumMap);
-            dsyyStatusReportsVO.setClientStatusReportsVOS(null);
         }
     }
 
@@ -167,12 +167,13 @@ public class DsyyStatusStaffReportsDao {
         dsyyStatusReportsVO.setMapList(kzNumMap);
         for(DsyyStatusReportsVO dsyyStatusReports:dsyyStatusReportsHeaderVO.getDsyyStatusReportsHeaderVOS()){
             for (ClientStatusReportsVO clientStatusReportsVO : dsyyStatusReports.getClientStatusReportsVOS()) {
-                Integer kzNum = dsyyStatusReportsVO.getMapList().get(clientStatusReportsVO.getStatusId());
+                Integer kzNum = dsyyStatusReportsVO.getMapList().get(String.valueOf(clientStatusReportsVO.getStatusId()));
                 if(kzNum == null){
                     kzNum = 0;
                 }
-                kzNumMap.put(clientStatusReportsVO.getStatusId(), clientStatusReportsVO.getKzNum() + kzNum);
+                kzNumMap.put(String.valueOf(clientStatusReportsVO.getStatusId()), clientStatusReportsVO.getKzNum() + kzNum);
             }
+            dsyyStatusReports.setClientStatusReportsVOS(null);
         }
         dsyyStatusReportsHeaderVO.getDsyyStatusReportsHeaderVOS().add(0,dsyyStatusReportsVO);
     }
