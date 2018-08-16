@@ -22,7 +22,7 @@ public class ReportsParamVO {
 
     /**
      * 咨询方式code
-     * */
+     */
     private String zxStyleCode;
 
     /**
@@ -37,7 +37,18 @@ public class ReportsParamVO {
      * 多个小组ID
      */
     private String groupIds;
+    /**
+     * 月份
+     */
+    private String month;
 
+    public String getMonth() {
+        return month;
+    }
+
+    public void setMonth(String month) {
+        this.month = month;
+    }
 
     public String getGroupIds() {
         return groupIds;
