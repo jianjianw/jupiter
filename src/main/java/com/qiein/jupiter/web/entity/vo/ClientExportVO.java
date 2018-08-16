@@ -33,6 +33,12 @@ public class ClientExportVO implements Serializable {
     private String receivePeriod;
 
     /**
+     * 进店时间
+     * */
+    @Excel(name="进店时间",width= 10 ,height = 6)
+    private String comeShopTime;
+
+    /**
      * 推广员姓名
      */
     @Excel(name = "推广", width = 20, height = 6)
@@ -163,6 +169,13 @@ public class ClientExportVO implements Serializable {
     @Excel(name = "销售备注", width = 40, height = 6)
     private String memo;
 
+    public String getComeShopTime() {
+        return comeShopTime;
+    }
+
+    public void setComeShopTime(String comeShopTime) {
+        this.comeShopTime = comeShopTime;
+    }
 
     public String getKzSex() {
         return kzSex;
