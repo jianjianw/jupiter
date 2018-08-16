@@ -269,12 +269,14 @@
     <!--根据公司id和type获取-->
     <select id="getInvaildReasons"  resultMap="baseMap">
         SELECT
-        CONCAT(DICTYPE, DICCODE) DICTYPE,
-        DICNAME
+            detail.INVALIDLABEL DICNAME,
+            CONCAT("invalid_reason", detail.ID) DICTYPE
         FROM
-        hm_crm_dictionary
+            ${tableInfo} info
+        LEFT JOIN ${tableDetail} detail ON info.kzid = detail.kzid
         WHERE
-        COMPANYID = #{companyId}
-        AND DICTYPE = #{type}
+            detail.INVALIDLABEL IS NOT NULL
+        GROUP BY
+            detail.INVALIDLABEL
     </select>
 </mapper>

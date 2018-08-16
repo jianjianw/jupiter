@@ -2,8 +2,10 @@ package com.qiein.jupiter.web.repository;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.util.CollectionUtils;
 import com.qiein.jupiter.util.DBSplitUtil;
+import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.po.GroupReportsVO;
 import com.qiein.jupiter.web.entity.vo.*;
@@ -44,12 +46,42 @@ public class DsyyStatusReportsDao {
         return dsyyStatusReportsHeaderVO;
     }
 
+
+    /**
+     * 添加条件
+     * */
+    private void addConditionByTypeAndGroupId(ReportsParamVO reportsParamVO,StringBuilder sb){
+        if(StringUtil.isNotEmpty(reportsParamVO.getGroupId())){
+            String[] groupIds = reportsParamVO.getGroupId().split(CommonConstant.STR_SEPARATOR);
+            StringBuilder groupIdsSb = new StringBuilder();
+            for (String id:groupIds){
+                groupIdsSb.append("'").append(id).append("'").append(",");
+            }
+            String groupId = groupIdsSb.substring(0, groupIdsSb.toString().length() - 1);
+            sb.append(" and info.groupid in ("+ groupId +")");
+        }
+        if(StringUtil.isNotEmpty(reportsParamVO.getType())){
+            sb.append(" and info.typeid in (" +reportsParamVO.getType()+ ")");
+        }
+    }
+
     /**
      * 获取小组下客服列表
      * */
     private void getGroupList(ReportsParamVO reportsParamVO,List<DsyyStatusReportsVO> dsyyStatusReportsVOS) {
         StringBuilder sb = new StringBuilder();
-        sb.append("select groupid,GROUPNAME,GROUPTYPE from hm_pub_group where companyid = ? and GROUPTYPE = 'dsyy' and PARENTID != '0' order by groupid");
+        sb.append("select groupid,GROUPNAME,GROUPTYPE from hm_pub_group where companyid = ? and GROUPTYPE = 'dsyy' and PARENTID != '0' ");
+        //条件筛选
+        if(StringUtil.isNotEmpty(reportsParamVO.getGroupId())){
+            String[] groupIds = reportsParamVO.getGroupId().split(CommonConstant.STR_SEPARATOR);
+            StringBuilder groupIdsSb = new StringBuilder();
+            for (String id:groupIds){
+                groupIdsSb.append("'").append(id).append("'").append(",");
+            }
+            String groupId = groupIdsSb.substring(0, groupIdsSb.toString().length() - 1);
+            sb.append(" and groupid in ("+ groupId +")");
+        }
+        sb.append(" order by GROUPNAME ");
 
         List<DsyyStatusReportsVO> dsyyStatusReports = jdbcTemplate.query(sb.toString(), new Object[]{reportsParamVO.getCompanyId()},
                 new RowMapper<DsyyStatusReportsVO>() {
@@ -99,6 +131,7 @@ public class DsyyStatusReportsDao {
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
         sb.append(" select STATUSID,groupid,count(id) client_count from "+ infoTabName +" info  where info.companyid = ? and info.isdel = 0 and info.groupid is not null ");
+        addConditionByTypeAndGroupId(reportsParamVO,sb);
         sb.append(" and info.CREATETIME BETWEEN ? AND ?");
         sb.append(" group by info.STATUSID,info.groupid ");
         jdbcTemplate.query(sb.toString(), new Object[]{reportsParamVO.getCompanyId(),reportsParamVO.getStart(),reportsParamVO.getEnd()}, new RowMapper<DsyyStatusReportsVO>() {

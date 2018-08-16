@@ -494,7 +494,7 @@ public class OldKzReportsDao {
         oldKzReportsTotal.setComeShopSuccessRate(parseDouble(((Double.isNaN(comeShopSuccessRate) || Double.isInfinite(comeShopSuccessRate)) ? 0.0 : comeShopSuccessRate) * 100));
         //成交均价
         double avgAmount = oldKzReportsTotal.getAmount() / oldKzReportsTotal.getSuccessClientCount();
-        oldKzReportsTotal.setAvgAmount(parseDouble(((Double.isNaN(avgAmount) || Double.isInfinite(avgAmount)) ? 0.0 : avgAmount) * 100));
+        oldKzReportsTotal.setAvgAmount(parseDouble(((Double.isNaN(avgAmount) || Double.isInfinite(avgAmount)) ? 0.0 : avgAmount) ));
 
         oldKzReportsVOS.add(0, oldKzReportsTotal);
     }

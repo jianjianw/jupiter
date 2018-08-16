@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.web.entity.dto.CitiesAnalysisParamDTO;
 import com.qiein.jupiter.web.entity.dto.ClientLogDTO;
+import com.qiein.jupiter.web.entity.dto.ProvinceAnalysisParamDTO;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.vo.*;
 
@@ -45,7 +46,7 @@ public interface ReportService {
      * @param companyId
      * @return
      */
-    List<DstgGoldDataReportsVO> getDstgAdReports(Integer start, Integer end, Integer companyId,Integer type);
+    List<DstgGoldDataReportsVO> getDstgAdReports(Integer start, Integer end, Integer companyId,String type);
 
     /**
      * 电商推广咨询信息方式报表
@@ -57,7 +58,7 @@ public interface ReportService {
      * @param zxStyleCode
      * @return
      */
-    List<DstgZxStyleReportsVO> getDstgZxStyleReports(Integer start, Integer end, int companyId,Integer type,String zxStyleCode);
+    List<DstgZxStyleReportsVO> getDstgZxStyleReports(Integer start, Integer end, int companyId,String type,String zxStyleCode);
 
     /**
      * 获取无效原因客资报表
@@ -75,7 +76,7 @@ public interface ReportService {
      * @param companyId
      * @return
      */
-    DsyyStatusReportsHeaderVO getDsyyStatusReports(Integer start, Integer end, int companyId);
+    DsyyStatusReportsHeaderVO getDsyyStatusReports(Integer start, Integer end, int companyId,String type,String groupId);
 
 
     /**
@@ -91,6 +92,12 @@ public interface ReportService {
      */
     List<RegionReportsVO> getCityReport(CitiesAnalysisParamDTO citiesAnalysisParamDTO);
 
+    /**
+     * 省域分析报表
+     * @param provinceAnalysisParamDTO
+     * @return
+     */
+    List<ProvinceReportsVO2> getProvinceReport(ProvinceAnalysisParamDTO provinceAnalysisParamDTO);
 
     /**
      * 查询所有客资--电商月度客资汇总报表
@@ -109,9 +116,15 @@ public interface ReportService {
      * @param groupId
      * @param companyId
      */
-    DsyyStatusReportsHeaderVO getDsyyStatusDetailReports(Integer start, Integer end, String groupId, int companyId);
+    DsyyStatusReportsHeaderVO getDsyyStatusDetailReports(Integer start, Integer end, String groupId, int companyId,String type);
 
-
+    /**
+     * 转介绍月底客资汇总报表详情
+     * @param companyId
+     * @param sourceId
+     * @param month
+     * @return
+     */
     ZjskzOfMonthMapVO ZjskzOfMonthIn(Integer companyId, String sourceId, String month);
 
     /**
@@ -165,7 +178,7 @@ public interface ReportService {
      * @param companyId
      * @return
      */
-    List<DstgZxStyleReportsVO> getDstgZxStyleSourceRerports(Integer start, Integer end, String zxStyleCode, int companyId);
+    List<DstgZxStyleReportsVO> getDstgZxStyleSourceRerports(Integer start, Integer end, String zxStyleCode,String type, int companyId);
 
     /**
      * 渠道订单数据统计
