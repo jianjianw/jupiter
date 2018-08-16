@@ -629,7 +629,7 @@ public class DstgZxStyleSourceReportsDao {
         dstgReportsTotal.setComeShopSuccessRate(parseDouble(((Double.isNaN(comeShopSuccessRate) || Double.isInfinite(comeShopSuccessRate)) ? 0.0 : comeShopSuccessRate) * 100));
         //成交均价
         double avgAmount = dstgReportsTotal.getAmount() /dstgReportsTotal.getSuccessClientCount();
-        dstgReportsTotal.setAvgAmount(parseDouble(((Double.isNaN(avgAmount) || Double.isInfinite(avgAmount)) ? 0.0 : avgAmount) * 100));
+        dstgReportsTotal.setAvgAmount(parseDouble(((Double.isNaN(avgAmount) || Double.isInfinite(avgAmount)) ? 0.0 : avgAmount)));
 
         DstgZxStyleReportsVOS.add(0,dstgReportsTotal);
     }
