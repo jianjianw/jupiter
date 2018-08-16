@@ -79,6 +79,9 @@ public class ReportsServiceImpl implements ReportService {
     @Autowired
     private ClientStatusTranslateReportsDao clientStatusTranslateReportsDao;
 
+    @Autowired
+    private KeyWordReportsDao keyWordReportsDao;
+
     /**
      * 修改联系方式日志
      *
@@ -428,5 +431,18 @@ public class ReportsServiceImpl implements ReportService {
             //查询小组
             return clientStatusTranslateReportsDao.getClientStatusTranslateForGroup(reportsParamVO);
         }
+    }
+    /**
+     * 关键词报表
+     * @param startTime
+     * @param endTime
+     * @param typeIds
+     * @param keyWord
+     * @param companyId
+     * @return
+     */
+    public List<KeyWordReportsVO> getKeyWordReports(String startTime,String endTime,String typeIds,String keyWord,Integer companyId){
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
+        return keyWordReportsDao.getKeyWordReports( startTime, endTime, typeIds, keyWord, companyId,invalidConfig);
     }
 }

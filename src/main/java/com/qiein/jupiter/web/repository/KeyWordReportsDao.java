@@ -1,13 +1,17 @@
 package com.qiein.jupiter.web.repository;
 
+import com.qiein.jupiter.enums.TableEnum;
+import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.vo.DsInvalidVO;
 import com.qiein.jupiter.web.entity.vo.KeyWordReportsVO;
 import com.qiein.jupiter.web.entity.vo.OldKzReportsVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -16,9 +20,31 @@ import java.util.Map;
  * 关键词报表
  * author xiangliang
  */
+@Repository
 public class KeyWordReportsDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    /**
+     * 获取报表
+     */
+    public List<KeyWordReportsVO> getKeyWordReports(String startTime,String endTime,String typeIds,String keyWord,Integer companyId,DsInvalidVO dsInvalidVO){
+        List<KeyWordReportsVO>  keyWordReportsVOS=new ArrayList<>();
+        String tableInfo= DBSplitUtil.getTable(TableEnum.info,companyId);
+        String tableDetail=DBSplitUtil.getTable(TableEnum.detail,companyId);
+        getAllClientCount(startTime, endTime, keyWordReportsVOS, typeIds,keyWord, tableInfo, tableDetail);
+        getPendingClientCount(startTime, endTime,keyWordReportsVOS, typeIds,keyWord, tableInfo, tableDetail, dsInvalidVO);
+        getComeShopClient(startTime, endTime, keyWordReportsVOS, typeIds,keyWord, tableInfo, tableDetail);
+        getSuccessClient(startTime, endTime, keyWordReportsVOS, typeIds,keyWord, tableInfo, tableDetail);
+        getFilterWaitClientCount(startTime, endTime, keyWordReportsVOS, typeIds,keyWord, tableInfo, tableDetail);
+        getFilterInValidClientCount(startTime, endTime, keyWordReportsVOS, typeIds,keyWord,tableInfo, tableDetail);
+        getFilterInValidClientCount(startTime, endTime, keyWordReportsVOS, typeIds,keyWord, tableInfo, tableDetail);
+        getInValidClientCount(startTime, endTime, keyWordReportsVOS, typeIds,keyWord, tableInfo, tableDetail, dsInvalidVO);
+        getAvgAmount(startTime, endTime, keyWordReportsVOS, typeIds,keyWord, tableInfo, tableDetail);
+        getAmount(startTime, endTime, keyWordReportsVOS, typeIds,keyWord, tableInfo, tableDetail);
+        computerRate(keyWordReportsVOS, dsInvalidVO);
+        computerTotal(keyWordReportsVOS);
+        return keyWordReportsVOS;
+    }
     /**
      * 总客资
      */
@@ -242,70 +268,67 @@ public class KeyWordReportsDao {
 
     /**
      * 成交均价
-
+     */
     private void getAvgAmount(String startTime, String endTime, List<KeyWordReportsVO> keyWordReportsVOS, String typeIds, String keyWord,String tableInfo, String tableDetail) {
         StringBuilder sql = new StringBuilder();
-        sql.append(" SELECT detail.OLDKZNAME oldKzName,detail.OLDKZPHONE oldKzPhone, AVG( detail.AMOUNT) avg_amount ");
-        sql.append("FROM ");
-        sql.append(tableInfo + "  info ");
-        sql.append("LEFT JOIN " + tableDetail + " detail ON info.KZID = detail.KZID ");
-        sql.append("where (detail.OLDKZNAME  is not null  or detail.OLDKZPHONE is not null)");
+        sql.append(" SELECT detail.keyword keyword, AVG( detail.AMOUNT) avg_amount ");
+        sql.append(" FROM "+tableInfo+" info");
+        sql.append(" LEFT JOIN "+tableDetail+" detail ON info.kzid = detail.kzid");
+
+        sql.append(" WHERE detail.keyword IS NOT NULL");
+        if(StringUtil.isNotEmpty(typeIds)){
+            sql.append(" and info.typeid in ("+typeIds+") ");
+        }
+        sql.append(" and detail.keyword like concat('%',?,'%')");
         sql.append(" and info.SuccessTime between ? and ?");
-        sql.append(" and (detail.oldKzName like concat('%',?,'%') or detail.oldKzPhone like concat('%',?,'%'))");
         sql.append(" GROUP BY detail.keyword ");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{ keyWord,startTime, endTime});
-        List<OldKzReportsVO> oldKzReportsBak = new LinkedList<>();
+        List<KeyWordReportsVO> keyWordReportsBak = new LinkedList<>();
         for (Map<String, Object> map : list) {
-            OldKzReportsVO oldKzReportsVO = new OldKzReportsVO();
-            oldKzReportsVO.setAvgAmount(((BigDecimal) map.get("avg_amount")).doubleValue());
-            oldKzReportsVO.setOldKzName((String) map.get("oldKzName"));
-            oldKzReportsVO.setOldKzPhone((String) map.get("oldKzPhone"));
-            oldKzReportsBak.add(oldKzReportsVO);
+            KeyWordReportsVO keyWordReportsVO = new KeyWordReportsVO();
+            keyWordReportsVO.setAvgAmount(((BigDecimal) map.get("avg_amount")).doubleValue());
+            keyWordReportsVO.setKeyWord((String) map.get("keyWord"));
+            keyWordReportsVOS.add(keyWordReportsVO);
         }
-        for (OldKzReportsVO oldKzReportsVO : oldKzReportsVOS) {
-            for (OldKzReportsVO oldKzReportsVO1 : oldKzReportsBak) {
-                if (oldKzReportsVO.getOldKzPhone().equalsIgnoreCase(oldKzReportsVO1.getOldKzPhone()) && oldKzReportsVO.getOldKzName().equalsIgnoreCase(oldKzReportsVO1.getOldKzName())) {
-                    oldKzReportsVO.setAvgAmount(oldKzReportsVO1.getAvgAmount());
+        for (KeyWordReportsVO keyWordReportsVO : keyWordReportsVOS) {
+            for (KeyWordReportsVO keyWordReportsVO1 : keyWordReportsBak) {
+                if (keyWordReportsVO.getKeyWord().equalsIgnoreCase(keyWordReportsVO1.getKeyWord()) ) {
+                    keyWordReportsVO.setAvgAmount(keyWordReportsVO1.getAvgAmount());
                     break;
                 }
+
             }
         }
     }
 
     /**
      * 成交总价
-
+     */
     private void getAmount(String startTime, String endTime, List<KeyWordReportsVO> keyWordReportsVOS, String typeIds, String keyWord,String tableInfo, String tableDetail) {
         StringBuilder sql = new StringBuilder();
         sql.append(" SELECT detail.keyword keyword, sum(detail.AMOUNT) as sum_amount ");
-        sql.append("FROM ");
-        sql.append(tableInfo + "  info ");
-        sql.append("LEFT JOIN " + tableDetail + " detail ON info.KZID = detail.KZID ");
-        sql.append(" where detail.keyword  is not null  ");
+        sql.append(" FROM "+tableInfo+" info");
+        sql.append(" LEFT JOIN "+tableDetail+" detail ON info.kzid = detail.kzid");
+        sql.append(" WHERE detail.keyword IS NOT NULL");
+        if(StringUtil.isNotEmpty(typeIds)){
+            sql.append(" and info.typeid in ("+typeIds+") ");
+        }
+        sql.append(" and detail.keyword like concat('%',?,'%')");
         sql.append(" and info.SuccessTime between ? and ?");
-        sql.append(" and  detail.keyword like concat('%',?,'%') ");
         sql.append(" GROUP BY detail.keyword ");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{keyWord,startTime, endTime});
-        List<OldKzReportsVO> oldKzReportsBak = new LinkedList<>();
+        List<KeyWordReportsVO> keyWordReportsBak = new LinkedList<>();
         for (Map<String, Object> map : list) {
-            OldKzReportsVO oldKzReportsVO = new OldKzReportsVO();
-            oldKzReportsVO.setAmount(((BigDecimal) map.get("sum_amount")).doubleValue());
-            oldKzReportsVO.setOldKzName((String) map.get("oldKzName"));
-            oldKzReportsVO.setOldKzPhone((String) map.get("oldKzPhone"));
-            oldKzReportsBak.add(oldKzReportsVO);
+            KeyWordReportsVO keyWordReportsVO = new KeyWordReportsVO();
+            keyWordReportsVO.setAmount(((BigDecimal) map.get("sum_amount")).doubleValue());
+            keyWordReportsVO.setKeyWord((String) map.get("keyWord"));
+            keyWordReportsVOS.add(keyWordReportsVO);
         }
-        for (OldKzReportsVO oldKzReportsVO : oldKzReportsVOS) {
-            for (OldKzReportsVO oldKzReportsVO1 : oldKzReportsBak) {
-                if(StringUtil.isNotEmpty(oldKzReportsVO1.getOldKzPhone())&&StringUtil.isNotEmpty(oldKzReportsVO.getOldKzPhone())){
-                    if (oldKzReportsVO.getOldKzPhone().equalsIgnoreCase(oldKzReportsVO1.getOldKzPhone())&&oldKzReportsVO.getOldKzName().equalsIgnoreCase(oldKzReportsVO1.getOldKzName()) ) {
-                        oldKzReportsVO.setAmount(oldKzReportsVO1.getAmount());
-                        break;
-                    }
-                }else{
-                    if( oldKzReportsVO.getOldKzName().equalsIgnoreCase(oldKzReportsVO1.getOldKzName())){
-                        oldKzReportsVO.setAmount(oldKzReportsVO1.getAmount());
-                        break;
-                    }
+        for (KeyWordReportsVO keyWordReportsVO : keyWordReportsVOS) {
+            for (KeyWordReportsVO keyWordReportsVO1 : keyWordReportsBak) {
+                if (keyWordReportsVO.getKeyWord().equalsIgnoreCase(keyWordReportsVO1.getKeyWord()) ) {
+                    keyWordReportsVO.setAmount(keyWordReportsVO1.getAmount());
+                    break;
                 }
 
             }
@@ -313,7 +336,7 @@ public class KeyWordReportsDao {
     }
 
 
-*/
+
     /**
      * 计算Rate
      */
@@ -417,10 +440,11 @@ public class KeyWordReportsDao {
         sql.append(" SELECT count(info.id) count,detail.keyword keyWord");
         sql.append(" FROM "+tableInfo+" info");
         sql.append(" LEFT JOIN "+tableDetail+" detail ON info.kzid = detail.kzid");
+
+        sql.append(" WHERE detail.keyword IS NOT NULL");
         if(StringUtil.isNotEmpty(typeIds)){
-            sql.append(" WHERE info.typeid in ("+typeIds+") ");
+            sql.append(" and  info.typeid in ("+typeIds+") ");
         }
-        sql.append(" and detail.keyword IS NOT NULL");
         sql.append(" and detail.keyword like concat('%',?,'%')");
     }
 }
