@@ -147,7 +147,7 @@ public interface GroupStaffDao {
      * @param groupId
      * @return
      */
-    String getGroupStaffIdsStrByCompanyIdAndGroupId(@Param(value = "companyId") int companyId, @Param(value = "groupId") String groupId);
+    List<Integer> getGroupStaffIdsStrByCompanyIdAndGroupId(@Param(value = "companyId") int companyId, @Param(value = "groupId") String groupId);
 
     /**
      * 根据员工id获取员工与组的关系
