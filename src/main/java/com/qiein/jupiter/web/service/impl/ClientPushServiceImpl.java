@@ -601,12 +601,6 @@ public class ClientPushServiceImpl implements ClientPushService {
         // 获取客资信息
         ClientGoEasyDTO infoDTO = clientInfoDao.getClientGoEasyDTOById(kzId, DBSplitUtil.getInfoTabName(companyId),
                 DBSplitUtil.getDetailTabName(companyId));
-        if (NumUtil.isValid(infoDTO.getLastPushTime())) {
-            return;
-        }
-        //修改客资最后推送时间
-        clientInfoDao.updateLastPushTime(companyId, DBSplitUtil.getInfoTabName(companyId), kzId);
-
         for (StaffPushDTO sf : yyList) {
             GoEasyUtil.pushClientReceive(companyId, sf.getStaffId(), infoDTO, newsDao, staffDao, webSocketMsgUtil);
         }
@@ -1105,7 +1099,7 @@ public class ClientPushServiceImpl implements ClientPushService {
             role = RoleConstant.ZJSSX;
         }
         //1.获取电商筛选人员，领取时间间隔排除
-        StaffPushDTO staff = staffDao.getAvgDssxStaff(companyId, interval, role);
+        StaffPushDTO staff = staffDao.getAvgDssxStaff(companyId, interval, role, DBSplitUtil.getInfoTabName(companyId));
         if (staff == null) {
             return;
         }

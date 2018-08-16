@@ -31,6 +31,7 @@ public class DsyyStatusReportsDao {
     public  DsyyStatusReportsHeaderVO  getDsyyStatusReports(ReportsParamVO reportsParamVO, DsInvalidVO invalidConfig) {
         DsyyStatusReportsHeaderVO dsyyStatusReportsHeaderVO = new DsyyStatusReportsHeaderVO();
         List<DsyyStatusReportsVO> dsyyStatusReportsVOS = new ArrayList<>();
+
         //获取小组列表
         getGroupList(reportsParamVO,dsyyStatusReportsVOS);
         //获取状态列表
@@ -38,6 +39,8 @@ public class DsyyStatusReportsDao {
         //获取客资数量
         getStatusClientCount(reportsParamVO,dsyyStatusReportsVOS);
         dsyyStatusReportsHeaderVO.setDsyyStatusReportsHeaderVOS(dsyyStatusReportsVOS);
+        dataHandle(dsyyStatusReportsHeaderVO);
+
         return dsyyStatusReportsHeaderVO;
     }
 
@@ -95,8 +98,9 @@ public class DsyyStatusReportsDao {
         StringBuilder sb = new StringBuilder();
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
-        sb.append(" select STATUSID,groupid,count(id) client_count from "+ infoTabName +" info  where info.companyid = ? and info.isdel = 0 and info.groupid is not null group by info.STATUSID,info.groupid ");
-        sb.append(" and info.SUCCESSTIME BETWEEN ? AND ?");
+        sb.append(" select STATUSID,groupid,count(id) client_count from "+ infoTabName +" info  where info.companyid = ? and info.isdel = 0 and info.groupid is not null ");
+        sb.append(" and info.CREATETIME BETWEEN ? AND ?");
+        sb.append(" group by info.STATUSID,info.groupid ");
         jdbcTemplate.query(sb.toString(), new Object[]{reportsParamVO.getCompanyId(),reportsParamVO.getStart(),reportsParamVO.getEnd()}, new RowMapper<DsyyStatusReportsVO>() {
             @Override
             public DsyyStatusReportsVO mapRow(ResultSet rs, int i) throws SQLException {
@@ -116,5 +120,15 @@ public class DsyyStatusReportsDao {
         });
     }
 
+    public void dataHandle(DsyyStatusReportsHeaderVO dsyyStatusReportsHeaderVO){
+        for (DsyyStatusReportsVO dsyyStatusReportsVO :dsyyStatusReportsHeaderVO.getDsyyStatusReportsHeaderVOS()){
+            Map kzNumMap = new HashMap();
+            for (ClientStatusReportsVO clientStatusReportsVO:dsyyStatusReportsVO.getClientStatusReportsVOS()){
+                kzNumMap.put(String.valueOf(clientStatusReportsVO.getStatusId()),clientStatusReportsVO.getKzNum());
+            }
+            dsyyStatusReportsVO.setMapList(kzNumMap);
+            dsyyStatusReportsVO.setClientStatusReportsVOS(null);
+        }
+    }
 
 }

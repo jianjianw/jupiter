@@ -375,6 +375,16 @@ public class ReportsController extends BaseController {
     }
 
     /**
+     * 电商推广咨询方式来源报表
+     * */
+    @GetMapping("/get_dstg_zx_style_source_reports")
+    public ResultInfo getDstgZxStyleSourceReports(Integer start,Integer end,String zxStyleCode){
+        StaffPO staffPO = getCurrentLoginStaff();
+        List<DstgZxStyleReportsVO> dstgZxStyleReportsVOS = reportService.getDstgZxStyleSourceRerports(start,end,zxStyleCode,staffPO.getCompanyId());
+        return ResultInfoUtil.success(dstgZxStyleReportsVOS);
+    }
+
+    /**
      * 客资各状态转发统计
      * */
     @GetMapping("/get_dsyy_status_reports")
@@ -383,6 +393,17 @@ public class ReportsController extends BaseController {
         DsyyStatusReportsHeaderVO dsyyStatusReports = reportService.getDsyyStatusReports(start, end, staffPO.getCompanyId());
         return ResultInfoUtil.success(dsyyStatusReports);
     }
+
+    /**
+     * 电商邀约详细统计
+     * */
+    @GetMapping("/get_dsyy_status_detail_reports")
+    public ResultInfo getDsyyStatusReports(Integer start,Integer end,String groupId){
+        StaffPO staffPO = getCurrentLoginStaff();
+        DsyyStatusReportsHeaderVO dsyyStatusReportsHeaderVO = reportService.getDsyyStatusDetailReports(start,end,groupId,staffPO.getCompanyId());
+        return ResultInfoUtil.success(dsyyStatusReportsHeaderVO);
+    }
+
 
     @GetMapping("/receive_ali")
     public ResultInfo receiveAli(String code, String state) {
@@ -397,12 +418,20 @@ public class ReportsController extends BaseController {
         return ResultInfoUtil.success(reportService.invalidReasonReports(getCurrentLoginStaff().getCompanyId(),sourceIds,startTime,endTime,typeIds));
     }
     /**
-     * 转介绍月底客资报表
+     * 转介绍每月客资报表
      */
     @GetMapping("/zjs_kz_of_month")
     public ResultInfo ZjskzOfMonth(@RequestParam String month,@RequestParam String type,@RequestParam String srcIds){
         return ResultInfoUtil.success(reportService.ZjskzOfMonth(getCurrentLoginStaff().getCompanyId(),month,type,srcIds));
     }
+    /**
+     * 转介绍每月客资报表内表详情
+     */
+    @GetMapping("/zjs_kz_of_month_in")
+    public ResultInfo ZjskzOfMonthIn( String sourceId, String month){
+        return ResultInfoUtil.success(reportService.ZjskzOfMonthIn(getCurrentLoginStaff().getCompanyId(), sourceId, month));
+    }
+
 
     /**
      * 获取市域分析报表
@@ -423,5 +452,43 @@ public class ReportsController extends BaseController {
         }
         searchKey.setCompanyId(getCurrentLoginStaff().getCompanyId());
         return ResultInfoUtil.success(reportService.getCityReport(searchKey));
+    }
+    
+    /**
+     * 电商推广月度客资汇总报表--Hjf
+     * */
+    @GetMapping("/get_dstg_src_month_reports")
+    public ResultInfo getDSTGSrcMonthReports(@RequestParam("start") Integer start, @RequestParam("end") Integer end, @RequestParam("typeId") String typeId, @RequestParam("sourceId") String sourceId, @RequestParam("kzZB") String kzZB){
+        StaffPO staffPO = getCurrentLoginStaff();
+        //查询总客资
+        if(StringUtil.isNotEmpty(kzZB) && "sum".equals(kzZB)){
+        	List<DstgReportsSrcMonthVO> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsSum(start,end,typeId,sourceId,staffPO.getCompanyId());
+        	
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+      //查询客资量
+        if(StringUtil.isNotEmpty(kzZB) && "all".equals(kzZB)){
+        	List<DstgReportsSrcMonthVO> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsAll(start,end,typeId,sourceId,staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+      //查询待定客资
+        if(StringUtil.isNotEmpty(kzZB) && "ddnum".equals(kzZB)){
+        	List<DstgReportsSrcMonthVO> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsDdNum(start,end,typeId,sourceId,staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+        
+       //查询无效客资
+        if(StringUtil.isNotEmpty(kzZB) && "invalid".equals(kzZB)){
+        	List<DstgReportsSrcMonthVO> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsInvalid(start,end,typeId,sourceId,staffPO.getCompanyId());
+        	
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+		
+		//查询有效客资
+        if(StringUtil.isNotEmpty(kzZB) && "valid".equals(kzZB)){ 
+        	List<DstgReportsSrcMonthVO> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsvalid(start,end,typeId,sourceId,staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+		return ResultInfoUtil.error(9999, "查询失败");
     }
 }

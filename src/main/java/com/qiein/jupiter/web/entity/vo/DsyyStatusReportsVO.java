@@ -3,6 +3,7 @@ package com.qiein.jupiter.web.entity.vo;
 import com.qiein.jupiter.web.entity.po.GroupReportsVO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author: yyx
@@ -18,11 +19,23 @@ public class DsyyStatusReportsVO {
      * 小组名称
      * */
     private String grouoName;
+
+    /**
+     * Map
+     * */
+    private Map<String,Integer> mapList;
     /**
      * StatusReports
      * */
     private List<ClientStatusReportsVO> clientStatusReportsVOS;
 
+    public Map<String, Integer> getMapList() {
+        return mapList;
+    }
+
+    public void setMapList(Map<String, Integer> mapList) {
+        this.mapList = mapList;
+    }
 
     public String getGroupId() {
         return groupId;
