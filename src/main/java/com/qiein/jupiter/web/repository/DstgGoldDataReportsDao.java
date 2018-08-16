@@ -76,9 +76,7 @@ public class DstgGoldDataReportsDao {
         sb.append(" group by detail.adid");
 
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
-                new Object[]{reportsParamVO.getCompanyId(),
-                        reportsParamVO.getStart(),
-                        reportsParamVO.getEnd()});
+                new Object[]{reportsParamVO.getCompanyId()});
 
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgGoldDataReportsVO dstgGoldDataReportsVO = new DstgGoldDataReportsVO();
