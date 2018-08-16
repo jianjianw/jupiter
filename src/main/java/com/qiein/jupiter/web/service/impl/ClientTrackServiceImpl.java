@@ -176,10 +176,16 @@ public class ClientTrackServiceImpl implements ClientTrackService {
             throw new RException(jsInfo.getString("msg"));
         } else {
             JSONArray kzIdArr = JsonFmtUtil.strContentToJsonObj(addRstStr).getJSONArray("kzIds");
+            if (kzIdArr == null) {
+                return 0;
+            }
             if (rst == ClientStatusConst.BE_INVALID_REJECT || rst == ClientStatusConst.BE_INVALID_ALWAYS) {
                 //发送消息给邀约客服
                 for (int i = 0; i < kzIdArr.size(); i++) {
                     String kzId = (String) kzIdArr.get(i);
+                    if (StringUtil.isEmpty(kzId)){
+                        continue;
+                    }
                     ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(kzId,
                             DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
                             DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
