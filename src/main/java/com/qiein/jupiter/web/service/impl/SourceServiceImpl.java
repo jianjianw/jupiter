@@ -150,7 +150,7 @@ public class SourceServiceImpl implements SourceService {
     @Override
     public void datDelSrc(String ids, Integer companyId) {
         String[] idArr = ids.split(",");
-        if (sourceDao.datDelCheck(idArr, DBSplitUtil.getInfoTabName(companyId)) > 0)
+        if (sourceDao.datDelCheck(idArr) > 0)
             throw new RException(ExceptionEnum.SOURCE_HAVE_KZ);
         sourceDao.datDelete(idArr, companyId);
     }

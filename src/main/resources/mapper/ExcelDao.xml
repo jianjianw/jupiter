@@ -528,15 +528,12 @@
         DISTINCT
         <include refid="Base_Column_News_List"/>
         FROM ${tempName} temp
-        inner join ${tableName} info
-        ON info.KZID is not null
+        inner join ${tabName} detail
+        ON detail.KZID is not null
         WHERE
-        info.KZID IS NOT NULL
-        AND info.ISDEL = 0
+        detail.KZID IS NOT NULL
         AND temp.OPERAID = #{staffId}
-        AND (( temp.KZPHONE = info.KZPHONE  or temp.KZPHONE = info.KZWECHAT or temp.KZPHONE = info.KZQQ)
-        or ( temp.KZWECHAT = info.KZPHONE  or temp.KZWECHAT = info.KZWECHAT or temp.KZWECHAT = info.KZQQ)
-        or ( temp.KZQQ = info.KZPHONE  or temp.KZQQ = info.KZWECHAT or temp.KZQQ = info.KZQQ))
+        AND temp.kzid = detail.kzid
         union
         SELECT
         <include refid="Base_Column_News_List"/>

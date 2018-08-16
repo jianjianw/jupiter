@@ -15,14 +15,9 @@ public interface WxmpClientDao {
     /**
      * 按名称 搜索客资
      *
-     * @param infoTableName
-     * @param detailTableName
      * @param companyId
      * @param searchKey
      * @return
      */
-    List<ClientVO> searchClient(@Param("infoTableName") String infoTableName,
-                                @Param("detailTableName") String detailTableName,
-                                @Param("companyId") int companyId,
-                                @Param("searchKey") String searchKey);
+    List<ClientVO> searchClient(@Param("companyId") int companyId, @Param("searchKey") String searchKey);
 }

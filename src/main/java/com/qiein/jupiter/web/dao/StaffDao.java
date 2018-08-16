@@ -535,7 +535,7 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @param interval
      * @return
      */
-    StaffPushDTO getAvgDssxStaff(@Param("companyId") int companyId, @Param("interval") int interval, @Param("role") String role);
+    StaffPushDTO getAvgDssxStaff(@Param("companyId") int companyId, @Param("interval") int interval, @Param("role") String role, @Param("infoTab") String infoTab);
 
     /**
      * 根据ids批量查找员工
@@ -559,11 +559,13 @@ public interface StaffDao extends BaseDao<StaffPO> {
     StaffPO getStaffByPhoneMd5PwdAndCid(@Param("phone") String phone,
                                         @Param("password") String password,
                                         @Param("companyId") int companyId);
+
     /**
      * 批量获取员工姓名
+     *
      * @param staffIds
      * @return
      */
-    List<String> getStaffNames(@Param("list")List<String> list);
+    List<String> getStaffNames(@Param("list") List<String> list);
 
 }
