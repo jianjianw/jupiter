@@ -34,55 +34,53 @@ public class GroupStaffServiceImpl implements GroupStaffService {
     @Override
     public void insert(JSONObject jsonObject, StaffPO staffPO) {
         //参数校验
-        if(null == jsonObject){
-          throw new RException(ExceptionEnum.UNKNOW_ERROR);
+        if (null == jsonObject) {
+            throw new RException(ExceptionEnum.UNKNOW_ERROR);
         }
         String staffIds = jsonObject.getString("staffIds");
         String groupId = jsonObject.getString("groupId");
 
-        if(StringUtil.isEmpty(staffIds)|| StringUtil.isEmpty(groupId)){
+        if (StringUtil.isEmpty(staffIds) || StringUtil.isEmpty(groupId)) {
             throw new RException(ExceptionEnum.LOSE_FILED);
         }
         //验证groupid
-        if(groupId.split(CommonConstant.ROD_SEPARATOR).length != CommonConstant.GROUP_ID_LENGTH ){
+        if (groupId.split(CommonConstant.ROD_SEPARATOR).length != CommonConstant.GROUP_ID_LENGTH) {
             throw new RException(ExceptionEnum.ADD_FAIL);
         }
         //切割
         String[] idsStr = staffIds.split(CommonConstant.STR_SEPARATOR);
         List<String> ids = new ArrayList<>();
-        String existsIds = groupStaffDao.getGroupStaffIdsStrByCompanyIdAndGroupId(staffPO.getCompanyId(), groupId);
+        List<Integer> existsIds = groupStaffDao.getGroupStaffIdsStrByCompanyIdAndGroupId(staffPO.getCompanyId(), groupId);
 
-        if(StringUtil.isNotEmpty(existsIds)){
-            for (String id : idsStr){
-                if(!existsIds.contains(id)){
+        if (CollectionUtils.isNotEmpty(existsIds)) {
+            for (String id : idsStr) {
+                if (!existsIds.contains(id)) {
                     ids.add(id);
                 }
             }
-            if(CollectionUtils.isNotEmpty(ids)){
-                groupStaffDao.batchInsertGroupStaff(staffPO.getCompanyId(),groupId,ids.toArray(new String[] {}));
-            }else{
+            if (CollectionUtils.isNotEmpty(ids)) {
+                groupStaffDao.batchInsertGroupStaff(staffPO.getCompanyId(), groupId, ids.toArray(new String[]{}));
+            } else {
                 throw new RException(ExceptionEnum.GROUP_STAFF_EXISTS);
             }
-        }else{
-            groupStaffDao.batchInsertGroupStaff(staffPO.getCompanyId(),groupId,idsStr);
+        } else {
+            groupStaffDao.batchInsertGroupStaff(staffPO.getCompanyId(), groupId, idsStr);
         }
-
-
     }
 
     @Override
     public void remove(GroupStaffPO groupStaffPO) {
-        if(NumUtil.isNull(groupStaffPO.getStaffId()) ||StringUtil.isEmpty(groupStaffPO.getGroupId()) ){
+        if (NumUtil.isNull(groupStaffPO.getStaffId()) || StringUtil.isEmpty(groupStaffPO.getGroupId())) {
             throw new RException(ExceptionEnum.LOSE_FILED);
         }
-        List<GroupStaffPO> groupStaffPOS = groupStaffDao.getGroupStaffByStaffId(groupStaffPO.getCompanyId(),groupStaffPO.getStaffId());
+        List<GroupStaffPO> groupStaffPOS = groupStaffDao.getGroupStaffByStaffId(groupStaffPO.getCompanyId(), groupStaffPO.getStaffId());
         //只存在一个组
-        if(CollectionUtils.isEmpty(groupStaffPOS) || !(groupStaffPOS.size() > CommonConstant.DEFAULT_ONE)){
+        if (CollectionUtils.isEmpty(groupStaffPOS) || !(groupStaffPOS.size() > CommonConstant.DEFAULT_ONE)) {
             throw new RException(ExceptionEnum.UNKNOW_ERROR);
         }
         //移除关系
         Integer rows = groupStaffDao.deleteByStaffIdAndGroupId(groupStaffPO.getStaffId(), groupStaffPO.getCompanyId(), groupStaffPO.getGroupId());
-        if(!(rows > CommonConstant.DEFAULT_ZERO)){
+        if (!(rows > CommonConstant.DEFAULT_ZERO)) {
             throw new RException(ExceptionEnum.DELETE_FAIL);
         }
     }

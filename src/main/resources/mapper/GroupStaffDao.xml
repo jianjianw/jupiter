@@ -483,13 +483,8 @@
     </select>
 
     <!--根据公司id和分组id获取分组员工的id集合-->
-    <select id="getGroupStaffIdsStrByCompanyIdAndGroupId" resultType="java.lang.String">
-        SELECT group_concat(STAFFID SEPARATOR ',')
-        FROM (
-                 SELECT
-                     GROUPID,
-                     STAFFID,
-                     COMPANYID
+    <select id="getGroupStaffIdsStrByCompanyIdAndGroupId" resultType="java.lang.Integer">
+         SELECT  STAFFID
                  FROM
                      hm_pub_group_staff
                  WHERE
@@ -507,8 +502,7 @@
                                      GROUPID = #{groupId} AND COMPANYID = #{companyId}
                              )
                      )
-                 GROUP BY staffId) RESULT
-
+                 GROUP BY staffId
     </select>
 
     <!--根据员工id查询员工与组的关系-->
