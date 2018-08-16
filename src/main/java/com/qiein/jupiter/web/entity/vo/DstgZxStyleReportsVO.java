@@ -8,7 +8,7 @@ public class DstgZxStyleReportsVO {
     /**
      * 咨询方式类型
      * */
-    private int zxStyleCode;
+    private String zxStyleCode;
     /**
      * 咨询方式
      * */
@@ -116,11 +116,11 @@ public class DstgZxStyleReportsVO {
     private double amount;
 
 
-    public int getZxStyleCode() {
+    public String getZxStyleCode() {
         return zxStyleCode;
     }
 
-    public void setZxStyleCode(int zxStyleCode) {
+    public void setZxStyleCode(String zxStyleCode) {
         this.zxStyleCode = zxStyleCode;
     }
 
