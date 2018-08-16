@@ -70,9 +70,10 @@ public class DstgZxStyleReportsDao {
         sb.append(" from ");
         sb.append(infoTabName + " info ");
         sb.append(" left join "+detailTabName+" detail on info.kzid = detail.kzid");
-        sb.append(" left join hm_crm_dictionary dictionary on detail.ZXSTYLE = dictionary.DICCODE and dictionary.DICTYPE = 'zx_style'");
+        sb.append(" left join hm_crm_dictionary dictionary on detail.ZXSTYLE = dictionary.DICCODE ");
         sb.append(" where");
-        sb.append("  info.isdel = 0");
+        sb.append("   info.isdel = 0");
+        sb.append(" and dictionary.DICTYPE = 'zx_style'");
         sb.append(" and (info.srctype = 1 or info.srctype = 2)");
         sb.append(" and info.companyid = ?");
         sb.append(" group by detail.ZXSTYLE");
@@ -94,9 +95,10 @@ public class DstgZxStyleReportsDao {
         sb.append(" from");
         sb.append(infoTabName + " info ");
         sb.append(" left join "+detailTabName+" detail on info.kzid = detail.kzid");
-        sb.append(" left join hm_crm_dictionary dictionary on detail.ZXSTYLE = dictionary.DICCODE and dictionary.DICTYPE = 'zx_style'");
+        sb.append(" left join hm_crm_dictionary dictionary on detail.ZXSTYLE = dictionary.DICCODE ");
         sb.append(" where");
         sb.append("  info.isdel = 0");
+        sb.append(" and dictionary.DICTYPE = 'zx_style'");
         sb.append(" and (info.srctype = 1 or info.srctype = 2)");
         sb.append(" and info.companyid = ?");
         return sb;
@@ -430,6 +432,7 @@ public class DstgZxStyleReportsDao {
         sb.append(" left join hm_crm_dictionary dictionary on detail.ZXSTYLE = dictionary.DICCODE and dictionary.DICTYPE = 'zx_style'");
         sb.append(" where");
         sb.append("  info.isdel = 0");
+        sb.append(" and dictionary.DICTYPE = 'zx_style'");
         sb.append(" and (info.srctype = 1 or info.srctype = 2)");
         sb.append(" and info.companyid = ?");
         sb.append(" and info.SUCCESSTIME BETWEEN ? AND ?");
@@ -475,6 +478,7 @@ public class DstgZxStyleReportsDao {
         sb.append(" left join hm_crm_dictionary dictionary on detail.ZXSTYLE = dictionary.DICCODE and dictionary.DICTYPE = 'zx_style'");
         sb.append(" where");
         sb.append("  info.isdel = 0");
+        sb.append(" and dictionary.DICTYPE = 'zx_style'");
         sb.append(" and (info.srctype = 1 or info.srctype = 2)");
         sb.append(" and info.companyid = ?");
         sb.append(" and info.SUCCESSTIME BETWEEN ? AND ?");
