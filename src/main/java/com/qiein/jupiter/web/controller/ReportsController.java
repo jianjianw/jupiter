@@ -503,4 +503,6 @@ public class ReportsController extends BaseController {
     public ResultInfo getOldKzReports(@RequestParam String startTime,@RequestParam String endTime,@RequestParam String kzNameOrPhone){
         return ResultInfoUtil.success(reportService.getOldKzReports(getCurrentLoginStaff().getCompanyId(),startTime,endTime,kzNameOrPhone));
     }
+
+
 }
