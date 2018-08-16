@@ -157,7 +157,7 @@ public class DstgZxStyleSourceReportsDao {
 
         for (DstgZxStyleReportsVO DstgZxStyleReportsVO : DstgZxStyleReportsVOS) {
             for (DstgZxStyleReportsVO dstgGoldDataReport : dstgGoldDataReportsBak) {
-                if (DstgZxStyleReportsVO.getZxStyleCode() == dstgGoldDataReport.getZxStyleCode()) {
+                if (DstgZxStyleReportsVO.getZxStyleCode().equalsIgnoreCase(dstgGoldDataReport.getZxStyleCode())) {
                     DstgZxStyleReportsVO.setAllClientCount(dstgGoldDataReport.getAllClientCount());
                     break;
                 }
@@ -197,7 +197,7 @@ public class DstgZxStyleSourceReportsDao {
 
         for (DstgZxStyleReportsVO DstgZxStyleReportsVO : DstgZxStyleReportsVOS) {
             for (DstgZxStyleReportsVO dstgGoldDataReport : dstgGoldDataReportsBak) {
-                if (DstgZxStyleReportsVO.getZxStyleCode() == dstgGoldDataReport.getZxStyleCode()) {
+                if (DstgZxStyleReportsVO.getZxStyleCode().equalsIgnoreCase(dstgGoldDataReport.getZxStyleCode())) {
                     DstgZxStyleReportsVO.setPendingClientCount(dstgGoldDataReport.getPendingClientCount());
                     break;
                 }
@@ -238,7 +238,7 @@ public class DstgZxStyleSourceReportsDao {
 
         for (DstgZxStyleReportsVO DstgZxStyleReportsVO : DstgZxStyleReportsVOS) {
             for (DstgZxStyleReportsVO dstgGoldDataReport : dstgGoldDataReportsBak) {
-                if (DstgZxStyleReportsVO.getZxStyleCode() == dstgGoldDataReport.getZxStyleCode()) {
+                if (DstgZxStyleReportsVO.getZxStyleCode().equalsIgnoreCase(dstgGoldDataReport.getZxStyleCode())) {
                     DstgZxStyleReportsVO.setFilterPendingClientCount(dstgGoldDataReport.getFilterPendingClientCount());
                     break;
                 }
@@ -277,7 +277,7 @@ public class DstgZxStyleSourceReportsDao {
 
         for (DstgZxStyleReportsVO DstgZxStyleReportsVO : DstgZxStyleReportsVOS) {
             for (DstgZxStyleReportsVO dstgGoldDataReport : dstgGoldDataReportsBak) {
-                if (DstgZxStyleReportsVO.getZxStyleCode() == dstgGoldDataReport.getZxStyleCode()) {
+                if (DstgZxStyleReportsVO.getZxStyleCode().equalsIgnoreCase(dstgGoldDataReport.getZxStyleCode())) {
                     DstgZxStyleReportsVO.setFilterInValidClientCount(dstgGoldDataReport.getFilterInValidClientCount());
                     break;
                 }
@@ -317,7 +317,7 @@ public class DstgZxStyleSourceReportsDao {
 
         for (DstgZxStyleReportsVO DstgZxStyleReportsVO : DstgZxStyleReportsVOS) {
             for (DstgZxStyleReportsVO dstgGoldDataReport : dstgGoldDataReportsBak) {
-                if (DstgZxStyleReportsVO.getZxStyleCode() == dstgGoldDataReport.getZxStyleCode()) {
+                if (DstgZxStyleReportsVO.getZxStyleCode().equalsIgnoreCase(dstgGoldDataReport.getZxStyleCode())) {
                     DstgZxStyleReportsVO.setFilterInClientCount(dstgGoldDataReport.getFilterInClientCount());
                     break;
                 }
@@ -369,7 +369,7 @@ public class DstgZxStyleSourceReportsDao {
 
         for (DstgZxStyleReportsVO DstgZxStyleReportsVO : DstgZxStyleReportsVOS) {
             for (DstgZxStyleReportsVO dstgGoldDataReport : dstgGoldDataReportsBak) {
-                if (DstgZxStyleReportsVO.getZxStyleCode() == dstgGoldDataReport.getZxStyleCode()) {
+                if (DstgZxStyleReportsVO.getZxStyleCode().equalsIgnoreCase(dstgGoldDataReport.getZxStyleCode())) {
                     DstgZxStyleReportsVO.setInValidClientCount(dstgGoldDataReport.getInValidClientCount());
                     break;
                 }
@@ -409,7 +409,7 @@ public class DstgZxStyleSourceReportsDao {
 
         for (DstgZxStyleReportsVO DstgZxStyleReportsVO : DstgZxStyleReportsVOS) {
             for (DstgZxStyleReportsVO dstgGoldDataReport : dstgGoldDataReportsBak) {
-                if (DstgZxStyleReportsVO.getZxStyleCode() == dstgGoldDataReport.getZxStyleCode()) {
+                if (DstgZxStyleReportsVO.getZxStyleCode().equalsIgnoreCase(dstgGoldDataReport.getZxStyleCode())) {
                     DstgZxStyleReportsVO.setComeShopClientCount(dstgGoldDataReport.getComeShopClientCount());
                     break;
                 }
@@ -448,7 +448,7 @@ public class DstgZxStyleSourceReportsDao {
 
         for (DstgZxStyleReportsVO DstgZxStyleReportsVO : DstgZxStyleReportsVOS) {
             for (DstgZxStyleReportsVO dstgGoldDataReport : dstgGoldDataReportsBak) {
-                if (DstgZxStyleReportsVO.getZxStyleCode() == dstgGoldDataReport.getZxStyleCode()) {
+                if (DstgZxStyleReportsVO.getZxStyleCode().equalsIgnoreCase(dstgGoldDataReport.getZxStyleCode())) {
                     DstgZxStyleReportsVO.setSuccessClientCount(dstgGoldDataReport.getSuccessClientCount());
                     break;
                 }
@@ -495,7 +495,7 @@ public class DstgZxStyleSourceReportsDao {
 
         for (DstgZxStyleReportsVO DstgZxStyleReportsVO : DstgZxStyleReportsVOS) {
             for (DstgZxStyleReportsVO dstgGoldDataReport : dstgGoldDataReportsBak) {
-                if (DstgZxStyleReportsVO.getZxStyleCode() == dstgGoldDataReport.getZxStyleCode()) {
+                if (DstgZxStyleReportsVO.getZxStyleCode().equalsIgnoreCase(dstgGoldDataReport.getZxStyleCode())) {
                     DstgZxStyleReportsVO.setAvgAmount(dstgGoldDataReport.getAvgAmount());
                     break;
                 }
@@ -539,7 +539,7 @@ public class DstgZxStyleSourceReportsDao {
         }
         for (DstgZxStyleReportsVO DstgZxStyleReportsVO : DstgZxStyleReportsVOS) {
             for (DstgZxStyleReportsVO dstgGoldDataReport : dstgGoldDataReportsBak) {
-                if (DstgZxStyleReportsVO.getZxStyleCode() == dstgGoldDataReport.getZxStyleCode()) {
+                if (DstgZxStyleReportsVO.getZxStyleCode().equalsIgnoreCase(dstgGoldDataReport.getZxStyleCode())) {
                     DstgZxStyleReportsVO.setAmount(dstgGoldDataReport.getAmount());
                     break;
                 }
