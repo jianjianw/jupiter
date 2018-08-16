@@ -208,7 +208,7 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
      * @return
      */
     int listExistAppointClientsNum(@Param("kzIds") String kzIds, @Param("companyId") int companyId,
-                                   @Param("infoTabName") String infoTabName);
+                                   @Param("infoTabName") String infoTabName, @Param("type") String type);
 
     /**
      * 修改联系方式日志

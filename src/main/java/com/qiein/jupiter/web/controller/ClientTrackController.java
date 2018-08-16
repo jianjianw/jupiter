@@ -115,8 +115,12 @@ public class ClientTrackController extends BaseController {
         if (StringUtil.isEmpty(kzIds)) {
             throw new RException(ExceptionEnum.KZ_ID_IS_NULL);
         }
+        String role = StringUtil.nullToStrTrim(jsonObject.getString("role"));
+        if (StringUtil.isEmpty(role)) {
+            throw new RException(ExceptionEnum.ROLE_ERROR);
+        }
         StaffPO currentStaff = getCurrentLoginStaff();
-        return ResultInfoUtil.success(clientService.listExistAppointClientsNum(kzIds, currentStaff.getCompanyId()));
+        return ResultInfoUtil.success(clientService.listExistAppointClientsNum(kzIds, currentStaff.getCompanyId(),role));
     }
 
     /**

@@ -215,8 +215,15 @@ public class ClientServiceImpl implements ClientService {
      * @param companyId
      * @return
      */
-    public int listExistAppointClientsNum(String kzIds, int companyId) {
-        return clientInfoDao.listExistAppointClientsNum(kzIds, companyId, DBSplitUtil.getInfoTabName(companyId));
+    public int listExistAppointClientsNum(String kzIds, int companyId, String role) {
+        String type = "APPOINTORID";
+        if (RoleConstant.DSCJ.equals(role) || RoleConstant.DSSX.equals(role) || RoleConstant.ZJSSX.equals(role)) {
+            type = "APPOINTORID";
+        } else if (RoleConstant.DSYY.equals(role) || RoleConstant.ZJSYY.equals(role)
+                || RoleConstant.MSJD.equals(role) || RoleConstant.CWZX.equals(role)) {
+            type = "RECEPTORID";
+        }
+        return clientInfoDao.listExistAppointClientsNum(kzIds, companyId, DBSplitUtil.getInfoTabName(companyId), type);
     }
 
     /**
