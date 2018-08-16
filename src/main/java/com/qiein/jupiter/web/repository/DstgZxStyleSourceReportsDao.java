@@ -88,7 +88,8 @@ public class DstgZxStyleSourceReportsDao {
 
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgZxStyleReportsVO DstgZxStyleReportsVO = new DstgZxStyleReportsVO();
-            DstgZxStyleReportsVO.setZxStyleCode(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("sourceid"))));
+            DstgZxStyleReportsVO.setZxStyleCode(String.valueOf(dstgGoldDataReport.get("sourceid").toString()));
+
             DstgZxStyleReportsVO.setZxStyle((String) dstgGoldDataReport.get("srcname"));
             DstgZxStyleReportsVOS.add(DstgZxStyleReportsVO);
         }
@@ -149,7 +150,7 @@ public class DstgZxStyleSourceReportsDao {
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgZxStyleReportsVO DstgZxStyleReportsVO = new DstgZxStyleReportsVO();
             DstgZxStyleReportsVO.setZxStyle((String) dstgGoldDataReport.get("srcname"));
-            DstgZxStyleReportsVO.setZxStyleCode(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("sourceid"))));
+            DstgZxStyleReportsVO.setZxStyleCode(String.valueOf(dstgGoldDataReport.get("sourceid").toString()));
             DstgZxStyleReportsVO.setAllClientCount(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("client_count"))));
             dstgGoldDataReportsBak.add(DstgZxStyleReportsVO);
         }
@@ -189,7 +190,7 @@ public class DstgZxStyleSourceReportsDao {
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgZxStyleReportsVO DstgZxStyleReportsVO = new DstgZxStyleReportsVO();
             DstgZxStyleReportsVO.setZxStyle((String) dstgGoldDataReport.get("srcname"));
-            DstgZxStyleReportsVO.setZxStyleCode(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("sourceid"))));
+            DstgZxStyleReportsVO.setZxStyleCode(String.valueOf(dstgGoldDataReport.get("sourceid").toString()));
             DstgZxStyleReportsVO.setPendingClientCount(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("client_count"))));
             dstgGoldDataReportsBak.add(DstgZxStyleReportsVO);
         }
@@ -229,7 +230,7 @@ public class DstgZxStyleSourceReportsDao {
         List<DstgZxStyleReportsVO> dstgGoldDataReportsBak = new LinkedList<>();
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgZxStyleReportsVO DstgZxStyleReportsVO = new DstgZxStyleReportsVO();
-            DstgZxStyleReportsVO.setZxStyleCode(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("sourceid"))));
+            DstgZxStyleReportsVO.setZxStyleCode(String.valueOf(dstgGoldDataReport.get("sourceid").toString()));
             DstgZxStyleReportsVO.setZxStyle((String) dstgGoldDataReport.get("srcname"));
             DstgZxStyleReportsVO.setFilterPendingClientCount(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("client_count"))));
             dstgGoldDataReportsBak.add(DstgZxStyleReportsVO);
@@ -269,7 +270,7 @@ public class DstgZxStyleSourceReportsDao {
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgZxStyleReportsVO DstgZxStyleReportsVO = new DstgZxStyleReportsVO();
             DstgZxStyleReportsVO.setZxStyle((String) dstgGoldDataReport.get("srcname"));
-            DstgZxStyleReportsVO.setZxStyleCode(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("sourceid"))));
+            DstgZxStyleReportsVO.setZxStyleCode(String.valueOf(dstgGoldDataReport.get("sourceid").toString()));
             DstgZxStyleReportsVO.setFilterInValidClientCount(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("client_count"))));
             dstgGoldDataReportsBak.add(DstgZxStyleReportsVO);
         }
@@ -309,7 +310,7 @@ public class DstgZxStyleSourceReportsDao {
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgZxStyleReportsVO DstgZxStyleReportsVO = new DstgZxStyleReportsVO();
             DstgZxStyleReportsVO.setZxStyle((String) dstgGoldDataReport.get("srcname"));
-            DstgZxStyleReportsVO.setZxStyleCode(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("sourceid"))));
+            DstgZxStyleReportsVO.setZxStyleCode(String.valueOf(dstgGoldDataReport.get("sourceid").toString()));
             DstgZxStyleReportsVO.setFilterInClientCount(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("client_count"))));
             dstgGoldDataReportsBak.add(DstgZxStyleReportsVO);
         }
@@ -361,7 +362,7 @@ public class DstgZxStyleSourceReportsDao {
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgZxStyleReportsVO DstgZxStyleReportsVO = new DstgZxStyleReportsVO();
             DstgZxStyleReportsVO.setZxStyle((String) dstgGoldDataReport.get("srcname"));
-            DstgZxStyleReportsVO.setZxStyleCode(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("sourceid"))));
+            DstgZxStyleReportsVO.setZxStyleCode(String.valueOf(dstgGoldDataReport.get("sourceid").toString()));
             DstgZxStyleReportsVO.setInValidClientCount(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("client_count"))));
             dstgGoldDataReportsBak.add(DstgZxStyleReportsVO);
         }
@@ -401,7 +402,7 @@ public class DstgZxStyleSourceReportsDao {
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgZxStyleReportsVO DstgZxStyleReportsVO = new DstgZxStyleReportsVO();
             DstgZxStyleReportsVO.setZxStyle((String) dstgGoldDataReport.get("srcname"));
-            DstgZxStyleReportsVO.setZxStyleCode(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("sourceid"))));
+            DstgZxStyleReportsVO.setZxStyleCode(String.valueOf(dstgGoldDataReport.get("sourceid").toString()));
             DstgZxStyleReportsVO.setComeShopClientCount(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("client_count"))));
             dstgGoldDataReportsBak.add(DstgZxStyleReportsVO);
         }
@@ -440,7 +441,7 @@ public class DstgZxStyleSourceReportsDao {
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgZxStyleReportsVO DstgZxStyleReportsVO = new DstgZxStyleReportsVO();
             DstgZxStyleReportsVO.setZxStyle((String) dstgGoldDataReport.get("srcname"));
-            DstgZxStyleReportsVO.setZxStyleCode(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("sourceid"))));
+            DstgZxStyleReportsVO.setZxStyleCode(String.valueOf(dstgGoldDataReport.get("sourceid").toString()));
             DstgZxStyleReportsVO.setSuccessClientCount(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("client_count"))));
             dstgGoldDataReportsBak.add(DstgZxStyleReportsVO);
         }
@@ -487,7 +488,7 @@ public class DstgZxStyleSourceReportsDao {
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgZxStyleReportsVO DstgZxStyleReportsVO = new DstgZxStyleReportsVO();
             DstgZxStyleReportsVO.setZxStyle((String) dstgGoldDataReport.get("srcname"));
-            DstgZxStyleReportsVO.setZxStyleCode(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("sourceid"))));
+            DstgZxStyleReportsVO.setZxStyleCode(String.valueOf(dstgGoldDataReport.get("sourceid").toString()));
             DstgZxStyleReportsVO.setAvgAmount(((BigDecimal) dstgGoldDataReport.get("avg_amount")).doubleValue());
             dstgGoldDataReportsBak.add(DstgZxStyleReportsVO);
         }
@@ -532,7 +533,7 @@ public class DstgZxStyleSourceReportsDao {
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgZxStyleReportsVO DstgZxStyleReportsVO = new DstgZxStyleReportsVO();
             DstgZxStyleReportsVO.setZxStyle((String) dstgGoldDataReport.get("srcname"));
-            DstgZxStyleReportsVO.setZxStyleCode(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("sourceid"))));
+            DstgZxStyleReportsVO.setZxStyleCode(String.valueOf(dstgGoldDataReport.get("sourceid").toString()));
             DstgZxStyleReportsVO.setAmount(((BigDecimal) dstgGoldDataReport.get("sum_amount")).doubleValue());
             dstgGoldDataReportsBak.add(DstgZxStyleReportsVO);
         }
