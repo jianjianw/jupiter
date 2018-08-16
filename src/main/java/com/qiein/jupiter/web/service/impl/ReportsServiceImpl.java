@@ -238,11 +238,13 @@ public class ReportsServiceImpl implements ReportService {
     }
 
     @Override
-    public DsyyStatusReportsHeaderVO getDsyyStatusReports(Integer start, Integer end, int companyId) {
+    public DsyyStatusReportsHeaderVO getDsyyStatusReports(Integer start, Integer end, int companyId,Integer type,String groupId) {
         ReportsParamVO reportsParamVO = new ReportsParamVO();
         reportsParamVO.setStart(start);
         reportsParamVO.setEnd(end);
         reportsParamVO.setCompanyId(companyId);
+        reportsParamVO.setType(type);
+        reportsParamVO.setGroupId(groupId);
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         DsyyStatusReportsHeaderVO dsyyStatusReports = dsyyStatusReportsDao.getDsyyStatusReports(reportsParamVO, invalidConfig);
         return dsyyStatusReports;
@@ -393,12 +395,13 @@ public class ReportsServiceImpl implements ReportService {
     }
 
     @Override
-    public List<DstgZxStyleReportsVO> getDstgZxStyleSourceRerports(Integer start, Integer end, String zxStyleCode, int companyId) {
+    public List<DstgZxStyleReportsVO> getDstgZxStyleSourceRerports(Integer start, Integer end, String zxStyleCode,Integer type, int companyId) {
         ReportsParamVO reportsParamVO = new ReportsParamVO();
         reportsParamVO.setStart(start);
         reportsParamVO.setEnd(end);
         reportsParamVO.setCompanyId(companyId);
         reportsParamVO.setZxStyleCode(zxStyleCode);
+        reportsParamVO.setType(type);
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         List<DstgZxStyleReportsVO> dstgGoldDataReprots = dstgZxStyleSourceReportsDao.getDstgGoldDataReprots(reportsParamVO, invalidConfig);
         return dstgGoldDataReprots;

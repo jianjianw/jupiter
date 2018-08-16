@@ -75,7 +75,7 @@ public interface ReportService {
      * @param companyId
      * @return
      */
-    DsyyStatusReportsHeaderVO getDsyyStatusReports(Integer start, Integer end, int companyId);
+    DsyyStatusReportsHeaderVO getDsyyStatusReports(Integer start, Integer end, int companyId,Integer type,String groupId);
 
 
     /**
@@ -165,7 +165,7 @@ public interface ReportService {
      * @param companyId
      * @return
      */
-    List<DstgZxStyleReportsVO> getDstgZxStyleSourceRerports(Integer start, Integer end, String zxStyleCode, int companyId);
+    List<DstgZxStyleReportsVO> getDstgZxStyleSourceRerports(Integer start, Integer end, String zxStyleCode,Integer type, int companyId);
 
     /**
      * 渠道订单数据统计

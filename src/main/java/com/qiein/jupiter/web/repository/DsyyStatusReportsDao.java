@@ -51,7 +51,7 @@ public class DsyyStatusReportsDao {
      * */
     private void addConditionByTypeAndGroupId(ReportsParamVO reportsParamVO,StringBuilder sb){
         if(StringUtil.isNotEmpty(reportsParamVO.getGroupId())){
-            sb.append(" and info.groupid = "+reportsParamVO.getGroupId());
+            sb.append(" and info.groupid = '"+reportsParamVO.getGroupId()+"' ");
         }
         if(NumUtil.isValid(reportsParamVO.getType())){
             sb.append(" and info.typeid =" +reportsParamVO.getType());
@@ -63,7 +63,11 @@ public class DsyyStatusReportsDao {
      * */
     private void getGroupList(ReportsParamVO reportsParamVO,List<DsyyStatusReportsVO> dsyyStatusReportsVOS) {
         StringBuilder sb = new StringBuilder();
-        sb.append("select groupid,GROUPNAME,GROUPTYPE from hm_pub_group where companyid = ? and GROUPTYPE = 'dsyy' and PARENTID != '0' order by groupid");
+        sb.append("select groupid,GROUPNAME,GROUPTYPE from hm_pub_group where companyid = ? and GROUPTYPE = 'dsyy' and PARENTID != '0' ");
+        if(StringUtil.isNotEmpty(reportsParamVO.getGroupId())){
+            sb.append(" and groupid = '"+reportsParamVO.getGroupId()+"'");
+        }
+        sb.append(" order by GROUPNAME ");
 
         List<DsyyStatusReportsVO> dsyyStatusReports = jdbcTemplate.query(sb.toString(), new Object[]{reportsParamVO.getCompanyId()},
                 new RowMapper<DsyyStatusReportsVO>() {
