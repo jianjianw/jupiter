@@ -167,12 +167,13 @@ public class DsyyStatusStaffReportsDao {
         dsyyStatusReportsVO.setMapList(kzNumMap);
         for(DsyyStatusReportsVO dsyyStatusReports:dsyyStatusReportsHeaderVO.getDsyyStatusReportsHeaderVOS()){
             for (ClientStatusReportsVO clientStatusReportsVO : dsyyStatusReports.getClientStatusReportsVOS()) {
-                Integer kzNum = dsyyStatusReportsVO.getMapList().get(clientStatusReportsVO.getStatusId());
+                Integer kzNum = dsyyStatusReportsVO.getMapList().get(String.valueOf(clientStatusReportsVO.getStatusId()));
                 if(kzNum == null){
                     kzNum = 0;
                 }
-                kzNumMap.put(clientStatusReportsVO.getStatusId(), clientStatusReportsVO.getKzNum() + kzNum);
+                kzNumMap.put(String.valueOf(clientStatusReportsVO.getStatusId()), clientStatusReportsVO.getKzNum() + kzNum);
             }
+            dsyyStatusReports.setClientStatusReportsVOS(null);
         }
         dsyyStatusReportsHeaderVO.getDsyyStatusReportsHeaderVOS().add(0,dsyyStatusReportsVO);
     }
