@@ -3,6 +3,7 @@ package com.qiein.jupiter.web.entity.vo;
 import com.qiein.jupiter.web.entity.dto.ProvinceDataDTO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 省域报表VO2 只有这个对象前端才能解析
@@ -15,6 +16,7 @@ public class ProvinceReportsVO2 {
     private String srcName;
     private String dataType;    //数据类型  总客资 客资量 有效量 入店量 成交量
     private List<ProvinceDataDTO> provinceDataList;
+    private Map<String,Integer> provinceDataMap;
 
     public Integer getSrcId() {
         return srcId;
@@ -56,6 +58,14 @@ public class ProvinceReportsVO2 {
         this.provinceDataList = provinceDataList;
     }
 
+    public Map<String, Integer> getProvinceDataMap() {
+        return provinceDataMap;
+    }
+
+    public void setProvinceDataMap(Map<String, Integer> provinceDataMap) {
+        this.provinceDataMap = provinceDataMap;
+    }
+
     @Override
     public String toString() {
         return "ProvinceReportsVO2{" +
@@ -64,7 +74,7 @@ public class ProvinceReportsVO2 {
                 ", srcName='" + srcName + '\'' +
                 ", dataType='" + dataType + '\'' +
                 ", provinceDataList=" + provinceDataList +
+                ", provinceDataMap=" + provinceDataMap +
                 '}';
     }
-
 }

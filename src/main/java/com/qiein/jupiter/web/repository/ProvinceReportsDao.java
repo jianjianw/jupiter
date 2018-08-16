@@ -419,7 +419,7 @@ public class ProvinceReportsDao {
         }
     }
 
-    public static List<ProvinceReportsVO2> transform (List<ProvinceReportsVO> vo1List){
+    public static List<ProvinceReportsVO2> transform2 (List<ProvinceReportsVO> vo1List){
         List<ProvinceReportsVO2> vo2List = new ArrayList<>();
         Map<Integer,Integer> exist = new HashMap<>();   //key为srcId value为下标
 //        List<Integer> exist = new ArrayList<>();
@@ -448,4 +448,35 @@ public class ProvinceReportsDao {
         return vo2List;
     }
 
+    public static List<ProvinceReportsVO2> transform (List<ProvinceReportsVO> vo1List){
+        List<ProvinceReportsVO2> vo2List = new ArrayList<>();
+        Map<Integer,Integer> exist = new HashMap<>();   //key为srcId value为下标
+//        List<Integer> exist = new ArrayList<>();
+        int count = 0;
+        //根据渠道名字去获取
+        for (ProvinceReportsVO pr1 : vo1List){   //想遍历省的数据
+            String prName = pr1.getProvinceName();
+            for (SourceClientDataDTO scd : pr1.getSourceData()){
+                if (!exist.containsKey(scd.getSrcId())){   //如果这个来源不存在，生成一个
+                    exist.put(scd.getSrcId(),count++);
+//                    exist.add(scd.getSrcId());
+                    ProvinceReportsVO2 newOne = new ProvinceReportsVO2();
+                    newOne.setDataType(pr1.getDataType());
+                    newOne.setSrcId(scd.getSrcId());
+                    newOne.setSrcName(scd.getSrcName());
+                    newOne.setSrcImg(scd.getSrcImg());
+//                    newOne.setProvinceDataList(new ArrayList<ProvinceDataDTO>());
+//                    newOne.getProvinceDataList().add(new ProvinceDataDTO(prName,scd.getDataNum()));
+                    newOne.setProvinceDataMap(new HashMap<String, Integer>());
+                    newOne.getProvinceDataMap().put(prName,scd.getDataNum());
+                    vo2List.add(newOne);
+                }else { //如果存在，找到再插入
+                    ProvinceReportsVO2 now = vo2List.get(exist.get(scd.getSrcId()));
+//                    now.getProvinceDataList().add(new ProvinceDataDTO(prName,scd.getDataNum()));
+                    now.getProvinceDataMap().put(prName,scd.getDataNum());
+                }
+            }
+        }
+        return vo2List;
+    }
 }
