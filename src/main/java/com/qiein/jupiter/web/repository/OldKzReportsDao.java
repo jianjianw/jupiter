@@ -50,7 +50,7 @@ public class OldKzReportsDao {
         getBaseSql(sql, tableInfo, tableDetail);
         sql.append(" and info.createtime between ? and ?");
         sql.append(" GROUP BY detail.OLDKZPHONE,detail.oldkzname  ");
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{startTime, endTime, kzNameOrPhone, kzNameOrPhone});
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{kzNameOrPhone, kzNameOrPhone,startTime, endTime});
         for (Map<String, Object> map : list) {
             OldKzReportsVO oldKzReportsVO = new OldKzReportsVO();
             oldKzReportsVO.setAllClientCount(Integer.parseInt(Long.toString((Long) (map.get("count")))));
@@ -69,7 +69,7 @@ public class OldKzReportsDao {
         sql.append(" and info.createtime between ? and ?");
         sql.append(" and INSTR( '" + dsInvalidVO.getDsDdStatus() + "', CONCAT(',',info.STATUSID + '',',')) != 0");
         sql.append(" GROUP BY detail.OLDKZPHONE,detail.oldkzname  ");
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{startTime, endTime, kzNameOrPhone, kzNameOrPhone});
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{kzNameOrPhone, kzNameOrPhone,startTime, endTime});
         List<OldKzReportsVO> oldKzReportsBak = new LinkedList<>();
         for (Map<String, Object> map : list) {
             OldKzReportsVO oldKzReportsVO = new OldKzReportsVO();
@@ -80,10 +80,18 @@ public class OldKzReportsDao {
         }
         for (OldKzReportsVO oldKzReportsVO : oldKzReportsVOS) {
             for (OldKzReportsVO oldKzReportsVO1 : oldKzReportsBak) {
-                if (oldKzReportsVO.getOldKzPhone().equalsIgnoreCase(oldKzReportsVO1.getOldKzPhone()) && oldKzReportsVO.getOldKzName().equalsIgnoreCase(oldKzReportsVO1.getOldKzName())) {
-                    oldKzReportsVO.setPendingClientCount(oldKzReportsVO1.getPendingClientCount());
-                    break;
+                if(StringUtil.isNotEmpty(oldKzReportsVO1.getOldKzPhone())&&StringUtil.isNotEmpty(oldKzReportsVO.getOldKzPhone())){
+                    if (oldKzReportsVO.getOldKzPhone().equalsIgnoreCase(oldKzReportsVO1.getOldKzPhone())&&oldKzReportsVO.getOldKzName().equalsIgnoreCase(oldKzReportsVO1.getOldKzName()) ) {
+                        oldKzReportsVO.setPendingClientCount(oldKzReportsVO1.getPendingClientCount());
+                        break;
+                    }
+                }else{
+                    if( oldKzReportsVO.getOldKzName().equalsIgnoreCase(oldKzReportsVO1.getOldKzName())){
+                        oldKzReportsVO.setPendingClientCount(oldKzReportsVO1.getPendingClientCount());
+                        break;
+                    }
                 }
+
             }
         }
     }
@@ -96,7 +104,7 @@ public class OldKzReportsDao {
         getBaseSql(sql, tableInfo, tableDetail);
         sql.append(" and info.ComeShopTime between ? and ?");
        sql.append(" GROUP BY detail.OLDKZPHONE,detail.oldkzname  ");
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{startTime, endTime, kzNameOrPhone, kzNameOrPhone});
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{kzNameOrPhone, kzNameOrPhone,startTime, endTime});
         List<OldKzReportsVO> oldKzReportsBak = new LinkedList<>();
         for (Map<String, Object> map : list) {
             OldKzReportsVO oldKzReportsVO = new OldKzReportsVO();
@@ -107,10 +115,18 @@ public class OldKzReportsDao {
         }
         for (OldKzReportsVO oldKzReportsVO : oldKzReportsVOS) {
             for (OldKzReportsVO oldKzReportsVO1 : oldKzReportsBak) {
-                if (oldKzReportsVO.getOldKzPhone().equalsIgnoreCase(oldKzReportsVO1.getOldKzPhone()) && oldKzReportsVO.getOldKzName().equalsIgnoreCase(oldKzReportsVO1.getOldKzName())) {
-                    oldKzReportsVO.setComeShopClientCount(oldKzReportsVO1.getComeShopClientCount());
-                    break;
+                if(StringUtil.isNotEmpty(oldKzReportsVO1.getOldKzPhone())&&StringUtil.isNotEmpty(oldKzReportsVO.getOldKzPhone())){
+                    if (oldKzReportsVO.getOldKzPhone().equalsIgnoreCase(oldKzReportsVO1.getOldKzPhone())&&oldKzReportsVO.getOldKzName().equalsIgnoreCase(oldKzReportsVO1.getOldKzName()) ) {
+                        oldKzReportsVO.setComeShopClientCount(oldKzReportsVO1.getComeShopClientCount());
+                        break;
+                    }
+                }else{
+                    if( oldKzReportsVO.getOldKzName().equalsIgnoreCase(oldKzReportsVO1.getOldKzName())){
+                        oldKzReportsVO.setComeShopClientCount(oldKzReportsVO1.getComeShopClientCount());
+                        break;
+                    }
                 }
+
             }
         }
     }
@@ -123,7 +139,7 @@ public class OldKzReportsDao {
         getBaseSql(sql, tableInfo, tableDetail);
         sql.append(" and info.SuccessTime between ? and ?");
         sql.append(" GROUP BY detail.OLDKZPHONE,detail.oldkzname  ");
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{startTime, endTime, kzNameOrPhone, kzNameOrPhone});
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{kzNameOrPhone, kzNameOrPhone,startTime, endTime});
         List<OldKzReportsVO> oldKzReportsBak = new LinkedList<>();
         for (Map<String, Object> map : list) {
             OldKzReportsVO oldKzReportsVO = new OldKzReportsVO();
@@ -134,12 +150,21 @@ public class OldKzReportsDao {
         }
         for (OldKzReportsVO oldKzReportsVO : oldKzReportsVOS) {
             for (OldKzReportsVO oldKzReportsVO1 : oldKzReportsBak) {
-                if (oldKzReportsVO.getOldKzPhone().equalsIgnoreCase(oldKzReportsVO1.getOldKzPhone()) && oldKzReportsVO.getOldKzName().equalsIgnoreCase(oldKzReportsVO1.getOldKzName())) {
-                    oldKzReportsVO.setSuccessClientCount(oldKzReportsVO1.getSuccessClientCount());
-                    break;
+                if(StringUtil.isNotEmpty(oldKzReportsVO1.getOldKzPhone())&&StringUtil.isNotEmpty(oldKzReportsVO.getOldKzPhone())){
+                    if (oldKzReportsVO.getOldKzPhone().equalsIgnoreCase(oldKzReportsVO1.getOldKzPhone())&&oldKzReportsVO.getOldKzName().equalsIgnoreCase(oldKzReportsVO1.getOldKzName()) ) {
+                        oldKzReportsVO.setSuccessClientCount(oldKzReportsVO1.getSuccessClientCount());
+                        break;
+                    }
+                }else{
+                    if( oldKzReportsVO.getOldKzName().equalsIgnoreCase(oldKzReportsVO1.getOldKzName())){
+                        oldKzReportsVO.setSuccessClientCount(oldKzReportsVO1.getSuccessClientCount());
+                        break;
+                    }
                 }
+
             }
         }
+
     }
 
     /**
@@ -151,7 +176,7 @@ public class OldKzReportsDao {
         sql.append(" and info.createtime between ? and ?");
         sql.append("  and info.CLASSID = 1 and info.STATUSID = 98 ");
         sql.append(" GROUP BY detail.OLDKZPHONE,detail.oldkzname  ");
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{startTime, endTime, kzNameOrPhone, kzNameOrPhone});
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{kzNameOrPhone, kzNameOrPhone,startTime, endTime});
         List<OldKzReportsVO> oldKzReportsBak = new LinkedList<>();
         for (Map<String, Object> map : list) {
             OldKzReportsVO oldKzReportsVO = new OldKzReportsVO();
@@ -162,10 +187,18 @@ public class OldKzReportsDao {
         }
         for (OldKzReportsVO oldKzReportsVO : oldKzReportsVOS) {
             for (OldKzReportsVO oldKzReportsVO1 : oldKzReportsBak) {
-                if (oldKzReportsVO.getOldKzPhone().equalsIgnoreCase(oldKzReportsVO1.getOldKzPhone()) && oldKzReportsVO.getOldKzName().equalsIgnoreCase(oldKzReportsVO1.getOldKzName())) {
-                    oldKzReportsVO.setFilterPendingClientCount(oldKzReportsVO1.getFilterPendingClientCount());
-                    break;
+                if(StringUtil.isNotEmpty(oldKzReportsVO1.getOldKzPhone())&&StringUtil.isNotEmpty(oldKzReportsVO.getOldKzPhone())){
+                    if (oldKzReportsVO.getOldKzPhone().equalsIgnoreCase(oldKzReportsVO1.getOldKzPhone())&&oldKzReportsVO.getOldKzName().equalsIgnoreCase(oldKzReportsVO1.getOldKzName()) ) {
+                        oldKzReportsVO.setFilterPendingClientCount(oldKzReportsVO1.getFilterPendingClientCount());
+                        break;
+                    }
+                }else{
+                    if( oldKzReportsVO.getOldKzName().equalsIgnoreCase(oldKzReportsVO1.getOldKzName())){
+                        oldKzReportsVO.setFilterPendingClientCount(oldKzReportsVO1.getFilterPendingClientCount());
+                        break;
+                    }
                 }
+
             }
         }
     }
@@ -179,7 +212,7 @@ public class OldKzReportsDao {
         sql.append(" and info.createtime between ? and ?");
         sql.append(" and info.CLASSID = 6 and info.STATUSID = 99 ");
         sql.append(" GROUP BY detail.OLDKZPHONE,detail.oldkzname  ");
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{startTime, endTime, kzNameOrPhone, kzNameOrPhone});
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{kzNameOrPhone, kzNameOrPhone,startTime, endTime});
         List<OldKzReportsVO> oldKzReportsBak = new LinkedList<>();
         for (Map<String, Object> map : list) {
             OldKzReportsVO oldKzReportsVO = new OldKzReportsVO();
@@ -190,10 +223,18 @@ public class OldKzReportsDao {
         }
         for (OldKzReportsVO oldKzReportsVO : oldKzReportsVOS) {
             for (OldKzReportsVO oldKzReportsVO1 : oldKzReportsBak) {
-                if (oldKzReportsVO.getOldKzPhone().equalsIgnoreCase(oldKzReportsVO1.getOldKzPhone()) && oldKzReportsVO.getOldKzName().equalsIgnoreCase(oldKzReportsVO1.getOldKzName())) {
-                    oldKzReportsVO.setFilterInValidClientCount(oldKzReportsVO1.getFilterInValidClientCount());
-                    break;
+                if(StringUtil.isNotEmpty(oldKzReportsVO1.getOldKzPhone())&&StringUtil.isNotEmpty(oldKzReportsVO.getOldKzPhone())){
+                    if (oldKzReportsVO.getOldKzPhone().equalsIgnoreCase(oldKzReportsVO1.getOldKzPhone())&&oldKzReportsVO.getOldKzName().equalsIgnoreCase(oldKzReportsVO1.getOldKzName()) ) {
+                        oldKzReportsVO.setFilterInValidClientCount(oldKzReportsVO1.getFilterInValidClientCount());
+                        break;
+                    }
+                }else{
+                    if( oldKzReportsVO.getOldKzName().equalsIgnoreCase(oldKzReportsVO1.getOldKzName())){
+                        oldKzReportsVO.setFilterInValidClientCount(oldKzReportsVO1.getFilterInValidClientCount());
+                        break;
+                    }
                 }
+
             }
         }
     }
@@ -207,7 +248,7 @@ public class OldKzReportsDao {
         sql.append(" and info.createtime between ? and ?");
         sql.append(" and info.CLASSID = 1 and info.STATUSID = 0 ");
         sql.append(" GROUP BY detail.OLDKZPHONE,detail.oldkzname  ");
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{startTime, endTime, kzNameOrPhone, kzNameOrPhone});
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{kzNameOrPhone, kzNameOrPhone,startTime, endTime});
         List<OldKzReportsVO> oldKzReportsBak = new LinkedList<>();
         for (Map<String, Object> map : list) {
             OldKzReportsVO oldKzReportsVO = new OldKzReportsVO();
@@ -218,10 +259,18 @@ public class OldKzReportsDao {
         }
         for (OldKzReportsVO oldKzReportsVO : oldKzReportsVOS) {
             for (OldKzReportsVO oldKzReportsVO1 : oldKzReportsBak) {
-                if (oldKzReportsVO.getOldKzPhone().equalsIgnoreCase(oldKzReportsVO1.getOldKzPhone()) && oldKzReportsVO.getOldKzName().equalsIgnoreCase(oldKzReportsVO1.getOldKzName())) {
-                    oldKzReportsVO.setFilterInClientCount(oldKzReportsVO1.getFilterInClientCount());
-                    break;
+                if(StringUtil.isNotEmpty(oldKzReportsVO1.getOldKzPhone())&&StringUtil.isNotEmpty(oldKzReportsVO.getOldKzPhone())){
+                    if (oldKzReportsVO.getOldKzPhone().equalsIgnoreCase(oldKzReportsVO1.getOldKzPhone())&&oldKzReportsVO.getOldKzName().equalsIgnoreCase(oldKzReportsVO1.getOldKzName()) ) {
+                        oldKzReportsVO.setFilterInClientCount(oldKzReportsVO1.getFilterInClientCount());
+                        break;
+                    }
+                }else{
+                    if( oldKzReportsVO.getOldKzName().equalsIgnoreCase(oldKzReportsVO1.getOldKzName())){
+                        oldKzReportsVO.setFilterInClientCount(oldKzReportsVO1.getFilterInClientCount());
+                        break;
+                    }
                 }
+
             }
         }
     }
@@ -244,7 +293,7 @@ public class OldKzReportsDao {
             sql.append(" and detail.YXLEVEL IN(" + dsInvalidVO.getDsInvalidLevel() + ") ");
         }
        sql.append(" GROUP BY detail.OLDKZPHONE,detail.oldkzname  ");
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{startTime, endTime, kzNameOrPhone, kzNameOrPhone});
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{kzNameOrPhone, kzNameOrPhone,startTime, endTime});
         List<OldKzReportsVO> oldKzReportsBak = new LinkedList<>();
         for (Map<String, Object> map : list) {
             OldKzReportsVO oldKzReportsVO = new OldKzReportsVO();
@@ -255,10 +304,18 @@ public class OldKzReportsDao {
         }
         for (OldKzReportsVO oldKzReportsVO : oldKzReportsVOS) {
             for (OldKzReportsVO oldKzReportsVO1 : oldKzReportsBak) {
-                if (oldKzReportsVO.getOldKzPhone().equalsIgnoreCase(oldKzReportsVO1.getOldKzPhone()) && oldKzReportsVO.getOldKzName().equalsIgnoreCase(oldKzReportsVO1.getOldKzName())) {
-                    oldKzReportsVO.setInValidClientCount(oldKzReportsVO1.getInValidClientCount());
-                    break;
+                if(StringUtil.isNotEmpty(oldKzReportsVO1.getOldKzPhone())&&StringUtil.isNotEmpty(oldKzReportsVO.getOldKzPhone())){
+                    if (oldKzReportsVO.getOldKzPhone().equalsIgnoreCase(oldKzReportsVO1.getOldKzPhone())&&oldKzReportsVO.getOldKzName().equalsIgnoreCase(oldKzReportsVO1.getOldKzName()) ) {
+                        oldKzReportsVO.setInValidClientCount(oldKzReportsVO1.getInValidClientCount());
+                        break;
+                    }
+                }else{
+                    if( oldKzReportsVO.getOldKzName().equalsIgnoreCase(oldKzReportsVO1.getOldKzName())){
+                        oldKzReportsVO.setInValidClientCount(oldKzReportsVO1.getInValidClientCount());
+                        break;
+                    }
                 }
+
             }
         }
     }
@@ -276,7 +333,7 @@ public class OldKzReportsDao {
         sql.append(" and info.SuccessTime between ? and ?");
         sql.append(" and (detail.oldKzName like concat('%',?,'%') or detail.oldKzPhone like concat('%',?,'%'))");
         sql.append(" GROUP BY detail.OLDKZPHONE,detail.oldkzname ");
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{startTime, endTime, kzNameOrPhone, kzNameOrPhone});
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{ kzNameOrPhone, kzNameOrPhone,startTime, endTime});
         List<OldKzReportsVO> oldKzReportsBak = new LinkedList<>();
         for (Map<String, Object> map : list) {
             OldKzReportsVO oldKzReportsVO = new OldKzReportsVO();
@@ -308,7 +365,7 @@ public class OldKzReportsDao {
         sql.append(" and info.SuccessTime between ? and ?");
         sql.append(" and (detail.oldKzName like concat('%',?,'%') or detail.oldKzPhone like concat('%',?,'%'))");
         sql.append(" GROUP BY detail.OLDKZPHONE,detail.oldkzname ");
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{startTime, endTime, kzNameOrPhone, kzNameOrPhone});
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{kzNameOrPhone, kzNameOrPhone,startTime, endTime});
         List<OldKzReportsVO> oldKzReportsBak = new LinkedList<>();
         for (Map<String, Object> map : list) {
             OldKzReportsVO oldKzReportsVO = new OldKzReportsVO();
@@ -319,10 +376,18 @@ public class OldKzReportsDao {
         }
         for (OldKzReportsVO oldKzReportsVO : oldKzReportsVOS) {
             for (OldKzReportsVO oldKzReportsVO1 : oldKzReportsBak) {
-                if (oldKzReportsVO.getOldKzPhone().equalsIgnoreCase(oldKzReportsVO1.getOldKzPhone()) && oldKzReportsVO.getOldKzName().equalsIgnoreCase(oldKzReportsVO1.getOldKzName())) {
-                    oldKzReportsVO.setAmount(oldKzReportsVO1.getAmount());
-                    break;
+                if(StringUtil.isNotEmpty(oldKzReportsVO1.getOldKzPhone())&&StringUtil.isNotEmpty(oldKzReportsVO.getOldKzPhone())){
+                    if (oldKzReportsVO.getOldKzPhone().equalsIgnoreCase(oldKzReportsVO1.getOldKzPhone())&&oldKzReportsVO.getOldKzName().equalsIgnoreCase(oldKzReportsVO1.getOldKzName()) ) {
+                        oldKzReportsVO.setAmount(oldKzReportsVO1.getAmount());
+                        break;
+                    }
+                }else{
+                    if( oldKzReportsVO.getOldKzName().equalsIgnoreCase(oldKzReportsVO1.getOldKzName())){
+                        oldKzReportsVO.setAmount(oldKzReportsVO1.getAmount());
+                        break;
+                    }
                 }
+
             }
         }
     }
