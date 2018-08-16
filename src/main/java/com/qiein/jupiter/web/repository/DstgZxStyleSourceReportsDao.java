@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.repository;
 
 import com.qiein.jupiter.util.DBSplitUtil;
+import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.ObjectUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.vo.DsInvalidVO;
@@ -99,6 +100,7 @@ public class DstgZxStyleSourceReportsDao {
         sb.append(" left join hm_crm_source source on source.id = info.sourceid");
         sb.append(" where");
         sb.append("  info.isdel = 0");
+        sb.append(" and (source.TYPEID = 1 or source.TYPEID = 2)");
         sb.append(" and info.companyid = ?");
         return sb;
     }
@@ -108,7 +110,7 @@ public class DstgZxStyleSourceReportsDao {
      * */
     public void addCondition(ReportsParamVO reportsParamVO,StringBuilder sb){
         if(StringUtil.isNotEmpty(reportsParamVO.getZxStyleCode())){
-            sb.append(" having zxstyle = ?");
+            sb.append(" having zxstyle = "+reportsParamVO.getZxStyleCode());
         }
     }
 
@@ -447,6 +449,7 @@ public class DstgZxStyleSourceReportsDao {
         sb.append(" left join hm_crm_source source on source.id = info.sourceid");
         sb.append(" where");
         sb.append("  info.isdel = 0");
+        sb.append(" and (source.TYPEID = 1 or source.TYPEID = 2)");
         sb.append(" and info.companyid = ?");
         sb.append(" and info.SUCCESSTIME BETWEEN ? AND ?");
         sb.append(" group by info.sourceid");
@@ -492,6 +495,7 @@ public class DstgZxStyleSourceReportsDao {
         sb.append(" where");
         sb.append("  info.isdel = 0");
         sb.append(" and info.companyid = ?");
+        sb.append(" and (source.TYPEID = 1 or source.TYPEID = 2)");
         sb.append(" and info.SUCCESSTIME BETWEEN ? AND ?");
         sb.append(" group by info.sourceid");
         addCondition(reportsParamVO,sb);
@@ -614,5 +618,8 @@ public class DstgZxStyleSourceReportsDao {
     public double parseDouble(double result){
         return Double.parseDouble(String.format("%.2f",result));
     }
+
+
+
 
 }

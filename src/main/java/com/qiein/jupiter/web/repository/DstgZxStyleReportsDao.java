@@ -96,6 +96,7 @@ public class DstgZxStyleReportsDao {
         sb.append(" left join hm_crm_dictionary dictionary on detail.ZXSTYLE = dictionary.DICCODE and dictionary.DICTYPE = 'zx_style'");
         sb.append(" where");
         sb.append("  info.isdel = 0");
+        sb.append(" and (source.TYPEID = 1 or source.TYPEID = 2)");
         sb.append(" and info.companyid = ?");
         return sb;
     }
@@ -428,6 +429,7 @@ public class DstgZxStyleReportsDao {
         sb.append(" left join hm_crm_dictionary dictionary on detail.ZXSTYLE = dictionary.DICCODE and dictionary.DICTYPE = 'zx_style'");
         sb.append(" where");
         sb.append("  info.isdel = 0");
+        sb.append(" and (source.TYPEID = 1 or source.TYPEID = 2)");
         sb.append(" and info.companyid = ?");
         sb.append(" and info.SUCCESSTIME BETWEEN ? AND ?");
         sb.append(" group by detail.ZXSTYLE");
@@ -472,6 +474,7 @@ public class DstgZxStyleReportsDao {
         sb.append(" left join hm_crm_dictionary dictionary on detail.ZXSTYLE = dictionary.DICCODE and dictionary.DICTYPE = 'zx_style'");
         sb.append(" where");
         sb.append("  info.isdel = 0");
+        sb.append(" and (source.TYPEID = 1 or source.TYPEID = 2)");
         sb.append(" and info.companyid = ?");
         sb.append(" and info.SUCCESSTIME BETWEEN ? AND ?");
         sb.append(" group by detail.ZXSTYLE");
