@@ -67,7 +67,8 @@ public class DstgZxStyleReportsDao {
         StringBuilder sb = new StringBuilder();
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
-        sb.append(" select distinct  cast(ifnull(ZXSTYLE,99) as SIGNED ) as zx_code,ifnull(dictionary.DICNAME,'其他') as zx_style");
+        sb.append(" select * from (");
+        sb.append(" select distinct  cast(ifnull(ZXSTYLE,0) as SIGNED ) as zx_code,ifnull(dictionary.DICNAME,'其他') as zx_style");
         sb.append(" from ");
         sb.append(infoTabName + " info ");
         sb.append(" left join "+detailTabName+" detail on info.kzid = detail.kzid");
@@ -77,7 +78,7 @@ public class DstgZxStyleReportsDao {
         sb.append(" and (info.srctype = 1 or info.srctype = 2)");
         sb.append(" and info.companyid = ?");
         sb.append(" group by detail.ZXSTYLE");
-
+        sb.append(" ) a group by zx_code");
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(),reportsParamVO.getCompanyId()});
 
@@ -101,7 +102,8 @@ public class DstgZxStyleReportsDao {
 
 
     private StringBuilder getCommonsql(StringBuilder sb,String infoTabName,String detailTabName) {
-        sb.append(" select  cast(ifnull(ZXSTYLE,99) as SIGNED)  as zx_code,ifnull(dictionary.DICNAME,'其他') as zx_style,count(info.id) as client_count ");
+
+        sb.append(" select  cast(ifnull(ZXSTYLE,0) as SIGNED)  as zx_code,ifnull(dictionary.DICNAME,'其他') as zx_style,count(info.id) as client_count ");
         sb.append(" from");
         sb.append(infoTabName + " info ");
         sb.append(" left join "+detailTabName+" detail on info.kzid = detail.kzid");
@@ -442,7 +444,7 @@ public class DstgZxStyleReportsDao {
         StringBuilder sb = new StringBuilder();
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
-        sb.append(" select  cast(ifnull(ZXSTYLE,99) as SIGNED)  as zx_code,ifnull(dictionary.DICNAME,'其他') as zx_style,avg(detail.AMOUNT) as avg_amount ");
+        sb.append(" select  cast(ifnull(ZXSTYLE,0) as SIGNED)  as zx_code,ifnull(dictionary.DICNAME,'其他') as zx_style,avg(detail.AMOUNT) as avg_amount ");
         sb.append(" from");
         sb.append(infoTabName + " info ");
         sb.append(" left join "+detailTabName+" detail on info.kzid = detail.kzid");
@@ -488,7 +490,7 @@ public class DstgZxStyleReportsDao {
         StringBuilder sb = new StringBuilder();
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
-        sb.append(" select  cast(ifnull(ZXSTYLE,99) as SIGNED )  as zx_code,ifnull(dictionary.DICNAME,'其他') as zx_style,sum(detail.AMOUNT) as sum_amount ");
+        sb.append(" select  cast(ifnull(ZXSTYLE,0) as SIGNED )  as zx_code,ifnull(dictionary.DICNAME,'其他') as zx_style,sum(detail.AMOUNT) as sum_amount ");
         sb.append(" from");
         sb.append(infoTabName + " info ");
         sb.append(" left join "+detailTabName+" detail on info.kzid = detail.kzid");
