@@ -78,9 +78,10 @@ public class DstgZxStyleSourceReportsDao {
         sb.append(" where");
         sb.append("  info.isdel = 0");
         sb.append(" and info.companyid = ?");
+        addConditionByTypeAndZxCodeStyle(reportsParamVO,sb);
         sb.append(" and (info.srctype = 1 or info.srctype = 2)");
         sb.append(" group by info.sourceid ");
-        addCondition(reportsParamVO,sb);
+//        addCondition(reportsParamVO,sb);
 
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId()});
@@ -97,7 +98,7 @@ public class DstgZxStyleSourceReportsDao {
 
     private void addConditionByTypeAndZxCodeStyle(ReportsParamVO reportsParamVO,StringBuilder sb){
         if(StringUtil.isNotEmpty(reportsParamVO.getZxStyleCode())){
-            sb.append(" and dictionary.DICCODE = "+reportsParamVO.getZxStyleCode()+" ");
+            sb.append(" and detail.zxstyle = "+reportsParamVO.getZxStyleCode()+" ");
         }
         if(NumUtil.isValid(reportsParamVO.getType())){
             sb.append(" and info.typeid = "+reportsParamVO.getType());
@@ -117,14 +118,14 @@ public class DstgZxStyleSourceReportsDao {
         return sb;
     }
 
-    /**
-     * 添加条件
-     * */
-    public void addCondition(ReportsParamVO reportsParamVO,StringBuilder sb){
-        if(StringUtil.isNotEmpty(reportsParamVO.getZxStyleCode())){
-            sb.append(" having zxstyle = "+reportsParamVO.getZxStyleCode());
-        }
-    }
+//    /**
+//     * 添加条件
+//     * */
+//    public void addCondition(ReportsParamVO reportsParamVO,StringBuilder sb){
+//        if(StringUtil.isNotEmpty(reportsParamVO.getZxStyleCode())){
+//            sb.append(" having zxstyle = "+reportsParamVO.getZxStyleCode());
+//        }
+//    }
 
     /**
      * 获取广告总量
@@ -137,7 +138,7 @@ public class DstgZxStyleSourceReportsDao {
         addConditionByTypeAndZxCodeStyle(reportsParamVO,sb);
         sb.append(" and info.CREATETIME BETWEEN ? AND ? ");
         sb.append(" group by info.sourceid");
-        addCondition(reportsParamVO,sb);
+//        addCondition(reportsParamVO,sb);
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(),
                         reportsParamVO.getStart(),
@@ -176,7 +177,7 @@ public class DstgZxStyleSourceReportsDao {
         sb.append(" and info.CREATETIME BETWEEN ? AND ?");
         sb.append(" AND INSTR( ?, CONCAT(',',info.STATUSID + '',',')) != 0");
         sb.append(" group by info.sourceid");
-        addCondition(reportsParamVO,sb);
+//        addCondition(reportsParamVO,sb);
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(),
                         reportsParamVO.getStart(),
@@ -216,7 +217,7 @@ public class DstgZxStyleSourceReportsDao {
         sb.append(" and info.CREATETIME BETWEEN ? AND ?");
         sb.append(" and info.CLASSID = 1 and info.STATUSID = 98 ");
         sb.append(" group by info.sourceid");
-        addCondition(reportsParamVO,sb);
+//        addCondition(reportsParamVO,sb);
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(),
                         reportsParamVO.getStart(),
@@ -256,7 +257,7 @@ public class DstgZxStyleSourceReportsDao {
         sb.append(" and info.CREATETIME BETWEEN ? AND ?");
         sb.append(" and info.CLASSID = 6 and info.STATUSID = 99");
         sb.append(" group by info.sourceid");
-        addCondition(reportsParamVO,sb);
+//        addCondition(reportsParamVO,sb);
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(),
                         reportsParamVO.getStart(),
@@ -296,7 +297,7 @@ public class DstgZxStyleSourceReportsDao {
         sb.append(" and info.CREATETIME BETWEEN ? AND ?");
         sb.append(" and info.CLASSID = 1 and info.STATUSID = 0");
         sb.append(" group by info.sourceid");
-        addCondition(reportsParamVO,sb);
+//        addCondition(reportsParamVO,sb);
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(),
                         reportsParamVO.getStart(),
@@ -348,7 +349,7 @@ public class DstgZxStyleSourceReportsDao {
             sb.append(" and detail.YXLEVEL IN("+ dsInvalidVO.getDsInvalidLevel()  +") ");
         }
         sb.append(" group by info.sourceid");
-        addCondition(reportsParamVO,sb);
+//        addCondition(reportsParamVO,sb);
 
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(),
@@ -389,7 +390,7 @@ public class DstgZxStyleSourceReportsDao {
         addConditionByTypeAndZxCodeStyle(reportsParamVO,sb);
         sb.append(" and info.COMESHOPTIME BETWEEN ? AND ?");
         sb.append(" group by info.sourceid");
-        addCondition(reportsParamVO,sb);
+//        addCondition(reportsParamVO,sb);
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(),
                         reportsParamVO.getStart(),
@@ -427,7 +428,7 @@ public class DstgZxStyleSourceReportsDao {
         addConditionByTypeAndZxCodeStyle(reportsParamVO,sb);
         sb.append(" and info.SUCCESSTIME BETWEEN ? AND ?");
         sb.append(" group by info.sourceid");
-        addCondition(reportsParamVO,sb);
+//        addCondition(reportsParamVO,sb);
 
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(),
@@ -474,7 +475,7 @@ public class DstgZxStyleSourceReportsDao {
         addConditionByTypeAndZxCodeStyle(reportsParamVO,sb);
         sb.append(" and info.SUCCESSTIME BETWEEN ? AND ?");
         sb.append(" group by info.sourceid");
-        addCondition(reportsParamVO,sb);
+//        addCondition(reportsParamVO,sb);
 
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(),
@@ -520,7 +521,7 @@ public class DstgZxStyleSourceReportsDao {
         addConditionByTypeAndZxCodeStyle(reportsParamVO,sb);
         sb.append(" and info.SUCCESSTIME BETWEEN ? AND ?");
         sb.append(" group by info.sourceid");
-        addCondition(reportsParamVO,sb);
+//        addCondition(reportsParamVO,sb);
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(),
                         reportsParamVO.getStart(),

@@ -48,7 +48,7 @@ public class DsyyStatusStaffReportsDao {
      * */
     private void addConditionByTypeAndGroupId(ReportsParamVO reportsParamVO,StringBuilder sb){
         if(StringUtil.isNotEmpty(reportsParamVO.getGroupId())){
-            sb.append(" and info.groupid = "+reportsParamVO.getGroupId());
+            sb.append(" and info.groupid = '"+reportsParamVO.getGroupId()+"' ");
         }
         if(NumUtil.isValid(reportsParamVO.getType())){
             sb.append(" and info.typeid =" +reportsParamVO.getType());
