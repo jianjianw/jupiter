@@ -167,7 +167,7 @@ public class ReportsServiceImpl implements ReportService {
      * @param companyId
      */
     @Override
-    public List<DstgGoldDataReportsVO> getDstgAdReports(Integer start, Integer end, Integer companyId,Integer type) {
+    public List<DstgGoldDataReportsVO> getDstgAdReports(Integer start, Integer end, Integer companyId,String type) {
         //封装对应的参数
         ReportsParamVO reportsParamVO = new ReportsParamVO();
         reportsParamVO.setStart(start);
@@ -181,7 +181,7 @@ public class ReportsServiceImpl implements ReportService {
     }
 
     @Override
-    public List<DstgZxStyleReportsVO> getDstgZxStyleReports(Integer start, Integer end, int companyId,Integer type,String zxStyleCode) {
+    public List<DstgZxStyleReportsVO> getDstgZxStyleReports(Integer start, Integer end, int companyId,String type,String zxStyleCode) {
         //封装对应的参数
         ReportsParamVO reportsParamVO = new ReportsParamVO();
         reportsParamVO.setStart(start);
@@ -250,7 +250,7 @@ public class ReportsServiceImpl implements ReportService {
     }
 
     @Override
-    public DsyyStatusReportsHeaderVO getDsyyStatusReports(Integer start, Integer end, int companyId,Integer type,String groupId) {
+    public DsyyStatusReportsHeaderVO getDsyyStatusReports(Integer start, Integer end, int companyId,String type,String groupId) {
         ReportsParamVO reportsParamVO = new ReportsParamVO();
         reportsParamVO.setStart(start);
         reportsParamVO.setEnd(end);
@@ -391,7 +391,7 @@ public class ReportsServiceImpl implements ReportService {
     }
 
     @Override
-    public DsyyStatusReportsHeaderVO getDsyyStatusDetailReports(Integer start, Integer end, String groupId, int companyId) {
+    public DsyyStatusReportsHeaderVO getDsyyStatusDetailReports(Integer start, Integer end, String groupId, int companyId,String type) {
         //FIXME 此处有问题
         if (StringUtil.isEmpty(groupId)) {
             throw new RException(ExceptionEnum.GROUP_IS_NULL);
@@ -401,13 +401,14 @@ public class ReportsServiceImpl implements ReportService {
         reportsParamVO.setEnd(end);
         reportsParamVO.setGroupId(groupId);
         reportsParamVO.setCompanyId(companyId);
+        reportsParamVO.setType(type);
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         DsyyStatusReportsHeaderVO dsyyStatusReports = dsyyStatusStaffReportsDao.getDsyyStatusReports(reportsParamVO, invalidConfig);
         return dsyyStatusReports;
     }
 
     @Override
-    public List<DstgZxStyleReportsVO> getDstgZxStyleSourceRerports(Integer start, Integer end, String zxStyleCode,Integer type, int companyId) {
+    public List<DstgZxStyleReportsVO> getDstgZxStyleSourceRerports(Integer start, Integer end, String zxStyleCode,String type, int companyId) {
         ReportsParamVO reportsParamVO = new ReportsParamVO();
         reportsParamVO.setStart(start);
         reportsParamVO.setEnd(end);

@@ -98,10 +98,10 @@ public class DstgZxStyleSourceReportsDao {
 
     private void addConditionByTypeAndZxCodeStyle(ReportsParamVO reportsParamVO,StringBuilder sb){
         if(StringUtil.isNotEmpty(reportsParamVO.getZxStyleCode())){
-            sb.append(" and detail.zxstyle = "+reportsParamVO.getZxStyleCode()+" ");
+            sb.append(" and detail.ZXSTYLE in ( "+reportsParamVO.getZxStyleCode()+") ");
         }
-        if(NumUtil.isValid(reportsParamVO.getType())){
-            sb.append(" and info.typeid = "+reportsParamVO.getType());
+        if(StringUtil.isNotEmpty(reportsParamVO.getType())){
+            sb.append(" and info.typeid in( "+reportsParamVO.getType()+") ");
         }
     }
 

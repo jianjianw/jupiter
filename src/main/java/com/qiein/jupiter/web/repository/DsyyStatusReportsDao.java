@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.repository;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.util.CollectionUtils;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.NumUtil;
@@ -51,10 +52,16 @@ public class DsyyStatusReportsDao {
      * */
     private void addConditionByTypeAndGroupId(ReportsParamVO reportsParamVO,StringBuilder sb){
         if(StringUtil.isNotEmpty(reportsParamVO.getGroupId())){
-            sb.append(" and info.groupid = '"+reportsParamVO.getGroupId()+"' ");
+            String[] groupIds = reportsParamVO.getGroupId().split(CommonConstant.STR_SEPARATOR);
+            StringBuilder groupIdsSb = new StringBuilder();
+            for (String id:groupIds){
+                groupIdsSb.append("'").append(id).append("'").append(",");
+            }
+            String groupId = groupIdsSb.substring(0, groupIdsSb.toString().length() - 1);
+            sb.append(" and info.groupid in ("+ groupId +")");
         }
-        if(NumUtil.isValid(reportsParamVO.getType())){
-            sb.append(" and info.typeid =" +reportsParamVO.getType());
+        if(StringUtil.isNotEmpty(reportsParamVO.getType())){
+            sb.append(" and info.typeid in (" +reportsParamVO.getType()+ ")");
         }
     }
 
@@ -64,8 +71,15 @@ public class DsyyStatusReportsDao {
     private void getGroupList(ReportsParamVO reportsParamVO,List<DsyyStatusReportsVO> dsyyStatusReportsVOS) {
         StringBuilder sb = new StringBuilder();
         sb.append("select groupid,GROUPNAME,GROUPTYPE from hm_pub_group where companyid = ? and GROUPTYPE = 'dsyy' and PARENTID != '0' ");
+        //条件筛选
         if(StringUtil.isNotEmpty(reportsParamVO.getGroupId())){
-            sb.append(" and groupid = '"+reportsParamVO.getGroupId()+"'");
+            String[] groupIds = reportsParamVO.getGroupId().split(CommonConstant.STR_SEPARATOR);
+            StringBuilder groupIdsSb = new StringBuilder();
+            for (String id:groupIds){
+                groupIdsSb.append("'").append(id).append("'").append(",");
+            }
+            String groupId = groupIdsSb.substring(0, groupIdsSb.toString().length() - 1);
+            sb.append(" and groupid in ("+ groupId +")");
         }
         sb.append(" order by GROUPNAME ");
 

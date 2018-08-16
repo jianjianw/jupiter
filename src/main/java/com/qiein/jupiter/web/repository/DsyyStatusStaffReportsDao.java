@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.repository;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.entity.po.GroupReportsVO;
 import com.qiein.jupiter.util.StringUtil;
@@ -48,10 +49,17 @@ public class DsyyStatusStaffReportsDao {
      * */
     private void addConditionByTypeAndGroupId(ReportsParamVO reportsParamVO,StringBuilder sb){
         if(StringUtil.isNotEmpty(reportsParamVO.getGroupId())){
-            sb.append(" and info.groupid = '"+reportsParamVO.getGroupId()+"' ");
+            String[] groupIds = reportsParamVO.getGroupId().split(CommonConstant.STR_SEPARATOR);
+            StringBuilder groupIdsSb = new StringBuilder();
+            for (String id:groupIds){
+                groupIdsSb.append("'").append(id).append("'").append(",");
+            }
+            String groupId = groupIdsSb.substring(0, groupIdsSb.toString().length() - 1);
+            System.out.println(groupId);
+            sb.append(" and info.groupid in ("+ groupId +")");
         }
-        if(NumUtil.isValid(reportsParamVO.getType())){
-            sb.append(" and info.typeid =" +reportsParamVO.getType());
+        if(StringUtil.isNotEmpty(reportsParamVO.getType())){
+            sb.append(" and info.typeid in (" +reportsParamVO.getType()+ ")");
         }
     }
 

@@ -359,7 +359,7 @@ public class ReportsController extends BaseController {
      * 获取电商推广广告报表
      */
     @GetMapping("/get_dstg_ad_reports")
-    public ResultInfo getDstgAdReports(Integer start,Integer end,@RequestParam(value = "type",required = false)Integer type){
+    public ResultInfo getDstgAdReports(Integer start,Integer end,@RequestParam(value = "type",required = false)String type){
         StaffPO staffPO = getCurrentLoginStaff();
         List<DstgGoldDataReportsVO> dstgGoldDataReportsVO = reportService.getDstgAdReports(start,end,staffPO.getCompanyId(),type);
         return ResultInfoUtil.success(dstgGoldDataReportsVO);
@@ -369,7 +369,7 @@ public class ReportsController extends BaseController {
      * 电商推广咨询信息方式报表
      */
     @GetMapping("/get_dstg_zx_style_reports")
-    public ResultInfo getDstgZxStyleReports(Integer start,Integer end,@RequestParam(value="type",required = false)Integer type,@RequestParam(value = "zxStyleCode",required = false)String zxStyleCode){
+    public ResultInfo getDstgZxStyleReports(Integer start,Integer end,@RequestParam(value="type",required = false)String type,@RequestParam(value = "zxStyleCode",required = false)String zxStyleCode){
         StaffPO staffPO = getCurrentLoginStaff();
         List<DstgZxStyleReportsVO> dstgGoldDataReportsVO = reportService.getDstgZxStyleReports(start,end,staffPO.getCompanyId(),type,zxStyleCode);
         return ResultInfoUtil.success(dstgGoldDataReportsVO);
@@ -379,7 +379,7 @@ public class ReportsController extends BaseController {
      * 电商推广咨询方式来源报表
      */
     @GetMapping("/get_dstg_zx_style_source_reports")
-    public ResultInfo getDstgZxStyleSourceReports(Integer start, Integer end, String zxStyleCode,@RequestParam(value="type",required = false)Integer type) {
+    public ResultInfo getDstgZxStyleSourceReports(Integer start, Integer end, String zxStyleCode,@RequestParam(value="type",required = false)String type) {
         StaffPO staffPO = getCurrentLoginStaff();
         List<DstgZxStyleReportsVO> dstgZxStyleReportsVOS = reportService.getDstgZxStyleSourceRerports(start, end, zxStyleCode,type, staffPO.getCompanyId());
         return ResultInfoUtil.success(dstgZxStyleReportsVOS);
@@ -389,7 +389,7 @@ public class ReportsController extends BaseController {
      * 客资各状态转发统计
      */
     @GetMapping("/get_dsyy_status_reports")
-    public ResultInfo getDSyyStatusReports(Integer start, Integer end,@RequestParam(value="type",required = false)Integer type,@RequestParam(value = "groupId",required = false)String groupId) {
+    public ResultInfo getDSyyStatusReports(Integer start, Integer end,@RequestParam(value="type",required = false)String type,@RequestParam(value = "groupId",required = false)String groupId) {
         StaffPO staffPO = getCurrentLoginStaff();
         DsyyStatusReportsHeaderVO dsyyStatusReports = reportService.getDsyyStatusReports(start, end, staffPO.getCompanyId(),type,groupId);
         return ResultInfoUtil.success(dsyyStatusReports);
@@ -399,9 +399,9 @@ public class ReportsController extends BaseController {
      * 电商邀约详细统计
      */
     @GetMapping("/get_dsyy_status_detail_reports")
-    public ResultInfo getDsyyStatusReports(Integer start, Integer end, String groupId,@RequestParam(value="type",required = false)Integer type) {
+    public ResultInfo getDsyyStatusReports(Integer start, Integer end, String groupId,@RequestParam(value="type",required = false)String type) {
         StaffPO staffPO = getCurrentLoginStaff();
-        DsyyStatusReportsHeaderVO dsyyStatusReportsHeaderVO = reportService.getDsyyStatusDetailReports(start, end, groupId, staffPO.getCompanyId());
+        DsyyStatusReportsHeaderVO dsyyStatusReportsHeaderVO = reportService.getDsyyStatusDetailReports(start, end, groupId, staffPO.getCompanyId(),type);
         return ResultInfoUtil.success(dsyyStatusReportsHeaderVO);
     }
 

@@ -103,9 +103,9 @@ public class DstgGoldDataReportsDao {
     /**
      * 新增条件
      * */
-    private void addConditionByType(Integer type,StringBuilder sb){
-        if(NumUtil.isValid(type)){
-            sb.append(" and info.typeid = "+type);
+    private void addConditionByType(String type,StringBuilder sb){
+        if(StringUtil.isNotEmpty(type)){
+            sb.append(" and info.typeid in ( "+type+")");
         }
     }
 
