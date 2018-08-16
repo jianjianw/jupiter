@@ -77,6 +77,7 @@ public class DstgZxStyleSourceReportsDao {
         sb.append(" where");
         sb.append("  info.isdel = 0");
         sb.append(" and info.companyid = ?");
+        sb.append(" and (info.srctype = 1 or info.srctype = 2)");
         sb.append(" group by info.sourceid ");
         addCondition(reportsParamVO,sb);
 
@@ -100,7 +101,7 @@ public class DstgZxStyleSourceReportsDao {
         sb.append(" left join hm_crm_source source on source.id = info.sourceid");
         sb.append(" where");
         sb.append("  info.isdel = 0");
-        sb.append(" and (source.TYPEID = 1 or source.TYPEID = 2)");
+        sb.append(" and (info.srctype = 1 or info.srctype = 2)");
         sb.append(" and info.companyid = ?");
         return sb;
     }
@@ -449,7 +450,7 @@ public class DstgZxStyleSourceReportsDao {
         sb.append(" left join hm_crm_source source on source.id = info.sourceid");
         sb.append(" where");
         sb.append("  info.isdel = 0");
-        sb.append(" and (source.TYPEID = 1 or source.TYPEID = 2)");
+        sb.append(" and (info.srctype = 1 or info.srctype = 2)");
         sb.append(" and info.companyid = ?");
         sb.append(" and info.SUCCESSTIME BETWEEN ? AND ?");
         sb.append(" group by info.sourceid");
@@ -495,7 +496,7 @@ public class DstgZxStyleSourceReportsDao {
         sb.append(" where");
         sb.append("  info.isdel = 0");
         sb.append(" and info.companyid = ?");
-        sb.append(" and (source.TYPEID = 1 or source.TYPEID = 2)");
+        sb.append(" and (info.srctype = 1 or info.srctype = 2)");
         sb.append(" and info.SUCCESSTIME BETWEEN ? AND ?");
         sb.append(" group by info.sourceid");
         addCondition(reportsParamVO,sb);

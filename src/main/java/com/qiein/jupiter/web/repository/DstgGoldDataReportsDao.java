@@ -72,8 +72,8 @@ public class DstgGoldDataReportsDao {
         sb.append(" where");
         sb.append(" info.kzid = detail.kzid");
         sb.append(" and info.isdel = 0");
+        sb.append(" and (info.srctype = 1 or info.srctype = 2)");
         sb.append(" and info.companyid = ?");
-        sb.append(" and (source.TYPEID = 1 or source.TYPEID = 2)");
         sb.append(" group by detail.adid");
 
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
@@ -93,8 +93,8 @@ public class DstgGoldDataReportsDao {
         sb.append(infoTabName + " info ," + detailTabName + " detail");
         sb.append(" where");
         sb.append(" info.kzid = detail.kzid");
+        sb.append(" and (info.srctype = 1 or info.srctype = 2)");
         sb.append(" and info.isdel = 0");
-        sb.append(" and (source.TYPEID = 1 or source.TYPEID = 2)");
         sb.append(" and info.companyid = ?");
         return sb;
     }
@@ -417,7 +417,7 @@ public class DstgGoldDataReportsDao {
         sb.append(" where");
         sb.append(" info.kzid = detail.kzid");
         sb.append(" and info.isdel = 0");
-        sb.append(" and (source.TYPEID = 1 or source.TYPEID = 2)");
+        sb.append(" and (info.srctype = 1 or info.srctype = 2)");
         sb.append(" and info.companyid = ?");
         sb.append(" and info.SUCCESSTIME BETWEEN ? AND ?");
         sb.append(" group by detail.adid");
@@ -460,7 +460,7 @@ public class DstgGoldDataReportsDao {
         sb.append(" where");
         sb.append(" info.kzid = detail.kzid");
         sb.append(" and info.isdel = 0");
-        sb.append(" and (source.TYPEID = 1 or source.TYPEID = 2)");
+        sb.append(" and (info.srctype = 1 or info.srctype = 2)");
         sb.append(" and info.companyid = ?");
         sb.append(" and info.SUCCESSTIME BETWEEN ? AND ?");
         sb.append(" group by detail.adid");
