@@ -70,14 +70,15 @@ public class DstgZxStyleReportsDao {
         sb.append(" from ");
         sb.append(infoTabName + " info ");
         sb.append(" left join "+detailTabName+" detail on info.kzid = detail.kzid");
-        sb.append(" left join hm_crm_dictionary dictionary on detail.ZXSTYLE = dictionary.DICCODE and dictionary.DICTYPE = 'zx_style'");
+        sb.append(" left join hm_crm_dictionary dictionary on detail.ZXSTYLE = dictionary.DICCODE and dictionary.DICTYPE = 'zx_style' and dictionary.companyid = ?");
         sb.append(" where");
         sb.append("  info.isdel = 0");
+        sb.append(" and (info.srctype = 1 or info.srctype = 2)");
         sb.append(" and info.companyid = ?");
         sb.append(" group by detail.ZXSTYLE");
 
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
-                new Object[]{reportsParamVO.getCompanyId()});
+                new Object[]{reportsParamVO.getCompanyId(),reportsParamVO.getCompanyId()});
 
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgZxStyleReportsVO DstgZxStyleReportsVO = new DstgZxStyleReportsVO();
@@ -93,9 +94,10 @@ public class DstgZxStyleReportsDao {
         sb.append(" from");
         sb.append(infoTabName + " info ");
         sb.append(" left join "+detailTabName+" detail on info.kzid = detail.kzid");
-        sb.append(" left join hm_crm_dictionary dictionary on detail.ZXSTYLE = dictionary.DICCODE and dictionary.DICTYPE = 'zx_style'");
+        sb.append(" left join hm_crm_dictionary dictionary on detail.ZXSTYLE = dictionary.DICCODE and dictionary.DICTYPE = 'zx_style' and dictionary.companyid = ?");
         sb.append(" where");
         sb.append("  info.isdel = 0");
+        sb.append(" and (info.srctype = 1 or info.srctype = 2)");
         sb.append(" and info.companyid = ?");
         return sb;
     }
@@ -111,7 +113,7 @@ public class DstgZxStyleReportsDao {
         sb.append(" and info.CREATETIME BETWEEN ? AND ? ");
         sb.append(" group by detail.ZXSTYLE");
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
-                new Object[]{reportsParamVO.getCompanyId(),
+                new Object[]{reportsParamVO.getCompanyId(),reportsParamVO.getCompanyId(),
                         reportsParamVO.getStart(),
                         reportsParamVO.getEnd()});
 
@@ -148,7 +150,7 @@ public class DstgZxStyleReportsDao {
         sb.append(" AND INSTR( ?, CONCAT(',',info.STATUSID + '',',')) != 0");
         sb.append(" group by detail.ZXSTYLE");
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
-                new Object[]{reportsParamVO.getCompanyId(),
+                new Object[]{reportsParamVO.getCompanyId(),reportsParamVO.getCompanyId(),
                         reportsParamVO.getStart(),
                         reportsParamVO.getEnd(),
                         dsInvalidVO.getDsDdStatus() });
@@ -186,7 +188,7 @@ public class DstgZxStyleReportsDao {
         sb.append(" and info.CLASSID = 1 and info.STATUSID = 98 ");
         sb.append(" group by detail.ZXSTYLE");
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
-                new Object[]{reportsParamVO.getCompanyId(),
+                new Object[]{reportsParamVO.getCompanyId(),reportsParamVO.getCompanyId(),
                         reportsParamVO.getStart(),
                         reportsParamVO.getEnd()
                        });
@@ -224,7 +226,7 @@ public class DstgZxStyleReportsDao {
         sb.append(" and info.CLASSID = 6 and info.STATUSID = 99");
         sb.append(" group by detail.ZXSTYLE");
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
-                new Object[]{reportsParamVO.getCompanyId(),
+                new Object[]{reportsParamVO.getCompanyId(),reportsParamVO.getCompanyId(),
                         reportsParamVO.getStart(),
                         reportsParamVO.getEnd()});
 
@@ -262,7 +264,7 @@ public class DstgZxStyleReportsDao {
         sb.append(" and info.CLASSID = 1 and info.STATUSID = 0");
         sb.append(" group by detail.ZXSTYLE");
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
-                new Object[]{reportsParamVO.getCompanyId(),
+                new Object[]{reportsParamVO.getCompanyId(),reportsParamVO.getCompanyId(),
                         reportsParamVO.getStart(),
                         reportsParamVO.getEnd()});
 
@@ -313,7 +315,7 @@ public class DstgZxStyleReportsDao {
         sb.append(" group by detail.ZXSTYLE");
 
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
-                new Object[]{reportsParamVO.getCompanyId(),
+                new Object[]{reportsParamVO.getCompanyId(),reportsParamVO.getCompanyId(),
                         reportsParamVO.getStart(),
                         reportsParamVO.getEnd()});
 
@@ -352,7 +354,7 @@ public class DstgZxStyleReportsDao {
         sb.append(" group by detail.ZXSTYLE");
 
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
-                new Object[]{reportsParamVO.getCompanyId(),
+                new Object[]{reportsParamVO.getCompanyId(),reportsParamVO.getCompanyId(),
                         reportsParamVO.getStart(),
                         reportsParamVO.getEnd()});
 
@@ -389,7 +391,7 @@ public class DstgZxStyleReportsDao {
         sb.append(" group by detail.ZXSTYLE");
 
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
-                new Object[]{reportsParamVO.getCompanyId(),
+                new Object[]{reportsParamVO.getCompanyId(),reportsParamVO.getCompanyId(),
                         reportsParamVO.getStart(),
                         reportsParamVO.getEnd()});
 
@@ -425,16 +427,17 @@ public class DstgZxStyleReportsDao {
         sb.append(" from");
         sb.append(infoTabName + " info ");
         sb.append(" left join "+detailTabName+" detail on info.kzid = detail.kzid");
-        sb.append(" left join hm_crm_dictionary dictionary on detail.ZXSTYLE = dictionary.DICCODE and dictionary.DICTYPE = 'zx_style'");
+        sb.append(" left join hm_crm_dictionary dictionary on detail.ZXSTYLE = dictionary.DICCODE and dictionary.DICTYPE = 'zx_style' and dictionary.companyid = ?");
         sb.append(" where");
         sb.append("  info.isdel = 0");
+        sb.append(" and (info.srctype = 1 or info.srctype = 2)");
         sb.append(" and info.companyid = ?");
         sb.append(" and info.SUCCESSTIME BETWEEN ? AND ?");
         sb.append(" group by detail.ZXSTYLE");
 
 
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
-                new Object[]{reportsParamVO.getCompanyId(),
+                new Object[]{reportsParamVO.getCompanyId(),reportsParamVO.getCompanyId(),
                         reportsParamVO.getStart(),
                         reportsParamVO.getEnd()});
 
@@ -469,15 +472,16 @@ public class DstgZxStyleReportsDao {
         sb.append(" from");
         sb.append(infoTabName + " info ");
         sb.append(" left join "+detailTabName+" detail on info.kzid = detail.kzid");
-        sb.append(" left join hm_crm_dictionary dictionary on detail.ZXSTYLE = dictionary.DICCODE and dictionary.DICTYPE = 'zx_style'");
+        sb.append(" left join hm_crm_dictionary dictionary on detail.ZXSTYLE = dictionary.DICCODE and dictionary.DICTYPE = 'zx_style' and dictionary.companyid = ?");
         sb.append(" where");
         sb.append("  info.isdel = 0");
+        sb.append(" and (info.srctype = 1 or info.srctype = 2)");
         sb.append(" and info.companyid = ?");
         sb.append(" and info.SUCCESSTIME BETWEEN ? AND ?");
         sb.append(" group by detail.ZXSTYLE");
 
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
-                new Object[]{reportsParamVO.getCompanyId(),
+                new Object[]{reportsParamVO.getCompanyId(),reportsParamVO.getCompanyId(),
                         reportsParamVO.getStart(),
                         reportsParamVO.getEnd()});
 

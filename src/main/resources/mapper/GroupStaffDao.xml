@@ -402,7 +402,7 @@
         WHERE
             s.COMPANYID = #{companyId} AND g.GROUPTYPE = #{type}
             AND s.ISDEL = 0 AND s.ISLOCK = 0
-        ORDER BY g.grp.PRIORITY
+        ORDER BY g.PRIORITY
     </select>
 
     <!--获取员工所属角色-->
@@ -479,7 +479,7 @@
             AND sf.ISDEL = 0
             AND sf.ISLOCK = 0
             AND sf.STATUSFLAG = 1
-        ORDER BY grp.GROUPNAME, grp.ID, sf.ISLOCK, sf.STATUSFLAG DESC, sf.ID
+        ORDER BY grp.PRIORITY, sf.ID
     </select>
 
     <!--根据公司id和分组id获取分组员工的id集合-->

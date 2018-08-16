@@ -405,7 +405,7 @@
 			info.COMPANYID = #{companyId}
 		AND info.ISDEL = 0
 		AND INSTR(CONCAT(',',#{kzIds},','),CONCAT(',',info.KZID,',')) != 0
-		AND info.APPOINTORID IS NOT NULL
+		AND ${type} IS NOT NULL
     </select>
 
 	<update id="editKzphoneFlag">

@@ -64,7 +64,7 @@ public interface ClientService {
      * @param companyId
      * @return
      */
-    int listExistAppointClientsNum(String kzIds, int companyId);
+    int listExistAppointClientsNum(String kzIds, int companyId, String role);
 
     /**
      * 新增客资日志
