@@ -45,7 +45,7 @@ public interface ReportService {
      * @param companyId
      * @return
      */
-    List<DstgGoldDataReportsVO> getDstgAdReports(Integer start, Integer end, Integer companyId);
+    List<DstgGoldDataReportsVO> getDstgAdReports(Integer start, Integer end, Integer companyId,Integer type);
 
     /**
      * 电商推广咨询信息方式报表
@@ -53,9 +53,11 @@ public interface ReportService {
      * @param start
      * @param end
      * @param companyId
+     * @param type
+     * @param zxStyleCode
      * @return
      */
-    List<DstgZxStyleReportsVO> getDstgZxStyleReports(Integer start, Integer end, int companyId);
+    List<DstgZxStyleReportsVO> getDstgZxStyleReports(Integer start, Integer end, int companyId,Integer type,String zxStyleCode);
 
     /**
      * 获取无效原因客资报表

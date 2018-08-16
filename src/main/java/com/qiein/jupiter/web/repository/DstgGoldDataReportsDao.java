@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.repository;
 
 import com.qiein.jupiter.util.DBSplitUtil;
+import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.vo.DsInvalidVO;
 import com.qiein.jupiter.web.entity.vo.DstgGoldDataReportsVO;
@@ -100,6 +101,16 @@ public class DstgGoldDataReportsDao {
     }
 
     /**
+     * 新增条件
+     * */
+    private void addConditionByType(Integer type,StringBuilder sb){
+        if(NumUtil.isValid(type)){
+            sb.append(" and info.typeid = "+type);
+        }
+    }
+
+
+    /**
      * 获取广告总量
      */
     private void getAllClientCount(ReportsParamVO reportsParamVO, List<DstgGoldDataReportsVO> dstgGoldDataReportsVOS) {
@@ -108,6 +119,7 @@ public class DstgGoldDataReportsDao {
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
         sb =  getCommonsql(sb,infoTabName,detailTabName);
         sb.append(" and info.CREATETIME BETWEEN ? AND ?");
+        addConditionByType(reportsParamVO.getType(),sb);
         sb.append(" group by detail.adid");
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(),
@@ -144,6 +156,7 @@ public class DstgGoldDataReportsDao {
         sb = getCommonsql(sb, infoTabName, detailTabName);
         sb.append(" and info.CREATETIME BETWEEN ? AND ?");
         sb.append(" AND INSTR( ?, CONCAT(',',info.STATUSID + '',',')) != 0");
+        addConditionByType(reportsParamVO.getType(),sb);
         sb.append(" group by detail.adid");
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(),
@@ -181,6 +194,7 @@ public class DstgGoldDataReportsDao {
         sb = getCommonsql(sb, infoTabName, detailTabName);
         sb.append(" and info.CREATETIME BETWEEN ? AND ?");
         sb.append(" and info.CLASSID = 1 and info.STATUSID = 98 ");
+        addConditionByType(reportsParamVO.getType(),sb);
         sb.append(" group by detail.adid");
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(),
@@ -217,6 +231,7 @@ public class DstgGoldDataReportsDao {
         sb = getCommonsql(sb, infoTabName, detailTabName);
         sb.append(" and info.CREATETIME BETWEEN ? AND ?");
         sb.append(" and info.CLASSID = 6 and info.STATUSID = 99");
+        addConditionByType(reportsParamVO.getType(),sb);
         sb.append(" group by detail.adid");
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(),
@@ -254,6 +269,7 @@ public class DstgGoldDataReportsDao {
         sb = getCommonsql(sb, infoTabName, detailTabName);
         sb.append(" and info.CREATETIME BETWEEN ? AND ?");
         sb.append(" and info.CLASSID = 1 and info.STATUSID = 0");
+        addConditionByType(reportsParamVO.getType(),sb);
         sb.append(" group by detail.adid");
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(),
@@ -293,6 +309,7 @@ public class DstgGoldDataReportsDao {
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
         sb = getCommonsql(sb, infoTabName, detailTabName);
         sb.append(" and info.CREATETIME BETWEEN ? AND ?");
+        addConditionByType(reportsParamVO.getType(),sb);
         if(StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidStatus()) && StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidLevel())){
             sb.append(" and (info.STATUSID in("+ dsInvalidVO.getDsInvalidStatus()+") or");
             sb.append("   detail.YXLEVEL IN("+ dsInvalidVO.getDsInvalidLevel()  +") )");
@@ -341,6 +358,7 @@ public class DstgGoldDataReportsDao {
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
         sb = getCommonsql(sb, infoTabName, detailTabName);
         sb.append(" and info.COMESHOPTIME BETWEEN ? AND ?");
+        addConditionByType(reportsParamVO.getType(),sb);
         sb.append(" group by detail.adid");
 
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
@@ -377,6 +395,7 @@ public class DstgGoldDataReportsDao {
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
         sb = getCommonsql(sb, infoTabName, detailTabName);
         sb.append(" and info.SUCCESSTIME BETWEEN ? AND ?");
+        addConditionByType(reportsParamVO.getType(),sb);
         sb.append(" group by detail.adid");
 
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
@@ -420,6 +439,7 @@ public class DstgGoldDataReportsDao {
         sb.append(" and (info.srctype = 1 or info.srctype = 2)");
         sb.append(" and info.companyid = ?");
         sb.append(" and info.SUCCESSTIME BETWEEN ? AND ?");
+        addConditionByType(reportsParamVO.getType(),sb);
         sb.append(" group by detail.adid");
 
 
@@ -463,6 +483,7 @@ public class DstgGoldDataReportsDao {
         sb.append(" and (info.srctype = 1 or info.srctype = 2)");
         sb.append(" and info.companyid = ?");
         sb.append(" and info.SUCCESSTIME BETWEEN ? AND ?");
+        addConditionByType(reportsParamVO.getType(),sb);
         sb.append(" group by detail.adid");
 
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
