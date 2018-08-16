@@ -964,4 +964,45 @@ public class GoEasyUtil {
         newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_RECEIVE, head, null, info.getKzId(), staffId, companyId));
     }
 
+    /**
+     * 客资驳回消息
+     *
+     * @param staffPO
+     * @param toStaffId
+     * @param kzIds
+     * @param newsDao
+     * @param clientInfoDao
+     */
+
+    public static void pushReject(int companyId, int toStaffId, ClientGoEasyDTO info, NewsDao newsDao, StaffDao staffDao) {
+        if (NumUtil.isInValid(toStaffId) || NumUtil.isInValid(companyId)) {
+            return;
+        }
+        String head = "您有一个客资被无效驳回";
+        StringBuffer sb = new StringBuffer();
+        sb.append("编号：").append(info.getId()).append("<br/>");
+        if (StringUtil.isNotEmpty(info.getKzName())) {
+            sb.append("姓名：").append(StringUtil.nullToStrTrim(info.getKzName())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzPhone())) {
+            sb.append("电话：").append(StringUtil.nullToStrTrim(info.getKzPhone())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzWechat())) {
+            sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWechat())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzQq())) {
+            sb.append("QQ：").append(StringUtil.nullToStrTrim(info.getKzQq())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzWw())) {
+            sb.append("旺旺：").append(StringUtil.nullToStrTrim(info.getKzWw())).append("<br/>");
+        }
+        sb.append("<br/>渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("<br/>");
+        sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("<br/><br/>");
+
+        pushCommon(companyId, toStaffId, head, sb.toString());
+        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_COMMON, head, sb.toString().replaceAll("<br/>", "；"),
+                info.getKzId(), toStaffId, companyId));
+        DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), companyId, toStaffId, staffDao);
+    }
+
 }

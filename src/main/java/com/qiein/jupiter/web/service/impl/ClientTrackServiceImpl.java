@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.constant.*;
 import com.qiein.jupiter.exception.ExceptionEnum;
@@ -174,9 +175,19 @@ public class ClientTrackServiceImpl implements ClientTrackService {
         if (!"100000".equals(jsInfo.getString("code"))) {
             throw new RException(jsInfo.getString("msg"));
         } else {
-            return JsonFmtUtil.strContentToJsonObj(addRstStr).getIntValue("num");
+            JSONArray kzIdArr = JsonFmtUtil.strContentToJsonObj(addRstStr).getJSONArray("kzIds");
+            if (rst == ClientStatusConst.BE_INVALID_REJECT || rst == ClientStatusConst.BE_INVALID_ALWAYS) {
+                //发送消息给邀约客服
+                for (int i = 0; i < kzIdArr.size(); i++) {
+                    String kzId = (String) kzIdArr.get(i);
+                    ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(kzId,
+                            DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
+                            DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
+                    GoEasyUtil.pushReject(staffPO.getCompanyId(), info.getAppointorId(), info, newsDao, staffDao);
+                }
+            }
+            return kzIdArr.size();
         }
-
     }
 
     /**
