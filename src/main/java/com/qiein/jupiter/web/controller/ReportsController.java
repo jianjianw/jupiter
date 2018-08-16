@@ -6,6 +6,7 @@ import com.qiein.jupiter.http.CrmBaseApi;
 import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.entity.dto.CitiesAnalysisParamDTO;
 import com.qiein.jupiter.web.entity.dto.ClientLogDTO;
+import com.qiein.jupiter.web.entity.dto.ProvinceAnalysisParamDTO;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.*;
@@ -456,6 +457,27 @@ public class ReportsController extends BaseController {
         }
         searchKey.setCompanyId(getCurrentLoginStaff().getCompanyId());
         return ResultInfoUtil.success(reportService.getCityReport(searchKey));
+    }
+
+    /**
+     * 获取省域分析报表
+     * @param searchKey
+     * @return
+     */
+    @GetMapping("/get_province_analysis_report")
+    public ResultInfo getProvinceAnalysisReport(ProvinceAnalysisParamDTO searchKey){
+        //TODO 给默认时间
+        if (searchKey.getStart() == null){
+            searchKey.setStart(0);
+        }
+        if (searchKey.getEnd() == null){
+            searchKey.setEnd(2000000000);
+        }
+        if (searchKey.getSearchClientType() == null){
+            searchKey.setSearchClientType(1);
+        }
+        searchKey.setCompanyId(getCurrentLoginStaff().getCompanyId());
+        return ResultInfoUtil.success(reportService.getProvinceReport(searchKey));
     }
 
     /**

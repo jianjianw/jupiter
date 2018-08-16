@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.web.entity.dto.CitiesAnalysisParamDTO;
 import com.qiein.jupiter.web.entity.dto.ClientLogDTO;
+import com.qiein.jupiter.web.entity.dto.ProvinceAnalysisParamDTO;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.vo.*;
 
@@ -91,6 +92,12 @@ public interface ReportService {
      */
     List<RegionReportsVO> getCityReport(CitiesAnalysisParamDTO citiesAnalysisParamDTO);
 
+    /**
+     * 省域分析报表
+     * @param provinceAnalysisParamDTO
+     * @return
+     */
+    List<ProvinceReportsVO2> getProvinceReport(ProvinceAnalysisParamDTO provinceAnalysisParamDTO);
 
     /**
      * 查询所有客资--电商月度客资汇总报表

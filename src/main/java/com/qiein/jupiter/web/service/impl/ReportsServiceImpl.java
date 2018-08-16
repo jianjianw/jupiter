@@ -15,6 +15,7 @@ import com.qiein.jupiter.web.dao.DictionaryDao;
 import com.qiein.jupiter.web.dao.GroupStaffDao;
 import com.qiein.jupiter.web.entity.dto.CitiesAnalysisParamDTO;
 import com.qiein.jupiter.web.entity.dto.ClientLogDTO;
+import com.qiein.jupiter.web.entity.dto.ProvinceAnalysisParamDTO;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.DictionaryPO;
 import com.qiein.jupiter.web.entity.po.EditClientPhonePO;
@@ -40,6 +41,9 @@ import java.util.Map;
 public class ReportsServiceImpl implements ReportService {
     @Autowired
     private CityReportsDao cityReportsDao;
+
+    @Autowired
+    private ProvinceReportsDao provinceReportsDao;
 
     @Autowired
     private ClientInfoDao clientInfoDao;
@@ -235,6 +239,14 @@ public class ReportsServiceImpl implements ReportService {
         //获取市域分析报表
         List<RegionReportsVO> cityReport = cityReportsDao.getCityReport(citiesAnalysisParamDTO, invalidConfig);
         return cityReport;
+    }
+
+    @Override
+    public List<ProvinceReportsVO2> getProvinceReport(ProvinceAnalysisParamDTO provinceAnalysisParamDTO) {
+        //获取公司自定义的无效设置 TODO 其实部分数据是不用调这个借口
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(provinceAnalysisParamDTO.getCompanyId());
+        List<ProvinceReportsVO2> provinceReport = provinceReportsDao.provinceReport(provinceAnalysisParamDTO,invalidConfig);
+        return provinceReport;
     }
 
     @Override
