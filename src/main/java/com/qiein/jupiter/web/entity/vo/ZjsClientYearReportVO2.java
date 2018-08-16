@@ -11,7 +11,7 @@ public class ZjsClientYearReportVO2 {
     private int srcId;
     private String srcName;
     private String srcImg;
-    private Map<String,Map<String,Integer>> dataMap;
+    private Map<String,Integer> dataMap;
 
     public int getSrcId() {
         return srcId;
@@ -37,11 +37,21 @@ public class ZjsClientYearReportVO2 {
         this.srcImg = srcImg;
     }
 
-    public Map<String, Map<String, Integer>> getDataMap() {
+    public Map<String, Integer> getDataMap() {
         return dataMap;
     }
 
-    public void setDataMap(Map<String, Map<String, Integer>> dataMap) {
+    public void setDataMap(Map<String, Integer> dataMap) {
         this.dataMap = dataMap;
+    }
+
+    @Override
+    public String toString() {
+        return "ZjsClientYearReportVO2{" +
+                "srcId=" + srcId +
+                ", srcName='" + srcName + '\'' +
+                ", srcImg='" + srcImg + '\'' +
+                ", dataMap=" + dataMap +
+                '}';
     }
 }

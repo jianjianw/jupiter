@@ -7,7 +7,7 @@ package com.qiein.jupiter.web.entity.dto;
 public class ZjsClientYearReportDTO {
     private int year;
     private String sourceIds;
-    private String dataType;    //数据类型  总客资 客资量 有效量 入店量 成交量
+    private String dataType;    //数据类型  客资量 有效量 入店量 成交量
     private int companyId;
 
     public int getYear() {
