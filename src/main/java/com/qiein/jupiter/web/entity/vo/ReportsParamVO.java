@@ -7,23 +7,48 @@ package com.qiein.jupiter.web.entity.vo;
 public class ReportsParamVO {
     /**
      * 开始时间
-     * */
+     */
     private Integer start;
 
     /**
      * 结束时间
-     * */
+     */
     private Integer end;
 
     /**
      * 拍摄类型
-     * */
+     */
     private Integer type;
 
     /**
      * 公司id
-     * */
+     */
     private Integer companyId;
+    /**
+     * 小组ID
+     */
+    private String groupId;
+    /**
+     * 多个小组ID
+     */
+    private String groupIds;
+
+
+    public String getGroupIds() {
+        return groupIds;
+    }
+
+    public void setGroupIds(String groupIds) {
+        this.groupIds = groupIds;
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
 
     public Integer getCompanyId() {
         return companyId;

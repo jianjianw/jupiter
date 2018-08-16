@@ -4,10 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.security.SecureRandom;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -652,5 +649,17 @@ public class StringUtil {
     public static boolean isNumber(String str) {
         String reg = "[0-9]+";
         return str.matches(reg);
+    }
+
+
+    /**
+     * 将一个 1,3  逗号分隔的字符串变为List
+     *
+     * @param listStr
+     * @return
+     */
+    public static List<String> arrStrToList(String listStr) {
+        String[] split = listStr.split(",");
+        return Arrays.asList(split);
     }
 }
