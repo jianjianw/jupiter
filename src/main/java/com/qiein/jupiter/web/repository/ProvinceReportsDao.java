@@ -69,7 +69,6 @@ public class ProvinceReportsDao {
                 now.add(empty);
             }
 
-            System.out.println(provinceName+now.size());
             now.get(0).setDataType(provinceAnalysisParamDTO.getSearchType());
             now.get(0).setProvinceName(provinceName);
             resultContent.addAll(now);
@@ -307,7 +306,6 @@ public class ProvinceReportsDao {
      * @return
      */
     private StringBuilder setConditionSQL(StringBuilder sb, ProvinceAnalysisParamDTO searchKey) {//查询的客资类型 1所有客资 2 电话客资 3 微信客资 4 qq客资 5 有电话有微信 6 无电话 7.无微信 8 只有电话 9只有微信 10 只有qq
-        System.out.println("替换前的sql： "+sb.toString());
         StringBuilder condition = new StringBuilder();
         String sourceIdSQL = "";
         if (StringUtil.isNotEmpty(searchKey.getSourceIds()))

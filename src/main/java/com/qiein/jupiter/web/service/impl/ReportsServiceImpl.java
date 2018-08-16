@@ -15,6 +15,7 @@ import com.qiein.jupiter.web.dao.DictionaryDao;
 import com.qiein.jupiter.web.dao.GroupStaffDao;
 import com.qiein.jupiter.web.entity.dto.CitiesAnalysisParamDTO;
 import com.qiein.jupiter.web.entity.dto.ClientLogDTO;
+import com.qiein.jupiter.web.entity.dto.ProvinceAnalysisParamDTO;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.DictionaryPO;
 import com.qiein.jupiter.web.entity.po.EditClientPhonePO;
@@ -40,6 +41,9 @@ import java.util.Map;
 public class ReportsServiceImpl implements ReportService {
     @Autowired
     private CityReportsDao cityReportsDao;
+
+    @Autowired
+    private ProvinceReportsDao provinceReportsDao;
 
     @Autowired
     private ClientInfoDao clientInfoDao;
@@ -238,6 +242,14 @@ public class ReportsServiceImpl implements ReportService {
     }
 
     @Override
+    public List<ProvinceReportsVO2> getProvinceReport(ProvinceAnalysisParamDTO provinceAnalysisParamDTO) {
+        //获取公司自定义的无效设置 TODO 其实部分数据是不用调这个借口
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(provinceAnalysisParamDTO.getCompanyId());
+        List<ProvinceReportsVO2> provinceReport = provinceReportsDao.provinceReport(provinceAnalysisParamDTO,invalidConfig);
+        return provinceReport;
+    }
+
+    @Override
     public DsyyStatusReportsHeaderVO getDsyyStatusReports(Integer start, Integer end, int companyId,Integer type,String groupId) {
         ReportsParamVO reportsParamVO = new ReportsParamVO();
         reportsParamVO.setStart(start);
@@ -395,13 +407,12 @@ public class ReportsServiceImpl implements ReportService {
     }
 
     @Override
-    public List<DstgZxStyleReportsVO> getDstgZxStyleSourceRerports(Integer start, Integer end, String zxStyleCode,Integer type, int companyId) {
+    public List<DstgZxStyleReportsVO> getDstgZxStyleSourceRerports(Integer start, Integer end, String zxStyleCode, int companyId) {
         ReportsParamVO reportsParamVO = new ReportsParamVO();
         reportsParamVO.setStart(start);
         reportsParamVO.setEnd(end);
         reportsParamVO.setCompanyId(companyId);
         reportsParamVO.setZxStyleCode(zxStyleCode);
-        reportsParamVO.setType(type);
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         List<DstgZxStyleReportsVO> dstgGoldDataReprots = dstgZxStyleSourceReportsDao.getDstgGoldDataReprots(reportsParamVO, invalidConfig);
         return dstgGoldDataReprots;

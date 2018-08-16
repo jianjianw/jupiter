@@ -6,6 +6,7 @@ import com.qiein.jupiter.http.CrmBaseApi;
 import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.entity.dto.CitiesAnalysisParamDTO;
 import com.qiein.jupiter.web.entity.dto.ClientLogDTO;
+import com.qiein.jupiter.web.entity.dto.ProvinceAnalysisParamDTO;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.*;
@@ -459,6 +460,27 @@ public class ReportsController extends BaseController {
     }
 
     /**
+     * 获取省域分析报表
+     * @param searchKey
+     * @return
+     */
+    @GetMapping("/get_province_analysis_report")
+    public ResultInfo getProvinceAnalysisReport(ProvinceAnalysisParamDTO searchKey){
+        //TODO 给默认时间
+        if (searchKey.getStart() == null){
+            searchKey.setStart(0);
+        }
+        if (searchKey.getEnd() == null){
+            searchKey.setEnd(2000000000);
+        }
+        if (searchKey.getSearchClientType() == null){
+            searchKey.setSearchClientType(1);
+        }
+        searchKey.setCompanyId(getCurrentLoginStaff().getCompanyId());
+        return ResultInfoUtil.success(reportService.getProvinceReport(searchKey));
+    }
+
+    /**
      * 电商推广月度客资汇总报表--Hjf
      */
     @GetMapping("/get_dstg_src_month_reports")
@@ -537,6 +559,6 @@ public class ReportsController extends BaseController {
      */
     @GetMapping("/get_key_word_reports")
     public ResultInfo getKeyWordReports(@RequestParam String startTime,@RequestParam String endTime,@RequestParam String keyWord,@RequestParam String typeIds){
-        return ResultInfoUtil.success(reportService.getKeyWordReports(startTime,endTime,keyWord,typeIds,getCurrentLoginStaff().getCompanyId()));
+        return ResultInfoUtil.success(reportService.getKeyWordReports(startTime,endTime,typeIds,keyWord,getCurrentLoginStaff().getCompanyId()));
     }
 }
