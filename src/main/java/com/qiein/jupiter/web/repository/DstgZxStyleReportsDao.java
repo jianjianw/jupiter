@@ -78,7 +78,7 @@ public class DstgZxStyleReportsDao {
         sb.append(" group by detail.ZXSTYLE");
 
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
-                new Object[]{reportsParamVO.getCompanyId()});
+                new Object[]{reportsParamVO.getCompanyId(),reportsParamVO.getCompanyId()});
 
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgZxStyleReportsVO DstgZxStyleReportsVO = new DstgZxStyleReportsVO();
