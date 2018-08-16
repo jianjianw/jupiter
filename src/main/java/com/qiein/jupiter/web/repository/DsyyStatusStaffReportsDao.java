@@ -75,6 +75,7 @@ public class DsyyStatusStaffReportsDao {
         sb.append(" and info.isdel = 0  ");
         sb.append(" and info.srctype in (1,2) ");
         sb.append(" and info.companyid = ?");
+        addConditionByTypeAndGroupId(reportsParamVO,sb);
         sb.append(" group by info.APPOINTORID");
 
         List<DsyyStatusReportsVO> dsyyStatusReports = jdbcTemplate.query(sb.toString(), new Object[]{reportsParamVO.getCompanyId()},
