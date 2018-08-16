@@ -40,7 +40,7 @@ public class DsyyStatusStaffReportsDao {
         getStatusClientCount(reportsParamVO,dsyyStatusReportsVOS);
         dsyyStatusReportsHeaderVO.setDsyyStatusReportsHeaderVOS(dsyyStatusReportsVOS);
         dataHandle(dsyyStatusReportsHeaderVO);
-
+        computerSumCount(dsyyStatusReportsHeaderVO);
         return dsyyStatusReportsHeaderVO;
     }
 
@@ -158,6 +158,20 @@ public class DsyyStatusStaffReportsDao {
             dsyyStatusReportsVO.setMapList(kzNumMap);
             dsyyStatusReportsVO.setClientStatusReportsVOS(null);
         }
+    }
+
+    public void computerSumCount(DsyyStatusReportsHeaderVO dsyyStatusReportsHeaderVO) {
+        Map kzNumMap = new HashMap();
+        DsyyStatusReportsVO dsyyStatusReportsVO = new DsyyStatusReportsVO();
+        dsyyStatusReportsVO.setGrouoName("合计");
+        dsyyStatusReportsVO.setMapList(kzNumMap);
+        for(DsyyStatusReportsVO dsyyStatusReports:dsyyStatusReportsHeaderVO.getDsyyStatusReportsHeaderVOS()){
+            for (ClientStatusReportsVO clientStatusReportsVO : dsyyStatusReports.getClientStatusReportsVOS()) {
+                Integer kzNum = dsyyStatusReportsVO.getMapList().get(clientStatusReportsVO.getStatusId());
+                kzNumMap.put(clientStatusReportsVO.getStatusId(), clientStatusReportsVO.getKzNum() + kzNum);
+            }
+        }
+        dsyyStatusReportsHeaderVO.getDsyyStatusReportsHeaderVOS().add(0,dsyyStatusReportsVO);
     }
 
 }
