@@ -73,7 +73,6 @@ public class DstgGoldDataReportsDao {
         sb.append(" info.kzid = detail.kzid");
         sb.append(" and info.isdel = 0");
         sb.append(" and info.companyid = ?");
-        sb.append(" and info.CREATETIME BETWEEN ? AND ?");
         sb.append(" group by detail.adid");
 
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
