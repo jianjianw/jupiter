@@ -2,9 +2,7 @@ package com.qiein.jupiter.web.repository;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.qiein.jupiter.util.CollectionUtils;
-import com.qiein.jupiter.util.DBSplitUtil;
-import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.entity.po.GroupReportsVO;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.vo.*;
@@ -43,6 +41,18 @@ public class DsyyStatusStaffReportsDao {
         dataHandle(dsyyStatusReportsHeaderVO);
 
         return dsyyStatusReportsHeaderVO;
+    }
+
+    /**
+     * 添加条件
+     * */
+    private void addConditionByTypeAndGroupId(ReportsParamVO reportsParamVO,StringBuilder sb){
+        if(StringUtil.isNotEmpty(reportsParamVO.getGroupId())){
+            sb.append(" and info.groupid = "+reportsParamVO.getGroupId());
+        }
+        if(NumUtil.isValid(reportsParamVO.getType())){
+            sb.append(" and info.typeid =" +reportsParamVO.getType());
+        }
     }
 
     /**
@@ -108,6 +118,7 @@ public class DsyyStatusStaffReportsDao {
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
         sb.append(" select STATUSID,APPOINTORID,count(id) client_count from "+ infoTabName +" info  where info.companyid = ? and info.isdel = 0 and info.groupid is not null  ");
         sb.append(" and info.srctype in (1,2) ");
+        addConditionByTypeAndGroupId(reportsParamVO,sb);
         sb.append(" and info.CREATETIME BETWEEN ? AND ?");
         //TODO 此处需要添加条件
         sb.append(" group by info.STATUSID,info.APPOINTORID");
