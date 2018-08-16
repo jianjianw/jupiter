@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.constant.ClientLogConst;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.constant.DictionaryConstant;
@@ -32,6 +33,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 报表
+ */
 @Service
 public class ReportsServiceImpl implements ReportService {
     @Autowired
@@ -68,6 +72,12 @@ public class ReportsServiceImpl implements ReportService {
     private DsyyStatusStaffReportsDao dsyyStatusStaffReportsDao;
     @Autowired
     private DstgZxStyleSourceReportsDao dstgZxStyleSourceReportsDao;
+
+    @Autowired
+    private SourceOrderDataReportsDao sourceOrderDataReportsDao;
+
+    @Autowired
+    private ClientStatusTranslateReportsDao clientStatusTranslateReportsDao;
 
     /**
      * 修改联系方式日志
@@ -159,7 +169,7 @@ public class ReportsServiceImpl implements ReportService {
         reportsParamVO.setType(type);
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         //获取数据
-        List<DstgGoldDataReportsVO> dstgGoldDataReprots = dstgGoldDataReportsDao.getDstgGoldDataReprots(reportsParamVO,invalidConfig);
+        List<DstgGoldDataReportsVO> dstgGoldDataReprots = dstgGoldDataReportsDao.getDstgGoldDataReprots(reportsParamVO, invalidConfig);
         return dstgGoldDataReprots;
     }
 
@@ -174,7 +184,7 @@ public class ReportsServiceImpl implements ReportService {
         reportsParamVO.setZxStyleCode(zxStyleCode);
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         //获取数据
-        List<DstgZxStyleReportsVO> dstgZxStyleReportsVOS = zxStyleReportsDao.getDstgGoldDataReprots(reportsParamVO,invalidConfig);
+        List<DstgZxStyleReportsVO> dstgZxStyleReportsVOS = zxStyleReportsDao.getDstgGoldDataReprots(reportsParamVO, invalidConfig);
         return dstgZxStyleReportsVOS;
     }
 
@@ -184,14 +194,14 @@ public class ReportsServiceImpl implements ReportService {
      * @param companyId
      * @return
      */
-    public InvalidReasonReportsVO invalidReasonReports(Integer companyId,String sourceIds,String startTime,String endTime,String typeIds){
-        InvalidReasonReportsVO invalidReasonReportsVO=new InvalidReasonReportsVO();
-        List<DictionaryPO> list=new ArrayList<>();
-        DictionaryPO dictionaryPO=new DictionaryPO();
+    public InvalidReasonReportsVO invalidReasonReports(Integer companyId, String sourceIds, String startTime, String endTime, String typeIds) {
+        InvalidReasonReportsVO invalidReasonReportsVO = new InvalidReasonReportsVO();
+        List<DictionaryPO> list = new ArrayList<>();
+        DictionaryPO dictionaryPO = new DictionaryPO();
         dictionaryPO.setDicType("hj");
         dictionaryPO.setDicName("合计");
-        List<DictionaryPO> DicList=dictionaryDao.getInvaildReasons(companyId, DictionaryConstant.INVALID_REASON);
-        invalidReasonReportsVO.setInvalidReasonKz(invalidReasonReportsDao.getInvalidReasonReports(DicList,DBSplitUtil.getTable(TableEnum.info,companyId),DBSplitUtil.getTable(TableEnum.detail,companyId),companyId,sourceIds,startTime,endTime,typeIds));
+        List<DictionaryPO> DicList = dictionaryDao.getInvaildReasons(companyId, DictionaryConstant.INVALID_REASON);
+        invalidReasonReportsVO.setInvalidReasonKz(invalidReasonReportsDao.getInvalidReasonReports(DicList, DBSplitUtil.getTable(TableEnum.info, companyId), DBSplitUtil.getTable(TableEnum.detail, companyId), companyId, sourceIds, startTime, endTime, typeIds));
         list.add(dictionaryPO);
         list.addAll(DicList);
         invalidReasonReportsVO.setInvalidReasons(list);
@@ -220,7 +230,7 @@ public class ReportsServiceImpl implements ReportService {
         //获取公司自定义的无效设置
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(citiesAnalysisParamDTO.getCompanyId());
         //获取市域分析报表
-        List<RegionReportsVO> cityReport = cityReportsDao.getCityReport(citiesAnalysisParamDTO,invalidConfig);
+        List<RegionReportsVO> cityReport = cityReportsDao.getCityReport(citiesAnalysisParamDTO, invalidConfig);
         return cityReport;
     }
 
@@ -241,127 +251,132 @@ public class ReportsServiceImpl implements ReportService {
     public ZjskzOfMonthMapVO ZjskzOfMonthIn(Integer companyId, String sourceId, String month) {
         List<Map<String, Object>> newList = zjskzOfMonthDao.getDayOfMonth(Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[0]), Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[1]), DBSplitUtil.getTable(TableEnum.info, companyId));
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
-        month=month.replace(CommonConstant.ROD_SEPARATOR,CommonConstant.FILE_SEPARATOR);
-        return zjskzOfMonthDao.ZjskzOfMonthIn(newList, companyId, month, sourceId,invalidConfig);
+        month = month.replace(CommonConstant.ROD_SEPARATOR, CommonConstant.FILE_SEPARATOR);
+        return zjskzOfMonthDao.ZjskzOfMonthIn(newList, companyId, month, sourceId, invalidConfig);
     }
+
     /**
      * 老客信息汇总报表
      */
-    public List<OldKzReportsVO> getOldKzReports(Integer companyId,String startTime,String endTime,String kzNameOrPhone){
+    public List<OldKzReportsVO> getOldKzReports(Integer companyId, String startTime, String endTime, String kzNameOrPhone) {
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
-        return oldKzReportsDao.getReports(companyId,startTime,endTime,kzNameOrPhone,invalidConfig);
+        return oldKzReportsDao.getReports(companyId, startTime, endTime, kzNameOrPhone, invalidConfig);
     }
 
     /**
      * 查询总客资--电商月度客资汇总报表
+     *
      * @param companyId
      * @return
      */
-	@Override
-	public List<DstgReportsSrcMonthVO> getDSTGSrcMonthReportsSum(Integer start, Integer end, String typeId,
-			String sourceId, int companyId) {
-		//封装参数
-		ReportsParamSrcMonthVO reportsParamSrcMonthVO=new ReportsParamSrcMonthVO();
-		reportsParamSrcMonthVO.setStart(start);
-		reportsParamSrcMonthVO.setEnd(end);
-		reportsParamSrcMonthVO.setTypeId(typeId);
-		reportsParamSrcMonthVO.setSourceId(sourceId);
-		reportsParamSrcMonthVO.setCompanyId(companyId);
-		//获取无效状态指标，无效意向等级，待定是否为有效量，待定指标
-		DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
-		//获取客资数据
-		List<DstgReportsSrcMonthVO> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsSum(reportsParamSrcMonthVO, invalidConfig);
-		return dstgSrcMonthReports;
-	}
+    @Override
+    public List<DstgReportsSrcMonthVO> getDSTGSrcMonthReportsSum(Integer start, Integer end, String typeId,
+                                                                 String sourceId, int companyId) {
+        //封装参数
+        ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
+        reportsParamSrcMonthVO.setStart(start);
+        reportsParamSrcMonthVO.setEnd(end);
+        reportsParamSrcMonthVO.setTypeId(typeId);
+        reportsParamSrcMonthVO.setSourceId(sourceId);
+        reportsParamSrcMonthVO.setCompanyId(companyId);
+        //获取无效状态指标，无效意向等级，待定是否为有效量，待定指标
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
+        //获取客资数据
+        List<DstgReportsSrcMonthVO> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsSum(reportsParamSrcMonthVO, invalidConfig);
+        return dstgSrcMonthReports;
+    }
 
-	/**
+    /**
      * 查询客资量--电商月度客资汇总报表
+     *
      * @param companyId
      * @return
      */
-	@Override
-	public List<DstgReportsSrcMonthVO> getDSTGSrcMonthReportsAll(Integer start, Integer end, String typeId,
-			String sourceId, int companyId) {
-		//封装参数
-		ReportsParamSrcMonthVO reportsParamSrcMonthVO=new ReportsParamSrcMonthVO();
-		reportsParamSrcMonthVO.setStart(start);
-		reportsParamSrcMonthVO.setEnd(end);
-		reportsParamSrcMonthVO.setTypeId(typeId);
-		reportsParamSrcMonthVO.setSourceId(sourceId);
-		reportsParamSrcMonthVO.setCompanyId(companyId);
-		//获取无效状态指标，无效意向等级，待定是否为有效量，待定指标
-		DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
-		//获取客资数据
-		List<DstgReportsSrcMonthVO> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsAll(reportsParamSrcMonthVO, invalidConfig);
-		return dstgSrcMonthReports;
-	}
+    @Override
+    public List<DstgReportsSrcMonthVO> getDSTGSrcMonthReportsAll(Integer start, Integer end, String typeId,
+                                                                 String sourceId, int companyId) {
+        //封装参数
+        ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
+        reportsParamSrcMonthVO.setStart(start);
+        reportsParamSrcMonthVO.setEnd(end);
+        reportsParamSrcMonthVO.setTypeId(typeId);
+        reportsParamSrcMonthVO.setSourceId(sourceId);
+        reportsParamSrcMonthVO.setCompanyId(companyId);
+        //获取无效状态指标，无效意向等级，待定是否为有效量，待定指标
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
+        //获取客资数据
+        List<DstgReportsSrcMonthVO> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsAll(reportsParamSrcMonthVO, invalidConfig);
+        return dstgSrcMonthReports;
+    }
 
-	/**
+    /**
      * 查询待定客资--电商月度客资汇总报表
+     *
      * @param companyId
      * @return
      */
-	@Override
-	public List<DstgReportsSrcMonthVO> getDSTGSrcMonthReportsDdNum(Integer start, Integer end, String typeId,
-			String sourceId, int companyId) {
-		//封装参数
-		ReportsParamSrcMonthVO reportsParamSrcMonthVO=new ReportsParamSrcMonthVO();
-		reportsParamSrcMonthVO.setStart(start);
-		reportsParamSrcMonthVO.setEnd(end);
-		reportsParamSrcMonthVO.setTypeId(typeId);
-		reportsParamSrcMonthVO.setSourceId(sourceId);
-		reportsParamSrcMonthVO.setCompanyId(companyId);
-		//获取无效状态指标，无效意向等级，待定是否为有效量，待定指标
-		DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
-		//获取客资数据
-		List<DstgReportsSrcMonthVO> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsDdNum(reportsParamSrcMonthVO, invalidConfig);
-		return dstgSrcMonthReports;
-	}
+    @Override
+    public List<DstgReportsSrcMonthVO> getDSTGSrcMonthReportsDdNum(Integer start, Integer end, String typeId,
+                                                                   String sourceId, int companyId) {
+        //封装参数
+        ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
+        reportsParamSrcMonthVO.setStart(start);
+        reportsParamSrcMonthVO.setEnd(end);
+        reportsParamSrcMonthVO.setTypeId(typeId);
+        reportsParamSrcMonthVO.setSourceId(sourceId);
+        reportsParamSrcMonthVO.setCompanyId(companyId);
+        //获取无效状态指标，无效意向等级，待定是否为有效量，待定指标
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
+        //获取客资数据
+        List<DstgReportsSrcMonthVO> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsDdNum(reportsParamSrcMonthVO, invalidConfig);
+        return dstgSrcMonthReports;
+    }
 
-	/**
+    /**
      * 查询无效客资--电商月度客资汇总报表
+     *
      * @param companyId
      * @return
      */
-	@Override
-	public List<DstgReportsSrcMonthVO> getDSTGSrcMonthReportsInvalid(Integer start, Integer end, String typeId,
-			String sourceId, int companyId) {
-		//封装参数
-		ReportsParamSrcMonthVO reportsParamSrcMonthVO=new ReportsParamSrcMonthVO();
-		reportsParamSrcMonthVO.setStart(start);
-		reportsParamSrcMonthVO.setEnd(end);
-		reportsParamSrcMonthVO.setTypeId(typeId);
-		reportsParamSrcMonthVO.setSourceId(sourceId);
-		reportsParamSrcMonthVO.setCompanyId(companyId);
-		//获取无效状态指标，无效意向等级，待定是否为有效量，待定指标
-		DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
-		//获取客资数据
-		List<DstgReportsSrcMonthVO> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsInvalid(reportsParamSrcMonthVO, invalidConfig);
-		return dstgSrcMonthReports;
-	}
+    @Override
+    public List<DstgReportsSrcMonthVO> getDSTGSrcMonthReportsInvalid(Integer start, Integer end, String typeId,
+                                                                     String sourceId, int companyId) {
+        //封装参数
+        ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
+        reportsParamSrcMonthVO.setStart(start);
+        reportsParamSrcMonthVO.setEnd(end);
+        reportsParamSrcMonthVO.setTypeId(typeId);
+        reportsParamSrcMonthVO.setSourceId(sourceId);
+        reportsParamSrcMonthVO.setCompanyId(companyId);
+        //获取无效状态指标，无效意向等级，待定是否为有效量，待定指标
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
+        //获取客资数据
+        List<DstgReportsSrcMonthVO> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsInvalid(reportsParamSrcMonthVO, invalidConfig);
+        return dstgSrcMonthReports;
+    }
 
 
-	@Override
-	public List<DstgReportsSrcMonthVO> getDSTGSrcMonthReportsvalid(Integer start, Integer end, String typeId,
-			String sourceId, int companyId) {
-		//封装参数
-		ReportsParamSrcMonthVO reportsParamSrcMonthVO=new ReportsParamSrcMonthVO();
-		reportsParamSrcMonthVO.setStart(start);
-		reportsParamSrcMonthVO.setEnd(end);
-		reportsParamSrcMonthVO.setTypeId(typeId);
-		reportsParamSrcMonthVO.setSourceId(sourceId);
-		reportsParamSrcMonthVO.setCompanyId(companyId);
-		//获取无效状态指标，无效意向等级，待定是否为有效量，待定指标
-		DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
-		//获取客资数据
-		List<DstgReportsSrcMonthVO> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsvalid(reportsParamSrcMonthVO, invalidConfig);
-		return dstgSrcMonthReports;
-	}
+    @Override
+    public List<DstgReportsSrcMonthVO> getDSTGSrcMonthReportsvalid(Integer start, Integer end, String typeId,
+                                                                   String sourceId, int companyId) {
+        //封装参数
+        ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
+        reportsParamSrcMonthVO.setStart(start);
+        reportsParamSrcMonthVO.setEnd(end);
+        reportsParamSrcMonthVO.setTypeId(typeId);
+        reportsParamSrcMonthVO.setSourceId(sourceId);
+        reportsParamSrcMonthVO.setCompanyId(companyId);
+        //获取无效状态指标，无效意向等级，待定是否为有效量，待定指标
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
+        //获取客资数据
+        List<DstgReportsSrcMonthVO> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsvalid(reportsParamSrcMonthVO, invalidConfig);
+        return dstgSrcMonthReports;
+    }
 
     @Override
     public DsyyStatusReportsHeaderVO getDsyyStatusDetailReports(Integer start, Integer end, String groupId, int companyId) {
         //FIXME 此处有问题
-	    if(StringUtil.isEmpty(groupId)){
+        if (StringUtil.isEmpty(groupId)) {
             throw new RException(ExceptionEnum.GROUP_IS_NULL);
         }
         ReportsParamVO reportsParamVO = new ReportsParamVO();
@@ -384,5 +399,34 @@ public class ReportsServiceImpl implements ReportService {
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         List<DstgZxStyleReportsVO> dstgGoldDataReprots = dstgZxStyleSourceReportsDao.getDstgGoldDataReprots(reportsParamVO, invalidConfig);
         return dstgGoldDataReprots;
+    }
+
+
+    /**
+     * 渠道订单数据统计
+     *
+     * @param reportsParamVO
+     * @return
+     */
+    @Override
+    public List<SourceOrderDataReportsVO> getSourceOrderDataReports(ReportsParamVO reportsParamVO) {
+        return sourceOrderDataReportsDao.getSourceOrderDataReports(reportsParamVO);
+    }
+
+    /**
+     * 客资各个状态转化统计
+     *
+     * @param reportsParamVO
+     * @return
+     */
+    @Override
+    public List<JSONObject> getClientStatusTranslateForGroup(ReportsParamVO reportsParamVO) {
+        if (StringUtil.isNotEmpty(reportsParamVO.getGroupId())) {
+            //查询个人
+            return clientStatusTranslateReportsDao.getClientStatusTranslateForGroupStaff(reportsParamVO);
+        } else {
+            //查询小组
+            return clientStatusTranslateReportsDao.getClientStatusTranslateForGroup(reportsParamVO);
+        }
     }
 }

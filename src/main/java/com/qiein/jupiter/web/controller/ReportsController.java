@@ -356,7 +356,7 @@ public class ReportsController extends BaseController {
 
     /**
      * 获取电商推广广告报表
-     * */
+     */
     @GetMapping("/get_dstg_ad_reports")
     public ResultInfo getDstgAdReports(Integer start,Integer end,@RequestParam(value = "type",required = false)Integer type){
         StaffPO staffPO = getCurrentLoginStaff();
@@ -366,7 +366,7 @@ public class ReportsController extends BaseController {
 
     /**
      * 电商推广咨询信息方式报表
-     * */
+     */
     @GetMapping("/get_dstg_zx_style_reports")
     public ResultInfo getDstgZxStyleReports(Integer start,Integer end,@RequestParam(value="type",required = false)Integer type,@RequestParam(value = "zxStyleCode",required = false)String zxStyleCode){
         StaffPO staffPO = getCurrentLoginStaff();
@@ -376,19 +376,19 @@ public class ReportsController extends BaseController {
 
     /**
      * 电商推广咨询方式来源报表
-     * */
+     */
     @GetMapping("/get_dstg_zx_style_source_reports")
-    public ResultInfo getDstgZxStyleSourceReports(Integer start,Integer end,String zxStyleCode){
+    public ResultInfo getDstgZxStyleSourceReports(Integer start, Integer end, String zxStyleCode) {
         StaffPO staffPO = getCurrentLoginStaff();
-        List<DstgZxStyleReportsVO> dstgZxStyleReportsVOS = reportService.getDstgZxStyleSourceRerports(start,end,zxStyleCode,staffPO.getCompanyId());
+        List<DstgZxStyleReportsVO> dstgZxStyleReportsVOS = reportService.getDstgZxStyleSourceRerports(start, end, zxStyleCode, staffPO.getCompanyId());
         return ResultInfoUtil.success(dstgZxStyleReportsVOS);
     }
 
     /**
      * 客资各状态转发统计
-     * */
+     */
     @GetMapping("/get_dsyy_status_reports")
-    public ResultInfo getDSyyStatusReports(Integer start,Integer end){
+    public ResultInfo getDSyyStatusReports(Integer start, Integer end) {
         StaffPO staffPO = getCurrentLoginStaff();
         DsyyStatusReportsHeaderVO dsyyStatusReports = reportService.getDsyyStatusReports(start, end, staffPO.getCompanyId());
         return ResultInfoUtil.success(dsyyStatusReports);
@@ -396,11 +396,11 @@ public class ReportsController extends BaseController {
 
     /**
      * 电商邀约详细统计
-     * */
+     */
     @GetMapping("/get_dsyy_status_detail_reports")
-    public ResultInfo getDsyyStatusReports(Integer start,Integer end,String groupId){
+    public ResultInfo getDsyyStatusReports(Integer start, Integer end, String groupId) {
         StaffPO staffPO = getCurrentLoginStaff();
-        DsyyStatusReportsHeaderVO dsyyStatusReportsHeaderVO = reportService.getDsyyStatusDetailReports(start,end,groupId,staffPO.getCompanyId());
+        DsyyStatusReportsHeaderVO dsyyStatusReportsHeaderVO = reportService.getDsyyStatusDetailReports(start, end, groupId, staffPO.getCompanyId());
         return ResultInfoUtil.success(dsyyStatusReportsHeaderVO);
     }
 
@@ -410,44 +410,48 @@ public class ReportsController extends BaseController {
         System.out.println(code + "-----------------------------------" + state);
         return ResultInfoUtil.success();
     }
+
     /**
      * 无效原因报表
      */
     @GetMapping("/invalid_reason_reports")
-    public ResultInfo invalidReasonReports(@RequestParam String sourceIds,@RequestParam String startTime,@RequestParam String endTime,@RequestParam String typeIds){
-        return ResultInfoUtil.success(reportService.invalidReasonReports(getCurrentLoginStaff().getCompanyId(),sourceIds,startTime,endTime,typeIds));
+    public ResultInfo invalidReasonReports(@RequestParam String sourceIds, @RequestParam String startTime, @RequestParam String endTime, @RequestParam String typeIds) {
+        return ResultInfoUtil.success(reportService.invalidReasonReports(getCurrentLoginStaff().getCompanyId(), sourceIds, startTime, endTime, typeIds));
     }
+
     /**
      * 转介绍每月客资报表
      */
     @GetMapping("/zjs_kz_of_month")
-    public ResultInfo ZjskzOfMonth(@RequestParam String month,@RequestParam String type,@RequestParam String srcIds){
-        return ResultInfoUtil.success(reportService.ZjskzOfMonth(getCurrentLoginStaff().getCompanyId(),month,type,srcIds));
+    public ResultInfo ZjskzOfMonth(@RequestParam String month, @RequestParam String type, @RequestParam String srcIds) {
+        return ResultInfoUtil.success(reportService.ZjskzOfMonth(getCurrentLoginStaff().getCompanyId(), month, type, srcIds));
     }
+
     /**
      * 转介绍每月客资报表内表详情
      */
     @GetMapping("/zjs_kz_of_month_in")
-    public ResultInfo ZjskzOfMonthIn( String sourceId, String month){
+    public ResultInfo ZjskzOfMonthIn(String sourceId, String month) {
         return ResultInfoUtil.success(reportService.ZjskzOfMonthIn(getCurrentLoginStaff().getCompanyId(), sourceId, month));
     }
 
 
     /**
      * 获取市域分析报表
+     *
      * @param searchKey
      * @return
      */
     @GetMapping("/get_cities_analysis_report")
-    public ResultInfo getCitiesAnalysisReport(CitiesAnalysisParamDTO searchKey){
+    public ResultInfo getCitiesAnalysisReport(CitiesAnalysisParamDTO searchKey) {
         //TODO 给默认时间
-        if (searchKey.getStart() == null){
+        if (searchKey.getStart() == null) {
             searchKey.setStart(0);
         }
-        if (searchKey.getEnd() == null){
+        if (searchKey.getEnd() == null) {
             searchKey.setEnd(2000000000);
         }
-        if (searchKey.getSearchClientType() == null){
+        if (searchKey.getSearchClientType() == null) {
             searchKey.setSearchClientType(1);
         }
         searchKey.setCompanyId(getCurrentLoginStaff().getCompanyId());
@@ -456,53 +460,76 @@ public class ReportsController extends BaseController {
 
     /**
      * 电商推广月度客资汇总报表--Hjf
-     * */
+     */
     @GetMapping("/get_dstg_src_month_reports")
-    public ResultInfo getDSTGSrcMonthReports(@RequestParam("start") Integer start, @RequestParam("end") Integer end, @RequestParam("typeId") String typeId, @RequestParam("sourceId") String sourceId, @RequestParam("kzZB") String kzZB){
+    public ResultInfo getDSTGSrcMonthReports(@RequestParam("start") Integer start, @RequestParam("end") Integer end, @RequestParam("typeId") String typeId, @RequestParam("sourceId") String sourceId, @RequestParam("kzZB") String kzZB) {
         StaffPO staffPO = getCurrentLoginStaff();
         //查询总客资
-        if(StringUtil.isNotEmpty(kzZB) && "sum".equals(kzZB)){
-        	List<DstgReportsSrcMonthVO> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsSum(start,end,typeId,sourceId,staffPO.getCompanyId());
+        if (StringUtil.isNotEmpty(kzZB) && "sum".equals(kzZB)) {
+            List<DstgReportsSrcMonthVO> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsSum(start, end, typeId, sourceId, staffPO.getCompanyId());
 
             return ResultInfoUtil.success(dstgReportsSrcMonthVO);
         }
-      //查询客资量
-        if(StringUtil.isNotEmpty(kzZB) && "all".equals(kzZB)){
-        	List<DstgReportsSrcMonthVO> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsAll(start,end,typeId,sourceId,staffPO.getCompanyId());
+        //查询客资量
+        if (StringUtil.isNotEmpty(kzZB) && "all".equals(kzZB)) {
+            List<DstgReportsSrcMonthVO> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsAll(start, end, typeId, sourceId, staffPO.getCompanyId());
             return ResultInfoUtil.success(dstgReportsSrcMonthVO);
         }
-      //查询待定客资
-        if(StringUtil.isNotEmpty(kzZB) && "ddnum".equals(kzZB)){
-        	List<DstgReportsSrcMonthVO> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsDdNum(start,end,typeId,sourceId,staffPO.getCompanyId());
-            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
-        }
-
-       //查询无效客资
-        if(StringUtil.isNotEmpty(kzZB) && "invalid".equals(kzZB)){
-        	List<DstgReportsSrcMonthVO> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsInvalid(start,end,typeId,sourceId,staffPO.getCompanyId());
-
+        //查询待定客资
+        if (StringUtil.isNotEmpty(kzZB) && "ddnum".equals(kzZB)) {
+            List<DstgReportsSrcMonthVO> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsDdNum(start, end, typeId, sourceId, staffPO.getCompanyId());
             return ResultInfoUtil.success(dstgReportsSrcMonthVO);
         }
 
-		//查询有效客资
-        if(StringUtil.isNotEmpty(kzZB) && "valid".equals(kzZB)){
-        	List<DstgReportsSrcMonthVO> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsvalid(start,end,typeId,sourceId,staffPO.getCompanyId());
+        //查询无效客资
+        if (StringUtil.isNotEmpty(kzZB) && "invalid".equals(kzZB)) {
+            List<DstgReportsSrcMonthVO> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsInvalid(start, end, typeId, sourceId, staffPO.getCompanyId());
+
             return ResultInfoUtil.success(dstgReportsSrcMonthVO);
         }
-		return ResultInfoUtil.error(9999, "查询失败");
+
+        //查询有效客资
+        if (StringUtil.isNotEmpty(kzZB) && "valid".equals(kzZB)) {
+            List<DstgReportsSrcMonthVO> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsvalid(start, end, typeId, sourceId, staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+        return ResultInfoUtil.error(9999, "查询失败");
     }
 
     /**
      * 老客信息汇总报表
+     *
      * @param startTime
      * @param endTime
      * @param kzNameOrPhone
      * @return
      */
     @GetMapping("/get_old_kz_reports")
-    public ResultInfo getOldKzReports(@RequestParam String startTime,@RequestParam String endTime,@RequestParam String kzNameOrPhone){
-        return ResultInfoUtil.success(reportService.getOldKzReports(getCurrentLoginStaff().getCompanyId(),startTime,endTime,kzNameOrPhone));
+    public ResultInfo getOldKzReports(@RequestParam String startTime, @RequestParam String endTime, @RequestParam String kzNameOrPhone) {
+        return ResultInfoUtil.success(reportService.getOldKzReports(getCurrentLoginStaff().getCompanyId(), startTime, endTime, kzNameOrPhone));
     }
 
 
+    /**
+     * 获取渠道订单数据统计
+     *
+     * @return
+     */
+    @PostMapping("/get_source_order_data_reports")
+    public ResultInfo getSourceOrderDataReports(@RequestBody ReportsParamVO reportsParamVO) {
+        reportsParamVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
+        return ResultInfoUtil.success(reportService.getSourceOrderDataReports(reportsParamVO));
+    }
+
+
+    /**
+     * 获取客资各状态转换 小组
+     *
+     * @return
+     */
+    @PostMapping("/get_client_status_translate_reports")
+    public ResultInfo getClientStatusTranslateReports(@RequestBody ReportsParamVO reportsParamVO) {
+        reportsParamVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
+        return ResultInfoUtil.success(reportService.getClientStatusTranslateForGroup(reportsParamVO));
+    }
 }
