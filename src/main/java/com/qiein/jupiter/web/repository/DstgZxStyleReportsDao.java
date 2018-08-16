@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.repository;
 
 import com.qiein.jupiter.util.DBSplitUtil;
+import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.vo.DsInvalidVO;
 import com.qiein.jupiter.web.entity.vo.DstgZxStyleReportsVO;
@@ -89,6 +90,16 @@ public class DstgZxStyleReportsDao {
 
     }
 
+    private void addConditionByTypeAndZxCodeStyle(ReportsParamVO reportsParamVO,StringBuilder sb){
+        if(StringUtil.isNotEmpty(reportsParamVO.getZxStyleCode())){
+            sb.append(" and dictionary.DICCODE = "+reportsParamVO.getZxStyleCode()+" ");
+        }
+        if(NumUtil.isValid(reportsParamVO.getType())){
+            sb.append(" and info.typeid = "+reportsParamVO.getType());
+        }
+    }
+
+
     private StringBuilder getCommonsql(StringBuilder sb,String infoTabName,String detailTabName) {
         sb.append(" select  ifnull(ZXSTYLE,99)  as zx_code,ifnull(dictionary.DICNAME,'其他') as zx_style,count(info.id) as client_count ");
         sb.append(" from");
@@ -110,6 +121,7 @@ public class DstgZxStyleReportsDao {
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
         sb =  getCommonsql(sb,infoTabName,detailTabName);
+        addConditionByTypeAndZxCodeStyle(reportsParamVO,sb);
         sb.append(" and info.CREATETIME BETWEEN ? AND ? ");
         sb.append(" group by detail.ZXSTYLE");
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
@@ -146,6 +158,7 @@ public class DstgZxStyleReportsDao {
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
         sb = getCommonsql(sb, infoTabName, detailTabName);
+        addConditionByTypeAndZxCodeStyle(reportsParamVO,sb);
         sb.append(" and info.CREATETIME BETWEEN ? AND ?");
         sb.append(" AND INSTR( ?, CONCAT(',',info.STATUSID + '',',')) != 0");
         sb.append(" group by detail.ZXSTYLE");
@@ -184,6 +197,7 @@ public class DstgZxStyleReportsDao {
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
         sb = getCommonsql(sb, infoTabName, detailTabName);
+        addConditionByTypeAndZxCodeStyle(reportsParamVO,sb);
         sb.append(" and info.CREATETIME BETWEEN ? AND ?");
         sb.append(" and info.CLASSID = 1 and info.STATUSID = 98 ");
         sb.append(" group by detail.ZXSTYLE");
@@ -222,6 +236,7 @@ public class DstgZxStyleReportsDao {
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
         sb = getCommonsql(sb, infoTabName, detailTabName);
+        addConditionByTypeAndZxCodeStyle(reportsParamVO,sb);
         sb.append(" and info.CREATETIME BETWEEN ? AND ?");
         sb.append(" and info.CLASSID = 6 and info.STATUSID = 99");
         sb.append(" group by detail.ZXSTYLE");
@@ -260,6 +275,7 @@ public class DstgZxStyleReportsDao {
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
         sb = getCommonsql(sb, infoTabName, detailTabName);
+        addConditionByTypeAndZxCodeStyle(reportsParamVO,sb);
         sb.append(" and info.CREATETIME BETWEEN ? AND ?");
         sb.append(" and info.CLASSID = 1 and info.STATUSID = 0");
         sb.append(" group by detail.ZXSTYLE");
@@ -301,6 +317,7 @@ public class DstgZxStyleReportsDao {
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
         sb = getCommonsql(sb, infoTabName, detailTabName);
+        addConditionByTypeAndZxCodeStyle(reportsParamVO,sb);
         sb.append(" and info.CREATETIME BETWEEN ? AND ?");
         if(StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidStatus()) && StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidLevel())){
             sb.append(" and (info.STATUSID in("+ dsInvalidVO.getDsInvalidStatus()+") or");
@@ -350,6 +367,7 @@ public class DstgZxStyleReportsDao {
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
         sb = getCommonsql(sb, infoTabName, detailTabName);
+        addConditionByTypeAndZxCodeStyle(reportsParamVO,sb);
         sb.append(" and info.COMESHOPTIME BETWEEN ? AND ?");
         sb.append(" group by detail.ZXSTYLE");
 
@@ -387,6 +405,7 @@ public class DstgZxStyleReportsDao {
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
         sb = getCommonsql(sb, infoTabName, detailTabName);
+        addConditionByTypeAndZxCodeStyle(reportsParamVO,sb);
         sb.append(" and info.SUCCESSTIME BETWEEN ? AND ?");
         sb.append(" group by detail.ZXSTYLE");
 
@@ -432,6 +451,7 @@ public class DstgZxStyleReportsDao {
         sb.append("  info.isdel = 0");
         sb.append(" and (info.srctype = 1 or info.srctype = 2)");
         sb.append(" and info.companyid = ?");
+        addConditionByTypeAndZxCodeStyle(reportsParamVO,sb);
         sb.append(" and info.SUCCESSTIME BETWEEN ? AND ?");
         sb.append(" group by detail.ZXSTYLE");
 
@@ -477,6 +497,7 @@ public class DstgZxStyleReportsDao {
         sb.append("  info.isdel = 0");
         sb.append(" and (info.srctype = 1 or info.srctype = 2)");
         sb.append(" and info.companyid = ?");
+        addConditionByTypeAndZxCodeStyle(reportsParamVO,sb);
         sb.append(" and info.SUCCESSTIME BETWEEN ? AND ?");
         sb.append(" group by detail.ZXSTYLE");
 
