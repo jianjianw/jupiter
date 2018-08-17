@@ -617,4 +617,19 @@ public class ReportsController extends BaseController {
         List<DstgYearDetailReportsProcessVO> dstgYearReportsVOS = reportService.getDstgYearDetailReports(years,staffPO.getCompanyId());
         return ResultInfoUtil.success(dstgYearReportsVOS);
     }
+
+    /**
+     * 转介绍年度详情
+     * @param searchKey
+     * @return
+     */
+    @GetMapping("/get_zjs_year_detail_report")
+    public ResultInfo getZjsYearClientDetailReport(ZjsClientYearReportDTO searchKey){
+        if (searchKey.getYear()==0){
+            searchKey.setYear(Integer.valueOf(new SimpleDateFormat("yyyy").format(new Date())));
+        }
+        searchKey.setCompanyId(getCurrentLoginStaff().getCompanyId());
+
+        return ResultInfoUtil.success(reportService.getZjsYearDetailReport(searchKey));
+    }
 }

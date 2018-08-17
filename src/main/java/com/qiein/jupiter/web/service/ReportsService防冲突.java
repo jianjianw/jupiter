@@ -9,6 +9,7 @@ import com.qiein.jupiter.web.entity.vo.RegionReportsVO;
 import com.qiein.jupiter.web.entity.vo.ZjsClientYearReportVO2;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Auther: Tt(yehuawei)
@@ -21,5 +22,5 @@ public interface ReportsService防冲突 {
 
     List<ZjsClientYearReportVO2> getZjsYearReport(ZjsClientYearReportDTO zjsClientYearReportDTO);
 
-    List<ZjsClientYearReportVO2> getZjsYearDetailReport(ZjsClientYearReportDTO zjsClientYearReportDTO);
+    List<Map<String, Object>> getZjsYearDetailReport(ZjsClientYearReportDTO zjsClientYearReportDTO);
 }

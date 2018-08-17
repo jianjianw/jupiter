@@ -246,4 +246,10 @@ public interface ReportService {
      * */
     List<DstgYearDetailReportsProcessVO> getDstgYearDetailReports(String years, Integer companyId);
 
+    /**
+     * 转介绍年度详情报表
+     * @param zjsClientYearReportDTO
+     * @return
+     */
+    List<Map<String, Object>> getZjsYearDetailReport(ZjsClientYearReportDTO zjsClientYearReportDTO);
 }

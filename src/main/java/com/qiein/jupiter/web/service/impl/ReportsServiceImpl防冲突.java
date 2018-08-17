@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 市域分析报表
@@ -61,9 +62,9 @@ public class ReportsServiceImpl防冲突 implements ReportsService防冲突 {
     }
 
     @Override
-    public List<ZjsClientYearReportVO2> getZjsYearDetailReport(ZjsClientYearReportDTO zjsClientYearReportDTO) {
+    public List<Map<String, Object>> getZjsYearDetailReport(ZjsClientYearReportDTO zjsClientYearReportDTO) {
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(zjsClientYearReportDTO.getCompanyId());
-        List<ZjsClientYearReportVO2> list =zjsKzOfYearDao.getZjsYearDetailReport(zjsClientYearReportDTO,invalidConfig);
+        List<Map<String, Object>> list =zjsKzOfYearDao.getZjsYearDetailReport(zjsClientYearReportDTO,invalidConfig);
         return list;
     }
 }
