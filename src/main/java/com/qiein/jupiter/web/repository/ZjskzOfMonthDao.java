@@ -68,7 +68,7 @@ public class ZjskzOfMonthDao {
         }
         String sqlString = sql.toString();
         //入店量
-        if (type.equals("type")) {
+        if (type.equals("come")) {
             sqlString = sqlString.replaceAll("CREATETIME", "ComeShopTime");
         }
         //成交量
@@ -95,7 +95,7 @@ public class ZjskzOfMonthDao {
         hjsql.append("'' srcImg ");
         sqlString = hjsql.toString();
         //入店量
-        if (type.equals("type")) {
+        if (type.equals("come")) {
             sqlString = sqlString.replaceAll("CREATETIME", "ComeShopTime");
         }
         //成交量
