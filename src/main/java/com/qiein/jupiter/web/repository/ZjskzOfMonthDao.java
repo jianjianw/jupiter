@@ -111,25 +111,25 @@ public class ZjskzOfMonthDao {
     /**
      * 获取报表详情数据
      */
-    public ZjskzOfMonthMapVO ZjskzOfMonthIn(List<Map<String, Object>> dayList, Integer companyId, String month, String sourceId, DsInvalidVO dsInvalidVO) {
+    public ZjskzOfMonthMapVO ZjskzOfMonthIn(List<Map<String, Object>> dayList, Integer companyId, String month, String sourceId, DsInvalidVO dsInvalidVO,String typeId) {
         List<ZjskzOfMonthReportsVO> zjskzOfMonthReportsVOS = new ArrayList<>();
         String tableInfo = DBSplitUtil.getTable(TableEnum.info, companyId);
         //总客资
-        getAllClientCount(dayList, tableInfo, month, zjskzOfMonthReportsVOS, sourceId, companyId);
+        getAllClientCount(dayList, tableInfo, month, zjskzOfMonthReportsVOS, sourceId, companyId,typeId);
         //待定
-        getPendingClientCount(dayList, tableInfo, month, zjskzOfMonthReportsVOS, sourceId, companyId, dsInvalidVO);
+        getPendingClientCount(dayList, tableInfo, month, zjskzOfMonthReportsVOS, sourceId, companyId, dsInvalidVO,typeId);
         //筛选待定
-        getFilterWaitClientCount(dayList, tableInfo, month, zjskzOfMonthReportsVOS, sourceId, companyId);
+        getFilterWaitClientCount(dayList, tableInfo, month, zjskzOfMonthReportsVOS, sourceId, companyId,typeId);
         //筛选无效
-        getFilterInValidClientCount(dayList, tableInfo, month, zjskzOfMonthReportsVOS, sourceId, companyId);
+        getFilterInValidClientCount(dayList, tableInfo, month, zjskzOfMonthReportsVOS, sourceId, companyId,typeId);
         //无效
-        getInValidClientCount(dayList, tableInfo, month, zjskzOfMonthReportsVOS, sourceId, companyId, dsInvalidVO);
+        getInValidClientCount(dayList, tableInfo, month, zjskzOfMonthReportsVOS, sourceId, companyId, dsInvalidVO,typeId);
         //筛选中
-        getFilterInClientCount(dayList, tableInfo, month, zjskzOfMonthReportsVOS, sourceId, companyId);
+        getFilterInClientCount(dayList, tableInfo, month, zjskzOfMonthReportsVOS, sourceId, companyId,typeId);
         //入店量
-        getComeShopClient(dayList, tableInfo, month, zjskzOfMonthReportsVOS, sourceId, companyId);
+        getComeShopClient(dayList, tableInfo, month, zjskzOfMonthReportsVOS, sourceId, companyId,typeId);
         //成交量
-        getSuccessClient(dayList, tableInfo, month, zjskzOfMonthReportsVOS, sourceId, companyId);
+        getSuccessClient(dayList, tableInfo, month, zjskzOfMonthReportsVOS, sourceId, companyId,typeId);
         computerRate(zjskzOfMonthReportsVOS, dsInvalidVO);
         ZjskzOfMonthMapVO zjskzOfMonthMapVO = new ZjskzOfMonthMapVO();
         List<Map<String,Object>> list=new ArrayList<>();
@@ -182,14 +182,14 @@ public class ZjskzOfMonthDao {
     /**
      * 总客资
      */
-    private void getAllClientCount(List<Map<String, Object>> dayList, String tableInfo, String month, List<ZjskzOfMonthReportsVO> zjskzOfMonthReportsVOS, String sourceId, Integer companyId) {
+    private void getAllClientCount(List<Map<String, Object>> dayList, String tableInfo, String month, List<ZjskzOfMonthReportsVO> zjskzOfMonthReportsVOS, String sourceId, Integer companyId,String typeId) {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT ");
 
         for (Map<String, Object> day : dayList) {
             sql.append("(select count(info.id) from " + tableInfo + " info where info.SOURCEID IN ");
             if (StringUtil.isEmpty(sourceId)) {
-                sql.append("(select id from hm_crm_source where companyId=" + companyId + " and typeid in (3,4,5) )");
+                sql.append("(select id from hm_crm_source where companyId=" + companyId + " and typeid in ("+typeId+") )");
             } else {
                 sql.append("(" + sourceId + ")");
             }
@@ -197,7 +197,7 @@ public class ZjskzOfMonthDao {
         }
         sql.append("(select count(info.id) from " + tableInfo + " info where info.SOURCEID IN ");
         if (StringUtil.isEmpty(sourceId)) {
-            sql.append("(select id from hm_crm_source where companyId=" + companyId + " and typeid in (3,4,5) )");
+            sql.append("(select id from hm_crm_source where companyId=" + companyId + " and typeid in ("+typeId+") )");
         } else {
             sql.append("(" + sourceId + ")");
         }
@@ -216,14 +216,14 @@ public class ZjskzOfMonthDao {
     /**
      * 待定量
      */
-    private void getPendingClientCount(List<Map<String, Object>> dayList, String tableInfo, String month, List<ZjskzOfMonthReportsVO> zjskzOfMonthReportsVOS, String sourceId, Integer companyId, DsInvalidVO dsInvalidVO) {
+    private void getPendingClientCount(List<Map<String, Object>> dayList, String tableInfo, String month, List<ZjskzOfMonthReportsVO> zjskzOfMonthReportsVOS, String sourceId, Integer companyId, DsInvalidVO dsInvalidVO,String typeId) {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT ");
 
         for (Map<String, Object> day : dayList) {
             sql.append("(select count(info.id) from " + tableInfo + " info where info.SOURCEID IN ");
             if (StringUtil.isEmpty(sourceId)) {
-                sql.append("(select id from hm_crm_source where companyId=" + companyId + " and typeid in (3,4,5) )");
+                sql.append("(select id from hm_crm_source where companyId=" + companyId + " and typeid in ("+typeId+") )");
             } else {
                 sql.append("(" + sourceId + ")");
             }
@@ -232,7 +232,7 @@ public class ZjskzOfMonthDao {
         }
         sql.append("(select count(info.id) from " + tableInfo + " info where info.SOURCEID IN ");
         if (StringUtil.isEmpty(sourceId)) {
-            sql.append("(select id from hm_crm_source where companyId=" + companyId + " and typeid in (3,4,5) )");
+            sql.append("(select id from hm_crm_source where companyId=" + companyId + " and typeid in ("+typeId+") )");
         } else {
             sql.append("(" + sourceId + ")");
         }
@@ -261,14 +261,14 @@ public class ZjskzOfMonthDao {
     /**
      * 筛选待定
      */
-    private void getFilterWaitClientCount(List<Map<String, Object>> dayList, String tableInfo, String month, List<ZjskzOfMonthReportsVO> zjskzOfMonthReportsVOS, String sourceId, Integer companyId) {
+    private void getFilterWaitClientCount(List<Map<String, Object>> dayList, String tableInfo, String month, List<ZjskzOfMonthReportsVO> zjskzOfMonthReportsVOS, String sourceId, Integer companyId,String typeId) {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT ");
 
         for (Map<String, Object> day : dayList) {
             sql.append("(select count(info.id) from " + tableInfo + " info where info.SOURCEID IN ");
             if (StringUtil.isEmpty(sourceId)) {
-                sql.append("(select id from hm_crm_source where companyId=" + companyId + " and typeid in (3,4,5) )");
+                sql.append("(select id from hm_crm_source where companyId=" + companyId + " and typeid in ("+typeId+") )");
             } else {
                 sql.append("(" + sourceId + ")");
             }
@@ -277,7 +277,7 @@ public class ZjskzOfMonthDao {
         }
         sql.append("(select count(info.id) from " + tableInfo + " info where info.SOURCEID IN ");
         if (StringUtil.isEmpty(sourceId)) {
-            sql.append("(select id from hm_crm_source where companyId=" + companyId + " and typeid in (3,4,5) )");
+            sql.append("(select id from hm_crm_source where companyId=" + companyId + " and typeid in ("+typeId+") )");
         } else {
             sql.append("(" + sourceId + ")");
         }
@@ -306,14 +306,14 @@ public class ZjskzOfMonthDao {
     /**
      * 筛选无效
      */
-    private void getFilterInValidClientCount(List<Map<String, Object>> dayList, String tableInfo, String month, List<ZjskzOfMonthReportsVO> zjskzOfMonthReportsVOS, String sourceId, Integer companyId) {
+    private void getFilterInValidClientCount(List<Map<String, Object>> dayList, String tableInfo, String month, List<ZjskzOfMonthReportsVO> zjskzOfMonthReportsVOS, String sourceId, Integer companyId,String typeId) {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT ");
 
         for (Map<String, Object> day : dayList) {
             sql.append("(select count(info.id) from " + tableInfo + " info where info.SOURCEID IN ");
             if (StringUtil.isEmpty(sourceId)) {
-                sql.append("(select id from hm_crm_source where companyId=" + companyId + " and typeid in (3,4,5) )");
+                sql.append("(select id from hm_crm_source where companyId=" + companyId + " and typeid in ("+typeId+") )");
             } else {
                 sql.append("(" + sourceId + ")");
             }
@@ -322,7 +322,7 @@ public class ZjskzOfMonthDao {
         }
         sql.append("(select count(info.id) from " + tableInfo + " info where info.SOURCEID IN ");
         if (StringUtil.isEmpty(sourceId)) {
-            sql.append("(select id from hm_crm_source where companyId=" + companyId + " and typeid in (3,4,5) )");
+            sql.append("(select id from hm_crm_source where companyId=" + companyId + " and typeid in ("+typeId+") )");
         } else {
             sql.append("(" + sourceId + ")");
         }
@@ -351,14 +351,14 @@ public class ZjskzOfMonthDao {
     /**
      * 筛选中
      */
-    private void getFilterInClientCount(List<Map<String, Object>> dayList, String tableInfo, String month, List<ZjskzOfMonthReportsVO> zjskzOfMonthReportsVOS, String sourceId, Integer companyId) {
+    private void getFilterInClientCount(List<Map<String, Object>> dayList, String tableInfo, String month, List<ZjskzOfMonthReportsVO> zjskzOfMonthReportsVOS, String sourceId, Integer companyId,String typeId) {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT ");
 
         for (Map<String, Object> day : dayList) {
             sql.append("(select count(info.id) from " + tableInfo + " info where info.SOURCEID IN ");
             if (StringUtil.isEmpty(sourceId)) {
-                sql.append("(select id from hm_crm_source where companyId=" + companyId + " and typeid in (3,4,5) )");
+                sql.append("(select id from hm_crm_source where companyId=" + companyId + " and typeid in ("+typeId+") )");
             } else {
                 sql.append("(" + sourceId + ")");
             }
@@ -367,7 +367,7 @@ public class ZjskzOfMonthDao {
         }
         sql.append("(select count(info.id) from " + tableInfo + " info where info.SOURCEID IN ");
         if (StringUtil.isEmpty(sourceId)) {
-            sql.append("(select id from hm_crm_source where companyId=" + companyId + " and typeid in (3,4,5) )");
+            sql.append("(select id from hm_crm_source where companyId=" + companyId + " and typeid in ("+typeId+") )");
         } else {
             sql.append("(" + sourceId + ")");
         }
@@ -396,14 +396,14 @@ public class ZjskzOfMonthDao {
     /**
      * 无效量
      */
-    private void getInValidClientCount(List<Map<String, Object>> dayList, String tableInfo, String month, List<ZjskzOfMonthReportsVO> zjskzOfMonthReportsVOS, String sourceId, Integer companyId, DsInvalidVO dsInvalidVO) {
+    private void getInValidClientCount(List<Map<String, Object>> dayList, String tableInfo, String month, List<ZjskzOfMonthReportsVO> zjskzOfMonthReportsVOS, String sourceId, Integer companyId, DsInvalidVO dsInvalidVO,String typeId) {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT ");
         String tableDetail = DBSplitUtil.getTable(TableEnum.detail, companyId);
         for (Map<String, Object> day : dayList) {
             sql.append("(select count(info.id) from " + tableInfo + " info left join " + tableDetail + " detail on detail.kzid=info.kzid  where info.SOURCEID IN ");
             if (StringUtil.isEmpty(sourceId)) {
-                sql.append("(select id from hm_crm_source where companyId=" + companyId + " and typeid in (3,4,5) )");
+                sql.append("(select id from hm_crm_source where companyId=" + companyId + " and typeid in ("+typeId+") )");
             } else {
                 sql.append("(" + sourceId + ")");
             }
@@ -421,7 +421,7 @@ public class ZjskzOfMonthDao {
         }
         sql.append("(select count(info.id) from " + tableInfo + " info left join " + tableDetail + " detail on detail.kzid=info.kzid   where info.SOURCEID IN ");
         if (StringUtil.isEmpty(sourceId)) {
-            sql.append("(select id from hm_crm_source where companyId=" + companyId + " and typeid in (3,4,5) )");
+            sql.append("(select id from hm_crm_source where companyId=" + companyId + " and typeid in ("+typeId+") )");
         } else {
             sql.append("(" + sourceId + ")");
         }
@@ -459,14 +459,14 @@ public class ZjskzOfMonthDao {
     /**
      * 入店量
      */
-    private void getComeShopClient(List<Map<String, Object>> dayList, String tableInfo, String month, List<ZjskzOfMonthReportsVO> zjskzOfMonthReportsVOS, String sourceId, Integer companyId) {
+    private void getComeShopClient(List<Map<String, Object>> dayList, String tableInfo, String month, List<ZjskzOfMonthReportsVO> zjskzOfMonthReportsVOS, String sourceId, Integer companyId,String typeId) {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT ");
 
         for (Map<String, Object> day : dayList) {
             sql.append("(select count(info.id) from " + tableInfo + " info where info.SOURCEID IN ");
             if (StringUtil.isEmpty(sourceId)) {
-                sql.append("(select id from hm_crm_source where companyId=" + companyId + " and typeid in (3,4,5) )");
+                sql.append("(select id from hm_crm_source where companyId=" + companyId + " and typeid in ("+typeId+") )");
             } else {
                 sql.append("(" + sourceId + ")");
             }
@@ -474,7 +474,7 @@ public class ZjskzOfMonthDao {
         }
         sql.append("(select count(info.id) from " + tableInfo + " info where info.SOURCEID IN ");
         if (StringUtil.isEmpty(sourceId)) {
-            sql.append("(select id from hm_crm_source where companyId=" + companyId + " and typeid in (3,4,5) )");
+            sql.append("(select id from hm_crm_source where companyId=" + companyId + " and typeid in ("+typeId+") )");
         } else {
             sql.append("(" + sourceId + ")");
         }
@@ -502,14 +502,14 @@ public class ZjskzOfMonthDao {
     /**
      * 成交量
      */
-    private void getSuccessClient(List<Map<String, Object>> dayList, String tableInfo, String month, List<ZjskzOfMonthReportsVO> zjskzOfMonthReportsVOS, String sourceId, Integer companyId) {
+    private void getSuccessClient(List<Map<String, Object>> dayList, String tableInfo, String month, List<ZjskzOfMonthReportsVO> zjskzOfMonthReportsVOS, String sourceId, Integer companyId,String typeId) {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT ");
 
         for (Map<String, Object> day : dayList) {
             sql.append("(select count(info.id) from " + tableInfo + " info where info.SOURCEID IN ");
             if (StringUtil.isEmpty(sourceId)) {
-                sql.append("(select id from hm_crm_source where companyId=" + companyId + " and typeid in (3,4,5) )");
+                sql.append("(select id from hm_crm_source where companyId=" + companyId + " and typeid in ("+typeId+") )");
             } else {
                 sql.append("(" + sourceId + ")");
             }
@@ -517,7 +517,7 @@ public class ZjskzOfMonthDao {
         }
         sql.append("(select count(info.id) from " + tableInfo + " info where info.SOURCEID IN ");
         if (StringUtil.isEmpty(sourceId)) {
-            sql.append("(select id from hm_crm_source where companyId=" + companyId + " and typeid in (3,4,5) )");
+            sql.append("(select id from hm_crm_source where companyId=" + companyId + " and typeid in ("+typeId+") )");
         } else {
             sql.append("(" + sourceId + ")");
         }

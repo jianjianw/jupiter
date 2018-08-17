@@ -126,6 +126,14 @@ public interface ReportService {
      * @return
      */
     ZjskzOfMonthMapVO ZjskzOfMonthIn(Integer companyId, String sourceId, String month);
+    /**
+     * 转介绍月底客资汇总报表详情
+     * @param companyId
+     * @param sourceId
+     * @param month
+     * @return
+     */
+    ZjskzOfMonthMapVO DskzOfMonthIn(Integer companyId, String sourceId, String month);
 
     /**
      * 老客信息汇总报表

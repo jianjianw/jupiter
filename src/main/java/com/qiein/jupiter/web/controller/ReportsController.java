@@ -436,6 +436,14 @@ public class ReportsController extends BaseController {
         return ResultInfoUtil.success(reportService.ZjskzOfMonthIn(getCurrentLoginStaff().getCompanyId(), sourceId, month));
     }
 
+    /**
+     * 电商每月客资报表内表详情
+     */
+    @GetMapping("/ds_kz_of_month_in")
+    public ResultInfo DskzOfMonthIn(String sourceId, String month) {
+        return ResultInfoUtil.success(reportService.DskzOfMonthIn(getCurrentLoginStaff().getCompanyId(), sourceId, month));
+    }
+
 
     /**
      * 获取市域分析报表

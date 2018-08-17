@@ -269,7 +269,17 @@ public class ReportsServiceImpl implements ReportService {
         List<Map<String, Object>> newList = zjskzOfMonthDao.getDayOfMonth(Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[0]), Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[1]), DBSplitUtil.getTable(TableEnum.info, companyId));
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         month = month.replace(CommonConstant.ROD_SEPARATOR, CommonConstant.FILE_SEPARATOR);
-        return zjskzOfMonthDao.ZjskzOfMonthIn(newList, companyId, month, sourceId, invalidConfig);
+        return zjskzOfMonthDao.ZjskzOfMonthIn(newList, companyId, month, sourceId, invalidConfig,CommonConstant.ZjsSrc);
+    }
+
+    /**
+     * 转介绍每月客资报表内表详情
+     */
+    public ZjskzOfMonthMapVO DskzOfMonthIn(Integer companyId, String sourceId, String month) {
+        List<Map<String, Object>> newList = zjskzOfMonthDao.getDayOfMonth(Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[0]), Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[1]), DBSplitUtil.getTable(TableEnum.info, companyId));
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
+        month = month.replace(CommonConstant.ROD_SEPARATOR, CommonConstant.FILE_SEPARATOR);
+        return zjskzOfMonthDao.ZjskzOfMonthIn(newList, companyId, month, sourceId, invalidConfig,CommonConstant.DsSrc);
     }
 
     /**

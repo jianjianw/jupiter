@@ -225,5 +225,13 @@ public class CommonConstant {
      * 合计
      */
     public final static String totalAll = "合计";
+    /**
+     * 电商渠道
+     */
+    public final static String DsSrc="1,2";
+    /**
+     * 转介绍渠道
+     */
+    public final static String ZjsSrc="3,4,5";
 
 }
