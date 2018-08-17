@@ -1,13 +1,12 @@
 package com.qiein.jupiter.web.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.constant.ClientLogConst;
 import com.qiein.jupiter.constant.CommonConstant;
-import com.qiein.jupiter.constant.DictionaryConstant;
 import com.qiein.jupiter.constant.RoleConstant;
 import com.qiein.jupiter.enums.TableEnum;
-import com.qiein.jupiter.exception.ExceptionEnum;
-import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.ClientInfoDao;
@@ -17,17 +16,12 @@ import com.qiein.jupiter.web.entity.dto.CitiesAnalysisParamDTO;
 import com.qiein.jupiter.web.entity.dto.ClientLogDTO;
 import com.qiein.jupiter.web.entity.dto.ProvinceAnalysisParamDTO;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
-import com.qiein.jupiter.web.entity.po.DictionaryPO;
-import com.qiein.jupiter.web.entity.po.EditClientPhonePO;
-import com.qiein.jupiter.web.entity.po.RepateKzLogPO;
-import com.qiein.jupiter.web.entity.po.WechatScanPO;
+import com.qiein.jupiter.web.entity.po.*;
 import com.qiein.jupiter.web.entity.vo.*;
 import com.qiein.jupiter.web.repository.*;
 import com.qiein.jupiter.web.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.github.pagehelper.PageInfo;
-import com.github.pagehelper.PageHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -85,6 +79,12 @@ public class ReportsServiceImpl implements ReportService {
 
     @Autowired
     private KeyWordReportsDao keyWordReportsDao;
+
+    @Autowired
+    private DstgYearsClientReportsDao dstgYearsClientReportsDao;
+
+    @Autowired
+    private CwMonthOrderCountReportsDao cwMonthOrderCountReportsDao;
 
     /**
      * 修改联系方式日志
@@ -167,7 +167,7 @@ public class ReportsServiceImpl implements ReportService {
      * @param companyId
      */
     @Override
-    public List<DstgGoldDataReportsVO> getDstgAdReports(Integer start, Integer end, Integer companyId,String type) {
+    public List<DstgGoldDataReportsVO> getDstgAdReports(Integer start, Integer end, Integer companyId, String type) {
         //封装对应的参数
         ReportsParamVO reportsParamVO = new ReportsParamVO();
         reportsParamVO.setStart(start);
@@ -181,7 +181,7 @@ public class ReportsServiceImpl implements ReportService {
     }
 
     @Override
-    public List<DstgZxStyleReportsVO> getDstgZxStyleReports(Integer start, Integer end, int companyId,String type,String zxStyleCode) {
+    public List<DstgZxStyleReportsVO> getDstgZxStyleReports(Integer start, Integer end, int companyId, String type, String zxStyleCode) {
         //封装对应的参数
         ReportsParamVO reportsParamVO = new ReportsParamVO();
         reportsParamVO.setStart(start);
@@ -207,7 +207,7 @@ public class ReportsServiceImpl implements ReportService {
         DictionaryPO dictionaryPO = new DictionaryPO();
         dictionaryPO.setDicType("hj");
         dictionaryPO.setDicName("合计");
-        List<DictionaryPO> DicList = dictionaryDao.getInvaildReasons(DBSplitUtil.getTable(TableEnum.info,companyId), DBSplitUtil.getTable(TableEnum.detail,companyId));
+        List<DictionaryPO> DicList = dictionaryDao.getInvaildReasons(DBSplitUtil.getTable(TableEnum.info, companyId), DBSplitUtil.getTable(TableEnum.detail, companyId));
         invalidReasonReportsVO.setInvalidReasonKz(invalidReasonReportsDao.getInvalidReasonReports(DicList, DBSplitUtil.getTable(TableEnum.info, companyId), DBSplitUtil.getTable(TableEnum.detail, companyId), companyId, sourceIds, startTime, endTime, typeIds));
         list.add(dictionaryPO);
         list.addAll(DicList);
@@ -245,12 +245,12 @@ public class ReportsServiceImpl implements ReportService {
     public List<ProvinceReportsVO2> getProvinceReport(ProvinceAnalysisParamDTO provinceAnalysisParamDTO) {
         //获取公司自定义的无效设置 TODO 其实部分数据是不用调这个借口
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(provinceAnalysisParamDTO.getCompanyId());
-        List<ProvinceReportsVO2> provinceReport = provinceReportsDao.provinceReport(provinceAnalysisParamDTO,invalidConfig);
+        List<ProvinceReportsVO2> provinceReport = provinceReportsDao.provinceReport(provinceAnalysisParamDTO, invalidConfig);
         return provinceReport;
     }
 
     @Override
-    public DsyyStatusReportsHeaderVO getDsyyStatusReports(Integer start, Integer end, int companyId,String type,String groupId) {
+    public DsyyStatusReportsHeaderVO getDsyyStatusReports(Integer start, Integer end, int companyId, String type, String groupId) {
         ReportsParamVO reportsParamVO = new ReportsParamVO();
         reportsParamVO.setStart(start);
         reportsParamVO.setEnd(end);
@@ -391,11 +391,7 @@ public class ReportsServiceImpl implements ReportService {
     }
 
     @Override
-    public DsyyStatusReportsHeaderVO getDsyyStatusDetailReports(Integer start, Integer end, String groupId, int companyId,String type) {
-        //FIXME 此处有问题
-        if (StringUtil.isEmpty(groupId)) {
-            throw new RException(ExceptionEnum.GROUP_IS_NULL);
-        }
+    public DsyyStatusReportsHeaderVO getDsyyStatusDetailReports(Integer start, Integer end, String groupId, int companyId, String type) {
         ReportsParamVO reportsParamVO = new ReportsParamVO();
         reportsParamVO.setStart(start);
         reportsParamVO.setEnd(end);
@@ -408,7 +404,7 @@ public class ReportsServiceImpl implements ReportService {
     }
 
     @Override
-    public List<DstgZxStyleReportsVO> getDstgZxStyleSourceRerports(Integer start, Integer end, String zxStyleCode,String type, int companyId) {
+    public List<DstgZxStyleReportsVO> getDstgZxStyleSourceRerports(Integer start, Integer end, String zxStyleCode, String type, int companyId) {
         ReportsParamVO reportsParamVO = new ReportsParamVO();
         reportsParamVO.setStart(start);
         reportsParamVO.setEnd(end);
@@ -448,8 +444,10 @@ public class ReportsServiceImpl implements ReportService {
             return clientStatusTranslateReportsDao.getClientStatusTranslateForGroup(reportsParamVO);
         }
     }
+
     /**
      * 关键词报表
+     *
      * @param startTime
      * @param endTime
      * @param typeIds
@@ -457,8 +455,31 @@ public class ReportsServiceImpl implements ReportService {
      * @param companyId
      * @return
      */
-    public List<KeyWordReportsVO> getKeyWordReports(String startTime,String endTime,String typeIds,String keyWord,Integer companyId){
+    public List<KeyWordReportsVO> getKeyWordReports(String startTime, String endTime, String typeIds, String keyWord, Integer companyId) {
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
-        return keyWordReportsDao.getKeyWordReports( startTime, endTime, typeIds, keyWord, companyId,invalidConfig);
+        return keyWordReportsDao.getKeyWordReports(startTime, endTime, typeIds, keyWord, companyId, invalidConfig);
+    }
+
+    /**
+     * 财务 月度订单数据统计
+     *
+     * @param reportsParamVO
+     * @return
+     */
+    @Override
+    public JSONObject getCwMonthOrderCountReports(ReportsParamVO reportsParamVO) {
+        return cwMonthOrderCountReportsDao.getCwMonthOrderCountReports(reportsParamVO);
+    }
+
+    @Override
+    public List<DstgYearReportsVO> getDstgYearsReports(Integer start, Integer end, int companyId,String years) {
+        ReportsParamVO reportsParamVO = new ReportsParamVO();
+        reportsParamVO.setStart(start);
+        reportsParamVO.setEnd(end);
+        reportsParamVO.setCompanyId(companyId);
+        reportsParamVO.setYears(years);
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
+        List<DstgYearReportsVO> dstgYearsClientReports = dstgYearsClientReportsDao.getDstgYearsClientReports(reportsParamVO, invalidConfig);
+        return dstgYearsClientReports;
     }
 }

@@ -4,6 +4,7 @@ import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.web.entity.dto.CitiesAnalysisParamDTO;
 import com.qiein.jupiter.web.entity.dto.ProvinceAnalysisParamDTO;
+import com.qiein.jupiter.web.entity.dto.ZjsClientYearReportDTO;
 import com.qiein.jupiter.web.service.ReportsService防冲突;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,5 +57,11 @@ public class ReportsController防止多人提交git冲突 extends BaseController
         }
         searchKey.setCompanyId(getCurrentLoginStaff().getCompanyId());
         return ResultInfoUtil.success(reportsService.getProvinceReport(searchKey));
+    }
+
+    public ResultInfo getZjsYearClientReport(ZjsClientYearReportDTO searchKey){
+        //TODO 给默认时间
+        searchKey.setCompanyId(getCurrentLoginStaff().getCompanyId());
+        return ResultInfoUtil.success();
     }
 }
