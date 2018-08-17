@@ -136,10 +136,6 @@ public class ProvinceReportsDao {
                 .append(" LEFT JOIN ("+getFilterInValidClientCount(provinceAnalysisParamDTO) + ") sxwxl ON zkz.srcId = sxwxl.srcId ")  //筛选无效量
                 ;
 
-//                .append("(" + getFilterPendingClientCount(provinceAnalysisParamDTO) + ") sxdd , ")     //筛选待定
-//                .append("(" + getFilterInClientCount(provinceAnalysisParamDTO) + ") sxz , ")   //筛选中
-//                .append("(" + getFilterInValidClientCount(provinceAnalysisParamDTO) + ") sxwxl ");   //筛选无效量
-
         setConditionSQL(sb, provinceAnalysisParamDTO);
         return sb;
     }

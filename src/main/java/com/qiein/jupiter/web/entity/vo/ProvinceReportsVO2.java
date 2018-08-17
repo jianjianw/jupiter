@@ -14,7 +14,7 @@ public class ProvinceReportsVO2 {
     private Integer srcId;
     private String srcImg;
     private String srcName;
-    private String dataType;    //数据类型  总客资 客资量 有效量 入店量 成交量
+    private String dataType;    //数据类型 总客资 客资量 有效量 入店量 成交量
     private List<ProvinceDataDTO> provinceDataList;
     private Map<String,Integer> provinceDataMap;
 

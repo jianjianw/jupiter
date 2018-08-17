@@ -47,7 +47,7 @@ public interface ReportService {
      * @param companyId
      * @return
      */
-    List<DstgGoldDataReportsVO> getDstgAdReports(Integer start, Integer end, Integer companyId,String type);
+    List<DstgGoldDataReportsVO> getDstgAdReports(Integer start, Integer end, Integer companyId, String type);
 
     /**
      * 电商推广咨询信息方式报表
@@ -59,7 +59,7 @@ public interface ReportService {
      * @param zxStyleCode
      * @return
      */
-    List<DstgZxStyleReportsVO> getDstgZxStyleReports(Integer start, Integer end, int companyId,String type,String zxStyleCode);
+    List<DstgZxStyleReportsVO> getDstgZxStyleReports(Integer start, Integer end, int companyId, String type, String zxStyleCode);
 
     /**
      * 获取无效原因客资报表
@@ -77,7 +77,7 @@ public interface ReportService {
      * @param companyId
      * @return
      */
-    DsyyStatusReportsHeaderVO getDsyyStatusReports(Integer start, Integer end, int companyId,String type,String groupId);
+    DsyyStatusReportsHeaderVO getDsyyStatusReports(Integer start, Integer end, int companyId, String type, String groupId);
 
 
     /**
@@ -95,6 +95,7 @@ public interface ReportService {
 
     /**
      * 省域分析报表
+     *
      * @param provinceAnalysisParamDTO
      * @return
      */
@@ -117,10 +118,11 @@ public interface ReportService {
      * @param groupId
      * @param companyId
      */
-    DsyyStatusReportsHeaderVO getDsyyStatusDetailReports(Integer start, Integer end, String groupId, int companyId,String type);
+    DsyyStatusReportsHeaderVO getDsyyStatusDetailReports(Integer start, Integer end, String groupId, int companyId, String type);
 
     /**
      * 转介绍月底客资汇总报表详情
+     *
      * @param companyId
      * @param sourceId
      * @param month
@@ -179,7 +181,7 @@ public interface ReportService {
      * @param companyId
      * @return
      */
-    List<DstgZxStyleReportsVO> getDstgZxStyleSourceRerports(Integer start, Integer end, String zxStyleCode,String type, int companyId);
+    List<DstgZxStyleReportsVO> getDstgZxStyleSourceRerports(Integer start, Integer end, String zxStyleCode, String type, int companyId);
 
     /**
      * 渠道订单数据统计
@@ -199,6 +201,7 @@ public interface ReportService {
 
     /**
      * 关键词报表
+     *
      * @param startTime
      * @param endTime
      * @param typeIds
@@ -216,4 +219,12 @@ public interface ReportService {
      * @return
      * */
     List<DstgYearReportsVO> getDstgYearsReports(Integer start, Integer end, int companyId,String years);
+
+    /**
+     * 财务 月度订单数据统计
+     *
+     * @param reportsParamVO
+     * @return
+     */
+    JSONObject getCwMonthOrderCountReports(ReportsParamVO reportsParamVO);
 }
