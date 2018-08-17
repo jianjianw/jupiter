@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.repository;
 
 import com.alibaba.fastjson.JSONObject;
+import com.qiein.jupiter.constant.ClientStatusConst;
 import com.qiein.jupiter.enums.SourceTypeEnum;
 import com.qiein.jupiter.util.CollectionUtils;
 import com.qiein.jupiter.util.DBSplitUtil;
@@ -194,6 +195,7 @@ public class CwMonthOrderCountReportsDao {
         int end = TimeUtil.getMonthEndTimeStampByDate(reportsParamVO.getMonth());
         params.put("start", start);
         params.put("end", end);
+        params.put("status", ClientStatusConst.SUCCESS_STATUS_RANGE);
         return params;
     }
 
@@ -203,10 +205,11 @@ public class CwMonthOrderCountReportsDao {
      * @return
      */
     private String getBaseWhereSql() {
-        String whereSql = " WHERE info.COMPANYID = :companyId " +
-                " AND  info.ISDEL = 0 " +
-                " AND info.SUCCESSTIME BETWEEN  :start AND :end ";
-        return whereSql;
+        StringBuilder whereSql = new StringBuilder().append(" WHERE info.COMPANYID = :companyId ")
+                .append(" AND  info.ISDEL = 0 ")
+                .append(" AND info.SUCCESSTIME BETWEEN  :start AND :end ")
+                .append(" AND info.STATUSID in :status ");
+        return whereSql.toString();
     }
 
     /**

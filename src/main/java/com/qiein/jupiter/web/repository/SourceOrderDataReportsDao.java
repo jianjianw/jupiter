@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.repository;
 
+import com.qiein.jupiter.constant.ClientStatusConst;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.enums.SourceTypeEnum;
 import com.qiein.jupiter.util.DBSplitUtil;
@@ -9,6 +10,7 @@ import com.qiein.jupiter.web.entity.vo.SourceOrderDataReportsVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowCallbackHandler;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
@@ -28,6 +30,9 @@ public class SourceOrderDataReportsDao {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private NamedParameterJdbcOperations namedJdbc;
 
     /**
      * 渠道订单数据统计
@@ -69,12 +74,19 @@ public class SourceOrderDataReportsDao {
         StringBuilder baseSql = new StringBuilder();
         baseSql.append(" SELECT info.SRCTYPE,COUNT(*) COUNT FROM ");
         baseSql.append(infoTableName).append(" info ");
-        baseSql.append(" WHERE info.ISDEL = 0 ")
-                .append(" AND info.COMPANYID = ? ")
-                .append(" AND info.SUCCESSTIME BETWEEN ? AND ? ")
+        baseSql.append(" WHERE info.COMPANYID = :companyId  ")
+                .append(" AND info.ISDEL = 0 ")
+                .append(" AND info.SUCCESSTIME BETWEEN :start AND :end ")
+                .append("  AND info.STATUSID in :status ")
                 .append(" GROUP BY info.SRCTYPE ");
+        Map<String, Object> params = new HashMap<>();
+        params.put("companyId", cid);
+        params.put("start", reportsParamVO.getStart());
+        params.put("end", reportsParamVO.getEnd());
+        params.put("status", ClientStatusConst.SUCCESS_STATUS_RANGE);
+
         //处理结果集
-        jdbcTemplate.query(baseSql.toString(),
+        namedJdbc.query(baseSql.toString(), params,
                 new RowCallbackHandler() {
                     @Override
                     public void processRow(ResultSet rs) throws SQLException {
@@ -83,8 +95,7 @@ public class SourceOrderDataReportsDao {
                         reportsVO.setOrderAmount(rs.getInt("COUNT"));
                         reportsList.add(reportsVO);
                     }
-                },
-                cid, reportsParamVO.getStart(), reportsParamVO.getEnd());
+                });
 
     }
 
@@ -101,20 +112,25 @@ public class SourceOrderDataReportsDao {
         baseSql.append(infoTableName).append(" info ")
                 .append(" LEFT JOIN ").append(detailTableName).append(" det ")
                 .append(" ON info.KZID = det.KZID AND info.COMPANYID = det.COMPANYID ");
-        baseSql.append(" WHERE info.ISDEL = 0 ")
-                .append(" AND info.COMPANYID = ? ")
-                .append(" AND info.SUCCESSTIME BETWEEN ? AND ? ")
+        baseSql.append(" WHERE info.COMPANYID = :companyId  ")
+                .append(" AND info.ISDEL = 0 ")
+                .append(" AND info.SUCCESSTIME BETWEEN :start AND :end ")
+                .append("  AND info.STATUSID in :status ")
                 .append(" GROUP BY info.SRCTYPE ");
+        Map<String, Object> params = new HashMap<>();
+        params.put("companyId", cid);
+        params.put("start", reportsParamVO.getStart());
+        params.put("end", reportsParamVO.getEnd());
+        params.put("status", ClientStatusConst.SUCCESS_STATUS_RANGE);
 
         final Map<Integer, Integer> map = new HashMap<>();
-        jdbcTemplate.query(baseSql.toString(),
+        namedJdbc.query(baseSql.toString(), params,
                 new RowCallbackHandler() {
                     @Override
                     public void processRow(ResultSet rs) throws SQLException {
                         map.put(rs.getInt("SRCTYPE"), rs.getInt("COUNT"));
                     }
-                },
-                cid, reportsParamVO.getStart(), reportsParamVO.getEnd());
+                });
         //遍历赋值
         for (SourceOrderDataReportsVO reportsVO : reportsList) {
             int txTotalAmount = map.get(reportsVO.getSrcType());
@@ -137,20 +153,26 @@ public class SourceOrderDataReportsDao {
         baseSql.append(infoTableName).append(" info ")
                 .append(" LEFT JOIN ").append(detailTableName).append(" det ")
                 .append(" ON info.KZID = det.KZID AND info.COMPANYID = det.COMPANYID ");
-        baseSql.append(" WHERE info.ISDEL = 0 ")
-                .append(" AND info.COMPANYID = ? ")
-                .append(" AND info.SUCCESSTIME BETWEEN ? AND ? ")
+        baseSql.append(" WHERE info.COMPANYID = :companyId ")
+                .append(" AND info.ISDEL = 0 ")
+                .append(" AND info.SUCCESSTIME BETWEEN :start AND :end ")
+                .append("  AND info.STATUSID in :status ")
                 .append(" GROUP BY info.SRCTYPE ");
+        Map<String, Object> params = new HashMap<>();
+        params.put("companyId", cid);
+        params.put("start", reportsParamVO.getStart());
+        params.put("end", reportsParamVO.getEnd());
+        params.put("status", ClientStatusConst.SUCCESS_STATUS_RANGE);
+
 
         final Map<Integer, Integer> map = new HashMap<>();
-        jdbcTemplate.query(baseSql.toString(),
+        namedJdbc.query(baseSql.toString(), params,
                 new RowCallbackHandler() {
                     @Override
                     public void processRow(ResultSet rs) throws SQLException {
                         map.put(rs.getInt("SRCTYPE"), rs.getInt("COUNT"));
                     }
-                },
-                cid, reportsParamVO.getStart(), reportsParamVO.getEnd());
+                });
         //遍历赋值
         for (SourceOrderDataReportsVO reportsVO : reportsList) {
             int ysAmount = map.get(reportsVO.getSrcType());
@@ -182,18 +204,22 @@ public class SourceOrderDataReportsDao {
 
         baseSql.append(" LEFT JOIN hm_crm_source source ")
                 .append(" ON source.ID = cost.SRCID ");
-        baseSql.append(" WHERE  cost.COMPANYID = ? AND cost.CREATETIME  BETWEEN ? AND ? ");
+        baseSql.append(" WHERE  cost.COMPANYID = :companyId AND cost.CREATETIME BETWEEN  :start AND :end  ");
         baseSql.append(" GROUP BY source.TYPEID ");
 
+        Map<String, Object> params = new HashMap<>();
+        params.put("companyId", cid);
+        params.put("start", reportsParamVO.getStart());
+        params.put("end", reportsParamVO.getEnd());
+
         final Map<Integer, Integer> map = new HashMap<>();
-        jdbcTemplate.query(baseSql.toString(),
+        namedJdbc.query(baseSql.toString(), params,
                 new RowCallbackHandler() {
                     @Override
                     public void processRow(ResultSet rs) throws SQLException {
                         map.put(rs.getInt("TYPEID"), rs.getInt("COST"));
                     }
-                },
-                cid, reportsParamVO.getStart(), reportsParamVO.getEnd());
+                });
         //遍历赋值
         for (SourceOrderDataReportsVO reportsVO : reportsList) {
             Integer cost = map.get(reportsVO.getSrcType());
