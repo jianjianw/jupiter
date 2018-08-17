@@ -59,4 +59,11 @@ public class ReportsServiceImpl防冲突 implements ReportsService防冲突 {
         List<ZjsClientYearReportVO2> list = zjsKzOfYearDao.getZjsKzYearReport(zjsClientYearReportDTO, invalidConfig);
         return list;
     }
+
+    @Override
+    public List<ZjsClientYearReportVO2> getZjsYearDetailReport(ZjsClientYearReportDTO zjsClientYearReportDTO) {
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(zjsClientYearReportDTO.getCompanyId());
+        List<ZjsClientYearReportVO2> list =zjsKzOfYearDao.getZjsYearDetailReport(zjsClientYearReportDTO,invalidConfig);
+        return list;
+    }
 }

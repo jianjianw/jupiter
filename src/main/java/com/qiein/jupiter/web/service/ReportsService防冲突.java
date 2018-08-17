@@ -20,4 +20,6 @@ public interface ReportsService防冲突 {
     List<ProvinceReportsVO2> getProvinceReport(ProvinceAnalysisParamDTO provinceAnalysisParamDTO);
 
     List<ZjsClientYearReportVO2> getZjsYearReport(ZjsClientYearReportDTO zjsClientYearReportDTO);
+
+    List<ZjsClientYearReportVO2> getZjsYearDetailReport(ZjsClientYearReportDTO zjsClientYearReportDTO);
 }

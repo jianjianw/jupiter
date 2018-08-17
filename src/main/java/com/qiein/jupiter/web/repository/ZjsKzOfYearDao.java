@@ -83,6 +83,61 @@ public class ZjsKzOfYearDao {
     }
 
     /**
+     * 获取转介绍年度渠道详情报表
+     *
+     * @param zjsClientYearReportDTO
+     * @param dsInvalidVO
+     * @return
+     */
+    public List<ZjsClientYearReportVO2> getZjsYearDetailReport(ZjsClientYearReportDTO zjsClientYearReportDTO, DsInvalidVO dsInvalidVO) {
+        List<ZjsClientYearReportVO> resultContent = new ArrayList<>();
+        List<Integer> timeList = getMonthTimeStamp(zjsClientYearReportDTO.getYear());
+//        int month = 1;
+        for (int i = 0; i < timeList.size(); i += 2) {
+            String sql = getAllTargetSQL(zjsClientYearReportDTO, dsInvalidVO).toString();
+            System.out.println("输出sql: "+sql);
+            continue;
+//            Object[] objs = getParam(zjsClientYearReportDTO,timeList,i,dsInvalidVO); //TODO 这个要改
+//            List<ZjsClientYearReportVO> now = jdbcTemplate.query(sql,
+//                    objs,
+//                    new RowMapper<ZjsClientYearReportVO>() {
+//                        @Override
+//                        public ZjsClientYearReportVO mapRow(ResultSet rs, int i) throws SQLException {
+//                            ZjsClientYearReportVO zjsClientYearReportVO = new ZjsClientYearReportVO();
+//                            List<SourceClientDataDTO> list = new ArrayList<>();
+//                            do {
+//                                RegionReportsVO regionReportsVO = new RegionReportsVO();
+//                                regionReportsVO.setRegionName(rs.getString("regionName"));
+//                                regionReportsVO.setAllClientCount(rs.getInt("allClientCount"));
+//                                regionReportsVO.setPendingClientCount(rs.getInt("pendingClientCount"));
+//                                regionReportsVO.setFilterPendingClientCount(rs.getInt("filterPendingClientCount"));
+//                                regionReportsVO.setInValidClientCount(rs.getInt("inValidClientCount"));
+//                                regionReportsVO.setFilterInValidClientCount(rs.getInt("filterInValidClientCount"));
+//                                regionReportsVO.setComeShopClientCount(rs.getInt("comeShopClientCount"));
+//                                regionReportsVO.setSuccessClientCount(rs.getInt("successClientCount"));
+//                                regionReportsVO.setFilterInClientCount(rs.getInt("filterInClientCount"));
+//                                regionReportsVO.setAvgAmount(rs.getInt(("avgAmount")));
+//                                regionReportsVO.setAmount(rs.getInt("amount"));
+//                            }while (rs.next());
+//                            zjsClientYearReportVO.setSourceData(list);
+//                            return zjsClientYearReportVO;
+//                        }
+//                    });
+//
+//            if (now.isEmpty()){
+//                ZjsClientYearReportVO empty = new ZjsClientYearReportVO();
+//                now.add(empty);
+//            }
+//
+//            now.get(0).setDataType(zjsClientYearReportDTO.getDataType());
+//            now.get(0).setMonthName(String.valueOf((i+2)/2)+"月");
+//            resultContent.addAll(now);
+        }
+
+        return transform(resultContent);
+    }
+
+    /**
      * 获取最后的sql
      *
      * @param zjsClientYearReportDTO
@@ -114,6 +169,7 @@ public class ZjsKzOfYearDao {
                 return getComeShopClientSQL(zjsClientYearReportDTO).toString();
             case "成交量":
                 return getSuccessClientSQL(zjsClientYearReportDTO).toString();
+
             default:
                 throw new RException(ExceptionEnum.SEARCH_TYPE_IS_UNKNOW);
         }
@@ -288,7 +344,7 @@ public class ZjsKzOfYearDao {
         StringBuilder pendingClientSQL = new StringBuilder(); //"pendingClientCount"
         getBaseSQL(pendingClientSQL, zjsClientYearReportDTO);
         pendingClientSQL.append(" AND (info.CREATETIME BETWEEN ? AND ?) ")
-                .append(" AND INSTR( ? , CONCAT(',',info.STATUSID + '',',')) != 0").append("GROUP BY info.SOURCEID");
+                .append(" AND INSTR( ? , CONCAT(',',info.STATUSID + '',',')) != 0 ").append(" GROUP BY info.SOURCEID");
         return pendingClientSQL;
     }
 
@@ -298,22 +354,21 @@ public class ZjsKzOfYearDao {
      * @return
      */
     public Object[] getParam(ZjsClientYearReportDTO zjsClientYearReportDTO,List<Integer> timeList , int i, DsInvalidVO dsInvalidVO) {
-
         switch (zjsClientYearReportDTO.getDataType()) {
 //            case "总客资":
 //                return new Object[]{ timeList.get(i), timeList.get(++i)};
             case "客资量":
-                return new Object[]{ timeList.get(i), timeList.get(++i),
-                        timeList.get(i), timeList.get(++i),
-                        timeList.get(i), timeList.get(++i),
-                        timeList.get(i), timeList.get(++i)};
+                return new Object[]{ timeList.get(i), timeList.get(i+1),
+                        timeList.get(i), timeList.get(i+1),
+                        timeList.get(i), timeList.get(i+1),
+                        timeList.get(i), timeList.get(i+1)};
             case "有效量":
-                return new Object[]{timeList.get(i), timeList.get(++i),
-                        timeList.get(i), timeList.get(++i),
-                        timeList.get(i), timeList.get(++i),
-                        timeList.get(i), timeList.get(++i),
-                        timeList.get(i), timeList.get(++i),
-                        timeList.get(i), timeList.get(++i), dsInvalidVO.getDsDdStatus()};
+                return new Object[]{timeList.get(i), timeList.get(i+1),
+                        timeList.get(i), timeList.get(i+1),
+                        timeList.get(i), timeList.get(i+1),
+                        timeList.get(i), timeList.get(i+1),
+                        timeList.get(i), timeList.get(i+1),
+                        timeList.get(i), timeList.get(i+1), dsInvalidVO.getDsDdStatus()};
             case "入店量":
                 return new Object[]{timeList.get(i), timeList.get(++i)};
             case "成交量":
@@ -377,6 +432,33 @@ public class ZjsKzOfYearDao {
         }
 
         return newlist;
+    }
+
+
+    //===================================================================================================================================================================================================
+    //             渠道年度详情报表
+    //===================================================================================================================================================================================================
+
+    /**
+     * 获取所有指标sql
+     *
+     * @return
+     */
+    private StringBuilder getAllTargetSQL(ZjsClientYearReportDTO zjsClientYearReportDTO, DsInvalidVO dsInvalidVO) {
+        StringBuilder sql = new StringBuilder();
+        //总客资  待定量 筛选待定 无效量 筛选无效量 入店量 成交量 成交均价 营业额
+        sql.append("SELECT ")
+                .append("zkz.allClientCount , ddl.pendingClientCount , sxdd.filterPendingClientCount ,sxz.filterInClientCount , wxl.inValidClientCount , sxwxl.filterInValidClientCount , rdl.comeShopClientCount , cjl.successClientCount ")
+                .append(" FROM ")
+                .append("(" + getAllClientSQL(zjsClientYearReportDTO) + ") zkz ,") //总客资
+                .append("(" + getPendingClientCount(zjsClientYearReportDTO, dsInvalidVO) + ") ddl ,") //待定量
+                .append("(" + getFilterPendingClientCount(zjsClientYearReportDTO) + ") sxdd ,") //筛选待定
+                .append("(" + getFilterInClientCount(zjsClientYearReportDTO) + ") sxz ,") //筛选中
+                .append("(" + getInValidClientSQL(zjsClientYearReportDTO, dsInvalidVO) + ") wxl ,") //无效量
+                .append("(" + getFilterInValidClientCount(zjsClientYearReportDTO) + ") sxwxl ,")   //筛选无效量
+                .append("(" + getComeShopClientSQL(zjsClientYearReportDTO) + ") rdl ,") //入店量
+                .append("(" + getSuccessClientSQL(zjsClientYearReportDTO) + ") cjl "); //成交量
+        return sql;
     }
 
 }
