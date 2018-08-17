@@ -12,10 +12,7 @@ import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.ClientInfoDao;
 import com.qiein.jupiter.web.dao.DictionaryDao;
 import com.qiein.jupiter.web.dao.GroupStaffDao;
-import com.qiein.jupiter.web.entity.dto.CitiesAnalysisParamDTO;
-import com.qiein.jupiter.web.entity.dto.ClientLogDTO;
-import com.qiein.jupiter.web.entity.dto.ProvinceAnalysisParamDTO;
-import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
+import com.qiein.jupiter.web.entity.dto.*;
 import com.qiein.jupiter.web.entity.po.*;
 import com.qiein.jupiter.web.entity.vo.*;
 import com.qiein.jupiter.web.repository.*;
@@ -60,6 +57,8 @@ public class ReportsServiceImpl implements ReportService {
     private InvalidReasonReportsDao invalidReasonReportsDao;
     @Autowired
     private ZjskzOfMonthDao zjskzOfMonthDao;
+    @Autowired
+    private ZjsKzOfYearDao zjsKzOfYearDao;
     @Autowired
     private DsyyStatusReportsDao dsyyStatusReportsDao;
     @Autowired
@@ -479,6 +478,18 @@ public class ReportsServiceImpl implements ReportService {
     @Override
     public JSONObject getCwMonthOrderCountReports(ReportsParamVO reportsParamVO) {
         return cwMonthOrderCountReportsDao.getCwMonthOrderCountReports(reportsParamVO);
+    }
+
+    /**
+     * 转介绍年度报表
+     * @param zjsClientYearReportDTO
+     * @return
+     */
+    @Override
+    public List<ZjsClientYearReportVO2> getZjsYearReport(ZjsClientYearReportDTO zjsClientYearReportDTO) {
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(zjsClientYearReportDTO.getCompanyId());
+        List<ZjsClientYearReportVO2> list = zjsKzOfYearDao.getZjsKzYearReport(zjsClientYearReportDTO, invalidConfig);
+        return list;
     }
 
     @Override

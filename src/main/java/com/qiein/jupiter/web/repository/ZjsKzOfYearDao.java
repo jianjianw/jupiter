@@ -55,27 +55,13 @@ public class ZjsKzOfYearDao {
                         public ZjsClientYearReportVO mapRow(ResultSet rs, int i) throws SQLException {
                             ZjsClientYearReportVO zjsClientYearReportVO = new ZjsClientYearReportVO();
                             List<SourceClientDataDTO> list = new ArrayList<>();
-                            System.out.println(rs.toString());
-//                            while (rs.next()){
-//                                int num =1;
-//                                System.out.println("本次查询出共"+(num++)+"条数据");
-//                                SourceClientDataDTO scd = new SourceClientDataDTO();
-//                                scd.setSrcId(rs.getInt("srcId"));
-//                                scd.setDataNum(rs.getInt("dataNum"));
-//                                scd.setSrcImg(rs.getString("srcImg"));
-//                                scd.setSrcName(rs.getString("srcName"));
-//                                System.out.println("本次查出的数据之一： "+scd);
-//                                list.add(scd);
-//                            }
                             do {
                                 int num =1;
-                                System.out.println("本次查询出共"+(num++)+"条数据");
                                 SourceClientDataDTO scd = new SourceClientDataDTO();
                                 scd.setSrcId(rs.getInt("srcId"));
                                 scd.setDataNum(rs.getInt("dataNum"));
                                 scd.setSrcImg(rs.getString("srcImg"));
                                 scd.setSrcName(rs.getString("srcName"));
-                                System.out.println("本次查出的数据之一： "+scd);
                                 list.add(scd);
                             }while (rs.next());
                             zjsClientYearReportVO.setSourceData(list);
@@ -88,10 +74,8 @@ public class ZjsKzOfYearDao {
                 now.add(empty);
             }
 
-            System.out.println(now);
             now.get(0).setDataType(zjsClientYearReportDTO.getDataType());
             now.get(0).setMonthName(String.valueOf((i+2)/2)+"月");
-            System.out.println(String.valueOf((i+2)/2)+"月");
             resultContent.addAll(now);
         }
 
@@ -360,12 +344,6 @@ public class ZjsKzOfYearDao {
         return timeList;
     }
 
-    public static void main(String[] args) {
-        ZjsKzOfYearDao zjsKzOfYearDao = new ZjsKzOfYearDao();
-//        List<Integer> timeList = zjsKzOfYearDao.getMonthTimeStamp(2018);
-//        for (int i = 0; i < zjsClientYearReportDTO.getYear(); i += 2) {
-        System.out.println(zjsKzOfYearDao.getMonthTimeStamp(2018));
-    }
 
     /**
      * 转换

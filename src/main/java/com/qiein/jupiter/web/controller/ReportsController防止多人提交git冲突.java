@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * @Auther: Tt(yehuawei)
  * @Date: 2018/8/11 11:16
@@ -61,8 +64,11 @@ public class ReportsController防止多人提交git冲突 extends BaseController
 
     @GetMapping("/get_zjs_year_report")
     public ResultInfo getZjsYearClientReport(ZjsClientYearReportDTO searchKey){
-        //TODO 给默认时间
+        if (searchKey.getYear()==0){
+            searchKey.setYear(Integer.valueOf(new SimpleDateFormat("yyyy").format(new Date())));
+        }
         searchKey.setCompanyId(getCurrentLoginStaff().getCompanyId());
+
         return ResultInfoUtil.success(reportsService.getZjsYearReport(searchKey));
     }
 }
