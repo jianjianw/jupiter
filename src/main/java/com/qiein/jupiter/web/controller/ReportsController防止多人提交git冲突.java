@@ -59,9 +59,10 @@ public class ReportsController防止多人提交git冲突 extends BaseController
         return ResultInfoUtil.success(reportsService.getProvinceReport(searchKey));
     }
 
+    @GetMapping("/get_zjs_year_report")
     public ResultInfo getZjsYearClientReport(ZjsClientYearReportDTO searchKey){
         //TODO 给默认时间
         searchKey.setCompanyId(getCurrentLoginStaff().getCompanyId());
-        return ResultInfoUtil.success();
+        return ResultInfoUtil.success(reportsService.getZjsYearReport(searchKey));
     }
 }

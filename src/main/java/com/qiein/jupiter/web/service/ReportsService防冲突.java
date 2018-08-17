@@ -2,9 +2,11 @@ package com.qiein.jupiter.web.service;
 
 import com.qiein.jupiter.web.entity.dto.CitiesAnalysisParamDTO;
 import com.qiein.jupiter.web.entity.dto.ProvinceAnalysisParamDTO;
+import com.qiein.jupiter.web.entity.dto.ZjsClientYearReportDTO;
 import com.qiein.jupiter.web.entity.vo.ProvinceReportsVO;
 import com.qiein.jupiter.web.entity.vo.ProvinceReportsVO2;
 import com.qiein.jupiter.web.entity.vo.RegionReportsVO;
+import com.qiein.jupiter.web.entity.vo.ZjsClientYearReportVO2;
 
 import java.util.List;
 
@@ -17,5 +19,5 @@ public interface ReportsService防冲突 {
 
     List<ProvinceReportsVO2> getProvinceReport(ProvinceAnalysisParamDTO provinceAnalysisParamDTO);
 
-//    List<>
+    List<ZjsClientYearReportVO2> getZjsYearReport(ZjsClientYearReportDTO zjsClientYearReportDTO);
 }

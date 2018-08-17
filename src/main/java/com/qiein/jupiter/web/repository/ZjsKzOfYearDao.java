@@ -6,6 +6,7 @@ import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.dto.ProvinceAnalysisParamDTO;
+import com.qiein.jupiter.web.entity.dto.SourceClientDataDTO;
 import com.qiein.jupiter.web.entity.dto.ZjsClientYearReportDTO;
 import com.qiein.jupiter.web.entity.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,33 +42,60 @@ public class ZjsKzOfYearDao {
      * @return
      */
     public List<ZjsClientYearReportVO2> getZjsKzYearReport(ZjsClientYearReportDTO zjsClientYearReportDTO, DsInvalidVO dsInvalidVO) {
-        List<ZjsClientYearReportVO2> resultList = new ArrayList<>();
-        for (int i = 0; i < zjsClientYearReportDTO.getYear(); i += 2) {
-            System.out.println(i);
+        List<ZjsClientYearReportVO> resultContent = new ArrayList<>();
+        List<Integer> timeList = getMonthTimeStamp(zjsClientYearReportDTO.getYear());
+//        int month = 1;
+        for (int i = 0; i < timeList.size(); i += 2) {
             String sql = getFinalSQL(zjsClientYearReportDTO, dsInvalidVO);
-            Object[] objs = getParam();
+            Object[] objs = getParam(zjsClientYearReportDTO,timeList,i,dsInvalidVO);
             List<ZjsClientYearReportVO> now = jdbcTemplate.query(sql,
                     objs,
                     new RowMapper<ZjsClientYearReportVO>() {
                         @Override
                         public ZjsClientYearReportVO mapRow(ResultSet rs, int i) throws SQLException {
                             ZjsClientYearReportVO zjsClientYearReportVO = new ZjsClientYearReportVO();
-                            Map<Integer,Map<String,Object>> dataMap = new HashMap<>();
-                            while (rs.next()){
-                                Map<String,Object> map = new HashMap<>();
-                                map.put("srcId",rs.getInt("srcId"));
-                                map.put("srcName",rs.getString("srcName"));
-                                map.put("srcImg",rs.getString("srcImg"));
-                                map.put("dataNum",rs.getString("dataNum"));
-                                dataMap.put(rs.getInt("srcId"),map);
-                            }
-                            zjsClientYearReportVO.setDataMap(dataMap);
+                            List<SourceClientDataDTO> list = new ArrayList<>();
+                            System.out.println(rs.toString());
+//                            while (rs.next()){
+//                                int num =1;
+//                                System.out.println("本次查询出共"+(num++)+"条数据");
+//                                SourceClientDataDTO scd = new SourceClientDataDTO();
+//                                scd.setSrcId(rs.getInt("srcId"));
+//                                scd.setDataNum(rs.getInt("dataNum"));
+//                                scd.setSrcImg(rs.getString("srcImg"));
+//                                scd.setSrcName(rs.getString("srcName"));
+//                                System.out.println("本次查出的数据之一： "+scd);
+//                                list.add(scd);
+//                            }
+                            do {
+                                int num =1;
+                                System.out.println("本次查询出共"+(num++)+"条数据");
+                                SourceClientDataDTO scd = new SourceClientDataDTO();
+                                scd.setSrcId(rs.getInt("srcId"));
+                                scd.setDataNum(rs.getInt("dataNum"));
+                                scd.setSrcImg(rs.getString("srcImg"));
+                                scd.setSrcName(rs.getString("srcName"));
+                                System.out.println("本次查出的数据之一： "+scd);
+                                list.add(scd);
+                            }while (rs.next());
+                            zjsClientYearReportVO.setSourceData(list);
                             return zjsClientYearReportVO;
                         }
                     });
+
+            if (now.isEmpty()){
+                ZjsClientYearReportVO empty = new ZjsClientYearReportVO();
+                now.add(empty);
+            }
+
+            System.out.println(now);
+            now.get(0).setDataType(zjsClientYearReportDTO.getDataType());
+            now.get(0).setMonthName(String.valueOf((i+2)/2)+"月");
+            System.out.println(String.valueOf((i+2)/2)+"月");
+            resultContent.addAll(now);
         }
 
-        return resultList;
+        return transform(resultContent);
     }
 
     /**
@@ -79,7 +107,7 @@ public class ZjsKzOfYearDao {
      */
     public String getFinalSQL(ZjsClientYearReportDTO zjsClientYearReportDTO, DsInvalidVO dsInvalidVO) {
         String fianlSQL = setSearchTypeAndSQL(zjsClientYearReportDTO, dsInvalidVO);
-        System.out.println("最终输出sql： "+ fianlSQL);
+        System.out.println("最终输出sql： " + fianlSQL);
         return fianlSQL;
     }
 
@@ -117,9 +145,9 @@ public class ZjsKzOfYearDao {
         sb.append("SELECT zkz.srcId,zkz.SRCIMG,zkz.SRCNAME,IFNULL(zkz.dataNum,0) - IFNULL(sxdd.dataNum,0) - IFNULL(sxz.dataNum,0) - IFNULL(sxwxl.dataNum,0) dataNum")
                 .append(" FROM ")
                 .append(" (" + getAllClientSQL(zjsClientYearReportDTO) + ") zkz ")     //总客资
-                .append(" LEFT JOIN ("+getFilterPendingClientCount(zjsClientYearReportDTO) + ") sxdd ON zkz.srcId = sxdd.srcId ")    //筛选待定
-                .append(" LEFT JOIN ("+getFilterInClientCount(zjsClientYearReportDTO) + ") sxz ON zkz.srcId = sxz.srcId ")          //筛选中
-                .append(" LEFT JOIN ("+getFilterInValidClientCount(zjsClientYearReportDTO) + ") sxwxl ON zkz.srcId = sxwxl.srcId ")  //筛选无效量
+                .append(" LEFT JOIN (" + getFilterPendingClientCount(zjsClientYearReportDTO) + ") sxdd ON zkz.srcId = sxdd.srcId ")    //筛选待定
+                .append(" LEFT JOIN (" + getFilterInClientCount(zjsClientYearReportDTO) + ") sxz ON zkz.srcId = sxz.srcId ")          //筛选中
+                .append(" LEFT JOIN (" + getFilterInValidClientCount(zjsClientYearReportDTO) + ") sxwxl ON zkz.srcId = sxwxl.srcId ")  //筛选无效量
         ;
 
 //                .append("(" + getFilterPendingClientCount(provinceAnalysisParamDTO) + ") sxdd , ")     //筛选待定
@@ -163,6 +191,9 @@ public class ZjsKzOfYearDao {
                 .append(" INNER JOIN hm_crm_source src ON src.ID = info.SOURCEID AND src.COMPANYID = info.COMPANYID")
                 .append(" WHERE info.ISDEL = 0 AND info.COMPANYID = " + zjsClientYearReportDTO.getCompanyId())
                 .append(" AND src.TYPEID IN (3,4,5) ");
+        if (StringUtil.isNotEmpty(zjsClientYearReportDTO.getSourceIds())){
+            sb.append(" AND info.SOURCEID IN ("+zjsClientYearReportDTO.getSourceIds()+") ");
+        }
         return sb;
     }
 
@@ -174,7 +205,7 @@ public class ZjsKzOfYearDao {
     private StringBuilder getComeShopClientSQL(ZjsClientYearReportDTO zjsClientYearReportDTO) {
         StringBuilder sb = new StringBuilder();
         getBaseSQL(sb, zjsClientYearReportDTO);
-        sb.append(" AND (info.COMESHOPTIME BETWEEN ? AND ?) ");
+        sb.append(" AND (info.COMESHOPTIME BETWEEN ? AND ?) ").append("GROUP BY info.SOURCEID");
         return sb;
     }
 
@@ -186,7 +217,7 @@ public class ZjsKzOfYearDao {
     private StringBuilder getSuccessClientSQL(ZjsClientYearReportDTO zjsClientYearReportDTO) {
         StringBuilder sb = new StringBuilder();
         getBaseSQL(sb, zjsClientYearReportDTO);
-        sb.append(" AND (info.SUCCESSTIME BETWEEN ? AND ?) ");
+        sb.append(" AND (info.SUCCESSTIME BETWEEN ? AND ?) ").append("GROUP BY info.SOURCEID");
         return sb;
     }
 
@@ -282,8 +313,30 @@ public class ZjsKzOfYearDao {
      *
      * @return
      */
-    public Object[] getParam() {
-        return null;
+    public Object[] getParam(ZjsClientYearReportDTO zjsClientYearReportDTO,List<Integer> timeList , int i, DsInvalidVO dsInvalidVO) {
+
+        switch (zjsClientYearReportDTO.getDataType()) {
+//            case "总客资":
+//                return new Object[]{ timeList.get(i), timeList.get(++i)};
+            case "客资量":
+                return new Object[]{ timeList.get(i), timeList.get(++i),
+                        timeList.get(i), timeList.get(++i),
+                        timeList.get(i), timeList.get(++i),
+                        timeList.get(i), timeList.get(++i)};
+            case "有效量":
+                return new Object[]{timeList.get(i), timeList.get(++i),
+                        timeList.get(i), timeList.get(++i),
+                        timeList.get(i), timeList.get(++i),
+                        timeList.get(i), timeList.get(++i),
+                        timeList.get(i), timeList.get(++i),
+                        timeList.get(i), timeList.get(++i), dsInvalidVO.getDsDdStatus()};
+            case "入店量":
+                return new Object[]{timeList.get(i), timeList.get(++i)};
+            case "成交量":
+                return new Object[]{timeList.get(i), timeList.get(++i)};
+            default:
+                throw new RException(ExceptionEnum.SEARCH_TYPE_IS_UNKNOW);
+        }
     }
 
     /**
@@ -307,14 +360,45 @@ public class ZjsKzOfYearDao {
         return timeList;
     }
 
+    public static void main(String[] args) {
+        ZjsKzOfYearDao zjsKzOfYearDao = new ZjsKzOfYearDao();
+//        List<Integer> timeList = zjsKzOfYearDao.getMonthTimeStamp(2018);
+//        for (int i = 0; i < zjsClientYearReportDTO.getYear(); i += 2) {
+        System.out.println(zjsKzOfYearDao.getMonthTimeStamp(2018));
+    }
+
     /**
      * 转换
+     *
      * @param vo1List
      * @return
      */
-    public static List<ZjsClientYearReportVO2> transform (List<ZjsClientYearReportVO> vo1List){
+    public static List<ZjsClientYearReportVO2> transform(List<ZjsClientYearReportVO> vo1List) {
+        List<ZjsClientYearReportVO2> newlist = new ArrayList<>();
+        Map<Integer, Integer> exist = new HashMap<>();   //key为srcId value为下标
+        int count = 0;
 
-        return null;
+        for (ZjsClientYearReportVO zcyr : vo1List) {
+            for (SourceClientDataDTO scd : zcyr.getSourceData()) {
+                if (!exist.containsKey(scd.getSrcId())) {
+                    exist.put(scd.getSrcId(), count++);
+                    ZjsClientYearReportVO2 newOne = new ZjsClientYearReportVO2();
+                    newOne.setDataType(zcyr.getDataType());
+                    newOne.setSrcId(scd.getSrcId());
+                    newOne.setSrcName(scd.getSrcName());
+                    newOne.setSrcImg(scd.getSrcImg());
+                    newOne.setDataMap(new HashMap<String, Integer>());
+                    newOne.getDataMap().put(zcyr.getMonthName(), scd.getDataNum());
+                    newlist.add(newOne);
+                } else {
+                    ZjsClientYearReportVO2 getOne = newlist.get(exist.get(scd.getSrcId()));
+                    getOne.getDataMap().put(zcyr.getMonthName(), scd.getDataNum());
+                }
+
+            }
+        }
+
+        return newlist;
     }
 
 }
