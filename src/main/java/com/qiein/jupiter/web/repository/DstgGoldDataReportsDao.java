@@ -67,7 +67,7 @@ public class DstgGoldDataReportsDao {
         StringBuilder sb = new StringBuilder();
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
-        sb.append(" select distinct IFNULL(detail.adid,'其他') as adid");
+        sb.append(" select distinct if((IFNULL(detail.adid,'其他') ) = '', '无名字',IFNULL(detail.adid,'其他')  ) as adid");
         sb.append(" from");
         sb.append(infoTabName + " info ," + detailTabName + " detail");
         sb.append(" where");
@@ -89,7 +89,7 @@ public class DstgGoldDataReportsDao {
     }
 
     private StringBuilder getCommonsql(StringBuilder sb,String infoTabName,String detailTabName) {
-        sb.append(" select IFNULL(detail.adid,'其他') as adid,count(detail.kzid) as client_count ");
+        sb.append(" select if((IFNULL(detail.adid,'其他') ) = '', '无名字',IFNULL(detail.adid,'其他')  ) as adid,count(detail.kzid) as client_count ");
         sb.append(" from");
         sb.append(infoTabName + " info ," + detailTabName + " detail");
         sb.append(" where");
@@ -430,7 +430,7 @@ public class DstgGoldDataReportsDao {
         StringBuilder sb = new StringBuilder();
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
-        sb.append(" select IFNULL(detail.adid,'其他') as adid,avg(detail.AMOUNT) as avg_amount ");
+        sb.append(" select if((IFNULL(detail.adid,'其他') ) = '', '无名字',IFNULL(detail.adid,'其他')  ) as adid,avg(detail.AMOUNT) as avg_amount ");
         sb.append(" from");
         sb.append(infoTabName + " info ," + detailTabName + " detail");
         sb.append(" where");
@@ -474,7 +474,7 @@ public class DstgGoldDataReportsDao {
         StringBuilder sb = new StringBuilder();
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
-        sb.append(" select IFNULL(detail.adid,'其他') as adid,sum(detail.AMOUNT) as sum_amount ");
+        sb.append(" select if((IFNULL(detail.adid,'其他') ) = '', '无名字',IFNULL(detail.adid,'其他')  ) as adid,sum(detail.AMOUNT) as sum_amount ");
         sb.append(" from");
         sb.append(infoTabName + " info ," + detailTabName + " detail");
         sb.append(" where");
