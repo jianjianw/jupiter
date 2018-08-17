@@ -24,4 +24,8 @@ public interface ClientBlackListDao {
      * 添加
      */
      void insert(BlackListPO blackListPO);
+    /**
+     * 添加
+     */
+    void update(BlackListPO blackListPO);
 }

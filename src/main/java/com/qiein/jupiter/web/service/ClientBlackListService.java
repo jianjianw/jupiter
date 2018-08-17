@@ -21,4 +21,8 @@ public interface ClientBlackListService {
      * 添加
      */
     void insert(BlackListPO blackListPO);
+    /**
+     * 修改
+     */
+    void update(BlackListPO blackListPO);
 }

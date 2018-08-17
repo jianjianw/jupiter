@@ -54,4 +54,12 @@ public class ClientBlackListController extends BaseController{
         clientBlackListService.insert(blackListPO);
         return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
     }
+    /**
+     * 修改黑名单
+     */
+    @PostMapping("/update")
+    public ResultInfo update(@RequestBody BlackListPO blackListPO){
+        clientBlackListService.update(blackListPO);
+        return ResultInfoUtil.success(TipMsgEnum.UPDATE_SUCCESS);
+    }
 }

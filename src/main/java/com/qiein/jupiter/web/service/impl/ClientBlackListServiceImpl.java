@@ -35,4 +35,10 @@ public class ClientBlackListServiceImpl implements ClientBlackListService {
     public void insert(BlackListPO blackListPO){
         clientBlackListDao.insert(blackListPO);
     }
+    /**
+     * 添加
+     */
+    public void update(BlackListPO blackListPO){
+        clientBlackListDao.update(blackListPO);
+    }
 }

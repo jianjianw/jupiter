@@ -31,4 +31,7 @@
     <insert id="insert">
         insert into hm_crm_client_blacklist(<include refid="forInsert"/>) values(<include refid="forValues"/>)
     </insert>
+    <update id="update">
+        update hm_crm_client_blacklist set KZNAME=#{kzName} and KZPHONE=#{kzPhone} and MEMO=#{memo} where id=#{id}
+    </update>
 </mapper>
