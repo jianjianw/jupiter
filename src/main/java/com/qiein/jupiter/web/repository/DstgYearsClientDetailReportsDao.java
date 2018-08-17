@@ -45,6 +45,9 @@ public class DstgYearsClientDetailReportsDao {
 
         //计算数据
         computerRate(reportsParamVO,dstgYearDetailReportsVOS,invalidConfig);
+
+        //计算总计
+        computerTotal(reportsParamVO,dstgYearDetailReportsVOS);
         return dstgYearDetailReportsVOS;
     }
 
