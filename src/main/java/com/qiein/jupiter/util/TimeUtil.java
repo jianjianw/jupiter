@@ -1,14 +1,14 @@
 package com.qiein.jupiter.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * 时间处理工具
@@ -199,7 +199,6 @@ public class TimeUtil {
      * 指定时间+=指定秒
      *
      * @param date
-     * @param second
      * @return
      */
     public static Date getDateBySecond(Date date, int seconds) {
@@ -517,20 +516,21 @@ public class TimeUtil {
 
     /**
      * local时间转换成UTC时间
+     *
      * @param localTime
      * @return
      */
     public static Date localToUTC(String localTime) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date localDate= null;
+        Date localDate = null;
         try {
             localDate = sdf.parse(localTime);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        long localTimeInMillis=localDate.getTime();
+        long localTimeInMillis = localDate.getTime();
         /** long时间转换成Calendar */
-        Calendar calendar= Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(localTimeInMillis);
         /** 取得时间偏移量 */
         int zoneOffset = calendar.get(java.util.Calendar.ZONE_OFFSET);
@@ -539,11 +539,76 @@ public class TimeUtil {
         /** 从本地时间里扣除这些差量，即可以取得UTC时间*/
         calendar.add(java.util.Calendar.MILLISECOND, -(zoneOffset + dstOffset));
         /** 取得的时间就是UTC标准时间 */
-        Date utcDate=new Date(calendar.getTimeInMillis());
+        Date utcDate = new Date(calendar.getTimeInMillis());
         return utcDate;
     }
 
     public static boolean checkTimesDifRange(int time, int dbTime) {
         return Math.abs(time - dbTime) > INVALID_RANGE;
+    }
+
+    /**
+     * 根据一个 字符串日期 2018-08 获取一个月第一天
+     *
+     * @param dateStr
+     * @return
+     */
+    public static int getMonthStartTimeStampByDate(String dateStr) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
+        Date parse = new Date();
+        try {
+            parse = format.parse(dateStr);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        //获取当前月第一天：
+        Calendar c = Calendar.getInstance();
+        c.setTime(parse);
+        c.set(Calendar.DAY_OF_MONTH, 1);//设置为1号,当前日期既为本月第一天
+        return getTimeStamp10ByDate(c.getTime());
+    }
+
+
+    /**
+     * 根据一个 字符串日期 2018-08 获取一个月最后一天
+     *
+     * @param dateStr
+     * @return
+     */
+    public static int getMonthEndTimeStampByDate(String dateStr) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
+        Date parse = new Date();
+        try {
+            parse = format.parse(dateStr);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        //获取当前月最后一天
+        Calendar ca = Calendar.getInstance();
+        ca.setTime(parse);
+        ca.set(Calendar.DAY_OF_MONTH, ca.getActualMaximum(Calendar.DAY_OF_MONTH));
+        return getDayLastTimeStamp10ByDate(ca.getTime());
+    }
+
+    /**
+     * 获取一个 10位时间戳
+     *
+     * @param date
+     * @return
+     */
+    public static int getTimeStamp10ByDate(Date date) {
+        return (int) (date.getTime() / 1000);
+    }
+
+    /**
+     * 获取某天最后一秒的时间戳  2
+     *
+     * @return
+     */
+    public static int getDayLastTimeStamp10ByDate(Date date) {
+        return (int) (date.getTime() / 1000) + 86399;
     }
 }

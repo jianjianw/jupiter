@@ -429,6 +429,14 @@ public class ClientEditServiceImpl implements ClientEditService {
             reqContent.put("receptorid", clientVO.getReceptorId());
             reqContent.put("receptorname", receptor.getNickName());
         }
+        if (NumUtil.isValid(clientVO.getCollectorId())) {
+            StaffPO collector = staffDao.getById(clientVO.getCollectorId());
+            if (collector == null) {
+                throw new RException(ExceptionEnum.STAFF_IS_NOT_EXIST);
+            }
+            reqContent.put("collectorid", clientVO.getCollectorId());
+            reqContent.put("collectorname", collector.getNickName());
+        }
 
         // 纠错信息
         reqContent.put("sourceid", clientVO.getSourceId());

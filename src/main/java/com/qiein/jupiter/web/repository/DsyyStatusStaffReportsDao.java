@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.repository;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.entity.po.GroupReportsVO;
 import com.qiein.jupiter.util.StringUtil;
@@ -39,7 +40,7 @@ public class DsyyStatusStaffReportsDao {
         getStatusClientCount(reportsParamVO,dsyyStatusReportsVOS);
         dsyyStatusReportsHeaderVO.setDsyyStatusReportsHeaderVOS(dsyyStatusReportsVOS);
         dataHandle(dsyyStatusReportsHeaderVO);
-
+        computerSumCount(dsyyStatusReportsHeaderVO);
         return dsyyStatusReportsHeaderVO;
     }
 
@@ -48,10 +49,17 @@ public class DsyyStatusStaffReportsDao {
      * */
     private void addConditionByTypeAndGroupId(ReportsParamVO reportsParamVO,StringBuilder sb){
         if(StringUtil.isNotEmpty(reportsParamVO.getGroupId())){
-            sb.append(" and info.groupid = '"+reportsParamVO.getGroupId()+"' ");
+            String[] groupIds = reportsParamVO.getGroupId().split(CommonConstant.STR_SEPARATOR);
+            StringBuilder groupIdsSb = new StringBuilder();
+            for (String id:groupIds){
+                groupIdsSb.append("'").append(id).append("'").append(",");
+            }
+            String groupId = groupIdsSb.substring(0, groupIdsSb.toString().length() - 1);
+            System.out.println(groupId);
+            sb.append(" and info.groupid in ("+ groupId +")");
         }
-        if(NumUtil.isValid(reportsParamVO.getType())){
-            sb.append(" and info.typeid =" +reportsParamVO.getType());
+        if(StringUtil.isNotEmpty(reportsParamVO.getType())){
+            sb.append(" and info.typeid in (" +reportsParamVO.getType()+ ")");
         }
     }
 
@@ -67,6 +75,7 @@ public class DsyyStatusStaffReportsDao {
         sb.append(" and info.isdel = 0  ");
         sb.append(" and info.srctype in (1,2) ");
         sb.append(" and info.companyid = ?");
+        addConditionByTypeAndGroupId(reportsParamVO,sb);
         sb.append(" group by info.APPOINTORID");
 
         List<DsyyStatusReportsVO> dsyyStatusReports = jdbcTemplate.query(sb.toString(), new Object[]{reportsParamVO.getCompanyId()},
@@ -148,8 +157,25 @@ public class DsyyStatusStaffReportsDao {
                 kzNumMap.put(String.valueOf(clientStatusReportsVO.getStatusId()),clientStatusReportsVO.getKzNum());
             }
             dsyyStatusReportsVO.setMapList(kzNumMap);
-            dsyyStatusReportsVO.setClientStatusReportsVOS(null);
         }
+    }
+
+    public void computerSumCount(DsyyStatusReportsHeaderVO dsyyStatusReportsHeaderVO) {
+        Map kzNumMap = new HashMap();
+        DsyyStatusReportsVO dsyyStatusReportsVO = new DsyyStatusReportsVO();
+        dsyyStatusReportsVO.setGrouoName("合计");
+        dsyyStatusReportsVO.setMapList(kzNumMap);
+        for(DsyyStatusReportsVO dsyyStatusReports:dsyyStatusReportsHeaderVO.getDsyyStatusReportsHeaderVOS()){
+            for (ClientStatusReportsVO clientStatusReportsVO : dsyyStatusReports.getClientStatusReportsVOS()) {
+                Integer kzNum = dsyyStatusReportsVO.getMapList().get(String.valueOf(clientStatusReportsVO.getStatusId()));
+                if(kzNum == null){
+                    kzNum = 0;
+                }
+                kzNumMap.put(String.valueOf(clientStatusReportsVO.getStatusId()), clientStatusReportsVO.getKzNum() + kzNum);
+            }
+            dsyyStatusReports.setClientStatusReportsVOS(null);
+        }
+        dsyyStatusReportsHeaderVO.getDsyyStatusReportsHeaderVOS().add(0,dsyyStatusReportsVO);
     }
 
 }

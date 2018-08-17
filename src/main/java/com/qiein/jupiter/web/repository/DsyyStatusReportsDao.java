@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.repository;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.util.CollectionUtils;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.NumUtil;
@@ -29,43 +30,56 @@ public class DsyyStatusReportsDao {
     /**
      * 获取电商邀约状态报表
      */
-    public  DsyyStatusReportsHeaderVO  getDsyyStatusReports(ReportsParamVO reportsParamVO, DsInvalidVO invalidConfig) {
+    public DsyyStatusReportsHeaderVO getDsyyStatusReports(ReportsParamVO reportsParamVO, DsInvalidVO invalidConfig) {
         DsyyStatusReportsHeaderVO dsyyStatusReportsHeaderVO = new DsyyStatusReportsHeaderVO();
         List<DsyyStatusReportsVO> dsyyStatusReportsVOS = new ArrayList<>();
 
         //获取小组列表
-        getGroupList(reportsParamVO,dsyyStatusReportsVOS);
+        getGroupList(reportsParamVO, dsyyStatusReportsVOS);
         //获取状态列表
-        getStatusList(dsyyStatusReportsHeaderVO,reportsParamVO,dsyyStatusReportsVOS);
+        getStatusList(dsyyStatusReportsHeaderVO, reportsParamVO, dsyyStatusReportsVOS);
         //获取客资数量
-        getStatusClientCount(reportsParamVO,dsyyStatusReportsVOS);
+        getStatusClientCount(reportsParamVO, dsyyStatusReportsVOS);
         dsyyStatusReportsHeaderVO.setDsyyStatusReportsHeaderVOS(dsyyStatusReportsVOS);
         dataHandle(dsyyStatusReportsHeaderVO);
-
+        computerSumCount(dsyyStatusReportsHeaderVO);
         return dsyyStatusReportsHeaderVO;
     }
 
 
     /**
      * 添加条件
-     * */
-    private void addConditionByTypeAndGroupId(ReportsParamVO reportsParamVO,StringBuilder sb){
-        if(StringUtil.isNotEmpty(reportsParamVO.getGroupId())){
-            sb.append(" and info.groupid = '"+reportsParamVO.getGroupId()+"' ");
+     */
+    private void addConditionByTypeAndGroupId(ReportsParamVO reportsParamVO, StringBuilder sb) {
+        if (StringUtil.isNotEmpty(reportsParamVO.getGroupId())) {
+            String[] groupIds = reportsParamVO.getGroupId().split(CommonConstant.STR_SEPARATOR);
+            StringBuilder groupIdsSb = new StringBuilder();
+            for (String id : groupIds) {
+                groupIdsSb.append("'").append(id).append("'").append(",");
+            }
+            String groupId = groupIdsSb.substring(0, groupIdsSb.toString().length() - 1);
+            sb.append(" and info.groupid in (" + groupId + ")");
         }
-        if(NumUtil.isValid(reportsParamVO.getType())){
-            sb.append(" and info.typeid =" +reportsParamVO.getType());
+        if (StringUtil.isNotEmpty(reportsParamVO.getType())) {
+            sb.append(" and info.typeid in (" + reportsParamVO.getType() + ")");
         }
     }
 
     /**
      * 获取小组下客服列表
-     * */
-    private void getGroupList(ReportsParamVO reportsParamVO,List<DsyyStatusReportsVO> dsyyStatusReportsVOS) {
+     */
+    private void getGroupList(ReportsParamVO reportsParamVO, List<DsyyStatusReportsVO> dsyyStatusReportsVOS) {
         StringBuilder sb = new StringBuilder();
         sb.append("select groupid,GROUPNAME,GROUPTYPE from hm_pub_group where companyid = ? and GROUPTYPE = 'dsyy' and PARENTID != '0' ");
-        if(StringUtil.isNotEmpty(reportsParamVO.getGroupId())){
-            sb.append(" and groupid = '"+reportsParamVO.getGroupId()+"'");
+        //条件筛选
+        if (StringUtil.isNotEmpty(reportsParamVO.getGroupId())) {
+            String[] groupIds = reportsParamVO.getGroupId().split(CommonConstant.STR_SEPARATOR);
+            StringBuilder groupIdsSb = new StringBuilder();
+            for (String id : groupIds) {
+                groupIdsSb.append("'").append(id).append("'").append(",");
+            }
+            String groupId = groupIdsSb.substring(0, groupIdsSb.toString().length() - 1);
+            sb.append(" and groupid in (" + groupId + ")");
         }
         sb.append(" order by GROUPNAME ");
 
@@ -84,8 +98,8 @@ public class DsyyStatusReportsDao {
 
     /**
      * 获取状态列表
-     * */
-    public void getStatusList(DsyyStatusReportsHeaderVO dsyyStatusReportsHeaderVO,ReportsParamVO reportsParamVO,List<DsyyStatusReportsVO> dsyyStatusReportsVOS) {
+     */
+    public void getStatusList(DsyyStatusReportsHeaderVO dsyyStatusReportsHeaderVO, ReportsParamVO reportsParamVO, List<DsyyStatusReportsVO> dsyyStatusReportsVOS) {
         StringBuilder sb = new StringBuilder();
         sb.append(" select distinct client_status.STATUSID,client_status.STATUSNAME from hm_crm_client_status client_status where companyid = ? ");
 
@@ -101,7 +115,7 @@ public class DsyyStatusReportsDao {
                 });
         //设置表头
         dsyyStatusReportsHeaderVO.setClientStatusReportsVOList(clientStatusReportsVOS);
-        for (DsyyStatusReportsVO dsyyStatusReportsVO :dsyyStatusReportsVOS){
+        for (DsyyStatusReportsVO dsyyStatusReportsVO : dsyyStatusReportsVOS) {
             // TODO list深拷贝问题，需要查看源码
             String jsonString = JSONObject.toJSONString(clientStatusReportsVOS);
             List<ClientStatusReportsVO> clientStatusReports = JSONObject.parseArray(jsonString, ClientStatusReportsVO.class);
@@ -111,23 +125,23 @@ public class DsyyStatusReportsDao {
 
     /**
      * 获取客资数量
-     * */
-    public void getStatusClientCount(ReportsParamVO reportsParamVO, final List<DsyyStatusReportsVO> dsyyStatusReportsVOS){
+     */
+    public void getStatusClientCount(ReportsParamVO reportsParamVO, final List<DsyyStatusReportsVO> dsyyStatusReportsVOS) {
         StringBuilder sb = new StringBuilder();
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
-        sb.append(" select STATUSID,groupid,count(id) client_count from "+ infoTabName +" info  where info.companyid = ? and info.isdel = 0 and info.groupid is not null ");
-        addConditionByTypeAndGroupId(reportsParamVO,sb);
+        sb.append(" select STATUSID,groupid,count(id) client_count from " + infoTabName + " info  where info.companyid = ? and info.isdel = 0 and info.groupid is not null ");
+        addConditionByTypeAndGroupId(reportsParamVO, sb);
         sb.append(" and info.CREATETIME BETWEEN ? AND ?");
         sb.append(" group by info.STATUSID,info.groupid ");
-        jdbcTemplate.query(sb.toString(), new Object[]{reportsParamVO.getCompanyId(),reportsParamVO.getStart(),reportsParamVO.getEnd()}, new RowMapper<DsyyStatusReportsVO>() {
+        jdbcTemplate.query(sb.toString(), new Object[]{reportsParamVO.getCompanyId(), reportsParamVO.getStart(), reportsParamVO.getEnd()}, new RowMapper<DsyyStatusReportsVO>() {
             @Override
             public DsyyStatusReportsVO mapRow(ResultSet rs, int i) throws SQLException {
-                for (DsyyStatusReportsVO dsyyStatusReports:dsyyStatusReportsVOS){
+                for (DsyyStatusReportsVO dsyyStatusReports : dsyyStatusReportsVOS) {
                     //遍历组
-                    if(StringUtil.isNotEmpty(rs.getString("groupid")) && dsyyStatusReports.getGroupId().equalsIgnoreCase(rs.getString("groupid"))){
-                        for (ClientStatusReportsVO clientStatusReportsVO:dsyyStatusReports.getClientStatusReportsVOS()){
-                            if(clientStatusReportsVO.getStatusId().equals(rs.getInt("STATUSID"))){
+                    if (StringUtil.isNotEmpty(rs.getString("groupid")) && dsyyStatusReports.getGroupId().equalsIgnoreCase(rs.getString("groupid"))) {
+                        for (ClientStatusReportsVO clientStatusReportsVO : dsyyStatusReports.getClientStatusReportsVOS()) {
+                            if (clientStatusReportsVO.getStatusId().equals(rs.getInt("STATUSID"))) {
                                 clientStatusReportsVO.setKzNum(rs.getInt("client_count"));
                                 break;
                             }
@@ -139,15 +153,33 @@ public class DsyyStatusReportsDao {
         });
     }
 
-    public void dataHandle(DsyyStatusReportsHeaderVO dsyyStatusReportsHeaderVO){
-        for (DsyyStatusReportsVO dsyyStatusReportsVO :dsyyStatusReportsHeaderVO.getDsyyStatusReportsHeaderVOS()){
+    public void dataHandle(DsyyStatusReportsHeaderVO dsyyStatusReportsHeaderVO) {
+        for (DsyyStatusReportsVO dsyyStatusReportsVO : dsyyStatusReportsHeaderVO.getDsyyStatusReportsHeaderVOS()) {
             Map kzNumMap = new HashMap();
-            for (ClientStatusReportsVO clientStatusReportsVO:dsyyStatusReportsVO.getClientStatusReportsVOS()){
-                kzNumMap.put(String.valueOf(clientStatusReportsVO.getStatusId()),clientStatusReportsVO.getKzNum());
+            for (ClientStatusReportsVO clientStatusReportsVO : dsyyStatusReportsVO.getClientStatusReportsVOS()) {
+                kzNumMap.put(String.valueOf(clientStatusReportsVO.getStatusId()), clientStatusReportsVO.getKzNum());
             }
             dsyyStatusReportsVO.setMapList(kzNumMap);
-            dsyyStatusReportsVO.setClientStatusReportsVOS(null);
+
         }
+    }
+
+    public void computerSumCount(DsyyStatusReportsHeaderVO dsyyStatusReportsHeaderVO) {
+        Map kzNumMap = new HashMap();
+        DsyyStatusReportsVO dsyyStatusReportsVO = new DsyyStatusReportsVO();
+        dsyyStatusReportsVO.setGrouoName("合计");
+        dsyyStatusReportsVO.setMapList(kzNumMap);
+        for(DsyyStatusReportsVO dsyyStatusReports:dsyyStatusReportsHeaderVO.getDsyyStatusReportsHeaderVOS()){
+            for (ClientStatusReportsVO clientStatusReportsVO : dsyyStatusReports.getClientStatusReportsVOS()) {
+                Integer kzNum = dsyyStatusReportsVO.getMapList().get(String.valueOf(clientStatusReportsVO.getStatusId()));
+                if(kzNum == null){
+                    kzNum = 0;
+                }
+                kzNumMap.put(String.valueOf(clientStatusReportsVO.getStatusId()), clientStatusReportsVO.getKzNum() + kzNum);
+            }
+            dsyyStatusReports.setClientStatusReportsVOS(null);
+        }
+        dsyyStatusReportsHeaderVO.getDsyyStatusReportsHeaderVOS().add(0,dsyyStatusReportsVO);
     }
 
 }
