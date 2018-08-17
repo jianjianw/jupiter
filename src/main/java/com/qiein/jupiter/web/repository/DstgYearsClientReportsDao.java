@@ -92,13 +92,16 @@ public class DstgYearsClientReportsDao {
     private void computerTotal(ReportsParamVO reportsParamVO, final List<DstgYearReportsVO> dstgYearReportsVOS) {
         for (DstgYearReportsVO dstgYearReports : dstgYearReportsVOS) {
             Map<String, Integer> mapList = dstgYearReports.getMapList();
+            Map<String,Integer> newsMapList = new HashMap<>();
             for (Map.Entry<String, Integer> keys : mapList.entrySet()) {
-                Integer kzNum = keys.getValue();
-                if (kzNum == null) {
+                Integer kzNum = newsMapList.get("合计");
+                if(kzNum == null){
                     kzNum = 0;
                 }
-                mapList.put("合计", keys.getValue() + kzNum);
+                newsMapList.put(keys.getKey(),keys.getValue());
+                newsMapList.put("合计",  kzNum+keys.getValue());
             }
+            dstgYearReports.setMapList(newsMapList);
         }
     }
 
