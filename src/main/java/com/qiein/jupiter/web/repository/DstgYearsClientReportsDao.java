@@ -68,8 +68,6 @@ public class DstgYearsClientReportsDao {
         sb.append(" GROUP BY t.monthNo,t.sourceid ");
         sb.append(" order by month ");
         List<Map<String, Object>> mapList = jdbcTemplate.queryForList(sb.toString(), new Object[]{reportsParamVO.getCompanyId(),reportsParamVO.getYears()});
-        System.out.println(mapList);
-        System.out.println(dstgYearReportsVO);
         //获取每月渠道客资数量
         for (DstgYearReportsVO dstgYearReports:dstgYearReportsVO){
             Map<String, Integer> newMap = null;

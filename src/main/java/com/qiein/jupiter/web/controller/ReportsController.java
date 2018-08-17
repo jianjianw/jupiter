@@ -606,4 +606,15 @@ public class ReportsController extends BaseController {
         return ResultInfoUtil.success(reportService.getZjsYearReport(searchKey));
     }
 
+
+
+    /**
+     * 电商推广年度详细报表
+     * */
+    @GetMapping("/get_dstg_year_detail_reports")
+    public ResultInfo getDstgYearDetailReports(String years){
+        StaffPO staffPO = getCurrentLoginStaff();
+        List<DstgYearDetailReportsProcessVO> dstgYearReportsVOS = reportService.getDstgYearDetailReports(years,staffPO.getCompanyId());
+        return ResultInfoUtil.success(dstgYearReportsVOS);
+    }
 }

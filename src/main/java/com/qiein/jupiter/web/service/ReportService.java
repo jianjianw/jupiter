@@ -7,6 +7,7 @@ import com.qiein.jupiter.web.entity.vo.DstgYearReportsVO;
 import com.qiein.jupiter.web.entity.vo.*;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ReportService {
     /**
@@ -239,4 +240,10 @@ public interface ReportService {
      * @return
      */
     List<ZjsClientYearReportVO2> getZjsYearReport(ZjsClientYearReportDTO zjsClientYearReportDTO);
+
+    /**
+     * 获取电商推广年度详情报表
+     * */
+    List<DstgYearDetailReportsProcessVO> getDstgYearDetailReports(String years, Integer companyId);
+
 }
