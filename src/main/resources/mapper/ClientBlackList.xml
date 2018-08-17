@@ -14,7 +14,7 @@
         <result column="MEMO" jdbcType="VARCHAR" property="memo"/>
     </resultMap>
     <sql id="forList">
-        ID,KZNAME,KZPHONE,FROM_UNIXTIME(CREATETIME, '%Y/%m/%d'),COUNT,STAFFNAME,MEMO
+        ID,KZNAME,KZPHONE,FROM_UNIXTIME(CREATETIME, '%Y/%m/%d %H:%i:%s'),COUNT,STAFFNAME,MEMO
     </sql>
     <sql id="forInsert">
         KZNAME,KZPHONE,COMPANYID,STAFFID,STAFFNAME,MEMO,CREATETIME
