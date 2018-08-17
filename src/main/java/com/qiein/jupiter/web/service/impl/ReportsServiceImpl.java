@@ -3,11 +3,8 @@ package com.qiein.jupiter.web.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.constant.ClientLogConst;
 import com.qiein.jupiter.constant.CommonConstant;
-import com.qiein.jupiter.constant.DictionaryConstant;
 import com.qiein.jupiter.constant.RoleConstant;
 import com.qiein.jupiter.enums.TableEnum;
-import com.qiein.jupiter.exception.ExceptionEnum;
-import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.ClientInfoDao;
@@ -17,10 +14,7 @@ import com.qiein.jupiter.web.entity.dto.CitiesAnalysisParamDTO;
 import com.qiein.jupiter.web.entity.dto.ClientLogDTO;
 import com.qiein.jupiter.web.entity.dto.ProvinceAnalysisParamDTO;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
-import com.qiein.jupiter.web.entity.po.DictionaryPO;
-import com.qiein.jupiter.web.entity.po.EditClientPhonePO;
-import com.qiein.jupiter.web.entity.po.RepateKzLogPO;
-import com.qiein.jupiter.web.entity.po.WechatScanPO;
+import com.qiein.jupiter.web.entity.po.*;
 import com.qiein.jupiter.web.entity.vo.*;
 import com.qiein.jupiter.web.repository.*;
 import com.qiein.jupiter.web.service.ReportService;
@@ -85,6 +79,9 @@ public class ReportsServiceImpl implements ReportService {
 
     @Autowired
     private KeyWordReportsDao keyWordReportsDao;
+
+    @Autowired
+    private DstgYearsClientReportsDao dstgYearsClientReportsDao;
 
     /**
      * 修改联系方式日志
@@ -456,5 +453,17 @@ public class ReportsServiceImpl implements ReportService {
     public List<KeyWordReportsVO> getKeyWordReports(String startTime,String endTime,String typeIds,String keyWord,Integer companyId){
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         return keyWordReportsDao.getKeyWordReports( startTime, endTime, typeIds, keyWord, companyId,invalidConfig);
+    }
+
+    @Override
+    public List<DstgYearReportsVO> getDstgYearsReports(Integer start, Integer end, int companyId,String years) {
+        ReportsParamVO reportsParamVO = new ReportsParamVO();
+        reportsParamVO.setStart(start);
+        reportsParamVO.setEnd(end);
+        reportsParamVO.setCompanyId(companyId);
+        reportsParamVO.setYears(years);
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
+        List<DstgYearReportsVO> dstgYearsClientReports = dstgYearsClientReportsDao.getDstgYearsClientReports(reportsParamVO, invalidConfig);
+        return dstgYearsClientReports;
     }
 }

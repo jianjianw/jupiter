@@ -6,6 +6,7 @@ import com.qiein.jupiter.web.entity.dto.CitiesAnalysisParamDTO;
 import com.qiein.jupiter.web.entity.dto.ClientLogDTO;
 import com.qiein.jupiter.web.entity.dto.ProvinceAnalysisParamDTO;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
+import com.qiein.jupiter.web.entity.vo.DstgYearReportsVO;
 import com.qiein.jupiter.web.entity.vo.*;
 
 import java.util.List;
@@ -206,4 +207,13 @@ public interface ReportService {
      * @return
      */
     List<KeyWordReportsVO> getKeyWordReports(String startTime,String endTime,String typeIds,String keyWord,Integer companyId);
+
+    /**
+     * 年度报表
+     * @param start
+     * @param end
+     * @param companyId
+     * @return
+     * */
+    List<DstgYearReportsVO> getDstgYearsReports(Integer start, Integer end, int companyId,String years);
 }

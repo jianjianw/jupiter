@@ -8,10 +8,10 @@ import com.qiein.jupiter.web.entity.dto.CitiesAnalysisParamDTO;
 import com.qiein.jupiter.web.entity.dto.ClientLogDTO;
 import com.qiein.jupiter.web.entity.dto.ProvinceAnalysisParamDTO;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
+import com.qiein.jupiter.web.entity.vo.DstgYearReportsVO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.*;
 import com.qiein.jupiter.web.service.ReportService;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -560,5 +560,16 @@ public class ReportsController extends BaseController {
     @GetMapping("/get_key_word_reports")
     public ResultInfo getKeyWordReports(@RequestParam String startTime,@RequestParam String endTime,@RequestParam String keyWord,@RequestParam String typeIds){
         return ResultInfoUtil.success(reportService.getKeyWordReports(startTime,endTime,typeIds,keyWord,getCurrentLoginStaff().getCompanyId()));
+    }
+
+
+    /**
+     * 电商推广年度报表
+     * */
+    @GetMapping("/get_dstg_years_reports")
+    public ResultInfo getDstgYearsReports(Integer start,Integer end,String years){
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        List<DstgYearReportsVO> dstgYearReportsVOS = reportService.getDstgYearsReports(start,end,currentLoginStaff.getCompanyId(),years);
+        return ResultInfoUtil.success(dstgYearReportsVOS);
     }
 }

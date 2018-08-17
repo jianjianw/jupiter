@@ -41,6 +41,18 @@ public class ReportsParamVO {
      * 月份
      */
     private String month;
+    /**
+     * 年份
+     * */
+    private String years;
+
+    public String getYears() {
+        return years;
+    }
+
+    public void setYears(String years) {
+        this.years = years;
+    }
 
     public String getMonth() {
         return month;
