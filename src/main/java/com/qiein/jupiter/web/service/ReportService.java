@@ -2,14 +2,12 @@ package com.qiein.jupiter.web.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
-import com.qiein.jupiter.web.entity.dto.CitiesAnalysisParamDTO;
-import com.qiein.jupiter.web.entity.dto.ClientLogDTO;
-import com.qiein.jupiter.web.entity.dto.ProvinceAnalysisParamDTO;
-import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
+import com.qiein.jupiter.web.entity.dto.*;
 import com.qiein.jupiter.web.entity.vo.DstgYearReportsVO;
 import com.qiein.jupiter.web.entity.vo.*;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ReportService {
     /**
@@ -235,4 +233,17 @@ public interface ReportService {
      * @return
      */
     JSONObject getCwMonthOrderCountReports(ReportsParamVO reportsParamVO);
+
+    /**
+     * 获取转介绍年度分析报表
+     * @param zjsClientYearReportDTO
+     * @return
+     */
+    List<ZjsClientYearReportVO2> getZjsYearReport(ZjsClientYearReportDTO zjsClientYearReportDTO);
+
+    /**
+     * 获取电商推广年度详情报表
+     * */
+    List<DstgYearDetailReportsProcessVO> getDstgYearDetailReports(String years, Integer companyId);
+
 }

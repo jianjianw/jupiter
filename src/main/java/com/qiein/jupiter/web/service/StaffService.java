@@ -380,8 +380,14 @@ public interface StaffService {
 
     /**
      * 批量获取员工姓名
+     *
      * @param staffIds
      * @return
      */
     List<String> getStaffNames(String staffIds);
+
+    /**
+     * 根据关键字获取员工的信息
+     */
+    List<SimpleStaffVO> searchStaffByKey(int companyId, String key);
 }
