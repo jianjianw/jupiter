@@ -667,4 +667,15 @@ public class StaffController extends BaseController {
         return ResultInfoUtil.success(staffService.getStaffByChangeCid(companyId,
                 currentLoginStaff.getId(), currentLoginStaff.getCompanyId()));
     }
+
+    /**
+     * 根据关键字搜索员工
+     *
+     * @return
+     */
+    @GetMapping("/search_by_key")
+    public ResultInfo searchByKey(String key) {
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        return ResultInfoUtil.success(staffService.searchStaffByKey(currentLoginStaff.getCompanyId(), key));
+    }
 }

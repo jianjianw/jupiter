@@ -213,32 +213,27 @@ public interface StaffDao extends BaseDao<StaffPO> {
 
     /**
      * 搜索离职员工
-     *
-     * @param companyId
-     * @param searchKey
-     * @return
      */
     List<StaffPO> getDelStaffListBySearchKey(@Param("companyId") int companyId, @Param("searchKey") String searchKey);
 
     /**
      * 根据客资的渠道ID和拍摄类型ID以及小组ID获取可分配的客服集合
-     *
-     * @param companyId
-     * @param channelId
-     * @param shopId
-     * @param interval
-     * @return
      */
     List<StaffPushDTO> listStaffPushDTOByTypeIdAndChannelId(@Param("companyId") int companyId,
-                                                            @Param("groupId") String groupId, @Param("channelId") int channelId, @Param("typeId") int typeId,
+                                                            @Param("groupId") String groupId,
+                                                            @Param("channelId") int channelId,
+                                                            @Param("typeId") int typeId,
                                                             @Param("interval") int interval);
 
     /**
      * 获取客服指定时间内渠道和拍摄类型客资的领取情况
      */
     List<StaffPushDTO> listStaffPushDTOByAlloted(@Param("infoTabName") String infoTabName,
-                                                 @Param("companyId") int companyId, @Param("channelId") int channelId, @Param("typeId") int typeId,
-                                                 @Param("calcRange") int calcRange, @Param("staffList") List<StaffPushDTO> staffList);
+                                                 @Param("companyId") int companyId,
+                                                 @Param("channelId") int channelId,
+                                                 @Param("typeId") int typeId,
+                                                 @Param("calcRange") int calcRange,
+                                                 @Param("staffList") List<StaffPushDTO> staffList);
 
     /**
      * 修改员工最后客资推送时间为当前时间
@@ -247,12 +242,9 @@ public interface StaffDao extends BaseDao<StaffPO> {
 
     /**
      * 根据员工ID，获取小组员工信息
-     *
-     * @param companyId
-     * @param staffId
-     * @return
      */
-    List<StaffVO> getGroupStaffById(@Param("companyId") int companyId, @Param("staffId") int staffId, @Param("groupId") String groupId);
+    List<StaffVO> getGroupStaffById(@Param("companyId") int companyId, @Param("staffId") int staffId,
+                                    @Param("groupId") String groupId);
 
     /**
      * 根据员工编号获取员工名片
@@ -340,22 +332,12 @@ public interface StaffDao extends BaseDao<StaffPO> {
 
     /**
      * 校验是否有上线后连续三次怠工
-     *
-     * @param allotLogTabName
-     * @param companyId
-     * @param appointorId
-     * @param overTime
-     * @return
      */
     int getSaboteurCheckNum(@Param("logTabName") String logTabName, @Param("companyId") int companyId,
                             @Param("staffId") int staffId, @Param("overTime") int overTime);
 
     /**
      * 修改员工当前状态
-     *
-     * @param companyId
-     * @param appointorId
-     * @param statusId
      */
     int editStatusFlagOffLine(@Param("companyId") int companyId, @Param("staffId") int staffId,
                               @Param("statusFlag") int statusFlag);
@@ -367,7 +349,8 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @param staffIds
      * @return
      */
-    List<StaffPushDTO> listStaffInstrIds(@Param("companyId") int companyId, @Param("staffIds") String staffIds, @Param("type") String type);
+    List<StaffPushDTO> listStaffInstrIds(@Param("companyId") int companyId, @Param("staffIds") String staffIds,
+                                         @Param("type") String type);
 
     /**
      * 查询所选门市所在的门店
@@ -377,7 +360,8 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @param type
      * @return
      */
-    List<StaffPushDTO> listStaffInstrIdsMsjd(@Param("companyId") int companyId, @Param("staffIds") String staffIds, @Param("type") String type);
+    List<StaffPushDTO> listStaffInstrIdsMsjd(@Param("companyId") int companyId, @Param("staffIds") String staffIds,
+                                             @Param("type") String type);
 
     /**
      * 修改最后上线时间
@@ -431,17 +415,14 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @param role
      * @return
      */
-    List<String> getGroupAvgGroupList(@Param("companyId") Integer companyId, @Param("sourceId") int sourceId, @Param("role") String role);
+    List<String> getGroupAvgGroupList(@Param("companyId") Integer companyId, @Param("sourceId") int sourceId,
+                                      @Param("role") String role);
 
     /**
      * 获取小组平均，可以领取的客服集合
-     *
-     * @param companyId
-     * @param role
-     * @param groupIdList
-     * @return
      */
-    List<StaffPushDTO> getGroupAvgAppointList(@Param("companyId") Integer companyId, @Param("role") String role, @Param("groupId") String groupId, @Param("interval") int interval);
+    List<StaffPushDTO> getGroupAvgAppointList(@Param("companyId") Integer companyId, @Param("role") String role,
+                                              @Param("groupId") String groupId, @Param("interval") int interval);
 
     /**
      * 获取小组平均,小组领取客资情况
@@ -464,7 +445,8 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @param sourceId
      * @return
      */
-    List<StaffPushDTO> getAssginAppointList(@Param("companyId") Integer companyId, @Param("sourceId") int sourceId, @Param("role") String role, @Param("interval") int interval);
+    List<StaffPushDTO> getAssginAppointList(@Param("companyId") Integer companyId, @Param("sourceId") int sourceId,
+                                            @Param("role") String role, @Param("interval") int interval);
 
     /**
      * 获取渠道指定员工客服
@@ -495,7 +477,9 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @param role
      * @return
      */
-    StaffPushDTO getPushAppointByGroupAvg(@Param("infoTabName") String infoTabName, @Param("companyId") Integer companyId, @Param("sourceId") int sourceId, @Param("role") String role);
+    StaffPushDTO getPushAppointByGroupAvg(@Param("infoTabName") String infoTabName,
+                                          @Param("companyId") Integer companyId,
+                                          @Param("sourceId") int sourceId, @Param("role") String role);
 
     /**
      * 编辑员工所属公司的CorpId
@@ -535,7 +519,8 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @param interval
      * @return
      */
-    StaffPushDTO getAvgDssxStaff(@Param("companyId") int companyId, @Param("interval") int interval, @Param("role") String role, @Param("infoTab") String infoTab);
+    StaffPushDTO getAvgDssxStaff(@Param("companyId") int companyId, @Param("interval") int interval,
+                                 @Param("role") String role, @Param("infoTab") String infoTab);
 
     /**
      * 根据ids批量查找员工
@@ -563,9 +548,13 @@ public interface StaffDao extends BaseDao<StaffPO> {
     /**
      * 批量获取员工姓名
      *
-     * @param staffIds
      * @return
      */
     List<String> getStaffNames(@Param("list") List<String> list);
+
+    /**
+     * 根据关键字搜索员工信息
+     */
+    List<SimpleStaffVO> searchStaffByKey(@Param("companyId") int companyId, @Param("key") String key);
 
 }
