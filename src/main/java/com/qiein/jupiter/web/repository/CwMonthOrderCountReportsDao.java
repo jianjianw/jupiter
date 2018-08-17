@@ -208,7 +208,7 @@ public class CwMonthOrderCountReportsDao {
         StringBuilder whereSql = new StringBuilder().append(" WHERE info.COMPANYID = :companyId ")
                 .append(" AND  info.ISDEL = 0 ")
                 .append(" AND info.SUCCESSTIME BETWEEN  :start AND :end ")
-                .append(" AND info.STATUSID in :status ");
+                .append(" AND info.STATUSID in (:status) ");
         return whereSql.toString();
     }
 

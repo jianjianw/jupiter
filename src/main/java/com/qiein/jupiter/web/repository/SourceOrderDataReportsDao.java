@@ -77,7 +77,7 @@ public class SourceOrderDataReportsDao {
         baseSql.append(" WHERE info.COMPANYID = :companyId  ")
                 .append(" AND info.ISDEL = 0 ")
                 .append(" AND info.SUCCESSTIME BETWEEN :start AND :end ")
-                .append("  AND info.STATUSID in :status ")
+                .append("  AND info.STATUSID in (:status) ")
                 .append(" GROUP BY info.SRCTYPE ");
         Map<String, Object> params = new HashMap<>();
         params.put("companyId", cid);
@@ -115,7 +115,7 @@ public class SourceOrderDataReportsDao {
         baseSql.append(" WHERE info.COMPANYID = :companyId  ")
                 .append(" AND info.ISDEL = 0 ")
                 .append(" AND info.SUCCESSTIME BETWEEN :start AND :end ")
-                .append("  AND info.STATUSID in :status ")
+                .append("  AND info.STATUSID in (:status) ")
                 .append(" GROUP BY info.SRCTYPE ");
         Map<String, Object> params = new HashMap<>();
         params.put("companyId", cid);
@@ -156,7 +156,7 @@ public class SourceOrderDataReportsDao {
         baseSql.append(" WHERE info.COMPANYID = :companyId ")
                 .append(" AND info.ISDEL = 0 ")
                 .append(" AND info.SUCCESSTIME BETWEEN :start AND :end ")
-                .append("  AND info.STATUSID in :status ")
+                .append("  AND info.STATUSID in (:status) ")
                 .append(" GROUP BY info.SRCTYPE ");
         Map<String, Object> params = new HashMap<>();
         params.put("companyId", cid);
