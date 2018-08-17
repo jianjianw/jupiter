@@ -90,23 +90,16 @@ public class DstgYearsClientReportsDao {
      * 计算总计
      */
     private void computerTotal(ReportsParamVO reportsParamVO, final List<DstgYearReportsVO> dstgYearReportsVOS) {
-        Map<String, Integer> kzNumMap = new HashMap();
-        DstgYearReportsVO dstgYearReportsVO = new DstgYearReportsVO();
-        dstgYearReportsVO.setSourceName("合计");
-        dstgYearReportsVO.setMapList(kzNumMap);
-
         for (DstgYearReportsVO dstgYearReports : dstgYearReportsVOS) {
             Map<String, Integer> mapList = dstgYearReports.getMapList();
             for (Map.Entry<String, Integer> keys : mapList.entrySet()) {
-                Integer kzNum = kzNumMap.get(keys.getKey());
+                Integer kzNum = keys.getValue();
                 if (kzNum == null) {
                     kzNum = 0;
                 }
-                kzNumMap.put(keys.getKey(), keys.getValue() + kzNum);
+                mapList.put("合计", keys.getValue() + kzNum);
             }
         }
-        dstgYearReportsVO.setMapList(kzNumMap);
-        dstgYearReportsVOS.add(0,dstgYearReportsVO);
     }
 
 
