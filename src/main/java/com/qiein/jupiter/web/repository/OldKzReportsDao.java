@@ -330,6 +330,7 @@ public class OldKzReportsDao {
         sql.append(tableInfo + "  info ");
         sql.append("LEFT JOIN " + tableDetail + " detail ON info.KZID = detail.KZID ");
         sql.append("where (detail.OLDKZNAME  is not null  or detail.OLDKZPHONE is not null)");
+        sql.append(" and detail.OLDKZNAME!=''");
         sql.append(" and info.SuccessTime between ? and ?");
         sql.append(" and (detail.oldKzName like concat('%',?,'%') or detail.oldKzPhone like concat('%',?,'%'))");
         sql.append(" GROUP BY detail.OLDKZPHONE,detail.oldkzname ");
@@ -362,6 +363,7 @@ public class OldKzReportsDao {
         sql.append(tableInfo + "  info ");
         sql.append("LEFT JOIN " + tableDetail + " detail ON info.KZID = detail.KZID ");
         sql.append("where (detail.OLDKZNAME  is not null  or detail.OLDKZPHONE is not null)");
+        sql.append(" and detail.OLDKZNAME!=''");
         sql.append(" and info.SuccessTime between ? and ?");
         sql.append(" and (detail.oldKzName like concat('%',?,'%') or detail.oldKzPhone like concat('%',?,'%'))");
         sql.append(" GROUP BY detail.OLDKZPHONE,detail.oldkzname ");
@@ -406,6 +408,7 @@ public class OldKzReportsDao {
         sql.append(tableInfo + "  info ");
         sql.append("LEFT JOIN " + tableDetail + " detail ON info.KZID = detail.KZID ");
         sql.append("where (detail.OLDKZNAME  is not null  or detail.OLDKZPHONE is not null)");
+        sql.append(" and detail.OLDKZNAME!=''");
         sql.append(" and (detail.oldKzName like concat('%',?,'%') or detail.oldKzPhone like concat('%',?,'%'))");
     }
 
