@@ -111,14 +111,14 @@ public class ZjsKzOfYearDao {
                         public RegionReportsVO mapRow(ResultSet rs, int i) throws SQLException {
                             RegionReportsVO regionReportsVO = new RegionReportsVO();
 //                                regionReportsVO.setRegionName(rs.getString("regionName"));
-                            regionReportsVO.setAllClientCount(rs.getInt("allClientCount"));
-                            regionReportsVO.setPendingClientCount(rs.getInt("pendingClientCount"));
-                            regionReportsVO.setFilterPendingClientCount(rs.getInt("filterPendingClientCount"));
-                            regionReportsVO.setInValidClientCount(rs.getInt("inValidClientCount"));
-                            regionReportsVO.setFilterInValidClientCount(rs.getInt("filterInValidClientCount"));
-                            regionReportsVO.setComeShopClientCount(rs.getInt("comeShopClientCount"));
-                            regionReportsVO.setSuccessClientCount(rs.getInt("successClientCount"));
-                            regionReportsVO.setFilterInClientCount(rs.getInt("filterInClientCount"));
+                            regionReportsVO.setAllClientCount(rs.getInt("allClientCount"));                     //总客资
+                            regionReportsVO.setPendingClientCount(rs.getInt("pendingClientCount"));             //待定量
+                            regionReportsVO.setFilterPendingClientCount(rs.getInt("filterPendingClientCount")); //筛选待定量
+                            regionReportsVO.setInValidClientCount(rs.getInt("inValidClientCount"));             //无效量
+                            regionReportsVO.setFilterInValidClientCount(rs.getInt("filterInValidClientCount")); //筛选无效量
+                            regionReportsVO.setComeShopClientCount(rs.getInt("comeShopClientCount"));           //到店量
+                            regionReportsVO.setSuccessClientCount(rs.getInt("successClientCount"));             //成交量
+                            regionReportsVO.setFilterInClientCount(rs.getInt("filterInClientCount"));           //筛选中
                             return regionReportsVO;
                         }
                     });
@@ -133,6 +133,8 @@ public class ZjsKzOfYearDao {
             now.get(0).setRegionName(String.valueOf((i + 2) / 2) + "月");
             resultContent.addAll(now);
         }
+
+        calculate(resultContent,dsInvalidVO);
 
         return dtransform(resultContent);
     }
@@ -487,6 +489,49 @@ public class ZjsKzOfYearDao {
             list.add(map);
         }
         return list;
+    }
+
+    /**
+     *  计算 有效量 各种率 合计
+     */
+    private void calculate(List<RegionReportsVO> list, DsInvalidVO invalidConfig){
+        for (RegionReportsVO rrv:list){
+            //有效量
+            if(invalidConfig.getDdIsValid()){
+                rrv.setValidClientCount(rrv.getAllClientCount()-rrv.getInValidClientCount()-rrv.getFilterInClientCount()-rrv.getFilterInValidClientCount()-rrv.getFilterPendingClientCount());
+            }else{
+                rrv.setValidClientCount(rrv.getAllClientCount()-rrv.getPendingClientCount()-rrv.getInValidClientCount()-rrv.getFilterInClientCount()-rrv.getFilterInValidClientCount()-rrv.getFilterPendingClientCount());
+            }
+            //客资量(总客资-筛选待定-筛选中-筛选无效)
+            rrv.setClientCount(rrv.getAllClientCount()-rrv.getFilterPendingClientCount()-rrv.getFilterInValidClientCount()-rrv.getFilterInClientCount());
+
+            //计算各种百分比
+            everyRate(rrv);
+
+        }
+    }
+
+    /**
+     * 计算各种百分比
+     * @param rrv
+     */
+    private void everyRate(RegionReportsVO rrv){
+        //有效率
+        double validRate = (double) rrv.getValidClientCount() / rrv.getClientCount();
+        rrv.setValidRate(parseDouble(((Double.isNaN(validRate) || Double.isInfinite(validRate)) ? 0.0 : validRate) * 100));
+        //毛客资入店率
+        double clientComeShopRate = (double) rrv.getComeShopClientCount() / rrv.getClientCount();
+        rrv.setClientComeShopRate(parseDouble(((Double.isNaN(clientComeShopRate) || Double.isInfinite(clientComeShopRate)) ? 0.0 : clientComeShopRate) * 100));
+        //入店成交率
+        double comeShopSuccessRate = (double) rrv.getSuccessClientCount() / rrv.getComeShopClientCount();
+        rrv.setComeShopSuccessRate(parseDouble(((Double.isNaN(comeShopSuccessRate) || Double.isInfinite(comeShopSuccessRate)) ? 0.0 : comeShopSuccessRate) * 100));
+    }
+
+    /**
+     * 只保留2位小数
+     * */
+    public double parseDouble(double result){
+        return Double.parseDouble(String.format("%.2f",result));
     }
 
     private static final String GROUP_BY = "GROUP BY info.SOURCEID";
