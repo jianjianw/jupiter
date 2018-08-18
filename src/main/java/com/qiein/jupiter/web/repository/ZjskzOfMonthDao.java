@@ -897,6 +897,7 @@ public class ZjskzOfMonthDao {
         ZjsKzOfMonthShowVO zjsKzOfMonthShowVO=new ZjsKzOfMonthShowVO();
         zjsKzOfMonthShowVO.setMap(map);
         zjsKzOfMonthShowVO.setSrcName("合计");
+        showList.add(0,zjsKzOfMonthShowVO);
     }
 
 }
