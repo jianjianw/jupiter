@@ -531,10 +531,16 @@ public class ProvinceReportsDao {
         prv.setProvinceDataMap(new HashMap<String, Integer>());
 
         for (ProvinceReportsVO2 temp:list){
+            prv.setDataType(temp.getDataType());
 
             Map<String,Integer> map = temp.getProvinceDataMap();
             map.put("其他",map.get("total"));
             for (String key : map.keySet()){
+                if (!prv.getProvinceDataMap().containsKey(key)){
+                    prv.getProvinceDataMap().put(key,map.get(key));
+                }else {
+                    prv.getProvinceDataMap().put(key,prv.getProvinceDataMap().get(key)+map.get(key));
+                }
                 if (key.equals("其他")||key.equals("total"))
                     continue;
                 map.put("其他",map.get("其他")-map.get(key));
@@ -542,19 +548,19 @@ public class ProvinceReportsDao {
 
         }
 
-        for (ProvinceReportsVO2 temp:list){
-            prv.setDataType(temp.getDataType());
-
-            Map<String,Integer> map = temp.getProvinceDataMap();
-            for (String key : map.keySet()){
-                if (!prv.getProvinceDataMap().containsKey(key)){
-                    prv.getProvinceDataMap().put(key,map.get(key));
-                }else {
-                    prv.getProvinceDataMap().put(key,prv.getProvinceDataMap().get(key)+map.get(key));
-                }
-            }
-
-        }
+//        for (ProvinceReportsVO2 temp:list){
+//            prv.setDataType(temp.getDataType());
+//
+//            Map<String,Integer> map = temp.getProvinceDataMap();
+//            for (String key : map.keySet()){
+//                if (!prv.getProvinceDataMap().containsKey(key)){
+//                    prv.getProvinceDataMap().put(key,map.get(key));
+//                }else {
+//                    prv.getProvinceDataMap().put(key,prv.getProvinceDataMap().get(key)+map.get(key));
+//                }
+//            }
+//
+//        }
 
         list.add(0, prv);
 
