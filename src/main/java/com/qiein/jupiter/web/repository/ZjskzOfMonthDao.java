@@ -511,7 +511,6 @@ public class ZjskzOfMonthDao {
             sql.append("  and info.CLASSID = 1 and info.STATUSID = 98 ");
             sql.append(" and FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d')= '" + day.get("day") + "') " + day.get("dayKey") + ",");
         }
-        sql.append(" and info.isdel = 0");
         sql.append("(select count(info.id) from " + tableInfo + " info where info.SOURCEID IN ");
         if (StringUtil.isEmpty(sourceId)) {
             sql.append("(select id from hm_crm_source where companyId=" + companyId + " and typeid in ("+typeId+") )");
@@ -897,6 +896,7 @@ public class ZjskzOfMonthDao {
         ZjsKzOfMonthShowVO zjsKzOfMonthShowVO=new ZjsKzOfMonthShowVO();
         zjsKzOfMonthShowVO.setMap(map);
         zjsKzOfMonthShowVO.setSrcName("合计");
+        zjsKzOfMonthShowVO.setSrcId(0);
         showList.add(0,zjsKzOfMonthShowVO);
     }
 
