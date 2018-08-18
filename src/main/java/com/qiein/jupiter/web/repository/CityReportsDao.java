@@ -399,7 +399,7 @@ public class CityReportsDao {
 
         }
         everyRate(total);
-        list.add(total);
+        list.add(0,total);
     }
 
     private void total(RegionReportsVO total,RegionReportsVO rrv){

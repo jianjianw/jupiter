@@ -493,7 +493,7 @@ public class ProvinceReportsDao {
         ProvinceReportsVO2 prv = new ProvinceReportsVO2();
         prv.setSrcName("合计");
         prv.setProvinceDataMap(new HashMap<String, Integer>());
-        list.add(prv);
+        list.add(0,prv);
         for (ProvinceReportsVO2 pr : list) {
             prv.setDataType(pr.getDataType());
             Map<String,Integer> map = pr.getProvinceDataMap();
