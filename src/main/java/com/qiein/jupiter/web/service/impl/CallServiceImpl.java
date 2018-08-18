@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.mzlion.easyokhttp.HttpClient;
 import com.qiein.jupiter.constant.AppolloUrlConst;
@@ -173,6 +174,110 @@ public class CallServiceImpl implements CallService {
                 .asString();
         //TODO 此处
         return null;
+    }
+
+    @Override
+    public JSONObject getRecording(String caller,StaffPO staffPO,Integer page,Integer pageSize) {
+        String sign = MD5Util.getApolloMd5(String.valueOf(staffPO.getCompanyId()));
+        //Appollo接口获取用户信息
+        String usreJson = HttpClient
+                // 请求方式和请求url
+                .get(appoloBaseUrl.concat(AppolloUrlConst.GET_CALL_USER))
+                // post提交json
+                .queryString("companyId", staffPO.getCompanyId())
+                .queryString("sign", sign)
+                .asString();
+
+        //Appollo接口获取intsanceId
+        String instaceJson = HttpClient
+                // 请求方式和请求url
+                .get(appoloBaseUrl.concat(AppolloUrlConst.GET_CALL_INSTANCE))
+                // post提交json
+                .queryString("companyId", staffPO.getCompanyId())
+                .queryString("sign", sign)
+                .asString();
+        CallPO callPO = JSONObject.parseObject(JSONObject.parseObject(instaceJson).get("data").toString(), CallPO.class);
+        CallUserPO callUserPO = JSONObject.parseObject(JSONObject.parseObject(usreJson).get("data").toString(), CallUserPO.class);
+        //获取Token
+        String token = BatchTokenRetrieval.retrieve(callUserPO.getUsername(), callUserPO.getPassword(), callUserPO.getClientId(), callUserPO.getClientSecret(), callUserPO.getCallBakUrl());
+        AliOauthVO aliOauthVO = JSONObject.parseObject(token, AliOauthVO.class);
+
+        //生成时间戳
+        StringBuilder timeStamp = new StringBuilder(TimeUtil.format(TimeUtil.localToUTC(TimeUtil.getSysTime()), "yyyy-MM-dd HH:mm:ss")).replace(10, 11, "T").append("Z");
+        RandomString randomString = new RandomString(45);
+
+        //TODO 通过kzId获取通话记录时间
+
+
+        String reportsJson = HttpClient
+                .get(CallUrlConst.CALL_BASE_URL)
+                .queryString("Action", "ListCallDetailRecords")
+                .queryString("InstanceId", callPO.getInstanceId())
+                .queryString("Criteria", caller)
+                .queryString("StartTime",1514736000)
+                .queryString("PageNumber",page)
+                .queryString("PageSize",pageSize)
+                .queryString("OrderBy","DESC")
+                //公共参数
+                .queryString("Format", "JSON")
+                .queryString("Version", "2017-07-05")
+                .queryString("Timestamp", timeStamp.toString())
+                .queryString("SignatureType", "BEARERTOKEN")
+                .queryString("RegionId", "cn-shanghai")
+                .queryString("SignatureNonce", randomString.nextString())
+                .queryString("BearerToken", aliOauthVO.getAccessToken()).asString();
+        JSONObject reportsObject = JSONObject.parseObject(reportsJson);
+        return reportsObject;
+    }
+
+    @Override
+    public JSONObject getRecordingFile(String fileName,StaffPO staffPO) {
+
+        String sign = MD5Util.getApolloMd5(String.valueOf(staffPO.getCompanyId()));
+        //Appollo接口获取用户信息
+        String usreJson = HttpClient
+                // 请求方式和请求url
+                .get(appoloBaseUrl.concat(AppolloUrlConst.GET_CALL_USER))
+                // post提交json
+                .queryString("companyId", staffPO.getCompanyId())
+                .queryString("sign", sign)
+                .asString();
+
+        //Appollo接口获取intsanceId
+        String instaceJson = HttpClient
+                // 请求方式和请求url
+                .get(appoloBaseUrl.concat(AppolloUrlConst.GET_CALL_INSTANCE))
+                // post提交json
+                .queryString("companyId", staffPO.getCompanyId())
+                .queryString("sign", sign)
+                .asString();
+        CallPO callPO = JSONObject.parseObject(JSONObject.parseObject(instaceJson).get("data").toString(), CallPO.class);
+        CallUserPO callUserPO = JSONObject.parseObject(JSONObject.parseObject(usreJson).get("data").toString(), CallUserPO.class);
+        //获取Token
+        String token = BatchTokenRetrieval.retrieve(callUserPO.getUsername(), callUserPO.getPassword(), callUserPO.getClientId(), callUserPO.getClientSecret(), callUserPO.getCallBakUrl());
+        AliOauthVO aliOauthVO = JSONObject.parseObject(token, AliOauthVO.class);
+
+        //生成时间戳
+        StringBuilder timeStamp = new StringBuilder(TimeUtil.format(TimeUtil.localToUTC(TimeUtil.getSysTime()), "yyyy-MM-dd HH:mm:ss")).replace(10, 11, "T").append("Z");
+        RandomString randomString = new RandomString(45);
+
+
+        String urlJson = HttpClient
+                .get(CallUrlConst.CALL_BASE_URL)
+                .queryString("Action", "DownloadRecording")
+                .queryString("InstanceId", callPO.getInstanceId())
+                .queryString("FileName",fileName)
+                //公共参数
+                .queryString("Format", "JSON")
+                .queryString("Version", "2017-07-05")
+                .queryString("Timestamp", timeStamp.toString())
+                .queryString("SignatureType", "BEARERTOKEN")
+                .queryString("RegionId", "cn-shanghai")
+                .queryString("SignatureNonce", randomString.nextString())
+                .queryString("BearerToken", aliOauthVO.getAccessToken()).asString();
+
+        JSONObject jsonObject = JSONObject.parseObject(urlJson);
+        return jsonObject;
     }
 
 }

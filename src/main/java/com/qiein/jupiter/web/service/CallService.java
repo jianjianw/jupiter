@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.web.entity.po.CallCustomerPO;
 import com.qiein.jupiter.web.entity.po.CallPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
@@ -47,5 +48,15 @@ public interface CallService {
      * @return
      * */
     CallPO instanceList(StaffPO staffPO);
+
+    /**
+     * 获取录音列表
+     * */
+    JSONObject getRecording(String caller, StaffPO staffPO,Integer page,Integer pageSize);
+
+    /**
+     * 获取录音文件
+     * */
+    JSONObject getRecordingFile(String fileName,StaffPO staffPO);
 
 }

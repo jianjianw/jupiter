@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.web.entity.po.CallCustomerPO;
@@ -59,6 +60,29 @@ public class CallController extends BaseController{
         StaffPO staffPO = getCurrentLoginStaff();
         return ResultInfoUtil.success(callService.instanceList(staffPO));
     }
+
+
+    /**
+     * 获取录音列表
+     * */
+    @RequestMapping("/get_recording")
+    public ResultInfo getRecording(String caller,Integer page,Integer pageSize){
+        StaffPO staffPO = getCurrentLoginStaff();
+        JSONObject recording = callService.getRecording(caller, staffPO,page,pageSize);
+        return ResultInfoUtil.success(recording);
+    }
+
+
+    /**
+     * 获取录音
+     * */
+    @RequestMapping("/get_recording_file")
+    public ResultInfo getRecordingFile(String fileName){
+        StaffPO staffPO = getCurrentLoginStaff();
+        JSONObject jsonObject = callService.getRecordingFile(fileName, staffPO);
+        return ResultInfoUtil.success(jsonObject);
+    }
+
 
     /**
      * 双呼
