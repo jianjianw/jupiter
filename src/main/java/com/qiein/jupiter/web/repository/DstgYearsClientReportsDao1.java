@@ -343,7 +343,7 @@ public class DstgYearsClientReportsDao1 {
         sb.append("   ifnull(avg(detail.AMOUNT),0) AS client_count ,info.sourceid ");
         sb.append(" FROM " + infoTabName + " info");
         sb.append(" left join "+detailTabName+" detail on info.kzid = detail.kzid ");
-        sb.append(" where info.companyid = ? and info.sourceid is not null");
+        sb.append(" where info.companyid = ? and info.sourceid is not null and info.isdel = 0");
         addConditionByTypeAndSourceIds(reportsParamVO,sb);
         sb.append(" group by info.sourceid,monthNo) AS t ");
         sb.append(" WHERE t.myYear= ? ");
@@ -385,7 +385,7 @@ public class DstgYearsClientReportsDao1 {
         sb.append("  ifnull( sum(detail.AMOUNT),0) AS client_count ,info.sourceid ");
         sb.append(" FROM " + infoTabName + " info");
         sb.append(" left join "+detailTabName+" detail on info.kzid = detail.kzid ");
-        sb.append(" where info.companyid = ? and info.sourceid is not null");
+        sb.append(" where info.companyid = ? and info.sourceid is not null and info.isdel = 0");
         addConditionByTypeAndSourceIds(reportsParamVO,sb);
         sb.append(" group by info.sourceid,monthNo) AS t ");
         sb.append(" WHERE t.myYear= ? ");
@@ -428,7 +428,7 @@ public class DstgYearsClientReportsDao1 {
         sb.append("   count(info.id) AS client_count ,info.sourceid ");
         sb.append(" FROM " + infoTabName + " info");
         sb.append(" left join "+detailTabName+" detail on info.kzid = detail.kzid ");
-        sb.append(" where info.companyid = ? and info.sourceid is not null");
+        sb.append(" where info.companyid = ? and info.sourceid is not null and info.isdel = 0");
     }
 
     private void addConditionByTypeAndSourceIds(ReportsParamVO reportsParamVO, StringBuilder sb) {
@@ -500,6 +500,7 @@ public class DstgYearsClientReportsDao1 {
      */
     private void computerTotal(ReportsParamVO reportsParamVO, final  List<DstgSourceYearReportsVO> dstgSourceYearReportsVOS) {
         DstgSourceYearReportsVO dstgSourceYearReportsTotal = new DstgSourceYearReportsVO();
+        dstgSourceYearReportsTotal.setSourceId(-1);
         dstgSourceYearReportsTotal.setSourceName("合计");
         for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgSourceYearReportsVOS) {
             dstgSourceYearReportsTotal.setAllClientCount(dstgSourceYearReportsVO.getAllClientCount() + dstgSourceYearReportsTotal.getAllClientCount());

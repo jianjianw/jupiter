@@ -89,7 +89,7 @@ public class DstgGoldDataReportsDao {
     }
 
     private StringBuilder getCommonsql(StringBuilder sb,String infoTabName,String detailTabName) {
-        sb.append(" select if((IFNULL(detail.adid,'-') ) = '', '-',IFNULL(detail.adid,'-')  ) as adid,count(detail.kzid) as client_count ");
+        sb.append(" select if((IFNULL(detail.adid,'-') ) = '', '其他',IFNULL(detail.adid,'-')  ) as adid,count(detail.kzid) as client_count ");
         sb.append(" from");
         sb.append(infoTabName + " info ," + detailTabName + " detail");
         sb.append(" where");

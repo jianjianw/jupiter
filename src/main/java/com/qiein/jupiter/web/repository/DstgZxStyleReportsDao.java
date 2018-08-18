@@ -77,6 +77,9 @@ public class DstgZxStyleReportsDao {
         sb.append("  info.isdel = 0");
         sb.append(" and (info.srctype = 1 or info.srctype = 2)");
         sb.append(" and info.companyid = ?");
+        if(StringUtil.isNotEmpty(reportsParamVO.getZxStyleCode())){
+            sb.append(" and detail.ZXSTYLE in ( "+reportsParamVO.getZxStyleCode()+") ");
+        }
         sb.append(" group by detail.ZXSTYLE");
         sb.append(" ) a group by zx_code");
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
