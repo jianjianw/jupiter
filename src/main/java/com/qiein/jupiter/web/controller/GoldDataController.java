@@ -108,9 +108,9 @@ public class GoldDataController extends BaseController {
     @GetMapping("/select")
     public ResultInfo select(@RequestParam(defaultValue = "1") int pageNum,
                              @RequestParam(defaultValue = "20") int pageSize,
-                             @RequestParam String formId,@RequestParam String staffIds,@RequestParam String srcIds) {
+                             @RequestParam String formId, @RequestParam String srcIds) {
         StaffPO staff = getCurrentLoginStaff();
-        PageInfo<GoldFingerPO> select = goldDataService.select(staff.getCompanyId(), pageNum, pageSize, formId,staffIds,srcIds);
+        PageInfo<GoldFingerPO> select = goldDataService.select(staff.getCompanyId(), pageNum, pageSize, formId, null, srcIds);
         return ResultInfoUtil.success(select);
     }
 
@@ -158,7 +158,7 @@ public class GoldDataController extends BaseController {
     @RequestMapping("/receive_gold_data_form")
     public ResultInfo receiveGoldDataForm(@RequestBody JSONObject jsonObject) {
         //TODO 获取到数据，存储temp与plugSetting
-        log.info("金数据接收到:"+jsonObject.toString());
+        log.info("金数据接收到:" + jsonObject.toString());
         goldDataService.receiveGoldDataForm(jsonObject);
         return ResultInfoUtil.success();
     }
