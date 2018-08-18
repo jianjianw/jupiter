@@ -43,12 +43,12 @@ public class ProvinceReportsDao {
         List<ProvinceReportsVO> resultContent = new ArrayList<>();
         List<String> psn = new ArrayList<>();
         psn.addAll(ChinaTerritoryConst.TERRITORY_MAP.keySet());
-        psn.add("其他");
+        psn.add("total");
         for (String provinceName : psn) {    //遍历所有省
             Object[] objs = getParam(provinceAnalysisParamDTO, invalidConfig, provinceName);
             String sql = getFinalSQL(provinceAnalysisParamDTO, invalidConfig);
-            //TODO 添加一个其他 然后查询出所有客资
-            if (provinceName.equals("其他")) {
+            //TODO 添加一个合计 然后查询出所有客资
+            if (provinceName.equals("total")) {
                 sql = sql.replace("AND INSTR(detail.ADDRESS, ? )> 0", " ");
                 objs = getOtherParam(provinceAnalysisParamDTO, invalidConfig);
             }
@@ -519,33 +519,38 @@ public class ProvinceReportsDao {
     }
 
     /**
-     * 合计
+     * 合计 其他
      *
      * @param list
      */
     private List<ProvinceReportsVO2> total(List<ProvinceReportsVO2> list) {
+
         ProvinceReportsVO2 prv = new ProvinceReportsVO2();
         prv.setSrcName("合计");
         prv.setProvinceDataMap(new HashMap<String, Integer>());
-        list.add(0, prv);
-        for (ProvinceReportsVO2 pr : list) {
-            prv.setDataType(pr.getDataType());
-            Map<String, Integer> map = pr.getProvinceDataMap();
-            int total = 0;
-            for (String key : map.keySet()) {
-                if (!prv.getProvinceDataMap().containsKey(key)) {
-                    prv.getProvinceDataMap().put(key, map.get(key));
-                } else {
-                    prv.getProvinceDataMap().put(key, prv.getProvinceDataMap().get(key) + map.get(key));
-                }
-                total += map.get(key);
-            }
-            map.put("total", total);
-        }
 
-        for (String key : prv.getProvinceDataMap().keySet()) {
-            prv.getProvinceDataMap().put("total", prv.getProvinceDataMap().get(key) + prv.getProvinceDataMap().get("total"));
+        for (ProvinceReportsVO2 temp:list){
+            prv.setDataType(temp.getDataType());
+
+            Map<String,Integer> map = temp.getProvinceDataMap();
+            map.put("其他",map.get("total"));
+            for (String key : map.keySet()){
+                if (!prv.getProvinceDataMap().containsKey(key)){
+                    prv.getProvinceDataMap().put(key,map.get(key));
+                }else {
+                    System.out.println(key);
+                    System.out.println(map.get(key));
+                    System.out.println(prv.getProvinceDataMap());
+                    prv.getProvinceDataMap().put(key,prv.getProvinceDataMap().get(key)+map.get(key));
+                }
+                if (key.equals("其他")||key.equals("total"))
+                    continue;
+                map.put("其他",map.get("其他")-map.get(key));
+            }
+
         }
+        list.add(0, prv);
+
         return list;
     }
 }
