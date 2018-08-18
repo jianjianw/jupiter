@@ -882,9 +882,7 @@ public class ZjskzOfMonthDao {
             Integer hj=0;
             for (ZjsKzOfMonthShowVO zjsKzOfMonthShowVO:showList)
             {
-                if(zjsKzOfMonthShowVO.getMap().keySet().equals(dayMap.get("dayKey"))){
-                    hj+=zjsKzOfMonthShowVO.getMap().get(dayMap.get("dayKey"));
-                }
+                hj+=zjsKzOfMonthShowVO.getMap().get(dayMap.get("dayKey"));
             }
             map.put((String)dayMap.get("dayKey"),hj);
         }
