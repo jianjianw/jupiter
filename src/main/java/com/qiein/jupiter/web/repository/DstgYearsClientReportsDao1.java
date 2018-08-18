@@ -302,7 +302,9 @@ public class DstgYearsClientReportsDao1 {
         sb.append(" SELECT MONTH(FROM_UNIXTIME(cost.`COSTTIME`)) AS monthNo,  YEAR(FROM_UNIXTIME(cost.`COSTTIME`)) AS myYear,source.id as sourceid,");
         sb.append("  ifnull(sum(cost.cost),0) AS client_cost  from hm_crm_source source ");
         sb.append(" left join hm_crm_cost cost on source.id = cost.SRCID  where cost.companyid = ? ");
-        addConditionByTypeAndSourceIds(reportsParamVO,sb);
+        if (StringUtil.isNotEmpty(reportsParamVO.getSourceIds())) {
+            sb.append(" and cost.srcid in (" + reportsParamVO.getSourceIds() + ")");
+        }
         sb.append(" group by monthNo,source.id");
         sb.append(" ) AS t WHERE t.myYear= ? GROUP BY t.monthNo,t.sourceid order by month ");
         List<Map<String, Object>> mapList = jdbcTemplate.queryForList(sb.toString(), new Object[]{reportsParamVO.getCompanyId(), reportsParamVO.getYears()});
