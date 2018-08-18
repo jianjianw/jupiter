@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.repository;
 
+import com.alibaba.fastjson.JSON;
 import com.qiein.jupiter.enums.TableEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
@@ -14,6 +15,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.lang.reflect.Field;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -79,7 +81,7 @@ public class ZjsKzOfYearDao {
             resultContent.addAll(now);
         }
 
-        return transform(resultContent);
+        return total(transform(resultContent));
     }
 
     /**
@@ -133,8 +135,9 @@ public class ZjsKzOfYearDao {
             now.get(0).setRegionName(String.valueOf((i + 2) / 2) + "月");
             resultContent.addAll(now);
         }
-
-        calculate(resultContent,dsInvalidVO);
+        System.out.println(JSON.toJSONString(resultContent));
+        dTotal(resultContent);
+        calculate(resultContent, dsInvalidVO);
 
         return dtransform(resultContent);
     }
@@ -436,6 +439,56 @@ public class ZjsKzOfYearDao {
         return newlist;
     }
 
+    /**
+     * 合计
+     *
+     * @param list
+     * @return
+     */
+    private static List<ZjsClientYearReportVO2> total(List<ZjsClientYearReportVO2> list) {
+        ZjsClientYearReportVO2 hTotal = new ZjsClientYearReportVO2();
+        hTotal.setSrcName("合计");
+        hTotal.setDataMap(new HashMap<String, Integer>());
+        list.add(hTotal);
+        for (ZjsClientYearReportVO2 zcyr : list) {
+            hTotal.setDataType(zcyr.getDataType());
+            Map<String, Integer> map = zcyr.getDataMap();
+            int total = 0;
+            for (String key : map.keySet()) {
+                if (!hTotal.getDataMap().containsKey(key)) {
+                    hTotal.getDataMap().put(key, map.get(key));
+                } else {
+                    hTotal.getDataMap().put(key, hTotal.getDataMap().get(key) + map.get(key));
+                }
+                total += map.get(key);
+            }
+            map.put("合计", total);
+        }
+        return list;
+    }
+
+    /**
+     * 详情合计
+     *
+     * @param list
+     * @return
+     */
+    private static List<RegionReportsVO> dTotal(List<RegionReportsVO> list) {
+        RegionReportsVO total = new RegionReportsVO();
+        total.setRegionName("合计");
+        for (RegionReportsVO zcyr : list) {
+            total.setAllClientCount(zcyr.getAllClientCount() + total.getAllClientCount());
+            total.setClientCount(zcyr.getClientCount() + total.getClientCount());
+            total.setValidClientCount(zcyr.getValidClientCount() + total.getValidClientCount());
+            total.setPendingClientCount(zcyr.getPendingClientCount() + total.getPendingClientCount());
+            total.setInValidClientCount(zcyr.getInValidClientCount() + total.getInValidClientCount());
+            total.setComeShopClientCount(zcyr.getComeShopClientCount() + total.getComeShopClientCount());
+            total.setSuccessClientCount(zcyr.getSuccessClientCount() + total.getSuccessClientCount());
+            total.setAmount(zcyr.getAmount() + total.getAmount());
+        }
+        list.add(total);
+        return list;
+    }
 
     //===================================================================================================================================================================================================
     //             渠道年度详情报表
@@ -474,36 +527,47 @@ public class ZjsKzOfYearDao {
      */
     public static List<Map<String, Object>> dtransform(List<RegionReportsVO> vo1List) {
         List<Map<String, Object>> list = new ArrayList<>();
-        for (RegionReportsVO rr : vo1List) {
+        String[] cols = {"clientCount", "validClientCount", "comeShopClientCount", "successClientCount", "validRate", "clientComeShopRate", "comeShopSuccessRate"};
+
+        for (String col : cols) {
             Map<String, Object> map = new HashMap<>();
-            map.put("dataType", rr.getRegionName());
+            map.put("dataType", col);
             Map<String, Object> subMap = new HashMap<>();
-            subMap.put("clientCount",rr.getAllClientCount());
-            subMap.put("validClientCount",rr.getValidClientCount());
-            subMap.put("comeShopClientCount",rr.getComeShopClientCount());
-            subMap.put("successClientCount",rr.getSuccessClientCount());
-            subMap.put("validRate",rr.getValidRate());
-            subMap.put("clientComeShopRate",rr.getClientComeShopRate());
-            subMap.put("comeShopSuccessRate",rr.getComeShopSuccessRate());
-            map.put("data",subMap);
+            map.put("data", subMap);
+            for (RegionReportsVO rr : vo1List) {
+                Object value = null;
+                try {
+                    Field field = rr.getClass().getDeclaredField(col);
+                    field.setAccessible(true);
+                    value = field.get(rr);
+                } catch (NoSuchFieldException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+
+                subMap.put(rr.getRegionName(), value);
+
+            }
             list.add(map);
         }
+        System.out.println(list);
         return list;
     }
 
     /**
-     *  计算 有效量 各种率 合计
+     * 计算 有效量 各种率 合计
      */
-    private void calculate(List<RegionReportsVO> list, DsInvalidVO invalidConfig){
-        for (RegionReportsVO rrv:list){
+    private void calculate(List<RegionReportsVO> list, DsInvalidVO invalidConfig) {
+        for (RegionReportsVO rrv : list) {
             //有效量
-            if(invalidConfig.getDdIsValid()){
-                rrv.setValidClientCount(rrv.getAllClientCount()-rrv.getInValidClientCount()-rrv.getFilterInClientCount()-rrv.getFilterInValidClientCount()-rrv.getFilterPendingClientCount());
-            }else{
-                rrv.setValidClientCount(rrv.getAllClientCount()-rrv.getPendingClientCount()-rrv.getInValidClientCount()-rrv.getFilterInClientCount()-rrv.getFilterInValidClientCount()-rrv.getFilterPendingClientCount());
+            if (invalidConfig.getDdIsValid()) {
+                rrv.setValidClientCount(rrv.getAllClientCount() - rrv.getInValidClientCount() - rrv.getFilterInClientCount() - rrv.getFilterInValidClientCount() - rrv.getFilterPendingClientCount());
+            } else {
+                rrv.setValidClientCount(rrv.getAllClientCount() - rrv.getPendingClientCount() - rrv.getInValidClientCount() - rrv.getFilterInClientCount() - rrv.getFilterInValidClientCount() - rrv.getFilterPendingClientCount());
             }
             //客资量(总客资-筛选待定-筛选中-筛选无效)
-            rrv.setClientCount(rrv.getAllClientCount()-rrv.getFilterPendingClientCount()-rrv.getFilterInValidClientCount()-rrv.getFilterInClientCount());
+            rrv.setClientCount(rrv.getAllClientCount() - rrv.getFilterPendingClientCount() - rrv.getFilterInValidClientCount() - rrv.getFilterInClientCount());
 
             //计算各种百分比
             everyRate(rrv);
@@ -513,9 +577,10 @@ public class ZjsKzOfYearDao {
 
     /**
      * 计算各种百分比
+     *
      * @param rrv
      */
-    private void everyRate(RegionReportsVO rrv){
+    private void everyRate(RegionReportsVO rrv) {
         //有效率
         double validRate = (double) rrv.getValidClientCount() / rrv.getClientCount();
         rrv.setValidRate(parseDouble(((Double.isNaN(validRate) || Double.isInfinite(validRate)) ? 0.0 : validRate) * 100));
@@ -529,9 +594,9 @@ public class ZjsKzOfYearDao {
 
     /**
      * 只保留2位小数
-     * */
-    public double parseDouble(double result){
-        return Double.parseDouble(String.format("%.2f",result));
+     */
+    public double parseDouble(double result) {
+        return Double.parseDouble(String.format("%.2f", result));
     }
 
     private static final String GROUP_BY = "GROUP BY info.SOURCEID";

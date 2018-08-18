@@ -42,6 +42,9 @@ public class ReportsServiceImpl implements ReportService {
     private GroupStaffDao groupStaffDao;
 
     @Autowired
+    private SourceDao sourceDao;
+
+    @Autowired
     private DstgGoldDataReportsDao dstgGoldDataReportsDao;
 
     @Autowired
@@ -90,9 +93,6 @@ public class ReportsServiceImpl implements ReportService {
     @Autowired
     private DstgYearsClientReportsDao1 dstgYearsClientReportsDao1;
 
-
-    @Autowired
-    private SourceDao sourceDao;
 
 
     /**
@@ -561,6 +561,8 @@ public class ReportsServiceImpl implements ReportService {
     @Override
     public List<Map<String, Object>> getZjsYearDetailReport(ZjsClientYearReportDTO zjsClientYearReportDTO) {
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(zjsClientYearReportDTO.getCompanyId());
+        if (zjsClientYearReportDTO.getSourceIds().equals("0"))
+            zjsClientYearReportDTO.setSourceIds(sourceDao.getAllZjsSourceIdStr(zjsClientYearReportDTO.getCompanyId()));
         List<Map<String, Object>> list = zjsKzOfYearDao.getZjsYearDetailReport(zjsClientYearReportDTO, invalidConfig);
         return list;
     }

@@ -405,14 +405,15 @@
         AND ISSHOW = 1
     </select>
 
-    <!--查询所属公司所有显示的渠道id字符串-->
-    <select id="getAllSourceIdStr">
+    <!--查询所属公司所有显示的转介绍渠道id字符串-->
+    <select id="getAllZjsSourceIdStr">
         SELECT
         GROUP_CONCAT(ID)
         FROM
         hm_crm_source
         WHERE COMPANYID = #{companyId}
         AND ISSHOW = 1
+        AND TYPEID IN (3,4,5)
     </select>
 
     <select id="findSourseByType" resultMap="baseMap">

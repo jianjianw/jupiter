@@ -343,7 +343,7 @@ public class ChinaTerritoryConst {
             "    \"CitySort\": 42\n" +
             "}, {\n" +
             "    \"CityID\": 43,\n" +
-            "    \"name\": \"延边朝鲜族自治州\",\n" +
+            "    \"name\": \"延边州\",\n" +
             "    \"ProID\": 7,\n" +
             "    \"CitySort\": 43\n" +
             "}, {\n" +
@@ -428,7 +428,7 @@ public class ChinaTerritoryConst {
             "    \"CitySort\": 59\n" +
             "}, {\n" +
             "    \"CityID\": 60,\n" +
-            "    \"name\": \"大兴安岭地区\",\n" +
+            "    \"name\": \"大兴安岭区\",\n" +
             "    \"ProID\": 8,\n" +
             "    \"CitySort\": 60\n" +
             "}, {\n" +
@@ -968,7 +968,7 @@ public class ChinaTerritoryConst {
             "    \"CitySort\": 167\n" +
             "}, {\n" +
             "    \"CityID\": 168,\n" +
-            "    \"name\": \"恩施土家族苗族自治州\",\n" +
+            "    \"name\": \"恩施州\",\n" +
             "    \"ProID\": 17,\n" +
             "    \"CitySort\": 168\n" +
             "}, {\n" +
@@ -1058,7 +1058,7 @@ public class ChinaTerritoryConst {
             "    \"CitySort\": 185\n" +
             "}, {\n" +
             "    \"CityID\": 186,\n" +
-            "    \"name\": \"湘西土家族苗族自治州\",\n" +
+            "    \"name\": \"湘西自治州\",\n" +
             "    \"ProID\": 18,\n" +
             "    \"CitySort\": 186\n" +
             "}, {\n" +
@@ -1243,12 +1243,12 @@ public class ChinaTerritoryConst {
             "    \"CitySort\": 222\n" +
             "}, {\n" +
             "    \"CityID\": 223,\n" +
-            "    \"name\": \"临夏回族自治州\",\n" +
+            "    \"name\": \"临夏州\",\n" +
             "    \"ProID\": 22,\n" +
             "    \"CitySort\": 223\n" +
             "}, {\n" +
             "    \"CityID\": 224,\n" +
-            "    \"name\": \"甘南藏族自治州\",\n" +
+            "    \"name\": \"甘南州\",\n" +
             "    \"ProID\": 22,\n" +
             "    \"CitySort\": 224\n" +
             "}, {\n" +
@@ -1328,7 +1328,7 @@ public class ChinaTerritoryConst {
             "    \"CitySort\": 239\n" +
             "}, {\n" +
             "    \"CityID\": 240,\n" +
-            "    \"name\": \"凉山彝族自治州\",\n" +
+            "    \"name\": \"凉山州\",\n" +
             "    \"ProID\": 28,\n" +
             "    \"CitySort\": 240\n" +
             "}, {\n" +
@@ -1338,12 +1338,12 @@ public class ChinaTerritoryConst {
             "    \"CitySort\": 241\n" +
             "}, {\n" +
             "    \"CityID\": 242,\n" +
-            "    \"name\": \"甘孜藏族自治州\",\n" +
+            "    \"name\": \"甘孜州\",\n" +
             "    \"ProID\": 28,\n" +
             "    \"CitySort\": 242\n" +
             "}, {\n" +
             "    \"CityID\": 243,\n" +
-            "    \"name\": \"阿坝藏族羌族自治州\",\n" +
+            "    \"name\": \"阿坝州\",\n" +
             "    \"ProID\": 28,\n" +
             "    \"CitySort\": 243\n" +
             "}, {\n" +
@@ -1373,22 +1373,22 @@ public class ChinaTerritoryConst {
             "    \"CitySort\": 248\n" +
             "}, {\n" +
             "    \"CityID\": 249,\n" +
-            "    \"name\": \"黔南布依族苗族自治州\",\n" +
+            "    \"name\": \"黔南州\",\n" +
             "    \"ProID\": 29,\n" +
             "    \"CitySort\": 249\n" +
             "}, {\n" +
             "    \"CityID\": 250,\n" +
-            "    \"name\": \"黔东南苗族侗族自治州\",\n" +
+            "    \"name\": \"黔东州\",\n" +
             "    \"ProID\": 29,\n" +
             "    \"CitySort\": 250\n" +
             "}, {\n" +
             "    \"CityID\": 251,\n" +
-            "    \"name\": \"铜仁地区\",\n" +
+            "    \"name\": \"铜仁区\",\n" +
             "    \"ProID\": 29,\n" +
             "    \"CitySort\": 251\n" +
             "}, {\n" +
             "    \"CityID\": 252,\n" +
-            "    \"name\": \"毕节地区\",\n" +
+            "    \"name\": \"毕节区\",\n" +
             "    \"ProID\": 29,\n" +
             "    \"CitySort\": 252\n" +
             "}, {\n" +
@@ -1398,7 +1398,7 @@ public class ChinaTerritoryConst {
             "    \"CitySort\": 253\n" +
             "}, {\n" +
             "    \"CityID\": 254,\n" +
-            "    \"name\": \"黔西南布依族苗族自治州\",\n" +
+            "    \"name\": \"黔西州\",\n" +
             "    \"ProID\": 29,\n" +
             "    \"CitySort\": 254\n" +
             "}, {\n" +
@@ -1463,42 +1463,42 @@ public class ChinaTerritoryConst {
             "    \"CitySort\": 266\n" +
             "}, {\n" +
             "    \"CityID\": 267,\n" +
-            "    \"name\": \"白沙黎族自治县\",\n" +
+            "    \"name\": \"白沙县\",\n" +
             "    \"ProID\": 20,\n" +
             "    \"CitySort\": 267\n" +
             "}, {\n" +
             "    \"CityID\": 268,\n" +
-            "    \"name\": \"昌江黎族自治县\",\n" +
+            "    \"name\": \"昌江县\",\n" +
             "    \"ProID\": 20,\n" +
             "    \"CitySort\": 268\n" +
             "}, {\n" +
             "    \"CityID\": 269,\n" +
-            "    \"name\": \"乐东黎族自治县\",\n" +
+            "    \"name\": \"乐东县\",\n" +
             "    \"ProID\": 20,\n" +
             "    \"CitySort\": 269\n" +
             "}, {\n" +
             "    \"CityID\": 270,\n" +
-            "    \"name\": \"陵水黎族自治县\",\n" +
+            "    \"name\": \"陵水县\",\n" +
             "    \"ProID\": 20,\n" +
             "    \"CitySort\": 270\n" +
             "}, {\n" +
             "    \"CityID\": 271,\n" +
-            "    \"name\": \"保亭黎族苗族自治县\",\n" +
+            "    \"name\": \"保亭县\",\n" +
             "    \"ProID\": 20,\n" +
             "    \"CitySort\": 271\n" +
             "}, {\n" +
             "    \"CityID\": 272,\n" +
-            "    \"name\": \"琼中黎族苗族自治县\",\n" +
+            "    \"name\": \"琼中县\",\n" +
             "    \"ProID\": 20,\n" +
             "    \"CitySort\": 272\n" +
             "}, {\n" +
             "    \"CityID\": 273,\n" +
-            "    \"name\": \"西双版纳傣族自治州\",\n" +
+            "    \"name\": \"西双版纳州\",\n" +
             "    \"ProID\": 30,\n" +
             "    \"CitySort\": 273\n" +
             "}, {\n" +
             "    \"CityID\": 274,\n" +
-            "    \"name\": \"德宏傣族景颇族自治州\",\n" +
+            "    \"name\": \"德宏州\",\n" +
             "    \"ProID\": 30,\n" +
             "    \"CitySort\": 274\n" +
             "}, {\n" +
@@ -1513,12 +1513,12 @@ public class ChinaTerritoryConst {
             "    \"CitySort\": 276\n" +
             "}, {\n" +
             "    \"CityID\": 277,\n" +
-            "    \"name\": \"大理白族自治州\",\n" +
+            "    \"name\": \"大理州\",\n" +
             "    \"ProID\": 30,\n" +
             "    \"CitySort\": 277\n" +
             "}, {\n" +
             "    \"CityID\": 278,\n" +
-            "    \"name\": \"红河哈尼族彝族自治州\",\n" +
+            "    \"name\": \"红河州\",\n" +
             "    \"ProID\": 30,\n" +
             "    \"CitySort\": 278\n" +
             "}, {\n" +
@@ -1533,7 +1533,7 @@ public class ChinaTerritoryConst {
             "    \"CitySort\": 280\n" +
             "}, {\n" +
             "    \"CityID\": 281,\n" +
-            "    \"name\": \"文山壮族苗族自治州\",\n" +
+            "    \"name\": \"文山州\",\n" +
             "    \"ProID\": 30,\n" +
             "    \"CitySort\": 281\n" +
             "}, {\n" +
@@ -1543,7 +1543,7 @@ public class ChinaTerritoryConst {
             "    \"CitySort\": 282\n" +
             "}, {\n" +
             "    \"CityID\": 283,\n" +
-            "    \"name\": \"楚雄彝族自治州\",\n" +
+            "    \"name\": \"楚雄州\",\n" +
             "    \"ProID\": 30,\n" +
             "    \"CitySort\": 283\n" +
             "}, {\n" +
@@ -1558,12 +1558,12 @@ public class ChinaTerritoryConst {
             "    \"CitySort\": 285\n" +
             "}, {\n" +
             "    \"CityID\": 286,\n" +
-            "    \"name\": \"怒江傈傈族自治州\",\n" +
+            "    \"name\": \"怒江州\",\n" +
             "    \"ProID\": 30,\n" +
             "    \"CitySort\": 286\n" +
             "}, {\n" +
             "    \"CityID\": 287,\n" +
-            "    \"name\": \"迪庆藏族自治州\",\n" +
+            "    \"name\": \"迪庆州\",\n" +
             "    \"ProID\": 30,\n" +
             "    \"CitySort\": 287\n" +
             "}, {\n" +
@@ -1573,7 +1573,7 @@ public class ChinaTerritoryConst {
             "    \"CitySort\": 288\n" +
             "}, {\n" +
             "    \"CityID\": 289,\n" +
-            "    \"name\": \"海北藏族自治州\",\n" +
+            "    \"name\": \"海北州\",\n" +
             "    \"ProID\": 25,\n" +
             "    \"CitySort\": 289\n" +
             "}, {\n" +
@@ -1583,32 +1583,32 @@ public class ChinaTerritoryConst {
             "    \"CitySort\": 290\n" +
             "}, {\n" +
             "    \"CityID\": 291,\n" +
-            "    \"name\": \"海东地区\",\n" +
+            "    \"name\": \"海东区\",\n" +
             "    \"ProID\": 25,\n" +
             "    \"CitySort\": 291\n" +
             "}, {\n" +
             "    \"CityID\": 292,\n" +
-            "    \"name\": \"黄南藏族自治州\",\n" +
+            "    \"name\": \"黄南州\",\n" +
             "    \"ProID\": 25,\n" +
             "    \"CitySort\": 292\n" +
             "}, {\n" +
             "    \"CityID\": 293,\n" +
-            "    \"name\": \"海南藏族自治州\",\n" +
+            "    \"name\": \"海南藏族州\",\n" +
             "    \"ProID\": 25,\n" +
             "    \"CitySort\": 293\n" +
             "}, {\n" +
             "    \"CityID\": 294,\n" +
-            "    \"name\": \"果洛藏族自治州\",\n" +
+            "    \"name\": \"果洛州\",\n" +
             "    \"ProID\": 25,\n" +
             "    \"CitySort\": 294\n" +
             "}, {\n" +
             "    \"CityID\": 295,\n" +
-            "    \"name\": \"玉树藏族自治州\",\n" +
+            "    \"name\": \"玉树州\",\n" +
             "    \"ProID\": 25,\n" +
             "    \"CitySort\": 295\n" +
             "}, {\n" +
             "    \"CityID\": 296,\n" +
-            "    \"name\": \"海西蒙古族藏族自治州\",\n" +
+            "    \"name\": \"海西州\",\n" +
             "    \"ProID\": 25,\n" +
             "    \"CitySort\": 296\n" +
             "}, {\n" +
@@ -1738,32 +1738,32 @@ public class ChinaTerritoryConst {
             "    \"CitySort\": 321\n" +
             "}, {\n" +
             "    \"CityID\": 322,\n" +
-            "    \"name\": \"日喀则地区\",\n" +
+            "    \"name\": \"日喀则区\",\n" +
             "    \"ProID\": 31,\n" +
             "    \"CitySort\": 322\n" +
             "}, {\n" +
             "    \"CityID\": 323,\n" +
-            "    \"name\": \"山南地区\",\n" +
+            "    \"name\": \"山南区\",\n" +
             "    \"ProID\": 31,\n" +
             "    \"CitySort\": 323\n" +
             "}, {\n" +
             "    \"CityID\": 324,\n" +
-            "    \"name\": \"林芝地区\",\n" +
+            "    \"name\": \"林芝区\",\n" +
             "    \"ProID\": 31,\n" +
             "    \"CitySort\": 324\n" +
             "}, {\n" +
             "    \"CityID\": 325,\n" +
-            "    \"name\": \"昌都地区\",\n" +
+            "    \"name\": \"昌都区\",\n" +
             "    \"ProID\": 31,\n" +
             "    \"CitySort\": 325\n" +
             "}, {\n" +
             "    \"CityID\": 326,\n" +
-            "    \"name\": \"那曲地区\",\n" +
+            "    \"name\": \"那曲区\",\n" +
             "    \"ProID\": 31,\n" +
             "    \"CitySort\": 326\n" +
             "}, {\n" +
             "    \"CityID\": 327,\n" +
-            "    \"name\": \"阿里地区\",\n" +
+            "    \"name\": \"阿里区\",\n" +
             "    \"ProID\": 31,\n" +
             "    \"CitySort\": 327\n" +
             "}, {\n" +
@@ -1793,17 +1793,17 @@ public class ChinaTerritoryConst {
             "    \"CitySort\": 332\n" +
             "}, {\n" +
             "    \"CityID\": 333,\n" +
-            "    \"name\": \"塔城地区\",\n" +
+            "    \"name\": \"塔城区\",\n" +
             "    \"ProID\": 24,\n" +
             "    \"CitySort\": 333\n" +
             "}, {\n" +
             "    \"CityID\": 334,\n" +
-            "    \"name\": \"哈密地区\",\n" +
+            "    \"name\": \"哈密区\",\n" +
             "    \"ProID\": 24,\n" +
             "    \"CitySort\": 334\n" +
             "}, {\n" +
             "    \"CityID\": 335,\n" +
-            "    \"name\": \"和田地区\",\n" +
+            "    \"name\": \"和田区\",\n" +
             "    \"ProID\": 24,\n" +
             "    \"CitySort\": 335\n" +
             "}, {\n" +
@@ -1813,12 +1813,12 @@ public class ChinaTerritoryConst {
             "    \"CitySort\": 336\n" +
             "}, {\n" +
             "    \"CityID\": 337,\n" +
-            "    \"name\": \"克孜勒苏柯尔克孜自治州\",\n" +
+            "    \"name\": \"克孜勒苏柯尔州\",\n" +
             "    \"ProID\": 24,\n" +
             "    \"CitySort\": 337\n" +
             "}, {\n" +
             "    \"CityID\": 338,\n" +
-            "    \"name\": \"博尔塔拉蒙古自治州\",\n" +
+            "    \"name\": \"博尔塔拉州\",\n" +
             "    \"ProID\": 24,\n" +
             "    \"CitySort\": 338\n" +
             "}, {\n" +
@@ -1838,7 +1838,7 @@ public class ChinaTerritoryConst {
             "    \"CitySort\": 341\n" +
             "}, {\n" +
             "    \"CityID\": 342,\n" +
-            "    \"name\": \"昌吉回族自治州\",\n" +
+            "    \"name\": \"昌吉州\",\n" +
             "    \"ProID\": 24,\n" +
             "    \"CitySort\": 342\n" +
             "}, {\n" +
@@ -1853,7 +1853,7 @@ public class ChinaTerritoryConst {
             "    \"CitySort\": 344\n" +
             "}, {\n" +
             "    \"CityID\": 345,\n" +
-            "    \"name\": \"巴音郭楞蒙古自治州\",\n" +
+            "    \"name\": \"巴音郭楞州\",\n" +
             "    \"ProID\": 24,\n" +
             "    \"CitySort\": 345\n" +
             "}, {\n" +
@@ -1878,7 +1878,7 @@ public class ChinaTerritoryConst {
             "    \"CitySort\": 349\n" +
             "}, {\n" +
             "    \"CityID\": 350,\n" +
-            "    \"name\": \"伊犁哈萨克自治州\",\n" +
+            "    \"name\": \"伊犁哈萨克州\",\n" +
             "    \"ProID\": 24,\n" +
             "    \"CitySort\": 350\n" +
             "}, {\n" +
@@ -2105,7 +2105,7 @@ public class ChinaTerritoryConst {
             "    \"ProRemark\": \"省份\"\n" +
             "}, {\n" +
             "    \"ProID\": 24,\n" +
-            "    \"name\": \"新疆维吾尔自治区\",\n" +
+            "    \"name\": \"新疆自治区\",\n" +
             "    \"ProSort\": 31,\n" +
             "    \"ProRemark\": \"自治区\"\n" +
             "}, {\n" +
@@ -2115,7 +2115,7 @@ public class ChinaTerritoryConst {
             "    \"ProRemark\": \"省份\"\n" +
             "}, {\n" +
             "    \"ProID\": 26,\n" +
-            "    \"name\": \"宁夏回族自治区\",\n" +
+            "    \"name\": \"宁夏自治区\",\n" +
             "    \"ProSort\": 30,\n" +
             "    \"ProRemark\": \"自治区\"\n" +
             "}, {\n" +

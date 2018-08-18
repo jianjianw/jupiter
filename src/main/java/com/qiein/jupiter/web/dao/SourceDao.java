@@ -179,7 +179,7 @@ public interface SourceDao extends BaseDao<SourcePO> {
      * @param companyId
      * @return
      */
-    String getAllSourceIdStr(@Param("companyId")int companyId);
+    String getAllZjsSourceIdStr(@Param("companyId")int companyId);
 
     /**
      * 根据typeid查询渠道
