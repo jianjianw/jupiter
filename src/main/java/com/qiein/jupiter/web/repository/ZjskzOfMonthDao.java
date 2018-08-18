@@ -4,7 +4,9 @@ import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.enums.TableEnum;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.web.entity.po.SourcePO;
 import com.qiein.jupiter.web.entity.vo.*;
+import org.omg.CORBA.DATA_CONVERSION;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -53,59 +55,289 @@ public class ZjskzOfMonthDao {
      *
      * @return
      */
-    public List<Map<String, Object>> getzjskzOfMonth(List<Map<String, Object>> dayList, String month, Integer companyId, String tableInfo, String sourceIds, String type) {
-        StringBuilder sql = new StringBuilder();
-        sql.append("SELECT src.SRCNAME srcName,src.ID srcId,");
-        sql.append("(select COUNT(info.ID) from " + tableInfo + " info where info.SOURCEID=src.ID AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m')='" + month + "') hj,  ");
-
-        for (Map<String, Object> day : dayList) {
-            sql.append("(select count(info.ID) from " + tableInfo + " info where info.SOURCEID=src.ID AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d')='" + day.get("day") + "') " + day.get("dayKey") + ",");
-        }
-        sql.append("src.SRCIMG srcImg ");
-        sql.append("FROM hm_crm_source src WHERE src.COMPANYID = ? AND TYPEID IN (3, 4, 5) ");
-        if (StringUtil.isNotEmpty(sourceIds)) {
-            sql.append("AND src.ID IN (" + sourceIds + ")");
-        }
-        String sqlString = sql.toString();
-        //入店量
-        if (type.equals("come")) {
-            sqlString = sqlString.replaceAll("CREATETIME", "ComeShopTime");
-        }
-        //成交量
-        if (type.equals("success")) {
-            sqlString = sqlString.replaceAll("CREATETIME", "SuccessTime");
-        }
-        System.out.println(sqlString);
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(sqlString, new Object[]{companyId});
-        StringBuilder hjsql = new StringBuilder();
-        hjsql.append("SELECT '合计' srcName ,'' srcId,");
-        hjsql.append("(select COUNT(info.ID) from " + tableInfo + " info where  FROM_UNIXTIME(info.CREATETIME, '%Y/%m')='" + month + "' AND info.SOURCEID IN (SELECT src.ID FROM hm_crm_source src WHERE COMPANYID = " + companyId + " AND TYPEID IN (3, 4, 5)");
-        if (StringUtil.isNotEmpty(sourceIds)) {
-            hjsql.append("AND src.ID IN (" + sourceIds + ")");
-        }
-        hjsql.append(")) hj,  ");
-
-        for (Map<String, Object> day : dayList) {
-            hjsql.append("(select count(info.ID) from " + tableInfo + " info where FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d')='" + day.get("day") + "' AND info.SOURCEID IN (SELECT src.ID FROM hm_crm_source src WHERE COMPANYID = " + companyId + " AND TYPEID IN (3, 4, 5)");
-            if (StringUtil.isNotEmpty(sourceIds)) {
-                hjsql.append("AND src.ID IN (" + sourceIds + ")");
+    public List<ZjsKzOfMonthShowVO> getzjskzOfMonth(List<SourcePO> sourcePOS,List<Map<String, Object>> dayList, String month, Integer companyId, String tableInfo, String sourceIds, String typeIds,DsInvalidVO dsInvalidVO,String type) {
+        String tableDetail=DBSplitUtil.getTable(TableEnum.detail,companyId);
+        List<ZjsKzOfMonthOutVO> zjsKzOfMonthOutVOS=new ArrayList<>();
+        for(Map<String, Object> dayMap:dayList){
+            for(SourcePO sourcePO:sourcePOS){
+                ZjsKzOfMonthOutVO zjsKzOfMonthOutVO=new ZjsKzOfMonthOutVO();
+                zjsKzOfMonthOutVO.setDay((String)dayMap.get("day"));
+                zjsKzOfMonthOutVO.setDayKey((String)dayMap.get("dayKey"));
+                zjsKzOfMonthOutVO.setSrcId(sourcePO.getId());
+                zjsKzOfMonthOutVO.setSrcImg(sourcePO.getSrcImg());
+                zjsKzOfMonthOutVO.setSrcName(sourcePO.getSrcName());
+                zjsKzOfMonthOutVOS.add(zjsKzOfMonthOutVO);
             }
-            hjsql.append(")) " + day.get("dayKey") + ",");
         }
-        hjsql.append("'' srcImg ");
-        sqlString = hjsql.toString();
+        //总客资
+        getAllClientCount1(tableDetail,tableInfo,month,zjsKzOfMonthOutVOS,sourceIds,companyId,typeIds);
+        //待定量
+        getPendingClientCount1(tableDetail,tableInfo,month,zjsKzOfMonthOutVOS,sourceIds,companyId,typeIds,dsInvalidVO);
+        //筛选待定
+        getFilterWaitClientCount1(tableDetail,tableInfo,month,zjsKzOfMonthOutVOS,sourceIds,companyId,typeIds);
+        //筛选无效
+        getFilterInValidClientCount1(tableDetail,tableInfo,month,zjsKzOfMonthOutVOS,sourceIds,companyId,typeIds);
+        //无效
+        getInValidClientCount1(tableDetail,tableInfo,month,zjsKzOfMonthOutVOS,sourceIds,companyId,typeIds,dsInvalidVO);
+        //筛选中
+        getFilterInClientCount1(tableDetail,tableInfo,month,zjsKzOfMonthOutVOS,sourceIds,companyId,typeIds);
         //入店量
-        if (type.equals("come")) {
-            sqlString = sqlString.replaceAll("CREATETIME", "ComeShopTime");
-        }
+        getComeShopClient1(tableDetail,tableInfo,month,zjsKzOfMonthOutVOS,sourceIds,companyId,typeIds);
         //成交量
-        if (type.equals("success")) {
-            sqlString = sqlString.replaceAll("CREATETIME", "SuccessTime");
+        getSuccessClient1(tableDetail,tableInfo,month,zjsKzOfMonthOutVOS,sourceIds,companyId,typeIds);
+        computerRate1(zjsKzOfMonthOutVOS,dsInvalidVO);
+        List<ZjsKzOfMonthShowVO> zjsKzOfMonthShowVOS=new ArrayList<>();
+        groupBy(sourcePOS,zjsKzOfMonthOutVOS,zjsKzOfMonthShowVOS,type, dayList);
+        return zjsKzOfMonthShowVOS;
+    }
+
+    /**
+     * 客资总量
+     * @param tableDetail
+     * @param tableInfo
+     * @param month
+     * @param zjsKzOfMonthOutVOS
+     * @param sourceIds
+     * @param companyId
+     * @param typeIds
+     */
+    private void getAllClientCount1(String tableDetail,String tableInfo, String month, List<ZjsKzOfMonthOutVO> zjsKzOfMonthOutVOS, String sourceIds, Integer companyId,String typeIds) {
+        StringBuilder sql = new StringBuilder();
+        getBaseSql(sql, tableInfo,sourceIds,typeIds,tableDetail);
+        sql.append(" AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m') = ?");
+        sql.append(" GROUP BY FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d')");
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{companyId,month});
+        List<ZjsKzOfMonthOutVO> zjsKzOfMonthOutBzk = new LinkedList<>();
+        for (Map<String, Object> map : list) {
+            ZjsKzOfMonthOutVO zjsKzOfMonthOutVO  = new ZjsKzOfMonthOutVO();
+            zjsKzOfMonthOutVO.setDay((String)map.get("day"));
+            zjsKzOfMonthOutVO.setSrcId(Integer.parseInt(Long.toString((Long) (map.get("srcId")))));
+            zjsKzOfMonthOutVO.setAllClientCount(Integer.parseInt(Long.toString((Long) (map.get("count")))));
+            zjsKzOfMonthOutBzk.add(zjsKzOfMonthOutVO);
         }
-        System.out.println(sqlString);
-        List<Map<String, Object>> hjList = jdbcTemplate.queryForList(sqlString, new Object[]{});
-        hjList.addAll(list);
-        return hjList;
+        for (ZjsKzOfMonthOutVO zjsKzOfMonthOutVO : zjsKzOfMonthOutVOS) {
+            for (ZjsKzOfMonthOutVO zjsKzOfMonthOutVO1 : zjsKzOfMonthOutBzk) {
+                if(zjsKzOfMonthOutVO.getDay().equalsIgnoreCase(zjsKzOfMonthOutVO1.getDay())&&zjsKzOfMonthOutVO.getSrcId()==zjsKzOfMonthOutVO1.getSrcId()){
+                    zjsKzOfMonthOutVO.setAllClientCount(zjsKzOfMonthOutVO1.getAllClientCount());
+                }
+            }
+        }
+    }
+
+    /**
+     * 待定量
+     */
+    private void getPendingClientCount1(String tableDetail,String tableInfo, String month, List<ZjsKzOfMonthOutVO> zjsKzOfMonthOutVOS, String sourceIds, Integer companyId,String typeIds,DsInvalidVO dsInvalidVO) {
+        StringBuilder sql = new StringBuilder();
+        getBaseSql(sql, tableInfo,sourceIds,typeIds,tableDetail);
+        sql.append(" AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m') = ?");
+        sql.append(" and INSTR( '" + dsInvalidVO.getDsDdStatus() + "', CONCAT(',',info.STATUSID + '',',')) != 0");
+        sql.append(" GROUP BY FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d')");
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{companyId,month});
+        List<ZjsKzOfMonthOutVO> zjsKzOfMonthOutBzk = new LinkedList<>();
+        for (Map<String, Object> map : list) {
+            ZjsKzOfMonthOutVO zjsKzOfMonthOutVO  = new ZjsKzOfMonthOutVO();
+            zjsKzOfMonthOutVO.setDay((String)map.get("day"));
+            zjsKzOfMonthOutVO.setSrcId(Integer.parseInt(Long.toString((Long) (map.get("srcId")))));
+            zjsKzOfMonthOutVO.setPendingClientCount(Integer.parseInt(Long.toString((Long) (map.get("count")))));
+            zjsKzOfMonthOutBzk.add(zjsKzOfMonthOutVO);
+        }
+        for (ZjsKzOfMonthOutVO zjsKzOfMonthOutVO : zjsKzOfMonthOutVOS) {
+            for (ZjsKzOfMonthOutVO zjsKzOfMonthOutVO1 : zjsKzOfMonthOutBzk) {
+                if(zjsKzOfMonthOutVO.getDay().equalsIgnoreCase(zjsKzOfMonthOutVO1.getDay())&&zjsKzOfMonthOutVO.getSrcId()==zjsKzOfMonthOutVO1.getSrcId()){
+                    zjsKzOfMonthOutVO.setPendingClientCount(zjsKzOfMonthOutVO1.getPendingClientCount());
+                }
+            }
+        }
+    }
+
+    /**
+     * 筛选待定
+     */
+    private void getFilterWaitClientCount1(String tableDetail,String tableInfo, String month, List<ZjsKzOfMonthOutVO> zjsKzOfMonthOutVOS, String sourceIds, Integer companyId,String typeIds) {
+        StringBuilder sql = new StringBuilder();
+        getBaseSql(sql, tableInfo,sourceIds,typeIds,tableDetail);
+        sql.append(" AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m') = ?");
+        sql.append("  and info.CLASSID = 1 and info.STATUSID = 98 ");
+        sql.append(" GROUP BY FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d')");
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{companyId,month});
+        List<ZjsKzOfMonthOutVO> zjsKzOfMonthOutBzk = new LinkedList<>();
+        for (Map<String, Object> map : list) {
+            ZjsKzOfMonthOutVO zjsKzOfMonthOutVO  = new ZjsKzOfMonthOutVO();
+            zjsKzOfMonthOutVO.setDay((String)map.get("day"));
+            zjsKzOfMonthOutVO.setSrcId(Integer.parseInt(Long.toString((Long) (map.get("srcId")))));
+            zjsKzOfMonthOutVO.setFilterPendingClientCount(Integer.parseInt(Long.toString((Long) (map.get("count")))));
+            zjsKzOfMonthOutBzk.add(zjsKzOfMonthOutVO);
+        }
+        for (ZjsKzOfMonthOutVO zjsKzOfMonthOutVO : zjsKzOfMonthOutVOS) {
+            for (ZjsKzOfMonthOutVO zjsKzOfMonthOutVO1 : zjsKzOfMonthOutBzk) {
+                if(zjsKzOfMonthOutVO.getDay().equalsIgnoreCase(zjsKzOfMonthOutVO1.getDay())&&zjsKzOfMonthOutVO.getSrcId()==zjsKzOfMonthOutVO1.getSrcId()){
+                    zjsKzOfMonthOutVO.setFilterPendingClientCount(zjsKzOfMonthOutVO1.getFilterPendingClientCount());
+                }
+            }
+        }
+    }
+
+    /**
+     * 筛选无效
+     */
+    private void getFilterInValidClientCount1(String tableDetail,String tableInfo, String month, List<ZjsKzOfMonthOutVO> zjsKzOfMonthOutVOS, String sourceIds, Integer companyId,String typeIds) {
+        StringBuilder sql = new StringBuilder();
+        getBaseSql(sql, tableInfo,sourceIds,typeIds,tableDetail);
+        sql.append(" AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m') = ?");
+        sql.append(" and info.CLASSID = 6 and info.STATUSID = 99 ");
+        sql.append(" GROUP BY FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d')");
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{companyId,month});
+        List<ZjsKzOfMonthOutVO> zjsKzOfMonthOutBzk = new LinkedList<>();
+        for (Map<String, Object> map : list) {
+            ZjsKzOfMonthOutVO zjsKzOfMonthOutVO  = new ZjsKzOfMonthOutVO();
+            zjsKzOfMonthOutVO.setDay((String)map.get("day"));
+            zjsKzOfMonthOutVO.setSrcId(Integer.parseInt(Long.toString((Long) (map.get("srcId")))));
+            zjsKzOfMonthOutVO.setFilterInValidClientCount(Integer.parseInt(Long.toString((Long) (map.get("count")))));
+            zjsKzOfMonthOutBzk.add(zjsKzOfMonthOutVO);
+        }
+        for (ZjsKzOfMonthOutVO zjsKzOfMonthOutVO : zjsKzOfMonthOutVOS) {
+            for (ZjsKzOfMonthOutVO zjsKzOfMonthOutVO1 : zjsKzOfMonthOutBzk) {
+                if(zjsKzOfMonthOutVO.getDay().equalsIgnoreCase(zjsKzOfMonthOutVO1.getDay())&&zjsKzOfMonthOutVO.getSrcId()==zjsKzOfMonthOutVO1.getSrcId()){
+                    zjsKzOfMonthOutVO.setFilterInValidClientCount(zjsKzOfMonthOutVO1.getFilterInValidClientCount());
+                }
+            }
+        }
+    }
+
+    /**
+     * 筛选中
+     */
+    private void getFilterInClientCount1(String tableDetail,String tableInfo, String month, List<ZjsKzOfMonthOutVO> zjsKzOfMonthOutVOS, String sourceIds, Integer companyId,String typeIds) {
+        StringBuilder sql = new StringBuilder();
+        getBaseSql(sql, tableInfo,sourceIds,typeIds,tableDetail);
+        sql.append(" AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m') = ?");
+        sql.append(" and info.CLASSID = 1 and info.STATUSID = 0 ");
+        sql.append(" GROUP BY FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d')");
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{companyId,month});
+        List<ZjsKzOfMonthOutVO> zjsKzOfMonthOutBzk = new LinkedList<>();
+        for (Map<String, Object> map : list) {
+            ZjsKzOfMonthOutVO zjsKzOfMonthOutVO  = new ZjsKzOfMonthOutVO();
+            zjsKzOfMonthOutVO.setDay((String)map.get("day"));
+            zjsKzOfMonthOutVO.setSrcId(Integer.parseInt(Long.toString((Long) (map.get("srcId")))));
+            zjsKzOfMonthOutVO.setFilterInClientCount(Integer.parseInt(Long.toString((Long) (map.get("count")))));
+            zjsKzOfMonthOutBzk.add(zjsKzOfMonthOutVO);
+        }
+        for (ZjsKzOfMonthOutVO zjsKzOfMonthOutVO : zjsKzOfMonthOutVOS) {
+            for (ZjsKzOfMonthOutVO zjsKzOfMonthOutVO1 : zjsKzOfMonthOutBzk) {
+                if(zjsKzOfMonthOutVO.getDay().equalsIgnoreCase(zjsKzOfMonthOutVO1.getDay())&&zjsKzOfMonthOutVO.getSrcId()==zjsKzOfMonthOutVO1.getSrcId()){
+                    zjsKzOfMonthOutVO.setFilterInClientCount(zjsKzOfMonthOutVO1.getFilterInClientCount());
+                }
+            }
+        }
+    }
+
+    /**
+     * 无效量
+     */
+    private void getInValidClientCount1(String tableDetail,String tableInfo, String month, List<ZjsKzOfMonthOutVO> zjsKzOfMonthOutVOS, String sourceIds, Integer companyId,String typeIds, DsInvalidVO dsInvalidVO) {
+        StringBuilder sql = new StringBuilder();
+        getBaseSql(sql, tableInfo,sourceIds,typeIds,tableDetail);
+        sql.append(" AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m') = ?");
+        if (StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidStatus()) && StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidLevel())) {
+            sql.append(" and (info.STATUSID in(" + dsInvalidVO.getDsInvalidStatus() + ") or");
+            sql.append("   detail.YXLEVEL IN(" + dsInvalidVO.getDsInvalidLevel() + ") )");
+        }
+        if (StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidStatus()) && StringUtil.isEmpty(dsInvalidVO.getDsInvalidLevel())) {
+            sql.append(" and info.STATUSID in (" + dsInvalidVO.getDsInvalidStatus() + ")");
+        }
+        if (StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidLevel()) && StringUtil.isEmpty(dsInvalidVO.getDsInvalidStatus())) {
+            sql.append(" and detail.YXLEVEL IN(" + dsInvalidVO.getDsInvalidLevel() + ") ");
+        }
+        sql.append(" GROUP BY FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d')");
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{companyId,month});
+        List<ZjsKzOfMonthOutVO> zjsKzOfMonthOutBzk = new LinkedList<>();
+        for (Map<String, Object> map : list) {
+            ZjsKzOfMonthOutVO zjsKzOfMonthOutVO  = new ZjsKzOfMonthOutVO();
+            zjsKzOfMonthOutVO.setDay((String)map.get("day"));
+            zjsKzOfMonthOutVO.setSrcId(Integer.parseInt(Long.toString((Long) (map.get("srcId")))));
+            zjsKzOfMonthOutVO.setInValidClientCount(Integer.parseInt(Long.toString((Long) (map.get("count")))));
+            zjsKzOfMonthOutBzk.add(zjsKzOfMonthOutVO);
+        }
+        for (ZjsKzOfMonthOutVO zjsKzOfMonthOutVO : zjsKzOfMonthOutVOS) {
+            for (ZjsKzOfMonthOutVO zjsKzOfMonthOutVO1 : zjsKzOfMonthOutBzk) {
+                if(zjsKzOfMonthOutVO.getDay().equalsIgnoreCase(zjsKzOfMonthOutVO1.getDay())&&zjsKzOfMonthOutVO.getSrcId()==zjsKzOfMonthOutVO1.getSrcId()){
+                    zjsKzOfMonthOutVO.setInValidClientCount(zjsKzOfMonthOutVO1.getInValidClientCount());
+                }
+            }
+        }
+    }
+
+    /**
+     * 入店量
+     */
+    private void getComeShopClient1(String tableDetail,String tableInfo, String month, List<ZjsKzOfMonthOutVO> zjsKzOfMonthOutVOS, String sourceIds, Integer companyId,String typeIds) {
+        StringBuilder sql = new StringBuilder();
+        getBaseSql(sql, tableInfo,sourceIds,typeIds,tableDetail);
+        sql.append(" AND FROM_UNIXTIME(info.ComeShopTime, '%Y/%m') = ?");
+        sql.append(" GROUP BY FROM_UNIXTIME(info.ComeShopTime, '%Y/%m/%d')");
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{companyId,month});
+        List<ZjsKzOfMonthOutVO> zjsKzOfMonthOutBzk = new LinkedList<>();
+        for (Map<String, Object> map : list) {
+            ZjsKzOfMonthOutVO zjsKzOfMonthOutVO  = new ZjsKzOfMonthOutVO();
+            zjsKzOfMonthOutVO.setDay((String)map.get("day"));
+            zjsKzOfMonthOutVO.setSrcId(Integer.parseInt(Long.toString((Long) (map.get("srcId")))));
+            zjsKzOfMonthOutVO.setComeShopClientCount(Integer.parseInt(Long.toString((Long) (map.get("count")))));
+            zjsKzOfMonthOutBzk.add(zjsKzOfMonthOutVO);
+        }
+        for (ZjsKzOfMonthOutVO zjsKzOfMonthOutVO : zjsKzOfMonthOutVOS) {
+            for (ZjsKzOfMonthOutVO zjsKzOfMonthOutVO1 : zjsKzOfMonthOutBzk) {
+                if(zjsKzOfMonthOutVO.getDay().equalsIgnoreCase(zjsKzOfMonthOutVO1.getDay())&&zjsKzOfMonthOutVO.getSrcId()==zjsKzOfMonthOutVO1.getSrcId()){
+                    zjsKzOfMonthOutVO.setComeShopClientCount(zjsKzOfMonthOutVO1.getComeShopClientCount());
+                }
+            }
+        }
+    }
+
+    /**
+     * 成交量
+     */
+    private void getSuccessClient1(String tableDetail,String tableInfo, String month, List<ZjsKzOfMonthOutVO> zjsKzOfMonthOutVOS, String sourceIds, Integer companyId,String typeIds) {
+        StringBuilder sql = new StringBuilder();
+        getBaseSql(sql, tableInfo,sourceIds,typeIds,tableDetail);
+        sql.append(" AND FROM_UNIXTIME(info.SuccessTime, '%Y/%m') = ?");
+        sql.append(" GROUP BY FROM_UNIXTIME(info.SuccessTime, '%Y/%m/%d')");
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{companyId,month});
+        List<ZjsKzOfMonthOutVO> zjsKzOfMonthOutBzk = new LinkedList<>();
+        for (Map<String, Object> map : list) {
+            ZjsKzOfMonthOutVO zjsKzOfMonthOutVO  = new ZjsKzOfMonthOutVO();
+            zjsKzOfMonthOutVO.setDay((String)map.get("day"));
+            zjsKzOfMonthOutVO.setSrcId(Integer.parseInt(Long.toString((Long) (map.get("srcId")))));
+            zjsKzOfMonthOutVO.setSuccessClientCount(Integer.parseInt(Long.toString((Long) (map.get("count")))));
+            zjsKzOfMonthOutBzk.add(zjsKzOfMonthOutVO);
+        }
+        for (ZjsKzOfMonthOutVO zjsKzOfMonthOutVO : zjsKzOfMonthOutVOS) {
+            for (ZjsKzOfMonthOutVO zjsKzOfMonthOutVO1 : zjsKzOfMonthOutBzk) {
+                if(zjsKzOfMonthOutVO.getDay().equalsIgnoreCase(zjsKzOfMonthOutVO1.getDay())&&zjsKzOfMonthOutVO.getSrcId()==zjsKzOfMonthOutVO1.getSrcId()){
+                    zjsKzOfMonthOutVO.setSuccessClientCount(zjsKzOfMonthOutVO1.getSuccessClientCount());
+                }
+            }
+        }
+    }
+
+    private void getBaseSql(StringBuilder sql,String tableInfo,String sourceIds,String typeIds,String tableDetail){
+        sql.append("SELECT src.srcNAME srcName,");
+        sql.append(" src.SRCIMG srcImg ,");
+        sql.append(" src.ID srcId,");
+        sql.append(" count(info.kzid) count,");
+        sql.append(" FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d') day");
+        sql.append(" FROM  hm_crm_source src");
+        sql.append(" LEFT JOIN "+tableInfo+" info ON info.SOURCEID = src.id");
+        sql.append(" LEFT JOIN "+tableDetail+" detail ON info.kzid = detail.kzid");
+        sql.append(" WHERE src.typeid IN (3, 4, 5)");
+        sql.append(" and src.companyId=?");
+        sql.append(" and info.isdel = 0");
+        if(StringUtil.isNotEmpty(sourceIds)){
+            sql.append(" and src.id in ("+sourceIds+")");
+        }
+        if(StringUtil.isNotEmpty(typeIds)){
+            sql.append(" and info.typeid in ("+typeIds+")");
+        }
     }
 
     /**
@@ -545,6 +777,22 @@ public class ZjskzOfMonthDao {
     /**
      * 计算Rate
      */
+    private void computerRate1(List<ZjsKzOfMonthOutVO> zjsKzOfMonthOutVOS, DsInvalidVO invalidConfig) {
+        for (ZjsKzOfMonthOutVO dstgGoldDataReportsVO : zjsKzOfMonthOutVOS) {
+            //有效量
+            if (invalidConfig.getDdIsValid()) {
+                dstgGoldDataReportsVO.setValidClientCount(dstgGoldDataReportsVO.getAllClientCount() - dstgGoldDataReportsVO.getInValidClientCount() - dstgGoldDataReportsVO.getFilterInClientCount() - dstgGoldDataReportsVO.getFilterInValidClientCount() - dstgGoldDataReportsVO.getFilterPendingClientCount());
+            } else {
+                dstgGoldDataReportsVO.setValidClientCount(dstgGoldDataReportsVO.getAllClientCount() - dstgGoldDataReportsVO.getPendingClientCount() - dstgGoldDataReportsVO.getInValidClientCount() - dstgGoldDataReportsVO.getFilterInClientCount() - dstgGoldDataReportsVO.getFilterInValidClientCount() - dstgGoldDataReportsVO.getFilterPendingClientCount());
+            }
+            //客资量(总客资-筛选待定-筛选中-筛选无效)
+            dstgGoldDataReportsVO.setClientCount(dstgGoldDataReportsVO.getAllClientCount() - dstgGoldDataReportsVO.getFilterPendingClientCount() - dstgGoldDataReportsVO.getFilterInValidClientCount() - dstgGoldDataReportsVO.getFilterInClientCount());
+
+        }
+    }
+    /**
+     * 计算Rate
+     */
     private void computerRate(List<ZjskzOfMonthReportsVO> zjskzOfMonthReportsVOS, DsInvalidVO invalidConfig) {
         for (ZjskzOfMonthReportsVO dstgGoldDataReportsVO : zjskzOfMonthReportsVOS) {
             //有效量
@@ -572,11 +820,67 @@ public class ZjskzOfMonthDao {
 
         }
     }
-
     /**
      * 只保留2位小数
      */
     public double parseDouble(double result) {
         return Double.parseDouble(String.format("%.2f", result));
     }
+
+    private void groupBy(List<SourcePO> sourcePOS,List<ZjsKzOfMonthOutVO> list,List<ZjsKzOfMonthShowVO> showList,String type,List<Map<String, Object>> dayList){
+
+        for(SourcePO sourcePO:sourcePOS ){
+            ZjsKzOfMonthShowVO zjsKzOfMonthShowVO=new ZjsKzOfMonthShowVO();
+            zjsKzOfMonthShowVO.setSrcId(sourcePO.getId());
+            zjsKzOfMonthShowVO.setSrcImg(sourcePO.getSrcImg());
+            zjsKzOfMonthShowVO.setSrcName(sourcePO.getSrcName());
+            Map<String,Integer> map=new HashMap<>();
+            Integer hj=0;
+            for(ZjsKzOfMonthOutVO zjsKzOfMonthOutVO:list){
+
+                if(zjsKzOfMonthOutVO.getSrcId()==sourcePO.getId()){
+                    if(type.equals("all")){
+                        map.put(zjsKzOfMonthOutVO.getDayKey(),zjsKzOfMonthOutVO.getClientCount());
+                        hj+=zjsKzOfMonthOutVO.getClientCount();
+                    }
+                    if(type.equals("all")){
+                        map.put(zjsKzOfMonthOutVO.getDayKey(),zjsKzOfMonthOutVO.getValidClientCount());
+                        hj+=zjsKzOfMonthOutVO.getValidClientCount();
+                    }
+                    if(type.equals("come")){
+                        map.put(zjsKzOfMonthOutVO.getDayKey(),zjsKzOfMonthOutVO.getComeShopClientCount());
+                        hj+=zjsKzOfMonthOutVO.getComeShopClientCount();
+                    }
+                    if(type.equals("success")){
+                        map.put(zjsKzOfMonthOutVO.getDayKey(),zjsKzOfMonthOutVO.getSuccessClientCount());
+                        hj+=zjsKzOfMonthOutVO.getSuccessClientCount();
+                    }
+
+                }
+            }
+            map.put("hj",hj);
+            zjsKzOfMonthShowVO.setMap(map);
+            showList.add(zjsKzOfMonthShowVO);
+        }
+        Map<String,Integer> map=new HashMap<>();
+        for(Map<String, Object> dayMap:dayList){
+            Integer hj=0;
+            for (ZjsKzOfMonthShowVO zjsKzOfMonthShowVO:showList)
+            {
+                if(zjsKzOfMonthShowVO.getMap().keySet().equals(dayMap.get("dayKey"))){
+                    hj+=zjsKzOfMonthShowVO.getMap().get(dayMap.get("dayKey"));
+                }
+            }
+            map.put((String)dayMap.get("dayKey"),hj);
+        }
+        Integer hj=0;
+        for(String countKey:map.keySet()){
+            hj+=map.get(countKey);
+        }
+        map.put("hj",hj);
+        ZjsKzOfMonthShowVO zjsKzOfMonthShowVO=new ZjsKzOfMonthShowVO();
+        zjsKzOfMonthShowVO.setMap(map);
+        zjsKzOfMonthShowVO.setSrcName("合计");
+    }
+
 }

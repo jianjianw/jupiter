@@ -423,8 +423,8 @@ public class ReportsController extends BaseController {
      * 转介绍每月客资报表
      */
     @GetMapping("/zjs_kz_of_month")
-    public ResultInfo ZjskzOfMonth(@RequestParam String month, @RequestParam String type, @RequestParam String srcIds) {
-        return ResultInfoUtil.success(reportService.ZjskzOfMonth(getCurrentLoginStaff().getCompanyId(), month, type, srcIds));
+    public ResultInfo ZjskzOfMonth(@RequestParam String month, @RequestParam String type, @RequestParam String srcIds,@RequestParam String typeIds) {
+        return ResultInfoUtil.success(reportService.ZjskzOfMonth(getCurrentLoginStaff().getCompanyId(), month, typeIds, srcIds,type));
     }
 
     /**
