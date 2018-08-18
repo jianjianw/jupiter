@@ -192,7 +192,8 @@ public class CityReportsDao {
         getBaseSQL(filterInClientSQL,companyId,"filterInClientCount");
         filterInClientSQL.append(" AND INSTR(detail.ADDRESS, ? )>0 ")
                 .append(" and info.CLASSID = 1 and info.STATUSID = 0 ")
-                .append(" AND info.CREATETIME BETWEEN ? AND ?");
+                .append(" AND info.CREATETIME BETWEEN ? AND ?")
+                .append(PLACEHOLDER);
         return filterInClientSQL;
     }
 
@@ -280,7 +281,8 @@ public class CityReportsDao {
                 .append(" FROM hm_crm_client_info_" + companyId + " info , hm_crm_client_detail_" + companyId + " detail ")
                 .append(" WHERE info.KZID = detail.KZID AND info.ISDEL = 0 AND info.COMPANYID = " + companyId)
                 .append(" AND INSTR(detail.ADDRESS, ? )>0 ")
-                .append("AND info.SUCCESSTIME BETWEEN ? AND ?");
+                .append("AND info.SUCCESSTIME BETWEEN ? AND ?")
+                .append(PLACEHOLDER);
         return avgAmountSQL;
     }
 
@@ -296,7 +298,8 @@ public class CityReportsDao {
                 .append(" FROM hm_crm_client_info_" + companyId + " info , hm_crm_client_detail_" + companyId + " detail ")
                 .append(" WHERE info.KZID = detail.KZID AND info.ISDEL = 0 AND info.COMPANYID = " + companyId)
                 .append(" AND INSTR(detail.ADDRESS, ? )>0 ")
-                .append(" AND info.SUCCESSTIME BETWEEN ? AND ? ");
+                .append(" AND info.SUCCESSTIME BETWEEN ? AND ? ")
+                .append(PLACEHOLDER);
         return amountSQL;
     }
 
@@ -384,11 +387,11 @@ public class CityReportsDao {
         RegionReportsVO total = new RegionReportsVO();
         total.setRegionName("合计");
         for (RegionReportsVO rrv:list){
-            //有效量
+            //有效量(总客资-筛选待定-筛选中-筛选无效-无效量)
             if(invalidConfig.getDdIsValid()){
-                rrv.setValidClientCount(rrv.getAllClientCount()-rrv.getInValidClientCount()-rrv.getFilterInClientCount()-rrv.getFilterInValidClientCount()-rrv.getFilterPendingClientCount());
-            }else{
-                rrv.setValidClientCount(rrv.getAllClientCount()-rrv.getPendingClientCount()-rrv.getInValidClientCount()-rrv.getFilterInClientCount()-rrv.getFilterInValidClientCount()-rrv.getFilterPendingClientCount());
+                rrv.setValidClientCount(rrv.getAllClientCount()-rrv.getInValidClientCount()-rrv.getFilterInClientCount()-rrv.getFilterInValidClientCount()-rrv.getFilterPendingClientCount()-rrv.getInValidClientCount());
+            }else{ // 有效量(总客资-筛选待定-筛选中-筛选无效-待定量-无效量)
+                rrv.setValidClientCount(rrv.getAllClientCount()-rrv.getInValidClientCount()-rrv.getFilterInClientCount()-rrv.getFilterPendingClientCount()-rrv.getFilterInValidClientCount()-rrv.getInValidClientCount()-rrv.getPendingClientCount());
             }
             //客资量(总客资-筛选待定-筛选中-筛选无效)
             rrv.setClientCount(rrv.getAllClientCount()-rrv.getFilterPendingClientCount()-rrv.getFilterInValidClientCount()-rrv.getFilterInClientCount());
