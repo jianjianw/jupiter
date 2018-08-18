@@ -302,7 +302,9 @@ public class DstgYearsClientReportsDao1 {
         sb.append(" SELECT MONTH(FROM_UNIXTIME(cost.`COSTTIME`)) AS monthNo,  YEAR(FROM_UNIXTIME(cost.`COSTTIME`)) AS myYear,source.id as sourceid,");
         sb.append("  ifnull(sum(cost.cost),0) AS client_cost  from hm_crm_source source ");
         sb.append(" left join hm_crm_cost cost on source.id = cost.SRCID  where cost.companyid = ? ");
-        addConditionByTypeAndSourceIds(reportsParamVO,sb);
+        if (StringUtil.isNotEmpty(reportsParamVO.getSourceIds())) {
+            sb.append(" and cost.srcid in (" + reportsParamVO.getSourceIds() + ")");
+        }
         sb.append(" group by monthNo,source.id");
         sb.append(" ) AS t WHERE t.myYear= ? GROUP BY t.monthNo,t.sourceid order by month ");
         List<Map<String, Object>> mapList = jdbcTemplate.queryForList(sb.toString(), new Object[]{reportsParamVO.getCompanyId(), reportsParamVO.getYears()});
@@ -334,7 +336,7 @@ public class DstgYearsClientReportsDao1 {
         StringBuilder sb = new StringBuilder();
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
-        sb.append(" SELECT t.myYear AS year,t.monthNo AS month,t.sourceid,sum(t.client_count) AS client_count  ");
+        sb.append(" SELECT t.myYear AS year,t.monthNo AS month,t.sourceid,ifnull(sum(t.client_count),0) AS client_count  ");
         sb.append(" FROM( ");
         sb.append(" SELECT MONTH(FROM_UNIXTIME(info.`CREATETIME`)) AS monthNo,  ");
         sb.append(" YEAR(FROM_UNIXTIME(info.`CREATETIME`)) AS myYear, ");
@@ -360,6 +362,11 @@ public class DstgYearsClientReportsDao1 {
                 if (dstgSourceYearReportsVO.getSourceId().equals(sourceid) && month.equals(dstgSourceYearReportsVO.getMonth())) {
                     dstgSourceYearReportsVO.setAvgAmount(String.valueOf(map.get("client_count").toString()));
                 }
+            }
+        }
+        for (DstgSourceYearReportsVO dstgSourceYearReportsVO:dstgSourceYearReportsVOS){
+            if(dstgSourceYearReportsVO.getAvgAmount() == null){
+                dstgSourceYearReportsVO.setAvgAmount("0.00");
             }
         }
     }
@@ -398,8 +405,6 @@ public class DstgYearsClientReportsDao1 {
                 }
             }
         }
-
-
     }
 
 

@@ -25,7 +25,7 @@ public class DstgYearReportsVO {
     /**
      * 每月对应的客资个数
      * */
-    private Map<String,Integer> mapList;
+    private Map<String,Object> mapList;
 
 
     public Integer getSourceId() {
@@ -52,11 +52,11 @@ public class DstgYearReportsVO {
         this.srcImage = srcImage;
     }
 
-    public Map<String, Integer> getMapList() {
+    public Map<String, Object> getMapList() {
         return mapList;
     }
 
-    public void setMapList(Map<String, Integer> mapList) {
+    public void setMapList(Map<String, Object> mapList) {
         this.mapList = mapList;
     }
 }
