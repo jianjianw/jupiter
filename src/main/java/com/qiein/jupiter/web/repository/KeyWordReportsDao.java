@@ -275,6 +275,7 @@ public class KeyWordReportsDao {
         sql.append(" LEFT JOIN "+tableDetail+" detail ON info.kzid = detail.kzid");
 
         sql.append(" WHERE detail.keyword IS NOT NULL");
+        sql.append(" and detail.keyword !=''");
         if(StringUtil.isNotEmpty(typeIds)){
             sql.append(" and info.typeid in ("+typeIds+") ");
         }
@@ -309,6 +310,7 @@ public class KeyWordReportsDao {
         sql.append(" FROM "+tableInfo+" info");
         sql.append(" LEFT JOIN "+tableDetail+" detail ON info.kzid = detail.kzid");
         sql.append(" WHERE detail.keyword IS NOT NULL");
+        sql.append(" and detail.keyword !=''");
         if(StringUtil.isNotEmpty(typeIds)){
             sql.append(" and info.typeid in ("+typeIds+") ");
         }
@@ -441,6 +443,7 @@ public class KeyWordReportsDao {
         sql.append(" LEFT JOIN "+tableDetail+" detail ON info.kzid = detail.kzid");
 
         sql.append(" WHERE detail.keyword IS NOT NULL");
+        sql.append(" and detail.keyword !=''");
         if(StringUtil.isNotEmpty(typeIds)){
             sql.append(" and  info.typeid in ("+typeIds+") ");
         }
