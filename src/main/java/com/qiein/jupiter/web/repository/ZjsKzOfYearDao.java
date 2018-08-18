@@ -44,7 +44,7 @@ public class ZjsKzOfYearDao {
      * @return
      */
     public List<ZjsClientYearReportVO2> getZjsKzYearReport(ZjsClientYearReportDTO zjsClientYearReportDTO, DsInvalidVO dsInvalidVO) {
-        List<ZjsClientYearReportVO> resultContent = new ArrayList<>();
+        List<ZjsClientYearReportVO> resultContent = new LinkedList<>();
         List<Integer> timeList = getMonthTimeStamp(zjsClientYearReportDTO.getYear());
 //        int month = 1;
         for (int i = 0; i < timeList.size(); i += 2) {
@@ -449,7 +449,7 @@ public class ZjsKzOfYearDao {
         ZjsClientYearReportVO2 hTotal = new ZjsClientYearReportVO2();
         hTotal.setSrcName("合计");
         hTotal.setDataMap(new HashMap<String, Integer>());
-        list.add(hTotal);
+        list.add(0,hTotal);
         for (ZjsClientYearReportVO2 zcyr : list) {
             hTotal.setDataType(zcyr.getDataType());
             Map<String, Integer> map = zcyr.getDataMap();
