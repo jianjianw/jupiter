@@ -493,17 +493,21 @@ public class ProvinceReportsDao {
         ProvinceReportsVO2 prv = new ProvinceReportsVO2();
         prv.setSrcName("合计");
         prv.setProvinceDataMap(new HashMap<String, Integer>());
+        list.add(prv);
         for (ProvinceReportsVO2 pr : list) {
             prv.setDataType(pr.getDataType());
-            for (String key : pr.getProvinceDataMap().keySet()) {
+            Map<String,Integer> map = pr.getProvinceDataMap();
+            int total = 0;
+            for (String key : map.keySet()) {
                 if (!prv.getProvinceDataMap().containsKey(key)) {
-                    prv.getProvinceDataMap().put(key, pr.getProvinceDataMap().get(key));
+                    prv.getProvinceDataMap().put(key, map.get(key));
                 } else {
-                    prv.getProvinceDataMap().put(key, prv.getProvinceDataMap().get(key) + pr.getProvinceDataMap().get(key));
+                    prv.getProvinceDataMap().put(key, prv.getProvinceDataMap().get(key) + map.get(key));
                 }
+                total += map.get(key);
             }
+            map.put("合计",total);
         }
-        list.add(prv);
         return list;
     }
 }
