@@ -166,14 +166,25 @@ public class ProvinceReportsDao {
      */
     private StringBuilder getValidClientSQL(ProvinceAnalysisParamDTO provinceAnalysisParamDTO, DsInvalidVO dsInvalidVO) {
         StringBuilder sb = new StringBuilder();
-        sb.append("SELECT zkz.srcId,zkz.SRCIMG,zkz.SRCNAME,IFNULL(zkz.dataNum,0) - IFNULL(sxdd.dataNum,0) - IFNULL(sxz.dataNum,0) - IFNULL(sxwxl.dataNum,0) - IFNULL(ddl.dataNum,0) dataNum ")
-                .append(" FROM ")
-                .append("(" + getAllClientSQL(provinceAnalysisParamDTO) + ") zkz , ")     //总客资
-                .append("(" + getInValidClientSQL(provinceAnalysisParamDTO, dsInvalidVO) + ") wxl , ") //无效量
-                .append("(" + getFilterPendingClientCount(provinceAnalysisParamDTO) + ") sxdd , ")     //筛选待定
-                .append("(" + getFilterInClientCount(provinceAnalysisParamDTO) + ") sxz , ")   //筛选中
-                .append("(" + getFilterInValidClientCount(provinceAnalysisParamDTO) + ") sxwxl , ")   //筛选无效量
-                .append("(" + getPendingClientCount(provinceAnalysisParamDTO, dsInvalidVO) + ") ddl ");    //待定量
+        if(dsInvalidVO.getDdIsValid()){ //有效量(总客资-无效量-筛选中-筛选无效-筛选待定)
+            sb.append("SELECT zkz.srcId,zkz.SRCIMG,zkz.SRCNAME,IFNULL(zkz.dataNum,0) - IFNULL(sxdd.dataNum,0) - IFNULL(sxz.dataNum,0) - IFNULL(sxwxl.dataNum,0) dataNum ")
+                    .append(" FROM ")
+                    .append("(" + getAllClientSQL(provinceAnalysisParamDTO) + ") zkz , ")     //总客资
+                    .append("(" + getInValidClientSQL(provinceAnalysisParamDTO, dsInvalidVO) + ") wxl , ") //无效量
+                    .append("(" + getFilterPendingClientCount(provinceAnalysisParamDTO) + ") sxdd , ")     //筛选待定
+                    .append("(" + getFilterInClientCount(provinceAnalysisParamDTO) + ") sxz , ")   //筛选中
+                    .append("(" + getFilterInValidClientCount(provinceAnalysisParamDTO) + ") sxwxl , ");   //筛选无效量
+        }else{ // 有效量(总客资-无效量-筛选中-筛选无效-筛选待定-待定量)
+            sb.append("SELECT zkz.srcId,zkz.SRCIMG,zkz.SRCNAME,IFNULL(zkz.dataNum,0) - IFNULL(sxdd.dataNum,0) - IFNULL(sxz.dataNum,0) - IFNULL(sxwxl.dataNum,0) - IFNULL(ddl.dataNum,0) dataNum ")
+                    .append(" FROM ")
+                    .append("(" + getAllClientSQL(provinceAnalysisParamDTO) + ") zkz , ")     //总客资
+                    .append("(" + getInValidClientSQL(provinceAnalysisParamDTO, dsInvalidVO) + ") wxl , ") //无效量
+                    .append("(" + getFilterPendingClientCount(provinceAnalysisParamDTO) + ") sxdd , ")     //筛选待定
+                    .append("(" + getFilterInClientCount(provinceAnalysisParamDTO) + ") sxz , ")   //筛选中
+                    .append("(" + getFilterInValidClientCount(provinceAnalysisParamDTO) + ") sxwxl , ")   //筛选无效量
+                    .append("(" + getPendingClientCount(provinceAnalysisParamDTO, dsInvalidVO) + ") ddl ");    //待定量
+        }
+
 
         setConditionSQL(sb, provinceAnalysisParamDTO);
         return sb;

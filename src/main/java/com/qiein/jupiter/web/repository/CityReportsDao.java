@@ -391,7 +391,6 @@ public class CityReportsDao {
             if(invalidConfig.getDdIsValid()){
                 rrv.setValidClientCount(rrv.getAllClientCount()-rrv.getInValidClientCount()-rrv.getFilterInClientCount()-rrv.getFilterInValidClientCount()-rrv.getFilterPendingClientCount());
             }else{ // 有效量(总客资-无效量-筛选中-筛选无效-筛选待定-待定量)
-                System.out.println(rrv.getRegionName()+":"+rrv.getAllClientCount()+","+rrv.getInValidClientCount()+","+rrv.getFilterInClientCount()+","+rrv.getFilterPendingClientCount()+","+rrv.getFilterInValidClientCount()+","+rrv.getPendingClientCount());
                 rrv.setValidClientCount(rrv.getAllClientCount()-rrv.getInValidClientCount()-rrv.getFilterInClientCount()-rrv.getFilterPendingClientCount()-rrv.getFilterInValidClientCount()-rrv.getPendingClientCount());
             }
             //客资量(总客资-筛选待定-筛选中-筛选无效)
