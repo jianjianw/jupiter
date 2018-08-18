@@ -855,8 +855,8 @@ public class ZjskzOfMonthDao {
 
                 if(zjsKzOfMonthOutVO.getSrcId()==sourcePO.getId()){
                     if(type.equals("all")){
-                        map.put(zjsKzOfMonthOutVO.getDayKey(),zjsKzOfMonthOutVO.getClientCount());
-                        hj+=zjsKzOfMonthOutVO.getClientCount();
+                        map.put(zjsKzOfMonthOutVO.getDayKey(),zjsKzOfMonthOutVO.getAllClientCount());
+                        hj+=zjsKzOfMonthOutVO.getAllClientCount();
                     }
                     if(type.equals("valid")){
                         map.put(zjsKzOfMonthOutVO.getDayKey(),zjsKzOfMonthOutVO.getValidClientCount());
