@@ -387,11 +387,12 @@ public class CityReportsDao {
         RegionReportsVO total = new RegionReportsVO();
         total.setRegionName("合计");
         for (RegionReportsVO rrv:list){
-            //有效量(总客资-筛选待定-筛选中-筛选无效-无效量)
+            //有效量(总客资-无效量-筛选中-筛选无效-筛选待定)
             if(invalidConfig.getDdIsValid()){
-                rrv.setValidClientCount(rrv.getAllClientCount()-rrv.getInValidClientCount()-rrv.getFilterInClientCount()-rrv.getFilterInValidClientCount()-rrv.getFilterPendingClientCount()-rrv.getInValidClientCount());
-            }else{ // 有效量(总客资-筛选待定-筛选中-筛选无效-待定量-无效量)
-                rrv.setValidClientCount(rrv.getAllClientCount()-rrv.getInValidClientCount()-rrv.getFilterInClientCount()-rrv.getFilterPendingClientCount()-rrv.getFilterInValidClientCount()-rrv.getInValidClientCount()-rrv.getPendingClientCount());
+                rrv.setValidClientCount(rrv.getAllClientCount()-rrv.getInValidClientCount()-rrv.getFilterInClientCount()-rrv.getFilterInValidClientCount()-rrv.getFilterPendingClientCount());
+            }else{ // 有效量(总客资-无效量-筛选中-筛选无效-筛选待定-待定量)
+                System.out.println(rrv.getRegionName()+":"+rrv.getAllClientCount()+","+rrv.getInValidClientCount()+","+rrv.getFilterInClientCount()+","+rrv.getFilterPendingClientCount()+","+rrv.getFilterInValidClientCount()+","+rrv.getPendingClientCount());
+                rrv.setValidClientCount(rrv.getAllClientCount()-rrv.getInValidClientCount()-rrv.getFilterInClientCount()-rrv.getFilterPendingClientCount()-rrv.getFilterInValidClientCount()-rrv.getPendingClientCount());
             }
             //客资量(总客资-筛选待定-筛选中-筛选无效)
             rrv.setClientCount(rrv.getAllClientCount()-rrv.getFilterPendingClientCount()-rrv.getFilterInValidClientCount()-rrv.getFilterInClientCount());
