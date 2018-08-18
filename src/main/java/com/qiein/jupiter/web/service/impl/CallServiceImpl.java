@@ -110,8 +110,6 @@ public class CallServiceImpl implements CallService {
         clientLogPO.setMemo(ClientLogConst.INFO_LOG_CALL_PHONE);
         clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(staffPO.getCompanyId()),clientLogPO);
 
-        //TODO 通话记录
-
     }
 
     @Override
