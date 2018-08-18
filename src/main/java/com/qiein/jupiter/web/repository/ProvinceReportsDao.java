@@ -508,6 +508,10 @@ public class ProvinceReportsDao {
             }
             map.put("total",total);
         }
+
+        for (String key : prv.getProvinceDataMap().keySet()){
+            prv.getProvinceDataMap().put("total",prv.getProvinceDataMap().get(key)+prv.getProvinceDataMap().get("total"));
+        }
         return list;
     }
 }
