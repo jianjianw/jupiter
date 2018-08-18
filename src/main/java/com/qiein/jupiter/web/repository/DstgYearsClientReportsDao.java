@@ -39,6 +39,9 @@ public class DstgYearsClientReportsDao {
     private void getAllSource(ReportsParamVO reportsParamVO, final List<DstgYearReportsVO> dstgYearReportsVO) {
         StringBuilder sb = new StringBuilder();
         sb.append(" select id,srcname,SRCIMG from hm_crm_source source where (source.TYPEID = 1 or source.typeid = 2)    and companyid = ?");
+        if(StringUtil.isNotEmpty(reportsParamVO.getSourceIds())){
+            sb.append(" and id in (" + reportsParamVO.getSourceIds()+")");
+        }
         List<DstgYearReportsVO> dstgYearReportsVOS = jdbcTemplate.query(sb.toString(), new Object[]{reportsParamVO.getCompanyId()}, new RowMapper<DstgYearReportsVO>() {
             @Override
             public DstgYearReportsVO mapRow(ResultSet rs, int i) throws SQLException {
