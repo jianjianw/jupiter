@@ -78,6 +78,11 @@ public class DstgYearsClientReportsDao1 {
                     dstgYearReports.setMonth(io);
                     dstgYearReportsVO.add(dstgYearReports);
                 }
+                DstgSourceYearReportsVO dstgYearReports = new DstgSourceYearReportsVO();
+                dstgYearReports.setSourceId(-1);
+                dstgYearReports.setSourceName("合计");
+                dstgYearReports.setMonth(-1);
+                dstgYearReportsVO.add(dstgYearReports);
                 return null;
             }
         });
@@ -502,6 +507,7 @@ public class DstgYearsClientReportsDao1 {
         DstgSourceYearReportsVO dstgSourceYearReportsTotal = new DstgSourceYearReportsVO();
         dstgSourceYearReportsTotal.setSourceId(-1);
         dstgSourceYearReportsTotal.setSourceName("合计");
+        dstgSourceYearReportsTotal.setMonth(-1);
         for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgSourceYearReportsVOS) {
             dstgSourceYearReportsTotal.setAllClientCount(dstgSourceYearReportsVO.getAllClientCount() + dstgSourceYearReportsTotal.getAllClientCount());
             dstgSourceYearReportsTotal.setClientCount(dstgSourceYearReportsVO.getClientCount() + dstgSourceYearReportsTotal.getClientCount());
