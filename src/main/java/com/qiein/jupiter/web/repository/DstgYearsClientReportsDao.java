@@ -75,7 +75,7 @@ public class DstgYearsClientReportsDao {
         List<Map<String, Object>> mapList = jdbcTemplate.queryForList(sb.toString(), new Object[]{reportsParamVO.getCompanyId(), reportsParamVO.getYears()});
         //获取每月渠道客资数量
         for (DstgYearReportsVO dstgYearReports : dstgYearReportsVO) {
-            Map<String, Integer> newMap = null;
+            Map<String, Object> newMap = null;
             if (CollectionUtils.isNotEmpty(dstgYearReports.getMapList())) {
                 newMap = dstgYearReports.getMapList();
             } else {
@@ -96,17 +96,17 @@ public class DstgYearsClientReportsDao {
     /**
      * 计算总计
      */
-    private void computerTotal(ReportsParamVO reportsParamVO, final List<DstgYearReportsVO> dstgYearReportsVOS) {
+    public void computerTotal( final List<DstgYearReportsVO> dstgYearReportsVOS) {
         for (DstgYearReportsVO dstgYearReports : dstgYearReportsVOS) {
-            Map<String, Integer> mapList = dstgYearReports.getMapList();
-            Map<String,Integer> newsMapList = new HashMap<>();
-            for (Map.Entry<String, Integer> keys : mapList.entrySet()) {
-                Integer kzNum = newsMapList.get("合计");
+            Map<String, Object> mapList = dstgYearReports.getMapList();
+            Map<String,Object> newsMapList = new HashMap<>();
+            for (Map.Entry<String, Object> keys : mapList.entrySet()) {
+                Integer kzNum = (Integer)newsMapList.get("合计");
                 if(kzNum == null){
                     kzNum = 0;
                 }
                 newsMapList.put(keys.getKey(),keys.getValue());
-                newsMapList.put("合计",  kzNum+keys.getValue());
+                newsMapList.put("合计",  (kzNum+(Integer)keys.getValue()));
             }
             dstgYearReports.setMapList(newsMapList);
         }

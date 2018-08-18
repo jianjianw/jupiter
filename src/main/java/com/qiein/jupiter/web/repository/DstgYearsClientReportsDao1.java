@@ -334,7 +334,7 @@ public class DstgYearsClientReportsDao1 {
         StringBuilder sb = new StringBuilder();
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
-        sb.append(" SELECT t.myYear AS year,t.monthNo AS month,t.sourceid,sum(t.client_count) AS client_count  ");
+        sb.append(" SELECT t.myYear AS year,t.monthNo AS month,t.sourceid,ifnull(sum(t.client_count),0) AS client_count  ");
         sb.append(" FROM( ");
         sb.append(" SELECT MONTH(FROM_UNIXTIME(info.`CREATETIME`)) AS monthNo,  ");
         sb.append(" YEAR(FROM_UNIXTIME(info.`CREATETIME`)) AS myYear, ");
@@ -360,6 +360,11 @@ public class DstgYearsClientReportsDao1 {
                 if (dstgSourceYearReportsVO.getSourceId().equals(sourceid) && month.equals(dstgSourceYearReportsVO.getMonth())) {
                     dstgSourceYearReportsVO.setAvgAmount(String.valueOf(map.get("client_count").toString()));
                 }
+            }
+        }
+        for (DstgSourceYearReportsVO dstgSourceYearReportsVO:dstgSourceYearReportsVOS){
+            if(dstgSourceYearReportsVO.getAvgAmount() == null){
+                dstgSourceYearReportsVO.setAvgAmount("0.00");
             }
         }
     }
@@ -398,8 +403,6 @@ public class DstgYearsClientReportsDao1 {
                 }
             }
         }
-
-
     }
 
 

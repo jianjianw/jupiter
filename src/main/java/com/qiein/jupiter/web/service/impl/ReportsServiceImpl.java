@@ -227,11 +227,11 @@ public class ReportsServiceImpl implements ReportService {
     /**
      * 获取转介绍月底客资报表
      */
-    public  List<ZjsKzOfMonthShowVO> ZjskzOfMonth(Integer companyId, String month, String typeIds, String sourceIds,String type) {
+    public List<ZjsKzOfMonthShowVO> ZjskzOfMonth(Integer companyId, String month, String typeIds, String sourceIds, String type) {
         List<Map<String, Object>> newList = zjskzOfMonthDao.getDayOfMonth(Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[0]), Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[1]), DBSplitUtil.getTable(TableEnum.info, companyId));
-        List<SourcePO> sourcePOS=sourceDao.findSourseByType(companyId,CommonConstant.ZjsSrc);
+        List<SourcePO> sourcePOS = sourceDao.findSourseByType(companyId, CommonConstant.ZjsSrc);
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
-        return zjskzOfMonthDao.getzjskzOfMonth(sourcePOS,newList, month.replace(CommonConstant.ROD_SEPARATOR, CommonConstant.FILE_SEPARATOR), companyId, DBSplitUtil.getTable(TableEnum.info, companyId), sourceIds, typeIds,invalidConfig,type);
+        return zjskzOfMonthDao.getzjskzOfMonth(sourcePOS, newList, month.replace(CommonConstant.ROD_SEPARATOR, CommonConstant.FILE_SEPARATOR), companyId, DBSplitUtil.getTable(TableEnum.info, companyId), sourceIds, typeIds, invalidConfig, type);
     }
 
     @Override
@@ -485,6 +485,7 @@ public class ReportsServiceImpl implements ReportService {
 
     /**
      * 转介绍年度报表
+     *
      * @param zjsClientYearReportDTO
      * @return
      */
@@ -572,19 +573,54 @@ public class ReportsServiceImpl implements ReportService {
         reportsParamVO.setCompanyId(companyId);
         reportsParamVO.setYears(years);
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
-//        List<DstgYearReportsVO> dstgYearsClientReports = dstgYearsClientReportsDao.getDstgYearsClientReports(reportsParamVO, invalidConfig);
         List<DstgSourceYearReportsVO> dstgYearsClientReports = dstgYearsClientReportsDao1.getDstgYearsClientReports(reportsParamVO, invalidConfig);
         List<DstgYearReportsVO> dstgYearReportsVOS = dstgYearsClientReportsDao.getDstgYearsClientReports(reportsParamVO, invalidConfig);
 
         getDataByConditionType(conditionType, dstgYearsClientReports, dstgYearReportsVOS);
-
+        //计算总计
         return dstgYearReportsVOS;
     }
+
+    private void computerClientCountTotal(List<DstgYearReportsVO> dstgYearReportsVOS) {
+        for (DstgYearReportsVO dstgYearReports : dstgYearReportsVOS) {
+            Map<String, Object> mapList = dstgYearReports.getMapList();
+            Map<String,Object> newsMapList = new HashMap<>();
+            for (Map.Entry<String, Object> keys : mapList.entrySet()) {
+                Integer kzNum = (Integer)newsMapList.get("合计");
+                if(kzNum == null){
+                    kzNum = 0;
+                }
+                newsMapList.put(keys.getKey(),keys.getValue());
+                Integer value = Integer.parseInt(keys.getValue().toString());
+                newsMapList.put("合计",  (kzNum+value));
+            }
+            dstgYearReports.setMapList(newsMapList);
+        }
+    }
+
+    private void computerClientRateTotal(List<DstgYearReportsVO> dstgYearReportsVOS) {
+        for (DstgYearReportsVO dstgYearReports : dstgYearReportsVOS) {
+            Map<String, Object> mapList = dstgYearReports.getMapList();
+            Map<String,Object> newsMapList = new HashMap<>();
+            for (Map.Entry<String, Object> keys : mapList.entrySet()) {
+                Double kzNum = (Double)newsMapList.get("合计");
+                if(kzNum == null){
+                    kzNum = 0.00;
+                }
+                newsMapList.put(keys.getKey(),keys.getValue());
+                Double value = Double.parseDouble(keys.getValue().toString());
+                newsMapList.put("合计",  (kzNum+value));
+            }
+            dstgYearReports.setMapList(newsMapList);
+        }
+    }
+
+
 
     private void getDataByConditionType(String conditionType, List<DstgSourceYearReportsVO> dstgYearsClientReports, List<DstgYearReportsVO> dstgYearReportsVOS) {
         switch (conditionType) {
             case "sum":
-                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                for (DstgYearReportsVO dstgYearReportsVO : dstgYearReportsVOS) {
                     Map newMap = null;
                     if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
                         newMap = dstgYearReportsVO.getMapList();
@@ -592,15 +628,17 @@ public class ReportsServiceImpl implements ReportService {
                         newMap = new HashMap();
                     }
                     for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
-                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                        if (dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())) {
                             newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getAllClientCount());
                         }
                     }
                     dstgYearReportsVO.setMapList(newMap);
                 }
+                //计算合计
+                computerClientCountTotal(dstgYearReportsVOS);
                 break;
             case "all":
-                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                for (DstgYearReportsVO dstgYearReportsVO : dstgYearReportsVOS) {
                     Map newMap = null;
                     if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
                         newMap = dstgYearReportsVO.getMapList();
@@ -608,15 +646,17 @@ public class ReportsServiceImpl implements ReportService {
                         newMap = new HashMap();
                     }
                     for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
-                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                        if (dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())) {
                             newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getClientCount());
                         }
                     }
                     dstgYearReportsVO.setMapList(newMap);
                 }
+                //计算合计
+                computerClientCountTotal(dstgYearReportsVOS);
                 break;
             case "valid":
-                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                for (DstgYearReportsVO dstgYearReportsVO : dstgYearReportsVOS) {
                     Map newMap = null;
                     if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
                         newMap = dstgYearReportsVO.getMapList();
@@ -624,15 +664,17 @@ public class ReportsServiceImpl implements ReportService {
                         newMap = new HashMap();
                     }
                     for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
-                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                        if (dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())) {
                             newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getValidClientCount());
                         }
                     }
                     dstgYearReportsVO.setMapList(newMap);
                 }
+                //计算合计
+                computerClientCountTotal(dstgYearReportsVOS);
                 break;
             case "come":
-                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                for (DstgYearReportsVO dstgYearReportsVO : dstgYearReportsVOS) {
                     Map newMap = null;
                     if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
                         newMap = dstgYearReportsVO.getMapList();
@@ -640,15 +682,17 @@ public class ReportsServiceImpl implements ReportService {
                         newMap = new HashMap();
                     }
                     for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
-                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                        if (dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())) {
                             newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getComeShopClientCount());
                         }
                     }
                     dstgYearReportsVO.setMapList(newMap);
                 }
+                //计算合计
+                computerClientCountTotal(dstgYearReportsVOS);
                 break;
             case "success":
-                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                for (DstgYearReportsVO dstgYearReportsVO : dstgYearReportsVOS) {
                     Map newMap = null;
                     if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
                         newMap = dstgYearReportsVO.getMapList();
@@ -656,15 +700,17 @@ public class ReportsServiceImpl implements ReportService {
                         newMap = new HashMap();
                     }
                     for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
-                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                        if (dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())) {
                             newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getSuccessClientCount());
                         }
                     }
                     dstgYearReportsVO.setMapList(newMap);
                 }
+                //计算合计
+                computerClientCountTotal(dstgYearReportsVOS);
                 break;
             case "invalid":
-                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                for (DstgYearReportsVO dstgYearReportsVO : dstgYearReportsVOS) {
                     Map newMap = null;
                     if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
                         newMap = dstgYearReportsVO.getMapList();
@@ -672,15 +718,17 @@ public class ReportsServiceImpl implements ReportService {
                         newMap = new HashMap();
                     }
                     for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
-                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                        if (dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())) {
                             newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getInValidClientCount());
                         }
                     }
                     dstgYearReportsVO.setMapList(newMap);
                 }
+                //计算合计
+                computerClientCountTotal(dstgYearReportsVOS);
                 break;
             case "ddnum":
-                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                for (DstgYearReportsVO dstgYearReportsVO : dstgYearReportsVOS) {
                     Map newMap = null;
                     if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
                         newMap = dstgYearReportsVO.getMapList();
@@ -688,15 +736,20 @@ public class ReportsServiceImpl implements ReportService {
                         newMap = new HashMap();
                     }
                     for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
-                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                        if (dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())) {
                             newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getPendingClientCount());
                         }
                     }
                     dstgYearReportsVO.setMapList(newMap);
                 }
+                //计算合计
+                computerClientCountTotal(dstgYearReportsVOS);
                 break;
             case "validrate":
-                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                for (DstgYearReportsVO dstgYearReportsVO : dstgYearReportsVOS) {
+                    Integer validClientCount = 0;
+                    Integer clientCount = 0;
+
                     Map newMap = null;
                     if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
                         newMap = dstgYearReportsVO.getMapList();
@@ -704,15 +757,24 @@ public class ReportsServiceImpl implements ReportService {
                         newMap = new HashMap();
                     }
                     for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
-                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                        if (dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())) {
                             newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getValidRate());
+                            clientCount += dstgSourceYearReportsVO.getClientCount();
+                            validClientCount += dstgSourceYearReportsVO.getValidClientCount();
                         }
+                    }
+                    if(clientCount == 0){
+                        newMap.put("合计",0);
+                    }else{
+                        newMap.put("合计",(validClientCount/clientCount)*100);
                     }
                     dstgYearReportsVO.setMapList(newMap);
                 }
                 break;
             case "invalidrate":
-                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                for (DstgYearReportsVO dstgYearReportsVO : dstgYearReportsVOS) {
+                    Integer clientCount = 0;
+                    Integer inValidClientCount = 0;
                     Map newMap = null;
                     if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
                         newMap = dstgYearReportsVO.getMapList();
@@ -720,111 +782,172 @@ public class ReportsServiceImpl implements ReportService {
                         newMap = new HashMap();
                     }
                     for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
-                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                        if (dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())) {
                             newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getInValidRate());
+                            clientCount += dstgSourceYearReportsVO.getClientCount();
+                            inValidClientCount += dstgSourceYearReportsVO.getInValidClientCount();
                         }
+                    }
+                    if(clientCount == 0){
+                        newMap.put("合计",0);
+                    }else{
+                        newMap.put("合计",(inValidClientCount/clientCount)*100);
                     }
                     dstgYearReportsVO.setMapList(newMap);
                 }
                 break;
             case "ddrate":
-                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                for (DstgYearReportsVO dstgYearReportsVO : dstgYearReportsVOS) {
                     Map newMap = null;
+                    Integer clientCount = 0;
+                    Integer pendingClientCount = 0;
                     if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
                         newMap = dstgYearReportsVO.getMapList();
                     } else {
                         newMap = new HashMap();
                     }
                     for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
-                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                        if (dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())) {
                             newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getWaitRate());
+                            clientCount += dstgSourceYearReportsVO.getClientCount();
+                            pendingClientCount += dstgSourceYearReportsVO.getPendingClientCount();
                         }
+                    }
+                    if(clientCount == 0){
+                        newMap.put("合计",0);
+                    }else{
+                        newMap.put("合计",(pendingClientCount/clientCount)*100);
                     }
                     dstgYearReportsVO.setMapList(newMap);
                 }
                 break;
             case "allcomerate":
-                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                for (DstgYearReportsVO dstgYearReportsVO : dstgYearReportsVOS) {
                     Map newMap = null;
+                    Integer clientCount = 0;
+                    Integer comeShopClientCount = 0;
                     if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
                         newMap = dstgYearReportsVO.getMapList();
                     } else {
                         newMap = new HashMap();
                     }
                     for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
-                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                        if (dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())) {
                             newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getClientComeShopRate());
+                            clientCount += dstgSourceYearReportsVO.getClientCount();
+                            comeShopClientCount += dstgSourceYearReportsVO.getComeShopClientCount();
                         }
+                    }
+                    if(clientCount == 0){
+                        newMap.put("合计",0);
+                    }else{
+                        newMap.put("合计",(comeShopClientCount/clientCount)*100);
                     }
                     dstgYearReportsVO.setMapList(newMap);
                 }
                 break;
             case "validcomerate":
-                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                for (DstgYearReportsVO dstgYearReportsVO : dstgYearReportsVOS) {
                     Map newMap = null;
+                    Integer validClientCount = 0;
+                    Integer comeShopClientCount = 0;
                     if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
                         newMap = dstgYearReportsVO.getMapList();
                     } else {
                         newMap = new HashMap();
                     }
                     for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
-                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                        if (dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())) {
                             newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getValidClientComeShopRate());
+                            validClientCount += dstgSourceYearReportsVO.getValidClientCount();
+                            comeShopClientCount += dstgSourceYearReportsVO.getComeShopClientCount();
                         }
+                    }
+                    if(validClientCount == 0){
+                        newMap.put("合计",0);
+                    }else{
+                        newMap.put("合计",(comeShopClientCount/validClientCount)*100);
                     }
                     dstgYearReportsVO.setMapList(newMap);
                 }
                 break;
             case "rdsuccessrate":
-                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                for (DstgYearReportsVO dstgYearReportsVO : dstgYearReportsVOS) {
                     Map newMap = null;
+                    Integer comeShopClientCount = 0;
+                    Integer successClientCount = 0;
                     if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
                         newMap = dstgYearReportsVO.getMapList();
                     } else {
                         newMap = new HashMap();
                     }
                     for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
-                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                        if (dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())) {
                             newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getComeShopSuccessRate());
+                            comeShopClientCount += dstgSourceYearReportsVO.getComeShopClientCount();
+                            successClientCount += dstgSourceYearReportsVO.getSuccessClientCount();
                         }
+                    }
+                    if(comeShopClientCount == 0){
+                        newMap.put("合计",0);
+                    }else{
+                        newMap.put("合计",(successClientCount/comeShopClientCount)*100);
                     }
                     dstgYearReportsVO.setMapList(newMap);
                 }
                 break;
             case "allsuccessrate":
-                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                for (DstgYearReportsVO dstgYearReportsVO : dstgYearReportsVOS) {
                     Map newMap = null;
+                    Integer clientCount = 0;
+                    Integer successClientCount = 0;
                     if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
                         newMap = dstgYearReportsVO.getMapList();
                     } else {
                         newMap = new HashMap();
                     }
                     for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
-                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                        if (dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())) {
                             newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getClientSuccessRate());
+                            clientCount += dstgSourceYearReportsVO.getClientCount();
+                            successClientCount += dstgSourceYearReportsVO.getSuccessClientCount();
                         }
+                    }
+                    if(clientCount == 0){
+                        newMap.put("合计",0);
+                    }else{
+                        newMap.put("合计",(successClientCount/clientCount)*100);
                     }
                     dstgYearReportsVO.setMapList(newMap);
                 }
                 break;
             case "validsuccessrate":
-                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                for (DstgYearReportsVO dstgYearReportsVO : dstgYearReportsVOS) {
                     Map newMap = null;
+                    Integer validClientCount = 0;
+                    Integer successClientCount = 0;
                     if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
                         newMap = dstgYearReportsVO.getMapList();
                     } else {
                         newMap = new HashMap();
                     }
                     for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
-                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                        if (dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())) {
                             newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getValidClientSuccessRate());
+                            validClientCount += dstgSourceYearReportsVO.getValidClientCount();
+                            successClientCount += dstgSourceYearReportsVO.getSuccessClientCount();
                         }
+                    }
+                    if(validClientCount == 0){
+                        newMap.put("合计",0);
+                    }else{
+                        newMap.put("合计",(successClientCount/validClientCount)*100);
                     }
                     dstgYearReportsVO.setMapList(newMap);
                 }
                 break;
             case "amount":
-                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                for (DstgYearReportsVO dstgYearReportsVO : dstgYearReportsVOS) {
                     Map newMap = null;
                     if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
                         newMap = dstgYearReportsVO.getMapList();
@@ -832,15 +955,19 @@ public class ReportsServiceImpl implements ReportService {
                         newMap = new HashMap();
                     }
                     for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
-                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                        if (dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())) {
                             newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getAllCost());
                         }
                     }
                     dstgYearReportsVO.setMapList(newMap);
                 }
+                //计算合计
+                computerClientRateTotal(dstgYearReportsVOS);
                 break;
             case "allcb":
-                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                for (DstgYearReportsVO dstgYearReportsVO : dstgYearReportsVOS) {
+                    Integer allClientCount = 0;
+                    double allCost = 0.00;
                     Map newMap = null;
                     if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
                         newMap = dstgYearReportsVO.getMapList();
@@ -848,15 +975,20 @@ public class ReportsServiceImpl implements ReportService {
                         newMap = new HashMap();
                     }
                     for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
-                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                        if (dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())) {
                             newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getClientCost());
+                            allClientCount += dstgSourceYearReportsVO.getAllClientCount();
+                            allCost += Double.parseDouble(dstgSourceYearReportsVO.getAllCost());
                         }
                     }
+                    newMap.put("合计",(allCost/allClientCount));
                     dstgYearReportsVO.setMapList(newMap);
                 }
                 break;
             case "validcb":
-                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                for (DstgYearReportsVO dstgYearReportsVO : dstgYearReportsVOS) {
+                    Integer validClientCount = 0;
+                    double allCost = 0.00;
                     Map newMap = null;
                     if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
                         newMap = dstgYearReportsVO.getMapList();
@@ -864,15 +996,24 @@ public class ReportsServiceImpl implements ReportService {
                         newMap = new HashMap();
                     }
                     for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
-                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                        if (dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())) {
                             newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getValidClientCost());
+                            validClientCount += dstgSourceYearReportsVO.getValidClientCount();
+                            allCost += Double.parseDouble(dstgSourceYearReportsVO.getAllCost());
                         }
+                    }
+                    if(validClientCount == 0){
+                        newMap.put("合计",0);
+                    }else{
+                        newMap.put("合计",(allCost/validClientCount)*100);
                     }
                     dstgYearReportsVO.setMapList(newMap);
                 }
                 break;
             case "comecb":
-                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                for (DstgYearReportsVO dstgYearReportsVO : dstgYearReportsVOS) {
+                    Integer comeShopClientCount = 0;
+                    double allCost = 0.00;
                     Map newMap = null;
                     if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
                         newMap = dstgYearReportsVO.getMapList();
@@ -880,15 +1021,24 @@ public class ReportsServiceImpl implements ReportService {
                         newMap = new HashMap();
                     }
                     for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
-                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                        if (dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())) {
                             newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getComeShopClientCost());
+                            comeShopClientCount += dstgSourceYearReportsVO.getComeShopClientCount();
+                            allCost += Double.parseDouble(dstgSourceYearReportsVO.getAllCost());
                         }
+                    }
+                    if(comeShopClientCount == 0){
+                        newMap.put("合计",0);
+                    }else{
+                        newMap.put("合计",(allCost/comeShopClientCount)*100);
                     }
                     dstgYearReportsVO.setMapList(newMap);
                 }
                 break;
             case "successcb":
-                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                for (DstgYearReportsVO dstgYearReportsVO : dstgYearReportsVOS) {
+                    Integer successClientCount = 0;
+                    double allCost = 0.00;
                     Map newMap = null;
                     if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
                         newMap = dstgYearReportsVO.getMapList();
@@ -896,15 +1046,22 @@ public class ReportsServiceImpl implements ReportService {
                         newMap = new HashMap();
                     }
                     for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
-                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                        if (dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())) {
                             newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getSuccessClientCost());
+                            successClientCount += dstgSourceYearReportsVO.getSuccessClientCount();
+                            allCost += Double.parseDouble(dstgSourceYearReportsVO.getAllCost());
                         }
+                    }
+                    if(successClientCount == 0){
+                        newMap.put("合计",0);
+                    }else{
+                        newMap.put("合计",(allCost/successClientCount)*100);
                     }
                     dstgYearReportsVO.setMapList(newMap);
                 }
                 break;
             case "successavg":
-                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                for (DstgYearReportsVO dstgYearReportsVO : dstgYearReportsVOS) {
                     Map newMap = null;
                     if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
                         newMap = dstgYearReportsVO.getMapList();
@@ -912,15 +1069,16 @@ public class ReportsServiceImpl implements ReportService {
                         newMap = new HashMap();
                     }
                     for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
-                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                        if (dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())) {
                             newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getAvgAmount());
                         }
                     }
                     dstgYearReportsVO.setMapList(newMap);
                 }
+                computerClientRateTotal(dstgYearReportsVOS);
                 break;
             case "successamount":
-                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                for (DstgYearReportsVO dstgYearReportsVO : dstgYearReportsVOS) {
                     Map newMap = null;
                     if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
                         newMap = dstgYearReportsVO.getMapList();
@@ -928,15 +1086,18 @@ public class ReportsServiceImpl implements ReportService {
                         newMap = new HashMap();
                     }
                     for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
-                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                        if (dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())) {
                             newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getAmount());
                         }
                     }
                     dstgYearReportsVO.setMapList(newMap);
                 }
+                computerClientRateTotal(dstgYearReportsVOS);
                 break;
             case "roi":
-                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                for (DstgYearReportsVO dstgYearReportsVO : dstgYearReportsVOS) {
+                    double allCost = 0.00;
+                    double amount = 0.00;
                     Map newMap = null;
                     if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
                         newMap = dstgYearReportsVO.getMapList();
@@ -944,15 +1105,22 @@ public class ReportsServiceImpl implements ReportService {
                         newMap = new HashMap();
                     }
                     for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
-                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                        if (dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())) {
                             newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getROI());
+                            allCost += Double.parseDouble(dstgSourceYearReportsVO.getAllCost());
+                            amount += dstgSourceYearReportsVO.getAmount();
                         }
+                    }
+                    if(amount == 0){
+                        newMap.put("合计",0);
+                    }else{
+                        newMap.put("合计",(allCost/amount)*100);
                     }
                     dstgYearReportsVO.setMapList(newMap);
                 }
                 break;
-                default:
-                    break;
+            default:
+                break;
         }
     }
 }
