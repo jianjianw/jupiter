@@ -423,8 +423,8 @@ public class ReportsController extends BaseController {
      * 转介绍每月客资报表
      */
     @GetMapping("/zjs_kz_of_month")
-    public ResultInfo ZjskzOfMonth(@RequestParam String month, @RequestParam String type, @RequestParam String srcIds) {
-        return ResultInfoUtil.success(reportService.ZjskzOfMonth(getCurrentLoginStaff().getCompanyId(), month, type, srcIds));
+    public ResultInfo ZjskzOfMonth(@RequestParam String month, @RequestParam String type, @RequestParam String srcIds,@RequestParam String typeIds) {
+        return ResultInfoUtil.success(reportService.ZjskzOfMonth(getCurrentLoginStaff().getCompanyId(), month, typeIds, srcIds,type));
     }
 
     /**
@@ -586,10 +586,11 @@ public class ReportsController extends BaseController {
      * 电商推广年度报表
      * */
     @GetMapping("/get_dstg_years_reports")
-    public ResultInfo getDstgYearsReports(Integer start,Integer end,String years){
+    public ResultInfo getDstgYearsReports(String type,String sourceIds,String years,String conditionType){
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        List<DstgYearReportsVO> dstgYearReportsVOS = reportService.getDstgYearsReports(start,end,currentLoginStaff.getCompanyId(),years);
-        return ResultInfoUtil.success(dstgYearReportsVOS);
+//        List<DstgYearReportsVO> dstgYearReportsVOS = reportService.getDstgYearsReports(type,sourceIds,currentLoginStaff.getCompanyId(),years);
+        List<DstgYearReportsVO> dstgYearsReports = reportService.getDstgYearsReports(type, sourceIds, currentLoginStaff.getCompanyId(), years, conditionType);
+        return ResultInfoUtil.success(dstgYearsReports);
     }
 
     /**

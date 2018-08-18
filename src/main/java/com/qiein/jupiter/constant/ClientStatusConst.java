@@ -85,4 +85,21 @@ public class ClientStatusConst {
     // 待追踪
     public static List<Integer> TRACE_STATUS_RANGE = new ArrayList<>(
             Arrays.asList(2, 6, 11, 13, 15, 16, 17, 18, 19, 20, 22, 23, 24, 25, 26, 27, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 50));
+
+    /*-- 状态集合 --*/
+    public static final String RANGE_INVALID_STATUSID = ",4,5,99,";// 无效
+    public static final String RANGE_INVITE_INVALID_STATUSID = ",4,5,99,8,";// 无效
+    public static final String RANGE_BE_TRACK = "2,6,11,15,16,17,18,19,20,22,23,24,25,26,27,28,29,39,61,62,63,64,65,66,67,68,69,70,71,72,73,";// 待追踪
+
+    public static final String IS_COME_SHOP = ",9,10,30,31,32,33,34,35,36,40,41,";// 算到店
+    public static final String IS_NEW_COME_SHOP = ",9,10,31,33,34,";// 算新客到店
+    public static final String IS_COME_SUCCESS = ",9,30,";// 算进店成交
+
+    public static final String IS_SUCCESS = ",9,30,31,32,40,41,";// 算成交
+
+    public static final String IS_RUN_OFF = ",10,33,34,35,36,45,46,";// 算门店流失
+
+    public static final String IS_BACK = ",30,35,36,";// 算回门
+    public static final String IS_VALID_ZJS = ",17,2,14,15,16,3,8,9,10,30,31,32,33,34,35,36,39,40,41,45,46,";// 转介绍算有效
+
 }

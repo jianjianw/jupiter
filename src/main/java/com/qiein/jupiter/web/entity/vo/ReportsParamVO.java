@@ -45,6 +45,19 @@ public class ReportsParamVO {
      * 年份
      * */
     private String years;
+    /**
+     * 渠道ids
+     * */
+    private String sourceIds;
+
+
+    public String getSourceIds() {
+        return sourceIds;
+    }
+
+    public void setSourceIds(String sourceIds) {
+        this.sourceIds = sourceIds;
+    }
 
     public String getYears() {
         return years;

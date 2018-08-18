@@ -42,7 +42,8 @@ public class DstgYearsClientDetailReportsDao {
         getFilterInValidClientCount(reportsParamVO,dstgYearDetailReportsVOS);
         //获取待定
         getPendingClientCount(reportsParamVO,dstgYearDetailReportsVOS,invalidConfig);
-
+        //获取花费
+        getClientCost(reportsParamVO,dstgYearDetailReportsVOS);
         //计算数据
         computerRate(reportsParamVO,dstgYearDetailReportsVOS,invalidConfig);
 

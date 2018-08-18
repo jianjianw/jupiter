@@ -81,7 +81,7 @@ public interface ReportService {
     /**
      * 获取转介绍月底客资报表
      */
-    ZjskzOfMonthVO ZjskzOfMonth(Integer companyId, String month, String type, String sourceIds);
+    List<ZjsKzOfMonthShowVO> ZjskzOfMonth(Integer companyId, String month, String typeIds, String sourceIds,String type);
 
     /**
      * 市域报表分析
@@ -219,12 +219,10 @@ public interface ReportService {
 
     /**
      * 年度报表
-     * @param start
-     * @param end
      * @param companyId
      * @return
      * */
-    List<DstgYearReportsVO> getDstgYearsReports(Integer start, Integer end, int companyId,String years);
+    List<DstgYearReportsVO> getDstgYearsReports(String type,String typeIds, int companyId,String years,String conditionType);
 
     /**
      * 财务 月度订单数据统计

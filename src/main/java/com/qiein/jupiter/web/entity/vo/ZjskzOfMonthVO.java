@@ -12,7 +12,7 @@ public class ZjskzOfMonthVO {
     //表头
     private List<Map<String, Object>> headList;
     //数据
-    private List<Map<String, Object>> list;
+    private List<ZjsKzOfMonthShowVO> list;
 
     public List<Map<String, Object>> getHeadList() {
         return headList;
@@ -22,11 +22,5 @@ public class ZjskzOfMonthVO {
         this.headList = headList;
     }
 
-    public List<Map<String, Object>> getList() {
-        return list;
-    }
 
-    public void setList(List<Map<String, Object>> list) {
-        this.list = list;
-    }
 }

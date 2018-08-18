@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.repository;
 
 import com.qiein.jupiter.util.CollectionUtils;
 import com.qiein.jupiter.util.DBSplitUtil;
+import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -29,9 +30,9 @@ public class DstgYearsClientReportsDao {
         //获取所有来源
         getAllSource(reportsParamVO, dstgYearReportsVO);
         //获取所有年度客资数量
-        getAllYearClientCount(reportsParamVO, dstgYearReportsVO);
+//        getAllYearClientCount(reportsParamVO, dstgYearReportsVO);
         //computerTotal
-        computerTotal(reportsParamVO,dstgYearReportsVO);
+//        computerTotal(reportsParamVO,dstgYearReportsVO);
         return dstgYearReportsVO;
     }
 
@@ -56,12 +57,18 @@ public class DstgYearsClientReportsDao {
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         sb.append(" SELECT t.myYear AS year,t.monthNo AS month,t.sourceid,sum(t.client_count) AS client_count  ");
         sb.append(" FROM( ");
-        sb.append(" SELECT MONTH(FROM_UNIXTIME(a.`CREATETIME`)) AS monthNo,  ");
-        sb.append(" YEAR(FROM_UNIXTIME(a.`CREATETIME`)) AS myYear, ");
-        sb.append("   count(a.id) AS client_count ,a.sourceid ");
-        sb.append(" FROM " + infoTabName + " a");
-        sb.append(" where a.companyid = ? and a.sourceid is not null");
-        sb.append(" group by a.sourceid,monthNo) AS t ");
+        sb.append(" SELECT MONTH(FROM_UNIXTIME(info.`CREATETIME`)) AS monthNo,  ");
+        sb.append(" YEAR(FROM_UNIXTIME(info.`CREATETIME`)) AS myYear, ");
+        sb.append("   count(info.id) AS client_count ,info.sourceid ");
+        sb.append(" FROM " + infoTabName + " info");
+        sb.append(" where info.companyid = ? and info.sourceid is not null");
+        if(StringUtil.isNotEmpty(reportsParamVO.getType())){
+            sb.append(" and info.typeid in( "+reportsParamVO.getType()+") ");
+        }
+        if(StringUtil.isNotEmpty(reportsParamVO.getSourceIds())){
+            sb.append(" and info.sourceid in (" + reportsParamVO.getSourceIds() +")");
+        }
+        sb.append(" group by info.sourceid,monthNo) AS t ");
         sb.append(" WHERE t.myYear= ? ");
         sb.append(" GROUP BY t.monthNo,t.sourceid ");
         sb.append(" order by month ");
