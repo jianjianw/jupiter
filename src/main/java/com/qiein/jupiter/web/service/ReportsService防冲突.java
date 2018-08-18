@@ -22,5 +22,5 @@ public interface ReportsService防冲突 {
 
     List<ZjsClientYearReportVO2> getZjsYearReport(ZjsClientYearReportDTO zjsClientYearReportDTO);
 
-    List<Map<String, Object>> getZjsYearDetailReport(ZjsClientYearReportDTO zjsClientYearReportDTO);
+    List<RegionReportsVO> getZjsYearDetailReport(ZjsClientYearReportDTO zjsClientYearReportDTO);
 }

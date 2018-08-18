@@ -45,6 +45,9 @@ public class CallServiceImpl implements CallService {
 
     @Override
     public void startBack2BackCall(String kzId,String caller, String callee, StaffPO staffPO) {
+        if(StringUtil.isEmpty(kzId)){
+            throw new RException(ExceptionEnum.KZ_ID_IS_NULL);
+        }
         if (StringUtil.isEmpty(caller) || StringUtil.isEmpty(callee)) {
             throw new RException(ExceptionEnum.CALLER_OR_CALLEE_IS_NULL);
         }
@@ -109,8 +112,6 @@ public class CallServiceImpl implements CallService {
         clientLogPO.setKzId(kzId);
         clientLogPO.setMemo(ClientLogConst.INFO_LOG_CALL_PHONE);
         clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(staffPO.getCompanyId()),clientLogPO);
-
-        //TODO 通话记录
 
     }
 
