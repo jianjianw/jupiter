@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.lang.reflect.Field;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -90,7 +91,7 @@ public class ZjsKzOfYearDao {
      * @param dsInvalidVO
      * @return
      */
-    public List<RegionReportsVO> getZjsYearDetailReport(ZjsClientYearReportDTO zjsClientYearReportDTO, DsInvalidVO dsInvalidVO) {
+    public List<Map<String, Object>> getZjsYearDetailReport(ZjsClientYearReportDTO zjsClientYearReportDTO, DsInvalidVO dsInvalidVO) {
         List<RegionReportsVO> resultContent = new ArrayList<>();
         List<Integer> timeList = getMonthTimeStamp(zjsClientYearReportDTO.getYear());
 //        int month = 1;
@@ -138,7 +139,7 @@ public class ZjsKzOfYearDao {
         dTotal(resultContent);
         calculate(resultContent, dsInvalidVO);
 
-        return resultContent;
+        return dtransform(resultContent);
     }
 
     /**
@@ -440,6 +441,7 @@ public class ZjsKzOfYearDao {
 
     /**
      * 合计
+     *
      * @param list
      * @return
      */
@@ -450,23 +452,24 @@ public class ZjsKzOfYearDao {
         list.add(hTotal);
         for (ZjsClientYearReportVO2 zcyr : list) {
             hTotal.setDataType(zcyr.getDataType());
-            Map<String,Integer> map =zcyr.getDataMap();
+            Map<String, Integer> map = zcyr.getDataMap();
             int total = 0;
-            for (String key : map.keySet()){
-                if (!hTotal.getDataMap().containsKey(key)){
-                    hTotal.getDataMap().put(key,map.get(key));
-                }else {
-                    hTotal.getDataMap().put(key,hTotal.getDataMap().get(key)+map.get(key));
+            for (String key : map.keySet()) {
+                if (!hTotal.getDataMap().containsKey(key)) {
+                    hTotal.getDataMap().put(key, map.get(key));
+                } else {
+                    hTotal.getDataMap().put(key, hTotal.getDataMap().get(key) + map.get(key));
                 }
                 total += map.get(key);
             }
-            map.put("合计",total);
+            map.put("合计", total);
         }
         return list;
     }
 
     /**
      * 详情合计
+     *
      * @param list
      * @return
      */
@@ -524,20 +527,31 @@ public class ZjsKzOfYearDao {
      */
     public static List<Map<String, Object>> dtransform(List<RegionReportsVO> vo1List) {
         List<Map<String, Object>> list = new ArrayList<>();
-        for (RegionReportsVO rr : vo1List) {
+        String[] cols = {"clientCount", "validClientCount", "comeShopClientCount", "successClientCount", "validRate", "clientComeShopRate", "comeShopSuccessRate"};
+
+        for (String col : cols) {
             Map<String, Object> map = new HashMap<>();
-            map.put("dataType", rr.getRegionName());
+            map.put("dataType", col);
             Map<String, Object> subMap = new HashMap<>();
-            subMap.put("clientCount", rr.getAllClientCount());
-            subMap.put("validClientCount", rr.getValidClientCount());
-            subMap.put("comeShopClientCount", rr.getComeShopClientCount());
-            subMap.put("successClientCount", rr.getSuccessClientCount());
-            subMap.put("validRate", rr.getValidRate());
-            subMap.put("clientComeShopRate", rr.getClientComeShopRate());
-            subMap.put("comeShopSuccessRate", rr.getComeShopSuccessRate());
             map.put("data", subMap);
+            for (RegionReportsVO rr : vo1List) {
+                Object value = null;
+                try {
+                    Field field = rr.getClass().getDeclaredField(col);
+                    field.setAccessible(true);
+                    value = field.get(rr);
+                } catch (NoSuchFieldException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+
+                subMap.put(rr.getRegionName(), value);
+
+            }
             list.add(map);
         }
+        System.out.println(list);
         return list;
     }
 
