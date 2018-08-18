@@ -13,6 +13,7 @@ import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.ClientInfoDao;
 import com.qiein.jupiter.web.dao.DictionaryDao;
 import com.qiein.jupiter.web.dao.GroupStaffDao;
+import com.qiein.jupiter.web.dao.SourceDao;
 import com.qiein.jupiter.web.entity.dto.*;
 import com.qiein.jupiter.web.entity.po.*;
 import com.qiein.jupiter.web.entity.vo.*;
@@ -89,6 +90,9 @@ public class ReportsServiceImpl implements ReportService {
     @Autowired
     private DstgYearsClientReportsDao1 dstgYearsClientReportsDao1;
 
+
+    @Autowired
+    private SourceDao sourceDao;
     /**
      * 修改联系方式日志
      *
@@ -221,18 +225,11 @@ public class ReportsServiceImpl implements ReportService {
     /**
      * 获取转介绍月底客资报表
      */
-    public ZjskzOfMonthVO ZjskzOfMonth(Integer companyId, String month, String type, String sourceIds) {
-        ZjskzOfMonthVO zjskzOfMonthVO = new ZjskzOfMonthVO();
+    public  List<ZjsKzOfMonthShowVO> ZjskzOfMonth(Integer companyId, String month, String typeIds, String sourceIds,String type) {
         List<Map<String, Object>> newList = zjskzOfMonthDao.getDayOfMonth(Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[0]), Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[1]), DBSplitUtil.getTable(TableEnum.info, companyId));
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("dayName", "合计");
-        map.put("dayKey", "hj");
-        List<Map<String, Object>> list = new ArrayList<>();
-        list.add(map);
-        list.addAll(newList);
-        zjskzOfMonthVO.setHeadList(list);
-        zjskzOfMonthVO.setList(zjskzOfMonthDao.getzjskzOfMonth(newList, month.replace(CommonConstant.ROD_SEPARATOR, CommonConstant.FILE_SEPARATOR), companyId, DBSplitUtil.getTable(TableEnum.info, companyId), sourceIds, type));
-        return zjskzOfMonthVO;
+        List<SourcePO> sourcePOS=sourceDao.findSourseByType(companyId,CommonConstant.ZjsSrc);
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
+        return zjskzOfMonthDao.getzjskzOfMonth(sourcePOS,newList, month.replace(CommonConstant.ROD_SEPARATOR, CommonConstant.FILE_SEPARATOR), companyId, DBSplitUtil.getTable(TableEnum.info, companyId), sourceIds, typeIds,invalidConfig,type);
     }
 
     @Override
@@ -486,7 +483,6 @@ public class ReportsServiceImpl implements ReportService {
 
     /**
      * 转介绍年度报表
-     *
      * @param zjsClientYearReportDTO
      * @return
      */

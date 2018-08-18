@@ -1,6 +1,11 @@
 package com.qiein.jupiter.web.entity.vo;
 
 public class ZjskzOfMonthReportsVO {
+
+    /**
+     *
+     */
+    private String date;
     /**
      * 日期信息
      * */
