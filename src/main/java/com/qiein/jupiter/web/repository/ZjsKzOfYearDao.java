@@ -466,6 +466,8 @@ public class ZjsKzOfYearDao {
         }
 
         for (String key:hTotal.getDataMap().keySet()){
+            if (key.equals("合计"))
+                continue;
             hTotal.getDataMap().put("合计",hTotal.getDataMap().get(key)+hTotal.getDataMap().get("合计"));
         }
         return list;
