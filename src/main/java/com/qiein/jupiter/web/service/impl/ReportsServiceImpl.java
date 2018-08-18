@@ -7,6 +7,7 @@ import com.qiein.jupiter.constant.ClientLogConst;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.constant.RoleConstant;
 import com.qiein.jupiter.enums.TableEnum;
+import com.qiein.jupiter.util.CollectionUtils;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.ClientInfoDao;
@@ -84,6 +85,10 @@ public class ReportsServiceImpl implements ReportService {
 
     @Autowired
     private DstgYearsClientDetailReportsDao dstgYearsClientDetailReportsDao;
+
+    @Autowired
+    private DstgYearsClientReportsDao1 dstgYearsClientReportsDao1;
+
     /**
      * 修改联系方式日志
      *
@@ -267,7 +272,7 @@ public class ReportsServiceImpl implements ReportService {
         List<Map<String, Object>> newList = zjskzOfMonthDao.getDayOfMonth(Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[0]), Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[1]), DBSplitUtil.getTable(TableEnum.info, companyId));
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         month = month.replace(CommonConstant.ROD_SEPARATOR, CommonConstant.FILE_SEPARATOR);
-        return zjskzOfMonthDao.ZjskzOfMonthIn(newList, companyId, month, sourceId, invalidConfig,CommonConstant.ZjsSrc);
+        return zjskzOfMonthDao.ZjskzOfMonthIn(newList, companyId, month, sourceId, invalidConfig, CommonConstant.ZjsSrc);
     }
 
     /**
@@ -277,7 +282,7 @@ public class ReportsServiceImpl implements ReportService {
         List<Map<String, Object>> newList = zjskzOfMonthDao.getDayOfMonth(Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[0]), Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[1]), DBSplitUtil.getTable(TableEnum.info, companyId));
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         month = month.replace(CommonConstant.ROD_SEPARATOR, CommonConstant.FILE_SEPARATOR);
-        return zjskzOfMonthDao.ZjskzOfMonthIn(newList, companyId, month, sourceId, invalidConfig,CommonConstant.DsSrc);
+        return zjskzOfMonthDao.ZjskzOfMonthIn(newList, companyId, month, sourceId, invalidConfig, CommonConstant.DsSrc);
     }
 
     /**
@@ -481,6 +486,7 @@ public class ReportsServiceImpl implements ReportService {
 
     /**
      * 转介绍年度报表
+     *
      * @param zjsClientYearReportDTO
      * @return
      */
@@ -492,25 +498,25 @@ public class ReportsServiceImpl implements ReportService {
     }
 
     @Override
-    public List<DstgYearDetailReportsProcessVO> getDstgYearDetailReports(String years,Integer companyId) {
+    public List<DstgYearDetailReportsProcessVO> getDstgYearDetailReports(String years, Integer companyId) {
         ReportsParamVO reportsParamVO = new ReportsParamVO();
         reportsParamVO.setYears(years);
         reportsParamVO.setCompanyId(companyId);
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
-        List<DstgYearDetailReportsVO> dstgYearsClietnDetailReports= null;
+        List<DstgYearDetailReportsVO> dstgYearsClietnDetailReports = null;
 
 
         //FIXME 此处代码已写死
         List<DstgYearDetailReportsProcessVO> dstgYearDetailReportsProcessVOS = new ArrayList<>();
-        try{
-            dstgYearsClietnDetailReports= dstgYearsClientDetailReportsDao.getDstgYearsClietnDetailReports(reportsParamVO, invalidConfig);
+        try {
+            dstgYearsClietnDetailReports = dstgYearsClientDetailReportsDao.getDstgYearsClietnDetailReports(reportsParamVO, invalidConfig);
             //FIXME
-            HashMap<String,Object> allClientCountMap = new HashMap();
-            HashMap<String,Object> validClientCountMap = new HashMap();
-            HashMap<String,Object> validRateMap = new HashMap();
-            HashMap<String,Object> allCostMap = new HashMap();
-            HashMap<String,Object> clientCostMap = new HashMap();
-            HashMap<String,Object> validClientCostMap = new HashMap();
+            HashMap<String, Object> allClientCountMap = new HashMap();
+            HashMap<String, Object> validClientCountMap = new HashMap();
+            HashMap<String, Object> validRateMap = new HashMap();
+            HashMap<String, Object> allCostMap = new HashMap();
+            HashMap<String, Object> clientCostMap = new HashMap();
+            HashMap<String, Object> validClientCostMap = new HashMap();
 
             DstgYearDetailReportsProcessVO dstgYearDetailReportsProcessVO = new DstgYearDetailReportsProcessVO();
             DstgYearDetailReportsProcessVO dstgYearDetailReportsProcessVO1 = new DstgYearDetailReportsProcessVO();
@@ -525,13 +531,13 @@ public class ReportsServiceImpl implements ReportService {
             dstgYearDetailReportsProcessVO4.setName("毛客资成本");
             dstgYearDetailReportsProcessVO5.setName("有效成本");
 
-            for (DstgYearDetailReportsVO dstgYearDetailReportsVO :dstgYearsClietnDetailReports){
-                allClientCountMap.put(dstgYearDetailReportsVO.getMonth(),dstgYearDetailReportsVO.getAllClientCount());
-                validClientCountMap.put(dstgYearDetailReportsVO.getMonth(),dstgYearDetailReportsVO.getValidClientCount());
-                validRateMap.put(dstgYearDetailReportsVO.getMonth(),dstgYearDetailReportsVO.getValidRate());
-                allCostMap.put(dstgYearDetailReportsVO.getMonth(),dstgYearDetailReportsVO.getAllCost());
-                clientCostMap.put(dstgYearDetailReportsVO.getMonth(),dstgYearDetailReportsVO.getClientCost());
-                validClientCostMap.put(dstgYearDetailReportsVO.getMonth(),dstgYearDetailReportsVO.getValidClientCost());
+            for (DstgYearDetailReportsVO dstgYearDetailReportsVO : dstgYearsClietnDetailReports) {
+                allClientCountMap.put(dstgYearDetailReportsVO.getMonth(), dstgYearDetailReportsVO.getAllClientCount());
+                validClientCountMap.put(dstgYearDetailReportsVO.getMonth(), dstgYearDetailReportsVO.getValidClientCount());
+                validRateMap.put(dstgYearDetailReportsVO.getMonth(), dstgYearDetailReportsVO.getValidRate());
+                allCostMap.put(dstgYearDetailReportsVO.getMonth(), dstgYearDetailReportsVO.getAllCost());
+                clientCostMap.put(dstgYearDetailReportsVO.getMonth(), dstgYearDetailReportsVO.getClientCost());
+                validClientCostMap.put(dstgYearDetailReportsVO.getMonth(), dstgYearDetailReportsVO.getValidClientCost());
             }
 
             dstgYearDetailReportsProcessVO.setProcessData(allClientCountMap);
@@ -547,7 +553,7 @@ public class ReportsServiceImpl implements ReportService {
             dstgYearDetailReportsProcessVOS.add(dstgYearDetailReportsProcessVO3);
             dstgYearDetailReportsProcessVOS.add(dstgYearDetailReportsProcessVO4);
             dstgYearDetailReportsProcessVOS.add(dstgYearDetailReportsProcessVO5);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return dstgYearDetailReportsProcessVOS;
@@ -561,16 +567,394 @@ public class ReportsServiceImpl implements ReportService {
     }
 
     @Override
-    public List<DstgYearReportsVO> getDstgYearsReports(Integer start, Integer end, int companyId,String years) {
+    public List<DstgYearReportsVO> getDstgYearsReports(String type, String sourceIds, int companyId, String years, String conditionType) {
         ReportsParamVO reportsParamVO = new ReportsParamVO();
-        reportsParamVO.setStart(start);
-        reportsParamVO.setEnd(end);
+        reportsParamVO.setType(type);
+        reportsParamVO.setSourceIds(sourceIds);
         reportsParamVO.setCompanyId(companyId);
         reportsParamVO.setYears(years);
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
-        List<DstgYearReportsVO> dstgYearsClientReports = dstgYearsClientReportsDao.getDstgYearsClientReports(reportsParamVO, invalidConfig);
-        List<Map<String,Map<String,Integer>>> listMap = new ArrayList<>();
+//        List<DstgYearReportsVO> dstgYearsClientReports = dstgYearsClientReportsDao.getDstgYearsClientReports(reportsParamVO, invalidConfig);
+        List<DstgSourceYearReportsVO> dstgYearsClientReports = dstgYearsClientReportsDao1.getDstgYearsClientReports(reportsParamVO, invalidConfig);
+        List<DstgYearReportsVO> dstgYearReportsVOS = dstgYearsClientReportsDao.getDstgYearsClientReports(reportsParamVO, invalidConfig);
 
-        return dstgYearsClientReports;
+        getDataByConditionType(conditionType, dstgYearsClientReports, dstgYearReportsVOS);
+
+        return dstgYearReportsVOS;
+    }
+
+    private void getDataByConditionType(String conditionType, List<DstgSourceYearReportsVO> dstgYearsClientReports, List<DstgYearReportsVO> dstgYearReportsVOS) {
+        switch (conditionType) {
+            case "sum":
+                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                    Map newMap = null;
+                    if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
+                        newMap = dstgYearReportsVO.getMapList();
+                    } else {
+                        newMap = new HashMap();
+                    }
+                    for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
+                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                            newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getAllClientCount());
+                        }
+                    }
+                    dstgYearReportsVO.setMapList(newMap);
+                }
+                break;
+            case "all":
+                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                    Map newMap = null;
+                    if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
+                        newMap = dstgYearReportsVO.getMapList();
+                    } else {
+                        newMap = new HashMap();
+                    }
+                    for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
+                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                            newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getClientCount());
+                        }
+                    }
+                    dstgYearReportsVO.setMapList(newMap);
+                }
+                break;
+            case "valid":
+                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                    Map newMap = null;
+                    if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
+                        newMap = dstgYearReportsVO.getMapList();
+                    } else {
+                        newMap = new HashMap();
+                    }
+                    for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
+                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                            newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getValidClientCount());
+                        }
+                    }
+                    dstgYearReportsVO.setMapList(newMap);
+                }
+                break;
+            case "come":
+                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                    Map newMap = null;
+                    if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
+                        newMap = dstgYearReportsVO.getMapList();
+                    } else {
+                        newMap = new HashMap();
+                    }
+                    for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
+                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                            newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getComeShopClientCount());
+                        }
+                    }
+                    dstgYearReportsVO.setMapList(newMap);
+                }
+                break;
+            case "success":
+                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                    Map newMap = null;
+                    if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
+                        newMap = dstgYearReportsVO.getMapList();
+                    } else {
+                        newMap = new HashMap();
+                    }
+                    for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
+                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                            newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getSuccessClientCount());
+                        }
+                    }
+                    dstgYearReportsVO.setMapList(newMap);
+                }
+                break;
+            case "invalid":
+                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                    Map newMap = null;
+                    if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
+                        newMap = dstgYearReportsVO.getMapList();
+                    } else {
+                        newMap = new HashMap();
+                    }
+                    for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
+                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                            newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getInValidClientCount());
+                        }
+                    }
+                    dstgYearReportsVO.setMapList(newMap);
+                }
+                break;
+            case "ddnum":
+                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                    Map newMap = null;
+                    if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
+                        newMap = dstgYearReportsVO.getMapList();
+                    } else {
+                        newMap = new HashMap();
+                    }
+                    for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
+                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                            newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getPendingClientCount());
+                        }
+                    }
+                    dstgYearReportsVO.setMapList(newMap);
+                }
+                break;
+            case "validrate":
+                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                    Map newMap = null;
+                    if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
+                        newMap = dstgYearReportsVO.getMapList();
+                    } else {
+                        newMap = new HashMap();
+                    }
+                    for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
+                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                            newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getValidRate());
+                        }
+                    }
+                    dstgYearReportsVO.setMapList(newMap);
+                }
+                break;
+            case "invalidrate":
+                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                    Map newMap = null;
+                    if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
+                        newMap = dstgYearReportsVO.getMapList();
+                    } else {
+                        newMap = new HashMap();
+                    }
+                    for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
+                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                            newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getInValidRate());
+                        }
+                    }
+                    dstgYearReportsVO.setMapList(newMap);
+                }
+                break;
+            case "ddrate":
+                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                    Map newMap = null;
+                    if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
+                        newMap = dstgYearReportsVO.getMapList();
+                    } else {
+                        newMap = new HashMap();
+                    }
+                    for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
+                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                            newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getWaitRate());
+                        }
+                    }
+                    dstgYearReportsVO.setMapList(newMap);
+                }
+                break;
+            case "allcomerate":
+                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                    Map newMap = null;
+                    if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
+                        newMap = dstgYearReportsVO.getMapList();
+                    } else {
+                        newMap = new HashMap();
+                    }
+                    for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
+                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                            newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getClientComeShopRate());
+                        }
+                    }
+                    dstgYearReportsVO.setMapList(newMap);
+                }
+                break;
+            case "validcomerate":
+                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                    Map newMap = null;
+                    if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
+                        newMap = dstgYearReportsVO.getMapList();
+                    } else {
+                        newMap = new HashMap();
+                    }
+                    for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
+                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                            newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getValidClientComeShopRate());
+                        }
+                    }
+                    dstgYearReportsVO.setMapList(newMap);
+                }
+                break;
+            case "rdsuccessrate":
+                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                    Map newMap = null;
+                    if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
+                        newMap = dstgYearReportsVO.getMapList();
+                    } else {
+                        newMap = new HashMap();
+                    }
+                    for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
+                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                            newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getComeShopSuccessRate());
+                        }
+                    }
+                    dstgYearReportsVO.setMapList(newMap);
+                }
+                break;
+            case "allsuccessrate":
+                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                    Map newMap = null;
+                    if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
+                        newMap = dstgYearReportsVO.getMapList();
+                    } else {
+                        newMap = new HashMap();
+                    }
+                    for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
+                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                            newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getClientSuccessRate());
+                        }
+                    }
+                    dstgYearReportsVO.setMapList(newMap);
+                }
+                break;
+            case "validsuccessrate":
+                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                    Map newMap = null;
+                    if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
+                        newMap = dstgYearReportsVO.getMapList();
+                    } else {
+                        newMap = new HashMap();
+                    }
+                    for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
+                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                            newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getValidClientSuccessRate());
+                        }
+                    }
+                    dstgYearReportsVO.setMapList(newMap);
+                }
+                break;
+            case "amount":
+                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                    Map newMap = null;
+                    if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
+                        newMap = dstgYearReportsVO.getMapList();
+                    } else {
+                        newMap = new HashMap();
+                    }
+                    for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
+                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                            newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getAllCost());
+                        }
+                    }
+                    dstgYearReportsVO.setMapList(newMap);
+                }
+                break;
+            case "allcb":
+                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                    Map newMap = null;
+                    if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
+                        newMap = dstgYearReportsVO.getMapList();
+                    } else {
+                        newMap = new HashMap();
+                    }
+                    for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
+                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                            newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getClientCost());
+                        }
+                    }
+                    dstgYearReportsVO.setMapList(newMap);
+                }
+                break;
+            case "validcb":
+                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                    Map newMap = null;
+                    if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
+                        newMap = dstgYearReportsVO.getMapList();
+                    } else {
+                        newMap = new HashMap();
+                    }
+                    for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
+                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                            newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getValidClientCost());
+                        }
+                    }
+                    dstgYearReportsVO.setMapList(newMap);
+                }
+                break;
+            case "comecb":
+                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                    Map newMap = null;
+                    if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
+                        newMap = dstgYearReportsVO.getMapList();
+                    } else {
+                        newMap = new HashMap();
+                    }
+                    for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
+                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                            newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getComeShopClientCost());
+                        }
+                    }
+                    dstgYearReportsVO.setMapList(newMap);
+                }
+                break;
+            case "successcb":
+                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                    Map newMap = null;
+                    if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
+                        newMap = dstgYearReportsVO.getMapList();
+                    } else {
+                        newMap = new HashMap();
+                    }
+                    for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
+                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                            newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getSuccessClientCost());
+                        }
+                    }
+                    dstgYearReportsVO.setMapList(newMap);
+                }
+                break;
+            case "successavg":
+                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                    Map newMap = null;
+                    if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
+                        newMap = dstgYearReportsVO.getMapList();
+                    } else {
+                        newMap = new HashMap();
+                    }
+                    for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
+                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                            newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getAvgAmount());
+                        }
+                    }
+                    dstgYearReportsVO.setMapList(newMap);
+                }
+                break;
+            case "successamount":
+                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                    Map newMap = null;
+                    if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
+                        newMap = dstgYearReportsVO.getMapList();
+                    } else {
+                        newMap = new HashMap();
+                    }
+                    for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
+                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                            newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getAmount());
+                        }
+                    }
+                    dstgYearReportsVO.setMapList(newMap);
+                }
+                break;
+            case "roi":
+                for(DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+                    Map newMap = null;
+                    if (CollectionUtils.isNotEmpty(dstgYearReportsVO.getMapList())) {
+                        newMap = dstgYearReportsVO.getMapList();
+                    } else {
+                        newMap = new HashMap();
+                    }
+                    for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgYearsClientReports) {
+                        if(dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())){
+                            newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getROI());
+                        }
+                    }
+                    dstgYearReportsVO.setMapList(newMap);
+                }
+                break;
+                default:
+                    break;
+        }
     }
 }
