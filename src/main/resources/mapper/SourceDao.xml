@@ -406,7 +406,7 @@
     </select>
 
     <!--查询所属公司所有显示的转介绍渠道id字符串-->
-    <select id="getAllZjsSourceIdStr">
+    <select id="getAllZjsSourceIdStr" resultType="String">
         SELECT
         GROUP_CONCAT(ID)
         FROM
