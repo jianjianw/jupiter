@@ -41,10 +41,17 @@ public class ProvinceReportsDao {
     public List<ProvinceReportsVO2> provinceReport(final ProvinceAnalysisParamDTO provinceAnalysisParamDTO, DsInvalidVO invalidConfig) {
 
         List<ProvinceReportsVO> resultContent = new ArrayList<>();
-        for (String provinceName : ChinaTerritoryConst.TERRITORY_MAP.keySet()) {    //遍历所有省
+        List<String> psn = new ArrayList<>();
+        psn.addAll(ChinaTerritoryConst.TERRITORY_MAP.keySet());
+        psn.add("其他");
+        for (String provinceName : psn) {    //遍历所有省
             Object[] objs = getParam(provinceAnalysisParamDTO, invalidConfig, provinceName);
             String sql = getFinalSQL(provinceAnalysisParamDTO, invalidConfig);
-
+            //TODO 添加一个其他 然后查询出所有客资
+            if (provinceName.equals("其他")) {
+                sql = sql.replace("AND INSTR(detail.ADDRESS, ? )> 0", " ");
+                objs = getOtherParam(provinceAnalysisParamDTO, invalidConfig);
+            }
             List<ProvinceReportsVO> now = jdbcTemplate.query(sql,
                     objs,
                     new RowMapper<ProvinceReportsVO>() {
@@ -52,14 +59,6 @@ public class ProvinceReportsDao {
                         public ProvinceReportsVO mapRow(ResultSet rs, int i) throws SQLException {
                             ProvinceReportsVO provinceReportsVO = new ProvinceReportsVO();
                             List<SourceClientDataDTO> list = new ArrayList<>();
-//                            while (rs.next()) {  //如果返回结果集还有就继续
-//                                SourceClientDataDTO scd = new SourceClientDataDTO();
-//                                scd.setSrcId(rs.getInt("srcId"));
-//                                scd.setDataNum(rs.getInt("dataNum"));
-//                                scd.setSrcName(rs.getString("srcName"));
-//                                scd.setSrcImg(rs.getString("srcImg"));
-//                                list.add(scd);
-//                            }
                             do {
                                 SourceClientDataDTO scd = new SourceClientDataDTO();
                                 scd.setSrcId(rs.getInt("srcId"));
@@ -81,8 +80,16 @@ public class ProvinceReportsDao {
             now.get(0).setProvinceName(provinceName);
             resultContent.addAll(now);
         }
-
         return total(transform(resultContent));
+    }
+
+    public static void main(String[] args) {
+//        String sql = "SELECT info.SOURCEID srcId,src.SRCNAME ,src.SRCIMG , COUNT(1) dataNum  FROM hm_crm_client_info_2 info INNER JOIN hm_crm_client_detail_2 detail ON info.KZID = detail.KZID AND info.COMPANYID = detail.COMPANYID  INNER JOIN hm_crm_source src ON src.ID = info.SOURCEID AND src.COMPANYID = info.COMPANYID WHERE info.ISDEL = 0 AND info.COMPANYID = 2 AND INSTR(detail.ADDRESS, ? )> 0  AND info.CREATETIME BETWEEN ? AND ?  GROUP BY info.SOURCEID ";
+//        System.out.println("index: "+sql.indexOf("AND INSTR(detail.ADDRESS, ? )> 0"));
+//        sql.replace("INSTR(detail.ADDRESS, ? )> 0","");
+        String sql = "asd,";
+        sql.replace(",", "");
+        System.out.println(sql);
     }
 
     /**
@@ -112,6 +119,8 @@ public class ProvinceReportsDao {
                 .append(" INNER JOIN hm_crm_source src ON src.ID = info.SOURCEID AND src.COMPANYID = info.COMPANYID")
                 .append(" WHERE info.ISDEL = 0 AND info.COMPANYID = " + provinceAnalysisParamDTO.getCompanyId())
                 .append(" AND INSTR(detail.ADDRESS, ? )> 0 ");
+//        if (!provinceAnalysisParamDTO.getSearchType().equals("其他"))
+//            sb.append(" AND INSTR(detail.ADDRESS, ? )> 0 ");
         return sb;
     }
 
@@ -424,6 +433,31 @@ public class ProvinceReportsDao {
         }
     }
 
+    private Object[] getOtherParam(ProvinceAnalysisParamDTO provinceAnalysisParamDTO, DsInvalidVO invalidConfig) {
+        switch (provinceAnalysisParamDTO.getSearchType()) {
+            case "总客资":
+                return new Object[]{provinceAnalysisParamDTO.getStart(), provinceAnalysisParamDTO.getEnd()};
+            case "客资量":
+                return new Object[]{provinceAnalysisParamDTO.getStart(), provinceAnalysisParamDTO.getEnd(),
+                        provinceAnalysisParamDTO.getStart(), provinceAnalysisParamDTO.getEnd(),
+                        provinceAnalysisParamDTO.getStart(), provinceAnalysisParamDTO.getEnd(),
+                        provinceAnalysisParamDTO.getStart(), provinceAnalysisParamDTO.getEnd()};
+            case "有效量":
+                return new Object[]{provinceAnalysisParamDTO.getStart(), provinceAnalysisParamDTO.getEnd(),
+                        provinceAnalysisParamDTO.getStart(), provinceAnalysisParamDTO.getEnd(),
+                        provinceAnalysisParamDTO.getStart(), provinceAnalysisParamDTO.getEnd(),
+                        provinceAnalysisParamDTO.getStart(), provinceAnalysisParamDTO.getEnd(),
+                        provinceAnalysisParamDTO.getStart(), provinceAnalysisParamDTO.getEnd(),
+                        provinceAnalysisParamDTO.getStart(), provinceAnalysisParamDTO.getEnd(), invalidConfig.getDsDdStatus()};
+            case "入店量":
+                return new Object[]{provinceAnalysisParamDTO.getStart(), provinceAnalysisParamDTO.getEnd()};
+            case "成交量":
+                return new Object[]{provinceAnalysisParamDTO.getStart(), provinceAnalysisParamDTO.getEnd()};
+            default:
+                throw new RException(ExceptionEnum.SEARCH_TYPE_IS_UNKNOW);
+        }
+    }
+
     public static List<ProvinceReportsVO2> transform2(List<ProvinceReportsVO> vo1List) {
         List<ProvinceReportsVO2> vo2List = new ArrayList<>();
         Map<Integer, Integer> exist = new HashMap<>();   //key为srcId value为下标
@@ -493,10 +527,10 @@ public class ProvinceReportsDao {
         ProvinceReportsVO2 prv = new ProvinceReportsVO2();
         prv.setSrcName("合计");
         prv.setProvinceDataMap(new HashMap<String, Integer>());
-        list.add(0,prv);
+        list.add(0, prv);
         for (ProvinceReportsVO2 pr : list) {
             prv.setDataType(pr.getDataType());
-            Map<String,Integer> map = pr.getProvinceDataMap();
+            Map<String, Integer> map = pr.getProvinceDataMap();
             int total = 0;
             for (String key : map.keySet()) {
                 if (!prv.getProvinceDataMap().containsKey(key)) {
@@ -506,11 +540,11 @@ public class ProvinceReportsDao {
                 }
                 total += map.get(key);
             }
-            map.put("total",total);
+            map.put("total", total);
         }
 
-        for (String key : prv.getProvinceDataMap().keySet()){
-            prv.getProvinceDataMap().put("total",prv.getProvinceDataMap().get(key)+prv.getProvinceDataMap().get("total"));
+        for (String key : prv.getProvinceDataMap().keySet()) {
+            prv.getProvinceDataMap().put("total", prv.getProvinceDataMap().get(key) + prv.getProvinceDataMap().get("total"));
         }
         return list;
     }
