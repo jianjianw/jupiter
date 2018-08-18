@@ -81,8 +81,8 @@ public class ProvinceReportsDao {
             now.get(0).setProvinceName(provinceName);
             resultContent.addAll(now);
         }
-        List<ProvinceReportsVO2> resultList = transform(resultContent);
-        return total(resultList);
+
+        return total(transform(resultContent));
     }
 
     /**
@@ -506,7 +506,7 @@ public class ProvinceReportsDao {
                 }
                 total += map.get(key);
             }
-            map.put("合计",total);
+            map.put("total",total);
         }
         return list;
     }
