@@ -5,8 +5,11 @@ import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
 import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.entity.dto.ClientGoEasyDTO;
+import com.qiein.jupiter.web.entity.dto.RequestInfoDTO;
+import com.qiein.jupiter.web.entity.po.SystemLog;
 import com.qiein.jupiter.web.service.CompanyService;
 import com.qiein.jupiter.web.service.DictionaryService;
+import com.qiein.jupiter.web.service.SystemLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +37,9 @@ public class ClientAddController extends BaseController {
     @Autowired
     private CompanyService companyService;
 
+    @Autowired
+    private SystemLogService logService;
+
     /**
      * 录入电商客资
      *
@@ -48,6 +54,17 @@ public class ClientAddController extends BaseController {
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         clientAddService.addDsClient(clientVO, currentLoginStaff);
+        try {
+            RequestInfoDTO requestInfo = getRequestInfo();
+            // 日志记录
+            SystemLog log = new SystemLog(SysLogUtil.LOG_TYPE_CLIENT, requestInfo.getIp(), requestInfo.getUrl(), currentLoginStaff.getId(),
+                    currentLoginStaff.getNickName(), SysLogUtil.getAddLog(SysLogUtil.LOG_SUP_CLIENT, clientVO.getKzPhone(),
+                    clientVO.getKzWechat(), clientVO.getKzQq(), clientVO.getKzWw()),
+                    currentLoginStaff.getCompanyId());
+            logService.addLog(log);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return ResultInfoUtil.success(TipMsgEnum.ENTERING_SUNCCESS);
     }
 
@@ -68,6 +85,17 @@ public class ClientAddController extends BaseController {
         String zjsFields = companyService.getZjsRequiredField(currentLoginStaff.getCompanyId());
         zjsFilter(clientVO, zjsFields);
         clientAddService.addZjsClient(clientVO, currentLoginStaff);
+        try {
+            RequestInfoDTO requestInfo = getRequestInfo();
+            // 日志记录
+            SystemLog log = new SystemLog(SysLogUtil.LOG_TYPE_CLIENT, requestInfo.getIp(), requestInfo.getUrl(), currentLoginStaff.getId(),
+                    currentLoginStaff.getNickName(), SysLogUtil.getAddLog(SysLogUtil.LOG_SUP_CLIENT, clientVO.getKzPhone(),
+                    clientVO.getKzWechat(), clientVO.getKzQq(), clientVO.getKzWw()),
+                    currentLoginStaff.getCompanyId());
+            logService.addLog(log);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return ResultInfoUtil.success(TipMsgEnum.ENTERING_SUNCCESS);
     }
 
@@ -119,6 +147,7 @@ public class ClientAddController extends BaseController {
             throw new RException(ExceptionEnum.OLD_CLIENT_PHONE_IS_NOT_LEGAL);
 
         clientAddService.addOutZjsClient(clientVO);
+
         return ResultInfoUtil.success();
     }
 
@@ -152,6 +181,17 @@ public class ClientAddController extends BaseController {
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         clientAddService.addMsClient(clientVO, currentLoginStaff);
+        try {
+            RequestInfoDTO requestInfo = getRequestInfo();
+            // 日志记录
+            SystemLog log = new SystemLog(SysLogUtil.LOG_TYPE_CLIENT, requestInfo.getIp(), requestInfo.getUrl(), currentLoginStaff.getId(),
+                    currentLoginStaff.getNickName(), SysLogUtil.getAddLog(SysLogUtil.LOG_SUP_CLIENT, clientVO.getKzPhone(),
+                    clientVO.getKzWechat(), clientVO.getKzQq(), clientVO.getKzWw()),
+                    currentLoginStaff.getCompanyId());
+            logService.addLog(log);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return ResultInfoUtil.success(TipMsgEnum.ENTERING_SUNCCESS);
     }
 
@@ -193,6 +233,16 @@ public class ClientAddController extends BaseController {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         JSONObject result = clientAddService.batchAddDsClient(list, channelId, sourceId, shopId, typeId, currentLoginStaff, adId,
                 adAddress, groupId, appointId, zxStyle, yxLevel, ysRange, marryTime);
+        try {
+            RequestInfoDTO requestInfo = getRequestInfo();
+            // 日志记录
+            SystemLog log = new SystemLog(SysLogUtil.LOG_TYPE_CLIENT, requestInfo.getIp(), requestInfo.getUrl(), currentLoginStaff.getId(),
+                    currentLoginStaff.getNickName(), SysLogUtil.getAddLog(SysLogUtil.LOG_SUP_CLIENT, list),
+                    currentLoginStaff.getCompanyId());
+            logService.addLog(log);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         ResultInfo rep = new ResultInfo();
         rep.setCode(result.getInteger("code"));
         rep.setMsg(result.getString("msg"));

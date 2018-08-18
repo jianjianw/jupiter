@@ -94,8 +94,10 @@ public class SysLogUtil {
         if (params != null) {
             sb.append("=>[");
             for (String param : params) {
-                sb.append(param);
-                sb.append(CommonConstant.STR_SEPARATOR);
+                if (StringUtil.isNotEmpty(param)){
+                    sb.append(param);
+                    sb.append(CommonConstant.STR_SEPARATOR);
+                }
             }
             sb.deleteCharAt(sb.length() - 1);
             sb.append("]");
@@ -107,6 +109,29 @@ public class SysLogUtil {
 
         StringBuilder sb = new StringBuilder();
         sb.append(SYS_LOG_PREFIX_IMPORT);
+        sb.append(LOG_SUP_CLIENT);
+        if (params != null) {
+            sb.append(":");
+            sb.append("=>[");
+            for (String key : params.keySet()) {
+                if (StringUtil.isEmpty(params.get(key))) {
+                    continue;
+                }
+                sb.append(key);
+                sb.append("→");
+                sb.append(params.get(key));
+                sb.append(CommonConstant.STR_SEPARATOR);
+            }
+            sb.deleteCharAt(sb.length() - 1);
+            sb.append("]");
+        }
+        return sb.toString();
+    }
+
+    public static String getKzEnterLog(Map<String, String> params) {
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(SYS_LOG_PREFIX_ADD);
         sb.append(LOG_SUP_CLIENT);
         if (params != null) {
             sb.append(":");

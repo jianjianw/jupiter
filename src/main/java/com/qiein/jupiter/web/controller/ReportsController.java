@@ -586,10 +586,11 @@ public class ReportsController extends BaseController {
      * 电商推广年度报表
      * */
     @GetMapping("/get_dstg_years_reports")
-    public ResultInfo getDstgYearsReports(Integer start,Integer end,String years){
+    public ResultInfo getDstgYearsReports(String type,String sourceIds,String years,String conditionType){
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        List<DstgYearReportsVO> dstgYearReportsVOS = reportService.getDstgYearsReports(start,end,currentLoginStaff.getCompanyId(),years);
-        return ResultInfoUtil.success(dstgYearReportsVOS);
+//        List<DstgYearReportsVO> dstgYearReportsVOS = reportService.getDstgYearsReports(type,sourceIds,currentLoginStaff.getCompanyId(),years);
+        List<DstgYearReportsVO> dstgYearsReports = reportService.getDstgYearsReports(type, sourceIds, currentLoginStaff.getCompanyId(), years, conditionType);
+        return ResultInfoUtil.success(dstgYearsReports);
     }
 
     /**
@@ -616,5 +617,20 @@ public class ReportsController extends BaseController {
         StaffPO staffPO = getCurrentLoginStaff();
         List<DstgYearDetailReportsProcessVO> dstgYearReportsVOS = reportService.getDstgYearDetailReports(years,staffPO.getCompanyId());
         return ResultInfoUtil.success(dstgYearReportsVOS);
+    }
+
+    /**
+     * 转介绍年度详情
+     * @param searchKey
+     * @return
+     */
+    @GetMapping("/get_zjs_year_detail_report")
+    public ResultInfo getZjsYearClientDetailReport(ZjsClientYearReportDTO searchKey){
+        if (searchKey.getYear()==0){
+            searchKey.setYear(Integer.valueOf(new SimpleDateFormat("yyyy").format(new Date())));
+        }
+        searchKey.setCompanyId(getCurrentLoginStaff().getCompanyId());
+
+        return ResultInfoUtil.success(reportService.getZjsYearDetailReport(searchKey));
     }
 }
