@@ -12,10 +12,7 @@ import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.ClientInfoDao;
 import com.qiein.jupiter.web.dao.DictionaryDao;
 import com.qiein.jupiter.web.dao.GroupStaffDao;
-import com.qiein.jupiter.web.entity.dto.CitiesAnalysisParamDTO;
-import com.qiein.jupiter.web.entity.dto.ClientLogDTO;
-import com.qiein.jupiter.web.entity.dto.ProvinceAnalysisParamDTO;
-import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
+import com.qiein.jupiter.web.entity.dto.*;
 import com.qiein.jupiter.web.entity.po.*;
 import com.qiein.jupiter.web.entity.vo.*;
 import com.qiein.jupiter.web.repository.*;
@@ -23,10 +20,7 @@ import com.qiein.jupiter.web.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 报表
@@ -61,6 +55,8 @@ public class ReportsServiceImpl implements ReportService {
     @Autowired
     private ZjskzOfMonthDao zjskzOfMonthDao;
     @Autowired
+    private ZjsKzOfYearDao zjsKzOfYearDao;
+    @Autowired
     private DsyyStatusReportsDao dsyyStatusReportsDao;
     @Autowired
     private OldKzReportsDao oldKzReportsDao;
@@ -86,6 +82,8 @@ public class ReportsServiceImpl implements ReportService {
     @Autowired
     private CwMonthOrderCountReportsDao cwMonthOrderCountReportsDao;
 
+    @Autowired
+    private DstgYearsClientDetailReportsDao dstgYearsClientDetailReportsDao;
     /**
      * 修改联系方式日志
      *
@@ -269,7 +267,17 @@ public class ReportsServiceImpl implements ReportService {
         List<Map<String, Object>> newList = zjskzOfMonthDao.getDayOfMonth(Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[0]), Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[1]), DBSplitUtil.getTable(TableEnum.info, companyId));
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         month = month.replace(CommonConstant.ROD_SEPARATOR, CommonConstant.FILE_SEPARATOR);
-        return zjskzOfMonthDao.ZjskzOfMonthIn(newList, companyId, month, sourceId, invalidConfig);
+        return zjskzOfMonthDao.ZjskzOfMonthIn(newList, companyId, month, sourceId, invalidConfig,CommonConstant.ZjsSrc);
+    }
+
+    /**
+     * 转介绍每月客资报表内表详情
+     */
+    public ZjskzOfMonthMapVO DskzOfMonthIn(Integer companyId, String sourceId, String month) {
+        List<Map<String, Object>> newList = zjskzOfMonthDao.getDayOfMonth(Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[0]), Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[1]), DBSplitUtil.getTable(TableEnum.info, companyId));
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
+        month = month.replace(CommonConstant.ROD_SEPARATOR, CommonConstant.FILE_SEPARATOR);
+        return zjskzOfMonthDao.ZjskzOfMonthIn(newList, companyId, month, sourceId, invalidConfig,CommonConstant.DsSrc);
     }
 
     /**
@@ -471,6 +479,87 @@ public class ReportsServiceImpl implements ReportService {
         return cwMonthOrderCountReportsDao.getCwMonthOrderCountReports(reportsParamVO);
     }
 
+    /**
+     * 转介绍年度报表
+     * @param zjsClientYearReportDTO
+     * @return
+     */
+    @Override
+    public List<ZjsClientYearReportVO2> getZjsYearReport(ZjsClientYearReportDTO zjsClientYearReportDTO) {
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(zjsClientYearReportDTO.getCompanyId());
+        List<ZjsClientYearReportVO2> list = zjsKzOfYearDao.getZjsKzYearReport(zjsClientYearReportDTO, invalidConfig);
+        return list;
+    }
+
+    @Override
+    public List<DstgYearDetailReportsProcessVO> getDstgYearDetailReports(String years,Integer companyId) {
+        ReportsParamVO reportsParamVO = new ReportsParamVO();
+        reportsParamVO.setYears(years);
+        reportsParamVO.setCompanyId(companyId);
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
+        List<DstgYearDetailReportsVO> dstgYearsClietnDetailReports= null;
+
+
+        //FIXME 此处代码已写死
+        List<DstgYearDetailReportsProcessVO> dstgYearDetailReportsProcessVOS = new ArrayList<>();
+        try{
+            dstgYearsClietnDetailReports= dstgYearsClientDetailReportsDao.getDstgYearsClietnDetailReports(reportsParamVO, invalidConfig);
+            //FIXME
+            HashMap<String,Object> allClientCountMap = new HashMap();
+            HashMap<String,Object> validClientCountMap = new HashMap();
+            HashMap<String,Object> validRateMap = new HashMap();
+            HashMap<String,Object> allCostMap = new HashMap();
+            HashMap<String,Object> clientCostMap = new HashMap();
+            HashMap<String,Object> validClientCostMap = new HashMap();
+
+            DstgYearDetailReportsProcessVO dstgYearDetailReportsProcessVO = new DstgYearDetailReportsProcessVO();
+            DstgYearDetailReportsProcessVO dstgYearDetailReportsProcessVO1 = new DstgYearDetailReportsProcessVO();
+            DstgYearDetailReportsProcessVO dstgYearDetailReportsProcessVO2 = new DstgYearDetailReportsProcessVO();
+            DstgYearDetailReportsProcessVO dstgYearDetailReportsProcessVO3 = new DstgYearDetailReportsProcessVO();
+            DstgYearDetailReportsProcessVO dstgYearDetailReportsProcessVO4 = new DstgYearDetailReportsProcessVO();
+            DstgYearDetailReportsProcessVO dstgYearDetailReportsProcessVO5 = new DstgYearDetailReportsProcessVO();
+            dstgYearDetailReportsProcessVO.setName("客资量");
+            dstgYearDetailReportsProcessVO1.setName("有效量");
+            dstgYearDetailReportsProcessVO2.setName("有效率");
+            dstgYearDetailReportsProcessVO3.setName("总花费");
+            dstgYearDetailReportsProcessVO4.setName("毛客资成本");
+            dstgYearDetailReportsProcessVO5.setName("有效成本");
+
+            for (DstgYearDetailReportsVO dstgYearDetailReportsVO :dstgYearsClietnDetailReports){
+                allClientCountMap.put(dstgYearDetailReportsVO.getMonth(),dstgYearDetailReportsVO.getAllClientCount());
+                validClientCountMap.put(dstgYearDetailReportsVO.getMonth(),dstgYearDetailReportsVO.getValidClientCount());
+                validRateMap.put(dstgYearDetailReportsVO.getMonth(),dstgYearDetailReportsVO.getValidRate());
+                allCostMap.put(dstgYearDetailReportsVO.getMonth(),dstgYearDetailReportsVO.getAllCost());
+                clientCostMap.put(dstgYearDetailReportsVO.getMonth(),dstgYearDetailReportsVO.getClientCost());
+                validClientCostMap.put(dstgYearDetailReportsVO.getMonth(),dstgYearDetailReportsVO.getValidClientCost());
+            }
+
+            dstgYearDetailReportsProcessVO.setProcessData(allClientCountMap);
+            dstgYearDetailReportsProcessVO1.setProcessData(validClientCountMap);
+            dstgYearDetailReportsProcessVO2.setProcessData(validRateMap);
+            dstgYearDetailReportsProcessVO3.setProcessData(allCostMap);
+            dstgYearDetailReportsProcessVO4.setProcessData(clientCostMap);
+            dstgYearDetailReportsProcessVO5.setProcessData(validClientCostMap);
+
+            dstgYearDetailReportsProcessVOS.add(dstgYearDetailReportsProcessVO);
+            dstgYearDetailReportsProcessVOS.add(dstgYearDetailReportsProcessVO1);
+            dstgYearDetailReportsProcessVOS.add(dstgYearDetailReportsProcessVO2);
+            dstgYearDetailReportsProcessVOS.add(dstgYearDetailReportsProcessVO3);
+            dstgYearDetailReportsProcessVOS.add(dstgYearDetailReportsProcessVO4);
+            dstgYearDetailReportsProcessVOS.add(dstgYearDetailReportsProcessVO5);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return dstgYearDetailReportsProcessVOS;
+    }
+
+    @Override
+    public List<Map<String, Object>> getZjsYearDetailReport(ZjsClientYearReportDTO zjsClientYearReportDTO) {
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(zjsClientYearReportDTO.getCompanyId());
+        List<Map<String, Object>> list = zjsKzOfYearDao.getZjsYearDetailReport(zjsClientYearReportDTO, invalidConfig);
+        return list;
+    }
+
     @Override
     public List<DstgYearReportsVO> getDstgYearsReports(Integer start, Integer end, int companyId,String years) {
         ReportsParamVO reportsParamVO = new ReportsParamVO();
@@ -480,6 +569,8 @@ public class ReportsServiceImpl implements ReportService {
         reportsParamVO.setYears(years);
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         List<DstgYearReportsVO> dstgYearsClientReports = dstgYearsClientReportsDao.getDstgYearsClientReports(reportsParamVO, invalidConfig);
+        List<Map<String,Map<String,Integer>>> listMap = new ArrayList<>();
+
         return dstgYearsClientReports;
     }
 }

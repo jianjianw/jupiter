@@ -2,14 +2,12 @@ package com.qiein.jupiter.web.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
-import com.qiein.jupiter.web.entity.dto.CitiesAnalysisParamDTO;
-import com.qiein.jupiter.web.entity.dto.ClientLogDTO;
-import com.qiein.jupiter.web.entity.dto.ProvinceAnalysisParamDTO;
-import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
+import com.qiein.jupiter.web.entity.dto.*;
 import com.qiein.jupiter.web.entity.vo.DstgYearReportsVO;
 import com.qiein.jupiter.web.entity.vo.*;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ReportService {
     /**
@@ -129,6 +127,14 @@ public interface ReportService {
      * @return
      */
     ZjskzOfMonthMapVO ZjskzOfMonthIn(Integer companyId, String sourceId, String month);
+    /**
+     * 转介绍月底客资汇总报表详情
+     * @param companyId
+     * @param sourceId
+     * @param month
+     * @return
+     */
+    ZjskzOfMonthMapVO DskzOfMonthIn(Integer companyId, String sourceId, String month);
 
     /**
      * 老客信息汇总报表
@@ -227,4 +233,23 @@ public interface ReportService {
      * @return
      */
     JSONObject getCwMonthOrderCountReports(ReportsParamVO reportsParamVO);
+
+    /**
+     * 获取转介绍年度分析报表
+     * @param zjsClientYearReportDTO
+     * @return
+     */
+    List<ZjsClientYearReportVO2> getZjsYearReport(ZjsClientYearReportDTO zjsClientYearReportDTO);
+
+    /**
+     * 获取电商推广年度详情报表
+     * */
+    List<DstgYearDetailReportsProcessVO> getDstgYearDetailReports(String years, Integer companyId);
+
+    /**
+     * 转介绍年度详情报表
+     * @param zjsClientYearReportDTO
+     * @return
+     */
+    List<Map<String, Object>> getZjsYearDetailReport(ZjsClientYearReportDTO zjsClientYearReportDTO);
 }

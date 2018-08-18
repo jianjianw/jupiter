@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.http.CrmBaseApi;
 import com.qiein.jupiter.util.*;
-import com.qiein.jupiter.web.entity.dto.CitiesAnalysisParamDTO;
-import com.qiein.jupiter.web.entity.dto.ClientLogDTO;
-import com.qiein.jupiter.web.entity.dto.ProvinceAnalysisParamDTO;
-import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
+import com.qiein.jupiter.web.entity.dto.*;
 import com.qiein.jupiter.web.entity.vo.DstgYearReportsVO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.*;
@@ -15,6 +12,8 @@ import com.qiein.jupiter.web.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -436,6 +435,14 @@ public class ReportsController extends BaseController {
         return ResultInfoUtil.success(reportService.ZjskzOfMonthIn(getCurrentLoginStaff().getCompanyId(), sourceId, month));
     }
 
+    /**
+     * 电商每月客资报表内表详情
+     */
+    @GetMapping("/ds_kz_of_month_in")
+    public ResultInfo DskzOfMonthIn(String sourceId, String month) {
+        return ResultInfoUtil.success(reportService.DskzOfMonthIn(getCurrentLoginStaff().getCompanyId(), sourceId, month));
+    }
+
 
     /**
      * 获取市域分析报表
@@ -583,5 +590,46 @@ public class ReportsController extends BaseController {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         List<DstgYearReportsVO> dstgYearReportsVOS = reportService.getDstgYearsReports(start,end,currentLoginStaff.getCompanyId(),years);
         return ResultInfoUtil.success(dstgYearReportsVOS);
+    }
+
+    /**
+     * 转介绍年度报表分析
+     * @param searchKey
+     * @return
+     */
+    @GetMapping("/get_zjs_year_report")
+    public ResultInfo getZjsYearClientReport(ZjsClientYearReportDTO searchKey){
+        if (searchKey.getYear()==0){
+            searchKey.setYear(Integer.valueOf(new SimpleDateFormat("yyyy").format(new Date())));
+        }
+        searchKey.setCompanyId(getCurrentLoginStaff().getCompanyId());
+        return ResultInfoUtil.success(reportService.getZjsYearReport(searchKey));
+    }
+
+
+
+    /**
+     * 电商推广年度详细报表
+     * */
+    @GetMapping("/get_dstg_year_detail_reports")
+    public ResultInfo getDstgYearDetailReports(String years){
+        StaffPO staffPO = getCurrentLoginStaff();
+        List<DstgYearDetailReportsProcessVO> dstgYearReportsVOS = reportService.getDstgYearDetailReports(years,staffPO.getCompanyId());
+        return ResultInfoUtil.success(dstgYearReportsVOS);
+    }
+
+    /**
+     * 转介绍年度详情
+     * @param searchKey
+     * @return
+     */
+    @GetMapping("/get_zjs_year_detail_report")
+    public ResultInfo getZjsYearClientDetailReport(ZjsClientYearReportDTO searchKey){
+        if (searchKey.getYear()==0){
+            searchKey.setYear(Integer.valueOf(new SimpleDateFormat("yyyy").format(new Date())));
+        }
+        searchKey.setCompanyId(getCurrentLoginStaff().getCompanyId());
+
+        return ResultInfoUtil.success(reportService.getZjsYearDetailReport(searchKey));
     }
 }

@@ -33,6 +33,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * 员工相关
+ */
 @Service
 public class StaffServiceImpl implements StaffService {
 
@@ -227,11 +230,11 @@ public class StaffServiceImpl implements StaffService {
     public void batDelStaff(StaffStateVO staffStateVO) {
         // TODO 清除缓存
         // FIXME  此处需要做删除校验
-        List<StaffGroupVO> staffGroupVOS = groupStaffDao.getGroupStaffCountByStaffIdAndCompanyId(Arrays.asList(staffStateVO.getIds().split(CommonConstant.STR_SEPARATOR)),staffStateVO.getCompanyId());
-        for (StaffGroupVO staffGroupVO :staffGroupVOS){
-            if(staffGroupVO.getGroupCount() > 1){
+        List<StaffGroupVO> staffGroupVOS = groupStaffDao.getGroupStaffCountByStaffIdAndCompanyId(Arrays.asList(staffStateVO.getIds().split(CommonConstant.STR_SEPARATOR)), staffStateVO.getCompanyId());
+        for (StaffGroupVO staffGroupVO : staffGroupVOS) {
+            if (staffGroupVO.getGroupCount() > 1) {
                 //FIXME 此处暂时无法更改
-            }else{
+            } else {
                 // 修改删除标识
                 staffDao.batUpdateStaffState(staffStateVO, staffStateVO.getIds().split(","));
                 // 硬删除员工角色
@@ -305,7 +308,7 @@ public class StaffServiceImpl implements StaffService {
         // 2.修改员工信息
         staffDao.updateStaff(staffVO);
         // 3.更新小组关联表
-        groupStaffDao.deleteByStaffIdAndGroupId(staffVO.getId(),staffVO.getCompanyId(), staffVO.getOldGroupId());
+        groupStaffDao.deleteByStaffIdAndGroupId(staffVO.getId(), staffVO.getCompanyId(), staffVO.getOldGroupId());
         groupStaffDao.insertGroupStaff(staffVO.getCompanyId(), staffVO.getGroupId(), staffVO.getId());
         // 4.删除权限关联表
         staffRoleDao.deleteByStaffId(staffVO.getId(), staffVO.getCompanyId());
@@ -877,7 +880,7 @@ public class StaffServiceImpl implements StaffService {
                     new StaffStatusLog(staffId, StaffStatusEnum.LIMIT.getStatusId(), CommonConstant.SYSTEM_OPERA_ID,
                             CommonConstant.SYSTEM_OPERA_NAME, companyId, ClientLogConst.LIMITDAY_OVERFLOW));
             // 推送状态重载消息
-            GoEasyUtil.pushStatusRefresh(companyId, staffId,webSocketMsgUtil);
+            GoEasyUtil.pushStatusRefresh(companyId, staffId, webSocketMsgUtil);
         }
     }
 
@@ -1001,18 +1004,32 @@ public class StaffServiceImpl implements StaffService {
         }
         return staffByPhoneMd5PwdAndCid;
     }
+
     /**
      * 批量获取员工姓名
+     *
      * @param staffIds
      * @return
      */
-    public List<String> getStaffNames(String staffIds){
-        String[] staffIdss=staffIds.split(CommonConstant.STR_SEPARATOR);
-        List<String> list=new ArrayList<>();
-        for(String staffId:staffIdss){
+    public List<String> getStaffNames(String staffIds) {
+        String[] staffIdss = staffIds.split(CommonConstant.STR_SEPARATOR);
+        List<String> list = new ArrayList<>();
+        for (String staffId : staffIdss) {
             list.add(staffId);
         }
         return staffDao.getStaffNames(list);
+    }
+
+    /**
+     * 根据关键字搜索员工
+     *
+     * @param companyId
+     * @param key
+     * @return
+     */
+    @Override
+    public List<SimpleStaffVO> searchStaffByKey(int companyId, String key) {
+        return staffDao.searchStaffByKey(companyId, key);
     }
 
 }

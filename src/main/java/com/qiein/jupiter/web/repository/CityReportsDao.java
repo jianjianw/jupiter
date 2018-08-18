@@ -381,6 +381,8 @@ public class CityReportsDao {
      *  计算 有效量 各种率 合计
      */
     private void calculate(List<RegionReportsVO> list, DsInvalidVO invalidConfig){
+        RegionReportsVO total = new RegionReportsVO();
+        total.setRegionName("合计");
         for (RegionReportsVO rrv:list){
             //有效量
             if(invalidConfig.getDdIsValid()){
@@ -390,27 +392,27 @@ public class CityReportsDao {
             }
             //客资量(总客资-筛选待定-筛选中-筛选无效)
             rrv.setClientCount(rrv.getAllClientCount()-rrv.getFilterPendingClientCount()-rrv.getFilterInValidClientCount()-rrv.getFilterInClientCount());
-//            //有效率 (有效量 / 客资量)
-//            rrv.setValidRate(rrv.getValidClientCount()/rrv.getClientCount());
-//            //无效率 (无效量 / 客资量)
-//            rrv.setInValidRate(rrv.getValidClientCount()/rrv.getClientCount());
-//            //待定率 (待定量 / 客资量)
-//            rrv.setWaitRate(rrv.getPendingClientCount()/rrv.getClientCount());
-//            //毛客资入店率 (入店量 / 总客资)
-//            rrv.setClientComeShopRate(rrv.getComeShopClientCount()/rrv.getAllClientCount());
-//            //有效客资入店率 (入店量 / 有效量 )
-//            rrv.setValidClientComeShopRate(rrv.getComeShopClientCount()/rrv.getValidClientCount());
-//            //入店成交率（成交量/入店量）
-//            rrv.setComeShopSuccessRate(rrv.getSuccessClientCount()/rrv.getComeShopClientCount());
-//            //毛客资成交率（成交量/总客资）
-//            rrv.setClientSuccessRate(rrv.getSuccessClientCount()/rrv.getAllClientCount());
-//            //有效客资成交率（有效量/成交量）
-//            rrv.setValidClientSuccessRate(rrv.getValidClientCount()/rrv.getSuccessClientCount());
-
+            //合计
+            total(total,rrv);
             //计算各种百分比
             everyRate(rrv);
 
         }
+        everyRate(total);
+        list.add(total);
+    }
+
+    private void total(RegionReportsVO total,RegionReportsVO rrv){
+        total.setAllClientCount(total.getAllClientCount()+rrv.getAllClientCount());                                 //总客资
+        total.setClientCount(total.getClientCount()+rrv.getClientCount());                                          //客资量
+        total.setValidClientCount(total.getValidClientCount()+rrv.getValidClientCount());                           //有效量
+        total.setInValidClientCount(total.getInValidClientCount()+rrv.getInValidClientCount());                     //无效量
+        total.setComeShopClientCount(total.getComeShopClientCount()+rrv.getComeShopClientCount());                  //入店量
+        total.setSuccessClientCount(total.getSuccessClientCount()+rrv.getSuccessClientCount());                     //成交量
+        total.setPendingClientCount(total.getPendingClientCount()+rrv.getPendingClientCount());                     //待定量
+        total.setFilterInClientCount(total.getFilterInValidClientCount()+total.getFilterPendingClientCount());      //筛选中
+        total.setFilterInValidClientCount(total.getFilterInValidClientCount()+rrv.getFilterInValidClientCount());   //筛选无效
+        total.setFilterPendingClientCount(total.getFilterPendingClientCount()+rrv.getFilterPendingClientCount());   //筛选待定
     }
 
     /**

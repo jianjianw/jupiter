@@ -52,19 +52,27 @@ public class ProvinceReportsDao {
                         public ProvinceReportsVO mapRow(ResultSet rs, int i) throws SQLException {
                             ProvinceReportsVO provinceReportsVO = new ProvinceReportsVO();
                             List<SourceClientDataDTO> list = new ArrayList<>();
-                            while (rs.next()) {  //如果返回结果集还有就继续
+//                            while (rs.next()) {  //如果返回结果集还有就继续
+//                                SourceClientDataDTO scd = new SourceClientDataDTO();
+//                                scd.setSrcId(rs.getInt("srcId"));
+//                                scd.setDataNum(rs.getInt("dataNum"));
+//                                scd.setSrcName(rs.getString("srcName"));
+//                                scd.setSrcImg(rs.getString("srcImg"));
+//                                list.add(scd);
+//                            }
+                            do {
                                 SourceClientDataDTO scd = new SourceClientDataDTO();
                                 scd.setSrcId(rs.getInt("srcId"));
                                 scd.setDataNum(rs.getInt("dataNum"));
                                 scd.setSrcName(rs.getString("srcName"));
                                 scd.setSrcImg(rs.getString("srcImg"));
                                 list.add(scd);
-                            }
+                            } while (rs.next());
                             provinceReportsVO.setSourceData(list);
                             return provinceReportsVO;
                         }
                     });
-            if (now.isEmpty()){
+            if (now.isEmpty()) {
                 ProvinceReportsVO empty = new ProvinceReportsVO();
                 now.add(empty);
             }
@@ -73,7 +81,8 @@ public class ProvinceReportsDao {
             now.get(0).setProvinceName(provinceName);
             resultContent.addAll(now);
         }
-        return transform(resultContent);
+        List<ProvinceReportsVO2> resultList = transform(resultContent);
+        return total(resultList);
     }
 
     /**
@@ -131,10 +140,10 @@ public class ProvinceReportsDao {
         sb.append("SELECT zkz.srcId,zkz.SRCIMG,zkz.SRCNAME,IFNULL(zkz.dataNum,0) - IFNULL(sxdd.dataNum,0) - IFNULL(sxz.dataNum,0) - IFNULL(sxwxl.dataNum,0) dataNum")
                 .append(" FROM ")
                 .append(" (" + getAllClientSQL(provinceAnalysisParamDTO) + ") zkz ")     //总客资
-                .append(" LEFT JOIN ("+getFilterPendingClientCount(provinceAnalysisParamDTO) + ") sxdd ON zkz.srcId = sxdd.srcId ")    //筛选待定
-                .append(" LEFT JOIN ("+getFilterInClientCount(provinceAnalysisParamDTO) + ") sxz ON zkz.srcId = sxz.srcId ")          //筛选中
-                .append(" LEFT JOIN ("+getFilterInValidClientCount(provinceAnalysisParamDTO) + ") sxwxl ON zkz.srcId = sxwxl.srcId ")  //筛选无效量
-                ;
+                .append(" LEFT JOIN (" + getFilterPendingClientCount(provinceAnalysisParamDTO) + ") sxdd ON zkz.srcId = sxdd.srcId ")    //筛选待定
+                .append(" LEFT JOIN (" + getFilterInClientCount(provinceAnalysisParamDTO) + ") sxz ON zkz.srcId = sxz.srcId ")          //筛选中
+                .append(" LEFT JOIN (" + getFilterInValidClientCount(provinceAnalysisParamDTO) + ") sxwxl ON zkz.srcId = sxwxl.srcId ")  //筛选无效量
+        ;
 
         setConditionSQL(sb, provinceAnalysisParamDTO);
         return sb;
@@ -415,17 +424,17 @@ public class ProvinceReportsDao {
         }
     }
 
-    public static List<ProvinceReportsVO2> transform2 (List<ProvinceReportsVO> vo1List){
+    public static List<ProvinceReportsVO2> transform2(List<ProvinceReportsVO> vo1List) {
         List<ProvinceReportsVO2> vo2List = new ArrayList<>();
-        Map<Integer,Integer> exist = new HashMap<>();   //key为srcId value为下标
+        Map<Integer, Integer> exist = new HashMap<>();   //key为srcId value为下标
 //        List<Integer> exist = new ArrayList<>();
         int count = 0;
         //根据渠道名字去获取
-        for (ProvinceReportsVO pr1 : vo1List){   //想遍历省的数据
+        for (ProvinceReportsVO pr1 : vo1List) {   //想遍历省的数据
             String prName = pr1.getProvinceName();
-            for (SourceClientDataDTO scd : pr1.getSourceData()){
-                if (!exist.containsKey(scd.getSrcId())){   //如果这个来源不存在，生成一个
-                    exist.put(scd.getSrcId(),count++);
+            for (SourceClientDataDTO scd : pr1.getSourceData()) {
+                if (!exist.containsKey(scd.getSrcId())) {   //如果这个来源不存在，生成一个
+                    exist.put(scd.getSrcId(), count++);
 //                    exist.add(scd.getSrcId());
                     ProvinceReportsVO2 newOne = new ProvinceReportsVO2();
                     newOne.setDataType(pr1.getDataType());
@@ -433,28 +442,27 @@ public class ProvinceReportsDao {
                     newOne.setSrcName(scd.getSrcName());
                     newOne.setSrcImg(scd.getSrcImg());
                     newOne.setProvinceDataList(new ArrayList<ProvinceDataDTO>());
-                    newOne.getProvinceDataList().add(new ProvinceDataDTO(prName,scd.getDataNum()));
+                    newOne.getProvinceDataList().add(new ProvinceDataDTO(prName, scd.getDataNum()));
                     vo2List.add(newOne);
-                }else { //如果存在，找到再插入
+                } else { //如果存在，找到再插入
                     ProvinceReportsVO2 now = vo2List.get(exist.get(scd.getSrcId()));
-                    now.getProvinceDataList().add(new ProvinceDataDTO(prName,scd.getDataNum()));
+                    now.getProvinceDataList().add(new ProvinceDataDTO(prName, scd.getDataNum()));
                 }
             }
         }
         return vo2List;
     }
 
-    public static List<ProvinceReportsVO2> transform (List<ProvinceReportsVO> vo1List){
+    public static List<ProvinceReportsVO2> transform(List<ProvinceReportsVO> vo1List) {
         List<ProvinceReportsVO2> vo2List = new ArrayList<>();
-        Map<Integer,Integer> exist = new HashMap<>();   //key为srcId value为下标
+        Map<Integer, Integer> exist = new HashMap<>();   //key为srcId value为下标
 //        List<Integer> exist = new ArrayList<>();
         int count = 0;
         //根据渠道名字去获取
-        for (ProvinceReportsVO pr1 : vo1List){   //想遍历省的数据
-            String prName = pr1.getProvinceName();
-            for (SourceClientDataDTO scd : pr1.getSourceData()){
-                if (!exist.containsKey(scd.getSrcId())){   //如果这个来源不存在，生成一个
-                    exist.put(scd.getSrcId(),count++);
+        for (ProvinceReportsVO pr1 : vo1List) {   //想遍历省的数据
+            for (SourceClientDataDTO scd : pr1.getSourceData()) {
+                if (!exist.containsKey(scd.getSrcId())) {   //如果这个来源不存在，生成一个
+                    exist.put(scd.getSrcId(), count++);
 //                    exist.add(scd.getSrcId());
                     ProvinceReportsVO2 newOne = new ProvinceReportsVO2();
                     newOne.setDataType(pr1.getDataType());
@@ -464,15 +472,42 @@ public class ProvinceReportsDao {
 //                    newOne.setProvinceDataList(new ArrayList<ProvinceDataDTO>());
 //                    newOne.getProvinceDataList().add(new ProvinceDataDTO(prName,scd.getDataNum()));
                     newOne.setProvinceDataMap(new HashMap<String, Integer>());
-                    newOne.getProvinceDataMap().put(prName,scd.getDataNum());
+                    newOne.getProvinceDataMap().put(pr1.getProvinceName(), scd.getDataNum());
                     vo2List.add(newOne);
-                }else { //如果存在，找到再插入
+                } else { //如果存在，找到再插入
                     ProvinceReportsVO2 now = vo2List.get(exist.get(scd.getSrcId()));
 //                    now.getProvinceDataList().add(new ProvinceDataDTO(prName,scd.getDataNum()));
-                    now.getProvinceDataMap().put(prName,scd.getDataNum());
+                    now.getProvinceDataMap().put(pr1.getProvinceName(), scd.getDataNum());
                 }
             }
         }
         return vo2List;
+    }
+
+    /**
+     * 合计
+     *
+     * @param list
+     */
+    private List<ProvinceReportsVO2> total(List<ProvinceReportsVO2> list) {
+        ProvinceReportsVO2 prv = new ProvinceReportsVO2();
+        prv.setSrcName("合计");
+        prv.setProvinceDataMap(new HashMap<String, Integer>());
+        list.add(prv);
+        for (ProvinceReportsVO2 pr : list) {
+            prv.setDataType(pr.getDataType());
+            Map<String,Integer> map = pr.getProvinceDataMap();
+            int total = 0;
+            for (String key : map.keySet()) {
+                if (!prv.getProvinceDataMap().containsKey(key)) {
+                    prv.getProvinceDataMap().put(key, map.get(key));
+                } else {
+                    prv.getProvinceDataMap().put(key, prv.getProvinceDataMap().get(key) + map.get(key));
+                }
+                total += map.get(key);
+            }
+            map.put("合计",total);
+        }
+        return list;
     }
 }

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiein.jupiter.web.dao.ClientBlackListDao">
+
+    <resultMap id="baseMap" type="com.qiein.jupiter.web.entity.po.BlackListPO">
+        <id column="ID" jdbcType="INTEGER" property="id"/>
+        <result column="KZNAME" jdbcType="VARCHAR" property="kzName"/>
+        <result column="KZPHONE" jdbcType="INTEGER" property="kzPhone"/>
+        <result column="CREATETIME" jdbcType="INTEGER" property="createTime"/>
+        <result column="COMPANYID" jdbcType="INTEGER" property="companyId"/>
+        <result column="COUNT" jdbcType="INTEGER" property="count"/>
+        <result column="STAFFID" jdbcType="INTEGER" property="staffId"/>
+        <result column="STAFFNAME" jdbcType="VARCHAR" property="staffName"/>
+        <result column="MEMO" jdbcType="VARCHAR" property="memo"/>
+    </resultMap>
+    <sql id="forList">
+        ID,KZNAME,KZPHONE,FROM_UNIXTIME(CREATETIME, '%Y/%m/%d %H:%i:%s'),COUNT,STAFFNAME,MEMO
+    </sql>
+    <sql id="forInsert">
+        KZNAME,KZPHONE,COMPANYID,STAFFID,STAFFNAME,MEMO,CREATETIME
+    </sql>
+    <sql id="forValues">
+        #{kzName},#{kzPhone},#{companyId},#{staffId},#{staffName},#{memo},UNIX_TIMESTAMP(NOW())
+    </sql>
+    <delete id="delete">
+        delete from hm_crm_client_blacklist where id in (${ids})
+    </delete>
+    <select id="select" resultMap="baseMap">
+        select <include refid="forList"/> from hm_crm_client_blacklist where companyId=#{companyId}
+    </select>
+    <insert id="insert">
+        insert into hm_crm_client_blacklist(<include refid="forInsert"/>) values(<include refid="forValues"/>)
+    </insert>
+    <update id="update">
+        update hm_crm_client_blacklist set KZNAME=#{kzName} , KZPHONE=#{kzPhone} , MEMO=#{memo} where id=#{id}
+    </update>
+</mapper>

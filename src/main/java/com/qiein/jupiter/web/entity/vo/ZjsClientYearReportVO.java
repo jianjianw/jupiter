@@ -1,6 +1,10 @@
 package com.qiein.jupiter.web.entity.vo;
 
-import java.util.Map;
+
+import com.qiein.jupiter.web.entity.dto.SourceClientDataDTO;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 从数据库取出的年度转介绍客资数据
@@ -9,7 +13,8 @@ import java.util.Map;
  */
 public class ZjsClientYearReportVO {
     private String monthName;
-    private Map<Integer,Map<String,Object>> dataMap;
+    private String dataType;
+    private List<SourceClientDataDTO> sourceData  = new ArrayList<>();  //来源数据
 
     public String getMonthName() {
         return monthName;
@@ -19,11 +24,28 @@ public class ZjsClientYearReportVO {
         this.monthName = monthName;
     }
 
-    public Map<Integer, Map<String, Object>> getDataMap() {
-        return dataMap;
+    public String getDataType() {
+        return dataType;
     }
 
-    public void setDataMap(Map<Integer, Map<String, Object>> dataMap) {
-        this.dataMap = dataMap;
+    public void setDataType(String dataType) {
+        this.dataType = dataType;
+    }
+
+    public List<SourceClientDataDTO> getSourceData() {
+        return sourceData;
+    }
+
+    public void setSourceData(List<SourceClientDataDTO> sourceData) {
+        this.sourceData = sourceData;
+    }
+
+    @Override
+    public String toString() {
+        return "ZjsClientYearReportVO{" +
+                "monthName='" + monthName + '\'' +
+                ", dataType='" + dataType + '\'' +
+                ", sourceData=" + sourceData +
+                '}';
     }
 }
