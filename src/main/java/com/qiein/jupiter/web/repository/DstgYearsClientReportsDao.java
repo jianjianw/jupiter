@@ -53,6 +53,11 @@ public class DstgYearsClientReportsDao {
                 return null;
             }
         });
+
+        DstgYearReportsVO dstgYearReports = new DstgYearReportsVO();
+        dstgYearReports.setSourceId(-1);
+        dstgYearReports.setSourceName("合计");
+        dstgYearReportsVO.add(dstgYearReports);
     }
 
     private void getAllYearClientCount(ReportsParamVO reportsParamVO, final List<DstgYearReportsVO> dstgYearReportsVO) {
