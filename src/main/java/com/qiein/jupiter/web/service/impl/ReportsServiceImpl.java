@@ -558,9 +558,9 @@ public class ReportsServiceImpl implements ReportService {
     }
 
     @Override
-    public List<RegionReportsVO> getZjsYearDetailReport(ZjsClientYearReportDTO zjsClientYearReportDTO) {
+    public List<Map<String, Object>> getZjsYearDetailReport(ZjsClientYearReportDTO zjsClientYearReportDTO) {
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(zjsClientYearReportDTO.getCompanyId());
-        List<RegionReportsVO> list = zjsKzOfYearDao.getZjsYearDetailReport(zjsClientYearReportDTO, invalidConfig);
+        List<Map<String, Object>> list = zjsKzOfYearDao.getZjsYearDetailReport(zjsClientYearReportDTO, invalidConfig);
         return list;
     }
 

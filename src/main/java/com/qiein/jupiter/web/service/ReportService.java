@@ -249,5 +249,5 @@ public interface ReportService {
      * @param zjsClientYearReportDTO
      * @return
      */
-    List<RegionReportsVO> getZjsYearDetailReport(ZjsClientYearReportDTO zjsClientYearReportDTO);
+    List<Map<String, Object>> getZjsYearDetailReport(ZjsClientYearReportDTO zjsClientYearReportDTO);
 }
