@@ -580,6 +580,14 @@ public class ReportsServiceImpl implements ReportService {
 
         getDataByConditionType(conditionType, dstgYearsClientReports, dstgYearReportsVOS);
         //计算总计
+//        Map hashMap = new HashMap();
+//        for (DstgYearReportsVO dstgYearReportsVO:dstgYearReportsVOS){
+//            for (Map.Entry<String, Object> keys : dstgYearReportsVO.getMapList().entrySet()) {
+//                    hashMap.get(keys.getKey()).toString()
+
+//                    hashMap.put(Integer.parseInt(keys.getValue().toString()))
+//            }
+//        }
         return dstgYearReportsVOS;
     }
 
