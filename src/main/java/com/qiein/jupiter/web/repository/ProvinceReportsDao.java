@@ -3,6 +3,7 @@ package com.qiein.jupiter.web.repository;
 import com.qiein.jupiter.constant.ChinaTerritoryConst;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
+import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.dto.ProvinceAnalysisParamDTO;
 import com.qiein.jupiter.web.entity.dto.ProvinceDataDTO;
@@ -51,7 +52,7 @@ public class ProvinceReportsDao {
             if (provinceName.equals("total")) {
                 sql = sql.replace("AND INSTR(detail.ADDRESS, ? )> 0", " ");
                 objs = getOtherParam(provinceAnalysisParamDTO, invalidConfig);
-                System.out.println("合计sql: "+sql);
+                System.out.println("合计sql: " + sql);
             }
             List<ProvinceReportsVO> now = jdbcTemplate.query(sql,
                     objs,
@@ -84,15 +85,6 @@ public class ProvinceReportsDao {
         return total(transform(resultContent));
     }
 
-    public static void main(String[] args) {
-//        String sql = "SELECT info.SOURCEID srcId,src.SRCNAME ,src.SRCIMG , COUNT(1) dataNum  FROM hm_crm_client_info_2 info INNER JOIN hm_crm_client_detail_2 detail ON info.KZID = detail.KZID AND info.COMPANYID = detail.COMPANYID  INNER JOIN hm_crm_source src ON src.ID = info.SOURCEID AND src.COMPANYID = info.COMPANYID WHERE info.ISDEL = 0 AND info.COMPANYID = 2 AND INSTR(detail.ADDRESS, ? )> 0  AND info.CREATETIME BETWEEN ? AND ?  GROUP BY info.SOURCEID ";
-//        System.out.println("index: "+sql.indexOf("AND INSTR(detail.ADDRESS, ? )> 0"));
-//        sql.replace("INSTR(detail.ADDRESS, ? )> 0","");
-        String sql = "asd,";
-        sql.replace(",", "");
-        System.out.println(sql);
-    }
-
     /**
      * 获取最终sql字符串
      *
@@ -115,8 +107,8 @@ public class ProvinceReportsDao {
      */
     private StringBuilder getBaseSQL(StringBuilder sb, ProvinceAnalysisParamDTO provinceAnalysisParamDTO) {
         sb.append(" SELECT info.SOURCEID srcId,src.SRCNAME ,src.SRCIMG , COUNT(1) dataNum ")
-                .append(" FROM hm_crm_client_info_" + provinceAnalysisParamDTO.getCompanyId() + " info")
-                .append(" INNER JOIN hm_crm_client_detail_" + provinceAnalysisParamDTO.getCompanyId() + " detail ON info.KZID = detail.KZID AND info.COMPANYID = detail.COMPANYID ")
+                .append(" FROM  " + DBSplitUtil.getInfoTabName(provinceAnalysisParamDTO.getCompanyId()) + " info")
+                .append(" INNER JOIN  " + DBSplitUtil.getDetailTabName(provinceAnalysisParamDTO.getCompanyId()) + " detail ON info.KZID = detail.KZID AND info.COMPANYID = detail.COMPANYID ")
                 .append(" INNER JOIN hm_crm_source src ON src.ID = info.SOURCEID AND src.COMPANYID = info.COMPANYID")
                 .append(" WHERE info.ISDEL = 0 AND info.COMPANYID = " + provinceAnalysisParamDTO.getCompanyId())
                 .append(" AND info.SRCTYPE IN (1,2) ")
@@ -167,7 +159,7 @@ public class ProvinceReportsDao {
      */
     private StringBuilder getValidClientSQL(ProvinceAnalysisParamDTO provinceAnalysisParamDTO, DsInvalidVO dsInvalidVO) {
         StringBuilder sb = new StringBuilder();
-        if(dsInvalidVO.getDdIsValid()){ //有效量(总客资-无效量-筛选中-筛选无效-筛选待定)
+        if (dsInvalidVO.getDdIsValid()) { //有效量(总客资-无效量-筛选中-筛选无效-筛选待定)
             sb.append("SELECT zkz.srcId,zkz.SRCIMG,zkz.SRCNAME,IFNULL(zkz.dataNum,0) - IFNULL(sxdd.dataNum,0) - IFNULL(sxz.dataNum,0) - IFNULL(sxwxl.dataNum,0) dataNum ")
                     .append(" FROM ")
                     .append("(" + getAllClientSQL(provinceAnalysisParamDTO) + ") zkz , ")     //总客资
@@ -175,7 +167,7 @@ public class ProvinceReportsDao {
                     .append("(" + getFilterPendingClientCount(provinceAnalysisParamDTO) + ") sxdd , ")     //筛选待定
                     .append("(" + getFilterInClientCount(provinceAnalysisParamDTO) + ") sxz , ")   //筛选中
                     .append("(" + getFilterInValidClientCount(provinceAnalysisParamDTO) + ") sxwxl , ");   //筛选无效量
-        }else{ // 有效量(总客资-无效量-筛选中-筛选无效-筛选待定-待定量)
+        } else { // 有效量(总客资-无效量-筛选中-筛选无效-筛选待定-待定量)
             sb.append("SELECT zkz.srcId,zkz.SRCIMG,zkz.SRCNAME,IFNULL(zkz.dataNum,0) - IFNULL(sxdd.dataNum,0) - IFNULL(sxz.dataNum,0) - IFNULL(sxwxl.dataNum,0) - IFNULL(ddl.dataNum,0) dataNum ")
                     .append(" FROM ")
                     .append("(" + getAllClientSQL(provinceAnalysisParamDTO) + ") zkz , ")     //总客资
@@ -542,33 +534,33 @@ public class ProvinceReportsDao {
         prv.setSrcName("合计");
         prv.setProvinceDataMap(new HashMap<String, Integer>());
 
-        for (ProvinceReportsVO2 temp:list){
+        for (ProvinceReportsVO2 temp : list) {
 //            prv.setDataType(temp.getDataType());
 
-            Map<String,Integer> map = temp.getProvinceDataMap();
-            map.put("其他",map.get("total"));
-            for (String key : map.keySet()){
+            Map<String, Integer> map = temp.getProvinceDataMap();
+            map.put("其他", map.get("total"));
+            for (String key : map.keySet()) {
 //                if (!prv.getProvinceDataMap().containsKey(key)){
 //                    prv.getProvinceDataMap().put(key,map.get(key));
 //                }else {
 //                    prv.getProvinceDataMap().put(key,prv.getProvinceDataMap().get(key)+map.get(key));
 //                }
-                if (key.equals("其他")||key.equals("total"))
+                if (key.equals("其他") || key.equals("total"))
                     continue;
-                map.put("其他",map.get("其他")-map.get(key));
+                map.put("其他", map.get("其他") - map.get(key));
             }
 
         }
 
-        for (ProvinceReportsVO2 temp:list){
+        for (ProvinceReportsVO2 temp : list) {
             prv.setDataType(temp.getDataType());
 
-            Map<String,Integer> map = temp.getProvinceDataMap();
-            for (String key : map.keySet()){
-                if (!prv.getProvinceDataMap().containsKey(key)){
-                    prv.getProvinceDataMap().put(key,map.get(key));
-                }else {
-                    prv.getProvinceDataMap().put(key,prv.getProvinceDataMap().get(key)+map.get(key));
+            Map<String, Integer> map = temp.getProvinceDataMap();
+            for (String key : map.keySet()) {
+                if (!prv.getProvinceDataMap().containsKey(key)) {
+                    prv.getProvinceDataMap().put(key, map.get(key));
+                } else {
+                    prv.getProvinceDataMap().put(key, prv.getProvinceDataMap().get(key) + map.get(key));
                 }
             }
 

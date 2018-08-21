@@ -15,21 +15,21 @@ import com.qiein.jupiter.exception.RException;
  */
 public class DBSplitUtil {
 
-    public static final String TAB_SUFFIX_INFO = " hm_crm_client_info_";// 客资信息表
-    public static final String TAB_SUFFIX_DETAIL = " hm_crm_client_detail_";// 客资详细信息表
-    public static final String TAB_SUFFIX_REMARK = "hm_crm_client_remark_";// 备注富文本
-    public static final String TAB_SUFFIX_LOG = " hm_crm_client_log_";// 客资日志表
-    public static final String TAB_SUFFIX_INVITA_LOG = " hm_crm_invitation_log_";// 客资邀约记录表
-    public static final String TAB_SUFFIX_TEMP = " hm_crm_client_info_temp_";// 客资临时表
-    public static final String TAB_SUFFIX_IP_LOG = " hm_crm_ip_log_";// ip日志表
-    public static final String TAB_SUFFIX_GOLD_TEMP = " hm_crm_gold_data_temp_";// 金数据缓存表
-    public static final String TAB_SUFFIX_ALLOT_LOG = " hm_crm_allot_log_";// 客资分配日志表
-    public static final String TAB_SUFFIX_LINE_LOG = "hm_crm_line_log_";// 上下线日志表
-    public static final String TAB_SUFFIX_ACCEPT_LOG = "hm_crm_accept_log_";// 接单日志
-    public static final String TAB_SYSLOG_REMARK = "hm_pub_system_log_";// 接单日志
-    public static final String TAB_ONLINE_TIME = "hm_crm_online_time_log_";// 在线时长日志
-    public static final String TAB_SUFFIX_EDIT_LOG = "hm_crm_contact_edit_log_";//联系方式修改日志
-    public static final String TAB_SUFFIX_CASH_LOG = "hm_crm_cash_log_";//收款记录日志
+    public static final String TAB_SUFFIX_INFO = " hm_crm_client_info ";// 客资信息表
+    public static final String TAB_SUFFIX_DETAIL = " hm_crm_client_detail ";// 客资详细信息表
+    public static final String TAB_SUFFIX_REMARK = "hm_crm_client_remark ";// 备注富文本
+    public static final String TAB_SUFFIX_LOG = " hm_crm_client_log ";// 客资日志表
+    public static final String TAB_SUFFIX_INVITA_LOG = " hm_crm_invitation_log ";// 客资邀约记录表
+    public static final String TAB_SUFFIX_TEMP = " hm_crm_client_info_temp ";// 客资临时表
+    public static final String TAB_SUFFIX_IP_LOG = " hm_crm_ip_log ";// ip日志表
+    public static final String TAB_SUFFIX_GOLD_TEMP = " hm_crm_gold_data_temp ";// 金数据缓存表
+    public static final String TAB_SUFFIX_ALLOT_LOG = " hm_crm_allot_log ";// 客资分配日志表
+    public static final String TAB_SUFFIX_LINE_LOG = "hm_crm_line_log ";// 上下线日志表
+    public static final String TAB_SUFFIX_ACCEPT_LOG = "hm_crm_accept_log ";// 接单日志
+    public static final String TAB_SYSLOG_REMARK = "hm_pub_system_log ";// 接单日志
+    public static final String TAB_ONLINE_TIME = "hm_crm_online_time_log ";// 在线时长日志
+    public static final String TAB_SUFFIX_EDIT_LOG = "hm_crm_contact_edit_log ";//联系方式修改日志
+    public static final String TAB_SUFFIX_CASH_LOG = "hm_crm_cash_log ";//收款记录日志
 
     public static String getInfoTabName(int companyId) throws RException {
 
@@ -130,49 +130,49 @@ public class DBSplitUtil {
         String tableName = "";
         switch (tableEnum) {
             case info:
-                tableName = TAB_SUFFIX_INFO + String.valueOf(companyId);
+                tableName = TAB_SUFFIX_INFO;
                 break;
             case log:
-                tableName = TAB_SUFFIX_LOG + String.valueOf(companyId);
+                tableName = TAB_SUFFIX_LOG;
                 break;
             case invita:
-                tableName = TAB_SUFFIX_INVITA_LOG + String.valueOf(companyId);
+                tableName = TAB_SUFFIX_INVITA_LOG;
                 break;
             case detail:
-                tableName = TAB_SUFFIX_DETAIL + String.valueOf(companyId);
+                tableName = TAB_SUFFIX_DETAIL;
                 break;
             case temp:
-                tableName = TAB_SUFFIX_TEMP + String.valueOf(companyId);
+                tableName = TAB_SUFFIX_TEMP;
                 break;
             case ip_log:
-                tableName = TAB_SUFFIX_IP_LOG + String.valueOf(companyId);
+                tableName = TAB_SUFFIX_IP_LOG;
                 break;
             case gold_temp:
-                tableName = TAB_SUFFIX_GOLD_TEMP + String.valueOf(companyId);
+                tableName = TAB_SUFFIX_GOLD_TEMP;
                 break;
             case allot:
-                tableName = TAB_SUFFIX_ALLOT_LOG + String.valueOf(companyId);
+                tableName = TAB_SUFFIX_ALLOT_LOG;
                 break;
             case line_log:
-                tableName = TAB_SUFFIX_LINE_LOG + String.valueOf(companyId);
+                tableName = TAB_SUFFIX_LINE_LOG;
                 break;
             case accept_log:
-                tableName = TAB_SUFFIX_ACCEPT_LOG + String.valueOf(companyId);
+                tableName = TAB_SUFFIX_ACCEPT_LOG;
                 break;
             case remark:
-                tableName = TAB_SUFFIX_REMARK + String.valueOf(companyId);
+                tableName = TAB_SUFFIX_REMARK;
                 break;
             case syslog:
-                tableName = TAB_SYSLOG_REMARK + String.valueOf(companyId);
+                tableName = TAB_SYSLOG_REMARK;
                 break;
             case online_time:
-                tableName = TAB_ONLINE_TIME + String.valueOf(companyId);
+                tableName = TAB_ONLINE_TIME;
                 break;
             case edit_log:
-                tableName = TAB_SUFFIX_EDIT_LOG + String.valueOf(companyId);
+                tableName = TAB_SUFFIX_EDIT_LOG;
                 break;
             case cash_log:
-                tableName = TAB_SUFFIX_CASH_LOG + String.valueOf(companyId);
+                tableName = TAB_SUFFIX_CASH_LOG;
                 break;
             default:
                 break;
