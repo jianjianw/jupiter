@@ -2,10 +2,14 @@ package com.qiein.jupiter.web.repository;
 
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.po.DictionaryPO;
+import com.qiein.jupiter.web.entity.po.SourcePO;
+import com.qiein.jupiter.web.entity.vo.InvalidReasonReportsShowVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +21,6 @@ import java.util.Map;
 public class InvalidReasonReportsDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
     /**
      * 报表显示
      * @param list
@@ -30,78 +33,75 @@ public class InvalidReasonReportsDao {
      * @param typeIds
      * @return
      */
-    public List<Map<String, Object>> getInvalidReasonReports(List<DictionaryPO> list, String tableInfo, String tableDetail, Integer companyId, String sourceIds, String startTime, String endTime, String typeIds) {
-        StringBuilder sql = new StringBuilder();
-        sql.append("SELECT src.SRCNAME,src.SRCIMG");
-        sql.append(",(SELECT count(detail.ID) FROM " + tableDetail + " detail LEFT JOIN " + tableInfo + " info ON info.KZID = detail.KZID WHERE src.ID = info.SOURCEID");
+    public List<InvalidReasonReportsShowVO> getInvalidReasonReports(List<SourcePO> sourcePOS, List<DictionaryPO> list, String tableInfo, String tableDetail, Integer companyId, String sourceIds, String startTime, String endTime, String typeIds){
+        List<InvalidReasonReportsShowVO> invalidReasonReportsShowVOS=new ArrayList<>();
+        SourcePO source=new SourcePO();
+        source.setId(0);
+        source.setSrcName("合计");
+        sourcePOS.add(0,source);
+        for(SourcePO sourcePO:sourcePOS){
+            InvalidReasonReportsShowVO invalidReasonReportsShowVO=new InvalidReasonReportsShowVO();
+            invalidReasonReportsShowVO.setSrcId(sourcePO.getId());
+            invalidReasonReportsShowVO.setSrcImg(sourcePO.getSrcImg());
+            invalidReasonReportsShowVO.setSrcName(sourcePO.getSrcName());
+            Map<String,Integer> map=new HashMap<>();
+            for(DictionaryPO dictionaryPO:list){
+                map.put(dictionaryPO.getDicType(),0);
+            }
+            invalidReasonReportsShowVO.setMap(map);
+            invalidReasonReportsShowVOS.add(invalidReasonReportsShowVO);
+        }
+        StringBuilder sql=new StringBuilder();
+        sql.append("SELECT src.ID id,");
+        sql.append(" COUNT(detail.INVALIDLABEL) count,");
+        sql.append(" CONCAT('invalid_reason',detail.INVALIDLABEL) statusKey");
+        sql.append(" FROM hm_crm_source src");
+        sql.append(" LEFT JOIN "+tableInfo+" info ON info.SOURCEID = src.ID");
+        sql.append(" LEFT JOIN "+tableDetail+" detail ON detail.KZID = info.KZID");
+        sql.append(" WHERE info.CREATETIME BETWEEN ? AND ?");
+        sql.append(" AND detail.INVALIDLABEL IS NOT NULL");
+        sql.append(" and src.companyid=? and src.typeid in (1,2)");
         if(StringUtil.isNotEmpty(typeIds)){
             sql.append(" AND info.TYPEID IN ("+typeIds+")");
         }
-        if(StringUtil.isNotEmpty(startTime)&&StringUtil.isNotEmpty(endTime)){
-            sql.append(" AND info.CREATETIME > "+startTime);
-            sql.append(" AND info.CREATETIME < "+endTime);
-        }
-        sql.append(" AND (");
-        sql.append("detail.INVALIDLABEL='" + list.get(0).getDicName() + "'");
-        for (int i = 1; i < list.size(); i++) {
-            sql.append("OR detail.INVALIDLABEL='" + list.get(i).getDicName() + "'");
-        }
-        sql.append(")) hj");
-        for (DictionaryPO dictionaryPO : list) {
-            sql.append(",(SELECT count(detail.ID) FROM " + tableDetail + " detail LEFT JOIN " + tableInfo + " info ON info.KZID = detail.KZID WHERE src.ID = info.SOURCEID ");
-            if(StringUtil.isNotEmpty(typeIds)){
-                sql.append(" AND info.TYPEID IN ("+typeIds+")");
-            }
-            if(StringUtil.isNotEmpty(startTime)&&StringUtil.isNotEmpty(endTime)){
-                sql.append(" AND info.CREATETIME > "+startTime);
-                sql.append(" AND info.CREATETIME < "+endTime);
-            }
-            sql.append(" AND detail.INVALIDLABEL ='" + dictionaryPO.getDicName() + "') " + dictionaryPO.getDicType());
-        }
-        sql.append(" FROM hm_crm_source src WHERE src.COMPANYID = ? AND src.TYPEID IN (1,2)");
         if(StringUtil.isNotEmpty(sourceIds)){
-            sql.append("AND src.ID IN ("+sourceIds+")");
+            sql.append(" AND info.SOURCEID IN ("+sourceIds+")");
         }
-        System.out.println(sql.toString());
-        List<Map<String, Object>> invalidalbel = jdbcTemplate.queryForList(sql.toString(), new Object[]{companyId});
-        StringBuilder hjsql = new StringBuilder();
-        hjsql.append("SELECT '合计' SRCNAME,'' SRCIMG");
-        hjsql.append(",(SELECT count(detail.ID) FROM " + tableDetail + " detail LEFT JOIN " + tableInfo + " info ON detail.KZID=info.KZID " );
+        sql.append(" GROUP BY detail.INVALIDLABEL,info.SOURCEID ");
+        List<Map<String, Object>> invalidalbel = jdbcTemplate.queryForList(sql.toString(), new Object[]{startTime,endTime,companyId});
+        for(Map<String,Object> map:invalidalbel){
+            for(InvalidReasonReportsShowVO invalidReasonReportsShowVO:invalidReasonReportsShowVOS){
+                if(invalidReasonReportsShowVO.getSrcId()==Integer.parseInt(Long.toString((Long) (map.get("id"))))){
+                    invalidReasonReportsShowVO.getMap().put((String)map.get("statusKey"),Integer.parseInt(Long.toString((Long) (map.get("count")))));
+                }
+            }
+        }
+        StringBuilder hjsql=new StringBuilder();
+        hjsql.append("SELECT COUNT(detail.INVALIDLABEL) count,");
+        hjsql.append(" CONCAT('invalid_reason',detail.INVALIDLABEL) statusKey");
+        hjsql.append(" FROM "+tableInfo+" info");
+        hjsql.append(" LEFT JOIN "+tableDetail+" detail ON detail.KZID = info.KZID");
+        hjsql.append(" WHERE info.CREATETIME BETWEEN ? AND ?");
+        hjsql.append(" AND detail.INVALIDLABEL IS NOT NULL");
+        hjsql.append(" and info.companyid=?");
         if(StringUtil.isNotEmpty(typeIds)){
-            hjsql.append(" AND info.TYPEID IN ("+typeIds+")");
+            sql.append(" AND info.TYPEID IN ("+typeIds+")");
         }
-        if(StringUtil.isNotEmpty(startTime)&&StringUtil.isNotEmpty(endTime)){
-            hjsql.append(" AND info.CREATETIME > "+startTime);
-            hjsql.append(" AND info.CREATETIME < "+endTime);
-        }
-        hjsql.append( " where info.SOURCEID IN (select ID from hm_crm_source src where COMPANYID=? and TYPEID IN (1,2)");
         if(StringUtil.isNotEmpty(sourceIds)){
-            hjsql.append(" AND src.ID IN ("+sourceIds+")");
+            sql.append(" AND info.SOURCEID IN ("+sourceIds+")");
         }
-        hjsql.append(")AND(");
-        hjsql.append("detail.INVALIDLABEL='" + list.get(0).getDicName() + "'");
-        for (int i = 1; i < list.size(); i++) {
-            hjsql.append("OR detail.INVALIDLABEL='" + list.get(i).getDicName() + "'");
+        hjsql.append(" GROUP BY detail.INVALIDLABEL ");
+        List<Map<String, Object>> invalidalbelHj = jdbcTemplate.queryForList(hjsql.toString(), new Object[]{startTime,endTime,companyId});
+        for(Map<String, Object> map:invalidalbelHj){
+            invalidReasonReportsShowVOS.get(0).getMap().put((String)map.get("statusKey"),Integer.parseInt(Long.toString((Long) (map.get("count")))));
         }
-        hjsql.append(")) hj");
-        for (DictionaryPO dictionaryPO : list) {
-            hjsql.append(",(SELECT count(detail.ID) FROM " + tableDetail + " detail LEFT JOIN " + tableInfo + " info ON detail.KZID=info.KZID " );
-            if(StringUtil.isNotEmpty(typeIds)){
-                hjsql.append(" AND info.TYPEID IN ("+typeIds+")");
+        for(InvalidReasonReportsShowVO invalidReasonReportsShowVO:invalidReasonReportsShowVOS){
+            invalidReasonReportsShowVO.getMap().put("hj",0);
+            for(String key:invalidReasonReportsShowVO.getMap().keySet()){
+                invalidReasonReportsShowVO.getMap().put("hj",invalidReasonReportsShowVO.getMap().get("hj")+invalidReasonReportsShowVO.getMap().get(key));
             }
-            if(StringUtil.isNotEmpty(startTime)&&StringUtil.isNotEmpty(endTime)){
-                hjsql.append(" AND info.CREATETIME > "+startTime);
-                hjsql.append(" AND info.CREATETIME < "+endTime);
-            }
-            hjsql.append(" WHERE info.SOURCEID IN (select ID from hm_crm_source src  where COMPANYID="+companyId+" and TYPEID IN (1,2)");
-            if(StringUtil.isNotEmpty(sourceIds)){
-                hjsql.append(" AND src.ID IN ("+sourceIds+")");
-            }
-            hjsql.append(") AND detail.INVALIDLABEL ='" + dictionaryPO.getDicName() + "') " + dictionaryPO.getDicType());
         }
-        System.out.println(hjsql.toString());
-        List<Map<String, Object>> hjInvalidalbel = jdbcTemplate.queryForList(hjsql.toString(), new Object[]{companyId});
-        hjInvalidalbel.addAll(invalidalbel);
-        return hjInvalidalbel;
+        return invalidReasonReportsShowVOS;
     }
+
 }

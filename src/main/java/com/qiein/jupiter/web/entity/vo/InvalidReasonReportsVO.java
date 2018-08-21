@@ -16,7 +16,7 @@ public class InvalidReasonReportsVO {
     /**
      * 客资数量
      */
-    private List<Map<String,Object>> invalidReasonKz;
+    private List<InvalidReasonReportsShowVO> invalidReasonKz;
 
     public List<DictionaryPO> getInvalidReasons() {
         return invalidReasons;
@@ -26,11 +26,11 @@ public class InvalidReasonReportsVO {
         this.invalidReasons = invalidReasons;
     }
 
-    public List<Map<String,Object>>  getInvalidReasonKz() {
+    public List<InvalidReasonReportsShowVO>  getInvalidReasonKz() {
         return invalidReasonKz;
     }
 
-    public void setInvalidReasonKz(List<Map<String,Object>>  invalidReasonKz) {
+    public void setInvalidReasonKz(List<InvalidReasonReportsShowVO>  invalidReasonKz) {
         this.invalidReasonKz = invalidReasonKz;
     }
 }
