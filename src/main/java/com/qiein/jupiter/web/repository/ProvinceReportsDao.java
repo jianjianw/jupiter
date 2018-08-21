@@ -119,6 +119,7 @@ public class ProvinceReportsDao {
                 .append(" INNER JOIN hm_crm_client_detail_" + provinceAnalysisParamDTO.getCompanyId() + " detail ON info.KZID = detail.KZID AND info.COMPANYID = detail.COMPANYID ")
                 .append(" INNER JOIN hm_crm_source src ON src.ID = info.SOURCEID AND src.COMPANYID = info.COMPANYID")
                 .append(" WHERE info.ISDEL = 0 AND info.COMPANYID = " + provinceAnalysisParamDTO.getCompanyId())
+                .append(" AND info.SRCTYPE IN (1,2) ")
                 .append(" AND INSTR(detail.ADDRESS, ? )> 0 ");
 //        if (!provinceAnalysisParamDTO.getSearchType().equals("其他"))
 //            sb.append(" AND INSTR(detail.ADDRESS, ? )> 0 ");

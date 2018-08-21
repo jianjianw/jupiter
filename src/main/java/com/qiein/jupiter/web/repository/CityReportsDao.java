@@ -130,7 +130,8 @@ public class CityReportsDao {
     private StringBuilder getBaseSQL(StringBuilder sb, int companyId, String alias) {
         sb.append(" SELECT COUNT(1) " + alias)
                 .append(" FROM hm_crm_client_info_" + companyId + " info , hm_crm_client_detail_" + companyId + " detail ")
-                .append(" WHERE info.KZID = detail.KZID AND info.ISDEL = 0 AND info.COMPANYID = " + companyId);
+                .append(" WHERE info.KZID = detail.KZID AND info.ISDEL = 0 AND info.COMPANYID = " + companyId)
+                .append(" AND info.SRCTYPE IN (1,2) ");
         return sb;
     }
 
