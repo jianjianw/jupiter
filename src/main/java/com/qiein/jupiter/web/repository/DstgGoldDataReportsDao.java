@@ -133,7 +133,7 @@ public class DstgGoldDataReportsDao {
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgGoldDataReportsVO dstgGoldDataReportsVO = new DstgGoldDataReportsVO();
             dstgGoldDataReportsVO.setAdId((String) dstgGoldDataReport.get("adid"));
-            dstgGoldDataReportsVO.setAllClientCount(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("client_count"))));
+            dstgGoldDataReportsVO.setAllClientCount(Integer.parseInt( String.valueOf(dstgGoldDataReport.get("client_count").toString())));
             dstgGoldDataReportsBak.add(dstgGoldDataReportsVO);
         }
 
@@ -172,7 +172,7 @@ public class DstgGoldDataReportsDao {
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgGoldDataReportsVO dstgGoldDataReportsVO = new DstgGoldDataReportsVO();
             dstgGoldDataReportsVO.setAdId((String) dstgGoldDataReport.get("adid"));
-            dstgGoldDataReportsVO.setPendingClientCount(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("client_count"))));
+            dstgGoldDataReportsVO.setPendingClientCount(Integer.parseInt( String.valueOf(dstgGoldDataReport.get("client_count").toString())));
             dstgGoldDataReportsBak.add(dstgGoldDataReportsVO);
         }
 
@@ -211,7 +211,7 @@ public class DstgGoldDataReportsDao {
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgGoldDataReportsVO dstgGoldDataReportsVO = new DstgGoldDataReportsVO();
             dstgGoldDataReportsVO.setAdId((String) dstgGoldDataReport.get("adid"));
-            dstgGoldDataReportsVO.setFilterPendingClientCount(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("client_count"))));
+            dstgGoldDataReportsVO.setFilterPendingClientCount(Integer.parseInt( String.valueOf(dstgGoldDataReport.get("client_count").toString())));
             dstgGoldDataReportsBak.add(dstgGoldDataReportsVO);
         }
 
@@ -249,7 +249,7 @@ public class DstgGoldDataReportsDao {
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgGoldDataReportsVO dstgGoldDataReportsVO = new DstgGoldDataReportsVO();
             dstgGoldDataReportsVO.setAdId((String) dstgGoldDataReport.get("adid"));
-            dstgGoldDataReportsVO.setFilterInValidClientCount(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("client_count"))));
+            dstgGoldDataReportsVO.setFilterInValidClientCount(Integer.parseInt( String.valueOf(dstgGoldDataReport.get("client_count").toString())));
             dstgGoldDataReportsBak.add(dstgGoldDataReportsVO);
         }
 
@@ -288,7 +288,7 @@ public class DstgGoldDataReportsDao {
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgGoldDataReportsVO dstgGoldDataReportsVO = new DstgGoldDataReportsVO();
             dstgGoldDataReportsVO.setAdId((String) dstgGoldDataReport.get("adid"));
-            dstgGoldDataReportsVO.setFilterInClientCount(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("client_count"))));
+            dstgGoldDataReportsVO.setFilterInClientCount(Integer.parseInt( String.valueOf(dstgGoldDataReport.get("client_count").toString())));
             dstgGoldDataReportsBak.add(dstgGoldDataReportsVO);
         }
 
@@ -338,7 +338,7 @@ public class DstgGoldDataReportsDao {
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgGoldDataReportsVO dstgGoldDataReportsVO = new DstgGoldDataReportsVO();
             dstgGoldDataReportsVO.setAdId((String) dstgGoldDataReport.get("adid"));
-            dstgGoldDataReportsVO.setInValidClientCount(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("client_count"))));
+            dstgGoldDataReportsVO.setInValidClientCount(Integer.parseInt( String.valueOf(dstgGoldDataReport.get("client_count").toString())));
             dstgGoldDataReportsBak.add(dstgGoldDataReportsVO);
         }
 
@@ -377,7 +377,7 @@ public class DstgGoldDataReportsDao {
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgGoldDataReportsVO dstgGoldDataReportsVO = new DstgGoldDataReportsVO();
             dstgGoldDataReportsVO.setAdId((String) dstgGoldDataReport.get("adid"));
-            dstgGoldDataReportsVO.setComeShopClientCount(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("client_count"))));
+            dstgGoldDataReportsVO.setComeShopClientCount(Integer.parseInt( String.valueOf(dstgGoldDataReport.get("client_count").toString())));
             dstgGoldDataReportsBak.add(dstgGoldDataReportsVO);
         }
 
@@ -414,7 +414,7 @@ public class DstgGoldDataReportsDao {
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgGoldDataReportsVO dstgGoldDataReportsVO = new DstgGoldDataReportsVO();
             dstgGoldDataReportsVO.setAdId((String) dstgGoldDataReport.get("adid"));
-            dstgGoldDataReportsVO.setSuccessClientCount(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("client_count"))));
+            dstgGoldDataReportsVO.setSuccessClientCount(Integer.parseInt( String.valueOf(dstgGoldDataReport.get("client_count").toString())));
             dstgGoldDataReportsBak.add(dstgGoldDataReportsVO);
         }
 
