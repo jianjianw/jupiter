@@ -29,14 +29,14 @@
         <if test="staffId != null and staffId != 0">
             ,staff_id = #{staffId}
         </if>
-        <if test="companyid != null and companyid != 0">
+        <if test="companyId != null and companyId != 0">
             , companyid = #{companyId}
         </if>
         <if test="callId != null and callId != 0">
             , call_id = #{callId}
         </if>
         <if test="phone != null and phone != ''">
-            ,#{phone} = #{phone}
+            , phone = #{phone}
         </if>
          where id = #{id}
     </update>

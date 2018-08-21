@@ -147,9 +147,6 @@ public class CallServiceImpl implements CallService {
     @Override
     public void editCustomer(StaffPO staffPO, CallCustomerPO callCustomerPO) {
         if(NumUtil.isInValid(callCustomerPO.getId())){
-            throw new RException(ExceptionEnum.ID_IS_NULL);
-        }
-        if(NumUtil.isInValid(callCustomerPO.getId())){
             throw new RException(ExceptionEnum.CALL_CONSUMER_ID_IS_NULL);
         }
         if(NumUtil.isInValid(callCustomerPO.getCallId())){
