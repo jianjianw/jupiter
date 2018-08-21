@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.entity.vo;
 
 
 import com.qiein.jupiter.web.entity.dto.PageDictDTO;
+import com.qiein.jupiter.web.entity.po.CallCustomerPO;
 import com.qiein.jupiter.web.entity.po.PermissionPO;
 import com.qiein.jupiter.web.entity.po.PluginPO;
 
@@ -48,6 +49,19 @@ public class BaseInfoVO implements Serializable {
      * 公司列表
      */
     private List<CompanyVO> companyList;
+
+    /**
+     * 通话实例
+     * */
+    private CallCustomerPO callCustomerPO;
+
+    public CallCustomerPO getCallCustomerPO() {
+        return callCustomerPO;
+    }
+
+    public void setCallCustomerPO(CallCustomerPO callCustomerPO) {
+        this.callCustomerPO = callCustomerPO;
+    }
 
     public List<CompanyVO> getCompanyList() {
         return companyList;

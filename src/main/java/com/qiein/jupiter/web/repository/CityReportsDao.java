@@ -86,7 +86,7 @@ public class CityReportsDao {
                         }));
             }
             //有效量 各种率 合计
-            calculate(resultContent,dsInvalidVO);
+            calculate(resultContent, dsInvalidVO);
         }
 
         return resultContent;
@@ -129,7 +129,7 @@ public class CityReportsDao {
      */
     private StringBuilder getBaseSQL(StringBuilder sb, int companyId, String alias) {
         sb.append(" SELECT COUNT(1) " + alias)
-                .append(" FROM hm_crm_client_info_" + companyId + " info , hm_crm_client_detail_" + companyId + " detail ")
+                .append(" FROM  " + DBSplitUtil.getInfoTabName(companyId) + " info ,  " + DBSplitUtil.getDetailTabName(companyId) + " detail ")
                 .append(" WHERE info.KZID = detail.KZID AND info.ISDEL = 0 AND info.COMPANYID = " + companyId)
                 .append(" AND info.SRCTYPE IN (1,2) ");
         return sb;
@@ -185,12 +185,13 @@ public class CityReportsDao {
 
     /**
      * 筛选中
+     *
      * @param companyId
      * @return
      */
-    private StringBuilder getFilterInClientCount(int companyId){
+    private StringBuilder getFilterInClientCount(int companyId) {
         StringBuilder filterInClientSQL = new StringBuilder();
-        getBaseSQL(filterInClientSQL,companyId,"filterInClientCount");
+        getBaseSQL(filterInClientSQL, companyId, "filterInClientCount");
         filterInClientSQL.append(" AND INSTR(detail.ADDRESS, ? )>0 ")
                 .append(" and info.CLASSID = 1 and info.STATUSID = 0 ")
                 .append(" AND info.CREATETIME BETWEEN ? AND ?")
@@ -279,10 +280,10 @@ public class CityReportsDao {
     private StringBuilder getAvgAmount(int companyId) {
         StringBuilder avgAmountSQL = new StringBuilder();
         avgAmountSQL.append("SELECT avg(detail.AMOUNT) avgAmount ")
-                .append(" FROM hm_crm_client_info_" + companyId + " info , hm_crm_client_detail_" + companyId + " detail ")
+                .append(" FROM " + DBSplitUtil.getInfoTabName(companyId) + " info , " + DBSplitUtil.getDetailTabName(companyId) + " detail ")
                 .append(" WHERE info.KZID = detail.KZID AND info.ISDEL = 0 AND info.COMPANYID = " + companyId)
-                .append(" AND INSTR(detail.ADDRESS, ? )>0 ")
-                .append("AND info.SUCCESSTIME BETWEEN ? AND ?")
+                .append(" AND INSTR(detail.ADDRESS, ? ) > 0 ")
+                .append(" AND info.SUCCESSTIME BETWEEN ? AND ? ")
                 .append(PLACEHOLDER);
         return avgAmountSQL;
     }
@@ -296,7 +297,7 @@ public class CityReportsDao {
     private StringBuilder getAmount(int companyId) {
         StringBuilder amountSQL = new StringBuilder();
         amountSQL.append("SELECT SUM(detail.AMOUNT) amount ")
-                .append(" FROM hm_crm_client_info_" + companyId + " info , hm_crm_client_detail_" + companyId + " detail ")
+                .append(" FROM " + DBSplitUtil.getInfoTabName(companyId) + " info , " + DBSplitUtil.getDetailTabName(companyId) + " detail ")
                 .append(" WHERE info.KZID = detail.KZID AND info.ISDEL = 0 AND info.COMPANYID = " + companyId)
                 .append(" AND INSTR(detail.ADDRESS, ? )>0 ")
                 .append(" AND info.SUCCESSTIME BETWEEN ? AND ? ")
@@ -313,7 +314,7 @@ public class CityReportsDao {
      */
     private StringBuilder setConditionSQL(StringBuilder sb, CitiesAnalysisParamDTO searchKey) {//查询的客资类型 1所有客资 2 电话客资 3 微信客资 4 qq客资 5 有电话有微信 6 无电话 7.无微信 8 只有电话 9只有微信 10 只有qq
 
-        StringBuilder condition = new StringBuilder(StringUtil.isNotEmpty(searchKey.getDicCodes())?" AND info.TYPEID IN ("+searchKey.getDicCodes()+") ":"");
+        StringBuilder condition = new StringBuilder(StringUtil.isNotEmpty(searchKey.getDicCodes()) ? " AND info.TYPEID IN (" + searchKey.getDicCodes() + ") " : "");
         switch (searchKey.getSearchClientType()) {
             case 1: //1所有客资
                 while (sb.indexOf(PLACEHOLDER) >= 0) {
@@ -381,49 +382,51 @@ public class CityReportsDao {
         return sb;
     }
 //缺筛选中
+
     /**
-     *  计算 有效量 各种率 合计
+     * 计算 有效量 各种率 合计
      */
-    private void calculate(List<RegionReportsVO> list, DsInvalidVO invalidConfig){
+    private void calculate(List<RegionReportsVO> list, DsInvalidVO invalidConfig) {
         RegionReportsVO total = new RegionReportsVO();
         total.setRegionName("合计");
-        for (RegionReportsVO rrv:list){
+        for (RegionReportsVO rrv : list) {
             //有效量(总客资-无效量-筛选中-筛选无效-筛选待定)
-            if(invalidConfig.getDdIsValid()){
-                rrv.setValidClientCount(rrv.getAllClientCount()-rrv.getInValidClientCount()-rrv.getFilterInClientCount()-rrv.getFilterInValidClientCount()-rrv.getFilterPendingClientCount());
-            }else{ // 有效量(总客资-无效量-筛选中-筛选无效-筛选待定-待定量)
-                rrv.setValidClientCount(rrv.getAllClientCount()-rrv.getInValidClientCount()-rrv.getFilterInClientCount()-rrv.getFilterPendingClientCount()-rrv.getFilterInValidClientCount()-rrv.getPendingClientCount());
+            if (invalidConfig.getDdIsValid()) {
+                rrv.setValidClientCount(rrv.getAllClientCount() - rrv.getInValidClientCount() - rrv.getFilterInClientCount() - rrv.getFilterInValidClientCount() - rrv.getFilterPendingClientCount());
+            } else { // 有效量(总客资-无效量-筛选中-筛选无效-筛选待定-待定量)
+                rrv.setValidClientCount(rrv.getAllClientCount() - rrv.getInValidClientCount() - rrv.getFilterInClientCount() - rrv.getFilterPendingClientCount() - rrv.getFilterInValidClientCount() - rrv.getPendingClientCount());
             }
             //客资量(总客资-筛选待定-筛选中-筛选无效)
-            rrv.setClientCount(rrv.getAllClientCount()-rrv.getFilterPendingClientCount()-rrv.getFilterInValidClientCount()-rrv.getFilterInClientCount());
+            rrv.setClientCount(rrv.getAllClientCount() - rrv.getFilterPendingClientCount() - rrv.getFilterInValidClientCount() - rrv.getFilterInClientCount());
             //合计
-            total(total,rrv);
+            total(total, rrv);
             //计算各种百分比
             everyRate(rrv);
 
         }
         everyRate(total);
-        list.add(0,total);
+        list.add(0, total);
     }
 
-    private void total(RegionReportsVO total,RegionReportsVO rrv){
-        total.setAllClientCount(total.getAllClientCount()+rrv.getAllClientCount());                                 //总客资
-        total.setClientCount(total.getClientCount()+rrv.getClientCount());                                          //客资量
-        total.setValidClientCount(total.getValidClientCount()+rrv.getValidClientCount());                           //有效量
-        total.setInValidClientCount(total.getInValidClientCount()+rrv.getInValidClientCount());                     //无效量
-        total.setComeShopClientCount(total.getComeShopClientCount()+rrv.getComeShopClientCount());                  //入店量
-        total.setSuccessClientCount(total.getSuccessClientCount()+rrv.getSuccessClientCount());                     //成交量
-        total.setPendingClientCount(total.getPendingClientCount()+rrv.getPendingClientCount());                     //待定量
-        total.setFilterInClientCount(total.getFilterInValidClientCount()+total.getFilterPendingClientCount());      //筛选中
-        total.setFilterInValidClientCount(total.getFilterInValidClientCount()+rrv.getFilterInValidClientCount());   //筛选无效
-        total.setFilterPendingClientCount(total.getFilterPendingClientCount()+rrv.getFilterPendingClientCount());   //筛选待定
+    private void total(RegionReportsVO total, RegionReportsVO rrv) {
+        total.setAllClientCount(total.getAllClientCount() + rrv.getAllClientCount());                                 //总客资
+        total.setClientCount(total.getClientCount() + rrv.getClientCount());                                          //客资量
+        total.setValidClientCount(total.getValidClientCount() + rrv.getValidClientCount());                           //有效量
+        total.setInValidClientCount(total.getInValidClientCount() + rrv.getInValidClientCount());                     //无效量
+        total.setComeShopClientCount(total.getComeShopClientCount() + rrv.getComeShopClientCount());                  //入店量
+        total.setSuccessClientCount(total.getSuccessClientCount() + rrv.getSuccessClientCount());                     //成交量
+        total.setPendingClientCount(total.getPendingClientCount() + rrv.getPendingClientCount());                     //待定量
+        total.setFilterInClientCount(total.getFilterInValidClientCount() + total.getFilterPendingClientCount());      //筛选中
+        total.setFilterInValidClientCount(total.getFilterInValidClientCount() + rrv.getFilterInValidClientCount());   //筛选无效
+        total.setFilterPendingClientCount(total.getFilterPendingClientCount() + rrv.getFilterPendingClientCount());   //筛选待定
     }
 
     /**
      * 计算各种百分比
+     *
      * @param rrv
      */
-    private void everyRate(RegionReportsVO rrv){
+    private void everyRate(RegionReportsVO rrv) {
         //有效率
         double validRate = (double) rrv.getValidClientCount() / rrv.getClientCount();
         rrv.setValidRate(parseDouble(((Double.isNaN(validRate) || Double.isInfinite(validRate)) ? 0.0 : validRate) * 100));
@@ -452,8 +455,8 @@ public class CityReportsDao {
 
     /**
      * 只保留2位小数
-     * */
-    public double parseDouble(double result){
-        return Double.parseDouble(String.format("%.2f",result));
+     */
+    public double parseDouble(double result) {
+        return Double.parseDouble(String.format("%.2f", result));
     }
 }

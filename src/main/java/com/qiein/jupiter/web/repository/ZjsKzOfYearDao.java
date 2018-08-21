@@ -58,7 +58,6 @@ public class ZjsKzOfYearDao {
                             ZjsClientYearReportVO zjsClientYearReportVO = new ZjsClientYearReportVO();
                             List<SourceClientDataDTO> list = new ArrayList<>();
                             do {
-                                int num = 1;
                                 SourceClientDataDTO scd = new SourceClientDataDTO();
                                 scd.setSrcId(rs.getInt("srcId"));
                                 scd.setDataNum(rs.getInt("dataNum"));
@@ -236,7 +235,7 @@ public class ZjsKzOfYearDao {
                 .append(" INNER JOIN hm_crm_source src ON src.ID = info.SOURCEID AND src.COMPANYID = info.COMPANYID")
                 .append(" WHERE info.ISDEL = 0 AND info.COMPANYID = " + zjsClientYearReportDTO.getCompanyId())
                 .append(" AND src.TYPEID IN (3,4,5) ");
-        if (StringUtil.isNotEmpty(zjsClientYearReportDTO.getSourceIds())) {
+        if (StringUtil.isNotEmpty(zjsClientYearReportDTO.getSourceIds())&&!zjsClientYearReportDTO.getSourceIds().equals("0")) {
             sb.append(" AND info.SOURCEID IN (" + zjsClientYearReportDTO.getSourceIds() + ") ");
         }
         return sb;
@@ -566,7 +565,7 @@ public class ZjsKzOfYearDao {
      */
     private void calculate(List<RegionReportsVO> list, DsInvalidVO invalidConfig) {
         for (RegionReportsVO rrv : list) {
-            //有效量
+            //有效量(总客资-无效量-筛选中-筛选无效-筛选待定)
             if (invalidConfig.getDdIsValid()) {
                 rrv.setValidClientCount(rrv.getAllClientCount() - rrv.getInValidClientCount() - rrv.getFilterInClientCount() - rrv.getFilterInValidClientCount() - rrv.getFilterPendingClientCount());
             } else {

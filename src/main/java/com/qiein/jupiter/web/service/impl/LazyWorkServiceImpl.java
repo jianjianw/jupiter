@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.LazyWorkDao;
 import com.qiein.jupiter.web.entity.vo.LazyWorkVO;
@@ -30,24 +31,18 @@ public class LazyWorkServiceImpl implements LazyWorkService {
      */
     @Override
     public List<LazyWorkVO> getLazyWorkListByStaffId(int staffId, int companyId) {
-        //TODO 表名之后改
-        String logTab = "hm_crm_allot_log_" + companyId;
-        String infoTab = "hm_crm_client_info_" + companyId;
-        return lazyWorkDao.getLazyWorkListByStaffId(staffId, companyId, logTab, infoTab);
+        return lazyWorkDao.getLazyWorkListByStaffId(staffId, companyId, DBSplitUtil.getAllotLogTabName(companyId), DBSplitUtil.getInfoTabName(companyId));
     }
 
     @Override
     public PageInfo<LazyWorkVO> getLazyWorkList(LazyWorkVO lazyWorkVO) {
-        //TODO 表名之后改
-        String logTab = "hm_crm_allot_log_" + lazyWorkVO.getCompanyId();
-        String infoTab = "hm_crm_client_info_" + lazyWorkVO.getCompanyId();
         PageHelper.startPage(lazyWorkVO.getPageNum(), lazyWorkVO.getPageSize());
         List<LazyWorkVO> list = lazyWorkDao.getLazyWorkListByUWant(
                 lazyWorkVO,
                 StringUtil.isEmpty(lazyWorkVO.getStaffIds()) ? null : lazyWorkVO.getStaffIds().split(","),
                 StringUtil.isEmpty(lazyWorkVO.getSourceIds()) ? null : lazyWorkVO.getSourceIds().split(","),
-                logTab,
-                infoTab);
+                DBSplitUtil.getAllotLogTabName(lazyWorkVO.getCompanyId()),
+                DBSplitUtil.getInfoTabName(lazyWorkVO.getCompanyId()));
         return new PageInfo<>(list);
     }
 }
