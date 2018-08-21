@@ -14,8 +14,8 @@
 
     <!--insert-->
     <insert id = "insert" parameterType="com.qiein.jupiter.web.entity.po.CallCustomerPO">
-        insert into hm_crm_call_customer ( staff_id,call_id,companyid,phone,createtime)
-        values(#{staffId},#{callId},#{companyId},#{phone},UNIX_TIMESTAMP(NOW()))
+        insert into hm_crm_call_customer ( staff_id,call_id,companyid,phone,nickname,createtime)
+        values(#{staffId},#{callId},#{companyId},#{phone},#{nickName},UNIX_TIMESTAMP(NOW()))
     </insert>
 
     <!--根据员工id公司id获取客服对象-->
@@ -37,6 +37,9 @@
         </if>
         <if test="phone != null and phone != ''">
             , phone = #{phone}
+        </if>
+        <if test="nickName != null and nickName != ''">
+            ,nickname = #{nickName}
         </if>
          where id = #{id}
     </update>
