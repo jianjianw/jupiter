@@ -38,7 +38,7 @@ public class InvalidReasonReportsDao {
         SourcePO source=new SourcePO();
         source.setId(0);
         source.setSrcName("合计");
-        sourcePOS.add(source);
+        sourcePOS.add(0,source);
         for(SourcePO sourcePO:sourcePOS){
             InvalidReasonReportsShowVO invalidReasonReportsShowVO=new InvalidReasonReportsShowVO();
             invalidReasonReportsShowVO.setSrcId(sourcePO.getId());
