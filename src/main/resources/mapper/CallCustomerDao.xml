@@ -48,4 +48,8 @@
         select  id,staff_id,nickname,companyid,call_id,phone,createtime from hm_crm_call_customer where companyid = #{companyId}
     </select>
 
+    <delete id = "deleteByIdAndCid">
+        delete from hm_crm_all_customer where id = #{id} and companyid = #{companyId}
+    </delete>
+
 </mapper>

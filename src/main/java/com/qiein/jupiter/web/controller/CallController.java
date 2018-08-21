@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.web.entity.po.CallCustomerPO;
@@ -43,6 +44,15 @@ public class CallController extends BaseController{
         return ResultInfoUtil.success();
     }
 
+    /**
+     * 删除客服
+     * */
+    @RequestMapping("/del_customer")
+    public ResultInfo delCustomer(Integer id){
+        StaffPO staffPO = getCurrentLoginStaff();
+        callService.delCustomer(id,staffPO);
+        return ResultInfoUtil.success(TipMsgEnum.DELETE_SUCCESS);
+    }
     /**
      * 客服列表
      * */

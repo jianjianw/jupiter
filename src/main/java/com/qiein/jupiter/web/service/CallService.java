@@ -59,4 +59,9 @@ public interface CallService {
      * */
     JSONObject getRecordingFile(String fileName,StaffPO staffPO,Integer callId);
 
+    /**
+     * 删除客服
+     * */
+    void delCustomer(Integer id,StaffPO staffPO);
+
 }

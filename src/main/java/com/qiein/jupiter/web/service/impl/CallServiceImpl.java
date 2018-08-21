@@ -297,4 +297,9 @@ public class CallServiceImpl implements CallService {
         return jsonObject;
     }
 
+    @Override
+    public void delCustomer(Integer id,StaffPO staffPO) {
+        callCustomerDao.deleteByIdAndCid(id,staffPO.getCompanyId());
+    }
+
 }
