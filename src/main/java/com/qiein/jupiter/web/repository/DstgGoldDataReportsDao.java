@@ -89,7 +89,7 @@ public class DstgGoldDataReportsDao {
     }
 
     private StringBuilder getCommonsql(StringBuilder sb,String infoTabName,String detailTabName) {
-        sb.append(" select info_detail_bak.adid,sum(info_detail_bak.client_count) from ( " );
+        sb.append(" select info_detail_bak.adid,sum(info_detail_bak.client_count) client_count from ( " );
         sb.append(" select if((IFNULL(detail.adid,'-') ) = '', '-',IFNULL(detail.adid,'-')  ) as adid,count(detail.kzid) as client_count ");
         sb.append(" from");
         sb.append(infoTabName + " info ," + detailTabName + " detail");
@@ -436,7 +436,7 @@ public class DstgGoldDataReportsDao {
         StringBuilder sb = new StringBuilder();
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
-        sb.append(" select info_detail_bak.adid,sum(info_detail_bak.avg_amount) from ( " );
+        sb.append(" select info_detail_bak.adid,sum(info_detail_bak.avg_amount) avg_amount from ( " );
         sb.append(" select if((IFNULL(detail.adid,'-') ) = '', '-',IFNULL(detail.adid,'-')  ) as adid,avg(detail.AMOUNT) as avg_amount ");
         sb.append(" from");
         sb.append(infoTabName + " info ," + detailTabName + " detail");
@@ -481,7 +481,7 @@ public class DstgGoldDataReportsDao {
         StringBuilder sb = new StringBuilder();
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
-        sb.append(" select info_detail_bak.adid,sum(info_detail_bak.sum_amount) from ( " );
+        sb.append(" select info_detail_bak.adid,sum(info_detail_bak.sum_amount) sum_amount from ( " );
         sb.append(" select if((IFNULL(detail.adid,'-') ) = '', '-',IFNULL(detail.adid,'-')  ) as adid,sum(detail.AMOUNT) as sum_amount ");
         sb.append(" from");
         sb.append(infoTabName + " info ," + detailTabName + " detail");
