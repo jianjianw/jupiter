@@ -599,7 +599,7 @@ public class ZjsKzOfYearDao {
         double validRate = (double) rrv.getValidClientCount() / rrv.getClientCount();
         rrv.setValidRate(parseDouble(((Double.isNaN(validRate) || Double.isInfinite(validRate)) ? 0.0 : validRate) * 100));
         //毛客资入店率 (入店量 / 总客资)
-        double clientComeShopRate = (double) rrv.getComeShopClientCount() / rrv.getClientCount();
+        double clientComeShopRate = (double) rrv.getComeShopClientCount() / rrv.getAllClientCount();
         rrv.setClientComeShopRate(parseDouble(((Double.isNaN(clientComeShopRate) || Double.isInfinite(clientComeShopRate)) ? 0.0 : clientComeShopRate) * 100));
         //入店成交率（成交量/入店量）
         double comeShopSuccessRate = (double) rrv.getSuccessClientCount() / rrv.getComeShopClientCount();
