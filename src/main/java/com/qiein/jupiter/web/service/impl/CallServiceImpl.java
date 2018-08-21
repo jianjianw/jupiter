@@ -45,6 +45,9 @@ public class CallServiceImpl implements CallService {
 
     @Override
     public void startBack2BackCall(String kzId,String caller, String callee, StaffPO staffPO,Integer callId) {
+        if(NumUtil.isInValid(callId)){
+            throw new RException(ExceptionEnum.CALL_ID_IS_NULL);
+        }
         if(StringUtil.isEmpty(kzId)){
             throw new RException(ExceptionEnum.KZ_ID_IS_NULL);
         }
@@ -144,6 +147,9 @@ public class CallServiceImpl implements CallService {
     @Override
     public void editCustomer(StaffPO staffPO, CallCustomerPO callCustomerPO) {
         if(NumUtil.isInValid(callCustomerPO.getId())){
+            throw new RException(ExceptionEnum.ID_IS_NULL);
+        }
+        if(NumUtil.isInValid(callCustomerPO.getId())){
             throw new RException(ExceptionEnum.CALL_CONSUMER_ID_IS_NULL);
         }
         if(NumUtil.isInValid(callCustomerPO.getCallId())){
@@ -182,6 +188,9 @@ public class CallServiceImpl implements CallService {
 
     @Override
     public JSONObject getRecording(String caller,StaffPO staffPO,Integer page,Integer pageSize,Integer callId) {
+        if(NumUtil.isInValid(callId)){
+            throw new RException(ExceptionEnum.CALL_ID_IS_NULL);
+        }
         String sign = MD5Util.getApolloMd5(String.valueOf(staffPO.getCompanyId()));
         //Appollo接口获取用户信息
         String usreJson = HttpClient
