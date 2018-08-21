@@ -130,7 +130,7 @@ public class CallServiceImpl implements CallService {
         if(NumUtil.isInValid(callCustomerPO.getStaffId())){
             throw new RException(ExceptionEnum.STAFF_ID_NULL);
         }
-        CallCustomerPO callCustomer = callCustomerDao.getCallCustomerByStaffIdAndCompanyId(staffPO.getId(), staffPO.getCompanyId());
+        CallCustomerPO callCustomer = callCustomerDao.getCallCustomerByStaffIdAndCompanyId(callCustomerPO.getStaffId(), staffPO.getCompanyId());
         if(null != callCustomer){
             throw new RException(ExceptionEnum.CALL_CONSUMER_IS_EXISTS);
         }
