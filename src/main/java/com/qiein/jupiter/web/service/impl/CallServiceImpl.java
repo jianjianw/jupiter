@@ -146,6 +146,9 @@ public class CallServiceImpl implements CallService {
 
     @Override
     public void editCustomer(StaffPO staffPO, CallCustomerPO callCustomerPO) {
+        if(NumUtil.isInValid(callCustomerPO.getStaffId())){
+            throw new RException(ExceptionEnum.STAFF_ID_NULL);
+        }
         if(NumUtil.isInValid(callCustomerPO.getId())){
             throw new RException(ExceptionEnum.CALL_CONSUMER_ID_IS_NULL);
         }
@@ -155,7 +158,9 @@ public class CallServiceImpl implements CallService {
         if(StringUtil.isEmpty(callCustomerPO.getPhone())){
             throw new RException(ExceptionEnum.CALL_CONSUMER_PHONE_IS_NULL);
         }
-        callCustomerPO.setStaffId(staffPO.getId());
+        StaffPO staff = staffDao.getByIdAndCid(callCustomerPO.getStaffId(), staffPO.getCompanyId());
+        callCustomerPO.setStaffId(callCustomerPO.getStaffId());
+        callCustomerPO.setNickName(staff.getNickName());
         callCustomerPO.setCompanyId(staffPO.getCompanyId());
         callCustomerDao.update(callCustomerPO);
     }
