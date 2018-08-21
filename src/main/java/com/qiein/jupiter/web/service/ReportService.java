@@ -105,7 +105,7 @@ public interface ReportService {
      * @param companyId
      * @return
      */
-    List<DstgReportsSrcMonthVO> getDSTGSrcMonthReportsSum(Integer start, Integer end, String typeId, String sourceId, int companyId);
+    List<Map<String, Object>> getDSTGSrcMonthReportsSum(String month, String typeId, String sourceId, int companyId);
 
 
     /**
@@ -147,7 +147,7 @@ public interface ReportService {
      * @param companyId
      * @return
      */
-    List<DstgReportsSrcMonthVO> getDSTGSrcMonthReportsAll(Integer start, Integer end, String typeId, String sourceId,
+    List<Map<String, Object>> getDSTGSrcMonthReportsAll(String month, String typeId, String sourceId,
                                                           int companyId);
 
     /**
@@ -156,7 +156,7 @@ public interface ReportService {
      * @param companyId
      * @return
      */
-    List<DstgReportsSrcMonthVO> getDSTGSrcMonthReportsDdNum(Integer start, Integer end, String typeId,
+    List<Map<String, Object>> getDSTGSrcMonthReportsDdNum(String month, String typeId,
                                                             String sourceId, int companyId);
 
     /**
@@ -165,7 +165,7 @@ public interface ReportService {
      * @param companyId
      * @return
      */
-    List<DstgReportsSrcMonthVO> getDSTGSrcMonthReportsInvalid(Integer start, Integer end, String typeId,
+    List<Map<String, Object>> getDSTGSrcMonthReportsInvalid(String month, String typeId,
                                                               String sourceId, int companyId);
 
     /**
@@ -174,7 +174,7 @@ public interface ReportService {
      * @param companyId
      * @return
      */
-    List<DstgReportsSrcMonthVO> getDSTGSrcMonthReportsvalid(Integer start, Integer end, String typeId,
+    List<Map<String, Object>> getDSTGSrcMonthReportsvalid(String month, String typeId,
                                                             String sourceId, int companyId);
 
 
