@@ -30,16 +30,16 @@ public class KeyWordReportsDao {
         List<KeyWordReportsVO>  keyWordReportsVOS=new ArrayList<>();
         String tableInfo= DBSplitUtil.getTable(TableEnum.info,companyId);
         String tableDetail=DBSplitUtil.getTable(TableEnum.detail,companyId);
-        getAllClientCount(startTime, endTime, keyWordReportsVOS, typeIds,keyWord, tableInfo, tableDetail);
-        getPendingClientCount(startTime, endTime,keyWordReportsVOS, typeIds,keyWord, tableInfo, tableDetail, dsInvalidVO);
-        getComeShopClient(startTime, endTime, keyWordReportsVOS, typeIds,keyWord, tableInfo, tableDetail);
-        getSuccessClient(startTime, endTime, keyWordReportsVOS, typeIds,keyWord, tableInfo, tableDetail);
-        getFilterWaitClientCount(startTime, endTime, keyWordReportsVOS, typeIds,keyWord, tableInfo, tableDetail);
-        getFilterInValidClientCount(startTime, endTime, keyWordReportsVOS, typeIds,keyWord,tableInfo, tableDetail);
-        getFilterInValidClientCount(startTime, endTime, keyWordReportsVOS, typeIds,keyWord, tableInfo, tableDetail);
-        getInValidClientCount(startTime, endTime, keyWordReportsVOS, typeIds,keyWord, tableInfo, tableDetail, dsInvalidVO);
-        getAvgAmount(startTime, endTime, keyWordReportsVOS, typeIds,keyWord, tableInfo, tableDetail);
-        getAmount(startTime, endTime, keyWordReportsVOS, typeIds,keyWord, tableInfo, tableDetail);
+        getAllClientCount(startTime, endTime, keyWordReportsVOS, typeIds,keyWord, tableInfo, tableDetail,companyId);
+        getPendingClientCount(startTime, endTime,keyWordReportsVOS, typeIds,keyWord, tableInfo, tableDetail, dsInvalidVO,companyId);
+        getComeShopClient(startTime, endTime, keyWordReportsVOS, typeIds,keyWord, tableInfo, tableDetail,companyId);
+        getSuccessClient(startTime, endTime, keyWordReportsVOS, typeIds,keyWord, tableInfo, tableDetail,companyId);
+        getFilterWaitClientCount(startTime, endTime, keyWordReportsVOS, typeIds,keyWord, tableInfo, tableDetail,companyId);
+        getFilterInValidClientCount(startTime, endTime, keyWordReportsVOS, typeIds,keyWord,tableInfo, tableDetail,companyId);
+        getFilterInValidClientCount(startTime, endTime, keyWordReportsVOS, typeIds,keyWord, tableInfo, tableDetail,companyId);
+        getInValidClientCount(startTime, endTime, keyWordReportsVOS, typeIds,keyWord, tableInfo, tableDetail, dsInvalidVO,companyId);
+        getAvgAmount(startTime, endTime, keyWordReportsVOS, typeIds,keyWord, tableInfo, tableDetail,companyId);
+        getAmount(startTime, endTime, keyWordReportsVOS, typeIds,keyWord, tableInfo, tableDetail,companyId);
         computerRate(keyWordReportsVOS, dsInvalidVO);
         computerTotal(keyWordReportsVOS);
         return keyWordReportsVOS;
@@ -47,9 +47,9 @@ public class KeyWordReportsDao {
     /**
      * 总客资
      */
-    private void getAllClientCount(String startTime, String endTime, List<KeyWordReportsVO> keyWordReportsVOS, String typeIds, String keyWord,String tableInfo, String tableDetail) {
+    private void getAllClientCount(String startTime, String endTime, List<KeyWordReportsVO> keyWordReportsVOS, String typeIds, String keyWord,String tableInfo, String tableDetail,Integer companyId) {
         StringBuilder sql = new StringBuilder();
-        getBaseSql(sql,typeIds, tableInfo, tableDetail);
+        getBaseSql(sql,typeIds, tableInfo, tableDetail,companyId);
         sql.append(" and info.createtime between ? and ?");
         sql.append(" GROUP BY detail.keyword ");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{keyWord,startTime, endTime});
@@ -64,9 +64,9 @@ public class KeyWordReportsDao {
     /**
      * 待定量
      */
-    private void getPendingClientCount(String startTime, String endTime, List<KeyWordReportsVO> keyWordReportsVOS, String typeIds, String keyWord,String tableInfo, String tableDetail, DsInvalidVO dsInvalidVO) {
+    private void getPendingClientCount(String startTime, String endTime, List<KeyWordReportsVO> keyWordReportsVOS, String typeIds, String keyWord,String tableInfo, String tableDetail, DsInvalidVO dsInvalidVO,Integer companyId) {
         StringBuilder sql = new StringBuilder();
-        getBaseSql(sql,typeIds, tableInfo, tableDetail);
+        getBaseSql(sql,typeIds, tableInfo, tableDetail,companyId);
         sql.append(" and info.createtime between ? and ?");
         sql.append(" and INSTR( '" + dsInvalidVO.getDsDdStatus() + "', CONCAT(',',info.STATUSID + '',',')) != 0");
         sql.append(" GROUP BY detail.keyword  ");
@@ -92,9 +92,9 @@ public class KeyWordReportsDao {
     /**
      * 入店量
      */
-    private void getComeShopClient(String startTime, String endTime, List<KeyWordReportsVO> keyWordReportsVOS, String typeIds, String keyWord,String tableInfo, String tableDetail) {
+    private void getComeShopClient(String startTime, String endTime, List<KeyWordReportsVO> keyWordReportsVOS, String typeIds, String keyWord,String tableInfo, String tableDetail,Integer companyId) {
         StringBuilder sql = new StringBuilder();
-        getBaseSql(sql,typeIds, tableInfo, tableDetail);
+        getBaseSql(sql,typeIds, tableInfo, tableDetail,companyId);
         sql.append(" and info.ComeShopTime between ? and ?");
         sql.append(" GROUP BY detail.keyword  ");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{keyWord,startTime, endTime});
@@ -119,9 +119,9 @@ public class KeyWordReportsDao {
     /**
      * 成交量
      */
-    private void getSuccessClient(String startTime, String endTime, List<KeyWordReportsVO> keyWordReportsVOS, String typeIds, String keyWord,String tableInfo, String tableDetail) {
+    private void getSuccessClient(String startTime, String endTime, List<KeyWordReportsVO> keyWordReportsVOS, String typeIds, String keyWord,String tableInfo, String tableDetail,Integer companyId) {
         StringBuilder sql = new StringBuilder();
-        getBaseSql(sql,typeIds, tableInfo, tableDetail);
+        getBaseSql(sql,typeIds, tableInfo, tableDetail,companyId);
         sql.append(" and info.SuccessTime between ? and ?");
         sql.append(" GROUP BY detail.keyword  ");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{keyWord,startTime, endTime});
@@ -147,9 +147,9 @@ public class KeyWordReportsDao {
     /**
      * 筛选待定
      */
-    private void getFilterWaitClientCount(String startTime, String endTime, List<KeyWordReportsVO> keyWordReportsVOS, String typeIds, String keyWord,String tableInfo, String tableDetail) {
+    private void getFilterWaitClientCount(String startTime, String endTime, List<KeyWordReportsVO> keyWordReportsVOS, String typeIds, String keyWord,String tableInfo, String tableDetail,Integer companyId) {
         StringBuilder sql = new StringBuilder();
-        getBaseSql(sql,typeIds, tableInfo, tableDetail);
+        getBaseSql(sql,typeIds, tableInfo, tableDetail,companyId);
         sql.append(" and info.createtime between ? and ?");
         sql.append("  and info.CLASSID = 1 and info.STATUSID = 98 ");
         sql.append(" GROUP BY detail.keyword  ");
@@ -175,9 +175,9 @@ public class KeyWordReportsDao {
     /**
      * 筛选无效
      */
-    private void getFilterInValidClientCount(String startTime, String endTime, List<KeyWordReportsVO> keyWordReportsVOS, String typeIds, String keyWord,String tableInfo, String tableDetail) {
+    private void getFilterInValidClientCount(String startTime, String endTime, List<KeyWordReportsVO> keyWordReportsVOS, String typeIds, String keyWord,String tableInfo, String tableDetail,Integer companyId) {
         StringBuilder sql = new StringBuilder();
-        getBaseSql(sql,typeIds, tableInfo, tableDetail);
+        getBaseSql(sql,typeIds, tableInfo, tableDetail,companyId);
         sql.append(" and info.createtime between ? and ?");
         sql.append(" and info.CLASSID = 6 and info.STATUSID = 99 ");
         sql.append(" GROUP BY detail.keyword  ");
@@ -203,9 +203,9 @@ public class KeyWordReportsDao {
     /**
      * 筛选中
      */
-    private void getFilterInClientCount(String startTime, String endTime, List<KeyWordReportsVO> keyWordReportsVOS, String typeIds, String keyWord,String tableInfo, String tableDetail) {
+    private void getFilterInClientCount(String startTime, String endTime, List<KeyWordReportsVO> keyWordReportsVOS, String typeIds, String keyWord,String tableInfo, String tableDetail,Integer companyId) {
         StringBuilder sql = new StringBuilder();
-        getBaseSql(sql,typeIds, tableInfo, tableDetail);
+        getBaseSql(sql,typeIds, tableInfo, tableDetail,companyId);
         sql.append(" and info.createtime between ? and ?");
         sql.append(" and info.CLASSID = 1 and info.STATUSID = 0 ");
         sql.append(" GROUP BY detail.keyword  ");
@@ -231,9 +231,9 @@ public class KeyWordReportsDao {
     /**
      * 无效
      */
-    private void getInValidClientCount(String startTime, String endTime, List<KeyWordReportsVO> keyWordReportsVOS, String typeIds, String keyWord,String tableInfo, String tableDetail, DsInvalidVO dsInvalidVO) {
+    private void getInValidClientCount(String startTime, String endTime, List<KeyWordReportsVO> keyWordReportsVOS, String typeIds, String keyWord,String tableInfo, String tableDetail, DsInvalidVO dsInvalidVO,Integer companyId) {
         StringBuilder sql = new StringBuilder();
-        getBaseSql(sql,typeIds, tableInfo, tableDetail);
+        getBaseSql(sql,typeIds, tableInfo, tableDetail,companyId);
         sql.append(" and info.createtime between ? and ?");
         if (StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidStatus()) && StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidLevel())) {
             sql.append(" and (info.STATUSID in(" + dsInvalidVO.getDsInvalidStatus() + ") or");
@@ -268,7 +268,7 @@ public class KeyWordReportsDao {
     /**
      * 成交均价
      */
-    private void getAvgAmount(String startTime, String endTime, List<KeyWordReportsVO> keyWordReportsVOS, String typeIds, String keyWord,String tableInfo, String tableDetail) {
+    private void getAvgAmount(String startTime, String endTime, List<KeyWordReportsVO> keyWordReportsVOS, String typeIds, String keyWord,String tableInfo, String tableDetail,Integer companyId) {
         StringBuilder sql = new StringBuilder();
         sql.append(" SELECT detail.keyword keyword, AVG( detail.AMOUNT) avg_amount ");
         sql.append(" FROM "+tableInfo+" info");
@@ -280,6 +280,7 @@ public class KeyWordReportsDao {
             sql.append(" and info.typeid in ("+typeIds+") ");
         }
         sql.append(" and detail.keyword like concat('%',?,'%')");
+        sql.append(" and info.companyId="+companyId);
         sql.append(" and info.SuccessTime between ? and ?");
         sql.append(" GROUP BY detail.keyword ");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{ keyWord,startTime, endTime});
@@ -304,7 +305,7 @@ public class KeyWordReportsDao {
     /**
      * 成交总价
      */
-    private void getAmount(String startTime, String endTime, List<KeyWordReportsVO> keyWordReportsVOS, String typeIds, String keyWord,String tableInfo, String tableDetail) {
+    private void getAmount(String startTime, String endTime, List<KeyWordReportsVO> keyWordReportsVOS, String typeIds, String keyWord,String tableInfo, String tableDetail,Integer companyId) {
         StringBuilder sql = new StringBuilder();
         sql.append(" SELECT detail.keyword keyword, sum(detail.AMOUNT) as sum_amount ");
         sql.append(" FROM "+tableInfo+" info");
@@ -315,6 +316,7 @@ public class KeyWordReportsDao {
             sql.append(" and info.typeid in ("+typeIds+") ");
         }
         sql.append(" and detail.keyword like concat('%',?,'%')");
+        sql.append(" and info.companyId="+companyId);
         sql.append(" and info.SuccessTime between ? and ?");
         sql.append(" GROUP BY detail.keyword ");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{keyWord,startTime, endTime});
@@ -437,13 +439,14 @@ public class KeyWordReportsDao {
 
 
 
-    private void getBaseSql(StringBuilder sql,String typeIds,String tableInfo,String tableDetail){
+    private void getBaseSql(StringBuilder sql,String typeIds,String tableInfo,String tableDetail,Integer companyId){
         sql.append(" SELECT count(info.id) count,detail.keyword keyWord");
         sql.append(" FROM "+tableInfo+" info");
         sql.append(" LEFT JOIN "+tableDetail+" detail ON info.kzid = detail.kzid");
 
         sql.append(" WHERE detail.keyword IS NOT NULL");
         sql.append(" and detail.keyword !=''");
+        sql.append(" and info.companyId="+companyId);
         if(StringUtil.isNotEmpty(typeIds)){
             sql.append(" and  info.typeid in ("+typeIds+") ");
         }
