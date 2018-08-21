@@ -77,9 +77,9 @@ public class CallController extends BaseController{
      * 获取录音
      * */
     @RequestMapping("/get_recording_file")
-    public ResultInfo getRecordingFile(String fileName){
+    public ResultInfo getRecordingFile(String fileName,Integer callId){
         StaffPO staffPO = getCurrentLoginStaff();
-        JSONObject jsonObject = callService.getRecordingFile(fileName, staffPO);
+        JSONObject jsonObject = callService.getRecordingFile(fileName, staffPO,callId);
         return ResultInfoUtil.success(jsonObject);
     }
 

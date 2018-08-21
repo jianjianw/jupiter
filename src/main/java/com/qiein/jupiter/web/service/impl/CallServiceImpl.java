@@ -247,7 +247,7 @@ public class CallServiceImpl implements CallService {
     }
 
     @Override
-    public JSONObject getRecordingFile(String fileName,StaffPO staffPO) {
+    public JSONObject getRecordingFile(String fileName,StaffPO staffPO,Integer callId) {
 
         String sign = MD5Util.getApolloMd5(String.valueOf(staffPO.getCompanyId()));
         //Appollo接口获取用户信息
@@ -262,8 +262,9 @@ public class CallServiceImpl implements CallService {
         //Appollo接口获取intsanceId
         String instaceJson = HttpClient
                 // 请求方式和请求url
-                .get(appoloBaseUrl.concat(AppolloUrlConst.GET_CALL_INSTANCE))
+                .get(appoloBaseUrl.concat(AppolloUrlConst.GET_CALL_INSTANCE_BY_ID))
                 // post提交json
+                .queryString("callId",callId)
                 .queryString("companyId", staffPO.getCompanyId())
                 .queryString("sign", sign)
                 .asString();

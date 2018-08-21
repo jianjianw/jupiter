@@ -57,6 +57,6 @@ public interface CallService {
     /**
      * 获取录音文件
      * */
-    JSONObject getRecordingFile(String fileName,StaffPO staffPO);
+    JSONObject getRecordingFile(String fileName,StaffPO staffPO,Integer callId);
 
 }
