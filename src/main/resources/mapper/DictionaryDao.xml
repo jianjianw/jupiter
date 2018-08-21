@@ -270,7 +270,7 @@
     <select id="getInvaildReasons"  resultMap="baseMap">
         SELECT
             detail.INVALIDLABEL DICNAME,
-            CONCAT("invalid_reason", detail.ID) DICTYPE
+            CONCAT("invalid_reason", detail.INVALIDLABEL) DICTYPE
         FROM
             ${tableInfo} info
         LEFT JOIN ${tableDetail} detail ON info.kzid = detail.kzid
