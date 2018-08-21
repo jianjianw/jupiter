@@ -68,13 +68,6 @@ public class ProvinceReportsVO2 {
 
     @Override
     public String toString() {
-        return "ProvinceReportsVO2{" +
-                "srcId=" + srcId +
-                ", srcImg='" + srcImg + '\'' +
-                ", srcName='" + srcName + '\'' +
-                ", dataType='" + dataType + '\'' +
-                ", provinceDataList=" + provinceDataList +
-                ", provinceDataMap=" + provinceDataMap +
-                '}';
+        return provinceDataMap+"";
     }
 }

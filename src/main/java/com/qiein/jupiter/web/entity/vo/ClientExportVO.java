@@ -168,6 +168,32 @@ public class ClientExportVO implements Serializable {
      */
     @Excel(name = "销售备注", width = 40, height = 6)
     private String memo;
+    /**
+     * 广告id
+     * */
+    @Excel(name ="广告id",width = 20,height = 6)
+    private String adId;
+    /**
+     * 筛客名称
+     * */
+    @Excel(name="筛客名称",width = 20,height = 6)
+    private String promoterName;
+
+    public String getAdId() {
+        return adId;
+    }
+
+    public void setAdId(String adId) {
+        this.adId = adId;
+    }
+
+    public String getPromoterName() {
+        return promoterName;
+    }
+
+    public void setPromoterName(String promoterName) {
+        this.promoterName = promoterName;
+    }
 
     public String getComeShopTime() {
         return comeShopTime;

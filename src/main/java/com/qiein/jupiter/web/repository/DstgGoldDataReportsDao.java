@@ -67,7 +67,7 @@ public class DstgGoldDataReportsDao {
         StringBuilder sb = new StringBuilder();
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
-        sb.append(" select distinct if((IFNULL(detail.adid,'其他') ) = '', '无名字',IFNULL(detail.adid,'其他')  ) as adid");
+        sb.append(" select distinct if((IFNULL(detail.adid,'-') ) = '', '-',IFNULL(detail.adid,'-')  ) as adid");
         sb.append(" from");
         sb.append(infoTabName + " info ," + detailTabName + " detail");
         sb.append(" where");
@@ -89,7 +89,8 @@ public class DstgGoldDataReportsDao {
     }
 
     private StringBuilder getCommonsql(StringBuilder sb,String infoTabName,String detailTabName) {
-        sb.append(" select if((IFNULL(detail.adid,'其他') ) = '', '无名字',IFNULL(detail.adid,'其他')  ) as adid,count(detail.kzid) as client_count ");
+        sb.append(" select info_detail_bak.adid,sum(info_detail_bak.client_count) client_count from ( " );
+        sb.append(" select if((IFNULL(detail.adid,'-') ) = '', '-',IFNULL(detail.adid,'-')  ) as adid,count(detail.kzid) as client_count ");
         sb.append(" from");
         sb.append(infoTabName + " info ," + detailTabName + " detail");
         sb.append(" where");
@@ -121,6 +122,7 @@ public class DstgGoldDataReportsDao {
         sb.append(" and info.CREATETIME BETWEEN ? AND ?");
         addConditionByType(reportsParamVO.getType(),sb);
         sb.append(" group by detail.adid");
+        sb.append(" ) info_detail_bak  group by info_detail_bak.adid ");
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(),
                         reportsParamVO.getStart(),
@@ -131,7 +133,7 @@ public class DstgGoldDataReportsDao {
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgGoldDataReportsVO dstgGoldDataReportsVO = new DstgGoldDataReportsVO();
             dstgGoldDataReportsVO.setAdId((String) dstgGoldDataReport.get("adid"));
-            dstgGoldDataReportsVO.setAllClientCount(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("client_count"))));
+            dstgGoldDataReportsVO.setAllClientCount(Integer.parseInt( String.valueOf(dstgGoldDataReport.get("client_count").toString())));
             dstgGoldDataReportsBak.add(dstgGoldDataReportsVO);
         }
 
@@ -158,6 +160,7 @@ public class DstgGoldDataReportsDao {
         sb.append(" AND INSTR( ?, CONCAT(',',info.STATUSID + '',',')) != 0");
         addConditionByType(reportsParamVO.getType(),sb);
         sb.append(" group by detail.adid");
+        sb.append(" ) info_detail_bak  group by info_detail_bak.adid ");
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(),
                         reportsParamVO.getStart(),
@@ -169,7 +172,7 @@ public class DstgGoldDataReportsDao {
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgGoldDataReportsVO dstgGoldDataReportsVO = new DstgGoldDataReportsVO();
             dstgGoldDataReportsVO.setAdId((String) dstgGoldDataReport.get("adid"));
-            dstgGoldDataReportsVO.setPendingClientCount(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("client_count"))));
+            dstgGoldDataReportsVO.setPendingClientCount(Integer.parseInt( String.valueOf(dstgGoldDataReport.get("client_count").toString())));
             dstgGoldDataReportsBak.add(dstgGoldDataReportsVO);
         }
 
@@ -193,9 +196,10 @@ public class DstgGoldDataReportsDao {
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
         sb = getCommonsql(sb, infoTabName, detailTabName);
         sb.append(" and info.CREATETIME BETWEEN ? AND ?");
-        sb.append(" and info.CLASSID = 1 and info.STATUSID = 98 ");
+        sb.append(" and  info.STATUSID = 98 ");
         addConditionByType(reportsParamVO.getType(),sb);
         sb.append(" group by detail.adid");
+        sb.append(" ) info_detail_bak  group by info_detail_bak.adid ");
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(),
                         reportsParamVO.getStart(),
@@ -207,7 +211,7 @@ public class DstgGoldDataReportsDao {
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgGoldDataReportsVO dstgGoldDataReportsVO = new DstgGoldDataReportsVO();
             dstgGoldDataReportsVO.setAdId((String) dstgGoldDataReport.get("adid"));
-            dstgGoldDataReportsVO.setFilterPendingClientCount(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("client_count"))));
+            dstgGoldDataReportsVO.setFilterPendingClientCount(Integer.parseInt( String.valueOf(dstgGoldDataReport.get("client_count").toString())));
             dstgGoldDataReportsBak.add(dstgGoldDataReportsVO);
         }
 
@@ -230,9 +234,10 @@ public class DstgGoldDataReportsDao {
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
         sb = getCommonsql(sb, infoTabName, detailTabName);
         sb.append(" and info.CREATETIME BETWEEN ? AND ?");
-        sb.append(" and info.CLASSID = 6 and info.STATUSID = 99");
+        sb.append(" and  info.STATUSID = 99");
         addConditionByType(reportsParamVO.getType(),sb);
         sb.append(" group by detail.adid");
+        sb.append(" ) info_detail_bak  group by info_detail_bak.adid ");
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(),
                         reportsParamVO.getStart(),
@@ -244,7 +249,7 @@ public class DstgGoldDataReportsDao {
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgGoldDataReportsVO dstgGoldDataReportsVO = new DstgGoldDataReportsVO();
             dstgGoldDataReportsVO.setAdId((String) dstgGoldDataReport.get("adid"));
-            dstgGoldDataReportsVO.setFilterInValidClientCount(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("client_count"))));
+            dstgGoldDataReportsVO.setFilterInValidClientCount(Integer.parseInt( String.valueOf(dstgGoldDataReport.get("client_count").toString())));
             dstgGoldDataReportsBak.add(dstgGoldDataReportsVO);
         }
 
@@ -268,9 +273,10 @@ public class DstgGoldDataReportsDao {
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
         sb = getCommonsql(sb, infoTabName, detailTabName);
         sb.append(" and info.CREATETIME BETWEEN ? AND ?");
-        sb.append(" and info.CLASSID = 1 and info.STATUSID = 0");
+        sb.append(" and  info.STATUSID = 0");
         addConditionByType(reportsParamVO.getType(),sb);
         sb.append(" group by detail.adid");
+        sb.append(" ) info_detail_bak  group by info_detail_bak.adid ");
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(),
                         reportsParamVO.getStart(),
@@ -282,7 +288,7 @@ public class DstgGoldDataReportsDao {
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgGoldDataReportsVO dstgGoldDataReportsVO = new DstgGoldDataReportsVO();
             dstgGoldDataReportsVO.setAdId((String) dstgGoldDataReport.get("adid"));
-            dstgGoldDataReportsVO.setFilterInClientCount(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("client_count"))));
+            dstgGoldDataReportsVO.setFilterInClientCount(Integer.parseInt( String.valueOf(dstgGoldDataReport.get("client_count").toString())));
             dstgGoldDataReportsBak.add(dstgGoldDataReportsVO);
         }
 
@@ -321,7 +327,7 @@ public class DstgGoldDataReportsDao {
             sb.append(" and detail.YXLEVEL IN("+ dsInvalidVO.getDsInvalidLevel()  +") ");
         }
         sb.append(" group by detail.adid");
-
+        sb.append(" ) info_detail_bak  group by info_detail_bak.adid ");
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(),
                         reportsParamVO.getStart(),
@@ -332,7 +338,7 @@ public class DstgGoldDataReportsDao {
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgGoldDataReportsVO dstgGoldDataReportsVO = new DstgGoldDataReportsVO();
             dstgGoldDataReportsVO.setAdId((String) dstgGoldDataReport.get("adid"));
-            dstgGoldDataReportsVO.setInValidClientCount(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("client_count"))));
+            dstgGoldDataReportsVO.setInValidClientCount(Integer.parseInt( String.valueOf(dstgGoldDataReport.get("client_count").toString())));
             dstgGoldDataReportsBak.add(dstgGoldDataReportsVO);
         }
 
@@ -360,7 +366,7 @@ public class DstgGoldDataReportsDao {
         sb.append(" and info.COMESHOPTIME BETWEEN ? AND ?");
         addConditionByType(reportsParamVO.getType(),sb);
         sb.append(" group by detail.adid");
-
+        sb.append(" ) info_detail_bak  group by info_detail_bak.adid ");
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(),
                         reportsParamVO.getStart(),
@@ -371,7 +377,7 @@ public class DstgGoldDataReportsDao {
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgGoldDataReportsVO dstgGoldDataReportsVO = new DstgGoldDataReportsVO();
             dstgGoldDataReportsVO.setAdId((String) dstgGoldDataReport.get("adid"));
-            dstgGoldDataReportsVO.setComeShopClientCount(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("client_count"))));
+            dstgGoldDataReportsVO.setComeShopClientCount(Integer.parseInt( String.valueOf(dstgGoldDataReport.get("client_count").toString())));
             dstgGoldDataReportsBak.add(dstgGoldDataReportsVO);
         }
 
@@ -397,7 +403,7 @@ public class DstgGoldDataReportsDao {
         sb.append(" and info.SUCCESSTIME BETWEEN ? AND ?");
         addConditionByType(reportsParamVO.getType(),sb);
         sb.append(" group by detail.adid");
-
+        sb.append(" ) info_detail_bak  group by info_detail_bak.adid ");
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(),
                         reportsParamVO.getStart(),
@@ -408,7 +414,7 @@ public class DstgGoldDataReportsDao {
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgGoldDataReportsVO dstgGoldDataReportsVO = new DstgGoldDataReportsVO();
             dstgGoldDataReportsVO.setAdId((String) dstgGoldDataReport.get("adid"));
-            dstgGoldDataReportsVO.setSuccessClientCount(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("client_count"))));
+            dstgGoldDataReportsVO.setSuccessClientCount(Integer.parseInt( String.valueOf(dstgGoldDataReport.get("client_count").toString())));
             dstgGoldDataReportsBak.add(dstgGoldDataReportsVO);
         }
 
@@ -430,7 +436,8 @@ public class DstgGoldDataReportsDao {
         StringBuilder sb = new StringBuilder();
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
-        sb.append(" select if((IFNULL(detail.adid,'其他') ) = '', '无名字',IFNULL(detail.adid,'其他')  ) as adid,avg(detail.AMOUNT) as avg_amount ");
+        sb.append(" select info_detail_bak.adid,sum(info_detail_bak.avg_amount) avg_amount from ( " );
+        sb.append(" select if((IFNULL(detail.adid,'-') ) = '', '-',IFNULL(detail.adid,'-')  ) as adid,avg(detail.AMOUNT) as avg_amount ");
         sb.append(" from");
         sb.append(infoTabName + " info ," + detailTabName + " detail");
         sb.append(" where");
@@ -441,7 +448,7 @@ public class DstgGoldDataReportsDao {
         sb.append(" and info.SUCCESSTIME BETWEEN ? AND ?");
         addConditionByType(reportsParamVO.getType(),sb);
         sb.append(" group by detail.adid");
-
+        sb.append(" ) info_detail_bak  group by info_detail_bak.adid ");
 
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(),
@@ -474,7 +481,8 @@ public class DstgGoldDataReportsDao {
         StringBuilder sb = new StringBuilder();
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
-        sb.append(" select if((IFNULL(detail.adid,'其他') ) = '', '无名字',IFNULL(detail.adid,'其他')  ) as adid,sum(detail.AMOUNT) as sum_amount ");
+        sb.append(" select info_detail_bak.adid,sum(info_detail_bak.sum_amount) sum_amount from ( " );
+        sb.append(" select if((IFNULL(detail.adid,'-') ) = '', '-',IFNULL(detail.adid,'-')  ) as adid,sum(detail.AMOUNT) as sum_amount ");
         sb.append(" from");
         sb.append(infoTabName + " info ," + detailTabName + " detail");
         sb.append(" where");
@@ -485,7 +493,7 @@ public class DstgGoldDataReportsDao {
         sb.append(" and info.SUCCESSTIME BETWEEN ? AND ?");
         addConditionByType(reportsParamVO.getType(),sb);
         sb.append(" group by detail.adid");
-
+        sb.append(" ) info_detail_bak  group by info_detail_bak.adid ");
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(),
                         reportsParamVO.getStart(),

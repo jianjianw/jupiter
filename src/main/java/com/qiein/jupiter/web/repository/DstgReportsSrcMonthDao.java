@@ -32,43 +32,64 @@ public class DstgReportsSrcMonthDao {
      * @param end
      * @param companyId
      * */
-	public List<DstgReportsSrcMonthVO> getDSTGSrcMonthReportsSum(ReportsParamSrcMonthVO reportsParamSrcMonthVO,
+	public List<Map<String, Object>> getDSTGSrcMonthReportsSum(List<Map<String, Object>> dayList , String month,ReportsParamSrcMonthVO reportsParamSrcMonthVO,
 			DsInvalidVO dsInvalidVO) {
-		List<DstgReportsSrcMonthVO> dstgReportsSrcMonthVOS = new ArrayList<>();
-		
-		StringBuilder sb=new StringBuilder();
+		StringBuilder sql = new StringBuilder();
 		String infoTabName = DBSplitUtil.getInfoTabName(reportsParamSrcMonthVO.getCompanyId());
-		sb.append("SELECT sr.ID as srcId,sr.SRCNAME as srcName ,COUNT(1) as AllClientCount,FROM_UNIXTIME(infos.CREATETIME, '%Y-%m-%d') as day ");
-		sb.append(" FROM ");
-		sb.append(infoTabName+" infos ," + " hm_crm_source sr ");
-		sb.append(" WHERE");
-		sb.append(" infos.SOURCEID=sr.ID");
-		sb.append(" AND	infos.COMPANYID=?");
-		sb.append(" AND infos.ISDEL=0");
-		sb.append(" AND infos.TYPEID IN(?)");
-		sb.append(" AND infos.CREATETIME >=?");
-		sb.append(" AND infos.CREATETIME <=?");
-		sb.append(" AND sr.TYPEID=1");
-		sb.append(" AND sr.ID IN(?)");
-		sb.append(" GROUP BY sr.SRCNAME , day");
-		sb.append(" ORDER BY infos.CREATETIME");
-		List<Map<String, Object>> lists = jdbcTemplate.queryForList(sb.toString(), new Object[]{
-			reportsParamSrcMonthVO.getCompanyId(),
-			reportsParamSrcMonthVO.getTypeId(),
-			reportsParamSrcMonthVO.getStart(),
-			reportsParamSrcMonthVO.getEnd(),
-			reportsParamSrcMonthVO.getSourceId()
-		});
-		for (Map<String, Object> list : lists) {
-			DstgReportsSrcMonthVO dstgReportsSrcMonthVO=new DstgReportsSrcMonthVO();
-			dstgReportsSrcMonthVO.setSourceId(Long.toString((Long)list.get("srcId")));
-			dstgReportsSrcMonthVO.setSourceName((String) list.get("srcName"));
-			dstgReportsSrcMonthVO.setAllClientCount( Integer.parseInt(Long.toString((Long)list.get("AllClientCount"))));
-			dstgReportsSrcMonthVO.setDay((String) list.get("day"));
-			dstgReportsSrcMonthVOS.add(dstgReportsSrcMonthVO);
-		}
 		
-		return dstgReportsSrcMonthVOS;
+        sql.append("SELECT src.SRCNAME srcName,src.ID srcId,");
+        if(StringUtil.isEmpty(reportsParamSrcMonthVO.getTypeId()) ){
+        	sql.append("(select COUNT(info.ID) from " + infoTabName + " info where info.SOURCEID=src.ID AND info.ISDEL=0  AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m')='" + month + "') hj,  ");
+        	for (Map<String, Object> day : dayList) {
+                sql.append("(select count(info.ID) from " + infoTabName + " info where info.SOURCEID=src.ID AND info.ISDEL=0  AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d')='" + day.get("day") + "') " + day.get("dayKey") + ",");
+            }
+        }else{
+        	sql.append("(select COUNT(info.ID) from " + infoTabName + " info where info.SOURCEID=src.ID AND info.ISDEL=0 "+" AND info.TYPEID IN("+reportsParamSrcMonthVO.getTypeId()+")  " +" AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m')='" + month + "') hj,  ");
+        	for (Map<String, Object> day : dayList) {
+                sql.append("(select count(info.ID) from " + infoTabName + " info where info.SOURCEID=src.ID AND info.ISDEL=0 "+" AND info.TYPEID IN("+reportsParamSrcMonthVO.getTypeId()+")  " +" AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d')='" + day.get("day") + "') " + day.get("dayKey") + ",");
+            }
+        }
+        sql.append(" src.SRCIMG srcImg ");
+        sql.append(" FROM hm_crm_source src WHERE src.COMPANYID = ? AND TYPEID IN (1,2) ");
+        
+        if (StringUtil.isNotEmpty(reportsParamSrcMonthVO.getSourceId())) {
+            sql.append(" AND src.ID IN (" + reportsParamSrcMonthVO.getSourceId() + ")");
+        }
+        String sqlString = sql.toString(); 
+        List<Map<String, Object>> listSum = jdbcTemplate.queryForList(sqlString, new Object[]{reportsParamSrcMonthVO.getCompanyId()});
+		
+        //横的一列合计
+        /*StringBuilder hjsql = new StringBuilder();
+        hjsql.append("SELECT '合计'  srcName, ''  srcIamge,");
+        hjsql.append("(SELECT COUNT(1)");
+        hjsql.append(" FROM ");
+        hjsql.append(" "+infoTabName+" info");
+        hjsql.append(" WHERE ");
+        hjsql.append(" FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d') = '"+month+"'");
+        hjsql.append(" AND info.ISDEL=0 ");
+        if(StringUtil.isEmpty(reportsParamSrcMonthVO.getTypeId()) ){
+        	hjsql.append(" AND info.TYPEID IN("+reportsParamSrcMonthVO.getTypeId()+")  ");
+        }
+        hjsql.append(" AND info.COMPANYID="+reportsParamSrcMonthVO.getCompanyId() );
+        hjsql.append(" AND info.SRCTYPE IN(1,2) ) hj,");
+        //
+        for (Map<String, Object> day : dayList) {
+        	hjsql.append("(SELECT COUNT(1)");
+        	hjsql.append(" FROM ");
+        	hjsql.append(" "+infoTabName+" info");
+        	hjsql.append(" WHERE ");
+        	hjsql.append(" FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d') = '"+day.get("day")+"' ");
+        	hjsql.append(" AND info.ISDEL=0 ");
+            if(StringUtil.isEmpty(reportsParamSrcMonthVO.getTypeId()) ){
+            	hjsql.append(" AND info.TYPEID IN("+reportsParamSrcMonthVO.getTypeId()+")  ");
+            }
+            hjsql.append(" AND info.COMPANYID="+reportsParamSrcMonthVO.getCompanyId() );
+            hjsql.append(" AND info.SRCTYPE IN(1,2) ) "+day.get("day")+" , ");
+        }
+        String hjsqlString = hjsql.toString();
+        List<Map<String, Object>> hjlistSum = jdbcTemplate.queryForList(hjsqlString, new Object[]{});
+        hjlistSum.addAll(listSum);*/
+		return listSum;
 	}
 	
 	/**
@@ -77,45 +98,33 @@ public class DstgReportsSrcMonthDao {
      * @param end
      * @param companyId
      * */
-	public List<DstgReportsSrcMonthVO> getDSTGSrcMonthReportsAll(ReportsParamSrcMonthVO reportsParamSrcMonthVO,
+	public List<Map<String, Object>> getDSTGSrcMonthReportsAll(List<Map<String, Object>> dayList , String month,ReportsParamSrcMonthVO reportsParamSrcMonthVO,
 			DsInvalidVO invalidConfig) {
-		List<DstgReportsSrcMonthVO> dstgReportsSrcMonthVOS = new ArrayList<>();
-		
-		StringBuilder sb=new StringBuilder();
+		StringBuilder sql = new StringBuilder();
 		String infoTabName = DBSplitUtil.getInfoTabName(reportsParamSrcMonthVO.getCompanyId());
-		sb.append("SELECT sr.ID as srcId,sr.SRCNAME as srcName ,COUNT(1) as ClientCount,FROM_UNIXTIME(infos.CREATETIME, '%Y-%m-%d') as day ");
-		sb.append(" FROM ");
-		sb.append(infoTabName+" infos ," + " hm_crm_source sr ");
-		sb.append(" WHERE");
-		sb.append(" infos.SOURCEID=sr.ID");
-		sb.append(" AND	infos.COMPANYID=?");
-		sb.append(" AND infos.ISDEL=0");
-		sb.append(" AND infos.TYPEID IN(?)");
-		sb.append(" AND infos.CREATETIME >=?");
-		sb.append(" AND infos.CREATETIME <=?");
-		sb.append(" AND infos.STATUSID !=0");
-		sb.append(" AND infos.STATUSID !=98");
-		sb.append(" AND infos.STATUSID !=99");
-		sb.append(" AND sr.TYPEID=1");
-		sb.append(" AND sr.ID IN(?)");
-		sb.append(" GROUP BY sr.SRCNAME , day");
-		sb.append(" ORDER BY infos.CREATETIME");
-		List<Map<String, Object>> lists = jdbcTemplate.queryForList(sb.toString(), new Object[]{
-			reportsParamSrcMonthVO.getCompanyId(),
-			reportsParamSrcMonthVO.getTypeId(),
-			reportsParamSrcMonthVO.getStart(),
-			reportsParamSrcMonthVO.getEnd(),
-			reportsParamSrcMonthVO.getSourceId()
-		});
-		for (Map<String, Object> list : lists) {
-			DstgReportsSrcMonthVO dstgReportsSrcMonthVO=new DstgReportsSrcMonthVO();
-			dstgReportsSrcMonthVO.setSourceId(Long.toString((Long)list.get("srcId")));
-			dstgReportsSrcMonthVO.setSourceName((String) list.get("srcName"));
-			dstgReportsSrcMonthVO.setClientCount(Integer.parseInt(Long.toString((Long)list.get("ClientCount"))));
-			dstgReportsSrcMonthVO.setDay((String) list.get("day"));
-			dstgReportsSrcMonthVOS.add(dstgReportsSrcMonthVO);
-		}
-		return dstgReportsSrcMonthVOS;
+		
+        sql.append("SELECT src.SRCNAME srcName,src.ID srcId,");
+        if(StringUtil.isEmpty(reportsParamSrcMonthVO.getTypeId()) ){
+        	sql.append("(select COUNT(info.ID) from " + infoTabName + " info where info.SOURCEID=src.ID AND info.ISDEL=0 AND info.STATUSID NOT IN(0,98,99) AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m')='" + month + "') hj,  ");
+        	for (Map<String, Object> day : dayList) {
+                sql.append("(select count(info.ID) from " + infoTabName + " info where info.SOURCEID=src.ID AND info.ISDEL=0 AND info.STATUSID NOT IN(0,98,99)  AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d')='" + day.get("day") + "') " + day.get("dayKey") + ",");
+            }
+        	
+        }else{
+        	sql.append("(select COUNT(info.ID) from " + infoTabName + " info where info.SOURCEID=src.ID AND info.ISDEL=0 AND info.STATUSID NOT IN(0,98,99) "+" AND info.TYPEID IN("+reportsParamSrcMonthVO.getTypeId()+")  " +" AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m')='" + month + "') hj,  ");
+        	for (Map<String, Object> day : dayList) {
+                sql.append("(select count(info.ID) from " + infoTabName + " info where info.SOURCEID=src.ID AND info.ISDEL=0 AND info.STATUSID NOT IN(0,98,99) "+" AND info.TYPEID IN("+reportsParamSrcMonthVO.getTypeId()+")  " +" AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d')='" + day.get("day") + "') " + day.get("dayKey") + ",");
+            }
+        }
+        sql.append(" src.SRCIMG srcImg ");
+        sql.append(" FROM hm_crm_source src WHERE src.COMPANYID = ? AND TYPEID IN (1,2) ");
+        
+        if (StringUtil.isNotEmpty(reportsParamSrcMonthVO.getSourceId())) {
+            sql.append(" AND src.ID IN (" + reportsParamSrcMonthVO.getSourceId() + ")");
+        }
+        String sqlString = sql.toString(); 
+        List<Map<String, Object>> listAll = jdbcTemplate.queryForList(sqlString, new Object[]{reportsParamSrcMonthVO.getCompanyId()});
+		return listAll;
 	}
 	
 	/**
@@ -124,44 +133,43 @@ public class DstgReportsSrcMonthDao {
      * @param end
      * @param companyId
      * */
-	public List<DstgReportsSrcMonthVO> getDSTGSrcMonthReportsDdNum(ReportsParamSrcMonthVO reportsParamSrcMonthVO,
+	public List<Map<String, Object>> getDSTGSrcMonthReportsDdNum(List<Map<String, Object>> dayList , String month,ReportsParamSrcMonthVO reportsParamSrcMonthVO,
 			DsInvalidVO invalidConfig) {
-		List<DstgReportsSrcMonthVO> dstgReportsSrcMonthVOS = new ArrayList<>();
-		
-		StringBuilder sb=new StringBuilder();
+		StringBuilder sql = new StringBuilder();
 		String infoTabName = DBSplitUtil.getInfoTabName(reportsParamSrcMonthVO.getCompanyId());
-		sb.append("SELECT sr.ID as srcId,sr.SRCNAME as srcName ,COUNT(1) as DsDDClientCount,FROM_UNIXTIME(infos.CREATETIME, '%Y-%m-%d') as day ");
-		sb.append(" FROM ");
-		sb.append(infoTabName+" infos ," + " hm_crm_source sr ");
-		sb.append(" WHERE ");
-		sb.append(" infos.SOURCEID=sr.ID ");
-		sb.append(" AND	infos.COMPANYID=?");
-		sb.append(" AND infos.ISDEL=0");
-		sb.append(" AND infos.TYPEID IN(?)");
-		sb.append(" AND infos.CREATETIME >=?");
-		sb.append(" AND infos.CREATETIME <=?");
-		sb.append(" AND INSTR( ?, CONCAT(',',infos.STATUSID + '',',')) != 0");
-		sb.append(" AND sr.TYPEID=1");
-		sb.append(" AND sr.ID IN(?)");
-		sb.append(" GROUP BY sr.SRCNAME , day");
-		sb.append(" ORDER BY infos.CREATETIME");
-		List<Map<String, Object>> lists = jdbcTemplate.queryForList(sb.toString(), new Object[]{
-			reportsParamSrcMonthVO.getCompanyId(),
-			reportsParamSrcMonthVO.getTypeId(),
-			reportsParamSrcMonthVO.getStart(),
-			reportsParamSrcMonthVO.getEnd(),
-			invalidConfig.getDsDdStatus(),
-			reportsParamSrcMonthVO.getSourceId()
-		});
-		for (Map<String, Object> list : lists) {
-			DstgReportsSrcMonthVO dstgReportsSrcMonthVO=new DstgReportsSrcMonthVO();
-			dstgReportsSrcMonthVO.setSourceId(Long.toString((Long)list.get("srcId")));
-			dstgReportsSrcMonthVO.setSourceName((String) list.get("srcName"));
-			dstgReportsSrcMonthVO.setPendingClientCount(Integer.parseInt(Long.toString((Long)list.get("DsDDClientCount"))));
-			dstgReportsSrcMonthVO.setDay((String) list.get("day"));
-			dstgReportsSrcMonthVOS.add(dstgReportsSrcMonthVO);
-		}
-		return dstgReportsSrcMonthVOS;
+		
+        sql.append("SELECT src.SRCNAME srcName,src.ID srcId,");
+        sql.append("(select COUNT(info.ID) from " + infoTabName + " info where info.SOURCEID=src.ID AND info.ISDEL=0  ");
+        	
+        if(StringUtil.isNotEmpty(invalidConfig.getDsDdStatus())){
+    		sql.append(" AND INSTR('"+invalidConfig.getDsDdStatus()+"', ',info.STATUSID ,' ) != 0");
+    	}
+    	if(StringUtil.isNotEmpty(reportsParamSrcMonthVO.getTypeId())){
+    		sql.append(" AND info.TYPEID IN("+reportsParamSrcMonthVO.getTypeId()+")");
+    	}
+    	sql.append(" AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m')='" + month + "') hj,  ");
+    	//计算每天客资数
+    	for (Map<String, Object> day : dayList) {
+            sql.append("(select count(info.ID) from " + infoTabName + " info where info.SOURCEID=src.ID AND info.ISDEL=0 ");
+            if(StringUtil.isNotEmpty(invalidConfig.getDsDdStatus())){
+        		sql.append(" AND INSTR('"+invalidConfig.getDsDdStatus()+"' , CONCAT(',',info.STATUSID + '',',')) != 0");
+        	}
+        	if(StringUtil.isNotEmpty(reportsParamSrcMonthVO.getTypeId())){
+        		sql.append(" AND info.TYPEID IN("+reportsParamSrcMonthVO.getTypeId()+")");
+        	}
+            sql.append(" AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d')='" + day.get("day") + "') " + day.get("dayKey") + ",");
+        }	
+        	
+        sql.append(" src.SRCIMG srcImg ");
+        sql.append(" FROM hm_crm_source src WHERE src.COMPANYID = ? AND TYPEID IN (1,2) ");
+        
+        if (StringUtil.isNotEmpty(reportsParamSrcMonthVO.getSourceId())) {
+            sql.append(" AND src.ID IN (" + reportsParamSrcMonthVO.getSourceId() + ")");
+        }
+        String sqlString = sql.toString(); 
+        List<Map<String, Object>> listdd = jdbcTemplate.queryForList(sqlString, new Object[]{
+        		reportsParamSrcMonthVO.getCompanyId(),});
+		return listdd;
 	}
 	
 	/**
@@ -170,53 +178,61 @@ public class DstgReportsSrcMonthDao {
      * @param end
      * @param companyId
      * */
-	public List<DstgReportsSrcMonthVO> getDSTGSrcMonthReportsInvalid(ReportsParamSrcMonthVO reportsParamSrcMonthVO,
+	public List<Map<String, Object>> getDSTGSrcMonthReportsInvalid(List<Map<String, Object>> dayList , String month,ReportsParamSrcMonthVO reportsParamSrcMonthVO,
 			DsInvalidVO invalidConfig) {
-		List<DstgReportsSrcMonthVO> dstgReportsSrcMonthVOS = new ArrayList<>();
-		
-		StringBuilder sb=new StringBuilder();
+		StringBuilder sql = new StringBuilder();
 		String infoTabName = DBSplitUtil.getInfoTabName(reportsParamSrcMonthVO.getCompanyId());
-		String detailTabName = DBSplitUtil.getDetailTabName(reportsParamSrcMonthVO.getCompanyId());
-		sb.append("SELECT sr.ID as srcId,sr.SRCNAME as srcName ,COUNT(1) as InValidClientCount,FROM_UNIXTIME(infos.CREATETIME, '%Y-%m-%d') as day ");
-		sb.append(" FROM ");
-		sb.append(infoTabName+" infos LEFT JOIN " + " hm_crm_source sr ON infos.SOURCEID = sr.ID ");
-		sb.append(" LEFT JOIN "+ detailTabName +" infodetail " + " ON infos.KZID=infodetail.KZID ");
-		sb.append(" WHERE");
-		sb.append(" infos.COMPANYID=?");
-		sb.append(" AND infos.ISDEL=0");
-		sb.append(" AND infos.TYPEID IN(?)");
-		sb.append(" AND infos.CREATETIME >=?");
-		sb.append(" AND infos.CREATETIME <=?");
-		if(StringUtil.isNotEmpty(invalidConfig.getDsInvalidStatus()) && StringUtil.isNotEmpty(invalidConfig.getDsInvalidLevel())){
-            sb.append(" AND (infos.STATUSID IN("+ invalidConfig.getDsInvalidStatus()+") or");
-            sb.append("   infodetail.YXLEVEL IN("+ invalidConfig.getDsInvalidLevel()  +") )");
-        }
+		
+        sql.append("SELECT src.SRCNAME srcName,src.ID srcId,");
+        sql.append("(select COUNT(info.ID) from " + infoTabName + " info, hm_crm_client_detail_2 deta where info.SOURCEID=src.ID AND deta.KZID=info.KZID AND info.ISDEL=0  ");
+        //无效指标&&意向等级
+        if(StringUtil.isNotEmpty(invalidConfig.getDsInvalidStatus()) && StringUtil.isNotEmpty(invalidConfig.getDsInvalidLevel())){
+    		sql.append(" AND (INSTR('"+invalidConfig.getDsInvalidStatus()+"', info.STATUSID  ) != 0 OR deta.YXLEVEL IN("+invalidConfig.getDsInvalidLevel()+"))");
+    	}
+        //只有无效指标
         if(StringUtil.isNotEmpty(invalidConfig.getDsInvalidStatus()) && StringUtil.isEmpty(invalidConfig.getDsInvalidLevel())){
-            sb.append(" AND infos.STATUSID IN ("+ invalidConfig.getDsInvalidStatus()+")");
+    		sql.append(" AND INSTR('"+invalidConfig.getDsInvalidStatus()+"', info.STATUSID  ) != 0");
+    	}
+        //只有意向指标
+        if(StringUtil.isEmpty(invalidConfig.getDsInvalidStatus()) && StringUtil.isNotEmpty(invalidConfig.getDsInvalidLevel())){
+    		sql.append(" AND deta.YXLEVEL IN("+invalidConfig.getDsInvalidLevel()+")");
+    	}
+        //拍摄类型
+    	if(StringUtil.isNotEmpty(reportsParamSrcMonthVO.getTypeId())){
+    		sql.append(" AND info.TYPEID IN("+reportsParamSrcMonthVO.getTypeId()+")");
+    	}
+    	sql.append(" AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m')='" + month + "') hj,  ");
+    	//计算每天客资数
+    	for (Map<String, Object> day : dayList) {
+            sql.append("(select COUNT(info.ID) from " + infoTabName + " info, hm_crm_client_detail_2 deta where info.SOURCEID=src.ID AND deta.KZID=info.KZID AND info.ISDEL=0  ");
+          //无效指标&&意向等级
+            if(StringUtil.isNotEmpty(invalidConfig.getDsInvalidStatus()) && StringUtil.isNotEmpty(invalidConfig.getDsInvalidLevel())){
+        		sql.append(" AND (INSTR('"+invalidConfig.getDsInvalidStatus()+"', info.STATUSID  ) != 0 OR deta.YXLEVEL IN("+invalidConfig.getDsInvalidLevel()+"))");
+        	}
+            //只有无效指标
+            if(StringUtil.isNotEmpty(invalidConfig.getDsInvalidStatus()) && StringUtil.isEmpty(invalidConfig.getDsInvalidLevel())){
+        		sql.append(" AND INSTR('"+invalidConfig.getDsInvalidStatus()+"', info.STATUSID  ) != 0");
+        	}
+            //只有意向指标
+            if(StringUtil.isEmpty(invalidConfig.getDsInvalidStatus()) && StringUtil.isNotEmpty(invalidConfig.getDsInvalidLevel())){
+        		sql.append(" AND deta.YXLEVEL IN("+invalidConfig.getDsInvalidLevel()+")");
+        	}
+        	if(StringUtil.isNotEmpty(reportsParamSrcMonthVO.getTypeId())){
+        		sql.append(" AND info.TYPEID IN("+reportsParamSrcMonthVO.getTypeId()+")");
+        	}
+            sql.append(" AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d')='" + day.get("day") + "') " + day.get("dayKey") + ",");
+        }	
+        	
+        sql.append(" src.SRCIMG srcImg ");
+        sql.append(" FROM hm_crm_source src WHERE src.COMPANYID = ? AND TYPEID IN (1,2) ");
+        
+        if (StringUtil.isNotEmpty(reportsParamSrcMonthVO.getSourceId())) {
+            sql.append(" AND src.ID IN (" + reportsParamSrcMonthVO.getSourceId() + ")");
         }
-        if(StringUtil.isNotEmpty(invalidConfig.getDsInvalidLevel()) && StringUtil.isEmpty(invalidConfig.getDsInvalidStatus())){
-            sb.append(" AND infodetail.YXLEVEL IN("+ invalidConfig.getDsInvalidLevel()  +") ");
-        }
-		sb.append(" AND sr.TYPEID=1");
-		sb.append(" AND sr.ID IN(?)");
-		sb.append(" GROUP BY sr.SRCNAME , day");
-		sb.append(" ORDER BY infos.CREATETIME");
-		List<Map<String, Object>> lists = jdbcTemplate.queryForList(sb.toString(), new Object[]{
-			reportsParamSrcMonthVO.getCompanyId(),
-			reportsParamSrcMonthVO.getTypeId(),
-			reportsParamSrcMonthVO.getStart(),
-			reportsParamSrcMonthVO.getEnd(),
-			reportsParamSrcMonthVO.getSourceId()
-		});
-		for (Map<String, Object> list : lists) {
-			DstgReportsSrcMonthVO dstgReportsSrcMonthVO=new DstgReportsSrcMonthVO();
-			dstgReportsSrcMonthVO.setSourceId(Long.toString((Long)list.get("srcId")));
-			dstgReportsSrcMonthVO.setSourceName((String) list.get("srcName"));
-			dstgReportsSrcMonthVO.setInValidClientCount(Integer.parseInt(Long.toString((Long)list.get("InValidClientCount"))));
-			dstgReportsSrcMonthVO.setDay((String) list.get("day"));
-			dstgReportsSrcMonthVOS.add(dstgReportsSrcMonthVO);
-		}
-		return dstgReportsSrcMonthVOS;
+        String sqlString = sql.toString(); 
+        List<Map<String, Object>> listdd = jdbcTemplate.queryForList(sqlString, new Object[]{
+        		reportsParamSrcMonthVO.getCompanyId(),});
+		return listdd;
 	}
 	
 	/**
@@ -225,180 +241,65 @@ public class DstgReportsSrcMonthDao {
      * @param end
      * @param companyId
      * */
-	public List<DstgReportsSrcMonthVO> getDSTGSrcMonthReportsvalid(ReportsParamSrcMonthVO reportsParamSrcMonthVO,
+	public List<Map<String, Object>> getDSTGSrcMonthReportsvalid(List<Map<String, Object>> dayList , String month,ReportsParamSrcMonthVO reportsParamSrcMonthVO,
 			DsInvalidVO invalidConfig) {
 		//构造集合对象，把指标放入
-		List<DstgReportsSrcMonthVO> dstgReportsSrcMonthVOS = new ArrayList<>();
-		//获取客资量
-		getClientCount(reportsParamSrcMonthVO, dstgReportsSrcMonthVOS);
-		//获取无效量
-		getInValidClientCount(reportsParamSrcMonthVO, dstgReportsSrcMonthVOS,invalidConfig);
-		//获取待定量
-		getDDClientCount(reportsParamSrcMonthVO, dstgReportsSrcMonthVOS,invalidConfig);
-		//有效量为客资量-无效量或者客资量-无效量-待定量
-		getvalidClientCount(reportsParamSrcMonthVO, dstgReportsSrcMonthVOS,invalidConfig);
-		return dstgReportsSrcMonthVOS;
+		StringBuilder sql = new StringBuilder();
+		String infoTabName = DBSplitUtil.getInfoTabName(reportsParamSrcMonthVO.getCompanyId());
+		
+        sql.append("SELECT src.SRCNAME srcName,src.ID srcId,");
+        sql.append("(select COUNT(info.ID) from " + infoTabName + " info, hm_crm_client_detail_2 deta where info.SOURCEID=src.ID AND info.STATUSID NOT IN(0,98,99) AND deta.KZID=info.KZID AND info.ISDEL=0  ");
+        
+        //减去无效客资状态指标
+        if(StringUtil.isNotEmpty(invalidConfig.getDsInvalidStatus()) ){
+    		sql.append(" AND INSTR('"+invalidConfig.getDsInvalidStatus()+"', info.STATUSID  ) = 0");
+    	}
+        //减去无效意向指标
+        if(StringUtil.isEmpty(invalidConfig.getDsInvalidStatus()) && StringUtil.isNotEmpty(invalidConfig.getDsInvalidLevel())){
+    		sql.append(" AND deta.YXLEVEL NOT IN("+invalidConfig.getDsInvalidLevel()+")");
+    	}
+        //待定不计算为有效时
+        if(!(invalidConfig.getDdIsValid())){
+        	sql.append(" AND INSTR('"+invalidConfig.getDsDdStatus()+"', info.STATUSID ) = 0");
+        }
+        //拍摄类型
+    	if(StringUtil.isNotEmpty(reportsParamSrcMonthVO.getTypeId())){
+    		sql.append(" AND info.TYPEID IN("+reportsParamSrcMonthVO.getTypeId()+")");
+    	}
+    	sql.append(" AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m')='" + month + "') hj,  ");
+    	//计算每天客资数
+    	for (Map<String, Object> day : dayList) {
+            sql.append("(select COUNT(info.ID) from " + infoTabName + " info, hm_crm_client_detail_2 deta where info.SOURCEID=src.ID AND info.STATUSID NOT IN(0,98,99) AND deta.KZID=info.KZID AND info.ISDEL=0  ");
+            //减去无效客资状态指标
+            if(StringUtil.isNotEmpty(invalidConfig.getDsInvalidStatus()) ){
+        		sql.append(" AND INSTR('"+invalidConfig.getDsInvalidStatus()+"', info.STATUSID  ) = 0");
+        	}
+            //减去无效意向指标
+            if(StringUtil.isEmpty(invalidConfig.getDsInvalidStatus()) && StringUtil.isNotEmpty(invalidConfig.getDsInvalidLevel())){
+        		sql.append(" AND deta.YXLEVEL NOT IN("+invalidConfig.getDsInvalidLevel()+")");
+        	}
+            //待定不计算为有效时
+            if(!(invalidConfig.getDdIsValid())){
+            	sql.append(" AND INSTR('"+invalidConfig.getDsDdStatus()+"', ',info.STATUSID ,' ) = 0");
+            }
+        	if(StringUtil.isNotEmpty(reportsParamSrcMonthVO.getTypeId())){
+        		sql.append(" AND info.TYPEID IN("+reportsParamSrcMonthVO.getTypeId()+")");
+        	}
+            sql.append(" AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d')='" + day.get("day") + "') " + day.get("dayKey") + ",");
+        }	
+        	
+        sql.append(" src.SRCIMG srcImg ");
+        sql.append(" FROM hm_crm_source src WHERE src.COMPANYID = ? AND TYPEID IN (1,2) ");
+        
+        if (StringUtil.isNotEmpty(reportsParamSrcMonthVO.getSourceId())) {
+            sql.append(" AND src.ID IN (" + reportsParamSrcMonthVO.getSourceId() + ")");
+        }
+        String sqlString = sql.toString(); 
+        List<Map<String, Object>> listdd = jdbcTemplate.queryForList(sqlString, new Object[]{
+        		reportsParamSrcMonthVO.getCompanyId(),});
+		return listdd;
 	}
 	
-	private void getvalidClientCount(ReportsParamSrcMonthVO reportsParamSrcMonthVO,
-			List<DstgReportsSrcMonthVO> dstgReportsSrcMonthVOS, DsInvalidVO invalidConfig) {
-		
-		for (DstgReportsSrcMonthVO dstgReportsSrcMonthVO : dstgReportsSrcMonthVOS) {
-			if(invalidConfig.getDdIsValid()){
-				dstgReportsSrcMonthVO.setValidClientCount(dstgReportsSrcMonthVO.getClientCount()-dstgReportsSrcMonthVO.getInValidClientCount());
-			}else{
-				dstgReportsSrcMonthVO.setValidClientCount(dstgReportsSrcMonthVO.getClientCount()-dstgReportsSrcMonthVO.getInValidClientCount()-dstgReportsSrcMonthVO.getPendingClientCount());
-			}
-		}
-		
-	}
-
-	//获取待定量
-	private void getDDClientCount(ReportsParamSrcMonthVO reportsParamSrcMonthVO,
-			List<DstgReportsSrcMonthVO> dstgReportsSrcMonthVOS,DsInvalidVO invalidConfig) {
-		StringBuilder sb=new StringBuilder();
-		String infoTabName = DBSplitUtil.getInfoTabName(reportsParamSrcMonthVO.getCompanyId());
-		sb.append("SELECT sr.ID as srcId,sr.SRCNAME as srcName ,COUNT(1) as DsDDClientCount,FROM_UNIXTIME(infos.CREATETIME, '%Y-%m-%d') as day ");
-		sb.append(" FROM ");
-		sb.append(infoTabName+" infos ," + " hm_crm_source sr ");
-		sb.append(" WHERE");
-		sb.append(" infos.SOURCEID=sr.ID");
-		sb.append(" AND	infos.COMPANYID=?");
-		sb.append(" AND infos.ISDEL=0");
-		sb.append(" AND infos.TYPEID IN(?)");
-		sb.append(" AND infos.CREATETIME >=?");
-		sb.append(" AND infos.CREATETIME <=?");
-		sb.append(" AND INSTR( ?, CONCAT(',',infos.STATUSID + '',',')) != 0");
-		sb.append(" AND sr.TYPEID=1");
-		sb.append(" AND sr.ID IN(?)");
-		sb.append(" GROUP BY sr.SRCNAME , day");
-		sb.append(" ORDER BY infos.CREATETIME");
-		List<Map<String, Object>> lists = jdbcTemplate.queryForList(sb.toString(), new Object[]{
-			reportsParamSrcMonthVO.getCompanyId(),
-			reportsParamSrcMonthVO.getTypeId(),
-			reportsParamSrcMonthVO.getStart(),
-			reportsParamSrcMonthVO.getEnd(),
-			invalidConfig.getDsDdStatus(),
-			reportsParamSrcMonthVO.getSourceId()
-		});
-		
-		List<DstgReportsSrcMonthVO> dstgReportsSrcMonthVOBaks = new LinkedList<>();
-		for (Map<String, Object> list : lists) {
-			DstgReportsSrcMonthVO dstgReportsSrcMonthVO=new  DstgReportsSrcMonthVO();
-			dstgReportsSrcMonthVO.setSourceId(Long.toString((Long)list.get("srcId")));
-			dstgReportsSrcMonthVO.setSourceName((String) list.get("srcName"));
-			dstgReportsSrcMonthVO.setPendingClientCount(Integer.parseInt(Long.toString((Long)list.get("DsDDClientCount"))));
-			dstgReportsSrcMonthVO.setDay((String) list.get("day"));
-			dstgReportsSrcMonthVOBaks.add(dstgReportsSrcMonthVO);
-		}
-		for (DstgReportsSrcMonthVO dstgReportsSrcMonthVO : dstgReportsSrcMonthVOS) {
-			for (DstgReportsSrcMonthVO dstgReportsSrcMonthVOBak : dstgReportsSrcMonthVOBaks) {
-				if(dstgReportsSrcMonthVO.getSourceId().equalsIgnoreCase(dstgReportsSrcMonthVOBak.getSourceId()) 
-						&& dstgReportsSrcMonthVO.getDay().equalsIgnoreCase(dstgReportsSrcMonthVOBak.getDay())){
-					dstgReportsSrcMonthVO.setPendingClientCount(dstgReportsSrcMonthVOBak.getPendingClientCount());
-					break;
-				}
-			}
-		}
-		
-	}
-	// 获取无效客资量
-	private void getInValidClientCount(ReportsParamSrcMonthVO reportsParamSrcMonthVO,
-			List<DstgReportsSrcMonthVO> dstgReportsSrcMonthVOS,DsInvalidVO invalidConfig) {
-		StringBuilder sb=new StringBuilder();
-		String infoTabName = DBSplitUtil.getInfoTabName(reportsParamSrcMonthVO.getCompanyId());
-		String detailTabName = DBSplitUtil.getDetailTabName(reportsParamSrcMonthVO.getCompanyId());
-		sb.append("SELECT sr.ID as srcId,sr.SRCNAME as srcName ,COUNT(1) as InValidClientCount,FROM_UNIXTIME(infos.CREATETIME, '%Y-%m-%d') as day ");
-		sb.append(" FROM ");
-		sb.append(infoTabName+" infos LEFT JOIN " + " hm_crm_source sr ON infos.SOURCEID = sr.ID ");
-		sb.append("LEFT JOIN"+ detailTabName +" infodetail " + " ON infos.KZID=infodetail.KZID ");
-		sb.append(" WHERE");
-		sb.append(" infos.COMPANYID=?");
-		sb.append(" AND infos.ISDEL=0");
-		sb.append(" AND infos.TYPEID IN(?)");
-		sb.append(" AND infos.CREATETIME >=?");
-		sb.append(" AND infos.CREATETIME <=?");
-		if(StringUtil.isNotEmpty(invalidConfig.getDsInvalidStatus()) && StringUtil.isNotEmpty(invalidConfig.getDsInvalidLevel())){
-            sb.append(" AND (infos.STATUSID IN("+ invalidConfig.getDsInvalidStatus()+") or");
-            sb.append("   infodetail.YXLEVEL IN("+ invalidConfig.getDsInvalidLevel()  +") )");
-        }
-        if(StringUtil.isNotEmpty(invalidConfig.getDsInvalidStatus()) && StringUtil.isEmpty(invalidConfig.getDsInvalidLevel())){
-            sb.append(" AND infos.STATUSID IN ("+ invalidConfig.getDsInvalidStatus()+")");
-        }
-        if(StringUtil.isNotEmpty(invalidConfig.getDsInvalidLevel()) && StringUtil.isEmpty(invalidConfig.getDsInvalidStatus())){
-            sb.append(" AND infodetail.YXLEVEL IN("+ invalidConfig.getDsInvalidLevel()  +") ");
-        }
-		sb.append(" AND sr.TYPEID=1");
-		sb.append(" AND sr.ID IN(?)");
-		sb.append(" GROUP BY sr.SRCNAME , day");
-		sb.append(" ORDER BY infos.CREATETIME");
-		List<Map<String, Object>> lists = jdbcTemplate.queryForList(sb.toString(), new Object[]{
-			reportsParamSrcMonthVO.getCompanyId(),
-			reportsParamSrcMonthVO.getTypeId(),
-			reportsParamSrcMonthVO.getStart(),
-			reportsParamSrcMonthVO.getEnd(),
-			reportsParamSrcMonthVO.getSourceId()
-		});
-		
-		List<DstgReportsSrcMonthVO> dstgReportsSrcMonthVOBaks = new LinkedList<>();
-		for (Map<String, Object> list : lists) {
-			DstgReportsSrcMonthVO dstgReportsSrcMonthVO=new  DstgReportsSrcMonthVO();
-			dstgReportsSrcMonthVO.setSourceId(Long.toString((Long)list.get("srcId")));
-			dstgReportsSrcMonthVO.setSourceName((String) list.get("srcName"));
-			dstgReportsSrcMonthVO.setInValidClientCount(Integer.parseInt(Long.toString((Long)list.get("InValidClientCount"))));
-			dstgReportsSrcMonthVO.setDay((String) list.get("day"));
-			dstgReportsSrcMonthVOBaks.add(dstgReportsSrcMonthVO);
-		}
-		for (DstgReportsSrcMonthVO dstgReportsSrcMonthVO : dstgReportsSrcMonthVOS) {
-			for (DstgReportsSrcMonthVO dstgReportsSrcMonthVOBak : dstgReportsSrcMonthVOBaks) {
-				if(dstgReportsSrcMonthVO.getSourceId().equalsIgnoreCase(dstgReportsSrcMonthVOBak.getSourceId()) 
-						&& dstgReportsSrcMonthVO.getDay().equalsIgnoreCase(dstgReportsSrcMonthVOBak.getDay())){
-					dstgReportsSrcMonthVO.setInValidClientCount(dstgReportsSrcMonthVOBak.getInValidClientCount());
-					break;
-				}
-			}
-		}
-		
-	}
-	//获取客资量
-	private void getClientCount(ReportsParamSrcMonthVO reportsParamSrcMonthVO,
-			List<DstgReportsSrcMonthVO> dstgReportsSrcMonthVOS) {
-		StringBuilder sb=new StringBuilder();
-		String infoTabName = DBSplitUtil.getInfoTabName(reportsParamSrcMonthVO.getCompanyId());
-		sb.append("SELECT sr.ID as srcId,sr.SRCNAME as srcName ,COUNT(1) as ClientCount,FROM_UNIXTIME(infos.CREATETIME, '%Y-%m-%d') as day ");
-		sb.append(" FROM ");
-		sb.append(infoTabName+" infos ," + " hm_crm_source sr ");
-		sb.append(" WHERE");
-		sb.append(" infos.SOURCEID=sr.ID");
-		sb.append(" AND	infos.COMPANYID=?");
-		sb.append(" AND infos.ISDEL=0");
-		sb.append(" AND infos.TYPEID IN(?)");
-		sb.append(" AND infos.CREATETIME >=?");
-		sb.append(" AND infos.CREATETIME <=?");
-		sb.append(" AND infos.STATUSID !=0");
-		sb.append(" AND infos.STATUSID !=98");
-		sb.append(" AND infos.STATUSID !=99");
-		sb.append(" AND sr.TYPEID=1");
-		sb.append(" AND sr.ID IN(?)");
-		sb.append(" GROUP BY sr.SRCNAME , day");
-		sb.append(" ORDER BY infos.CREATETIME");
-		List<Map<String, Object>> lists = jdbcTemplate.queryForList(sb.toString(), new Object[]{
-			reportsParamSrcMonthVO.getCompanyId(),
-			reportsParamSrcMonthVO.getTypeId(),
-			reportsParamSrcMonthVO.getStart(),
-			reportsParamSrcMonthVO.getEnd(),
-			reportsParamSrcMonthVO.getSourceId()
-		});
-		
-		for (Map<String, Object> list : lists) {
-			DstgReportsSrcMonthVO dstgReportsSrcMonthVO=new DstgReportsSrcMonthVO();
-			dstgReportsSrcMonthVO.setSourceId(Long.toString((Long)list.get("srcId")));
-			dstgReportsSrcMonthVO.setSourceName((String) list.get("srcName"));
-			dstgReportsSrcMonthVO.setClientCount(Integer.parseInt(Long.toString((Long)list.get("ClientCount"))));
-			dstgReportsSrcMonthVO.setDay((String) list.get("day"));
-			dstgReportsSrcMonthVOS.add(dstgReportsSrcMonthVO);
-		}
-	}
-
+	
 	
 }
