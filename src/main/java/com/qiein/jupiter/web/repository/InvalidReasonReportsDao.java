@@ -93,7 +93,7 @@ public class InvalidReasonReportsDao {
         hjsql.append(" GROUP BY detail.INVALIDLABEL ");
         List<Map<String, Object>> invalidalbelHj = jdbcTemplate.queryForList(hjsql.toString(), new Object[]{startTime,endTime,companyId});
         for(Map<String, Object> map:invalidalbelHj){
-            invalidReasonReportsShowVOS.get(invalidReasonReportsShowVOS.size()-1).getMap().put((String)map.get("statusKey"),Integer.parseInt(Long.toString((Long) (map.get("count")))));
+            invalidReasonReportsShowVOS.get(0).getMap().put((String)map.get("statusKey"),Integer.parseInt(Long.toString((Long) (map.get("count")))));
         }
         for(InvalidReasonReportsShowVO invalidReasonReportsShowVO:invalidReasonReportsShowVOS){
             invalidReasonReportsShowVO.getMap().put("hj",0);
