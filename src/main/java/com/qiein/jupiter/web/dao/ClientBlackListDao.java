@@ -28,4 +28,12 @@ public interface ClientBlackListDao {
      * 添加
      */
     void update(BlackListPO blackListPO);
+
+    /**
+     * 检测手机号是否重复
+     * @param companyId
+     * @param phone
+     * @return
+     */
+    List<BlackListPO> getByPhone(@Param("companyId")Integer companyId,@Param("phone")String phone);
 }

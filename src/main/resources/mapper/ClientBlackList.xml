@@ -34,4 +34,7 @@
     <update id="update">
         update hm_crm_client_blacklist set KZNAME=#{kzName} , KZPHONE=#{kzPhone} , MEMO=#{memo} where id=#{id}
     </update>
+    <select id="getByPhone" resultMap="baseMap">
+        select <include refid="forList"/> from hm_crm_client_blacklist where companyId=#{companyId} and phone=#{phone}
+    </select>
 </mapper>

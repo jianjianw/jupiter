@@ -1,5 +1,7 @@
 package com.qiein.jupiter.web.service.impl;
 
+import com.qiein.jupiter.exception.ExceptionEnum;
+import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.web.dao.ClientBlackListDao;
 import com.qiein.jupiter.web.entity.po.BlackListPO;
 import com.qiein.jupiter.web.service.ClientBlackListService;
@@ -33,6 +35,10 @@ public class ClientBlackListServiceImpl implements ClientBlackListService {
      * 添加
      */
     public void insert(BlackListPO blackListPO){
+        List<BlackListPO> list=clientBlackListDao.getByPhone(blackListPO.getCompanyId(),blackListPO.getKzPhone());
+        if(list.size()==0){
+            throw new RException(ExceptionEnum.BLACK_WAS_IN);
+        }
         clientBlackListDao.insert(blackListPO);
     }
     /**
