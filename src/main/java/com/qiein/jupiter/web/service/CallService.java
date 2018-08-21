@@ -19,7 +19,7 @@ public interface CallService {
      * @param callee
      * @param staffPO
      * */
-    void startBack2BackCall(String kzId,String caller, String callee, StaffPO staffPO);
+    void startBack2BackCall(String kzId,String caller, String callee, StaffPO staffPO,Integer callId);
 
     /**
      * 添加客服
@@ -47,12 +47,12 @@ public interface CallService {
      * @param staffPO
      * @return
      * */
-    CallPO instanceList(StaffPO staffPO);
+    List<CallPO> instanceList(StaffPO staffPO);
 
     /**
      * 获取录音列表
      * */
-    JSONObject getRecording(String caller, StaffPO staffPO,Integer page,Integer pageSize);
+    JSONObject getRecording(String caller, StaffPO staffPO,Integer page,Integer pageSize,Integer callId);
 
     /**
      * 获取录音文件

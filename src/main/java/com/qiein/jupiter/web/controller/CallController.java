@@ -66,9 +66,9 @@ public class CallController extends BaseController{
      * 获取录音列表
      * */
     @RequestMapping("/get_recording")
-    public ResultInfo getRecording(String caller,Integer page,Integer pageSize){
+    public ResultInfo getRecording(String caller,Integer page,Integer pageSize,Integer callId){
         StaffPO staffPO = getCurrentLoginStaff();
-        JSONObject recording = callService.getRecording(caller, staffPO,page,pageSize);
+        JSONObject recording = callService.getRecording(caller, staffPO,page,pageSize,callId);
         return ResultInfoUtil.success(recording);
     }
 
@@ -88,9 +88,9 @@ public class CallController extends BaseController{
      * 双呼
      * */
     @RequestMapping("/start_back_2_back_call")
-    public ResultInfo startBack2BackCall(String kzId,String caller, String callee){
+    public ResultInfo startBack2BackCall(String kzId,String caller, String callee,Integer callId){
         StaffPO staffPO = getCurrentLoginStaff();
-        callService.startBack2BackCall(kzId,caller,callee,staffPO);
+        callService.startBack2BackCall(kzId,caller,callee,staffPO,callId);
         return ResultInfoUtil.success();
     }
 

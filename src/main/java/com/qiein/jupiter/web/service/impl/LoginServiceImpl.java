@@ -91,6 +91,8 @@ public class LoginServiceImpl implements LoginService {
     @Autowired
     private PluginService pluginService;
 
+    @Autowired
+    private CallCustomerDao callCustomerDao;
     /**
      * 微信获取公司列表
      *
@@ -337,6 +339,8 @@ public class LoginServiceImpl implements LoginService {
         staffBaseInfoVO.setNews(newsService.getNewsTotalAmountAndFlag(staffId, companyId));
         //企业列表
         staffBaseInfoVO.setCompanyList(companyService.getCompanyListByPhoneAndPwd(staffDetailVO.getPhone(), staffDetailVO.getPassword()));
+        //通话实例
+        staffBaseInfoVO.setCallCustomerPO(callCustomerDao.getCallCustomerByStaffIdAndCompanyId(staffId,companyId));
         return staffBaseInfoVO;
     }
 
