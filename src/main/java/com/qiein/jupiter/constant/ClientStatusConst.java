@@ -102,4 +102,7 @@ public class ClientStatusConst {
     public static final String IS_BACK = ",30,35,36,";// 算回门
     public static final String IS_VALID_ZJS = ",17,2,14,15,16,3,8,9,10,30,31,32,33,34,35,36,39,40,41,45,46,";// 转介绍算有效
 
+    //统计毛客 时用的 筛选中，筛选待定，筛选无效
+    public static List<Integer> COUNT_KZ_NUM_STATUS = new ArrayList<>(Arrays.asList(99, 0, 40));
+
 }

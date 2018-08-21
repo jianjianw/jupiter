@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.repository;
 
+import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.web.entity.vo.ClientVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
@@ -25,10 +26,15 @@ public class WebClientInfoSearchDao {
      */
     public List<ClientVO> searchClientInfoBySearchKey(int companyId, String key) {
         List<ClientVO> clientVOList = new ArrayList<>();
+        String infoTableName = DBSplitUtil.getInfoTabName(companyId);
+        String detailTableName = DBSplitUtil.getDetailTabName(companyId);
         StringBuilder sql = new StringBuilder()
                 .append("  SELECT info.ID, info.KZID, info.KZNAME, info.KZPHONE, info.KZWECHAT, info.KZQQ, info.KZWW, info.CREATETIME, ")
                 .append("info.STATUSID, info.SOURCEID, det.APPOINTNAME,det.MATENAME, det.MATEWECHAT,")
                 .append(" det.MATEPHONE, det.MATEQQ, det.GROUPNAME FROM ");
+        sql.append(infoTableName).append(" info LEFT JOIN ")
+                .append(detailTableName).append(" det ON info.KZID= det.KZID AND info.COMPANYID = det.COMPANYID ");
+
         return null;
     }
 }
