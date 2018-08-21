@@ -246,6 +246,22 @@ public class ReportsController extends BaseController {
     }
 
     /**
+     * 转介绍邀约统计--人员详情
+     */
+    @GetMapping("/get_zjs_invite_reports_detail")
+    public ResultInfo getZjsInviteReportsDetail(@RequestParam("start") int start, @RequestParam("end") int end, String groupIds) {
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        Map<String, Object> reqContent = new HashMap<>();
+        reqContent.put("start", start);
+        reqContent.put("end", end);
+        reqContent.put("companyid", currentLoginStaff.getCompanyId());
+        reqContent.put("groupid", groupIds);
+        //请求juplat接口
+        String json = crmBaseApi.doService(reqContent, "zjsInviteReportsDetail");
+        return ResultInfoUtil.success(JsonFmtUtil.strContentToJsonObj(json).get("analysis"));
+    }
+
+    /**
      * 电商推广无效原因统计
      */
     @GetMapping("/get_dstg_invalid_reports")
@@ -423,8 +439,8 @@ public class ReportsController extends BaseController {
      * 转介绍每月客资报表
      */
     @GetMapping("/zjs_kz_of_month")
-    public ResultInfo ZjskzOfMonth(@RequestParam String month, @RequestParam String type, @RequestParam String srcIds,@RequestParam String typeIds) {
-        return ResultInfoUtil.success(reportService.ZjskzOfMonth(getCurrentLoginStaff().getCompanyId(), month, typeIds, srcIds,type));
+    public ResultInfo ZjskzOfMonth(@RequestParam String month, @RequestParam String type, @RequestParam String srcIds, @RequestParam String typeIds) {
+        return ResultInfoUtil.success(reportService.ZjskzOfMonth(getCurrentLoginStaff().getCompanyId(), month, typeIds, srcIds, type));
     }
 
     /**
@@ -492,7 +508,7 @@ public class ReportsController extends BaseController {
      * 电商推广月度客资汇总报表--Hjf
      */
     @GetMapping("/get_dstg_src_month_reports")
-    public ResultInfo getDSTGSrcMonthReports(@RequestParam("month") String month,  @RequestParam("typeId") String typeId, @RequestParam("sourceId") String sourceId, @RequestParam("kzZB") String kzZB) {
+    public ResultInfo getDSTGSrcMonthReports(@RequestParam("month") String month, @RequestParam("typeId") String typeId, @RequestParam("sourceId") String sourceId, @RequestParam("kzZB") String kzZB) {
         StaffPO staffPO = getCurrentLoginStaff();
         //查询总客资
         if (StringUtil.isEmpty(kzZB) || "sum".equals(kzZB)) {
@@ -582,9 +598,9 @@ public class ReportsController extends BaseController {
 
     /**
      * 电商推广年度报表
-     * */
+     */
     @GetMapping("/get_dstg_years_reports")
-    public ResultInfo getDstgYearsReports(String type,String sourceIds,String years,String conditionType){
+    public ResultInfo getDstgYearsReports(String type, String sourceIds, String years, String conditionType) {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
 //        List<DstgYearReportsVO> dstgYearReportsVOS = reportService.getDstgYearsReports(type,sourceIds,currentLoginStaff.getCompanyId(),years);
         List<DstgYearReportsVO> dstgYearsReports = reportService.getDstgYearsReports(type, sourceIds, currentLoginStaff.getCompanyId(), years, conditionType);
@@ -593,12 +609,13 @@ public class ReportsController extends BaseController {
 
     /**
      * 转介绍年度报表分析
+     *
      * @param searchKey
      * @return
      */
     @GetMapping("/get_zjs_year_report")
-    public ResultInfo getZjsYearClientReport(ZjsClientYearReportDTO searchKey){
-        if (searchKey.getYear()==0){
+    public ResultInfo getZjsYearClientReport(ZjsClientYearReportDTO searchKey) {
+        if (searchKey.getYear() == 0) {
             searchKey.setYear(Integer.valueOf(new SimpleDateFormat("yyyy").format(new Date())));
         }
         searchKey.setCompanyId(getCurrentLoginStaff().getCompanyId());
@@ -606,25 +623,25 @@ public class ReportsController extends BaseController {
     }
 
 
-
     /**
      * 电商推广年度详细报表
-     * */
+     */
     @GetMapping("/get_dstg_year_detail_reports")
-    public ResultInfo getDstgYearDetailReports(String years){
+    public ResultInfo getDstgYearDetailReports(String years) {
         StaffPO staffPO = getCurrentLoginStaff();
-        List<DstgYearDetailReportsProcessVO> dstgYearReportsVOS = reportService.getDstgYearDetailReports(years,staffPO.getCompanyId());
+        List<DstgYearDetailReportsProcessVO> dstgYearReportsVOS = reportService.getDstgYearDetailReports(years, staffPO.getCompanyId());
         return ResultInfoUtil.success(dstgYearReportsVOS);
     }
 
     /**
      * 转介绍年度详情
+     *
      * @param searchKey
      * @return
      */
     @GetMapping("/get_zjs_year_detail_report")
-    public ResultInfo getZjsYearClientDetailReport(ZjsClientYearReportDTO searchKey){
-        if (searchKey.getYear()==0){
+    public ResultInfo getZjsYearClientDetailReport(ZjsClientYearReportDTO searchKey) {
+        if (searchKey.getYear() == 0) {
             searchKey.setYear(Integer.valueOf(new SimpleDateFormat("yyyy").format(new Date())));
         }
         searchKey.setCompanyId(getCurrentLoginStaff().getCompanyId());
