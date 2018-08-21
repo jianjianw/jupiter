@@ -66,7 +66,6 @@ public class CallServiceImpl implements CallService {
                 // 请求方式和请求url
                 .get(appoloBaseUrl.concat(AppolloUrlConst.GET_CALL_USER))
                 // post提交json
-                .queryString("callId",callId)
                 .queryString("companyId", staffPO.getCompanyId())
                 .queryString("sign", sign)
                 .asString();
@@ -77,6 +76,7 @@ public class CallServiceImpl implements CallService {
                 .get(appoloBaseUrl.concat(AppolloUrlConst.GET_CALL_INSTANCE_BY_ID))
                 // post提交json
                 .queryString("companyId", staffPO.getCompanyId())
+                .queryString("callId",callId)
                 .queryString("sign", sign)
                 .asString();
         CallPO callPO = JSONObject.parseObject(JSONObject.parseObject(instaceJson).get("data").toString(), CallPO.class);
@@ -130,7 +130,7 @@ public class CallServiceImpl implements CallService {
         if(NumUtil.isInValid(callCustomerPO.getStaffId())){
             throw new RException(ExceptionEnum.STAFF_ID_NULL);
         }
-        CallCustomerPO callCustomer = callCustomerDao.getCallCustomerByStaffIdAndCompanyId(staffPO.getId(), staffPO.getCompanyId());
+        CallCustomerPO callCustomer = callCustomerDao.getCallCustomerByStaffIdAndCompanyId(callCustomerPO.getStaffId(), staffPO.getCompanyId());
         if(null != callCustomer){
             throw new RException(ExceptionEnum.CALL_CONSUMER_IS_EXISTS);
         }
