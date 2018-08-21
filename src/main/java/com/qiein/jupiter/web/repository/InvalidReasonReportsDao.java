@@ -71,7 +71,7 @@ public class InvalidReasonReportsDao {
         List<Map<String, Object>> invalidalbel = jdbcTemplate.queryForList(sql.toString(), new Object[]{startTime,endTime,companyId});
         for(Map<String,Object> map:invalidalbel){
             for(InvalidReasonReportsShowVO invalidReasonReportsShowVO:invalidReasonReportsShowVOS){
-                if(invalidReasonReportsShowVO.getSrcId().equals(map.get("srcId"))){
+                if(invalidReasonReportsShowVO.getSrcId()==Integer.parseInt(Long.toString((Long) (map.get("id"))))){
                     invalidReasonReportsShowVO.getMap().put((String)map.get("statusKey"),Integer.parseInt(Long.toString((Long) (map.get("count")))));
                 }
             }
@@ -83,6 +83,7 @@ public class InvalidReasonReportsDao {
         hjsql.append(" LEFT JOIN "+tableDetail+" detail ON detail.KZID = info.KZID");
         hjsql.append(" WHERE info.CREATETIME BETWEEN ? AND ?");
         hjsql.append(" AND detail.INVALIDLABEL IS NOT NULL");
+        hjsql.append(" and info.companyid=?");
         if(StringUtil.isNotEmpty(typeIds)){
             sql.append(" AND info.TYPEID IN ("+typeIds+")");
         }
