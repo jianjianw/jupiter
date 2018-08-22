@@ -224,6 +224,7 @@ public class CallServiceImpl implements CallService {
 
         //TODO 通过kzId获取通话记录时间
 
+        //FIXME 这里需要增加时间
 
         String reportsJson = HttpClient
                 .get(CallUrlConst.CALL_BASE_URL)
