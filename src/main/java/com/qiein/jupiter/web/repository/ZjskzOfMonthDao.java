@@ -105,7 +105,7 @@ public class ZjskzOfMonthDao {
         StringBuilder sql = new StringBuilder();
         getBaseSql(sql, tableInfo,sourceIds,typeIds,tableDetail);
         sql.append(" AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m') = ?");
-        sql.append(" GROUP BY FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d')");
+        sql.append(" GROUP BY FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d'),info.sourceId");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{companyId,month});
         List<ZjsKzOfMonthOutVO> zjsKzOfMonthOutBzk = new LinkedList<>();
         for (Map<String, Object> map : list) {
@@ -132,7 +132,7 @@ public class ZjskzOfMonthDao {
         getBaseSql(sql, tableInfo,sourceIds,typeIds,tableDetail);
         sql.append(" AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m') = ?");
         sql.append(" and INSTR( '" + dsInvalidVO.getDsDdStatus() + "', CONCAT(',',info.STATUSID + '',',')) != 0");
-        sql.append(" GROUP BY FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d')");
+        sql.append(" GROUP BY FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d'),info.sourceId");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{companyId,month});
         List<ZjsKzOfMonthOutVO> zjsKzOfMonthOutBzk = new LinkedList<>();
         for (Map<String, Object> map : list) {
@@ -159,7 +159,7 @@ public class ZjskzOfMonthDao {
         getBaseSql(sql, tableInfo,sourceIds,typeIds,tableDetail);
         sql.append(" AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m') = ?");
         sql.append("  and info.CLASSID = 1 and info.STATUSID = 98 ");
-        sql.append(" GROUP BY FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d')");
+        sql.append(" GROUP BY FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d'),info.sourceId");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{companyId,month});
         List<ZjsKzOfMonthOutVO> zjsKzOfMonthOutBzk = new LinkedList<>();
         for (Map<String, Object> map : list) {
@@ -186,7 +186,7 @@ public class ZjskzOfMonthDao {
         getBaseSql(sql, tableInfo,sourceIds,typeIds,tableDetail);
         sql.append(" AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m') = ?");
         sql.append(" and info.CLASSID = 6 and info.STATUSID = 99 ");
-        sql.append(" GROUP BY FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d')");
+        sql.append(" GROUP BY FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d'),info.sourceId");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{companyId,month});
         List<ZjsKzOfMonthOutVO> zjsKzOfMonthOutBzk = new LinkedList<>();
         for (Map<String, Object> map : list) {
@@ -213,7 +213,7 @@ public class ZjskzOfMonthDao {
         getBaseSql(sql, tableInfo,sourceIds,typeIds,tableDetail);
         sql.append(" AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m') = ?");
         sql.append(" and info.CLASSID = 1 and info.STATUSID = 0 ");
-        sql.append(" GROUP BY FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d')");
+        sql.append(" GROUP BY FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d'),info.sourceId");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{companyId,month});
         List<ZjsKzOfMonthOutVO> zjsKzOfMonthOutBzk = new LinkedList<>();
         for (Map<String, Object> map : list) {
@@ -249,7 +249,7 @@ public class ZjskzOfMonthDao {
         if (StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidLevel()) && StringUtil.isEmpty(dsInvalidVO.getDsInvalidStatus())) {
             sql.append(" and detail.YXLEVEL IN(" + dsInvalidVO.getDsInvalidLevel() + ") ");
         }
-        sql.append(" GROUP BY FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d')");
+        sql.append(" GROUP BY FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d') ,info.sourceId");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{companyId,month});
         List<ZjsKzOfMonthOutVO> zjsKzOfMonthOutBzk = new LinkedList<>();
         for (Map<String, Object> map : list) {
@@ -275,7 +275,7 @@ public class ZjskzOfMonthDao {
         StringBuilder sql = new StringBuilder();
         getBaseSql(sql, tableInfo,sourceIds,typeIds,tableDetail);
         sql.append(" AND FROM_UNIXTIME(info.ComeShopTime, '%Y/%m') = ?");
-        sql.append(" GROUP BY FROM_UNIXTIME(info.ComeShopTime, '%Y/%m/%d')");
+        sql.append(" GROUP BY FROM_UNIXTIME(info.ComeShopTime, '%Y/%m/%d') ,info.sourceId");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{companyId,month});
         List<ZjsKzOfMonthOutVO> zjsKzOfMonthOutBzk = new LinkedList<>();
         for (Map<String, Object> map : list) {
@@ -301,7 +301,7 @@ public class ZjskzOfMonthDao {
         StringBuilder sql = new StringBuilder();
         getBaseSql(sql, tableInfo,sourceIds,typeIds,tableDetail);
         sql.append(" AND FROM_UNIXTIME(info.SuccessTime, '%Y/%m') = ?");
-        sql.append(" GROUP BY FROM_UNIXTIME(info.SuccessTime, '%Y/%m/%d')");
+        sql.append(" GROUP BY FROM_UNIXTIME(info.SuccessTime, '%Y/%m/%d') ,info.sourceId");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{companyId,month});
         List<ZjsKzOfMonthOutVO> zjsKzOfMonthOutBzk = new LinkedList<>();
         for (Map<String, Object> map : list) {
