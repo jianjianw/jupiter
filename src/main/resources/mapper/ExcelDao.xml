@@ -957,7 +957,7 @@
         or (temp.MARRYTIMESTR IS NOT NULL AND temp.MARRYTIME IS NULL)
         or (temp.ZXSTYLESTR IS NOT NULL AND temp.ZXSTYLE IS NULL))) c
         ON temp.kzid = c.kzid
-        where temp.OPERAID = #{staffId} and b.KZID is null and c.kzid is null
+        where temp.OPERAID = #{staffId} and c.kzid is null
         )
     </insert>
 </mapper>
