@@ -76,9 +76,9 @@ public class CallController extends BaseController{
      * 获取录音列表
      * */
     @RequestMapping("/get_recording")
-    public ResultInfo getRecording(String caller,Integer page,Integer pageSize,Integer callId){
+    public ResultInfo getRecording(String caller,Integer page,Integer pageSize,Integer callId,Integer startTime){
         StaffPO staffPO = getCurrentLoginStaff();
-        JSONObject recording = callService.getRecording(caller, staffPO,page,pageSize,callId);
+        JSONObject recording = callService.getRecording(caller, staffPO,page,pageSize,callId,startTime);
         return ResultInfoUtil.success(recording);
     }
 
