@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -228,12 +229,14 @@ public class CallServiceImpl implements CallService {
         if(null == startTime && 0 == startTime){
             throw new RException(ExceptionEnum.START_TIME_OR_END_TIME_IS_NULL);
         }
+        //时间转换成毫秒
+        Date date = TimeUtil.format(TimeUtil.intMillisToTimeStr(startTime, "yyyy-MM-dd HH:mm:ss"), "yyyy-MM-dd HH:mm:ss");
         String reportsJson = HttpClient
                 .get(CallUrlConst.CALL_BASE_URL)
                 .queryString("Action", "ListCallDetailRecords")
                 .queryString("InstanceId", callPO.getInstanceId())
                 .queryString("Criteria", caller)
-                .queryString("StartTime",startTime+"000")
+                .queryString("StartTime",date.getTime())
                 .queryString("PageNumber",page)
                 .queryString("PageSize",pageSize)
                 .queryString("OrderBy","ASC")
