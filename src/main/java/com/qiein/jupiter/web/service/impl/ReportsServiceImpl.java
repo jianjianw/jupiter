@@ -91,7 +91,7 @@ public class ReportsServiceImpl implements ReportService {
     private DstgYearsClientDetailReportsDao dstgYearsClientDetailReportsDao;
 
     @Autowired
-    private DstgYearsClientReportsDao1 dstgYearsClientReportsDao1;
+    private DstgYearsClientReportsRowDao dstgYearsClientReportsRowDao;
 
 
 
@@ -596,7 +596,7 @@ public class ReportsServiceImpl implements ReportService {
         reportsParamVO.setCompanyId(companyId);
         reportsParamVO.setYears(years);
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
-        List<DstgSourceYearReportsVO> dstgYearsClientReports = dstgYearsClientReportsDao1.getDstgYearsClientReports(reportsParamVO, invalidConfig);
+        List<DstgSourceYearReportsVO> dstgYearsClientReports = dstgYearsClientReportsRowDao.getDstgYearsClientReports(reportsParamVO, invalidConfig);
         List<DstgYearReportsVO> dstgYearReportsVOS = dstgYearsClientReportsDao.getDstgYearsClientReports(reportsParamVO, invalidConfig);
 
         getDataByConditionType(conditionType, dstgYearsClientReports, dstgYearReportsVOS);
