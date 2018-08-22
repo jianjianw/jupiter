@@ -233,7 +233,7 @@ public class CallServiceImpl implements CallService {
                 .queryString("Action", "ListCallDetailRecords")
                 .queryString("InstanceId", callPO.getInstanceId())
                 .queryString("Criteria", caller)
-                .queryString("StartTime",startTime)
+                .queryString("StartTime",startTime+"000")
                 .queryString("PageNumber",page)
                 .queryString("PageSize",pageSize)
                 .queryString("OrderBy","ASC")
