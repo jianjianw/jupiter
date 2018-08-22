@@ -230,7 +230,7 @@ public class ReportsServiceImpl implements ReportService {
      */
     public List<ZjsKzOfMonthShowVO> ZjskzOfMonth(Integer companyId, String month, String typeIds, String sourceIds, String type) {
         List<Map<String, Object>> newList = zjskzOfMonthDao.getDayOfMonth(Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[0]), Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[1]), DBSplitUtil.getTable(TableEnum.info, companyId));
-        List<SourcePO> sourcePOS = sourceDao.findSourseByType(companyId, CommonConstant.ZjsSrc);
+        List<SourcePO> sourcePOS = sourceDao.findSourseByType(companyId, CommonConstant.ZjsSrc,sourceIds);
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         return zjskzOfMonthDao.getzjskzOfMonth(sourcePOS, newList, month.replace(CommonConstant.ROD_SEPARATOR, CommonConstant.FILE_SEPARATOR), companyId, DBSplitUtil.getTable(TableEnum.info, companyId), sourceIds, typeIds, invalidConfig, type);
     }
@@ -276,7 +276,7 @@ public class ReportsServiceImpl implements ReportService {
     }
 
     /**
-     * 转介绍每月客资报表内表详情
+     * 电商每月客资报表内表详情
      */
     public ZjskzOfMonthMapVO DskzOfMonthIn(Integer companyId, String sourceId, String month) {
         List<Map<String, Object>> newList = zjskzOfMonthDao.getDayOfMonth(Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[0]), Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[1]), DBSplitUtil.getTable(TableEnum.info, companyId));
