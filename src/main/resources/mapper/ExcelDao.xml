@@ -925,7 +925,7 @@
     <!--批量添加日志-->
     <insert id ="batchAddInfoLog">
           INSERT INTO ${logTabName} (
-            KZID, OPERAID, OPERANAME, MEMO, OPERATIME, LOGTYPE, COMPANYID
+            KZID, COMPANYID, OPERAID, OPERANAME, MEMO, OPERATIME, LOGTYPE
         ) (SELECT temp.kzid,temp.companyid,'${staffId}' as OPERAID,'${nickName}' as OPERANAME ,'${memo}' as MEMO,'unix_timestamp(now())' as OPERATIME,'${logType}' as LOGTYPE
         from ${tempName} temp
         left join
