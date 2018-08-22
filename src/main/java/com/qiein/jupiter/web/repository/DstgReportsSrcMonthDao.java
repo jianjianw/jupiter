@@ -142,7 +142,7 @@ public class DstgReportsSrcMonthDao {
         sql.append("(select COUNT(info.ID) from " + infoTabName + " info where info.SOURCEID=src.ID AND info.ISDEL=0  ");
         	
         if(StringUtil.isNotEmpty(invalidConfig.getDsDdStatus())){
-    		sql.append(" AND INSTR('"+invalidConfig.getDsDdStatus()+"', ',info.STATUSID ,' ) != 0");
+    		sql.append(" AND INSTR('"+invalidConfig.getDsDdStatus()+"' , CONCAT(',',info.STATUSID,',')) != 0");
     	}
     	if(StringUtil.isNotEmpty(reportsParamSrcMonthVO.getTypeId())){
     		sql.append(" AND info.TYPEID IN("+reportsParamSrcMonthVO.getTypeId()+")");
@@ -152,7 +152,7 @@ public class DstgReportsSrcMonthDao {
     	for (Map<String, Object> day : dayList) {
             sql.append("(select count(info.ID) from " + infoTabName + " info where info.SOURCEID=src.ID AND info.ISDEL=0 ");
             if(StringUtil.isNotEmpty(invalidConfig.getDsDdStatus())){
-        		sql.append(" AND INSTR('"+invalidConfig.getDsDdStatus()+"' , CONCAT(',',info.STATUSID + '',',')) != 0");
+        		sql.append(" AND INSTR('"+invalidConfig.getDsDdStatus()+"' , CONCAT(',',info.STATUSID,',')) != 0");
         	}
         	if(StringUtil.isNotEmpty(reportsParamSrcMonthVO.getTypeId())){
         		sql.append(" AND info.TYPEID IN("+reportsParamSrcMonthVO.getTypeId()+")");
@@ -184,14 +184,14 @@ public class DstgReportsSrcMonthDao {
 		String infoTabName = DBSplitUtil.getInfoTabName(reportsParamSrcMonthVO.getCompanyId());
 		
         sql.append("SELECT src.SRCNAME srcName,src.ID srcId,");
-        sql.append("(select COUNT(info.ID) from " + infoTabName + " info, hm_crm_client_detail_2 deta where info.SOURCEID=src.ID AND deta.KZID=info.KZID AND info.ISDEL=0  ");
+        sql.append("(select COUNT(info.ID) from " + infoTabName + " info, hm_crm_client_detail deta where info.SOURCEID=src.ID AND deta.KZID=info.KZID AND info.ISDEL=0  ");
         //无效指标&&意向等级
         if(StringUtil.isNotEmpty(invalidConfig.getDsInvalidStatus()) && StringUtil.isNotEmpty(invalidConfig.getDsInvalidLevel())){
-    		sql.append(" AND (INSTR('"+invalidConfig.getDsInvalidStatus()+"', info.STATUSID  ) != 0 OR deta.YXLEVEL IN("+invalidConfig.getDsInvalidLevel()+"))");
+    		sql.append(" AND ( info.STATUSID  IN("+invalidConfig.getDsInvalidStatus()+")"+ "OR deta.YXLEVEL IN("+invalidConfig.getDsInvalidLevel()+"))");
     	}
         //只有无效指标
         if(StringUtil.isNotEmpty(invalidConfig.getDsInvalidStatus()) && StringUtil.isEmpty(invalidConfig.getDsInvalidLevel())){
-    		sql.append(" AND INSTR('"+invalidConfig.getDsInvalidStatus()+"', info.STATUSID  ) != 0");
+    		sql.append(" AND info.STATUSID  IN("+invalidConfig.getDsInvalidStatus()+")");
     	}
         //只有意向指标
         if(StringUtil.isEmpty(invalidConfig.getDsInvalidStatus()) && StringUtil.isNotEmpty(invalidConfig.getDsInvalidLevel())){
@@ -204,14 +204,14 @@ public class DstgReportsSrcMonthDao {
     	sql.append(" AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m')='" + month + "') hj,  ");
     	//计算每天客资数
     	for (Map<String, Object> day : dayList) {
-            sql.append("(select COUNT(info.ID) from " + infoTabName + " info, hm_crm_client_detail_2 deta where info.SOURCEID=src.ID AND deta.KZID=info.KZID AND info.ISDEL=0  ");
+            sql.append("(select COUNT(info.ID) from " + infoTabName + " info, hm_crm_client_detail deta where info.SOURCEID=src.ID AND deta.KZID=info.KZID AND info.ISDEL=0  ");
           //无效指标&&意向等级
             if(StringUtil.isNotEmpty(invalidConfig.getDsInvalidStatus()) && StringUtil.isNotEmpty(invalidConfig.getDsInvalidLevel())){
-        		sql.append(" AND (INSTR('"+invalidConfig.getDsInvalidStatus()+"', info.STATUSID  ) != 0 OR deta.YXLEVEL IN("+invalidConfig.getDsInvalidLevel()+"))");
+        		sql.append(" AND ( info.STATUSID  IN("+invalidConfig.getDsInvalidStatus()+")"+ "OR deta.YXLEVEL IN("+invalidConfig.getDsInvalidLevel()+"))");
         	}
             //只有无效指标
             if(StringUtil.isNotEmpty(invalidConfig.getDsInvalidStatus()) && StringUtil.isEmpty(invalidConfig.getDsInvalidLevel())){
-        		sql.append(" AND INSTR('"+invalidConfig.getDsInvalidStatus()+"', info.STATUSID  ) != 0");
+        		sql.append(" AND info.STATUSID  IN("+invalidConfig.getDsInvalidStatus()+")");
         	}
             //只有意向指标
             if(StringUtil.isEmpty(invalidConfig.getDsInvalidStatus()) && StringUtil.isNotEmpty(invalidConfig.getDsInvalidLevel())){
@@ -248,11 +248,11 @@ public class DstgReportsSrcMonthDao {
 		String infoTabName = DBSplitUtil.getInfoTabName(reportsParamSrcMonthVO.getCompanyId());
 		
         sql.append("SELECT src.SRCNAME srcName,src.ID srcId,");
-        sql.append("(select COUNT(info.ID) from " + infoTabName + " info, hm_crm_client_detail_2 deta where info.SOURCEID=src.ID AND info.STATUSID NOT IN(0,98,99) AND deta.KZID=info.KZID AND info.ISDEL=0  ");
+        sql.append("(select COUNT(info.ID) from " + infoTabName + " info, hm_crm_client_detail deta where info.SOURCEID=src.ID AND info.STATUSID NOT IN(0,98,99) AND deta.KZID=info.KZID AND info.ISDEL=0  ");
         
         //减去无效客资状态指标
         if(StringUtil.isNotEmpty(invalidConfig.getDsInvalidStatus()) ){
-    		sql.append(" AND INSTR('"+invalidConfig.getDsInvalidStatus()+"', info.STATUSID  ) = 0");
+    		sql.append("  AND info.STATUSID NOT IN("+invalidConfig.getDsInvalidStatus()+")");
     	}
         //减去无效意向指标
         if(StringUtil.isEmpty(invalidConfig.getDsInvalidStatus()) && StringUtil.isNotEmpty(invalidConfig.getDsInvalidLevel())){
@@ -260,7 +260,7 @@ public class DstgReportsSrcMonthDao {
     	}
         //待定不计算为有效时
         if(!(invalidConfig.getDdIsValid())){
-        	sql.append(" AND INSTR('"+invalidConfig.getDsDdStatus()+"', info.STATUSID ) = 0");
+        	sql.append(" AND INSTR('"+invalidConfig.getDsDdStatus()+"', CONCAT(',',info.STATUSID,',')) = 0");
         }
         //拍摄类型
     	if(StringUtil.isNotEmpty(reportsParamSrcMonthVO.getTypeId())){
@@ -269,10 +269,10 @@ public class DstgReportsSrcMonthDao {
     	sql.append(" AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m')='" + month + "') hj,  ");
     	//计算每天客资数
     	for (Map<String, Object> day : dayList) {
-            sql.append("(select COUNT(info.ID) from " + infoTabName + " info, hm_crm_client_detail_2 deta where info.SOURCEID=src.ID AND info.STATUSID NOT IN(0,98,99) AND deta.KZID=info.KZID AND info.ISDEL=0  ");
+            sql.append("(select COUNT(info.ID) from " + infoTabName + " info, hm_crm_client_detail deta where info.SOURCEID=src.ID AND info.STATUSID NOT IN(0,98,99) AND deta.KZID=info.KZID AND info.ISDEL=0  ");
             //减去无效客资状态指标
             if(StringUtil.isNotEmpty(invalidConfig.getDsInvalidStatus()) ){
-        		sql.append(" AND INSTR('"+invalidConfig.getDsInvalidStatus()+"', info.STATUSID  ) = 0");
+        		sql.append(" AND info.STATUSID NOT IN("+invalidConfig.getDsInvalidStatus()+")");
         	}
             //减去无效意向指标
             if(StringUtil.isEmpty(invalidConfig.getDsInvalidStatus()) && StringUtil.isNotEmpty(invalidConfig.getDsInvalidLevel())){
@@ -280,7 +280,7 @@ public class DstgReportsSrcMonthDao {
         	}
             //待定不计算为有效时
             if(!(invalidConfig.getDdIsValid())){
-            	sql.append(" AND INSTR('"+invalidConfig.getDsDdStatus()+"', ',info.STATUSID ,' ) = 0");
+            	sql.append(" AND INSTR('"+invalidConfig.getDsDdStatus()+"', CONCAT(',',info.STATUSID,',')) = 0");
             }
         	if(StringUtil.isNotEmpty(reportsParamSrcMonthVO.getTypeId())){
         		sql.append(" AND info.TYPEID IN("+reportsParamSrcMonthVO.getTypeId()+")");
