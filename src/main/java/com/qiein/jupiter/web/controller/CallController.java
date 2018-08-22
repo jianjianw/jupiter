@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.web.entity.po.CallCustomerPO;
@@ -44,6 +45,15 @@ public class CallController extends BaseController{
     }
 
     /**
+     * 删除客服
+     * */
+    @RequestMapping("/del_customer")
+    public ResultInfo delCustomer(Integer id){
+        StaffPO staffPO = getCurrentLoginStaff();
+        callService.delCustomer(id,staffPO);
+        return ResultInfoUtil.success(TipMsgEnum.DELETE_SUCCESS);
+    }
+    /**
      * 客服列表
      * */
     @RequestMapping("/customer_list")
@@ -66,9 +76,9 @@ public class CallController extends BaseController{
      * 获取录音列表
      * */
     @RequestMapping("/get_recording")
-    public ResultInfo getRecording(String caller,Integer page,Integer pageSize,Integer callId){
+    public ResultInfo getRecording(String caller,Integer page,Integer pageSize,Integer callId,Integer startTime){
         StaffPO staffPO = getCurrentLoginStaff();
-        JSONObject recording = callService.getRecording(caller, staffPO,page,pageSize,callId);
+        JSONObject recording = callService.getRecording(caller, staffPO,page,pageSize,callId,startTime);
         return ResultInfoUtil.success(recording);
     }
 
@@ -77,9 +87,9 @@ public class CallController extends BaseController{
      * 获取录音
      * */
     @RequestMapping("/get_recording_file")
-    public ResultInfo getRecordingFile(String fileName){
+    public ResultInfo getRecordingFile(String fileName,Integer callId){
         StaffPO staffPO = getCurrentLoginStaff();
-        JSONObject jsonObject = callService.getRecordingFile(fileName, staffPO);
+        JSONObject jsonObject = callService.getRecordingFile(fileName, staffPO,callId);
         return ResultInfoUtil.success(jsonObject);
     }
 

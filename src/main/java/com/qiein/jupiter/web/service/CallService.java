@@ -52,11 +52,16 @@ public interface CallService {
     /**
      * 获取录音列表
      * */
-    JSONObject getRecording(String caller, StaffPO staffPO,Integer page,Integer pageSize,Integer callId);
+    JSONObject getRecording(String caller, StaffPO staffPO,Integer page,Integer pageSize,Integer callId,Integer startTime);
 
     /**
      * 获取录音文件
      * */
-    JSONObject getRecordingFile(String fileName,StaffPO staffPO);
+    JSONObject getRecordingFile(String fileName,StaffPO staffPO,Integer callId);
+
+    /**
+     * 删除客服
+     * */
+    void delCustomer(Integer id,StaffPO staffPO);
 
 }
