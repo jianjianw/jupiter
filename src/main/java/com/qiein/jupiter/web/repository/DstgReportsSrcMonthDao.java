@@ -55,40 +55,11 @@ public class DstgReportsSrcMonthDao {
         if (StringUtil.isNotEmpty(reportsParamSrcMonthVO.getSourceId())) {
             sql.append(" AND src.ID IN (" + reportsParamSrcMonthVO.getSourceId() + ")");
         }
+        sql.append(" ORDER BY src.CHANNELID ASC,src.PRIORITY ASC");
         String sqlString = sql.toString(); 
         List<Map<String, Object>> listSum = jdbcTemplate.queryForList(sqlString, new Object[]{reportsParamSrcMonthVO.getCompanyId()});
 		
-        //横的一列合计
-        /*StringBuilder hjsql = new StringBuilder();
-        hjsql.append("SELECT '合计'  srcName, ''  srcIamge,");
-        hjsql.append("(SELECT COUNT(1)");
-        hjsql.append(" FROM ");
-        hjsql.append(" "+infoTabName+" info");
-        hjsql.append(" WHERE ");
-        hjsql.append(" FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d') = '"+month+"'");
-        hjsql.append(" AND info.ISDEL=0 ");
-        if(StringUtil.isEmpty(reportsParamSrcMonthVO.getTypeId()) ){
-        	hjsql.append(" AND info.TYPEID IN("+reportsParamSrcMonthVO.getTypeId()+")  ");
-        }
-        hjsql.append(" AND info.COMPANYID="+reportsParamSrcMonthVO.getCompanyId() );
-        hjsql.append(" AND info.SRCTYPE IN(1,2) ) hj,");
-        //
-        for (Map<String, Object> day : dayList) {
-        	hjsql.append("(SELECT COUNT(1)");
-        	hjsql.append(" FROM ");
-        	hjsql.append(" "+infoTabName+" info");
-        	hjsql.append(" WHERE ");
-        	hjsql.append(" FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d') = '"+day.get("day")+"' ");
-        	hjsql.append(" AND info.ISDEL=0 ");
-            if(StringUtil.isEmpty(reportsParamSrcMonthVO.getTypeId()) ){
-            	hjsql.append(" AND info.TYPEID IN("+reportsParamSrcMonthVO.getTypeId()+")  ");
-            }
-            hjsql.append(" AND info.COMPANYID="+reportsParamSrcMonthVO.getCompanyId() );
-            hjsql.append(" AND info.SRCTYPE IN(1,2) ) "+day.get("day")+" , ");
-        }
-        String hjsqlString = hjsql.toString();
-        List<Map<String, Object>> hjlistSum = jdbcTemplate.queryForList(hjsqlString, new Object[]{});
-        hjlistSum.addAll(listSum);*/
+        
 		return listSum;
 	}
 	
@@ -122,8 +93,11 @@ public class DstgReportsSrcMonthDao {
         if (StringUtil.isNotEmpty(reportsParamSrcMonthVO.getSourceId())) {
             sql.append(" AND src.ID IN (" + reportsParamSrcMonthVO.getSourceId() + ")");
         }
+        sql.append(" ORDER BY src.CHANNELID ASC,src.PRIORITY ASC");
         String sqlString = sql.toString(); 
         List<Map<String, Object>> listAll = jdbcTemplate.queryForList(sqlString, new Object[]{reportsParamSrcMonthVO.getCompanyId()});
+        
+        
 		return listAll;
 	}
 	
@@ -166,6 +140,7 @@ public class DstgReportsSrcMonthDao {
         if (StringUtil.isNotEmpty(reportsParamSrcMonthVO.getSourceId())) {
             sql.append(" AND src.ID IN (" + reportsParamSrcMonthVO.getSourceId() + ")");
         }
+        sql.append(" ORDER BY src.CHANNELID ASC,src.PRIORITY ASC");
         String sqlString = sql.toString(); 
         List<Map<String, Object>> listdd = jdbcTemplate.queryForList(sqlString, new Object[]{
         		reportsParamSrcMonthVO.getCompanyId(),});
@@ -229,6 +204,7 @@ public class DstgReportsSrcMonthDao {
         if (StringUtil.isNotEmpty(reportsParamSrcMonthVO.getSourceId())) {
             sql.append(" AND src.ID IN (" + reportsParamSrcMonthVO.getSourceId() + ")");
         }
+        sql.append(" ORDER BY src.CHANNELID ASC,src.PRIORITY ASC");
         String sqlString = sql.toString(); 
         List<Map<String, Object>> listdd = jdbcTemplate.queryForList(sqlString, new Object[]{
         		reportsParamSrcMonthVO.getCompanyId(),});
@@ -294,6 +270,7 @@ public class DstgReportsSrcMonthDao {
         if (StringUtil.isNotEmpty(reportsParamSrcMonthVO.getSourceId())) {
             sql.append(" AND src.ID IN (" + reportsParamSrcMonthVO.getSourceId() + ")");
         }
+        sql.append(" ORDER BY src.CHANNELID ASC,src.PRIORITY ASC");
         String sqlString = sql.toString(); 
         List<Map<String, Object>> listdd = jdbcTemplate.queryForList(sqlString, new Object[]{
         		reportsParamSrcMonthVO.getCompanyId(),});
