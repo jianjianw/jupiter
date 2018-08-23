@@ -58,7 +58,26 @@ public class GoldFingerPO {
     private String createorName;
 
     private String createTime;
+    //老客姓名
+    private String oldKzName;
+    //老客电话
+    private String oldKzPhone;
 
+    public String getOldKzName() {
+        return oldKzName;
+    }
+
+    public void setOldKzName(String oldKzName) {
+        this.oldKzName = oldKzName;
+    }
+
+    public String getOldKzPhone() {
+        return oldKzPhone;
+    }
+
+    public void setOldKzPhone(String oldKzPhone) {
+        this.oldKzPhone = oldKzPhone;
+    }
 
     public Integer getCreateorId() {
         return createorId;
