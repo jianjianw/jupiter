@@ -28,7 +28,7 @@ public class CommonReportsDao {
         if (NumUtil.isInValid(companyId)) {
             return null;
         }
-        sb.append(" SELECT comp.DSINVALIDSTATUS, comp.DSINVALIDLEVEL, comp.DDISVALID, comp.DSDDSTATUS  FROM hm_pub_company comp WHERE comp.ID = ? AND comp.ISDEL = 0 ");
+        sb.append(" SELECT comp.DSINVALIDSTATUS, comp.DSINVALIDLEVEL, comp.DDISVALID, comp.DSDDSTATUS ,comp.ZJSVALIDSTATUS FROM hm_pub_company comp WHERE comp.ID = ? AND comp.ISDEL = 0 ");
         DsInvalidVO dsInvalidVO = jdbcTemplate.queryForObject(sb.toString(),
                 new Object[]{companyId},
                 new RowMapper<DsInvalidVO>() {
@@ -39,6 +39,7 @@ public class CommonReportsDao {
                         dsInvalidVO.setDsInvalidLevel(rs.getString("DSINVALIDLEVEL"));
                         dsInvalidVO.setDdIsValid(rs.getBoolean("DDISVALID"));
                         dsInvalidVO.setDsDdStatus(rs.getString("DSDDSTATUS"));
+                        dsInvalidVO.setZjsValidStatus(rs.getString("ZJSVALIDSTATUS"));
                         return dsInvalidVO;
                     }
                 });
