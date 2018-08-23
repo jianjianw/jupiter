@@ -346,7 +346,7 @@ public class GroupServiceImpl implements GroupService {
             throw new RException(ExceptionEnum.DELETE_FAIL);
         }
         //删除拍摄地-渠道-组关联表中的
-        shopChannelGroupDao.delByGroupId(companyId, groupPO.getGroupId());
+//        shopChannelGroupDao.delByGroupId(companyId, groupPO.getGroupId());
 
         //TODO dstj dsyy dssx
         //节点不存在
