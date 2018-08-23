@@ -133,7 +133,6 @@ public class ClientServiceImpl implements ClientService {
 //        String tabName = DBSplitUtil.getRemarkTabName(clientStatusVoteVO.getCompanyId());
 
         String kzStatusName = "";
-        String content = "";
         if (ClientStatusTypeConst.VALID_TYPE.equals(type)) {
             //有效
             kzStatusName = ClientConst.KZ_BZ_WATING_MAKE_ORDER;
@@ -174,9 +173,11 @@ public class ClientServiceImpl implements ClientService {
         //获取客资时候有备注
         if (StringUtil.isNotEmpty(clientStatusVoteVO.getContent())) {
             //对长度进行校验 -- 不能超过200
-            if(StringUtil.isNotEmpty(clientStatusVoteVO.getReason()) && clientStatusVoteVO.getReason().length() >= 200){
-                  clientStatusVoteVO.setReason(clientStatusVoteVO.getReason().substring(0,199));
-                  clientStatusVoteVO.setContent("备注:"+clientStatusVoteVO.getContent()+","+clientStatusVoteVO.getReason());
+            if(StringUtil.isNotEmpty(clientStatusVoteVO.getReason()) ){
+                if(clientStatusVoteVO.getReason().length() >= 200){
+                    clientStatusVoteVO.setReason(clientStatusVoteVO.getReason().substring(0,199));
+                }
+                clientStatusVoteVO.setContent("备注:"+clientStatusVoteVO.getContent()+","+clientStatusVoteVO.getReason());
             }
             clientDao.updateDetailMemo(DBSplitUtil.getDetailTabName(clientStatusVoteVO.getCompanyId()), clientStatusVoteVO.getKzId(), clientStatusVoteVO.getCompanyId(), clientStatusVoteVO.getContent());
         }
