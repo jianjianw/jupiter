@@ -177,9 +177,9 @@ public class ClientServiceImpl implements ClientService {
             if(StringUtil.isNotEmpty(clientStatusVoteVO.getReason()) && clientStatusVoteVO.getReason().length() >= 200){
                   clientStatusVoteVO.setReason(clientStatusVoteVO.getReason().substring(0,199));
             }
-            clientStatusVoteVO.setContent(clientStatusVoteVO.getContent()+";无效备注:"+clientStatusVoteVO.getReason());
+            clientStatusVoteVO.setContent(clientStatusVoteVO.getContent()+";无效备注:"+(StringUtil.isNotEmpty(clientStatusVoteVO.getReason())?clientStatusVoteVO.getReason():"无"));
             //拼接无效
-            clientDao.updateDetailMemo(DBSplitUtil.getDetailTabName(clientStatusVoteVO.getCompanyId()), clientStatusVoteVO.getKzId(), clientStatusVoteVO.getCompanyId(), "无效原因:"+clientStatusVoteVO.getContent()+";无效备注:"+clientStatusVoteVO.getReason());
+            clientDao.updateDetailMemo(DBSplitUtil.getDetailTabName(clientStatusVoteVO.getCompanyId()), clientStatusVoteVO.getKzId(), clientStatusVoteVO.getCompanyId(), "无效原因:"+clientStatusVoteVO.getContent()+";无效备注:"+(StringUtil.isNotEmpty(clientStatusVoteVO.getReason())?clientStatusVoteVO.getReason():"无"));
         }
         //FIXME 废弃代码
 //        ClientRemarkPO clientRemarkPO = new ClientRemarkPO();
