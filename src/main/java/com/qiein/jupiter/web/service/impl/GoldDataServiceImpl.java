@@ -175,6 +175,8 @@ public class GoldDataServiceImpl implements GoldDataService {
             throw new RException(ExceptionEnum.KZ_IN_BLACK_LIST);
         }
         String address = MobileLocationUtil.getPhoneLocation(kzPhone);
+        String oldKzName = StringUtil.nullToStrTrim(entry.getString(goldFingerPO.getOldKzName()));
+        String oldKzPhone = StringUtil.nullToStrTrim(entry.getString(goldFingerPO.getOldKzPhone()));
         //获取字段值
         String[] fieldKeys = StringUtil.isNotEmpty(goldFingerPO.getFieldKey()) ? goldFingerPO.getFieldKey().split(CommonConstant.STR_SEPARATOR) : new String[]{};
         String[] fieldValues = StringUtil.isNotEmpty(goldFingerPO.getFieldValue()) ? goldFingerPO.getFieldValue().split(CommonConstant.STR_SEPARATOR) : new String[]{};
@@ -246,6 +248,8 @@ public class GoldDataServiceImpl implements GoldDataService {
         reqContent.put("collectorname", goldFingerPO.getCreateorName());
         reqContent.put("address", address);
         reqContent.put("remark", sb.toString());
+        reqContent.put("oldkzname",oldKzName);
+        reqContent.put("oldkzphone",oldKzPhone);
 
 
         //插入记录
@@ -311,7 +315,6 @@ public class GoldDataServiceImpl implements GoldDataService {
             StaffPO staffPO = staffDao.getByIdAndCid(goldFingerPO.getStaffId(), goldFingerPO.getCompanyId());
             clientLogPO.setOperaName(staffPO.getNickName());
             clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(goldFingerPO.getCompanyId()),clientLogPO);
-
         } else if ("130019".equals(jsInfo.getString("code"))) {
             goldTempPO.setStatusId(GoldDataConst.REPEATED_SCREEN);
             goldTempDao.update(goldTempPO);
