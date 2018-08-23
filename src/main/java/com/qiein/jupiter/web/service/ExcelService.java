@@ -41,7 +41,7 @@ public interface ExcelService {
 	 * @param companyId
 	 * @param staffId
 	 */
-	void tempKzMoveToInfo(int companyId, int staffId);
+	void tempKzMoveToInfo(int companyId, int staffId,String nickName);
 
 	/**
 	 * 批量删除客资缓存记录

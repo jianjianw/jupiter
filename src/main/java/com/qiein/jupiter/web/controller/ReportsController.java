@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.http.CrmBaseApi;
 import com.qiein.jupiter.util.*;
@@ -374,10 +375,13 @@ public class ReportsController extends BaseController {
      * 获取电商推广广告报表
      */
     @GetMapping("/get_dstg_ad_reports")
-    public ResultInfo getDstgAdReports(Integer start, Integer end, @RequestParam(value = "type", required = false) String type) {
+    public ResultInfo getDstgAdReports(Integer start, Integer end, @RequestParam(value = "type", required = false) String type,Integer page) {
+        if(null == page || 0 == page) {
+            page = 1;
+        }
         StaffPO staffPO = getCurrentLoginStaff();
-        List<DstgGoldDataReportsVO> dstgGoldDataReportsVO = reportService.getDstgAdReports(start, end, staffPO.getCompanyId(), type);
-        return ResultInfoUtil.success(dstgGoldDataReportsVO);
+        PageInfo dstgAdReports = reportService.getDstgAdReports(start, end, staffPO.getCompanyId(), type,page);
+        return ResultInfoUtil.success(dstgAdReports);
     }
 
     /**

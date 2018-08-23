@@ -119,6 +119,8 @@ public class JsonFmtUtil {
                 vo.setRemark(getBlindString(StringUtil.replaceAllHTML(info.getString("content"))));
                 vo.setMemo(getBlindString(info.getString("memo")));
             }
+            vo.setShootType(getDicNameByCode(info.getIntValue("typeid"),DictionaryConstant.COMMON_TYPE,dicMap));
+            vo.setReceptorName(info.getString("receptorname"));
             vo.setYxLevel(getDicNameByCode(info.getIntValue("yxlevel"), DictionaryConstant.YX_RANK, dicMap));
             vo.setShopName(info.getString("shopname"));
             vo.setAmount(info.getIntValue("amount"));
@@ -137,6 +139,8 @@ public class JsonFmtUtil {
             vo.setInvalidLabel(info.getString("invalidlabel"));
             vo.setAdId(info.getString("adid"));
             vo.setPromoterName(info.getString("promotername"));
+            vo.setOldKzName(info.getString("oldkzname"));
+            vo.setOldKzPhone(info.getString("oldkzphone"));
             //设置性别
             if(StringUtil.isNotEmpty(info.getString("sex")) && ClientConst.KZ_SEX_UNKNOWN_NUM.equalsIgnoreCase(info.getString("sex"))){
                 vo.setKzSex(ClientConst.KZ_SEX_UNKNOWN);
