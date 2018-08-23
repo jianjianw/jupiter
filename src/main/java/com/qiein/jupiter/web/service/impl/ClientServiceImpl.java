@@ -178,6 +178,8 @@ public class ClientServiceImpl implements ClientService {
                     clientStatusVoteVO.setReason(clientStatusVoteVO.getReason().substring(0,199));
                 }
                 clientStatusVoteVO.setContent("备注:"+clientStatusVoteVO.getContent()+","+clientStatusVoteVO.getReason());
+            }else{
+                clientStatusVoteVO.setContent("备注:"+clientStatusVoteVO.getContent());
             }
             clientDao.updateDetailMemo(DBSplitUtil.getDetailTabName(clientStatusVoteVO.getCompanyId()), clientStatusVoteVO.getKzId(), clientStatusVoteVO.getCompanyId(), clientStatusVoteVO.getContent());
         }
