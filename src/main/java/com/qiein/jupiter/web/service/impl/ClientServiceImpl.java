@@ -133,6 +133,7 @@ public class ClientServiceImpl implements ClientService {
 //        String tabName = DBSplitUtil.getRemarkTabName(clientStatusVoteVO.getCompanyId());
 
         String kzStatusName = "";
+        String content = "";
         if (ClientStatusTypeConst.VALID_TYPE.equals(type)) {
             //有效
             kzStatusName = ClientConst.KZ_BZ_WATING_MAKE_ORDER;
@@ -170,10 +171,15 @@ public class ClientServiceImpl implements ClientService {
         //修改状态id
         clientDao.updateKzValidStatusByKzId(DBSplitUtil.getInfoTabName(clientStatusVoteVO.getCompanyId()), clientStatusVoteVO);
         //是否有备注
-
         //获取客资时候有备注
         if (StringUtil.isNotEmpty(clientStatusVoteVO.getContent())) {
-            clientDao.updateDetailMemo(DBSplitUtil.getDetailTabName(clientStatusVoteVO.getCompanyId()), clientStatusVoteVO.getKzId(), clientStatusVoteVO.getCompanyId(), clientStatusVoteVO.getContent());
+            //对长度进行校验 -- 不能超过200
+            if(clientStatusVoteVO.getReason().length() >= 200){
+                  clientStatusVoteVO.setReason(clientStatusVoteVO.getReason().substring(0,199));
+            }
+            clientStatusVoteVO.setContent(clientStatusVoteVO.getContent()+";无效备注:"+clientStatusVoteVO.getReason());
+            //拼接无效
+            clientDao.updateDetailMemo(DBSplitUtil.getDetailTabName(clientStatusVoteVO.getCompanyId()), clientStatusVoteVO.getKzId(), clientStatusVoteVO.getCompanyId(), "无效原因:"+clientStatusVoteVO.getContent()+";无效备注:"+clientStatusVoteVO.getReason());
         }
         //FIXME 废弃代码
 //        ClientRemarkPO clientRemarkPO = new ClientRemarkPO();
@@ -191,7 +197,7 @@ public class ClientServiceImpl implements ClientService {
         //插入日志
         int addLogNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(clientStatusVoteVO.getCompanyId()),
                 new ClientLogPO(clientStatusVoteVO.getKzId(), clientStatusVoteVO.getOperaId(), clientStatusVoteVO.getOperaName(),
-                        ClientLogConst.INFO_LOG_EDIT_BE_STATUS + kzStatusName,
+                        ClientLogConst.INFO_LOG_EDIT_BE_STATUS + kzStatusName+"；备注:"+clientStatusVoteVO.getContent(),
                         ClientLogConst.INFO_LOGTYPE_EDIT, clientStatusVoteVO.getCompanyId()));
         if (addLogNum != 1) {
             log.error("修改客资状态日志失败");

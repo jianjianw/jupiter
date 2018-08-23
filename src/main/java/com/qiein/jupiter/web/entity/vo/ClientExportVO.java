@@ -190,6 +190,32 @@ public class ClientExportVO implements Serializable {
      * */
     @Excel(name="筛客名称",width = 20,height = 6)
     private String promoterName;
+    /**
+     * 老客姓名
+     * */
+    @Excel(name="老客姓名",width = 20,height = 6)
+    private String oldKzName;
+    /**
+     * 老客电话
+     * */
+    @Excel(name="老客电话",width = 20,height = 6)
+    private String oldKzPhone;
+
+    public String getOldKzName() {
+        return oldKzName;
+    }
+
+    public void setOldKzName(String oldKzName) {
+        this.oldKzName = oldKzName;
+    }
+
+    public String getOldKzPhone() {
+        return oldKzPhone;
+    }
+
+    public void setOldKzPhone(String oldKzPhone) {
+        this.oldKzPhone = oldKzPhone;
+    }
 
     public String getShootType() {
         return shootType;

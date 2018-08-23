@@ -139,6 +139,8 @@ public class JsonFmtUtil {
             vo.setInvalidLabel(info.getString("invalidlabel"));
             vo.setAdId(info.getString("adid"));
             vo.setPromoterName(info.getString("promotername"));
+            vo.setOldKzName(info.getString("oldkzname"));
+            vo.setOldKzPhone(info.getString("oldkzphone"));
             //设置性别
             if(StringUtil.isNotEmpty(info.getString("sex")) && ClientConst.KZ_SEX_UNKNOWN_NUM.equalsIgnoreCase(info.getString("sex"))){
                 vo.setKzSex(ClientConst.KZ_SEX_UNKNOWN);
