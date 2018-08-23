@@ -53,6 +53,8 @@ public class GoldDataServiceImpl implements GoldDataService {
     private DictionaryDao dictionaryDao;
     @Autowired
     private ClientLogDao clientLogDao;
+    @Autowired
+    private ClientBlackListDao clientBlackListDao;
 
     /**
      * 添加表单
@@ -168,6 +170,10 @@ public class GoldDataServiceImpl implements GoldDataService {
 //        }
         String kzName = StringUtil.nullToStrTrim(entry.getString(goldFingerPO.getKzNameField()));
         String weChat = StringUtil.nullToStrTrim(entry.getString(goldFingerPO.getKzWechatField()));
+        List<BlackListPO> list=clientBlackListDao.checkBlackList(goldFingerPO.getCompanyId(),kzPhone,null,null,weChat);
+        if(!list.isEmpty()){
+            throw new RException(ExceptionEnum.KZ_IN_BLACK_LIST);
+        }
         String address = MobileLocationUtil.getPhoneLocation(kzPhone);
         //获取字段值
         String[] fieldKeys = StringUtil.isNotEmpty(goldFingerPO.getFieldKey()) ? goldFingerPO.getFieldKey().split(CommonConstant.STR_SEPARATOR) : new String[]{};

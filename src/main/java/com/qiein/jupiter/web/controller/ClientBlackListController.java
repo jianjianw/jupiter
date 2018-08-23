@@ -50,9 +50,6 @@ public class ClientBlackListController extends BaseController{
     @PostMapping("/insert")
     public ResultInfo insert(@RequestBody BlackListPO blackListPO){
         StaffPO staff=getCurrentLoginStaff();
-        if (!RegexUtil.checkMobile(blackListPO.getKzPhone())) {
-            return ResultInfoUtil.error(ExceptionEnum.PHONE_ERROR);
-        }
         blackListPO.setCompanyId(staff.getCompanyId());
         blackListPO.setStaffId(staff.getId());
         blackListPO.setStaffName(staff.getNickName());
@@ -64,9 +61,6 @@ public class ClientBlackListController extends BaseController{
      */
     @PostMapping("/update")
     public ResultInfo update(@RequestBody BlackListPO blackListPO){
-        if (!RegexUtil.checkMobile(blackListPO.getKzPhone())) {
-            return ResultInfoUtil.error(ExceptionEnum.PHONE_ERROR);
-        }
         clientBlackListService.update(blackListPO);
         return ResultInfoUtil.success(TipMsgEnum.UPDATE_SUCCESS);
     }
