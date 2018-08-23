@@ -119,6 +119,8 @@ public class JsonFmtUtil {
                 vo.setRemark(getBlindString(StringUtil.replaceAllHTML(info.getString("content"))));
                 vo.setMemo(getBlindString(info.getString("memo")));
             }
+            vo.setShootType(getDicNameByCode(info.getIntValue("typeid"),DictionaryConstant.COMMON_TYPE,dicMap));
+            vo.setReceptorName(info.getString("receptorname"));
             vo.setYxLevel(getDicNameByCode(info.getIntValue("yxlevel"), DictionaryConstant.YX_RANK, dicMap));
             vo.setShopName(info.getString("shopname"));
             vo.setAmount(info.getIntValue("amount"));
