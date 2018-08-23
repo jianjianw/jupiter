@@ -50,6 +50,7 @@ public class ZjsKzOfYearDao {
         for (int i = 0; i < timeList.size(); i += 2) {
             String sql = getFinalSQL(zjsClientYearReportDTO, dsInvalidVO);
             Object[] objs = getParam(zjsClientYearReportDTO, timeList, i, dsInvalidVO);
+            System.out.println(objs);
             List<ZjsClientYearReportVO> now = jdbcTemplate.query(sql,
                     objs,
                     new RowMapper<ZjsClientYearReportVO>() {
@@ -231,10 +232,10 @@ public class ZjsKzOfYearDao {
      * @param sb
      * @param zjsClientYearReportDTO
      */
-    private StringBuilder getBaseSQL(StringBuilder sb, ZjsClientYearReportDTO zjsClientYearReportDTO, String name) {
+    private StringBuilder getBaseSQL(StringBuilder sb, ZjsClientYearReportDTO zjsClientYearReportDTO) {
         String infoTabName = DBSplitUtil.getTable(TableEnum.info, zjsClientYearReportDTO.getCompanyId());
         String detailTabName = DBSplitUtil.getTable(TableEnum.detail, zjsClientYearReportDTO.getCompanyId());
-        sb.append(" SELECT info.SOURCEID srcId,src.SRCNAME ,src.SRCIMG , COUNT(1) " + name)
+        sb.append(" SELECT info.SOURCEID srcId,src.SRCNAME ,src.SRCIMG , COUNT(1) dataNum")
                 .append(" FROM " + infoTabName + " info")
                 .append(" INNER JOIN " + detailTabName + " detail ON info.KZID = detail.KZID AND info.COMPANYID = detail.COMPANYID ")
                 .append(" INNER JOIN hm_crm_source src ON src.ID = info.SOURCEID AND src.COMPANYID = info.COMPANYID")
@@ -253,7 +254,7 @@ public class ZjsKzOfYearDao {
      */
     private StringBuilder getComeShopClientSQL(ZjsClientYearReportDTO zjsClientYearReportDTO) {
         StringBuilder sb = new StringBuilder();
-        getBaseSQL(sb, zjsClientYearReportDTO, "comeShopClientCount");
+        getBaseSQL(sb, zjsClientYearReportDTO);
         sb.append(" AND (info.COMESHOPTIME BETWEEN ? AND ?) ").append("GROUP BY info.SOURCEID");
         return sb;
     }
@@ -265,7 +266,7 @@ public class ZjsKzOfYearDao {
      */
     private StringBuilder getSuccessClientSQL(ZjsClientYearReportDTO zjsClientYearReportDTO) {
         StringBuilder sb = new StringBuilder();
-        getBaseSQL(sb, zjsClientYearReportDTO, "successClientCount");
+        getBaseSQL(sb, zjsClientYearReportDTO);
         sb.append(" AND (info.SUCCESSTIME BETWEEN ? AND ?) ").append("GROUP BY info.SOURCEID");
         return sb;
     }
@@ -277,7 +278,7 @@ public class ZjsKzOfYearDao {
      */
     private StringBuilder getAllClientSQL(ZjsClientYearReportDTO zjsClientYearReportDTO) {
         StringBuilder sb = new StringBuilder();
-        getBaseSQL(sb, zjsClientYearReportDTO, "allClientCount");
+        getBaseSQL(sb, zjsClientYearReportDTO);
         sb.append(" AND info.CREATETIME BETWEEN ? AND ? ").append("GROUP BY info.SOURCEID");
         return sb;
     }
@@ -289,7 +290,7 @@ public class ZjsKzOfYearDao {
      */
     private StringBuilder getInValidClientSQL(ZjsClientYearReportDTO zjsClientYearReportDTO, DsInvalidVO dsInvalidVO) {
         StringBuilder inValidClientSQL = new StringBuilder();
-        getBaseSQL(inValidClientSQL, zjsClientYearReportDTO, "inValidClientCount");
+        getBaseSQL(inValidClientSQL, zjsClientYearReportDTO);
         inValidClientSQL.append(" AND (info.CREATETIME BETWEEN ? AND ?) ");
         if (StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidStatus()) && StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidLevel())) {
             inValidClientSQL.append(" and (info.STATUSID in(" + dsInvalidVO.getDsInvalidStatus() + ") or");
@@ -312,7 +313,7 @@ public class ZjsKzOfYearDao {
      */
     private StringBuilder getFilterPendingClientCount(ZjsClientYearReportDTO zjsClientYearReportDTO) {
         StringBuilder filterPendingClientSQL = new StringBuilder();
-        getBaseSQL(filterPendingClientSQL, zjsClientYearReportDTO, "filterPendingClientCount");
+        getBaseSQL(filterPendingClientSQL, zjsClientYearReportDTO);
         filterPendingClientSQL.append(" AND info.CLASSID = 1 and info.STATUSID = 98 ")
                 .append(" AND (info.CREATETIME BETWEEN ? AND ?) ");
         filterPendingClientSQL.append("GROUP BY info.SOURCEID");
@@ -324,7 +325,7 @@ public class ZjsKzOfYearDao {
      */
     private StringBuilder getFilterInClientCount(ZjsClientYearReportDTO zjsClientYearReportDTO) {
         StringBuilder filterInClienSQL = new StringBuilder();
-        getBaseSQL(filterInClienSQL, zjsClientYearReportDTO, "filterInClientCount");
+        getBaseSQL(filterInClienSQL, zjsClientYearReportDTO);
         filterInClienSQL.append(" and info.CREATETIME BETWEEN ? AND ? ")
                 .append(" and info.CLASSID = 1 and info.STATUSID = 0 ");
         filterInClienSQL.append("GROUP BY info.SOURCEID");
@@ -338,7 +339,7 @@ public class ZjsKzOfYearDao {
      */
     private StringBuilder getFilterInValidClientCount(ZjsClientYearReportDTO zjsClientYearReportDTO) {
         StringBuilder filterInValidClientSQL = new StringBuilder();
-        getBaseSQL(filterInValidClientSQL, zjsClientYearReportDTO, "filterInValidClientCount");
+        getBaseSQL(filterInValidClientSQL, zjsClientYearReportDTO);
         filterInValidClientSQL.append(" and info.CLASSID = 6 and info.STATUSID = 99 ")
                 .append(" AND (info.CREATETIME BETWEEN ? AND ?) ").append("GROUP BY info.SOURCEID");
         return filterInValidClientSQL;
@@ -351,7 +352,7 @@ public class ZjsKzOfYearDao {
      */
     private StringBuilder getPendingClientCount(ZjsClientYearReportDTO zjsClientYearReportDTO, DsInvalidVO dsInvalidVO) {
         StringBuilder pendingClientSQL = new StringBuilder(); //"pendingClientCount"
-        getBaseSQL(pendingClientSQL, zjsClientYearReportDTO, "pendingClientCount");
+        getBaseSQL(pendingClientSQL, zjsClientYearReportDTO);
         pendingClientSQL.append(" AND (info.CREATETIME BETWEEN ? AND ?) ")
                 .append(" AND INSTR( ? , CONCAT(',',info.STATUSID + '',',')) != 0 ").append(" GROUP BY info.SOURCEID");
         return pendingClientSQL;
@@ -516,8 +517,8 @@ public class ZjsKzOfYearDao {
         StringBuilder sql = new StringBuilder();
         //总客资  待定量 筛选待定 无效量 筛选无效量 入店量 成交量 成交均价 营业额
         sql.append("SELECT ")
-                .append("zkz.allClientCount , ddl.pendingClientCount , sxdd.filterPendingClientCount ,sxz.filterInClientCount , wxl.inValidClientCount , sxwxl.filterInValidClientCount  , " +
-                        "rdl.comeShopClientCount  , cjl.successClientCount  ")
+                .append("zkz.dataNum allClientCount , ddl.dataNum pendingClientCount , sxdd.dataNum filterPendingClientCount ,sxz.dataNum filterInClientCount , wxl.dataNum inValidClientCount , sxwxl.dataNum filterInValidClientCount  , " +
+                        "rdl.dataNum comeShopClientCount  , cjl.dataNum successClientCount  ")
                 .append(" FROM ")
                 .append("(" + getAllClientSQL(zjsClientYearReportDTO) + ") zkz ,") //总客资
                 .append("(" + getPendingClientCount(zjsClientYearReportDTO, dsInvalidVO) + ") ddl ,") //待定量
