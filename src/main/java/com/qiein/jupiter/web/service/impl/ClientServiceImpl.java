@@ -176,10 +176,9 @@ public class ClientServiceImpl implements ClientService {
             //对长度进行校验 -- 不能超过200
             if(StringUtil.isNotEmpty(clientStatusVoteVO.getReason()) && clientStatusVoteVO.getReason().length() >= 200){
                   clientStatusVoteVO.setReason(clientStatusVoteVO.getReason().substring(0,199));
+                  clientStatusVoteVO.setContent("备注:"+clientStatusVoteVO.getContent()+","+clientStatusVoteVO.getReason());
             }
-            clientStatusVoteVO.setContent(clientStatusVoteVO.getContent()+";无效备注:"+(StringUtil.isNotEmpty(clientStatusVoteVO.getReason())?clientStatusVoteVO.getReason():"无"));
-            //拼接无效
-            clientDao.updateDetailMemo(DBSplitUtil.getDetailTabName(clientStatusVoteVO.getCompanyId()), clientStatusVoteVO.getKzId(), clientStatusVoteVO.getCompanyId(), "无效原因:"+clientStatusVoteVO.getContent()+";无效备注:"+(StringUtil.isNotEmpty(clientStatusVoteVO.getReason())?clientStatusVoteVO.getReason():"无"));
+            clientDao.updateDetailMemo(DBSplitUtil.getDetailTabName(clientStatusVoteVO.getCompanyId()), clientStatusVoteVO.getKzId(), clientStatusVoteVO.getCompanyId(), clientStatusVoteVO.getContent());
         }
         //FIXME 废弃代码
 //        ClientRemarkPO clientRemarkPO = new ClientRemarkPO();
@@ -197,7 +196,7 @@ public class ClientServiceImpl implements ClientService {
         //插入日志
         int addLogNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(clientStatusVoteVO.getCompanyId()),
                 new ClientLogPO(clientStatusVoteVO.getKzId(), clientStatusVoteVO.getOperaId(), clientStatusVoteVO.getOperaName(),
-                        ClientLogConst.INFO_LOG_EDIT_BE_STATUS + kzStatusName+"；备注:"+clientStatusVoteVO.getContent(),
+                        ClientLogConst.INFO_LOG_EDIT_BE_STATUS + kzStatusName+"；"+clientStatusVoteVO.getContent(),
                         ClientLogConst.INFO_LOGTYPE_EDIT, clientStatusVoteVO.getCompanyId()));
         if (addLogNum != 1) {
             log.error("修改客资状态日志失败");
