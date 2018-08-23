@@ -177,7 +177,7 @@ public class ClientServiceImpl implements ClientService {
                 if(clientStatusVoteVO.getReason().length() >= 200){
                     clientStatusVoteVO.setReason(clientStatusVoteVO.getReason().substring(0,199));
                 }
-                clientStatusVoteVO.setContent("备注:"+clientStatusVoteVO.getContent()+","+clientStatusVoteVO.getReason());
+                clientStatusVoteVO.setContent("无效原因:"+clientStatusVoteVO.getContent()+",无效备注："+clientStatusVoteVO.getReason());
             }else{
                 clientStatusVoteVO.setContent("备注:"+clientStatusVoteVO.getContent());
             }
