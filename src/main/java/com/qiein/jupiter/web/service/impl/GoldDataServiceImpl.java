@@ -311,8 +311,8 @@ public class GoldDataServiceImpl implements GoldDataService {
             clientLogPO.setLogType(ClientConst.ALLOT_LOG_STATUS_YES);
             clientLogPO.setMemo("金数据录入");
             clientLogPO.setKzId(kzId);
-            clientLogPO.setOperaId(goldFingerPO.getStaffId());
-            StaffPO staffPO = staffDao.getByIdAndCid(goldFingerPO.getStaffId(), goldFingerPO.getCompanyId());
+            clientLogPO.setOperaId(goldFingerPO.getCreateorId());
+            StaffPO staffPO = staffDao.getByIdAndCid(goldFingerPO.getCreateorId(), goldFingerPO.getCompanyId());
             clientLogPO.setOperaName(staffPO.getNickName());
             clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(goldFingerPO.getCompanyId()),clientLogPO);
         } else if ("130019".equals(jsInfo.getString("code"))) {
