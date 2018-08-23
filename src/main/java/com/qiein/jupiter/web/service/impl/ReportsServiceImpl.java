@@ -187,7 +187,7 @@ public class ReportsServiceImpl implements ReportService {
         //获取数据
         List<DstgGoldDataReportsVO> dstgGoldDataReprots = dstgGoldDataReportsDao.getDstgGoldDataReprots(reportsParamVO, invalidConfig);
 
-        Integer pageSize = 5;
+        Integer pageSize = 20;
         //逻辑分页
         List<DstgGoldDataReportsVO> dstgGoldDataReportsVOS = new LinkedList<>();
         int index = 0;
@@ -200,9 +200,9 @@ public class ReportsServiceImpl implements ReportService {
                 dstgGoldDataReportsVOS.add(dstgGoldDataReprots.get(index));
             }
         }
-
-
-        return new PageInfo<>(dstgGoldDataReportsVOS);
+        PageInfo<DstgGoldDataReportsVO> pageInfo = new PageInfo<>(dstgGoldDataReportsVOS);
+        pageInfo.setTotal(dstgGoldDataReportsVOS.size());
+        return pageInfo;
     }
 
     @Override
