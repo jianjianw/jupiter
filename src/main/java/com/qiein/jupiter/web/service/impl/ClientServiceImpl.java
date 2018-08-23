@@ -174,7 +174,7 @@ public class ClientServiceImpl implements ClientService {
         //获取客资时候有备注
         if (StringUtil.isNotEmpty(clientStatusVoteVO.getContent())) {
             //对长度进行校验 -- 不能超过200
-            if(clientStatusVoteVO.getReason().length() >= 200){
+            if(StringUtil.isNotEmpty(clientStatusVoteVO.getReason()) && clientStatusVoteVO.getReason().length() >= 200){
                   clientStatusVoteVO.setReason(clientStatusVoteVO.getReason().substring(0,199));
             }
             clientStatusVoteVO.setContent(clientStatusVoteVO.getContent()+";无效备注:"+clientStatusVoteVO.getReason());
