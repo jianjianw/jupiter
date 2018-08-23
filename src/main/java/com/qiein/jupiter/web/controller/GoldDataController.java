@@ -7,6 +7,7 @@ import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
+import com.qiein.jupiter.util.ObjectUtil;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.util.StringUtil;
@@ -60,6 +61,7 @@ public class GoldDataController extends BaseController {
             throw new RException(ExceptionEnum.LOSE_FILED);
         }
         StaffPO staff = getCurrentLoginStaff();
+        ObjectUtil.objectStrParamTrim(goldFingerPO);
         goldFingerPO.setStaffId(staff.getId());
         goldFingerPO.setCreateorName(staff.getNickName());
         goldFingerPO.setCompanyId(staff.getCompanyId());
@@ -95,6 +97,7 @@ public class GoldDataController extends BaseController {
         if (StringUtil.haveEmpty(goldFingerPO.getFormId(), goldFingerPO.getFormName(), goldFingerPO.getSrcName(), goldFingerPO.getTypeName(), goldFingerPO.getZxStyle())) {
             throw new RException(ExceptionEnum.LOSE_FILED);
         }
+        ObjectUtil.objectStrParamTrim(goldFingerPO);
         StaffPO staff = getCurrentLoginStaff();
         goldFingerPO.setStaffId(staff.getId());
         goldFingerPO.setCompanyId(staff.getCompanyId());
