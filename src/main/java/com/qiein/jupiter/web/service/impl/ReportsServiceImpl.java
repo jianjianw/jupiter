@@ -176,7 +176,7 @@ public class ReportsServiceImpl implements ReportService {
      * @param companyId
      */
     @Override
-    public List<DstgGoldDataReportsVO> getDstgAdReports(Integer start, Integer end, Integer companyId, String type) {
+    public PageInfo getDstgAdReports(Integer start, Integer end, Integer companyId, String type,Integer page) {
         //封装对应的参数
         ReportsParamVO reportsParamVO = new ReportsParamVO();
         reportsParamVO.setStart(start);
@@ -186,7 +186,23 @@ public class ReportsServiceImpl implements ReportService {
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         //获取数据
         List<DstgGoldDataReportsVO> dstgGoldDataReprots = dstgGoldDataReportsDao.getDstgGoldDataReprots(reportsParamVO, invalidConfig);
-        return dstgGoldDataReprots;
+
+        Integer pageSize = 5;
+        //逻辑分页
+        List<DstgGoldDataReportsVO> dstgGoldDataReportsVOS = new LinkedList<>();
+        int index = 0;
+        if( page * pageSize > dstgGoldDataReprots.size() ){
+            for( index = pageSize*(page-1) ;index <dstgGoldDataReprots.size();index++ ){
+                dstgGoldDataReportsVOS.add(dstgGoldDataReprots.get(index));
+            }
+        }else{
+            for( index = pageSize*(page-1) ;index <page * pageSize;index++ ){
+                dstgGoldDataReportsVOS.add(dstgGoldDataReprots.get(index));
+            }
+        }
+
+
+        return new PageInfo<>(dstgGoldDataReportsVOS);
     }
 
     @Override
