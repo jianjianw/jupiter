@@ -61,7 +61,14 @@ public class ClientAddServiceImpl implements ClientAddService {
         Map<String, Object> reqContent = new HashMap<String, Object>();
         List<BlackListPO> list=clientBlackListDao.checkBlackList(staffPO.getCompanyId(),clientVO.getKzPhone(),clientVO.getKzWw(),clientVO.getKzQq(),clientVO.getMateWeChat());
         if(!list.isEmpty()){
+            String ids=CommonConstant.NULL_STR;
+            for(BlackListPO blackListPO:list){
+                ids+=blackListPO.getId()+CommonConstant.STR_SEPARATOR;
+            }
+            ids.substring(ids.lastIndexOf(CommonConstant.STR_SEPARATOR));
+            clientBlackListDao.addCount(ids);
             throw new RException(ExceptionEnum.KZ_IN_BLACK_LIST);
+
         }
         reqContent.put("companyid", staffPO.getCompanyId());
         reqContent.put("collectorid", staffPO.getId());

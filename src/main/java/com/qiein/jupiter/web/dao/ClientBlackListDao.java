@@ -40,4 +40,10 @@ public interface ClientBlackListDao {
      * 检测是否拦截
      */
     List<BlackListPO> checkBlackList(@Param("companyId")Integer companyId,@Param("kzPhone")String kzPhone,@Param("kzWw")String kzWw,@Param("kzQq")String kzQq,@Param("kzWeChat")String kzWeChat);
-}
+
+    /**
+     * 增加拦截次数
+     * @param ids
+     */
+    void addCount(@Param("ids")String  ids);
+    }
