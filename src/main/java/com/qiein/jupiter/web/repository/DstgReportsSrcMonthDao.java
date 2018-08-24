@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.repository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
@@ -132,7 +133,13 @@ public class DstgReportsSrcMonthDao {
         List<Map<String, Object>> listSum = jdbcTemplate.queryForList(sqlString, new Object[]{reportsParamSrcMonthVO.getCompanyId()});
 		
         //合计横向的一行
-        Map<String, Object> map1=new HashMap<>();
+        Map<String, Object> map1=new LinkedHashMap();
+        long Monthsum=0;
+        for (Map<String, Object> map : listSum) {
+        		Monthsum +=(long) map.get("hj");
+    		}
+        	map1.put("srcName", "合计");
+        	map1.put("hj", Monthsum);
         for (Map<String, Object> day : dayList) {
         	long daysum=0;
         	for (Map<String, Object> map : listSum) {
@@ -140,12 +147,6 @@ public class DstgReportsSrcMonthDao {
     		}
         	map1.put((String) day.get("dayKey"), daysum);
 		}
-        long Monthsum=0;
-        for (Map<String, Object> map : listSum) {
-        		Monthsum +=(long) map.get("hj");
-    		}
-        	map1.put("hj", Monthsum);
-        	map1.put("srcName", "合计");
         listSum.add(map1);
 		return listSum;
 	}
@@ -184,8 +185,14 @@ public class DstgReportsSrcMonthDao {
         String sqlString = sql.toString(); 
         List<Map<String, Object>> listAll = jdbcTemplate.queryForList(sqlString, new Object[]{reportsParamSrcMonthVO.getCompanyId()});
         
-      //合计横向的一行
-        Map<String, Object> map1=new HashMap<>();
+        //合计横向的一行
+        Map<String, Object> map1=new LinkedHashMap();
+        long Monthsum=0;
+        for (Map<String, Object> map : listAll) {
+        		Monthsum +=(long) map.get("hj");
+    		}
+        	map1.put("srcName", "合计");
+        	map1.put("hj", Monthsum);
         for (Map<String, Object> day : dayList) {
         	long daysum=0;
         	for (Map<String, Object> map : listAll) {
@@ -193,13 +200,7 @@ public class DstgReportsSrcMonthDao {
     		}
         	map1.put((String) day.get("dayKey"), daysum);
 		}
-        long Monthsum=0;
-        for (Map<String, Object> map : listAll) {
-        		Monthsum +=(long) map.get("hj");
-    		}
-        	map1.put("hj", Monthsum);
-        	map1.put("srcName", "合计");
-        	listAll.add(map1);
+        listAll.add(map1);
 		return listAll;
 	}
 	
@@ -248,7 +249,13 @@ public class DstgReportsSrcMonthDao {
         		reportsParamSrcMonthVO.getCompanyId(),});
         
         //合计横向的一行
-        Map<String, Object> map1=new HashMap<>();
+        Map<String, Object> map1=new LinkedHashMap();
+        long Monthsum=0;
+        for (Map<String, Object> map : listdd) {
+        		Monthsum +=(long) map.get("hj");
+    		}
+        	map1.put("srcName", "合计");
+        	map1.put("hj", Monthsum);
         for (Map<String, Object> day : dayList) {
         	long daysum=0;
         	for (Map<String, Object> map : listdd) {
@@ -256,12 +263,6 @@ public class DstgReportsSrcMonthDao {
     		}
         	map1.put((String) day.get("dayKey"), daysum);
 		}
-        long Monthsum=0;
-        for (Map<String, Object> map : listdd) {
-        		Monthsum +=(long) map.get("hj");
-    		}
-        	map1.put("hj", Monthsum);
-        	map1.put("srcName", "合计");
         listdd.add(map1);
 		return listdd;
 	}
@@ -329,7 +330,13 @@ public class DstgReportsSrcMonthDao {
         		reportsParamSrcMonthVO.getCompanyId(),});
         
         //合计横向的一行
-        Map<String, Object> map1=new HashMap<>();
+        Map<String, Object> map1=new LinkedHashMap();
+        long Monthsum=0;
+        for (Map<String, Object> map : listInvalid) {
+        		Monthsum +=(long) map.get("hj");
+    		}
+        	map1.put("srcName", "合计");
+        	map1.put("hj", Monthsum);
         for (Map<String, Object> day : dayList) {
         	long daysum=0;
         	for (Map<String, Object> map : listInvalid) {
@@ -337,12 +344,6 @@ public class DstgReportsSrcMonthDao {
     		}
         	map1.put((String) day.get("dayKey"), daysum);
 		}
-        long Monthsum=0;
-        for (Map<String, Object> map : listInvalid) {
-        		Monthsum +=(long) map.get("hj");
-    		}
-        	map1.put("hj", Monthsum);
-        	map1.put("srcName", "合计");
         listInvalid.add(map1);
 		return listInvalid;
 	}
@@ -411,8 +412,14 @@ public class DstgReportsSrcMonthDao {
         List<Map<String, Object>> listValid = jdbcTemplate.queryForList(sqlString, new Object[]{
         		reportsParamSrcMonthVO.getCompanyId(),});
         
-      //合计横向的一行
-        Map<String, Object> map1=new HashMap<>();
+        //合计横向的一行
+        Map<String, Object> map1=new LinkedHashMap();
+        long Monthsum=0;
+        for (Map<String, Object> map : listValid) {
+        		Monthsum +=(long) map.get("hj");
+    		}
+        	map1.put("srcName", "合计");
+        	map1.put("hj", Monthsum);
         for (Map<String, Object> day : dayList) {
         	long daysum=0;
         	for (Map<String, Object> map : listValid) {
@@ -420,12 +427,6 @@ public class DstgReportsSrcMonthDao {
     		}
         	map1.put((String) day.get("dayKey"), daysum);
 		}
-        long Monthsum=0;
-        for (Map<String, Object> map : listValid) {
-        		Monthsum +=(long) map.get("hj");
-    		}
-        	map1.put("hj", Monthsum);
-        	map1.put("srcName", "合计");
         listValid.add(map1);
 		return listValid;
 	}
