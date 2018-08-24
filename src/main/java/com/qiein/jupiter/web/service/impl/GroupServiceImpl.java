@@ -62,9 +62,7 @@ public class GroupServiceImpl implements GroupService {
      */
     // @Cacheable(value = "dept", key = "'dept'+':'+#companyId")
     public List<GroupVO> getCompanyAllDeptList(int companyId) {
-        List<GroupVO> list = groupDao.getCompanyAllDeptList(companyId);
-        System.out.println(JSON.toJSONString(list));
-        return list;
+        return groupDao.getCompanyAllDeptList(companyId);
     }
 
     /**
