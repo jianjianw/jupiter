@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.qiein.jupiter.constant.ClientLogConst;
 import com.qiein.jupiter.constant.DictionaryConstant;
 import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.dao.*;
@@ -66,6 +67,8 @@ public class ExcelServiceImpl implements ExcelService {
     private DictionaryDao dictionaryDao;
     @Autowired
     private SourceDao sourceDao;
+    @Autowired
+    private ClientLogDao clientLogDao;
 
     /**
      * 导入客资
@@ -260,8 +263,10 @@ public class ExcelServiceImpl implements ExcelService {
      * @param staffId   gaoxiaoli
      */
     @Transactional(rollbackFor = Exception.class)
-    public void tempKzMoveToInfo(int companyId, int staffId) {
+    public void tempKzMoveToInfo(int companyId, int staffId,String nickName) {
         //TODO 程序来做校验 去除重复客资
+        //添加客资日志
+        excelDao.batchAddInfoLog(DBSplitUtil.getInfoLogTabName(companyId),DBSplitUtil.getTable(TableEnum.temp, companyId),DBSplitUtil.getTable(TableEnum.info, companyId),staffId,nickName, ClientLogConst.INFO_LOGTYPE_ADD,ClientLogConst.INFO_LOG_EXCEL_IMPORT);
         //添加客资基本表
         excelDao.insertBaseInfoByStaffId(DBSplitUtil.getInfoTabName(companyId), DBSplitUtil.getTable(TableEnum.temp, companyId), DBSplitUtil.getTable(TableEnum.info, companyId), staffId);
         //添加客资详情表

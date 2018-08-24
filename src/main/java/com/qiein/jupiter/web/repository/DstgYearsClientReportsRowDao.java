@@ -25,7 +25,7 @@ import java.util.Map;
  * @Date: 2018-8-16
  */
 @Repository
-public class DstgYearsClientReportsDao1 {
+public class DstgYearsClientReportsRowDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -142,7 +142,7 @@ public class DstgYearsClientReportsDao1 {
     private void getFilterPending(ReportsParamVO reportsParamVO, final List<DstgSourceYearReportsVO> dstgSourceYearReportsVOS){
         StringBuilder sb = new StringBuilder();
         getCommonSqlPart(sb, reportsParamVO);
-        sb.append(" and info.CLASSID = 1 and info.STATUSID = 98 ");
+        sb.append(" and  info.STATUSID = 98 ");
         addConditionByTypeAndSourceIds(reportsParamVO, sb);
         getCommonSqlPartB(sb);
         List<Map<String, Object>> mapList = jdbcTemplate.queryForList(sb.toString(), new Object[]{reportsParamVO.getCompanyId()
@@ -167,7 +167,7 @@ public class DstgYearsClientReportsDao1 {
     private void getFilterInClientCount(ReportsParamVO reportsParamVO, final List<DstgSourceYearReportsVO> dstgSourceYearReportsVOS){
         StringBuilder sb = new StringBuilder();
         getCommonSqlPart(sb, reportsParamVO);
-        sb.append(" and info.CLASSID = 1 and info.STATUSID = 0");
+        sb.append(" and  info.STATUSID = 0");
         addConditionByTypeAndSourceIds(reportsParamVO, sb);
         getCommonSqlPartB(sb);
         List<Map<String, Object>> mapList = jdbcTemplate.queryForList(sb.toString(), new Object[]{reportsParamVO.getCompanyId()
@@ -192,7 +192,7 @@ public class DstgYearsClientReportsDao1 {
     private void getFilterInValidClientCount(ReportsParamVO reportsParamVO, final List<DstgSourceYearReportsVO> dstgSourceYearReportsVOS){
         StringBuilder sb = new StringBuilder();
         getCommonSqlPart(sb, reportsParamVO);
-        sb.append(" and info.CLASSID = 6 and info.STATUSID = 99");
+        sb.append(" and  info.STATUSID = 99");
         addConditionByTypeAndSourceIds(reportsParamVO, sb);
         getCommonSqlPartB(sb);
         List<Map<String, Object>> mapList = jdbcTemplate.queryForList(sb.toString(), new Object[]{reportsParamVO.getCompanyId()
@@ -252,11 +252,13 @@ public class DstgYearsClientReportsDao1 {
     private void getComeShopClientCount(ReportsParamVO reportsParamVO, final List<DstgSourceYearReportsVO> dstgSourceYearReportsVOS){
         StringBuilder sb = new StringBuilder();
         getCommonSqlPart(sb, reportsParamVO);
-        sb.append(" AND INSTR( ?, CONCAT(',',info.STATUSID + '',',')) != 0");
+//        sb.append(" AND INSTR( ?, CONCAT(',',info.STATUSID + '',',')) != 0");
         addConditionByTypeAndSourceIds(reportsParamVO, sb);
         getCommonSqlPartB(sb);
         List<Map<String, Object>> mapList = jdbcTemplate.queryForList(sb.toString(), new Object[]{reportsParamVO.getCompanyId()
-                , reportsParamVO.getYears(),ClientStatusConst.IS_COME_SHOP});
+                , reportsParamVO.getYears()
+//                ,ClientStatusConst.IS_COME_SHOP
+        });
 
         //获取每月渠道客资数量
         for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgSourceYearReportsVOS) {

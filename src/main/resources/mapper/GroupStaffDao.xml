@@ -21,6 +21,7 @@
         <result column="UPCHIEFIDS" property="chiefIds" jdbcType="VARCHAR"/>
         <result column="UPCHIEFNAMES" property="chiefNames" jdbcType="VARCHAR"/>
         <result column="UPGROUPTYPE" property="groupType" jdbcType="VARCHAR"/>
+        <result column="UPPRIORITY" property="priority" jdbcType="INTEGER"/>
         <collection property="groupList" ofType="com.qiein.jupiter.web.entity.vo.GroupStaffVO">
             <id column="ID" property="id" jdbcType="VARCHAR"/>
             <result column="SHOPID" property="shopId" jdbcType="VARCHAR"/>
@@ -32,6 +33,7 @@
             <result column="CHIEFIDS" property="chiefIds" jdbcType="VARCHAR"/>
             <result column="CHIEFNAMES" property="chiefNames" jdbcType="VARCHAR"/>
             <result column="GROUPTYPE" property="groupType" jdbcType="VARCHAR"/>
+            <result column="PRIORITY" property="priority" jdbcType="INTEGER"/>
             <collection property="staffList" ofType="com.qiein.jupiter.web.entity.po.StaffPO">
                 <id column="STAFFID" property="id" jdbcType="INTEGER"/>
                 <result column="NICKNAME" property="nickName" jdbcType="VARCHAR"/>
@@ -355,11 +357,13 @@
             group_up.GROUPID   UPGROUPID,
             group_up.PARENTID  UPPARENTID,
             group_up.GROUPTYPE UPGROUPTYPE,
+            group_up.PRIORITY  UPPRIORITY,
             group_down.ID,
             group_down.GROUPNAME,
             group_down.GROUPID,
             group_down.PARENTID,
             group_down.GROUPTYPE,
+            group_down.PRIORITY,
             staff.id           STAFFID,
             staff.NICKNAME,
             staff.ISLOCK,
@@ -376,7 +380,7 @@
                                             AND staff.ISDEL = 0
         WHERE group_up.COMPANYID = #{companyId}
               AND group_up.PARENTID = '0'
-        ORDER BY group_up.PRIORITY, group_up.GROUPTYPE, group_up.GROUPNAME, group_down.GROUPNAME
+        ORDER BY group_up.PRIORITY, group_up.GROUPTYPE, group_down.PRIORITY, group_up.GROUPNAME, group_down.GROUPNAME
     </select>
 
     <!--根据组类型获取所有小组及组内人员信息-->

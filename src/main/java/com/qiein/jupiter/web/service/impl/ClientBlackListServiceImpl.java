@@ -36,7 +36,7 @@ public class ClientBlackListServiceImpl implements ClientBlackListService {
      */
     public void insert(BlackListPO blackListPO){
         List<BlackListPO> list=clientBlackListDao.getByPhone(blackListPO.getCompanyId(),blackListPO.getKzPhone());
-        if(list.size()==0){
+        if(list.size()!=0){
             throw new RException(ExceptionEnum.BLACK_WAS_IN);
         }
         clientBlackListDao.insert(blackListPO);
@@ -45,6 +45,10 @@ public class ClientBlackListServiceImpl implements ClientBlackListService {
      * 添加
      */
     public void update(BlackListPO blackListPO){
+        List<BlackListPO> list=clientBlackListDao.getByPhone(blackListPO.getCompanyId(),blackListPO.getKzPhone());
+        if(list.size()!=0){
+            throw new RException(ExceptionEnum.BLACK_WAS_IN);
+        }
         clientBlackListDao.update(blackListPO);
     }
 }

@@ -96,45 +96,51 @@ public class ZjsKzOfYearDao {
 //        int month = 1;
         for (int i = 0; i < timeList.size(); i += 2) {
             String sql = getAllTargetSQL(zjsClientYearReportDTO, dsInvalidVO).toString();
-            System.out.println("输出sql: " + sql);
+//            System.out.println("输出sql: " + sql);
+            System.out.println(String.valueOf((i + 2) / 2) + "月time: begin: " + timeList.get(i) + " ,end: " + timeList.get(i + 1));
             Object[] objs = new Object[]{timeList.get(i), timeList.get(i + 1),
+                    timeList.get(i), timeList.get(i + 1), dsInvalidVO.getZjsValidStatus(),
                     timeList.get(i), timeList.get(i + 1),
                     timeList.get(i), timeList.get(i + 1),
                     timeList.get(i), timeList.get(i + 1),
                     timeList.get(i), timeList.get(i + 1),
                     timeList.get(i), timeList.get(i + 1),
                     timeList.get(i), timeList.get(i + 1),
-                    timeList.get(i), timeList.get(i + 1), dsInvalidVO.getDsDdStatus()};
-            List<RegionReportsVO> now = jdbcTemplate.query(sql,
-                    objs,
-                    new RowMapper<RegionReportsVO>() {
-                        @Override
-                        public RegionReportsVO mapRow(ResultSet rs, int i) throws SQLException {
-                            RegionReportsVO regionReportsVO = new RegionReportsVO();
+                    timeList.get(i), timeList.get(i + 1)};
+            List<RegionReportsVO> now = jdbcTemplate.query(sql, objs, new RowMapper<RegionReportsVO>() {
+                @Override
+                public RegionReportsVO mapRow(ResultSet rs, int rowNum) throws SQLException {
+                    System.out.println(JSON.toJSONString(rs.getString(2)));
+                    RegionReportsVO regionReportsVO = new RegionReportsVO();
 //                                regionReportsVO.setRegionName(rs.getString("regionName"));
-                            regionReportsVO.setAllClientCount(rs.getInt("allClientCount"));                     //总客资
-                            regionReportsVO.setPendingClientCount(rs.getInt("pendingClientCount"));             //待定量
-                            regionReportsVO.setFilterPendingClientCount(rs.getInt("filterPendingClientCount")); //筛选待定量
-                            regionReportsVO.setInValidClientCount(rs.getInt("inValidClientCount"));             //无效量
-                            regionReportsVO.setFilterInValidClientCount(rs.getInt("filterInValidClientCount")); //筛选无效量
-                            regionReportsVO.setComeShopClientCount(rs.getInt("comeShopClientCount"));           //到店量
-                            regionReportsVO.setSuccessClientCount(rs.getInt("successClientCount"));             //成交量
-                            regionReportsVO.setFilterInClientCount(rs.getInt("filterInClientCount"));           //筛选中
-                            return regionReportsVO;
-                        }
-                    });
+                    regionReportsVO.setAllClientCount(rs.getInt("allClientCount"));                     //总客资
+                    regionReportsVO.setPendingClientCount(rs.getInt("pendingClientCount"));             //待定量
+                    regionReportsVO.setFilterPendingClientCount(rs.getInt("filterPendingClientCount")); //筛选待定量
+                    regionReportsVO.setValidClientCount(rs.getInt("validClientCount"));                 //有效量
+                    regionReportsVO.setInValidClientCount(rs.getInt("inValidClientCount"));             //无效量
+                    regionReportsVO.setFilterInValidClientCount(rs.getInt("filterInValidClientCount")); //筛选无效量
+                    regionReportsVO.setComeShopClientCount(rs.getInt("comeShopClientCount"));           //到店量
+                    regionReportsVO.setSuccessClientCount(rs.getInt("successClientCount"));             //成交量
+                    regionReportsVO.setFilterInClientCount(rs.getInt("filterInClientCount"));           //筛选中
+                    System.out.println(rs.getInt("allClientCount") + "," + rs.getInt("pendingClientCount") + "," +
+                            rs.getInt("filterPendingClientCount") + "," + rs.getInt("inValidClientCount") + "," +
+                            rs.getInt("inValidClientCount") + "," + rs.getInt("filterInValidClientCount") + "," +
+                            rs.getInt("comeShopClientCount") + "," + rs.getInt("successClientCount") + "," +
+                            rs.getInt("filterInClientCount"));
+                    System.out.println("本条记录： " + regionReportsVO);
+                    return regionReportsVO;
+                }
+            });
 
             if (now.isEmpty()) {
                 RegionReportsVO empty = new RegionReportsVO();
                 now.add(empty);
             }
 
-//            now.get(0).setDataType(zjsClientYearReportDTO.getDataType());
-//            now.get(0).setMonthName(String.valueOf((i+2)/2)+"月");
             now.get(0).setRegionName(String.valueOf((i + 2) / 2) + "月");
             resultContent.addAll(now);
         }
-        System.out.println(JSON.toJSONString(resultContent));
+        System.out.println("resultContent: " + JSON.toJSONString(resultContent));
         dTotal(resultContent);
         calculate(resultContent, dsInvalidVO);
 
@@ -202,23 +208,32 @@ public class ZjsKzOfYearDao {
     }
 
     /**
-     * 获取有效量 validClientCount sql 有效量 =  总客资-无效-筛选待定-筛选中-筛选无效-待定量
+     * 获取有效量 validClientCount sql 有效量 =  总客资-无效-筛选待定-筛选中-筛选无效-待定量?? 有效量应该是只要符合有效指标就算
      *
      * @param zjsClientYearReportDTO
      */
     private StringBuilder getValidClientSQL(ZjsClientYearReportDTO zjsClientYearReportDTO, DsInvalidVO dsInvalidVO) {
         StringBuilder sb = new StringBuilder();
-        sb.append("SELECT zkz.srcId,zkz.SRCIMG,zkz.SRCNAME,IFNULL(zkz.dataNum,0) - IFNULL(sxdd.dataNum,0) - IFNULL(sxz.dataNum,0) - IFNULL(sxwxl.dataNum,0) - IFNULL(ddl.dataNum,0) dataNum ")
-                .append(" FROM ")
-                .append("(" + getAllClientSQL(zjsClientYearReportDTO) + ") zkz , ")     //总客资
-                .append("(" + getInValidClientSQL(zjsClientYearReportDTO, dsInvalidVO) + ") wxl , ") //无效量
-                .append("(" + getFilterPendingClientCount(zjsClientYearReportDTO) + ") sxdd , ")     //筛选待定
-                .append("(" + getFilterInClientCount(zjsClientYearReportDTO) + ") sxz , ")   //筛选中
-                .append("(" + getFilterInValidClientCount(zjsClientYearReportDTO) + ") sxwxl , ")   //筛选无效量
-                .append("(" + getPendingClientCount(zjsClientYearReportDTO, dsInvalidVO) + ") ddl ");    //待定量
-
+        getBaseSQL(sb,zjsClientYearReportDTO)
+                .append(" AND info.CREATETIME BETWEEN ? AND ? ")
+                .append(" AND INSTR('"+dsInvalidVO.getZjsValidStatus()+"',CONCAT( ','+info.STATUSID + '', ','))>0 ")
+                .append(" GROUP BY info.SOURCEID");
         return sb;
     }
+//    private StringBuilder getValidClientSQL(ZjsClientYearReportDTO zjsClientYearReportDTO, DsInvalidVO dsInvalidVO) {
+//        StringBuilder sb = new StringBuilder();
+//        sb.append("SELECT zkz.srcId,zkz.SRCIMG,zkz.SRCNAME,IFNULL(zkz.dataNum,0) - IFNULL(wxl.dataNum,0) - IFNULL(sxdd.dataNum,0) - " +
+//                "IFNULL(sxz.dataNum,0) - IFNULL(sxwxl.dataNum,0) - IFNULL(ddl.dataNum,0) dataNum ")
+//                .append(" FROM ")
+//                .append("(" + getAllClientSQL(zjsClientYearReportDTO) + ") zkz , ")     //总客资
+//                .append("(" + getInValidClientSQL(zjsClientYearReportDTO, dsInvalidVO) + ") wxl , ") //无效量
+//                .append("(" + getFilterPendingClientCount(zjsClientYearReportDTO) + ") sxdd , ")     //筛选待定
+//                .append("(" + getFilterInClientCount(zjsClientYearReportDTO) + ") sxz , ")   //筛选中
+//                .append("(" + getFilterInValidClientCount(zjsClientYearReportDTO) + ") sxwxl , ")   //筛选无效量
+//                .append("(" + getPendingClientCount(zjsClientYearReportDTO, dsInvalidVO) + ") ddl ");    //待定量
+//
+//        return sb;
+//    }
 
     /**
      * 获取通用sql头部
@@ -229,13 +244,13 @@ public class ZjsKzOfYearDao {
     private StringBuilder getBaseSQL(StringBuilder sb, ZjsClientYearReportDTO zjsClientYearReportDTO) {
         String infoTabName = DBSplitUtil.getTable(TableEnum.info, zjsClientYearReportDTO.getCompanyId());
         String detailTabName = DBSplitUtil.getTable(TableEnum.detail, zjsClientYearReportDTO.getCompanyId());
-        sb.append(" SELECT info.SOURCEID srcId,src.SRCNAME ,src.SRCIMG , COUNT(1) dataNum ")
+        sb.append(" SELECT info.SOURCEID srcId,src.SRCNAME ,src.SRCIMG , COUNT(1) dataNum")
                 .append(" FROM " + infoTabName + " info")
                 .append(" INNER JOIN " + detailTabName + " detail ON info.KZID = detail.KZID AND info.COMPANYID = detail.COMPANYID ")
                 .append(" INNER JOIN hm_crm_source src ON src.ID = info.SOURCEID AND src.COMPANYID = info.COMPANYID")
                 .append(" WHERE info.ISDEL = 0 AND info.COMPANYID = " + zjsClientYearReportDTO.getCompanyId())
                 .append(" AND src.TYPEID IN (3,4,5) ");
-        if (StringUtil.isNotEmpty(zjsClientYearReportDTO.getSourceIds())&&!zjsClientYearReportDTO.getSourceIds().equals("0")) {
+        if (StringUtil.isNotEmpty(zjsClientYearReportDTO.getSourceIds()) && !zjsClientYearReportDTO.getSourceIds().equals("0")) {
             sb.append(" AND info.SOURCEID IN (" + zjsClientYearReportDTO.getSourceIds() + ") ");
         }
         return sb;
@@ -286,16 +301,19 @@ public class ZjsKzOfYearDao {
         StringBuilder inValidClientSQL = new StringBuilder();
         getBaseSQL(inValidClientSQL, zjsClientYearReportDTO);
         inValidClientSQL.append(" AND (info.CREATETIME BETWEEN ? AND ?) ");
-        if (StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidStatus()) && StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidLevel())) {
-            inValidClientSQL.append(" and (info.STATUSID in(" + dsInvalidVO.getDsInvalidStatus() + ") or");
-            inValidClientSQL.append("   detail.YXLEVEL IN(" + dsInvalidVO.getDsInvalidLevel() + ") )");
+        if (StringUtil.isNotEmpty(dsInvalidVO.getZjsValidStatus())){
+            inValidClientSQL.append(" AND INSTR('"+dsInvalidVO.getZjsValidStatus()+"',CONCAT( ','+info.STATUSID + '', ','))=0 ");
         }
-        if (StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidStatus()) && StringUtil.isEmpty(dsInvalidVO.getDsInvalidLevel())) {
-            inValidClientSQL.append(" and info.STATUSID in (" + dsInvalidVO.getDsInvalidStatus() + ")");
-        }
-        if (StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidLevel()) && StringUtil.isEmpty(dsInvalidVO.getDsInvalidStatus())) {
-            inValidClientSQL.append(" and detail.YXLEVEL IN(" + dsInvalidVO.getDsInvalidLevel() + ") ");
-        }
+//        if (StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidStatus()) && StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidLevel())) {
+//            inValidClientSQL.append(" and (info.STATUSID in(" + dsInvalidVO.getDsInvalidStatus() + ") or");
+//            inValidClientSQL.append("   detail.YXLEVEL IN(" + dsInvalidVO.getDsInvalidLevel() + ") )");
+//        }
+//        if (StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidStatus()) && StringUtil.isEmpty(dsInvalidVO.getDsInvalidLevel())) {
+//            inValidClientSQL.append(" and info.STATUSID in (" + dsInvalidVO.getDsInvalidStatus() + ") ");
+//        }
+//        if (StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidLevel()) && StringUtil.isEmpty(dsInvalidVO.getDsInvalidStatus())) {
+//            inValidClientSQL.append(" and detail.YXLEVEL IN(" + dsInvalidVO.getDsInvalidLevel() + ") ");
+//        }
         inValidClientSQL.append("GROUP BY info.SOURCEID");
         return inValidClientSQL;
     }
@@ -367,12 +385,7 @@ public class ZjsKzOfYearDao {
                         timeList.get(i), timeList.get(i + 1),
                         timeList.get(i), timeList.get(i + 1)};
             case "有效量":
-                return new Object[]{timeList.get(i), timeList.get(i + 1),
-                        timeList.get(i), timeList.get(i + 1),
-                        timeList.get(i), timeList.get(i + 1),
-                        timeList.get(i), timeList.get(i + 1),
-                        timeList.get(i), timeList.get(i + 1),
-                        timeList.get(i), timeList.get(i + 1), dsInvalidVO.getDsDdStatus()};
+                return new Object[]{timeList.get(i), timeList.get(i + 1)};
             case "入店量":
                 return new Object[]{timeList.get(i), timeList.get(++i)};
             case "成交量":
@@ -411,7 +424,7 @@ public class ZjsKzOfYearDao {
      * @return
      */
     public static List<ZjsClientYearReportVO2> transform(List<ZjsClientYearReportVO> vo1List) {
-        List<ZjsClientYearReportVO2> newlist = new ArrayList<>();
+        List<ZjsClientYearReportVO2> newlist = new LinkedList<>();
         Map<Integer, Integer> exist = new HashMap<>();   //key为srcId value为下标
         int count = 0;
 
@@ -448,7 +461,7 @@ public class ZjsKzOfYearDao {
         ZjsClientYearReportVO2 hTotal = new ZjsClientYearReportVO2();
         hTotal.setSrcName("合计");
         hTotal.setDataMap(new HashMap<String, Integer>());
-        list.add(0,hTotal);
+        list.add(0, hTotal);
         for (ZjsClientYearReportVO2 zcyr : list) {
             hTotal.setDataType(zcyr.getDataType());
             Map<String, Integer> map = zcyr.getDataMap();
@@ -464,10 +477,10 @@ public class ZjsKzOfYearDao {
             map.put("合计", total);
         }
 
-        for (String key:hTotal.getDataMap().keySet()){
+        for (String key : hTotal.getDataMap().keySet()) {
             if (key.equals("合计"))
                 continue;
-            hTotal.getDataMap().put("合计",hTotal.getDataMap().get(key)+hTotal.getDataMap().get("合计"));
+            hTotal.getDataMap().put("合计", hTotal.getDataMap().get(key) + hTotal.getDataMap().get("合计"));
         }
         return list;
     }
@@ -485,12 +498,15 @@ public class ZjsKzOfYearDao {
             total.setAllClientCount(zcyr.getAllClientCount() + total.getAllClientCount());
             total.setClientCount(zcyr.getClientCount() + total.getClientCount());
             total.setValidClientCount(zcyr.getValidClientCount() + total.getValidClientCount());
-            total.setPendingClientCount(zcyr.getPendingClientCount() + total.getPendingClientCount());
             total.setInValidClientCount(zcyr.getInValidClientCount() + total.getInValidClientCount());
             total.setComeShopClientCount(zcyr.getComeShopClientCount() + total.getComeShopClientCount());
             total.setSuccessClientCount(zcyr.getSuccessClientCount() + total.getSuccessClientCount());
+            total.setPendingClientCount(zcyr.getPendingClientCount() + total.getPendingClientCount());
+            total.setFilterInClientCount(zcyr.getFilterInClientCount() + total.getFilterInClientCount());
+            total.setFilterInValidClientCount(zcyr.getFilterInValidClientCount() + total.getFilterInValidClientCount());
+            total.setFilterPendingClientCount(zcyr.getFilterPendingClientCount() + total.getFilterPendingClientCount());
             total.setAmount(zcyr.getAmount() + total.getAmount());
-        }
+        }//客资量(总客资-筛选待定-筛选中-筛选无效)
         list.add(total);
         return list;
     }
@@ -508,12 +524,15 @@ public class ZjsKzOfYearDao {
         StringBuilder sql = new StringBuilder();
         //总客资  待定量 筛选待定 无效量 筛选无效量 入店量 成交量 成交均价 营业额
         sql.append("SELECT ")
-                .append("zkz.dataNum allClientCount , ddl.dataNum pendingClientCount , sxdd.dataNum filterPendingClientCount ,sxz.dataNum filterInClientCount , wxl.dataNum inValidClientCount , sxwxl.dataNum filterInValidClientCount , rdl.dataNum comeShopClientCount , cjl.dataNum successClientCount ")
+                .append("zkz.dataNum allClientCount , ddl.dataNum pendingClientCount , sxdd.dataNum filterPendingClientCount ,yxl.dataNum validClientCount ," +
+                        "sxz.dataNum filterInClientCount , wxl.dataNum inValidClientCount , sxwxl.dataNum filterInValidClientCount  , " +
+                        "rdl.dataNum comeShopClientCount  , cjl.dataNum successClientCount  ")
                 .append(" FROM ")
                 .append("(" + getAllClientSQL(zjsClientYearReportDTO) + ") zkz ,") //总客资
                 .append("(" + getPendingClientCount(zjsClientYearReportDTO, dsInvalidVO) + ") ddl ,") //待定量
                 .append("(" + getFilterPendingClientCount(zjsClientYearReportDTO) + ") sxdd ,") //筛选待定
                 .append("(" + getFilterInClientCount(zjsClientYearReportDTO) + ") sxz ,") //筛选中
+                .append("(" + getValidClientSQL(zjsClientYearReportDTO, dsInvalidVO) +")yxl ,")     //有效量
                 .append("(" + getInValidClientSQL(zjsClientYearReportDTO, dsInvalidVO) + ") wxl ,") //无效量
                 .append("(" + getFilterInValidClientCount(zjsClientYearReportDTO) + ") sxwxl ,")   //筛选无效量
                 .append("(" + getComeShopClientSQL(zjsClientYearReportDTO) + ") rdl ,") //入店量
@@ -566,11 +585,11 @@ public class ZjsKzOfYearDao {
     private void calculate(List<RegionReportsVO> list, DsInvalidVO invalidConfig) {
         for (RegionReportsVO rrv : list) {
             //有效量(总客资-无效量-筛选中-筛选无效-筛选待定)
-            if (invalidConfig.getDdIsValid()) {
-                rrv.setValidClientCount(rrv.getAllClientCount() - rrv.getInValidClientCount() - rrv.getFilterInClientCount() - rrv.getFilterInValidClientCount() - rrv.getFilterPendingClientCount());
-            } else {
-                rrv.setValidClientCount(rrv.getAllClientCount() - rrv.getPendingClientCount() - rrv.getInValidClientCount() - rrv.getFilterInClientCount() - rrv.getFilterInValidClientCount() - rrv.getFilterPendingClientCount());
-            }
+//            if (invalidConfig.getDdIsValid()) {
+//                rrv.setValidClientCount(rrv.getAllClientCount() - rrv.getInValidClientCount() - rrv.getFilterInClientCount() - rrv.getFilterInValidClientCount() - rrv.getFilterPendingClientCount());
+//            } else {// 有效量(总客资-无效量-筛选中-筛选无效-筛选待定-待定量)
+//                rrv.setValidClientCount(rrv.getAllClientCount() - rrv.getInValidClientCount() - rrv.getFilterInClientCount() - rrv.getFilterPendingClientCount() - rrv.getFilterInValidClientCount() - rrv.getPendingClientCount());
+//            }
             //客资量(总客资-筛选待定-筛选中-筛选无效)
             rrv.setClientCount(rrv.getAllClientCount() - rrv.getFilterPendingClientCount() - rrv.getFilterInValidClientCount() - rrv.getFilterInClientCount());
 
@@ -586,13 +605,13 @@ public class ZjsKzOfYearDao {
      * @param rrv
      */
     private void everyRate(RegionReportsVO rrv) {
-        //有效率
+        //有效率 (有效量 / 客资量)
         double validRate = (double) rrv.getValidClientCount() / rrv.getClientCount();
         rrv.setValidRate(parseDouble(((Double.isNaN(validRate) || Double.isInfinite(validRate)) ? 0.0 : validRate) * 100));
-        //毛客资入店率
-        double clientComeShopRate = (double) rrv.getComeShopClientCount() / rrv.getClientCount();
+        //毛客资入店率 (入店量 / 总客资)
+        double clientComeShopRate = (double) rrv.getComeShopClientCount() / rrv.getAllClientCount();
         rrv.setClientComeShopRate(parseDouble(((Double.isNaN(clientComeShopRate) || Double.isInfinite(clientComeShopRate)) ? 0.0 : clientComeShopRate) * 100));
-        //入店成交率
+        //入店成交率（成交量/入店量）
         double comeShopSuccessRate = (double) rrv.getSuccessClientCount() / rrv.getComeShopClientCount();
         rrv.setComeShopSuccessRate(parseDouble(((Double.isNaN(comeShopSuccessRate) || Double.isInfinite(comeShopSuccessRate)) ? 0.0 : comeShopSuccessRate) * 100));
     }

@@ -418,6 +418,9 @@
 
     <select id="findSourseByType" resultMap="baseMap">
         select SRCIMG,SRCNAME,ID FROM hm_crm_source where companyId=#{companyId} and typeid=#{typeId}
+        <if test="sourceIds!=null and sourceIds!=''">
+            and ID IN (${sourceIds})
+        </if>
     </select>
 
 </mapper>

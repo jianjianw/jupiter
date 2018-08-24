@@ -53,6 +53,8 @@ public class GoldDataServiceImpl implements GoldDataService {
     private DictionaryDao dictionaryDao;
     @Autowired
     private ClientLogDao clientLogDao;
+    @Autowired
+    private ClientBlackListDao clientBlackListDao;
 
     /**
      * 添加表单
@@ -168,7 +170,20 @@ public class GoldDataServiceImpl implements GoldDataService {
 //        }
         String kzName = StringUtil.nullToStrTrim(entry.getString(goldFingerPO.getKzNameField()));
         String weChat = StringUtil.nullToStrTrim(entry.getString(goldFingerPO.getKzWechatField()));
+        List<BlackListPO> list=clientBlackListDao.checkBlackList(goldFingerPO.getCompanyId(),kzPhone,null,null,weChat);
+        if(!list.isEmpty()){
+            String ids=CommonConstant.NULL_STR;
+            for(BlackListPO blackListPO:list){
+                ids+=blackListPO.getId()+CommonConstant.STR_SEPARATOR;
+            }
+            ids=ids.substring(0,ids.lastIndexOf(CommonConstant.STR_SEPARATOR));
+            clientBlackListDao.addCount(ids);
+            throw new RException(ExceptionEnum.KZ_IN_BLACK_LIST);
+
+        }
         String address = MobileLocationUtil.getPhoneLocation(kzPhone);
+        String oldKzName = StringUtil.nullToStrTrim(entry.getString(goldFingerPO.getOldKzName()));
+        String oldKzPhone = StringUtil.nullToStrTrim(entry.getString(goldFingerPO.getOldKzPhone()));
         //获取字段值
         String[] fieldKeys = StringUtil.isNotEmpty(goldFingerPO.getFieldKey()) ? goldFingerPO.getFieldKey().split(CommonConstant.STR_SEPARATOR) : new String[]{};
         String[] fieldValues = StringUtil.isNotEmpty(goldFingerPO.getFieldValue()) ? goldFingerPO.getFieldValue().split(CommonConstant.STR_SEPARATOR) : new String[]{};
@@ -240,6 +255,8 @@ public class GoldDataServiceImpl implements GoldDataService {
         reqContent.put("collectorname", goldFingerPO.getCreateorName());
         reqContent.put("address", address);
         reqContent.put("remark", sb.toString());
+        reqContent.put("oldkzname",oldKzName);
+        reqContent.put("oldkzphone",oldKzPhone);
 
 
         //插入记录
@@ -301,11 +318,10 @@ public class GoldDataServiceImpl implements GoldDataService {
             clientLogPO.setLogType(ClientConst.ALLOT_LOG_STATUS_YES);
             clientLogPO.setMemo("金数据录入");
             clientLogPO.setKzId(kzId);
-            clientLogPO.setOperaId(goldFingerPO.getStaffId());
-            StaffPO staffPO = staffDao.getByIdAndCid(goldFingerPO.getStaffId(), goldFingerPO.getCompanyId());
+            clientLogPO.setOperaId(goldFingerPO.getCreateorId());
+            StaffPO staffPO = staffDao.getByIdAndCid(goldFingerPO.getCreateorId(), goldFingerPO.getCompanyId());
             clientLogPO.setOperaName(staffPO.getNickName());
             clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(goldFingerPO.getCompanyId()),clientLogPO);
-
         } else if ("130019".equals(jsInfo.getString("code"))) {
             goldTempPO.setStatusId(GoldDataConst.REPEATED_SCREEN);
             goldTempDao.update(goldTempPO);

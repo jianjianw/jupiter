@@ -35,6 +35,15 @@
         update hm_crm_client_blacklist set KZNAME=#{kzName} , KZPHONE=#{kzPhone} , MEMO=#{memo} where id=#{id}
     </update>
     <select id="getByPhone" resultMap="baseMap">
-        select <include refid="forList"/> from hm_crm_client_blacklist where companyId=#{companyId} and phone=#{phone}
+        select <include refid="forList"/> from hm_crm_client_blacklist where companyId=#{companyId} and KZPHONE=#{phone}
     </select>
+
+    <select id="checkBlackList"  resultMap="baseMap">
+        select <include refid="forList"/> from hm_crm_client_blacklist where companyId=#{companyId} and (KZPHONE=#{kzPhone} or KZPHONE=#{kzWw}  or KZPHONE=#{kzQq}  or KZPHONE=#{kzWeChat} )
+    </select>
+
+    <update id="addCount">
+        update hm_crm_client_blacklist set COUNT=COUNT+1 where id in (${ids})
+    </update>
+
 </mapper>

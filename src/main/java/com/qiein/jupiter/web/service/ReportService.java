@@ -45,7 +45,7 @@ public interface ReportService {
      * @param companyId
      * @return
      */
-    List<DstgGoldDataReportsVO> getDstgAdReports(Integer start, Integer end, Integer companyId, String type);
+    PageInfo getDstgAdReports(Integer start, Integer end, Integer companyId, String type,Integer page);
 
     /**
      * 电商推广咨询信息方式报表

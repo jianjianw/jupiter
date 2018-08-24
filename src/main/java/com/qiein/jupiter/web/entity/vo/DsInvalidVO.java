@@ -29,6 +29,10 @@ public class DsInvalidVO implements Serializable {
      * 电商待定状态
      */
     private String dsDdStatus;
+    /**
+     * 转介绍有效状态
+     */
+    private String zjsValidStatus;
 
     public String getDsInvalidStatus() {
         return dsInvalidStatus;
@@ -60,5 +64,13 @@ public class DsInvalidVO implements Serializable {
 
     public void setDsDdStatus(String dsDdStatus) {
         this.dsDdStatus = dsDdStatus;
+    }
+
+    public String getZjsValidStatus() {
+        return zjsValidStatus;
+    }
+
+    public void setZjsValidStatus(String zjsValidStatus) {
+        this.zjsValidStatus = zjsValidStatus;
     }
 }

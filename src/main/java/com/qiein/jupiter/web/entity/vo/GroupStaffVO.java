@@ -56,6 +56,11 @@ public class GroupStaffVO implements Serializable {
 	 */
 	private List<GroupStaffVO> groupList;
 
+	/**
+	 * 排序
+	 */
+	private int priority;
+
 
 	public Integer getShopId() {
 		return shopId;
@@ -143,5 +148,13 @@ public class GroupStaffVO implements Serializable {
 
 	public void setGroupList(List<GroupStaffVO> groupList) {
 		this.groupList = groupList;
+	}
+
+	public int getPriority() {
+		return priority;
+	}
+
+	public void setPriority(int priority) {
+		this.priority = priority;
 	}
 }

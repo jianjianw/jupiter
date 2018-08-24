@@ -26,7 +26,9 @@
         <result column="AREALIMIT" jdbcType="BIT" property="areaLimit"/>
         <result column="ISFILTER" jdbcType="BIT" property="isFilter"/>
         <result column="PUSHNEWS" jdbcType="BIT" property="pushNews"/>
-        <result column="COMPANYID" jdbcType="INTEGER" property="companyId"></result>
+        <result column="COMPANYID" jdbcType="INTEGER" property="companyId"/>
+        <result column="OLDKZNAME" jdbcType="VARCHAR" property="oldKzName"/>
+        <result column="OLDKZPHONE" jdbcType="VARCHAR" property="oldKzPhone"/>
     </resultMap>
     <resultMap id="goldCustomer" type="com.qiein.jupiter.web.entity.vo.GoldCustomerVO">
         <id column="ID" jdbcType="INTEGER" property="id"/>
@@ -54,13 +56,13 @@
         ID, FORMID, FORMNAME, SRCNAME, TYPENAME, MEMO, FROM_UNIXTIME(CREATETIME, '%Y/%m/%d %H:%i') createTime, KZNAME, KZPHONE, WECHAT, ADDRESS, REMARK, IP, IPADDRESS, STATUSID
     </sql>
     <sql id="formInsert">
-        FORMID, FORMNAME, KZNAMEFIELD, KZPHONEFIELD, KZWECHATFIELD, FIELDKEY, FIELDVALUE, SRCID, SRCNAME, TYPEID, TYPENAME, ADID, ADADDRESS, ZXSTYLE, MEMO, ISSHOW, POSTURL, CREATEORID, CREATEORNAME, CREATETIME, COMPANYID, ISFILTER, PUSHNEWS
+        OLDKZNAME,OLDKZPHONE,FORMID, FORMNAME, KZNAMEFIELD, KZPHONEFIELD, KZWECHATFIELD, FIELDKEY, FIELDVALUE, SRCID, SRCNAME, TYPEID, TYPENAME, ADID, ADADDRESS, ZXSTYLE, MEMO, ISSHOW, POSTURL, CREATEORID, CREATEORNAME, CREATETIME, COMPANYID, ISFILTER, PUSHNEWS
     </sql>
     <sql id="formList">
-        ID, FORMID, FORMNAME, KZNAMEFIELD, KZPHONEFIELD, KZWECHATFIELD, FIELDKEY, FIELDVALUE, SRCID, SRCNAME, TYPEID, TYPENAME, ADID, ADADDRESS, ZXSTYLE, MEMO, ISSHOW, POSTURL, CREATEORID, CREATEORNAME, FROM_UNIXTIME(CREATETIME, '%Y/%m/%d %H:%i') createTime, AREALIMIT, ISFILTER, PUSHNEWS, COMPANYID
+        OLDKZNAME,OLDKZPHONE,ID, FORMID, FORMNAME, KZNAMEFIELD, KZPHONEFIELD, KZWECHATFIELD, FIELDKEY, FIELDVALUE, SRCID, SRCNAME, TYPEID, TYPENAME, ADID, ADADDRESS, ZXSTYLE, MEMO, ISSHOW, POSTURL, CREATEORID, CREATEORNAME, FROM_UNIXTIME(CREATETIME, '%Y/%m/%d %H:%i') createTime, AREALIMIT, ISFILTER, PUSHNEWS, COMPANYID
     </sql>
     <sql id="formUpdate">
-        FORMID=#{formId}, FORMNAME=#{formName}, KZNAMEFIELD=#{kzNameField}, KZPHONEFIELD=#{kzPhoneField}, KZWECHATFIELD=#{kzWechatField}, FIELDKEY=#{fieldKey}, FIELDVALUE=#{fieldValue}, SRCID=#{srcId}, SRCNAME=#{srcName}, TYPEID=#{typeId}, TYPENAME=#{typeName}, ADID=#{adId}, ADADDRESS=#{adAddress}, ZXSTYLE=#{zxStyle}, MEMO=#{memo}, POSTURL=#{postURL}, ISSHOW=#{isShow}, AREALIMIT=#{areaLimit}, ISFILTER=#{isFilter}, PUSHNEWS=#{pushNews}
+        OLDKZNAME=#{oldKzName},OLDKZPHONE=#{oldKzPhone},FORMID=#{formId}, FORMNAME=#{formName}, KZNAMEFIELD=#{kzNameField}, KZPHONEFIELD=#{kzPhoneField}, KZWECHATFIELD=#{kzWechatField}, FIELDKEY=#{fieldKey}, FIELDVALUE=#{fieldValue}, SRCID=#{srcId}, SRCNAME=#{srcName}, TYPEID=#{typeId}, TYPENAME=#{typeName}, ADID=#{adId}, ADADDRESS=#{adAddress}, ZXSTYLE=#{zxStyle}, MEMO=#{memo}, POSTURL=#{postURL}, ISSHOW=#{isShow}, AREALIMIT=#{areaLimit}, ISFILTER=#{isFilter}, PUSHNEWS=#{pushNews}
     </sql>
     <insert id="insert">
         INSERT INTO hm_crm_gold_plug_setting (
@@ -68,6 +70,8 @@
         )
         VALUES
         (
+        #{oldKzName},
+        #{oldKzPhone},
         #{formId},
         #{formName},
         #{kzNameField},

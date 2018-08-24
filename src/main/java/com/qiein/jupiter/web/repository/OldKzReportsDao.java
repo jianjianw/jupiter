@@ -27,16 +27,16 @@ public class OldKzReportsDao {
         String tableInfo = DBSplitUtil.getTable(TableEnum.info, companyId);
         String tableDetail = DBSplitUtil.getTable(TableEnum.detail, companyId);
         List<OldKzReportsVO> oldKzReportsVOS = new ArrayList<>();
-        getAllClientCount(startTime, endTime, oldKzReportsVOS, kzNameOrPhone, tableInfo, tableDetail);
-        getPendingClientCount(startTime, endTime, oldKzReportsVOS, kzNameOrPhone, tableInfo, tableDetail, dsInvalidVO);
-        getComeShopClient(startTime, endTime, oldKzReportsVOS, kzNameOrPhone, tableInfo, tableDetail);
-        getSuccessClient(startTime, endTime, oldKzReportsVOS, kzNameOrPhone, tableInfo, tableDetail);
-        getFilterWaitClientCount(startTime, endTime, oldKzReportsVOS, kzNameOrPhone, tableInfo, tableDetail);
-        getFilterInValidClientCount(startTime, endTime, oldKzReportsVOS, kzNameOrPhone, tableInfo, tableDetail);
-        getFilterInClientCount(startTime, endTime, oldKzReportsVOS, kzNameOrPhone, tableInfo, tableDetail);
-        getInValidClientCount(startTime, endTime, oldKzReportsVOS, kzNameOrPhone, tableInfo, tableDetail, dsInvalidVO);
-        getAvgAmount(startTime, endTime, oldKzReportsVOS, kzNameOrPhone, tableInfo, tableDetail);
-        getAmount(startTime, endTime, oldKzReportsVOS, kzNameOrPhone, tableInfo, tableDetail);
+        getAllClientCount(startTime, endTime, oldKzReportsVOS, kzNameOrPhone, tableInfo, tableDetail, companyId);
+        getPendingClientCount(startTime, endTime, oldKzReportsVOS, kzNameOrPhone, tableInfo, tableDetail, dsInvalidVO, companyId);
+        getComeShopClient(startTime, endTime, oldKzReportsVOS, kzNameOrPhone, tableInfo, tableDetail, companyId);
+        getSuccessClient(startTime, endTime, oldKzReportsVOS, kzNameOrPhone, tableInfo, tableDetail, companyId);
+        getFilterWaitClientCount(startTime, endTime, oldKzReportsVOS, kzNameOrPhone, tableInfo, tableDetail, companyId);
+        getFilterInValidClientCount(startTime, endTime, oldKzReportsVOS, kzNameOrPhone, tableInfo, tableDetail, companyId);
+        getFilterInClientCount(startTime, endTime, oldKzReportsVOS, kzNameOrPhone, tableInfo, tableDetail, companyId);
+        getInValidClientCount(startTime, endTime, oldKzReportsVOS, kzNameOrPhone, tableInfo, tableDetail, dsInvalidVO, companyId);
+        getAvgAmount(startTime, endTime, oldKzReportsVOS, kzNameOrPhone, tableInfo, tableDetail, companyId);
+        getAmount(startTime, endTime, oldKzReportsVOS, kzNameOrPhone, tableInfo, tableDetail, companyId);
         computerRate(oldKzReportsVOS, dsInvalidVO);
         computerTotal(oldKzReportsVOS);
         return oldKzReportsVOS;
@@ -45,9 +45,9 @@ public class OldKzReportsDao {
     /**
      * 总客资
      */
-    private void getAllClientCount(String startTime, String endTime, List<OldKzReportsVO> oldKzReportsVOS, String kzNameOrPhone, String tableInfo, String tableDetail) {
+    private void getAllClientCount(String startTime, String endTime, List<OldKzReportsVO> oldKzReportsVOS, String kzNameOrPhone, String tableInfo, String tableDetail,Integer companyId) {
         StringBuilder sql = new StringBuilder();
-        getBaseSql(sql, tableInfo, tableDetail);
+        getBaseSql(sql, tableInfo, tableDetail,companyId);
         sql.append(" and info.createtime between ? and ?");
         sql.append(" GROUP BY detail.OLDKZPHONE,detail.oldkzname  ");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{kzNameOrPhone, kzNameOrPhone,startTime, endTime});
@@ -63,9 +63,9 @@ public class OldKzReportsDao {
     /**
      * 待定量
      */
-    private void getPendingClientCount(String startTime, String endTime, List<OldKzReportsVO> oldKzReportsVOS, String kzNameOrPhone, String tableInfo, String tableDetail, DsInvalidVO dsInvalidVO) {
+    private void getPendingClientCount(String startTime, String endTime, List<OldKzReportsVO> oldKzReportsVOS, String kzNameOrPhone, String tableInfo, String tableDetail, DsInvalidVO dsInvalidVO,Integer companyId) {
         StringBuilder sql = new StringBuilder();
-        getBaseSql(sql, tableInfo, tableDetail);
+        getBaseSql(sql, tableInfo, tableDetail,companyId);
         sql.append(" and info.createtime between ? and ?");
         sql.append(" and INSTR( '" + dsInvalidVO.getDsDdStatus() + "', CONCAT(',',info.STATUSID + '',',')) != 0");
         sql.append(" GROUP BY detail.OLDKZPHONE,detail.oldkzname  ");
@@ -99,9 +99,9 @@ public class OldKzReportsDao {
     /**
      * 入店量
      */
-    private void getComeShopClient(String startTime, String endTime, List<OldKzReportsVO> oldKzReportsVOS, String kzNameOrPhone, String tableInfo, String tableDetail) {
+    private void getComeShopClient(String startTime, String endTime, List<OldKzReportsVO> oldKzReportsVOS, String kzNameOrPhone, String tableInfo, String tableDetail,Integer companyId) {
         StringBuilder sql = new StringBuilder();
-        getBaseSql(sql, tableInfo, tableDetail);
+        getBaseSql(sql, tableInfo, tableDetail,companyId);
         sql.append(" and info.ComeShopTime between ? and ?");
        sql.append(" GROUP BY detail.OLDKZPHONE,detail.oldkzname  ");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{kzNameOrPhone, kzNameOrPhone,startTime, endTime});
@@ -134,9 +134,9 @@ public class OldKzReportsDao {
     /**
      * 成交量
      */
-    private void getSuccessClient(String startTime, String endTime, List<OldKzReportsVO> oldKzReportsVOS, String kzNameOrPhone, String tableInfo, String tableDetail) {
+    private void getSuccessClient(String startTime, String endTime, List<OldKzReportsVO> oldKzReportsVOS, String kzNameOrPhone, String tableInfo, String tableDetail,Integer companyId) {
         StringBuilder sql = new StringBuilder();
-        getBaseSql(sql, tableInfo, tableDetail);
+        getBaseSql(sql, tableInfo, tableDetail,companyId);
         sql.append(" and info.SuccessTime between ? and ?");
         sql.append(" GROUP BY detail.OLDKZPHONE,detail.oldkzname  ");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{kzNameOrPhone, kzNameOrPhone,startTime, endTime});
@@ -170,11 +170,11 @@ public class OldKzReportsDao {
     /**
      * 筛选待定
      */
-    private void getFilterWaitClientCount(String startTime, String endTime, List<OldKzReportsVO> oldKzReportsVOS, String kzNameOrPhone, String tableInfo, String tableDetail) {
+    private void getFilterWaitClientCount(String startTime, String endTime, List<OldKzReportsVO> oldKzReportsVOS, String kzNameOrPhone, String tableInfo, String tableDetail,Integer companyId) {
         StringBuilder sql = new StringBuilder();
-        getBaseSql(sql, tableInfo, tableDetail);
+        getBaseSql(sql, tableInfo, tableDetail,companyId);
         sql.append(" and info.createtime between ? and ?");
-        sql.append("  and info.CLASSID = 1 and info.STATUSID = 98 ");
+        sql.append("   and info.STATUSID = 98 ");
         sql.append(" GROUP BY detail.OLDKZPHONE,detail.oldkzname  ");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{kzNameOrPhone, kzNameOrPhone,startTime, endTime});
         List<OldKzReportsVO> oldKzReportsBak = new LinkedList<>();
@@ -206,11 +206,11 @@ public class OldKzReportsDao {
     /**
      * 筛选无效
      */
-    private void getFilterInValidClientCount(String startTime, String endTime, List<OldKzReportsVO> oldKzReportsVOS, String kzNameOrPhone, String tableInfo, String tableDetail) {
+    private void getFilterInValidClientCount(String startTime, String endTime, List<OldKzReportsVO> oldKzReportsVOS, String kzNameOrPhone, String tableInfo, String tableDetail,Integer companyId) {
         StringBuilder sql = new StringBuilder();
-        getBaseSql(sql, tableInfo, tableDetail);
+        getBaseSql(sql, tableInfo, tableDetail,companyId);
         sql.append(" and info.createtime between ? and ?");
-        sql.append(" and info.CLASSID = 6 and info.STATUSID = 99 ");
+        sql.append("  and info.STATUSID = 99 ");
         sql.append(" GROUP BY detail.OLDKZPHONE,detail.oldkzname  ");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{kzNameOrPhone, kzNameOrPhone,startTime, endTime});
         List<OldKzReportsVO> oldKzReportsBak = new LinkedList<>();
@@ -242,11 +242,11 @@ public class OldKzReportsDao {
     /**
      * 筛选中
      */
-    private void getFilterInClientCount(String startTime, String endTime, List<OldKzReportsVO> oldKzReportsVOS, String kzNameOrPhone, String tableInfo, String tableDetail) {
+    private void getFilterInClientCount(String startTime, String endTime, List<OldKzReportsVO> oldKzReportsVOS, String kzNameOrPhone, String tableInfo, String tableDetail,Integer companyId) {
         StringBuilder sql = new StringBuilder();
-        getBaseSql(sql, tableInfo, tableDetail);
+        getBaseSql(sql, tableInfo, tableDetail,companyId);
         sql.append(" and info.createtime between ? and ?");
-        sql.append(" and info.CLASSID = 1 and info.STATUSID = 0 ");
+        sql.append("  and info.STATUSID = 0 ");
         sql.append(" GROUP BY detail.OLDKZPHONE,detail.oldkzname  ");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{kzNameOrPhone, kzNameOrPhone,startTime, endTime});
         List<OldKzReportsVO> oldKzReportsBak = new LinkedList<>();
@@ -278,9 +278,9 @@ public class OldKzReportsDao {
     /**
      * 无效
      */
-    private void getInValidClientCount(String startTime, String endTime, List<OldKzReportsVO> oldKzReportsVOS, String kzNameOrPhone, String tableInfo, String tableDetail, DsInvalidVO dsInvalidVO) {
+    private void getInValidClientCount(String startTime, String endTime, List<OldKzReportsVO> oldKzReportsVOS, String kzNameOrPhone, String tableInfo, String tableDetail, DsInvalidVO dsInvalidVO,Integer companyId) {
         StringBuilder sql = new StringBuilder();
-        getBaseSql(sql, tableInfo, tableDetail);
+        getBaseSql(sql, tableInfo, tableDetail,companyId);
         sql.append(" and info.createtime between ? and ?");
         if (StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidStatus()) && StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidLevel())) {
             sql.append(" and (info.STATUSID in(" + dsInvalidVO.getDsInvalidStatus() + ") or");
@@ -323,7 +323,7 @@ public class OldKzReportsDao {
     /**
      * 成交均价
      */
-    private void getAvgAmount(String startTime, String endTime, List<OldKzReportsVO> oldKzReportsVOS, String kzNameOrPhone, String tableInfo, String tableDetail) {
+    private void getAvgAmount(String startTime, String endTime, List<OldKzReportsVO> oldKzReportsVOS, String kzNameOrPhone, String tableInfo, String tableDetail,Integer companyId) {
         StringBuilder sql = new StringBuilder();
         sql.append(" SELECT detail.OLDKZNAME oldKzName,detail.OLDKZPHONE oldKzPhone, AVG( detail.AMOUNT) avg_amount ");
         sql.append("FROM ");
@@ -357,7 +357,7 @@ public class OldKzReportsDao {
     /**
      * 成交总价
      */
-    private void getAmount(String startTime, String endTime, List<OldKzReportsVO> oldKzReportsVOS, String kzNameOrPhone, String tableInfo, String tableDetail) {
+    private void getAmount(String startTime, String endTime, List<OldKzReportsVO> oldKzReportsVOS, String kzNameOrPhone, String tableInfo, String tableDetail,Integer companyId) {
         StringBuilder sql = new StringBuilder();
         sql.append(" SELECT detail.OLDKZNAME oldKzName,detail.OLDKZPHONE oldKzPhone, sum(detail.AMOUNT) as sum_amount ");
         sql.append("FROM ");
@@ -403,7 +403,7 @@ public class OldKzReportsDao {
      * @param tableInfo
      * @param tableDetail
      */
-    private void getBaseSql(StringBuilder sql, String tableInfo, String tableDetail) {
+    private void getBaseSql(StringBuilder sql, String tableInfo, String tableDetail,Integer companyId) {
         sql.append("SELECT ");
         sql.append("count(info.KZID) count ,OLDKZPHONE oldKzPhone,OLDKZNAME oldKzName  ");
         sql.append("FROM ");
@@ -412,6 +412,7 @@ public class OldKzReportsDao {
         sql.append("where (detail.OLDKZNAME  is not null  or detail.OLDKZPHONE is not null)");
         sql.append(" and info.isdel = 0");
         sql.append(" and detail.OLDKZNAME!=''");
+        sql.append(" and info.companyid="+companyId);
         sql.append(" and (detail.oldKzName like concat('%',?,'%') or detail.oldKzPhone like concat('%',?,'%'))");
     }
 

@@ -44,6 +44,7 @@ public class ClientLogConst {
     public static final String CONTINUOUS_SABOTEUR_DONW = "连续怠工三次自动下线ಥ﹏ಥ";
     public static final String LIMITDAY_OVERFLOW = "今日领取客资数达到最大限额";
     public static final String INFO_LOG_CALL_PHONE = "已拨打客资电话";
+    public static final String INFO_LOG_EXCEL_IMPORT = "Excel导入客资";
 
 
     /**

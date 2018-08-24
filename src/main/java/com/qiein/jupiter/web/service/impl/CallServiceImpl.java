@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -44,7 +45,10 @@ public class CallServiceImpl implements CallService {
 
 
     @Override
-    public void startBack2BackCall(String kzId,String caller, String callee, StaffPO staffPO) {
+    public void startBack2BackCall(String kzId,String caller, String callee, StaffPO staffPO,Integer callId) {
+        if(NumUtil.isInValid(callId)){
+            throw new RException(ExceptionEnum.CALL_ID_IS_NULL);
+        }
         if(StringUtil.isEmpty(kzId)){
             throw new RException(ExceptionEnum.KZ_ID_IS_NULL);
         }
@@ -70,9 +74,10 @@ public class CallServiceImpl implements CallService {
         //Appollo接口获取intsanceId
         String instaceJson = HttpClient
                 // 请求方式和请求url
-                .get(appoloBaseUrl.concat(AppolloUrlConst.GET_CALL_INSTANCE))
+                .get(appoloBaseUrl.concat(AppolloUrlConst.GET_CALL_INSTANCE_BY_ID))
                 // post提交json
                 .queryString("companyId", staffPO.getCompanyId())
+                .queryString("callId",callId)
                 .queryString("sign", sign)
                 .asString();
         CallPO callPO = JSONObject.parseObject(JSONObject.parseObject(instaceJson).get("data").toString(), CallPO.class);
@@ -126,7 +131,7 @@ public class CallServiceImpl implements CallService {
         if(NumUtil.isInValid(callCustomerPO.getStaffId())){
             throw new RException(ExceptionEnum.STAFF_ID_NULL);
         }
-        CallCustomerPO callCustomer = callCustomerDao.getCallCustomerByStaffIdAndCompanyId(staffPO.getId(), staffPO.getCompanyId());
+        CallCustomerPO callCustomer = callCustomerDao.getCallCustomerByStaffIdAndCompanyId(callCustomerPO.getStaffId(), staffPO.getCompanyId());
         if(null != callCustomer){
             throw new RException(ExceptionEnum.CALL_CONSUMER_IS_EXISTS);
         }
@@ -142,6 +147,9 @@ public class CallServiceImpl implements CallService {
 
     @Override
     public void editCustomer(StaffPO staffPO, CallCustomerPO callCustomerPO) {
+        if(NumUtil.isInValid(callCustomerPO.getStaffId())){
+            throw new RException(ExceptionEnum.STAFF_ID_NULL);
+        }
         if(NumUtil.isInValid(callCustomerPO.getId())){
             throw new RException(ExceptionEnum.CALL_CONSUMER_ID_IS_NULL);
         }
@@ -151,7 +159,9 @@ public class CallServiceImpl implements CallService {
         if(StringUtil.isEmpty(callCustomerPO.getPhone())){
             throw new RException(ExceptionEnum.CALL_CONSUMER_PHONE_IS_NULL);
         }
-        callCustomerPO.setStaffId(staffPO.getId());
+        StaffPO staff = staffDao.getByIdAndCid(callCustomerPO.getStaffId(), staffPO.getCompanyId());
+        callCustomerPO.setStaffId(callCustomerPO.getStaffId());
+        callCustomerPO.setNickName(staff.getNickName());
         callCustomerPO.setCompanyId(staffPO.getCompanyId());
         callCustomerDao.update(callCustomerPO);
     }
@@ -163,22 +173,27 @@ public class CallServiceImpl implements CallService {
     }
 
     @Override
-    public CallPO instanceList(StaffPO staffPO) {
+    public List<CallPO> instanceList(StaffPO staffPO) {
         String sign = MD5Util.getApolloMd5(String.valueOf(staffPO.getCompanyId()));
         //Appollo接口获取用户信息
-        String usreJson = HttpClient
+        String instaceJson = HttpClient
                 // 请求方式和请求url
-                .get(appoloBaseUrl.concat(AppolloUrlConst.GET_CALL_USER))
+                .get(appoloBaseUrl.concat(AppolloUrlConst.GET_CALL_INSTANCE))
                 // post提交json
                 .queryString("companyId", staffPO.getCompanyId())
                 .queryString("sign", sign)
                 .asString();
         //TODO 此处list
-        return null;
+        System.out.println(JSONObject.parseObject(instaceJson));
+        List<CallPO> callPOS = JSONObject.parseArray(JSONObject.parseObject(instaceJson).get("data").toString(), CallPO.class);
+        return callPOS;
     }
 
     @Override
-    public JSONObject getRecording(String caller,StaffPO staffPO,Integer page,Integer pageSize) {
+    public JSONObject getRecording(String caller,StaffPO staffPO,Integer page,Integer pageSize,Integer callId,Integer startTime) {
+        if(NumUtil.isInValid(callId)){
+            throw new RException(ExceptionEnum.CALL_ID_IS_NULL);
+        }
         String sign = MD5Util.getApolloMd5(String.valueOf(staffPO.getCompanyId()));
         //Appollo接口获取用户信息
         String usreJson = HttpClient
@@ -192,8 +207,9 @@ public class CallServiceImpl implements CallService {
         //Appollo接口获取intsanceId
         String instaceJson = HttpClient
                 // 请求方式和请求url
-                .get(appoloBaseUrl.concat(AppolloUrlConst.GET_CALL_INSTANCE))
+                .get(appoloBaseUrl.concat(AppolloUrlConst.GET_CALL_INSTANCE_BY_ID))
                 // post提交json
+                .queryString("callId",callId)
                 .queryString("companyId", staffPO.getCompanyId())
                 .queryString("sign", sign)
                 .asString();
@@ -209,16 +225,21 @@ public class CallServiceImpl implements CallService {
 
         //TODO 通过kzId获取通话记录时间
 
-
+        //FIXME 这里需要增加时间
+        if(null == startTime && 0 == startTime){
+            throw new RException(ExceptionEnum.START_TIME_OR_END_TIME_IS_NULL);
+        }
+        //时间转换成毫秒
+        Date date = TimeUtil.format(TimeUtil.intMillisToTimeStr(startTime, "yyyy-MM-dd HH:mm:ss"), "yyyy-MM-dd HH:mm:ss");
         String reportsJson = HttpClient
                 .get(CallUrlConst.CALL_BASE_URL)
                 .queryString("Action", "ListCallDetailRecords")
                 .queryString("InstanceId", callPO.getInstanceId())
                 .queryString("Criteria", caller)
-                .queryString("StartTime",1514736000)
+                .queryString("StartTime",date.getTime())
                 .queryString("PageNumber",page)
                 .queryString("PageSize",pageSize)
-                .queryString("OrderBy","DESC")
+                .queryString("OrderBy","ASC")
                 //公共参数
                 .queryString("Format", "JSON")
                 .queryString("Version", "2017-07-05")
@@ -232,7 +253,7 @@ public class CallServiceImpl implements CallService {
     }
 
     @Override
-    public JSONObject getRecordingFile(String fileName,StaffPO staffPO) {
+    public JSONObject getRecordingFile(String fileName,StaffPO staffPO,Integer callId) {
 
         String sign = MD5Util.getApolloMd5(String.valueOf(staffPO.getCompanyId()));
         //Appollo接口获取用户信息
@@ -247,8 +268,9 @@ public class CallServiceImpl implements CallService {
         //Appollo接口获取intsanceId
         String instaceJson = HttpClient
                 // 请求方式和请求url
-                .get(appoloBaseUrl.concat(AppolloUrlConst.GET_CALL_INSTANCE))
+                .get(appoloBaseUrl.concat(AppolloUrlConst.GET_CALL_INSTANCE_BY_ID))
                 // post提交json
+                .queryString("callId",callId)
                 .queryString("companyId", staffPO.getCompanyId())
                 .queryString("sign", sign)
                 .asString();
@@ -279,6 +301,11 @@ public class CallServiceImpl implements CallService {
 
         JSONObject jsonObject = JSONObject.parseObject(urlJson);
         return jsonObject;
+    }
+
+    @Override
+    public void delCustomer(Integer id,StaffPO staffPO) {
+        callCustomerDao.deleteByIdAndCid(id,staffPO.getCompanyId());
     }
 
 }

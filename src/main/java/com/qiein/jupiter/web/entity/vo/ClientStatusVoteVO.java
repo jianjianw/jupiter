@@ -26,6 +26,12 @@ public class ClientStatusVoteVO implements Serializable {
     private String content;
 
     /**
+     * 无效备注
+     * */
+    private String reason;
+
+
+    /**
      * classid
      * */
     private Integer classId;
@@ -88,6 +94,14 @@ public class ClientStatusVoteVO implements Serializable {
      * */
     private String operaName;
 
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
 
     public Integer getSourceId() {
         return sourceId;
