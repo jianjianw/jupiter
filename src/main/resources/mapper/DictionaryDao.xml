@@ -276,6 +276,7 @@
         LEFT JOIN ${tableDetail} detail ON info.kzid = detail.kzid
         WHERE
             detail.INVALIDLABEL IS NOT NULL
+            and info.createTime BETWEEN #{startTime} and #{endTime}
         GROUP BY
             detail.INVALIDLABEL
     </select>
