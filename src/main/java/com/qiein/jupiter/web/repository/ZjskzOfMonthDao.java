@@ -389,7 +389,7 @@ public class ZjskzOfMonthDao {
         Map<String, Object> validClientComeShopRateMap = new HashMap<>();
         validClientComeShopRateMap.put("name", "入店率");
         for (ZjskzOfMonthReportsVO zjskzOfMonthReportsVO : zjskzOfMonthReportsVOS) {
-            validClientComeShopRateMap.put(zjskzOfMonthReportsVO.getDayId(), zjskzOfMonthReportsVO.getValidClientComeShopRate());
+            validClientComeShopRateMap.put(zjskzOfMonthReportsVO.getDayId(), zjskzOfMonthReportsVO.getClientComeShopRate());
         }
         list.add(validClientComeShopRateMap);
         Map<String, Object> comeShopSuccessRateMap = new HashMap<>();
