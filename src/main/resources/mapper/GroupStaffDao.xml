@@ -380,7 +380,7 @@
                                             AND staff.ISDEL = 0
         WHERE group_up.COMPANYID = #{companyId}
               AND group_up.PARENTID = '0'
-        ORDER BY group_up.PRIORITY, group_up.GROUPTYPE, group_down.PRIORITY, group_up.GROUPNAME, group_down.GROUPNAME
+        ORDER BY group_up.PRIORITY, group_up.GROUPTYPE, group_up.GROUPNAME, group_down.GROUPNAME
     </select>
 
     <!--根据组类型获取所有小组及组内人员信息-->
