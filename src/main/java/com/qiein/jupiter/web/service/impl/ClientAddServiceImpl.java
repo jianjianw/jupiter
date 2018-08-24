@@ -65,7 +65,7 @@ public class ClientAddServiceImpl implements ClientAddService {
             for(BlackListPO blackListPO:list){
                 ids+=blackListPO.getId()+CommonConstant.STR_SEPARATOR;
             }
-            ids.substring(ids.lastIndexOf(CommonConstant.STR_SEPARATOR));
+            ids.substring(ids.lastIndexOf(CommonConstant.STR_SEPARATOR)-1);
             clientBlackListDao.addCount(ids);
             throw new RException(ExceptionEnum.KZ_IN_BLACK_LIST);
 
