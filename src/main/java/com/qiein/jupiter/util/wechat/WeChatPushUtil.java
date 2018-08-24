@@ -172,10 +172,8 @@ public class WeChatPushUtil {
      */
     public static void pushMsg(WeChatPushMsgDTO weChatPushMsgDTO){
         String contentStr = JSONObject.toJSONString(weChatPushMsgDTO);
-        System.out.println(contentStr);
         //TODO 之后放进配置类中
         String url = APOLLO_URL+"/wechat/push_new_client";
-        System.out.println(url);
         HttpClient.textBody(url)
                 .json(contentStr)
                 .execute();

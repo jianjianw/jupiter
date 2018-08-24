@@ -27,10 +27,18 @@ public class WeChatPushMsgDTO {
      * 模版跳转url
      */
     private String url;
-//    /**
-//     * 跳小程序所需数据，不需跳小程序可不用传该数据
-//     */
-//    private HashMap<String,Object> miniprogram;
+    /**
+     * 跳小程序所需数据，不需跳小程序可不用传该数据
+     */
+    private HashMap<String,Object> miniprogram;
+    /**
+     * 客资Id
+     */
+    private String kzId;
+    /**
+     * 日志id
+     */
+    private String logId;
 
 //    /**
 //     * 客资姓名
@@ -59,10 +67,12 @@ public class WeChatPushMsgDTO {
      * @param kzPhone   客资电话
      * @param time      发送时间
      */
-    public WeChatPushMsgDTO(Integer cid,String cName, Integer uid, String url, String kzName, String kzPhone, String time) {
+    public WeChatPushMsgDTO(Integer cid,String cName, Integer uid, String url, String kzName, String kzPhone, String time,String kzId ,String logId) {
         this.cid = cid;
         this.uid = uid;
         this.url = url;
+        this.kzId=kzId;
+        this.logId=logId;
         HashMap<String,Object> first = new HashMap<>();
         first.put("value","您有一个新的客资");
         HashMap<String,Object> remark = new HashMap<>();
@@ -131,5 +141,29 @@ public class WeChatPushMsgDTO {
 
     public void setTouser(String touser) {
         this.touser = touser;
+    }
+
+    public HashMap<String, Object> getMiniprogram() {
+        return miniprogram;
+    }
+
+    public void setMiniprogram(HashMap<String, Object> miniprogram) {
+        this.miniprogram = miniprogram;
+    }
+
+    public String getKzId() {
+        return kzId;
+    }
+
+    public void setKzId(String kzId) {
+        this.kzId = kzId;
+    }
+
+    public String getLogId() {
+        return logId;
+    }
+
+    public void setLogId(String logId) {
+        this.logId = logId;
     }
 }

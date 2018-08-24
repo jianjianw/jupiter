@@ -27,6 +27,7 @@
         <result column="CIDS" property="chiefIds" jdbcType="VARCHAR"/>
         <result column="CNAMES" property="chiefNames" jdbcType="VARCHAR"/>
         <result column="SHOPID" property="shopId" jdbcType="INTEGER"></result>
+        <result column="PRI" property="priority" jdbcType="INTEGER"/>
     </resultMap>
 
     <!--网销排班部门-->
@@ -154,6 +155,7 @@
             grp.COMPANYID  AS CMPID,
             grp.CHIEFIDS   AS CIDS,
             grp.CHIEFNAMES AS CNAMES,
+            grp.PRIORITY   AS PRI,
             grp.SHOPID
         FROM
             hm_pub_group par
