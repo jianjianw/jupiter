@@ -145,6 +145,7 @@ public class DstgReportsSrcMonthDao {
         		Monthsum +=(long) map.get("hj");
     		}
         	map1.put("hj", Monthsum);
+        	map1.put("srcName", "合计");
         listSum.add(map1);
 		return listSum;
 	}
@@ -197,6 +198,7 @@ public class DstgReportsSrcMonthDao {
         		Monthsum +=(long) map.get("hj");
     		}
         	map1.put("hj", Monthsum);
+        	map1.put("srcName", "合计");
         	listAll.add(map1);
 		return listAll;
 	}
@@ -259,6 +261,7 @@ public class DstgReportsSrcMonthDao {
         		Monthsum +=(long) map.get("hj");
     		}
         	map1.put("hj", Monthsum);
+        	map1.put("srcName", "合计");
         listdd.add(map1);
 		return listdd;
 	}
@@ -339,6 +342,7 @@ public class DstgReportsSrcMonthDao {
         		Monthsum +=(long) map.get("hj");
     		}
         	map1.put("hj", Monthsum);
+        	map1.put("srcName", "合计");
         listInvalid.add(map1);
 		return listInvalid;
 	}
@@ -421,6 +425,7 @@ public class DstgReportsSrcMonthDao {
         		Monthsum +=(long) map.get("hj");
     		}
         	map1.put("hj", Monthsum);
+        	map1.put("srcName", "合计");
         listValid.add(map1);
 		return listValid;
 	}
