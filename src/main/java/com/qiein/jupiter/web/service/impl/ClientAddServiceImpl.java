@@ -59,7 +59,7 @@ public class ClientAddServiceImpl implements ClientAddService {
      */
     public void addDsClient(ClientVO clientVO, StaffPO staffPO) {
         Map<String, Object> reqContent = new HashMap<String, Object>();
-        List<BlackListPO> list=clientBlackListDao.checkBlackList(staffPO.getCompanyId(),clientVO.getKzPhone(),clientVO.getKzWw(),clientVO.getKzQq(),clientVO.getMateWeChat());
+        List<BlackListPO> list=clientBlackListDao.checkBlackList(staffPO.getCompanyId(),clientVO.getKzPhone(),clientVO.getKzWw(),clientVO.getKzQq(),clientVO.getKzWechat());
         if(!list.isEmpty()){
             String ids=CommonConstant.NULL_STR;
             for(BlackListPO blackListPO:list){
@@ -177,9 +177,16 @@ public class ClientAddServiceImpl implements ClientAddService {
      */
     public void addZjsClient(ClientVO clientVO, StaffPO staffPO) {
         Map<String, Object> reqContent = new HashMap<String, Object>();
-        List<BlackListPO> list=clientBlackListDao.checkBlackList(staffPO.getCompanyId(),clientVO.getKzPhone(),clientVO.getKzWw(),clientVO.getKzQq(),clientVO.getMateWeChat());
+        List<BlackListPO> list=clientBlackListDao.checkBlackList(staffPO.getCompanyId(),clientVO.getKzPhone(),clientVO.getKzWw(),clientVO.getKzQq(),clientVO.getKzWechat());
         if(!list.isEmpty()){
+            String ids=CommonConstant.NULL_STR;
+            for(BlackListPO blackListPO:list){
+                ids+=blackListPO.getId()+CommonConstant.STR_SEPARATOR;
+            }
+            ids=ids.substring(0,ids.lastIndexOf(CommonConstant.STR_SEPARATOR));
+            clientBlackListDao.addCount(ids);
             throw new RException(ExceptionEnum.KZ_IN_BLACK_LIST);
+
         }
         reqContent.put("companyid", staffPO.getCompanyId());
         if (NumUtil.isValid(clientVO.getCollectorId())) {
@@ -312,9 +319,16 @@ public class ClientAddServiceImpl implements ClientAddService {
      */
     public void addMsClient(ClientVO clientVO, StaffPO staffPO) {
         Map<String, Object> reqContent = new HashMap<String, Object>();
-        List<BlackListPO> list=clientBlackListDao.checkBlackList(staffPO.getCompanyId(),clientVO.getKzPhone(),clientVO.getKzWw(),clientVO.getKzQq(),clientVO.getMateWeChat());
+        List<BlackListPO> list=clientBlackListDao.checkBlackList(staffPO.getCompanyId(),clientVO.getKzPhone(),clientVO.getKzWw(),clientVO.getKzQq(),clientVO.getKzWechat());
         if(!list.isEmpty()){
+            String ids=CommonConstant.NULL_STR;
+            for(BlackListPO blackListPO:list){
+                ids+=blackListPO.getId()+CommonConstant.STR_SEPARATOR;
+            }
+            ids=ids.substring(0,ids.lastIndexOf(CommonConstant.STR_SEPARATOR));
+            clientBlackListDao.addCount(ids);
             throw new RException(ExceptionEnum.KZ_IN_BLACK_LIST);
+
         }
         reqContent.put("companyid", staffPO.getCompanyId());
         reqContent.put("collectorid", staffPO.getId());
@@ -534,7 +548,13 @@ public class ClientAddServiceImpl implements ClientAddService {
                     StringUtil.emptyToNull(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("qq"))));
             List<BlackListPO> blackList=clientBlackListDao.checkBlackList(staffPO.getCompanyId(),clientVO.getKzPhone(),clientVO.getKzWw(),clientVO.getKzQq(),clientVO.getMateWeChat());
             if(!blackList.isEmpty()){
-               break;
+                String ids=CommonConstant.NULL_STR;
+                for(BlackListPO blackListPO:blackList){
+                    ids+=blackListPO.getId()+CommonConstant.STR_SEPARATOR;
+                }
+                ids=ids.substring(0,ids.lastIndexOf(CommonConstant.STR_SEPARATOR));
+                clientBlackListDao.addCount(ids);
+                break;
             }
             clientVO.setMateName(StringUtil
                     .emptyToNull(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("matename"))));
