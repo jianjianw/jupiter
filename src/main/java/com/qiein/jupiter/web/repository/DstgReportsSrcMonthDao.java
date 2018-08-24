@@ -147,7 +147,7 @@ public class DstgReportsSrcMonthDao {
     		}
         	map1.put((String) day.get("dayKey"), daysum);
 		}
-        listSum.add(map1);
+        listSum.add(0,map1);
 		return listSum;
 	}
 	
@@ -200,7 +200,7 @@ public class DstgReportsSrcMonthDao {
     		}
         	map1.put((String) day.get("dayKey"), daysum);
 		}
-        listAll.add(map1);
+        listAll.add(0,map1);
 		return listAll;
 	}
 	
@@ -263,7 +263,7 @@ public class DstgReportsSrcMonthDao {
     		}
         	map1.put((String) day.get("dayKey"), daysum);
 		}
-        listdd.add(map1);
+        listdd.add(0,map1);
 		return listdd;
 	}
 	
@@ -344,7 +344,7 @@ public class DstgReportsSrcMonthDao {
     		}
         	map1.put((String) day.get("dayKey"), daysum);
 		}
-        listInvalid.add(map1);
+        listInvalid.add(0,map1);
 		return listInvalid;
 	}
 	
@@ -427,7 +427,7 @@ public class DstgReportsSrcMonthDao {
     		}
         	map1.put((String) day.get("dayKey"), daysum);
 		}
-        listValid.add(map1);
+        listValid.add(0,map1);
 		return listValid;
 	}
 	
