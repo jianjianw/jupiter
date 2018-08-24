@@ -142,7 +142,7 @@ public class DstgYearsClientReportsRowDao {
     private void getFilterPending(ReportsParamVO reportsParamVO, final List<DstgSourceYearReportsVO> dstgSourceYearReportsVOS){
         StringBuilder sb = new StringBuilder();
         getCommonSqlPart(sb, reportsParamVO);
-        sb.append(" and info.CLASSID = 1 and info.STATUSID = 98 ");
+        sb.append(" and  info.STATUSID = 98 ");
         addConditionByTypeAndSourceIds(reportsParamVO, sb);
         getCommonSqlPartB(sb);
         List<Map<String, Object>> mapList = jdbcTemplate.queryForList(sb.toString(), new Object[]{reportsParamVO.getCompanyId()
@@ -167,7 +167,7 @@ public class DstgYearsClientReportsRowDao {
     private void getFilterInClientCount(ReportsParamVO reportsParamVO, final List<DstgSourceYearReportsVO> dstgSourceYearReportsVOS){
         StringBuilder sb = new StringBuilder();
         getCommonSqlPart(sb, reportsParamVO);
-        sb.append(" and info.CLASSID = 1 and info.STATUSID = 0");
+        sb.append(" and  info.STATUSID = 0");
         addConditionByTypeAndSourceIds(reportsParamVO, sb);
         getCommonSqlPartB(sb);
         List<Map<String, Object>> mapList = jdbcTemplate.queryForList(sb.toString(), new Object[]{reportsParamVO.getCompanyId()
@@ -192,7 +192,7 @@ public class DstgYearsClientReportsRowDao {
     private void getFilterInValidClientCount(ReportsParamVO reportsParamVO, final List<DstgSourceYearReportsVO> dstgSourceYearReportsVOS){
         StringBuilder sb = new StringBuilder();
         getCommonSqlPart(sb, reportsParamVO);
-        sb.append(" and info.CLASSID = 6 and info.STATUSID = 99");
+        sb.append(" and  info.STATUSID = 99");
         addConditionByTypeAndSourceIds(reportsParamVO, sb);
         getCommonSqlPartB(sb);
         List<Map<String, Object>> mapList = jdbcTemplate.queryForList(sb.toString(), new Object[]{reportsParamVO.getCompanyId()
