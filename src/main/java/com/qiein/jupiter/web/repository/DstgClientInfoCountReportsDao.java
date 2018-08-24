@@ -52,6 +52,12 @@ public class DstgClientInfoCountReportsDao {
         //成交、已收
         Map<String, NumVO> cjNumMap = countCjNum(reportsParamVO);
 
+        //合计及以上汇总
+        countTotalAndOther(reportsList, invalidConfig, kzNumYxNumMap,
+                yxWxNumMap, ddNumAndResetKzNumMap, rdNumMap, cjNumMap);
+        //统计率
+        countRate(reportsList);
+
     }
 
 
@@ -216,7 +222,7 @@ public class DstgClientInfoCountReportsDao {
     /**
      * 获取入店量
      */
-    public Map<String, Integer> countRdNum(ReportsParamVO reportsParamVO) {
+    private Map<String, Integer> countRdNum(ReportsParamVO reportsParamVO) {
         final int cid = reportsParamVO.getCompanyId();
         String infoTableName = DBSplitUtil.getInfoTabName(cid);
         //封装参数
@@ -233,7 +239,7 @@ public class DstgClientInfoCountReportsDao {
                         "FROM hm_pub_group_staff rela LEFT JOIN hm_pub_group grp ON rela.GROUPID = grp.GROUPID GROUP BY STAFFID ) " +
                         "staff_group ON info.COLLECTORID = staff_group.STAFFID  ");
         baseSql.append(" WHERE info.COMPANYID = :companyId AND info.ISDEL = 0  ")
-                .append(" AND info.CREATETIME  BETWEEN  :start AND :end ")
+                .append(" AND info.COMESHOPTIME  BETWEEN  :start AND :end ")
                 .append(" AND INSTR( :status, CONCAT(',',info.STATUSID + '',',')) != 0 ")
                 .append(" AND ( info.SRCTYPE = 1 OR info.SRCTYPE = 2 ) ")
                 .append(" GROUP BY staff_group.GROUPID");
@@ -251,7 +257,7 @@ public class DstgClientInfoCountReportsDao {
     /**
      * 获取成交量
      */
-    public Map<String, NumVO> countCjNum(ReportsParamVO reportsParamVO) {
+    private Map<String, NumVO> countCjNum(ReportsParamVO reportsParamVO) {
         final int cid = reportsParamVO.getCompanyId();
         String infoTableName = DBSplitUtil.getInfoTabName(cid);
         //封装参数
@@ -291,7 +297,7 @@ public class DstgClientInfoCountReportsDao {
     /**
      * 计算合计以及其他的
      */
-    public void countTotalAndOther(List<DstgClientInfoCountVO> reportsList, DsInvalidVO invalidConfig,
+    private void countTotalAndOther(List<DstgClientInfoCountVO> reportsList, DsInvalidVO invalidConfig,
                                    Map<String, Integer> kzNumMap, Map<String, Integer> yxWxNumMap,
                                    Map<String, Integer> ddNumMap, Map<String, Integer> rdNumMap,
                                    Map<String, NumVO> cjNumMap) {
@@ -311,11 +317,15 @@ public class DstgClientInfoCountReportsDao {
             //设置毛客资 kznum
             dstgClientInfoCountVO.getNumVO().setKzNum(kzNumMap.get(groupId));
             //设置有效无效
+            if (yxWxNumMap != null) {
 
+            }
             //设置待定
-            dstgClientInfoCountVO.getNumVO().setDdNum(ddNumMap.get(groupId));
-            //如果企业设置有效包含待定，重新设置有效量
+            if (ddNumMap != null) {
+                dstgClientInfoCountVO.getNumVO().setDdNum(ddNumMap.get(groupId));
+                //如果企业设置有效包含待定，重新设置有效量
 
+            }
             //设置入店
             dstgClientInfoCountVO.getNumVO().setRdNum(rdNumMap.get(groupId));
             //设置成交量
@@ -331,7 +341,7 @@ public class DstgClientInfoCountReportsDao {
     /**
      * 计算率
      */
-    public void countRate(List<DstgClientInfoCountVO> dscjCountReports) {
+    private void countRate(List<DstgClientInfoCountVO> dscjCountReports) {
         for (DstgClientInfoCountVO dscjClientInfo : dscjCountReports) {
             // 有效率
             if (dscjClientInfo.getNumVO().getKzNum() != 0) {
