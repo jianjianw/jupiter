@@ -174,7 +174,7 @@ public class OldKzReportsDao {
         StringBuilder sql = new StringBuilder();
         getBaseSql(sql, tableInfo, tableDetail,companyId);
         sql.append(" and info.createtime between ? and ?");
-        sql.append("  and info.CLASSID = 1 and info.STATUSID = 98 ");
+        sql.append("   and info.STATUSID = 98 ");
         sql.append(" GROUP BY detail.OLDKZPHONE,detail.oldkzname  ");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{kzNameOrPhone, kzNameOrPhone,startTime, endTime});
         List<OldKzReportsVO> oldKzReportsBak = new LinkedList<>();
@@ -210,7 +210,7 @@ public class OldKzReportsDao {
         StringBuilder sql = new StringBuilder();
         getBaseSql(sql, tableInfo, tableDetail,companyId);
         sql.append(" and info.createtime between ? and ?");
-        sql.append(" and info.CLASSID = 6 and info.STATUSID = 99 ");
+        sql.append("  and info.STATUSID = 99 ");
         sql.append(" GROUP BY detail.OLDKZPHONE,detail.oldkzname  ");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{kzNameOrPhone, kzNameOrPhone,startTime, endTime});
         List<OldKzReportsVO> oldKzReportsBak = new LinkedList<>();
@@ -246,7 +246,7 @@ public class OldKzReportsDao {
         StringBuilder sql = new StringBuilder();
         getBaseSql(sql, tableInfo, tableDetail,companyId);
         sql.append(" and info.createtime between ? and ?");
-        sql.append(" and info.CLASSID = 1 and info.STATUSID = 0 ");
+        sql.append("  and info.STATUSID = 0 ");
         sql.append(" GROUP BY detail.OLDKZPHONE,detail.oldkzname  ");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{kzNameOrPhone, kzNameOrPhone,startTime, endTime});
         List<OldKzReportsVO> oldKzReportsBak = new LinkedList<>();

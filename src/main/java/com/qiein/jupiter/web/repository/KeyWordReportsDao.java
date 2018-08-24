@@ -151,7 +151,7 @@ public class KeyWordReportsDao {
         StringBuilder sql = new StringBuilder();
         getBaseSql(sql,typeIds, tableInfo, tableDetail,companyId);
         sql.append(" and info.createtime between ? and ?");
-        sql.append("  and info.CLASSID = 1 and info.STATUSID = 98 ");
+        sql.append("   and info.STATUSID = 98 ");
         sql.append(" GROUP BY detail.keyword  ");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{keyWord,startTime, endTime});
         List<KeyWordReportsVO> keyWordReportsBak = new LinkedList<>();
@@ -179,7 +179,7 @@ public class KeyWordReportsDao {
         StringBuilder sql = new StringBuilder();
         getBaseSql(sql,typeIds, tableInfo, tableDetail,companyId);
         sql.append(" and info.createtime between ? and ?");
-        sql.append(" and info.CLASSID = 6 and info.STATUSID = 99 ");
+        sql.append("   and info.STATUSID = 99 ");
         sql.append(" GROUP BY detail.keyword  ");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{keyWord,startTime, endTime});
         List<KeyWordReportsVO> keyWordReportsBak = new LinkedList<>();
@@ -207,7 +207,7 @@ public class KeyWordReportsDao {
         StringBuilder sql = new StringBuilder();
         getBaseSql(sql,typeIds, tableInfo, tableDetail,companyId);
         sql.append(" and info.createtime between ? and ?");
-        sql.append(" and info.CLASSID = 1 and info.STATUSID = 0 ");
+        sql.append("  and info.STATUSID = 0 ");
         sql.append(" GROUP BY detail.keyword  ");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{keyWord,startTime, endTime});
         List<KeyWordReportsVO> keyWordReportsBak = new LinkedList<>();

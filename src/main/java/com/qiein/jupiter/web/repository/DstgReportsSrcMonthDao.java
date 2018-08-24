@@ -444,7 +444,7 @@ public class DstgReportsSrcMonthDao {
 			}
 			sql.append(" and info.isdel = 0");
 			sql.append(" and info.companyId="+companyId);
-			sql.append("  and info.CLASSID = 1 and info.STATUSID = 98 ");
+			sql.append("    and info.STATUSID = 98 ");
 			sql.append(" and FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d')= '" + day.get("day") + "') " + day.get("dayKey") + ",");
 		}
 		sql.append("(select count(info.id) from " + tableInfo + " info where info.SOURCEID IN ");
@@ -455,7 +455,7 @@ public class DstgReportsSrcMonthDao {
 		}
 		sql.append(" and info.isdel = 0");
 		sql.append(" and info.companyId="+companyId);
-		sql.append("  and info.CLASSID = 1 and info.STATUSID = 98 ");
+		sql.append("    and info.STATUSID = 98 ");
 		sql.append(" and FROM_UNIXTIME(info.CREATETIME, '%Y/%m')= '" + month + "') " + "hj ");
 		List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{});
 		List<ZjskzOfMonthReportsVO> zjskzOfMonthReportsBak = new LinkedList<>();
@@ -493,7 +493,7 @@ public class DstgReportsSrcMonthDao {
 			}
 			sql.append(" and info.isdel = 0");
 			sql.append(" and info.companyId="+companyId);
-			sql.append(" and info.CLASSID = 6 and info.STATUSID = 99 ");
+			sql.append("   and info.STATUSID = 99 ");
 			sql.append(" and FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d')= '" + day.get("day") + "') " + day.get("dayKey") + ",");
 		}
 		sql.append("(select count(info.id) from " + tableInfo + " info where info.SOURCEID IN ");
@@ -504,7 +504,7 @@ public class DstgReportsSrcMonthDao {
 		}
 		sql.append(" and info.isdel = 0");
 		sql.append(" and info.companyId="+companyId);
-		sql.append(" and info.CLASSID = 6 and info.STATUSID = 99 ");
+		sql.append("   and info.STATUSID = 99 ");
 		sql.append(" and FROM_UNIXTIME(info.CREATETIME, '%Y/%m')= '" + month + "') " + "hj ");
 		List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{});
 		List<ZjskzOfMonthReportsVO> zjskzOfMonthReportsBak = new LinkedList<>();
@@ -542,7 +542,7 @@ public class DstgReportsSrcMonthDao {
 			}
 			sql.append(" and info.isdel = 0");
 			sql.append(" and info.companyId="+companyId);
-			sql.append(" and info.CLASSID = 1 and info.STATUSID = 0 ");
+			sql.append("   and info.STATUSID = 0 ");
 			sql.append(" and FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d')= '" + day.get("day") + "') " + day.get("dayKey") + ",");
 		}
 		sql.append("(select count(info.id) from " + tableInfo + " info where info.SOURCEID IN ");
