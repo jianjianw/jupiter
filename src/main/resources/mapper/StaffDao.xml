@@ -739,8 +739,8 @@
                     AND CAST(STATUSID AS UNSIGNED) &lt;&gt; 98
                     AND CAST(STATUSID AS UNSIGNED) &lt;&gt; 99
                     AND CAST(STATUSID AS UNSIGNED) &lt;&gt; 999
-                    AND CREATETIME &gt;= UNIX_TIMESTAMP(CAST(SYSDATE() AS DATE))
-                    AND CREATETIME &lt;= UNIX_TIMESTAMP(CAST(SYSDATE() AS DATE)) + 86399
+                    AND RECEIVETIME &gt;= UNIX_TIMESTAMP(CAST(SYSDATE() AS DATE))
+                    AND RECEIVETIME &lt;= UNIX_TIMESTAMP(CAST(SYSDATE() AS DATE)) + 86399
             ) AS info
             INNER JOIN (
                            SELECT *
