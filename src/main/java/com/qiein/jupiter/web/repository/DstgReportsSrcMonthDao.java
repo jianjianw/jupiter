@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.repository;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
@@ -25,8 +26,9 @@ public class DstgReportsSrcMonthDao {
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+	
 	/**
-	 * 获取报表详情数据
+	 * 获取报表内详情数据
 	 */
 	public ZjskzOfMonthMapVO ZjskzOfMonthIn(List<Map<String, Object>> dayList, Integer companyId, String month, String sourceId, DsInvalidVO dsInvalidVO,String typeId) {
 		List<ZjskzOfMonthReportsVO> zjskzOfMonthReportsVOS = new ArrayList<>();
@@ -97,7 +99,7 @@ public class DstgReportsSrcMonthDao {
 	}
 	
 	/**
-     * 获取总客资量
+     * 获取总客资量--报表外
      * @param start
      * @param end
      * @param companyId
@@ -148,7 +150,7 @@ public class DstgReportsSrcMonthDao {
 	}
 	
 	/**
-     * 获取客资量
+     * 获取客资量--报表外
      * @param start
      * @param end
      * @param companyId
@@ -200,7 +202,7 @@ public class DstgReportsSrcMonthDao {
 	}
 	
 	/**
-     * 获取待定客资量
+     * 获取待定客资量--报表外
      * @param start
      * @param end
      * @param companyId
@@ -262,7 +264,7 @@ public class DstgReportsSrcMonthDao {
 	}
 	
 	/**
-     * 获取无效客资量
+     * 获取无效客资量--报表外
      * @param start
      * @param end
      * @param companyId
@@ -342,7 +344,7 @@ public class DstgReportsSrcMonthDao {
 	}
 	
 	/**
-     * 获取有效客资量
+     * 获取有效客资量--报表外
      * @param start
      * @param end
      * @param companyId
@@ -422,6 +424,7 @@ public class DstgReportsSrcMonthDao {
         listValid.add(map1);
 		return listValid;
 	}
+	
 	/**
 	 * 总客资
 	 */
