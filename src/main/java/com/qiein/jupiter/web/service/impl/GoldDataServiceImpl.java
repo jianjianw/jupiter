@@ -172,7 +172,14 @@ public class GoldDataServiceImpl implements GoldDataService {
         String weChat = StringUtil.nullToStrTrim(entry.getString(goldFingerPO.getKzWechatField()));
         List<BlackListPO> list=clientBlackListDao.checkBlackList(goldFingerPO.getCompanyId(),kzPhone,null,null,weChat);
         if(!list.isEmpty()){
+            String ids=CommonConstant.NULL_STR;
+            for(BlackListPO blackListPO:list){
+                ids+=blackListPO.getId()+CommonConstant.STR_SEPARATOR;
+            }
+            ids=ids.substring(0,ids.lastIndexOf(CommonConstant.STR_SEPARATOR));
+            clientBlackListDao.addCount(ids);
             throw new RException(ExceptionEnum.KZ_IN_BLACK_LIST);
+
         }
         String address = MobileLocationUtil.getPhoneLocation(kzPhone);
         String oldKzName = StringUtil.nullToStrTrim(entry.getString(goldFingerPO.getOldKzName()));
