@@ -223,6 +223,7 @@ public class ClientAddController extends BaseController {
         String adId = StringUtil.nullToStrTrim(jsonObject.getString("adId"));
         String adAddress = StringUtil.nullToStrTrim(jsonObject.getString("adAddress"));
         String groupId = StringUtil.nullToStrTrim(jsonObject.getString("groupId"));
+        String address = StringUtil.nullToStrTrim(jsonObject.getString("address"));
         int yxLevel = jsonObject.getIntValue("yxLevel");
         int ysRange = jsonObject.getIntValue("ysRange");
         int marryTime = jsonObject.getIntValue("marryTime");
@@ -232,7 +233,7 @@ public class ClientAddController extends BaseController {
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         JSONObject result = clientAddService.batchAddDsClient(list, channelId, sourceId, shopId, typeId, currentLoginStaff, adId,
-                adAddress, groupId, appointId, zxStyle, yxLevel, ysRange, marryTime);
+                adAddress, groupId, appointId, zxStyle, yxLevel, ysRange, marryTime,address);
         try {
             RequestInfoDTO requestInfo = getRequestInfo();
             // 日志记录
