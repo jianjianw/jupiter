@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.constant.ChannelConstant;
 import com.qiein.jupiter.constant.CommonConstant;
@@ -61,7 +62,9 @@ public class GroupServiceImpl implements GroupService {
      */
     // @Cacheable(value = "dept", key = "'dept'+':'+#companyId")
     public List<GroupVO> getCompanyAllDeptList(int companyId) {
-        return groupDao.getCompanyAllDeptList(companyId);
+        List<GroupVO> list = groupDao.getCompanyAllDeptList(companyId);
+        System.out.println(JSON.toJSONString(list));
+        return list;
     }
 
     /**
