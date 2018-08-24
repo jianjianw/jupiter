@@ -91,7 +91,7 @@ public class ReportsServiceImpl implements ReportService {
     private DstgYearsClientDetailReportsDao dstgYearsClientDetailReportsDao;
 
     @Autowired
-    private DstgYearsClientReportsDao1 dstgYearsClientReportsDao1;
+    private DstgYearsClientReportsRowDao dstgYearsClientReportsRowDao;
 
 
 
@@ -176,7 +176,7 @@ public class ReportsServiceImpl implements ReportService {
      * @param companyId
      */
     @Override
-    public List<DstgGoldDataReportsVO> getDstgAdReports(Integer start, Integer end, Integer companyId, String type) {
+    public PageInfo getDstgAdReports(Integer start, Integer end, Integer companyId, String type,Integer page) {
         //封装对应的参数
         ReportsParamVO reportsParamVO = new ReportsParamVO();
         reportsParamVO.setStart(start);
@@ -186,7 +186,23 @@ public class ReportsServiceImpl implements ReportService {
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         //获取数据
         List<DstgGoldDataReportsVO> dstgGoldDataReprots = dstgGoldDataReportsDao.getDstgGoldDataReprots(reportsParamVO, invalidConfig);
-        return dstgGoldDataReprots;
+
+        Integer pageSize = 20;
+        //逻辑分页
+        List<DstgGoldDataReportsVO> dstgGoldDataReportsVOS = new LinkedList<>();
+        int index = 0;
+        if( page * pageSize > dstgGoldDataReprots.size() ){
+            for( index = pageSize*(page-1) ;index <dstgGoldDataReprots.size();index++ ){
+                dstgGoldDataReportsVOS.add(dstgGoldDataReprots.get(index));
+            }
+        }else{
+            for( index = pageSize*(page-1) ;index <page * pageSize;index++ ){
+                dstgGoldDataReportsVOS.add(dstgGoldDataReprots.get(index));
+            }
+        }
+        PageInfo<DstgGoldDataReportsVO> pageInfo = new PageInfo<>(dstgGoldDataReportsVOS);
+        pageInfo.setTotal(dstgGoldDataReportsVOS.size());
+        return pageInfo;
     }
 
     @Override
@@ -217,7 +233,7 @@ public class ReportsServiceImpl implements ReportService {
         dictionaryPO.setDicType("hj");
         dictionaryPO.setDicName("合计");
         List<DictionaryPO> DicList = dictionaryDao.getInvaildReasons(DBSplitUtil.getTable(TableEnum.info, companyId), DBSplitUtil.getTable(TableEnum.detail, companyId));
-        List<SourcePO> sourcePOS = sourceDao.findSourseByType(companyId, CommonConstant.DsSrc);
+        List<SourcePO> sourcePOS = sourceDao.findSourseByType(companyId, CommonConstant.DsSrc,sourceIds);
         invalidReasonReportsVO.setInvalidReasonKz(invalidReasonReportsDao.getInvalidReasonReports(sourcePOS,DicList, DBSplitUtil.getTable(TableEnum.info, companyId), DBSplitUtil.getTable(TableEnum.detail, companyId), companyId, sourceIds, startTime, endTime, typeIds));
         list.add(dictionaryPO);
         list.addAll(DicList);
@@ -230,7 +246,7 @@ public class ReportsServiceImpl implements ReportService {
      */
     public List<ZjsKzOfMonthShowVO> ZjskzOfMonth(Integer companyId, String month, String typeIds, String sourceIds, String type) {
         List<Map<String, Object>> newList = zjskzOfMonthDao.getDayOfMonth(Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[0]), Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[1]), DBSplitUtil.getTable(TableEnum.info, companyId));
-        List<SourcePO> sourcePOS = sourceDao.findSourseByType(companyId, CommonConstant.ZjsSrc);
+        List<SourcePO> sourcePOS = sourceDao.findSourseByType(companyId, CommonConstant.ZjsSrc,sourceIds);
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         return zjskzOfMonthDao.getzjskzOfMonth(sourcePOS, newList, month.replace(CommonConstant.ROD_SEPARATOR, CommonConstant.FILE_SEPARATOR), companyId, DBSplitUtil.getTable(TableEnum.info, companyId), sourceIds, typeIds, invalidConfig, type);
     }
@@ -276,7 +292,7 @@ public class ReportsServiceImpl implements ReportService {
     }
 
     /**
-     * 转介绍每月客资报表内表详情
+     * 电商每月客资报表内表详情
      */
     public ZjskzOfMonthMapVO DskzOfMonthIn(Integer companyId, String sourceId, String month) {
         List<Map<String, Object>> newList = zjskzOfMonthDao.getDayOfMonth(Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[0]), Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[1]), DBSplitUtil.getTable(TableEnum.info, companyId));
@@ -596,7 +612,7 @@ public class ReportsServiceImpl implements ReportService {
         reportsParamVO.setCompanyId(companyId);
         reportsParamVO.setYears(years);
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
-        List<DstgSourceYearReportsVO> dstgYearsClientReports = dstgYearsClientReportsDao1.getDstgYearsClientReports(reportsParamVO, invalidConfig);
+        List<DstgSourceYearReportsVO> dstgYearsClientReports = dstgYearsClientReportsRowDao.getDstgYearsClientReports(reportsParamVO, invalidConfig);
         List<DstgYearReportsVO> dstgYearReportsVOS = dstgYearsClientReportsDao.getDstgYearsClientReports(reportsParamVO, invalidConfig);
 
         getDataByConditionType(conditionType, dstgYearsClientReports, dstgYearReportsVOS);

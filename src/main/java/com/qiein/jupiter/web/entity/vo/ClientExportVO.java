@@ -39,6 +39,18 @@ public class ClientExportVO implements Serializable {
     private String comeShopTime;
 
     /**
+     * 拍摄类型
+     * */
+    @Excel(name="拍摄类型",width = 10,height = 6)
+    private String shootType;
+
+    /**
+     * 门市
+     * */
+    @Excel(name="门市",width = 20,height = 6)
+    private String receptorName;
+
+    /**
      * 推广员姓名
      */
     @Excel(name = "推广", width = 20, height = 6)
@@ -178,6 +190,48 @@ public class ClientExportVO implements Serializable {
      * */
     @Excel(name="筛客名称",width = 20,height = 6)
     private String promoterName;
+    /**
+     * 老客姓名
+     * */
+    @Excel(name="老客姓名",width = 20,height = 6)
+    private String oldKzName;
+    /**
+     * 老客电话
+     * */
+    @Excel(name="老客电话",width = 20,height = 6)
+    private String oldKzPhone;
+
+    public String getOldKzName() {
+        return oldKzName;
+    }
+
+    public void setOldKzName(String oldKzName) {
+        this.oldKzName = oldKzName;
+    }
+
+    public String getOldKzPhone() {
+        return oldKzPhone;
+    }
+
+    public void setOldKzPhone(String oldKzPhone) {
+        this.oldKzPhone = oldKzPhone;
+    }
+
+    public String getShootType() {
+        return shootType;
+    }
+
+    public void setShootType(String shootType) {
+        this.shootType = shootType;
+    }
+
+    public String getReceptorName() {
+        return receptorName;
+    }
+
+    public void setReceptorName(String receptorName) {
+        this.receptorName = receptorName;
+    }
 
     public String getAdId() {
         return adId;

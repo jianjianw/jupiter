@@ -85,10 +85,10 @@ public class InvalidReasonReportsDao {
         hjsql.append(" AND detail.INVALIDLABEL IS NOT NULL");
         hjsql.append(" and info.companyid=?");
         if(StringUtil.isNotEmpty(typeIds)){
-            sql.append(" AND info.TYPEID IN ("+typeIds+")");
+            hjsql.append(" AND info.TYPEID IN ("+typeIds+")");
         }
         if(StringUtil.isNotEmpty(sourceIds)){
-            sql.append(" AND info.SOURCEID IN ("+sourceIds+")");
+            hjsql.append(" AND info.SOURCEID IN ("+sourceIds+")");
         }
         hjsql.append(" GROUP BY detail.INVALIDLABEL ");
         List<Map<String, Object>> invalidalbelHj = jdbcTemplate.queryForList(hjsql.toString(), new Object[]{startTime,endTime,companyId});

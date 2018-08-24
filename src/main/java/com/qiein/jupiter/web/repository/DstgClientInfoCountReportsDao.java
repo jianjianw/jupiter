@@ -230,7 +230,7 @@ public class DstgClientInfoCountReportsDao {
         paramsMap.put("companyId", cid);
         paramsMap.put("start", reportsParamVO.getStart());
         paramsMap.put("end", reportsParamVO.getEnd());
-        paramsMap.put("status", ClientStatusConst.IS_COME_SHOP);
+//        paramsMap.put("status", ClientStatusConst.IS_COME_SHOP);
         //拼接SQL
         StringBuilder baseSql = new StringBuilder();
         baseSql.append("SELECT staff_group.GROUPID,staff_group.GROUPNAME,COUNT( * ) COUNT");
@@ -241,6 +241,8 @@ public class DstgClientInfoCountReportsDao {
         baseSql.append(" WHERE info.COMPANYID = :companyId AND info.ISDEL = 0  ")
                 .append(" AND info.COMESHOPTIME  BETWEEN  :start AND :end ")
                 .append(" AND INSTR( :status, CONCAT(',',info.STATUSID + '',',')) != 0 ")
+                .append(" AND info.CREATETIME  BETWEEN  :start AND :end ")
+//                .append(" AND INSTR( :status, CONCAT(',',info.STATUSID + '',',')) != 0 ")
                 .append(" AND ( info.SRCTYPE = 1 OR info.SRCTYPE = 2 ) ")
                 .append(" GROUP BY staff_group.GROUPID");
         final Map<String, Integer> groupCountMap = new HashMap<>();

@@ -189,7 +189,8 @@ public enum ExceptionEnum {
     CALL_CONSUMER_IS_EXISTS(2605,"客服已经存在"),
     CALL_CONSUMER_ID_IS_NULL(2606,"客服id为空"),
     //黑名单
-    BLACK_WAS_IN(2701,"该手机号已存在");
+    BLACK_WAS_IN(2701,"该手机号已存在"),
+    KZ_IN_BLACK_LIST(2702,"该客资已被添加到黑名单");
     private Integer code;
     private String msg;
 

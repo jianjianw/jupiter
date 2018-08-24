@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -189,7 +190,7 @@ public class CallServiceImpl implements CallService {
     }
 
     @Override
-    public JSONObject getRecording(String caller,StaffPO staffPO,Integer page,Integer pageSize,Integer callId) {
+    public JSONObject getRecording(String caller,StaffPO staffPO,Integer page,Integer pageSize,Integer callId,Integer startTime) {
         if(NumUtil.isInValid(callId)){
             throw new RException(ExceptionEnum.CALL_ID_IS_NULL);
         }
@@ -224,16 +225,21 @@ public class CallServiceImpl implements CallService {
 
         //TODO 通过kzId获取通话记录时间
 
-
+        //FIXME 这里需要增加时间
+        if(null == startTime && 0 == startTime){
+            throw new RException(ExceptionEnum.START_TIME_OR_END_TIME_IS_NULL);
+        }
+        //时间转换成毫秒
+        Date date = TimeUtil.format(TimeUtil.intMillisToTimeStr(startTime, "yyyy-MM-dd HH:mm:ss"), "yyyy-MM-dd HH:mm:ss");
         String reportsJson = HttpClient
                 .get(CallUrlConst.CALL_BASE_URL)
                 .queryString("Action", "ListCallDetailRecords")
                 .queryString("InstanceId", callPO.getInstanceId())
                 .queryString("Criteria", caller)
-                .queryString("StartTime",1514736000)
+                .queryString("StartTime",date.getTime())
                 .queryString("PageNumber",page)
                 .queryString("PageSize",pageSize)
-                .queryString("OrderBy","DESC")
+                .queryString("OrderBy","ASC")
                 //公共参数
                 .queryString("Format", "JSON")
                 .queryString("Version", "2017-07-05")

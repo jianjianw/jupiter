@@ -146,7 +146,7 @@ public class ChannelServiceImpl implements ChannelService {
 
         // hm_crm_shop_channel_group_rela删除时关联删除该表信息
         channelDao.deleteByIdAndCid(id, companyId);
-        shopChannelGroupDao.delByChannelId(companyId, id);
+//        shopChannelGroupDao.delByChannelId(companyId, id);
     }
 
     /**

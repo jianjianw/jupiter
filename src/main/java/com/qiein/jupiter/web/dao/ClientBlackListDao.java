@@ -36,4 +36,8 @@ public interface ClientBlackListDao {
      * @return
      */
     List<BlackListPO> getByPhone(@Param("companyId")Integer companyId,@Param("phone")String phone);
+    /**
+     * 检测是否拦截
+     */
+    List<BlackListPO> checkBlackList(@Param("companyId")Integer companyId,@Param("kzPhone")String kzPhone,@Param("kzWw")String kzWw,@Param("kzQq")String kzQq,@Param("kzWeChat")String kzWeChat);
 }

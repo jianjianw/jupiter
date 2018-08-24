@@ -12,7 +12,6 @@ import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
 import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.dao.*;
 import com.qiein.jupiter.web.entity.dto.ClientGoEasyDTO;
-import com.qiein.jupiter.web.entity.dto.ClientPushDTO;
 import com.qiein.jupiter.web.entity.po.*;
 import com.qiein.jupiter.web.entity.vo.ClientVO;
 import com.qiein.jupiter.web.entity.vo.ShopVO;
@@ -47,6 +46,8 @@ public class ClientAddServiceImpl implements ClientAddService {
     private ClientInfoDao clientInfoDao;
     @Autowired
     private NewsDao newsDao;
+    @Autowired
+    private ClientBlackListDao clientBlackListDao;
 
 
 
@@ -58,6 +59,10 @@ public class ClientAddServiceImpl implements ClientAddService {
      */
     public void addDsClient(ClientVO clientVO, StaffPO staffPO) {
         Map<String, Object> reqContent = new HashMap<String, Object>();
+        List<BlackListPO> list=clientBlackListDao.checkBlackList(staffPO.getCompanyId(),clientVO.getKzPhone(),clientVO.getKzWw(),clientVO.getKzQq(),clientVO.getMateWeChat());
+        if(!list.isEmpty()){
+            throw new RException(ExceptionEnum.KZ_IN_BLACK_LIST);
+        }
         reqContent.put("companyid", staffPO.getCompanyId());
         reqContent.put("collectorid", staffPO.getId());
         reqContent.put("collectorname", staffPO.getNickName());
@@ -165,6 +170,10 @@ public class ClientAddServiceImpl implements ClientAddService {
      */
     public void addZjsClient(ClientVO clientVO, StaffPO staffPO) {
         Map<String, Object> reqContent = new HashMap<String, Object>();
+        List<BlackListPO> list=clientBlackListDao.checkBlackList(staffPO.getCompanyId(),clientVO.getKzPhone(),clientVO.getKzWw(),clientVO.getKzQq(),clientVO.getMateWeChat());
+        if(!list.isEmpty()){
+            throw new RException(ExceptionEnum.KZ_IN_BLACK_LIST);
+        }
         reqContent.put("companyid", staffPO.getCompanyId());
         if (NumUtil.isValid(clientVO.getCollectorId())) {
             StaffPO collector = staffDao.getById(clientVO.getCollectorId());
@@ -296,6 +305,10 @@ public class ClientAddServiceImpl implements ClientAddService {
      */
     public void addMsClient(ClientVO clientVO, StaffPO staffPO) {
         Map<String, Object> reqContent = new HashMap<String, Object>();
+        List<BlackListPO> list=clientBlackListDao.checkBlackList(staffPO.getCompanyId(),clientVO.getKzPhone(),clientVO.getKzWw(),clientVO.getKzQq(),clientVO.getMateWeChat());
+        if(!list.isEmpty()){
+            throw new RException(ExceptionEnum.KZ_IN_BLACK_LIST);
+        }
         reqContent.put("companyid", staffPO.getCompanyId());
         reqContent.put("collectorid", staffPO.getId());
         reqContent.put("collectorname", staffPO.getNickName());
@@ -512,6 +525,10 @@ public class ClientAddServiceImpl implements ClientAddService {
                     StringUtil.emptyToNull(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("wechat"))));
             clientVO.setKzQq(
                     StringUtil.emptyToNull(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("qq"))));
+            List<BlackListPO> blackList=clientBlackListDao.checkBlackList(staffPO.getCompanyId(),clientVO.getKzPhone(),clientVO.getKzWw(),clientVO.getKzQq(),clientVO.getMateWeChat());
+            if(!blackList.isEmpty()){
+               break;
+            }
             clientVO.setMateName(StringUtil
                     .emptyToNull(String.valueOf(JSONObject.parseObject(jsonArr.getString(i)).get("matename"))));
             clientVO.setMatePhone(StringUtil

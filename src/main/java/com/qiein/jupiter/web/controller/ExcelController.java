@@ -90,7 +90,7 @@ public class ExcelController extends BaseController {
     public ResultInfo saveExcelKz() {
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        excelService.tempKzMoveToInfo(currentLoginStaff.getCompanyId(), currentLoginStaff.getId());
+        excelService.tempKzMoveToInfo(currentLoginStaff.getCompanyId(), currentLoginStaff.getId(),currentLoginStaff.getNickName());
         return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
     }
 

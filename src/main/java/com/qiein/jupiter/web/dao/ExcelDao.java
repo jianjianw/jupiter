@@ -256,4 +256,12 @@ public interface ExcelDao {
      * */
     void updateMarryTimeDictionaryCode(@Param("tempName") String tempName, @Param("staffId") Integer staffId,@Param("companyId")Integer companyId, @Param(value = "dictionaryType") String dictionaryType);
 
+    /**
+     * 批量添加客资日志
+     * @param infoLogTabName
+     * @param staffId
+     * @param nickName
+     * @param logType
+     * */
+    void batchAddInfoLog(@Param("logTabName") String infoLogTabName,@Param(value="tempName") String tempName,@Param(value="tabName")String tabName,@Param("staffId") int staffId,@Param(value="nickName")String nickName,@Param(value="logType") Integer logType,@Param(value="memo")String memo);
 }
