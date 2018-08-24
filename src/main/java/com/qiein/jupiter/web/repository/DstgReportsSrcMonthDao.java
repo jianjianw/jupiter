@@ -368,7 +368,7 @@ public class DstgReportsSrcMonthDao {
     		sql.append("  AND info.STATUSID NOT IN("+invalidConfig.getDsInvalidStatus()+")");
     	}
         //减去无效意向指标
-        if(StringUtil.isEmpty(invalidConfig.getDsInvalidStatus()) && StringUtil.isNotEmpty(invalidConfig.getDsInvalidLevel())){
+        if(StringUtil.isNotEmpty(invalidConfig.getDsInvalidLevel())){
     		sql.append(" AND deta.YXLEVEL NOT IN("+invalidConfig.getDsInvalidLevel()+")");
     	}
         //待定不计算为有效时
