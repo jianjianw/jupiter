@@ -102,7 +102,12 @@ public class ExcelServiceImpl implements ExcelService {
             clientExcelDTO.setCompanyId(currentLoginStaff.getCompanyId());
             clientExcelDTO.setKzId(StringUtil.getRandom());
             clientExcelDTO.setOperaId(currentLoginStaff.getId());
-            clientExcelDTO.setTypeName(CommonConstant.EXCEL_DEFAULT_PHOTO_TYPE_NAME);
+            if(StringUtil.isEmpty(clientExcelDTO.getTypeName())){
+                clientExcelDTO.setTypeName(CommonConstant.EXCEL_DEFAULT_PHOTO_TYPE_NAME);
+            }
+            if(StringUtil.isEmpty(clientExcelDTO.getSex())){
+                clientExcelDTO.setSex(CommonConstant.DEFAULT_STRING_ZERO);
+            }
             clientExcelDTO.setCreateTime(clientExcelDTO.getTime() == null ? 0 : clientExcelDTO.getTime().getTime() / 1000);
             clientExcelDTO.setSuccessTime(clientExcelDTO.getSuccessTimeDate() == null ? 0 : clientExcelDTO.getSuccessTimeDate().getTime() / 1000);
             clientExcelDTO.setAppointTime(clientExcelDTO.getAppointTimeDate() == null ? 0 : clientExcelDTO.getAppointTimeDate().getTime() / 1000);

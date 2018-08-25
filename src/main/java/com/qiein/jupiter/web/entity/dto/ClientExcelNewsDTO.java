@@ -75,9 +75,9 @@ public class ClientExcelNewsDTO implements Serializable {
     @Excel(name = "旺旺")
     private String kzWw;
     /**
-     * 性别（0男 1女 9未知）
+     * 性别（1男 2女 0未知）
      */
-    @Excel(name = "性别", replace = {"男_0", "女_1", "未知_9"})
+    @Excel(name = "性别", replace = {"男_1", "女_2", "未知_0"})
     private String sex;
     /**
      * 状态ID
