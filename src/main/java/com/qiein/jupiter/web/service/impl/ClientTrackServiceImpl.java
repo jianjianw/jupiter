@@ -310,7 +310,7 @@ public class ClientTrackServiceImpl implements ClientTrackService {
         //修改客资状态
         List<ClientPushDTO> clientPushDTOS = clientInfoDao.getKzIdExists(kzId, staffPO.getCompanyId(), DBSplitUtil.getInfoTabName(staffPO.getCompanyId()));
         if (CollectionUtils.isEmpty(clientPushDTOS)) {
-            throw new RException(ExceptionEnum.ALLOTED_ERROR);
+            throw new RException(ExceptionEnum.KZ_STATUS_ERROR);
         }
         ClientStatusPO clientStatusPO = clientStatusDao.getClientStatusByStatusId(ClientStatusConst.NOT_COME, staffPO.getCompanyId());
         if (null == clientStatusPO) {
