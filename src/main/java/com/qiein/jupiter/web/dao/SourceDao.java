@@ -188,5 +188,11 @@ public interface SourceDao extends BaseDao<SourcePO> {
      * @return
      */
     List<SourcePO> findSourseByType(@Param("companyId") int companyId,@Param("typeId")String typeId,@Param("sourceIds") String sourceIds);
-
+    /**
+     * 根据typeid查询渠道
+     * @param companyId
+     * @param typeId
+     * @return
+     */
+    List<SourcePO> findSourseByType1(@Param("companyId") int companyId,@Param("typeId")String typeId,@Param("sourceIds") String sourceIds,@Param("startTime")String startTime,@Param("endTime")String endTime);
 }

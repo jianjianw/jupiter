@@ -117,7 +117,7 @@ public class ZjskzOfMonthDao {
         }
         for (ZjsKzOfMonthOutVO zjsKzOfMonthOutVO : zjsKzOfMonthOutVOS) {
             for (ZjsKzOfMonthOutVO zjsKzOfMonthOutVO1 : zjsKzOfMonthOutBzk) {
-                if(zjsKzOfMonthOutVO.getDay().equalsIgnoreCase(zjsKzOfMonthOutVO1.getDay())&&zjsKzOfMonthOutVO.getSrcId()==zjsKzOfMonthOutVO1.getSrcId()){
+                if(zjsKzOfMonthOutVO.getDay().equalsIgnoreCase(zjsKzOfMonthOutVO1.getDay())&&zjsKzOfMonthOutVO.getSrcId().equals(zjsKzOfMonthOutVO1.getSrcId())){
                     zjsKzOfMonthOutVO.setAllClientCount(zjsKzOfMonthOutVO1.getAllClientCount());
                 }
             }
@@ -144,7 +144,7 @@ public class ZjskzOfMonthDao {
         }
         for (ZjsKzOfMonthOutVO zjsKzOfMonthOutVO : zjsKzOfMonthOutVOS) {
             for (ZjsKzOfMonthOutVO zjsKzOfMonthOutVO1 : zjsKzOfMonthOutBzk) {
-                if(zjsKzOfMonthOutVO.getDay().equalsIgnoreCase(zjsKzOfMonthOutVO1.getDay())&&zjsKzOfMonthOutVO.getSrcId()==zjsKzOfMonthOutVO1.getSrcId()){
+                if(zjsKzOfMonthOutVO.getDay().equalsIgnoreCase(zjsKzOfMonthOutVO1.getDay())&&zjsKzOfMonthOutVO.getSrcId().equals(zjsKzOfMonthOutVO1.getSrcId())){
                     zjsKzOfMonthOutVO.setPendingClientCount(zjsKzOfMonthOutVO1.getPendingClientCount());
                 }
             }
@@ -171,7 +171,7 @@ public class ZjskzOfMonthDao {
         }
         for (ZjsKzOfMonthOutVO zjsKzOfMonthOutVO : zjsKzOfMonthOutVOS) {
             for (ZjsKzOfMonthOutVO zjsKzOfMonthOutVO1 : zjsKzOfMonthOutBzk) {
-                if(zjsKzOfMonthOutVO.getDay().equalsIgnoreCase(zjsKzOfMonthOutVO1.getDay())&&zjsKzOfMonthOutVO.getSrcId()==zjsKzOfMonthOutVO1.getSrcId()){
+                if(zjsKzOfMonthOutVO.getDay().equalsIgnoreCase(zjsKzOfMonthOutVO1.getDay())&&zjsKzOfMonthOutVO.getSrcId().equals(zjsKzOfMonthOutVO1.getSrcId())){
                     zjsKzOfMonthOutVO.setFilterPendingClientCount(zjsKzOfMonthOutVO1.getFilterPendingClientCount());
                 }
             }
@@ -198,7 +198,7 @@ public class ZjskzOfMonthDao {
         }
         for (ZjsKzOfMonthOutVO zjsKzOfMonthOutVO : zjsKzOfMonthOutVOS) {
             for (ZjsKzOfMonthOutVO zjsKzOfMonthOutVO1 : zjsKzOfMonthOutBzk) {
-                if(zjsKzOfMonthOutVO.getDay().equalsIgnoreCase(zjsKzOfMonthOutVO1.getDay())&&zjsKzOfMonthOutVO.getSrcId()==zjsKzOfMonthOutVO1.getSrcId()){
+                if(zjsKzOfMonthOutVO.getDay().equalsIgnoreCase(zjsKzOfMonthOutVO1.getDay())&&zjsKzOfMonthOutVO.getSrcId().equals(zjsKzOfMonthOutVO1.getSrcId())){
                     zjsKzOfMonthOutVO.setFilterInValidClientCount(zjsKzOfMonthOutVO1.getFilterInValidClientCount());
                 }
             }
@@ -225,7 +225,7 @@ public class ZjskzOfMonthDao {
         }
         for (ZjsKzOfMonthOutVO zjsKzOfMonthOutVO : zjsKzOfMonthOutVOS) {
             for (ZjsKzOfMonthOutVO zjsKzOfMonthOutVO1 : zjsKzOfMonthOutBzk) {
-                if(zjsKzOfMonthOutVO.getDay().equalsIgnoreCase(zjsKzOfMonthOutVO1.getDay())&&zjsKzOfMonthOutVO.getSrcId()==zjsKzOfMonthOutVO1.getSrcId()){
+                if(zjsKzOfMonthOutVO.getDay().equalsIgnoreCase(zjsKzOfMonthOutVO1.getDay())&&zjsKzOfMonthOutVO.getSrcId().equals(zjsKzOfMonthOutVO1.getSrcId())){
                     zjsKzOfMonthOutVO.setFilterInClientCount(zjsKzOfMonthOutVO1.getFilterInClientCount());
                 }
             }
@@ -252,7 +252,7 @@ public class ZjskzOfMonthDao {
         }
         for (ZjsKzOfMonthOutVO zjsKzOfMonthOutVO : zjsKzOfMonthOutVOS) {
             for (ZjsKzOfMonthOutVO zjsKzOfMonthOutVO1 : zjsKzOfMonthOutBzk) {
-                if(zjsKzOfMonthOutVO.getDay().equalsIgnoreCase(zjsKzOfMonthOutVO1.getDay())&&zjsKzOfMonthOutVO.getSrcId()==zjsKzOfMonthOutVO1.getSrcId()){
+                if(zjsKzOfMonthOutVO.getDay().equalsIgnoreCase(zjsKzOfMonthOutVO1.getDay())&&zjsKzOfMonthOutVO.getSrcId().equals(zjsKzOfMonthOutVO1.getSrcId())){
                     zjsKzOfMonthOutVO.setValidClientCount(zjsKzOfMonthOutVO1.getValidClientCount());
                 }
             }
@@ -278,7 +278,7 @@ public class ZjskzOfMonthDao {
         }
         for (ZjsKzOfMonthOutVO zjsKzOfMonthOutVO : zjsKzOfMonthOutVOS) {
             for (ZjsKzOfMonthOutVO zjsKzOfMonthOutVO1 : zjsKzOfMonthOutBzk) {
-                if(zjsKzOfMonthOutVO.getDay().equalsIgnoreCase(zjsKzOfMonthOutVO1.getDay())&&zjsKzOfMonthOutVO.getSrcId()==zjsKzOfMonthOutVO1.getSrcId()){
+                if(zjsKzOfMonthOutVO.getDay().equalsIgnoreCase(zjsKzOfMonthOutVO1.getDay())&&zjsKzOfMonthOutVO.getSrcId().equals(zjsKzOfMonthOutVO1.getSrcId())){
                     zjsKzOfMonthOutVO.setComeShopClientCount(zjsKzOfMonthOutVO1.getComeShopClientCount());
                 }
             }
@@ -304,7 +304,7 @@ public class ZjskzOfMonthDao {
         }
         for (ZjsKzOfMonthOutVO zjsKzOfMonthOutVO : zjsKzOfMonthOutVOS) {
             for (ZjsKzOfMonthOutVO zjsKzOfMonthOutVO1 : zjsKzOfMonthOutBzk) {
-                if(zjsKzOfMonthOutVO.getDay().equalsIgnoreCase(zjsKzOfMonthOutVO1.getDay())&&zjsKzOfMonthOutVO.getSrcId()==zjsKzOfMonthOutVO1.getSrcId()){
+                if(zjsKzOfMonthOutVO.getDay().equalsIgnoreCase(zjsKzOfMonthOutVO1.getDay())&&zjsKzOfMonthOutVO.getSrcId().equals(zjsKzOfMonthOutVO1.getSrcId())){
                     zjsKzOfMonthOutVO.setSuccessClientCount(zjsKzOfMonthOutVO1.getSuccessClientCount());
                 }
             }

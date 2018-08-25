@@ -417,10 +417,34 @@
     </select>
 
     <select id="findSourseByType" resultMap="baseMap">
-        select SRCIMG,SRCNAME,ID FROM hm_crm_source where companyId=#{companyId} and typeid=#{typeId}
+        select SRCIMG,SRCNAME,ID FROM hm_crm_source where companyId=#{companyId} and typeid in (${typeId})
         <if test="sourceIds!=null and sourceIds!=''">
             and ID IN (${sourceIds})
         </if>
     </select>
+
+    <select id="findSourseByType1" resultMap="baseMap">
+        SELECT
+        src.id ID,
+        src.SRCNAME SRCNAME,
+        src.SRCIMG SRCIMG
+        FROM
+        hm_crm_client_info info
+        LEFT JOIN hm_crm_source src on src.id = info.sourceId and src.companyid=info.companyid
+        left join hm_crm_client_detail detail on info.kzid=detail.kzid and info.companyid=detail.companyid
+        WHERE
+        info.CREATETIME BETWEEN #{startTime}
+        AND #{endTime}
+        AND detail.INVALIDLABEL IS NOT NULL
+        AND src.SRCNAME is not null
+        and info.COMPANYID=#{companyId}
+        and src.typeid in (${typeId})
+        <if test="sourceIds!=null and sourceIds!=''">
+            and src.ID IN (${sourceIds})
+        </if>
+        GROUP BY src.srcname
+
+    </select>
+
 
 </mapper>
