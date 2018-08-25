@@ -211,6 +211,7 @@ public class ClientEditServiceImpl implements ClientEditService {
             // 在线订单
             if (ClientStatusConst.ONLINE_SUCCESS == clientVO.getYyRst()) {
                 reqContent.put("amount", clientVO.getAmount());// 成交套系金额
+                reqContent.put("htnum", clientVO.getHtNum());// 合同编号
                 reqContent.put("payamount", clientVO.getPayAmount());// 本次收款金额
 //                reqContent.put("stayamount", clientVO.getStayAmount());// 已收金额
                 reqContent.put("successtime", clientVO.getSuccessTime());// 订单时间
