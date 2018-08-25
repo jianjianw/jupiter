@@ -149,6 +149,7 @@ public enum ExceptionEnum {
     ALLOT_ERROR(1611, "请选择要分配的客资和客服"),
     ALLOTED_ERROR(1612, "所选客资无法进行分配"),
     APPOINTOR_ERROR(1613, "客服信息获取失败"),
+    KZ_STATUS_ERROR(1614, "该客资无法标记为未到店"),
     //状态
     STS_COLUMN_ERROR(1701, "状态颜色表示错误"),
     STS_DEFAULT_ERROR(1702, "默认颜色信息缺失"),
