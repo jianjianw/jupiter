@@ -336,8 +336,8 @@ public class ClientEditServiceImpl implements ClientEditService {
                 reqContent.put("htnum", clientVO.getHtNum());// 合同编号
                 reqContent.put("paystyle", clientVO.getPayStyle());// 付款方式
                 reqContent.put("paytime", clientVO.getSuccessTime());// 收款时间
-                reqContent.put("payreceiptid", clientVO.getReceiptId());// 收款人id
-                reqContent.put("payreceiptname", clientVO.getReceiptName());// 收款人姓名
+                reqContent.put("payreceiptid", NumUtil.isValid(clientVO.getReceiptId()) ? clientVO.getReceiptId() : clientVO.getReceiptId());// 收款人id
+                reqContent.put("payreceiptname", StringUtil.isNotEmpty(clientVO.getReceiptName()) ? clientVO.getReceiptName() : clientVO.getReceptorName());// 收款人姓名
             }
         }
         reqContent.put("memo", clientVO.getMemo());
