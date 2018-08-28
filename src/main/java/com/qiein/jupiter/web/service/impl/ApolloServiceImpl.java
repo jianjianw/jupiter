@@ -1,22 +1,38 @@
 package com.qiein.jupiter.web.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.mzlion.easyokhttp.HttpClient;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.HttpUtil;
+import com.qiein.jupiter.util.MD5Util;
 import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.util.retrofitUtil.RetorfitUtil;
 import com.qiein.jupiter.web.entity.dto.VerifyParamDTO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.remote.ApolloRemoteService;
 import com.qiein.jupiter.web.service.ApolloService;
 import com.qiein.jupiter.web.service.LoginService;
 import com.qiein.jupiter.web.service.StaffService;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Service;
+import retrofit2.Call;
+import retrofit2.Retrofit;
+
+import java.io.IOException;
+import java.util.Date;
+
+import static cn.afterturn.easypoi.excel.entity.enmus.CellValueType.Date;
 
 /**
  * apollo
@@ -24,15 +40,13 @@ import org.springframework.stereotype.Service;
  * @Author: shiTao
  */
 @Service
-public class ApolloServiceImpl implements ApolloService {
+public class ApolloServiceImpl implements ApolloService, ApplicationRunner {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Value("${apollo.getIpUrl}")
-    private String getIpUrl = "";
+    @Value("${apollo.baseUrl}")
+    private String apolloBaseUrl;
 
-    @Value("${apollo.getCrmUrl}")
-    private String getCrmUrl = "";
 
     private String apolloIps = "";
 
@@ -41,6 +55,8 @@ public class ApolloServiceImpl implements ApolloService {
 
     @Autowired
     private LoginService loginService;
+
+    private ApolloRemoteService apolloRemoteService;
 
 
     /**
@@ -77,7 +93,7 @@ public class ApolloServiceImpl implements ApolloService {
      */
     @Override
     public void getApolloIp() {
-        String ip = HttpClient.get(getIpUrl).asString();
+        String ip = RetorfitUtil.request(apolloRemoteService.getApolloIp());
         ip = ip.replaceAll("\"", "");
         this.apolloIps = ip;
     }
@@ -89,14 +105,42 @@ public class ApolloServiceImpl implements ApolloService {
      */
     @Override
     public String getCrmUrlByCidFromApollo(int cid) {
-        JSONObject json = HttpClient.get(getCrmUrl)
-                .queryString("cid", cid)
-                .asBean(JSONObject.class);
-        String url = json.getString("data");
+        String body = RetorfitUtil.request(apolloRemoteService.getCrmUrlByCidFromApollo(cid));
+        String url = JSON.parseObject(body).getString("data");
         if (StringUtil.isEmpty(url)) {
             throw new RException(ExceptionEnum.APOLLO_URL_NOT_SET);
         }
-        return HttpUtil.formatEndUrl(url);
+        url = HttpUtil.formatEndUrl(url);
+        return url;
+    }
+
+    /**
+     * 发送Websocket 消息
+     *
+     * @param msg
+     */
+    @Override
+    public void postWebSocketMsg(String msg) {
+        RequestBody requestBody = RetorfitUtil.createJSONBody(msg);
+        RetorfitUtil.requestSync(apolloRemoteService.postWebSocketMsg(requestBody));
+    }
+
+    /**
+     * 调用 远程图片
+     */
+    @Override
+    public JSONArray getSrcImgListRpc(String type, int companyId) {
+        JSONObject params = new JSONObject();
+        params.put("companyId", companyId);
+        params.put("typeCode", type);
+        RequestBody requestBody = RetorfitUtil.createJSONBody(params.toString());
+        String request = RetorfitUtil.request(apolloRemoteService.getSrcImgListRpc(MD5Util.getApolloMd5(params.toString()),
+                new Date().getTime(), requestBody));
+        JSONObject json = JSON.parseObject(request);
+        if (json.getIntValue("code") == CommonConstant.DEFAULT_SUCCESS_CODE) {
+            return json.getJSONArray("data");
+        }
+        return new JSONArray();
     }
 
     /**
@@ -116,5 +160,16 @@ public class ApolloServiceImpl implements ApolloService {
 
         }
         return false;
+    }
+
+
+    @Override
+    public void run(ApplicationArguments applicationArguments) {
+        Retrofit retrofit = new Retrofit.Builder()
+                //设置网络请求的Url地址
+                .baseUrl(apolloBaseUrl)
+                .build();
+        // 创建网络请求接口的实例
+        apolloRemoteService = retrofit.create(ApolloRemoteService.class);
     }
 }

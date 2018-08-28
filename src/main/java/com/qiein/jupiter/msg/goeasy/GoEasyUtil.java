@@ -69,10 +69,6 @@ public class GoEasyUtil {
      */
     public static String serverAddress;
 
-    @Value("${server.ip.address}")
-    public void setServerAddress(String serverAddress) {
-        GoEasyUtil.serverAddress = serverAddress;
-    }
 
     /**
      * 初始化GoEasy实例
@@ -202,10 +198,10 @@ public class GoEasyUtil {
         contentJson.put("overtime", overTime);
 
         //TODO
-        String url = "http://crm-jupiter.oss-cn-hangzhou.aliyuncs.com/wechat/index.html?kzId=" + kzId + "&logId=" + logId + "&uid=" + staffId + "&cid=" + companyId + "&url=" + serverAddress;
+        String url = "http://crm-jupiter.oss-cn-hangzhou.aliyuncs.com/wechat/index.html?kzId=" + kzId + "&logId=" + logId + "&uid=" + staffId + "&cid=" + companyId;
         CompanyPO companyPO = companyService.getById(companyId);
         WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(companyId, companyPO.getCompanyName(), staffId, url, "保密", "保密",
-                new SimpleDateFormat("YYYY-MM-DD HH:mm").format(new Date()),kzId,logId));
+                new SimpleDateFormat("YYYY-MM-DD HH:mm").format(new Date()), kzId, logId));
 
         pushApp(MessageConts.MSG_APP_INFO_REVEIVE, companyId, staffId, contentJson);
     }

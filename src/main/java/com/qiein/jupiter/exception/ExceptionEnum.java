@@ -12,6 +12,7 @@ public enum ExceptionEnum {
     METHOD_ARGUMENT_TYPE_MISMATCH_ERROR(-10, "方法参数无法转换"),
     CAN_NOT_FIND_USER_FROM_REQ(-11, "未能从请求中获取到用户信息"),
     APOLLO_URL_NOT_SET(-12, "阿波罗地址未设置"),
+    REMOTE_CALL_ERROR(-13, "远程调用错误"),
     //常用错误
     ADD_FAIL(1, "新增失败"),
     LOSE_FILED(2, "缺少必须条件"),
@@ -57,7 +58,7 @@ public enum ExceptionEnum {
     STAFF_CAN_NOT_DEL(358, "该员工存在有客资，请交接后再删除"),
     ONLY_APP_LOGIN(359, "只允许客户端登录"),
     COLLECTOR_NOT_FOUND(360, "提报人不存在"),
-    OLD_CLIENT_PHONE_IS_NOT_LEGAL(361,"请检查老客手机号是否正确，手机号的格式为11位纯数字"),
+    OLD_CLIENT_PHONE_IS_NOT_LEGAL(361, "请检查老客手机号是否正确，手机号的格式为11位纯数字"),
     //部门
     GROUP_NAME_REPEAT(401, "部门名称重复"),
     GROUP_HAVE_CHILD_GROUP(402, "该部门存在小组，请删除下属小组再进行操作"),
@@ -69,7 +70,7 @@ public enum ExceptionEnum {
     GROUP_NOT_EXIT(408, "部门不存在"),
     GROUP_IS_NULL(409, "小组不能为空"),
     GROUP_STAFF_EXISTS(410, "小组员工已经存在"),
-    GROUP_STAFF_NOT_EXISTS(411,"小组员工不存在"),
+    GROUP_STAFF_NOT_EXISTS(411, "小组员工不存在"),
     //渠道&来源
     CHANNEL_NAME_REPEAT(501, "渠道名称重复"),
     CHANNEL_ID_NULL(502, "渠道编号不能为空"),
@@ -128,8 +129,8 @@ public enum ExceptionEnum {
     SUCCESS_TIME_IS_NULL(1412, "订单时间不能为空"),
     STAY_TIME_IS_NULL(1413, "收款时间不能为空"),
     JD_RESULT_IS_NULL(1414, "接待结果不能为空"),
-    IS_NOT_KZ_PHONE_OR_WECHAT(1415,"请输入正确的客资手机号或密码"),
-    AMOUNT_ERROR(1416,"收款总价不能大于套系金额"),
+    IS_NOT_KZ_PHONE_OR_WECHAT(1415, "请输入正确的客资手机号或密码"),
+    AMOUNT_ERROR(1416, "收款总价不能大于套系金额"),
     //OSS对象存储
     OSS_UPLOAD_TYPE_ERROR(1501, "上传类型错误"),
     OSS_UPLOAD_SIZE_ERROR(1502, "图片大小超过3M"),
@@ -171,8 +172,8 @@ public enum ExceptionEnum {
     //金数据
     FORM_WAS_IN(2201, "表单已存在"),
     FORM_NOT_EXISTS(2202, "表单不存在"),
-    GOLD_DATA_ARR_LENGTH_ERROR(2203,"数组数据错误"),
-    ZX_STYLE_NOT_EXISTS(2204,"咨询类型不存在"),
+    GOLD_DATA_ARR_LENGTH_ERROR(2203, "数组数据错误"),
+    ZX_STYLE_NOT_EXISTS(2204, "咨询类型不存在"),
     //分页
     PAGESIZE_MAX_SIZE_ERROR(2301, "每页最多500条"),
     //短信
@@ -180,18 +181,20 @@ public enum ExceptionEnum {
     TEMPLATE_NOT_IN(2402, "短信模板不存在"),
     //报表
     START_TIME_OR_END_TIME_IS_NULL(2501, "开始时间或者结束时间不能为空"),
-    SEARCH_TYPE_IS_UNKNOW(2502,"请选择查询一个已知的数据类型"),
-    SEARCH_CLIENT_TYPE_IS_UNKNOW(2503,"请选择查询一个已知的客资类型"),
+    SEARCH_TYPE_IS_UNKNOW(2502, "请选择查询一个已知的数据类型"),
+    SEARCH_CLIENT_TYPE_IS_UNKNOW(2503, "请选择查询一个已知的客资类型"),
     //外呼
-    NOT_FOUND_BIND_USER(2601,"未找到绑定用户信息"),
-    CALLER_OR_CALLEE_IS_NULL(2602,"主叫或者被叫电话为空"),
-    CALL_ID_IS_NULL(2603,"实例ID不能为空"),
-    CALL_CONSUMER_PHONE_IS_NULL(2604,"客服电话不能为空"),
-    CALL_CONSUMER_IS_EXISTS(2605,"客服已经存在"),
-    CALL_CONSUMER_ID_IS_NULL(2606,"客服id为空"),
+    NOT_FOUND_BIND_USER(2601, "未找到绑定用户信息"),
+    CALLER_OR_CALLEE_IS_NULL(2602, "主叫或者被叫电话为空"),
+    CALL_ID_IS_NULL(2603, "实例ID不能为空"),
+    CALL_CONSUMER_PHONE_IS_NULL(2604, "客服电话不能为空"),
+    CALL_CONSUMER_IS_EXISTS(2605, "客服已经存在"),
+    CALL_CONSUMER_ID_IS_NULL(2606, "客服id为空"),
     //黑名单
-    BLACK_WAS_IN(2701,"该手机号已存在"),
-    KZ_IN_BLACK_LIST(2702,"该客资已被添加到黑名单");
+    BLACK_WAS_IN(2701, "该手机号已存在"),
+    KZ_IN_BLACK_LIST(2702, "该客资已被添加到黑名单");
+
+
     private Integer code;
     private String msg;
 
