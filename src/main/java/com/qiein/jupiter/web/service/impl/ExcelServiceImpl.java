@@ -416,7 +416,7 @@ public class ExcelServiceImpl implements ExcelService {
         reqContent.put("filtersql", clientExportDTO.getFilterSql());
         reqContent.put("supersql", clientExportDTO.getSuperSql());
         CompanyVO companyVO = companyDao.getVOById(staffPO.getCompanyId());
-        String addRstStr = crmBaseApi.doService(reqContent, "excel_export_lp");
+        String addRstStr = crmBaseApi.doService(reqContent, "excel_export_hs");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if ("100000".equals(jsInfo.getString("code"))) {
             JSONArray jsArr = JsonFmtUtil.strContentToJsonObj(addRstStr).getJSONArray("infoList");
