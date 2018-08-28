@@ -197,6 +197,7 @@ public class ClientEditServiceImpl implements ClientEditService {
             // 下次追踪
             if (ClientStatusConst.TRACE_STATUS_RANGE.contains(clientVO.getYyRst())) {
                 reqContent.put("tracktime", clientVO.getTrackTime());
+                reqContent.put("trackmemo", clientVO.getTrackMemo());
             }
             //预约到店
             if (ClientStatusConst.BE_COMFIRM == clientVO.getYyRst()) {
