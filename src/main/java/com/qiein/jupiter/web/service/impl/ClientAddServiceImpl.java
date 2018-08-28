@@ -49,8 +49,6 @@ public class ClientAddServiceImpl implements ClientAddService {
     @Autowired
     private ClientBlackListDao clientBlackListDao;
 
-
-
     /**
      * 添加电商客资
      *
