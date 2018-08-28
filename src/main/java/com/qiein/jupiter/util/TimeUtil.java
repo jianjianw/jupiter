@@ -611,4 +611,59 @@ public class TimeUtil {
     public static int getDayLastTimeStamp10ByDate(Date date) {
         return (int) (date.getTime() / 1000) + 86399;
     }
+
+
+    /**
+     * 匹配所有所有时间格式
+     * */
+    public static Date smartFormat(String time) throws Exception{
+        SimpleDateFormat datePattern = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+        Date returnTime = null;
+        try{
+            returnTime  =  datePattern.parse(time);
+        }catch (ParseException e){
+            datePattern = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            try{
+                returnTime = datePattern.parse(time);
+            }catch (ParseException e1){
+                datePattern = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                try{
+                    returnTime = datePattern.parse(time);
+                }catch (ParseException e2){
+                    datePattern = new SimpleDateFormat("yyyy-M-dd HH:mm:ss");
+                    try{
+                        returnTime = datePattern.parse(time);
+                    }catch (ParseException e3){
+                        datePattern = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                        try{
+                            returnTime = datePattern.parse(time);
+                        }catch (ParseException e4){
+                            datePattern = new SimpleDateFormat("yyyy-MM-dd H:mm");
+                            try{
+                                returnTime = datePattern.parse(time);
+                            }catch (ParseException e5){
+                                datePattern = new SimpleDateFormat("yyyy-M-dd HH:mm");
+                                try{
+                                    returnTime = datePattern.parse(time);
+                                }catch (ParseException e6){
+                                    datePattern = new SimpleDateFormat("yyyy-M-dd H:mm");
+                                    try{
+                                        returnTime = datePattern.parse(time);
+                                    }catch (ParseException e7){
+                                        datePattern = new SimpleDateFormat("yyyy-M-d H:mm");
+                                        try{
+                                            returnTime = datePattern.parse(time);
+                                        }catch (ParseException e8){
+                                            throw e8;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return returnTime;
+    }
 }
