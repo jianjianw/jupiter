@@ -167,7 +167,6 @@ public class CostServiceImpl implements CostService {
      * 修改花费
      */
     public void editCost(CostPO costPO,CostLogPO costLogPO) {
-        costPO.setRate(costPO.getRate().divide(new BigDecimal(100)));
         List<CostPO> list = costDao.getCostByDayAndSrc(costPO);
         if (list.size() == 0) {
             costPO.setRate(new BigDecimal(0));
