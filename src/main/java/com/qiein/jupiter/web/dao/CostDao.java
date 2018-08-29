@@ -15,7 +15,7 @@ public interface CostDao {
      * @param companyId
      * @return
      */
-     List<CostShowVO> costList(@Param("month") String month, @Param("companyId") Integer companyId,@Param("staffId")Integer staffId);
+     List<CostPO> costList(@Param("month") String month, @Param("companyId") Integer companyId,@Param("staffId")Integer staffId);
 
     /**
      * 添加花费

@@ -445,6 +445,27 @@
         GROUP BY src.srcname
 
     </select>
+    <select id="findSourceByRole" resultMap="baseMap">
 
+        SELECT
+            src.SRCIMG,
+            src.SRCNAME,
+            src.ID
+        FROM
+            hm_pub_role_source role
+        LEFT JOIN hm_crm_source src ON src.ID = role.SOURCEID
+        AND src.COMPANYID = role.COMPANYID
+        WHERE
+            role.COMPANYID = #{companyId}
+        AND role.ROLEID IN (
+            SELECT
+                staff.ROLEID
+            FROM
+                hm_pub_staff_role staff
+            WHERE
+                staff.staffid = #{staffId}
+        )
+        and src.ID is not null
+    </select>
 
 </mapper>

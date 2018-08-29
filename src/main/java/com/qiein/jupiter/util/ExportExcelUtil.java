@@ -2,6 +2,8 @@ package com.qiein.jupiter.util;
 
 import cn.afterturn.easypoi.excel.ExcelExportUtil;
 import cn.afterturn.easypoi.excel.entity.ExportParams;
+import cn.afterturn.easypoi.excel.export.styler.ExcelExportStylerBorderImpl;
+import cn.afterturn.easypoi.excel.export.styler.ExcelExportStylerColorImpl;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -71,6 +73,8 @@ public class ExportExcelUtil {
         Workbook workBook;
         ExportParams params = new ExportParams(null, title);
         workBook = ExcelExportUtil.exportBigExcel(params, pojoClass, list);
+        ExcelExportStylerColorImpl excelExportStylerColor =new ExcelExportStylerColorImpl(workBook);
+        excelExportStylerColor.stringSeptailStyle(workBook,true);
         ExcelExportUtil.closeExportBigExcel();
         return workBook;
     }

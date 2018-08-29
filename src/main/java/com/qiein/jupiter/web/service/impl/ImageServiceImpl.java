@@ -7,6 +7,7 @@ import com.mzlion.easyokhttp.HttpClient;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.util.MD5Util;
 import com.qiein.jupiter.web.dao.ImageDao;
+import com.qiein.jupiter.web.service.ApolloService;
 import com.qiein.jupiter.web.service.ImageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,8 +32,11 @@ public class ImageServiceImpl implements ImageService {
     @Autowired
     private ImageDao imageDao;
 
-    @Value("${apollo.getImgUrl}")
-    private String getImgUrl;
+//    @Value("${apollo.getImgUrl}")
+//    private String getImgUrl;
+
+    @Autowired
+    private ApolloService apolloService;
 
 
     /**
@@ -48,27 +52,28 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public JSONArray getSrcImgListRPC(String type, int companyId) {
-        JSONObject params = new JSONObject();
-        params.put("companyId", companyId);
-        params.put("typeCode", type);
-
-        String res;
-        try {
-            res = HttpClient.textBody(getImgUrl)
-                    .queryString("sign", MD5Util.getApolloMd5(params.toString()))
-                    .queryString("time", new Date().getTime())
-                    .json(params.toString())
-                    .asString();
-            JSONObject json = JSON.parseObject(res);
-            if (json.getIntValue("code") == CommonConstant.DEFAULT_SUCCESS_CODE) {
-                return json.getJSONArray("data");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.error("阿波罗远程连接错误！");
-            return new JSONArray();
-        }
-        return new JSONArray();
+//        JSONObject params = new JSONObject();
+//        params.put("companyId", companyId);
+//        params.put("typeCode", type);
+//
+//        String res;
+//        try {
+//            res = HttpClient.textBody(getImgUrl)
+//                    .queryString("sign", MD5Util.getApolloMd5(params.toString()))
+//                    .queryString("time", new Date().getTime())
+//                    .json(params.toString())
+//                    .asString();
+//            JSONObject json = JSON.parseObject(res);
+//            if (json.getIntValue("code") == CommonConstant.DEFAULT_SUCCESS_CODE) {
+//                return json.getJSONArray("data");
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            log.error("阿波罗远程连接错误！");
+//            return new JSONArray();
+//        }
+//        return new JSONArray();
+        return apolloService.getSrcImgListRpc(type, companyId);
     }
 
 }

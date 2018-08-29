@@ -1,19 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qiein.jupiter.web.dao.CostDao">
-    <resultMap id="Cost" type="com.qiein.jupiter.web.entity.vo.CostShowVO">
-        <id column="ID" jdbcType="VARCHAR" property="id" />
-        <result column="TOTALCOST" jdbcType="DECIMAL" property="totalCost"/>
-        <result column="SRCID" jdbcType="INTEGER" property="srcId" />
-        <result column="SRCNAME" jdbcType="VARCHAR" property="srcName" />
-        <result column="SRCIMG" jdbcType="VARCHAR" property="srcImg" />
-        <collection property="costPOS" ofType="com.qiein.jupiter.web.entity.po.CostPO">
-            <id column="COSTID" jdbcType="VARCHAR" property="id" />
-            <result column="COST" jdbcType="DECIMAL" property="cost" />
-            <result column="COSTTIME" jdbcType="VARCHAR" property="costTime" />
-            <result column="COMPANYID" jdbcType="INTEGER" property="companyId" />
-            <result column="COSTDATE" jdbcType="VARCHAR" property="date" />
-        </collection>
+    <resultMap id="Cost" type="com.qiein.jupiter.web.entity.po.CostPO">
+        <id column="ID" jdbcType="INTEGER" property="srcId" />
+		<result column="COST" jdbcType="DECIMAL" property="afterCost" />
+		<result column="BEFORECOST" jdbcType="DECIMAL" property="beforeCost"/>
+		<result column="COSTTIME" jdbcType="VARCHAR" property="costTime" />
+
     </resultMap>
 
 
@@ -23,107 +16,19 @@
 
   <select id="costList" resultMap="Cost">
          SELECT
-			a.ID COSTID,
-			sourse.ID,
-			SRCNAME,
-			SRCIMG,
-			(
-				SELECT
-					c.COST
-				FROM
-					hm_crm_cost c
-				WHERE
-					c.COSTTIME = a.COSTTIME
-				AND c.SRCID = a.SRCID
-			) COST,
-			SRCID,
-			FROM_UNIXTIME(a.COSTTIME, '%Y/%m/%d') COSTTIME,
-			FROM_UNIXTIME(a.COSTTIME, '%d ') COSTDATE,
-			(
-				SELECT
-					SUM(COST)
-				FROM
-					hm_crm_cost b
-				WHERE
-					a.SRCID = b.SRCID
-				AND FROM_UNIXTIME(b.COSTTIME, '%Y/%m/%d ') LIKE CONCAT(
-					"%",
-		#{month},
-		 "%"
-		)
-				AND b.COMPANYID = #{companyId}
-				) TOTALCOST
-				FROM
-			(
-				SELECT
-					SOURCEID
-				FROM
-					hm_pub_role_source
-				WHERE
-					roleID = (select staff.ROLEID from hm_pub_staff_role  staff where staff.staffid=#{staffId})
-				AND companyid = #{companyId}
-			) role
-		LEFT JOIN (
-			SELECT
-				ID,
-				SRCNAME,
-				SRCIMG
-			FROM
-				hm_crm_source
-			WHERE
-				COMPANYID = #{companyId}
-			AND (TYPEID = 1 OR TYPEID = 2)
-		) sourse ON sourse.ID = role.SOURCEID
-				LEFT JOIN (
-					SELECT
-						ID,
-						SRCID,
-						COSTTIME
-					FROM
-					hm_crm_cost cost
-					WHERE
-						FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d ') LIKE CONCAT(
-							"%",
-							#{month}, "%")
-						AND cost.companyId = #{companyId}
-		GROUP BY SRCID,COSTTIME
-		) a ON sourse.ID = a.SRCID
-
-
-			UNION
-				SELECT
-					cost.ID COSTID,
-					"" ID,
-					"合计" SRCNAME,
-					"NOIMG" SRCIMG,
-					SUM(cost.COST) COST,
-					cost.SRCID SRCID,
-					FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d ') COSTTIME,
-					FROM_UNIXTIME(cost.COSTTIME, '%d ') COSTDATE,
-					(
-						SELECT
-							SUM(b.COST)
-						FROM
-								hm_pub_role_source a
-
-
-						LEFT JOIN hm_crm_cost b ON b.SRCID=a.sourceid AND b.COMPANYID=a.companyid AND FROM_UNIXTIME(b.COSTTIME, '%Y/%m/%d ') LIKE CONCAT(
-								"%",
-								#{month}, "%") AND a.roleid=(select staff.ROLEID from hm_pub_staff_role  staff where staff.staffid=#{staffId})
-						WHERE
-							a.companyid=#{companyId}
-							) TOTALCOST
-						FROM
-								hm_pub_role_source role
-
-
-						LEFT JOIN hm_crm_cost cost ON cost.SRCID=role.sourceid AND cost.COMPANYID=role.companyid AND FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d ') LIKE CONCAT(
-								"%",
-								#{month}, "%") AND role.roleid=(select staff.ROLEID from hm_pub_staff_role  staff where staff.staffid=#{staffId})
-						WHERE
-								role.companyid=#{companyId}
-							GROUP BY
-								cost.COSTTIME
+			cost.COST,
+			cost.BEFORECOST,
+			FROM_UNIXTIME(cost.COSTTIME,"%Y/%m/%d") COSTTIME,
+			src.ID
+		FROM
+			hm_pub_role_source role
+		LEFT JOIN hm_crm_source src ON src.id = role.SOURCEID
+		AND src.COMPANYID = role.COMPANYID
+		LEFT JOIN hm_crm_cost cost ON cost.SRCID = role.SOURCEID
+		AND cost.COMPANYID = role.COMPANYID
+		WHERE cost.COMPANYID=#{companyId} and  FROM_UNIXTIME(cost.COSTTIME,"%Y/%m")=#{month}  and
+		role.ROLEID in ((select staff.ROLEID  from hm_pub_staff_role staff where staff.STAFFID=#{staffId} ))
+		and src.ID is not null
     </select>
 
 

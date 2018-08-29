@@ -7,6 +7,8 @@ import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.dto.ClientGoEasyDTO;
 import com.qiein.jupiter.web.entity.dto.WebSocketMsgDTO;
 import com.qiein.jupiter.web.entity.dto.OrderSuccessMsg;
+import com.qiein.jupiter.web.service.ApolloService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +21,9 @@ public class WebSocketMsgUtil {
      * 消息推送地址
      */
     private final String msgUrl;
+
+    @Autowired
+    private ApolloService apolloService;
 
     /**
      * 构造
@@ -35,9 +40,10 @@ public class WebSocketMsgUtil {
      * @param msg
      */
     private void sendMsgAsync(String msg) {
-        HttpClient.textBody(msgUrl)
-                // post提交json
-                .json(msg).execute();
+//        HttpClient.textBody(msgUrl)
+//                // post提交json
+//                .json(msg).execute();
+        apolloService.postWebSocketMsg(msg);
     }
 
     // /**
@@ -57,7 +63,7 @@ public class WebSocketMsgUtil {
      *
      * @param msgDTO
      */
-    public void sendMsg(WebSocketMsgDTO msgDTO) {
+    private void sendMsg(WebSocketMsgDTO msgDTO) {
         this.sendMsgAsync(JSONObject.toJSONString(msgDTO));
     }
 

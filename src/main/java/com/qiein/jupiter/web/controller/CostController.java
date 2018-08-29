@@ -37,7 +37,7 @@ public class CostController extends BaseController {
      */
     @PostMapping("edit_cost")
     public ResultInfo editCost(@RequestBody CostPO costPO) {
-        StaffPO staff = getCurrentLoginStaff();
+        /**StaffPO staff = getCurrentLoginStaff();
         costPO.setCompanyId(staff.getCompanyId());
         if (StringUtil.haveEmpty(costPO.getId())) {
             int id = costService.insert(costPO);
@@ -45,7 +45,7 @@ public class CostController extends BaseController {
         } else {
             costService.editCost(costPO);
             addCostLog(staff, costPO.getId(), "修改" + costPO.getCostTime() + "花费金额为：" + costPO.getCost());
-        }
+        }**/
         return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
 

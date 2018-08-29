@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.qiein.jupiter.web.entity.dto.VerifyParamDTO;
 
 /**
@@ -26,4 +27,17 @@ public interface ApolloService {
      * 从apollo 获取 CRM 地址
      */
     String getCrmUrlByCidFromApollo(int companyId);
+
+
+    /**
+     * 发送Websocket 消息
+     *
+     * @param msg
+     */
+    void postWebSocketMsg(String msg);
+
+    /**
+     * 远程调用获取图片
+     */
+    JSONArray getSrcImgListRpc(String type, int companyId);
 }

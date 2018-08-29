@@ -38,6 +38,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
                 .excludePathPatterns("/login/need_verity_code")
                 .excludePathPatterns("/login/check_token")
                 //微信
+                .excludePathPatterns("/wechat/check_auth_pms")
                 .excludePathPatterns("/app/wx_receive")
                 //外部转介绍
                 .excludePathPatterns("/add/add_out_zjs_client")

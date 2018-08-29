@@ -61,4 +61,11 @@ public interface RoleService {
      */
     boolean roleUsed(int companyId, int roleId);
 
+    /**
+     * 判断该员工是否拥有授权客户端权限
+     * @param companyId
+     * @param staffId
+     * @return
+     */
+    boolean checkStaffAuthPms(Integer companyId,Integer staffId);
 }
