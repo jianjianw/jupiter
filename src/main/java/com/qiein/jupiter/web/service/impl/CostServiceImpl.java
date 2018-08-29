@@ -78,6 +78,7 @@ public class CostServiceImpl implements CostService {
         //获取合计类
         CostShowVO hjcostShow = new CostShowVO();
         hjcostShow.setSrcName("合计");
+        hjcostShow.setSrcId(0);
         Map<String, BigDecimal> costMap = new HashMap<>();
         Map<String, BigDecimal> beforeCostMap = new HashMap<>();
         for (Map<String, Object> map : dayList) {
