@@ -1039,4 +1039,15 @@ public class StaffServiceImpl implements StaffService {
         return staffDao.searchStaffByKey(companyId, key);
     }
 
+    /**
+     * 获取爆彩消息设置
+     *
+     * @param companyId
+     * @param staffId
+     * @return
+     */
+    public String getMsgSetByStaffId(int companyId, int staffId) {
+        return staffDao.getMsgSetByStaffId(companyId, staffId);
+    }
+
 }

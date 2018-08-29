@@ -1182,4 +1182,12 @@
                 OR staff.NICKNAME LIKE '%${key}%'
             )
     </select>
+
+    <!--获取消息设置-->
+    <select id="getMsgSetByStaffId" parameterType="map" resultType="java.lang.String">
+        SELECT  MSGSET
+        FROM hm_pub_staff_detail
+        WHERE ID = #{staffId}
+        AND COMPANYID = #{companyId}
+    </select>
 </mapper>
