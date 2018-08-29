@@ -154,7 +154,7 @@ public class ExcelController extends BaseController {
                     TimeUtil.ymdSDF_) + "--"
                     + TimeUtil.intMillisToTimeStr(Integer.parseInt(clientExportDTO.getEnd()), TimeUtil.ymdSDF_) + "客资（"
                     + currentLoginStaff.getNickName() + "）";
-            ExportExcelUtil.export(response, fileName, excelService.Export(currentLoginStaff, clientExportDTO),
+            ExportExcelUtil.export(response, fileName, excelService.export(currentLoginStaff, clientExportDTO),
                     ClientExportVO.class);
         } catch (Exception e) {
             e.printStackTrace();

@@ -81,6 +81,34 @@ public class ClientExportDTO implements Serializable {
      */
     private String superSql;
 
+    /**
+     * 第几页
+     */
+    private String page;
+    /**
+     * 每页多少条
+     */
+    private String size;
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public String getPage() {
+        return page;
+    }
+
+    public void setPage(String page) {
+        this.page = page;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
 
     public int getCompanyId() {
         return companyId;
