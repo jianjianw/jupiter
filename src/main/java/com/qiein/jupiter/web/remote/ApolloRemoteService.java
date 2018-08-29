@@ -37,10 +37,45 @@ public interface ApolloRemoteService {
     @POST("/websocket/post_to_company_staff")
     Call<ResponseBody> postWebSocketMsg(@Body RequestBody body);
 
-
-    @POST
+    /**
+     * 获取渠道图片列表
+     */
+    @POST("/img/get_public_image_by_type")
     Call<ResponseBody> getSrcImgListRpc(@Query("sign") String sign,
                                         @Query("time") long time,
                                         @Body RequestBody body);
 
+    /**
+     * 短信账号记录
+     */
+    @GET("/send_msg/msg_template_log")
+    Call<ResponseBody> msgTemplateLog(@Query("startTime") String startTime,
+                                      @Query("endTime") String endTime,
+                                      @Query("companyId") int companyId);
+
+    /**
+     * 获取短信发送记录页面
+     */
+    @GET("/send_msg/find_send_msg")
+    Call<ResponseBody> findSendMsg(@Query("startTime") String startTime,
+                                   @Query("endTime") String endTime,
+                                   @Query("companyId") int companyId,
+                                   @Query("phone") String phone,
+                                   @Query("type") String type,
+                                   @Query("pageNum") int pageNum,
+                                   @Query("pageSize") int pageSize);
+
+    /**
+     * 获取短信模板
+     */
+    @GET("/send_msg/find_company_template")
+    Call<ResponseBody> getTemplate(@Query("templateType") String templateType,
+                                   @Query("companyId") int companyId);
+
+    /**
+     * 短信发送
+     */
+    @POST("/send_msg/send_msg")
+    Call<ResponseBody> sendMsg(@Query("sign") String sign,
+                               @Body RequestBody body);
 }
