@@ -690,6 +690,6 @@ public class StaffController extends BaseController {
         String msgSet = staffService.getMsgSetByStaffId(currentLoginStaff.getCompanyId(), currentLoginStaff.getId());
         HashMap<String, Boolean> result = new HashMap<>();
         result.put("explode", msgSet.indexOf("/1/") != -1);
-        return ResultInfoUtil.success();
+        return ResultInfoUtil.success(result);
     }
 }
