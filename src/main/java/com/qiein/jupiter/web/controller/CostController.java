@@ -1,6 +1,8 @@
 package com.qiein.jupiter.web.controller;
 
 import com.qiein.jupiter.enums.TipMsgEnum;
+import com.qiein.jupiter.exception.ExceptionEnum;
+import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.util.StringUtil;
@@ -46,6 +48,9 @@ public class CostController extends BaseController {
      */
     @PostMapping("/edit_cost")
     public ResultInfo editCost(@RequestBody CostPO costPO) {
+        if(costPO.getSrcId()==0){
+            throw new RException(ExceptionEnum.CANT_EDIT_HJ);
+        }
         costPO.setCompanyId(getCurrentLoginStaff().getCompanyId());
         StaffPO staff= getCurrentLoginStaff();
         CostLogPO costLog = new CostLogPO();

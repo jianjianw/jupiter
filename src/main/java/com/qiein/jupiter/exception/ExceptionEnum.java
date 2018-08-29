@@ -183,6 +183,7 @@ public enum ExceptionEnum {
     //短信
     TEMPLATE_LOSE(2401, "短信模板获取失败"),
     TEMPLATE_NOT_IN(2402, "短信模板不存在"),
+    CANT_EDIT_HJ(2403,"合计数据不能直接修改"),
     //报表
     START_TIME_OR_END_TIME_IS_NULL(2501, "开始时间或者结束时间不能为空"),
     SEARCH_TYPE_IS_UNKNOW(2502, "请选择查询一个已知的数据类型"),
