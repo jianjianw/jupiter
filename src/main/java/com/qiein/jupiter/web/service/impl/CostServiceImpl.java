@@ -138,6 +138,7 @@ public class CostServiceImpl implements CostService {
      * @param companyId
      */
     public void editRate(String srcIds, Integer start, Integer end, BigDecimal rate,Integer companyId){
+        rate=rate.divide(new BigDecimal(100));
         costDao.editRate(srcIds,start,end,rate,companyId);
         List<ForDayPO> dayList=costDao.getDay(start,end);
         List<ForDayPO> forDayPOS=new ArrayList<>();
@@ -166,6 +167,7 @@ public class CostServiceImpl implements CostService {
      * 修改花费
      */
     public void editCost(CostPO costPO,CostLogPO costLogPO) {
+        costPO.setRate(costPO.getRate().divide(new BigDecimal(100)));
         List<CostPO> list = costDao.getCostByDayAndSrc(costPO);
         if (list.size() == 0) {
             costPO.setRate(new BigDecimal(0));
