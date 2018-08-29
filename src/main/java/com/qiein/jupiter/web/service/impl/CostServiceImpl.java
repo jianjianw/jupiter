@@ -9,6 +9,7 @@ import com.qiein.jupiter.web.dao.CostDao;
 import com.qiein.jupiter.web.dao.SourceDao;
 import com.qiein.jupiter.web.entity.po.CostLogPO;
 import com.qiein.jupiter.web.entity.po.CostPO;
+import com.qiein.jupiter.web.entity.po.ForDayPO;
 import com.qiein.jupiter.web.entity.po.SourcePO;
 import com.qiein.jupiter.web.entity.vo.CostShowVO;
 import com.qiein.jupiter.web.entity.vo.ZjsKzOfMonthOutVO;
@@ -56,8 +57,8 @@ public class CostServiceImpl implements CostService {
             Map<String, BigDecimal> costMap = new HashMap<>();
             Map<String, BigDecimal> beforeCostMap = new HashMap<>();
             for (Map<String, Object> map : dayList) {
-                beforeCostMap.put((String) map.get("day"), new BigDecimal(0));
-                costMap.put((String) map.get("day"), new BigDecimal(0));
+                beforeCostMap.put((String) map.get("dayKey"), new BigDecimal(0));
+                costMap.put((String) map.get("dayKey"), new BigDecimal(0));
             }
             costShowVO.setBeforeCostMap(beforeCostMap);
             costShowVO.setCostMap(costMap);
@@ -68,8 +69,8 @@ public class CostServiceImpl implements CostService {
         for (CostShowVO costShowVO : costShowVOS) {
             for (CostPO costPO : list) {
                 if (costPO.getSrcId().equals(costShowVO.getSrcId())) {
-                    costShowVO.getBeforeCostMap().put(costPO.getCostTime(), costPO.getBeforeCost());
-                    costShowVO.getCostMap().put(costPO.getCostTime(), costPO.getAfterCost());
+                    costShowVO.getBeforeCostMap().put(costPO.getDayKey(), costPO.getBeforeCost());
+                    costShowVO.getCostMap().put(costPO.getDayKey(), costPO.getAfterCost());
                 }
             }
         }
@@ -78,8 +79,8 @@ public class CostServiceImpl implements CostService {
         Map<String, BigDecimal> costMap = new HashMap<>();
         Map<String, BigDecimal> beforeCostMap = new HashMap<>();
         for (Map<String, Object> map : dayList) {
-            beforeCostMap.put((String) map.get("day"), new BigDecimal(0));
-            costMap.put((String) map.get("day"), new BigDecimal(0));
+            beforeCostMap.put((String) map.get("dayKey"), new BigDecimal(0));
+            costMap.put((String) map.get("dayKey"), new BigDecimal(0));
         }
         hjcostShow.setCostMap(costMap);
         hjcostShow.setBeforeCostMap(beforeCostMap);
@@ -123,7 +124,39 @@ public class CostServiceImpl implements CostService {
         }
         return i;
     }
+    /**
+     * 修改花费的返利率
+     * @param srcIds
+     * @param start
+     * @param end
+     * @param rate
+     * @param companyId
+     */
+    public void editRate(String srcIds, Integer start, Integer end, BigDecimal rate,Integer companyId){
+        costDao.editRate(srcIds,start,end,rate,companyId);
+        List<ForDayPO> dayList=costDao.getDay(start,end);
+        List<ForDayPO> forDayPOS=new ArrayList<>();
+        for(ForDayPO forDayPO:dayList){
+            for(String srcId:srcIds.split(CommonConstant.STR_SEPARATOR)){
+                ForDayPO forDayPO1=new ForDayPO();
+                forDayPO1.setDay(forDayPO.getDay());
+                forDayPO1.setSrcId(srcId);
+                forDayPO1.setRate(rate);
+                forDayPO1.setCompanyId(companyId);
+                forDayPOS.add(forDayPO1);
+            }
+        }
+        List<ForDayPO> checkList=costDao.getSrcByDay(srcIds,start,end,companyId);
+        for(int i=0;i<forDayPOS.size();i++){
+            for(ForDayPO forDayPO:checkList){
+                if(forDayPO.getDay().equals(forDayPOS.get(i).getDay())&&forDayPO.getSrcId().equals(forDayPOS.get(i).getSrcId())){
+                    forDayPOS.remove(i);
+                }
+            }
+        }
+        costDao.insertRate(forDayPOS);
 
+    }
     /**
      * 修改花费
      */

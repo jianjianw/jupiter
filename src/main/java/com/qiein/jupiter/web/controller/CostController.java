@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+
 /**
  * 电商渠道花费
  * Author xiangliang 2018/6/22
@@ -26,16 +28,23 @@ public class CostController extends BaseController {
     /**
      * 获取花费页面信息
      */
-    @GetMapping("cost_list")
+    @GetMapping("/cost_list")
     public ResultInfo costList(@RequestParam String month) {
         StaffPO staff = getCurrentLoginStaff();
         return ResultInfoUtil.success(costService.costList(month, staff.getCompanyId(),staff.getId()));
     }
-
+    /**
+     * 修改返利率
+     */
+    @GetMapping("/edit_rate")
+    public ResultInfo editRate(@RequestParam String srcIds, @RequestParam Integer start, @RequestParam Integer end, @RequestParam BigDecimal rate){
+        costService.editRate(srcIds,start,end,rate,getCurrentLoginStaff().getCompanyId());
+        return ResultInfoUtil.success();
+    }
     /**
      * 花费修改
      */
-    @PostMapping("edit_cost")
+    @PostMapping("/edit_cost")
     public ResultInfo editCost(@RequestBody CostPO costPO) {
         /**StaffPO staff = getCurrentLoginStaff();
         costPO.setCompanyId(staff.getCompanyId());

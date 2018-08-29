@@ -6,7 +6,7 @@
 		<result column="COST" jdbcType="DECIMAL" property="afterCost" />
 		<result column="BEFORECOST" jdbcType="DECIMAL" property="beforeCost"/>
 		<result column="COSTTIME" jdbcType="VARCHAR" property="costTime" />
-
+        <result column="DAYKEY" jdbcType="VARCHAR" property="dayKey"/>
     </resultMap>
 
 
@@ -19,6 +19,7 @@
 			cost.COST,
 			cost.BEFORECOST,
 			FROM_UNIXTIME(cost.COSTTIME,"%Y/%m/%d") COSTTIME,
+			CONCAT("Day",FROM_UNIXTIME(cost.COSTTIME,"%d")) DAYKEY,
 			src.ID
 		FROM
 			hm_pub_role_source role
@@ -46,5 +47,45 @@
         )
         VALUES
             (#{costId}, #{operaId}, #{operaName},UNIX_TIMESTAMP(now()), #{companyId}, #{memo})
+    </insert>
+    <update id="editRate">
+        update hm_crm_cost set rate=#{rate},cost=beforecost*(1-#{rate}) where companyId=#{companyId} and srcId in (${srcIds}) and costtime between #{start} and #{end}
+    </update>
+    <!-- 获取一段时间内每天的时间戳-->
+    <select id="getDay" resultType="com.qiein.jupiter.web.entity.po.ForDayPO">
+        SELECT
+        UNIX_TIMESTAMP(DATE(@tempDay)) day ,@tempDay := DATE_ADD(@tempDay, INTERVAL 1 DAY) forDay
+        FROM
+        hm_crm_cost
+        LEFT JOIN (
+        SELECT
+        @tempDay := FROM_UNIXTIME(#{start}, '%Y-%m-%d')
+        ) b ON 1 = 1
+        WHERE
+        @tempDay &lt;=FROM_UNIXTIME(#{end}, '%Y-%m-%d')
+    </select>
+    <select id="getSrcByDay" resultType="com.qiein.jupiter.web.entity.po.ForDayPO">
+        select costtime day,srcId from hm_crm_cost where companyId=#{companyId} and srcId in (${srcIds}) and costtime between #{start} and #{end}
+    </select>
+
+    <insert id="insertRate" parameterType="java.util.List">
+        INSERT INTO hm_crm_cost(
+        srcid,
+        costtime,
+        rate,
+        createtime,
+        updatetime,
+        companyid
+        )VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.srcId},
+            #{item.day},
+            #{item.rate},
+            UNIX_TIMESTAMP(now()),
+            UNIX_TIMESTAMP(now()),
+            #{item.companyId}
+            )
+        </foreach>
     </insert>
 </mapper>

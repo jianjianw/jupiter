@@ -11,6 +11,15 @@ public class CostPO {
     private BigDecimal afterCost;//实际金额
     private Integer srcId;// 渠道id
     private String costTime;// 日期
+    private String dayKey;
+
+    public String getDayKey() {
+        return dayKey;
+    }
+
+    public void setDayKey(String dayKey) {
+        this.dayKey = dayKey;
+    }
 
     public BigDecimal getBeforeCost() {
         return beforeCost;
