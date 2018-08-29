@@ -7,26 +7,16 @@ import java.util.List;
 import java.util.Map;
 
 public class CostShowVO {
-    //id
-    private Integer id;
     //来源ID
     private Integer srcId;
-    //总花费
-    private BigDecimal totalCost;
-    //花费详情
-    private List<CostPO> costPOS;
+    //实际花费
+    private Map<String,BigDecimal> beforeCostMap;
+    //花费
+    private Map<String,BigDecimal> costMap;
     //来源名称
     private String srcName;
     //来源图片
     private String srcImg;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public Integer getSrcId() {
         return srcId;
@@ -36,20 +26,20 @@ public class CostShowVO {
         this.srcId = srcId;
     }
 
-    public BigDecimal getTotalCost() {
-        return totalCost;
+    public Map<String, BigDecimal> getBeforeCostMap() {
+        return beforeCostMap;
     }
 
-    public void setTotalCost(BigDecimal totalCost) {
-        this.totalCost = totalCost;
+    public void setBeforeCostMap(Map<String, BigDecimal> beforeCostMap) {
+        this.beforeCostMap = beforeCostMap;
     }
 
-    public List<CostPO> getCostPOS() {
-        return costPOS;
+    public Map<String, BigDecimal> getCostMap() {
+        return costMap;
     }
 
-    public void setCostPOS(List<CostPO> costPOS) {
-        this.costPOS = costPOS;
+    public void setCostMap(Map<String, BigDecimal> costMap) {
+        this.costMap = costMap;
     }
 
     public String getSrcName() {

@@ -7,37 +7,25 @@ import java.math.BigDecimal;
  * author xiangliang 2018/6/22
  */
 public class CostPO {
-    private Integer id;// 花费id
-    private BigDecimal cost;// 花费金额
+    private BigDecimal beforeCost;// 花费金额
+    private BigDecimal afterCost;//实际金额
     private Integer srcId;// 渠道id
     private String costTime;// 日期
-    private Integer companyId;// 公司id
-    private String createTime;// 创建时间
-    private String updateTime;// 修改时间
-    private String date;
 
-    public String getDate() {
-        return date;
+    public BigDecimal getBeforeCost() {
+        return beforeCost;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setBeforeCost(BigDecimal beforeCost) {
+        this.beforeCost = beforeCost;
     }
 
-    public Integer getId() {
-        return id;
+    public BigDecimal getAfterCost() {
+        return afterCost;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public BigDecimal getCost() {
-        return cost;
-    }
-
-    public void setCost(BigDecimal cost) {
-        this.cost = cost;
+    public void setAfterCost(BigDecimal afterCost) {
+        this.afterCost = afterCost;
     }
 
     public Integer getSrcId() {
@@ -54,29 +42,5 @@ public class CostPO {
 
     public void setCostTime(String costTime) {
         this.costTime = costTime;
-    }
-
-    public Integer getCompanyId() {
-        return companyId;
-    }
-
-    public void setCompanyId(Integer companyId) {
-        this.companyId = companyId;
-    }
-
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(String updateTime) {
-        this.updateTime = updateTime;
     }
 }
