@@ -50,4 +50,14 @@ public class WeChatController extends BaseController {
         staffService.getWXStaffInfo(companyId,staffId);
         return ResultInfoUtil.success();
     }
+
+    /**
+     * 查询是否有授权权限
+     * @return
+     */
+    @GetMapping("/check_auth_pms")
+    public ResultInfo getStaffInfo(Integer staffId,Integer companyId){
+        //TODO
+        return ResultInfoUtil.success(true);
+    }
 }

@@ -75,9 +75,9 @@ public class ClientExcelNewsDTO implements Serializable {
     @Excel(name = "旺旺")
     private String kzWw;
     /**
-     * 性别（0男 1女 9未知）
+     * 性别（1男 2女 0未知）
      */
-    @Excel(name = "性别", replace = {"男_0", "女_1", "未知_9"})
+    @Excel(name = "性别", replace = {"男_1", "女_2", "未知_0"})
     private String sex;
     /**
      * 状态ID
@@ -149,13 +149,13 @@ public class ClientExcelNewsDTO implements Serializable {
     /**
      * 录入时间接收格式
      */
-    @Excel(name = "提报时间", databaseFormat = "MM月dd日", format = "yyyy-MM-dd HH:mm:ss,yyyy-M-dd HH:mm:ss,yyyy/MM/dd HH:mm:ss,yyyy-MM-dd HH:mm,yyyy-MM-dd H:mm,yyyy-M-dd HH:mm,yyyy-M-dd H:mm,yyyy-M-d H:mm")
-    private Date time;
+    @Excel(name = "提报时间", databaseFormat = "MM月dd日", format = "yyyy-MM-dd HH:mm:ss,yyyy-MM-dd HH:mm:ss,yyyy/MM/dd HH:mm:ss,yyyy-M-dd HH:mm:ss,yyyy-MM-dd HH:mm,yyyy-MM-dd H:mm,yyyy-M-dd HH:mm,yyyy-M-dd H:mm,yyyy-M-d H:mm")
+    private String time;
     /**
      * 预约时间接受格式
      */
-    @Excel(name = "预约时间", databaseFormat = "MM月dd日", format = "yyyy-MM-dd HH:mm:ss,yyyy-M-dd HH:mm:ss,yyyy/MM/dd HH:mm:ss,yyyy-MM-dd HH:mm,yyyy-MM-dd H:mm,yyyy-M-dd HH:mm,yyyy-M-dd H:mm,yyyy-M-d H:mm")
-    private Date appointTimeDate;
+    @Excel(name = "预约时间", databaseFormat = "MM月dd日", format = "yyyy-MM-dd HH:mm:ss,yyyy/MM/dd HH:mm:ss,yyyy-M-dd HH:mm:ss,yyyy-MM-dd HH:mm,yyyy-MM-dd H:mm,yyyy-M-dd HH:mm,yyyy-M-dd H:mm,yyyy-M-d H:mm")
+    private String appointTimeDate;
     /**
      * 预约时间
      * */
@@ -163,8 +163,8 @@ public class ClientExcelNewsDTO implements Serializable {
     /**
      * 入店时间接受格式
      */
-    @Excel(name = "入店时间 (首次入店时间，邀约计算业绩)", databaseFormat = "MM月dd日", format = "yyyy-MM-dd HH:mm:ss,yyyy-M-dd HH:mm:ss,yyyy/MM/dd HH:mm:ss,yyyy-MM-dd HH:mm,yyyy-MM-dd H:mm,yyyy-M-dd HH:mm,yyyy-M-dd H:mm,yyyy-M-d H:mm")
-    private Date comeShopTimeDate;
+    @Excel(name = "入店时间 (首次入店时间，邀约计算业绩)", format = "yyyy-MM-dd HH:mm:ss,yyyy/MM/dd HH:mm:ss,yyyy-M-dd HH:mm:ss,yyyy-MM-dd HH:mm,yyyy-MM-dd H:mm,yyyy-M-dd HH:mm,yyyy-M-dd H:mm,yyyy-M-d H:mm")
+    private String comeShopTimeDate;
 
     /**
      * 入店时间
@@ -173,8 +173,8 @@ public class ClientExcelNewsDTO implements Serializable {
     /**
      * 成交时间接受格式
      */
-    @Excel(name = "成交时间", databaseFormat = "MM月dd日", format = "yyyy-MM-dd HH:mm:ss,yyyy-M-dd HH:mm:ss,yyyy/MM/dd HH:mm:ss,yyyy-MM-dd HH:mm,yyyy-MM-dd H:mm,yyyy-M-dd HH:mm,yyyy-M-dd H:mm,yyyy-M-d H:mm")
-    private Date successTimeDate;
+    @Excel(name = "成交时间", databaseFormat = "MM月dd日", format = "yyyy-MM-dd HH:mm:ss,yyyy/MM/dd HH:mm:ss,yyyy-M-dd HH:mm:ss,yyyy-MM-dd HH:mm,yyyy-MM-dd H:mm,yyyy-M-dd HH:mm,yyyy-M-dd H:mm,yyyy-M-d H:mm")
+    private String successTimeDate;
     /**
      * 成交时间
      * */
@@ -372,6 +372,8 @@ public class ClientExcelNewsDTO implements Serializable {
         this.zxStyle = zxStyle;
     }
 
+
+
     public int getMarryTime() {
         return marryTime;
     }
@@ -457,35 +459,35 @@ public class ClientExcelNewsDTO implements Serializable {
         return false;
     }
 
-    public Date getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(String time) {
         this.time = time;
     }
 
-    public Date getAppointTimeDate() {
+    public String getAppointTimeDate() {
         return appointTimeDate;
     }
 
-    public void setAppointTimeDate(Date appointTimeDate) {
+    public void setAppointTimeDate(String appointTimeDate) {
         this.appointTimeDate = appointTimeDate;
     }
 
-    public Date getComeShopTimeDate() {
+    public String getComeShopTimeDate() {
         return comeShopTimeDate;
     }
 
-    public void setComeShopTimeDate(Date comeShopTimeDate) {
+    public void setComeShopTimeDate(String comeShopTimeDate) {
         this.comeShopTimeDate = comeShopTimeDate;
     }
 
-    public Date getSuccessTimeDate() {
+    public String getSuccessTimeDate() {
         return successTimeDate;
     }
 
-    public void setSuccessTimeDate(Date successTimeDate) {
+    public void setSuccessTimeDate(String successTimeDate) {
         this.successTimeDate = successTimeDate;
     }
 
@@ -971,6 +973,5 @@ public class ClientExcelNewsDTO implements Serializable {
     public void setZxStyleStr(String zxStyleStr) {
         this.zxStyleStr = zxStyleStr;
     }
-
 
 }

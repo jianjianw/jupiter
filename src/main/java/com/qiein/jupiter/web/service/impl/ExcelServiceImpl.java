@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import cn.afterturn.easypoi.excel.imports.CellValueService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.constant.ClientLogConst;
@@ -84,8 +85,15 @@ public class ExcelServiceImpl implements ExcelService {
         params.setTitleRows(0);
         // 表头行数,默认1
         params.setHeadRows(1);
-        List<ClientExcelNewsDTO> clientList = ExcelImportUtil.importExcel(file.getInputStream(), ClientExcelNewsDTO.class,
-                params);
+        List<ClientExcelNewsDTO> clientList = null;
+        try{
+            clientList  = ExcelImportUtil.importExcel(file.getInputStream(), ClientExcelNewsDTO.class,
+                    params);
+        }catch (Exception e){
+            throw new RException(e.getMessage(),e);
+        }
+
+
         if (CollectionUtils.isEmpty(clientList)) {
             throw new RException(ExceptionEnum.EXCEL_IS_NULL);
         }
@@ -102,11 +110,33 @@ public class ExcelServiceImpl implements ExcelService {
             clientExcelDTO.setCompanyId(currentLoginStaff.getCompanyId());
             clientExcelDTO.setKzId(StringUtil.getRandom());
             clientExcelDTO.setOperaId(currentLoginStaff.getId());
-            clientExcelDTO.setTypeName(CommonConstant.EXCEL_DEFAULT_PHOTO_TYPE_NAME);
-            clientExcelDTO.setCreateTime(clientExcelDTO.getTime() == null ? 0 : clientExcelDTO.getTime().getTime() / 1000);
-            clientExcelDTO.setSuccessTime(clientExcelDTO.getSuccessTimeDate() == null ? 0 : clientExcelDTO.getSuccessTimeDate().getTime() / 1000);
-            clientExcelDTO.setAppointTime(clientExcelDTO.getAppointTimeDate() == null ? 0 : clientExcelDTO.getAppointTimeDate().getTime() / 1000);
-            clientExcelDTO.setComeShopTime(clientExcelDTO.getComeShopTimeDate() == null ? 0 : clientExcelDTO.getComeShopTimeDate().getTime() / 1000);
+            if(StringUtil.isEmpty(clientExcelDTO.getTypeName())){
+                clientExcelDTO.setTypeName(CommonConstant.EXCEL_DEFAULT_PHOTO_TYPE_NAME);
+            }
+            if(StringUtil.isEmpty(clientExcelDTO.getSex())){
+                clientExcelDTO.setSex(CommonConstant.DEFAULT_STRING_ZERO);
+            }
+            //时间校验
+            try{
+                clientExcelDTO.setCreateTime(clientExcelDTO.getTime() == null ? 0 : TimeUtil.smartFormat(clientExcelDTO.getTime()).getTime() / 1000);
+            }catch (Exception e){
+                throw new RException(ExceptionEnum.TIME_ERROR);
+            }
+            try{
+                clientExcelDTO.setSuccessTime(clientExcelDTO.getSuccessTimeDate() == null ? 0 : TimeUtil.smartFormat(clientExcelDTO.getSuccessTimeDate()).getTime() / 1000);
+            }catch (Exception e){
+                throw new RException(ExceptionEnum.SUCCESS_TIME_ERROR);
+            }
+            try{
+                clientExcelDTO.setAppointTime(clientExcelDTO.getAppointTimeDate() == null ? 0 : TimeUtil.smartFormat(clientExcelDTO.getAppointTimeDate()).getTime() / 1000);
+            }catch (Exception e){
+                throw new RException(ExceptionEnum.APPOINT_TIME_ERROR);
+            }
+            try{
+                clientExcelDTO.setComeShopTime(clientExcelDTO.getComeShopTimeDate() == null ? 0 : TimeUtil.smartFormat(clientExcelDTO.getComeShopTimeDate()).getTime() / 1000);
+            }catch (Exception e){
+                throw new RException(ExceptionEnum.COME_SHOP_TIME_ERROR);
+            }
             clientExcelDTO.setMarryTime(CommonConstant.DEFAULT_ZERO);
             clientExcelDTO.setYpTime(CommonConstant.DEFAULT_ZERO);
             clientExcelDTO.setYxLevel(CommonConstant.DEFAULT_ZERO);
@@ -386,7 +416,7 @@ public class ExcelServiceImpl implements ExcelService {
         reqContent.put("filtersql", clientExportDTO.getFilterSql());
         reqContent.put("supersql", clientExportDTO.getSuperSql());
         CompanyVO companyVO = companyDao.getVOById(staffPO.getCompanyId());
-        String addRstStr = crmBaseApi.doService(reqContent, "excel_export_lp");
+        String addRstStr = crmBaseApi.doService(reqContent, "excel_export_hs");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if ("100000".equals(jsInfo.getString("code"))) {
             JSONArray jsArr = JsonFmtUtil.strContentToJsonObj(addRstStr).getJSONArray("infoList");

@@ -191,12 +191,13 @@ public class ClientEditServiceImpl implements ClientEditService {
             // 无效,或者流失
             if (ClientStatusConst.INVALID_BE_STAY == clientVO.getYyRst()
                     || ClientStatusConst.COME_SHOP_FAIL == clientVO.getYyRst()) {
-                reqContent.put("invalidLabel", clientVO.getInvalidLabel());
-                reqContent.put("invalidMemo", StringUtil.nullToStrTrim(clientVO.getInvalidMemo()));
+                reqContent.put("invalidlabel", clientVO.getInvalidLabel());
+                reqContent.put("invalidmemo", StringUtil.nullToStrTrim(clientVO.getInvalidMemo()));
             }
             // 下次追踪
             if (ClientStatusConst.TRACE_STATUS_RANGE.contains(clientVO.getYyRst())) {
                 reqContent.put("tracktime", clientVO.getTrackTime());
+                reqContent.put("trackmemo", clientVO.getTrackMemo());
             }
             //预约到店
             if (ClientStatusConst.BE_COMFIRM == clientVO.getYyRst()) {
@@ -336,8 +337,8 @@ public class ClientEditServiceImpl implements ClientEditService {
                 reqContent.put("htnum", clientVO.getHtNum());// 合同编号
                 reqContent.put("paystyle", clientVO.getPayStyle());// 付款方式
                 reqContent.put("paytime", clientVO.getSuccessTime());// 收款时间
-                reqContent.put("payreceiptid", clientVO.getReceiptId());// 收款人id
-                reqContent.put("payreceiptname", clientVO.getReceiptName());// 收款人姓名
+                reqContent.put("payreceiptid", NumUtil.isValid(clientVO.getReceiptId()) ? clientVO.getReceiptId() : clientVO.getReceptorId());// 收款人id
+                reqContent.put("payreceiptname", StringUtil.isNotEmpty(clientVO.getReceiptName()) ? clientVO.getReceiptName() : receptor.getNickName());// 收款人姓名
             }
         }
         reqContent.put("memo", clientVO.getMemo());

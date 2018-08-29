@@ -200,6 +200,19 @@ public class ClientExportVO implements Serializable {
      * */
     @Excel(name="老客电话",width = 20,height = 6)
     private String oldKzPhone;
+    /**
+     * 无效备注
+     * */
+    @Excel(name="无效备注",width=20,height = 6)
+    private String invalidMemo;
+
+    public String getInvalidMemo() {
+        return invalidMemo;
+    }
+
+    public void setInvalidMemo(String invalidMemo) {
+        this.invalidMemo = invalidMemo;
+    }
 
     public String getOldKzName() {
         return oldKzName;

@@ -166,6 +166,10 @@ public class ClientVO implements Serializable {
      */
     private String invalidMemo;
     /**
+     * 追踪备注
+     */
+    private String trackMemo;
+    /**
      * 下次追踪时间
      */
     private int trackTime;
@@ -771,5 +775,13 @@ public class ClientVO implements Serializable {
 
     public void setPayAmount(int payAmount) {
         this.payAmount = payAmount;
+    }
+
+    public String getTrackMemo() {
+        return trackMemo;
+    }
+
+    public void setTrackMemo(String trackMemo) {
+        this.trackMemo = trackMemo;
     }
 }

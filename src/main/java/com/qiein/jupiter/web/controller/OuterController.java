@@ -69,9 +69,14 @@ public class OuterController {
         return ResultInfoUtil.success();
     }
 
+    /**
+     * 获取UUID
+     *
+     * @return
+     */
     @GetMapping("/get_uuid")
     public ResultInfo getUUId() {
-        String uuid = UUID.randomUUID().toString().replace("-","" );
+        String uuid = UUID.randomUUID().toString().replace("-", "");
         return ResultInfoUtil.success(uuid);
     }
 
