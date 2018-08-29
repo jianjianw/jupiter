@@ -55,32 +55,20 @@ public interface ClientService {
      * @param kzId
      * @return
      */
-    Integer findId(String kzId, Integer companyId);
+    Integer findByKzId(String kzId, Integer companyId);
 
     /**
      * 查询已有客服的客资数量，用于分配
-     *
-     * @param kzIds
-     * @param companyId
-     * @return
      */
     int listExistAppointClientsNum(String kzIds, int companyId, String role);
 
     /**
      * 新增客资日志
-     *
-     * @param clientLogPO
      */
     void addClientLog(ClientLogPO clientLogPO);
 
     /**
      * 查询客资收款修改日志
-     *
-     * @param logTabName
-     * @param companyId
-     * @param kzId
-     * @param logType
-     * @return
      */
     List<ClientLogPO> getCashEditLog(int companyId, String kzId);
 }
