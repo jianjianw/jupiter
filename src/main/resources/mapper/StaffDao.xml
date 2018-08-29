@@ -94,6 +94,7 @@
         <result column="GROUPID" property="groupId" jdbcType="VARCHAR"/>
         <result column="GROUPNAME" property="groupName" jdbcType="VARCHAR"/>
         <result column="DEPTNAME" property="deptName" jdbcType="VARCHAR"/>
+        <result column="ISLOCK" property="lockFlag" jdbcType="BOOLEAN"/>
     </resultMap>
 
     <sql id="baseColumn">
@@ -345,7 +346,8 @@
             sf.USERNAME,
             grp.GROUPID,
             grp.GROUPNAME,
-            par.GROUPNAME AS DEPTNAME
+            par.GROUPNAME AS DEPTNAME,
+            sf.ISLOCK
         FROM
             hm_pub_group_staff rela
             RIGHT JOIN hm_pub_staff sf ON sf.COMPANYID = rela.COMPANYID AND rela.STAFFID = sf.ID

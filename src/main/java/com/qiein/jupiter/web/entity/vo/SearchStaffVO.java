@@ -36,7 +36,10 @@ public class SearchStaffVO extends BaseEntity {
      * 企业ID
      */
     private int companyId;
-
+    /**
+     * 锁定标志
+     */
+    private boolean lockFlag;
     public String getNickName() {
         return nickName;
     }
@@ -91,5 +94,13 @@ public class SearchStaffVO extends BaseEntity {
 
     public void setGroupId(String groupId) {
         this.groupId = groupId;
+    }
+
+    public boolean isLockFlag() {
+        return lockFlag;
+    }
+
+    public void setLockFlag(boolean lockFlag) {
+        this.lockFlag = lockFlag;
     }
 }
