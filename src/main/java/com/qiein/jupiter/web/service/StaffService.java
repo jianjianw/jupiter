@@ -390,4 +390,13 @@ public interface StaffService {
      * 根据关键字获取员工的信息
      */
     List<SimpleStaffVO> searchStaffByKey(int companyId, String key);
+
+    /**
+     * 获取爆彩消息设置
+     *
+     * @param companyId
+     * @param staffId
+     * @return
+     */
+    String getMsgSetByStaffId(int companyId, int staffId);
 }

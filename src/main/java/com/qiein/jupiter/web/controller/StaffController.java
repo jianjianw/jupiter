@@ -678,4 +678,18 @@ public class StaffController extends BaseController {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         return ResultInfoUtil.success(staffService.searchStaffByKey(currentLoginStaff.getCompanyId(), key));
     }
+
+    /**
+     * 根据关键字搜索员工
+     *
+     * @return
+     */
+    @GetMapping("/get_staff_msg_set")
+    public ResultInfo getStaffMsgSet() {
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        String msgSet = staffService.getMsgSetByStaffId(currentLoginStaff.getCompanyId(), currentLoginStaff.getId());
+        HashMap<String, Boolean> result = new HashMap<>();
+        result.put("explode", msgSet.indexOf("/1/") > 0);
+        return ResultInfoUtil.success();
+    }
 }

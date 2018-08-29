@@ -557,4 +557,13 @@ public interface StaffDao extends BaseDao<StaffPO> {
      */
     List<SimpleStaffVO> searchStaffByKey(@Param("companyId") int companyId, @Param("key") String key);
 
+    /**
+     * 获取爆彩消息设置
+     *
+     * @param companyId
+     * @param staffId
+     * @return
+     */
+    String getMsgSetByStaffId(@Param("companyId") int companyId, @Param("staffId") int staffId);
+
 }
