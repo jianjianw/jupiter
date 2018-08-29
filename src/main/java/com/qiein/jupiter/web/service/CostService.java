@@ -39,10 +39,6 @@ public interface CostService {
     /**
      * 修改花费
      */
-    void editCost(CostPO costPO);
+    void editCost(CostPO costPO,CostLogPO costLogPO);
 
-    /**
-     * 添加花费日志
-     */
-    void createCostLog(CostLogPO costLogPO);
 }

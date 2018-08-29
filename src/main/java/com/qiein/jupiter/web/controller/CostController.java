@@ -39,39 +39,22 @@ public class CostController extends BaseController {
     @GetMapping("/edit_rate")
     public ResultInfo editRate(@RequestParam String srcIds, @RequestParam Integer start, @RequestParam Integer end, @RequestParam BigDecimal rate){
         costService.editRate(srcIds,start,end,rate,getCurrentLoginStaff().getCompanyId());
-        return ResultInfoUtil.success();
+        return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
     /**
      * 花费修改
      */
     @PostMapping("/edit_cost")
     public ResultInfo editCost(@RequestBody CostPO costPO) {
-        /**StaffPO staff = getCurrentLoginStaff();
-        costPO.setCompanyId(staff.getCompanyId());
-        if (StringUtil.haveEmpty(costPO.getId())) {
-            int id = costService.insert(costPO);
-            addCostLog(staff, costPO.getId(), "新增" + costPO.getCostTime() + "花费：" + costPO.getCost());
-        } else {
-            costService.editCost(costPO);
-            addCostLog(staff, costPO.getId(), "修改" + costPO.getCostTime() + "花费金额为：" + costPO.getCost());
-        }**/
+        costPO.setCompanyId(getCurrentLoginStaff().getCompanyId());
+        StaffPO staff= getCurrentLoginStaff();
+        CostLogPO costLog = new CostLogPO();
+        costLog.setCompanyId(staff.getCompanyId());
+        costLog.setOperaId(staff.getId());
+        costLog.setOperaName(staff.getNickName());
+        costService.editCost(costPO,costLog);
         return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
 
-    /**
-     * 添加花费记录
-     *
-     * @param staff
-     * @param id
-     * @param memo
-     */
-    private void addCostLog(StaffPO staff, Integer id, String memo) {
-        CostLogPO costLog = new CostLogPO();
-        costLog.setCompanyId(staff.getCompanyId());
-        costLog.setCostId(id);
-        costLog.setOperaId(staff.getId());
-        costLog.setOperaName(staff.getNickName());
-        costLog.setMemo(memo);
-        costService.createCostLog(costLog);
-    }
+
 }

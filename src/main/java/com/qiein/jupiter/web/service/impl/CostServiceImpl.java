@@ -5,6 +5,7 @@ import com.qiein.jupiter.enums.TableEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.DBSplitUtil;
+import com.qiein.jupiter.util.TimeUtil;
 import com.qiein.jupiter.web.dao.CostDao;
 import com.qiein.jupiter.web.dao.SourceDao;
 import com.qiein.jupiter.web.entity.po.CostLogPO;
@@ -74,6 +75,7 @@ public class CostServiceImpl implements CostService {
                 }
             }
         }
+        //获取合计类
         CostShowVO hjcostShow = new CostShowVO();
         hjcostShow.setSrcName("合计");
         Map<String, BigDecimal> costMap = new HashMap<>();
@@ -84,6 +86,7 @@ public class CostServiceImpl implements CostService {
         }
         hjcostShow.setCostMap(costMap);
         hjcostShow.setBeforeCostMap(beforeCostMap);
+        //合计计算
         for (String costTime : costMap.keySet()) {
             BigDecimal cost = new BigDecimal(0);
             BigDecimal beforeCost = new BigDecimal(0);
@@ -95,6 +98,7 @@ public class CostServiceImpl implements CostService {
             hjcostShow.getBeforeCostMap().put(costTime, beforeCost);
         }
         costShowVOS.add(0,hjcostShow);
+        //各个类的合计计算
         for (CostShowVO costShowVO : costShowVOS) {
             BigDecimal cost = new BigDecimal(0);
             for (String costTime : costShowVO.getCostMap().keySet()) {
@@ -160,14 +164,20 @@ public class CostServiceImpl implements CostService {
     /**
      * 修改花费
      */
-    public void editCost(CostPO costPO) {
-        costDao.editCost(costPO);
-    }
-
-    /**
-     * 添加花费日志
-     */
-    public void createCostLog(CostLogPO costLogPO) {
-        costDao.createCostLog(costLogPO);
+    public void editCost(CostPO costPO,CostLogPO costLogPO) {
+        List<CostPO> list = costDao.getCostByDayAndSrc(costPO);
+        if (list.size() == 0) {
+            costPO.setRate(new BigDecimal(0));
+            Integer id=costDao.insert(costPO);
+            costLogPO.setCostId(id);
+            costLogPO.setMemo("新增了"+ TimeUtil.intMillisToTimeStr(costPO.getTime(),TimeUtil.ymdSDF_)+"花费为："+costPO.getAfterCost() );
+            costDao.createCostLog(costLogPO);
+        } else {
+            costPO.setId(list.get(0).getId());
+            costDao.editCost(costPO);
+            costLogPO.setMemo("修改了"+TimeUtil.intMillisToTimeStr(costPO.getTime(),TimeUtil.ymdSDF_)+"花费为："+costPO.getAfterCost() );
+            costLogPO.setCostId(costPO.getId());
+            costDao.createCostLog(costLogPO);
+        }
     }
 }

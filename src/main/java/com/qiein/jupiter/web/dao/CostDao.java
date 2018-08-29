@@ -55,4 +55,9 @@ public interface CostDao {
      * @param list
      */
     void insertRate(List<ForDayPO> list);
+    /**
+     * 根据花费日期和渠道 查询是否存在该数据
+     */
+    List<CostPO> getCostByDayAndSrc(CostPO costPO);
+
 }

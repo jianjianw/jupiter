@@ -2,7 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qiein.jupiter.web.dao.CostDao">
     <resultMap id="Cost" type="com.qiein.jupiter.web.entity.po.CostPO">
-        <id column="ID" jdbcType="INTEGER" property="srcId" />
+
+        <id column="ID" jdbcType="INTEGER" property="id" />
+        <result column="SRCID" jdbcType="INTEGER" property="srcId" />
 		<result column="COST" jdbcType="DECIMAL" property="afterCost" />
 		<result column="BEFORECOST" jdbcType="DECIMAL" property="beforeCost"/>
 		<result column="COSTTIME" jdbcType="VARCHAR" property="costTime" />
@@ -20,7 +22,7 @@
 			cost.BEFORECOST,
 			FROM_UNIXTIME(cost.COSTTIME,"%Y/%m/%d") COSTTIME,
 			CONCAT("Day",FROM_UNIXTIME(cost.COSTTIME,"%d")) DAYKEY,
-			src.ID
+			src.ID SRCID
 		FROM
 			hm_pub_role_source role
 		LEFT JOIN hm_crm_source src ON src.id = role.SOURCEID
@@ -35,10 +37,10 @@
 
 
     <insert id="insert" parameterType="com.qiein.jupiter.web.entity.po.CostPO" useGeneratedKeys="true" keyProperty="id">
-        insert into hm_crm_cost(SRCID,COMPANYID,UPDATETIME,CREATETIME,COSTTIME,COST) values(#{srcId},#{companyId},UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(#{costTime}),#{cost})
+        insert into hm_crm_cost(SRCID,COMPANYID,UPDATETIME,CREATETIME,COSTTIME,COST,BEFORECOST,RATE) values(#{srcId},#{companyId},UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()),#{time},#{afterCost},#{afterCost},#{rate})
     </insert>
     <update id="editCost">
-        update hm_crm_cost set cost=#{cost},UPDATETIME=UNIX_TIMESTAMP(now()) WHERE id=#{id}
+        update hm_crm_cost set cost=#{afterCost},UPDATETIME=UNIX_TIMESTAMP(now()),BEFORECOST=#{afterCost}*(1-rate) WHERE id=#{id}
     </update>
 
     <insert id="createCostLog">
@@ -88,4 +90,8 @@
             )
         </foreach>
     </insert>
+
+    <select id="getCostByDayAndSrc" resultMap="Cost">
+        select id from hm_crm_cost where costtime=#{time} and srcId= #{srcId} and companyId=#{companyId}
+    </select>
 </mapper>
