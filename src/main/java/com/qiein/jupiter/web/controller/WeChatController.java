@@ -1,10 +1,13 @@
 package com.qiein.jupiter.web.controller;
 
+import com.qiein.jupiter.exception.ExceptionEnum;
+import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.util.wechat.WeChatPushUtil;
 import com.qiein.jupiter.web.entity.dto.WeChatUserDTO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.service.RoleService;
 import com.qiein.jupiter.web.service.StaffService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +24,8 @@ public class WeChatController extends BaseController {
 
     @Resource
     private StaffService staffService;
+    @Resource
+    private RoleService roleService;
 
     @GetMapping("/get_qr_code_img")
     public ResultInfo getQRCode(){
@@ -57,7 +62,9 @@ public class WeChatController extends BaseController {
      */
     @GetMapping("/check_auth_pms")
     public ResultInfo getStaffInfo(Integer staffId,Integer companyId){
-        //TODO
-        return ResultInfoUtil.success(true);
+        if (staffId == null && companyId == null){
+            throw new RException(ExceptionEnum.LOSE_FILED);
+        }
+        return ResultInfoUtil.success( roleService.checkStaffAuthPms(companyId,staffId));
     }
 }

@@ -44,4 +44,12 @@ public interface RolePermissionDao {
      */
     List<Integer> getStaffPmsList(@Param("companyId") Integer companyId, @Param("staffId") int staffId);
 
+    /**
+     * 判断该员工是否拥有授权客户端权限
+     * @param companyId
+     * @param staffId
+     * @return
+     */
+    boolean checkStaffAuthPms(@Param("companyId")Integer companyId,@Param("staffId") Integer staffId);
+
 }

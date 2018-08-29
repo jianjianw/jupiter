@@ -132,4 +132,15 @@ public class RoleServiceImpl implements RoleService {
     public boolean roleUsed(int companyId, int roleId) {
         return staffRoleDao.getCountByRole(companyId, roleId) > 0;
     }
+
+    /**
+     * 判断该员工是否拥有授权客户端权限
+     * @param companyId
+     * @param staffId
+     * @return
+     */
+    @Override
+    public boolean checkStaffAuthPms(Integer companyId, Integer staffId) {
+        return rolePmsDao.checkStaffAuthPms(companyId, staffId);
+    }
 }

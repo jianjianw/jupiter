@@ -77,5 +77,17 @@
             pms.PERMISSIONID
     </select>
 
+    <!--判断该员工是否拥有授权客户端权限-->
+    <select id="checkStaffAuthPms" resultType="Boolean">
+        SELECT
+        INSTR(CONCAT(',',IFNULL(GROUP_CONCAT(rp.PERMISSIONID),'false'),','),',179,')>0
+        FROM
+        hm_pub_staff_role sr
+        INNER JOIN hm_pub_role_permission rp ON rp.ROLEID = sr.ROLEID
+        WHERE
+        sr.STAFFID = #{staffId} AND sr.COMPANYID = #{companyId}
+        AND s.ISDEL = 0 AND s.ISLOCK = 0
+    </select>
+
 
 </mapper>
