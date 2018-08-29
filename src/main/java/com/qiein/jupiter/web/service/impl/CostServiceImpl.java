@@ -5,10 +5,12 @@ import com.qiein.jupiter.enums.TableEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.DBSplitUtil;
+import com.qiein.jupiter.util.TimeUtil;
 import com.qiein.jupiter.web.dao.CostDao;
 import com.qiein.jupiter.web.dao.SourceDao;
 import com.qiein.jupiter.web.entity.po.CostLogPO;
 import com.qiein.jupiter.web.entity.po.CostPO;
+import com.qiein.jupiter.web.entity.po.ForDayPO;
 import com.qiein.jupiter.web.entity.po.SourcePO;
 import com.qiein.jupiter.web.entity.vo.CostShowVO;
 import com.qiein.jupiter.web.entity.vo.ZjsKzOfMonthOutVO;
@@ -56,8 +58,8 @@ public class CostServiceImpl implements CostService {
             Map<String, BigDecimal> costMap = new HashMap<>();
             Map<String, BigDecimal> beforeCostMap = new HashMap<>();
             for (Map<String, Object> map : dayList) {
-                beforeCostMap.put((String) map.get("day"), new BigDecimal(0));
-                costMap.put((String) map.get("day"), new BigDecimal(0));
+                beforeCostMap.put((String) map.get("dayKey"), new BigDecimal(0));
+                costMap.put((String) map.get("dayKey"), new BigDecimal(0));
             }
             costShowVO.setBeforeCostMap(beforeCostMap);
             costShowVO.setCostMap(costMap);
@@ -68,21 +70,23 @@ public class CostServiceImpl implements CostService {
         for (CostShowVO costShowVO : costShowVOS) {
             for (CostPO costPO : list) {
                 if (costPO.getSrcId().equals(costShowVO.getSrcId())) {
-                    costShowVO.getBeforeCostMap().put(costPO.getCostTime(), costPO.getBeforeCost());
-                    costShowVO.getCostMap().put(costPO.getCostTime(), costPO.getAfterCost());
+                    costShowVO.getBeforeCostMap().put(costPO.getDayKey(), costPO.getBeforeCost());
+                    costShowVO.getCostMap().put(costPO.getDayKey(), costPO.getAfterCost());
                 }
             }
         }
+        //获取合计类
         CostShowVO hjcostShow = new CostShowVO();
         hjcostShow.setSrcName("合计");
         Map<String, BigDecimal> costMap = new HashMap<>();
         Map<String, BigDecimal> beforeCostMap = new HashMap<>();
         for (Map<String, Object> map : dayList) {
-            beforeCostMap.put((String) map.get("day"), new BigDecimal(0));
-            costMap.put((String) map.get("day"), new BigDecimal(0));
+            beforeCostMap.put((String) map.get("dayKey"), new BigDecimal(0));
+            costMap.put((String) map.get("dayKey"), new BigDecimal(0));
         }
         hjcostShow.setCostMap(costMap);
         hjcostShow.setBeforeCostMap(beforeCostMap);
+        //合计计算
         for (String costTime : costMap.keySet()) {
             BigDecimal cost = new BigDecimal(0);
             BigDecimal beforeCost = new BigDecimal(0);
@@ -94,6 +98,7 @@ public class CostServiceImpl implements CostService {
             hjcostShow.getBeforeCostMap().put(costTime, beforeCost);
         }
         costShowVOS.add(0,hjcostShow);
+        //各个类的合计计算
         for (CostShowVO costShowVO : costShowVOS) {
             BigDecimal cost = new BigDecimal(0);
             for (String costTime : costShowVO.getCostMap().keySet()) {
@@ -123,18 +128,56 @@ public class CostServiceImpl implements CostService {
         }
         return i;
     }
+    /**
+     * 修改花费的返利率
+     * @param srcIds
+     * @param start
+     * @param end
+     * @param rate
+     * @param companyId
+     */
+    public void editRate(String srcIds, Integer start, Integer end, BigDecimal rate,Integer companyId){
+        costDao.editRate(srcIds,start,end,rate,companyId);
+        List<ForDayPO> dayList=costDao.getDay(start,end);
+        List<ForDayPO> forDayPOS=new ArrayList<>();
+        for(ForDayPO forDayPO:dayList){
+            for(String srcId:srcIds.split(CommonConstant.STR_SEPARATOR)){
+                ForDayPO forDayPO1=new ForDayPO();
+                forDayPO1.setDay(forDayPO.getDay());
+                forDayPO1.setSrcId(srcId);
+                forDayPO1.setRate(rate);
+                forDayPO1.setCompanyId(companyId);
+                forDayPOS.add(forDayPO1);
+            }
+        }
+        List<ForDayPO> checkList=costDao.getSrcByDay(srcIds,start,end,companyId);
+        for(int i=0;i<forDayPOS.size();i++){
+            for(ForDayPO forDayPO:checkList){
+                if(forDayPO.getDay().equals(forDayPOS.get(i).getDay())&&forDayPO.getSrcId().equals(forDayPOS.get(i).getSrcId())){
+                    forDayPOS.remove(i);
+                }
+            }
+        }
+        costDao.insertRate(forDayPOS);
 
+    }
     /**
      * 修改花费
      */
-    public void editCost(CostPO costPO) {
-        costDao.editCost(costPO);
-    }
-
-    /**
-     * 添加花费日志
-     */
-    public void createCostLog(CostLogPO costLogPO) {
-        costDao.createCostLog(costLogPO);
+    public void editCost(CostPO costPO,CostLogPO costLogPO) {
+        List<CostPO> list = costDao.getCostByDayAndSrc(costPO);
+        if (list.size() == 0) {
+            costPO.setRate(new BigDecimal(0));
+            Integer id=costDao.insert(costPO);
+            costLogPO.setCostId(id);
+            costLogPO.setMemo("新增了"+ TimeUtil.intMillisToTimeStr(costPO.getTime(),TimeUtil.ymdSDF_)+"花费为："+costPO.getAfterCost() );
+            costDao.createCostLog(costLogPO);
+        } else {
+            costPO.setId(list.get(0).getId());
+            costDao.editCost(costPO);
+            costLogPO.setMemo("修改了"+TimeUtil.intMillisToTimeStr(costPO.getTime(),TimeUtil.ymdSDF_)+"花费为："+costPO.getAfterCost() );
+            costLogPO.setCostId(costPO.getId());
+            costDao.createCostLog(costLogPO);
+        }
     }
 }

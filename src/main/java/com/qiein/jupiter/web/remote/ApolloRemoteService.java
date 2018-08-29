@@ -9,6 +9,8 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 /**
+ * 阿波罗远程服务
+ *
  * @Author: shiTao
  */
 public interface ApolloRemoteService {

@@ -3,7 +3,6 @@ package com.qiein.jupiter.web.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.mzlion.easyokhttp.HttpClient;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
@@ -18,7 +17,6 @@ import com.qiein.jupiter.web.service.ApolloService;
 import com.qiein.jupiter.web.service.LoginService;
 import com.qiein.jupiter.web.service.StaffService;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +24,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Service;
-import retrofit2.Call;
 import retrofit2.Retrofit;
 
-import java.io.IOException;
 import java.util.Date;
 
-import static cn.afterturn.easypoi.excel.entity.enmus.CellValueType.Date;
 
 /**
  * apollo

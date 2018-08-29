@@ -4,6 +4,7 @@ import com.qiein.jupiter.web.entity.po.CostLogPO;
 import com.qiein.jupiter.web.entity.po.CostPO;
 import com.qiein.jupiter.web.entity.vo.CostShowVO;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +22,15 @@ public interface CostService {
     List<CostShowVO> costList(String month, Integer companyId,Integer staffId);
 
     /**
+     * 修改花费的返利率
+     * @param srcIds
+     * @param start
+     * @param end
+     * @param rate
+     * @param companyId
+     */
+    void editRate(String srcIds, Integer start, Integer end, BigDecimal rate,Integer companyId);
+    /**
      * 添加花费
      * @param costPO
      */
@@ -29,10 +39,6 @@ public interface CostService {
     /**
      * 修改花费
      */
-    void editCost(CostPO costPO);
+    void editCost(CostPO costPO,CostLogPO costLogPO);
 
-    /**
-     * 添加花费日志
-     */
-    void createCostLog(CostLogPO costLogPO);
 }
