@@ -160,7 +160,10 @@ public class CostServiceImpl implements CostService {
                 }
             }
         }
-        costDao.insertRate(forDayPOS);
+        if(forDayPOS.size()!=0){
+            costDao.insertRate(forDayPOS);
+        }
+
 
     }
     /**

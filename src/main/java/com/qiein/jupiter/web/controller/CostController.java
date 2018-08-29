@@ -51,6 +51,9 @@ public class CostController extends BaseController {
         if(costPO.getSrcId()==0){
             throw new RException(ExceptionEnum.CANT_EDIT_HJ);
         }
+        if(costPO.getAfterCost()==null){
+            costPO.setAfterCost(new BigDecimal(0));
+        }
         costPO.setCompanyId(getCurrentLoginStaff().getCompanyId());
         StaffPO staff= getCurrentLoginStaff();
         CostLogPO costLog = new CostLogPO();

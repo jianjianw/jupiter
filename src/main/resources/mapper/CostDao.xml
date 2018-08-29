@@ -3,20 +3,20 @@
 <mapper namespace="com.qiein.jupiter.web.dao.CostDao">
     <resultMap id="Cost" type="com.qiein.jupiter.web.entity.po.CostPO">
 
-        <id column="ID" jdbcType="INTEGER" property="id" />
-        <result column="SRCID" jdbcType="INTEGER" property="srcId" />
-		<result column="COST" jdbcType="DECIMAL" property="afterCost" />
-		<result column="BEFORECOST" jdbcType="DECIMAL" property="beforeCost"/>
-		<result column="COSTTIME" jdbcType="VARCHAR" property="costTime" />
+        <id column="ID" jdbcType="INTEGER" property="id"/>
+        <result column="SRCID" jdbcType="INTEGER" property="srcId"/>
+        <result column="COST" jdbcType="DECIMAL" property="afterCost"/>
+        <result column="BEFORECOST" jdbcType="DECIMAL" property="beforeCost"/>
+        <result column="COSTTIME" jdbcType="VARCHAR" property="costTime"/>
         <result column="DAYKEY" jdbcType="VARCHAR" property="dayKey"/>
     </resultMap>
 
 
-<sql id="costlog">
+    <sql id="costlog">
     COSTID,OPERAID,OPERANAME,OPERATIME,COMPANYID,MEMO
 </sql>
 
-  <select id="costList" resultMap="Cost">
+    <select id="costList" resultMap="Cost">
          SELECT
 			cost.COST,
 			cost.BEFORECOST,
@@ -33,9 +33,6 @@
 		role.ROLEID in ((select staff.ROLEID  from hm_pub_staff_role staff where staff.STAFFID=#{staffId} ))
 		and src.ID is not null
     </select>
-
-
-
     <insert id="insert" parameterType="com.qiein.jupiter.web.entity.po.CostPO" useGeneratedKeys="true" keyProperty="id">
         insert into hm_crm_cost(SRCID,COMPANYID,UPDATETIME,CREATETIME,COSTTIME,COST,BEFORECOST,RATE) values(#{srcId},#{companyId},UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()),#{time},#{afterCost},#{afterCost},#{rate})
     </insert>
@@ -45,10 +42,10 @@
 
     <insert id="createCostLog">
         INSERT INTO hm_crm_cost_log (
-            <include refid="costlog"/>
+        <include refid="costlog"/>
         )
         VALUES
-            (#{costId}, #{operaId}, #{operaName},UNIX_TIMESTAMP(now()), #{companyId}, #{memo})
+        (#{costId}, #{operaId}, #{operaName},UNIX_TIMESTAMP(now()), #{companyId}, #{memo})
     </insert>
     <update id="editRate">
         update hm_crm_cost set rate=#{rate},cost=beforecost*(1-#{rate}) where companyId=#{companyId} and srcId in (${srcIds}) and costtime between #{start} and #{end}
