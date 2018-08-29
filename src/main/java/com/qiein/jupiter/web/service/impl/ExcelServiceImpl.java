@@ -393,7 +393,7 @@ public class ExcelServiceImpl implements ExcelService {
      * @param clientExportDTO
      * @return
      */
-    public List<ClientExportVO> Export(StaffPO staffPO, ClientExportDTO clientExportDTO) {
+    public List<ClientExportVO> export(StaffPO staffPO, ClientExportDTO clientExportDTO) {
         Map<String, Object> reqContent = new HashMap<>();
         reqContent.put("cid", staffPO.getCompanyId());
         reqContent.put("uid", clientExportDTO.getUid());
@@ -415,6 +415,8 @@ public class ExcelServiceImpl implements ExcelService {
         reqContent.put("sparesql", clientExportDTO.getSpareSql());
         reqContent.put("filtersql", clientExportDTO.getFilterSql());
         reqContent.put("supersql", clientExportDTO.getSuperSql());
+        reqContent.put("page", clientExportDTO.getPage());
+        reqContent.put("size", clientExportDTO.getSize());
         CompanyVO companyVO = companyDao.getVOById(staffPO.getCompanyId());
         String addRstStr = crmBaseApi.doService(reqContent, "excel_export_hs");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);

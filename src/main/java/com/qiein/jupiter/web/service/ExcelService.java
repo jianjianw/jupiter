@@ -75,7 +75,7 @@ public interface ExcelService {
 	 * @param clientExportDTO
 	 * @return
 	 */
-	List<ClientExportVO> Export(StaffPO staffPO, ClientExportDTO clientExportDTO);
+	List<ClientExportVO> export(StaffPO staffPO, ClientExportDTO clientExportDTO);
 
 	/**
 	 * 获取分类客资个数
