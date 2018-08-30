@@ -38,8 +38,9 @@ public class WebSocketMsgUtilTest {
     }
 
     @Test
-    public void sendMsg1() {
+    public void sendMsg1() throws InterruptedException {
         webSocketMsgUtil.pushAlertMsg(5013, 97, "test");
+        Thread.sleep(11111);
     }
 
 }
