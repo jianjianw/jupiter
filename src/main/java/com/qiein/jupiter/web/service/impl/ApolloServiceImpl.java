@@ -117,7 +117,7 @@ public class ApolloServiceImpl implements ApolloService, ApplicationRunner {
     @Override
     public void postWebSocketMsg(String msg) {
         RequestBody requestBody = RetorfitUtil.createJSONBody(msg);
-        RetorfitUtil.requestSync(apolloRemoteService.postWebSocketMsg(requestBody));
+        RetorfitUtil.request(apolloRemoteService.postWebSocketMsg(requestBody));
     }
 
     /**
