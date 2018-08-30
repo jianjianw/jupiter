@@ -336,4 +336,11 @@
             AND company.ISLOCK = 0
             AND company.ISDEL = 0
     </select>
+
+    <!--编辑公司报表设置-->
+    <update id="editReportsConfig">
+        UPDATE hm_pub_company
+        SET REPORTSCONFIG = #{reportsConfig}
+        WHERE ID = #{companyId}
+    </update>
 </mapper>
