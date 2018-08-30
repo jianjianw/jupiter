@@ -363,6 +363,9 @@ public class LoginServiceImpl implements LoginService {
                 .queryString("sign", sign)
                 .asString();
         List<CallPO> callPOS = JSONObject.parseArray(JSONObject.parseObject(instaceJson).get("data").toString(), CallPO.class);
+        if(CollectionUtils.isEmpty(callPOS)){
+            return "";
+        }
         return callPOS.get(0).getInstanceId();
     }
 
