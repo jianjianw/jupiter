@@ -244,9 +244,6 @@ public class ClientEditServiceImpl implements ClientEditService {
                 if (appoint == null) {
                     return;
                 }
-                if (StringUtil.isEmpty(appoint.getMsgSet()) || !appoint.getMsgSet().contains("/1/")) {
-                    return;
-                }
                 OrderSuccessMsg orderSuccessMsg = new OrderSuccessMsg();
                 orderSuccessMsg.setCompanyId(staffPO.getCompanyId());
                 orderSuccessMsg.setStaffName(appoint.getNickName());
@@ -352,9 +349,6 @@ public class ClientEditServiceImpl implements ClientEditService {
                 // 成功订单爆彩
                 StaffDetailVO appoint = staffDao.getStaffDetailVO(info.getAppointorId(), staffPO.getCompanyId());
                 if (appoint == null) {
-                    return;
-                }
-                if (StringUtil.isEmpty(appoint.getMsgSet()) || !appoint.getMsgSet().contains("/1/")) {
                     return;
                 }
                 OrderSuccessMsg orderSuccessMsg = new OrderSuccessMsg();
