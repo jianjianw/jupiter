@@ -190,7 +190,7 @@ public class CallServiceImpl implements CallService {
     }
 
     @Override
-    public JSONObject getRecording(String caller,StaffPO staffPO,Integer page,Integer pageSize,Integer startTime) {
+    public JSONObject getRecording(String caller,StaffPO staffPO,Integer page,Integer pageSize,Integer startTime,String instanceId) {
         String sign = MD5Util.getApolloMd5(String.valueOf(staffPO.getCompanyId()));
         //Appollo接口获取用户信息
         String usreJson = HttpClient
@@ -201,15 +201,6 @@ public class CallServiceImpl implements CallService {
                 .queryString("sign", sign)
                 .asString();
 
-        //Appollo接口获取intsanceId
-        String instaceJson = HttpClient
-                // 请求方式和请求url
-                .get(appoloBaseUrl.concat(AppolloUrlConst.GET_CALL_INSTANCE))
-                // post提交json
-                .queryString("companyId", staffPO.getCompanyId())
-                .queryString("sign", sign)
-                .asString();
-        List<CallPO> callPOS = JSONObject.parseArray(JSONObject.parseObject(instaceJson).get("data").toString(), CallPO.class);
         CallUserPO callUserPO = JSONObject.parseObject(JSONObject.parseObject(usreJson).get("data").toString(), CallUserPO.class);
         //获取Token
         String token = BatchTokenRetrieval.retrieve(callUserPO.getUsername(), callUserPO.getPassword(), callUserPO.getClientId(), callUserPO.getClientSecret(), callUserPO.getCallBakUrl());
@@ -230,7 +221,7 @@ public class CallServiceImpl implements CallService {
         String reportsJson = HttpClient
                 .get(CallUrlConst.CALL_BASE_URL)
                 .queryString("Action", "ListCallDetailRecords")
-                .queryString("InstanceId", callPOS.get(0).getInstanceId())
+                .queryString("InstanceId", instanceId)
                 .queryString("Criteria", caller)
                 .queryString("StartTime",date.getTime())
                 .queryString("PageNumber",page)
@@ -249,7 +240,7 @@ public class CallServiceImpl implements CallService {
     }
 
     @Override
-    public JSONObject getRecordingFile(String fileName,StaffPO staffPO) {
+    public JSONObject getRecordingFile(String fileName,StaffPO staffPO,String instanceId) {
 
         String sign = MD5Util.getApolloMd5(String.valueOf(staffPO.getCompanyId()));
         //Appollo接口获取用户信息
@@ -261,15 +252,6 @@ public class CallServiceImpl implements CallService {
                 .queryString("sign", sign)
                 .asString();
 
-        //Appollo接口获取intsanceId
-        String instaceJson = HttpClient
-                // 请求方式和请求url
-                .get(appoloBaseUrl.concat(AppolloUrlConst.GET_CALL_INSTANCE))
-                // post提交json
-                .queryString("companyId", staffPO.getCompanyId())
-                .queryString("sign", sign)
-                .asString();
-        List<CallPO> callPOS = JSONObject.parseArray(JSONObject.parseObject(instaceJson).get("data").toString(), CallPO.class);
         CallUserPO callUserPO = JSONObject.parseObject(JSONObject.parseObject(usreJson).get("data").toString(), CallUserPO.class);
         //获取Token
         String token = BatchTokenRetrieval.retrieve(callUserPO.getUsername(), callUserPO.getPassword(), callUserPO.getClientId(), callUserPO.getClientSecret(), callUserPO.getCallBakUrl());
@@ -283,7 +265,7 @@ public class CallServiceImpl implements CallService {
         String urlJson = HttpClient
                 .get(CallUrlConst.CALL_BASE_URL)
                 .queryString("Action", "DownloadRecording")
-                .queryString("InstanceId", callPOS.get(0).getInstanceId())
+                .queryString("InstanceId", instanceId)
                 .queryString("FileName",fileName)
                 //公共参数
                 .queryString("Format", "JSON")
