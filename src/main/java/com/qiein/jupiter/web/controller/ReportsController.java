@@ -652,4 +652,16 @@ public class ReportsController extends BaseController {
 
         return ResultInfoUtil.success(reportService.getZjsYearDetailReport(searchKey));
     }
+
+    /**
+     * 获取个人简报
+     * @param reportParamDTO
+     * @return
+     */
+    @GetMapping("/get_personal_presentation")
+    public ResultInfo getPersonalPresentation(ReportParamDTO reportParamDTO){
+        reportParamDTO.setStaffId(getCurrentLoginStaff().getId());
+        reportParamDTO.setCompanyId(getCurrentLoginStaff().getCompanyId());
+        return ResultInfoUtil.success(reportService.getPersonalPresentation(reportParamDTO));
+    }
 }

@@ -282,22 +282,13 @@ public class OldKzReportsDao {
         StringBuilder sql = new StringBuilder();
         getBaseSql(sql, tableInfo, tableDetail,companyId);
         sql.append(" and info.createtime between ? and ?");
-        if (StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidStatus()) && StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidLevel())) {
-            sql.append(" and (info.STATUSID in(" + dsInvalidVO.getDsInvalidStatus() + ") or");
-            sql.append("   detail.YXLEVEL IN(" + dsInvalidVO.getDsInvalidLevel() + ") )");
-        }
-        if (StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidStatus()) && StringUtil.isEmpty(dsInvalidVO.getDsInvalidLevel())) {
-            sql.append(" and info.STATUSID in (" + dsInvalidVO.getDsInvalidStatus() + ")");
-        }
-        if (StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidLevel()) && StringUtil.isEmpty(dsInvalidVO.getDsInvalidStatus())) {
-            sql.append(" and detail.YXLEVEL IN(" + dsInvalidVO.getDsInvalidLevel() + ") ");
-        }
+        sql.append(" AND INSTR('"+dsInvalidVO.getZjsValidStatus()+"',CONCAT( ','+info.STATUSID + '', ','))>0 ");
        sql.append(" GROUP BY detail.OLDKZPHONE,detail.oldkzname  ");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{kzNameOrPhone, kzNameOrPhone,startTime, endTime});
         List<OldKzReportsVO> oldKzReportsBak = new LinkedList<>();
         for (Map<String, Object> map : list) {
             OldKzReportsVO oldKzReportsVO = new OldKzReportsVO();
-            oldKzReportsVO.setInValidClientCount(Integer.parseInt(Long.toString((Long) (map.get("count")))));
+            oldKzReportsVO.setValidClientCount(Integer.parseInt(Long.toString((Long) (map.get("count")))));
             oldKzReportsVO.setOldKzName((String) map.get("oldKzName"));
             oldKzReportsVO.setOldKzPhone((String) map.get("oldKzPhone"));
             oldKzReportsBak.add(oldKzReportsVO);
@@ -306,12 +297,12 @@ public class OldKzReportsDao {
             for (OldKzReportsVO oldKzReportsVO1 : oldKzReportsBak) {
                 if(StringUtil.isNotEmpty(oldKzReportsVO1.getOldKzPhone())&&StringUtil.isNotEmpty(oldKzReportsVO.getOldKzPhone())){
                     if (oldKzReportsVO.getOldKzPhone().equalsIgnoreCase(oldKzReportsVO1.getOldKzPhone())&&oldKzReportsVO.getOldKzName().equalsIgnoreCase(oldKzReportsVO1.getOldKzName()) ) {
-                        oldKzReportsVO.setInValidClientCount(oldKzReportsVO1.getInValidClientCount());
+                        oldKzReportsVO.setValidClientCount(oldKzReportsVO1.getValidClientCount());
                         break;
                     }
                 }else{
                     if( oldKzReportsVO.getOldKzName().equalsIgnoreCase(oldKzReportsVO1.getOldKzName())){
-                        oldKzReportsVO.setInValidClientCount(oldKzReportsVO1.getInValidClientCount());
+                        oldKzReportsVO.setValidClientCount(oldKzReportsVO1.getValidClientCount());
                         break;
                     }
                 }
@@ -421,20 +412,12 @@ public class OldKzReportsDao {
      */
     private void computerRate(List<OldKzReportsVO> oldKzReportsVOS, DsInvalidVO invalidConfig) {
         for (OldKzReportsVO oldKzReportsVO : oldKzReportsVOS) {
-            //有效量
-            if (invalidConfig.getDdIsValid()) {
-                oldKzReportsVO.setValidClientCount(oldKzReportsVO.getAllClientCount() - oldKzReportsVO.getInValidClientCount() - oldKzReportsVO.getFilterInClientCount() - oldKzReportsVO.getFilterInValidClientCount() - oldKzReportsVO.getFilterPendingClientCount());
-            } else {
-                oldKzReportsVO.setValidClientCount(oldKzReportsVO.getAllClientCount() - oldKzReportsVO.getPendingClientCount() - oldKzReportsVO.getInValidClientCount() - oldKzReportsVO.getFilterInClientCount() - oldKzReportsVO.getFilterInValidClientCount() - oldKzReportsVO.getFilterPendingClientCount());
-            }
+
             //客资量(总客资-筛选待定-筛选中-筛选无效)
             oldKzReportsVO.setClientCount(oldKzReportsVO.getAllClientCount() - oldKzReportsVO.getFilterPendingClientCount() - oldKzReportsVO.getFilterInValidClientCount() - oldKzReportsVO.getFilterInClientCount());
             //有效率
             double validRate = (double) oldKzReportsVO.getValidClientCount() / oldKzReportsVO.getClientCount();
             oldKzReportsVO.setValidRate(parseDouble(((Double.isNaN(validRate) || Double.isInfinite(validRate)) ? 0.0 : validRate) * 100));
-            //无效率
-            double invalidRate = (double) oldKzReportsVO.getInValidClientCount() / oldKzReportsVO.getClientCount();
-            oldKzReportsVO.setInValidRate(parseDouble(((Double.isNaN(invalidRate) || Double.isInfinite(invalidRate)) ? 0.0 : invalidRate) * 100));
             //待定率
             double waitRate = (double) oldKzReportsVO.getPendingClientCount() / oldKzReportsVO.getClientCount();
             oldKzReportsVO.setWaitRate(parseDouble(((Double.isNaN(waitRate) || Double.isInfinite(waitRate)) ? 0.0 : waitRate) * 100));
@@ -478,9 +461,6 @@ public class OldKzReportsDao {
         //有效率
         double validRate = (double) oldKzReportsTotal.getValidClientCount() / oldKzReportsTotal.getClientCount();
         oldKzReportsTotal.setValidRate(parseDouble(((Double.isNaN(validRate) || Double.isInfinite(validRate)) ? 0.0 : validRate) * 100));
-        //无效率
-        double invalidRate = (double) oldKzReportsTotal.getInValidClientCount() / oldKzReportsTotal.getClientCount();
-        oldKzReportsTotal.setInValidRate(parseDouble(((Double.isNaN(invalidRate) || Double.isInfinite(invalidRate)) ? 0.0 : invalidRate) * 100));
         //待定率
         double waitRate = (double) oldKzReportsTotal.getPendingClientCount() / oldKzReportsTotal.getClientCount();
         oldKzReportsTotal.setWaitRate(parseDouble(((Double.isNaN(waitRate) || Double.isInfinite(waitRate)) ? 0.0 : waitRate) * 100));
