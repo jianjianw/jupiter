@@ -71,7 +71,7 @@ public class RetorfitUtil {
                 throw new RException(ExceptionEnum.REMOTE_CALL_ERROR);
             }
             bodyStr = body.string();
-            log.info("http-msg", bodyStr);
+            log.info("http-msg-sync", bodyStr);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -87,7 +87,7 @@ public class RetorfitUtil {
         responseBodyCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                log.info("http-msg", response.message());
+                log.info("http-msg-async", response.isSuccessful());
             }
 
             @Override

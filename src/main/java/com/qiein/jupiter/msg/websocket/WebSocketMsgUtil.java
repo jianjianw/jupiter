@@ -40,10 +40,10 @@ public class WebSocketMsgUtil {
      * @param msg
      */
     private void sendMsgAsync(String msg) {
-        HttpClient.textBody(msgUrl)
-                // post提交json
-                .json(msg).execute();
-//        apolloService.postWebSocketMsg(msg);
+//        HttpClient.textBody(msgUrl)
+//                // post提交json
+//                .json(msg).execute();
+        apolloService.postWebSocketMsg(msg);
     }
 
     // /**
@@ -74,7 +74,7 @@ public class WebSocketMsgUtil {
         WebSocketMsgDTO msgDTO = new WebSocketMsgDTO();
         msgDTO.setType(WebSocketMsgEnum.OrderSuccess);
         msgDTO.setCompanyId(orderSuccessMsg.getCompanyId());
-        msgDTO.setContent(JSONObject.toJSONString(orderSuccessMsg));
+        msgDTO.setContent(JSONObject.toJSONString(orderSuccessMsg, false));
         this.sendMsg(msgDTO);
     }
 
