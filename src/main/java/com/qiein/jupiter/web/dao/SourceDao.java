@@ -55,7 +55,7 @@ public interface SourceDao extends BaseDao<SourcePO> {
      * @param ids
      * @return
      */
-    Integer datDelCheck(@Param("ids") String[] ids);
+    Integer datDelCheck(@Param("ids") String[] ids, @Param("tabName") String tabName);
 
     /**
      * 渠道名变更时下属所有来源的记录也要相应变更
