@@ -366,6 +366,7 @@
         ON info.KZID is not null
         WHERE
         info.KZID IS NOT NULL
+        and temp.COMPANYID = #{companyId}
         AND info.ISDEL = 0
         AND temp.OPERAID = #{staffId}
         AND (( temp.KZPHONE = info.KZPHONE or temp.KZPHONE = info.KZWECHAT or temp.KZPHONE = info.KZQQ)
@@ -672,7 +673,7 @@
         select
         <include refid="Base_Column_News_List"/>
         from ${tempName} temp
-        where temp.OPERAID = #{staffId} and (((temp.KZPHONE is not null and temp.KZPHONE != '') and temp.KZPHONE NOT
+        where temp.OPERAID = #{staffId} and temp.COMPANYID = #{companyId} and (((temp.KZPHONE is not null and temp.KZPHONE != '') and temp.KZPHONE NOT
         REGEXP '^[1][3456789][0-9]{9}$')
         or ( (temp.KZWECHAT is not null and temp.KZWECHAT != '') and temp.KZWECHAT NOT REGEXP
         '^[a-zA-Z0-9]{1}[-_a-zA-Z0-9]{5,30}$')
@@ -716,6 +717,7 @@
         ON info.KZID is not null
         WHERE
         info.KZID IS NOT NULL
+        and temp.COMPANYID = #{companyId}
         AND info.ISDEL = 0
         AND temp.OPERAID = #{staffId}
         AND (( temp.KZPHONE = info.KZPHONE or temp.KZPHONE = info.KZWECHAT or temp.KZPHONE = info.KZQQ)
@@ -735,7 +737,7 @@
         (select
         <include refid="Base_Column_News_List"/>
         from ${tempName} temp
-        where temp.OPERAID = #{staffId} and (((temp.KZPHONE is not null and temp.KZPHONE != '') and temp.KZPHONE NOT
+        where temp.OPERAID = #{staffId} and temp.COMPANYID = #{companyId} and (((temp.KZPHONE is not null and temp.KZPHONE != '') and temp.KZPHONE NOT
         REGEXP '^[1][3456789][0-9]{9}$')
         or ( (temp.KZWECHAT is not null and temp.KZWECHAT != '') and temp.KZWECHAT NOT REGEXP
         '^[a-zA-Z0-9]{1}[-_a-zA-Z0-9]{5,30}$')
@@ -762,7 +764,7 @@
         or (temp.ZXSTYLESTR IS NOT NULL AND temp.ZXSTYLE IS NULL)
         or temp.GROUPID IS NULL)) c
         ON temp.kzid = c.kzid
-        where temp.OPERAID = #{staffId} and b.KZID is null and c.kzid is null
+        where temp.OPERAID = #{staffId} and temp.COMPANYID = #{companyId} and b.KZID is null and c.kzid is null
     </select>
 
     <!--获取客资数量-->
