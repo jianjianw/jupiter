@@ -40,10 +40,10 @@ public class WebSocketMsgUtil {
      * @param msg
      */
     private void sendMsgAsync(String msg) {
-//        HttpClient.textBody(msgUrl)
-//                // post提交json
-//                .json(msg).execute();
-        apolloService.postWebSocketMsg(msg);
+        HttpClient.textBody(msgUrl)
+                // post提交json
+                .json(msg).execute();
+//        apolloService.postWebSocketMsg(msg);
     }
 
     // /**
