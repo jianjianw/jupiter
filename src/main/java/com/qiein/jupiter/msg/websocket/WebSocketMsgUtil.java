@@ -4,10 +4,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.mzlion.easyokhttp.HttpClient;
 import com.qiein.jupiter.enums.WebSocketMsgEnum;
 import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.util.retrofitUtil.RetorfitUtil;
 import com.qiein.jupiter.web.entity.dto.ClientGoEasyDTO;
 import com.qiein.jupiter.web.entity.dto.WebSocketMsgDTO;
 import com.qiein.jupiter.web.entity.dto.OrderSuccessMsg;
 import com.qiein.jupiter.web.service.ApolloService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -24,6 +27,8 @@ public class WebSocketMsgUtil {
 
     @Autowired
     private ApolloService apolloService;
+
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     /**
      * 构造
@@ -43,6 +48,7 @@ public class WebSocketMsgUtil {
 //        HttpClient.textBody(msgUrl)
 //                // post提交json
 //                .json(msg).execute();
+        log.info("websocket消息", msg);
         apolloService.postWebSocketMsg(msg);
     }
 
