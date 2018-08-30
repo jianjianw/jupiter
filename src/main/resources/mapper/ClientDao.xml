@@ -93,7 +93,7 @@
 
     <!--修改客资渠道ID-->
     <update id = "updateKzChannelId">
-        update ${tableName} info set info.channelId = #{channelId} where info.sourceId = #{sourceId} and info.companyId = #{companyId}
+        update ${infoTabName} info set info.channelId = #{channelId} where info.sourceId = #{sourceId} and info.companyId = #{companyId}
     </update>
 
     <!--修改客资详情表中的Memo字段-->
