@@ -44,6 +44,7 @@
         <result column="KFEDITJDRST" property="kfEditJdRst" jdbcType="BOOLEAN"/>
         <result column="ONLYAPP" property="onlyApp" jdbcType="BOOLEAN"/>
         <result column="ISLOCK" property="lockFlag" jdbcType="BOOLEAN"/>
+        <result column="REPORTSCONFIG" property="reportsConfig" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="baseColumn">
@@ -119,7 +120,8 @@
             comp.OVERTIME,
             comp.KZINTERVAL,
             comp.LIMITDEFAULT,
-            comp.KFEDITJDRST
+            comp.KFEDITJDRST,
+            comp.REPORTSCONFIG
         FROM
             hm_pub_company comp
         WHERE
@@ -245,16 +247,16 @@
     </update>
 
     <select id="findDsinvalId" resultType="com.qiein.jupiter.web.entity.dto.DsinvalDTO">
-		SELECT
-		 	DSINVALIDSTATUS dsInvalidStatus,
-		 	DSINVALIDLEVEL dsInvalidLevel,
-		 	DDISVALID ddIsValid,
-		 	ZJSVALIDSTATUS zjsValidStatus,
-		 	DSDDSTATUS dsddStatus
-		FROM
-			hm_pub_company
-		WHERE ID=#{companyId}
-	</select>
+        SELECT
+            DSINVALIDSTATUS dsInvalidStatus,
+            DSINVALIDLEVEL  dsInvalidLevel,
+            DDISVALID       ddIsValid,
+            ZJSVALIDSTATUS  zjsValidStatus,
+            DSDDSTATUS      dsddStatus
+        FROM
+            hm_pub_company
+        WHERE ID = #{companyId}
+    </select>
 
     <update id="editZjsValidStatus">
         UPDATE
@@ -312,13 +314,12 @@
     </select>
     <update id="editDsddStatus">
         UPDATE
-        hm_pub_company
+            hm_pub_company
         SET
-        DSDDSTATUS =#{dsddStatus}
+            DSDDSTATUS = #{dsddStatus}
         WHERE
-        ID = #{companyId}
+            ID = #{companyId}
     </update>
-
 
 
     <!--根据手机号码和加密码  获取对应的公司-->
