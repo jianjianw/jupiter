@@ -31,7 +31,7 @@ import java.util.Map;
 @RequestMapping("/send_msg")
 @Validated
 @PropertySource({"classpath:application-dev.properties"})
-public class SendMsgController extends BaseController{
+public class SendMsgController extends BaseController {
 
     @Autowired
     private ShopService shopService;
@@ -50,47 +50,48 @@ public class SendMsgController extends BaseController{
 
     @Autowired
     private ClientService clientService;
+
     /**
      * 短信发送（门店预约）
      */
     @PostMapping("send_msg")
-    public ResultInfo sendMsg(@RequestBody SendMsgDTO sendMsgDTO){
-        StaffPO staff=getCurrentLoginStaff();
+    public ResultInfo sendMsg(@RequestBody SendMsgDTO sendMsgDTO) {
+        StaffPO staff = getCurrentLoginStaff();
         sendMsgDTO.setCompanyId(staff.getCompanyId());
         sendMsgDTO.setStaffId(staff.getId());
         sendMsgDTO.setStaffName(staff.getNickName());
-        Map<String,String> map=sendMsgDTO.getMap();
+        Map<String, String> map = sendMsgDTO.getMap();
         //获取门店信息
-        ShopPO shopPO=shopService.findShop(Integer.parseInt(map.get("shopId")));
-        map.put("address",shopPO.getAddress());
+        ShopPO shopPO = shopService.findShop(Integer.parseInt(map.get("shopId")));
+        map.put("address", shopPO.getAddress());
         //判断门店电话是否为空
 
-        if( StringUtil.isEmpty(shopPO.getServicePhone())){
-            map.put("telno","");
-        }else{
-            map.put("telno",shopPO.getServicePhone());
+        if (StringUtil.isEmpty(shopPO.getServicePhone())) {
+            map.put("telno", "");
+        } else {
+            map.put("telno", shopPO.getServicePhone());
         }
         //获取时间
-        String date_string=TimeUtil.intMillisToTimeStr(Integer.parseInt(map.get("time")));
-        map.put("time",date_string);
-        Integer id=clientService.findId(map.get("kzId"),staff.getCompanyId());
-        map.put("code",CommonConstant.YYJD+id);
+        String date_string = TimeUtil.intMillisToTimeStr(Integer.parseInt(map.get("time")));
+        map.put("time", date_string);
+        Integer id = clientService.findByKzId(map.get("kzId"), staff.getCompanyId());
+        map.put("code", CommonConstant.YYJD + id);
         sendMsgDTO.setTemplateType(CommonConstant.YYJD);
-        SendMsgToDTO sendMsgToDTO=new SendMsgToDTO();
+        SendMsgToDTO sendMsgToDTO = new SendMsgToDTO();
         sendMsgToDTO.setParams(sendMsgDTO);
-        String json=JSON.toJSONString(sendMsgToDTO);
-        String sign=MD5Util.getApolloMd5(json);
-        String back=HttpClient
+        String json = JSON.toJSONString(sendMsgToDTO);
+        String sign = MD5Util.getApolloMd5(json);
+        String back = HttpClient
                 // 请求方式和请求url
                 .textBody(sendMsgUrl)
                 // post提交json
                 .json(json)
-                .queryString("sign",sign)
+                .queryString("sign", sign)
                 .asString();
-        JSONObject getBack=JSONObject.parseObject(back);
-        Integer code=(Integer)getBack.get("code");
-        if(code!=100000){
-            throw new RException((String)getBack.get("msg"));
+        JSONObject getBack = JSONObject.parseObject(back);
+        Integer code = (Integer) getBack.get("code");
+        if (code != 100000) {
+            throw new RException((String) getBack.get("msg"));
         }
         return ResultInfoUtil.success(TipMsgEnum.SEND_SUCCESS);
     }
@@ -99,7 +100,7 @@ public class SendMsgController extends BaseController{
      * 获取模板样式
      */
     @PostMapping("get_template")
-    public ResultInfo getTemplate(@RequestBody SendMsgDTO sendMsgDTO){
+    public ResultInfo getTemplate(@RequestBody SendMsgDTO sendMsgDTO) {
         StaffPO staff = getCurrentLoginStaff();
         sendMsgDTO.setCompanyId(staff.getCompanyId());
         String msgTemlate = HttpClient
@@ -117,7 +118,7 @@ public class SendMsgController extends BaseController{
         Map<String, String> map = sendMsgDTO.getMap();
         ShopPO shopPO = shopService.findShop(Integer.parseInt(sendMsgDTO.getMap().get("shopId")));
         map.put("address", shopPO.getAddress());
-        if (!msgTemplateVO.getIsSelf().equals(CommonConstant.SELF) ) {
+        if (!msgTemplateVO.getIsSelf().equals(CommonConstant.SELF)) {
             if (StringUtil.isEmpty(shopPO.getServicePhone())) {
                 map.put("telno", "");
             } else {
@@ -130,8 +131,8 @@ public class SendMsgController extends BaseController{
                 map.put("telno", staff.getPhone());
             }
         }
-        Integer id = clientService.findId(map.get("kzId"), staff.getCompanyId());
-        map.put("code",  id+CommonConstant.NULL_STR);
+        Integer id = clientService.findByKzId(map.get("kzId"), staff.getCompanyId());
+        map.put("code", id + CommonConstant.NULL_STR);
         String date_string = TimeUtil.intMillisToTimeStr(Integer.parseInt(map.get("time")));
         map.put("time", date_string);
         for (String key : map.keySet()) {
@@ -144,15 +145,15 @@ public class SendMsgController extends BaseController{
      * 短信账号记录
      */
     @GetMapping("/msg_template_log")
-    public ResultInfo msgTemplateLog(@RequestParam String startTime,@RequestParam String endTime) {
-        StaffPO staff=getCurrentLoginStaff();
-        String templateText=HttpClient
+    public ResultInfo msgTemplateLog(@RequestParam String startTime, @RequestParam String endTime) {
+        StaffPO staff = getCurrentLoginStaff();
+        String templateText = HttpClient
                 .get(msgTemplateLogUrl)
                 .queryString("startTime", startTime)
                 .queryString("endTime", endTime)
-                .queryString("companyId",staff.getCompanyId())
+                .queryString("companyId", staff.getCompanyId())
                 .asString();
-        JSONObject json=JSONObject.parseObject(templateText);
+        JSONObject json = JSONObject.parseObject(templateText);
         return ResultInfoUtil.success(json);
     }
 
@@ -160,21 +161,26 @@ public class SendMsgController extends BaseController{
      * 短信发送记录
      */
     @GetMapping("/find_send_msg")
-    public ResultInfo findSendMsg(@RequestParam String startTime,@RequestParam String endTime,@RequestParam String phone,@RequestParam String type,@RequestParam Integer pageNum,@RequestParam Integer pageSize){
-        StaffPO staff=getCurrentLoginStaff();
-        String templateText=HttpClient
+    public ResultInfo findSendMsg(@RequestParam String startTime,
+                                  @RequestParam String endTime,
+                                  @RequestParam String phone,
+                                  @RequestParam String type,
+                                  @RequestParam Integer pageNum,
+                                  @RequestParam Integer pageSize) {
+        StaffPO staff = getCurrentLoginStaff();
+        String templateText = HttpClient
                 .get(findSendMsgUrl)
                 .queryString("startTime", startTime)
                 .queryString("endTime", endTime)
-                .queryString("companyId",staff.getCompanyId())
+                .queryString("companyId", staff.getCompanyId())
                 .queryString("phone", phone)
                 .queryString("type", type)
                 .queryString("pageNum", pageNum)
                 .queryString("pageSize", pageSize)
                 .asString();
 
-        JSONObject json=JSONObject.parseObject(templateText);
-        return  ResultInfoUtil.success(json);
+        JSONObject json = JSONObject.parseObject(templateText);
+        return ResultInfoUtil.success(json);
     }
 
 }
