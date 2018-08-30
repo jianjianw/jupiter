@@ -261,17 +261,17 @@ public class StaffController extends BaseController {
         staffStateVO.setIds(ids);
         staffStateVO.setDel(true);
         // staffService.batUpdateStaffState(staffStateVO);
-        String staffName = CommonConstant.NULL_STR;
+        StringBuilder staffName = new StringBuilder(CommonConstant.NULL_STR);
         List<StaffPO> staff = staffService.getByIds(ids, currentLoginStaff.getCompanyId());
         for (StaffPO staffPO : staff) {
-            staffName += staffPO.getNickName() + CommonConstant.STR_SEPARATOR;
+            staffName.append(staffPO.getNickName()).append(CommonConstant.STR_SEPARATOR);
         }
         staffService.batDelStaff(staffStateVO);
         RequestInfoDTO requestInfo = getRequestInfo();
         try {
             // 日志记录
             logService.addLog(new SystemLog(SysLogUtil.LOG_TYPE_STAFF, requestInfo.getIp(), requestInfo.getUrl(), currentLoginStaff.getId(),
-                    currentLoginStaff.getNickName(), SysLogUtil.getRemoveLog(SysLogUtil.LOG_SUP_STAFF, staffName),
+                    currentLoginStaff.getNickName(), SysLogUtil.getRemoveLog(SysLogUtil.LOG_SUP_STAFF, staffName.toString()),
                     currentLoginStaff.getCompanyId()));
 
         } catch (Exception e) {
