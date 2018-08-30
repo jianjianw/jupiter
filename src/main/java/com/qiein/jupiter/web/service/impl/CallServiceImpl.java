@@ -190,10 +190,7 @@ public class CallServiceImpl implements CallService {
     }
 
     @Override
-    public JSONObject getRecording(String caller,StaffPO staffPO,Integer page,Integer pageSize,Integer callId,Integer startTime) {
-        if(NumUtil.isInValid(callId)){
-            throw new RException(ExceptionEnum.CALL_ID_IS_NULL);
-        }
+    public JSONObject getRecording(String caller,StaffPO staffPO,Integer page,Integer pageSize,Integer startTime) {
         String sign = MD5Util.getApolloMd5(String.valueOf(staffPO.getCompanyId()));
         //Appollo接口获取用户信息
         String usreJson = HttpClient
@@ -207,13 +204,12 @@ public class CallServiceImpl implements CallService {
         //Appollo接口获取intsanceId
         String instaceJson = HttpClient
                 // 请求方式和请求url
-                .get(appoloBaseUrl.concat(AppolloUrlConst.GET_CALL_INSTANCE_BY_ID))
+                .get(appoloBaseUrl.concat(AppolloUrlConst.GET_CALL_INSTANCE))
                 // post提交json
-                .queryString("callId",callId)
                 .queryString("companyId", staffPO.getCompanyId())
                 .queryString("sign", sign)
                 .asString();
-        CallPO callPO = JSONObject.parseObject(JSONObject.parseObject(instaceJson).get("data").toString(), CallPO.class);
+        List<CallPO> callPOS = JSONObject.parseArray(JSONObject.parseObject(instaceJson).get("data").toString(), CallPO.class);
         CallUserPO callUserPO = JSONObject.parseObject(JSONObject.parseObject(usreJson).get("data").toString(), CallUserPO.class);
         //获取Token
         String token = BatchTokenRetrieval.retrieve(callUserPO.getUsername(), callUserPO.getPassword(), callUserPO.getClientId(), callUserPO.getClientSecret(), callUserPO.getCallBakUrl());
@@ -234,7 +230,7 @@ public class CallServiceImpl implements CallService {
         String reportsJson = HttpClient
                 .get(CallUrlConst.CALL_BASE_URL)
                 .queryString("Action", "ListCallDetailRecords")
-                .queryString("InstanceId", callPO.getInstanceId())
+                .queryString("InstanceId", callPOS.get(0).getInstanceId())
                 .queryString("Criteria", caller)
                 .queryString("StartTime",date.getTime())
                 .queryString("PageNumber",page)
@@ -253,7 +249,7 @@ public class CallServiceImpl implements CallService {
     }
 
     @Override
-    public JSONObject getRecordingFile(String fileName,StaffPO staffPO,Integer callId) {
+    public JSONObject getRecordingFile(String fileName,StaffPO staffPO) {
 
         String sign = MD5Util.getApolloMd5(String.valueOf(staffPO.getCompanyId()));
         //Appollo接口获取用户信息
@@ -268,13 +264,12 @@ public class CallServiceImpl implements CallService {
         //Appollo接口获取intsanceId
         String instaceJson = HttpClient
                 // 请求方式和请求url
-                .get(appoloBaseUrl.concat(AppolloUrlConst.GET_CALL_INSTANCE_BY_ID))
+                .get(appoloBaseUrl.concat(AppolloUrlConst.GET_CALL_INSTANCE))
                 // post提交json
-                .queryString("callId",callId)
                 .queryString("companyId", staffPO.getCompanyId())
                 .queryString("sign", sign)
                 .asString();
-        CallPO callPO = JSONObject.parseObject(JSONObject.parseObject(instaceJson).get("data").toString(), CallPO.class);
+        List<CallPO> callPOS = JSONObject.parseArray(JSONObject.parseObject(instaceJson).get("data").toString(), CallPO.class);
         CallUserPO callUserPO = JSONObject.parseObject(JSONObject.parseObject(usreJson).get("data").toString(), CallUserPO.class);
         //获取Token
         String token = BatchTokenRetrieval.retrieve(callUserPO.getUsername(), callUserPO.getPassword(), callUserPO.getClientId(), callUserPO.getClientSecret(), callUserPO.getCallBakUrl());
@@ -288,7 +283,7 @@ public class CallServiceImpl implements CallService {
         String urlJson = HttpClient
                 .get(CallUrlConst.CALL_BASE_URL)
                 .queryString("Action", "DownloadRecording")
-                .queryString("InstanceId", callPO.getInstanceId())
+                .queryString("InstanceId", callPOS.get(0).getInstanceId())
                 .queryString("FileName",fileName)
                 //公共参数
                 .queryString("Format", "JSON")
