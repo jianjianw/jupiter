@@ -14,27 +14,33 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class WebSocketMsgUtilTest {
 
-	@Autowired
-	private WebSocketMsgUtil webSocketMsgUtil;
+    @Autowired
+    private WebSocketMsgUtil webSocketMsgUtil;
 
-	@Test
-	public void sendMsg() {
-		OrderSuccessMsg orderSuccessMsg = new OrderSuccessMsg();
-		orderSuccessMsg.setCompanyId(9999);
-		orderSuccessMsg.setStaffName("张三1");
-		orderSuccessMsg.setShopName("三亚");
-		orderSuccessMsg.setAmount("12000");
-		orderSuccessMsg.setType(OrderSuccessTypeEnum.TourShoot);
-		orderSuccessMsg.setSrcImg(
-				"https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=156581925,3170808657&fm=27&gp=0.jpg");
-		orderSuccessMsg.setHeadImg(
-				"https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=4005596794,992112216&fm=27&gp=0.jpg");
-		WebSocketMsgDTO webSocketMsgDTO = new WebSocketMsgDTO();
-		webSocketMsgDTO.setCompanyId(1);
-		webSocketMsgDTO.setType(WebSocketMsgEnum.OrderSuccess);
-		long time = System.currentTimeMillis();
-		webSocketMsgUtil.pushOrderSuccessMsg(orderSuccessMsg);
-		System.out.println(System.currentTimeMillis() - time);
-	}
+    @Test
+    public void sendMsg() {
+        OrderSuccessMsg orderSuccessMsg = new OrderSuccessMsg();
+        orderSuccessMsg.setCompanyId(5013);
+        orderSuccessMsg.setStaffName("张三1");
+        orderSuccessMsg.setShopName("三亚");
+        orderSuccessMsg.setAmount("12000");
+        orderSuccessMsg.setType(OrderSuccessTypeEnum.TourShoot);
+        orderSuccessMsg.setSrcImg(
+                "34");
+        orderSuccessMsg.setHeadImg(
+                "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=4005596794,992112216&fm=27&gp=0.jpg");
+        WebSocketMsgDTO webSocketMsgDTO = new WebSocketMsgDTO();
+        webSocketMsgDTO.setCompanyId(1);
+        webSocketMsgDTO.setType(WebSocketMsgEnum.OrderSuccess);
+        long time = System.currentTimeMillis();
+        webSocketMsgUtil.pushOrderSuccessMsg(orderSuccessMsg);
+        System.out.println(System.currentTimeMillis() - time);
+    }
+
+    @Test
+    public void sendMsg1() throws InterruptedException {
+        webSocketMsgUtil.pushAlertMsg(5013, 97, "test");
+        Thread.sleep(11111);
+    }
 
 }

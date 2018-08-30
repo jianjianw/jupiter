@@ -5,6 +5,8 @@ import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import retrofit2.*;
 
 import java.io.IOException;
@@ -17,6 +19,9 @@ import java.lang.reflect.Type;
  * @Author: shiTao
  */
 public class RetorfitUtil {
+
+    private static final Logger log = LoggerFactory.getLogger(RetorfitUtil.class);
+
     /**
      * 自定义Converter实现RequestBody到JSON的转换
      */
@@ -81,12 +86,12 @@ public class RetorfitUtil {
         responseBodyCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                System.out.println(1);
+//                log.info("http-msg-async", response.isSuccessful());
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable throwable) {
-                System.out.println(2);
+                log.info("http-error", throwable.getMessage());
             }
         });
     }

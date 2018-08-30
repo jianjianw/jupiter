@@ -1,9 +1,9 @@
 package com.qiein.jupiter.web.service.impl;
 
-import com.qiein.jupiter.constant.CommonConstant;
-import com.qiein.jupiter.constant.DictionaryConstant;
-import com.qiein.jupiter.constant.RedisConstant;
-import com.qiein.jupiter.constant.RoleConstant;
+import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.annotation.JacksonAnnotationsInside;
+import com.mzlion.easyokhttp.HttpClient;
+import com.qiein.jupiter.constant.*;
 import com.qiein.jupiter.enums.StaffStatusEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
@@ -19,6 +19,7 @@ import com.qiein.jupiter.web.entity.po.*;
 import com.qiein.jupiter.web.entity.vo.*;
 import com.qiein.jupiter.web.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -93,6 +94,10 @@ public class LoginServiceImpl implements LoginService {
 
     @Autowired
     private CallCustomerDao callCustomerDao;
+
+    @Value("${apollo.baseUrl}")
+    private String appoloBaseUrl;
+
     /**
      * 微信获取公司列表
      *
@@ -312,6 +317,7 @@ public class LoginServiceImpl implements LoginService {
         // 放入公司对象
         CompanyVO companyVO = companyService.getCompanyVO(companyId);
         companyVO.setMenuList(getCompanyMenuList(companyId, staffId));
+        companyVO.setInstanceId(getCompanyInstaceId(companyId));
         staffBaseInfoVO.setCompany(companyVO);
         // 员工
         StaffDetailVO staffDetailVO = staffDao.getStaffDetailVO(staffId, companyId);
@@ -342,6 +348,22 @@ public class LoginServiceImpl implements LoginService {
         //通话实例
         staffBaseInfoVO.setCallCustomerPO(callCustomerDao.getCallCustomerByStaffIdAndCompanyId(staffId,companyId));
         return staffBaseInfoVO;
+    }
+
+    /**
+     * 根据公司id获取通话实例id
+     * */
+    private String getCompanyInstaceId(int companyId){
+        String sign = MD5Util.getApolloMd5(String.valueOf(companyId));
+        String instaceJson = HttpClient
+                // 请求方式和请求url
+                .get(appoloBaseUrl.concat(AppolloUrlConst.GET_CALL_INSTANCE))
+                // post提交json
+                .queryString("companyId", companyId)
+                .queryString("sign", sign)
+                .asString();
+        List<CallPO> callPOS = JSONObject.parseArray(JSONObject.parseObject(instaceJson).get("data").toString(), CallPO.class);
+        return callPOS.get(0).getInstanceId();
     }
 
     /**

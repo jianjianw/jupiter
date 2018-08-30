@@ -173,13 +173,13 @@ public class ClientServiceImpl implements ClientService {
         //获取客资时候有备注
         if (StringUtil.isNotEmpty(clientStatusVoteVO.getContent())) {
             //对长度进行校验 -- 不能超过200
-            if(StringUtil.isNotEmpty(clientStatusVoteVO.getReason()) ){
-                if(clientStatusVoteVO.getReason().length() >= 200){
-                    clientStatusVoteVO.setReason(clientStatusVoteVO.getReason().substring(0,199));
+            if (StringUtil.isNotEmpty(clientStatusVoteVO.getReason())) {
+                if (clientStatusVoteVO.getReason().length() >= 200) {
+                    clientStatusVoteVO.setReason(clientStatusVoteVO.getReason().substring(0, 199));
                 }
-                clientStatusVoteVO.setContent("无效原因:"+clientStatusVoteVO.getContent()+",无效备注："+clientStatusVoteVO.getReason());
-            }else{
-                clientStatusVoteVO.setContent("备注:"+clientStatusVoteVO.getContent());
+                clientStatusVoteVO.setContent("无效原因:" + clientStatusVoteVO.getContent() + ",无效备注：" + clientStatusVoteVO.getReason());
+            } else {
+                clientStatusVoteVO.setContent("备注:" + clientStatusVoteVO.getContent());
             }
             clientDao.updateDetailMemo(DBSplitUtil.getDetailTabName(clientStatusVoteVO.getCompanyId()), clientStatusVoteVO.getKzId(), clientStatusVoteVO.getCompanyId(), clientStatusVoteVO.getContent());
         }
@@ -199,7 +199,7 @@ public class ClientServiceImpl implements ClientService {
         //插入日志
         int addLogNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(clientStatusVoteVO.getCompanyId()),
                 new ClientLogPO(clientStatusVoteVO.getKzId(), clientStatusVoteVO.getOperaId(), clientStatusVoteVO.getOperaName(),
-                        ClientLogConst.INFO_LOG_EDIT_BE_STATUS + kzStatusName+"；"+clientStatusVoteVO.getContent(),
+                        ClientLogConst.INFO_LOG_EDIT_BE_STATUS + kzStatusName + "；" + clientStatusVoteVO.getContent(),
                         ClientLogConst.INFO_LOGTYPE_EDIT, clientStatusVoteVO.getCompanyId()));
         if (addLogNum != 1) {
             log.error("修改客资状态日志失败");
@@ -212,7 +212,8 @@ public class ClientServiceImpl implements ClientService {
      * @param kzId
      * @return
      */
-    public Integer findId(String kzId, Integer companyId) {
+    @Override
+    public Integer findByKzId(String kzId, Integer companyId) {
         return clientDao.findId(kzId, companyId, DBSplitUtil.getInfoTabName(companyId));
     }
 
@@ -223,6 +224,7 @@ public class ClientServiceImpl implements ClientService {
      * @param companyId
      * @return
      */
+    @Override
     public int listExistAppointClientsNum(String kzIds, int companyId, String role) {
         String type = "APPOINTORID";
         if (RoleConstant.DSCJ.equals(role) || RoleConstant.DSSX.equals(role) || RoleConstant.ZJSSX.equals(role)) {
@@ -246,12 +248,6 @@ public class ClientServiceImpl implements ClientService {
 
     /**
      * 查询客资收款修改日志
-     *
-     * @param logTabName
-     * @param companyId
-     * @param kzId
-     * @param logType
-     * @return
      */
     public List<ClientLogPO> getCashEditLog(int companyId, String kzId) {
         return clientLogDao.getCashEditLog(DBSplitUtil.getInfoLogTabName(companyId), companyId, kzId, ClientLogConst.INFO_LOGTYPE_CASH);

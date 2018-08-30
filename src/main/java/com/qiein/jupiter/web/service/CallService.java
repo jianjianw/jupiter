@@ -52,12 +52,12 @@ public interface CallService {
     /**
      * 获取录音列表
      * */
-    JSONObject getRecording(String caller, StaffPO staffPO,Integer page,Integer pageSize,Integer callId,Integer startTime);
+    JSONObject getRecording(String caller, StaffPO staffPO,Integer page,Integer pageSize,Integer startTime,String instanceId);
 
     /**
      * 获取录音文件
      * */
-    JSONObject getRecordingFile(String fileName,StaffPO staffPO,Integer callId);
+    JSONObject getRecordingFile(String fileName,StaffPO staffPO,String instanceId);
 
     /**
      * 删除客服
