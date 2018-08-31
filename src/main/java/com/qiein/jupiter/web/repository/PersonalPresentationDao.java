@@ -172,6 +172,12 @@ public class PersonalPresentationDao {
         return queryData(reportParamDTO, invalidConfig);
     }
 
+    /**
+     * 查询数据
+     * @param reportParamDTO
+     * @param invalidConfig
+     * @return
+     */
     public List<RegionReportsVO> queryData(ReportParamDTO reportParamDTO, DsInvalidVO invalidConfig){
         String sql = getFinalSQL(reportParamDTO, invalidConfig);
         Map<String, Object> params = null;
@@ -268,22 +274,6 @@ public class PersonalPresentationDao {
      * @return
      */
     private StringBuilder getBaseSQL(StringBuilder sb, String dataName, String type) {
-//        String subSql = "";
-//        if (type.startsWith("zjs")) {
-//
-//            if ("zjsll".equals(type)){
-//                subSql = " AND src.TYPEID IN (3,4,5) AND info.COLLECTORID = :staffid ";
-//            }else if ("zjsyy".equals(type)){
-//                subSql = " AND src.TYPEID IN (3,4,5) AND info.APPOINTORID = :staffid ";
-//            }
-//        }
-//        if (type.startsWith("ds")) {
-//            if ("dsll".equals(type)){
-//                subSql = " AND src.TYPEID IN (3,4,5) AND info.COLLECTORID = :staffid ";
-//            }else if ("dsyy".equals(type)){
-//                subSql = " AND src.TYPEID IN (3,4,5) AND info.APPOINTORID = :staffid ";
-//            }
-//        }
         sb.append("SELECT COUNT(1) " + dataName)
                 .append(" FROM hm_crm_client_info info ")
                 .append(" INNER JOIN hm_crm_client_detail detail ON info.KZID = detail.KZID AND info.COMPANYID = detail.COMPANYID ")
@@ -340,8 +330,12 @@ public class PersonalPresentationDao {
     private StringBuilder getValidClientSQL(String type, DsInvalidVO invalidConfig) {
         StringBuilder sb = new StringBuilder();
         getBaseSQL(sb, "validClientCount", type)
-                .append(" AND info.CREATETIME BETWEEN :start AND :end ")
-                .append(" AND INSTR( :zjsvalidstatus ,CONCAT( ','+info.STATUSID + '', ','))>0 ");
+                .append(" AND info.CREATETIME BETWEEN :start AND :end ");
+        if (type.startsWith("zjs")){
+            sb.append(" AND INSTR( :zjsvalidstatus ,CONCAT( ','+info.STATUSID + '', ','))>0 ");
+        }else if (type.startsWith("ds")){
+            sb.append(" AND INSTR( :zjsvalidstatus ,CONCAT( ','+info.STATUSID + '', ','))=0 ");
+        }
 //        sb.append(" GROUP BY info.SOURCEID");
         return sb;
     }
@@ -507,8 +501,9 @@ public class PersonalPresentationDao {
                 //客资量(总客资-筛选待定-筛选中-筛选无效)
                 rrv.setClientCount(rrv.getAllClientCount() - rrv.getFilterPendingClientCount() - rrv.getFilterInValidClientCount() - rrv.getFilterInClientCount());
                 //计算各种百分比
+                System.out.println("计算前： "+rrv);
                 everyRate(rrv);
-
+                System.out.println("计算后： "+rrv);
             }
         }if (type.startsWith("zjs")){
             for (RegionReportsVO rrv : total) {
@@ -537,13 +532,13 @@ public class PersonalPresentationDao {
         double waitRate = (double) rrv.getPendingClientCount() / rrv.getClientCount();
         rrv.setWaitRate(parseDouble(((Double.isNaN(waitRate) || Double.isInfinite(waitRate)) ? 0.0 : waitRate) * 100));
         //毛客资入店率
-        double clientComeShopRate = (double) rrv.getComeShopClientCount() / rrv.getClientCount();
+        double clientComeShopRate = (double) rrv.getComeShopClientCount() / rrv.getAllClientCount();
         rrv.setClientComeShopRate(parseDouble(((Double.isNaN(clientComeShopRate) || Double.isInfinite(clientComeShopRate)) ? 0.0 : clientComeShopRate) * 100));
         //有效客资入店率
         double validComeShopRate = (double) rrv.getComeShopClientCount() / rrv.getValidClientCount();
-        rrv.setClientComeShopRate(parseDouble(((Double.isNaN(validComeShopRate) || Double.isInfinite(validComeShopRate)) ? 0.0 : validComeShopRate) * 100));
+        rrv.setValidClientComeShopRate(parseDouble(((Double.isNaN(validComeShopRate) || Double.isInfinite(validComeShopRate)) ? 0.0 : validComeShopRate) * 100));
         //毛客资成交率
-        double successRate = (double) rrv.getSuccessClientCount() / rrv.getClientCount();
+        double successRate = (double) rrv.getSuccessClientCount() / rrv.getAllClientCount();
         rrv.setClientSuccessRate(parseDouble(((Double.isNaN(successRate) || Double.isInfinite(successRate)) ? 0.0 : successRate) * 100));
         //有效客资成交率
         double validSuccessRate = (double) rrv.getSuccessClientCount() / rrv.getValidClientCount();
