@@ -93,6 +93,9 @@ public class ReportsServiceImpl implements ReportService {
     @Autowired
     private DstgYearsClientReportsRowDao dstgYearsClientReportsRowDao;
 
+    @Autowired
+    private PersonalPresentationDao personalPresentationDao;
+
 
 
     /**
@@ -602,6 +605,17 @@ public class ReportsServiceImpl implements ReportService {
 //            zjsClientYearReportDTO.setSourceIds(sourceDao.getAllZjsSourceIdStr(zjsClientYearReportDTO.getCompanyId()));
         List<Map<String, Object>> list = zjsKzOfYearDao.getZjsYearDetailReport(zjsClientYearReportDTO, invalidConfig);
         return list;
+    }
+
+    /**
+     * 个人简报
+     * @param reportParamDTO
+     * @return
+     */
+    @Override
+    public Map<String,RegionReportsVO> getPersonalPresentation(ReportParamDTO reportParamDTO) {
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(reportParamDTO.getCompanyId());
+        return personalPresentationDao.getPersonalPresentation(reportParamDTO,invalidConfig);
     }
 
     @Override

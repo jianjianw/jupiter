@@ -316,6 +316,17 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     /**
+     * 编辑公司报表设置
+     *
+     * @param companyId
+     * @param reportsConfig
+     */
+    @Override
+    public void editReportsConfig(int companyId, String reportsConfig) {
+        companyDao.editReportsConfig(companyId, reportsConfig);
+    }
+
+    /**
      * 根据手机号码和加密码  获取对应的公司
      *
      * @param phone

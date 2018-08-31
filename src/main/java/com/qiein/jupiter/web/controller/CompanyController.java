@@ -250,10 +250,10 @@ public class CompanyController extends BaseController {
      */
     @GetMapping("/zjs_menu")
     public ResultInfo getZjsMenu() {
-        Map<String,Object> resultMap = new HashMap<>();
-        resultMap.put("qy_zjsMenu",ClientZjsMenuConst.QY_ZJS_MENU);
-        resultMap.put("lk_zjsMenu",ClientZjsMenuConst.LK_ZJS_MENU);
-        resultMap.put("companySet",companyService.getCompanyZjsSet(getCurrentLoginStaff().getCompanyId()));
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("qy_zjsMenu", ClientZjsMenuConst.QY_ZJS_MENU);
+        resultMap.put("lk_zjsMenu", ClientZjsMenuConst.LK_ZJS_MENU);
+        resultMap.put("companySet", companyService.getCompanyZjsSet(getCurrentLoginStaff().getCompanyId()));
         return ResultInfoUtil.success(resultMap);
     }
 
@@ -276,19 +276,33 @@ public class CompanyController extends BaseController {
      * 客服编辑接待结果
      */
     @GetMapping("/edit_kf_edit_jd_rst")
-    public ResultInfo editKfEditJdRst(@RequestParam boolean kfEditJdRst){
-        StaffPO staff=getCurrentLoginStaff();
-        companyService.editKfEditJdRst(kfEditJdRst,staff.getCompanyId());
+    public ResultInfo editKfEditJdRst(@RequestParam boolean kfEditJdRst) {
+        StaffPO staff = getCurrentLoginStaff();
+        companyService.editKfEditJdRst(kfEditJdRst, staff.getCompanyId());
         return ResultInfoUtil.success(kfEditJdRst ? TipMsgEnum.OPERATE_SUCCESS : TipMsgEnum.CLOSE_SUCCESS);
     }
+
     /**
      * 修改电商待定自定义状态
+     *
      * @param dsddStatus
      * @return
      */
     @GetMapping("/edit_dsdd_status")
-    public ResultInfo editDsddStatus(@RequestParam String dsddStatus){
-        companyService.editDsddStatus(dsddStatus,getCurrentLoginStaff().getCompanyId());
+    public ResultInfo editDsddStatus(@RequestParam String dsddStatus) {
+        companyService.editDsddStatus(dsddStatus, getCurrentLoginStaff().getCompanyId());
+        return ResultInfoUtil.success();
+    }
+
+    /**
+     * 编辑公司报表设置
+     *
+     * @param reportsConfig
+     * @return
+     */
+    @GetMapping("/edit_reports_conifg")
+    public ResultInfo editReportsConfig(String reportsConfig) {
+        companyService.editReportsConfig(getCurrentLoginStaff().getCompanyId(), reportsConfig);
         return ResultInfoUtil.success();
     }
 

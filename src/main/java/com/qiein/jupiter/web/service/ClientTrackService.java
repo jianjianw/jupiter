@@ -35,7 +35,7 @@ public interface ClientTrackService {
 	 * @param invalidLabel
 	 * @param staffPO
 	 */
-	int approvalInvalidKzList(String kzIds, String memo, int rst, String invalidLabel, StaffPO staffPO);
+	void approvalInvalidKzList(String kzIds, String memo, int rst, String invalidLabel, StaffPO staffPO);
 
 	/**
 	 * 客资批量分配

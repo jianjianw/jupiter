@@ -194,25 +194,25 @@ public class GoldDataServiceImpl implements GoldDataService {
         //备注放入其他信息
         String remark = "<span style=\"color:#FF8533;\">【金数据】</span>";
         StringBuilder sb = new StringBuilder(remark);
+        if (StringUtil.isNotEmpty(kzName)) {
+            sb.append("姓名：").append(kzName).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(kzPhone)) {
+            sb.append("手机号：").append(kzPhone).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(address)) {
+            sb.append("归属地：").append(address).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(weChat)) {
+            sb.append("微信号：").append(weChat).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(formId)) {
+            sb.append("表单号：").append(formId).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(formName)) {
+            sb.append("表单名称：").append(formName).append("<br/>");
+        }
         if (fieldKeys.length != 0) {
-            if (StringUtil.isNotEmpty(kzName)) {
-                sb.append("姓名：").append(kzName).append("<br/>");
-            }
-            if (StringUtil.isNotEmpty(kzPhone)) {
-                sb.append("手机号：").append(kzPhone).append("<br/>");
-            }
-            if (StringUtil.isNotEmpty(address)) {
-                sb.append("归属地：").append(address).append("<br/>");
-            }
-            if (StringUtil.isNotEmpty(weChat)) {
-                sb.append("微信号：").append(weChat).append("<br/>");
-            }
-            if (StringUtil.isNotEmpty(formId)) {
-                sb.append("表单号：").append(formId).append("<br/>");
-            }
-            if (StringUtil.isNotEmpty(formName)) {
-                sb.append("表单名称：").append(formName).append("<br/>");
-            }
             for (int i = 0; i < fieldValues.length; i++) {
                 if ("kzqq".equalsIgnoreCase(fieldValues[i])) {
                     reqContent.put("kzqq", entry.getString(fieldKeys[i]));
