@@ -36,82 +36,156 @@ public class PersonalPresentationDao {
 
     public Map<String,RegionReportsVO> getPersonalPresentation(ReportParamDTO reportParamDTO, DsInvalidVO invalidConfig){
         Map<String,RegionReportsVO> map = new HashMap<>();
-        map.put("zjs",getZjsPersonalPresentation(reportParamDTO, invalidConfig).get(0));
-        map.put("ds",getDsPersonalPresentation(reportParamDTO, invalidConfig).get(0));
+        map.put("zjsll",getZjsllPersonalPresentation(reportParamDTO, invalidConfig).get(0));
+        map.put("zjsyy",getZjsyyPersonalPresentation(reportParamDTO, invalidConfig).get(0));
+        map.put("dsll",getDsllPersonalPresentation(reportParamDTO, invalidConfig).get(0));
+        map.put("dsyy",getDsyyPersonalPresentation(reportParamDTO, invalidConfig).get(0));
         return map;
     }
 
     /**
-     * 获取个人转介绍简报
+     * 获取我录入的转介绍简报
      *
      * @param reportParamDTO
      * @param invalidConfig
      * @return
      */
-    public List<RegionReportsVO> getZjsPersonalPresentation(ReportParamDTO reportParamDTO, DsInvalidVO invalidConfig) {
-        reportParamDTO.setType("zjs");
-        String sql = getFinalSQL(reportParamDTO, invalidConfig);
-        Map<String, Object> params = null;
-        try {
-            params = ObjectUtil.getAttributeMap(reportParamDTO);
-            params.put("zjsvalidstatus", invalidConfig.getZjsValidStatus());
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-//        final List<RegionReportsVO> total = new ArrayList<>();
-        List<RegionReportsVO> total = namedJdbc.query(sql, params,
-                new RowMapper<RegionReportsVO>() {
-                    @Override
-                    public RegionReportsVO mapRow(ResultSet rs, int rowNum) throws SQLException {
-                        RegionReportsVO regionReportsVO = new RegionReportsVO();
-                        //总客资
-                        regionReportsVO.setAllClientCount(rs.getInt("allClientCount"));
-                        //待定量
-                        regionReportsVO.setPendingClientCount(rs.getInt("pendingClientCount"));
-                        //筛选待定
-                        regionReportsVO.setFilterPendingClientCount(rs.getInt("filterPendingClientCount"));
-                        //筛选中
-                        regionReportsVO.setValidClientCount(rs.getInt("validClientCount"));
-                        //有效量
-                        regionReportsVO.setFilterInClientCount(rs.getInt("filterInClientCount"));
-                        //无效量
-                        regionReportsVO.setInValidClientCount(rs.getInt("inValidClientCount"));
-                        //筛选无效量
-                        regionReportsVO.setFilterInValidClientCount(rs.getInt("filterInValidClientCount"));
-                        //入店量
-                        regionReportsVO.setComeShopClientCount(rs.getInt("comeShopClientCount"));
-                        //成交量
-                        regionReportsVO.setSuccessClientCount(rs.getInt("successClientCount"));
-                        //成交均价
-                        regionReportsVO.setAvgAmount(rs.getInt(("avgAmount")));
-                        //营业额
-                        regionReportsVO.setAmount(rs.getInt("amount"));
-                        return regionReportsVO;
-                    }
-                }
-        );
-        //计算各种率
-        calculat(total,reportParamDTO.getType(),invalidConfig);
-        return total;
+    public List<RegionReportsVO> getZjsllPersonalPresentation(ReportParamDTO reportParamDTO, DsInvalidVO invalidConfig) {
+        reportParamDTO.setType("zjsll");
+//        String sql = getFinalSQL(reportParamDTO, invalidConfig);
+//        Map<String, Object> params = null;
+//        try {
+//            params = ObjectUtil.getAttributeMap(reportParamDTO);
+//            params.put("zjsvalidstatus", invalidConfig.getZjsValidStatus());
+//        } catch (IllegalAccessException e) {
+//            e.printStackTrace();
+//        }
+//        List<RegionReportsVO> total = namedJdbc.query(sql, params,
+//                new RowMapper<RegionReportsVO>() {
+//                    @Override
+//                    public RegionReportsVO mapRow(ResultSet rs, int rowNum) throws SQLException {
+//                        RegionReportsVO regionReportsVO = new RegionReportsVO();
+//                        //总客资
+//                        regionReportsVO.setAllClientCount(rs.getInt("allClientCount"));
+//                        //待定量
+//                        regionReportsVO.setPendingClientCount(rs.getInt("pendingClientCount"));
+//                        //筛选待定
+//                        regionReportsVO.setFilterPendingClientCount(rs.getInt("filterPendingClientCount"));
+//                        //筛选中
+//                        regionReportsVO.setValidClientCount(rs.getInt("validClientCount"));
+//                        //有效量
+//                        regionReportsVO.setFilterInClientCount(rs.getInt("filterInClientCount"));
+//                        //无效量
+//                        regionReportsVO.setInValidClientCount(rs.getInt("inValidClientCount"));
+//                        //筛选无效量
+//                        regionReportsVO.setFilterInValidClientCount(rs.getInt("filterInValidClientCount"));
+//                        //入店量
+//                        regionReportsVO.setComeShopClientCount(rs.getInt("comeShopClientCount"));
+//                        //成交量
+//                        regionReportsVO.setSuccessClientCount(rs.getInt("successClientCount"));
+//                        //成交均价
+//                        regionReportsVO.setAvgAmount(rs.getInt(("avgAmount")));
+//                        //营业额
+//                        regionReportsVO.setAmount(rs.getInt("amount"));
+//                        return regionReportsVO;
+//                    }
+//                }
+//        );
+//        //计算各种率
+//        calculat(total,reportParamDTO.getType(),invalidConfig);
+        return queryData(reportParamDTO, invalidConfig);
     }
 
     /**
-     * 获取电商个人简报
+     * 获取我的转介绍邀约简报
+     *
      * @param reportParamDTO
      * @param invalidConfig
      * @return
      */
-    public List<RegionReportsVO> getDsPersonalPresentation(ReportParamDTO reportParamDTO, DsInvalidVO invalidConfig) {
-        reportParamDTO.setType("ds");
+    public List<RegionReportsVO> getZjsyyPersonalPresentation(ReportParamDTO reportParamDTO, DsInvalidVO invalidConfig) {
+        reportParamDTO.setType("zjsyy");
+        return queryData(reportParamDTO, invalidConfig);
+    }
+
+    /**
+     * 获取我录入的电商个人简报
+     * @param reportParamDTO
+     * @param invalidConfig
+     * @return
+     */
+    public List<RegionReportsVO> getDsllPersonalPresentation(ReportParamDTO reportParamDTO, DsInvalidVO invalidConfig) {
+        reportParamDTO.setType("dsll");
+//        String sql = getFinalSQL(reportParamDTO, invalidConfig);
+//        Map<String, Object> params = null;
+//        try {
+//            params = ObjectUtil.getAttributeMap(reportParamDTO);
+//            params.put("zjsvalidstatus", invalidConfig.getZjsValidStatus());
+//        } catch (IllegalAccessException e) {
+//            e.printStackTrace();
+//        }
+////        final List<RegionReportsVO> total = new ArrayList<>();
+//        List<RegionReportsVO> total = namedJdbc.query(sql, params,
+//                new RowMapper<RegionReportsVO>() {
+//                    @Override
+//                    public RegionReportsVO mapRow(ResultSet rs, int rowNum) throws SQLException {
+//                        RegionReportsVO regionReportsVO = new RegionReportsVO();
+//                        //总客资
+//                        regionReportsVO.setAllClientCount(rs.getInt("allClientCount"));
+//                        //待定量
+//                        regionReportsVO.setPendingClientCount(rs.getInt("pendingClientCount"));
+//                        //筛选待定
+//                        regionReportsVO.setFilterPendingClientCount(rs.getInt("filterPendingClientCount"));
+//                        //筛选中
+//                        regionReportsVO.setValidClientCount(rs.getInt("validClientCount"));
+//                        //有效量
+//                        regionReportsVO.setFilterInClientCount(rs.getInt("filterInClientCount"));
+//                        //无效量
+//                        regionReportsVO.setInValidClientCount(rs.getInt("inValidClientCount"));
+//                        //筛选无效量
+//                        regionReportsVO.setFilterInValidClientCount(rs.getInt("filterInValidClientCount"));
+//                        //入店量
+//                        regionReportsVO.setComeShopClientCount(rs.getInt("comeShopClientCount"));
+//                        //成交量
+//                        regionReportsVO.setSuccessClientCount(rs.getInt("successClientCount"));
+//                        //成交均价
+//                        regionReportsVO.setAvgAmount(rs.getInt(("avgAmount")));
+//                        //营业额
+//                        regionReportsVO.setAmount(rs.getInt("amount"));
+//                        return regionReportsVO;
+//                    }
+//                }
+//        );
+//        //计算各种率
+//        calculat(total,reportParamDTO.getType(),invalidConfig);
+        return queryData(reportParamDTO, invalidConfig);
+    }
+
+    /**
+     * 我的电商邀约
+     * @param reportParamDTO
+     * @param invalidConfig
+     * @return
+     */
+    public List<RegionReportsVO> getDsyyPersonalPresentation(ReportParamDTO reportParamDTO, DsInvalidVO invalidConfig) {
+        reportParamDTO.setType("dsyy");
+        return queryData(reportParamDTO, invalidConfig);
+    }
+
+    public List<RegionReportsVO> queryData(ReportParamDTO reportParamDTO, DsInvalidVO invalidConfig){
         String sql = getFinalSQL(reportParamDTO, invalidConfig);
         Map<String, Object> params = null;
         try {
             params = ObjectUtil.getAttributeMap(reportParamDTO);
-            params.put("zjsvalidstatus", invalidConfig.getZjsValidStatus());
+            if (reportParamDTO.getType().startsWith("zjs")){
+                params.put("zjsvalidstatus", invalidConfig.getDsInvalidStatus());
+            }else if (reportParamDTO.getType().startsWith("ds")){
+                params.put("zjsvalidstatus", invalidConfig.getZjsValidStatus());
+            }
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
-//        final List<RegionReportsVO> total = new ArrayList<>();
+
         List<RegionReportsVO> total = namedJdbc.query(sql, params,
                 new RowMapper<RegionReportsVO>() {
                     @Override
@@ -194,20 +268,29 @@ public class PersonalPresentationDao {
      * @return
      */
     private StringBuilder getBaseSQL(StringBuilder sb, String dataName, String type) {
-        String subSql = "";
-        if (type.equals("zjs")) {
-            subSql = " AND src.TYPEID IN (3,4,5) ";
-        }
-        if (type.equals("ds")) {
-            subSql = " AND src.TYPEID IN (1,2) ";
-        }
+//        String subSql = "";
+//        if (type.startsWith("zjs")) {
+//
+//            if ("zjsll".equals(type)){
+//                subSql = " AND src.TYPEID IN (3,4,5) AND info.COLLECTORID = :staffid ";
+//            }else if ("zjsyy".equals(type)){
+//                subSql = " AND src.TYPEID IN (3,4,5) AND info.APPOINTORID = :staffid ";
+//            }
+//        }
+//        if (type.startsWith("ds")) {
+//            if ("dsll".equals(type)){
+//                subSql = " AND src.TYPEID IN (3,4,5) AND info.COLLECTORID = :staffid ";
+//            }else if ("dsyy".equals(type)){
+//                subSql = " AND src.TYPEID IN (3,4,5) AND info.APPOINTORID = :staffid ";
+//            }
+//        }
         sb.append("SELECT COUNT(1) " + dataName)
                 .append(" FROM hm_crm_client_info info ")
                 .append(" INNER JOIN hm_crm_client_detail detail ON info.KZID = detail.KZID AND info.COMPANYID = detail.COMPANYID ")
                 .append(" INNER JOIN hm_crm_source src ON src.ID = info.SOURCEID AND src.COMPANYID = info.COMPANYID ")
                 .append(" WHERE info.ISDEL = 0 ")
-                .append(" AND info.COMPANYID = :companyid AND info.COLLECTORID = :staffid ")
-                .append(subSql);
+                .append(" AND info.COMPANYID = :companyid ")
+                .append(getSubSql(type));
         return sb;
     }
 
@@ -272,12 +355,12 @@ public class PersonalPresentationDao {
         StringBuilder inValidClientSQL = new StringBuilder();
         getBaseSQL(inValidClientSQL, "inValidClientCount", type);
         inValidClientSQL.append(" AND (info.CREATETIME BETWEEN :start AND :end ) ");
-        if ("zjs".equals(type)) {
+        if (type.startsWith("zjs")) {
             if (StringUtil.isNotEmpty(dsInvalidVO.getZjsValidStatus())) {
                 inValidClientSQL.append(" AND INSTR('" + dsInvalidVO.getZjsValidStatus() + "',CONCAT( ','+info.STATUSID + '', ','))=0 ");
             }
         }
-        if ("ds".equals(type)) {
+        if (type.startsWith("ds")) {
             if (StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidStatus()) && StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidLevel())) {
                 inValidClientSQL.append(" and (info.STATUSID in(" + dsInvalidVO.getDsInvalidStatus() + ") or");
                 inValidClientSQL.append("   detail.YXLEVEL IN(" + dsInvalidVO.getDsInvalidLevel() + ") )");
@@ -355,20 +438,13 @@ public class PersonalPresentationDao {
      */
     private StringBuilder getAvgAmount(String type) {
         StringBuilder avgAmountSQL = new StringBuilder();
-        String subSql = "";
-        if (type.equals("zjs")) {
-            subSql = " AND src.TYPEID IN (3,4,5) ";
-        }
-        if (type.equals("ds")) {
-            subSql = " AND src.TYPEID IN (1,2) ";
-        }
         avgAmountSQL.append("SELECT avg(detail.AMOUNT) avgAmount ")
                 .append(" FROM hm_crm_client_info info ")
                 .append(" INNER JOIN hm_crm_client_detail detail ON info.KZID = detail.KZID AND info.COMPANYID = detail.COMPANYID ")
                 .append(" INNER JOIN hm_crm_source src ON src.ID = info.SOURCEID AND src.COMPANYID = info.COMPANYID ")
-                .append(" WHERE info.COMPANYID = :companyid AND info.COLLECTORID = :staffid AND info.ISDEL = 0 ")
+                .append(" WHERE info.COMPANYID = :companyid AND info.ISDEL = 0 ")
                 .append(" AND info.SUCCESSTIME BETWEEN :start AND :end ")
-                .append(subSql);
+                .append(getSubSql(type));
         return avgAmountSQL;
     }
 
@@ -380,21 +456,39 @@ public class PersonalPresentationDao {
      */
     private String getAmount(String type) {
         StringBuilder amountSQL = new StringBuilder();
-        String subSql = "";
-        if (type.equals("zjs")) {
-            subSql = " AND src.TYPEID IN (3,4,5) ";
-        }
-        if (type.equals("ds")) {
-            subSql = " AND src.TYPEID IN (1,2) ";
-        }
+
         amountSQL.append("SELECT SUM(detail.AMOUNT) amount ")
                 .append(" FROM hm_crm_client_info info ")
                 .append(" INNER JOIN hm_crm_client_detail detail ON info.KZID = detail.KZID AND info.COMPANYID = detail.COMPANYID ")
                 .append(" INNER JOIN hm_crm_source src ON src.ID = info.SOURCEID AND src.COMPANYID = info.COMPANYID ")
-                .append(" WHERE info.COMPANYID = :companyid AND info.COLLECTORID = :staffid AND info.ISDEL = 0 ")
+                .append(" WHERE info.COMPANYID = :companyid AND info.ISDEL = 0 ")
                 .append(" AND info.SUCCESSTIME BETWEEN :start AND :end ")
-                .append(subSql);
+                .append(getSubSql(type));
         return amountSQL.toString();
+    }
+
+    /**
+     * 根据type类型获取where条件子句
+     * @param type
+     * @return
+     */
+    private String getSubSql(String type){
+        String subSql = "";
+        if (type.startsWith("zjs")) {
+            if ("zjsll".equals(type)){
+                subSql = " AND src.TYPEID IN (3,4,5) AND info.COLLECTORID = :staffid ";
+            }else if ("zjsyy".equals(type)){
+                subSql = " AND src.TYPEID IN (3,4,5) AND info.APPOINTORID = :staffid ";
+            }
+        }
+        if (type.startsWith("ds")) {
+            if ("dsll".equals(type)){
+                subSql = " AND src.TYPEID IN (1,2) AND info.COLLECTORID = :staffid ";
+            }else if ("dsyy".equals(type)){
+                subSql = " AND src.TYPEID IN (1,2) AND info.APPOINTORID = :staffid ";
+            }
+        }
+        return subSql;
     }
 
     /**
@@ -402,7 +496,7 @@ public class PersonalPresentationDao {
      * @param total
      */
     private void calculat(List<RegionReportsVO> total, String type, DsInvalidVO invalidConfig) {
-        if ("ds".equals(type)){
+        if (type.startsWith("ds")){
             for (RegionReportsVO rrv : total) {
                 //有效量(总客资-无效量-筛选中-筛选无效-筛选待定)
                 if (invalidConfig.getDdIsValid()) {
@@ -416,7 +510,7 @@ public class PersonalPresentationDao {
                 everyRate(rrv);
 
             }
-        }if ("zjs".equals(type)){
+        }if (type.startsWith("zjs")){
             for (RegionReportsVO rrv : total) {
                 //客资量(总客资-筛选待定-筛选中-筛选无效)
                 rrv.setClientCount(rrv.getAllClientCount() - rrv.getFilterPendingClientCount() - rrv.getFilterInValidClientCount() - rrv.getFilterInClientCount());

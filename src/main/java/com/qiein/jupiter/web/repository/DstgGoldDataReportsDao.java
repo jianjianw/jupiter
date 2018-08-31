@@ -157,7 +157,8 @@ public class DstgGoldDataReportsDao {
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
         sb = getCommonsql(sb, infoTabName, detailTabName);
         sb.append(" and info.CREATETIME BETWEEN ? AND ?");
-        sb.append(" AND INSTR( ?, CONCAT(',',info.STATUSID + '',',')) != 0");
+//        sb.append(" AND INSTR( ?, CONCAT(',',info.STATUSID + '',',')) != 0");
+        sb.append(" and info.STATUSID in (?)");
         addConditionByType(reportsParamVO.getType(),sb);
         sb.append(" group by detail.adid");
         sb.append(" ) info_detail_bak  group by info_detail_bak.adid ");
