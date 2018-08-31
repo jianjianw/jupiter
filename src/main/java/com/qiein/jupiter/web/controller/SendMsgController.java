@@ -110,6 +110,11 @@ public class SendMsgController extends BaseController {
                 .asString();
         JSONObject json = JSONObject.parseObject(msgTemlate);
         MsgTemplateVO msgTemplateVO = JSONObject.parseObject(json.getString("data"), MsgTemplateVO.class);
+        if(msgTemplateVO==null){
+            throw new RException(ExceptionEnum.CANT_FIND_TEMPLATE);
+        }
+
+
         String templateText = msgTemplateVO.getTemplateText();
         Integer backcode = (Integer) json.get("code");
         if (backcode != 100000) {
