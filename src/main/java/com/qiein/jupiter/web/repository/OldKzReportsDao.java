@@ -426,7 +426,7 @@ public class OldKzReportsDao {
             oldKzReportsVO.setClientComeShopRate(parseDouble(((Double.isNaN(clientComeShopRate) || Double.isInfinite(clientComeShopRate)) ? 0.0 : clientComeShopRate) * 100));
             //有效客资入店率
             double validComeShopRate = (double) oldKzReportsVO.getComeShopClientCount() / oldKzReportsVO.getValidClientCount();
-            oldKzReportsVO.setClientComeShopRate(parseDouble(((Double.isNaN(validComeShopRate) || Double.isInfinite(validComeShopRate)) ? 0.0 : validComeShopRate) * 100));
+            oldKzReportsVO.setValidClientComeShopRate(parseDouble(((Double.isNaN(validComeShopRate) || Double.isInfinite(validComeShopRate)) ? 0.0 : validComeShopRate) * 100));
             //毛客资成交率
             double successRate = (double) oldKzReportsVO.getSuccessClientCount() / oldKzReportsVO.getClientCount();
             oldKzReportsVO.setClientSuccessRate(parseDouble(((Double.isNaN(successRate) || Double.isInfinite(successRate)) ? 0.0 : successRate) * 100));
@@ -469,7 +469,7 @@ public class OldKzReportsDao {
         oldKzReportsTotal.setClientComeShopRate(parseDouble(((Double.isNaN(clientComeShopRate) || Double.isInfinite(clientComeShopRate)) ? 0.0 : clientComeShopRate) * 100));
         //有效客资入店率
         double validComeShopRate = (double) oldKzReportsTotal.getComeShopClientCount() / oldKzReportsTotal.getValidClientCount();
-        oldKzReportsTotal.setClientComeShopRate(parseDouble(((Double.isNaN(validComeShopRate) || Double.isInfinite(validComeShopRate)) ? 0.0 : validComeShopRate) * 100));
+        oldKzReportsTotal.setValidClientComeShopRate(parseDouble(((Double.isNaN(validComeShopRate) || Double.isInfinite(validComeShopRate)) ? 0.0 : validComeShopRate) * 100));
         //毛客资成交率
         double successRate = (double) oldKzReportsTotal.getSuccessClientCount() / oldKzReportsTotal.getClientCount();
         oldKzReportsTotal.setClientSuccessRate(parseDouble(((Double.isNaN(successRate) || Double.isInfinite(successRate)) ? 0.0 : successRate) * 100));

@@ -441,7 +441,7 @@ public class CityReportsDao {
         rrv.setClientComeShopRate(parseDouble(((Double.isNaN(clientComeShopRate) || Double.isInfinite(clientComeShopRate)) ? 0.0 : clientComeShopRate) * 100));
         //有效客资入店率
         double validComeShopRate = (double) rrv.getComeShopClientCount() / rrv.getValidClientCount();
-        rrv.setClientComeShopRate(parseDouble(((Double.isNaN(validComeShopRate) || Double.isInfinite(validComeShopRate)) ? 0.0 : validComeShopRate) * 100));
+        rrv.setValidClientComeShopRate(parseDouble(((Double.isNaN(validComeShopRate) || Double.isInfinite(validComeShopRate)) ? 0.0 : validComeShopRate) * 100));
         //毛客资成交率
         double successRate = (double) rrv.getSuccessClientCount() / rrv.getClientCount();
         rrv.setClientSuccessRate(parseDouble(((Double.isNaN(successRate) || Double.isInfinite(successRate)) ? 0.0 : successRate) * 100));
