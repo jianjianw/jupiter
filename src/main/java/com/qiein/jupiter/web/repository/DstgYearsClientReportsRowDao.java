@@ -474,7 +474,7 @@ public class DstgYearsClientReportsRowDao {
             dstgSourceYearReportsVO.setClientComeShopRate(parseDouble(((Double.isNaN(clientComeShopRate) || Double.isInfinite(clientComeShopRate)) ? 0.0 : clientComeShopRate) * 100));
             //有效客资入店率
             double validComeShopRate = (double) dstgSourceYearReportsVO.getComeShopClientCount() / dstgSourceYearReportsVO.getValidClientCount();
-            dstgSourceYearReportsVO.setClientComeShopRate(parseDouble(((Double.isNaN(validComeShopRate) || Double.isInfinite(validComeShopRate)) ? 0.0 : validComeShopRate) * 100));
+            dstgSourceYearReportsVO.setValidClientComeShopRate(parseDouble(((Double.isNaN(validComeShopRate) || Double.isInfinite(validComeShopRate)) ? 0.0 : validComeShopRate) * 100));
             //毛客资成交率
             double successRate = (double) dstgSourceYearReportsVO.getSuccessClientCount() / dstgSourceYearReportsVO.getClientCount();
             dstgSourceYearReportsVO.setClientSuccessRate(parseDouble(((Double.isNaN(successRate) || Double.isInfinite(successRate)) ? 0.0 : successRate) * 100));
@@ -538,7 +538,7 @@ public class DstgYearsClientReportsRowDao {
         dstgSourceYearReportsTotal.setClientComeShopRate(parseDouble(((Double.isNaN(clientComeShopRate) || Double.isInfinite(clientComeShopRate)) ? 0.0 : clientComeShopRate) * 100));
         //有效客资入店率
         double validComeShopRate = (double) dstgSourceYearReportsTotal.getComeShopClientCount() / dstgSourceYearReportsTotal.getValidClientCount();
-        dstgSourceYearReportsTotal.setClientComeShopRate(parseDouble(((Double.isNaN(validComeShopRate) || Double.isInfinite(validComeShopRate)) ? 0.0 : validComeShopRate) * 100));
+        dstgSourceYearReportsTotal.setValidClientComeShopRate(parseDouble(((Double.isNaN(validComeShopRate) || Double.isInfinite(validComeShopRate)) ? 0.0 : validComeShopRate) * 100));
         //毛客资成交率
         double successRate = (double) dstgSourceYearReportsTotal.getSuccessClientCount() / dstgSourceYearReportsTotal.getClientCount();
         dstgSourceYearReportsTotal.setClientSuccessRate(parseDouble(((Double.isNaN(successRate) || Double.isInfinite(successRate)) ? 0.0 : successRate) * 100));
