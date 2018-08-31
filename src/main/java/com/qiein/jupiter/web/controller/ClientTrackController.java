@@ -175,7 +175,7 @@ public class ClientTrackController extends BaseController {
     public ResultInfo allotNotArriveShop(@RequestBody JSONObject jsonObject) {
         String kzId = StringUtil.nullToStrTrim(jsonObject.getString("kzId"));
         if (StringUtil.isEmpty(kzId)) {
-            throw new RException(ExceptionEnum.ALLOTED_ERROR);
+            throw new RException(ExceptionEnum.KZ_ID_IS_NULL);
         }
         StaffPO staffPO = getCurrentLoginStaff();
         clientTrackService.allotNotArriveShop(kzId, staffPO);
