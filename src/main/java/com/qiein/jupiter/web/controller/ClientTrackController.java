@@ -97,11 +97,8 @@ public class ClientTrackController extends BaseController {
         String invalidLabel = StringUtil.nullToStrTrim(jsonObject.getString("invalidLabel"));
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        int num = clientTrackService.approvalInvalidKzList(kzIds, memo, rst, invalidLabel, currentLoginStaff);
-        ResultInfo resultInfo = new ResultInfo();
-        resultInfo.setCode(CommonConstant.DEFAULT_SUCCESS_CODE);
-        resultInfo.setMsg("审批成功" + num + "个");
-        return resultInfo;
+        clientTrackService.approvalInvalidKzList(kzIds, memo, rst, invalidLabel, currentLoginStaff);
+        return ResultInfoUtil.success(TipMsgEnum.APPROVAL_SUCCESS);
     }
 
     /**
@@ -120,7 +117,7 @@ public class ClientTrackController extends BaseController {
             throw new RException(ExceptionEnum.ROLE_ERROR);
         }
         StaffPO currentStaff = getCurrentLoginStaff();
-        return ResultInfoUtil.success(clientService.listExistAppointClientsNum(kzIds, currentStaff.getCompanyId(),role));
+        return ResultInfoUtil.success(clientService.listExistAppointClientsNum(kzIds, currentStaff.getCompanyId(), role));
     }
 
     /**
