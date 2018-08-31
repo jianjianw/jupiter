@@ -73,8 +73,8 @@ public class CommonReportsDao {
                         zjsDdStatusArr.addAll(zjsYddArr);
                         zjsDdStatusArr.addAll(zjsWxArr);
 
-                        dsInvalidVO.setDsInvalidStatus(arrToStr(yxLevelArr));
-                        dsInvalidVO.setDsInvalidLevel(arrToStr(statusArr));
+                        dsInvalidVO.setDsInvalidStatus(arrToStr(statusArr));
+                        dsInvalidVO.setDsInvalidLevel(arrToStr(yxLevelArr));
                         dsInvalidVO.setDdIsValid(configObj.getJSONObject(ReportsConfigConst.YX_SET).getBoolean(ReportsConfigConst.DD_IS_YX));
                         dsInvalidVO.setDsDdStatus(arrToStr(dsDdStatusArr));
                         dsInvalidVO.setZjsValidStatus(arrToStr(zjsDdStatusArr));
