@@ -130,7 +130,7 @@ public interface ExcelDao {
      * 获取与info表重复的记录
      **/
     List<ClientExcelNewsDTO> getRepeatRecord(@Param("tempName") String tempName, @Param("tableName") String tableName,
-                                             @Param("staffId") int staffId);
+                                             @Param("staffId") int staffId,@Param("companyId")Integer companyId);
 
     /**
      * 获取Excel重复的记录
@@ -189,7 +189,7 @@ public interface ExcelDao {
      * @param staffId
      * @return
      */
-    List<ClientExcelNewsDTO> getExcelErrorClient(@Param("tempName") String tempName, @Param("staffId") int staffId);
+    List<ClientExcelNewsDTO> getExcelErrorClient(@Param("tempName") String tempName, @Param("staffId") int staffId,@Param("companyId")Integer companyId);
 
 
     /**
@@ -200,7 +200,7 @@ public interface ExcelDao {
      * @return
      */
     List<ClientExcelNewsDTO> getExcelSuccessClient(@Param("tempName") String tempName, @Param("tableName") String tableName,
-                                                   @Param("staffId") int staffId);
+                                                   @Param("staffId") int staffId,@Param("companyId")Integer companyId);
 
 
     /**

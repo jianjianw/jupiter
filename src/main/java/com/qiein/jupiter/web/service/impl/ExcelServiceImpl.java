@@ -242,7 +242,7 @@ public class ExcelServiceImpl implements ExcelService {
         List<ClientExcelNewsDTO> rights = new LinkedList<>();
         List<ClientExcelNewsDTO> all = excelDao.getAllRecordByStaffId(DBSplitUtil.getTable(TableEnum.temp, companyId), staffId);
         List<ClientExcelNewsDTO> dbRepeats = excelDao.getRepeatRecord(DBSplitUtil.getTable(TableEnum.temp, companyId),
-                DBSplitUtil.getTable(TableEnum.info, companyId), staffId);
+                DBSplitUtil.getTable(TableEnum.info, companyId), staffId,companyId);
         String repeatIds = "";
         if (CollectionUtils.isNotEmpty(dbRepeats)) {
             for (ClientExcelNewsDTO info : dbRepeats) {
@@ -445,19 +445,19 @@ public class ExcelServiceImpl implements ExcelService {
             case 1:
                 //错误客资
                 PageHelper.startPage(page, pageSize);
-                clientExcelNewsDTOS = excelDao.getExcelErrorClient(DBSplitUtil.getTable(TableEnum.temp, staffPO.getCompanyId()), staffPO.getId());
+                clientExcelNewsDTOS = excelDao.getExcelErrorClient(DBSplitUtil.getTable(TableEnum.temp, staffPO.getCompanyId()), staffPO.getId(),staffPO.getCompanyId());
                 break;
             case 2:
                 //正常客资
                 PageHelper.startPage(page, pageSize);
                 clientExcelNewsDTOS = excelDao.getExcelSuccessClient(DBSplitUtil.getTable(TableEnum.temp, staffPO.getCompanyId()),
-                        DBSplitUtil.getTable(TableEnum.info, staffPO.getCompanyId()), staffPO.getId());
+                        DBSplitUtil.getTable(TableEnum.info, staffPO.getCompanyId()), staffPO.getId(),staffPO.getCompanyId());
                 break;
             case 3:
                 //重复客资
                 PageHelper.startPage(page, pageSize);
                 clientExcelNewsDTOS = excelDao.getRepeatRecord(DBSplitUtil.getTable(TableEnum.temp, staffPO.getCompanyId()),
-                        DBSplitUtil.getTable(TableEnum.info, staffPO.getCompanyId()), staffPO.getId());
+                        DBSplitUtil.getTable(TableEnum.info, staffPO.getCompanyId()), staffPO.getId(),staffPO.getCompanyId());
                 break;
             default:
                 break;

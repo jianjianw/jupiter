@@ -100,9 +100,24 @@ public class CompanyPO extends BaseEntity {
      * 电商客资超时不能返无效
      */
     private int unableInvalidRange;
-
+    /**
+     * 客服是否可以编辑门市的
+     */
     private boolean kfEditJdRst;
 
+    /**
+     * 报表配置
+     */
+    private String reportsConfig;
+
+
+    public String getReportsConfig() {
+        return reportsConfig;
+    }
+
+    public void setReportsConfig(String reportsConfig) {
+        this.reportsConfig = reportsConfig;
+    }
 
     public boolean isKfEditJdRst() {
         return kfEditJdRst;

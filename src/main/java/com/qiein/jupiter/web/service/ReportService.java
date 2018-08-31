@@ -250,4 +250,11 @@ public interface ReportService {
      * @return
      */
     List<Map<String, Object>> getZjsYearDetailReport(ZjsClientYearReportDTO zjsClientYearReportDTO);
+
+    /**
+     * 获取员工个人简报
+     * @param reportParamDTO
+     * @return
+     */
+    Map<String,RegionReportsVO> getPersonalPresentation(ReportParamDTO reportParamDTO);
 }

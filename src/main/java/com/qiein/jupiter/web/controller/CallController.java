@@ -76,9 +76,9 @@ public class CallController extends BaseController{
      * 获取录音列表
      * */
     @RequestMapping("/get_recording")
-    public ResultInfo getRecording(String caller,Integer page,Integer pageSize,Integer callId,Integer startTime){
+    public ResultInfo getRecording(String caller,Integer page,Integer pageSize,Integer startTime,String instanceId){
         StaffPO staffPO = getCurrentLoginStaff();
-        JSONObject recording = callService.getRecording(caller, staffPO,page,pageSize,callId,startTime);
+        JSONObject recording = callService.getRecording(caller, staffPO,page,pageSize,startTime,instanceId);
         return ResultInfoUtil.success(recording);
     }
 
@@ -87,9 +87,9 @@ public class CallController extends BaseController{
      * 获取录音
      * */
     @RequestMapping("/get_recording_file")
-    public ResultInfo getRecordingFile(String fileName,Integer callId){
+    public ResultInfo getRecordingFile(String fileName,String instanceId){
         StaffPO staffPO = getCurrentLoginStaff();
-        JSONObject jsonObject = callService.getRecordingFile(fileName, staffPO,callId);
+        JSONObject jsonObject = callService.getRecordingFile(fileName, staffPO,instanceId);
         return ResultInfoUtil.success(jsonObject);
     }
 
