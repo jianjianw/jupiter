@@ -30,7 +30,7 @@ import java.util.List;
  * 安全中心Controller
  */
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/safe_center")
 @Validated
 @PropertySource({"classpath:application-dev.properties"})
 public class SafeCenterController extends BaseController{
