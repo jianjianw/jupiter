@@ -1,6 +1,8 @@
 package com.qiein.jupiter.web.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.mzlion.easyokhttp.HttpClient;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.enums.TipMsgEnum;
@@ -44,7 +46,7 @@ public class AdminController extends BaseController{
      * @return
      */
     @GetMapping("/get_admin_log")
-    public ResultInfo getAdminList(@RequestParam String time){
+    public ResultInfo getAdminList(@RequestParam String time,@RequestParam Integer pageNum,@RequestParam Integer pageSize){
         String adminLog = HttpClient
                 .get(getAdminListUrl)
                 .queryString("companyId", getCurrentLoginStaff().getCompanyId())
@@ -56,7 +58,8 @@ public class AdminController extends BaseController{
             StaffPO staff=staffService.getById(adminLogPO.getStaffId(),getCurrentLoginStaff().getCompanyId());
             adminLogPO.setStaffName(staff.getNickName());
         }
-        return ResultInfoUtil.success(adminVO.getLogList());
+        PageHelper.startPage(pageNum, pageSize);
+        return ResultInfoUtil.success(new PageInfo<>(adminVO.getLogList()));
     }
 
     /**
