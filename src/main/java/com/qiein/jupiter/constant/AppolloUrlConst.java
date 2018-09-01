@@ -35,4 +35,20 @@ public class AppolloUrlConst {
      * 获取管理员列表
      */
     public static final String GET_ADMIN_LIST = "/admin_auth_computer/get_list";
+
+    /**
+     * 添加场地
+     * */
+    public static final String ADD_SITE = "/site/add";
+
+    /**
+     * 编辑场地
+     * */
+    public static final String EDIT_SITE = "/site/edit";
+
+    /**
+     * 场地列表
+     * */
+    public static final String SITE_LIST = "/site/list";
+
 }
