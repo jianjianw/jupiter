@@ -9,6 +9,15 @@ public class AdminShowVO {
     private String computerCode;
     private String  createTime;
     private String type;
+    private String staffName;
+
+    public String getStaffName() {
+        return staffName;
+    }
+
+    public void setStaffName(String staffName) {
+        this.staffName = staffName;
+    }
 
     public String getType() {
         return type;

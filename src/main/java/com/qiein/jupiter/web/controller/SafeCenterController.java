@@ -82,4 +82,25 @@ public class SafeCenterController extends BaseController{
         }
         return ResultInfoUtil.success(TipMsgEnum.DELETE_SUCCESS);
     }
+    /**
+     * 管理中心页面
+     */
+    @GetMapping("")
+    public ResultInfo getList(){
+        String adminLog = HttpClient
+                .get(getAdminListUrl)
+                .queryString("companyId", getCurrentLoginStaff().getCompanyId())
+                .asString();
+        JSONObject json = JSONObject.parseObject(adminLog);
+        AdminVO adminVO = JSONObject.parseObject(json.getString("data"), AdminVO.class);
+        for(AdminLogPO adminLogPO:adminVO.getLogList()){
+            StaffPO staff=staffService.getById(adminLogPO.getStaffId(),getCurrentLoginStaff().getCompanyId());
+            adminLogPO.setStaffName(staff.getNickName());
+        }
+        for(AdminShowVO adminShowVO:adminVO.getList()){
+            StaffPO staff=staffService.getById(adminShowVO.getStaffId(),getCurrentLoginStaff().getCompanyId());
+            adminShowVO.setStaffName(staff.getNickName());
+        }
+        return ResultInfoUtil.success(adminVO);
+    }
 }
