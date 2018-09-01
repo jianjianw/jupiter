@@ -20,4 +20,19 @@ public class AppolloUrlConst {
      * */
     public static final String GET_CALL_USER = "/call/get_call_user";
 
+    /**
+     * 添加场地
+     * */
+    public static final String ADD_SITE = "/site/add";
+
+    /**
+     * 编辑场地
+     * */
+    public static final String EDIT_SITE = "/site/edit";
+
+    /**
+     * 场地列表
+     * */
+    public static final String SITE_LIST = "/site/list";
+
 }
