@@ -33,7 +33,7 @@ import java.util.List;
 @RequestMapping("/admin")
 @Validated
 @PropertySource({"classpath:application-dev.properties"})
-public class AdminController extends BaseController{
+public class SafeCenterController extends BaseController{
     @Autowired
     private StaffService staffService;
     //apollo获取操作日志接口
