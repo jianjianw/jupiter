@@ -134,6 +134,15 @@ public class SafeCenterController extends BaseController{
         return ResultInfoUtil.success(JSONObject.parseObject(result).get("data"));
     }
 
+    /**
+     * 获取场地所有电脑个数及周增加数
+     * */
+    @GetMapping("/get_computer_count")
+    public ResultInfo getComputerCount(){
+        int companyId = getCurrentLoginStaff().getCompanyId();
+        String result = HttpClient.get(appoloBaseUrl.concat(AppolloUrlConst.COMPUTER_COUNT)).queryString("companyId",companyId).asString();
+        return ResultInfoUtil.success(JSONObject.parseObject(result).get("data"));
+    }
 
     /**
      * 管理中心页面

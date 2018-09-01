@@ -59,4 +59,9 @@ public class AppolloUrlConst {
      * */
     public static final String SITE_LIST = "/site/list";
 
+    /**
+     * 场地电脑总数及周增加数
+     * */
+    public static final String COMPUTER_COUNT = "/site/get_computer_count";
+
 }
