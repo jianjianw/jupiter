@@ -64,7 +64,7 @@ public class AdminController extends BaseController{
      * @param id
      * @return
      */
-    @GetMapping("/delete_admin")
+    @GetMapping("/delete_admin_log")
     public ResultInfo deleteAdmin(@RequestParam Integer id){
         String delete = HttpClient
                 .get(deteleLogUrl)
