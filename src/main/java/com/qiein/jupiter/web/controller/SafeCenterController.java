@@ -68,7 +68,7 @@ public class SafeCenterController extends BaseController{
      * @return
      */
     @GetMapping("/delete_admin_log")
-    public ResultInfo deleteAdmin(@RequestParam Integer id){
+    public ResultInfo deleteAdminLog(@RequestParam Integer id){
         String delete = HttpClient
                 .get(appoloBaseUrl.concat(AppolloUrlConst.DELETE_ADMIN_LOG))
                 .queryString("id", id)
@@ -144,9 +144,25 @@ public class SafeCenterController extends BaseController{
      * 删除设备
      */
     @GetMapping("/delete_computer")
-    public ResultInfo delete_computer(@RequestParam Integer id){
+    public ResultInfo deleteComputer(@RequestParam Integer id){
         String delete = HttpClient
                 .get(appoloBaseUrl.concat(AppolloUrlConst.DELETE_COMPUTER))
+                .queryString("id", id)
+                .asString();
+        JSONObject getBack = JSONObject.parseObject(delete);
+        Integer code = (Integer) getBack.get("code");
+        if (code != 100000) {
+            throw new RException((String) getBack.get("msg"));
+        }
+        return ResultInfoUtil.success(TipMsgEnum.DELETE_SUCCESS);
+    }
+    /**
+     * 删除设备
+     */
+    @GetMapping("/delete_admin")
+    public ResultInfo deleteAdmin(@RequestParam Integer id){
+        String delete = HttpClient
+                .get(appoloBaseUrl.concat(AppolloUrlConst.DELETE_ADMIN))
                 .queryString("id", id)
                 .asString();
         JSONObject getBack = JSONObject.parseObject(delete);

@@ -35,7 +35,10 @@ public class AppolloUrlConst {
      * 获取管理员列表
      */
     public static final String GET_ADMIN_LIST = "/admin_auth_computer/get_list";
-
+    /**
+     * 删除管理员
+     */
+    public static final String DELETE_ADMIN = "/admin_auth_computer/delete_admin";
     /**
      * 添加场地
      * */
