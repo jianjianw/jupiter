@@ -39,11 +39,6 @@ public class SafeCenterController extends BaseController{
     private StaffService staffService;
     @Value("${apollo.baseUrl}")
     private String appoloBaseUrl;
-    //apollo获取操作日志接口
-    @Value("${apollo.getAdminList}")
-    private String getAdminListUrl;
-    @Value("${apollo.deleteLog}")
-    private String deteleLogUrl;
     /**
      * 操作日志页面
      * @return
@@ -51,7 +46,7 @@ public class SafeCenterController extends BaseController{
     @GetMapping("/get_admin_log")
     public ResultInfo getAdminList(@RequestParam String time,@RequestParam Integer pageNum,@RequestParam Integer pageSize){
         String adminLog = HttpClient
-                .get(getAdminListUrl)
+                .get(appoloBaseUrl.concat(AppolloUrlConst.GET_ADMIN_LOG))
                 .queryString("companyId", getCurrentLoginStaff().getCompanyId())
                 .queryString("time",time)
                 .queryString("pageNum",pageNum)
@@ -75,7 +70,7 @@ public class SafeCenterController extends BaseController{
     @GetMapping("/delete_admin_log")
     public ResultInfo deleteAdmin(@RequestParam Integer id){
         String delete = HttpClient
-                .get(deteleLogUrl)
+                .get(appoloBaseUrl.concat(AppolloUrlConst.DELETE_ADMIN_LOG))
                 .queryString("id", id)
                 .asString();
         JSONObject getBack = JSONObject.parseObject(delete);
@@ -140,4 +135,41 @@ public class SafeCenterController extends BaseController{
     }
 
 
+    /**
+     * 管理中心页面
+     */
+    @GetMapping("/get_admin_list")
+    public ResultInfo getList(){
+        String adminLog = HttpClient
+                .get(appoloBaseUrl.concat(AppolloUrlConst.GET_ADMIN_LIST))
+                .queryString("companyId", getCurrentLoginStaff().getCompanyId())
+                .asString();
+        JSONObject json = JSONObject.parseObject(adminLog);
+        AdminVO adminVO = JSONObject.parseObject(json.getString("data"), AdminVO.class);
+        for(AdminLogPO adminLogPO:adminVO.getLogList()){
+            StaffPO staff=staffService.getById(adminLogPO.getStaffId(),getCurrentLoginStaff().getCompanyId());
+            adminLogPO.setStaffName(staff.getNickName());
+        }
+        for(AdminShowVO adminShowVO:adminVO.getList()){
+            StaffPO staff=staffService.getById(adminShowVO.getStaffId(),getCurrentLoginStaff().getCompanyId());
+            adminShowVO.setStaffName(staff.getNickName());
+        }
+        return ResultInfoUtil.success(adminVO);
+    }
+    /**
+     * 删除设备
+     */
+    @GetMapping("/delete_computer")
+    public ResultInfo delete_computer(@RequestParam Integer id){
+        String delete = HttpClient
+                .get(appoloBaseUrl.concat(AppolloUrlConst.DELETE_COMPUTER))
+                .queryString("id", id)
+                .asString();
+        JSONObject getBack = JSONObject.parseObject(delete);
+        Integer code = (Integer) getBack.get("code");
+        if (code != 100000) {
+            throw new RException((String) getBack.get("msg"));
+        }
+        return ResultInfoUtil.success(TipMsgEnum.DELETE_SUCCESS);
+    }
 }
