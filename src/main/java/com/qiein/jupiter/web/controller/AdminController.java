@@ -51,6 +51,8 @@ public class AdminController extends BaseController{
                 .get(getAdminListUrl)
                 .queryString("companyId", getCurrentLoginStaff().getCompanyId())
                 .queryString("time",time)
+                .queryString("pageNum",pageNum)
+                .queryString("pageSize",pageSize)
                 .asString();
         JSONObject json = JSONObject.parseObject(adminLog);
         AdminVO adminVO = JSONObject.parseObject(json.getString("data"), AdminVO.class);
