@@ -11,19 +11,6 @@ public class CompanyVO extends CompanyPO {
      * 企业左上角菜单栏
      */
     private List<MenuVO> menuList;
-    /**
-     * 公司实例id
-     * */
-    private String instanceId;
-
-
-    public String getInstanceId() {
-        return instanceId;
-    }
-
-    public void setInstanceId(String instanceId) {
-        this.instanceId = instanceId;
-    }
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
