@@ -97,7 +97,7 @@ public class SafeCenterController extends BaseController{
                 .json(sitePO)
                 .queryString("sign", sign)
                 .asString();
-        return ResultInfoUtil.success(JSONObject.parseObject(result).get("data"));
+        return ResultInfoUtil.error(JSONObject.parseObject(result).getIntValue("code"),JSONObject.parseObject(result).getString("msg"));
     }
 
     /**
@@ -106,11 +106,27 @@ public class SafeCenterController extends BaseController{
     @PostMapping("/edit_site")
     public ResultInfo editSite(@RequestBody SitePO sitePO){
         String sign = MD5Util.getApolloMd5(JSONObject.toJSONString(sitePO));
+        sitePO.setCompanyId(getCurrentLoginStaff().getCompanyId());
         String result = HttpClient.textBody(appoloBaseUrl.concat(AppolloUrlConst.EDIT_SITE))
                 .json(sitePO)
                 .queryString("sign", sign)
                 .asString();
-        return ResultInfoUtil.success(JSONObject.parseObject(result).get("data"));
+        return ResultInfoUtil.error(JSONObject.parseObject(result).getIntValue("code"),JSONObject.parseObject(result).getString("msg"));
+    }
+
+    /**
+     * 删除场地
+     * */
+    @PostMapping("/del_site")
+    public ResultInfo delSite(@RequestBody SitePO sitePO){
+        String sign = MD5Util.getApolloMd5(JSONObject.toJSONString(sitePO));
+        sitePO.setCompanyId(getCurrentLoginStaff().getCompanyId());
+        String result = HttpClient.textBody(appoloBaseUrl.concat(AppolloUrlConst.DEL_SITE))
+                .json(sitePO)
+                .queryString("sign", sign)
+                .asString();
+        System.out.println(result);
+        return ResultInfoUtil.error(JSONObject.parseObject(result).getIntValue("code"),JSONObject.parseObject(result).getString("msg"));
     }
 
     /**

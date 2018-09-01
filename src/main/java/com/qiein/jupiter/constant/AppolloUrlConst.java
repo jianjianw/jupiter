@@ -31,6 +31,11 @@ public class AppolloUrlConst {
     public static final String EDIT_SITE = "/site/edit";
 
     /**
+     * 删除场地
+     * */
+    public static final String DEL_SITE = "/site/del";
+
+    /**
      * 场地列表
      * */
     public static final String SITE_LIST = "/site/list";
