@@ -68,4 +68,9 @@ public class AppolloUrlConst {
      * */
     public static final String COMPUTER_COUNT = "/site/get_computer_count";
 
+    /**
+     * 授权机器检测
+     * */
+    public static final String CHECK_COMPUTER_AUTH = "/admin_auth_computer/check_computer";
+
 }
