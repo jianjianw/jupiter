@@ -125,14 +125,24 @@ public class SafeCenterController extends BaseController{
     }
 
     /**
-     * 场地列表
+     * 场地及电脑列表
      * */
     @GetMapping("/site_list")
     public ResultInfo siteList(){
         int companyId = getCurrentLoginStaff().getCompanyId();
+        String result = HttpClient.get(appoloBaseUrl.concat(AppolloUrlConst.SITE_COMPUTER_LIST)).queryString("companyId",companyId).asString();
+        return ResultInfoUtil.success(JSONObject.parseObject(result).get("data"));
+    }
+
+    /**
+     * 场地列表
+     * */
+    @GetMapping("/not_token_site_list")
+    public ResultInfo notTokenSiteList(Integer companyId){
         String result = HttpClient.get(appoloBaseUrl.concat(AppolloUrlConst.SITE_LIST)).queryString("companyId",companyId).asString();
         return ResultInfoUtil.success(JSONObject.parseObject(result).get("data"));
     }
+
 
     /**
      * 获取场地所有电脑个数及周增加数

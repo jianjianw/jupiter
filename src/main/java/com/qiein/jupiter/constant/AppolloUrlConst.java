@@ -57,6 +57,10 @@ public class AppolloUrlConst {
     /**
      * 场地列表
      * */
+    public static final String SITE_COMPUTER_LIST = "/site/list";
+    /**
+     * 场地列表
+     * */
     public static final String SITE_LIST = "/site/list";
 
     /**

@@ -44,7 +44,9 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
                 .excludePathPatterns("/add/add_out_zjs_client")
                 .excludePathPatterns("/add/out_zjs_menu")
                 //金数据
-                .excludePathPatterns("/gold_data/receive_gold_data_form");
+                .excludePathPatterns("/gold_data/receive_gold_data_form")
+                //安全中心无token获取场地列表
+                .excludePathPatterns("/safe_center/not_token_site_list");
 //                .excludePathPatterns("/wechat/**");
     }
 
