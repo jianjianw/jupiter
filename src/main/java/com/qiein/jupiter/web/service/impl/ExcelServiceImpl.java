@@ -97,7 +97,7 @@ public class ExcelServiceImpl implements ExcelService {
         if (CollectionUtils.isEmpty(clientList)) {
             throw new RException(ExceptionEnum.EXCEL_IS_NULL);
         }
-        Integer index = 1;
+        Integer index = 2;
         for (ClientExcelNewsDTO clientExcelDTO : clientList) {
             if(StringUtil.isNotEmpty(clientExcelDTO.getKzName()) && clientExcelDTO.getKzName().length() > 16){
                 throw new RException("第"+index+"行"+ExceptionEnum.KZ_NAME_LENGTH_TOO_LONG.getMsg(),ExceptionEnum.KZ_NAME_LENGTH_TOO_LONG.getCode());
