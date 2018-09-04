@@ -929,6 +929,7 @@
             AND sf.STATUSFLAG = 1
             AND sf.TODAYNUM &lt; LIMITDAY
             AND (UNIX_TIMESTAMP(NOW()) - sf.LASTPUSHTIME) &gt; #{interval}
+            AND INSTR(CONCAT(',', sf.LIMITCHANNELIDS, ','), CONCAT(',', #{sourceId}, ',')) = 0
     </select>
 
     <!--小组平均，获取可以领取的小组-->
@@ -965,6 +966,7 @@
             AND sf.STATUSFLAG = 1
             AND sf.TODAYNUM &lt; LIMITDAY
             AND (UNIX_TIMESTAMP(NOW()) - sf.LASTPUSHTIME) &gt; #{interval}
+            AND INSTR(CONCAT(',', sf.LIMITCHANNELIDS, ','), CONCAT(',', #{sourceId}, ',')) = 0
         ORDER BY sf.LASTPUSHTIME ASC
     </select>
 
@@ -1060,6 +1062,7 @@
             AND sf.ISDEL = 0
             AND sf.ISLOCK = 0
             AND sf.STATUSFLAG = 1
+            AND INSTR(CONCAT(',', sf.LIMITCHANNELIDS, ','), CONCAT(',', #{sourceId}, ',')) = 0
     </select>
 
     <!--编辑员工所属公司的CorpId-->

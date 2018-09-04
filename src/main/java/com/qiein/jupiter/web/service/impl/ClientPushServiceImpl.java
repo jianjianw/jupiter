@@ -181,7 +181,7 @@ public class ClientPushServiceImpl implements ClientPushService {
                 break;
             case ChannelConstant.PUSH_RULE_EVERYONE_CAN_GET:
                 //13:自由领取
-                List<StaffPushDTO> yyList = staffDao.getYyStaffListByRole(companyId, type);
+                List<StaffPushDTO> yyList = staffDao.getYyStaffListByRole(companyId, type, srcId);
                 if (CollectionUtils.isEmpty(yyList)) {
                     return;
                 }
@@ -315,7 +315,7 @@ public class ClientPushServiceImpl implements ClientPushService {
             calcRange = CommonConstant.ALLOT_RANGE_DEFAULT;
         }
         //1.获取可以领取的客服集合
-        List<StaffPushDTO> staffOnlineList = staffDao.getGroupAvgAppointList(companyId, type, groupId, interval);
+        List<StaffPushDTO> staffOnlineList = staffDao.getGroupAvgAppointList(companyId, type, groupId, interval, srcId);
         if (CollectionUtils.isEmpty(staffOnlineList)) {
             return null;
         }
