@@ -177,11 +177,10 @@ public class ClientServiceImpl implements ClientService {
                 if (clientStatusVoteVO.getReason().length() >= 200) {
                     clientStatusVoteVO.setReason(clientStatusVoteVO.getReason().substring(0, 199));
                 }
-                clientStatusVoteVO.setContent("无效原因:" + clientStatusVoteVO.getContent() + ",无效备注：" + clientStatusVoteVO.getReason());
             } else {
                 clientStatusVoteVO.setContent("备注:" + clientStatusVoteVO.getContent());
             }
-            clientDao.updateDetailMemo(DBSplitUtil.getDetailTabName(clientStatusVoteVO.getCompanyId()), clientStatusVoteVO.getKzId(), clientStatusVoteVO.getCompanyId(), clientStatusVoteVO.getContent());
+            clientDao.updateDetailMemo(DBSplitUtil.getDetailTabName(clientStatusVoteVO.getCompanyId()), clientStatusVoteVO.getKzId(), clientStatusVoteVO.getCompanyId(), "无效原因:" + clientStatusVoteVO.getContent() + ",无效备注：" + clientStatusVoteVO.getReason(),clientStatusVoteVO.getContent(),clientStatusVoteVO.getReason());
         }
         //FIXME 废弃代码
 //        ClientRemarkPO clientRemarkPO = new ClientRemarkPO();
