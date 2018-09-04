@@ -178,7 +178,7 @@ public class ClientExportVO implements Serializable {
     /**
      * 销售备注
      */
-    @Excel(name = "销售备注", width = 40, height = 6)
+    @Excel(name = "备注", width = 40, height = 6)
     private String memo;
     /**
      * 广告id

@@ -8,8 +8,10 @@ import com.mzlion.easyokhttp.HttpClient;
 import com.qiein.jupiter.constant.AppolloUrlConst;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.enums.TipMsgEnum;
+import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.MD5Util;
+import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.web.entity.po.AdminLogPO;
@@ -125,15 +127,47 @@ public class SafeCenterController extends BaseController{
     }
 
     /**
-     * 场地列表
+     * 场地及电脑列表
      * */
     @GetMapping("/site_list")
     public ResultInfo siteList(){
         int companyId = getCurrentLoginStaff().getCompanyId();
+        String result = HttpClient.get(appoloBaseUrl.concat(AppolloUrlConst.SITE_COMPUTER_LIST)).queryString("companyId",companyId).asString();
+        return ResultInfoUtil.success(JSONObject.parseObject(result).get("data"));
+    }
+
+    /**
+     * 场地列表
+     * */
+    @GetMapping("/not_token_site_list")
+    public ResultInfo notTokenSiteList(Integer companyId){
         String result = HttpClient.get(appoloBaseUrl.concat(AppolloUrlConst.SITE_LIST)).queryString("companyId",companyId).asString();
         return ResultInfoUtil.success(JSONObject.parseObject(result).get("data"));
     }
 
+
+    /**
+     * 获取场地所有电脑个数及周增加数
+     * */
+    @GetMapping("/get_computer_count")
+    public ResultInfo getComputerCount(){
+        int companyId = getCurrentLoginStaff().getCompanyId();
+        String result = HttpClient.get(appoloBaseUrl.concat(AppolloUrlConst.COMPUTER_COUNT)).queryString("companyId",companyId).asString();
+        return ResultInfoUtil.success(JSONObject.parseObject(result).get("data"));
+    }
+
+    /**
+     * 检测电脑时候已经授权
+     * */
+    @GetMapping("/check_computer")
+    public ResultInfo checkComputer(@RequestParam String computerCode,@RequestParam Integer siteId,@RequestParam Integer companyId){
+        String result = HttpClient.get(appoloBaseUrl.concat(AppolloUrlConst.CHECK_COMPUTER_AUTH))
+                .queryString("companyId",companyId)
+                .queryString("computerCode",computerCode)
+                .queryString("siteId",siteId)
+                .asString();
+        return ResultInfoUtil.error(JSONObject.parseObject(result).getIntValue("code"),JSONObject.parseObject(result).getString("msg"));
+    }
 
     /**
      * 管理中心页面
