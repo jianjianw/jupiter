@@ -37,7 +37,7 @@
         insert into hm_crm_cost(SRCID,COMPANYID,UPDATETIME,CREATETIME,COSTTIME,COST,BEFORECOST,RATE) values(#{srcId},#{companyId},UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()),#{time},#{afterCost},#{afterCost},#{rate})
     </insert>
     <update id="editCost">
-        update hm_crm_cost set cost=#{afterCost},UPDATETIME=UNIX_TIMESTAMP(now()),BEFORECOST=#{afterCost}*(1-rate) WHERE id=#{id}
+        update hm_crm_cost set cost=#{afterCost},UPDATETIME=UNIX_TIMESTAMP(now()),BEFORECOST=#{afterCost}/(1+rate) WHERE id=#{id}
     </update>
 
     <insert id="createCostLog">
@@ -48,7 +48,7 @@
         (#{costId}, #{operaId}, #{operaName},UNIX_TIMESTAMP(now()), #{companyId}, #{memo})
     </insert>
     <update id="editRate">
-        update hm_crm_cost set rate=#{rate},beforecost=cost*(1-#{rate}) where companyId=#{companyId} and srcId in (${srcIds}) and costtime between #{start} and #{end}
+        update hm_crm_cost set rate=#{rate},beforecost=cost/(1+#{rate}) where companyId=#{companyId} and srcId in (${srcIds}) and costtime between #{start} and #{end}
     </update>
     <!-- 获取一段时间内每天的时间戳-->
     <select id="getDay" resultType="com.qiein.jupiter.web.entity.po.ForDayPO">
