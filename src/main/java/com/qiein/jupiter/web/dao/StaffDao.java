@@ -422,7 +422,7 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * 获取小组平均，可以领取的客服集合
      */
     List<StaffPushDTO> getGroupAvgAppointList(@Param("companyId") Integer companyId, @Param("role") String role,
-                                              @Param("groupId") String groupId, @Param("interval") int interval);
+                                              @Param("groupId") String groupId, @Param("interval") int interval, @Param("sourceId") int sourceId);
 
     /**
      * 获取小组平均,小组领取客资情况
@@ -466,7 +466,7 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @param role
      * @return
      */
-    List<StaffPushDTO> getYyStaffListByRole(@Param("companyId") Integer companyId, @Param("role") String role);
+    List<StaffPushDTO> getYyStaffListByRole(@Param("companyId") Integer companyId, @Param("role") String role, @Param("sourceId") int sourceId);
 
     /**
      * 获取小组平均，推送客服
