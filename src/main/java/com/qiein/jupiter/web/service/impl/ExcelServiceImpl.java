@@ -97,7 +97,38 @@ public class ExcelServiceImpl implements ExcelService {
         if (CollectionUtils.isEmpty(clientList)) {
             throw new RException(ExceptionEnum.EXCEL_IS_NULL);
         }
+        Integer index = 1;
         for (ClientExcelNewsDTO clientExcelDTO : clientList) {
+            if(clientExcelDTO.getKzName().length() > 16){
+                throw new RException("第"+index+"行"+ExceptionEnum.KZ_NAME_LENGTH_TOO_LONG.getMsg(),ExceptionEnum.KZ_NAME_LENGTH_TOO_LONG.getCode());
+            }
+            if(clientExcelDTO.getKzPhone().length() > 11){
+                throw new RException("第"+index+"行"+ExceptionEnum.KZ_PHONE_LENGTH_TOO_LONG.getMsg(),ExceptionEnum.KZ_PHONE_LENGTH_TOO_LONG.getCode());
+            }
+            if(clientExcelDTO.getKzWechat().length() > 32){
+                throw new RException("第"+index+"行"+ExceptionEnum.KZ_WECHAT_LENGTH_TOO_LONG.getMsg(),ExceptionEnum.KZ_WECHAT_LENGTH_TOO_LONG.getCode());
+            }
+            if(clientExcelDTO.getKzQq().length() > 16){
+                throw new RException("第"+index+"行"+ExceptionEnum.KZ_WECHAT_LENGTH_TOO_LONG.getMsg(),ExceptionEnum.KZ_WECHAT_LENGTH_TOO_LONG.getCode());
+            }
+            if(clientExcelDTO.getCollectorName().length() > 16){
+                throw new RException("第"+index+"行"+ExceptionEnum.COLLECTOR_NAME_LENGTH_TOO_LONG.getMsg(),ExceptionEnum.COLLECTOR_NAME_LENGTH_TOO_LONG.getCode());
+            }
+            if(clientExcelDTO.getAppointName().length() > 16){
+                throw new RException("第"+index+"行"+ExceptionEnum.APPOINT_NAME_LENGTH_TOO_LONG.getMsg(),ExceptionEnum.APPOINT_NAME_LENGTH_TOO_LONG.getCode());
+            }
+            if(clientExcelDTO.getShopName().length() > 16){
+                throw new RException("第"+index+"行"+ExceptionEnum.SHOP_NAME_LENGTH_TOO_LONG.getMsg(),ExceptionEnum.SHOP_NAME_LENGTH_TOO_LONG.getCode());
+            }
+            if(clientExcelDTO.getRemark().length()>255){
+                throw new RException("第"+index+"行"+ExceptionEnum.MEMO_LENGTH_TOO_LONG.getMsg(),ExceptionEnum.MEMO_LENGTH_TOO_LONG.getCode());
+            }
+            if(clientExcelDTO.getOldKzName().length()>32){
+                throw new RException("第"+index+"行"+ExceptionEnum.OLD_KZ_NAME_LENGTH_TOO_LONG.getMsg(),ExceptionEnum.OLD_KZ_NAME_LENGTH_TOO_LONG.getCode());
+            }
+            if(clientExcelDTO.getKzPhone().length()>32){
+                throw new RException("第"+index+"行"+ExceptionEnum.OLD_KZ_PHONE_LENGTH_TOO_LONG.getMsg(),ExceptionEnum.OLD_KZ_PHONE_LENGTH_TOO_LONG.getCode());
+            }
             ObjectUtil.objectStrParamTrim(clientExcelDTO);
             //此处进行特殊换行符处理
             //TODO 封装到工具类中
@@ -152,7 +183,7 @@ public class ExcelServiceImpl implements ExcelService {
             } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
-
+            index++;
         }
         // 1.删除员工客资缓存记录
         excelDao.deleteTempByStaffId(DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()),
