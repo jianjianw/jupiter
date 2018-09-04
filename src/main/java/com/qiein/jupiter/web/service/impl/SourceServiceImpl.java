@@ -191,5 +191,16 @@ public class SourceServiceImpl implements SourceService {
         return pageDictMap;
     }
 
+    /**
+     * 获取员工的来源列表
+     * @param companyId
+     * @param staffId
+     * @return
+     */
+    @Override
+    public List<SourcePO> getStaffSourceList(Integer companyId, Integer staffId) {
+        return sourceDao.getStaffSourceList(companyId, staffId);
+    }
+
 
 }

@@ -203,4 +203,21 @@ public interface SourceDao extends BaseDao<SourcePO> {
      * @return
      */
     List<SourcePO> findSourceByRole(@Param("companyId")Integer companyId,@Param("staffId")Integer staffId);
+
+    /**
+     * 获取员工的所有来源
+     * @param companyId
+     * @param staffId
+     * @return
+     */
+    List<SourcePO> getStaffSourceList(@Param("companyId")Integer companyId,@Param("staffId")Integer staffId);
+
+    /**
+     * 根据批量渠道名称获取渠道名称列表
+     *
+     * @param companyId
+     * @param ids
+     * @return
+     */
+    String getSourceNamesByIds(@Param("companyId") Integer companyId, @Param("ids") String[] ids);
 }

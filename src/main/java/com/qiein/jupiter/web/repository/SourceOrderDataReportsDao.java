@@ -204,7 +204,7 @@ public class SourceOrderDataReportsDao {
 
         baseSql.append(" LEFT JOIN hm_crm_source source ")
                 .append(" ON source.ID = cost.SRCID ");
-        baseSql.append(" WHERE  cost.COMPANYID = :companyId AND cost.CREATETIME BETWEEN  :start AND :end  ");
+        baseSql.append(" WHERE  cost.COMPANYID = :companyId AND cost.COSTTIME BETWEEN  :start AND :end  ");
         baseSql.append(" GROUP BY source.TYPEID ");
 
         Map<String, Object> params = new HashMap<>();

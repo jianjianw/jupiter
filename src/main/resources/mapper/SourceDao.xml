@@ -468,4 +468,50 @@
         and src.ID is not null
     </select>
 
+    <!--获取员工所有来源列表-->
+    <select id="getStaffSourceList" resultMap="baseMap">
+        SELECT
+        al.*
+        FROM
+        (SELECT
+        <include refid="baseColumn"/>
+        FROM
+        hm_crm_source src
+        WHERE
+        src.PUSHRULE = 13 AND src.ISSHOW = 1 AND COMPANYID = #{companyId}
+        UNION ALL
+        SELECT
+        src.*
+        FROM
+        hm_crm_source src
+        INNER JOIN
+        hm_crm_source_staff ss ON src.ID = ss.SOURCEID AND ss.RELATYPE = 1 AND ss.COMPANYID = src.COMPANYID
+        WHERE
+        src.PUSHRULE = 12 AND src.ISSHOW = 1  AND src.COMPANYID = #{companyId} AND ss.LINKID = #{staffId}
+        UNION ALL
+        SELECT
+        src.*
+        FROM
+        hm_crm_source src
+        INNER JOIN
+        hm_crm_source_staff ss ON src.ID = ss.SOURCEID AND ss.RELATYPE = 2 AND ss.COMPANYID = src.COMPANYID
+        INNER JOIN
+        hm_pub_group_staff gs ON gs.GROUPID = ss.LINKID AND gs.COMPANYID = ss.COMPANYID
+        WHERE
+        src.PUSHRULE = 14 AND src.ISSHOW = 1  AND src.COMPANYID = #{companyId} AND gs.STAFFID = #{staffId}) al
+        ORDER BY TYPEID,PUSHRULE,PRIORITY
+    </select>
+
+    <!--根据批量渠道编号获取渠道名称列表-->
+    <select id="getSourceNamesByIds" parameterType="map" resultType="String">
+        SELECT
+        GROUP_CONCAT(SRCNAME)
+        FROM
+        hm_crm_source
+        WHERE
+        COMPANYID = #{companyId} AND ID IN
+        <foreach collection="ids" item="id" index="index" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
 </mapper>

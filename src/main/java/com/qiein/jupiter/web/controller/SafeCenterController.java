@@ -145,14 +145,23 @@ public class SafeCenterController extends BaseController{
         return ResultInfoUtil.success(JSONObject.parseObject(result).get("data"));
     }
 
+    /***
+     * 根据场地id获取电脑列表
+     */
+    @RequestMapping("/auth_list_by_site_id")
+    public ResultInfo getAuthListBySiteID(Integer id,Integer page){
+        int companyId = getCurrentLoginStaff().getCompanyId();
+        String result = HttpClient.get(appoloBaseUrl.concat(AppolloUrlConst.SITE_LIST_BY_ID)).queryString("siteId",id).queryString("companyId",companyId).queryString("page",page).asString();
+        return ResultInfoUtil.success(JSONObject.parseObject(result).get("data"));
+    }
 
     /**
      * 获取场地所有电脑个数及周增加数
      * */
     @GetMapping("/get_computer_count")
-    public ResultInfo getComputerCount(){
+    public ResultInfo getComputerCount(Integer id){
         int companyId = getCurrentLoginStaff().getCompanyId();
-        String result = HttpClient.get(appoloBaseUrl.concat(AppolloUrlConst.COMPUTER_COUNT)).queryString("companyId",companyId).asString();
+        String result = HttpClient.get(appoloBaseUrl.concat(AppolloUrlConst.COMPUTER_COUNT)).queryString("companyId",companyId).queryString("siteId",id).asString();
         return ResultInfoUtil.success(JSONObject.parseObject(result).get("data"));
     }
 

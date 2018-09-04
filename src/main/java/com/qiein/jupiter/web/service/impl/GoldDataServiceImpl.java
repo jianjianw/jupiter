@@ -250,7 +250,7 @@ public class GoldDataServiceImpl implements GoldDataService {
         reqContent.put("adaddress", goldFingerPO.getAdAddress());
         reqContent.put("typeid", goldFingerPO.getTypeId());
         DictionaryPO dictionaryPO = dictionaryDao.getDicByTypeAndName(goldFingerPO.getCompanyId(), DictionaryConstant.ZX_STYLE, goldFingerPO.getZxStyle());
-        reqContent.put("zxstyle", dictionaryPO.getDicType());
+        reqContent.put("zxstyle", dictionaryPO.getDicCode());
         reqContent.put("collectorid", goldFingerPO.getCreateorId());
         reqContent.put("collectorname", goldFingerPO.getCreateorName());
         reqContent.put("address", address);
