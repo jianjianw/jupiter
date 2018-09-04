@@ -95,8 +95,6 @@ public class LoginServiceImpl implements LoginService {
     @Autowired
     private CallCustomerDao callCustomerDao;
 
-    @Value("${apollo.baseUrl}")
-    private String appoloBaseUrl;
 
     /**
      * 微信获取公司列表
@@ -317,7 +315,6 @@ public class LoginServiceImpl implements LoginService {
         // 放入公司对象
         CompanyVO companyVO = companyService.getCompanyVO(companyId);
         companyVO.setMenuList(getCompanyMenuList(companyId, staffId));
-        companyVO.setInstanceId(getCompanyInstaceId(companyId));
         staffBaseInfoVO.setCompany(companyVO);
         // 员工
         StaffDetailVO staffDetailVO = staffDao.getStaffDetailVO(staffId, companyId);
@@ -350,24 +347,6 @@ public class LoginServiceImpl implements LoginService {
         return staffBaseInfoVO;
     }
 
-    /**
-     * 根据公司id获取通话实例id
-     * */
-    private String getCompanyInstaceId(int companyId){
-        String sign = MD5Util.getApolloMd5(String.valueOf(companyId));
-        String instaceJson = HttpClient
-                // 请求方式和请求url
-                .get(appoloBaseUrl.concat(AppolloUrlConst.GET_CALL_INSTANCE))
-                // post提交json
-                .queryString("companyId", companyId)
-                .queryString("sign", sign)
-                .asString();
-        List<CallPO> callPOS = JSONObject.parseArray(JSONObject.parseObject(instaceJson).get("data").toString(), CallPO.class);
-        if(CollectionUtils.isEmpty(callPOS)){
-            return "";
-        }
-        return callPOS.get(0).getInstanceId();
-    }
 
     /**
      * 根据公司ID和个人获取菜单列表

@@ -69,16 +69,16 @@ public class SchedulingServiceImpl implements SchedulingService {
     public List<GroupsInfoVO> getDeptListByType(String type, int companyId, int staffId) {
         // TODO 加入缓存
         // 获取了全部符合类型的部门
-        List<GroupsInfoVO> list = schedulingDao.getDeptListByType(type.startsWith("ds") ? "dsyy" : "zjsyy", companyId);
+        List<GroupsInfoVO> list = schedulingDao.getDeptListByType(type.startsWith("ds") ? type.endsWith("sx") ? "dssx" : "dsyy" : type.endsWith("sx") ? "zjssx" : "zjsyy", companyId);
         // 根据权限过滤显示标记
         // 获取员工权限
         List<Integer> roleList = rolePermissionDao.getStaffPmsList(companyId, staffId);
         // 获取员工所在部门列表
         List<String> deptList = groupDao.getDeptByTypeAndStaff(companyId, staffId, type);
         // 获取员工所属的电商小组
-        List<String> dsGroupList = groupDao.getStaffBelongDSGroup(companyId,staffId);
+        List<String> dsGroupList = groupDao.getStaffBelongDSGroup(companyId, staffId);
 
-        if (dsGroupList.size()==0){
+        if (dsGroupList.size() == 0) {
             roleList.add(PmsConstant.SEE_ALL);
         }
 
@@ -141,7 +141,7 @@ public class SchedulingServiceImpl implements SchedulingService {
 //		// 获取各小组内人员的接单数和在线人数
 //		List<GroupsInfoVO> infoList = groupStaffDao.getStaffMarsInfo(companyId);
 
-        if (dsGroupList.size()==0)
+        if (dsGroupList.size() == 0)
             roleList.add(PmsConstant.SEE_ALL);
 
         if (roleList.contains(PmsConstant.SEE_ALL) || roleList.contains(PmsConstant.SEE_MY_DEPT)) { // 查看所有
@@ -282,6 +282,6 @@ public class SchedulingServiceImpl implements SchedulingService {
         }
 
         // 推送状态重载消息
-        GoEasyUtil.pushStatusRefresh(staffMarsDTO.getCompanyId(), staffMarsDTO.getId(),webSocketMsgUtil);
+        GoEasyUtil.pushStatusRefresh(staffMarsDTO.getCompanyId(), staffMarsDTO.getId(), webSocketMsgUtil);
     }
 }
