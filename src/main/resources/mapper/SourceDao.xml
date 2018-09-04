@@ -501,4 +501,17 @@
         src.PUSHRULE = 14 AND src.ISSHOW = 1  AND src.COMPANYID = #{companyId} AND gs.STAFFID = #{staffId}) al
         ORDER BY TYPEID,PUSHRULE,PRIORITY
     </select>
+
+    <!--根据批量渠道编号获取渠道名称列表-->
+    <select id="getSourceNamesByIds" parameterType="map" resultType="String">
+        SELECT
+        GROUP_CONCAT(SRCNAME)
+        FROM
+        hm_crm_source
+        WHERE
+        COMPANYID = #{companyId} AND ID IN
+        <foreach collection="ids" item="id" index="index" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
 </mapper>

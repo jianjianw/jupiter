@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.qiein.jupiter.msg.websocket.WebSocketMsgUtil;
+import com.qiein.jupiter.web.dao.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,13 +13,6 @@ import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
 import com.qiein.jupiter.util.StringUtil;
-import com.qiein.jupiter.web.dao.ChannelDao;
-import com.qiein.jupiter.web.dao.GroupDao;
-import com.qiein.jupiter.web.dao.RolePermissionDao;
-import com.qiein.jupiter.web.dao.SchedulingDao;
-import com.qiein.jupiter.web.dao.ShopDao;
-import com.qiein.jupiter.web.dao.StaffDao;
-import com.qiein.jupiter.web.dao.StaffStatusLogDao;
 import com.qiein.jupiter.web.entity.dto.StaffMarsDTO;
 import com.qiein.jupiter.web.entity.po.StaffDetailPO;
 import com.qiein.jupiter.web.entity.po.StaffStatusLog;
@@ -45,6 +39,9 @@ public class SchedulingServiceImpl implements SchedulingService {
 
     @Autowired
     private ChannelDao channelDao;
+
+    @Autowired
+    private SourceDao sourceDao;
 
     @Autowired
     private RolePermissionDao rolePermissionDao;
@@ -220,7 +217,7 @@ public class SchedulingServiceImpl implements SchedulingService {
         }
 
         if (staffMarsDTO.getLimitChannelIds() != null && staffMarsDTO.getLimitChannelIds().trim().length() != 0) { // 如果限制来源，修改不接单的渠道同时修改渠道名称
-            String channelNames = channelDao.getChannelNamesByIds(staffMarsDTO.getCompanyId(),
+            String channelNames = sourceDao.getSourceNamesByIds(staffMarsDTO.getCompanyId(),
                     staffMarsDTO.getLimitChannelIds().split(","));
             staffMarsDTO.setLimitChannelNames(channelNames);
         } else if (staffMarsDTO.getLimitChannelIds() != null
