@@ -1115,6 +1115,7 @@
             AND sf.ISLOCK = 0
             AND sf.STATUSFLAG = 1
             AND (UNIX_TIMESTAMP(NOW()) - sf.LASTPUSHTIME) &gt; #{interval}
+--             AND INSTR(CONCAT(',', sf.LIMITCHANNELIDS, ','), CONCAT(',', #{sourceId}, ',')) = 0
         GROUP BY sf.ID
         ORDER BY count(info.KZID) ASC, sf.LASTPUSHTIME ASC
         LIMIT 0, 1;
