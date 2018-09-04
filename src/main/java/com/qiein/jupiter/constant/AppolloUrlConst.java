@@ -64,6 +64,11 @@ public class AppolloUrlConst {
     public static final String SITE_LIST = "/site/list";
 
     /**
+     * 根据场地id获取授权电脑列表
+     * */
+    public static final String SITE_LIST_BY_ID = "/admin_auth_computer/get_auth_computer_by_site_id";
+
+    /**
      * 场地电脑总数及周增加数
      * */
     public static final String COMPUTER_COUNT = "/site/get_computer_count";
