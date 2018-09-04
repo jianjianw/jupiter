@@ -104,7 +104,7 @@ public class SourceController extends BaseController {
      * @return
      */
     @GetMapping("/priority")
-    public ResultInfo editPriority(Integer fId,Integer fPriority,Integer sId,Integer sPriority) {
+    public ResultInfo editPriority(Integer fId, Integer fPriority, Integer sId, Integer sPriority) {
         sourceService.editProiority(fId, fPriority, sId, sPriority, getCurrentLoginStaff().getCompanyId());
         return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
@@ -123,5 +123,19 @@ public class SourceController extends BaseController {
         Integer companyId = currentLoginStaff.getCompanyId();
         sourceService.datDelSrc(ids, companyId);
         return ResultInfoUtil.success(TipMsgEnum.DEL_SOURCE_SUCCESS);
+    }
+
+    /**
+     * 获取该员工的所有来源
+     *
+     * @param staffId
+     * @return
+     */
+    @GetMapping("/get_staff_source_list")
+    public ResultInfo getStaffSourceList(Integer staffId) {
+        if (staffId == null) {
+            throw new RException(ExceptionEnum.STAFF_ID_NULL);
+        }
+        return ResultInfoUtil.success(sourceService.getStaffSourceList(getCurrentLoginStaff().getCompanyId(), staffId));
     }
 }

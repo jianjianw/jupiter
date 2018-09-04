@@ -79,5 +79,11 @@ public interface SourceService {
      */
     Map<String, SourceDictVO> getSourcePageMap(int companyId);
 
-
+    /**
+     * 获取员工的所有来源列表
+     * @param companyId
+     * @param staffId
+     * @return
+     */
+    List<SourcePO> getStaffSourceList(Integer companyId,Integer staffId);
 }
