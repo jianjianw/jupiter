@@ -65,8 +65,8 @@ public class GroupController extends BaseController {
         ObjectUtil.objectStrParamTrim(groupPO);
         groupService.update(groupPO);
         // 同步修改分配表中的客服组名
-        ShopChannelGroupService.updateGroupNameById(groupPO.getGroupName(), groupPO.getGroupId(),
-                groupPO.getCompanyId());
+//        ShopChannelGroupService.updateGroupNameById(groupPO.getGroupName(), groupPO.getGroupId(),
+//                groupPO.getCompanyId());
         return ResultInfoUtil.success(TipMsgEnum.UPDATE_SUCCESS);
     }
 
