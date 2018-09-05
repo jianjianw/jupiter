@@ -89,5 +89,5 @@ public interface ClientDao {
      * @param companyId
      * @param content
      * */
-    void updateDetailMemo(@Param(value="detailTabName") String detailTabName,@Param(value = "kzId") String kzId,@Param(value="companyId") Integer companyId,@Param(value="content") String content);
+    void updateDetailMemo(@Param(value="detailTabName") String detailTabName,@Param(value = "kzId") String kzId,@Param(value="companyId") Integer companyId,@Param(value="content") String content,@Param(value="label")String label,@Param(value="reason")String reason);
 }

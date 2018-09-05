@@ -98,7 +98,7 @@
 
     <!--修改客资详情表中的Memo字段-->
     <update id = "updateDetailMemo">
-        update ${detailTabName} detail set memo = #{content} where detail.kzid = #{kzId} and detail.companyId = #{companyId}
+        update ${detailTabName} detail set memo = #{content},INVALIDLABEL = #{label},INVALIDMEMO = #{reason} where detail.kzid = #{kzId} and detail.companyId = #{companyId}
     </update>
 
 </mapper>

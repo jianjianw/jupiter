@@ -12,6 +12,7 @@ import com.qiein.jupiter.web.entity.dto.StaffPushDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.po.StaffDetailPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
+import retrofit2.http.PATCH;
 
 /**
  * 员工Dao
@@ -520,7 +521,9 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @return
      */
     StaffPushDTO getAvgDssxStaff(@Param("companyId") int companyId, @Param("interval") int interval,
-                                 @Param("role") String role, @Param("infoTab") String infoTab);
+                                 @Param("role") String role, @Param("infoTab") String infoTab
+//            , @Param("sourceId") int sourceId
+    );
 
     /**
      * 根据ids批量查找员工
