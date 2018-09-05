@@ -188,6 +188,10 @@ public class SafeCenterController extends BaseController{
                 .queryString("companyId", getCurrentLoginStaff().getCompanyId())
                 .asString();
         JSONObject json = JSONObject.parseObject(adminLog);
+        Integer code = (Integer) json.get("code");
+        if (code != 100000) {
+            throw new RException((String) json.get("msg"));
+        }
         AdminVO adminVO = JSONObject.parseObject(json.getString("data"), AdminVO.class);
         for(AdminLogPO adminLogPO:adminVO.getLogList()){
             StaffPO staff=staffService.getById(adminLogPO.getStaffId(),getCurrentLoginStaff().getCompanyId());
