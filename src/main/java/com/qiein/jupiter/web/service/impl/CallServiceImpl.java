@@ -104,7 +104,7 @@ public class CallServiceImpl implements CallService {
                 .queryString("SignatureNonce", randomString.nextString())
                 .queryString("BearerToken", aliOauthVO.getAccessToken()).asString();
 
-        System.out.println(returnJson);
+        System.out.println("--------------------------------------"+returnJson);
         //修改客资状态为已拨打
         clientInfoDao.editKzphoneFlag(kzId, ClientConst.DIALED, DBSplitUtil.getInfoTabName(staffPO.getCompanyId()));
 
