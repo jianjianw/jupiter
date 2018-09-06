@@ -114,11 +114,8 @@ public class ClientAddController extends BaseController {
             throw new RException(ExceptionEnum.KZ_CONTACT_INFORMATION);
 
         if (!StringUtil.isPhone(clientVO.getKzPhone())) {
-            if (StringUtil.isWeChat(clientVO.getKzPhone())) {
-                clientVO.setKzWechat(clientVO.getKzPhone());
-                clientVO.setKzPhone("");
-            } else
-                throw new RException(ExceptionEnum.IS_NOT_KZ_PHONE_OR_WECHAT);
+            clientVO.setKzWechat(clientVO.getKzPhone());
+            clientVO.setKzPhone("");
         }
 
         if (clientVO.getOldKzPhone() != null && !StringUtil.isPhone(clientVO.getOldKzPhone()))
@@ -200,7 +197,7 @@ public class ClientAddController extends BaseController {
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         JSONObject result = clientAddService.batchAddDsClient(list, channelId, sourceId, shopId, typeId, currentLoginStaff, adId,
-                adAddress, groupId, appointId, zxStyle, yxLevel, ysRange, marryTime,address);
+                adAddress, groupId, appointId, zxStyle, yxLevel, ysRange, marryTime, address);
         ResultInfo rep = new ResultInfo();
         rep.setCode(result.getInteger("code"));
         rep.setMsg(result.getString("msg"));
