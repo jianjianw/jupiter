@@ -118,7 +118,7 @@ public class ClientAddController extends BaseController {
             clientVO.setKzPhone("");
         }
 
-        if (clientVO.getOldKzPhone() != null && !StringUtil.isPhone(clientVO.getOldKzPhone()))
+        if (StringUtil.isNotEmpty(clientVO.getOldKzPhone()) && !StringUtil.isPhone(clientVO.getOldKzPhone()))
             throw new RException(ExceptionEnum.OLD_CLIENT_PHONE_IS_NOT_LEGAL);
 
         clientAddService.addOutZjsClient(clientVO);
