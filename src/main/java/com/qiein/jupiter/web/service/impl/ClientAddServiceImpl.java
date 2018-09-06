@@ -296,15 +296,17 @@ public class ClientAddServiceImpl implements ClientAddService {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
-        ChannelPO channelPO = channelDao.getShowChannelById(clientVO.getCompanyId(), clientVO.getChannelId());
-        if (channelPO == null)
+//        ChannelPO channelPO = channelDao.getShowChannelById(clientVO.getCompanyId(), clientVO.getChannelId());
+        SourcePO sourcePO = sourceDao.getByIdAndCid(clientVO.getSourceId(),clientVO.getCompanyId());
+        if (sourcePO == null || !sourcePO.getIsShow())
             throw new RException(ExceptionEnum.CHANNEL_NOT_FOUND);
-        reqContent.put("srctype", channelPO.getTypeId());
+        reqContent.put("srctype", sourcePO.getTypeId());
+        reqContent.put("isfilter",sourcePO.getIsFilter());
         String resultJsonStr = crmBaseApi.doService(reqContent, "addDingClientInfo");
         JSONObject resultJson = JSONObject.parseObject(resultJsonStr).getJSONObject("response").getJSONObject("info");
         System.out.println("接口平台返回： " + resultJson);
         if (resultJson.getIntValue("code") != 100000)
-            throw new RException(resultJson.getString("msg"), resultJson.getIntValue("code"));
+            throw new RException("130019".equals(resultJson.getString("msg"))?"存在重复客资":resultJson.getString("msg"), resultJson.getIntValue("code"));
     }
 
 

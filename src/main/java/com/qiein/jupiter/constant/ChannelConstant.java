@@ -19,6 +19,10 @@ public class ChannelConstant {
     public static final List<Integer> ZJS_TYPE_LIST = new ArrayList<Integer>(Arrays.asList(3, 4, 5));
     // 自然渠道常量列表
     public static final List<Integer> ZR_TYPE_LIST = new ArrayList<Integer>(Arrays.asList(6, 7));
+    // 内部转介绍渠道常量列表
+    public static final List<Integer> INNER_ZJS_TYPE_LIST = new ArrayList<Integer>(Arrays.asList(3, 4));
+    // 外部转介绍渠道常量列表
+    public static final List<Integer> OUTER_ZJS_TYPE_LIST = new ArrayList<Integer>(Arrays.asList(5));
 
     // 纯电商
     public static final int DS_ONLY = 1;
