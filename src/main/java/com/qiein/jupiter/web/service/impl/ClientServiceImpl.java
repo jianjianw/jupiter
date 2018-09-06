@@ -169,6 +169,7 @@ public class ClientServiceImpl implements ClientService {
 
         //修改状态id
         clientDao.updateKzValidStatusByKzId(DBSplitUtil.getInfoTabName(clientStatusVoteVO.getCompanyId()), clientStatusVoteVO);
+        String memo = "";
         //是否有备注
         //获取客资时候有备注
         if (StringUtil.isNotEmpty(clientStatusVoteVO.getContent())) {
@@ -177,10 +178,12 @@ public class ClientServiceImpl implements ClientService {
                 if (clientStatusVoteVO.getReason().length() >= 200) {
                     clientStatusVoteVO.setReason(clientStatusVoteVO.getReason().substring(0, 199));
                 }
+                memo = "无效原因:" + clientStatusVoteVO.getContent() + ",无效备注：" + clientStatusVoteVO.getReason();
             } else {
                 clientStatusVoteVO.setContent("备注:" + clientStatusVoteVO.getContent());
+                memo = clientStatusVoteVO.getContent();
             }
-            clientDao.updateDetailMemo(DBSplitUtil.getDetailTabName(clientStatusVoteVO.getCompanyId()), clientStatusVoteVO.getKzId(), clientStatusVoteVO.getCompanyId(), "无效原因:" + clientStatusVoteVO.getContent() + ",无效备注：" + clientStatusVoteVO.getReason(),clientStatusVoteVO.getContent(),clientStatusVoteVO.getReason());
+            clientDao.updateDetailMemo(DBSplitUtil.getDetailTabName(clientStatusVoteVO.getCompanyId()), clientStatusVoteVO.getKzId(), clientStatusVoteVO.getCompanyId(), memo,clientStatusVoteVO.getContent(),clientStatusVoteVO.getReason());
         }
         //FIXME 废弃代码
 //        ClientRemarkPO clientRemarkPO = new ClientRemarkPO();
