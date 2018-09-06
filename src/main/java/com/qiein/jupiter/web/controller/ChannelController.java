@@ -199,7 +199,7 @@ public class ChannelController extends BaseController {
                 // 获取自然渠道组列表
                 list = channelService.getChannelList(ChannelConstant.ZR_TYPE_LIST, companyId);
                 break;
-            case 4:
+            case 5:
                 // 获取外部转介绍渠道组列表
                 list = channelService.getChannelList(ChannelConstant.OUTER_ZJS_TYPE_LIST, companyId);
                 break;
