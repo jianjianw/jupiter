@@ -20,6 +20,15 @@
         <result column="NICKNAMES" jdbcType="VARCHAR" property="nickNames"></result>
     </resultMap>
 
+    <resultMap id="channelMap" type="com.qiein.jupiter.web.entity.vo.ChannelVO">
+        <result column="CHANNELID" jdbcType="INTEGER" property="channelId"/>
+        <result column="CHANNELNAME" jdbcType="VARCHAR" property="channelName"/>
+        <collection property="srcList" ofType="com.qiein.jupiter.web.entity.vo.SrcListVO">
+            <result column="ID" jdbcType="INTEGER" property="srcId"/>
+            <result column="SRCNAME" jdbcType="VARCHAR" property="srcName"/>
+        </collection>
+    </resultMap>
+
     <sql id="baseColumn">
         ID, SRCNAME, TYPEID, CHANNELID, CHANNELNAME, SRCIMG, BRANDID, BRANDNAME, PRIORITY, ISSHOW, ISFILTER, COMPANYID, PUSHRULE
     </sql>
@@ -469,7 +478,7 @@
     </select>
 
     <!--获取员工所有来源列表-->
-    <select id="getStaffSourceList" resultMap="baseMap">
+    <select id="getStaffSourceList" resultMap="channelMap">
         SELECT
         al.*
         FROM
