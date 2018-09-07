@@ -144,17 +144,6 @@ public class ChannelController extends BaseController {
     }
 
     /**
-     * 根据渠道编号获取旗下所有渠道
-     *
-     * @param id
-     * @return
-     */
-    @GetMapping("/get_source_list")
-    public ResultInfo queryChannel(int id,int companyId) {
-        return ResultInfoUtil.success(TipMsgEnum.SUCCESS, sourceService.getSourceListByChannelId(id, companyId));
-    }
-
-    /**
      * 根据渠道细分类型获取渠道列表 1:纯电商，2:电商转介绍，3:员工转介绍，4:指名转介绍，5:外部转介绍，6:自然入客，7:门店外展
      *
      * @return
