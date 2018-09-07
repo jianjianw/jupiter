@@ -123,7 +123,7 @@ public class ClientAddController extends BaseController {
 
         clientAddService.addOutZjsClient(clientVO);
 
-        return ResultInfoUtil.success();
+        return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
     }
 
     /**
