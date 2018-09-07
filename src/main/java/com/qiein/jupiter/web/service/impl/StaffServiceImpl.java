@@ -1050,4 +1050,15 @@ public class StaffServiceImpl implements StaffService {
         return staffDao.getMsgSetByStaffId(companyId, staffId);
     }
 
+    /**
+     * 根据员工姓名获取员工id
+     * @param name
+     * @param companyId
+     * @return
+     */
+    @Override
+    public Integer getStaffIdByName(String name, Integer companyId) {
+        return staffDao.getStaffIdByName(name, companyId);
+    }
+
 }

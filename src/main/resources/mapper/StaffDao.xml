@@ -1194,4 +1194,16 @@
         WHERE ID = #{staffId}
         AND COMPANYID = #{companyId}
     </select>
+
+    <!--根据员工姓名获取员工id-->
+    <select id="getStaffIdByName" parameterType="map" resultType="Integer">
+        SELECT
+        ID
+        FROM
+        hm_pub_staff
+        WHERE
+        NICKNAME = #{name} AND COMPANYID = #{companyId}
+        AND ISDEL = 0 AND ISLOCK = 0
+        LIMIT 1
+    </select>
 </mapper>

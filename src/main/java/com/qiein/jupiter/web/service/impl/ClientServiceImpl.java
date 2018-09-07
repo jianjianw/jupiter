@@ -180,7 +180,7 @@ public class ClientServiceImpl implements ClientService {
                 }
                 memo = "无效原因:" + clientStatusVoteVO.getContent() + ",无效备注：" + clientStatusVoteVO.getReason();
             } else {
-                clientStatusVoteVO.setContent("备注:" + clientStatusVoteVO.getContent());
+                clientStatusVoteVO.setContent(clientStatusVoteVO.getContent());
                 memo = clientStatusVoteVO.getContent();
             }
             clientDao.updateDetailMemo(DBSplitUtil.getDetailTabName(clientStatusVoteVO.getCompanyId()), clientStatusVoteVO.getKzId(), clientStatusVoteVO.getCompanyId(), memo,clientStatusVoteVO.getContent(),clientStatusVoteVO.getReason());
