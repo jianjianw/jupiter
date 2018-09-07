@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.service;
 
 import com.qiein.jupiter.web.entity.po.SourcePO;
+import com.qiein.jupiter.web.entity.vo.ChannelVO;
 import com.qiein.jupiter.web.entity.vo.SourceDictVO;
 import com.qiein.jupiter.web.entity.vo.SourceVO;
 
@@ -85,7 +86,7 @@ public interface SourceService {
      * @param staffId
      * @return
      */
-    List<SourcePO> getStaffSourceList(Integer companyId,Integer staffId);
+    List<ChannelVO> getStaffSourceList(Integer companyId, Integer staffId);
 
 
 }

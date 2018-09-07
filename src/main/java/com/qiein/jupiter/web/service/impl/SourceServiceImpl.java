@@ -12,6 +12,7 @@ import com.qiein.jupiter.constant.SourceStaffConst;
 import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.SourceStaffDao;
+import com.qiein.jupiter.web.entity.vo.ChannelVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -198,7 +199,7 @@ public class SourceServiceImpl implements SourceService {
      * @return
      */
     @Override
-    public List<SourcePO> getStaffSourceList(Integer companyId, Integer staffId) {
+    public List<ChannelVO> getStaffSourceList(Integer companyId, Integer staffId) {
         return sourceDao.getStaffSourceList(companyId, staffId);
     }
 

@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.dao;
 
 import com.qiein.jupiter.web.entity.po.ChannelPO;
 import com.qiein.jupiter.web.entity.po.SourcePO;
+import com.qiein.jupiter.web.entity.vo.ChannelVO;
 import com.qiein.jupiter.web.entity.vo.SourceVO;
 import org.apache.ibatis.annotations.Param;
 
@@ -210,7 +211,7 @@ public interface SourceDao extends BaseDao<SourcePO> {
      * @param staffId
      * @return
      */
-    List<SourcePO> getStaffSourceList(@Param("companyId")Integer companyId,@Param("staffId")Integer staffId);
+    List<ChannelVO> getStaffSourceList(@Param("companyId")Integer companyId, @Param("staffId")Integer staffId);
 
     /**
      * 根据批量渠道名称获取渠道名称列表
