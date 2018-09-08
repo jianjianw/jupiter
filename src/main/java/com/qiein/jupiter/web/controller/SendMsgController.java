@@ -75,7 +75,7 @@ public class SendMsgController extends BaseController {
         String date_string = TimeUtil.intMillisToTimeStr(Integer.parseInt(map.get("time")));
         map.put("time", date_string);
         Integer id = clientService.findByKzId(map.get("kzId"), staff.getCompanyId());
-        map.put("code", CommonConstant.YYJD + id);
+        map.put("code", CommonConstant.NULL_STR+id);
         sendMsgDTO.setTemplateType(CommonConstant.YYJD);
         SendMsgToDTO sendMsgToDTO = new SendMsgToDTO();
         sendMsgToDTO.setParams(sendMsgDTO);
