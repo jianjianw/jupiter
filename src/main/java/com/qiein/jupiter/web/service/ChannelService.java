@@ -130,4 +130,12 @@ public interface ChannelService {
      * @return:
      */
     List<ChannelVO> getCompanyOutZjsChannelAndSource(int companyId);
+
+    /**
+     * 获取公司所有启用的渠道来源列表
+     * @param companyId
+     * @param channelId
+     * @return
+     */
+    List<ChannelVO> getAllShowChannelSourceList(int companyId,Integer channelId);
 }

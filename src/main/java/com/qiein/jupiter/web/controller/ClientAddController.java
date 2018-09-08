@@ -8,6 +8,7 @@ import com.qiein.jupiter.web.entity.dto.ClientGoEasyDTO;
 import com.qiein.jupiter.web.entity.dto.RequestInfoDTO;
 import com.qiein.jupiter.web.entity.po.SourcePO;
 import com.qiein.jupiter.web.entity.po.SystemLog;
+import com.qiein.jupiter.web.entity.vo.ChannelVO;
 import com.qiein.jupiter.web.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -48,6 +49,9 @@ public class ClientAddController extends BaseController {
 
     @Autowired
     private SourceService sourceService;
+
+    @Autowired
+    private ChannelService channelService;
 
     /**
      * 录入电商客资
@@ -154,20 +158,21 @@ public class ClientAddController extends BaseController {
      */
     @GetMapping("/out_zjs_menu")
     public ResultInfo OutZjsDorpDownMenu(Integer channelId, Integer companyId) {
-        if (companyId == null || channelId == null)
+        if (companyId == null)
             throw new RException(ExceptionEnum.COMPANY_ID_NULL);
         Map<String, Object> map = new HashMap<>();
         map.put("dic", dictionaryService.getDictMapByCid(companyId));
-        List<SourcePO> list =sourceService.getSourceListByChannelId(channelId, companyId);
-        if (!list.isEmpty()){
-            Iterator<SourcePO> it = list.iterator();
-            while(it.hasNext()){
-                SourcePO s = it.next();
-                if(!s.getIsShow()){
-                    it.remove();
-                }
-            }
-        }
+//        List<SourcePO> list =sourceService.getSourceListByChannelId(channelId, companyId);
+//        if (!list.isEmpty()){
+//            Iterator<SourcePO> it = list.iterator();
+//            while(it.hasNext()){
+//                SourcePO s = it.next();
+//                if(!s.getIsShow()){
+//                    it.remove();
+//                }
+//            }
+//        }
+        List<ChannelVO> list = channelService.getAllShowChannelSourceList(companyId,channelId);
         map.put("srcList", list);
         return ResultInfoUtil.success(map);
     }

@@ -502,4 +502,24 @@
             src.ID
     </select>
 
+    <!--获取企业所有渠道组及渠道-->
+    <select id="getAllShowChannelSourceList" parameterType="map" resultMap="ChannelVOMap">
+        SELECT
+            channel.ID,
+            channel.CHANNELNAME,
+            src.ID AS SRCID,
+            src.SRCNAME
+        FROM
+            hm_crm_channel channel
+            LEFT JOIN hm_crm_source src ON src.COMPANYID = channel.COMPANYID AND src.CHANNELID = channel.ID
+        <where>
+            channel.COMPANYID = #{companyId} AND channel.ISSHOW = 1
+            <if test="channelId != null">
+                AND channel.ID = #{channelId}
+            </if>
+        </where>
+        ORDER BY channel.ISSHOW DESC, channel.TYPEID, channel.PRIORITY, channel.ID, src.ISSHOW DESC, src.PRIORITY,
+            src.ID
+    </select>
+
 </mapper>
