@@ -17,7 +17,7 @@ public interface CostDao {
      * @param companyId
      * @return
      */
-     List<CostPO> costList(@Param("month") String month, @Param("companyId") Integer companyId,@Param("staffId")Integer staffId);
+     List<CostPO> costList(@Param("month") String month, @Param("companyId") Integer companyId,@Param("staffId")Integer staffId,@Param("sourceIds")String sourceIds);
     /**
      * 修改花费的返利率
      * @param srcIds

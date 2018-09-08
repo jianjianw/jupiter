@@ -466,6 +466,7 @@
                 staff.staffid = #{staffId}
         )
         and src.ID is not null
+        and src.ID in (${sourceIds})
     </select>
 
     <!--获取员工所有来源列表-->

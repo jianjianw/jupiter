@@ -31,9 +31,9 @@ public class CostController extends BaseController {
      * 获取花费页面信息
      */
     @GetMapping("/cost_list")
-    public ResultInfo costList(@RequestParam String month) {
+    public ResultInfo costList(@RequestParam String month,@RequestParam String sourceIds) {
         StaffPO staff = getCurrentLoginStaff();
-        return ResultInfoUtil.success(costService.costList(month, staff.getCompanyId(),staff.getId()));
+        return ResultInfoUtil.success(costService.costList(month, staff.getCompanyId(),staff.getId(),sourceIds));
     }
     /**
      * 修改返利率
