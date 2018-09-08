@@ -513,7 +513,7 @@
             hm_crm_channel channel
             LEFT JOIN hm_crm_source src ON src.COMPANYID = channel.COMPANYID AND src.CHANNELID = channel.ID
         <where>
-            channel.COMPANYID = #{companyId} AND channel.ISSHOW = 1
+            channel.COMPANYID = #{companyId} AND channel.ISSHOW = 1 AND src.ISSHOW = 1
             <if test="channelId != null">
                 AND channel.ID = #{channelId}
             </if>
