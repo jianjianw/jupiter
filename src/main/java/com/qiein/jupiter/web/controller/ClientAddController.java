@@ -6,10 +6,9 @@ import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
 import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.entity.dto.ClientGoEasyDTO;
 import com.qiein.jupiter.web.entity.dto.RequestInfoDTO;
+import com.qiein.jupiter.web.entity.po.SourcePO;
 import com.qiein.jupiter.web.entity.po.SystemLog;
-import com.qiein.jupiter.web.service.CompanyService;
-import com.qiein.jupiter.web.service.DictionaryService;
-import com.qiein.jupiter.web.service.SystemLogService;
+import com.qiein.jupiter.web.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +18,11 @@ import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.ClientVO;
-import com.qiein.jupiter.web.service.ClientAddService;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 客资录入
@@ -39,6 +42,12 @@ public class ClientAddController extends BaseController {
 
     @Autowired
     private SystemLogService logService;
+
+    @Autowired
+    private StaffService staffService;
+
+    @Autowired
+    private SourceService sourceService;
 
     /**
      * 录入电商客资
@@ -114,19 +123,24 @@ public class ClientAddController extends BaseController {
             throw new RException(ExceptionEnum.KZ_CONTACT_INFORMATION);
 
         if (!StringUtil.isPhone(clientVO.getKzPhone())) {
-            if (StringUtil.isWeChat(clientVO.getKzPhone())) {
-                clientVO.setKzWechat(clientVO.getKzPhone());
-                clientVO.setKzPhone("");
-            } else
-                throw new RException(ExceptionEnum.IS_NOT_KZ_PHONE_OR_WECHAT);
+            clientVO.setKzWechat(clientVO.getKzPhone());
+            clientVO.setKzPhone("");
         }
 
-        if (clientVO.getOldKzPhone() != null && !StringUtil.isPhone(clientVO.getOldKzPhone()))
+        if (StringUtil.isNotEmpty(clientVO.getOldKzPhone()) && !StringUtil.isPhone(clientVO.getOldKzPhone()))
             throw new RException(ExceptionEnum.OLD_CLIENT_PHONE_IS_NOT_LEGAL);
+
+        //如果有简单和这个名字全匹配的员工，则获取到这个人的id
+        if (StringUtil.isNotEmpty(clientVO.getCollectorName())) {
+            Integer i = staffService.getStaffIdByName(clientVO.getCollectorName(), clientVO.getCompanyId());
+            if (i != null) {
+                clientVO.setCollectorId(i);
+            }
+        }
 
         clientAddService.addOutZjsClient(clientVO);
 
-        return ResultInfoUtil.success();
+        return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
     }
 
     /**
@@ -139,10 +153,23 @@ public class ClientAddController extends BaseController {
      * @return:
      */
     @GetMapping("/out_zjs_menu")
-    public ResultInfo OutZjsDorpDownMenu(Integer companyId) {
-        if (companyId == null)
+    public ResultInfo OutZjsDorpDownMenu(Integer channelId, Integer companyId) {
+        if (companyId == null || channelId == null)
             throw new RException(ExceptionEnum.COMPANY_ID_NULL);
-        return ResultInfoUtil.success(dictionaryService.getDictMapByCid(companyId));
+        Map<String, Object> map = new HashMap<>();
+        map.put("dic", dictionaryService.getDictMapByCid(companyId));
+        List<SourcePO> list =sourceService.getSourceListByChannelId(channelId, companyId);
+        if (!list.isEmpty()){
+            Iterator<SourcePO> it = list.iterator();
+            while(it.hasNext()){
+                SourcePO s = it.next();
+                if(!s.getIsShow()){
+                    it.remove();
+                }
+            }
+        }
+        map.put("srcList", list);
+        return ResultInfoUtil.success(map);
     }
 
     /**
@@ -200,7 +227,7 @@ public class ClientAddController extends BaseController {
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         JSONObject result = clientAddService.batchAddDsClient(list, channelId, sourceId, shopId, typeId, currentLoginStaff, adId,
-                adAddress, groupId, appointId, zxStyle, yxLevel, ysRange, marryTime,address);
+                adAddress, groupId, appointId, zxStyle, yxLevel, ysRange, marryTime, address);
         ResultInfo rep = new ResultInfo();
         rep.setCode(result.getInteger("code"));
         rep.setMsg(result.getString("msg"));

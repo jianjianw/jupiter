@@ -88,7 +88,7 @@ public class CallServiceImpl implements CallService {
         //生成时间戳
         StringBuilder timeStamp = new StringBuilder(TimeUtil.format(TimeUtil.localToUTC(TimeUtil.getSysTime()), "yyyy-MM-dd HH:mm:ss")).replace(10, 11, "T").append("Z");
         RandomString randomString = new RandomString(45);
-        HttpClient
+        String returnJson = HttpClient
                 .get(CallUrlConst.CALL_BASE_URL)
                 .queryString("Action", "StartBack2BackCall")
                 .queryString("InstanceId", callPO.getInstanceId())
@@ -104,7 +104,7 @@ public class CallServiceImpl implements CallService {
                 .queryString("SignatureNonce", randomString.nextString())
                 .queryString("BearerToken", aliOauthVO.getAccessToken()).asString();
 
-
+        System.out.println("--------------------------------------"+returnJson);
         //修改客资状态为已拨打
         clientInfoDao.editKzphoneFlag(kzId, ClientConst.DIALED, DBSplitUtil.getInfoTabName(staffPO.getCompanyId()));
 

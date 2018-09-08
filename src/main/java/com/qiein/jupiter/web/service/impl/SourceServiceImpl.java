@@ -12,6 +12,7 @@ import com.qiein.jupiter.constant.SourceStaffConst;
 import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.SourceStaffDao;
+import com.qiein.jupiter.web.entity.vo.ChannelVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -81,13 +82,19 @@ public class SourceServiceImpl implements SourceService {
             //指定渠道邀约人员
             if (StringUtil.isNotEmpty(sourceVO.getLinkIds())) {
                 sourceStaffDao.deleteBySourceId(sourceVO.getId(), sourceVO.getCompanyId());
-                sourceStaffDao.insertBySourceId(sourceVO.getId(), sourceVO.getCompanyId(), Arrays.asList(sourceVO.getLinkIds().split(CommonConstant.STR_SEPARATOR)), SourceStaffConst.RELATYPE_STAFF);
+//                sourceStaffDao.insertBySourceId(sourceVO.getId(), sourceVO.getCompanyId(), Arrays.asList(sourceVO.getLinkIds().split(CommonConstant.STR_SEPARATOR)), SourceStaffConst.RELATYPE_STAFF);
+                for(String linkId: Arrays.asList(sourceVO.getLinkIds().split(CommonConstant.STR_SEPARATOR))){
+                    sourceStaffDao.insertBySourceId(sourceVO.getId(), sourceVO.getCompanyId(), linkId, SourceStaffConst.RELATYPE_STAFF);
+                }
             }
         } else if (PushRoleConst.GROUP_AVG_YY_WEIGHTS_RECEIVE.equals(sourceVO.getPushRule())) {
             //指定渠道邀约人员
             if (StringUtil.isNotEmpty(sourceVO.getLinkIds())) {
                 sourceStaffDao.deleteBySourceId(sourceVO.getId(), sourceVO.getCompanyId());
-                sourceStaffDao.insertBySourceId(sourceVO.getId(), sourceVO.getCompanyId(), Arrays.asList(sourceVO.getLinkIds().split(CommonConstant.STR_SEPARATOR)), SourceStaffConst.RELATYPE_GROUP);
+//                sourceStaffDao.insertBySourceId(sourceVO.getId(), sourceVO.getCompanyId(), Arrays.asList(sourceVO.getLinkIds().split(CommonConstant.STR_SEPARATOR)), SourceStaffConst.RELATYPE_GROUP);
+                for(String linkId: Arrays.asList(sourceVO.getLinkIds().split(CommonConstant.STR_SEPARATOR))){
+                    sourceStaffDao.insertBySourceId(sourceVO.getId(), sourceVO.getCompanyId(), linkId, SourceStaffConst.RELATYPE_STAFF);
+                }
             }
         }
 
@@ -198,7 +205,7 @@ public class SourceServiceImpl implements SourceService {
      * @return
      */
     @Override
-    public List<SourcePO> getStaffSourceList(Integer companyId, Integer staffId) {
+    public List<ChannelVO> getStaffSourceList(Integer companyId, Integer staffId) {
         return sourceDao.getStaffSourceList(companyId, staffId);
     }
 

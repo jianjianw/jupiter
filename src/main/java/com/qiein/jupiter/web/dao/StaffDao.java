@@ -568,4 +568,10 @@ public interface StaffDao extends BaseDao<StaffPO> {
      */
     String getMsgSetByStaffId(@Param("companyId") int companyId, @Param("staffId") int staffId);
 
+    /**
+     * 根据员工姓名获取员工id
+     * @param name
+     * @return
+     */
+    Integer getStaffIdByName(@Param("name") String name,@Param("companyId") Integer companyId);
 }

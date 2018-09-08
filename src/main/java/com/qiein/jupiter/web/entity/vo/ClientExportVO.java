@@ -176,6 +176,11 @@ public class ClientExportVO implements Serializable {
     @Excel(name = "无效原因", width = 30, height = 6)
     private String invalidLabel;
     /**
+     * 无效备注
+     * */
+    @Excel(name="无效备注",width=20,height = 6)
+    private String invalidMemo;
+    /**
      * 销售备注
      */
     @Excel(name = "备注", width = 40, height = 6)
@@ -200,11 +205,7 @@ public class ClientExportVO implements Serializable {
      * */
     @Excel(name="老客电话",width = 20,height = 6)
     private String oldKzPhone;
-    /**
-     * 无效备注
-     * */
-    @Excel(name="无效备注",width=20,height = 6)
-    private String invalidMemo;
+
 
     public String getInvalidMemo() {
         return invalidMemo;

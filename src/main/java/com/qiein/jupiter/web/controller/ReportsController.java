@@ -388,9 +388,9 @@ public class ReportsController extends BaseController {
      * 电商推广咨询信息方式报表
      */
     @GetMapping("/get_dstg_zx_style_reports")
-    public ResultInfo getDstgZxStyleReports(Integer start, Integer end, @RequestParam(value = "type", required = false) String type, @RequestParam(value = "zxStyleCode", required = false) String zxStyleCode) {
+    public ResultInfo getDstgZxStyleReports(Integer start, Integer end, @RequestParam(value = "type", required = false) String type, @RequestParam(value = "zxStyleCode", required = false) String zxStyleCode,@RequestParam(value="sourceIds")String sourceIds) {
         StaffPO staffPO = getCurrentLoginStaff();
-        List<DstgZxStyleReportsVO> dstgGoldDataReportsVO = reportService.getDstgZxStyleReports(start, end, staffPO.getCompanyId(), type, zxStyleCode);
+        List<DstgZxStyleReportsVO> dstgGoldDataReportsVO = reportService.getDstgZxStyleReports(start, end, staffPO.getCompanyId(), type, zxStyleCode,sourceIds);
         return ResultInfoUtil.success(dstgGoldDataReportsVO);
     }
 

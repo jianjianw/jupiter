@@ -399,4 +399,11 @@ public interface StaffService {
      * @return
      */
     String getMsgSetByStaffId(int companyId, int staffId);
+
+    /**
+     * 根据员工姓名获取员工id
+     * @param name
+     * @return
+     */
+    Integer getStaffIdByName(String name,Integer companyId);
 }
