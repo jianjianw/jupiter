@@ -20,6 +20,7 @@
 
     <resultMap id="ChannelVOMap" type="com.qiein.jupiter.web.entity.vo.ChannelVO">
         <result column="ID" jdbcType="INTEGER" property="channelId"/>
+        <result column="TYPEID" jdbcType="INTEGER" property="typeId"/>
         <result column="CHANNELNAME" jdbcType="VARCHAR" property="channelName"/>
         <collection property="srcList" ofType="com.qiein.jupiter.web.entity.vo.SrcListVO">
             <result column="SRCID" jdbcType="INTEGER" property="srcId"/>
@@ -233,7 +234,9 @@
     </select>
 
     <select id="findById" resultMap="baseMap">
-        select CHANNELNAME from hm_crm_channel where id=#{id}
+        SELECT CHANNELNAME
+        FROM hm_crm_channel
+        WHERE id = #{id}
     </select>
     <!--根据细分类型获取渠道列表-->
     <select id="getListByType" parameterType="Integer" resultMap="baseMap">
@@ -249,8 +252,8 @@
             a.PRIORITY,
             a.ISSHOW,
             a.ISFILTER,
-            if(a.PUSHRULE = 12,b.LINKIDS,IF(a.PUSHRULE = 14,c.LINKIDS,null))as LINKIDS,
-            if(a.PUSHRULE = 12,b.NICKNAMES,if(a.PUSHRULE = 14,c.NICKNAMES,null))as nicknames
+            if(a.PUSHRULE = 12, b.LINKIDS, IF(a.PUSHRULE = 14, c.LINKIDS, NULL))     AS LINKIDS,
+            if(a.PUSHRULE = 12, b.NICKNAMES, if(a.PUSHRULE = 14, c.NICKNAMES, NULL)) AS nicknames
         FROM
             hm_crm_channel a
             LEFT JOIN
@@ -258,8 +261,8 @@
                 SELECT
                     a.channelId,
                     a.companyId,
-                    GROUP_CONCAT(a.LINKID SEPARATOR ',')   as LINKIDS,
-                    GROUP_CONCAT(a.nickname SEPARATOR ',') as NICKNAMES
+                    GROUP_CONCAT(a.LINKID SEPARATOR ',')   AS LINKIDS,
+                    GROUP_CONCAT(a.nickname SEPARATOR ',') AS NICKNAMES
                 FROM
                     (
                         SELECT
@@ -272,7 +275,7 @@
                             hm_crm_source_staff b,
                             hm_pub_staff c
                         WHERE
-                            a.id = b.SOURCEID and b.LINKID = c.ID
+                            a.id = b.SOURCEID AND b.LINKID = c.ID
                         GROUP BY
                             CHANNELID,
                             LINKID
@@ -280,15 +283,15 @@
                 GROUP BY
                     channelId
             ) b
-                ON a.ID = b.channelId and a.COMPANYID = b.COMPANYID
-            left join
-            (select
+                ON a.ID = b.channelId AND a.COMPANYID = b.COMPANYID
+            LEFT JOIN
+            (SELECT
                  a.channelId,
                  a.companyid,
                  a.relatype,
                  GROUP_CONCAT(a.LINKID SEPARATOR ',')    AS LINKIDS,
                  GROUP_CONCAT(a.groupName SEPARATOR ',') AS NICKNAMES
-             from
+             FROM
                  (SELECT
                       a.CHANNELID,
                       b.linkid,
@@ -303,10 +306,10 @@
                   WHERE
                       a.id = b.SOURCEID
                       AND b.LINKID = c.GROUPID
-                  group by CHANNELID, LINKID
+                  GROUP BY CHANNELID, LINKID
                  ) a
-             group by channelId) c
-           on a.COMPANYID = c.COMPANYID and a.ID = c.channelId
+             GROUP BY channelId) c
+                ON a.COMPANYID = c.COMPANYID AND a.ID = c.channelId
         WHERE
             a.COMPANYID = #{companyId} AND TYPEID = #{typeId}
         ORDER BY ISSHOW DESC, PRIORITY, TYPEID, ID
@@ -415,7 +418,7 @@
 
     <!--根据组名称获取渠道-->
     <select id="getChannelByGroupName" resultMap="baseMap">
-        select
+        SELECT
             id,
             CHANNELNAME,
             CHANNELIMG,
@@ -426,13 +429,13 @@
             PRIORITY,
             ISSHOW,
             COMPANYID
-        from hm_crm_channel
-        where CHANNELNAME = #{groupName} and COMPANYID = #{companyId}
+        FROM hm_crm_channel
+        WHERE CHANNELNAME = #{groupName} AND COMPANYID = #{companyId}
     </select>
 
     <!--根据父节点id获取渠道-->
     <select id="getChannelByGroupParentId" resultMap="baseMap">
-        select
+        SELECT
             id,
             CHANNELNAME,
             CHANNELIMG,
@@ -443,10 +446,10 @@
             PRIORITY,
             ISSHOW,
             COMPANYID
-        from hm_crm_channel
-        where CHANNELNAME = (select GROUPNAME
-                             from hm_pub_group
-                             where GROUPID = #{parentId}) and COMPANYID = #{companyId}
+        FROM hm_crm_channel
+        WHERE CHANNELNAME = (SELECT GROUPNAME
+                             FROM hm_pub_group
+                             WHERE GROUPID = #{parentId}) AND COMPANYID = #{companyId}
     </select>
 
     <!--根据员工id获取员工所在小组的承接渠道列表-->
@@ -466,7 +469,7 @@
             LEFT JOIN
             hm_crm_channel c ON c.COMPANYID = scgr.COMPANYID AND c.ID = scgr.CHANNELID
         WHERE
-            scgr.COMPANYID = #{companyId} and scgr.GROUPID = #{groupId} AND c.ISSHOW = 1
+            scgr.COMPANYID = #{companyId} AND scgr.GROUPID = #{groupId} AND c.ISSHOW = 1
         GROUP BY c.CHANNELNAME
     </select>
 
@@ -487,7 +490,7 @@
     </select>
 
     <!--获取所有电商渠道来源-->
-    <select id = "getDsAllChannel" resultMap="ChannelVOMap">
+    <select id="getDsAllChannel" resultMap="ChannelVOMap">
         SELECT
             channel.ID,
             channel.CHANNELNAME,
@@ -497,7 +500,7 @@
             hm_crm_channel channel
             LEFT JOIN hm_crm_source src ON src.COMPANYID = channel.COMPANYID AND src.CHANNELID = channel.ID
         WHERE
-            channel.COMPANYID = #{companyId} and (channel.TYPEID = 1 or channel.TYPEID = 2)
+            channel.COMPANYID = #{companyId} AND (channel.TYPEID = 1 OR channel.TYPEID = 2)
         ORDER BY channel.ISSHOW DESC, channel.TYPEID, channel.PRIORITY, channel.ID, src.ISSHOW DESC, src.PRIORITY,
             src.ID
     </select>
@@ -505,13 +508,14 @@
     <!--获取企业所有渠道组及渠道-->
     <select id="getAllShowChannelSourceList" parameterType="map" resultMap="ChannelVOMap">
         SELECT
-            channel.ID,
-            channel.CHANNELNAME,
-            src.ID AS SRCID,
-            src.SRCNAME
+        channel.ID,
+        channel.CHANNELNAME,
+        channel.TYPEID,
+        src.ID AS SRCID,
+        src.SRCNAME
         FROM
-            hm_crm_channel channel
-            LEFT JOIN hm_crm_source src ON src.COMPANYID = channel.COMPANYID AND src.CHANNELID = channel.ID
+        hm_crm_channel channel
+        LEFT JOIN hm_crm_source src ON src.COMPANYID = channel.COMPANYID AND src.CHANNELID = channel.ID
         <where>
             channel.COMPANYID = #{companyId} AND channel.ISSHOW = 1 AND src.ISSHOW = 1
             <if test="channelId != null">
@@ -519,7 +523,7 @@
             </if>
         </where>
         ORDER BY channel.ISSHOW DESC, channel.TYPEID, channel.PRIORITY, channel.ID, src.ISSHOW DESC, src.PRIORITY,
-            src.ID
+        src.ID
     </select>
 
 </mapper>
