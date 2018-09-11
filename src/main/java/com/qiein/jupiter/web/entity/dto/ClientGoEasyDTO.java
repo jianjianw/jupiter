@@ -114,6 +114,12 @@ public class ClientGoEasyDTO implements Serializable {
      */
     private int lastPushTime;
 
+    /**
+     * 筛选人ID
+     */
+    private int promotorId;
+
+
     public String getKzQq() {
         return kzQq;
     }
@@ -312,5 +318,13 @@ public class ClientGoEasyDTO implements Serializable {
 
     public void setLastPushTime(int lastPushTime) {
         this.lastPushTime = lastPushTime;
+    }
+
+    public int getPromotorId() {
+        return promotorId;
+    }
+
+    public void setPromotorId(int promotorId) {
+        this.promotorId = promotorId;
     }
 }
