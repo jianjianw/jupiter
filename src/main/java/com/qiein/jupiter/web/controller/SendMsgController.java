@@ -75,7 +75,7 @@ public class SendMsgController extends BaseController {
             if (StringUtil.isEmpty(staff.getPhone())) {
                 map.put("telno", "");
             } else {
-                map.put("telno", staff.getPhone());
+                map.put("telno", staff.getNickName()+CommonConstant.ROD_SEPARATOR+staff.getPhone());
             }
         }
         //获取时间
@@ -142,7 +142,7 @@ public class SendMsgController extends BaseController {
             if (StringUtil.isEmpty(staff.getPhone())) {
                 map.put("telno", "");
             } else {
-                map.put("telno", staff.getPhone());
+                map.put("telno", staff.getNickName()+CommonConstant.ROD_SEPARATOR+staff.getPhone());
             }
         }
         Integer id = clientService.findByKzId(map.get("kzId"), staff.getCompanyId());
