@@ -139,6 +139,7 @@ public class SendMsgController extends BaseController {
                 map.put("telno", shopPO.getServicePhone());
             }
         } else {
+            self="self";
             if (StringUtil.isEmpty(staff.getPhone())) {
                 map.put("telno", "");
             } else {
