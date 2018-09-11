@@ -886,9 +886,9 @@ public class StaffServiceImpl implements StaffService {
             staff.setStatusFlag(StaffStatusEnum.LIMIT.getStatusId());
         } else if (0 == updateNum && staff.getTodayNum() < staff.getLimitDay()) {
             //如果当前员工之前是满限，但是现在不是
-            staff.setStatusFlag(StaffStatusEnum.OnLine.getStatusId());
-            //更新状态
-            staffDao.updateStatusFlag(staff);
+//            staff.setStatusFlag(StaffStatusEnum.OnLine.getStatusId());
+//            //更新状态
+//            staffDao.updateStatusFlag(staff);
         }
     }
 
