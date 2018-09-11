@@ -74,11 +74,12 @@ public class DstgGoldDataReportsDao {
         sb.append(" info.kzid = detail.kzid");
         sb.append(" and info.isdel = 0");
         sb.append(" and (info.srctype = 1 or info.srctype = 2)");
+        sb.append(" and (info.createtime between ? and ? or info.comeshoptime between ? and ? and info.successtime between ? and ? )");
         sb.append(" and info.companyid = ?");
         sb.append(" group by detail.adid");
 
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
-                new Object[]{reportsParamVO.getCompanyId()});
+                new Object[]{reportsParamVO.getStart(),reportsParamVO.getEnd(),reportsParamVO.getStart(),reportsParamVO.getEnd(),reportsParamVO.getStart(),reportsParamVO.getEnd(),reportsParamVO.getCompanyId()});
 
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgGoldDataReportsVO dstgGoldDataReportsVO = new DstgGoldDataReportsVO();
