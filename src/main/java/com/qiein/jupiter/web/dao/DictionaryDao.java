@@ -171,5 +171,5 @@ public interface DictionaryDao extends BaseDao<DictionaryPO> {
     /**
      * 根据公司id和type获取
      */
-    List<DictionaryPO> getInvaildReasons(@Param("tableInfo") String tableInfo, @Param("tableDetail") String tableDetail,@Param("startTime")String startTime,@Param("endTime")String endTime,@Param("companyId")Integer companyId);
+    List<DictionaryPO> getInvaildReasons(@Param("companyId")Integer companyId,@Param("dicType")String dicType);
 }
