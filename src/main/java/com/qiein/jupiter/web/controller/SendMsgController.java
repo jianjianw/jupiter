@@ -65,17 +65,24 @@ public class SendMsgController extends BaseController {
         ShopPO shopPO = shopService.findShop(Integer.parseInt(map.get("shopId")));
         map.put("address", shopPO.getAddress());
         //判断门店电话是否为空
-
-        if (StringUtil.isEmpty(shopPO.getServicePhone())) {
-            map.put("telno", "");
+        if (!sendMsgDTO.getIsSelf().equals(CommonConstant.SELF)) {
+            if (StringUtil.isEmpty(shopPO.getServicePhone())) {
+                map.put("telno", "");
+            } else {
+                map.put("telno", shopPO.getServicePhone());
+            }
         } else {
-            map.put("telno", shopPO.getServicePhone());
+            if (StringUtil.isEmpty(staff.getPhone())) {
+                map.put("telno", "");
+            } else {
+                map.put("telno", staff.getPhone());
+            }
         }
         //获取时间
         String date_string = TimeUtil.intMillisToTimeStr(Integer.parseInt(map.get("time")));
         map.put("time", date_string);
         Integer id = clientService.findByKzId(map.get("kzId"), staff.getCompanyId());
-        map.put("code", CommonConstant.NULL_STR+id);
+        map.put("code", CommonConstant.NULL_STR + id);
         sendMsgDTO.setTemplateType(CommonConstant.YYJD);
         SendMsgToDTO sendMsgToDTO = new SendMsgToDTO();
         sendMsgToDTO.setParams(sendMsgDTO);
@@ -110,7 +117,7 @@ public class SendMsgController extends BaseController {
                 .asString();
         JSONObject json = JSONObject.parseObject(msgTemlate);
         MsgTemplateVO msgTemplateVO = JSONObject.parseObject(json.getString("data"), MsgTemplateVO.class);
-        if(msgTemplateVO==null){
+        if (msgTemplateVO == null) {
             throw new RException(ExceptionEnum.CANT_FIND_TEMPLATE);
         }
 
@@ -123,7 +130,9 @@ public class SendMsgController extends BaseController {
         Map<String, String> map = sendMsgDTO.getMap();
         ShopPO shopPO = shopService.findShop(Integer.parseInt(sendMsgDTO.getMap().get("shopId")));
         map.put("address", shopPO.getAddress());
+        String self=CommonConstant.NULL_STR;
         if (!msgTemplateVO.getIsSelf().equals(CommonConstant.SELF)) {
+            self = "shop";
             if (StringUtil.isEmpty(shopPO.getServicePhone())) {
                 map.put("telno", "");
             } else {
@@ -143,7 +152,10 @@ public class SendMsgController extends BaseController {
         for (String key : map.keySet()) {
             templateText = templateText.replace("${" + key + "}", map.get(key));
         }
-        return ResultInfoUtil.success(templateText);
+        SendMsgDTO sendMsgDTO1=new SendMsgDTO();
+        sendMsgDTO1.setText(templateText);
+        sendMsgDTO1.setIsSelf(self);
+        return ResultInfoUtil.success(sendMsgDTO1);
     }
 
     /**
