@@ -204,7 +204,7 @@ public class ReportsServiceImpl implements ReportService {
             }
         }
         PageInfo<DstgGoldDataReportsVO> pageInfo = new PageInfo<>(dstgGoldDataReportsVOS);
-        pageInfo.setTotal(dstgGoldDataReportsVOS.size());
+        pageInfo.setTotal(dstgGoldDataReprots.size());
         return pageInfo;
     }
 
