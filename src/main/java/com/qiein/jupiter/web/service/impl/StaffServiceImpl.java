@@ -871,10 +871,11 @@ public class StaffServiceImpl implements StaffService {
             throw new RException(ExceptionEnum.STAFF_EDIT_ERROR);
         }
         // 计算是否满限，updateNum代表=1 代表之前不是满限状态
+        //0 两种情况 已经是满状态 和 未到达满状态
         updateNum = staffDao.checkOverFlowToday(companyId, staffId);
         StaffPO staff = staffDao.getByIdAndCid(staffId, companyId);
-        //如果之前不是满限，则记录日志
-        if (updateNum == 1) {
+        //如果当前是满限，之前不是满限，则记录日志
+        if (staff.getTodayNum() >= staff.getLimitDay() && StaffStatusEnum.LIMIT.getStatusId() != staff.getStatusFlag()) {
             // 记录状态修改日志
             statusLogDao.insert(
                     new StaffStatusLog(staffId, StaffStatusEnum.LIMIT.getStatusId(), CommonConstant.SYSTEM_OPERA_ID,
@@ -883,7 +884,7 @@ public class StaffServiceImpl implements StaffService {
             GoEasyUtil.pushStatusRefresh(companyId, staffId, webSocketMsgUtil);
             //更新为满限状态
             staff.setStatusFlag(StaffStatusEnum.LIMIT.getStatusId());
-        } else if (0 == updateNum && staff.getTodayNum() >= staff.getLimitDay()) {
+        } else if (0 == updateNum && staff.getTodayNum() < staff.getLimitDay()) {
             //如果当前员工之前是满限，但是现在不是
             staff.setStatusFlag(StaffStatusEnum.OnLine.getStatusId());
             //更新状态
@@ -1052,6 +1053,7 @@ public class StaffServiceImpl implements StaffService {
 
     /**
      * 根据员工姓名获取员工id
+     *
      * @param name
      * @param companyId
      * @return
