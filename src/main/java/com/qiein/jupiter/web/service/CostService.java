@@ -19,7 +19,7 @@ public interface CostService {
      * @param companyId
      * @return
      */
-    List<CostShowVO> costList(String month, Integer companyId,Integer staffId);
+    List<CostShowVO> costList(String month, Integer companyId,Integer staffId,String sourceIds);
 
     /**
      * 修改花费的返利率

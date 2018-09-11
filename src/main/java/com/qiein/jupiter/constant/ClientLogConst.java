@@ -144,7 +144,7 @@ public class ClientLogConst {
         }
         StringBuilder sb = new StringBuilder();
         sb.append(newCash.getOperaName() + " 修改了编号为 " + newCash.getId() + " 的收款记录");
-        if (NumUtil.isValid(newCash.getAmount()) && NumUtil.isValid(oldCash.getAmount()) && oldCash.getAmount() != newCash.getAmount()) {
+        if (oldCash.getAmount() != newCash.getAmount()) {
             sb.append("，收款金额由 " + oldCash.getAmount() + " 改为：" + newCash.getAmount());
         }
         if (StringUtil.isNotEmpty(newCash.getPayStyleName()) && StringUtil.isNotEmpty(oldCash.getPayStyleName()) && !oldCash.getPayStyleName().equals(newCash.getPayStyleName())) {
