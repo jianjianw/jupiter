@@ -259,4 +259,9 @@ public class ChannelServiceImpl implements ChannelService {
         return channelDao.getChannelSourceListByType(companyId, Arrays.asList(ChannelConstant.STAFF_OUT));
     }
 
+    @Override
+    public List<ChannelVO> getAllShowChannelSourceList(int companyId, Integer channelId) {
+        return channelDao.getAllShowChannelSourceList(companyId, channelId);
+    }
+
 }

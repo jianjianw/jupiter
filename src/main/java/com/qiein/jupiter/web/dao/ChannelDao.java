@@ -152,4 +152,12 @@ public interface ChannelDao extends BaseDao<ChannelPO> {
      * @return
      */
     List<ChannelVO> getDsAllChannel(int companyId);
+
+    /**
+     * 获取企业所有启用渠道及来源列表
+     * @param companyId
+     * @param channelId
+     * @return
+     */
+    List<ChannelVO> getAllShowChannelSourceList(@Param("companyId") int companyId,@Param("channelId") Integer channelId);
 }

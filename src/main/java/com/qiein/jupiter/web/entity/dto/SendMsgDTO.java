@@ -24,6 +24,15 @@ public class SendMsgDTO {
 
     private Integer staffId;
     private String staffName;
+    private String isSelf;
+
+    public String getIsSelf() {
+        return isSelf;
+    }
+
+    public void setIsSelf(String isSelf) {
+        this.isSelf = isSelf;
+    }
 
     public String getStaffName() {
         return staffName;

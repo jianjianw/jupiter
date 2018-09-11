@@ -41,9 +41,9 @@ public class CostServiceImpl implements CostService {
      * @param companyId
      * @return
      */
-    public List<CostShowVO> costList(String month, Integer companyId, Integer staffId) {
+    public List<CostShowVO> costList(String month, Integer companyId, Integer staffId,String sourceIds) {
         List<Map<String, Object>> dayList = zjskzOfMonthDao.getDayOfMonth(Integer.parseInt(month.split(CommonConstant.FILE_SEPARATOR)[0]), Integer.parseInt(month.split(CommonConstant.FILE_SEPARATOR)[1]), DBSplitUtil.getTable(TableEnum.info, companyId));
-        List<SourcePO> srcList = sourceDao.findSourceByRole(companyId, staffId);
+        List<SourcePO> srcList = sourceDao.findSourceByRole(companyId, staffId,sourceIds);
         List<CostShowVO> costShowVOS = new ArrayList<>();
         //将已知渠道先加入到对象中 构建对应数量的集合
         for (SourcePO sourcePO : srcList) {
@@ -65,7 +65,7 @@ public class CostServiceImpl implements CostService {
             costShowVO.setCostMap(costMap);
         }
         //从数据库获取数据
-        List<CostPO> list = costDao.costList(month, companyId, staffId);
+        List<CostPO> list = costDao.costList(month, companyId, staffId,sourceIds);
         //将从数据库获取的数据根据对应的渠道和日期插入到实体类中
         for (CostShowVO costShowVO : costShowVOS) {
             for (CostPO costPO : list) {

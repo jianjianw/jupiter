@@ -32,6 +32,10 @@
 		WHERE cost.COMPANYID=#{companyId} and  FROM_UNIXTIME(cost.COSTTIME,"%Y/%m")=#{month}  and
 		role.ROLEID in ((select staff.ROLEID  from hm_pub_staff_role staff where staff.STAFFID=#{staffId} ))
 		and src.ID is not null
+        <if test="sourceIds!=null and sourceIds!=''">
+            and src.ID in (${sourceIds})
+        </if>
+
     </select>
     <insert id="insert" parameterType="com.qiein.jupiter.web.entity.po.CostPO" useGeneratedKeys="true" keyProperty="id">
         insert into hm_crm_cost(SRCID,COMPANYID,UPDATETIME,CREATETIME,COSTTIME,COST,BEFORECOST,RATE) values(#{srcId},#{companyId},UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()),#{time},#{afterCost},#{afterCost},#{rate})
