@@ -110,6 +110,18 @@ public class CompanyPO extends BaseEntity {
      */
     private String reportsConfig;
 
+    /**
+     * 是否客户端
+     * */
+    private Boolean isClient;
+
+    public Boolean getClient() {
+        return isClient;
+    }
+
+    public void setClient(Boolean client) {
+        isClient = client;
+    }
 
     public String getReportsConfig() {
         return reportsConfig;

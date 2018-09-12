@@ -45,6 +45,7 @@
         <result column="ONLYAPP" property="onlyApp" jdbcType="BOOLEAN"/>
         <result column="ISLOCK" property="lockFlag" jdbcType="BOOLEAN"/>
         <result column="REPORTSCONFIG" property="reportsConfig" jdbcType="VARCHAR"/>
+        <result column="ISCLIENT" property="isClient" jdbcType="BOOLEAN"></result>
     </resultMap>
 
     <sql id="baseColumn">
@@ -121,7 +122,8 @@
             comp.KZINTERVAL,
             comp.LIMITDEFAULT,
             comp.KFEDITJDRST,
-            comp.REPORTSCONFIG
+            comp.REPORTSCONFIG,
+            comp.ISCLIENT
         FROM
             hm_pub_company comp
         WHERE
