@@ -13,6 +13,7 @@ import com.qiein.jupiter.web.entity.po.StatusPO;
 import com.qiein.jupiter.web.entity.vo.DictionaryVO;
 import com.qiein.jupiter.web.service.DictionaryService;
 import com.qiein.jupiter.web.service.StatusService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -288,6 +289,18 @@ public class DictionaryServiceImpl implements DictionaryService {
     @Override
     public void editDictShowFlag(DictionaryPO dictionaryPO) {
         dictionaryDao.editDictShowFlag(dictionaryPO);
+    }
+    /**
+     * 根据公司ID 和iD 获取
+     */
+    public DictionaryPO getByCompanyIdAndId(int companyId,int id) {
+        return dictionaryDao.getByCompanyIdAndId(companyId, id);
+    }
+    /**
+     * 根据ids 批量获取
+     */
+    public List<DictionaryPO> getByIds(String ids){
+        return dictionaryDao.getByIds(ids);
     }
 
 }

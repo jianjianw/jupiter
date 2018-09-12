@@ -19,6 +19,7 @@ public class SysLogUtil {
     public static final int LOG_TYPE_CHANNEL = 4;
     public static final int LOG_TYPE_SOURCE = 5;
     public static final int LOG_TYPE_ROLE = 6;
+    public static final int LOG_TYPE_DIC=9;
     public static final int LOG_TYPE_STAFF = 10;
     public static final String LOG_SUP_LOGIN = "登录";
     public static final String LOG_SUP_GROUP = "部门";
@@ -30,6 +31,10 @@ public class SysLogUtil {
     public static final String LOG_SUP_LOCK = "锁定状态";
     public static final String LOG_SUP_GIVE = "交接";
     public static final String LOG_SUP_GROUP_STAFF="小组员工关系";
+    public static final String LOG_SUP_INVALID_REASON="无效原因";
+    public static final String LOG_SUP_RUN_OFF_REASON="流失原因";
+    public static final String LOG_SUP_DIC="字典";
+    public static final String LOG_SUP_COMMON_TYPE="咨询类型";
 
     public static final String SYS_LOG_PREFIX_ADD = "新增了";
     public static final String SYS_LOG_PREFIX_EDIT = "修改了";

@@ -42,7 +42,7 @@ public class ZjskzOfMonthDao {
         sql.append("SELECT DATE_FORMAT(@cdate := DATE_ADD(@cdate, INTERVAL - 1 DAY),'%d') dayName,");
         sql.append("CONCAT('Day',DATE_FORMAT(@cdate ,'%d')) dayKey,");
         sql.append("DATE_FORMAT (@cdate, '%Y/%m/%d') day FROM ");
-        sql.append("(SELECT @cdate := DATE_ADD('" + lastDayOfMonth + "', INTERVAL + 1 DAY) FROM " + infoTable + ") t0 ");
+        sql.append("(SELECT @cdate := DATE_ADD('" + lastDayOfMonth + "', INTERVAL + 1 DAY) FROM hm_crm_dictionary) t0 ");
         sql.append("LIMIT " + lastDayOfMonth.split(CommonConstant.FILE_SEPARATOR)[2]);
         System.out.println(sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{});

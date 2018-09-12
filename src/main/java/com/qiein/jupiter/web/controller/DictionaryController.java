@@ -2,18 +2,25 @@ package com.qiein.jupiter.web.controller;
 
 import com.qiein.jupiter.aop.validate.annotation.Id;
 import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
+import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.constant.DictionaryConstant;
 import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.util.*;
+import com.qiein.jupiter.web.entity.dto.RequestInfoDTO;
 import com.qiein.jupiter.web.entity.po.DictionaryPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.entity.po.SystemLog;
 import com.qiein.jupiter.web.entity.vo.DictionaryVO;
 import com.qiein.jupiter.web.service.DictionaryService;
+import com.qiein.jupiter.web.service.SystemLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 /**
  * 字典数据
  */
@@ -24,6 +31,9 @@ public class DictionaryController extends BaseController {
 
     @Autowired
     private DictionaryService dictionaryService;
+
+    @Autowired
+    private SystemLogService logService;
 
     /**
      * 获取企业自己配置的无效原因列表，自定义
@@ -53,6 +63,17 @@ public class DictionaryController extends BaseController {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         dictionaryPO.setCompanyId(currentLoginStaff.getCompanyId());
         dictionaryService.addInvalidReason(dictionaryPO);
+        try {
+            // 日志记录
+            RequestInfoDTO requestInfo = getRequestInfo();
+            SystemLog log = new SystemLog(SysLogUtil.LOG_TYPE_DIC, requestInfo.getIp(), requestInfo.getUrl(), currentLoginStaff.getId(),
+                    currentLoginStaff.getNickName(), SysLogUtil.getAddLog(SysLogUtil.LOG_SUP_INVALID_REASON, dictionaryPO.getDicName()),
+                    currentLoginStaff.getCompanyId());
+            logService.addLog(log);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
+        }
         return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
     }
 
@@ -70,8 +91,22 @@ public class DictionaryController extends BaseController {
         if (NumUtil.isNull(dictionaryPO.getId())) {
             return ResultInfoUtil.error(ExceptionEnum.ID_IS_NULL);
         }
+        StaffPO  currentLoginStaff=getCurrentLoginStaff();
+        DictionaryPO dictionaryPOBefore=dictionaryService.getByCompanyIdAndId(currentLoginStaff.getCompanyId(),dictionaryPO.getId());
+        Map<String,String> map=new HashMap<>();
+        map.put(dictionaryPOBefore.getDicName(),dictionaryPO.getDicName());
+        try {
+            // 日志记录
+            RequestInfoDTO requestInfo = getRequestInfo();
+            SystemLog log = new SystemLog(SysLogUtil.LOG_TYPE_DIC, requestInfo.getIp(), requestInfo.getUrl(), currentLoginStaff.getId(),
+                    currentLoginStaff.getNickName(), SysLogUtil.getEditLog(SysLogUtil.LOG_SUP_INVALID_REASON,SysLogUtil.LOG_SUP_INVALID_REASON, map),
+                    currentLoginStaff.getCompanyId());
+            logService.addLog(log);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
+        }
         // 获取当前登录账户
-        StaffPO currentLoginStaff = getCurrentLoginStaff();
         dictionaryPO.setCompanyId(currentLoginStaff.getCompanyId());
         dictionaryService.editInvalidReason(dictionaryPO);
         return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
@@ -87,6 +122,21 @@ public class DictionaryController extends BaseController {
     public ResultInfo deleteInvalidReason(@NotEmptyStr @RequestParam("ids") String ids) {
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
+        List<DictionaryPO> list=dictionaryService.getByIds(ids);
+        String dicNames= CommonConstant.NULL_STR;
+        for(DictionaryPO dictionaryPO:list){
+            dicNames+=dictionaryPO.getDicName()+",";
+        }
+        dicNames=dicNames.substring(0,dicNames.length()-2);
+        try {
+            RequestInfoDTO requestInfo = getRequestInfo();
+            logService.addLog(new SystemLog(SysLogUtil.LOG_TYPE_DIC, requestInfo.getIp(), requestInfo.getUrl(), currentLoginStaff.getId(),
+                    currentLoginStaff.getNickName(), SysLogUtil.getRemoveLog(SysLogUtil.LOG_SUP_INVALID_REASON,dicNames ),
+                    currentLoginStaff.getCompanyId()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultInfoUtil.success(TipMsgEnum.DELETE_SUCCESS);
+        }
         dictionaryService.batchDeleteByIds(currentLoginStaff.getCompanyId(), ids);
         return ResultInfoUtil.success(TipMsgEnum.DELETE_SUCCESS);
     }
@@ -115,6 +165,17 @@ public class DictionaryController extends BaseController {
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         dictionaryService.addRunoffReason(currentLoginStaff.getCompanyId(), dicName);
+        try {
+            // 日志记录
+            RequestInfoDTO requestInfo = getRequestInfo();
+            SystemLog log = new SystemLog(SysLogUtil.LOG_TYPE_DIC, requestInfo.getIp(), requestInfo.getUrl(), currentLoginStaff.getId(),
+                    currentLoginStaff.getNickName(), SysLogUtil.getAddLog(SysLogUtil.LOG_SUP_RUN_OFF_REASON, dicName),
+                    currentLoginStaff.getCompanyId());
+            logService.addLog(log);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
+        }
         return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
     }
 
@@ -130,6 +191,20 @@ public class DictionaryController extends BaseController {
                                        @Id @RequestParam("id") int id) {
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
+        DictionaryPO dictionaryPOBefore=dictionaryService.getByCompanyIdAndId(currentLoginStaff.getCompanyId(),id);
+        Map<String,String> map=new HashMap<>();
+        map.put(dictionaryPOBefore.getDicName(),dicName);
+        try {
+            // 日志记录
+            RequestInfoDTO requestInfo = getRequestInfo();
+            SystemLog log = new SystemLog(SysLogUtil.LOG_TYPE_DIC, requestInfo.getIp(), requestInfo.getUrl(), currentLoginStaff.getId(),
+                    currentLoginStaff.getNickName(), SysLogUtil.getEditLog(SysLogUtil.LOG_SUP_RUN_OFF_REASON,SysLogUtil.LOG_SUP_RUN_OFF_REASON, map),
+                    currentLoginStaff.getCompanyId());
+            logService.addLog(log);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
+        }
         dictionaryService.editRunoffReason(currentLoginStaff.getCompanyId(), id, dicName);
         return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
@@ -144,6 +219,21 @@ public class DictionaryController extends BaseController {
     public ResultInfo deleteRunoffReason(@NotEmptyStr @RequestParam("ids") String ids) {
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
+        List<DictionaryPO> list=dictionaryService.getByIds(ids);
+        String dicNames= CommonConstant.NULL_STR;
+        for(DictionaryPO dictionaryPO:list){
+            dicNames+=dictionaryPO.getDicName()+",";
+        }
+        dicNames=dicNames.substring(0,dicNames.length()-2);
+        try {
+            RequestInfoDTO requestInfo = getRequestInfo();
+            logService.addLog(new SystemLog(SysLogUtil.LOG_TYPE_DIC, requestInfo.getIp(), requestInfo.getUrl(), currentLoginStaff.getId(),
+                    currentLoginStaff.getNickName(), SysLogUtil.getRemoveLog(SysLogUtil.LOG_SUP_RUN_OFF_REASON,dicNames ),
+                    currentLoginStaff.getCompanyId()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultInfoUtil.success(TipMsgEnum.DELETE_SUCCESS);
+        }
         dictionaryService.batchDeleteByIds(currentLoginStaff.getCompanyId(), ids);
         return ResultInfoUtil.success(TipMsgEnum.DELETE_SUCCESS);
     }
@@ -184,6 +274,18 @@ public class DictionaryController extends BaseController {
         dictionaryPO.setCompanyId(getCurrentLoginStaff().getCompanyId());
         dictionaryPO.setDicType(dicType);
         dictionaryService.createDict(dictionaryPO);
+        StaffPO currentLoginStaff=getCurrentLoginStaff();
+        try {
+            // 日志记录
+            RequestInfoDTO requestInfo = getRequestInfo();
+            SystemLog log = new SystemLog(SysLogUtil.LOG_TYPE_DIC, requestInfo.getIp(), requestInfo.getUrl(), currentLoginStaff.getId(),
+                    currentLoginStaff.getNickName(), SysLogUtil.getAddLog(SysLogUtil.LOG_SUP_DIC, dictionaryPO.getDicName()),
+                    currentLoginStaff.getCompanyId());
+            logService.addLog(log);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultInfoUtil.success();
+        }
         return ResultInfoUtil.success();
     }
 
@@ -195,6 +297,17 @@ public class DictionaryController extends BaseController {
      */
     @GetMapping("/{id}")
     public ResultInfo delDict(@PathVariable("id") int id) {
+        StaffPO currentLoginStaff=getCurrentLoginStaff();
+
+        try {
+            RequestInfoDTO requestInfo = getRequestInfo();
+            logService.addLog(new SystemLog(SysLogUtil.LOG_TYPE_DIC, requestInfo.getIp(), requestInfo.getUrl(), currentLoginStaff.getId(),
+                    currentLoginStaff.getNickName(), SysLogUtil.getRemoveLog(SysLogUtil.LOG_SUP_DIC,dictionaryService.getByCompanyIdAndId(currentLoginStaff.getCompanyId(),id).getDicName() ),
+                    currentLoginStaff.getCompanyId()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultInfoUtil.success(TipMsgEnum.DELETE_SUCCESS);
+        }
         dictionaryService.delDict(id, getCurrentLoginStaff().getCompanyId());
         return ResultInfoUtil.success();
     }
@@ -209,6 +322,18 @@ public class DictionaryController extends BaseController {
     public ResultInfo addCommonType(@RequestBody DictionaryVO dictionaryVO) {
         dictionaryVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
         dictionaryService.addCommonType(dictionaryVO);
+        StaffPO currentLoginStaff=getCurrentLoginStaff();
+        try {
+            // 日志记录
+            RequestInfoDTO requestInfo = getRequestInfo();
+            SystemLog log = new SystemLog(SysLogUtil.LOG_TYPE_DIC, requestInfo.getIp(), requestInfo.getUrl(), currentLoginStaff.getId(),
+                    currentLoginStaff.getNickName(), SysLogUtil.getAddLog(SysLogUtil.LOG_SUP_COMMON_TYPE, dictionaryVO.getDicNames()),
+                    currentLoginStaff.getCompanyId());
+            logService.addLog(log);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultInfoUtil.success();
+        }
         return ResultInfoUtil.success();
     }
 
@@ -252,6 +377,20 @@ public class DictionaryController extends BaseController {
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         ObjectUtil.objectStrParamTrim(dictionaryPO);
+        DictionaryPO dictionaryPOBefore=dictionaryService.getByCompanyIdAndId(currentLoginStaff.getCompanyId(),dictionaryPO.getId());
+        Map<String,String> map=new HashMap<>();
+        map.put(dictionaryPOBefore.getDicName(),dictionaryPO.getDicName());
+        try {
+            // 日志记录
+            RequestInfoDTO requestInfo = getRequestInfo();
+            SystemLog log = new SystemLog(SysLogUtil.LOG_TYPE_DIC, requestInfo.getIp(), requestInfo.getUrl(), currentLoginStaff.getId(),
+                    currentLoginStaff.getNickName(), SysLogUtil.getEditLog(SysLogUtil.LOG_SUP_DIC,SysLogUtil.LOG_SUP_DIC, map),
+                    currentLoginStaff.getCompanyId());
+            logService.addLog(log);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
+        }
         dictionaryPO.setCompanyId(currentLoginStaff.getCompanyId());
         dictionaryService.editDictName(dictionaryPO);
         return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);

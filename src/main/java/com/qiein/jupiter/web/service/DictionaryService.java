@@ -128,5 +128,13 @@ public interface DictionaryService {
      * 字典排序
      */
     void editDictShowFlag(DictionaryPO dictionaryPO);
+    /**
+     * 根据公司ID 和iD 获取
+     */
+    DictionaryPO getByCompanyIdAndId(int companyId,int id);
+    /**
+     * 根据ids 批量获取
+     */
+    List<DictionaryPO> getByIds(String ids);
 
 }
