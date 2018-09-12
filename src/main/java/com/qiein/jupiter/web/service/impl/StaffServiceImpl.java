@@ -884,7 +884,8 @@ public class StaffServiceImpl implements StaffService {
             GoEasyUtil.pushStatusRefresh(companyId, staffId, webSocketMsgUtil);
             //更新为满限状态
             staff.setStatusFlag(StaffStatusEnum.LIMIT.getStatusId());
-        } else if (0 == updateNum && staff.getTodayNum() < staff.getLimitDay()) {
+        } else if (staff.getTodayNum() < staff.getLimitDay()
+                && StaffStatusEnum.LIMIT.getStatusId() == staff.getStatusFlag()) {
             //如果当前员工之前是满限，但是现在不是
             staff.setStatusFlag(StaffStatusEnum.OnLine.getStatusId());
             //更新状态

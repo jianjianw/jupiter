@@ -204,7 +204,7 @@ public class ReportsServiceImpl implements ReportService {
             }
         }
         PageInfo<DstgGoldDataReportsVO> pageInfo = new PageInfo<>(dstgGoldDataReportsVOS);
-        pageInfo.setTotal(dstgGoldDataReportsVOS.size());
+        pageInfo.setTotal(dstgGoldDataReprots.size());
         return pageInfo;
     }
 
@@ -236,7 +236,7 @@ public class ReportsServiceImpl implements ReportService {
         DictionaryPO dictionaryPO = new DictionaryPO();
         dictionaryPO.setDicType("hj");
         dictionaryPO.setDicName("合计");
-        List<DictionaryPO> DicList = dictionaryDao.getInvaildReasons(DBSplitUtil.getTable(TableEnum.info, companyId), DBSplitUtil.getTable(TableEnum.detail, companyId),startTime,endTime,companyId);
+        List<DictionaryPO> DicList = dictionaryDao.getInvaildReasons(companyId,"invalid_reason");
         List<SourcePO> sourcePOS = sourceDao.findSourseByType1(companyId, CommonConstant.DsSrc,sourceIds,startTime,endTime);
         invalidReasonReportsVO.setInvalidReasonKz(invalidReasonReportsDao.getInvalidReasonReports(sourcePOS,DicList, DBSplitUtil.getTable(TableEnum.info, companyId), DBSplitUtil.getTable(TableEnum.detail, companyId), companyId, sourceIds, startTime, endTime, typeIds));
         list.add(dictionaryPO);

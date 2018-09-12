@@ -11,7 +11,15 @@ import java.util.List;
 public class AdminVO {
     List<AdminShowVO> list;
     List<AdminLogPO> logList;
+    private Integer count;
 
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
+    }
     public List<AdminShowVO> getList() {
         return list;
     }

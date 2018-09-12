@@ -72,7 +72,11 @@ public class InvalidReasonReportsDao {
         for(Map<String,Object> map:invalidalbel){
             for(InvalidReasonReportsShowVO invalidReasonReportsShowVO:invalidReasonReportsShowVOS){
                 if(invalidReasonReportsShowVO.getSrcId()==Integer.parseInt(Long.toString((Long) (map.get("id"))))){
-                    invalidReasonReportsShowVO.getMap().put((String)map.get("statusKey"),Integer.parseInt(Long.toString((Long) (map.get("count")))));
+                    for(DictionaryPO dictionaryPO:list){
+                        if(dictionaryPO.getDicName().equals((String)map.get("statusKey"))){
+                            invalidReasonReportsShowVO.getMap().put((String)map.get("statusKey"),Integer.parseInt(Long.toString((Long) (map.get("count")))));
+                        }
+                    }
                 }
             }
         }
@@ -93,7 +97,11 @@ public class InvalidReasonReportsDao {
         hjsql.append(" GROUP BY detail.INVALIDLABEL ");
         List<Map<String, Object>> invalidalbelHj = jdbcTemplate.queryForList(hjsql.toString(), new Object[]{startTime,endTime,companyId});
         for(Map<String, Object> map:invalidalbelHj){
-            invalidReasonReportsShowVOS.get(0).getMap().put((String)map.get("statusKey"),Integer.parseInt(Long.toString((Long) (map.get("count")))));
+            for(DictionaryPO dictionaryPO:list){
+                if(dictionaryPO.getDicName().equals((String)map.get("statusKey"))){
+                    invalidReasonReportsShowVOS.get(0).getMap().put((String)map.get("statusKey"),Integer.parseInt(Long.toString((Long) (map.get("count")))));
+                }
+            }
         }
         for(InvalidReasonReportsShowVO invalidReasonReportsShowVO:invalidReasonReportsShowVOS){
             invalidReasonReportsShowVO.getMap().put("hj",0);
