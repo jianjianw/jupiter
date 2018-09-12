@@ -45,7 +45,7 @@
         <result column="ONLYAPP" property="onlyApp" jdbcType="BOOLEAN"/>
         <result column="ISLOCK" property="lockFlag" jdbcType="BOOLEAN"/>
         <result column="REPORTSCONFIG" property="reportsConfig" jdbcType="VARCHAR"/>
-        <result column="ISCLIENT" property="isClient" jdbcType="BOOLEAN"></result>
+        <result column="ISCLIENT" property="clientFlag" jdbcType="BOOLEAN"></result>
     </resultMap>
 
     <sql id="baseColumn">
