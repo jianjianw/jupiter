@@ -414,7 +414,7 @@
         SELECT grp.GROUPTYPE
         FROM
             hm_pub_group_staff rela
-            LEFT JOIN hm_pub_group grp ON grp.COMPANYID = rela.COMPANYID AND rela.GROUPID = grp.GROUPID
+            INNER JOIN hm_pub_group grp ON grp.COMPANYID = rela.COMPANYID AND rela.GROUPID = grp.GROUPID
         WHERE
             rela.STAFFID = #{staffId}
             AND rela.COMPANYID = #{companyId}
