@@ -165,8 +165,6 @@ public class ClientServiceImpl implements ClientService {
             clientDTO.setSrcName(clientStatusVoteVO.getSourceName());
             GoEasyUtil.pushInvalidKz(clientStatusVoteVO.getCompanyId(), clientStatusVoteVO.getCollectorId(), clientDTO, clientStatusVoteVO.getContent(), newsDao, staffDao);
         }
-
-
         //修改状态id
         clientDao.updateKzValidStatusByKzId(DBSplitUtil.getInfoTabName(clientStatusVoteVO.getCompanyId()), clientStatusVoteVO);
         String memo = "";
@@ -185,23 +183,10 @@ public class ClientServiceImpl implements ClientService {
             }
             clientDao.updateDetailMemo(DBSplitUtil.getDetailTabName(clientStatusVoteVO.getCompanyId()), clientStatusVoteVO.getKzId(), clientStatusVoteVO.getCompanyId(), memo,clientStatusVoteVO.getContent(),clientStatusVoteVO.getReason());
         }
-        //FIXME 废弃代码
-//        ClientRemarkPO clientRemarkPO = new ClientRemarkPO();
-//        clientRemarkPO.setKzId(clientStatusVoteVO.getKzId());
-//        clientRemarkPO.setCompanyId(clientStatusVoteVO.getCompanyId());
-//        clientRemarkPO.setContent(clientStatusVoteVO.getContent());
-//
-//        ClientRemarkPO clientRemark = clientRemarkDao.getById(tabName, clientRemarkPO);
-//        if (null == clientRemark) {
-//            clientRemarkDao.insert(tabName, clientRemarkPO);
-//        } else {
-//            clientRemarkDao.update(tabName, clientRemarkPO);
-//        }
-
         //插入日志
         int addLogNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(clientStatusVoteVO.getCompanyId()),
                 new ClientLogPO(clientStatusVoteVO.getKzId(), clientStatusVoteVO.getOperaId(), clientStatusVoteVO.getOperaName(),
-                        ClientLogConst.INFO_LOG_EDIT_BE_STATUS + kzStatusName + "；" + clientStatusVoteVO.getContent(),
+                        ClientLogConst.INFO_LOG_EDIT_BE_STATUS + kzStatusName + "；" + memo,
                         ClientLogConst.INFO_LOGTYPE_EDIT, clientStatusVoteVO.getCompanyId()));
         if (addLogNum != 1) {
             log.error("修改客资状态日志失败");
