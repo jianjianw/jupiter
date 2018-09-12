@@ -172,6 +172,10 @@ public class SendMsgController extends BaseController {
                 .queryString("companyId", staff.getCompanyId())
                 .asString();
         JSONObject json = JSONObject.parseObject(templateText);
+        Integer backcode = (Integer) json.get("code");
+        if (backcode != 100000) {
+            throw new RException((String) json.get("data"));
+        }
         return ResultInfoUtil.success(json);
     }
 
@@ -198,6 +202,10 @@ public class SendMsgController extends BaseController {
                 .asString();
 
         JSONObject json = JSONObject.parseObject(templateText);
+        Integer backcode = (Integer) json.get("code");
+        if (backcode != 100000) {
+            throw new RException((String) json.get("data"));
+        }
         return ResultInfoUtil.success(json);
     }
 
