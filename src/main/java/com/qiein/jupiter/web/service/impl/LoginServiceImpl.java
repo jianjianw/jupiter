@@ -343,7 +343,7 @@ public class LoginServiceImpl implements LoginService {
         //企业列表
         staffBaseInfoVO.setCompanyList(companyService.getCompanyListByPhoneAndPwd(staffDetailVO.getPhone(), staffDetailVO.getPassword()));
         //通话实例
-        staffBaseInfoVO.setCallCustomerPO(callCustomerDao.getCallCustomerByStaffIdAndCompanyId(staffId,companyId));
+        staffBaseInfoVO.setCallCustomerPO(callCustomerDao.getCallCustomerByStaffIdAndCompanyId(staffId, companyId));
         return staffBaseInfoVO;
     }
 
@@ -371,6 +371,9 @@ public class LoginServiceImpl implements LoginService {
         }
 
         for (String role : roleList) {
+            if (StringUtil.isEmpty(role)) {
+                continue;
+            }
             // 1.如果是管理中心，全部开放
             if (RoleConstant.GLZX.equals(role)) {
                 for (MenuVO menu : menuList) {
