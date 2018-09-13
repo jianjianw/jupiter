@@ -729,7 +729,7 @@
             (
                 SELECT
                     KZID,
-                    CHANNELID
+                    SOURCEID
                 FROM
                     ${infoTabName}
                 WHERE
@@ -747,13 +747,13 @@
             INNER JOIN (
                            SELECT *
                            FROM
-                               hm_crm_channel
+                               hm_crm_source
                            WHERE
                                (CAST(PUSHRULE AS UNSIGNED) = 11 OR CAST(PUSHRULE AS UNSIGNED) = 1 OR
                                 CAST(PUSHRULE AS UNSIGNED) = 12
                                 OR CAST(PUSHRULE AS UNSIGNED) = 14)
                                AND COMPANYID = #{companyId}
-                       ) AS channel ON info.CHANNELID = channel.ID
+                       ) AS source ON info.SOURCEID = source.ID
     </select>
 
     <!-- 修改员工今日领取客资数 -->
@@ -1115,7 +1115,7 @@
             AND sf.ISLOCK = 0
             AND sf.STATUSFLAG = 1
             AND (UNIX_TIMESTAMP(NOW()) - sf.LASTPUSHTIME) &gt; #{interval}
---             AND INSTR(CONCAT(',', sf.LIMITCHANNELIDS, ','), CONCAT(',', #{sourceId}, ',')) = 0
+        --             AND INSTR(CONCAT(',', sf.LIMITCHANNELIDS, ','), CONCAT(',', #{sourceId}, ',')) = 0
         GROUP BY sf.ID
         ORDER BY count(info.KZID) ASC, sf.LASTPUSHTIME ASC
         LIMIT 0, 1;
@@ -1189,21 +1189,20 @@
 
     <!--获取消息设置-->
     <select id="getMsgSetByStaffId" parameterType="map" resultType="java.lang.String">
-        SELECT  MSGSET
+        SELECT MSGSET
         FROM hm_pub_staff_detail
         WHERE ID = #{staffId}
-        AND COMPANYID = #{companyId}
+              AND COMPANYID = #{companyId}
     </select>
 
     <!--根据员工姓名获取员工id-->
     <select id="getStaffIdByName" parameterType="map" resultType="Integer">
-        SELECT
-        ID
+        SELECT ID
         FROM
-        hm_pub_staff
+            hm_pub_staff
         WHERE
-        NICKNAME = #{name} AND COMPANYID = #{companyId}
-        AND ISDEL = 0 AND ISLOCK = 0
+            NICKNAME = #{name} AND COMPANYID = #{companyId}
+            AND ISDEL = 0 AND ISLOCK = 0
         LIMIT 1
     </select>
 </mapper>
