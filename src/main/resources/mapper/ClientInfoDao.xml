@@ -209,6 +209,7 @@
 		WHERE
 			info.COMPANYID = #{companyId}
 		AND info.ISDEL = 0
+		AND info.STATUSID IN (98,99,999,0,12,1)
 -- 		AND info.STATUSID != 98
 -- 		AND info.STATUSID != 99
 -- 		AND info.STATUSID != 0
