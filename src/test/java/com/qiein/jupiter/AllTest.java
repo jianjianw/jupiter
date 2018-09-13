@@ -138,7 +138,7 @@ public class AllTest {
     }
 
     @Test
-    public void testSql(){
+    public void testSql() {
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT source.id,source.srcname,");
         //总客资
@@ -203,9 +203,9 @@ public class AllTest {
         //总客资量
         sb.append(" left join");
         sb.append(" (select SOURCEID,COUNT(1) as client_count from hm_crm_client_info_2 client where client.isdel = 0 and client.companyid = 2 AND client.CREATETIME BETWEEN 1530720000 AND 1530806459 ");
-        
+
         sb.append(" GROUP BY SOURCEID) client_count on client_count.SOURCEID = source.id");
-        
+
         //筛选中
         sb.append(" left join");
         sb.append("(select SOURCEID,COUNT(1) as client_count from hm_crm_client_info_2 client where client.isdel = 0 and client.companyid = 2 and client.CREATETIME BETWEEN 1530720000 AND 1530806459 AND client.CLASSID = 1 AND client.STATUSID = 0");
@@ -332,29 +332,66 @@ public class AllTest {
     }
 
     @Test
-    public void test12321(){
+    public void test12321() {
         boolean matches = "17743124932".matches("^[1][3456789][0-9]{9}$");
         System.out.println(matches);
     }
 
 
-
     @Test
-    public void test123123(){
-        CompanyVO companyVO=new CompanyVO();
+    public void test123123() {
+        CompanyVO companyVO = new CompanyVO();
         System.out.println(JSON.toJSON(companyVO));
     }
 
 
     @Test
-    public void test1123(){
+    public void test1123() {
         String str = "2018-7-31  16:52:34";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        try{
+        try {
             Date parse = simpleDateFormat.parse(str);
             System.out.println(parse);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+
+    @Test
+    public void tesassdq() {
+        long i = 1;
+
+        String s = Long.toString(i, 26);
+        System.out.println(String.format("%6s", s).replace(" ", "0"));
+        long i1 = Long.parseLong("00000" + s, 26);
+        System.out.println(i1);
+    }
+
+
+    @Test
+    public void hex10To26() {
+        System.out.println(to26Jinzhi(111));
+    }
+
+    public static String to26Jinzhi(int data) {
+        String str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        int scale = str.length(); //转化目标进制
+        StringBuilder s = new StringBuilder();
+        if (data == 0) {
+            return str.charAt(0) + "";
+        }
+        while (data > 0) {
+            if (data < scale) {
+                s.insert(0, str.charAt(data));
+                data = 0;
+            } else {
+                int r = data % scale;
+                s.insert(0, str.charAt(r));
+                data = (data - r) / scale;
+            }
+        }
+        return String.format("%6s", s.toString()).replace(" ", "6");
+    }
+
 }
