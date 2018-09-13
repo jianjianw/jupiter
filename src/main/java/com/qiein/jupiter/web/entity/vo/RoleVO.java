@@ -27,6 +27,19 @@ public class RoleVO implements Serializable {
 	 */
 	private String pmsIds;
 
+	/**
+	 * 渠道ids
+	 */
+	private String sourceIds;
+
+	public String getSourceIds() {
+		return sourceIds;
+	}
+
+	public void setSourceIds(String sourceIds) {
+		this.sourceIds = sourceIds;
+	}
+
 	public int getRoleId() {
 		return roleId;
 	}
