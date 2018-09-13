@@ -9,7 +9,6 @@
     </resultMap>
     <resultMap id="showMap" type="com.qiein.jupiter.web.entity.vo.RoleSourceVO">
         <result column="ROLEID" property="roleId" jdbcType="INTEGER"/>
-        <result column="CHANNELID" property="channelId" jdbcType="INTEGER"/>
         <collection property="list" ofType="INTEGER">
             <result column="SOURCEID" jdbcType="INTEGER"/>
         </collection>
@@ -36,13 +35,10 @@
     <select id="getByCompanyId"  resultMap="showMap">
         SELECT
             role.ROLEID,
-            role.SOURCEID,
-            source.CHANNELID
+            role.SOURCEID
         FROM
             hm_pub_role_source role
-        LEFT JOIN hm_crm_source source ON source.ID = role.SOURCEID
-        AND source.COMPANYID = role.COMPANYID
-        where role.COMPANYID=#{companyId} and source.CHANNELID is not null
+        where role.COMPANYID=#{companyId}
 
     </select>
 </mapper>
