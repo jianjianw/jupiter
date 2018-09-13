@@ -20,10 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class CostServiceImpl implements CostService {
@@ -153,10 +150,12 @@ public class CostServiceImpl implements CostService {
             }
         }
         List<ForDayPO> checkList=costDao.getSrcByDay(srcIds,start,end,companyId);
-        for(int i=0;i<forDayPOS.size();i++){
+        Iterator<ForDayPO> iterator = forDayPOS.iterator();
+        while(iterator.hasNext()){
+            ForDayPO forDayPO1=iterator.next();
             for(ForDayPO forDayPO:checkList){
-                if(forDayPO.getDay().equals(forDayPOS.get(i).getDay())&&forDayPO.getSrcId().equals(forDayPOS.get(i).getSrcId())){
-                    forDayPOS.remove(i);
+                if(forDayPO.getDay().equals(forDayPO1.getDay())&&forDayPO.getSrcId().equals(forDayPO1.getSrcId())){
+                    iterator.remove();
                 }
             }
         }
