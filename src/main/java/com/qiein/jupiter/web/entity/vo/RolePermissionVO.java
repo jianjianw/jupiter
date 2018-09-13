@@ -34,6 +34,19 @@ public class RolePermissionVO implements Serializable {
 	 */
 	private List<PermissionPO> pmsList;
 
+	/**
+	 * 花费规则权限
+	 */
+	private List<RoleSourceVO> roleSourceList;
+
+	public List<RoleSourceVO> getRoleSourceList() {
+		return roleSourceList;
+	}
+
+	public void setRoleSourceList(List<RoleSourceVO> roleSourceList) {
+		this.roleSourceList = roleSourceList;
+	}
+
 	public int getRoleId() {
 		return roleId;
 	}

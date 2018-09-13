@@ -7,15 +7,20 @@ import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.RoleDao;
 import com.qiein.jupiter.web.dao.RolePermissionDao;
+import com.qiein.jupiter.web.dao.RoleSourceDao;
 import com.qiein.jupiter.web.dao.StaffRoleDao;
 import com.qiein.jupiter.web.entity.po.RolePO;
 import com.qiein.jupiter.web.entity.vo.RolePermissionVO;
+import com.qiein.jupiter.web.entity.vo.RoleSourceVO;
 import com.qiein.jupiter.web.entity.vo.RoleVO;
 import com.qiein.jupiter.web.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.management.relation.Role;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -32,6 +37,9 @@ public class RoleServiceImpl implements RoleService {
 
     @Autowired
     private StaffRoleDao staffRoleDao;
+
+    @Autowired
+    private RoleSourceDao roleSourceDao;
 
     /**
      * 新增角色
@@ -109,7 +117,17 @@ public class RoleServiceImpl implements RoleService {
      * 获取企业所有角色，以及角色对应的权限集合
      */
     public List<RolePermissionVO> getCompanyAllRole(Integer companyId) {
-        return rolePmsDao.getCompanyAllRole(companyId);
+       List<RolePermissionVO> list=rolePmsDao.getCompanyAllRole(companyId);
+       List<RoleSourceVO> roleSourceVOS=roleSourceDao.getByCompanyId(companyId);
+       for(RolePermissionVO rolePermissionVO:list){
+           rolePermissionVO.setRoleSourceList(new ArrayList<RoleSourceVO>());
+          for(RoleSourceVO roleSourceVO:roleSourceVOS) {
+              if(rolePermissionVO.getRoleId()==roleSourceVO.getRoleId()){
+                  rolePermissionVO.getRoleSourceList().add(roleSourceVO);
+              }
+          }
+       }
+        return list;
     }
 
     /**
