@@ -5,6 +5,7 @@ import java.util.List;
 import com.qiein.jupiter.util.SysLogUtil;
 import com.qiein.jupiter.web.entity.dto.RequestInfoDTO;
 import com.qiein.jupiter.web.entity.po.SystemLog;
+import com.qiein.jupiter.web.service.RoleSourceService;
 import com.qiein.jupiter.web.service.SystemLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,6 +40,9 @@ public class RoleController extends BaseController {
 
     @Autowired
     private SystemLogService logService;//日志业务层
+
+    @Autowired
+    private RoleSourceService roleSourceService;//花费规则
 
     @GetMapping("/get_company_role_list")
     public ResultInfo getCompanyRoleList() {
@@ -91,6 +95,7 @@ public class RoleController extends BaseController {
         }
         roleVO.setCompanyId(currentLoginStaff.getCompanyId());
         roleService.update(roleVO);
+        roleSourceService.insert(roleVO.getRoleId(),roleVO.getSourceIds(),getCurrentLoginStaff().getCompanyId());
         return ResultInfoUtil.success(TipMsgEnum.EDIT_ROLE_SUCCESS);
     }
 

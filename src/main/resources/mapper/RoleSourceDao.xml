@@ -7,6 +7,13 @@
         <result column="SOURCEID" property="sourceId" jdbcType="INTEGER"/>
         <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
     </resultMap>
+    <resultMap id="showMap" type="com.qiein.jupiter.web.entity.vo.RoleSourceVO">
+        <result column="ROLEID" property="roleId" jdbcType="INTEGER"/>
+        <result column="CHANNELID" property="channelId" jdbcType="INTEGER"/>
+        <collection property="list" ofType="INTEGER">
+            <result column="SOURCEID" jdbcType="INTEGER"/>
+        </collection>
+    </resultMap>
 
 
     <!--插入-->
@@ -26,4 +33,16 @@
     <delete id="delete">
         DELETE  FROM hm_pub_role_source WHERE  ROLEID=#{id}
     </delete>
+    <select id="getByCompanyId"  resultMap="showMap">
+        SELECT
+            role.ROLEID,
+            role.SOURCEID,
+            source.CHANNELID
+        FROM
+            hm_pub_role_source role
+        LEFT JOIN hm_crm_source source ON source.ID = role.SOURCEID
+        AND source.COMPANYID = role.COMPANYID
+        where role.COMPANYID=#{companyId} and source.CHANNELID is not null
+
+    </select>
 </mapper>
