@@ -59,7 +59,7 @@ public class PushQueue implements CommandLineRunner {
             ClientPushDTO take = this.queue.take();
             take.getService().pushLp(take.getPushRule(), take.getCompanyId(),
                     take.getKzId(), take.getSrcType(), take.getOverTime(), take.getPushInterval(), take.getSourceId());
-            log.info("推送了一条客资");
+//            log.info("推送了一条客资");
             //继续获取
         } catch (InterruptedException e) {
             log.info("推送队列客资出错！");
