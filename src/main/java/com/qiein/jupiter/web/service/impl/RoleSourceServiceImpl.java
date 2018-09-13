@@ -30,9 +30,7 @@ public class RoleSourceServiceImpl implements RoleSourceService {
         if (NumUtil.isInValid(roleId)) {
             throw new RException(ExceptionEnum.ROLE_ID_IS_NULL);
         }
-        if(StringUtil.isEmpty(sourceId)){
-            throw new RException(ExceptionEnum.SOURCE_ID_NULL);
-        }
+
 
         List<String> sourceIds = Arrays.asList(sourceId.split(CommonConstant.STR_SEPARATOR));
         roleSourceDao.delete(roleId);
