@@ -110,6 +110,18 @@ public class CompanyPO extends BaseEntity {
      */
     private String reportsConfig;
 
+    /**
+     * 是否客户端
+     * */
+    private Boolean clientFlag;
+
+    public Boolean getClientFlag() {
+        return clientFlag;
+    }
+
+    public void setClientFlag(Boolean clientFlag) {
+        this.clientFlag = clientFlag;
+    }
 
     public String getReportsConfig() {
         return reportsConfig;

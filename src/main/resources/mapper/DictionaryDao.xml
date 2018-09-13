@@ -276,4 +276,7 @@
         WHERE
         COMPANYID = #{companyId} AND DICTYPE = #{dicType}
     </select>
+    <select id="getByIds" resultMap="baseMap">
+        select <include refid="baseColumn"/> from hm_crm_dictionary dic where id in(${ids})
+    </select>
 </mapper>
