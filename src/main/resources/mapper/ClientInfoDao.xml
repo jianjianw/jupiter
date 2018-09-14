@@ -6,7 +6,7 @@
         <id column="ID" jdbcType="INTEGER" property="id"/>
         <result column="KZID" jdbcType="VARCHAR" property="kzId"/>
         <result column="STATUSID" jdbcType="INTEGER" property="statusId"/>
-		<result column="COLLECTORID" jdbcType="INTEGER" property="collectorId"/>
+        <result column="COLLECTORID" jdbcType="INTEGER" property="collectorId"/>
         <result column="APPOINTORID" jdbcType="INTEGER" property="appointorId"/>
         <result column="COMPANYID" jdbcType="INTEGER" property="companyId"/>
         <result column="PUSHINTERVAL" jdbcType="INTEGER" property="pushInterval"/>
@@ -17,411 +17,457 @@
         <result column="SRCTYPE" jdbcType="INTEGER" property="srcType"/>
     </resultMap>
 
-	<resultMap id="goEasyMap" type="com.qiein.jupiter.web.entity.dto.ClientGoEasyDTO">
-		<id column="ID" jdbcType="INTEGER" property="id"/>
-		<result column="KZID" jdbcType="VARCHAR" property="kzId"/>
-		<result column="KZNAME" jdbcType="VARCHAR" property="kzName"/>
-		<result column="KZPHONE" jdbcType="VARCHAR" property="kzPhone"/>
-		<result column="KZWECHAT" jdbcType="VARCHAR" property="kzWechat"/>
-		<result column="KZQQ" jdbcType="VARCHAR" property="kzQq"/>
-		<result column="KZWW" jdbcType="VARCHAR" property="kzWw"/>
-		<result column="MEMO" jdbcType="VARCHAR" property="memo"/>
-		<result column="COLLECTORID" jdbcType="INTEGER" property="collectorId"/>
-		<result column="COLLECTORNAME" jdbcType="VARCHAR" property="collectorName"/>
-		<result column="APPOINTORID" jdbcType="INTEGER" property="appointorId"/>
-		<result column="PROMOTORID" jdbcType="INTEGER" property="promotorId"/>
-		<result column="COMPANYID" jdbcType="INTEGER" property="companyId"/>
-		<result column="SOURCEID" jdbcType="INTEGER" property="sourceId"/>
-		<result column="APPOINTNAME" jdbcType="VARCHAR" property="appointName"/>
-		<result column="FILMINGAREA" jdbcType="VARCHAR" property="filmingArea"/>
-		<result column="SRCNAME" jdbcType="VARCHAR" property="sourceName"/>
-		<result column="CHANNELNAME" jdbcType="VARCHAR" property="channelName"/>
-		<result column="INVALIDLABEL" jdbcType="VARCHAR" property="invalidLabel"/>
-		<result column="SUCCESSTIME" jdbcType="INTEGER" property="successTime"/>
-		<result column="AMOUNT" jdbcType="INTEGER" property="amount"/>
-		<result column="STAYAMOUNT" jdbcType="INTEGER" property="stayAmount"/>
-		<result column="CREATETIME" jdbcType="INTEGER" property="createTime"/>
-		<result column="RECEPTORNAME" jdbcType="VARCHAR" property="receptorName"/>
-		<result column="SHOPNAME" jdbcType="VARCHAR" property="shopName"/>
-		<result column="LASTPUSHTIME" jdbcType="INTEGER" property="lastPushTime"/>
-	</resultMap>
+    <resultMap id="goEasyMap" type="com.qiein.jupiter.web.entity.dto.ClientGoEasyDTO">
+        <id column="ID" jdbcType="INTEGER" property="id"/>
+        <result column="KZID" jdbcType="VARCHAR" property="kzId"/>
+        <result column="KZNAME" jdbcType="VARCHAR" property="kzName"/>
+        <result column="KZPHONE" jdbcType="VARCHAR" property="kzPhone"/>
+        <result column="KZWECHAT" jdbcType="VARCHAR" property="kzWechat"/>
+        <result column="KZQQ" jdbcType="VARCHAR" property="kzQq"/>
+        <result column="KZWW" jdbcType="VARCHAR" property="kzWw"/>
+        <result column="MEMO" jdbcType="VARCHAR" property="memo"/>
+        <result column="COLLECTORID" jdbcType="INTEGER" property="collectorId"/>
+        <result column="COLLECTORNAME" jdbcType="VARCHAR" property="collectorName"/>
+        <result column="APPOINTORID" jdbcType="INTEGER" property="appointorId"/>
+        <result column="PROMOTORID" jdbcType="INTEGER" property="promotorId"/>
+        <result column="COMPANYID" jdbcType="INTEGER" property="companyId"/>
+        <result column="SOURCEID" jdbcType="INTEGER" property="sourceId"/>
+        <result column="APPOINTNAME" jdbcType="VARCHAR" property="appointName"/>
+        <result column="FILMINGAREA" jdbcType="VARCHAR" property="filmingArea"/>
+        <result column="SRCNAME" jdbcType="VARCHAR" property="sourceName"/>
+        <result column="CHANNELNAME" jdbcType="VARCHAR" property="channelName"/>
+        <result column="INVALIDLABEL" jdbcType="VARCHAR" property="invalidLabel"/>
+        <result column="SUCCESSTIME" jdbcType="INTEGER" property="successTime"/>
+        <result column="AMOUNT" jdbcType="INTEGER" property="amount"/>
+        <result column="STAYAMOUNT" jdbcType="INTEGER" property="stayAmount"/>
+        <result column="CREATETIME" jdbcType="INTEGER" property="createTime"/>
+        <result column="RECEPTORNAME" jdbcType="VARCHAR" property="receptorName"/>
+        <result column="SHOPNAME" jdbcType="VARCHAR" property="shopName"/>
+        <result column="LASTPUSHTIME" jdbcType="INTEGER" property="lastPushTime"/>
+    </resultMap>
 
-	<resultMap id="editLog" type="com.qiein.jupiter.web.entity.po.EditClientPhonePO">
-		<id column="ID" jdbcType="INTEGER" property="id"/>
-		<result column="TYPEID" jdbcType="INTEGER" property="typeId"/>
-		<result column="TYPENAME" jdbcType="INTEGER" property="typeName"/>
-		<result column="BEFOREVALUE" jdbcType="INTEGER" property="beforeValue"/>
-		<result column="AFTERVALUE" jdbcType="INTEGER" property="afterValue"/>
-		<result column="OPERANAME" jdbcType="INTEGER" property="operaName"/>
-		<result column="OPERATIME" jdbcType="INTEGER" property="operaTime"/>
-		<result column="KZNAME" jdbcType="INTEGER" property="kzName"/>
-		<result column="STATUSID" jdbcType="INTEGER" property="statusId"/>
-		<result column="SOURCEID" jdbcType="INTEGER" property="sourceId"/>
-		<result column="COLLECTORNAME" jdbcType="VARCHAR" property="collectorName"/>
-		<result column="APPOINTNAME" jdbcType="VARCHAR" property="appointName"/>
-	</resultMap>
+    <resultMap id="editLog" type="com.qiein.jupiter.web.entity.po.EditClientPhonePO">
+        <id column="ID" jdbcType="INTEGER" property="id"/>
+        <result column="TYPEID" jdbcType="INTEGER" property="typeId"/>
+        <result column="TYPENAME" jdbcType="INTEGER" property="typeName"/>
+        <result column="BEFOREVALUE" jdbcType="INTEGER" property="beforeValue"/>
+        <result column="AFTERVALUE" jdbcType="INTEGER" property="afterValue"/>
+        <result column="OPERANAME" jdbcType="INTEGER" property="operaName"/>
+        <result column="OPERATIME" jdbcType="INTEGER" property="operaTime"/>
+        <result column="KZNAME" jdbcType="INTEGER" property="kzName"/>
+        <result column="STATUSID" jdbcType="INTEGER" property="statusId"/>
+        <result column="SOURCEID" jdbcType="INTEGER" property="sourceId"/>
+        <result column="COLLECTORNAME" jdbcType="VARCHAR" property="collectorName"/>
+        <result column="APPOINTNAME" jdbcType="VARCHAR" property="appointName"/>
+    </resultMap>
 
     <sql id="baseColumn">
         info.ID, info.KZID, info.STATUSID, info.APPOINTORID, info.COLLECTORID, info.COMPANYID, info.SOURCEID
     </sql>
 
     <!--获取要推送的客资信息-->
-	<select id="getClientPushDTOById" parameterType="map" resultMap="infoMap">
-		SELECT
-		<include refid="baseColumn"/>, (UNIX_TIMESTAMP(NOW()) - info.LASTPUSHTIME) PUSHINTERVAL ,info.SRCTYPE SRCTYPE
-		FROM
-			${infoTabName} info
-		LEFT JOIN ${detailTabName} det ON det.KZID = info.KZID AND info.COMPANYID = det.COMPANYID
-		WHERE
-			info.ISDEL = 0
-		AND info.KZID = #{kzId};
-	</select>
+    <select id="getClientPushDTOById" parameterType="map" resultMap="infoMap">
+        SELECT
+        <include refid="baseColumn"/>, (UNIX_TIMESTAMP(NOW()) - info.LASTPUSHTIME) PUSHINTERVAL ,info.SRCTYPE SRCTYPE
+        FROM
+        ${infoTabName} info
+        LEFT JOIN ${detailTabName} det ON det.KZID = info.KZID AND info.COMPANYID = det.COMPANYID
+        WHERE
+        info.ISDEL = 0
+        AND info.KZID = #{kzId};
+    </select>
 
-	<!--获取要goeasy推送的客资信息-->
-	<select id="getClientGoEasyDTOById" parameterType="map" resultMap="goEasyMap">
-		SELECT
-			info.ID, info.KZID, info.KZNAME, info.KZPHONE, info.KZWECHAT, info.KZWW, info.KZQQ, det.MEMO, info.APPOINTORID,info.COLLECTORID,info.PROMOTORID, info.COMPANYID, info.SOURCEID, det.APPOINTNAME, det.FILMINGAREA, src.SRCNAME,
-			src.CHANNELNAME, det.INVALIDLABEL, info.SUCCESSTIME, det.AMOUNT, info.CREATETIME, det.COLLECTORNAME,det.SHOPNAME,det.RECEPTORNAME, det.AMOUNT, det.STAYAMOUNT, info.LASTPUSHTIME
-		FROM
-			${infoTabName} info
-		LEFT JOIN ${detailTabName} det ON det.KZID = info.KZID AND info.COMPANYID = det.COMPANYID
-		LEFT JOIN hm_crm_source src ON src.COMPANYID =  info.COMPANYID AND src.ID = info.SOURCEID
-		WHERE
-			 info.KZID = #{kzId};
-	</select>
-    
+    <!--获取要goeasy推送的客资信息-->
+    <select id="getClientGoEasyDTOById" parameterType="map" resultMap="goEasyMap">
+        SELECT
+            info.ID,
+            info.KZID,
+            info.KZNAME,
+            info.KZPHONE,
+            info.KZWECHAT,
+            info.KZWW,
+            info.KZQQ,
+            det.MEMO,
+            info.APPOINTORID,
+            info.COLLECTORID,
+            info.PROMOTORID,
+            info.COMPANYID,
+            info.SOURCEID,
+            det.APPOINTNAME,
+            det.FILMINGAREA,
+            src.SRCNAME,
+            src.CHANNELNAME,
+            det.INVALIDLABEL,
+            info.SUCCESSTIME,
+            det.AMOUNT,
+            info.CREATETIME,
+            det.COLLECTORNAME,
+            det.SHOPNAME,
+            det.RECEPTORNAME,
+            det.AMOUNT,
+            det.STAYAMOUNT,
+            info.LASTPUSHTIME
+        FROM
+            ${infoTabName} info
+            LEFT JOIN ${detailTabName} det ON det.KZID = info.KZID AND info.COMPANYID = det.COMPANYID
+            LEFT JOIN hm_crm_source src ON src.COMPANYID = info.COMPANYID AND src.ID = info.SOURCEID
+        WHERE
+            info.KZID = #{kzId};
+    </select>
+
     <!-- 客资分配给客服后修改客资信息，分配给邀约客服 -->
     <update id="updateClientInfoWhenAllot" parameterType="map">
-    	UPDATE ${infoTabName}
-		SET CLASSID = #{classId},
-		 STATUSID = #{statusId},
-		 APPOINTORID = #{appointorId},
-		 LASTPUSHTIME = UNIX_TIMESTAMP(NOW()),
-		 RECEIVETIME = UNIX_TIMESTAMP(NOW()),
-		 UPDATETIME = UNIX_TIMESTAMP(NOW()),
-		 GROUPID = #{groupId},
-		 ALLOTTYPE = #{allotType}
-		WHERE
-			KZID = #{kzId}
-		AND COMPANYID = #{companyId}
+        UPDATE ${infoTabName}
+        SET CLASSID      = #{classId},
+            STATUSID     = #{statusId},
+            APPOINTORID  = #{appointorId},
+            LASTPUSHTIME = UNIX_TIMESTAMP(NOW()),
+            RECEIVETIME  = UNIX_TIMESTAMP(NOW()),
+            UPDATETIME   = UNIX_TIMESTAMP(NOW()),
+            GROUPID      = #{groupId},
+            ALLOTTYPE    = #{allotType}
+        WHERE
+            KZID = #{kzId}
+            AND COMPANYID = #{companyId}
     </update>
 
-	<!-- 客资分配给客服后修改客资信息,分配给门市 -->
-	<update id="updateClientInfoWhenAllotMsjd" parameterType="map">
-    	UPDATE ${infoTabName}
-		SET STATUSID = #{statusId},
-		 SHOPID = #{shopId},
-		 RECEPTORID = #{receptorId},
-		 LASTPUSHTIME = UNIX_TIMESTAMP(NOW()),
-		 UPDATETIME = UNIX_TIMESTAMP(NOW()),
-		 ALLOTTYPE = #{allotType}
-		WHERE
-			KZID = #{kzId}
-		AND COMPANYID = #{companyId}
+    <!-- 客资分配给客服后修改客资信息,分配给门市 -->
+    <update id="updateClientInfoWhenAllotMsjd" parameterType="map">
+        UPDATE ${infoTabName}
+        SET STATUSID     = #{statusId},
+            SHOPID       = #{shopId},
+            RECEPTORID   = #{receptorId},
+            LASTPUSHTIME = UNIX_TIMESTAMP(NOW()),
+            UPDATETIME   = UNIX_TIMESTAMP(NOW()),
+            ALLOTTYPE    = #{allotType}
+        WHERE
+            KZID = #{kzId}
+            AND COMPANYID = #{companyId}
     </update>
-    
+
     <!-- 客资分配邀约客服后修改客资详情 -->
     <update id="updateClientDetailWhenAllot" parameterType="map">
-    	UPDATE ${detailTabName}
-		SET APPOINTNAME = #{appointorName}, GROUPNAME = #{groupName}
-		WHERE
-			KZID = #{kzId}
-		AND COMPANYID = #{companyId}
+        UPDATE ${detailTabName}
+        SET APPOINTNAME = #{appointorName}, GROUPNAME = #{groupName}
+        WHERE
+            KZID = #{kzId}
+            AND COMPANYID = #{companyId}
     </update>
 
-	<!-- 客资分配门市，后修改客资详情 -->
-	<update id="updateClientDetailWhenAllotMsjd" parameterType="map">
-    	UPDATE ${detailTabName}
-		SET RECEPTORNAME = #{receptorName},
-		SHOPNAME = #{shopName}
-		WHERE
-			KZID = #{kzId}
-		AND COMPANYID = #{companyId}
+    <!-- 客资分配门市，后修改客资详情 -->
+    <update id="updateClientDetailWhenAllotMsjd" parameterType="map">
+        UPDATE ${detailTabName}
+        SET RECEPTORNAME = #{receptorName},
+            SHOPNAME     = #{shopName}
+        WHERE
+            KZID = #{kzId}
+            AND COMPANYID = #{companyId}
     </update>
-    
+
     <!-- 客资分配后修改客资的领取时间和最后操作时间 -->
     <update id="updateClientInfoAfterAllot" parameterType="map">
-    	UPDATE ${infoTabName}
-		SET RECEIVETIME = UNIX_TIMESTAMP(NOW()), UPDATETIME = UNIX_TIMESTAMP(NOW())
-		WHERE
-			KZID = #{kzId}
-		AND COMPANYID = #{companyId}
+        UPDATE ${infoTabName}
+        SET RECEIVETIME = UNIX_TIMESTAMP(NOW()), UPDATETIME = UNIX_TIMESTAMP(NOW())
+        WHERE
+            KZID = #{kzId}
+            AND COMPANYID = #{companyId}
     </update>
-    
+
     <!-- 修改客资状态 -->
     <update id="updateClientInfoStatus" parameterType="map">
-    	UPDATE ${infoTabName}
-		SET STATUSID = #{statusId},
-			CLASSID = #{classId},
-		 	UPDATETIME = UNIX_TIMESTAMP(NOW())
-		WHERE
-			KZID = #{kzId}
-		AND COMPANYID = #{companyId}
+        UPDATE ${infoTabName}
+        SET STATUSID   = #{statusId},
+            CLASSID    = #{classId},
+            UPDATETIME = UNIX_TIMESTAMP(NOW())
+        WHERE
+            KZID = #{kzId}
+            AND COMPANYID = #{companyId}
     </update>
 
-	<!--交接客资-->
-	<update id="changeStaff" parameterType="staffChangeVO">
+    <!--交接客资-->
+    <update id="changeStaff" parameterType="staffChangeVO">
 
-	</update>
+    </update>
 
-	<!-- 获取企业要推送的客资信息 -->	
+    <!-- 获取企业要推送的客资信息 -->
     <select id="getInfoListBeReadyPush" parameterType="map" resultMap="infoMap">
-		SELECT
-			info.KZID, info.COMPANYID, info.TYPEID, info.CHANNELID, info.SOURCEID,src.PUSHRULE ,src.TYPEID SRCTYPE
-		FROM
-			${infoTabName} info
-		LEFT JOIN hm_crm_source src ON info.SOURCEID = src.ID AND src.COMPANYID = #{companyId}
-		WHERE
-			info.COMPANYID = #{companyId}
-		AND info.ISDEL = 0
-		AND (
-			info.STATUSID = 999
-			OR info.STATUSID = 12
-		)
-		AND (
-			UNIX_TIMESTAMP(NOW()) - info.LASTPUSHTIME
-		) &gt;= #{overTime}
-		ORDER BY info.ID ASC
+        SELECT
+            info.KZID,
+            info.COMPANYID,
+            info.TYPEID,
+            info.CHANNELID,
+            info.SOURCEID,
+            src.PUSHRULE,
+            src.TYPEID SRCTYPE
+        FROM
+            ${infoTabName} info
+            LEFT JOIN hm_crm_source src ON info.SOURCEID = src.ID AND src.COMPANYID = #{companyId}
+        WHERE
+            info.COMPANYID = #{companyId}
+            AND info.ISDEL = 0
+            AND (
+                info.STATUSID = 999
+                OR info.STATUSID = 12
+            )
+            AND (
+                    UNIX_TIMESTAMP(NOW()) - info.LASTPUSHTIME
+                ) &gt;= #{overTime}
+
+            AND (
+                    UNIX_TIMESTAMP(NOW()) - info.CREATETIME
+                ) &lt;= 2592000
+        ORDER BY info.ID ASC
     </select>
 
-	<!--根据拍摄地获取客资数量-->
-	<select id="getKzNumByShopId" parameterType="map" resultType="java.lang.Integer">
-		SELECT COUNT(1)
-		FROM ${infoTabName} info
-		WHERE info.SHOPID = #{shopId} AND info.ISDEL = 0
-		AND info.COMPANYID = #{companyId}
-	</select>
+    <!--根据拍摄地获取客资数量-->
+    <select id="getKzNumByShopId" parameterType="map" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM ${infoTabName} info
+        WHERE info.SHOPID = #{shopId} AND info.ISDEL = 0
+              AND info.COMPANYID = #{companyId}
+    </select>
 
-	<!--根据最终拍摄地获取客资数量-->
-	<select id="getKzNumByFilmingCode" parameterType="map" resultType="java.lang.Integer">
-		SELECT COUNT(1)
-		FROM ${detailName} det
-		WHERE det.FILMINGCODE = #{filmingCode} AND det.ISDEL = 0
-		AND det.COMPANYID = #{companyId}
-	</select>
-	
-	<!-- 根据客资ID集合查询客资信息 -->	
+    <!--根据最终拍摄地获取客资数量-->
+    <select id="getKzNumByFilmingCode" parameterType="map" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM ${detailName} det
+        WHERE det.FILMINGCODE = #{filmingCode} AND det.ISDEL = 0
+              AND det.COMPANYID = #{companyId}
+    </select>
+
+    <!-- 根据客资ID集合查询客资信息 -->
     <select id="listClientsInStrKzids" parameterType="map" resultMap="infoMap">
-		SELECT
-			info.ID, info.KZID, info.COMPANYID
-		FROM
-			${infoTabName} info
-		WHERE
-			info.COMPANYID = #{companyId}
-		AND info.ISDEL = 0
-		AND info.STATUSID IN (98,99,999,0,12,1)
--- 		AND info.STATUSID != 98
--- 		AND info.STATUSID != 99
--- 		AND info.STATUSID != 0
-		AND INSTR(CONCAT(',',#{kzIds},','),CONCAT(',',info.KZID,',')) != 0;
+        SELECT
+            info.ID,
+            info.KZID,
+            info.COMPANYID
+        FROM
+            ${infoTabName} info
+        WHERE
+            info.COMPANYID = #{companyId}
+            AND info.ISDEL = 0
+            AND info.STATUSID NOT IN (30,40,9)
+            -- 		AND info.STATUSID != 98
+            -- 		AND info.STATUSID != 99
+            -- 		AND info.STATUSID != 0
+            AND INSTR(CONCAT(',', #{kzIds}, ','), CONCAT(',', info.KZID, ',')) != 0;
     </select>
 
-	<!-- 根据客资ID集合查询可以分配给门市的客资集合 -->
-	<select id="listClientsInStrKzids4Msjd" parameterType="map" resultMap="infoMap">
-		SELECT
-			info.ID, info.KZID, info.COMPANYID,info.STATUSID
-		FROM
-			${infoTabName} info
-		WHERE
-			info.COMPANYID = #{companyId}
-		AND info.ISDEL = 0
-		AND INSTR(CONCAT(',',#{kzIds},','),CONCAT(',',info.KZID,',')) != 0;
+    <!-- 根据客资ID集合查询可以分配给门市的客资集合 -->
+    <select id="listClientsInStrKzids4Msjd" parameterType="map" resultMap="infoMap">
+        SELECT
+            info.ID,
+            info.KZID,
+            info.COMPANYID,
+            info.STATUSID
+        FROM
+            ${infoTabName} info
+        WHERE
+            info.COMPANYID = #{companyId}
+            AND info.ISDEL = 0
+            AND INSTR(CONCAT(',', #{kzIds}, ','), CONCAT(',', info.KZID, ',')) != 0;
     </select>
-	<!--修改联系方式日志-->
-	<select id="editClientPhoneLog" resultMap="editLog">
-		SELECT
-			log.ID,
-			log.TYPEID,
-			log.TYPENAME,
-			log.BEFOREVALUE,
-			log.AFTERVALUE,
-			log.OPERANAME,
-			FROM_UNIXTIME(log.OPERATIME, '%Y/%m/%d %H:%m:%s ') OPERATIME,
-			info.KZNAME,
-			info.STATUSID,
-			info.SOURCEID,
-			detail.APPOINTNAME,
-			detail.COLLECTORNAME
-		FROM
-			${tableEditLog} log
-		LEFT JOIN ${tableInfo} info ON log.KZID = info.KZID
-		LEFT JOIN ${tableDetail} detail ON log.KZID=detail.KZID
-		LEFT JOIN hm_pub_staff staff on staff.ID=info.PROMOTORID AND staff.COMPANYID=info.COMPANYID
+    <!--修改联系方式日志-->
+    <select id="editClientPhoneLog" resultMap="editLog">
+        SELECT
+        log.ID,
+        log.TYPEID,
+        log.TYPENAME,
+        log.BEFOREVALUE,
+        log.AFTERVALUE,
+        log.OPERANAME,
+        FROM_UNIXTIME(log.OPERATIME, '%Y/%m/%d %H:%m:%s ') OPERATIME,
+        info.KZNAME,
+        info.STATUSID,
+        info.SOURCEID,
+        detail.APPOINTNAME,
+        detail.COLLECTORNAME
+        FROM
+        ${tableEditLog} log
+        LEFT JOIN ${tableInfo} info ON log.KZID = info.KZID
+        LEFT JOIN ${tableDetail} detail ON log.KZID=detail.KZID
+        LEFT JOIN hm_pub_staff staff on staff.ID=info.PROMOTORID AND staff.COMPANYID=info.COMPANYID
 
-		WHERE log.COMPANYID=#{companyId}
-		<if test="statusId !=null">
-			AND info.STATUSID=#{statusId}
-		</if>
-		<if test="sourceIds !=null and sourceIds!=''">
-			AND info.SOURCEID IN (
-			<foreach collection="list" separator="," item="sourceId">
-				#{sourceId}
-			</foreach>
-			)
-		</if>
-		<if test="typeId !=null">
-			AND log.TYPEID=#{typeId}
-		</if>
-		<if test="value !=null and value!=''">
-			AND (log.BEFOREVALUE=#{value} OR log.AFTERVALUE=#{value})
-		</if>
-		<if test="startTime !=null and endTime!=null">
-			AND log.OPERATIME &gt;= #{startTime} AND log.OPERATIME &lt; #{endTime}
-		</if>
-	</select>
+        WHERE log.COMPANYID=#{companyId}
+        <if test="statusId !=null">
+            AND info.STATUSID=#{statusId}
+        </if>
+        <if test="sourceIds !=null and sourceIds!=''">
+            AND info.SOURCEID IN (
+            <foreach collection="list" separator="," item="sourceId">
+                #{sourceId}
+            </foreach>
+            )
+        </if>
+        <if test="typeId !=null">
+            AND log.TYPEID=#{typeId}
+        </if>
+        <if test="value !=null and value!=''">
+            AND (log.BEFOREVALUE=#{value} OR log.AFTERVALUE=#{value})
+        </if>
+        <if test="startTime !=null and endTime!=null">
+            AND log.OPERATIME &gt;= #{startTime} AND log.OPERATIME &lt; #{endTime}
+        </if>
+    </select>
 
 
-	<!-- pc端领取客资，修改客资基本信息 -->
-	<update id="updateClientInfoWhenReceive" parameterType="map">
-    	UPDATE ${infoTabName}
-		SET CLASSID = #{classId},
-		 STATUSID = #{statusId},
-		 APPOINTORID = #{appointorId},
-		 UPDATETIME = UNIX_TIMESTAMP(NOW()),
-		 GROUPID = #{groupId},
-		 ALLOTTYPE = #{allotType}
-		WHERE
-			KZID = #{kzId}
-		AND COMPANYID = #{companyId}
+    <!-- pc端领取客资，修改客资基本信息 -->
+    <update id="updateClientInfoWhenReceive" parameterType="map">
+        UPDATE ${infoTabName}
+        SET CLASSID     = #{classId},
+            STATUSID    = #{statusId},
+            APPOINTORID = #{appointorId},
+            UPDATETIME  = UNIX_TIMESTAMP(NOW()),
+            GROUPID     = #{groupId},
+            ALLOTTYPE   = #{allotType}
+        WHERE
+            KZID = #{kzId}
+            AND COMPANYID = #{companyId}
     </update>
 
-	<select id="repateKzLog" resultType="com.qiein.jupiter.web.entity.po.RepateKzLogPO">
-		SELECT
-		log.ID id,
-		info.KZID kzId,
-		info.KZNAME kzName,
-		info.KZPHONE kzPhone,
-		info.KZQQ kzqq,
-		info.KZWECHAT kzWechat,
-		detail.APPOINTNAME appointName,
-		detail.COLLECTORNAME collectorName,
-		log.MEMO memo,
-		info.STATUSID statusId,
-		info.SOURCEID sourceId,
-		COUNT(log.KZID) count
-		FROM
-		${tableLog} log
-		LEFT JOIN ${tableInfo} info ON info.KZID = log.KZID
-		LEFT JOIN ${tableDetail} detail ON log.KZID = detail.KZID
-		WHERE
-		log.COMPANYID = #{companyId}
-		AND log.LOGTYPE = #{logType}
-		<if test="startTime !=null and endTime!=null">
-			AND log.OPERATIME &gt;= #{startTime} AND log.OPERATIME &lt; #{endTime}
-		</if>
-		<if test="staffId !=0">
-			AND info.APPOINTORID=#{staffId}
-		</if>
-		GROUP BY
-		log.KZID
+    <select id="repateKzLog" resultType="com.qiein.jupiter.web.entity.po.RepateKzLogPO">
+        SELECT
+        log.ID id,
+        info.KZID kzId,
+        info.KZNAME kzName,
+        info.KZPHONE kzPhone,
+        info.KZQQ kzqq,
+        info.KZWECHAT kzWechat,
+        detail.APPOINTNAME appointName,
+        detail.COLLECTORNAME collectorName,
+        log.MEMO memo,
+        info.STATUSID statusId,
+        info.SOURCEID sourceId,
+        COUNT(log.KZID) count
+        FROM
+        ${tableLog} log
+        LEFT JOIN ${tableInfo} info ON info.KZID = log.KZID
+        LEFT JOIN ${tableDetail} detail ON log.KZID = detail.KZID
+        WHERE
+        log.COMPANYID = #{companyId}
+        AND log.LOGTYPE = #{logType}
+        <if test="startTime !=null and endTime!=null">
+            AND log.OPERATIME &gt;= #{startTime} AND log.OPERATIME &lt; #{endTime}
+        </if>
+        <if test="staffId !=0">
+            AND info.APPOINTORID=#{staffId}
+        </if>
+        GROUP BY
+        log.KZID
 
-	</select>
-
-	<select id="wechatScanCodeLog"  resultType="com.qiein.jupiter.web.entity.po.WechatScanPO">
-		SELECT
-		log.ID id,
-		info.KZID kzId,
-		info.KZNAME kzName,
-		info.KZPHONE kzPhone,
-		FROM_UNIXTIME(log.OPERATIME, '%Y/%m/%d %H:%m:%s ') createTime,
-		info.KZQQ kzqq,
-		info.KZWECHAT kzWechat,
-		detail.APPOINTNAME appointName
-		FROM
-		${tableLog} log
-		LEFT JOIN ${tableInfo} info ON info.KZID = log.KZID
-		LEFT JOIN ${tableDetail} detail ON log.KZID = detail.KZID
-		WHERE
-		log.COMPANYID = #{companyId}
-		AND log.LOGTYPE = #{logType}
-		<if test="startTime !=null and endTime!=null">
-			AND log.OPERATIME &gt;= #{startTime} AND log.OPERATIME &lt; #{endTime}
-		</if>
-	</select>
-
-	<!--获取KzId时候存在-->
-	<select id = "getKzIdExists" resultMap="infoMap">
-		SELECT
-			info.ID, info.KZID, info.COMPANYID
-		FROM
-			${infoTabName} info
-		WHERE
-			info.COMPANYID = #{companyId}
-			AND info.ISDEL = 0
-			AND	info.STATUSID = 3
-			AND info.CLASSID = 3
-			AND INSTR(#{kzIds},info.KZID) != 0;
-	</select>
-
-	<!--修改已收金额-->
-	<update id="editStayAmount" parameterType="map">
-		UPDATE ${detTabName}
-		SET STAYAMOUNT = ( SELECT IFNULL( SUM( AMOUNT ), 0 ) FROM ${cashTabName} WHERE KZID = #{kzId} AND COMPANYID = #{companyId} AND STATUS = 1 )
-		WHERE
-			KZID = #{kzId}
-			AND COMPANYID = #{companyId};
-	</update>
-
-	<!-- 获取企业需要分配的筛选中的客资列表 -->
-	<select id="getSkInfoList" parameterType="map" resultMap="infoMap">
-		SELECT
-			info.KZID, info.SRCTYPE
-		FROM
-			${infoTabName} info
-		WHERE
-			info.COMPANYID = #{companyId}
-		AND info.ISDEL = 0
-		AND info.STATUSID = 0
-		AND info.PROMOTORID IS NULL
-		AND (UNIX_TIMESTAMP(NOW()) - info.LASTPUSHTIME) &gt;= #{overTime}
-		ORDER BY info.ID ASC
     </select>
 
-	<!-- 分配给筛客之后，修改筛选人ID，推送时间 -->
-	<update id="updateSkInfoWhenAllot" parameterType="map">
-    	UPDATE ${infoTabName}
-		SET  PROMOTORID = #{promotorId},
-		 LASTPUSHTIME = UNIX_TIMESTAMP(NOW()),
-		 UPDATETIME = UNIX_TIMESTAMP(NOW())
-		WHERE
-			KZID = #{kzId}
-		AND COMPANYID = #{companyId}
-    </update>
-
-	<!-- 分配给筛客之后，修改筛选人姓名 -->
-	<update id="updateSkDetailWhenAllot" parameterType="map">
-    	UPDATE ${detTabName}
-		SET  PROMOTERNAME = #{promoterName}
-		WHERE
-			KZID = #{kzId}
-		AND COMPANYID = #{companyId}
-    </update>
-
-	<!-- 查询已有客服的客资数量，用于分配 -->
-	<select id="listExistAppointClientsNum" parameterType="map" resultType="java.lang.Integer">
-		SELECT
-			COUNT(info.ID)
-		FROM
-			${infoTabName} info
-		WHERE
-			info.COMPANYID = #{companyId}
-		AND info.ISDEL = 0
-		AND INSTR(CONCAT(',',#{kzIds},','),CONCAT(',',info.KZID,',')) != 0
-		AND ${type} IS NOT NULL
+    <select id="wechatScanCodeLog" resultType="com.qiein.jupiter.web.entity.po.WechatScanPO">
+        SELECT
+        log.ID id,
+        info.KZID kzId,
+        info.KZNAME kzName,
+        info.KZPHONE kzPhone,
+        FROM_UNIXTIME(log.OPERATIME, '%Y/%m/%d %H:%m:%s ') createTime,
+        info.KZQQ kzqq,
+        info.KZWECHAT kzWechat,
+        detail.APPOINTNAME appointName
+        FROM
+        ${tableLog} log
+        LEFT JOIN ${tableInfo} info ON info.KZID = log.KZID
+        LEFT JOIN ${tableDetail} detail ON log.KZID = detail.KZID
+        WHERE
+        log.COMPANYID = #{companyId}
+        AND log.LOGTYPE = #{logType}
+        <if test="startTime !=null and endTime!=null">
+            AND log.OPERATIME &gt;= #{startTime} AND log.OPERATIME &lt; #{endTime}
+        </if>
     </select>
 
-	<update id="editKzphoneFlag">
-		UPDATE ${table} SET  KZPHONE_FLAG=#{kzphoneFlag} WHERE KZID=#{kzId}
-	</update>
+    <!--获取KzId时候存在-->
+    <select id="getKzIdExists" resultMap="infoMap">
+        SELECT
+            info.ID,
+            info.KZID,
+            info.COMPANYID
+        FROM
+            ${infoTabName} info
+        WHERE
+            info.COMPANYID = #{companyId}
+            AND info.ISDEL = 0
+            AND info.STATUSID = 3
+            AND info.CLASSID = 3
+            AND INSTR(#{kzIds}, info.KZID) != 0;
+    </select>
 
-	<!-- 修改客资推送时间 -->
-	<update id="updateLastPushTime" parameterType="map">
-    	UPDATE ${infoTabName}
-		SET LASTPUSHTIME = UNIX_TIMESTAMP(NOW()),
-		 UPDATETIME = UNIX_TIMESTAMP(NOW())
-		WHERE
-			KZID = #{kzId}
-		AND COMPANYID = #{companyId}
+    <!--修改已收金额-->
+    <update id="editStayAmount" parameterType="map">
+        UPDATE ${detTabName}
+        SET STAYAMOUNT = (SELECT IFNULL(SUM(AMOUNT), 0)
+                          FROM ${cashTabName}
+                          WHERE KZID = #{kzId} AND COMPANYID = #{companyId} AND STATUS = 1)
+        WHERE
+            KZID = #{kzId}
+            AND COMPANYID = #{companyId};
+    </update>
+
+    <!-- 获取企业需要分配的筛选中的客资列表 -->
+    <select id="getSkInfoList" parameterType="map" resultMap="infoMap">
+        SELECT
+            info.KZID,
+            info.SRCTYPE
+        FROM
+            ${infoTabName} info
+        WHERE
+            info.COMPANYID = #{companyId}
+            AND info.ISDEL = 0
+            AND info.STATUSID = 0
+            AND info.PROMOTORID IS NULL
+            AND (UNIX_TIMESTAMP(NOW()) - info.LASTPUSHTIME) &gt;= #{overTime}
+        ORDER BY info.ID ASC
+    </select>
+
+    <!-- 分配给筛客之后，修改筛选人ID，推送时间 -->
+    <update id="updateSkInfoWhenAllot" parameterType="map">
+        UPDATE ${infoTabName}
+        SET PROMOTORID   = #{promotorId},
+            LASTPUSHTIME = UNIX_TIMESTAMP(NOW()),
+            UPDATETIME   = UNIX_TIMESTAMP(NOW())
+        WHERE
+            KZID = #{kzId}
+            AND COMPANYID = #{companyId}
+    </update>
+
+    <!-- 分配给筛客之后，修改筛选人姓名 -->
+    <update id="updateSkDetailWhenAllot" parameterType="map">
+        UPDATE ${detTabName}
+        SET PROMOTERNAME = #{promoterName}
+        WHERE
+            KZID = #{kzId}
+            AND COMPANYID = #{companyId}
+    </update>
+
+    <!-- 查询已有客服的客资数量，用于分配 -->
+    <select id="listExistAppointClientsNum" parameterType="map" resultType="java.lang.Integer">
+        SELECT COUNT(info.ID)
+        FROM
+            ${infoTabName} info
+        WHERE
+            info.COMPANYID = #{companyId}
+            AND info.ISDEL = 0
+            AND INSTR(CONCAT(',', #{kzIds}, ','), CONCAT(',', info.KZID, ',')) != 0
+            AND ${type} IS NOT NULL
+    </select>
+
+    <update id="editKzphoneFlag">
+        UPDATE ${table}
+        SET KZPHONE_FLAG = #{kzphoneFlag}
+        WHERE KZID = #{kzId}
+    </update>
+
+    <!-- 修改客资推送时间 -->
+    <update id="updateLastPushTime" parameterType="map">
+        UPDATE ${infoTabName}
+        SET LASTPUSHTIME = UNIX_TIMESTAMP(NOW()),
+            UPDATETIME   = UNIX_TIMESTAMP(NOW())
+        WHERE
+            KZID = #{kzId}
+            AND COMPANYID = #{companyId}
     </update>
 
 </mapper>
