@@ -18,7 +18,7 @@
 
     <select id="costList" resultMap="Cost">
          SELECT
-			cost.COST,
+            SUM(cost.COST) COST,
 			cost.BEFORECOST,
 			FROM_UNIXTIME(cost.COSTTIME,"%Y/%m/%d") COSTTIME,
 			CONCAT("Day",FROM_UNIXTIME(cost.COSTTIME,"%d")) DAYKEY,
@@ -35,7 +35,7 @@
         <if test="sourceIds!=null and sourceIds!=''">
             and src.ID in (${sourceIds})
         </if>
-
+        GROUP BY src.ID,FROM_UNIXTIME(cost.COSTTIME,"%Y/%m/%d")
     </select>
     <insert id="insert" parameterType="com.qiein.jupiter.web.entity.po.CostPO" useGeneratedKeys="true" keyProperty="id">
         insert into hm_crm_cost(SRCID,COMPANYID,UPDATETIME,CREATETIME,COSTTIME,COST,BEFORECOST,RATE) values(#{srcId},#{companyId},UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()),#{time},#{afterCost},#{afterCost},#{rate})
