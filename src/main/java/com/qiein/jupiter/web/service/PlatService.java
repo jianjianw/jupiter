@@ -19,4 +19,5 @@ public interface PlatService {
      * @return
      */
     List<SearchClientVO> pageSearch(int companyId, String key);
+
 }

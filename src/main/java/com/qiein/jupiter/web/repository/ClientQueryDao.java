@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.repository;
 
+import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.NumUtil;
@@ -13,7 +14,9 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,7 +33,7 @@ public class ClientQueryDao {
      * 查询删除客资
      */
     public PlatPageVO queryDelClientInfo(QueryVO vo, int companyId) {
-        PlatPageVO pageVO = new PlatPageVO();
+        final PlatPageVO pageVO = new PlatPageVO();
         pageVO.setCurrentPage(vo.getCurrentPage());
         pageVO.setPageSize(vo.getPageSize());
         //查询参数
@@ -38,26 +41,134 @@ public class ClientQueryDao {
         keyMap.put("companyId", companyId);
         keyMap.put("page", vo.getCurrentPage());
         keyMap.put("size", vo.getPageSize());
-        //sql
+        //select
         StringBuilder baseSelect = getBaseSelect();
-        baseSelect.append(getFromSql(companyId));
-
-        baseSelect.append(" WHERE  info.COMPANYID = :companyId AND info.ISDEL = 1 ");
-        handleWhereSql(vo, keyMap, baseSelect);
+        //from
+        StringBuilder fromSql = new StringBuilder();
+        fromSql.append(getFromSql(companyId));
+        //where
+        StringBuilder whereSql = new StringBuilder();
+        whereSql.append(" WHERE  info.COMPANYID = :companyId AND info.ISDEL = 1 ");
+        handleWhereSql(vo, keyMap, whereSql);
         //ORDER
-        baseSelect.append(" ORDER BY info.UPDATETIME DESC, info.ID DESC ");
+        StringBuilder orderLimitSql = new StringBuilder();
+        orderLimitSql.append(" ORDER BY info.UPDATETIME DESC, info.ID DESC ");
         //分页
-        baseSelect.append(" limit :page , :size ");
+        orderLimitSql.append(" limit :page , :size ");
+        String querySql = baseSelect.append(fromSql).append(whereSql).append(orderLimitSql).toString();
         //执行查询
-        namedJdbc.query(baseSelect.toString(), keyMap, new RowCallbackHandler() {
+        final List<JSONObject> result = new ArrayList<>();
+        namedJdbc.query(querySql, keyMap, new RowCallbackHandler() {
             @Override
             public void processRow(ResultSet rs) throws SQLException {
-                System.out.println(rs.getString("KZID"));
+                result.add(resultToClientInfo(rs));
             }
         });
+        //分页
+        String countSql = "SELECT COUNT(*) COUNT " + fromSql + whereSql;
+        namedJdbc.query(countSql, keyMap, new RowCallbackHandler() {
+            @Override
+            public void processRow(ResultSet rs) throws SQLException {
+                int count = rs.getInt("COUNT");
+                pageVO.setTotalCount(count);
+                int totalPageNum = (count + pageVO.getPageSize() - 1) / pageVO.getPageSize();
+                pageVO.setTotalPage(totalPageNum);
+            }
+        });
+        //执行分页
+        pageVO.setData(result);
         return pageVO;
     }
 
+
+    /**
+     * 查询客资详情
+     */
+    public void searchClientDeatilInfo(PlatPageVO pageVO, String sql) {
+
+    }
+
+    /**
+     * 处理分页信息
+     */
+    private void handlePageInfo(PlatPageVO pageVO, String sql) {
+
+    }
+
+
+    /**
+     * 将结果转换为客资信息
+     *
+     * @param rs
+     */
+    private JSONObject resultToClientInfo(ResultSet rs) throws SQLException {
+        JSONObject info = new JSONObject();
+        info.put("id", rs.getInt("ID"));
+        info.put("letterid", rs.getString("LETTERID"));
+        info.put("kzid", rs.getString("KZID"));
+        info.put("typeid", rs.getInt("TYPEID"));
+        info.put("classid", rs.getInt("CLASSID"));
+        info.put("statusid", rs.getInt("STATUSID"));
+        info.put("kzname", rs.getString("KZNAME"));
+        info.put("kzphone", rs.getString("KZPHONE"));
+        info.put("kzwechat", rs.getString("KZWECHAT"));
+        info.put("kzphoneflag", rs.getString("KZPHONE_FLAG"));
+        info.put("weflag", rs.getInt("WEFLAG"));
+        info.put("kzqq", rs.getString("KZQQ"));
+        info.put("kzww", rs.getString("KZWW"));
+        info.put("sex", rs.getInt("SEX"));
+        info.put("channelid", rs.getInt("CHANNELID"));
+        info.put("sourceid", rs.getInt("SOURCEID"));
+        info.put("collectorid", rs.getInt("COLLECTORID"));
+        info.put("promotorid", rs.getInt("PROMOTORID"));
+        info.put("appointorid", rs.getInt("APPOINTORID"));
+        info.put("receptorid", rs.getInt("RECEPTORID"));
+        info.put("receivetime", rs.getInt("RECEIVETIME"));
+        info.put("shopid", rs.getInt("SHOPID"));
+        info.put("allottype", rs.getInt("ALLOTTYPE"));
+        info.put("createtime", rs.getInt("CREATETIME"));
+        info.put("tracetime", rs.getInt("TRACETIME"));
+        info.put("appointtime", rs.getInt("APPOINTTIME"));
+        info.put("comeshoptime", rs.getInt("COMESHOPTIME"));
+        info.put("successtime", rs.getInt("SUCCESSTIME"));
+        info.put("updatetime", rs.getInt("UPDATETIME"));
+        info.put("srctype", rs.getInt("SRCTYPE"));
+        info.put("groupid", rs.getString("GROUPID"));
+        info.put("collectorname", rs.getString("COLLECTORNAME"));
+        info.put("promotername", rs.getString("PROMOTERNAME"));
+        info.put("appointname", rs.getString("APPOINTNAME"));
+        info.put("receptorname", rs.getString("RECEPTORNAME"));
+        info.put("shopname", rs.getString("SHOPNAME"));
+        info.put("memo", rs.getString("MEMO"));
+        info.put("oldkzname", rs.getString("OLDKZNAME"));
+        info.put("oldkzphone", rs.getString("OLDKZPHONE"));
+        info.put("amount", rs.getString("AMOUNT"));
+        info.put("stayamount", rs.getString("STAYAMOUNT"));
+        info.put("talkimg", rs.getString("TALKIMG"));
+        info.put("orderimg", rs.getString("ORDERIMG"));
+        info.put("zxstyle", rs.getInt("ZXSTYLE"));
+        info.put("yxlevel", rs.getInt("YXLEVEL"));
+        info.put("ysrange", rs.getInt("YSRANGE"));
+        info.put("adaddress", rs.getString("ADADDRESS"));
+        info.put("adid", rs.getString("ADID"));
+        info.put("marrytime", rs.getInt("MARRYTIME"));
+        info.put("yptime", rs.getInt("YPTIME"));
+        info.put("matename", rs.getString("MATENAME"));
+        info.put("matephone", rs.getString("MATEPHONE"));
+        info.put("matewechat", rs.getString("MATEWECHAT"));
+        info.put("mateqq", rs.getString("MATEQQ"));
+        info.put("address", rs.getString("ADDRESS"));
+        info.put("groupname", rs.getString("GROUPNAME"));
+        info.put("paystyle", rs.getInt("PAYSTYLE"));
+        info.put("htnum", rs.getString("HTNUM"));
+        info.put("invalidlabel", rs.getString("INVALIDLABEL"));
+        info.put("filmingcode", rs.getInt("FILMINGCODE"));
+        info.put("filmingarea", rs.getString("FILMINGAREA"));
+        info.put("keyword", rs.getString("KEYWORD"));
+        info.put("packagecode", rs.getInt("PACKAGECODE"));
+
+        return info;
+    }
 
     /**
      * 获取基础select
@@ -66,16 +177,16 @@ public class ClientQueryDao {
      */
     private StringBuilder getBaseSelect() {
         StringBuilder sql = new StringBuilder();
-        sql.append(" SELECT info.ID, info.KZID, info.TYPEID, info.CLASSID, info.STATUSID, ").
-                append("info.KZNAME, info.KZPHONE, info.KZWECHAT, info.WEFLAG, ")
+        sql.append(" SELECT info.ID, info.KZID, info.TYPEID, info.CLASSID, info.STATUSID,info.LETTERID,info.KZPHONE_FLAG, ").
+                append("info.KZNAME, info.KZPHONE, info.KZWECHAT, info.WEFLAG,info.SRCTYPE, ")
                 .append(" info.KZQQ, info.KZWW, info.SEX, info.CHANNELID, info.SOURCEID, info.COLLECTORID, det.COLLECTORNAME,")
                 .append(" info.PROMOTORID, det.PROMOTERNAME, info.APPOINTORID, ")
                 .append("  det.APPOINTNAME, info.RECEPTORID, det.RECEPTORNAME, info.SHOPID, det.SHOPNAME, info.ALLOTTYPE,")
-                .append(" info.CREATETIME, info.RECEIVETIME, info.TRACETIME, info.APPOINTTIME, ")
-                .append(" info.COMESHOPTIME, info.SUCCESSTIME, info.UPDATETIME, det.MEMO, ")
-                .append("det.OLDKZNAME, det.OLDKZPHONE, det.AMOUNT, det.STAYAMOUNT, det.TALKIMG, det.ORDERIMG, ")
-                .append("  det.ZXSTYLE, det.YXLEVEL, det.YSRANGE, det.ADADDRESS, det.ADID, det.MARRYTIME,")
-                .append(" det.YPTIME, det.MATENAME, det.MATEPHONE, det.ADDRESS,  ")
+                .append(" info.CREATETIME, info.RECEIVETIME, info.TRACETIME, info.APPOINTTIME, det.PACKAGECODE, ")
+                .append(" info.COMESHOPTIME, info.SUCCESSTIME, info.UPDATETIME, det.MEMO,det.FILMINGCODE,det.FILMINGAREA, ")
+                .append(" det.OLDKZNAME, det.OLDKZPHONE, det.AMOUNT, det.STAYAMOUNT, det.TALKIMG, det.ORDERIMG, ")
+                .append(" det.ZXSTYLE, det.YXLEVEL, det.YSRANGE, det.ADADDRESS, det.ADID, det.MARRYTIME,")
+                .append(" det.YPTIME, det.MATENAME, det.MATEPHONE, det.ADDRESS, det.MATEWECHAT,det.MATEQQ, ")
                 .append(" info.GROUPID, det.GROUPNAME, det.PAYSTYLE, det.HTNUM, det.INVALIDLABEL, det.KEYWORD, log.CONTENT ");
         return sql;
     }
@@ -86,7 +197,7 @@ public class ClientQueryDao {
      * @param companyId
      * @return
      */
-    private String getFromSql(int companyId) {
+    private StringBuilder getFromSql(int companyId) {
         StringBuilder from = new StringBuilder();
         from.append(" FROM ").append(DBSplitUtil.getInfoTabName(companyId));
         from.append(" info LEFT JOIN ");
@@ -95,7 +206,7 @@ public class ClientQueryDao {
         from.append(" LEFT JOIN ");
         from.append(DBSplitUtil.getRemarkTabName(companyId));
         from.append(" log ON log.KZID = info.KZID AND log.COMPANYID = info.COMPANYID ");
-        return from.toString();
+        return from;
     }
 
     /**

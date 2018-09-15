@@ -1,5 +1,7 @@
 package com.qiein.jupiter.web.repository;
 
+import com.alibaba.fastjson.JSONObject;
+import com.qiein.jupiter.web.entity.vo.PlatPageVO;
 import com.qiein.jupiter.web.entity.vo.QueryVO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +29,8 @@ public class ClientQueryDaoTest {
         queryVO.setTimeType(" UPDATETIME ");
         queryVO.setStart(1534377600);
         queryVO.setEnd(1537027199);
-        clientQueryDao.queryDelClientInfo(queryVO, 3);
+        PlatPageVO pageVO = clientQueryDao.queryDelClientInfo(queryVO, 3);
+        System.out.println(JSONObject.toJSONString(pageVO,true));
     }
 
 }

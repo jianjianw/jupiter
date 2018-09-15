@@ -1,5 +1,7 @@
 package com.qiein.jupiter.web.repository;
 
+import com.qiein.jupiter.exception.ExceptionEnum;
+import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.CollectionUtils;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.StringUtil;
@@ -37,13 +39,13 @@ public class WebClientInfoSearchDao {
      * @return
      */
     public List<SearchClientVO> search(int companyId, final String key) {
-        long t=System.currentTimeMillis();
+        long t = System.currentTimeMillis();
         List<SearchClientVO> clientVOList = searchClientInfoBySearchKey(companyId, key);
 
         if (CollectionUtils.isEmpty(clientVOList)) {
             clientVOList = searchClientDetailBySearchKey(companyId, key);
         }
-        System.out.println(System.currentTimeMillis()-t);
+        System.out.println(System.currentTimeMillis() - t);
 
         return clientVOList;
     }
