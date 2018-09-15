@@ -155,6 +155,7 @@ public class CostServiceImpl implements CostService {
                 if(forDayPO.getDay().equals(forDayPOS.get(i).getDay())&&forDayPO.getSrcId().equals(forDayPOS.get(i).getSrcId())){
                     forDayPOS.remove(i);
                     i--;
+                    break;
                 }
             }
         }
