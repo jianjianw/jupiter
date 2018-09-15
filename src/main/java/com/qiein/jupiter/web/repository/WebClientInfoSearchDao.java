@@ -126,7 +126,7 @@ public class WebClientInfoSearchDao {
         Map<String, Object> keyMap = new HashMap<>();
         keyMap.put("companyId", companyId);
         keyMap.put("key", key + "%");
-        
+
         //查询
         namedJdbc.query(sql.toString(), keyMap, new RowCallbackHandler() {
             @Override
