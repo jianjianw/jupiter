@@ -2,3 +2,8 @@
 ALTER TABLE hm_pub_company
   ADD `REPORTSCONFIG` VARCHAR(1024) DEFAULT NULL
 COMMENT '报表配置'
+
+
+
+###9.14
+client info 表新增 LETTERID  短字母编号
