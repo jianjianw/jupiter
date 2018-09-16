@@ -125,7 +125,7 @@ public enum ExceptionEnum {
     COLLECTOR_NAME_LENGTH_TOO_LONG(1312,"客资录入人姓名过长"),
     APPOINT_NAME_LENGTH_TOO_LONG(1313,"邀约姓名过长"),
     SHOP_NAME_LENGTH_TOO_LONG(1314,"门店名称过长"),
-    MEMO_LENGTH_TOO_LONG(1314,"备注姓名过长"),
+    MEMO_LENGTH_TOO_LONG(1314,"备注过长"),
     OLD_KZ_NAME_LENGTH_TOO_LONG(1315,"老客姓名过长"),
     OLD_KZ_PHONE_LENGTH_TOO_LONG(1316,"老客电话过长"),
     //客资
