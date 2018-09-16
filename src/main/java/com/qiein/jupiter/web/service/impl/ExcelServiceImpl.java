@@ -120,7 +120,7 @@ public class ExcelServiceImpl implements ExcelService {
             if(StringUtil.isNotEmpty(clientExcelDTO.getShopName()) &&  clientExcelDTO.getShopName().length() > 16){
                 throw new RException("第"+index+"行"+ExceptionEnum.SHOP_NAME_LENGTH_TOO_LONG.getMsg(),ExceptionEnum.SHOP_NAME_LENGTH_TOO_LONG.getCode());
             }
-            if(StringUtil.isNotEmpty(clientExcelDTO.getRemark()) && clientExcelDTO.getRemark().length()>255){
+            if(StringUtil.isNotEmpty(clientExcelDTO.getRemark()) && clientExcelDTO.getRemark().length()>1024){
                 throw new RException("第"+index+"行"+ExceptionEnum.MEMO_LENGTH_TOO_LONG.getMsg(),ExceptionEnum.MEMO_LENGTH_TOO_LONG.getCode());
             }
             if(StringUtil.isNotEmpty(clientExcelDTO.getOldKzName()) && clientExcelDTO.getOldKzName().length()>32){
