@@ -31,15 +31,14 @@ public class RoleSourceServiceImpl implements RoleSourceService {
         if (NumUtil.isInValid(roleId)) {
             throw new RException(ExceptionEnum.ROLE_ID_IS_NULL);
         }
-
-
-        List<String> sourceIds = Arrays.asList(sourceId.split(CommonConstant.STR_SEPARATOR));
-        System.out.println("-----------:" + sourceId);
-        System.out.println("-----------:" + sourceIds);
-        System.out.println(sourceIds.size());
-        if (CollectionUtils.isNotEmpty(sourceIds)) {
-            roleSourceDao.delete(roleId);
-            roleSourceDao.batchAddRoleSource(roleId, sourceIds, companyId);
+        if (StringUtil.isNotEmpty(sourceId)) {
+            List<String> sourceIds = Arrays.asList(sourceId.split(CommonConstant.STR_SEPARATOR));
+            if (CollectionUtils.isNotEmpty(sourceIds)) {
+                roleSourceDao.delete(roleId);
+                roleSourceDao.batchAddRoleSource(roleId, sourceIds, companyId);
+            }
         }
+
+
     }
 }
