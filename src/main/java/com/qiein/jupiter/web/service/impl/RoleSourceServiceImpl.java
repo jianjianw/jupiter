@@ -36,6 +36,7 @@ public class RoleSourceServiceImpl implements RoleSourceService {
         List<String> sourceIds = Arrays.asList(sourceId.split(CommonConstant.STR_SEPARATOR));
         System.out.println("-----------:" + sourceId);
         System.out.println("-----------:" + sourceIds);
+        System.out.println(sourceIds.size());
         if (CollectionUtils.isNotEmpty(sourceIds)) {
             roleSourceDao.delete(roleId);
             roleSourceDao.batchAddRoleSource(roleId, sourceIds, companyId);
