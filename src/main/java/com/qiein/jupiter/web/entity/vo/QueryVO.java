@@ -95,22 +95,22 @@ public class QueryVO {
     /**
      * 录入人ID
      */
-    private String collectorId = "";
+    private int collectorId;
 
     /**
      * 筛选人ID
      */
-    private String promotorId = "";
+    private int promotorId;
 
     /**
      * 邀约人ID
      */
-    private String appointorId = "";
+    private int appointorId;
 
     /**
      * 接待人ID
      */
-    private String receptorId = "";
+    private int receptorId;
 
     private String spareSql = "";
 
@@ -240,55 +240,36 @@ public class QueryVO {
         this.kzId = kzId;
     }
 
-    public String getCollectorId() {
+
+    public int getCollectorId() {
         return collectorId;
     }
 
-    public void setCollectorId(String collectorId) {
+    public void setCollectorId(int collectorId) {
         this.collectorId = collectorId;
     }
 
-    public void appendCollectorId(int id) {
-        this.collectorId += CommonConstant.STR_SEPARATOR;
-        this.collectorId += id;
-    }
-
-    public void appendPromotorId(int id) {
-        this.promotorId += CommonConstant.STR_SEPARATOR;
-        this.promotorId += id;
-    }
-
-    public void appendAppointorId(int id) {
-        this.appointorId += CommonConstant.STR_SEPARATOR;
-        this.appointorId += id;
-    }
-
-    public void appendReceptorId(int id) {
-        this.receptorId += CommonConstant.STR_SEPARATOR;
-        this.receptorId += id;
-    }
-
-    public String getPromotorId() {
+    public int getPromotorId() {
         return promotorId;
     }
 
-    public void setPromotorId(String promotorId) {
+    public void setPromotorId(int promotorId) {
         this.promotorId = promotorId;
     }
 
-    public String getAppointorId() {
+    public int getAppointorId() {
         return appointorId;
     }
 
-    public void setAppointorId(String appointorId) {
+    public void setAppointorId(int appointorId) {
         this.appointorId = appointorId;
     }
 
-    public String getReceptorId() {
+    public int getReceptorId() {
         return receptorId;
     }
 
-    public void setReceptorId(String receptorId) {
+    public void setReceptorId(int receptorId) {
         this.receptorId = receptorId;
     }
 

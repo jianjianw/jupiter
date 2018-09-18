@@ -1,14 +1,11 @@
 package com.qiein.jupiter;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 
 import com.alibaba.fastjson.JSON;
+import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.util.TimeUtil;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.CompanyVO;
@@ -392,6 +389,26 @@ public class AllTest {
             }
         }
         return String.format("%6s", s.toString()).replace(" ", "6");
+    }
+
+
+    @Test
+    public void test132() {
+        Map map = new HashMap();
+        String a = (String) map.get("a");
+        System.out.println(a);
+
+        Integer b = (Integer) map.get("a");
+        System.out.println(b);
+    }
+
+    @Test
+    public void testlIST12() {
+        String sourceId = "";
+        List<String> sourceIds = Arrays.asList(sourceId.split(CommonConstant.STR_SEPARATOR));
+        System.out.println("-----------:" + sourceId);
+        System.out.println("-----------:" + sourceIds);
+        System.out.println(sourceIds.size());
     }
 
 }
