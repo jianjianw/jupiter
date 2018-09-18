@@ -456,7 +456,7 @@
     </select>
     <select id="findSourceByRole" resultMap="baseMap">
 
-        SELECT
+        SELECT distinct
             src.SRCIMG,
             src.SRCNAME,
             src.ID

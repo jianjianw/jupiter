@@ -150,12 +150,12 @@ public class CostServiceImpl implements CostService {
             }
         }
         List<ForDayPO> checkList=costDao.getSrcByDay(srcIds,start,end,companyId);
-        Iterator<ForDayPO> iterator = forDayPOS.iterator();
-        while(iterator.hasNext()){
-            ForDayPO forDayPO1=iterator.next();
+        for(int i=0;i<forDayPOS.size();i++){
             for(ForDayPO forDayPO:checkList){
-                if(forDayPO.getDay().equals(forDayPO1.getDay())&&forDayPO.getSrcId().equals(forDayPO1.getSrcId())){
-                    iterator.remove();
+                if(forDayPO.getDay().equals(forDayPOS.get(i).getDay())&&forDayPO.getSrcId().equals(forDayPOS.get(i).getSrcId())){
+                    forDayPOS.remove(i);
+                    i--;
+                    break;
                 }
             }
         }

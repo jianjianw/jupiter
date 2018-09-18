@@ -1,5 +1,7 @@
 package com.qiein.jupiter.constant;
 
+import com.qiein.jupiter.util.StringUtil;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -76,9 +78,9 @@ public class ClientStatusConst {
     public static final int ONLINE_SUCCESS = 40;// 线上成交
     public static final int ONLINE_STAY = 28;// 线上保留
     /*-- 客资分类 --*/
-    public static final int KZ_CLASS_NEW = 1;// 新客资
-    public static final int KZ_CLASS_ORDER = 3;// 已预约
-    public static final int KZ_CLASS_TRACK = 2; //待追踪
+//    public static final int KZ_CLASS_NEW = 1;// 新客资
+//    public static final int KZ_CLASS_ORDER = 3;// 已预约
+//    public static final int KZ_CLASS_TRACK = 2; //待追踪
 
     // 成交状态
     public static List<Integer> SUCCESS_STATUS_RANGE = new ArrayList<>(Arrays.asList(9, 30, 40));
@@ -105,4 +107,71 @@ public class ClientStatusConst {
     //统计毛客 时用的 筛选中，筛选待定，筛选无效
     public static List<Integer> COUNT_KZ_NUM_STATUS = new ArrayList<>(Arrays.asList(99, 0, 40));
 
+
+
+    /*-- 客资分类 --*/
+    public static final int KZ_CLASS_NEW = 1;// 新客资
+    public static final int KZ_CLASS_TRACK = 2;// 待跟踪
+    public static final int KZ_CLASS_ORDER = 3;// 已预约
+    public static final int KZ_CLASS_COME = 4;// 已进店
+    public static final int KZ_CLASS_SUCCESS = 5;// 已定单
+    public static final int KZ_CLASS_INVALID = 6;// 无效
+    public static final int KZ_CLASS_CUSTOM1 = 7;// 自定义1
+    public static final int KZ_CLASS_CUSTOM2 = 8;// 自定义2
+    public static final int KZ_CLASS_CUSTOM3 = 9;// 自定义3
+
+    public static final String KZ_CLASS_COMESHOP = ",4,5,";// 入店分类集合
+
+    public static final String KZ_CLASS_ACTION_ALL = "all";
+    public static final String KZ_CLASS_ACTION_NEW = "new";
+    public static final String KZ_CLASS_ACTION_TRACE = "trace";
+    public static final String KZ_CLASS_ACTION_ORDER = "order";
+    public static final String KZ_CLASS_ACTION_COME = "come";
+    public static final String KZ_CLASS_ACTION_SUCCESS = "success";
+    public static final String KZ_CLASS_ACTION_INVALID = "invalid";
+    public static final String KZ_CLASS_ACTION_CUSTOM1 = "custom1";
+    public static final String KZ_CLASS_ACTION_CUSTOM2 = "custom2";
+    public static final String KZ_CLASS_ACTION_CUSTOM3 = "custom3";
+
+    public static int getClassByAction(String action) {
+        if (StringUtil.isEmpty(action)) {
+            return 0;
+        }
+
+        int classId = 0;
+        switch (action.toLowerCase()) {
+            case KZ_CLASS_ACTION_ALL:
+                break;
+            case KZ_CLASS_ACTION_NEW:
+                classId = KZ_CLASS_NEW;
+                break;
+            case KZ_CLASS_ACTION_TRACE:
+                classId = KZ_CLASS_TRACK;
+                break;
+            case KZ_CLASS_ACTION_ORDER:
+                classId = KZ_CLASS_ORDER;
+                break;
+            case KZ_CLASS_ACTION_COME:
+                classId = KZ_CLASS_COME;
+                break;
+            case KZ_CLASS_ACTION_SUCCESS:
+                classId = KZ_CLASS_SUCCESS;
+                break;
+            case KZ_CLASS_ACTION_INVALID:
+                classId = KZ_CLASS_INVALID;
+                break;
+            case KZ_CLASS_ACTION_CUSTOM1:
+                classId = KZ_CLASS_CUSTOM1;
+                break;
+            case KZ_CLASS_ACTION_CUSTOM2:
+                classId = KZ_CLASS_CUSTOM2;
+                break;
+            case KZ_CLASS_ACTION_CUSTOM3:
+                classId = KZ_CLASS_CUSTOM3;
+                break;
+            default:
+                break;
+        }
+        return classId;
+    }
 }

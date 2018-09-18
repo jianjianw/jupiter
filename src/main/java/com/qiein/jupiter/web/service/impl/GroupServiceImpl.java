@@ -302,6 +302,7 @@ public class GroupServiceImpl implements GroupService {
                 channelPO.setChannelName(groupPO.getGroupName());
                 channelPO.setShowFlag(true);
                 channelDao.update(channelPO);
+                sourceDao.updateChannelName(channelPO.getId(),channelPO.getChannelName(),groupPO.getCompanyId());
             }
         } else {
             ChannelPO channelPO = channelDao.getChannelByGroupParentId(groupPO.getParentId(), old.getCompanyId());
