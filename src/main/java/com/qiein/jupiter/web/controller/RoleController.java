@@ -2,7 +2,7 @@ package com.qiein.jupiter.web.controller;
 
 import java.util.List;
 
-import com.qiein.jupiter.util.SysLogUtil;
+import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.entity.dto.RequestInfoDTO;
 import com.qiein.jupiter.web.entity.po.SystemLog;
 import com.qiein.jupiter.web.service.RoleSourceService;
@@ -19,9 +19,6 @@ import com.qiein.jupiter.aop.validate.annotation.Id;
 import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
-import com.qiein.jupiter.util.NumUtil;
-import com.qiein.jupiter.util.ResultInfo;
-import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.web.entity.po.RolePO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.RolePermissionVO;
@@ -66,7 +63,7 @@ public class RoleController extends BaseController {
             logService.addLog(log);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResultInfoUtil.success(TipMsgEnum.ADD_ROLE_SUCCESS,id);
+            return ResultInfoUtil.success(TipMsgEnum.ADD_ROLE_SUCCESS, id);
         }
         return ResultInfoUtil.success(TipMsgEnum.ADD_ROLE_SUCCESS, id);
     }
@@ -95,7 +92,9 @@ public class RoleController extends BaseController {
         }
         roleVO.setCompanyId(currentLoginStaff.getCompanyId());
         roleService.update(roleVO);
-        roleSourceService.insert(roleVO.getRoleId(),roleVO.getSourceIds(),getCurrentLoginStaff().getCompanyId());
+        if (StringUtil.isNotEmpty(roleVO.getSourceIds())) {
+            roleSourceService.insert(roleVO.getRoleId(), roleVO.getSourceIds(), getCurrentLoginStaff().getCompanyId());
+        }
         return ResultInfoUtil.success(TipMsgEnum.EDIT_ROLE_SUCCESS);
     }
 
