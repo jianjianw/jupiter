@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.dao;
 
 import com.qiein.jupiter.web.entity.po.SystemLog;
+import com.qiein.jupiter.web.entity.vo.AllotLogVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -47,4 +48,8 @@ public interface SystemLogDao extends BaseDao<SystemLogDao> {
      * @param time
      */
     int clearLog(int time);
+    /**
+     * 网销排班分配日志
+     */
+    List<AllotLogVO> getAllotLog(@Param("companyId")Integer companyId,@Param("staffId") Integer staffId);
 }
