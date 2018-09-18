@@ -9,6 +9,7 @@ import com.qiein.jupiter.util.SmsUtil;
 import com.qiein.jupiter.web.dao.NewsDao;
 import com.qiein.jupiter.web.dao.SystemLogDao;
 import com.qiein.jupiter.web.entity.po.SystemLog;
+import com.qiein.jupiter.web.entity.vo.AllotLogVO;
 import com.qiein.jupiter.web.service.SystemLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -76,5 +77,22 @@ public class SystemLogServiceImpl implements SystemLogService {
     @Override
     public int clearLog(int time) {
         return logDao.clearLog(time);
+    }
+
+    /**
+     * 网销排班分配日志
+     */
+    public List<AllotLogVO> getAllotLog(Integer companyId, Integer staffId) {
+        List<AllotLogVO> allotLogVOS = logDao.getAllotLog(companyId, staffId);
+        for (AllotLogVO allotLogVO : allotLogVOS) {
+            if (allotLogVO.getStatus().equals(0)) {
+                allotLogVO.setStatus("未领取");
+            } else if (allotLogVO.getStatus().equals(1)){
+                allotLogVO.setStatus("已领取");
+            } else if (allotLogVO.getStatus().equals(1)) {
+                allotLogVO.setStatus("已拒绝");
+            }
+        }
+        return allotLogVOS;
     }
 }

@@ -16,6 +16,15 @@
         <result column="COMPANYID" jdbcType="INTEGER" property="companyId"/>
     </resultMap>
 
+    <resultMap id="allotLog" type="com.qiein.jupiter.web.entity.vo.AllotLogVO">
+        <id column="ID" jdbcType="INTEGER" property="id"/>
+        <result column="KZNAME" jdbcType="VARCHAR" property="kzName"/>
+        <result column="KZWECHAT" jdbcType="INTEGER" property="kzWechat"/>
+        <result column="KZPHONE" jdbcType="INTEGER" property="kzPhone"/>
+        <result column="ALLOTTIME" jdbcType="INTEGER" property="allotTime"/>
+        <result column="STATUSID" jdbcType="INTEGER" property="status"/>
+    </resultMap>
+
     <sql id="baseColumn">
         ID, TYPEID, IP, ADDRESS, URL, STAFFID, STAFFNAME, MEMO, LOGTIME, MAC, COMPANYID
     </sql>
@@ -51,4 +60,25 @@
         DELETE FROM hm_pub_system_log
         WHERE LOGTIME &lt; #{time}
     </delete>
+    <select id="getAllotLog" resultMap="allotLog">
+        SELECT
+            info.id,
+            info.KZNAME,
+            info.KZWECHAT,
+            info.KZPHONE,
+            FROM_UNIXTIME(log.ALLOTTIME, "%Y/%m/%d") ALLOTTIME,
+            log.STATUSID
+        FROM
+            hm_crm_allot_log log
+        LEFT JOIN hm_crm_client_info info ON info.kzid = log.kzid
+        AND info.COMPANYID = log.COMPANYID
+        WHERE
+            log.ALLOTTYPE = 1
+        AND log.STAFFID =#{staffId}
+        AND log.COMPANYID = #{companyId}
+        AND FROM_UNIXTIME(log.ALLOTTIME, "%Y/%m/%d") = FROM_UNIXTIME(
+            UNIX_TIMESTAMP(NOW()),
+            "%Y/%m/%d"
+        )
+    </select>
 </mapper>

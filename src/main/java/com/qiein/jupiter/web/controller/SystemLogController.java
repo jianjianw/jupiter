@@ -9,6 +9,7 @@ import com.qiein.jupiter.web.service.SystemLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -31,5 +32,13 @@ public class SystemLogController extends BaseController {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         PageInfo<SystemLog> logByType = systemLogService.getLogByType(pageNum, pageSize, currentLoginStaff.getCompanyId(), typeId, startTime, endTime);
         return ResultInfoUtil.success(logByType);
+    }
+
+    /**
+     * 网销排班分配日志
+     */
+    @GetMapping("/get_allot_log")
+    public ResultInfo getAllotLog(@RequestParam Integer staffId){
+        return ResultInfoUtil.success(systemLogService.getAllotLog(getCurrentLoginStaff().getCompanyId(),staffId));
     }
 }

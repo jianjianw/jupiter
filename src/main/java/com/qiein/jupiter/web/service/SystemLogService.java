@@ -2,6 +2,9 @@ package com.qiein.jupiter.web.service;
 
 import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.web.entity.po.SystemLog;
+import com.qiein.jupiter.web.entity.vo.AllotLogVO;
+
+import java.util.List;
 
 /**
  * 系统日志
@@ -39,4 +42,9 @@ public interface SystemLogService {
      * 定时器清空日志
      */
     int clearLog(int time);
+
+    /**
+     * 网销排班分配日志
+     */
+    List<AllotLogVO> getAllotLog(Integer companyId,Integer staffId);
 }

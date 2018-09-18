@@ -290,7 +290,7 @@ public class ClientAddServiceImpl implements ClientAddService {
      * @return:
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void addOutZjsClient(ClientVO clientVO) {
         Map<String, Object> reqContent = null;
         try {
@@ -302,6 +302,10 @@ public class ClientAddServiceImpl implements ClientAddService {
         SourcePO sourcePO = sourceDao.getByIdAndCid(clientVO.getSourceId(),clientVO.getCompanyId());
         if (sourcePO == null || !sourcePO.getIsShow())
             throw new RException(ExceptionEnum.CHANNEL_NOT_FOUND);
+        if (StringUtil.isNotEmpty(clientVO.getCollectorName()))
+            reqContent.put("operaName",clientVO.getCollectorName());
+        if (clientVO.getCollectorId()==0)
+            reqContent.put("operaId",clientVO.getCollectorId());
         reqContent.put("srctype", sourcePO.getTypeId());
         reqContent.put("isfilter",sourcePO.getIsFilter());
         String resultJsonStr = crmBaseApi.doService(reqContent, "addDingClientInfo");
