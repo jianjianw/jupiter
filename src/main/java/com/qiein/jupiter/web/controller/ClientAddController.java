@@ -123,10 +123,10 @@ public class ClientAddController extends BaseController {
      */
     @PostMapping("/add_out_zjs_client")
     public ResultInfo addOutZjsClient(@RequestBody ClientVO clientVO) {
-        if (StringUtil.isAllEmpty(clientVO.getKzPhone(), clientVO.getKzWechat(),clientVO.getKzQq()))
+        if (StringUtil.isAllEmpty(clientVO.getKzPhone(), clientVO.getKzWechat(), clientVO.getKzQq()))
             throw new RException(ExceptionEnum.KZ_CONTACT_WAY_WRITE_ONE);
 
-        if (!StringUtil.isPhone(clientVO.getKzPhone())){
+        if (StringUtil.isNotEmpty(clientVO.getKzPhone()) && !StringUtil.isPhone(clientVO.getKzPhone())) {
             throw new RException(ExceptionEnum.PHONE_ERROR);
         }
 //        if (!StringUtil.isPhone(clientVO.getKzPhone())) {
@@ -175,7 +175,7 @@ public class ClientAddController extends BaseController {
 //                }
 //            }
 //        }
-        List<ChannelVO> list = channelService.getAllShowChannelSourceList(companyId,channelId);
+        List<ChannelVO> list = channelService.getAllShowChannelSourceList(companyId, channelId);
         map.put("srcList", list);
         return ResultInfoUtil.success(map);
     }
