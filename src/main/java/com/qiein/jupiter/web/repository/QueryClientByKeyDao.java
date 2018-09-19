@@ -26,7 +26,7 @@ import java.util.Map;
  * @Author: shiTao
  */
 @Repository
-public class WebClientInfoSearchDao {
+public class QueryClientByKeyDao {
     @Autowired
     private NamedParameterJdbcOperations namedJdbc;
 
@@ -116,8 +116,8 @@ public class WebClientInfoSearchDao {
         String detailTableName = DBSplitUtil.getDetailTabName(companyId);
         StringBuilder sql = new StringBuilder();
         sql.append(
-                "   SELECT det.KZID, det.MATENAME, det.MATEWECHAT, det.MATEPHONE, det.MATEQQ, info.CREATETIME, info.STATUSID, info.SOURCEID, det.APPOINTNAME, det.GROUPNAME FROM  ");
-
+                "   SELECT det.KZID, det.MATENAME, det.MATEWECHAT, det.MATEPHONE, det.MATEQQ, info.CREATETIME," +
+                        " info.STATUSID, info.SOURCEID, det.APPOINTNAME, det.GROUPNAME ,  ");
         sql.append(" det.APPOINTNAME, det.GROUPNAME ,det.KZID, det.MATENAME, det.MATEWECHAT, det.MATEPHONE, det.MATEQQ ");
         sql.append(" FROM ");
         sql.append(infoTableName);

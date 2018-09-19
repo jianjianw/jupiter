@@ -32,7 +32,8 @@ public class ClientQueryDao {
     /**
      * 查询删除客资
      */
-    public PlatPageVO queryDelClientInfo(QueryVO vo, int companyId) {
+    public PlatPageVO queryDelClientInfo(QueryVO vo) {
+        int companyId = vo.getCompanyId();
         final PlatPageVO pageVO = new PlatPageVO();
         pageVO.setCurrentPage(vo.getCurrentPage());
         pageVO.setPageSize(vo.getPageSize());
@@ -66,33 +67,15 @@ public class ClientQueryDao {
         });
         //分页
         String countSql = "SELECT COUNT(*) COUNT " + fromSql + whereSql;
-        namedJdbc.query(countSql, keyMap, new RowCallbackHandler() {
-            @Override
-            public void processRow(ResultSet rs) throws SQLException {
-                int count = rs.getInt("COUNT");
-                pageVO.setTotalCount(count);
-                int totalPageNum = (count + pageVO.getPageSize() - 1) / pageVO.getPageSize();
-                pageVO.setTotalPage(totalPageNum);
-            }
-        });
+
+        int count = namedJdbc.queryForObject(countSql, keyMap, Integer.class);
+        pageVO.setTotalCount(count);
+        int totalPageNum = (count + pageVO.getPageSize() - 1) / pageVO.getPageSize();
+        pageVO.setTotalPage(totalPageNum);
+
         //执行分页
         pageVO.setData(result);
         return pageVO;
-    }
-
-
-    /**
-     * 查询客资详情
-     */
-    public void searchClientDeatilInfo(PlatPageVO pageVO, String sql) {
-
-    }
-
-    /**
-     * 处理分页信息
-     */
-    private void handlePageInfo(PlatPageVO pageVO, String sql) {
-
     }
 
 
@@ -101,7 +84,7 @@ public class ClientQueryDao {
      *
      * @param rs
      */
-    private JSONObject resultToClientInfo(ResultSet rs) throws SQLException {
+    public static JSONObject resultToClientInfo(ResultSet rs) throws SQLException {
         JSONObject info = new JSONObject();
         info.put("id", rs.getInt("ID"));
         info.put("letterid", rs.getString("LETTERID"));
@@ -175,7 +158,7 @@ public class ClientQueryDao {
      *
      * @return
      */
-    private StringBuilder getBaseSelect() {
+    public static StringBuilder getBaseSelect() {
         StringBuilder sql = new StringBuilder();
         sql.append(" SELECT info.ID, info.KZID, info.TYPEID, info.CLASSID, info.STATUSID,info.LETTERID,info.KZPHONE_FLAG, ").
                 append("info.KZNAME, info.KZPHONE, info.KZWECHAT, info.WEFLAG,info.SRCTYPE, ")
@@ -197,7 +180,7 @@ public class ClientQueryDao {
      * @param companyId
      * @return
      */
-    private StringBuilder getFromSql(int companyId) {
+    public static StringBuilder getFromSql(int companyId) {
         StringBuilder from = new StringBuilder();
         from.append(" FROM ").append(DBSplitUtil.getInfoTabName(companyId));
         from.append(" info LEFT JOIN ");
@@ -236,26 +219,26 @@ public class ClientQueryDao {
         if (StringUtil.isNotEmpty(vo.getTypeId())) {
             where.append(dynamixSql(vo.getTypeId(), CommonConstant.STR_SEPARATOR, "info.TYPEID"));
         }
-
-        // 录入人
-        if (StringUtil.isNotEmpty(vo.getCollectorId())) {
-            where.append(dynamixSql(vo.getCollectorId(), CommonConstant.STR_SEPARATOR, "info.COLLECTORID"));
-        }
-
-        // 筛选人
-        if (StringUtil.isNotEmpty(vo.getPromotorId())) {
-            where.append(dynamixSql(vo.getPromotorId(), CommonConstant.STR_SEPARATOR, "info.PROMOTORID"));
-        }
-
-        // 邀约人
-        if (StringUtil.isNotEmpty(vo.getAppointorId())) {
-            where.append(dynamixSql(vo.getAppointorId(), CommonConstant.STR_SEPARATOR, "info.APPOINTORID"));
-        }
-
-        // 接待人
-        if (StringUtil.isNotEmpty(vo.getReceptorId())) {
-            where.append(dynamixSql(vo.getReceptorId(), CommonConstant.STR_SEPARATOR, "info.RECEPTORID"));
-        }
+//
+//        // 录入人
+//        if (StringUtil.isNotEmpty(vo.getCollectorId())) {
+//            where.append(dynamixSql(vo.getCollectorId(), CommonConstant.STR_SEPARATOR, "info.COLLECTORID"));
+//        }
+//
+//        // 筛选人
+//        if (StringUtil.isNotEmpty(vo.getPromotorId())) {
+//            where.append(dynamixSql(vo.getPromotorId(), CommonConstant.STR_SEPARATOR, "info.PROMOTORID"));
+//        }
+//
+//        // 邀约人
+//        if (StringUtil.isNotEmpty(vo.getAppointorId())) {
+//            where.append(dynamixSql(vo.getAppointorId(), CommonConstant.STR_SEPARATOR, "info.APPOINTORID"));
+//        }
+//
+//        // 接待人
+//        if (StringUtil.isNotEmpty(vo.getReceptorId())) {
+//            where.append(dynamixSql(vo.getReceptorId(), CommonConstant.STR_SEPARATOR, "info.RECEPTORID"));
+//        }
 
         // 状态
         if (StringUtil.isNotEmpty(vo.getStatusId())) {
@@ -318,7 +301,7 @@ public class ClientQueryDao {
      * @param column
      * @return
      */
-    private String dynamixSql(String param, String spitStr, String column) {
+    public static String dynamixSql(String param, String spitStr, String column) {
 
         String[] paramArr = param.split(spitStr);
         if (paramArr.length == 0) {

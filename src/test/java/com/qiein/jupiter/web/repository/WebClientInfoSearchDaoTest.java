@@ -9,8 +9,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
-
 /**
  * @Author: shiTao
  */
@@ -19,7 +17,7 @@ import static org.junit.Assert.*;
 public class WebClientInfoSearchDaoTest {
 
     @Autowired
-    private WebClientInfoSearchDao webClientInfoSearchDao;
+    private QueryClientByKeyDao webClientInfoSearchDao;
 
     @Test
     public void searchClientInfoBySearchKey() {
