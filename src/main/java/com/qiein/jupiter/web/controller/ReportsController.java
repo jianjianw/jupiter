@@ -185,11 +185,12 @@ public class ReportsController extends BaseController {
      * 获取电商推广渠道统计
      */
     @RequestMapping("/get_dstg_channel_reports")
-    public ResultInfo getDstgChannelReports(@RequestParam("start") int start, @RequestParam("end") int end) {
+    public ResultInfo getDstgChannelReports(@RequestParam("start") int start, @RequestParam("end") int end, String channelIds) {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         Map<String, Object> reqContent = new HashMap<>();
         reqContent.put("start", start);
         reqContent.put("end", end);
+        reqContent.put("channelids", channelIds);
         reqContent.put("companyid", currentLoginStaff.getCompanyId());
         //请求juplat接口
         String json = crmBaseApi.doService(reqContent, "dstgchannelreports");
@@ -375,12 +376,12 @@ public class ReportsController extends BaseController {
      * 获取电商推广广告报表
      */
     @GetMapping("/get_dstg_ad_reports")
-    public ResultInfo getDstgAdReports(Integer start, Integer end, @RequestParam(value = "type", required = false) String type,Integer page) {
-        if(null == page || 0 == page) {
+    public ResultInfo getDstgAdReports(Integer start, Integer end, @RequestParam(value = "type", required = false) String type, Integer page) {
+        if (null == page || 0 == page) {
             page = 1;
         }
         StaffPO staffPO = getCurrentLoginStaff();
-        PageInfo dstgAdReports = reportService.getDstgAdReports(start, end, staffPO.getCompanyId(), type,page);
+        PageInfo dstgAdReports = reportService.getDstgAdReports(start, end, staffPO.getCompanyId(), type, page);
         return ResultInfoUtil.success(dstgAdReports);
     }
 
@@ -388,9 +389,9 @@ public class ReportsController extends BaseController {
      * 电商推广咨询信息方式报表
      */
     @GetMapping("/get_dstg_zx_style_reports")
-    public ResultInfo getDstgZxStyleReports(Integer start, Integer end, @RequestParam(value = "type", required = false) String type, @RequestParam(value = "zxStyleCode", required = false) String zxStyleCode,@RequestParam(value="sourceIds")String sourceIds) {
+    public ResultInfo getDstgZxStyleReports(Integer start, Integer end, @RequestParam(value = "type", required = false) String type, @RequestParam(value = "zxStyleCode", required = false) String zxStyleCode, @RequestParam(value = "sourceIds") String sourceIds) {
         StaffPO staffPO = getCurrentLoginStaff();
-        List<DstgZxStyleReportsVO> dstgGoldDataReportsVO = reportService.getDstgZxStyleReports(start, end, staffPO.getCompanyId(), type, zxStyleCode,sourceIds);
+        List<DstgZxStyleReportsVO> dstgGoldDataReportsVO = reportService.getDstgZxStyleReports(start, end, staffPO.getCompanyId(), type, zxStyleCode, sourceIds);
         return ResultInfoUtil.success(dstgGoldDataReportsVO);
     }
 
@@ -655,11 +656,12 @@ public class ReportsController extends BaseController {
 
     /**
      * 获取个人简报
+     *
      * @param reportParamDTO
      * @return
      */
     @GetMapping("/get_personal_presentation")
-    public ResultInfo getPersonalPresentation(ReportParamDTO reportParamDTO){
+    public ResultInfo getPersonalPresentation(ReportParamDTO reportParamDTO) {
         reportParamDTO.setStaffId(getCurrentLoginStaff().getId());
         reportParamDTO.setCompanyId(getCurrentLoginStaff().getCompanyId());
         return ResultInfoUtil.success(reportService.getPersonalPresentation(reportParamDTO));
