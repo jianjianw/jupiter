@@ -428,7 +428,7 @@ public class ReportsController extends BaseController {
 
     @GetMapping("/receive_ali")
     public ResultInfo receiveAli(String code, String state) {
-        System.out.println(code + "-----------------------------------" + state);
+//        System.out.println(code + "-----------------------------------" + state);
         return ResultInfoUtil.success();
     }
 

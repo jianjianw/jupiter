@@ -171,7 +171,7 @@ public class LoginController extends BaseController {
                 logService.addLog(log);
             } catch (Exception e) {
                 e.printStackTrace();
-                System.out.println("添加登录日志出错。。。。。。");
+//                System.out.println("添加登录日志出错。。。。。。");
             }
             return ResultInfoUtil.success(staffPO);
         } catch (RException e) {

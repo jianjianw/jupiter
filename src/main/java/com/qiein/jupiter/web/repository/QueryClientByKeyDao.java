@@ -39,13 +39,12 @@ public class QueryClientByKeyDao {
      * @return
      */
     public List<SearchClientVO> search(int companyId, final String key) {
-        long t = System.currentTimeMillis();
+
         List<SearchClientVO> clientVOList = searchClientInfoBySearchKey(companyId, key);
 
         if (CollectionUtils.isEmpty(clientVOList)) {
             clientVOList = searchClientDetailBySearchKey(companyId, key);
         }
-        System.out.println(System.currentTimeMillis() - t);
 
         return clientVOList;
     }

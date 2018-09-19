@@ -97,7 +97,7 @@ public class ZjsKzOfYearDao {
         for (int i = 0; i < timeList.size(); i += 2) {
             String sql = getAllTargetSQL(zjsClientYearReportDTO, dsInvalidVO).toString();
 //            System.out.println("输出sql: " + sql);
-            System.out.println(String.valueOf((i + 2) / 2) + "月time: begin: " + timeList.get(i) + " ,end: " + timeList.get(i + 1));
+//            System.out.println(String.valueOf((i + 2) / 2) + "月time: begin: " + timeList.get(i) + " ,end: " + timeList.get(i + 1));
             Object[] objs = new Object[]{timeList.get(i), timeList.get(i + 1),
                     timeList.get(i), timeList.get(i + 1), dsInvalidVO.getZjsValidStatus(),
                     timeList.get(i), timeList.get(i + 1),
@@ -110,7 +110,7 @@ public class ZjsKzOfYearDao {
             List<RegionReportsVO> now = jdbcTemplate.query(sql, objs, new RowMapper<RegionReportsVO>() {
                 @Override
                 public RegionReportsVO mapRow(ResultSet rs, int rowNum) throws SQLException {
-                    System.out.println(JSON.toJSONString(rs.getString(2)));
+//                    System.out.println(JSON.toJSONString(rs.getString(2)));
                     RegionReportsVO regionReportsVO = new RegionReportsVO();
 //                                regionReportsVO.setRegionName(rs.getString("regionName"));
                     regionReportsVO.setAllClientCount(rs.getInt("allClientCount"));                     //总客资
@@ -140,7 +140,7 @@ public class ZjsKzOfYearDao {
             now.get(0).setRegionName(String.valueOf((i + 2) / 2) + "月");
             resultContent.addAll(now);
         }
-        System.out.println("resultContent: " + JSON.toJSONString(resultContent));
+//        System.out.println("resultContent: " + JSON.toJSONString(resultContent));
         dTotal(resultContent);
         calculate(resultContent, dsInvalidVO);
 
@@ -156,7 +156,7 @@ public class ZjsKzOfYearDao {
      */
     public String getFinalSQL(ZjsClientYearReportDTO zjsClientYearReportDTO, DsInvalidVO dsInvalidVO) {
         String fianlSQL = setSearchTypeAndSQL(zjsClientYearReportDTO, dsInvalidVO);
-        System.out.println("最终输出sql： " + fianlSQL);
+//        System.out.println("最终输出sql： " + fianlSQL);
         return fianlSQL;
     }
 
@@ -575,7 +575,7 @@ public class ZjsKzOfYearDao {
             }
             list.add(map);
         }
-        System.out.println(list);
+//        System.out.println(list);
         return list;
     }
 
