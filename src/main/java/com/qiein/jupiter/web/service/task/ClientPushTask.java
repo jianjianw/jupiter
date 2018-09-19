@@ -54,7 +54,7 @@ public class ClientPushTask {
             return;
         }
         log.info("执行定时推送任务");
-        List<CompanyPO> compList = companyDao.listComp();
+        List<CompanyPO> compList = companyDao.listComp(1);
         for (CompanyPO comp : compList) {
             //超时时间设置是秒
             int overTime = comp.getOverTime();
