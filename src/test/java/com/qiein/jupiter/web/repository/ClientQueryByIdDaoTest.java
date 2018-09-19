@@ -24,7 +24,7 @@ public class ClientQueryByIdDaoTest {
     public void getClientByKzid() {
         QueryVO queryVO = new QueryVO();
         queryVO.setCompanyId(3);
-        queryVO.setKzId("6b915a02b2a98d332d881abc21d2103c");
+        queryVO.setKzId("a10fcf31dfbdbd703686c43b7196a5df");
         queryVO.setUid(1);
         JSONObject clientByKzid = clientQueryByIdDao.getClientByKzid(queryVO);
         System.out.println(clientByKzid.toJSONString());
