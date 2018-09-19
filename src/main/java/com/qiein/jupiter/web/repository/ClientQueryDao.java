@@ -43,7 +43,7 @@ public class ClientQueryDao {
         keyMap.put("page", vo.getCurrentPage());
         keyMap.put("size", vo.getPageSize());
         //select
-        StringBuilder baseSelect = getBaseSelect();
+        StringBuilder baseSelect = getBaseSelect(true);
         //from
         StringBuilder fromSql = new StringBuilder();
         fromSql.append(getFromSql(companyId));
@@ -78,6 +78,53 @@ public class ClientQueryDao {
         return pageVO;
     }
 
+    /**
+     * 查询重复客资
+     */
+    public PlatPageVO checkRepeatInfoHs(QueryVO vo) {
+        int companyId = vo.getCompanyId();
+        final PlatPageVO pageVO = new PlatPageVO();
+        pageVO.setCurrentPage(vo.getCurrentPage());
+        pageVO.setPageSize(vo.getPageSize());
+
+        //查询参数
+        Map<String, Object> keyMap = new HashMap<>();
+        keyMap.put("companyId", companyId);
+        keyMap.put("key", vo.getSearchKey());
+
+        StringBuilder baseSelect = getBaseSelect(false);
+        baseSelect.append(" FROM hm_crm_client_info info LEFT JOIN hm_crm_client_detail det " +
+                " ON info.KZID = det.KZID AND det.COMPANYID = info.COMPANYID  " +
+                " WHERE info.COMPANYID = :companyId AND info.ISDEL = 0 " +
+                " AND ( info.KZPHONE = :key  OR info.KZWECHAT = :key OR info.KZQQ = :key OR info.KZWW = :key )" +
+                " ORDER BY info.ID DESC ");
+
+        //执行查询
+        final List<JSONObject> result = new ArrayList<>();
+        namedJdbc.query(baseSelect.toString(), keyMap, new RowCallbackHandler() {
+            @Override
+            public void processRow(ResultSet rs) throws SQLException {
+                result.add(resultToClientInfo(rs));
+            }
+        });
+
+        //分页
+        String countSql = "SELECT COUNT(*) COUNT " +
+                " FROM hm_crm_client_info info LEFT JOIN hm_crm_client_detail det " +
+                " ON info.KZID = det.KZID AND det.COMPANYID = info.COMPANYID  " +
+                " WHERE info.COMPANYID = :companyId AND info.ISDEL = 0 " +
+                " AND ( info.KZPHONE = :key  OR info.KZWECHAT = :key OR info.KZQQ = :key OR info.KZWW = :key )" +
+                " ORDER BY info.ID DESC";
+
+        int count = namedJdbc.queryForObject(countSql, keyMap, Integer.class);
+        pageVO.setTotalCount(count);
+        int totalPageNum = (count + pageVO.getPageSize() - 1) / pageVO.getPageSize();
+        pageVO.setTotalPage(totalPageNum);
+
+        //执行分页
+        pageVO.setData(result);
+        return pageVO;
+    }
 
     /**
      * 将结果转换为客资信息
@@ -158,19 +205,25 @@ public class ClientQueryDao {
      *
      * @return
      */
-    public static StringBuilder getBaseSelect() {
+    public static StringBuilder getBaseSelect(boolean needLog) {
         StringBuilder sql = new StringBuilder();
-        sql.append(" SELECT info.ID, info.KZID, info.TYPEID, info.CLASSID, info.STATUSID,info.LETTERID,info.KZPHONE_FLAG, ").
-                append("info.KZNAME, info.KZPHONE, info.KZWECHAT, info.WEFLAG,info.SRCTYPE, ")
-                .append(" info.KZQQ, info.KZWW, info.SEX, info.CHANNELID, info.SOURCEID, info.COLLECTORID, det.COLLECTORNAME,")
-                .append(" info.PROMOTORID, det.PROMOTERNAME, info.APPOINTORID, ")
-                .append("  det.APPOINTNAME, info.RECEPTORID, det.RECEPTORNAME, info.SHOPID, det.SHOPNAME, info.ALLOTTYPE,")
-                .append(" info.CREATETIME, info.RECEIVETIME, info.TRACETIME, info.APPOINTTIME, det.PACKAGECODE, ")
-                .append(" info.COMESHOPTIME, info.SUCCESSTIME, info.UPDATETIME, det.MEMO,det.FILMINGCODE,det.FILMINGAREA, ")
+        sql.append(" SELECT  ");
+        sql.append("info.ID, info.KZID, info.TYPEID, info.CLASSID, info.STATUSID,info.LETTERID,info.KZPHONE_FLAG,")
+                .append("info.KZNAME, info.KZPHONE, info.KZWECHAT, info.WEFLAG,info.SRCTYPE, ")
+                .append("info.KZQQ, info.KZWW, info.SEX, info.CHANNELID, info.SOURCEID, info.COLLECTORID,")
+                .append("  info.PROMOTORID, info.APPOINTORID,info.RECEPTORID,info.SHOPID, info.ALLOTTYPE,")
+                .append(" info.CREATETIME, info.RECEIVETIME, info.TRACETIME, info.APPOINTTIME, ")
+                .append(" .info.COMESHOPTIME, info.SUCCESSTIME, info.UPDATETIME,info.GROUPID, ")
+
+                .append("  det.COLLECTORNAME,det.PROMOTERNAME,det.APPOINTNAME,det.RECEPTORNAME,det.SHOPNAME,")
+                .append(" det.PACKAGECODE,det.MEMO,det.FILMINGCODE,det.FILMINGAREA, ")
                 .append(" det.OLDKZNAME, det.OLDKZPHONE, det.AMOUNT, det.STAYAMOUNT, det.TALKIMG, det.ORDERIMG, ")
                 .append(" det.ZXSTYLE, det.YXLEVEL, det.YSRANGE, det.ADADDRESS, det.ADID, det.MARRYTIME,")
                 .append(" det.YPTIME, det.MATENAME, det.MATEPHONE, det.ADDRESS, det.MATEWECHAT,det.MATEQQ, ")
-                .append(" info.GROUPID, det.GROUPNAME, det.PAYSTYLE, det.HTNUM, det.INVALIDLABEL, det.KEYWORD, log.CONTENT ");
+                .append(" det.GROUPNAME, det.PAYSTYLE, det.HTNUM, det.INVALIDLABEL, det.KEYWORD ");
+        if (needLog) {
+            sql.append("  ,log.CONTENT");
+        }
         return sql;
     }
 

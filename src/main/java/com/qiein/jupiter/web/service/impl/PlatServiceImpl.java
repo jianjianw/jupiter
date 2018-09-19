@@ -65,5 +65,16 @@ public class PlatServiceImpl implements PlatService {
         return clientQueryDao.queryDelClientInfo(queryVO);
     }
 
+    /**
+     * 查询重复客资
+     *
+     * @param queryVO
+     * @return
+     */
+    @Override
+    public PlatPageVO getRepeatClientHsWeb(QueryVO queryVO) {
+        return clientQueryDao.checkRepeatInfoHs(queryVO);
+    }
+
 
 }

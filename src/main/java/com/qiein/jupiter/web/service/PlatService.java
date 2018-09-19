@@ -33,4 +33,9 @@ public interface PlatService {
      * 查看删除客资
      */
     PlatPageVO getDelClient(QueryVO queryVO);
+
+    /**
+     * 页面查询重复客资
+     */
+    PlatPageVO getRepeatClientHsWeb(QueryVO queryVO);
 }

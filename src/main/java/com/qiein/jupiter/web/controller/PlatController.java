@@ -46,11 +46,26 @@ public class PlatController extends BaseController {
      * 查询删除客资
      */
     @GetMapping("/get_del_client")
-    public ResultInfo getDelClientInfo(){
+    public ResultInfo getDelClientInfo() {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         QueryVO queryVO = new QueryVO();
         queryVO.setUid(currentLoginStaff.getId());
         queryVO.setCompanyId(currentLoginStaff.getCompanyId());
         return ResultInfoUtil.success(platService.getDelClient(queryVO));
+    }
+
+    /**
+     * 查询重复客资
+     */
+    @GetMapping("/get_repeat_client_by_key")
+    public ResultInfo getDelClientInfo(String key) {
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        QueryVO queryVO = new QueryVO();
+        queryVO.setUid(currentLoginStaff.getId());
+        queryVO.setCompanyId(currentLoginStaff.getCompanyId());
+        queryVO.setSearchKey(key);
+        queryVO.setCurrentPage(0);
+        queryVO.setPageSize(50);
+        return ResultInfoUtil.success(platService.getRepeatClientHsWeb(queryVO));
     }
 }
