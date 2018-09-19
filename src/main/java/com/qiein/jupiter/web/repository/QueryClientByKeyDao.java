@@ -26,7 +26,7 @@ import java.util.Map;
  * @Author: shiTao
  */
 @Repository
-public class WebClientInfoSearchDao {
+public class QueryClientByKeyDao {
     @Autowired
     private NamedParameterJdbcOperations namedJdbc;
 

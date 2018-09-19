@@ -4,6 +4,7 @@ import com.qiein.jupiter.constant.ClientStatusConst;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.util.TimeUtil;
 
 /**
  * @Author: shiTao
@@ -95,22 +96,22 @@ public class QueryVO {
     /**
      * 录入人ID
      */
-    private int collectorId;
+    private String collectorId = "";
 
     /**
      * 筛选人ID
      */
-    private int promotorId;
+    private String promotorId = "";
 
     /**
      * 邀约人ID
      */
-    private int appointorId;
+    private String appointorId = "";
 
     /**
      * 接待人ID
      */
-    private int receptorId;
+    private String receptorId = "";
 
     private String spareSql = "";
 
@@ -147,59 +148,6 @@ public class QueryVO {
      * 当前第几页
      */
     private int currentPage;
-
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
-
-    public int getOperationAdminNo() {
-        return operationAdminNo;
-    }
-
-    public void setOperationAdminNo(int operationAdminNo) {
-        this.operationAdminNo = operationAdminNo;
-    }
-
-    public String getOperationAdminName() {
-        return operationAdminName;
-    }
-
-    public void setOperationAdminName(String operationAdminName) {
-        this.operationAdminName = operationAdminName;
-    }
-
-    public String getRequestIp() {
-        return requestIp;
-    }
-
-    public void setRequestIp(String requestIp) {
-        this.requestIp = requestIp;
-    }
-
-    public int getCompanyId() {
-        return companyId;
-    }
-
-    public void setCompanyId(int companyId) {
-        this.companyId = companyId;
-    }
-
-    public int getPageSize() {
-        return pageSize;
-    }
-
-    public void setPageSize(int pageSize) {
-        this.pageSize = pageSize;
-    }
-
-    public int getCurrentPage() {
-        return currentPage;
-    }
-
-    public void setCurrentPage(int currentPage) {
-        this.currentPage = currentPage;
-    }
 
     public String getYxLevel() {
         return yxLevel;
@@ -240,36 +188,55 @@ public class QueryVO {
         this.kzId = kzId;
     }
 
-
-    public int getCollectorId() {
+    public String getCollectorId() {
         return collectorId;
     }
 
-    public void setCollectorId(int collectorId) {
+    public void setCollectorId(String collectorId) {
         this.collectorId = collectorId;
     }
 
-    public int getPromotorId() {
+    public void appendCollectorId(int id) {
+        this.collectorId += CommonConstant.STR_SEPARATOR;
+        this.collectorId += id;
+    }
+
+    public void appendPromotorId(int id) {
+        this.promotorId += CommonConstant.STR_SEPARATOR;
+        this.promotorId += id;
+    }
+
+    public void appendAppointorId(int id) {
+        this.appointorId += CommonConstant.STR_SEPARATOR;
+        this.appointorId += id;
+    }
+
+    public void appendReceptorId(int id) {
+        this.receptorId += CommonConstant.STR_SEPARATOR;
+        this.receptorId += id;
+    }
+
+    public String getPromotorId() {
         return promotorId;
     }
 
-    public void setPromotorId(int promotorId) {
+    public void setPromotorId(String promotorId) {
         this.promotorId = promotorId;
     }
 
-    public int getAppointorId() {
+    public String getAppointorId() {
         return appointorId;
     }
 
-    public void setAppointorId(int appointorId) {
+    public void setAppointorId(String appointorId) {
         this.appointorId = appointorId;
     }
 
-    public int getReceptorId() {
+    public String getReceptorId() {
         return receptorId;
     }
 
-    public void setReceptorId(int receptorId) {
+    public void setReceptorId(String receptorId) {
         this.receptorId = receptorId;
     }
 
@@ -353,6 +320,9 @@ public class QueryVO {
     }
 
     public void setStart(int start) {
+        if (NumUtil.isInValid(start)) {
+            start = TimeUtil.dateToIntMillis(TimeUtil.getSysdateStart());
+        }
         this.start = start;
     }
 
@@ -361,6 +331,9 @@ public class QueryVO {
     }
 
     public void setEnd(int end) {
+        if (NumUtil.isInValid(end)) {
+            end = TimeUtil.dateToIntMillis(TimeUtil.getSysdateEnd());
+        }
         this.end = end;
     }
 
@@ -478,5 +451,57 @@ public class QueryVO {
             sql += " AND ";
         }
         this.superSql += sql;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public int getOperationAdminNo() {
+        return operationAdminNo;
+    }
+
+    public void setOperationAdminNo(int operationAdminNo) {
+        this.operationAdminNo = operationAdminNo;
+    }
+
+    public String getOperationAdminName() {
+        return operationAdminName;
+    }
+
+    public void setOperationAdminName(String operationAdminName) {
+        this.operationAdminName = operationAdminName;
+    }
+
+    public String getRequestIp() {
+        return requestIp;
+    }
+
+    public void setRequestIp(String requestIp) {
+        this.requestIp = requestIp;
+    }
+
+    public int getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(int companyId) {
+        this.companyId = companyId;
+    }
+
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public int getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
     }
 }

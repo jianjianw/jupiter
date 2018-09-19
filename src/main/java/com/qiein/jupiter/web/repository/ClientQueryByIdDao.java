@@ -40,8 +40,9 @@ public class ClientQueryByIdDao {
 
         JSONObject info = new JSONObject();
 
+        JSONObject clientDetailInfo = getClientDetailInfo(vo);
         // 获取客资信息
-        info.put("info", getClientDetailInfo(vo));
+        info.put("info", clientDetailInfo);
         // 获取录入备注
         info.put("remark", getInfoRemark(vo));
         // 操作日志
@@ -54,7 +55,10 @@ public class ClientQueryByIdDao {
         info.put("sklog", getCashLog(vo));
 
         // 获取权限集
-        info.put("pms", getPmsMap(vo));
+        info.put("pms", getPmsMap(vo.getUid(), vo.getCompanyId(),
+                clientDetailInfo.getIntValue("collectorid"),
+                clientDetailInfo.getIntValue("appointorid"),
+                clientDetailInfo.getIntValue("receptorid")));
 
         return info;
     }
@@ -281,12 +285,8 @@ public class ClientQueryByIdDao {
     /**
      * 获取权限
      */
-    public HashMap<String, Object> getPmsMap(QueryVO queryVO) {
-        int staffId = queryVO.getUid();
-        int companyId = queryVO.getCompanyId();
-        int collecterId = queryVO.getCollectorId();
-        int appointId = queryVO.getAppointorId();
-        int recepterId = queryVO.getReceptorId();
+    public HashMap<String, Object> getPmsMap(int staffId, int companyId, int collecterId,
+                                             int appointId, int recepterId) {
         HashMap<String, Object> pmsMap = new HashMap<String, Object>();
         // 获取角色集
         String roleStr = getRoleStr(staffId, companyId);

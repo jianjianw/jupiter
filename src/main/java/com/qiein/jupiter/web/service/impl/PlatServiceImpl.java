@@ -1,11 +1,10 @@
 package com.qiein.jupiter.web.service.impl;
 
 import com.qiein.jupiter.web.entity.vo.SearchClientVO;
-import com.qiein.jupiter.web.repository.WebClientInfoSearchDao;
+import com.qiein.jupiter.web.repository.QueryClientByKeyDao;
 import com.qiein.jupiter.web.service.PlatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,7 +17,7 @@ import java.util.List;
 public class PlatServiceImpl implements PlatService {
 
     @Autowired
-    private WebClientInfoSearchDao webClientInfoSearchDao;
+    private QueryClientByKeyDao webClientInfoSearchDao;
 
     @Override
     public List<SearchClientVO> pageSearch(int companyId, String key) {
