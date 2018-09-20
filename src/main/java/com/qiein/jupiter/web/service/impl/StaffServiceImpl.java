@@ -110,6 +110,10 @@ public class StaffServiceImpl implements StaffService {
         if (staffDao.getStaffByNames(staffVO.getCompanyId(), staffVO.getUserName()) != null) {
             throw new RException(ExceptionEnum.USERNAME_EXIST);
         }
+        //小组不能为空
+        if (StringUtil.isEmpty(staffVO.getGroupId())) {
+            throw new RException(ExceptionEnum.GROUP_IS_NULL);
+        }
         CompanyPO companyPO = companyDao.getById(staffVO.getCompanyId());
         staffVO.setLimitDay(companyPO.getLimitDefault());
         // 1.给个默认token，钉钉需要
