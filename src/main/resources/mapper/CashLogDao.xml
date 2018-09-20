@@ -50,7 +50,9 @@
         UPDATE ${table}
         SET AMOUNT = #{amount},
         STAFFID=#{staffId},
-        STAFFNAME=#{staffName}
+        STAFFNAME=#{staffName},
+        PAYSTYLE=#{payStyle},
+        PAYMENTTIME=#{paymentTime}
         WHERE ID = #{id}
               AND COMPANYID = #{companyId}
     </update>
