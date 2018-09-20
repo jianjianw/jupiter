@@ -128,6 +128,7 @@ public class ClientAddServiceImpl implements ClientAddService {
         reqContent.put("adaddress", clientVO.getAdAddress());
         reqContent.put("adid", clientVO.getAdId());
         reqContent.put("typeid", clientVO.getTypeId());
+        //TODO 异步
         reqContent.put("address",
                 StringUtil.isNotEmpty(clientVO.getAddress()) ? clientVO.getAddress()
                         : MobileLocationUtil.getAddressByContactInfo(clientVO.getKzPhone(), clientVO.getKzWechat(),

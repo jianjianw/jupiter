@@ -70,6 +70,7 @@ public class ClientTrackServiceImpl implements ClientTrackService {
         reqContent.put("kzids", kzIds);
 
         //获取推广人员集合
+        //TODO  优化
         List<StaffNumVO> onwerCollector = getOnwerStaffList("COLLECTORID", staffPO.getCompanyId(), kzIds);
         List<StaffNumVO> appoints = getOnwerStaffList("APPOINTORID", staffPO.getCompanyId(), kzIds);
 
