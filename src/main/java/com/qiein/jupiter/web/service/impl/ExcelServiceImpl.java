@@ -327,15 +327,15 @@ public class ExcelServiceImpl implements ExcelService {
     public void tempKzMoveToInfo(int companyId, int staffId,String nickName) {
         //TODO 程序来做校验 去除重复客资
         //添加客资日志
-        excelDao.batchAddInfoLog(DBSplitUtil.getInfoLogTabName(companyId),DBSplitUtil.getTable(TableEnum.temp, companyId),DBSplitUtil.getTable(TableEnum.info, companyId),staffId,nickName, ClientLogConst.INFO_LOGTYPE_ADD,ClientLogConst.INFO_LOG_EXCEL_IMPORT);
+        excelDao.batchAddInfoLog(DBSplitUtil.getInfoLogTabName(companyId),DBSplitUtil.getTable(TableEnum.temp, companyId),DBSplitUtil.getTable(TableEnum.info, companyId),staffId,nickName, ClientLogConst.INFO_LOGTYPE_ADD,ClientLogConst.INFO_LOG_EXCEL_IMPORT,companyId);
         //添加客资基本表
-        excelDao.insertBaseInfoByStaffId(DBSplitUtil.getInfoTabName(companyId), DBSplitUtil.getTable(TableEnum.temp, companyId), DBSplitUtil.getTable(TableEnum.info, companyId), staffId);
+        excelDao.insertBaseInfoByStaffId(DBSplitUtil.getInfoTabName(companyId), DBSplitUtil.getTable(TableEnum.temp, companyId), DBSplitUtil.getTable(TableEnum.info, companyId), staffId,companyId);
         //添加客资详情表
-        excelDao.insertDetailInfoByStaffId(DBSplitUtil.getDetailTabName(companyId), DBSplitUtil.getTable(TableEnum.temp, companyId), DBSplitUtil.getTable(TableEnum.info, companyId), staffId);
+        excelDao.insertDetailInfoByStaffId(DBSplitUtil.getDetailTabName(companyId), DBSplitUtil.getTable(TableEnum.temp, companyId), DBSplitUtil.getTable(TableEnum.info, companyId), staffId,companyId);
         //添加备注
-        excelDao.addExcelKzRemark(DBSplitUtil.getRemarkTabName(companyId), DBSplitUtil.getTable(TableEnum.temp, companyId), staffId);
+        excelDao.addExcelKzRemark(DBSplitUtil.getRemarkTabName(companyId), DBSplitUtil.getTable(TableEnum.temp, companyId), staffId,companyId);
         // 删除缓存表记录
-        excelDao.deleteTempByStaffId(DBSplitUtil.getTable(TableEnum.temp, companyId), staffId);
+        excelDao.deleteTempByStaffId(DBSplitUtil.getTable(TableEnum.temp, companyId), staffId,companyId);
     }
 
     /**
