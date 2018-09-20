@@ -256,7 +256,7 @@ public class ClientQueryDao {
         fromSql.append(getFromSql(companyId));
         //where
         StringBuilder whereSql = new StringBuilder();
-        whereSql.append(" WHERE  info.COMPANYID = :companyId AND info.ISDEL = 1 ");
+        whereSql.append(" WHERE  info.COMPANYID = :companyId AND info.ISDEL = 0 ");
         // 限制电商和转介绍查看的客资渠道类型
         if (vo.getRole().startsWith("ds")) {
             whereSql.append(" AND ( info.SRCTYPE = 1 OR info.SRCTYPE = 2 ) ");
@@ -266,13 +266,13 @@ public class ClientQueryDao {
         handleWhereSql(vo, keyMap, whereSql);
 
 
-
         //ORDER
         StringBuilder orderLimitSql = new StringBuilder();
         orderLimitSql.append(" ORDER BY info.UPDATETIME DESC, info.ID DESC ");
         //分页
         orderLimitSql.append(" limit :page , :size ");
         String querySql = baseSelect.append(fromSql).append(whereSql).append(orderLimitSql).toString();
+        System.out.println(querySql);
         //执行查询
         final List<JSONObject> result = new ArrayList<>();
         namedJdbc.query(querySql, keyMap, new RowCallbackHandler() {

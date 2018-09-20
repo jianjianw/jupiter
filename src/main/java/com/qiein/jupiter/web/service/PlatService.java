@@ -38,4 +38,9 @@ public interface PlatService {
      * 页面查询重复客资
      */
     PlatPageVO getRepeatClientHsWeb(QueryVO queryVO);
+
+    /**
+     * 页面查询客资
+     */
+    PlatPageVO queryPageClientInfo(QueryVO queryVO);
 }

@@ -77,4 +77,16 @@ public class PlatServiceImpl implements PlatService {
     }
 
 
+    /**
+     * 页面客资搜索
+     *
+     * @param queryVO
+     * @return
+     */
+    @Override
+    public PlatPageVO queryPageClientInfo(QueryVO queryVO) {
+        return clientQueryDao.clientSearchPage(queryVO);
+    }
+
+
 }
