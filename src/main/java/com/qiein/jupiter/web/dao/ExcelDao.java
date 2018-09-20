@@ -263,5 +263,5 @@ public interface ExcelDao {
      * @param nickName
      * @param logType
      * */
-    void batchAddInfoLog(@Param("logTabName") String infoLogTabName,@Param(value="tempName") String tempName,@Param(value="tabName")String tabName,@Param("staffId") int staffId,@Param(value="nickName")String nickName,@Param(value="logType") Integer logType,@Param(value="memo")String memo);
+    void batchAddInfoLog(@Param("logTabName") String infoLogTabName,@Param(value="tempName") String tempName,@Param(value="tableName")String tabName,@Param("staffId") int staffId,@Param(value="nickName")String nickName,@Param(value="logType") Integer logType,@Param(value="memo")String memo);
 }
