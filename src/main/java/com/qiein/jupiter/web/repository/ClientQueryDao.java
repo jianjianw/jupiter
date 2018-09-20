@@ -439,7 +439,7 @@ public class ClientQueryDao {
         String sql = "SELECT grp.SHOPID FROM hm_pub_group_staff rela " +
                 " LEFT JOIN hm_pub_group grp ON grp.GROUPID = rela.GROUPID AND grp.COMPANYID = rela.COMPANYID " +
                 "  LEFT JOIN hm_pub_shop shop ON shop.ID = grp.SHOPID AND shop.COMPANYID = grp.COMPANYID" +
-                " WHERE rela.COMPANYID = ?  AND rela.STAFFID = ?  AND shop.ISSHOW = 1";
+                " WHERE rela.COMPANYID = :comapnyId  AND rela.STAFFID =  :staffId  AND shop.ISSHOW = 1";
         final StringBuilder shopIds = new StringBuilder();
         namedJdbc.query(sql, keyMap, new RowCallbackHandler() {
             @Override
@@ -465,13 +465,14 @@ public class ClientQueryDao {
         keyMap.put("staffId", staffId);
         keyMap.put("groupType", groupType);
         String sql = "SELECT DISTINCT sf.ID FROM hm_pub_group_staff rl " +
-                "LEFT JOIN hm_pub_staff sf ON rl.STAFFID = sf.ID AND sf.COMPANYID = ?" +
+                " LEFT JOIN hm_pub_staff sf ON rl.STAFFID = sf.ID AND sf.COMPANYID = :companyId " +
                 " WHERE rl.GROUPID IN (" +
                 " SELECT DISTINCT grp.GROUPID FROM hm_pub_group_staff rela" +
                 " LEFT JOIN hm_pub_group grp ON rela.GROUPID = grp.GROUPID" +
-                " AND grp.COMPANYID = ? WHERE ( rela.STAFFID = ? " +
-                "OR INSTR( CONCAT(',', grp.CHIEFIDS, ','), CONCAT(',', ? , ',') ) != 0 )" +
-                " AND rela.COMPANYID = ? AND grp.GROUPTYPE = ? ) AND rl.COMPANYID = ? AND sf.ID IS NOT NULL ";
+                " AND grp.COMPANYID = :companyId WHERE ( rela.STAFFID = :staffId " +
+                " OR INSTR( CONCAT(',', grp.CHIEFIDS, ','), CONCAT(',', :staffId , ',') ) != 0 )" +
+                " AND rela.COMPANYID = :companyId AND grp.GROUPTYPE = :groupType )" +
+                " AND rl.COMPANYID = :companyId AND sf.ID IS NOT NULL ";
 
         final StringBuilder ids = new StringBuilder();
         ids.append(CommonConstant.STR_SEPARATOR).append(staffId);
@@ -499,15 +500,16 @@ public class ClientQueryDao {
         keyMap.put("staffId", staffId);
         keyMap.put("groupType", groupType);
         String sql = " SELECT DISTINCT sf.ID FROM hm_pub_group_staff rl LEFT JOIN " +
-                "hm_pub_staff sf ON rl.STAFFID = sf.ID AND sf.COMPANYID = ? " +
-                " LEFT JOIN hm_pub_group grp ON rl.GROUPID = grp.GROUPID AND grp.COMPANYID = ?" +
+                " hm_pub_staff sf ON rl.STAFFID = sf.ID AND sf.COMPANYID = :companyId " +
+                " LEFT JOIN hm_pub_group grp ON rl.GROUPID = grp.GROUPID AND grp.COMPANYID = :companyId " +
                 " WHERE grp.PARENTID IN ( " +
                 " SELECT DISTINCT grp.PARENTID FROM hm_pub_group_staff rela " +
-                "LEFT JOIN hm_pub_group grp ON rela.GROUPID = grp.GROUPID AND grp.COMPANYID = ?" +
-                " LEFT JOIN hm_pub_group sp ON grp.PARENTID = sp.GROUPID AND sp.COMPANYID = ? " +
-                "WHERE ( rela.STAFFID = ? OR INSTR( CONCAT(',', grp.CHIEFIDS, ','), CONCAT(',', ?, ',') ) != 0" +
-                "  OR INSTR( CONCAT(',', sp.CHIEFIDS, ','), CONCAT(',', ?, ',') ) != 0 ) " +
-                "AND rela.COMPANYID = ? AND grp.GROUPTYPE = ? ) AND grp.GROUPTYPE = ? AND rl.COMPANYID = ? AND sf.ID IS NOT NULL";
+                " LEFT JOIN hm_pub_group grp ON rela.GROUPID = grp.GROUPID AND grp.COMPANYID = :companyId " +
+                " LEFT JOIN hm_pub_group sp ON grp.PARENTID = sp.GROUPID AND sp.COMPANYID = :companyId " +
+                " WHERE ( rela.STAFFID = ? OR INSTR( CONCAT(',', grp.CHIEFIDS, ','), CONCAT(',', :staffId , ',') ) != 0" +
+                " OR INSTR( CONCAT(',', sp.CHIEFIDS, ','), CONCAT(',', :staffId , ',') ) != 0 ) " +
+                " AND rela.COMPANYID = :companyId AND grp.GROUPTYPE = :groupType ) AND grp.GROUPTYPE = :groupType " +
+                " AND rl.COMPANYID = :companyId AND sf.ID IS NOT NULL";
         //ids
         final StringBuilder ids = new StringBuilder();
         ids.append(CommonConstant.STR_SEPARATOR).append(staffId);
