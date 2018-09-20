@@ -207,7 +207,7 @@ public interface ExcelDao {
      * 获取可知数量
      */
     ClientSortCountDTO getMultipleKzStatusCount(@Param("tempName") String tempName, @Param("tableName") String tableName,
-                                                @Param("staffId") int staffId);
+                                                @Param("staffId") int staffId,@Param("companyId")int companyId);
 
     /**
      * 更新咨询方式的字典编码

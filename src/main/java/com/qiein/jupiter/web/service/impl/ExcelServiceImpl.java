@@ -465,7 +465,7 @@ public class ExcelServiceImpl implements ExcelService {
     public ClientSortCountDTO getMultipleKzStatusCount(StaffPO staffPO) {
         //错误个数
         ClientSortCountDTO clientSortCount = excelDao.getMultipleKzStatusCount(DBSplitUtil.getTable(TableEnum.temp, staffPO.getCompanyId()),
-                DBSplitUtil.getTable(TableEnum.info, staffPO.getCompanyId()), staffPO.getId());
+                DBSplitUtil.getTable(TableEnum.info, staffPO.getCompanyId()), staffPO.getId(),staffPO.getCompanyId());
         return clientSortCount;
     }
 
