@@ -48,8 +48,8 @@ public class CityReportsDao {
 
             for (String regionName : ChinaTerritoryConst.TERRITORY_MAP.get(provinceNames).split(",")) {
                 Object[] objs = {regionName, start, end,
-                        regionName, start, end,
                         regionName, start, end, dsInvalidVO.getDsDdStatus(),
+                        regionName, start, end,
                         regionName, start, end,
                         regionName, start, end,
                         regionName, start, end,
