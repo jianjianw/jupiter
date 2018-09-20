@@ -16,7 +16,7 @@ public interface ExcelDao {
     /**
      * 删除员工客资缓存记录
      **/
-    void deleteTempByStaffId(@Param("tempName") String tempName, @Param("operaId") int operaId);
+    void deleteTempByStaffId(@Param("tempName") String tempName, @Param("operaId") int operaId,@Param("companyId")Integer companyId);
 
     /**
      * 批量写入客资临时缓存表
@@ -140,12 +140,12 @@ public interface ExcelDao {
     /**
      * 添加客资基础信息ByStaffId
      */
-    void insertBaseInfoByStaffId(@Param("tabName") String tabName, @Param("tempName") String tempName, @Param("tableName") String tableName, @Param("staffId") Integer staffId);
+    void insertBaseInfoByStaffId(@Param("tabName") String tabName, @Param("tempName") String tempName, @Param("tableName") String tableName, @Param("staffId") Integer staffId,@Param("companyId")Integer companyId);
 
     /**
      * 添加客资详细信息 ByStaffId
      */
-    void insertDetailInfoByStaffId(@Param("tabName") String tabName, @Param("tempName") String tempName, @Param("tableName") String tableName, @Param("staffId") Integer staffId);
+    void insertDetailInfoByStaffId(@Param("tabName") String tabName, @Param("tempName") String tempName, @Param("tableName") String tableName, @Param("staffId") Integer staffId,@Param("companyId")Integer companyId);
 
     /**
      * 插入客资备注表
@@ -154,7 +154,7 @@ public interface ExcelDao {
      * @param tempName
      * @param staffId
      */
-    void addExcelKzRemark(@Param("tabName") String tabName, @Param("tempName") String tempName, @Param("staffId") Integer staffId);
+    void addExcelKzRemark(@Param("tabName") String tabName, @Param("tempName") String tempName, @Param("staffId") Integer staffId,@Param("companyId")Integer companyId);
 
     /**
      * 批量删除员工客资缓存记录
@@ -263,5 +263,5 @@ public interface ExcelDao {
      * @param nickName
      * @param logType
      * */
-    void batchAddInfoLog(@Param("logTabName") String infoLogTabName,@Param(value="tempName") String tempName,@Param(value="tabName")String tabName,@Param("staffId") int staffId,@Param(value="nickName")String nickName,@Param(value="logType") Integer logType,@Param(value="memo")String memo);
+    void batchAddInfoLog(@Param("logTabName") String infoLogTabName,@Param(value="tempName") String tempName,@Param(value="tableName")String tabName,@Param("staffId") int staffId,@Param(value="nickName")String nickName,@Param(value="logType") Integer logType,@Param(value="memo")String memo,@Param("companyId")Integer companyId);
 }
