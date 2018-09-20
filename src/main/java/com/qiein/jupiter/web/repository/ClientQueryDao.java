@@ -230,6 +230,70 @@ public class ClientQueryDao {
         return sql;
     }
 
+    /**
+     * 页面客资搜索
+     */
+    public PlatPageVO clientSearchPage(QueryVO vo) {
+        // 权限限定
+        setPmsimit(vo);
+
+        // 职工限定
+        setStaffId(vo);
+
+        int companyId = vo.getCompanyId();
+        final PlatPageVO pageVO = new PlatPageVO();
+        pageVO.setCurrentPage(vo.getCurrentPage());
+        pageVO.setPageSize(vo.getPageSize());
+        //查询参数
+        Map<String, Object> keyMap = new HashMap<>();
+        keyMap.put("companyId", companyId);
+        keyMap.put("page", vo.getCurrentPage());
+        keyMap.put("size", vo.getPageSize());
+        //select
+        StringBuilder baseSelect = getBaseSelect(true);
+        //from
+        StringBuilder fromSql = new StringBuilder();
+        fromSql.append(getFromSql(companyId));
+        //where
+        StringBuilder whereSql = new StringBuilder();
+        whereSql.append(" WHERE  info.COMPANYID = :companyId AND info.ISDEL = 1 ");
+        // 限制电商和转介绍查看的客资渠道类型
+        if (vo.getRole().startsWith("ds")) {
+            whereSql.append(" AND ( info.SRCTYPE = 1 OR info.SRCTYPE = 2 ) ");
+        } else if (vo.getRole().startsWith("zjs")) {
+            whereSql.append(" AND ( info.SRCTYPE = 3 OR info.SRCTYPE = 4 OR info.SRCTYPE = 5 ) ");
+        }
+        handleWhereSql(vo, keyMap, whereSql);
+
+
+
+        //ORDER
+        StringBuilder orderLimitSql = new StringBuilder();
+        orderLimitSql.append(" ORDER BY info.UPDATETIME DESC, info.ID DESC ");
+        //分页
+        orderLimitSql.append(" limit :page , :size ");
+        String querySql = baseSelect.append(fromSql).append(whereSql).append(orderLimitSql).toString();
+        //执行查询
+        final List<JSONObject> result = new ArrayList<>();
+        namedJdbc.query(querySql, keyMap, new RowCallbackHandler() {
+            @Override
+            public void processRow(ResultSet rs) throws SQLException {
+                result.add(resultToClientInfo(rs));
+            }
+        });
+        //分页
+        String countSql = "SELECT COUNT(*) COUNT " + fromSql + whereSql;
+
+        int count = namedJdbc.queryForObject(countSql, keyMap, Integer.class);
+        pageVO.setTotalCount(count);
+        int totalPageNum = (count + pageVO.getPageSize() - 1) / pageVO.getPageSize();
+        pageVO.setTotalPage(totalPageNum);
+
+        //执行分页
+        pageVO.setData(result);
+        return pageVO;
+
+    }
 
     /**
      * 搜索员工限定
@@ -571,26 +635,26 @@ public class ClientQueryDao {
         if (StringUtil.isNotEmpty(vo.getTypeId())) {
             where.append(dynamixSql(vo.getTypeId(), CommonConstant.STR_SEPARATOR, "info.TYPEID"));
         }
-//
-//        // 录入人
-//        if (StringUtil.isNotEmpty(vo.getCollectorId())) {
-//            where.append(dynamixSql(vo.getCollectorId(), CommonConstant.STR_SEPARATOR, "info.COLLECTORID"));
-//        }
-//
-//        // 筛选人
-//        if (StringUtil.isNotEmpty(vo.getPromotorId())) {
-//            where.append(dynamixSql(vo.getPromotorId(), CommonConstant.STR_SEPARATOR, "info.PROMOTORID"));
-//        }
-//
-//        // 邀约人
-//        if (StringUtil.isNotEmpty(vo.getAppointorId())) {
-//            where.append(dynamixSql(vo.getAppointorId(), CommonConstant.STR_SEPARATOR, "info.APPOINTORID"));
-//        }
-//
-//        // 接待人
-//        if (StringUtil.isNotEmpty(vo.getReceptorId())) {
-//            where.append(dynamixSql(vo.getReceptorId(), CommonConstant.STR_SEPARATOR, "info.RECEPTORID"));
-//        }
+
+        // 录入人
+        if (StringUtil.isNotEmpty(vo.getCollectorId())) {
+            where.append(dynamixSql(vo.getCollectorId(), CommonConstant.STR_SEPARATOR, "info.COLLECTORID"));
+        }
+
+        // 筛选人
+        if (StringUtil.isNotEmpty(vo.getPromotorId())) {
+            where.append(dynamixSql(vo.getPromotorId(), CommonConstant.STR_SEPARATOR, "info.PROMOTORID"));
+        }
+
+        // 邀约人
+        if (StringUtil.isNotEmpty(vo.getAppointorId())) {
+            where.append(dynamixSql(vo.getAppointorId(), CommonConstant.STR_SEPARATOR, "info.APPOINTORID"));
+        }
+
+        // 接待人
+        if (StringUtil.isNotEmpty(vo.getReceptorId())) {
+            where.append(dynamixSql(vo.getReceptorId(), CommonConstant.STR_SEPARATOR, "info.RECEPTORID"));
+        }
 
         // 状态
         if (StringUtil.isNotEmpty(vo.getStatusId())) {

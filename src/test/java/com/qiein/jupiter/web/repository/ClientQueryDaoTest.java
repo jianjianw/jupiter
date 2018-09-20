@@ -55,4 +55,23 @@ public class ClientQueryDaoTest {
         System.out.println(JSON.toJSONString(maps));
     }
 
+
+    @Test
+    public void testClientQueryPage() {
+        QueryVO queryVO = new QueryVO();
+        queryVO.setCurrentPage(1);
+        queryVO.setPageSize(10);
+        queryVO.setTimeType(" CREATETIME ");
+        queryVO.setStart(1534377600);
+        queryVO.setEnd(1537027199);
+        queryVO.setUid(1);
+        queryVO.setCompanyId(3);
+        queryVO.setPmsLimit(0);
+        queryVO.setLinkLimit("0");
+        queryVO.setAction("all");
+        queryVO.setRole("dscj");
+        PlatPageVO pageVO = clientQueryDao.clientSearchPage(queryVO);
+        System.out.println(JSONObject.toJSONString(pageVO));
+    }
+
 }
