@@ -83,10 +83,10 @@ public enum ExceptionEnum {
     YYID_NOT_EXISTS(509, "邀约人员不存在"),
     SHOP_SOURCE_ERROR(510, "门店自然入客渠道配置错误，请联系管理员"),
     //拍摄地
-    SHOP_EXIST(601, "拍摄地已存在"),
-    SHOP_ID_NULL(602, "拍摄地ID不能为空"),
-    SHOP_NOT_FOUND(603, "拍摄地不存在"),
-    SHOP_KZ_EXIST(604, "该拍摄地存在客资，不能删除"),
+    SHOP_EXIST(601, "门店已存在"),
+    SHOP_ID_NULL(602, "门店ID不能为空"),
+    SHOP_NOT_FOUND(603, "门店不存在"),
+    SHOP_KZ_EXIST(604, "该门店存在客资，不能删除"),
     //权限
     ROLE_EXIST(701, "该角权限已存在"),
     ROLE_EDIT_FAIL(702, "权限修改失败"),

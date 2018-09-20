@@ -46,6 +46,7 @@ public class TimerTask {
             log.info("测试环境，暂不推送...");
             return;
         }
+        //todo 根据公司类型 推送
         clientPushService.pushClientNoticeInfo();
         log.info("执行了定时推送提醒任务...");
     }

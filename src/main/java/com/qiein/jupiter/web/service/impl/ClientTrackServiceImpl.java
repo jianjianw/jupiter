@@ -70,6 +70,7 @@ public class ClientTrackServiceImpl implements ClientTrackService {
         reqContent.put("kzids", kzIds);
 
         //获取推广人员集合
+        //TODO  优化
         List<StaffNumVO> onwerCollector = getOnwerStaffList("COLLECTORID", staffPO.getCompanyId(), kzIds);
         List<StaffNumVO> appoints = getOnwerStaffList("APPOINTORID", staffPO.getCompanyId(), kzIds);
 
@@ -117,7 +118,11 @@ public class ClientTrackServiceImpl implements ClientTrackService {
      * @return
      */
     private List<StaffNumVO> getOnwerStaffList(String type, int companyId, String kzIds) {
-        return clientDao.getOnwerInfoNumByIds(DBSplitUtil.getInfoTabName(companyId), kzIds, " info." + type + " ", companyId);
+        if(StringUtil.isEmpty(kzIds)){
+            return null;
+        }
+        String[] kzIdArr = kzIds.split(CommonConstant.STR_SEPARATOR);
+        return clientDao.getOnwerInfoNumByIds(DBSplitUtil.getInfoTabName(companyId), kzIdArr, " info." + type + " ", companyId);
     }
 
     /**

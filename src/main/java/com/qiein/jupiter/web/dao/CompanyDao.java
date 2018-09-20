@@ -57,7 +57,7 @@ public interface CompanyDao extends BaseDao<CompanyPO> {
      *
      * @return
      */
-    List<CompanyPO> listComp();
+    List<CompanyPO> listComp(int type);
 
     /**
      * 获取筛客平均的企业列表

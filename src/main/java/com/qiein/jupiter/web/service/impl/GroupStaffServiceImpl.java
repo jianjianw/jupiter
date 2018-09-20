@@ -54,7 +54,7 @@ public class GroupStaffServiceImpl implements GroupStaffService {
 
         if (CollectionUtils.isNotEmpty(existsIds)) {
             for (String id : idsStr) {
-                if (!existsIds.contains(id)) {
+                if (!existsIds.contains(Integer.parseInt(id))) {
                     ids.add(id);
                 }
             }

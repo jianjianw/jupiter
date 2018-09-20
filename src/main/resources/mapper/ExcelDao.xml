@@ -377,8 +377,8 @@
         <include refid="Base_Column_News_List"/>
         FROM ${tempName} temp
         WHERE
-        temp.kzid in (select kzid from (select kzid,count(1) as client_count from ${tempName} a group by
-        kzphone,kzqq,kzwechat having client_count> 1) result)
+        temp.kzid in (select kzid from (select kzid,count(1) as client_count from ${tempName} a where a.COMPANYID = #{companyId} AND a.OPERAID = #{staffId} group by
+        kzphone,kzqq,kzwechat having client_count> 1)  result) and  temp.COMPANYID = #{companyId}
     </select>
 
     <!--获取excel中重复客资列表-->
@@ -728,8 +728,8 @@
         <include refid="Base_Column_News_List"/>
         FROM ${tempName} temp
         WHERE
-        temp.kzid in (select kzid from (select kzid,count(1) as client_count from ${tempName} a group by
-        kzphone,kzqq,kzwechat having client_count> 1) result)
+        temp.kzid in (select kzid from (select kzid,count(1) as client_count from ${tempName} a where a.COMPANYID = #{companyId} group by
+        kzphone,kzqq,kzwechat having client_count> 1) result) and  temp.COMPANYID = #{companyId}
         ) b
         ON temp.kzid = b.kzid
         left join
@@ -792,6 +792,7 @@
         WHERE
         info.KZID IS NOT NULL
         AND info.ISDEL = 0
+        AND temp.COMPANYID = #{companyId}
         AND temp.OPERAID = #{staffId}
         AND (( temp.KZPHONE = info.KZPHONE or temp.KZPHONE = info.KZWECHAT or temp.KZPHONE = info.KZQQ)
         or ( temp.KZWECHAT = info.KZPHONE or temp.KZWECHAT = info.KZWECHAT or temp.KZWECHAT = info.KZQQ)
@@ -801,8 +802,8 @@
         <include refid="Base_Column_News_List"/>
         FROM ${tempName} temp
         WHERE
-        temp.kzid in (select kzid from (select kzid,count(1) as client_count from ${tempName} a group by
-        kzphone,kzqq,kzwechat having client_count> 1) result)
+        temp.kzid in (select kzid from (select kzid,count(1) as client_count from ${tempName} a where a.companyId = #{companyId} AND a.OPERAID = #{staffId} group by
+        kzphone,kzqq,kzwechat having client_count> 1) result) and  temp.COMPANYID = #{companyId}
         ) b
         ON temp.kzid = b.kzid
         left join
@@ -810,7 +811,7 @@
         (select
         <include refid="Base_Column_News_List"/>
         from ${tempName} temp
-        where temp.OPERAID = #{staffId} and (((temp.KZPHONE is not null and temp.KZPHONE != '') and temp.KZPHONE NOT
+        where temp.OPERAID = #{staffId} AND temp.COMPANYID = #{companyId} and (((temp.KZPHONE is not null and temp.KZPHONE != '') and temp.KZPHONE NOT
         REGEXP '^[1][3456789][0-9]{9}$')
         or ( (temp.KZWECHAT is not null and temp.KZWECHAT != '') and temp.KZWECHAT NOT REGEXP
         '^[a-zA-Z0-9]{1}[-_a-zA-Z0-9]{5,30}$')
@@ -885,6 +886,7 @@
         ON info.KZID is not null
         WHERE
         info.KZID IS NOT NULL
+        AND temp.companyId = #{companyId}
         AND info.ISDEL = 0
         AND temp.OPERAID = #{staffId}
         AND (( temp.KZPHONE = info.KZPHONE or temp.KZPHONE = info.KZWECHAT or temp.KZPHONE = info.KZQQ)
@@ -895,8 +897,8 @@
         <include refid="Base_Column_News_List"/>
         FROM ${tempName} temp
         WHERE
-        temp.kzid in (select kzid from (select kzid,count(1) as client_count from ${tempName} a group by
-        kzphone,kzqq,kzwechat having client_count> 1) result)
+        temp.kzid in (select kzid from (select kzid,count(1) as client_count from ${tempName} a where a.companyId = #{companyId} AND a.OPERAID = #{staffId} group by
+        kzphone,kzqq,kzwechat having client_count> 1) result) AND temp.COMPANYID = #{companyId}
         ) b
         ) c
     </select>

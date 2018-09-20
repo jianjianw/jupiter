@@ -128,6 +128,7 @@ public class ClientAddServiceImpl implements ClientAddService {
         reqContent.put("adaddress", clientVO.getAdAddress());
         reqContent.put("adid", clientVO.getAdId());
         reqContent.put("typeid", clientVO.getTypeId());
+        //TODO 异步
         reqContent.put("address",
                 StringUtil.isNotEmpty(clientVO.getAddress()) ? clientVO.getAddress()
                         : MobileLocationUtil.getAddressByContactInfo(clientVO.getKzPhone(), clientVO.getKzWechat(),
@@ -290,7 +291,7 @@ public class ClientAddServiceImpl implements ClientAddService {
      * @return:
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void addOutZjsClient(ClientVO clientVO) {
         Map<String, Object> reqContent = null;
         try {
@@ -302,11 +303,15 @@ public class ClientAddServiceImpl implements ClientAddService {
         SourcePO sourcePO = sourceDao.getByIdAndCid(clientVO.getSourceId(),clientVO.getCompanyId());
         if (sourcePO == null || !sourcePO.getIsShow())
             throw new RException(ExceptionEnum.CHANNEL_NOT_FOUND);
+        if (StringUtil.isNotEmpty(clientVO.getCollectorName()))
+            reqContent.put("operaName",clientVO.getCollectorName());
+        if (clientVO.getCollectorId()==0)
+            reqContent.put("operaId",clientVO.getCollectorId());
         reqContent.put("srctype", sourcePO.getTypeId());
         reqContent.put("isfilter",sourcePO.getIsFilter());
         String resultJsonStr = crmBaseApi.doService(reqContent, "addDingClientInfo");
         JSONObject resultJson = JSONObject.parseObject(resultJsonStr).getJSONObject("response").getJSONObject("info");
-        System.out.println("接口平台返回： " + resultJson);
+//        System.out.println("接口平台返回： " + resultJson);
         if (resultJson.getIntValue("code") != 100000)
             throw new RException("130019".equals(resultJson.getString("msg"))?"存在重复客资":resultJson.getString("msg"), resultJson.getIntValue("code"));
     }

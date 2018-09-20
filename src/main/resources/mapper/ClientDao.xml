@@ -77,9 +77,10 @@
             info.COMPANYID = #{companyId}
             AND info.ISDEL = 0
             AND ${type} IS NOT NULL
-            AND (
-                INSTR(#{kzIds}, info.KZID) != 0
-            )
+            AND info.KZID IN
+            <foreach collection="kzIdArr" item="kzId" index="index" open="(" separator="," close=")">
+                #{kzId}
+            </foreach>
         GROUP BY ${type}
     </select>
 

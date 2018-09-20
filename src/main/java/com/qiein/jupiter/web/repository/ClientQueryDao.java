@@ -1,7 +1,9 @@
 package com.qiein.jupiter.web.repository;
 
 import com.alibaba.fastjson.JSONObject;
+import com.qiein.jupiter.constant.ClientStatusConst;
 import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.constant.RoleConstant;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.StringUtil;
@@ -32,7 +34,8 @@ public class ClientQueryDao {
     /**
      * 查询删除客资
      */
-    public PlatPageVO queryDelClientInfo(QueryVO vo, int companyId) {
+    public PlatPageVO queryDelClientInfo(QueryVO vo) {
+        int companyId = vo.getCompanyId();
         final PlatPageVO pageVO = new PlatPageVO();
         pageVO.setCurrentPage(vo.getCurrentPage());
         pageVO.setPageSize(vo.getPageSize());
@@ -42,7 +45,7 @@ public class ClientQueryDao {
         keyMap.put("page", vo.getCurrentPage());
         keyMap.put("size", vo.getPageSize());
         //select
-        StringBuilder baseSelect = getBaseSelect();
+        StringBuilder baseSelect = getBaseSelect(true);
         //from
         StringBuilder fromSql = new StringBuilder();
         fromSql.append(getFromSql(companyId));
@@ -66,42 +69,71 @@ public class ClientQueryDao {
         });
         //分页
         String countSql = "SELECT COUNT(*) COUNT " + fromSql + whereSql;
-        namedJdbc.query(countSql, keyMap, new RowCallbackHandler() {
-            @Override
-            public void processRow(ResultSet rs) throws SQLException {
-                int count = rs.getInt("COUNT");
-                pageVO.setTotalCount(count);
-                int totalPageNum = (count + pageVO.getPageSize() - 1) / pageVO.getPageSize();
-                pageVO.setTotalPage(totalPageNum);
-            }
-        });
+
+        int count = namedJdbc.queryForObject(countSql, keyMap, Integer.class);
+        pageVO.setTotalCount(count);
+        int totalPageNum = (count + pageVO.getPageSize() - 1) / pageVO.getPageSize();
+        pageVO.setTotalPage(totalPageNum);
+
         //执行分页
         pageVO.setData(result);
         return pageVO;
     }
 
-
     /**
-     * 查询客资详情
+     * 查询重复客资
      */
-    public void searchClientDeatilInfo(PlatPageVO pageVO, String sql) {
+    public PlatPageVO checkRepeatInfoHs(QueryVO vo) {
+        int companyId = vo.getCompanyId();
+        final PlatPageVO pageVO = new PlatPageVO();
+        pageVO.setCurrentPage(vo.getCurrentPage());
+        pageVO.setPageSize(vo.getPageSize());
 
+        //查询参数
+        Map<String, Object> keyMap = new HashMap<>();
+        keyMap.put("companyId", companyId);
+        keyMap.put("key", vo.getSearchKey());
+
+        StringBuilder baseSelect = getBaseSelect(false);
+        baseSelect.append(" FROM hm_crm_client_info info LEFT JOIN hm_crm_client_detail det " +
+                " ON info.KZID = det.KZID AND det.COMPANYID = info.COMPANYID  " +
+                " WHERE info.COMPANYID = :companyId AND info.ISDEL = 0 " +
+                " AND ( info.KZPHONE = :key  OR info.KZWECHAT = :key OR info.KZQQ = :key OR info.KZWW = :key )" +
+                " ORDER BY info.ID DESC ");
+
+        //执行查询
+        final List<JSONObject> result = new ArrayList<>();
+        namedJdbc.query(baseSelect.toString(), keyMap, new RowCallbackHandler() {
+            @Override
+            public void processRow(ResultSet rs) throws SQLException {
+                result.add(resultToClientInfo(rs));
+            }
+        });
+
+        //分页
+        String countSql = "SELECT COUNT(*) COUNT " +
+                " FROM hm_crm_client_info info LEFT JOIN hm_crm_client_detail det " +
+                " ON info.KZID = det.KZID AND det.COMPANYID = info.COMPANYID  " +
+                " WHERE info.COMPANYID = :companyId AND info.ISDEL = 0 " +
+                " AND ( info.KZPHONE = :key  OR info.KZWECHAT = :key OR info.KZQQ = :key OR info.KZWW = :key )" +
+                " ORDER BY info.ID DESC";
+
+        int count = namedJdbc.queryForObject(countSql, keyMap, Integer.class);
+        pageVO.setTotalCount(count);
+        int totalPageNum = (count + pageVO.getPageSize() - 1) / pageVO.getPageSize();
+        pageVO.setTotalPage(totalPageNum);
+
+        //执行分页
+        pageVO.setData(result);
+        return pageVO;
     }
-
-    /**
-     * 处理分页信息
-     */
-    private void handlePageInfo(PlatPageVO pageVO, String sql) {
-
-    }
-
 
     /**
      * 将结果转换为客资信息
      *
      * @param rs
      */
-    private JSONObject resultToClientInfo(ResultSet rs) throws SQLException {
+    public static JSONObject resultToClientInfo(ResultSet rs) throws SQLException {
         JSONObject info = new JSONObject();
         info.put("id", rs.getInt("ID"));
         info.put("letterid", rs.getString("LETTERID"));
@@ -170,26 +202,393 @@ public class ClientQueryDao {
         return info;
     }
 
+
     /**
      * 获取基础select
      *
      * @return
      */
-    private StringBuilder getBaseSelect() {
+    public static StringBuilder getBaseSelect(boolean needLog) {
         StringBuilder sql = new StringBuilder();
-        sql.append(" SELECT info.ID, info.KZID, info.TYPEID, info.CLASSID, info.STATUSID,info.LETTERID,info.KZPHONE_FLAG, ").
-                append("info.KZNAME, info.KZPHONE, info.KZWECHAT, info.WEFLAG,info.SRCTYPE, ")
-                .append(" info.KZQQ, info.KZWW, info.SEX, info.CHANNELID, info.SOURCEID, info.COLLECTORID, det.COLLECTORNAME,")
-                .append(" info.PROMOTORID, det.PROMOTERNAME, info.APPOINTORID, ")
-                .append("  det.APPOINTNAME, info.RECEPTORID, det.RECEPTORNAME, info.SHOPID, det.SHOPNAME, info.ALLOTTYPE,")
-                .append(" info.CREATETIME, info.RECEIVETIME, info.TRACETIME, info.APPOINTTIME, det.PACKAGECODE, ")
-                .append(" info.COMESHOPTIME, info.SUCCESSTIME, info.UPDATETIME, det.MEMO,det.FILMINGCODE,det.FILMINGAREA, ")
+        sql.append(" SELECT  ");
+        sql.append("info.ID, info.KZID, info.TYPEID, info.CLASSID, info.STATUSID,info.LETTERID,info.KZPHONE_FLAG,")
+                .append("info.KZNAME, info.KZPHONE, info.KZWECHAT, info.WEFLAG,info.SRCTYPE, ")
+                .append("info.KZQQ, info.KZWW, info.SEX, info.CHANNELID, info.SOURCEID, info.COLLECTORID,")
+                .append("  info.PROMOTORID, info.APPOINTORID,info.RECEPTORID,info.SHOPID, info.ALLOTTYPE,")
+                .append(" info.CREATETIME, info.RECEIVETIME, info.TRACETIME, info.APPOINTTIME, ")
+                .append(" .info.COMESHOPTIME, info.SUCCESSTIME, info.UPDATETIME,info.GROUPID, ")
+
+                .append("  det.COLLECTORNAME,det.PROMOTERNAME,det.APPOINTNAME,det.RECEPTORNAME,det.SHOPNAME,")
+                .append(" det.PACKAGECODE,det.MEMO,det.FILMINGCODE,det.FILMINGAREA, ")
                 .append(" det.OLDKZNAME, det.OLDKZPHONE, det.AMOUNT, det.STAYAMOUNT, det.TALKIMG, det.ORDERIMG, ")
                 .append(" det.ZXSTYLE, det.YXLEVEL, det.YSRANGE, det.ADADDRESS, det.ADID, det.MARRYTIME,")
                 .append(" det.YPTIME, det.MATENAME, det.MATEPHONE, det.ADDRESS, det.MATEWECHAT,det.MATEQQ, ")
-                .append(" info.GROUPID, det.GROUPNAME, det.PAYSTYLE, det.HTNUM, det.INVALIDLABEL, det.KEYWORD, log.CONTENT ");
+                .append(" det.GROUPNAME, det.PAYSTYLE, det.HTNUM, det.INVALIDLABEL, det.KEYWORD ");
+        if (needLog) {
+            sql.append("  ,log.CONTENT");
+        }
         return sql;
     }
+
+    /**
+     * 页面客资搜索
+     */
+    public PlatPageVO clientSearchPage(QueryVO vo) {
+        // 权限限定
+        setPmsimit(vo);
+
+        // 职工限定
+        setStaffId(vo);
+
+        int companyId = vo.getCompanyId();
+        final PlatPageVO pageVO = new PlatPageVO();
+        pageVO.setCurrentPage(vo.getCurrentPage());
+        pageVO.setPageSize(vo.getPageSize());
+        //查询参数
+        Map<String, Object> keyMap = new HashMap<>();
+        keyMap.put("companyId", companyId);
+        keyMap.put("page", vo.getCurrentPage());
+        keyMap.put("size", vo.getPageSize());
+        //select
+        StringBuilder baseSelect = getBaseSelect(true);
+        //from
+        StringBuilder fromSql = new StringBuilder();
+        fromSql.append(getFromSql(companyId));
+        //where
+        StringBuilder whereSql = new StringBuilder();
+        whereSql.append(" WHERE  info.COMPANYID = :companyId AND info.ISDEL = 1 ");
+        // 限制电商和转介绍查看的客资渠道类型
+        if (vo.getRole().startsWith("ds")) {
+            whereSql.append(" AND ( info.SRCTYPE = 1 OR info.SRCTYPE = 2 ) ");
+        } else if (vo.getRole().startsWith("zjs")) {
+            whereSql.append(" AND ( info.SRCTYPE = 3 OR info.SRCTYPE = 4 OR info.SRCTYPE = 5 ) ");
+        }
+        handleWhereSql(vo, keyMap, whereSql);
+
+
+
+        //ORDER
+        StringBuilder orderLimitSql = new StringBuilder();
+        orderLimitSql.append(" ORDER BY info.UPDATETIME DESC, info.ID DESC ");
+        //分页
+        orderLimitSql.append(" limit :page , :size ");
+        String querySql = baseSelect.append(fromSql).append(whereSql).append(orderLimitSql).toString();
+        //执行查询
+        final List<JSONObject> result = new ArrayList<>();
+        namedJdbc.query(querySql, keyMap, new RowCallbackHandler() {
+            @Override
+            public void processRow(ResultSet rs) throws SQLException {
+                result.add(resultToClientInfo(rs));
+            }
+        });
+        //分页
+        String countSql = "SELECT COUNT(*) COUNT " + fromSql + whereSql;
+
+        int count = namedJdbc.queryForObject(countSql, keyMap, Integer.class);
+        pageVO.setTotalCount(count);
+        int totalPageNum = (count + pageVO.getPageSize() - 1) / pageVO.getPageSize();
+        pageVO.setTotalPage(totalPageNum);
+
+        //执行分页
+        pageVO.setData(result);
+        return pageVO;
+
+    }
+
+    /**
+     * 搜索员工限定
+     *
+     * @param vo
+     */
+    private void setStaffId(QueryVO vo) {
+        if (StringUtil.isEmpty(vo.getStaffId())) {
+            return;
+        }
+        switch (vo.getRole()) {
+            case RoleConstant.DSCJ:
+                vo.setCollectorId(vo.getStaffId());
+                break;
+            case RoleConstant.DSSX:
+                vo.setPromotorId(vo.getStaffId());
+                break;
+            case RoleConstant.DSYY:
+                vo.setAppointorId(vo.getStaffId());
+                break;
+            case RoleConstant.ZJSSX:
+                vo.setPromotorId(vo.getStaffId());
+                break;
+            case RoleConstant.ZJSYY:
+                vo.setAppointorId(vo.getStaffId());
+                break;
+            case RoleConstant.MSJD:
+                vo.setReceptorId(vo.getStaffId());
+                break;
+            case RoleConstant.CWZX:
+                vo.setCollectorId(vo.getStaffId());
+                break;
+            default:
+                vo.setCollectorId(vo.getStaffId());
+                break;
+        }
+    }
+
+
+    /**
+     * 权限限定
+     */
+    private void setPmsimit(QueryVO vo) {
+        if (0 == vo.getPmsLimit()) {
+            return;
+        }
+        switch (vo.getPmsLimit()) {
+            case 1:
+                // 只看自己
+                querySelf(vo);
+                break;
+            case 2:
+                // 只看本组
+                queryGroup(vo);
+                break;
+            case 3:
+                // 只看部门
+                queryDept(vo);
+                break;
+            case 4:
+                // 只看本店
+                queryShop(vo);
+                break;
+            default:
+                // 默认只看自己
+                querySelf(vo);
+                break;
+        }
+
+        if (RoleConstant.DSYY.equalsIgnoreCase(vo.getRole())) {
+            vo.appendSuperSql(" info.STATUSID != " + ClientStatusConst.BE_ALLOTING + " AND info.STATUSID != "
+                    + ClientStatusConst.BE_WAIT_MAKE_ORDER);
+        }
+    }
+
+    /**
+     * 只看自己
+     *
+     * @param vo
+     */
+    private void querySelf(QueryVO vo) {
+        int staffId = vo.getUid();
+
+        switch (vo.getRole()) {
+            case RoleConstant.DSCJ:
+                vo.appendCollectorId(staffId);
+                break;
+            case RoleConstant.DSSX:
+                vo.appendPromotorId(staffId);
+                break;
+            case RoleConstant.DSYY:
+                vo.appendAppointorId(staffId);
+                break;
+            case RoleConstant.ZJSSX:
+                vo.appendPromotorId(staffId);
+                break;
+            case RoleConstant.ZJSYY:
+                vo.appendAppointorId(staffId);
+                break;
+            case RoleConstant.MSJD:
+                vo.appendReceptorId(staffId);
+                break;
+            case RoleConstant.CWZX:
+                vo.appendCollectorId(staffId);
+                break;
+            default:
+                vo.appendCollectorId(staffId);
+                break;
+        }
+    }
+
+    /**
+     * 只看本组
+     */
+    private void queryGroup(QueryVO vo) {
+        int staffId = vo.getUid();
+        int companyId = vo.getCompanyId();
+        switch (vo.getRole()) {
+            case RoleConstant.DSCJ:
+                vo.setCollectorId(getStaffIdsThisGroup(staffId, companyId, RoleConstant.DSCJ));
+                break;
+            case RoleConstant.DSSX:
+                vo.setPromotorId(getStaffIdsThisGroup(staffId, companyId, RoleConstant.DSSX));
+                break;
+            case RoleConstant.DSYY:
+                vo.setAppointorId(getStaffIdsThisGroup(staffId, companyId, RoleConstant.DSYY));
+                break;
+            case RoleConstant.ZJSSX:
+                vo.setPromotorId(getStaffIdsThisGroup(staffId, companyId, RoleConstant.ZJSSX));
+                break;
+            case RoleConstant.ZJSYY:
+                vo.setAppointorId(getStaffIdsThisGroup(staffId, companyId, RoleConstant.ZJSYY));
+                break;
+            case RoleConstant.MSJD:
+                vo.setReceptorId(getStaffIdsThisGroup(staffId, companyId, RoleConstant.MSJD));
+                break;
+            case RoleConstant.CWZX:
+                vo.setCollectorId(getStaffIdsThisGroup(staffId, companyId, RoleConstant.CWZX));
+                break;
+            default:
+                vo.setCollectorId(getStaffIdsThisGroup(staffId, companyId, RoleConstant.CWZX));
+                break;
+        }
+    }
+
+    /**
+     * 只看部门
+     *
+     * @param vo
+     */
+    private void queryDept(QueryVO vo) {
+        int staffId = vo.getUid();
+        int companyId = vo.getCompanyId();
+        switch (vo.getRole()) {
+            case RoleConstant.DSCJ:
+                vo.setCollectorId(getStaffIdsThisDept(staffId, companyId, RoleConstant.DSCJ));
+                break;
+            case RoleConstant.DSSX:
+                vo.setPromotorId(getStaffIdsThisDept(staffId, companyId, RoleConstant.DSSX));
+                break;
+            case RoleConstant.DSYY:
+                vo.setAppointorId(getStaffIdsThisDept(staffId, companyId, RoleConstant.DSYY));
+                break;
+            case RoleConstant.ZJSSX:
+                vo.setPromotorId(getStaffIdsThisDept(staffId, companyId, RoleConstant.ZJSSX));
+                break;
+            case RoleConstant.ZJSYY:
+                vo.setAppointorId(getStaffIdsThisDept(staffId, companyId, RoleConstant.ZJSYY));
+                break;
+            case RoleConstant.MSJD:
+                vo.setReceptorId(getStaffIdsThisDept(staffId, companyId, RoleConstant.MSJD));
+                break;
+            case RoleConstant.CWZX:
+                vo.setCollectorId(getStaffIdsThisDept(staffId, companyId, RoleConstant.CWZX));
+                break;
+            default:
+                vo.setCollectorId(getStaffIdsThisDept(staffId, companyId, RoleConstant.CWZX));
+                break;
+        }
+    }
+
+    /**
+     * 只看本店
+     *
+     * @param vo
+     */
+    private void queryShop(QueryVO vo) {
+        int staffId = vo.getUid();
+        int companyId = vo.getCompanyId();
+        switch (vo.getRole()) {
+            case RoleConstant.MSJD:
+                vo.setShopId(getShopId(staffId, companyId));
+                break;
+        }
+
+    }
+
+
+    private String getShopId(int staffId, int companyId) {
+        if (NumUtil.isInValid(staffId) || NumUtil.isInValid(companyId)) {
+            return "";
+        }
+        //查询参数
+        Map<String, Object> keyMap = new HashMap<>();
+        keyMap.put("companyId", companyId);
+        keyMap.put("staffId", staffId);
+        String sql = "SELECT grp.SHOPID FROM hm_pub_group_staff rela " +
+                " LEFT JOIN hm_pub_group grp ON grp.GROUPID = rela.GROUPID AND grp.COMPANYID = rela.COMPANYID " +
+                "  LEFT JOIN hm_pub_shop shop ON shop.ID = grp.SHOPID AND shop.COMPANYID = grp.COMPANYID" +
+                " WHERE rela.COMPANYID = :comapnyId  AND rela.STAFFID =  :staffId  AND shop.ISSHOW = 1";
+        final StringBuilder shopIds = new StringBuilder();
+        namedJdbc.query(sql, keyMap, new RowCallbackHandler() {
+            @Override
+            public void processRow(ResultSet resultSet) throws SQLException {
+                shopIds.append(CommonConstant.STR_SEPARATOR).append(resultSet.getString("SHOPID"));
+
+            }
+        });
+
+        if (StringUtil.isNotEmpty(shopIds.toString())) {
+            shopIds.append(CommonConstant.STR_SEPARATOR);
+        }
+        return shopIds.toString();
+    }
+
+    /**
+     * 获取职工所在小组人员ID集合
+     */
+    private String getStaffIdsThisGroup(int staffId, int companyId, String groupType) {
+        //查询参数
+        Map<String, Object> keyMap = new HashMap<>();
+        keyMap.put("companyId", companyId);
+        keyMap.put("staffId", staffId);
+        keyMap.put("groupType", groupType);
+        String sql = "SELECT DISTINCT sf.ID FROM hm_pub_group_staff rl " +
+                " LEFT JOIN hm_pub_staff sf ON rl.STAFFID = sf.ID AND sf.COMPANYID = :companyId " +
+                " WHERE rl.GROUPID IN (" +
+                " SELECT DISTINCT grp.GROUPID FROM hm_pub_group_staff rela" +
+                " LEFT JOIN hm_pub_group grp ON rela.GROUPID = grp.GROUPID" +
+                " AND grp.COMPANYID = :companyId WHERE ( rela.STAFFID = :staffId " +
+                " OR INSTR( CONCAT(',', grp.CHIEFIDS, ','), CONCAT(',', :staffId , ',') ) != 0 )" +
+                " AND rela.COMPANYID = :companyId AND grp.GROUPTYPE = :groupType )" +
+                " AND rl.COMPANYID = :companyId AND sf.ID IS NOT NULL ";
+
+        final StringBuilder ids = new StringBuilder();
+        ids.append(CommonConstant.STR_SEPARATOR).append(staffId);
+
+        namedJdbc.query(sql, keyMap, new RowCallbackHandler() {
+            @Override
+            public void processRow(ResultSet resultSet) throws SQLException {
+                ids.append(CommonConstant.STR_SEPARATOR).append(resultSet.getString("ID"));
+
+            }
+        });
+        ids.append(CommonConstant.STR_SEPARATOR);
+
+        return ids.toString();
+    }
+
+
+    /**
+     * 获取职工所在部门人员ID集合
+     */
+    private String getStaffIdsThisDept(int staffId, int companyId, String groupType) {
+        //查询参数
+        Map<String, Object> keyMap = new HashMap<>();
+        keyMap.put("companyId", companyId);
+        keyMap.put("staffId", staffId);
+        keyMap.put("groupType", groupType);
+        String sql = " SELECT DISTINCT sf.ID FROM hm_pub_group_staff rl LEFT JOIN " +
+                " hm_pub_staff sf ON rl.STAFFID = sf.ID AND sf.COMPANYID = :companyId " +
+                " LEFT JOIN hm_pub_group grp ON rl.GROUPID = grp.GROUPID AND grp.COMPANYID = :companyId " +
+                " WHERE grp.PARENTID IN ( " +
+                " SELECT DISTINCT grp.PARENTID FROM hm_pub_group_staff rela " +
+                " LEFT JOIN hm_pub_group grp ON rela.GROUPID = grp.GROUPID AND grp.COMPANYID = :companyId " +
+                " LEFT JOIN hm_pub_group sp ON grp.PARENTID = sp.GROUPID AND sp.COMPANYID = :companyId " +
+                " WHERE ( rela.STAFFID = ? OR INSTR( CONCAT(',', grp.CHIEFIDS, ','), CONCAT(',', :staffId , ',') ) != 0" +
+                " OR INSTR( CONCAT(',', sp.CHIEFIDS, ','), CONCAT(',', :staffId , ',') ) != 0 ) " +
+                " AND rela.COMPANYID = :companyId AND grp.GROUPTYPE = :groupType ) AND grp.GROUPTYPE = :groupType " +
+                " AND rl.COMPANYID = :companyId AND sf.ID IS NOT NULL";
+        //ids
+        final StringBuilder ids = new StringBuilder();
+        ids.append(CommonConstant.STR_SEPARATOR).append(staffId);
+        namedJdbc.query(sql, keyMap, new RowCallbackHandler() {
+            @Override
+            public void processRow(ResultSet resultSet) throws SQLException {
+                ids.append(CommonConstant.STR_SEPARATOR).append(resultSet.getString("ID"));
+
+            }
+        });
+        ids.append(CommonConstant.STR_SEPARATOR);
+
+        return ids.toString();
+    }
+
 
     /**
      * 获取from
@@ -197,7 +596,7 @@ public class ClientQueryDao {
      * @param companyId
      * @return
      */
-    private StringBuilder getFromSql(int companyId) {
+    public static StringBuilder getFromSql(int companyId) {
         StringBuilder from = new StringBuilder();
         from.append(" FROM ").append(DBSplitUtil.getInfoTabName(companyId));
         from.append(" info LEFT JOIN ");
@@ -318,7 +717,7 @@ public class ClientQueryDao {
      * @param column
      * @return
      */
-    private String dynamixSql(String param, String spitStr, String column) {
+    public static String dynamixSql(String param, String spitStr, String column) {
 
         String[] paramArr = param.split(spitStr);
         if (paramArr.length == 0) {

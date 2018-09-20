@@ -102,7 +102,7 @@ public class ExcelServiceImpl implements ExcelService {
             if(StringUtil.isNotEmpty(clientExcelDTO.getKzName()) && clientExcelDTO.getKzName().length() > 16){
                 throw new RException("第"+index+"行"+ExceptionEnum.KZ_NAME_LENGTH_TOO_LONG.getMsg(),ExceptionEnum.KZ_NAME_LENGTH_TOO_LONG.getCode());
             }
-            if(StringUtil.isNotEmpty(clientExcelDTO.getKzPhone()) &&  clientExcelDTO.getKzPhone().length() > 11){
+            if(StringUtil.isNotEmpty(clientExcelDTO.getKzPhone()) &&  clientExcelDTO.getKzPhone().length() > 12){
                 throw new RException("第"+index+"行"+ExceptionEnum.KZ_PHONE_LENGTH_TOO_LONG.getMsg(),ExceptionEnum.KZ_PHONE_LENGTH_TOO_LONG.getCode());
             }
             if(StringUtil.isNotEmpty(clientExcelDTO.getKzWechat()) && clientExcelDTO.getKzWechat().length() > 32){
@@ -465,7 +465,7 @@ public class ExcelServiceImpl implements ExcelService {
     public ClientSortCountDTO getMultipleKzStatusCount(StaffPO staffPO) {
         //错误个数
         ClientSortCountDTO clientSortCount = excelDao.getMultipleKzStatusCount(DBSplitUtil.getTable(TableEnum.temp, staffPO.getCompanyId()),
-                DBSplitUtil.getTable(TableEnum.info, staffPO.getCompanyId()), staffPO.getId());
+                DBSplitUtil.getTable(TableEnum.info, staffPO.getCompanyId()), staffPO.getId(),staffPO.getCompanyId());
         return clientSortCount;
     }
 
