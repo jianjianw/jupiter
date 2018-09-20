@@ -363,7 +363,7 @@
         <include refid="Base_Column_News_List"/>
         FROM ${tempName} temp
         WHERE
-        and temp.COMPANYID = #{companyId}
+         temp.COMPANYID = #{companyId}
         AND temp.OPERAID = #{staffId}
         AND ((temp.kzphone in (select kzphone from ${tableName} info) or temp.kzwechat in (select kzphone from ${tableName} info) or temp.kzqq in (select kzphone from ${tableName} info))
         or temp.kzwechat in (select kzwechat from ${tableName} info) or temp.kzwechat in(select kzwechat from ${tableName} info) or temp.kzwechat in (select kzwechat from ${tableName} info)
@@ -438,7 +438,7 @@
         <include refid="Base_Column_News_List"/>
         FROM ${tempName} temp
         WHERE
-        and temp.COMPANYID = #{companyId}
+         temp.COMPANYID = #{companyId}
         AND temp.OPERAID = #{staffId}
         AND ((temp.kzphone in (select kzphone from ${tableName} info) or temp.kzwechat in (select kzphone from ${tableName} info) or temp.kzqq in (select kzphone from ${tableName} info))
         or temp.kzwechat in (select kzwechat from ${tableName} info) or temp.kzwechat in(select kzwechat from ${tableName} info) or temp.kzwechat in (select kzwechat from ${tableName} info)
@@ -953,7 +953,7 @@
         <include refid="Base_Column_News_List"/>
         FROM ${tempName} temp
         WHERE
-        and temp.COMPANYID = #{companyId}
+         temp.COMPANYID = #{companyId}
         AND temp.OPERAID = #{staffId}
         AND ((temp.kzphone in (select kzphone from ${tableName} info) or temp.kzwechat in (select kzphone from ${tableName} info) or temp.kzqq in (select kzphone from ${tableName} info))
         or temp.kzwechat in (select kzwechat from ${tableName} info) or temp.kzwechat in(select kzwechat from ${tableName} info) or temp.kzwechat in (select kzwechat from ${tableName} info)
