@@ -185,7 +185,7 @@ public class ReportsController extends BaseController {
      * 获取电商推广渠道统计
      */
     @RequestMapping("/get_dstg_channel_reports")
-    public ResultInfo getDstgChannelReports(@RequestParam("start") int start, @RequestParam("end") int end, String channelIds, int typeLimit) {
+    public ResultInfo getDstgChannelReports(@RequestParam("start") int start, @RequestParam("end") int end, String channelIds, String typeLimit) {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         Map<String, Object> reqContent = new HashMap<>();
         reqContent.put("start", start);
