@@ -168,6 +168,7 @@
         hm_pub_company
         WHERE ISDEL = 0
         AND ISLOCK = 0
+        AND TYPEID = #{type}
     </select>
 
 

@@ -378,7 +378,7 @@ public class CityReportsDao {
             default:
                 throw new RException(ExceptionEnum.SEARCH_CLIENT_TYPE_IS_UNKNOW);
         }
-        System.out.println("输出本次最终sql: " + sb.toString());
+//        System.out.println("输出本次最终sql: " + sb.toString());
         return sb;
     }
 //缺筛选中

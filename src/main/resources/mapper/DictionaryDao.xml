@@ -32,6 +32,7 @@
         WHERE
             dic.DICTYPE = #{dicType}
             AND dic.COMPANYID = #{companyId}
+            AND dic.ISSHOW = 1
         ORDER BY dic.PRIORITY ASC
     </select>
 

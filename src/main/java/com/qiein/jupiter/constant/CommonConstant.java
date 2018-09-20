@@ -233,5 +233,9 @@ public class CommonConstant {
      * 转介绍渠道
      */
     public final static String ZjsSrc="3,4,5";
+    /**
+     * 草莓卷图标48px
+     */
+    public static final String CMJ_LOGO_IMG48 = "https://crm-jupiter.oss-cn-hangzhou.aliyuncs.com/img%2Flogo48.png";
 
 }

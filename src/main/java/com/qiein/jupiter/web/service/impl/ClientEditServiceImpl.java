@@ -435,13 +435,15 @@ public class ClientEditServiceImpl implements ClientEditService {
         }
 
         // 纠错信息
-        reqContent.put("sourceid", clientVO.getSourceId());
+
         // 获取来源名
         SourcePO sourcePO = sourceDao.getShowSourceById(staffPO.getCompanyId(), clientVO.getSourceId());
         if (sourcePO == null) {
             throw new RException(ExceptionEnum.SOURCE_NOT_FOUND);
         }
+        reqContent.put("sourceid", clientVO.getSourceId());
         reqContent.put("sourcename", sourcePO.getSrcName());
+        reqContent.put("srctype", sourcePO.getTypeId());
 
         // 获取渠道名
         ChannelPO channelPO = channelDao.getShowChannelById(staffPO.getCompanyId(), clientVO.getChannelId());
