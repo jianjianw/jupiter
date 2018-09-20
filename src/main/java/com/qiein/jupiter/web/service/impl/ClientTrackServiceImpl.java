@@ -118,7 +118,11 @@ public class ClientTrackServiceImpl implements ClientTrackService {
      * @return
      */
     private List<StaffNumVO> getOnwerStaffList(String type, int companyId, String kzIds) {
-        return clientDao.getOnwerInfoNumByIds(DBSplitUtil.getInfoTabName(companyId), kzIds, " info." + type + " ", companyId);
+        if(StringUtil.isEmpty(kzIds)){
+            return null;
+        }
+        String[] kzIdArr = kzIds.split(CommonConstant.STR_SEPARATOR);
+        return clientDao.getOnwerInfoNumByIds(DBSplitUtil.getInfoTabName(companyId), kzIdArr, " info." + type + " ", companyId);
     }
 
     /**

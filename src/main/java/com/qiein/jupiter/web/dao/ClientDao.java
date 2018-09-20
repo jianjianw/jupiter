@@ -53,12 +53,12 @@ public interface ClientDao {
      * 客资被转移时统计被转移人的客资数
      *
      * @param tabName
-     * @param kzIds
+     * @param kzIdArr
      * @param type
      * @param companyId
      * @return
      */
-    List<StaffNumVO> getOnwerInfoNumByIds(@Param("tabName") String tabName, @Param("kzIds") String kzIds,
+    List<StaffNumVO> getOnwerInfoNumByIds(@Param("tabName") String tabName, @Param("kzIdArr") String[] kzIdArr,
                                           @Param("type") String type, @Param("companyId") Integer companyId);
     /**
      * 寻找 kz的主id
