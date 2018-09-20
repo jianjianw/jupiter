@@ -108,7 +108,6 @@ public class ClientStatusConst {
     public static List<Integer> COUNT_KZ_NUM_STATUS = new ArrayList<>(Arrays.asList(99, 0, 40));
 
 
-
     /*-- 客资分类 --*/
     public static final int KZ_CLASS_NEW = 1;// 新客资
     public static final int KZ_CLASS_TRACK = 2;// 待跟踪
@@ -174,4 +173,7 @@ public class ClientStatusConst {
         }
         return classId;
     }
+
+    public static final List<String> actionDefault = new ArrayList<>(
+            Arrays.asList("new", "trace", "order", "come", "success", "invalid", "custom1", "custom2", "custom3"));
 }

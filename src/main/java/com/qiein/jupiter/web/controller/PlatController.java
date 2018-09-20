@@ -74,8 +74,28 @@ public class PlatController extends BaseController {
     /**
      * 页面查询客资
      */
-    @PostMapping("/query_client_info_page")
-    public ResultInfo queryClientInfoPage(@RequestBody JSONObject content) {
+    @PostMapping("/query_page_client_info")
+    public ResultInfo queryPageClientInfo(@RequestBody JSONObject content) {
+        QueryVO queryVO = initQueryVo(content);
+        return ResultInfoUtil.success(platService.queryPageClientInfo(queryVO));
+    }
+
+    /**
+     * 页面查询客资
+     */
+    @PostMapping("/query_page_client_info_count")
+    public ResultInfo queryPageClientInfoCount(@RequestBody JSONObject content) {
+        QueryVO queryVO = initQueryVo(content);
+        return ResultInfoUtil.success(platService.queryPageClientInfoCount(queryVO));
+    }
+
+    /**
+     * 初始化参数
+     *
+     * @param content
+     * @return
+     */
+    private QueryVO initQueryVo(JSONObject content) {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
 
         QueryVO queryVO = new QueryVO();
@@ -101,7 +121,8 @@ public class PlatController extends BaseController {
         queryVO.setSpareSql(content.getString("sparesql"));
         queryVO.setFilterSql(content.getString("filtersql"));
         queryVO.setSuperSql(content.getString("supersql"));
-        return ResultInfoUtil.success(platService.queryPageClientInfo(queryVO));
+        return queryVO;
     }
+
 
 }

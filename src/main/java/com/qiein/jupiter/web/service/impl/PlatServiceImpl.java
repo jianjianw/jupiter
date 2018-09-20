@@ -89,4 +89,16 @@ public class PlatServiceImpl implements PlatService {
     }
 
 
+    /**
+     * 页面查询客资统计
+     *
+     * @param queryVO
+     * @return
+     */
+    @Override
+    public JSONObject queryPageClientInfoCount(QueryVO queryVO) {
+        return clientQueryDao.queryPageClientCountInfo(queryVO);
+    }
+
+
 }

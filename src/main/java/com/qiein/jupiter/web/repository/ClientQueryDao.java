@@ -296,6 +296,85 @@ public class ClientQueryDao {
     }
 
     /**
+     * 页面客资各个数量查询
+     */
+    public JSONObject queryPageClientCountInfo(QueryVO vo) {
+        JSONObject countJson = new JSONObject();
+        int companyId = vo.getCompanyId();
+        List<String> actionList = getActionList(vo);
+        // 权限限定
+        setPmsimit(vo);
+
+        // 职工限定
+        setStaffId(vo);
+
+        //查询参数
+        Map<String, Object> keyMap = new HashMap<>();
+        keyMap.put("companyId", companyId);
+
+        //from
+        StringBuilder fromSql = new StringBuilder();
+        fromSql.append(getFromSql(companyId));
+        //where
+        StringBuilder whereSql = new StringBuilder();
+        whereSql.append(" WHERE  info.COMPANYID = :companyId AND info.ISDEL = 0 ");
+        // 限制电商和转介绍查看的客资渠道类型
+        if (vo.getRole().startsWith("ds")) {
+            whereSql.append(" AND ( info.SRCTYPE = 1 OR info.SRCTYPE = 2 ) ");
+        } else if (vo.getRole().startsWith("zjs")) {
+            whereSql.append(" AND ( info.SRCTYPE = 3 OR info.SRCTYPE = 4 OR info.SRCTYPE = 5 ) ");
+        }
+        handleWhereSql(vo, keyMap, whereSql);
+
+        String countSql = "SELECT COUNT(*) COUNT " + fromSql + whereSql;
+
+        int countAll = namedJdbc.queryForObject(countSql, keyMap, Integer.class);
+        countJson.put(ClientStatusConst.KZ_CLASS_ACTION_ALL, countAll);
+        for (String action : actionList) {
+            if (ClientStatusConst.actionDefault.contains(action)) {
+                keyMap.put("action", ClientStatusConst.getClassByAction(action));
+                int count = namedJdbc.queryForObject(countSql + " AND info.CLASSID = :action ", keyMap, Integer.class);
+                countJson.put(action, count);
+            } else {
+                // 自定义action
+            }
+        }
+        return countJson;
+
+    }
+
+
+    /**
+     * 获取角色action
+     *
+     * @param vo
+     * @return
+     */
+    private List<String> getActionList(QueryVO vo) {
+
+        String sql = "SELECT cf.ACTION FROM hm_crm_page_conf cf" +
+                " WHERE cf.COMPANYID = :companyId AND cf.ROLE = :role ORDER BY cf.PRIORITY ASC";
+
+
+        //查询参数
+        Map<String, Object> keyMap = new HashMap<>();
+        keyMap.put("companyId", vo.getCompanyId());
+        keyMap.put("role", vo.getRole());
+
+
+        final List<String> actionList = new ArrayList<>();
+
+        namedJdbc.query(sql, keyMap, new RowCallbackHandler() {
+            @Override
+            public void processRow(ResultSet rs) throws SQLException {
+                actionList.add(rs.getString("ACTION"));
+            }
+        });
+
+        return actionList;
+    }
+
+    /**
      * 搜索员工限定
      *
      * @param vo
