@@ -26,7 +26,7 @@ public interface CashLogDao extends BaseDao<CashLogDao> {
     /**
      * 修改付款记录的状态
      */
-    void editAmount(@Param("table") String table, @Param("amount") int amount, @Param("id") int id, @Param("companyId") int companyId);
+    void editAmount(@Param("table") String table, @Param("amount") int amount, @Param("id") int id, @Param("companyId") int companyId,@Param("staffId")int staffId,@Param("staffName")String staffName);
 
     /**
      * 付款记录查询页面

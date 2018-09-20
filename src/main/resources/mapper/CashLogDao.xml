@@ -48,7 +48,9 @@
     <!--修改付款记录的状态-->
     <update id="editAmount">
         UPDATE ${table}
-        SET AMOUNT = #{amount}
+        SET AMOUNT = #{amount},
+        STAFFID=#{staffId},
+        STAFFNAME=#{staffName}
         WHERE ID = #{id}
               AND COMPANYID = #{companyId}
     </update>

@@ -362,16 +362,12 @@
         DISTINCT
         <include refid="Base_Column_News_List"/>
         FROM ${tempName} temp
-        LEFT JOIN ${tableName} info
-        ON info.KZID is not null
         WHERE
-        info.KZID IS NOT NULL
         and temp.COMPANYID = #{companyId}
-        AND info.ISDEL = 0
         AND temp.OPERAID = #{staffId}
-        AND (( temp.KZPHONE = info.KZPHONE or temp.KZPHONE = info.KZWECHAT or temp.KZPHONE = info.KZQQ)
-        or ( temp.KZWECHAT = info.KZPHONE or temp.KZWECHAT = info.KZWECHAT or temp.KZWECHAT = info.KZQQ)
-        or ( temp.KZQQ = info.KZPHONE or temp.KZQQ = info.KZWECHAT or temp.KZQQ = info.KZQQ))
+        AND ((temp.kzphone in (select kzphone from ${tableName} info) or temp.kzwechat in (select kzphone from ${tableName} info) or temp.kzqq in (select kzphone from ${tableName} info))
+        or temp.kzwechat in (select kzwechat from ${tableName} info) or temp.kzwechat in(select kzwechat from ${tableName} info) or temp.kzwechat in (select kzwechat from ${tableName} info)
+        or temp.kzwechat in (select kzqq from ${tableName} info) or temp.kzwechat in(select kzqq from ${tableName} info) or temp.kzwechat in (select kzqq from ${tableName} info))
         union
         SELECT
         <include refid="Base_Column_News_List"/>
@@ -437,19 +433,16 @@
 
         left join
         -- 重复客资
-        (SELECT
+        ( SELECT
         DISTINCT
         <include refid="Base_Column_News_List"/>
         FROM ${tempName} temp
-        inner join ${tabName} info
-        ON info.KZID is not null
         WHERE
-        info.KZID IS NOT NULL
-        AND info.ISDEL = 0
+        and temp.COMPANYID = #{companyId}
         AND temp.OPERAID = #{staffId}
-        AND (( temp.KZPHONE = info.KZPHONE or temp.KZPHONE = info.KZWECHAT or temp.KZPHONE = info.KZQQ)
-        or ( temp.KZWECHAT = info.KZPHONE or temp.KZWECHAT = info.KZWECHAT or temp.KZWECHAT = info.KZQQ)
-        or ( temp.KZQQ = info.KZPHONE or temp.KZQQ = info.KZWECHAT or temp.KZQQ = info.KZQQ))
+        AND ((temp.kzphone in (select kzphone from ${tableName} info) or temp.kzwechat in (select kzphone from ${tableName} info) or temp.kzqq in (select kzphone from ${tableName} info))
+        or temp.kzwechat in (select kzwechat from ${tableName} info) or temp.kzwechat in(select kzwechat from ${tableName} info) or temp.kzwechat in (select kzwechat from ${tableName} info)
+        or temp.kzwechat in (select kzqq from ${tableName} info) or temp.kzwechat in(select kzqq from ${tableName} info) or temp.kzwechat in (select kzqq from ${tableName} info))
         union
         SELECT
         <include refid="Base_Column_News_List"/>
@@ -709,20 +702,16 @@
         from ${tempName} temp
         left join
         -- 重复客资
-        (SELECT
+        ( SELECT
         DISTINCT
         <include refid="Base_Column_News_List"/>
         FROM ${tempName} temp
-        inner join ${tableName} info
-        ON info.KZID is not null
         WHERE
-        info.KZID IS NOT NULL
-        and temp.COMPANYID = #{companyId}
-        AND info.ISDEL = 0
+         temp.COMPANYID = #{companyId}
         AND temp.OPERAID = #{staffId}
-        AND (( temp.KZPHONE = info.KZPHONE or temp.KZPHONE = info.KZWECHAT or temp.KZPHONE = info.KZQQ)
-        or ( temp.KZWECHAT = info.KZPHONE or temp.KZWECHAT = info.KZWECHAT or temp.KZWECHAT = info.KZQQ)
-        or ( temp.KZQQ = info.KZPHONE or temp.KZQQ = info.KZWECHAT or temp.KZQQ = info.KZQQ))
+        AND ((temp.kzphone in (select kzphone from ${tableName} info) or temp.kzwechat in (select kzphone from ${tableName} info) or temp.kzqq in (select kzphone from ${tableName} info))
+        or temp.kzwechat in (select kzwechat from ${tableName} info) or temp.kzwechat in(select kzwechat from ${tableName} info) or temp.kzwechat in (select kzwechat from ${tableName} info)
+        or temp.kzwechat in (select kzqq from ${tableName} info) or temp.kzwechat in(select kzqq from ${tableName} info) or temp.kzwechat in (select kzqq from ${tableName} info))
         union
         SELECT
         <include refid="Base_Column_News_List"/>
@@ -783,20 +772,16 @@
         from ${tempName} temp
         left join
         -- 重复客资
-        (SELECT
+        ( SELECT
         DISTINCT
         <include refid="Base_Column_News_List"/>
         FROM ${tempName} temp
-        inner join ${tableName} info
-        ON info.KZID is not null
         WHERE
-        info.KZID IS NOT NULL
-        AND info.ISDEL = 0
-        AND temp.COMPANYID = #{companyId}
+         temp.COMPANYID = #{companyId}
         AND temp.OPERAID = #{staffId}
-        AND (( temp.KZPHONE = info.KZPHONE or temp.KZPHONE = info.KZWECHAT or temp.KZPHONE = info.KZQQ)
-        or ( temp.KZWECHAT = info.KZPHONE or temp.KZWECHAT = info.KZWECHAT or temp.KZWECHAT = info.KZQQ)
-        or ( temp.KZQQ = info.KZPHONE or temp.KZQQ = info.KZWECHAT or temp.KZQQ = info.KZQQ))
+        AND ((temp.kzphone in (select kzphone from ${tableName} info) or temp.kzwechat in (select kzphone from ${tableName} info) or temp.kzqq in (select kzphone from ${tableName} info))
+        or temp.kzwechat in (select kzwechat from ${tableName} info) or temp.kzwechat in(select kzwechat from ${tableName} info) or temp.kzwechat in (select kzwechat from ${tableName} info)
+        or temp.kzwechat in (select kzqq from ${tableName} info) or temp.kzwechat in(select kzqq from ${tableName} info) or temp.kzwechat in (select kzqq from ${tableName} info))
         union
         SELECT
         <include refid="Base_Column_News_List"/>
@@ -963,19 +948,16 @@
         from ${tempName} temp
         left join
         -- 重复客资
-        (SELECT
+        ( SELECT
         DISTINCT
         <include refid="Base_Column_News_List"/>
         FROM ${tempName} temp
-        inner join ${tabName} info
-        ON info.KZID is not null
         WHERE
-        info.KZID IS NOT NULL
-        AND info.ISDEL = 0
+        and temp.COMPANYID = #{companyId}
         AND temp.OPERAID = #{staffId}
-        AND (( temp.KZPHONE = info.KZPHONE or temp.KZPHONE = info.KZWECHAT or temp.KZPHONE = info.KZQQ)
-        or ( temp.KZWECHAT = info.KZPHONE or temp.KZWECHAT = info.KZWECHAT or temp.KZWECHAT = info.KZQQ)
-        or ( temp.KZQQ = info.KZPHONE or temp.KZQQ = info.KZWECHAT or temp.KZQQ = info.KZQQ))
+        AND ((temp.kzphone in (select kzphone from ${tableName} info) or temp.kzwechat in (select kzphone from ${tableName} info) or temp.kzqq in (select kzphone from ${tableName} info))
+        or temp.kzwechat in (select kzwechat from ${tableName} info) or temp.kzwechat in(select kzwechat from ${tableName} info) or temp.kzwechat in (select kzwechat from ${tableName} info)
+        or temp.kzwechat in (select kzqq from ${tableName} info) or temp.kzwechat in(select kzqq from ${tableName} info) or temp.kzwechat in (select kzqq from ${tableName} info))
         union
         SELECT
         <include refid="Base_Column_News_List"/>
