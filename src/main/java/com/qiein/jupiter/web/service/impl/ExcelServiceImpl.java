@@ -187,7 +187,7 @@ public class ExcelServiceImpl implements ExcelService {
         }
         // 1.删除员工客资缓存记录
         excelDao.deleteTempByStaffId(DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()),
-                currentLoginStaff.getId());
+                currentLoginStaff.getId(),currentLoginStaff.getCompanyId());
 
         /*-- 新增客资信息 --*/
         int back = excelDao.insertExcelClientInfo(clientList,
@@ -414,7 +414,7 @@ public class ExcelServiceImpl implements ExcelService {
      * @param operaId
      */
     public void deleteTempByStaffId(int companyId, int operaId) {
-        excelDao.deleteTempByStaffId((DBSplitUtil.getTable(TableEnum.temp, companyId)), operaId);
+        excelDao.deleteTempByStaffId((DBSplitUtil.getTable(TableEnum.temp, companyId)), operaId,companyId);
     }
 
     /**
