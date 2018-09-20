@@ -377,7 +377,7 @@
         <include refid="Base_Column_News_List"/>
         FROM ${tempName} temp
         WHERE
-        temp.kzid in (select kzid from (select kzid,count(1) as client_count from ${tempName} a group by
+        temp.kzid in (select kzid from (select kzid,count(1) as client_count from ${tempName} a where a.COMPANYID = #{companyId} group by
         kzphone,kzqq,kzwechat having client_count> 1) and  temp.COMPANYID = #{companyId} result)
     </select>
 
