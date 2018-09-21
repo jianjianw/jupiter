@@ -61,7 +61,7 @@ public class DstgChannelReportsOrderBySrcDao {
         sb.append(" FROM hm_crm_client_info info");
         sb.append(" LEFT JOIN hm_crm_client_detail detail ON info.KZID = detail.KZID AND info.COMPANYID = detail.COMPANYID");
         sb.append(" LEFT JOIN hm_crm_source src ON src.id = info.SOURCEID");
-        sb.append(" WHERE COLLECTORID in ( select distinct  gp_staff.staffid from hm_pub_group gp");
+        sb.append(" WHERE info.COLLECTORID in ( select distinct  gp_staff.staffid from hm_pub_group gp");
         sb.append(" left join hm_pub_group_staff gp_staff on gp.groupid = gp_staff.groupid  ");
         sb.append(" where gp.groupid = ? and gp.grouptype = 'dscj') ");
       //  sb.append(" and info.sourceid in ("+sourceIds+")");
@@ -76,7 +76,7 @@ public class DstgChannelReportsOrderBySrcDao {
 
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgChannelReportsOrderBySrcVO dstgChannelReportsOrderBySrcVO = new DstgChannelReportsOrderBySrcVO();
-            dstgChannelReportsOrderBySrcVO.setSrcId(Integer.parseInt((String) dstgGoldDataReport.get("srcId")));
+            dstgChannelReportsOrderBySrcVO.setSrcId(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("srcId")) ));
             dstgChannelReportsOrderBySrcVO.setSrcName((String) dstgGoldDataReport.get("srcname"));
             dstgChannelReportsOrderBySrcVOS.add(dstgChannelReportsOrderBySrcVO);
         }
@@ -92,7 +92,7 @@ public class DstgChannelReportsOrderBySrcDao {
         sb.append(" FROM hm_crm_client_info info");
         sb.append(" LEFT JOIN hm_crm_client_detail detail ON info.KZID = detail.KZID AND info.COMPANYID = detail.COMPANYID");
         sb.append(" LEFT JOIN hm_crm_source src ON src.id = info.SOURCEID");
-        sb.append(" WHERE COLLECTORID in ( select distinct  gp_staff.staffid from hm_pub_group gp");
+        sb.append(" WHERE info.COLLECTORI in ( select distinct  gp_staff.staffid from hm_pub_group gp");
         sb.append(" left join hm_pub_group_staff gp_staff on gp.groupid = gp_staff.groupid  ");
         sb.append(" where gp.groupid = ? and gp.grouptype = 'dscj') ");
         //  sb.append(" and info.sourceid in ("+sourceIds+")");
@@ -107,9 +107,9 @@ public class DstgChannelReportsOrderBySrcDao {
         List<DstgChannelReportsOrderBySrcVO> dstgChannelReportsOrderBySrcBak=new ArrayList<>();
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgChannelReportsOrderBySrcVO dstgChannelReportsOrderBySrcVO = new DstgChannelReportsOrderBySrcVO();
-            dstgChannelReportsOrderBySrcVO.setSrcId(Integer.parseInt((String) dstgGoldDataReport.get("srcId")));
+            dstgChannelReportsOrderBySrcVO.setSrcId(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("srcId"))));
             dstgChannelReportsOrderBySrcVO.setSrcName((String) dstgGoldDataReport.get("srcname"));
-            dstgChannelReportsOrderBySrcVO.setAllClientCount(Integer.parseInt((String) dstgGoldDataReport.get("count")));
+            dstgChannelReportsOrderBySrcVO.setAllClientCount(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("count"))));
             dstgChannelReportsOrderBySrcBak.add(dstgChannelReportsOrderBySrcVO);
         }
 
@@ -137,7 +137,7 @@ public class DstgChannelReportsOrderBySrcDao {
         sb.append(" FROM hm_crm_client_info info");
         sb.append(" LEFT JOIN hm_crm_client_detail detail ON info.KZID = detail.KZID AND info.COMPANYID = detail.COMPANYID");
         sb.append(" LEFT JOIN hm_crm_source src ON src.id = info.SOURCEID");
-        sb.append(" WHERE COLLECTORID in ( select distinct  gp_staff.staffid from hm_pub_group gp");
+        sb.append(" WHERE info.COLLECTORI in ( select distinct  gp_staff.staffid from hm_pub_group gp");
         sb.append(" left join hm_pub_group_staff gp_staff on gp.groupid = gp_staff.groupid  ");
         sb.append(" where gp.groupid = ? and gp.grouptype = 'dscj') ");
         //  sb.append(" and info.sourceid in ("+sourceIds+")");
@@ -154,9 +154,9 @@ public class DstgChannelReportsOrderBySrcDao {
         List<DstgChannelReportsOrderBySrcVO> dstgChannelReportsOrderBySrcBak=new ArrayList<>();
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgChannelReportsOrderBySrcVO dstgChannelReportsOrderBySrcVO = new DstgChannelReportsOrderBySrcVO();
-            dstgChannelReportsOrderBySrcVO.setSrcId(Integer.parseInt((String) dstgGoldDataReport.get("srcId")));
+            dstgChannelReportsOrderBySrcVO.setSrcId(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("srcId"))));
             dstgChannelReportsOrderBySrcVO.setSrcName((String) dstgGoldDataReport.get("srcname"));
-            dstgChannelReportsOrderBySrcVO.setPendingClientCount(Integer.parseInt((String) dstgGoldDataReport.get("count")));
+            dstgChannelReportsOrderBySrcVO.setPendingClientCount(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("count"))));
             dstgChannelReportsOrderBySrcBak.add(dstgChannelReportsOrderBySrcVO);
         }
 
@@ -182,7 +182,7 @@ public class DstgChannelReportsOrderBySrcDao {
         sb.append(" FROM hm_crm_client_info info");
         sb.append(" LEFT JOIN hm_crm_client_detail detail ON info.KZID = detail.KZID AND info.COMPANYID = detail.COMPANYID");
         sb.append(" LEFT JOIN hm_crm_source src ON src.id = info.SOURCEID");
-        sb.append(" WHERE COLLECTORID in ( select distinct  gp_staff.staffid from hm_pub_group gp");
+        sb.append(" WHERE info.COLLECTORI in ( select distinct  gp_staff.staffid from hm_pub_group gp");
         sb.append(" left join hm_pub_group_staff gp_staff on gp.groupid = gp_staff.groupid  ");
         sb.append(" where gp.groupid = ? and gp.grouptype = 'dscj') ");
         //  sb.append(" and info.sourceid in ("+sourceIds+")");
@@ -198,9 +198,9 @@ public class DstgChannelReportsOrderBySrcDao {
         List<DstgChannelReportsOrderBySrcVO> dstgChannelReportsOrderBySrcBak=new ArrayList<>();
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgChannelReportsOrderBySrcVO dstgChannelReportsOrderBySrcVO = new DstgChannelReportsOrderBySrcVO();
-            dstgChannelReportsOrderBySrcVO.setSrcId(Integer.parseInt((String) dstgGoldDataReport.get("srcId")));
+            dstgChannelReportsOrderBySrcVO.setSrcId(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("srcId"))));
             dstgChannelReportsOrderBySrcVO.setSrcName((String) dstgGoldDataReport.get("srcname"));
-            dstgChannelReportsOrderBySrcVO.setFilterPendingClientCount(Integer.parseInt((String) dstgGoldDataReport.get("count")));
+            dstgChannelReportsOrderBySrcVO.setFilterPendingClientCount(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("count"))));
             dstgChannelReportsOrderBySrcBak.add(dstgChannelReportsOrderBySrcVO);
         }
 
@@ -225,7 +225,7 @@ public class DstgChannelReportsOrderBySrcDao {
         sb.append(" FROM hm_crm_client_info info");
         sb.append(" LEFT JOIN hm_crm_client_detail detail ON info.KZID = detail.KZID AND info.COMPANYID = detail.COMPANYID");
         sb.append(" LEFT JOIN hm_crm_source src ON src.id = info.SOURCEID");
-        sb.append(" WHERE COLLECTORID in ( select distinct  gp_staff.staffid from hm_pub_group gp");
+        sb.append(" WHERE info.COLLECTORI in ( select distinct  gp_staff.staffid from hm_pub_group gp");
         sb.append(" left join hm_pub_group_staff gp_staff on gp.groupid = gp_staff.groupid  ");
         sb.append(" where gp.groupid = ? and gp.grouptype = 'dscj') ");
         //  sb.append(" and info.sourceid in ("+sourceIds+")");
@@ -241,9 +241,9 @@ public class DstgChannelReportsOrderBySrcDao {
         List<DstgChannelReportsOrderBySrcVO> dstgChannelReportsOrderBySrcBak=new ArrayList<>();
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgChannelReportsOrderBySrcVO dstgChannelReportsOrderBySrcVO = new DstgChannelReportsOrderBySrcVO();
-            dstgChannelReportsOrderBySrcVO.setSrcId(Integer.parseInt((String) dstgGoldDataReport.get("srcId")));
+            dstgChannelReportsOrderBySrcVO.setSrcId(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("srcId"))));
             dstgChannelReportsOrderBySrcVO.setSrcName((String) dstgGoldDataReport.get("srcname"));
-            dstgChannelReportsOrderBySrcVO.setFilterInValidClientCount(Integer.parseInt((String) dstgGoldDataReport.get("count")));
+            dstgChannelReportsOrderBySrcVO.setFilterInValidClientCount(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("count"))));
             dstgChannelReportsOrderBySrcBak.add(dstgChannelReportsOrderBySrcVO);
         }
 
@@ -269,7 +269,7 @@ public class DstgChannelReportsOrderBySrcDao {
         sb.append(" FROM hm_crm_client_info info");
         sb.append(" LEFT JOIN hm_crm_client_detail detail ON info.KZID = detail.KZID AND info.COMPANYID = detail.COMPANYID");
         sb.append(" LEFT JOIN hm_crm_source src ON src.id = info.SOURCEID");
-        sb.append(" WHERE COLLECTORID in ( select distinct  gp_staff.staffid from hm_pub_group gp");
+        sb.append(" WHERE info.COLLECTORI in ( select distinct  gp_staff.staffid from hm_pub_group gp");
         sb.append(" left join hm_pub_group_staff gp_staff on gp.groupid = gp_staff.groupid  ");
         sb.append(" where gp.groupid = ? and gp.grouptype = 'dscj') ");
         //  sb.append(" and info.sourceid in ("+sourceIds+")");
@@ -285,9 +285,9 @@ public class DstgChannelReportsOrderBySrcDao {
         List<DstgChannelReportsOrderBySrcVO> dstgChannelReportsOrderBySrcBak=new ArrayList<>();
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgChannelReportsOrderBySrcVO dstgChannelReportsOrderBySrcVO = new DstgChannelReportsOrderBySrcVO();
-            dstgChannelReportsOrderBySrcVO.setSrcId(Integer.parseInt((String) dstgGoldDataReport.get("srcId")));
+            dstgChannelReportsOrderBySrcVO.setSrcId(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("srcId"))));
             dstgChannelReportsOrderBySrcVO.setSrcName((String) dstgGoldDataReport.get("srcname"));
-            dstgChannelReportsOrderBySrcVO.setFilterInClientCount(Integer.parseInt((String) dstgGoldDataReport.get("count")));
+            dstgChannelReportsOrderBySrcVO.setFilterInClientCount(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("count"))));
             dstgChannelReportsOrderBySrcBak.add(dstgChannelReportsOrderBySrcVO);
         }
 
@@ -313,7 +313,7 @@ public class DstgChannelReportsOrderBySrcDao {
         sb.append(" FROM hm_crm_client_info info");
         sb.append(" LEFT JOIN hm_crm_client_detail detail ON info.KZID = detail.KZID AND info.COMPANYID = detail.COMPANYID");
         sb.append(" LEFT JOIN hm_crm_source src ON src.id = info.SOURCEID");
-        sb.append(" WHERE COLLECTORID in ( select distinct  gp_staff.staffid from hm_pub_group gp");
+        sb.append(" WHERE info.COLLECTORI in ( select distinct  gp_staff.staffid from hm_pub_group gp");
         sb.append(" left join hm_pub_group_staff gp_staff on gp.groupid = gp_staff.groupid  ");
         sb.append(" where gp.groupid = ? and gp.grouptype = 'dscj') ");
         //  sb.append(" and info.sourceid in ("+sourceIds+")");
@@ -338,9 +338,9 @@ public class DstgChannelReportsOrderBySrcDao {
         List<DstgChannelReportsOrderBySrcVO> dstgChannelReportsOrderBySrcBak=new ArrayList<>();
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgChannelReportsOrderBySrcVO dstgChannelReportsOrderBySrcVO = new DstgChannelReportsOrderBySrcVO();
-            dstgChannelReportsOrderBySrcVO.setSrcId(Integer.parseInt((String) dstgGoldDataReport.get("srcId")));
+            dstgChannelReportsOrderBySrcVO.setSrcId(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("srcId"))));
             dstgChannelReportsOrderBySrcVO.setSrcName((String) dstgGoldDataReport.get("srcname"));
-            dstgChannelReportsOrderBySrcVO.setInValidClientCount(Integer.parseInt((String) dstgGoldDataReport.get("count")));
+            dstgChannelReportsOrderBySrcVO.setInValidClientCount(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("count"))));
             dstgChannelReportsOrderBySrcBak.add(dstgChannelReportsOrderBySrcVO);
         }
 
@@ -368,7 +368,7 @@ public class DstgChannelReportsOrderBySrcDao {
         sb.append(" FROM hm_crm_client_info info");
         sb.append(" LEFT JOIN hm_crm_client_detail detail ON info.KZID = detail.KZID AND info.COMPANYID = detail.COMPANYID");
         sb.append(" LEFT JOIN hm_crm_source src ON src.id = info.SOURCEID");
-        sb.append(" WHERE COLLECTORID in ( select distinct  gp_staff.staffid from hm_pub_group gp");
+        sb.append(" WHERE info.COLLECTORI in ( select distinct  gp_staff.staffid from hm_pub_group gp");
         sb.append(" left join hm_pub_group_staff gp_staff on gp.groupid = gp_staff.groupid  ");
         sb.append(" where gp.groupid = ? and gp.grouptype = 'dscj') ");
         //  sb.append(" and info.sourceid in ("+sourceIds+")");
@@ -383,9 +383,9 @@ public class DstgChannelReportsOrderBySrcDao {
         List<DstgChannelReportsOrderBySrcVO> dstgChannelReportsOrderBySrcBak=new ArrayList<>();
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgChannelReportsOrderBySrcVO dstgChannelReportsOrderBySrcVO = new DstgChannelReportsOrderBySrcVO();
-            dstgChannelReportsOrderBySrcVO.setSrcId(Integer.parseInt((String) dstgGoldDataReport.get("srcId")));
+            dstgChannelReportsOrderBySrcVO.setSrcId(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("srcId"))));
             dstgChannelReportsOrderBySrcVO.setSrcName((String) dstgGoldDataReport.get("srcname"));
-            dstgChannelReportsOrderBySrcVO.setComeShopClientCount(Integer.parseInt((String) dstgGoldDataReport.get("count")));
+            dstgChannelReportsOrderBySrcVO.setComeShopClientCount(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("count"))));
             dstgChannelReportsOrderBySrcBak.add(dstgChannelReportsOrderBySrcVO);
         }
 
@@ -411,7 +411,7 @@ public class DstgChannelReportsOrderBySrcDao {
         sb.append(" FROM hm_crm_client_info info");
         sb.append(" LEFT JOIN hm_crm_client_detail detail ON info.KZID = detail.KZID AND info.COMPANYID = detail.COMPANYID");
         sb.append(" LEFT JOIN hm_crm_source src ON src.id = info.SOURCEID");
-        sb.append(" WHERE COLLECTORID in ( select distinct  gp_staff.staffid from hm_pub_group gp");
+        sb.append(" WHERE info.COLLECTORI in ( select distinct  gp_staff.staffid from hm_pub_group gp");
         sb.append(" left join hm_pub_group_staff gp_staff on gp.groupid = gp_staff.groupid  ");
         sb.append(" where gp.groupid = ? and gp.grouptype = 'dscj') ");
         //  sb.append(" and info.sourceid in ("+sourceIds+")");
@@ -426,9 +426,9 @@ public class DstgChannelReportsOrderBySrcDao {
         List<DstgChannelReportsOrderBySrcVO> dstgChannelReportsOrderBySrcBak=new ArrayList<>();
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgChannelReportsOrderBySrcVO dstgChannelReportsOrderBySrcVO = new DstgChannelReportsOrderBySrcVO();
-            dstgChannelReportsOrderBySrcVO.setSrcId(Integer.parseInt((String) dstgGoldDataReport.get("srcId")));
+            dstgChannelReportsOrderBySrcVO.setSrcId(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("srcId"))));
             dstgChannelReportsOrderBySrcVO.setSrcName((String) dstgGoldDataReport.get("srcname"));
-            dstgChannelReportsOrderBySrcVO.setSuccessClientCount(Integer.parseInt((String) dstgGoldDataReport.get("count")));
+            dstgChannelReportsOrderBySrcVO.setSuccessClientCount(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("count"))));
             dstgChannelReportsOrderBySrcBak.add(dstgChannelReportsOrderBySrcVO);
         }
 
@@ -454,7 +454,7 @@ public class DstgChannelReportsOrderBySrcDao {
         sb.append(" FROM hm_crm_client_info info");
         sb.append(" LEFT JOIN hm_crm_client_detail detail ON info.KZID = detail.KZID AND info.COMPANYID = detail.COMPANYID");
         sb.append(" LEFT JOIN hm_crm_source src ON src.id = info.SOURCEID");
-        sb.append(" WHERE COLLECTORID in ( select distinct  gp_staff.staffid from hm_pub_group gp");
+        sb.append(" WHERE info.COLLECTORI in ( select distinct  gp_staff.staffid from hm_pub_group gp");
         sb.append(" left join hm_pub_group_staff gp_staff on gp.groupid = gp_staff.groupid  ");
         sb.append(" where gp.groupid = ? and gp.grouptype = 'dscj') ");
         //  sb.append(" and info.sourceid in ("+sourceIds+")");
@@ -469,9 +469,9 @@ public class DstgChannelReportsOrderBySrcDao {
         List<DstgChannelReportsOrderBySrcVO> dstgChannelReportsOrderBySrcBak=new ArrayList<>();
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgChannelReportsOrderBySrcVO dstgChannelReportsOrderBySrcVO = new DstgChannelReportsOrderBySrcVO();
-            dstgChannelReportsOrderBySrcVO.setSrcId(Integer.parseInt((String) dstgGoldDataReport.get("srcId")));
+            dstgChannelReportsOrderBySrcVO.setSrcId(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("srcId"))));
             dstgChannelReportsOrderBySrcVO.setSrcName((String) dstgGoldDataReport.get("srcname"));
-            dstgChannelReportsOrderBySrcVO.setAvgAmount(Integer.parseInt((String) dstgGoldDataReport.get("count")));
+            dstgChannelReportsOrderBySrcVO.setAvgAmount(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("count"))));
             dstgChannelReportsOrderBySrcBak.add(dstgChannelReportsOrderBySrcVO);
         }
 
@@ -496,7 +496,7 @@ public class DstgChannelReportsOrderBySrcDao {
         sb.append(" FROM hm_crm_client_info info");
         sb.append(" LEFT JOIN hm_crm_client_detail detail ON info.KZID = detail.KZID AND info.COMPANYID = detail.COMPANYID");
         sb.append(" LEFT JOIN hm_crm_source src ON src.id = info.SOURCEID");
-        sb.append(" WHERE COLLECTORID in ( select distinct  gp_staff.staffid from hm_pub_group gp");
+        sb.append(" WHERE info.COLLECTORI in ( select distinct  gp_staff.staffid from hm_pub_group gp");
         sb.append(" left join hm_pub_group_staff gp_staff on gp.groupid = gp_staff.groupid  ");
         sb.append(" where gp.groupid = ? and gp.grouptype = 'dscj') ");
         //  sb.append(" and info.sourceid in ("+sourceIds+")");
@@ -511,9 +511,9 @@ public class DstgChannelReportsOrderBySrcDao {
         List<DstgChannelReportsOrderBySrcVO> dstgChannelReportsOrderBySrcBak=new ArrayList<>();
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgChannelReportsOrderBySrcVO dstgChannelReportsOrderBySrcVO = new DstgChannelReportsOrderBySrcVO();
-            dstgChannelReportsOrderBySrcVO.setSrcId(Integer.parseInt((String) dstgGoldDataReport.get("srcId")));
+            dstgChannelReportsOrderBySrcVO.setSrcId(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("srcId"))));
             dstgChannelReportsOrderBySrcVO.setSrcName((String) dstgGoldDataReport.get("srcname"));
-            dstgChannelReportsOrderBySrcVO.setAmount(Integer.parseInt((String) dstgGoldDataReport.get("count")));
+            dstgChannelReportsOrderBySrcVO.setAmount(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("count")) ));
             dstgChannelReportsOrderBySrcBak.add(dstgChannelReportsOrderBySrcVO);
         }
 
