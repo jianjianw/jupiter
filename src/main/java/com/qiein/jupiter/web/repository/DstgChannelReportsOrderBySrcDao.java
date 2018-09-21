@@ -61,7 +61,7 @@ public class DstgChannelReportsOrderBySrcDao {
         sb.append(" FROM hm_crm_client_info info");
         sb.append(" LEFT JOIN hm_crm_client_detail detail ON info.KZID = detail.KZID AND info.COMPANYID = detail.COMPANYID");
         sb.append(" LEFT JOIN hm_crm_source src ON src.id = info.SOURCEID");
-        sb.append(" WHERE PROMOTORID in ( select distinct  gp_staff.staffid from hm_pub_group gp");
+        sb.append(" WHERE COLLECTORID in ( select distinct  gp_staff.staffid from hm_pub_group gp");
         sb.append(" left join hm_pub_group_staff gp_staff on gp.groupid = gp_staff.groupid  ");
         sb.append(" where gp.groupid = ? and gp.grouptype = 'dscj') ");
       //  sb.append(" and info.sourceid in ("+sourceIds+")");
@@ -92,7 +92,7 @@ public class DstgChannelReportsOrderBySrcDao {
         sb.append(" FROM hm_crm_client_info info");
         sb.append(" LEFT JOIN hm_crm_client_detail detail ON info.KZID = detail.KZID AND info.COMPANYID = detail.COMPANYID");
         sb.append(" LEFT JOIN hm_crm_source src ON src.id = info.SOURCEID");
-        sb.append(" WHERE PROMOTORID in ( select distinct  gp_staff.staffid from hm_pub_group gp");
+        sb.append(" WHERE COLLECTORID in ( select distinct  gp_staff.staffid from hm_pub_group gp");
         sb.append(" left join hm_pub_group_staff gp_staff on gp.groupid = gp_staff.groupid  ");
         sb.append(" where gp.groupid = ? and gp.grouptype = 'dscj') ");
         //  sb.append(" and info.sourceid in ("+sourceIds+")");
@@ -137,7 +137,7 @@ public class DstgChannelReportsOrderBySrcDao {
         sb.append(" FROM hm_crm_client_info info");
         sb.append(" LEFT JOIN hm_crm_client_detail detail ON info.KZID = detail.KZID AND info.COMPANYID = detail.COMPANYID");
         sb.append(" LEFT JOIN hm_crm_source src ON src.id = info.SOURCEID");
-        sb.append(" WHERE PROMOTORID in ( select distinct  gp_staff.staffid from hm_pub_group gp");
+        sb.append(" WHERE COLLECTORID in ( select distinct  gp_staff.staffid from hm_pub_group gp");
         sb.append(" left join hm_pub_group_staff gp_staff on gp.groupid = gp_staff.groupid  ");
         sb.append(" where gp.groupid = ? and gp.grouptype = 'dscj') ");
         //  sb.append(" and info.sourceid in ("+sourceIds+")");
@@ -182,7 +182,7 @@ public class DstgChannelReportsOrderBySrcDao {
         sb.append(" FROM hm_crm_client_info info");
         sb.append(" LEFT JOIN hm_crm_client_detail detail ON info.KZID = detail.KZID AND info.COMPANYID = detail.COMPANYID");
         sb.append(" LEFT JOIN hm_crm_source src ON src.id = info.SOURCEID");
-        sb.append(" WHERE PROMOTORID in ( select distinct  gp_staff.staffid from hm_pub_group gp");
+        sb.append(" WHERE COLLECTORID in ( select distinct  gp_staff.staffid from hm_pub_group gp");
         sb.append(" left join hm_pub_group_staff gp_staff on gp.groupid = gp_staff.groupid  ");
         sb.append(" where gp.groupid = ? and gp.grouptype = 'dscj') ");
         //  sb.append(" and info.sourceid in ("+sourceIds+")");
@@ -225,7 +225,7 @@ public class DstgChannelReportsOrderBySrcDao {
         sb.append(" FROM hm_crm_client_info info");
         sb.append(" LEFT JOIN hm_crm_client_detail detail ON info.KZID = detail.KZID AND info.COMPANYID = detail.COMPANYID");
         sb.append(" LEFT JOIN hm_crm_source src ON src.id = info.SOURCEID");
-        sb.append(" WHERE PROMOTORID in ( select distinct  gp_staff.staffid from hm_pub_group gp");
+        sb.append(" WHERE COLLECTORID in ( select distinct  gp_staff.staffid from hm_pub_group gp");
         sb.append(" left join hm_pub_group_staff gp_staff on gp.groupid = gp_staff.groupid  ");
         sb.append(" where gp.groupid = ? and gp.grouptype = 'dscj') ");
         //  sb.append(" and info.sourceid in ("+sourceIds+")");
@@ -269,7 +269,7 @@ public class DstgChannelReportsOrderBySrcDao {
         sb.append(" FROM hm_crm_client_info info");
         sb.append(" LEFT JOIN hm_crm_client_detail detail ON info.KZID = detail.KZID AND info.COMPANYID = detail.COMPANYID");
         sb.append(" LEFT JOIN hm_crm_source src ON src.id = info.SOURCEID");
-        sb.append(" WHERE PROMOTORID in ( select distinct  gp_staff.staffid from hm_pub_group gp");
+        sb.append(" WHERE COLLECTORID in ( select distinct  gp_staff.staffid from hm_pub_group gp");
         sb.append(" left join hm_pub_group_staff gp_staff on gp.groupid = gp_staff.groupid  ");
         sb.append(" where gp.groupid = ? and gp.grouptype = 'dscj') ");
         //  sb.append(" and info.sourceid in ("+sourceIds+")");
@@ -313,7 +313,7 @@ public class DstgChannelReportsOrderBySrcDao {
         sb.append(" FROM hm_crm_client_info info");
         sb.append(" LEFT JOIN hm_crm_client_detail detail ON info.KZID = detail.KZID AND info.COMPANYID = detail.COMPANYID");
         sb.append(" LEFT JOIN hm_crm_source src ON src.id = info.SOURCEID");
-        sb.append(" WHERE PROMOTORID in ( select distinct  gp_staff.staffid from hm_pub_group gp");
+        sb.append(" WHERE COLLECTORID in ( select distinct  gp_staff.staffid from hm_pub_group gp");
         sb.append(" left join hm_pub_group_staff gp_staff on gp.groupid = gp_staff.groupid  ");
         sb.append(" where gp.groupid = ? and gp.grouptype = 'dscj') ");
         //  sb.append(" and info.sourceid in ("+sourceIds+")");
@@ -368,7 +368,7 @@ public class DstgChannelReportsOrderBySrcDao {
         sb.append(" FROM hm_crm_client_info info");
         sb.append(" LEFT JOIN hm_crm_client_detail detail ON info.KZID = detail.KZID AND info.COMPANYID = detail.COMPANYID");
         sb.append(" LEFT JOIN hm_crm_source src ON src.id = info.SOURCEID");
-        sb.append(" WHERE PROMOTORID in ( select distinct  gp_staff.staffid from hm_pub_group gp");
+        sb.append(" WHERE COLLECTORID in ( select distinct  gp_staff.staffid from hm_pub_group gp");
         sb.append(" left join hm_pub_group_staff gp_staff on gp.groupid = gp_staff.groupid  ");
         sb.append(" where gp.groupid = ? and gp.grouptype = 'dscj') ");
         //  sb.append(" and info.sourceid in ("+sourceIds+")");
@@ -411,7 +411,7 @@ public class DstgChannelReportsOrderBySrcDao {
         sb.append(" FROM hm_crm_client_info info");
         sb.append(" LEFT JOIN hm_crm_client_detail detail ON info.KZID = detail.KZID AND info.COMPANYID = detail.COMPANYID");
         sb.append(" LEFT JOIN hm_crm_source src ON src.id = info.SOURCEID");
-        sb.append(" WHERE PROMOTORID in ( select distinct  gp_staff.staffid from hm_pub_group gp");
+        sb.append(" WHERE COLLECTORID in ( select distinct  gp_staff.staffid from hm_pub_group gp");
         sb.append(" left join hm_pub_group_staff gp_staff on gp.groupid = gp_staff.groupid  ");
         sb.append(" where gp.groupid = ? and gp.grouptype = 'dscj') ");
         //  sb.append(" and info.sourceid in ("+sourceIds+")");
@@ -454,7 +454,7 @@ public class DstgChannelReportsOrderBySrcDao {
         sb.append(" FROM hm_crm_client_info info");
         sb.append(" LEFT JOIN hm_crm_client_detail detail ON info.KZID = detail.KZID AND info.COMPANYID = detail.COMPANYID");
         sb.append(" LEFT JOIN hm_crm_source src ON src.id = info.SOURCEID");
-        sb.append(" WHERE PROMOTORID in ( select distinct  gp_staff.staffid from hm_pub_group gp");
+        sb.append(" WHERE COLLECTORID in ( select distinct  gp_staff.staffid from hm_pub_group gp");
         sb.append(" left join hm_pub_group_staff gp_staff on gp.groupid = gp_staff.groupid  ");
         sb.append(" where gp.groupid = ? and gp.grouptype = 'dscj') ");
         //  sb.append(" and info.sourceid in ("+sourceIds+")");
@@ -496,7 +496,7 @@ public class DstgChannelReportsOrderBySrcDao {
         sb.append(" FROM hm_crm_client_info info");
         sb.append(" LEFT JOIN hm_crm_client_detail detail ON info.KZID = detail.KZID AND info.COMPANYID = detail.COMPANYID");
         sb.append(" LEFT JOIN hm_crm_source src ON src.id = info.SOURCEID");
-        sb.append(" WHERE PROMOTORID in ( select distinct  gp_staff.staffid from hm_pub_group gp");
+        sb.append(" WHERE COLLECTORID in ( select distinct  gp_staff.staffid from hm_pub_group gp");
         sb.append(" left join hm_pub_group_staff gp_staff on gp.groupid = gp_staff.groupid  ");
         sb.append(" where gp.groupid = ? and gp.grouptype = 'dscj') ");
         //  sb.append(" and info.sourceid in ("+sourceIds+")");
