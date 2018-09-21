@@ -31,6 +31,18 @@ public class ReportsConditionVO {
      * 录取类型
      * */
     private Integer sparelimit;
+    /**
+     * String typeLimit
+     * */
+    private String typeLimit;
+
+    public String getTypeLimit() {
+        return typeLimit;
+    }
+
+    public void setTypeLimit(String typeLimit) {
+        this.typeLimit = typeLimit;
+    }
 
     public Integer getStart() {
         return start;
