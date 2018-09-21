@@ -1068,4 +1068,12 @@ public class StaffServiceImpl implements StaffService {
         return staffDao.getStaffIdByName(name, companyId);
     }
 
+    @Override
+    public Integer getClientCountById(StaffPO currentLoginStaff, Integer staffId) {
+        if(NumUtil.isInValid(staffId)){
+            throw new RException(ExceptionEnum.STAFF_ID_NULL);
+        }
+        return staffDao.getClientCountById(DBSplitUtil.getInfoTabName(currentLoginStaff.getCompanyId()),staffId,currentLoginStaff.getCompanyId());
+    }
+
 }

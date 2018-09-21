@@ -1205,4 +1205,9 @@
             AND ISDEL = 0 AND ISLOCK = 0
         LIMIT 1
     </select>
+
+    <!--获取客资数量-->
+    <select id = "getClientCountById" resultType="Integer">
+        select count(1) from ${tableName} info where info.APPOINTORID = #{staffId} and info.isdel = 0 and info.COMPANYID = #{companyId}
+    </select>
 </mapper>

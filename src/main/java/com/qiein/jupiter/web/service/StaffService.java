@@ -406,4 +406,11 @@ public interface StaffService {
      * @return
      */
     Integer getStaffIdByName(String name,Integer companyId);
+
+    /**
+     * 获取客资数量
+     * @param currentLoginStaff
+     * */
+    Integer getClientCountById(StaffPO currentLoginStaff,Integer staffId);
+
 }
