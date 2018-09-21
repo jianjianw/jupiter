@@ -114,6 +114,9 @@ public class DstgYearsClientReportsRowDao {
      * 获取待定量
      * */
     private void getPendingClientCount(ReportsParamVO reportsParamVO, final List<DstgSourceYearReportsVO> dstgSourceYearReportsVOS, DsInvalidVO invalidConfig){
+        if(StringUtil.isEmpty(invalidConfig.getDsDdStatus())){
+            return;
+        }
         StringBuilder sb = new StringBuilder();
         getCommonSqlPart(sb, reportsParamVO);
 //        sb.append(" AND INSTR( ?, CONCAT(',',info.STATUSID + '',',')) != 0");

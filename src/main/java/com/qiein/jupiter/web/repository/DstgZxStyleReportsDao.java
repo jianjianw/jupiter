@@ -162,6 +162,9 @@ public class DstgZxStyleReportsDao {
      * 获取待定量
      */
     private void getPendingClientCount(ReportsParamVO reportsParamVO, List<DstgZxStyleReportsVO> DstgZxStyleReportsVOS,DsInvalidVO dsInvalidVO) {
+        if(StringUtil.isEmpty(dsInvalidVO.getDsDdStatus())){
+            return;
+        }
         StringBuilder sb = new StringBuilder();
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());

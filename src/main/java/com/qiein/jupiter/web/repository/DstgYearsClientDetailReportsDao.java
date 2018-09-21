@@ -76,6 +76,9 @@ public class DstgYearsClientDetailReportsDao {
      * 获取客资待定量
      * */
     public void getPendingClientCount(ReportsParamVO reportsParamVO,final List<DstgYearDetailReportsVO> dstgYearDetailReportsVOS, DsInvalidVO invalidConfig) throws SQLException{
+        if(StringUtil.isEmpty(invalidConfig.getDsDdStatus())){
+            return;
+        }
         StringBuilder sb = new StringBuilder();
         getCommonSqlPartOne(reportsParamVO, sb);
         //TODO 添加指定条件

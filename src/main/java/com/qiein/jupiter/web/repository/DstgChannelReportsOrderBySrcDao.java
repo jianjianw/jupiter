@@ -123,6 +123,9 @@ public class DstgChannelReportsOrderBySrcDao {
      * 获取待定量
      */
     private void getPendingClientCount(String groupId,Integer companyId,String start,String end,String sourceIds,String typeIds,List<DstgChannelReportsOrderBySrcVO> dstgChannelReportsOrderBySrcVOS,DsInvalidVO dsInvalidVO) {
+        if(StringUtil.isEmpty(dsInvalidVO.getDsDdStatus())){
+            return;
+        }
         StringBuilder sb = new StringBuilder();
         sb.append(" SELECT info.SOURCEID srcId,");
         sb.append(" count(1) count,");
