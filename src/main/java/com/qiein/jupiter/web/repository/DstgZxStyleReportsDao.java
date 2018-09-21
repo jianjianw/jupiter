@@ -168,7 +168,8 @@ public class DstgZxStyleReportsDao {
         sb = getCommonsql(sb, infoTabName, detailTabName);
         addConditionByTypeAndZxCodeStyle(reportsParamVO,sb);
         sb.append(" and info.CREATETIME BETWEEN ? AND ?");
-        sb.append(" AND INSTR( ?, CONCAT(',',info.STATUSID + '',',')) != 0");
+//        sb.append(" AND INSTR( ?, CONCAT(',',info.STATUSID + '',',')) != 0");
+        sb.append(" and info.STATUSID in (?)");
         sb.append(" group by detail.ZXSTYLE");
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(),reportsParamVO.getCompanyId(),

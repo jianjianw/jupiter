@@ -116,7 +116,8 @@ public class DstgYearsClientReportsRowDao {
     private void getPendingClientCount(ReportsParamVO reportsParamVO, final List<DstgSourceYearReportsVO> dstgSourceYearReportsVOS, DsInvalidVO invalidConfig){
         StringBuilder sb = new StringBuilder();
         getCommonSqlPart(sb, reportsParamVO);
-        sb.append(" AND INSTR( ?, CONCAT(',',info.STATUSID + '',',')) != 0");
+//        sb.append(" AND INSTR( ?, CONCAT(',',info.STATUSID + '',',')) != 0");
+        sb.append(" and info.STATUSID in (?)");
         addConditionByTypeAndSourceIds(reportsParamVO, sb);
         getCommonSqlPartB(sb);
         List<Map<String, Object>> mapList = jdbcTemplate.queryForList(sb.toString(), new Object[]{reportsParamVO.getCompanyId()

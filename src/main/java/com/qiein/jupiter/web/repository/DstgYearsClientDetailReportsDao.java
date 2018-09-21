@@ -79,7 +79,8 @@ public class DstgYearsClientDetailReportsDao {
         StringBuilder sb = new StringBuilder();
         getCommonSqlPartOne(reportsParamVO, sb);
         //TODO 添加指定条件
-        sb.append(" AND INSTR( ?, CONCAT(',',info.STATUSID + '',',')) != 0");
+//        sb.append(" AND INSTR( ?, CONCAT(',',info.STATUSID + '',',')) != 0");
+        sb.append(" and info.STATUSID in (?)");
         getCommonSqlPartTwo(sb);
 
         jdbcTemplate.query(sb.toString(), new Object[]{reportsParamVO.getCompanyId(), reportsParamVO.getYears(),invalidConfig.getDsDdStatus()}, new RowMapper<DstgYearDetailReportsVO>() {
