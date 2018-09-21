@@ -139,12 +139,12 @@ public class DstgChannelReportsOrderBySrcDao {
         sb.append(" AND src.SRCNAME IS NOT NULL");
         sb.append(" and info.companyid=?");
         sb.append(" and info.createtime between  ? and  ?");
-        sb.append(" and info.STATUSID in (?)");
+//        sb.append(" and info.STATUSID in (?)");
+        sb.append(" and info.STATUSID in ("+dsInvalidVO.getDsDdStatus()+")");
         sb.append(" GROUP BY info.SOURCEID");
 
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
-                new Object[]{groupId,companyId,start,end,
-                        dsInvalidVO.getDsDdStatus()});
+                new Object[]{groupId,companyId,start,end});
         List<DstgChannelReportsOrderBySrcVO> dstgChannelReportsOrderBySrcBak=new ArrayList<>();
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgChannelReportsOrderBySrcVO dstgChannelReportsOrderBySrcVO = new DstgChannelReportsOrderBySrcVO();
