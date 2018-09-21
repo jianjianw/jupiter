@@ -472,7 +472,12 @@ public class DstgChannelReportsOrderBySrcDao {
             DstgChannelReportsOrderBySrcVO dstgChannelReportsOrderBySrcVO = new DstgChannelReportsOrderBySrcVO();
             dstgChannelReportsOrderBySrcVO.setSrcId(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("srcId"))));
             dstgChannelReportsOrderBySrcVO.setSrcName((String) dstgGoldDataReport.get("srcname"));
-            dstgChannelReportsOrderBySrcVO.setAvgAmount(Integer.parseInt(StringUtil.isEmpty(String.valueOf(dstgGoldDataReport.get("count")))? CommonConstant.DEFAULT_STRING_ZERO:String.valueOf(dstgGoldDataReport.get("count"))));
+            String avgAmount = String.valueOf(dstgGoldDataReport.get("count"));
+            if(StringUtil.isEmpty(avgAmount)){
+                dstgChannelReportsOrderBySrcVO.setAvgAmount(CommonConstant.DEFAULT_ZERO);
+            }else{
+                dstgChannelReportsOrderBySrcVO.setAvgAmount((int)Double.parseDouble(avgAmount));
+            }
             dstgChannelReportsOrderBySrcBak.add(dstgChannelReportsOrderBySrcVO);
         }
 
