@@ -66,7 +66,7 @@
             info.KZNAME,
             info.KZWECHAT,
             info.KZPHONE,
-            FROM_UNIXTIME(log.ALLOTTIME, "%Y/%m/%d") ALLOTTIME,
+            FROM_UNIXTIME(log.ALLOTTIME, "%Y/%m/%d  %H:%i:%S") ALLOTTIME,
             log.STATUSID
         FROM
             hm_crm_allot_log log
