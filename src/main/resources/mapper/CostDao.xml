@@ -18,7 +18,7 @@
 
     <select id="costList" resultMap="Cost">
          SELECT
-            cost.COST COST,
+            cost.COST,
 			cost.BEFORECOST,
 			FROM_UNIXTIME(cost.COSTTIME,"%Y/%m/%d") COSTTIME,
 			CONCAT("Day",FROM_UNIXTIME(cost.COSTTIME,"%d")) DAYKEY,
