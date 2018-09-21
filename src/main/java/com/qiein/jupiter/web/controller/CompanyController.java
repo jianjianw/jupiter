@@ -305,6 +305,13 @@ public class CompanyController extends BaseController {
         companyService.editReportsConfig(getCurrentLoginStaff().getCompanyId(), reportsConfig);
         return ResultInfoUtil.success();
     }
-
+    /**
+     * 是否可以修改电话和微信的权限
+     */
+    @GetMapping("/edit_phone_and_wechat")
+    public ResultInfo editPhoneAndWechat(@RequestParam boolean editPhoneAndWechat){
+        companyService.editPhoneAndWechat(editPhoneAndWechat,getCurrentLoginStaff().getCompanyId());
+        return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
+    }
 
 }

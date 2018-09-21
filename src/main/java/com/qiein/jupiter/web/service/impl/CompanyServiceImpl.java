@@ -337,5 +337,13 @@ public class CompanyServiceImpl implements CompanyService {
     public List<CompanyVO> getCompanyListByPhoneAndPwd(String phone, String pwd) {
         return companyDao.getCompanyListByPhoneAndPwd(phone, pwd);
     }
+    /**
+     * 是否可以修改手机和微信的权限
+     * @param editPhoneAndWechat
+     * @param companyId
+     */
+    public void editPhoneAndWechat(boolean editPhoneAndWechat,int companyId){
+        companyDao.editPhoneAndWechat(editPhoneAndWechat,companyId);
+    }
 
 }
