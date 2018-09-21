@@ -692,4 +692,14 @@ public class StaffController extends BaseController {
         result.put("explode", msgSet.indexOf("/1/") != -1);
         return ResultInfoUtil.success(result);
     }
+
+    /**
+     * 获取当前员工下的客资数量
+     * */
+    @GetMapping("/get_client_count_by_id")
+    public ResultInfo getClientCountById(@RequestParam("staffId") Integer staffId){
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        Integer clientCount = staffService.getClientCountById(currentLoginStaff,staffId);
+        return ResultInfoUtil.success(clientCount);
+    }
 }
