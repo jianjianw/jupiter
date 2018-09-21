@@ -96,6 +96,9 @@ public class ReportsServiceImpl implements ReportService {
     @Autowired
     private PersonalPresentationDao personalPresentationDao;
 
+    @Autowired
+    private DstgChannelReportsOrderBySrcDao dstgChannelReportsOrderBySrcDao;
+
 
 
     /**
@@ -1184,5 +1187,15 @@ public class ReportsServiceImpl implements ReportService {
             default:
                 break;
         }
+    }
+    /**
+     * 推广渠道报表根据 小组id的详情报表
+     * @param groupId
+     * @param companyId
+     * @return
+     */
+    public List<DstgChannelReportsOrderBySrcVO> getDstgChannelReportsOrderBySrc(String groupId,Integer companyId,String start,String end,String sourceIds,String typeIds){
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
+        return dstgChannelReportsOrderBySrcDao.getDstgChannelReportsOrderBySrc(groupId,companyId,start,end,sourceIds,typeIds,invalidConfig);
     }
 }

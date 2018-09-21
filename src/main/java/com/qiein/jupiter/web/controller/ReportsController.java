@@ -667,4 +667,11 @@ public class ReportsController extends BaseController {
         reportParamDTO.setCompanyId(getCurrentLoginStaff().getCompanyId());
         return ResultInfoUtil.success(reportService.getPersonalPresentation(reportParamDTO));
     }
+    /**
+     * 推广渠道报表根据 小组id的详情报表
+     */
+    @GetMapping("/get_dstg_channel_reports_order_by_src")
+    public ResultInfo getDstgChannelReportsOrderBySrc(String groupId,String start,String end,String sourceIds,String typeIds) {
+        return ResultInfoUtil.success(reportService.getDstgChannelReportsOrderBySrc(groupId,getCurrentLoginStaff().getCompanyId(),start,end,sourceIds,typeIds));
+    }
 }

@@ -257,4 +257,12 @@ public interface ReportService {
      * @return
      */
     Map<String,RegionReportsVO> getPersonalPresentation(ReportParamDTO reportParamDTO);
+
+    /**
+     * 推广渠道报表根据 小组id的详情报表
+     * @param groupId
+     * @param companyId
+     * @return
+     */
+    List<DstgChannelReportsOrderBySrcVO> getDstgChannelReportsOrderBySrc(String groupId,Integer companyId,String start,String end,String sourceIds,String typeIds);
 }
