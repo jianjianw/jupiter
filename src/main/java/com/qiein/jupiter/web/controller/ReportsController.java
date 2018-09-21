@@ -52,6 +52,7 @@ public class ReportsController extends BaseController {
         reqContent.put("start", reportsConditionVO.getStart());
         reqContent.put("end", reportsConditionVO.getEnd());
         reqContent.put("companyid", currentLoginStaff.getCompanyId());
+        reqContent.put("typelimit",reportsConditionVO.getTypeLimit());
         if (StringUtil.isNotEmpty(reportsConditionVO.getSourceId())) {
             reqContent.put("sourceid", reportsConditionVO.getSourceId());
         }
