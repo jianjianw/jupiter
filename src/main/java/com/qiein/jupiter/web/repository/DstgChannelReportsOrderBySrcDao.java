@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.repository;
 
+import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.vo.DsInvalidVO;
 import com.qiein.jupiter.web.entity.vo.DstgChannelReportsOrderBySrcVO;
@@ -109,7 +110,7 @@ public class DstgChannelReportsOrderBySrcDao {
             DstgChannelReportsOrderBySrcVO dstgChannelReportsOrderBySrcVO = new DstgChannelReportsOrderBySrcVO();
             dstgChannelReportsOrderBySrcVO.setSrcId(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("srcId"))));
             dstgChannelReportsOrderBySrcVO.setSrcName((String) dstgGoldDataReport.get("srcname"));
-            dstgChannelReportsOrderBySrcVO.setAllClientCount(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("count"))));
+            dstgChannelReportsOrderBySrcVO.setAllClientCount(Integer.parseInt(StringUtil.isEmpty(String.valueOf(dstgGoldDataReport.get("count")))? CommonConstant.DEFAULT_STRING_ZERO:String.valueOf(dstgGoldDataReport.get("count"))));
             dstgChannelReportsOrderBySrcBak.add(dstgChannelReportsOrderBySrcVO);
         }
 
@@ -156,7 +157,7 @@ public class DstgChannelReportsOrderBySrcDao {
             DstgChannelReportsOrderBySrcVO dstgChannelReportsOrderBySrcVO = new DstgChannelReportsOrderBySrcVO();
             dstgChannelReportsOrderBySrcVO.setSrcId(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("srcId"))));
             dstgChannelReportsOrderBySrcVO.setSrcName((String) dstgGoldDataReport.get("srcname"));
-            dstgChannelReportsOrderBySrcVO.setPendingClientCount(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("count"))));
+            dstgChannelReportsOrderBySrcVO.setPendingClientCount(Integer.parseInt(StringUtil.isEmpty(String.valueOf(dstgGoldDataReport.get("count")))? CommonConstant.DEFAULT_STRING_ZERO:String.valueOf(dstgGoldDataReport.get("count"))));
             dstgChannelReportsOrderBySrcBak.add(dstgChannelReportsOrderBySrcVO);
         }
 
@@ -200,7 +201,7 @@ public class DstgChannelReportsOrderBySrcDao {
             DstgChannelReportsOrderBySrcVO dstgChannelReportsOrderBySrcVO = new DstgChannelReportsOrderBySrcVO();
             dstgChannelReportsOrderBySrcVO.setSrcId(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("srcId"))));
             dstgChannelReportsOrderBySrcVO.setSrcName((String) dstgGoldDataReport.get("srcname"));
-            dstgChannelReportsOrderBySrcVO.setFilterPendingClientCount(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("count"))));
+            dstgChannelReportsOrderBySrcVO.setFilterPendingClientCount(Integer.parseInt(StringUtil.isEmpty(String.valueOf(dstgGoldDataReport.get("count")))? CommonConstant.DEFAULT_STRING_ZERO:String.valueOf(dstgGoldDataReport.get("count"))));
             dstgChannelReportsOrderBySrcBak.add(dstgChannelReportsOrderBySrcVO);
         }
 
@@ -243,7 +244,7 @@ public class DstgChannelReportsOrderBySrcDao {
             DstgChannelReportsOrderBySrcVO dstgChannelReportsOrderBySrcVO = new DstgChannelReportsOrderBySrcVO();
             dstgChannelReportsOrderBySrcVO.setSrcId(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("srcId"))));
             dstgChannelReportsOrderBySrcVO.setSrcName((String) dstgGoldDataReport.get("srcname"));
-            dstgChannelReportsOrderBySrcVO.setFilterInValidClientCount(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("count"))));
+            dstgChannelReportsOrderBySrcVO.setFilterInValidClientCount(Integer.parseInt(StringUtil.isEmpty(String.valueOf(dstgGoldDataReport.get("count")))? CommonConstant.DEFAULT_STRING_ZERO:String.valueOf(dstgGoldDataReport.get("count"))));
             dstgChannelReportsOrderBySrcBak.add(dstgChannelReportsOrderBySrcVO);
         }
 
@@ -287,7 +288,7 @@ public class DstgChannelReportsOrderBySrcDao {
             DstgChannelReportsOrderBySrcVO dstgChannelReportsOrderBySrcVO = new DstgChannelReportsOrderBySrcVO();
             dstgChannelReportsOrderBySrcVO.setSrcId(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("srcId"))));
             dstgChannelReportsOrderBySrcVO.setSrcName((String) dstgGoldDataReport.get("srcname"));
-            dstgChannelReportsOrderBySrcVO.setFilterInClientCount(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("count"))));
+            dstgChannelReportsOrderBySrcVO.setFilterInClientCount(Integer.parseInt(StringUtil.isEmpty(String.valueOf(dstgGoldDataReport.get("count")))? CommonConstant.DEFAULT_STRING_ZERO:String.valueOf(dstgGoldDataReport.get("count"))));
             dstgChannelReportsOrderBySrcBak.add(dstgChannelReportsOrderBySrcVO);
         }
 
@@ -340,7 +341,7 @@ public class DstgChannelReportsOrderBySrcDao {
             DstgChannelReportsOrderBySrcVO dstgChannelReportsOrderBySrcVO = new DstgChannelReportsOrderBySrcVO();
             dstgChannelReportsOrderBySrcVO.setSrcId(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("srcId"))));
             dstgChannelReportsOrderBySrcVO.setSrcName((String) dstgGoldDataReport.get("srcname"));
-            dstgChannelReportsOrderBySrcVO.setInValidClientCount(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("count"))));
+            dstgChannelReportsOrderBySrcVO.setInValidClientCount(Integer.parseInt(StringUtil.isEmpty(String.valueOf(dstgGoldDataReport.get("count")))? CommonConstant.DEFAULT_STRING_ZERO:String.valueOf(dstgGoldDataReport.get("count"))));
             dstgChannelReportsOrderBySrcBak.add(dstgChannelReportsOrderBySrcVO);
         }
 
@@ -385,7 +386,7 @@ public class DstgChannelReportsOrderBySrcDao {
             DstgChannelReportsOrderBySrcVO dstgChannelReportsOrderBySrcVO = new DstgChannelReportsOrderBySrcVO();
             dstgChannelReportsOrderBySrcVO.setSrcId(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("srcId"))));
             dstgChannelReportsOrderBySrcVO.setSrcName((String) dstgGoldDataReport.get("srcname"));
-            dstgChannelReportsOrderBySrcVO.setComeShopClientCount(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("count"))));
+            dstgChannelReportsOrderBySrcVO.setComeShopClientCount(Integer.parseInt(StringUtil.isEmpty(String.valueOf(dstgGoldDataReport.get("count")))? CommonConstant.DEFAULT_STRING_ZERO:String.valueOf(dstgGoldDataReport.get("count"))));
             dstgChannelReportsOrderBySrcBak.add(dstgChannelReportsOrderBySrcVO);
         }
 
@@ -428,7 +429,7 @@ public class DstgChannelReportsOrderBySrcDao {
             DstgChannelReportsOrderBySrcVO dstgChannelReportsOrderBySrcVO = new DstgChannelReportsOrderBySrcVO();
             dstgChannelReportsOrderBySrcVO.setSrcId(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("srcId"))));
             dstgChannelReportsOrderBySrcVO.setSrcName((String) dstgGoldDataReport.get("srcname"));
-            dstgChannelReportsOrderBySrcVO.setSuccessClientCount(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("count"))));
+            dstgChannelReportsOrderBySrcVO.setSuccessClientCount(Integer.parseInt(StringUtil.isEmpty(String.valueOf(dstgGoldDataReport.get("count")))? CommonConstant.DEFAULT_STRING_ZERO:String.valueOf(dstgGoldDataReport.get("count"))));
             dstgChannelReportsOrderBySrcBak.add(dstgChannelReportsOrderBySrcVO);
         }
 
@@ -471,7 +472,7 @@ public class DstgChannelReportsOrderBySrcDao {
             DstgChannelReportsOrderBySrcVO dstgChannelReportsOrderBySrcVO = new DstgChannelReportsOrderBySrcVO();
             dstgChannelReportsOrderBySrcVO.setSrcId(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("srcId"))));
             dstgChannelReportsOrderBySrcVO.setSrcName((String) dstgGoldDataReport.get("srcname"));
-            dstgChannelReportsOrderBySrcVO.setAvgAmount(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("count"))));
+            dstgChannelReportsOrderBySrcVO.setAvgAmount(Integer.parseInt(StringUtil.isEmpty(String.valueOf(dstgGoldDataReport.get("count")))? CommonConstant.DEFAULT_STRING_ZERO:String.valueOf(dstgGoldDataReport.get("count"))));
             dstgChannelReportsOrderBySrcBak.add(dstgChannelReportsOrderBySrcVO);
         }
 
@@ -513,7 +514,7 @@ public class DstgChannelReportsOrderBySrcDao {
             DstgChannelReportsOrderBySrcVO dstgChannelReportsOrderBySrcVO = new DstgChannelReportsOrderBySrcVO();
             dstgChannelReportsOrderBySrcVO.setSrcId(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("srcId"))));
             dstgChannelReportsOrderBySrcVO.setSrcName((String) dstgGoldDataReport.get("srcname"));
-            dstgChannelReportsOrderBySrcVO.setAmount(Integer.parseInt(String.valueOf(dstgGoldDataReport.get("count")) ));
+            dstgChannelReportsOrderBySrcVO.setAmount(Integer.parseInt(StringUtil.isEmpty(String.valueOf(dstgGoldDataReport.get("count")))? CommonConstant.DEFAULT_STRING_ZERO:String.valueOf(dstgGoldDataReport.get("count"))));
             dstgChannelReportsOrderBySrcBak.add(dstgChannelReportsOrderBySrcVO);
         }
 
