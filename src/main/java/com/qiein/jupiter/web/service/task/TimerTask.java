@@ -62,12 +62,13 @@ public class TimerTask {
     }
 
     /**
-     * 凌晨三点下线
+     * 凌晨0点下线
      */
-    @Scheduled(cron = "0 0 3 * * ?")
+    @Scheduled(cron = "0 0 0 * * ?")
     public void offLine() {
         //TODO 定时下线
         log.info("定时让所有在线员工全部离线...");
+        staffService.companyStaffOffLine();
     }
 
     /**

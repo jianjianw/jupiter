@@ -570,15 +570,23 @@ public interface StaffDao extends BaseDao<StaffPO> {
 
     /**
      * 根据员工姓名获取员工id
+     *
      * @param name
      * @return
      */
-    Integer getStaffIdByName(@Param("name") String name,@Param("companyId") Integer companyId);
+    Integer getStaffIdByName(@Param("name") String name, @Param("companyId") Integer companyId);
 
     /**
      * 获取客资数量
+     *
      * @param staffId
      * @return
-     * */
-    Integer getClientCountById(@Param("tableName")String tableName,@Param("staffId") Integer staffId,@Param("companyId")Integer companyId);
+     */
+    Integer getClientCountById(@Param("tableName") String tableName, @Param("staffId") Integer staffId, @Param("companyId") Integer companyId);
+
+
+    /**
+     * 员工定时下线
+     */
+    int companyStaffOffLine();
 }
