@@ -119,7 +119,7 @@ public class JsonFmtUtil {
                 vo.setRemark(getBlindString(StringUtil.replaceAllHTML(info.getString("content"))));
                 vo.setMemo(getBlindString(info.getString("memo")));
             }
-            vo.setShootType(getDicNameByCode(info.getIntValue("typeid"),DictionaryConstant.COMMON_TYPE,dicMap));
+            vo.setShootType(getDicNameByCode(info.getIntValue("typeid"), DictionaryConstant.COMMON_TYPE, dicMap));
             vo.setReceptorName(info.getString("receptorname"));
             vo.setYxLevel(getDicNameByCode(info.getIntValue("yxlevel"), DictionaryConstant.YX_RANK, dicMap));
             vo.setShopName(info.getString("shopname"));
@@ -143,15 +143,17 @@ public class JsonFmtUtil {
             vo.setOldKzPhone(info.getString("oldkzphone"));
             vo.setInvalidMemo(info.getString("invalidmemo"));
             //设置性别
-            if(StringUtil.isNotEmpty(info.getString("sex")) && ClientConst.KZ_SEX_UNKNOWN_NUM.equalsIgnoreCase(info.getString("sex"))){
+            if (StringUtil.isNotEmpty(info.getString("sex")) && ClientConst.KZ_SEX_UNKNOWN_NUM.equalsIgnoreCase(info.getString("sex"))) {
                 vo.setKzSex(ClientConst.KZ_SEX_UNKNOWN);
-            }else if (StringUtil.isNotEmpty(info.getString("sex")) && ClientConst.KZ_SEX_BODY_NUM.equalsIgnoreCase(info.getString("sex"))){
+            } else if (StringUtil.isNotEmpty(info.getString("sex")) && ClientConst.KZ_SEX_BODY_NUM.equalsIgnoreCase(info.getString("sex"))) {
                 vo.setKzSex(ClientConst.KZ_SEX_BODY);
-            }else if(StringUtil.isNotEmpty(info.getString("sex")) && ClientConst.KZ_SEX_GIRL_NUM.equalsIgnoreCase(info.getString("sex"))){
+            } else if (StringUtil.isNotEmpty(info.getString("sex")) && ClientConst.KZ_SEX_GIRL_NUM.equalsIgnoreCase(info.getString("sex"))) {
                 vo.setKzSex(ClientConst.KZ_SEX_GIRL);
-            }else{
+            } else {
                 vo.setKzSex(ClientConst.KZ_SEX_UNKNOWN);
             }
+            //TODO excel 最大单元格长度
+            vo.setRemark(info.getString("remake").substring(0, 32000));
             clientList.add(vo);
         }
         return clientList;
