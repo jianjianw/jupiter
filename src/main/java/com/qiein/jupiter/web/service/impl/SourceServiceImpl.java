@@ -79,7 +79,7 @@ public class SourceServiceImpl implements SourceService {
         }
 
         if (PushRoleConst.YY_WEIGHTS_RECEIVE.equals(sourceVO.getPushRule())) {
-            //指定渠道邀约人员
+            //指定客服
             if (StringUtil.isNotEmpty(sourceVO.getLinkIds())) {
                 sourceStaffDao.deleteBySourceId(sourceVO.getId(), sourceVO.getCompanyId());
 //                sourceStaffDao.insertBySourceId(sourceVO.getId(), sourceVO.getCompanyId(), Arrays.asList(sourceVO.getLinkIds().split(CommonConstant.STR_SEPARATOR)), SourceStaffConst.RELATYPE_STAFF);
@@ -88,7 +88,7 @@ public class SourceServiceImpl implements SourceService {
                 }
             }
         } else if (PushRoleConst.GROUP_AVG_YY_WEIGHTS_RECEIVE.equals(sourceVO.getPushRule())) {
-            //指定渠道邀约人员
+            //小组平均
             if (StringUtil.isNotEmpty(sourceVO.getLinkIds())) {
                 sourceStaffDao.deleteBySourceId(sourceVO.getId(), sourceVO.getCompanyId());
 //                sourceStaffDao.insertBySourceId(sourceVO.getId(), sourceVO.getCompanyId(), Arrays.asList(sourceVO.getLinkIds().split(CommonConstant.STR_SEPARATOR)), SourceStaffConst.RELATYPE_GROUP);
