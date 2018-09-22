@@ -141,7 +141,13 @@ public class JsonFmtUtil {
             vo.setPromoterName(info.getString("promotername"));
             vo.setOldKzName(info.getString("oldkzname"));
             vo.setOldKzPhone(info.getString("oldkzphone"));
-            vo.setInvalidMemo(info.getString("invalidmemo"));
+            //TODO excel 最大单元格长度
+            if (info.getString("invalidmemo") != null && info.getString("invalidmemo").length() >= 32000) {
+                vo.setInvalidMemo(info.getString("invalidmemo").substring(0, 32000));
+            } else {
+                vo.setInvalidMemo(info.getString("invalidmemo"));
+            }
+
             //设置性别
             if (StringUtil.isNotEmpty(info.getString("sex")) && ClientConst.KZ_SEX_UNKNOWN_NUM.equalsIgnoreCase(info.getString("sex"))) {
                 vo.setKzSex(ClientConst.KZ_SEX_UNKNOWN);
@@ -153,7 +159,11 @@ public class JsonFmtUtil {
                 vo.setKzSex(ClientConst.KZ_SEX_UNKNOWN);
             }
             //TODO excel 最大单元格长度
-            vo.setRemark(info.getString("remake").substring(0, 32000));
+            if (info.getString("remake") != null && info.getString("remake").length() >= 32000) {
+                vo.setInvalidMemo(info.getString("remake").substring(0, 32000));
+            } else {
+                vo.setInvalidMemo(info.getString("remake"));
+            }
             clientList.add(vo);
         }
         return clientList;
