@@ -317,7 +317,7 @@ public class DstgYearsClientReportsRowDao {
         if (StringUtil.isNotEmpty(reportsParamVO.getSourceIds())) {
             sb.append(" and cost.srcid in (" + reportsParamVO.getSourceIds() + ")");
         }
-        sb.append(" group by monthNo,source.id");
+        sb.append(" group by monthNo,myYear,source.id");
         sb.append(" ) AS t WHERE t.myYear= ? GROUP BY t.monthNo,t.sourceid order by month ");
         List<Map<String, Object>> mapList = jdbcTemplate.queryForList(sb.toString(), new Object[]{reportsParamVO.getCompanyId(), reportsParamVO.getYears()});
 
@@ -357,7 +357,7 @@ public class DstgYearsClientReportsRowDao {
         sb.append(" left join "+detailTabName+" detail on info.kzid = detail.kzid ");
         sb.append(" where info.companyid = ? and info.sourceid is not null and info.isdel = 0");
         addConditionByTypeAndSourceIds(reportsParamVO,sb);
-        sb.append(" group by info.sourceid,monthNo) AS t ");
+        sb.append(" group by info.sourceid,myYear,monthNo) AS t ");
         sb.append(" WHERE t.myYear= ? ");
         sb.append(" GROUP BY t.monthNo,t.sourceid ");
         sb.append(" order by month ");
@@ -399,7 +399,7 @@ public class DstgYearsClientReportsRowDao {
         sb.append(" left join "+detailTabName+" detail on info.kzid = detail.kzid ");
         sb.append(" where info.companyid = ? and info.sourceid is not null and info.isdel = 0");
         addConditionByTypeAndSourceIds(reportsParamVO,sb);
-        sb.append(" group by info.sourceid,monthNo) AS t ");
+        sb.append(" group by info.sourceid,myYear,monthNo) AS t ");
         sb.append(" WHERE t.myYear= ? ");
         sb.append(" GROUP BY t.monthNo,t.sourceid ");
         sb.append(" order by month ");

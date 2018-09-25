@@ -76,7 +76,7 @@ public class DstgYearsClientReportsDao {
         if(StringUtil.isNotEmpty(reportsParamVO.getSourceIds())){
             sb.append(" and info.sourceid in (" + reportsParamVO.getSourceIds() +")");
         }
-        sb.append(" group by info.sourceid,monthNo) AS t ");
+        sb.append(" group by info.sourceid,myYear,monthNo) AS t ");
         sb.append(" WHERE t.myYear= ? ");
         sb.append(" GROUP BY t.monthNo,t.sourceid ");
         sb.append(" order by month ");
