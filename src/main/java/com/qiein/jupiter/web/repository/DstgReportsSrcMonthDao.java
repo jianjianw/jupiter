@@ -219,8 +219,8 @@ public class DstgReportsSrcMonthDao {
         sql.append("(select COUNT(info.ID) from " + infoTabName + " info where info.SOURCEID=src.ID AND info.ISDEL=0  ");
         	
         if(StringUtil.isNotEmpty(invalidConfig.getDsDdStatus())){
-        	sql.append(" AND INSTR('"+invalidConfig.getDsDdStatus()+"', CONCAT(',',info.STATUSID,',')) != 0");
-    		//sql.append(" AND info.STATUSID IN("+invalidConfig.getDsDdStatus()+")");
+        	//sql.append(" AND INSTR('"+invalidConfig.getDsDdStatus()+"', CONCAT(',',info.STATUSID,',')) != 0");
+    		sql.append(" AND info.STATUSID IN("+invalidConfig.getDsDdStatus()+")");
     	}
     	if(StringUtil.isNotEmpty(reportsParamSrcMonthVO.getTypeId())){
     		sql.append(" AND info.TYPEID IN("+reportsParamSrcMonthVO.getTypeId()+")");
