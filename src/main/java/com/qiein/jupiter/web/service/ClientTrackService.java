@@ -24,7 +24,7 @@ public interface ClientTrackService {
 	 * @param toStaffId
 	 * @param staffPO
 	 */
-	void batchTransferKzList(String kzIds, String role, int toStaffId, StaffPO staffPO);
+	void batchTransferKzList(String kzIds, String role, int toStaffId, StaffPO staffPO, boolean receiveFlag);
 
 	/**
 	 * 无效审批

@@ -119,7 +119,7 @@ public class JsonFmtUtil {
                 vo.setRemark(getBlindString(StringUtil.replaceAllHTML(info.getString("content"))));
                 vo.setMemo(getBlindString(info.getString("memo")));
             }
-            vo.setShootType(getDicNameByCode(info.getIntValue("typeid"),DictionaryConstant.COMMON_TYPE,dicMap));
+            vo.setShootType(getDicNameByCode(info.getIntValue("typeid"), DictionaryConstant.COMMON_TYPE, dicMap));
             vo.setReceptorName(info.getString("receptorname"));
             vo.setYxLevel(getDicNameByCode(info.getIntValue("yxlevel"), DictionaryConstant.YX_RANK, dicMap));
             vo.setShopName(info.getString("shopname"));
@@ -141,16 +141,28 @@ public class JsonFmtUtil {
             vo.setPromoterName(info.getString("promotername"));
             vo.setOldKzName(info.getString("oldkzname"));
             vo.setOldKzPhone(info.getString("oldkzphone"));
-            vo.setInvalidMemo(info.getString("invalidmemo"));
+            //TODO excel 最大单元格长度
+            if (info.getString("invalidmemo") != null && info.getString("invalidmemo").length() >= 32000) {
+                vo.setInvalidMemo(info.getString("invalidmemo").substring(0, 32000));
+            } else {
+                vo.setInvalidMemo(info.getString("invalidmemo"));
+            }
+
             //设置性别
-            if(StringUtil.isNotEmpty(info.getString("sex")) && ClientConst.KZ_SEX_UNKNOWN_NUM.equalsIgnoreCase(info.getString("sex"))){
+            if (StringUtil.isNotEmpty(info.getString("sex")) && ClientConst.KZ_SEX_UNKNOWN_NUM.equalsIgnoreCase(info.getString("sex"))) {
                 vo.setKzSex(ClientConst.KZ_SEX_UNKNOWN);
-            }else if (StringUtil.isNotEmpty(info.getString("sex")) && ClientConst.KZ_SEX_BODY_NUM.equalsIgnoreCase(info.getString("sex"))){
+            } else if (StringUtil.isNotEmpty(info.getString("sex")) && ClientConst.KZ_SEX_BODY_NUM.equalsIgnoreCase(info.getString("sex"))) {
                 vo.setKzSex(ClientConst.KZ_SEX_BODY);
-            }else if(StringUtil.isNotEmpty(info.getString("sex")) && ClientConst.KZ_SEX_GIRL_NUM.equalsIgnoreCase(info.getString("sex"))){
+            } else if (StringUtil.isNotEmpty(info.getString("sex")) && ClientConst.KZ_SEX_GIRL_NUM.equalsIgnoreCase(info.getString("sex"))) {
                 vo.setKzSex(ClientConst.KZ_SEX_GIRL);
-            }else{
+            } else {
                 vo.setKzSex(ClientConst.KZ_SEX_UNKNOWN);
+            }
+            //TODO excel 最大单元格长度
+            if (info.getString("remake") != null && info.getString("remake").length() >= 32000) {
+                vo.setInvalidMemo(info.getString("remake").substring(0, 32000));
+            } else {
+                vo.setInvalidMemo(info.getString("remake"));
             }
             clientList.add(vo);
         }

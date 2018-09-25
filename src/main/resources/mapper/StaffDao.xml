@@ -1207,7 +1207,16 @@
     </select>
 
     <!--获取客资数量-->
-    <select id = "getClientCountById" resultType="Integer">
-        select count(1) from ${tableName} info where info.APPOINTORID = #{staffId} and info.isdel = 0 and info.COMPANYID = #{companyId}
+    <select id="getClientCountById" resultType="Integer">
+        SELECT count(1)
+        FROM ${tableName} info
+        WHERE info.APPOINTORID = #{staffId} AND info.isdel = 0 AND info.COMPANYID = #{companyId}
     </select>
+
+    <!--公司定时下线-->
+    <update id="companyStaffOffLine">
+        UPDATE hm_pub_staff
+        SET STATUSFLAG = 0
+        WHERE STATUSFLAG != 8;
+    </update>
 </mapper>
