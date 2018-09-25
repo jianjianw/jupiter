@@ -222,6 +222,7 @@
         FROM
         ${tabName}
         WHERE
+        isdel = 0 and
         SOURCEID IN
         <foreach collection="ids" item="id" index="index" open="(" separator="," close=")">#{id}</foreach>
     </select>
