@@ -615,7 +615,7 @@ public class GoEasyUtil {
         sb.append("<br/>渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("<br/>");
         sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("<br/><br/>");
         sb.append("提报人：").append(StringUtil.nullToStrTrim(info.getCollectorName())).append("<br/><br/>");
-        sb.append("备注：").append(StringUtil.nullToStrTrim(info.getMemo()));
+        sb.append("备注：").append(StringUtil.nullToStrTrim(StringUtil.replaceAllHTML(info.getMemo()).substring(0, 30)));
         String msg = sb.toString();
         pushCommon(companyId, staffId, head, msg);
         newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_COMMON, head, msg.replaceAll("<br/>", "；"), info.getKzId(),
