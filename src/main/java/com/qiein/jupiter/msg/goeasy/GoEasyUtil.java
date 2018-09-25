@@ -616,7 +616,11 @@ public class GoEasyUtil {
         sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("<br/><br/>");
         sb.append("提报人：").append(StringUtil.nullToStrTrim(info.getCollectorName())).append("<br/><br/>");
         if (StringUtil.isNotEmpty(info.getMemo())) {
-            sb.append("备注：").append(StringUtil.nullToStrTrim(StringUtil.replaceAllHTML(info.getMemo()).substring(0, 30)));
+            String memo = StringUtil.replaceAllHTML(info.getMemo());
+            if (memo.length() >= 30) {
+                memo = memo.substring(0, 30);
+            }
+            sb.append("备注：").append(memo);
         }
         String msg = sb.toString();
         pushCommon(companyId, staffId, head, msg);
@@ -965,14 +969,7 @@ public class GoEasyUtil {
 
     /**
      * 客资驳回消息
-     *
-     * @param staffPO
-     * @param toStaffId
-     * @param kzIds
-     * @param newsDao
-     * @param clientInfoDao
      */
-
     public static void pushReject(int companyId, int toStaffId, ClientGoEasyDTO info, NewsDao newsDao, StaffDao staffDao) {
         if (NumUtil.isInValid(toStaffId) || NumUtil.isInValid(companyId)) {
             return;
