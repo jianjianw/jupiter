@@ -230,7 +230,8 @@ public class DstgReportsSrcMonthDao {
     	for (Map<String, Object> day : dayList) {
             sql.append("(select count(info.ID) from " + infoTabName + " info where info.SOURCEID=src.ID AND info.ISDEL=0 ");
             if(StringUtil.isNotEmpty(invalidConfig.getDsDdStatus())){
-        		sql.append(" AND INSTR('"+invalidConfig.getDsDdStatus()+"' , CONCAT(',',info.STATUSID,',')) != 0");
+        		//sql.append(" AND INSTR('"+invalidConfig.getDsDdStatus()+"' , CONCAT(',',info.STATUSID,',')) != 0");
+        		sql.append(" AND info.STATUSID IN("+invalidConfig.getDsDdStatus()+")");
         	}
         	if(StringUtil.isNotEmpty(reportsParamSrcMonthVO.getTypeId())){
         		sql.append(" AND info.TYPEID IN("+reportsParamSrcMonthVO.getTypeId()+")");
@@ -374,7 +375,8 @@ public class DstgReportsSrcMonthDao {
     	}
         //待定不计算为有效时
         if(!(invalidConfig.getDdIsValid())){
-        	sql.append(" AND INSTR('"+invalidConfig.getDsDdStatus()+"', CONCAT(',',info.STATUSID,',')) = 0");
+        	//sql.append(" AND INSTR('"+invalidConfig.getDsDdStatus()+"', CONCAT(',',info.STATUSID,',')) = 0");
+        	sql.append(" AND info.STATUSID NOT IN("+invalidConfig.getDsDdStatus()+")");
         }
         //拍摄类型
     	if(StringUtil.isNotEmpty(reportsParamSrcMonthVO.getTypeId())){
@@ -394,7 +396,8 @@ public class DstgReportsSrcMonthDao {
         	}
             //待定不计算为有效时
             if(!(invalidConfig.getDdIsValid())){
-            	sql.append(" AND INSTR('"+invalidConfig.getDsDdStatus()+"', CONCAT(',',info.STATUSID,',')) = 0");
+            	//sql.append(" AND INSTR('"+invalidConfig.getDsDdStatus()+"', CONCAT(',',info.STATUSID,',')) = 0");
+            	sql.append(" AND info.STATUSID NOT IN("+invalidConfig.getDsDdStatus()+")");
             }
         	if(StringUtil.isNotEmpty(reportsParamSrcMonthVO.getTypeId())){
         		sql.append(" AND info.TYPEID IN("+reportsParamSrcMonthVO.getTypeId()+")");
