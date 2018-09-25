@@ -424,7 +424,7 @@ public class DstgYearsClientReportsRowDao {
 
 
     private void getCommonSqlPartB(StringBuilder sb) {
-        sb.append(" group by info.sourceid,myYear,,monthNo) AS t ");
+        sb.append(" group by info.sourceid,myYear,monthNo) AS t ");
         sb.append(" WHERE t.myYear= ? ");
         sb.append(" GROUP BY t.monthNo,t.sourceid ");
         sb.append(" order by month ");
