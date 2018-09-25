@@ -1064,7 +1064,7 @@ public class ReportsServiceImpl implements ReportService {
                         if (dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())) {
                             newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getValidClientCost());
                             validClientCount += dstgSourceYearReportsVO.getValidClientCount();
-                            allCost += Double.parseDouble(dstgSourceYearReportsVO.getAllCost());
+                            allCost += Double.parseDouble(StringUtil.isEmpty(dstgSourceYearReportsVO.getAllCost())?"0.00":dstgSourceYearReportsVO.getAllCost());
                         }
                     }
                     if(validClientCount == 0){
