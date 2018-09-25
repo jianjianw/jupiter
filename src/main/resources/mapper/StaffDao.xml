@@ -1005,7 +1005,7 @@
         AND info.STATUSID != 98
         AND info.STATUSID != 99
         AND info.ISDEL = 0
-#         AND info.SOURCEID = #{sourceId}
+        AND info.SOURCEID = #{sourceId}
         AND info.GROUPID IN
         <foreach collection="groupIdList" item="groupId" index="index" open="(" separator="," close=")">
             #{groupId}
