@@ -120,12 +120,13 @@ public class DstgYearsClientReportsRowDao {
         StringBuilder sb = new StringBuilder();
         getCommonSqlPart(sb, reportsParamVO);
 //        sb.append(" AND INSTR( ?, CONCAT(',',info.STATUSID + '',',')) != 0");
-        sb.append(" and info.STATUSID in (?)");
+//        sb.append(" and info.STATUSID in (?)");
+        sb.append(" and info.STATUSID in ("+invalidConfig.getDsDdStatus()+")");
         addConditionByTypeAndSourceIds(reportsParamVO, sb);
         getCommonSqlPartB(sb);
         List<Map<String, Object>> mapList = jdbcTemplate.queryForList(sb.toString(), new Object[]{reportsParamVO.getCompanyId()
                 , reportsParamVO.getYears()
-                ,invalidConfig.getDsDdStatus()});
+                });
 
         //获取每月渠道客资数量
         for (DstgSourceYearReportsVO dstgSourceYearReportsVO : dstgSourceYearReportsVOS) {

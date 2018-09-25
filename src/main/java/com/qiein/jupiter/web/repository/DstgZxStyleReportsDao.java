@@ -172,13 +172,13 @@ public class DstgZxStyleReportsDao {
         addConditionByTypeAndZxCodeStyle(reportsParamVO,sb);
         sb.append(" and info.CREATETIME BETWEEN ? AND ?");
 //        sb.append(" AND INSTR( ?, CONCAT(',',info.STATUSID + '',',')) != 0");
-        sb.append(" and info.STATUSID in (?)");
+        sb.append(" and info.STATUSID in ("+dsInvalidVO.getDsDdStatus()+")");
         sb.append(" group by detail.ZXSTYLE");
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(),reportsParamVO.getCompanyId(),
                         reportsParamVO.getStart(),
-                        reportsParamVO.getEnd(),
-                        dsInvalidVO.getDsDdStatus() });
+                        reportsParamVO.getEnd()
+                         });
 
         // 处理数据
         List<DstgZxStyleReportsVO> dstgGoldDataReportsBak = new LinkedList<>();

@@ -83,10 +83,11 @@ public class DstgYearsClientDetailReportsDao {
         getCommonSqlPartOne(reportsParamVO, sb);
         //TODO 添加指定条件
 //        sb.append(" AND INSTR( ?, CONCAT(',',info.STATUSID + '',',')) != 0");
-        sb.append(" and info.STATUSID in (?)");
+//        sb.append(" and info.STATUSID in (?)");
+        sb.append(" and info.STATUSID in ("+invalidConfig.getDsDdStatus()+")");
         getCommonSqlPartTwo(sb);
 
-        jdbcTemplate.query(sb.toString(), new Object[]{reportsParamVO.getCompanyId(), reportsParamVO.getYears(),invalidConfig.getDsDdStatus()}, new RowMapper<DstgYearDetailReportsVO>() {
+        jdbcTemplate.query(sb.toString(), new Object[]{reportsParamVO.getCompanyId(), reportsParamVO.getYears()}, new RowMapper<DstgYearDetailReportsVO>() {
             @Override
             public DstgYearDetailReportsVO mapRow(ResultSet rs, int i) throws SQLException {
                 for (DstgYearDetailReportsVO dstgYearDetailReportsVO:dstgYearDetailReportsVOS){

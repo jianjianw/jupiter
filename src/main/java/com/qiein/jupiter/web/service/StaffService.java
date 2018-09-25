@@ -402,15 +402,23 @@ public interface StaffService {
 
     /**
      * 根据员工姓名获取员工id
+     *
      * @param name
      * @return
      */
-    Integer getStaffIdByName(String name,Integer companyId);
+    Integer getStaffIdByName(String name, Integer companyId);
 
     /**
      * 获取客资数量
+     *
      * @param currentLoginStaff
-     * */
-    Integer getClientCountById(StaffPO currentLoginStaff,Integer staffId);
+     */
+    Integer getClientCountById(StaffPO currentLoginStaff, Integer staffId);
+
+    /**
+     *
+     * @return
+     */
+    int companyStaffOffLine();
 
 }

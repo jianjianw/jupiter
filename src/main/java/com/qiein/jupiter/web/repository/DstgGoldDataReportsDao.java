@@ -162,15 +162,15 @@ public class DstgGoldDataReportsDao {
         sb = getCommonsql(sb, infoTabName, detailTabName);
         sb.append(" and info.CREATETIME BETWEEN ? AND ?");
 //        sb.append(" AND INSTR( ?, CONCAT(',',info.STATUSID + '',',')) != 0");
-        sb.append(" and info.STATUSID in (?)");
+//        sb.append(" and info.STATUSID in (?)");
+        sb.append(" and info.STATUSID in ("+dsInvalidVO.getDsDdStatus()+")");
         addConditionByType(reportsParamVO.getType(),sb);
         sb.append(" group by detail.adid");
         sb.append(" ) info_detail_bak  group by info_detail_bak.adid ");
         List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(),
                         reportsParamVO.getStart(),
-                        reportsParamVO.getEnd(),
-                        dsInvalidVO.getDsDdStatus()});
+                        reportsParamVO.getEnd()});
 
         // 处理数据
         List<DstgGoldDataReportsVO> dstgGoldDataReportsBak = new LinkedList<>();
