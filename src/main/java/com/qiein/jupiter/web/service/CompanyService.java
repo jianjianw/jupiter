@@ -208,9 +208,15 @@ public interface CompanyService {
 
     /**
      * 是否可以修改手机和微信的权限
+     *
      * @param editPhoneAndWechat
      * @param companyId
      */
-    void editPhoneAndWechat(boolean editPhoneAndWechat,int companyId);
+    void editPhoneAndWechat(boolean editPhoneAndWechat, int companyId);
+
+    /**
+     * 编辑公司公共设置
+     */
+    int editConfig(int companyId, String config);
 
 }

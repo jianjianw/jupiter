@@ -300,18 +300,28 @@ public class CompanyController extends BaseController {
      * @param reportsConfig
      * @return
      */
-    @GetMapping("/edit_reports_conifg")
+    @GetMapping("/edit_reports_config")
     public ResultInfo editReportsConfig(String reportsConfig) {
         companyService.editReportsConfig(getCurrentLoginStaff().getCompanyId(), reportsConfig);
         return ResultInfoUtil.success();
     }
+
     /**
      * 是否可以修改电话和微信的权限
      */
     @GetMapping("/edit_phone_and_wechat")
-    public ResultInfo editPhoneAndWechat(@RequestParam boolean editPhoneAndWechat){
-        companyService.editPhoneAndWechat(editPhoneAndWechat,getCurrentLoginStaff().getCompanyId());
+    public ResultInfo editPhoneAndWechat(@RequestParam boolean editPhoneAndWechat) {
+        companyService.editPhoneAndWechat(editPhoneAndWechat, getCurrentLoginStaff().getCompanyId());
         return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
+    }
+
+    /**
+     * 编辑公司报表设置
+     */
+    @GetMapping("/edit_config")
+    public ResultInfo editConfig(String config) {
+        companyService.editConfig(getCurrentLoginStaff().getCompanyId(), config);
+        return ResultInfoUtil.success();
     }
 
 }

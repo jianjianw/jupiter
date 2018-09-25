@@ -356,4 +356,11 @@
         SET EDITPHONEANDWECHAT = #{editPhoneAndWechat}
         WHERE ID = #{companyId}
     </update>
+
+    <!--编辑公司公共设置-->
+    <update id="editConfig">
+        UPDATE hm_pub_company
+        SET CONFIG = #{config}
+        WHERE ID = #{companyId}
+    </update>
 </mapper>
