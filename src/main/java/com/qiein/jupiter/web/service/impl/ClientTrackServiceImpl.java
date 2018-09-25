@@ -118,7 +118,7 @@ public class ClientTrackServiceImpl implements ClientTrackService {
      * @return
      */
     private List<StaffNumVO> getOnwerStaffList(String type, int companyId, String kzIds) {
-        if(StringUtil.isEmpty(kzIds)){
+        if (StringUtil.isEmpty(kzIds)) {
             return null;
         }
         String[] kzIdArr = kzIds.split(CommonConstant.STR_SEPARATOR);
@@ -133,7 +133,7 @@ public class ClientTrackServiceImpl implements ClientTrackService {
      * @param toStaffId
      * @param staffPO
      */
-    public void batchTransferKzList(String kzIds, String role, int toStaffId, StaffPO staffPO) {
+    public void batchTransferKzList(String kzIds, String role, int toStaffId, StaffPO staffPO, boolean receiveFlag) {
         Map<String, Object> reqContent = new HashMap<>();
         reqContent.put("companyid", staffPO.getCompanyId());
         reqContent.put("operaid", staffPO.getId());
@@ -146,6 +146,7 @@ public class ClientTrackServiceImpl implements ClientTrackService {
         }
         reqContent.put("tostaffname", toStaff.getNickName());
         reqContent.put("role", role);
+        reqContent.put("receiveflag", receiveFlag);
 
         String addRstStr = crmBaseApi.doService(reqContent, "clientBatchTransferHs");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
