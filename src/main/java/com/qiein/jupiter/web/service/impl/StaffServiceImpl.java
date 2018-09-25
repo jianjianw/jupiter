@@ -888,13 +888,15 @@ public class StaffServiceImpl implements StaffService {
             GoEasyUtil.pushStatusRefresh(companyId, staffId, webSocketMsgUtil);
             //更新为满限状态
             staff.setStatusFlag(StaffStatusEnum.LIMIT.getStatusId());
-        } else if (staff.getTodayNum() < staff.getLimitDay()
-                && StaffStatusEnum.LIMIT.getStatusId() == staff.getStatusFlag()) {
-            //如果当前员工之前是满限，但是现在不是
-            staff.setStatusFlag(StaffStatusEnum.OnLine.getStatusId());
-            //更新状态
-            staffDao.updateStatusFlag(staff);
         }
+        //如果之前是满限，但是后台把这个人客资删除或者转移了，不是满限了，还保留满限状态TO 金夫人
+//        else if (staff.getTodayNum() < staff.getLimitDay()
+//                && StaffStatusEnum.LIMIT.getStatusId() == staff.getStatusFlag()) {
+//            //如果当前员工之前是满限，但是现在不是
+//            staff.setStatusFlag(StaffStatusEnum.OnLine.getStatusId());
+//            //更新状态
+//            staffDao.updateStatusFlag(staff);
+//        }
     }
 
     /**
