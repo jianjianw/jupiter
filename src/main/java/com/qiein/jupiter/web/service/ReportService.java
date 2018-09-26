@@ -57,7 +57,7 @@ public interface ReportService {
      * @param zxStyleCode
      * @return
      */
-    List<DstgZxStyleReportsVO> getDstgZxStyleReports(Integer start, Integer end, int companyId, String type, String zxStyleCode,String sourceIds);
+    List<DstgZxStyleReportsVO> getDstgZxStyleReports(Integer start, Integer end, int companyId, String type, String zxStyleCode,String sourceIds,String collectorId);
 
     /**
      * 获取无效原因客资报表

@@ -392,9 +392,9 @@ public class ReportsController extends BaseController {
      * 电商推广咨询信息方式报表
      */
     @GetMapping("/get_dstg_zx_style_reports")
-    public ResultInfo getDstgZxStyleReports(Integer start, Integer end, @RequestParam(value = "type", required = false) String type, @RequestParam(value = "zxStyleCode", required = false) String zxStyleCode, @RequestParam(value = "sourceIds") String sourceIds) {
+    public ResultInfo getDstgZxStyleReports(Integer start, Integer end, @RequestParam(value = "type", required = false) String type, @RequestParam(value = "zxStyleCode", required = false) String zxStyleCode, @RequestParam(value = "sourceIds") String sourceIds,@RequestParam(value="collectorId",required = false)String collectorId) {
         StaffPO staffPO = getCurrentLoginStaff();
-        List<DstgZxStyleReportsVO> dstgGoldDataReportsVO = reportService.getDstgZxStyleReports(start, end, staffPO.getCompanyId(), type, zxStyleCode, sourceIds);
+        List<DstgZxStyleReportsVO> dstgGoldDataReportsVO = reportService.getDstgZxStyleReports(start, end, staffPO.getCompanyId(), type, zxStyleCode, sourceIds,collectorId);
         return ResultInfoUtil.success(dstgGoldDataReportsVO);
     }
 
@@ -402,7 +402,7 @@ public class ReportsController extends BaseController {
      * 电商推广咨询方式来源报表
      */
     @GetMapping("/get_dstg_zx_style_source_reports")
-    public ResultInfo getDstgZxStyleSourceReports(Integer start, Integer end, String zxStyleCode, @RequestParam(value = "type", required = false) String type,@RequestParam(value="collectorId")String collectorId) {
+    public ResultInfo getDstgZxStyleSourceReports(Integer start, Integer end, String zxStyleCode, @RequestParam(value = "type", required = false) String type,@RequestParam(value="collectorId",required = false)String collectorId) {
         StaffPO staffPO = getCurrentLoginStaff();
         List<DstgZxStyleReportsVO> dstgZxStyleReportsVOS = reportService.getDstgZxStyleSourceRerports(start, end, zxStyleCode, type, staffPO.getCompanyId(),collectorId);
         return ResultInfoUtil.success(dstgZxStyleReportsVOS);
