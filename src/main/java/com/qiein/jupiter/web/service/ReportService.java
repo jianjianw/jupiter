@@ -187,7 +187,7 @@ public interface ReportService {
      * @param companyId
      * @return
      */
-    List<DstgZxStyleReportsVO> getDstgZxStyleSourceRerports(Integer start, Integer end, String zxStyleCode, String type, int companyId,Integer collectorId);
+    List<DstgZxStyleReportsVO> getDstgZxStyleSourceRerports(Integer start, Integer end, String zxStyleCode, String type, int companyId,String collectorId);
 
     /**
      * 渠道订单数据统计

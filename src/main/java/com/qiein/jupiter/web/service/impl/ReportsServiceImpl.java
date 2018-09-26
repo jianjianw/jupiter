@@ -465,7 +465,7 @@ public class ReportsServiceImpl implements ReportService {
     }
 
     @Override
-    public List<DstgZxStyleReportsVO> getDstgZxStyleSourceRerports(Integer start, Integer end, String zxStyleCode, String type, int companyId,Integer collectorId) {
+    public List<DstgZxStyleReportsVO> getDstgZxStyleSourceRerports(Integer start, Integer end, String zxStyleCode, String type, int companyId,String collectorId) {
         ReportsParamVO reportsParamVO = new ReportsParamVO();
         reportsParamVO.setStart(start);
         reportsParamVO.setEnd(end);

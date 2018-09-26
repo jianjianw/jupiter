@@ -52,14 +52,14 @@ public class ReportsParamVO {
     /**
      * 录入人id
      * */
-    private Integer collectorId;
+    private String collectorId;
 
 
-    public Integer getCollectorId() {
+    public String getCollectorId() {
         return collectorId;
     }
 
-    public void setCollectorId(Integer collectorId) {
+    public void setCollectorId(String collectorId) {
         this.collectorId = collectorId;
     }
 
