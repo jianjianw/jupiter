@@ -21,6 +21,8 @@ import com.qiein.jupiter.web.entity.dto.StaffPushDTO;
 import com.qiein.jupiter.web.entity.po.*;
 import com.qiein.jupiter.web.service.ClientPushService;
 import com.qiein.jupiter.web.service.StaffService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +39,8 @@ import java.util.*;
  */
 @Service
 public class ClientPushServiceImpl implements ClientPushService {
+
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private ClientInfoDao clientInfoDao;
@@ -245,6 +249,7 @@ public class ClientPushServiceImpl implements ClientPushService {
      */
     private StaffPushDTO getGroupAvg(int companyId, int srcId, String type, int interval) {
         List<String> appointGroups = getGroupAvgGroup(companyId, srcId, type);
+
         StaffPushDTO appoint = null;
         while (CollectionUtils.isNotEmpty(appointGroups)) {
             appoint = getGroupAvgAppoint(companyId, srcId, type, appointGroups.get(0), interval);
