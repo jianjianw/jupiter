@@ -4,7 +4,7 @@ public class ZjsKzOfMonthShowVO {
     private String srcName;
     private Integer srcId;
     private String srcImg;
-    private Map<String,Integer> map;
+    private Map<String,String> map;
 
     public String getSrcName() {
         return srcName;
@@ -30,11 +30,11 @@ public class ZjsKzOfMonthShowVO {
         this.srcImg = srcImg;
     }
 
-    public Map<String, Integer> getMap() {
+    public Map<String, String> getMap() {
         return map;
     }
 
-    public void setMap(Map<String, Integer> map) {
+    public void setMap(Map<String, String> map) {
         this.map = map;
     }
 }
