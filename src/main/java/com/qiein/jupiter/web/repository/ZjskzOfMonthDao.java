@@ -1109,7 +1109,7 @@ public class ZjskzOfMonthDao {
             for (ZjsKzOfMonthShowVO zjsKzOfMonthShowVO:showList)
             {
                 hj+=Double.parseDouble(zjsKzOfMonthShowVO.getMap().get(dayMap.get("dayKey")));
-                if(Double.parseDouble(zjsKzOfMonthShowVO.getMap().get(dayMap.get("dayKey")))==0){
+                if(Double.parseDouble(zjsKzOfMonthShowVO.getMap().get(dayMap.get("dayKey")))!=0){
                     i++;
                 }
             }
@@ -1129,7 +1129,7 @@ public class ZjskzOfMonthDao {
         int i=0;
         for(String countKey:map.keySet()){
             hj+=Double.parseDouble(map.get(countKey));
-            if(Double.parseDouble(map.get(countKey))==0){
+            if(Double.parseDouble(map.get(countKey))!=0){
                 i++;
             }
         }
