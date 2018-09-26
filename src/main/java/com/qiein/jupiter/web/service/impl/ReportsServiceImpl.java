@@ -10,10 +10,7 @@ import com.qiein.jupiter.enums.TableEnum;
 import com.qiein.jupiter.util.CollectionUtils;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.StringUtil;
-import com.qiein.jupiter.web.dao.ClientInfoDao;
-import com.qiein.jupiter.web.dao.DictionaryDao;
-import com.qiein.jupiter.web.dao.GroupStaffDao;
-import com.qiein.jupiter.web.dao.SourceDao;
+import com.qiein.jupiter.web.dao.*;
 import com.qiein.jupiter.web.entity.dto.*;
 import com.qiein.jupiter.web.entity.po.*;
 import com.qiein.jupiter.web.entity.vo.*;
@@ -98,6 +95,12 @@ public class ReportsServiceImpl implements ReportService {
 
     @Autowired
     private DstgChannelReportsOrderBySrcDao dstgChannelReportsOrderBySrcDao;
+
+    @Autowired
+    private SourceAndStatusReportsDao sourceAndStatusReportsDao;
+
+    @Autowired
+    private ClientStatusDao clientStatusDao;
 
 
 
@@ -1198,4 +1201,19 @@ public class ReportsServiceImpl implements ReportService {
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         return dstgChannelReportsOrderBySrcDao.getDstgChannelReportsOrderBySrc(groupId,companyId,start,end,sourceIds,typeIds,invalidConfig);
     }
+    /**
+     * 客资各个渠道各个状态
+     */
+    public SourceAndStatusReportsShowVO getSourceAndStatusReports(String appointorIds,String collectorIds,String receptorIds,String start,String end,String groupIds,String typeIds,String sourceIds,Integer companyId){
+            List<StatusPO> statusPOS=clientStatusDao.getCompanyStatusList(companyId);
+            List<SourcePO> sourcePOS=sourceDao.findSourseByType(companyId, CommonConstant.DsSrc,"");
+            SourceAndStatusReportsShowVO sourceAndStatusReportsShowVO=new SourceAndStatusReportsShowVO();
+            sourceAndStatusReportsShowVO.setList(sourceAndStatusReportsDao.getSourceAndStatusReports(appointorIds,collectorIds,receptorIds,start,end,groupIds,typeIds,sourceIds,companyId,statusPOS,sourcePOS));
+            StatusPO statusPO=new StatusPO();
+            statusPO.setStatusId(-1);
+            statusPO.setStatusName("合计");
+            sourceAndStatusReportsShowVO.setStatusPO(statusPOS);
+            return sourceAndStatusReportsShowVO;
+    }
+
 }

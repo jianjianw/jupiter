@@ -265,4 +265,9 @@ public interface ReportService {
      * @return
      */
     List<DstgChannelReportsOrderBySrcVO> getDstgChannelReportsOrderBySrc(String groupId,Integer companyId,String start,String end,String sourceIds,String typeIds);
+    /**
+    * 客资各个渠道各个状态
+     */
+    SourceAndStatusReportsShowVO getSourceAndStatusReports(String appointorIds,String collectorIds,String receptorIds,String start,String end,String groupIds,String typeIds,String sourceIds,Integer companyId);
+
 }

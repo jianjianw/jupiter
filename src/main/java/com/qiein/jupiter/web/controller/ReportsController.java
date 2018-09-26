@@ -676,4 +676,11 @@ public class ReportsController extends BaseController {
     public ResultInfo getDstgChannelReportsOrderBySrc(String groupId,String start,String end,String sourceIds,String typeIds) {
         return ResultInfoUtil.success(reportService.getDstgChannelReportsOrderBySrc(groupId,getCurrentLoginStaff().getCompanyId(),start,end,sourceIds,typeIds));
     }
+    /**
+     * 客资各个渠道各个状态
+     */
+    @GetMapping("/get_source_and_status_reports")
+    public ResultInfo getSourceAndStatusReports(String appointorIds,String collectorIds,String receptorIds,String start,String end,String groupIds,String typeIds,String sourceIds){
+        return ResultInfoUtil.success(reportService.getSourceAndStatusReports(appointorIds,collectorIds,receptorIds,start,end,groupIds,typeIds,sourceIds,getCurrentLoginStaff().getCompanyId()));
+    }
 }
