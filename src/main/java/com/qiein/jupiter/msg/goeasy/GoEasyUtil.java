@@ -614,7 +614,14 @@ public class GoEasyUtil {
         }
         sb.append("<br/>渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("<br/>");
         sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("<br/><br/>");
-//        sb.append("备注：").append(StringUtil.nullToStrTrim(info.getMemo()));
+        sb.append("提报人：").append(StringUtil.nullToStrTrim(info.getCollectorName())).append("<br/><br/>");
+        if (StringUtil.isNotEmpty(info.getMemo())) {
+            String memo = StringUtil.replaceAllHTML(info.getMemo());
+            if (memo.length() >= 30) {
+                memo = memo.substring(0, 30);
+            }
+            sb.append("备注：").append(memo);
+        }
         String msg = sb.toString();
         pushCommon(companyId, staffId, head, msg);
         newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_COMMON, head, msg.replaceAll("<br/>", "；"), info.getKzId(),
@@ -962,14 +969,7 @@ public class GoEasyUtil {
 
     /**
      * 客资驳回消息
-     *
-     * @param staffPO
-     * @param toStaffId
-     * @param kzIds
-     * @param newsDao
-     * @param clientInfoDao
      */
-
     public static void pushReject(int companyId, int toStaffId, ClientGoEasyDTO info, NewsDao newsDao, StaffDao staffDao) {
         if (NumUtil.isInValid(toStaffId) || NumUtil.isInValid(companyId)) {
             return;

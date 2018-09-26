@@ -79,7 +79,7 @@ public class ReportsController extends BaseController {
      */
     @RequestMapping("get_dsyy_group_reports")
     public ResultInfo getDsyyGroupReports(@RequestParam("start") Integer start, @RequestParam("end") Integer end,
-                                          @RequestParam(value = "typeId", required = false) String typeId, @RequestParam(value = "groupIds", required = false) String groupIds) {
+                                          @RequestParam(value = "typeId", required = false) String typeId, @RequestParam(value = "groupIds", required = false) String groupIds,@RequestParam(value = "sourceIds",required = false)String sourceIds) {
         if (NumUtil.isInValid(start) || NumUtil.isInValid(end)) {
             return ResultInfoUtil.error(ExceptionEnum.START_TIME_OR_END_TIME_IS_NULL);
         }
@@ -91,6 +91,7 @@ public class ReportsController extends BaseController {
         reqContent.put("companyid", currentLoginStaff.getCompanyId());
         reqContent.put("typeId", typeId);
         reqContent.put("groupId", groupIds);
+        reqContent.put("sourceIds",sourceIds);
         String json = crmBaseApi.doService(reqContent, "dsyyGroupReports");
 
         if (StringUtil.isEmpty(json) || !"100000".equalsIgnoreCase(JSONObject.parseObject(json).getJSONObject("response").getJSONObject("info").getString("code"))) {

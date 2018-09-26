@@ -6,9 +6,7 @@ import org.slf4j.LoggerFactory;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * 时间处理工具
@@ -615,45 +613,45 @@ public class TimeUtil {
 
     /**
      * 匹配所有所有时间格式
-     * */
-    public static Date smartFormat(String time) throws Exception{
+     */
+    public static Date smartFormat(String time) throws Exception {
         SimpleDateFormat datePattern = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
         Date returnTime = null;
-        try{
-            returnTime  =  datePattern.parse(time);
-        }catch (ParseException e){
+        try {
+            returnTime = datePattern.parse(time);
+        } catch (ParseException e) {
             datePattern = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            try{
+            try {
                 returnTime = datePattern.parse(time);
-            }catch (ParseException e1){
+            } catch (ParseException e1) {
                 datePattern = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                try{
+                try {
                     returnTime = datePattern.parse(time);
-                }catch (ParseException e2){
+                } catch (ParseException e2) {
                     datePattern = new SimpleDateFormat("yyyy-M-dd HH:mm:ss");
-                    try{
+                    try {
                         returnTime = datePattern.parse(time);
-                    }catch (ParseException e3){
+                    } catch (ParseException e3) {
                         datePattern = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                        try{
+                        try {
                             returnTime = datePattern.parse(time);
-                        }catch (ParseException e4){
+                        } catch (ParseException e4) {
                             datePattern = new SimpleDateFormat("yyyy-MM-dd H:mm");
-                            try{
+                            try {
                                 returnTime = datePattern.parse(time);
-                            }catch (ParseException e5){
+                            } catch (ParseException e5) {
                                 datePattern = new SimpleDateFormat("yyyy-M-dd HH:mm");
-                                try{
+                                try {
                                     returnTime = datePattern.parse(time);
-                                }catch (ParseException e6){
+                                } catch (ParseException e6) {
                                     datePattern = new SimpleDateFormat("yyyy-M-dd H:mm");
-                                    try{
+                                    try {
                                         returnTime = datePattern.parse(time);
-                                    }catch (ParseException e7){
+                                    } catch (ParseException e7) {
                                         datePattern = new SimpleDateFormat("yyyy-M-d H:mm");
-                                        try{
+                                        try {
                                             returnTime = datePattern.parse(time);
-                                        }catch (ParseException e8){
+                                        } catch (ParseException e8) {
                                             throw e8;
                                         }
                                     }
@@ -665,5 +663,28 @@ public class TimeUtil {
             }
         }
         return returnTime;
+    }
+
+    /**
+     * 获取当天时间戳
+     *
+     * @return
+     */
+    public static Map<String, Integer> getTodayTimeInterval() {
+        Map<String, Integer> map = new HashMap<>();
+        Calendar calendar1 = Calendar.getInstance();
+        //设置昨天
+        calendar1.setTime(new Date());
+        calendar1.set(Calendar.HOUR, 0);
+        calendar1.set(Calendar.MINUTE, 0);
+        calendar1.set(Calendar.SECOND, 0);
+        Calendar calendar2 = Calendar.getInstance();
+        calendar2.setTime(new Date());
+        calendar2.set(Calendar.HOUR_OF_DAY, 23);
+        calendar2.set(Calendar.MINUTE, 59);
+        calendar2.set(Calendar.SECOND, 59);
+        map.put("start", TimeUtil.getTimeStamp10ByDate(calendar1.getTime()));
+        map.put("end", TimeUtil.getTimeStamp10ByDate(calendar2.getTime()));
+        return map;
     }
 }

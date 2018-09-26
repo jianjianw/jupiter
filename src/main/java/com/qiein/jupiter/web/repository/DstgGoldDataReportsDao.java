@@ -465,7 +465,13 @@ public class DstgGoldDataReportsDao {
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgGoldDataReportsVO dstgGoldDataReportsVO = new DstgGoldDataReportsVO();
             dstgGoldDataReportsVO.setAdId((String) dstgGoldDataReport.get("adid"));
-            dstgGoldDataReportsVO.setAvgAmount(((BigDecimal) dstgGoldDataReport.get("avg_amount")).doubleValue());
+            Object avg_amount = dstgGoldDataReport.get("avg_amount");
+            if(avg_amount == null){
+                dstgGoldDataReportsVO.setAvgAmount(0);
+            }else{
+
+                dstgGoldDataReportsVO.setAvgAmount(((BigDecimal)avg_amount ).doubleValue());
+            }
             dstgGoldDataReportsBak.add(dstgGoldDataReportsVO);
         }
 
@@ -509,7 +515,11 @@ public class DstgGoldDataReportsDao {
         for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
             DstgGoldDataReportsVO dstgGoldDataReportsVO = new DstgGoldDataReportsVO();
             dstgGoldDataReportsVO.setAdId((String) dstgGoldDataReport.get("adid"));
-            dstgGoldDataReportsVO.setAmount(((BigDecimal) dstgGoldDataReport.get("sum_amount")).doubleValue());
+            if(dstgGoldDataReport.get("sum_amount") == null){
+                dstgGoldDataReportsVO.setAmount(0);
+            }else{
+                dstgGoldDataReportsVO.setAmount(((BigDecimal) dstgGoldDataReport.get("sum_amount")).doubleValue());
+            }
             dstgGoldDataReportsBak.add(dstgGoldDataReportsVO);
         }
         for (DstgGoldDataReportsVO dstgGoldDataReportsVO : dstgGoldDataReportsVOS) {

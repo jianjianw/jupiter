@@ -69,9 +69,14 @@ public class ClientTrackController extends BaseController {
         if (StringUtil.isEmpty(role)) {
             throw new RException(ExceptionEnum.INVALID_REASON_TYPE_NULL);
         }
+        boolean receiveFlag = false;
+        if (jsonObject.getBoolean("receiveFlag") != null) {
+            receiveFlag = jsonObject.getBoolean("receiveFlag");
+        }
+
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        clientTrackService.batchTransferKzList(kzIds, role, toStaffId, currentLoginStaff);
+        clientTrackService.batchTransferKzList(kzIds, role, toStaffId, currentLoginStaff, receiveFlag);
         return ResultInfoUtil.success(TipMsgEnum.TRANSFER_SUCCESS);
     }
 

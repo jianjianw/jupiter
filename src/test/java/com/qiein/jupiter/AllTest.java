@@ -6,6 +6,8 @@ import java.util.regex.Pattern;
 
 import com.alibaba.fastjson.JSON;
 import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.util.CollectionUtils;
+import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.util.TimeUtil;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.CompanyVO;
@@ -411,4 +413,39 @@ public class AllTest {
         System.out.println(sourceIds.size());
     }
 
+
+    @Test
+    public void asdadq213() {
+        List<String> groupIdList = new LinkedList<>();
+        groupIdList.add("1");
+        groupIdList.add("2");
+        groupIdList.add("3");
+        groupIdList.add("4");
+
+        List<String> appointGroups = new LinkedList<>();
+        appointGroups.add("1");
+        appointGroups.add("2");
+
+        List<String> result = new LinkedList<>();
+        //小组排序
+//        for (String appointGrp : appointGroups) {
+//            Iterator<String> it = groupIdList.iterator();
+//            while (it.hasNext()) {
+//                String groupId = it.next();
+//                if (appointGrp.equals(groupId)) {
+//                    result.add(appointGrp);
+//                    it.remove();
+//                }
+//            }
+//        }
+        if (CollectionUtils.isNotEmpty(groupIdList)) {
+            result.addAll(0, groupIdList);
+        }
+    }
+
+    @Test
+    public void test1232131221() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("备注：").append(StringUtil.nullToStrTrim(StringUtil.replaceAllHTML(null).substring(0, 30)));
+    }
 }
