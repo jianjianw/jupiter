@@ -204,9 +204,37 @@ public class ClientPushServiceImpl implements ClientPushService {
                         appointer.getGroupName(), ClientConst.ALLOT_SYSTEM_AUTO, companyId);
                 doAssignAppoint(companyId, kzId, appointer, allotLog.getId(), overTime);
                 break;
+            case ChannelConstant.PUSH_RULE_GROUP_WHEEL:
+                //20 小组轮单
+                if (NumUtil.isInValid(srcId)) {
+                    return;
+                }
+                appointer = getGroupAvg(companyId, srcId, type, interval);
+                if (appointer == null) {
+                    return;
+                }
+                // 生成分配日志
+                allotLog = addAllotLog(kzId, appointer.getStaffId(), appointer.getStaffName(), appointer.getGroupId(),
+                        appointer.getGroupName(), ClientConst.ALLOT_SYSTEM_AUTO, companyId);
+                doAssignAppoint(companyId, kzId, appointer, allotLog.getId(), overTime);
+                break;
             default:
                 break;
         }
+    }
+
+    /**
+     * 小组 轮单
+     *
+     * @return
+     */
+    private StaffPushDTO getGroupWheel(int companyId, int srcId, String type, int interval) {
+        //先从队列中找到
+        //获取当前可分配的小组
+        List<String> appointGroups = getGroupAvgGroup(companyId, srcId, type);
+
+
+        return null;
     }
 
     /**
