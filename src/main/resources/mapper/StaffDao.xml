@@ -933,17 +933,54 @@
             AND INSTR(CONCAT(',', sf.LIMITCHANNELIDS, ','), CONCAT(',', #{sourceId}, ',')) = 0
     </select>
 
+
+    <!--
+      # SELECT grp.GROUPID
+        # FROM
+        # hm_crm_source_staff rela
+        # INNER JOIN hm_pub_group grp ON grp.GROUPID = rela.LINKID AND grp.COMPANYID = rela.COMPANYID
+        # WHERE
+        # rela.COMPANYID = #{companyId}
+        # AND rela.SOURCEID = #{sourceId}
+        # AND rela.RELATYPE = 2
+        # AND grp.GROUPTYPE = #{role}
+    -->
     <!--小组平均，获取可以领取的小组-->
     <select id="getGroupAvgGroupList" parameterType="map" resultType="java.lang.String">
-        SELECT grp.GROUPID
-        FROM
-            hm_crm_source_staff rela
-            INNER JOIN hm_pub_group grp ON grp.GROUPID = rela.LINKID AND grp.COMPANYID = rela.COMPANYID
-        WHERE
-            rela.COMPANYID = #{companyId}
-            AND rela.SOURCEID = #{sourceId}
-            AND rela.RELATYPE = 2
-            AND grp.GROUPTYPE = #{role}
+
+        SELECT info.GROUPID
+        FROM (
+                 SELECT grp.GROUPID
+                 FROM
+                     hm_crm_source_staff rela
+                     INNER JOIN hm_pub_group grp
+                         ON grp.GROUPID = rela.LINKID
+                            AND grp.COMPANYID = rela.COMPANYID
+                 WHERE
+                     rela.COMPANYID = #{companyId}
+                     AND rela.SOURCEID = #{sourceId}
+                     AND rela.RELATYPE = 2
+                     AND grp.GROUPTYPE = #{role}
+             ) rela
+            LEFT JOIN (
+                          SELECT info.GROUPID
+                          FROM
+                              hm_crm_client_info info
+                          WHERE
+                              info.COMPANYID =  #{companyId}
+                              AND info.ISDEL = 0
+
+                              AND info.RECEIVETIME BETWEEN #{start}
+                              AND #{end}
+
+                              AND info.STATUSID != 0
+                              AND info.STATUSID != 98
+                              AND info.STATUSID != 99
+                              AND info.ISDEL = 0
+                      ) info ON info.GROUPID = rela.GROUPID
+
+        GROUP BY info.GROUPID
+        ORDER BY COUNT(*)
     </select>
 
     <!--获取小组平均，可以领取的客服集合-->
