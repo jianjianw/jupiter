@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.constant.*;
 import com.qiein.jupiter.enums.StaffStatusEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
@@ -7,10 +8,7 @@ import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
 import com.qiein.jupiter.msg.goeasy.MessageConts;
 import com.qiein.jupiter.msg.websocket.WebSocketMsgUtil;
-import com.qiein.jupiter.util.CollectionUtils;
-import com.qiein.jupiter.util.DBSplitUtil;
-import com.qiein.jupiter.util.NumUtil;
-import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.util.wechat.WeChatPushMsgDTO;
 import com.qiein.jupiter.util.wechat.WeChatPushUtil;
 import com.qiein.jupiter.web.dao.*;
@@ -21,6 +19,8 @@ import com.qiein.jupiter.web.entity.dto.StaffPushDTO;
 import com.qiein.jupiter.web.entity.po.*;
 import com.qiein.jupiter.web.service.ClientPushService;
 import com.qiein.jupiter.web.service.StaffService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +37,8 @@ import java.util.*;
  */
 @Service
 public class ClientPushServiceImpl implements ClientPushService {
+
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private ClientInfoDao clientInfoDao;
@@ -245,6 +247,7 @@ public class ClientPushServiceImpl implements ClientPushService {
      */
     private StaffPushDTO getGroupAvg(int companyId, int srcId, String type, int interval) {
         List<String> appointGroups = getGroupAvgGroup(companyId, srcId, type);
+
         StaffPushDTO appoint = null;
         while (CollectionUtils.isNotEmpty(appointGroups)) {
             appoint = getGroupAvgAppoint(companyId, srcId, type, appointGroups.get(0), interval);
@@ -271,9 +274,13 @@ public class ClientPushServiceImpl implements ClientPushService {
             calcRange = CommonConstant.ALLOT_RANGE_DEFAULT;
         }
         //1.获取可以领取的小组集合
-        List<String> groupIdList = staffDao.getGroupAvgGroupList(companyId, srcId, type);
+        Map<String, Integer> todayTimeInterval = TimeUtil.getTodayTimeInterval();
+        List<String> groupIdList = staffDao.getGroupAvgGroupList(companyId, srcId, type,
+                todayTimeInterval.get("start"), todayTimeInterval.get("end"));
+        log.info("可以领取的小组：" + JSONObject.toJSONString(groupIdList));
         //2.获取从当前时间往前退一个小时内，所有指定小组的领取情况
         List<String> appointGroups = staffDao.getGroupAvgReceive(DBSplitUtil.getInfoTabName(companyId), companyId, srcId, calcRange, groupIdList);
+        log.info("往前退的小组：" + JSONObject.toJSONString(appointGroups));
         while (calcRange <= CommonConstant.ALLOT_RANGE_MAX
                 && (appointGroups == null || appointGroups.size() != groupIdList.size())) {
             calcRange += CommonConstant.ALLOT_RANGE_INTERVAL;

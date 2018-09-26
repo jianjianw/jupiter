@@ -112,13 +112,14 @@ public class CompanyPO extends BaseEntity {
 
     /**
      * 是否客户端
-     * */
+     */
     private Boolean clientFlag;
 
     /**
      * 是否可以修改手机和微信的权限
      */
     private boolean editPhoneAndWechat;
+
 
     public boolean isEditPhoneAndWechat() {
         return editPhoneAndWechat;

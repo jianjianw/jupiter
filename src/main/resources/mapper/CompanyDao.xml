@@ -20,12 +20,12 @@
         <result column="ISDEL" property="delFlag" jdbcType="BOOLEAN"/>
         <result column="ONLYAPP" property="onlyApp" jdbcType="BOOLEAN"/>
         <result column="ISLOCK" property="lockFlag" jdbcType="BOOLEAN"/>
-
         <result column="TYPEREPEAT" property="typeRepeat" jdbcType="BOOLEAN"/>
         <result column="SRCREPEAT" property="srcRepeat" jdbcType="BOOLEAN"/>
         <result column="STATUSIGNORE" property="statusIgnore" jdbcType="VARCHAR"/>
         <result column="TIMETYPEIGNORE" property="timeTypeIgnore" jdbcType="VARCHAR"/>
         <result column="DAYIGNORE" property="dayIgnore" jdbcType="INTEGER"/>
+        <result column="CONFIG" property="config" jdbcType="VARCHAR"/>
     </resultMap>
 
     <resultMap id="VOMap" type="com.qiein.jupiter.web.entity.vo.CompanyVO">
@@ -47,6 +47,7 @@
         <result column="REPORTSCONFIG" property="reportsConfig" jdbcType="VARCHAR"/>
         <result column="ISCLIENT" property="clientFlag" jdbcType="BOOLEAN"/>
         <result column="EDITPHONEANDWECHAT" property="editPhoneAndWechat" jdbcType="BOOLEAN"/>
+        <result column="CONFIG" property="config" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="baseColumn">
@@ -126,7 +127,8 @@
             comp.ONLYAPP,
             comp.REPORTSCONFIG,
             comp.ISCLIENT,
-            comp.EDITPHONEANDWECHAT
+            comp.EDITPHONEANDWECHAT,
+            comp.CONFIG
         FROM
             hm_pub_company comp
         WHERE
@@ -352,6 +354,13 @@
     <update id="editPhoneAndWechat">
         UPDATE hm_pub_company
         SET EDITPHONEANDWECHAT = #{editPhoneAndWechat}
+        WHERE ID = #{companyId}
+    </update>
+
+    <!--编辑公司公共设置-->
+    <update id="editConfig">
+        UPDATE hm_pub_company
+        SET CONFIG = #{config}
         WHERE ID = #{companyId}
     </update>
 </mapper>

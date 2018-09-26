@@ -73,6 +73,213 @@ public class ZjsKzOfMonthOutVO {
      * 成交量
      * */
     private int successClientCount;
+    /**
+     * 有效率 (有效量 / 客资量)
+     */
+    private double validRate;
+
+    /**
+     * 无效率 (无效量 / 客资量)
+     */
+    private double inValidRate;
+
+    /**
+     * 待定率 (待定量 / 客资量)
+     */
+    private double waitRate;
+
+    /**
+     * 毛客资入店率 (入店量 / 总客资)
+     */
+    private double clientComeShopRate;
+
+    /**
+     * 有效客资入店率 (入店量 / 有效量 )
+     */
+    private double validClientComeShopRate;
+
+    /**
+     * 入店成交率(成交量 / 入店量)
+     */
+    private double comeShopSuccessRate;
+
+    /**
+     * 毛客资成交率 (成交量 / 总客资)
+     */
+    private double clientSuccessRate;
+
+    /**
+     * 有效客资成交率 (有效量 / 成交量)
+     */
+    private double validClientSuccessRate;
+
+    /**
+     * 花费
+     * */
+    private String allCost;
+
+    /**
+     * 毛客资成本
+     * */
+    private String clientCost;
+
+    /**
+     * 有效客资成本
+     * */
+    private String validClientCost;
+
+    /**
+     * 入店成本
+     * */
+    private String comeShopClientCost;
+
+    /**
+     * 成交成本
+     * */
+    private String successClientCost;
+
+    /**
+     * 成交均价
+     */
+    private double avgAmount;
+
+    /**
+     * 营业额
+     */
+    private double amount;
+
+    /**
+     * ROI
+     * */
+    private String ROI;
+
+    public double getAvgAmount() {
+        return avgAmount;
+    }
+
+    public void setAvgAmount(double avgAmount) {
+        this.avgAmount = avgAmount;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public double getValidRate() {
+        return validRate;
+    }
+
+    public void setValidRate(double validRate) {
+        this.validRate = validRate;
+    }
+
+    public double getInValidRate() {
+        return inValidRate;
+    }
+
+    public void setInValidRate(double inValidRate) {
+        this.inValidRate = inValidRate;
+    }
+
+    public double getWaitRate() {
+        return waitRate;
+    }
+
+    public void setWaitRate(double waitRate) {
+        this.waitRate = waitRate;
+    }
+
+    public double getClientComeShopRate() {
+        return clientComeShopRate;
+    }
+
+    public void setClientComeShopRate(double clientComeShopRate) {
+        this.clientComeShopRate = clientComeShopRate;
+    }
+
+    public double getValidClientComeShopRate() {
+        return validClientComeShopRate;
+    }
+
+    public void setValidClientComeShopRate(double validClientComeShopRate) {
+        this.validClientComeShopRate = validClientComeShopRate;
+    }
+
+    public double getComeShopSuccessRate() {
+        return comeShopSuccessRate;
+    }
+
+    public void setComeShopSuccessRate(double comeShopSuccessRate) {
+        this.comeShopSuccessRate = comeShopSuccessRate;
+    }
+
+    public double getClientSuccessRate() {
+        return clientSuccessRate;
+    }
+
+    public void setClientSuccessRate(double clientSuccessRate) {
+        this.clientSuccessRate = clientSuccessRate;
+    }
+
+    public double getValidClientSuccessRate() {
+        return validClientSuccessRate;
+    }
+
+    public void setValidClientSuccessRate(double validClientSuccessRate) {
+        this.validClientSuccessRate = validClientSuccessRate;
+    }
+
+    public String getAllCost() {
+        return allCost;
+    }
+
+    public void setAllCost(String allCost) {
+        this.allCost = allCost;
+    }
+
+    public String getClientCost() {
+        return clientCost;
+    }
+
+    public void setClientCost(String clientCost) {
+        this.clientCost = clientCost;
+    }
+
+    public String getValidClientCost() {
+        return validClientCost;
+    }
+
+    public void setValidClientCost(String validClientCost) {
+        this.validClientCost = validClientCost;
+    }
+
+    public String getComeShopClientCost() {
+        return comeShopClientCost;
+    }
+
+    public void setComeShopClientCost(String comeShopClientCost) {
+        this.comeShopClientCost = comeShopClientCost;
+    }
+
+    public String getSuccessClientCost() {
+        return successClientCost;
+    }
+
+    public void setSuccessClientCost(String successClientCost) {
+        this.successClientCost = successClientCost;
+    }
+
+    public String getROI() {
+        return ROI;
+    }
+
+    public void setROI(String ROI) {
+        this.ROI = ROI;
+    }
 
     public String getDayKey() {
         return dayKey;

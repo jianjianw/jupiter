@@ -191,10 +191,17 @@ public interface CompanyDao extends BaseDao<CompanyPO> {
      * @return
      */
     int editReportsConfig(@Param("companyId") int companyId, @Param("reportsConfig") String reportsConfig);
+
     /**
      * 是否可以修改手机和微信的权限
+     *
      * @param editPhoneAndWechat
      * @param companyId
      */
-    void editPhoneAndWechat(@Param("editPhoneAndWechat")boolean editPhoneAndWechat,@Param("companyId")int companyId);
+    void editPhoneAndWechat(@Param("editPhoneAndWechat") boolean editPhoneAndWechat, @Param("companyId") int companyId);
+
+    /**
+     * 修改配置
+     */
+    int editConfig(@Param("companyId") int companyId, @Param("config") String config);
 }

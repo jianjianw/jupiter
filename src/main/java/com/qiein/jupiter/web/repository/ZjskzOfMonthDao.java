@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -85,6 +86,9 @@ public class ZjskzOfMonthDao {
         getComeShopClient1(tableDetail,tableInfo,month,zjsKzOfMonthOutVOS,sourceIds,companyId,typeIds);
         //成交量
         getSuccessClient1(tableDetail,tableInfo,month,zjsKzOfMonthOutVOS,sourceIds,companyId,typeIds);
+        getAmount(tableDetail,tableInfo,month,zjsKzOfMonthOutVOS,sourceIds,companyId,typeIds);
+        getAvgAmount(tableDetail,tableInfo,month,zjsKzOfMonthOutVOS,sourceIds,companyId,typeIds);
+        getCost(month,companyId,zjsKzOfMonthOutVOS);
         computerRate1(zjsKzOfMonthOutVOS,dsInvalidVO);
         List<ZjsKzOfMonthShowVO> zjsKzOfMonthShowVOS=new ArrayList<>();
         groupBy(sourcePOS,zjsKzOfMonthOutVOS,zjsKzOfMonthShowVOS,type, dayList);
@@ -150,6 +154,7 @@ public class ZjskzOfMonthDao {
             }
         }
     }
+
 
     /**
      * 筛选待定
@@ -306,6 +311,123 @@ public class ZjskzOfMonthDao {
             for (ZjsKzOfMonthOutVO zjsKzOfMonthOutVO1 : zjsKzOfMonthOutBzk) {
                 if(zjsKzOfMonthOutVO.getDay().equalsIgnoreCase(zjsKzOfMonthOutVO1.getDay())&&zjsKzOfMonthOutVO.getSrcId().equals(zjsKzOfMonthOutVO1.getSrcId())){
                     zjsKzOfMonthOutVO.setSuccessClientCount(zjsKzOfMonthOutVO1.getSuccessClientCount());
+                }
+            }
+        }
+    }
+    /**
+     * 成交均价
+     */
+    private void getAvgAmount(String tableDetail,String tableInfo, String month, List<ZjsKzOfMonthOutVO> zjsKzOfMonthOutVOS, String sourceIds, Integer companyId,String typeIds) {
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT src.srcNAME srcName,");
+        sql.append(" src.SRCIMG srcImg ,");
+        sql.append(" src.ID srcId,");
+        sql.append("  avg(detail.AMOUNT) count,");
+        sql.append(" FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d') day");
+        sql.append(" FROM  hm_crm_source src");
+        sql.append(" LEFT JOIN "+tableInfo+" info ON info.SOURCEID = src.id");
+        sql.append(" LEFT JOIN "+tableDetail+" detail ON info.kzid = detail.kzid");
+        sql.append(" WHERE src.typeid IN (3, 4, 5)");
+        sql.append(" and src.companyId=?");
+        sql.append(" and info.isdel = 0");
+        if(StringUtil.isNotEmpty(sourceIds)){
+            sql.append(" and src.id in ("+sourceIds+")");
+        }
+        if(StringUtil.isNotEmpty(typeIds)){
+            sql.append(" and info.typeid in ("+typeIds+")");
+        }
+        sql.append(" AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m') = ?");
+        sql.append(" and detail.AMOUNT is not null");
+        sql.append(" GROUP BY FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d') ,info.sourceId");
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{companyId,month});
+        List<ZjsKzOfMonthOutVO> zjsKzOfMonthOutBzk = new LinkedList<>();
+        for (Map<String, Object> map : list) {
+            ZjsKzOfMonthOutVO zjsKzOfMonthOutVO  = new ZjsKzOfMonthOutVO();
+            zjsKzOfMonthOutVO.setDay((String)map.get("day"));
+            zjsKzOfMonthOutVO.setSrcId(Integer.parseInt(Long.toString((Long) (map.get("srcId")))));
+            zjsKzOfMonthOutVO.setAvgAmount(((BigDecimal) map.get("count")).doubleValue());
+            zjsKzOfMonthOutBzk.add(zjsKzOfMonthOutVO);
+        }
+        for (ZjsKzOfMonthOutVO zjsKzOfMonthOutVO : zjsKzOfMonthOutVOS) {
+            for (ZjsKzOfMonthOutVO zjsKzOfMonthOutVO1 : zjsKzOfMonthOutBzk) {
+                if(zjsKzOfMonthOutVO.getDay().equalsIgnoreCase(zjsKzOfMonthOutVO1.getDay())&&zjsKzOfMonthOutVO.getSrcId().equals(zjsKzOfMonthOutVO1.getSrcId())){
+                    zjsKzOfMonthOutVO.setAvgAmount(zjsKzOfMonthOutVO1.getAvgAmount());
+                }
+            }
+        }
+    }
+
+    /**
+     * 成交总价
+     */
+    private void getAmount(String tableDetail,String tableInfo, String month, List<ZjsKzOfMonthOutVO> zjsKzOfMonthOutVOS, String sourceIds, Integer companyId,String typeIds) {
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT src.srcNAME srcName,");
+        sql.append(" src.SRCIMG srcImg ,");
+        sql.append(" src.ID srcId,");
+        sql.append("  sum(detail.AMOUNT) count,");
+        sql.append(" FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d') day");
+        sql.append(" FROM  hm_crm_source src");
+        sql.append(" LEFT JOIN "+tableInfo+" info ON info.SOURCEID = src.id");
+        sql.append(" LEFT JOIN "+tableDetail+" detail ON info.kzid = detail.kzid");
+        sql.append(" WHERE src.typeid IN (3, 4, 5)");
+        sql.append(" and src.companyId=?");
+        sql.append(" and info.isdel = 0");
+        if(StringUtil.isNotEmpty(sourceIds)){
+            sql.append(" and src.id in ("+sourceIds+")");
+        }
+        if(StringUtil.isNotEmpty(typeIds)){
+            sql.append(" and info.typeid in ("+typeIds+")");
+        }
+        sql.append(" AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m') = ?");
+        sql.append(" and detail.AMOUNT is not null");
+        sql.append(" GROUP BY FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d') ,info.sourceId");
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{companyId,month});
+        List<ZjsKzOfMonthOutVO> zjsKzOfMonthOutBzk = new LinkedList<>();
+        for (Map<String, Object> map : list) {
+            ZjsKzOfMonthOutVO zjsKzOfMonthOutVO  = new ZjsKzOfMonthOutVO();
+            zjsKzOfMonthOutVO.setDay((String)map.get("day"));
+            zjsKzOfMonthOutVO.setSrcId(Integer.parseInt(Long.toString((Long) (map.get("srcId")))));
+            zjsKzOfMonthOutVO.setAmount(((BigDecimal) map.get("count")).doubleValue());
+            zjsKzOfMonthOutBzk.add(zjsKzOfMonthOutVO);
+        }
+        for (ZjsKzOfMonthOutVO zjsKzOfMonthOutVO : zjsKzOfMonthOutVOS) {
+            for (ZjsKzOfMonthOutVO zjsKzOfMonthOutVO1 : zjsKzOfMonthOutBzk) {
+                if(zjsKzOfMonthOutVO.getDay().equalsIgnoreCase(zjsKzOfMonthOutVO1.getDay())&&zjsKzOfMonthOutVO.getSrcId().equals(zjsKzOfMonthOutVO1.getSrcId())){
+                    zjsKzOfMonthOutVO.setAmount(zjsKzOfMonthOutVO1.getAmount());
+                }
+            }
+        }
+    }
+
+    /**
+     * 花费
+     */
+    private void getCost(String month,Integer companyId, List<ZjsKzOfMonthOutVO> zjsKzOfMonthOutVOS){
+        StringBuilder sql=new StringBuilder();
+        sql.append(" SELECT src.ID srcId,");
+        sql.append(" cost.COST cost,");
+        sql.append(" FROM_UNIXTIME(cost.COSTTIME, '%Y/%m/%d') day");
+        sql.append(" FROM hm_crm_cost cost");
+        sql.append(" LEFT JOIN hm_crm_source src ON src.ID = cost.SRCID");
+        sql.append(" AND src.COMPANYID = cost.COMPANYID");
+        sql.append(" WHERE cost.companyid = ? ");
+        sql.append(" and src.ID is not null");
+        sql.append(" AND FROM_UNIXTIME(cost.COSTTIME, '%Y/%m') =  ? ");
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{companyId,month});
+        List<ZjsKzOfMonthOutVO> zjsKzOfMonthOutBzk = new LinkedList<>();
+        for (Map<String, Object> map : list) {
+            ZjsKzOfMonthOutVO zjsKzOfMonthOutVO  = new ZjsKzOfMonthOutVO();
+            zjsKzOfMonthOutVO.setDay((String)map.get("day"));
+            zjsKzOfMonthOutVO.setSrcId(Integer.parseInt(Long.toString((Long) (map.get("srcId")))));
+            zjsKzOfMonthOutVO.setAllCost(map.get("cost")+"");
+            zjsKzOfMonthOutBzk.add(zjsKzOfMonthOutVO);
+        }
+        for (ZjsKzOfMonthOutVO zjsKzOfMonthOutVO : zjsKzOfMonthOutVOS) {
+            for (ZjsKzOfMonthOutVO zjsKzOfMonthOutVO1 : zjsKzOfMonthOutBzk) {
+                if(zjsKzOfMonthOutVO.getDay().equalsIgnoreCase(zjsKzOfMonthOutVO1.getDay())&&zjsKzOfMonthOutVO.getSrcId().equals(zjsKzOfMonthOutVO1.getSrcId())){
+                    zjsKzOfMonthOutVO.setAllCost(zjsKzOfMonthOutVO1.getAllCost());
                 }
             }
         }
@@ -786,7 +908,45 @@ public class ZjskzOfMonthDao {
         for (ZjsKzOfMonthOutVO dstgGoldDataReportsVO : zjsKzOfMonthOutVOS) {
             //客资量(总客资-筛选待定-筛选中-筛选无效)
             dstgGoldDataReportsVO.setClientCount(dstgGoldDataReportsVO.getAllClientCount() - dstgGoldDataReportsVO.getFilterPendingClientCount() - dstgGoldDataReportsVO.getFilterInValidClientCount() - dstgGoldDataReportsVO.getFilterInClientCount());
-
+            //有效率
+            double validRate = (double) dstgGoldDataReportsVO.getValidClientCount() / dstgGoldDataReportsVO.getClientCount();
+            dstgGoldDataReportsVO.setValidRate(parseDouble(((Double.isNaN(validRate) || Double.isInfinite(validRate)) ? 0.0 : validRate) * 100));
+            //无效率
+            double invalidRate = (double) dstgGoldDataReportsVO.getInValidClientCount() / dstgGoldDataReportsVO.getClientCount();
+            dstgGoldDataReportsVO.setInValidRate(parseDouble(((Double.isNaN(invalidRate) || Double.isInfinite(invalidRate)) ? 0.0 : invalidRate) * 100));
+            //待定率
+            double waitRate = (double) dstgGoldDataReportsVO.getPendingClientCount() / dstgGoldDataReportsVO.getClientCount();
+            dstgGoldDataReportsVO.setWaitRate(parseDouble(((Double.isNaN(waitRate) || Double.isInfinite(waitRate)) ? 0.0 : waitRate) * 100));
+            //毛客资入店率
+            double clientComeShopRate = (double) dstgGoldDataReportsVO.getComeShopClientCount() / dstgGoldDataReportsVO.getClientCount();
+            dstgGoldDataReportsVO.setClientComeShopRate(parseDouble(((Double.isNaN(clientComeShopRate) || Double.isInfinite(clientComeShopRate)) ? 0.0 : clientComeShopRate) * 100));
+            //有效客资入店率
+            double validComeShopRate = (double) dstgGoldDataReportsVO.getComeShopClientCount() / dstgGoldDataReportsVO.getValidClientCount();
+            dstgGoldDataReportsVO.setValidClientComeShopRate(parseDouble(((Double.isNaN(validComeShopRate) || Double.isInfinite(validComeShopRate)) ? 0.0 : validComeShopRate) * 100));
+            //毛客资成交率
+            double successRate = (double) dstgGoldDataReportsVO.getSuccessClientCount() / dstgGoldDataReportsVO.getClientCount();
+            dstgGoldDataReportsVO.setClientSuccessRate(parseDouble(((Double.isNaN(successRate) || Double.isInfinite(successRate)) ? 0.0 : successRate) * 100));
+            //有效客资成交率
+            double validSuccessRate = (double) dstgGoldDataReportsVO.getSuccessClientCount() / dstgGoldDataReportsVO.getValidClientCount();
+            dstgGoldDataReportsVO.setValidClientSuccessRate(parseDouble(((Double.isNaN(validSuccessRate) || Double.isInfinite(validSuccessRate)) ? 0.0 : validSuccessRate) * 100));
+            //入店成交率
+            double comeShopSuccessRate = (double) dstgGoldDataReportsVO.getSuccessClientCount() / dstgGoldDataReportsVO.getComeShopClientCount();
+            dstgGoldDataReportsVO.setComeShopSuccessRate(parseDouble(((Double.isNaN(comeShopSuccessRate) || Double.isInfinite(comeShopSuccessRate)) ? 0.0 : comeShopSuccessRate) * 100));
+            //毛客资成本
+            double clientCost = Double.valueOf(StringUtil.isEmpty(dstgGoldDataReportsVO.getAllCost()) ? "0" : dstgGoldDataReportsVO.getAllCost()) / dstgGoldDataReportsVO.getClientCount();
+            dstgGoldDataReportsVO.setClientCost(String.valueOf(parseDouble((Double.isNaN(clientCost) || Double.isInfinite(clientCost)) ? 0.0 : clientCost)));
+            //有效客资成本
+            double validClientCost = Double.valueOf(StringUtil.isEmpty(dstgGoldDataReportsVO.getAllCost()) ? "0" : dstgGoldDataReportsVO.getAllCost()) / dstgGoldDataReportsVO.getValidClientCount();
+            dstgGoldDataReportsVO.setValidClientCost(String.valueOf(parseDouble((Double.isNaN(validClientCost) || Double.isInfinite(validClientCost)) ? 0.0 : validClientCost)));
+            //入店成本
+            double appointClientCost = Double.valueOf(StringUtil.isEmpty(dstgGoldDataReportsVO.getAllCost()) ? "0" : dstgGoldDataReportsVO.getAllCost()) / dstgGoldDataReportsVO.getComeShopClientCount();
+            dstgGoldDataReportsVO.setComeShopClientCost(String.valueOf(parseDouble((Double.isNaN(appointClientCost) || Double.isInfinite(appointClientCost)) ? 0.0 : appointClientCost)));
+            //成交成本
+            double successClientCost = Double.valueOf(StringUtil.isEmpty(dstgGoldDataReportsVO.getAllCost()) ? "0" : dstgGoldDataReportsVO.getAllCost()) / dstgGoldDataReportsVO.getSuccessClientCount();
+            dstgGoldDataReportsVO.setSuccessClientCost(String.valueOf(parseDouble((Double.isNaN(successClientCost) || Double.isInfinite(successClientCost)) ? 0.0 : successClientCost)));
+            // ROI
+            double roi = dstgGoldDataReportsVO.getAmount() / Double.valueOf(StringUtil.isEmpty(dstgGoldDataReportsVO.getAllCost()) ? "0" : dstgGoldDataReportsVO.getAllCost());
+            dstgGoldDataReportsVO.setROI(String.valueOf(parseDouble(((Double.isNaN(roi) || Double.isInfinite(roi)) ? 0.0 : roi) * 100)));
         }
     }
     /**
@@ -813,6 +973,7 @@ public class ZjskzOfMonthDao {
 
         }
     }
+
     /**
      * 只保留2位小数
      */
@@ -827,35 +988,121 @@ public class ZjskzOfMonthDao {
             zjsKzOfMonthShowVO.setSrcId(sourcePO.getId());
             zjsKzOfMonthShowVO.setSrcImg(sourcePO.getSrcImg());
             zjsKzOfMonthShowVO.setSrcName(sourcePO.getSrcName());
-            Map<String,Integer> map=new HashMap<>();
-            Integer hj=0;
+            Map<String,String> map=new HashMap<>();
+            double hj=0;
+            int i=0;
             for(ZjsKzOfMonthOutVO zjsKzOfMonthOutVO:list){
 
                 if(zjsKzOfMonthOutVO.getSrcId()==sourcePO.getId()){
-                    if(type.equals("all")){
-                        map.put(zjsKzOfMonthOutVO.getDayKey(),zjsKzOfMonthOutVO.getClientCount());
-                        hj+=zjsKzOfMonthOutVO.getAllClientCount();
-                    }
-                    if(type.equals("valid")){
-                        map.put(zjsKzOfMonthOutVO.getDayKey(),zjsKzOfMonthOutVO.getValidClientCount());
+                    if(type.equals("all")) {
+                        map.put(zjsKzOfMonthOutVO.getDayKey(),zjsKzOfMonthOutVO.getClientCount()+"");
+                        hj += zjsKzOfMonthOutVO.getClientCount();
+                    }else if(type.equals("valid")){
+                        map.put(zjsKzOfMonthOutVO.getDayKey(),zjsKzOfMonthOutVO.getValidClientCount()+"");
                         hj+=zjsKzOfMonthOutVO.getValidClientCount();
-                    }
-                    if(type.equals("come")){
-                        map.put(zjsKzOfMonthOutVO.getDayKey(),zjsKzOfMonthOutVO.getComeShopClientCount());
+                    }else if(type.equals("come")){
+                        map.put(zjsKzOfMonthOutVO.getDayKey(),zjsKzOfMonthOutVO.getComeShopClientCount()+"");
                         hj+=zjsKzOfMonthOutVO.getComeShopClientCount();
-                    }
-                    if(type.equals("success")){
-                        map.put(zjsKzOfMonthOutVO.getDayKey(),zjsKzOfMonthOutVO.getSuccessClientCount());
+                    }else if(type.equals("success")){
+                        map.put(zjsKzOfMonthOutVO.getDayKey(),zjsKzOfMonthOutVO.getSuccessClientCount()+"");
                         hj+=zjsKzOfMonthOutVO.getSuccessClientCount();
+                    }else if(type.equals("sum")){
+                        map.put(zjsKzOfMonthOutVO.getDayKey(),zjsKzOfMonthOutVO.getAllClientCount()+"");
+                        hj+=zjsKzOfMonthOutVO.getAllClientCount();
+                    }else if(type.equals("invalid")){
+                        map.put(zjsKzOfMonthOutVO.getDayKey(),zjsKzOfMonthOutVO.getInValidClientCount()+"");
+                        hj+=zjsKzOfMonthOutVO.getInValidClientCount();
+                    }else if(type.equals("ddnum")){
+                        map.put(zjsKzOfMonthOutVO.getDayKey(),zjsKzOfMonthOutVO.getPendingClientCount()+"");
+                        hj+=zjsKzOfMonthOutVO.getPendingClientCount();
+                    }else if(type.equals("validrate")){
+                        map.put(zjsKzOfMonthOutVO.getDayKey(),zjsKzOfMonthOutVO.getValidRate()+"");
+                        if(zjsKzOfMonthOutVO.getValidRate()!=0){
+                            hj+=zjsKzOfMonthOutVO.getValidRate();
+                            i++;
+                        }
+                    }else if(type.equals("ddrate")){
+                        map.put(zjsKzOfMonthOutVO.getDayKey(),zjsKzOfMonthOutVO.getWaitRate()+"");
+                        if(zjsKzOfMonthOutVO.getWaitRate()!=0){
+                            hj+=zjsKzOfMonthOutVO.getWaitRate();
+                            i++;
+                        }
+                    }else if(type.equals("allcomerate")){
+                        map.put(zjsKzOfMonthOutVO.getDayKey(),zjsKzOfMonthOutVO.getClientComeShopRate()+"");
+                        if(zjsKzOfMonthOutVO.getClientComeShopRate()!=0){
+                            hj+=zjsKzOfMonthOutVO.getClientComeShopRate();
+                            i++;
+                        }
+                    }else if(type.equals("validcomerate")){
+                        map.put(zjsKzOfMonthOutVO.getDayKey(),zjsKzOfMonthOutVO.getValidClientComeShopRate()+"");
+                        if(zjsKzOfMonthOutVO.getValidClientComeShopRate()!=0){
+                            hj+=zjsKzOfMonthOutVO.getValidClientComeShopRate();
+                            i++;
+                        }
+                    }else if(type.equals("rdsuccessrate")){
+                        map.put(zjsKzOfMonthOutVO.getDayKey(),zjsKzOfMonthOutVO.getComeShopSuccessRate()+"");
+                        if(zjsKzOfMonthOutVO.getComeShopSuccessRate()!=0){
+                            hj+=zjsKzOfMonthOutVO.getComeShopSuccessRate();
+                            i++;
+                        }
+                    }else if(type.equals("allsuccessrate")){
+                        map.put(zjsKzOfMonthOutVO.getDayKey(),zjsKzOfMonthOutVO.getClientSuccessRate()+"");
+                        if(zjsKzOfMonthOutVO.getClientSuccessRate()!=0){
+                            hj+=zjsKzOfMonthOutVO.getClientSuccessRate();
+                            i++;
+                        }
+                    }else if(type.equals("validsuccessrate")){
+                        map.put(zjsKzOfMonthOutVO.getDayKey(),zjsKzOfMonthOutVO.getValidClientSuccessRate()+"");
+                        if(zjsKzOfMonthOutVO.getValidClientSuccessRate()!=0){
+                            hj+=zjsKzOfMonthOutVO.getValidClientSuccessRate();
+                            i++;
+                        }
+                    }else if(type.equals("amount")){
+                        map.put(zjsKzOfMonthOutVO.getDayKey(),zjsKzOfMonthOutVO.getAllCost());
+                        hj+=Double.parseDouble(zjsKzOfMonthOutVO.getAllCost());
+                    }else if(type.equals("allcb")){
+                        map.put(zjsKzOfMonthOutVO.getDayKey(),zjsKzOfMonthOutVO.getClientCost());
+                        hj+=Double.parseDouble(zjsKzOfMonthOutVO.getClientCost());
+                    }else if(type.equals("validcb")){
+                        map.put(zjsKzOfMonthOutVO.getDayKey(),zjsKzOfMonthOutVO.getValidClientCost());
+                        hj+=Double.parseDouble(zjsKzOfMonthOutVO.getValidClientCost());
+                    }else if(type.equals("comecb")){
+                        map.put(zjsKzOfMonthOutVO.getDayKey(),zjsKzOfMonthOutVO.getComeShopClientCost());
+                        hj+=Double.parseDouble(zjsKzOfMonthOutVO.getComeShopClientCost());
+                    }else if(type.equals("successcb")){
+                        map.put(zjsKzOfMonthOutVO.getDayKey(),zjsKzOfMonthOutVO.getSuccessClientCost());
+                        hj+=Double.parseDouble(zjsKzOfMonthOutVO.getSuccessClientCost());
+                    }else if(type.equals("successavg")){
+                        map.put(zjsKzOfMonthOutVO.getDayKey(),zjsKzOfMonthOutVO.getAvgAmount()+"");
+                        hj+=zjsKzOfMonthOutVO.getAvgAmount();
+                    }else if(type.equals("successamount")){
+                        map.put(zjsKzOfMonthOutVO.getDayKey(),zjsKzOfMonthOutVO.getAmount()+"");
+                        hj+=zjsKzOfMonthOutVO.getAmount();
+                    }else if(type.equals("roi")){
+                        map.put(zjsKzOfMonthOutVO.getDayKey(),zjsKzOfMonthOutVO.getROI());
+                        hj+=Double.parseDouble(zjsKzOfMonthOutVO.getROI());
                     }
+
 
                 }
             }
-            map.put("hj",hj);
+            if(type.equals("all")||type.equals("come")||type.equals("success")||type.equals("sum")||type.equals("invalid")||type.equals("ddnum")||type.equals("valid")){
+                map.put("hj",((int)hj)+"");
+            }else if(type.equals("validrate")||type.equals("ddrate")||type.equals("allcomerate")||type.equals("validcomerate")||type.equals("rdsuccessrate")||type.equals("allsuccessrate")||type.equals("validsuccessrate")){
+                if(i==0){
+                    map.put("hj",parseDouble(hj)+"");
+                }else {
+                    map.put("hj", parseDouble(hj / i) + "");
+                }
+            }else{
+                map.put("hj",parseDouble(hj)+"");
+            }
+
             zjsKzOfMonthShowVO.setMap(map);
             showList.add(zjsKzOfMonthShowVO);
         }
-        Map<String,Integer> map=new HashMap<>();
+        /**
+         Map<String,Integer> map=new HashMap<>();
         for(Map<String, Object> dayMap:dayList){
             Integer hj=0;
             for (ZjsKzOfMonthShowVO zjsKzOfMonthShowVO:showList)
@@ -874,6 +1121,7 @@ public class ZjskzOfMonthDao {
         zjsKzOfMonthShowVO.setSrcName("合计");
         zjsKzOfMonthShowVO.setSrcId(0);
         showList.add(0,zjsKzOfMonthShowVO);
+         **/
     }
 
 }
