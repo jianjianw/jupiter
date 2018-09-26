@@ -465,13 +465,14 @@ public class ReportsServiceImpl implements ReportService {
     }
 
     @Override
-    public List<DstgZxStyleReportsVO> getDstgZxStyleSourceRerports(Integer start, Integer end, String zxStyleCode, String type, int companyId) {
+    public List<DstgZxStyleReportsVO> getDstgZxStyleSourceRerports(Integer start, Integer end, String zxStyleCode, String type, int companyId,Integer collectorId) {
         ReportsParamVO reportsParamVO = new ReportsParamVO();
         reportsParamVO.setStart(start);
         reportsParamVO.setEnd(end);
         reportsParamVO.setCompanyId(companyId);
         reportsParamVO.setZxStyleCode(zxStyleCode);
         reportsParamVO.setType(type);
+        reportsParamVO.setCollectorId(collectorId);
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         List<DstgZxStyleReportsVO> dstgGoldDataReprots = dstgZxStyleSourceReportsDao.getDstgGoldDataReprots(reportsParamVO, invalidConfig);
         return dstgGoldDataReprots;

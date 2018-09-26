@@ -49,7 +49,19 @@ public class ReportsParamVO {
      * 渠道ids
      * */
     private String sourceIds;
+    /**
+     * 录入人id
+     * */
+    private Integer collectorId;
 
+
+    public Integer getCollectorId() {
+        return collectorId;
+    }
+
+    public void setCollectorId(Integer collectorId) {
+        this.collectorId = collectorId;
+    }
 
     public String getSourceIds() {
         return sourceIds;
