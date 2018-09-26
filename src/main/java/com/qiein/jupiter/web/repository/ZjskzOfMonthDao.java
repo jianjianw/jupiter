@@ -990,6 +990,7 @@ public class ZjskzOfMonthDao {
             zjsKzOfMonthShowVO.setSrcName(sourcePO.getSrcName());
             Map<String,String> map=new HashMap<>();
             double hj=0;
+            int i=0;
             for(ZjsKzOfMonthOutVO zjsKzOfMonthOutVO:list){
 
                 if(zjsKzOfMonthOutVO.getSrcId()==sourcePO.getId()){
@@ -1016,25 +1017,46 @@ public class ZjskzOfMonthDao {
                         hj+=zjsKzOfMonthOutVO.getPendingClientCount();
                     }else if(type.equals("validrate")){
                         map.put(zjsKzOfMonthOutVO.getDayKey(),zjsKzOfMonthOutVO.getValidRate()+"");
-                        hj+=zjsKzOfMonthOutVO.getValidRate();
+                        if(zjsKzOfMonthOutVO.getValidRate()!=0){
+                            hj+=zjsKzOfMonthOutVO.getValidRate();
+                            i++;
+                        }
                     }else if(type.equals("ddrate")){
                         map.put(zjsKzOfMonthOutVO.getDayKey(),zjsKzOfMonthOutVO.getWaitRate()+"");
-                        hj+=zjsKzOfMonthOutVO.getWaitRate();
+                        if(zjsKzOfMonthOutVO.getWaitRate()!=0){
+                            hj+=zjsKzOfMonthOutVO.getWaitRate();
+                            i++;
+                        }
                     }else if(type.equals("allcomerate")){
                         map.put(zjsKzOfMonthOutVO.getDayKey(),zjsKzOfMonthOutVO.getClientComeShopRate()+"");
-                        hj+=zjsKzOfMonthOutVO.getClientComeShopRate();
+                        if(zjsKzOfMonthOutVO.getClientComeShopRate()!=0){
+                            hj+=zjsKzOfMonthOutVO.getClientComeShopRate();
+                            i++;
+                        }
                     }else if(type.equals("validcomerate")){
                         map.put(zjsKzOfMonthOutVO.getDayKey(),zjsKzOfMonthOutVO.getValidClientComeShopRate()+"");
-                        hj+=zjsKzOfMonthOutVO.getValidClientComeShopRate();
+                        if(zjsKzOfMonthOutVO.getValidClientComeShopRate()!=0){
+                            hj+=zjsKzOfMonthOutVO.getValidClientComeShopRate();
+                            i++;
+                        }
                     }else if(type.equals("rdsuccessrate")){
                         map.put(zjsKzOfMonthOutVO.getDayKey(),zjsKzOfMonthOutVO.getComeShopSuccessRate()+"");
-                        hj+=zjsKzOfMonthOutVO.getComeShopSuccessRate();
+                        if(zjsKzOfMonthOutVO.getComeShopSuccessRate()!=0){
+                            hj+=zjsKzOfMonthOutVO.getComeShopSuccessRate();
+                            i++;
+                        }
                     }else if(type.equals("allsuccessrate")){
                         map.put(zjsKzOfMonthOutVO.getDayKey(),zjsKzOfMonthOutVO.getClientSuccessRate()+"");
-                        hj+=zjsKzOfMonthOutVO.getClientSuccessRate();
+                        if(zjsKzOfMonthOutVO.getClientSuccessRate()!=0){
+                            hj+=zjsKzOfMonthOutVO.getClientSuccessRate();
+                            i++;
+                        }
                     }else if(type.equals("validsuccessrate")){
                         map.put(zjsKzOfMonthOutVO.getDayKey(),zjsKzOfMonthOutVO.getValidClientSuccessRate()+"");
-                        hj+=zjsKzOfMonthOutVO.getValidClientSuccessRate();
+                        if(zjsKzOfMonthOutVO.getValidClientSuccessRate()!=0){
+                            hj+=zjsKzOfMonthOutVO.getValidClientSuccessRate();
+                            i++;
+                        }
                     }else if(type.equals("amount")){
                         map.put(zjsKzOfMonthOutVO.getDayKey(),zjsKzOfMonthOutVO.getAllCost());
                         hj+=Double.parseDouble(zjsKzOfMonthOutVO.getAllCost());
@@ -1067,7 +1089,7 @@ public class ZjskzOfMonthDao {
             if(type.equals("all")||type.equals("come")||type.equals("success")||type.equals("sum")||type.equals("invalid")||type.equals("ddnum")||type.equals("valid")){
                 map.put("hj",((int)hj)+"");
             }else if(type.equals("validrate")||type.equals("ddrate")||type.equals("allcomerate")||type.equals("validcomerate")||type.equals("rdsuccessrate")||type.equals("allsuccessrate")||type.equals("validsuccessrate")){
-                map.put("hj",parseDouble(hj/dayList.size())+"");
+                map.put("hj",parseDouble(hj/i)+"");
             }else{
                 map.put("hj",parseDouble(hj)+"");
             }
