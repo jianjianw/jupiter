@@ -88,6 +88,7 @@ public class ZjskzOfMonthDao {
         getSuccessClient1(tableDetail,tableInfo,month,zjsKzOfMonthOutVOS,sourceIds,companyId,typeIds);
         getAmount(tableDetail,tableInfo,month,zjsKzOfMonthOutVOS,sourceIds,companyId,typeIds);
         getAvgAmount(tableDetail,tableInfo,month,zjsKzOfMonthOutVOS,sourceIds,companyId,typeIds);
+        getCost(month,companyId,zjsKzOfMonthOutVOS);
         computerRate1(zjsKzOfMonthOutVOS,dsInvalidVO);
         List<ZjsKzOfMonthShowVO> zjsKzOfMonthShowVOS=new ArrayList<>();
         groupBy(sourcePOS,zjsKzOfMonthOutVOS,zjsKzOfMonthShowVOS,type, dayList);
@@ -153,12 +154,7 @@ public class ZjskzOfMonthDao {
             }
         }
     }
-    /**
-     * 花费
-     */
-    private void getCost(){
-        StringBuilder sql=new StringBuilder();
-    }
+
 
     /**
      * 筛选待定
@@ -342,6 +338,7 @@ public class ZjskzOfMonthDao {
             sql.append(" and info.typeid in ("+typeIds+")");
         }
         sql.append(" AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m') = ?");
+        sql.append(" and detail.AMOUNT is not null");
         sql.append(" GROUP BY FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d') ,info.sourceId");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{companyId,month});
         List<ZjsKzOfMonthOutVO> zjsKzOfMonthOutBzk = new LinkedList<>();
@@ -384,6 +381,7 @@ public class ZjskzOfMonthDao {
             sql.append(" and info.typeid in ("+typeIds+")");
         }
         sql.append(" AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m') = ?");
+        sql.append(" and detail.AMOUNT is not null");
         sql.append(" GROUP BY FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d') ,info.sourceId");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{companyId,month});
         List<ZjsKzOfMonthOutVO> zjsKzOfMonthOutBzk = new LinkedList<>();
@@ -423,7 +421,7 @@ public class ZjskzOfMonthDao {
             ZjsKzOfMonthOutVO zjsKzOfMonthOutVO  = new ZjsKzOfMonthOutVO();
             zjsKzOfMonthOutVO.setDay((String)map.get("day"));
             zjsKzOfMonthOutVO.setSrcId(Integer.parseInt(Long.toString((Long) (map.get("srcId")))));
-            zjsKzOfMonthOutVO.setAllCost((String)map.get("cost"));
+            zjsKzOfMonthOutVO.setAllCost(map.get("cost")+"");
             zjsKzOfMonthOutBzk.add(zjsKzOfMonthOutVO);
         }
         for (ZjsKzOfMonthOutVO zjsKzOfMonthOutVO : zjsKzOfMonthOutVOS) {
