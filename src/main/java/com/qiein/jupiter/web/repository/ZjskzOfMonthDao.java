@@ -1089,7 +1089,11 @@ public class ZjskzOfMonthDao {
             if(type.equals("all")||type.equals("come")||type.equals("success")||type.equals("sum")||type.equals("invalid")||type.equals("ddnum")||type.equals("valid")){
                 map.put("hj",((int)hj)+"");
             }else if(type.equals("validrate")||type.equals("ddrate")||type.equals("allcomerate")||type.equals("validcomerate")||type.equals("rdsuccessrate")||type.equals("allsuccessrate")||type.equals("validsuccessrate")){
-                map.put("hj",parseDouble(hj/i)+"");
+                if(i==0){
+                    map.put("hj",parseDouble(hj)+"");
+                }else {
+                    map.put("hj", parseDouble(hj / i) + "");
+                }
             }else{
                 map.put("hj",parseDouble(hj)+"");
             }
