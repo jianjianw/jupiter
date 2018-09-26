@@ -416,9 +416,12 @@ public interface StaffService {
     Integer getClientCountById(StaffPO currentLoginStaff, Integer staffId);
 
     /**
+     * 公司员工离线
      *
      * @return
      */
     int companyStaffOffLine();
+
+
 
 }

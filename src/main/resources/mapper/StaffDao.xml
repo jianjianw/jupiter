@@ -948,7 +948,7 @@
     <!--小组平均，获取可以领取的小组-->
     <select id="getGroupAvgGroupList" parameterType="map" resultType="java.lang.String">
 
-        SELECT info.GROUPID
+        SELECT rela.GROUPID
         FROM (
                  SELECT grp.GROUPID
                  FROM
@@ -979,7 +979,7 @@
                               AND info.ISDEL = 0
                       ) info ON info.GROUPID = rela.GROUPID
 
-        GROUP BY info.GROUPID
+        GROUP BY rela.GROUPID
         ORDER BY COUNT(*)
     </select>
 
