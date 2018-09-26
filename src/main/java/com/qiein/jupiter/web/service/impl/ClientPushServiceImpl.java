@@ -581,12 +581,15 @@ public class ClientPushServiceImpl implements ClientPushService {
         // 重载客服今日领取客资数
         staffService.resizeTodayNum(companyId, appointer.getStaffId());
 
-        // 推送消息
-        ClientGoEasyDTO infoDTO = clientInfoDao.getClientGoEasyDTOById(kzId, DBSplitUtil.getInfoTabName(companyId),
-                DBSplitUtil.getDetailTabName(companyId));
-        GoEasyUtil.pushInfoComed(companyId, appointer.getStaffId(), infoDTO, newsDao, staffDao);
-        GoEasyUtil.pushInfoRefresh(companyId, appointer.getStaffId(), webSocketMsgUtil);
-
+        try {
+            // 推送消息
+            ClientGoEasyDTO infoDTO = clientInfoDao.getClientGoEasyDTOById(kzId, DBSplitUtil.getInfoTabName(companyId),
+                    DBSplitUtil.getDetailTabName(companyId));
+            GoEasyUtil.pushInfoComed(companyId, appointer.getStaffId(), infoDTO, newsDao, staffDao);
+            GoEasyUtil.pushInfoRefresh(companyId, appointer.getStaffId(), webSocketMsgUtil);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         // 客资日志记录
         updateRstNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(companyId),
                 new ClientLogPO(kzId,
