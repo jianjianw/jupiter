@@ -176,6 +176,7 @@ public class DstgZxStyleSourceReportsDao {
         StringBuilder sb = new StringBuilder();
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
+        sb = getCommonsql(sb,infoTabName,detailTabName);
         addConditionByTypeAndZxCodeStyle(reportsParamVO,sb);
         sb.append(" and info.CREATETIME BETWEEN ? AND ?");
 //        sb.append(" AND INSTR( ?, CONCAT(',',info.STATUSID + '',',')) != 0");
