@@ -324,4 +324,12 @@ public class CompanyController extends BaseController {
         return ResultInfoUtil.success();
     }
 
+    /**
+     * 获取公司配置
+     */
+    @GetMapping("/get_config")
+    public ResultInfo getCompanyConfig() {
+        return ResultInfoUtil.success(companyService.getCompanyConfig(getCurrentLoginStaff().getCompanyId()));
+    }
+
 }

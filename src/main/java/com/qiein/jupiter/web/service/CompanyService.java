@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.web.entity.dto.CompanyZjsSetDTO;
 import com.qiein.jupiter.web.entity.dto.DsinvalDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
@@ -218,5 +219,10 @@ public interface CompanyService {
      * 编辑公司公共设置
      */
     int editConfig(int companyId, String config);
+
+    /**
+     * 获取公司配置
+     */
+    JSONObject getCompanyConfig(int companyId);
 
 }

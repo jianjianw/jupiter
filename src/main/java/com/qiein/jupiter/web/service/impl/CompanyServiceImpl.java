@@ -1,5 +1,7 @@
 package com.qiein.jupiter.web.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
@@ -358,6 +360,24 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public int editConfig(int companyId, String config) {
         return companyDao.editConfig(companyId, config);
+    }
+
+
+    /**
+     * 获取公司配置
+     *
+     * @param companyId
+     * @return
+     */
+    @Override
+    public JSONObject getCompanyConfig(int companyId) {
+        CompanyVO companyVO = companyDao.getVOById(companyId);
+        JSONObject json = new JSONObject();
+        String config = companyVO.getConfig();
+        if (StringUtil.isNotEmpty(config)) {
+            json = JSONObject.parseObject(config);
+        }
+        return json;
     }
 
 }
