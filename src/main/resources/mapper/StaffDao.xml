@@ -80,6 +80,7 @@
         <result column="GROUPID" property="groupId" jdbcType="VARCHAR"/>
         <result column="GROUPNAME" property="groupName" jdbcType="VARCHAR"/>
         <result column="WEIGHT" property="weight" jdbcType="INTEGER"/>
+        <result column="WHEELFLAG" property="wheelFlag" jdbcType="INTEGER"/>
         <result column="TODAYNUM" property="todayNum" jdbcType="INTEGER"/>
         <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
         <result column="SHOPID" property="shopId" jdbcType="INTEGER"/>
@@ -967,7 +968,7 @@
                           FROM
                               hm_crm_client_info info
                           WHERE
-                              info.COMPANYID =  #{companyId}
+                              info.COMPANYID = #{companyId}
                               AND info.ISDEL = 0
 
                               AND info.RECEIVETIME BETWEEN #{start}
@@ -1256,5 +1257,58 @@
         UPDATE hm_pub_staff
         SET STATUSFLAG = 0
         WHERE STATUSFLAG != 8;
+    </update>
+
+
+    <!--获取符合轮单分配规则的客服-->
+    <select id="getWheelStaffList" resultMap="pushMap">
+        SELECT
+            grp.GROUPID,
+            grp.GROUPNAME,
+            staff.ID,
+            staff.NICKNAME,
+            staff.LASTPUSHTIME,
+            staff.WEIGHT,
+            staff.TODAYNUM,
+            staff.WHEELFLAG,
+            staff.COMPANYID
+
+        FROM
+            hm_pub_group grp
+            LEFT JOIN hm_pub_group_staff rela ON grp.GROUPID = rela.GROUPID
+            INNER JOIN hm_pub_staff staff ON rela.STAFFID = staff.ID
+        WHERE
+            grp.COMPANYID = #{companyId}
+            AND grp.PARENTID != '0'
+            AND grp.GROUPTYPE = #{groupType}
+            AND staff.WHEELFLAG = #{wheelFlag}
+            AND staff.ISDEL = 0
+            AND staff.STATUSFLAG = 1
+        ORDER BY LASTPUSHTIME
+    </select>
+
+    <!--重置某种类型的轮单-->
+    <update id="resetWheelStaffList">
+        UPDATE hm_pub_staff stf
+        SET WHEELFLAG = 1
+        WHERE
+            stf.ID IN (
+                SELECT rela.ID
+                FROM
+                    (
+                        SELECT staff.ID
+                        FROM
+                            hm_pub_group grp
+                            LEFT JOIN hm_pub_group_staff rela ON grp.GROUPID = rela.GROUPID
+                            INNER JOIN hm_pub_staff staff ON rela.STAFFID = staff.ID
+                        WHERE
+                            grp.COMPANYID = #{companyId}
+                            AND grp.PARENTID != '0'
+                            AND grp.GROUPTYPE = #{groupType}
+                            AND (staff.WHEELFLAG = '0' OR staff.WHEELFLAG = '2')
+                            AND staff.STATUSFLAG = 1
+                            AND staff.ISDEL = 0
+                    ) rela
+            )
     </update>
 </mapper>

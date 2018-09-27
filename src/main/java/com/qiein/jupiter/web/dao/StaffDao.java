@@ -592,4 +592,19 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * 员工定时下线
      */
     int companyStaffOffLine();
+
+    /**
+     * 获取符合轮单分配规则的客服
+     *
+     * @return
+     */
+    List<StaffPushDTO> getWheelStaffList(@Param("companyId") int companyId,
+                                         @Param("wheelFlag") int wheelFlag,
+                                         @Param("groupType") String groupType);
+
+    /**
+     * 重置某种类型的轮单
+     */
+    int resetWheelStaffList(@Param("companyId") int companyId,
+                            @Param("groupType") String groupType);
 }

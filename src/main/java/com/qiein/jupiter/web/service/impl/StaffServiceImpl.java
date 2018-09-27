@@ -1089,5 +1089,21 @@ public class StaffServiceImpl implements StaffService {
         return staffDao.companyStaffOffLine();
     }
 
+    /**
+     * 获取所有的电商客服或者转介绍小组员工，按照最后登录时间排序
+     */
+    @Override
+    public List<StaffPushDTO> getWheelStaffList(int companyId, int wheelFlag, String groupType) {
+        return staffDao.getWheelStaffList(companyId, wheelFlag, groupType);
+    }
+
+    /**
+     * 重置当前所有在线客服轮单状态
+     */
+    @Override
+    public int resetWheelStaffList(int companyId, String groupType) {
+        return staffDao.resetWheelStaffList(companyId, groupType);
+    }
+
 
 }
