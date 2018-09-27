@@ -84,6 +84,7 @@ public class SourceAndStatusReportsDao {
         sql.append(" WHERE client.COMPANYID = ?");
         sql.append(" AND client.SRCTYPE in (1,2)");
         sql.append(" AND client.CREATETIME BETWEEN ? AND ?");
+        sql.append(" and client.isdel =0");
     }
 
     /**
