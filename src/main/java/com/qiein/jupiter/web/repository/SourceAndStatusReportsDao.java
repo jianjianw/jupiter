@@ -37,8 +37,9 @@ public class SourceAndStatusReportsDao {
         //获取数据排列
         for(Map<String,Object> map:sourceAndStatusReports){
             for(SourceAndStatusReportsVO sourceAndStatusReportsVO:list){
-                if(map.get("srcId").equals(sourceAndStatusReportsVO.getSrcId())){
-                    sourceAndStatusReportsVO.getMap().put((String)map.get("status"),Integer.parseInt((String)map.get("count")));
+                Integer i=Integer.parseInt(Long.toString((Long) (map.get("srcId"))));
+                if(Integer.parseInt(Long.toString((Long) (map.get("srcId"))))==sourceAndStatusReportsVO.getSrcId()){
+                    sourceAndStatusReportsVO.getMap().put(map.get("status").toString(),Integer.parseInt(Long.toString((Long) (map.get("count")))));
                 }
             }
         }
