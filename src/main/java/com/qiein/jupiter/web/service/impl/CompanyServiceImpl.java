@@ -9,6 +9,7 @@ import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.CompanyDao;
 import com.qiein.jupiter.web.dao.StaffDao;
+import com.qiein.jupiter.web.entity.dto.CompanyConfigDTO;
 import com.qiein.jupiter.web.entity.dto.CompanyZjsSetDTO;
 import com.qiein.jupiter.web.entity.dto.DsinvalDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
@@ -378,6 +379,28 @@ public class CompanyServiceImpl implements CompanyService {
             json = JSONObject.parseObject(config);
         }
         return json;
+    }
+
+    /**
+     * 定时关闭企业自定义设置
+     *
+     * @return
+     */
+    @Override
+    public int timingCloseAutoAllot() {
+        List<CompanyPO> companyPOS = companyDao.listComp(1);
+        for (CompanyPO companyPO : companyPOS) {
+            String config = companyPO.getConfig();
+            if (StringUtil.isNotEmpty(config)) {
+                CompanyConfigDTO companyConfigDTO = JSONObject.parseObject(config, CompanyConfigDTO.class);
+                if (companyConfigDTO.isAutoCloseAllot()) {
+                    companyConfigDTO.setAutoAllot(false);
+                    companyDao.editConfig(companyPO.getId(), JSONObject.toJSONString(companyConfigDTO));
+                }
+            }
+        }
+
+        return 0;
     }
 
 }

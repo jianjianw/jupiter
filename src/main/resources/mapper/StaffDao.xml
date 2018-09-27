@@ -1325,4 +1325,34 @@
         WHERE COMPANYID = #{companyId}
               AND ID = #{staffId}
     </update>
+
+
+    <!--获取轮单客服列表-->
+    <select id="getWheelStaffList1" resultMap="pushMap">
+        SELECT
+            grp.GROUPID,
+            grp.GROUPNAME,
+            staff.ID,
+            staff.NICKNAME,
+            staff.LASTPUSHTIME,
+            staff.WEIGHT,
+            staff.TODAYNUM,
+            staff.WHEELFLAG,
+            staff.STATUSFLAG,
+            staff.COMPANYID
+
+        FROM
+            hm_pub_group grp
+            LEFT JOIN hm_pub_group_staff rela ON grp.GROUPID = rela.GROUPID
+            INNER JOIN hm_pub_staff staff ON rela.STAFFID = staff.ID
+            LEFT JOIN hm_pub_staff_detail det ON staff.ID = det.ID
+        WHERE
+            grp.COMPANYID = #{companyId}
+            AND grp.PARENTID != '0'
+            AND grp.GROUPTYPE = #{groupType}
+            AND staff.WHEELFLAG != 0
+            AND staff.ISDEL = 0
+            AND staff.STATUSFLAG = 1
+        ORDER BY det.LASTLOGINTIME
+    </select>
 </mapper>
