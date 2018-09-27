@@ -1105,5 +1105,18 @@ public class StaffServiceImpl implements StaffService {
         return staffDao.resetWheelStaffList(companyId, groupType);
     }
 
+    /**
+     * 更新轮单标志
+     *
+     * @param companyId
+     * @param staffId
+     * @param flag
+     * @return
+     */
+    @Override
+    public int updateStaffWheelFlag(int companyId, int staffId, int flag) {
+        return 0;
+    }
+
 
 }

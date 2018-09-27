@@ -84,6 +84,7 @@
         <result column="TODAYNUM" property="todayNum" jdbcType="INTEGER"/>
         <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
         <result column="SHOPID" property="shopId" jdbcType="INTEGER"/>
+        <result column="STATUSFLAG" property="statusFlag" jdbcType="INTEGER"/>
     </resultMap>
 
     <resultMap id="SearchMap" type="com.qiein.jupiter.web.entity.vo.SearchStaffVO">
@@ -1271,6 +1272,7 @@
             staff.WEIGHT,
             staff.TODAYNUM,
             staff.WHEELFLAG,
+            staff.STATUSFLAG,
             staff.COMPANYID
 
         FROM
@@ -1310,5 +1312,13 @@
                             AND staff.ISDEL = 0
                     ) rela
             )
+    </update>
+
+    <!--更新员工轮单标志-->
+    <update id="updateStaffWheelFlag">
+        UPDATE hm_pub_staff
+        SET WHEELFLAG = #{flag}
+        WHERE COMPANYID = #{companyId}
+              AND ID = #{staffId}
     </update>
 </mapper>
