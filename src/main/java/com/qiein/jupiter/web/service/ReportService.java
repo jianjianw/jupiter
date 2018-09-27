@@ -269,5 +269,18 @@ public interface ReportService {
     * 客资各个渠道各个状态
      */
     SourceAndStatusReportsShowVO getSourceAndStatusReports(String appointorIds,String collectorIds,String receptorIds,String start,String end,String groupIds,String typeIds,String sourceIds,Integer companyId);
-
+    
+    /**
+     * 电商推广月度报表入店量量--HJF
+     * @param reportParamDTO
+     * @return
+     */
+    List<Map<String, Object>> getDSTGSrcMonthReportsCome(String month, String typeId, String sourceId, int companyId);
+	/**
+     * 电商推广月度报表成交量--HJF
+     * @param reportParamDTO
+     * @return
+     */
+	List<Map<String, Object>> getDSTGSrcMonthReportsSuccess(String month, String typeId, String sourceId,
+			int companyId);
 }
