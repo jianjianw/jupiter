@@ -754,7 +754,10 @@
                                (CAST(PUSHRULE AS UNSIGNED) = 11
                                 OR CAST(PUSHRULE AS UNSIGNED) = 1
                                 OR CAST(PUSHRULE AS UNSIGNED) = 12
-                                OR CAST(PUSHRULE AS UNSIGNED) = 14)
+                                OR CAST(PUSHRULE AS UNSIGNED) = 14
+                                OR CAST(PUSHRULE AS UNSIGNED) = 20
+                               )
+
                                AND COMPANYID = #{companyId}
                        ) AS source ON info.SOURCEID = source.ID
     </select>
