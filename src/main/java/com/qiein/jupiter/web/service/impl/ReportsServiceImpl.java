@@ -32,7 +32,9 @@ public class ReportsServiceImpl implements ReportService {
     private CityReportsDao cityReportsDao;
 
     @Autowired
-    private ProvinceReportsDao provinceReportsDao;
+//    private ProvinceReportsDao provinceReportsDao;
+//    private DsProvinceReportsDao provinceReportsDao;
+    private DstgProvinceReportsDao provinceReportsDao;
 
     @Autowired
     private ClientInfoDao clientInfoDao;
@@ -274,10 +276,11 @@ public class ReportsServiceImpl implements ReportService {
     }
 
     @Override
-    public List<ProvinceReportsVO2> getProvinceReport(ProvinceAnalysisParamDTO provinceAnalysisParamDTO) {
+    public Map<String,Object> getProvinceReport(ProvinceAnalysisParamDTO provinceAnalysisParamDTO) {
         //获取公司自定义的无效设置 TODO 其实部分数据是不用调这个借口
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(provinceAnalysisParamDTO.getCompanyId());
-        List<ProvinceReportsVO2> provinceReport = provinceReportsDao.provinceReport(provinceAnalysisParamDTO, invalidConfig);
+//        List<ProvinceReportsVO2> provinceReport = provinceReportsDao.provinceReport(provinceAnalysisParamDTO, invalidConfig);
+        Map<String,Object> provinceReport = provinceReportsDao.getDstgProvinceReports(provinceAnalysisParamDTO, invalidConfig);
         return provinceReport;
     }
 

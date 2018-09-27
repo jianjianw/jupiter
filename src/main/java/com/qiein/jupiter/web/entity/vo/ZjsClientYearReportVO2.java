@@ -12,7 +12,7 @@ public class ZjsClientYearReportVO2 {
     private String srcName;
     private String srcImg;
     private String dataType;    //数据类型 总客资 客资量 有效量 入店量 成交量
-    private Map<String,Integer> dataMap;
+    private Map<String,String> dataMap;
 
     public String getDataType() {
         return dataType;
@@ -46,11 +46,11 @@ public class ZjsClientYearReportVO2 {
         this.srcImg = srcImg;
     }
 
-    public Map<String, Integer> getDataMap() {
+    public Map<String, String> getDataMap() {
         return dataMap;
     }
 
-    public void setDataMap(Map<String, Integer> dataMap) {
+    public void setDataMap(Map<String, String> dataMap) {
         this.dataMap = dataMap;
     }
 

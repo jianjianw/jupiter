@@ -97,7 +97,7 @@ public interface ReportService {
      * @param provinceAnalysisParamDTO
      * @return
      */
-    List<ProvinceReportsVO2> getProvinceReport(ProvinceAnalysisParamDTO provinceAnalysisParamDTO);
+    Map<String,Object> getProvinceReport(ProvinceAnalysisParamDTO provinceAnalysisParamDTO);
 
     /**
      * 查询所有客资--电商月度客资汇总报表

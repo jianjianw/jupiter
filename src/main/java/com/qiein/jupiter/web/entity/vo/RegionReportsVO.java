@@ -23,7 +23,7 @@ public class RegionReportsVO {
     private double validClientComeShopRate;     //有效客资入店率 (入店量 / 有效量 )
     private double comeShopSuccessRate;         //入店成交率（成交量/入店量）
     private double clientSuccessRate;           //毛客资成交率（成交量/总客资）
-    private double validClientSuccessRate;      //有效客资成交率（有效量/成交量）
+    private double validClientSuccessRate;      //有效客资成交率（成交量/有效量）
     private double avgAmount;                   //成交均价
     private double amount;                      //营业额
 
