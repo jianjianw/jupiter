@@ -109,7 +109,7 @@ public class DstgReportsSrcMonthDao {
 			DsInvalidVO dsInvalidVO) {
 		StringBuilder sql = new StringBuilder();
 		//String infoTabName = DBSplitUtil.getInfoTabName(reportsParamSrcMonthVO.getCompanyId());
-		sql.append("SELECT info.SOURCEID,src.SRCNAME,FROM_UNIXTIME(info.CREATETIME, '%d') time,COUNT(1) count,src.SRCIMG srcImg ");
+		sql.append("SELECT info.SOURCEID srcId,src.SRCNAME srcName,FROM_UNIXTIME(info.CREATETIME, '%d') time,COUNT(1) count,src.SRCIMG srcImg ");
 		sql.append(" FROM hm_crm_client_info info ");
 		sql.append(" LEFT JOIN hm_crm_source src ON src.ID=info.SOURCEID ");
 		sql.append(" WHERE info.ISDEL = 0");
@@ -131,15 +131,15 @@ public class DstgReportsSrcMonthDao {
 
  		for (Map<String, Object> map6 : listSum) {
  			Map<String, Object> row = new HashMap<>();
- 			row.put("SOURCEID", map6.get("SOURCEID"));
- 			row.put("SRCNAME", map6.get("SRCNAME"));
+ 			row.put("srcId", map6.get("srcId"));
+ 			row.put("srcName", map6.get("srcName"));
  			row.put("srcImg", map6.get("srcImg"));
  			row.put((String) map6.get("time"), map6.get("count"));
  			//合计
  			int count=Integer.valueOf(map6.get("count").toString());
  			boolean flag = false;
  			for (Map<String, Object> newmap : newmaps) {
- 				if (newmap.get("SOURCEID").equals(row.get("SOURCEID"))) {
+ 				if (newmap.get("srcId").equals(row.get("srcId"))) {
  					newmap.put((String) map6.get("time"), map6.get("count"));
  					Integer total = (Integer)newmap.get("total");
  					newmap.put("total", total + count);
@@ -182,7 +182,7 @@ public class DstgReportsSrcMonthDao {
 	public List<Map<String, Object>> getDSTGSrcMonthReportsAll(int firstDay , int lastDay ,ReportsParamSrcMonthVO reportsParamSrcMonthVO,
 			DsInvalidVO invalidConfig) {
 		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT info.SOURCEID,src.SRCNAME,FROM_UNIXTIME(info.CREATETIME, '%d') time,COUNT(1) count,src.SRCIMG srcImg ");
+		sql.append("SELECT info.SOURCEID srcId,src.SRCNAME srcName,FROM_UNIXTIME(info.CREATETIME, '%d') time,COUNT(1) count,src.SRCIMG srcImg ");
 		sql.append(" FROM hm_crm_client_info info ");
 		sql.append(" LEFT JOIN hm_crm_source src ON src.ID=info.SOURCEID ");
 		sql.append(" WHERE info.ISDEL = 0 AND info.STATUSID NOT IN(0,98,99) ");
@@ -204,15 +204,15 @@ public class DstgReportsSrcMonthDao {
 
  		for (Map<String, Object> map6 : listAll) {
  			Map<String, Object> row = new HashMap<>();
- 			row.put("SOURCEID", map6.get("SOURCEID"));
- 			row.put("SRCNAME", map6.get("SRCNAME"));
+ 			row.put("srcId", map6.get("srcId"));
+ 			row.put("srcName", map6.get("srcName"));
  			row.put("srcImg", map6.get("srcImg"));
  			row.put((String) map6.get("time"), map6.get("count"));
  			//合计
  			int count=Integer.valueOf(map6.get("count").toString());
  			boolean flag = false;
  			for (Map<String, Object> newmap : newmaps) {
- 				if (newmap.get("SOURCEID").equals(row.get("SOURCEID"))) {
+ 				if (newmap.get("srcId").equals(row.get("srcId"))) {
  					newmap.put((String) map6.get("time"), map6.get("count"));
  					Integer total = (Integer)newmap.get("total");
  					newmap.put("total", total + count);
@@ -255,7 +255,7 @@ public class DstgReportsSrcMonthDao {
 	public List<Map<String, Object>> getDSTGSrcMonthReportsDdNum(int firstDay , int lastDay,ReportsParamSrcMonthVO reportsParamSrcMonthVO,
 			DsInvalidVO invalidConfig) {
 		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT info.SOURCEID,src.SRCNAME,FROM_UNIXTIME(info.CREATETIME, '%d') time,COUNT(1) count,src.SRCIMG srcImg ");
+		sql.append("SELECT info.SOURCEID srcId,src.SRCNAME srcName,FROM_UNIXTIME(info.CREATETIME, '%d') time,COUNT(1) count,src.SRCIMG srcImg ");
 		sql.append(" FROM hm_crm_client_info info ");
 		sql.append(" LEFT JOIN hm_crm_source src ON src.ID=info.SOURCEID ");
 		sql.append(" WHERE info.ISDEL = 0 AND info.STATUSID NOT IN(0,98,99) ");
@@ -280,15 +280,15 @@ public class DstgReportsSrcMonthDao {
 
  		for (Map<String, Object> map6 : listAll) {
  			Map<String, Object> row = new HashMap<>();
- 			row.put("SOURCEID", map6.get("SOURCEID"));
- 			row.put("SRCNAME", map6.get("SRCNAME"));
+ 			row.put("srcId", map6.get("srcId"));
+ 			row.put("srcName", map6.get("srcName"));
  			row.put("srcImg", map6.get("srcImg"));
  			row.put((String) map6.get("time"), map6.get("count"));
  			//合计
  			int count=Integer.valueOf(map6.get("count").toString());
  			boolean flag = false;
  			for (Map<String, Object> newmap : newmaps) {
- 				if (newmap.get("SOURCEID").equals(row.get("SOURCEID"))) {
+ 				if (newmap.get("srcId").equals(row.get("srcId"))) {
  					newmap.put((String) map6.get("time"), map6.get("count"));
  					Integer total = (Integer)newmap.get("total");
  					newmap.put("total", total + count);
@@ -332,7 +332,7 @@ public class DstgReportsSrcMonthDao {
 			DsInvalidVO invalidConfig) {
 		StringBuilder sql = new StringBuilder();
 		
-		sql.append("SELECT info.SOURCEID,src.SRCNAME,FROM_UNIXTIME(info.CREATETIME, '%d') time,COUNT(1) count,src.SRCIMG srcImg ");
+		sql.append("SELECT info.SOURCEID srcId,src.SRCNAME srcName,FROM_UNIXTIME(info.CREATETIME, '%d') time,COUNT(1) count,src.SRCIMG srcImg ");
 		sql.append(" FROM hm_crm_client_info info ");
 		sql.append(" LEFT JOIN hm_crm_source src ON src.ID=info.SOURCEID ");
 		sql.append(" LEFT JOIN hm_crm_client_detail deta ON info.KZID=deta.KZID ");
@@ -367,15 +367,15 @@ public class DstgReportsSrcMonthDao {
 
  		for (Map<String, Object> map6 : listAll) {
  			Map<String, Object> row = new HashMap<>();
- 			row.put("SOURCEID", map6.get("SOURCEID"));
- 			row.put("SRCNAME", map6.get("SRCNAME"));
+ 			row.put("srcId", map6.get("srcId"));
+ 			row.put("srcName", map6.get("srcName"));
  			row.put("srcImg", map6.get("srcImg"));
  			row.put((String) map6.get("time"), map6.get("count"));
  			//合计
  			int count=Integer.valueOf(map6.get("count").toString());
  			boolean flag = false;
  			for (Map<String, Object> newmap : newmaps) {
- 				if (newmap.get("SOURCEID").equals(row.get("SOURCEID"))) {
+ 				if (newmap.get("srcId").equals(row.get("srcId"))) {
  					newmap.put((String) map6.get("time"), map6.get("count"));
  					Integer total = (Integer)newmap.get("total");
  					newmap.put("total", total + count);
@@ -419,7 +419,7 @@ public class DstgReportsSrcMonthDao {
 			DsInvalidVO invalidConfig) {
 		//构造集合对象，把指标放入
 		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT info.SOURCEID,src.SRCNAME,FROM_UNIXTIME(info.CREATETIME, '%d') time,COUNT(1) count,src.SRCIMG srcImg ");
+		sql.append("SELECT info.SOURCEID srcId,src.SRCNAME srcName,FROM_UNIXTIME(info.CREATETIME, '%d') time,COUNT(1) count,src.SRCIMG srcImg ");
 		sql.append(" FROM hm_crm_client_info info ");
 		sql.append(" LEFT JOIN hm_crm_source src ON src.ID=info.SOURCEID ");
 		sql.append(" LEFT JOIN hm_crm_client_detail deta ON info.KZID=deta.KZID ");
@@ -454,15 +454,15 @@ public class DstgReportsSrcMonthDao {
 
  		for (Map<String, Object> map6 : listAll) {
  			Map<String, Object> row = new HashMap<>();
- 			row.put("SOURCEID", map6.get("SOURCEID"));
- 			row.put("SRCNAME", map6.get("SRCNAME"));
+ 			row.put("srcId", map6.get("srcId"));
+ 			row.put("srcName", map6.get("srcName"));
  			row.put("srcImg", map6.get("srcImg"));
  			row.put((String) map6.get("time"), map6.get("count"));
  			//合计
  			int count=Integer.valueOf(map6.get("count").toString());
  			boolean flag = false;
  			for (Map<String, Object> newmap : newmaps) {
- 				if (newmap.get("SOURCEID").equals(row.get("SOURCEID"))) {
+ 				if (newmap.get("srcId").equals(row.get("srcId"))) {
  					newmap.put((String) map6.get("time"), map6.get("count"));
  					Integer total = (Integer)newmap.get("total");
  					newmap.put("total", total + count);
@@ -937,7 +937,7 @@ public class DstgReportsSrcMonthDao {
 			ReportsParamSrcMonthVO reportsParamSrcMonthVO, DsInvalidVO invalidConfig) {
 		StringBuilder sql = new StringBuilder();
 		//String infoTabName = DBSplitUtil.getInfoTabName(reportsParamSrcMonthVO.getCompanyId());
-		sql.append("SELECT info.SOURCEID,src.SRCNAME,FROM_UNIXTIME(info.CREATETIME, '%d') time,COUNT(1) count,src.SRCIMG srcImg ");
+		sql.append("SELECT info.SOURCEID srcId,src.SRCNAME srcName,FROM_UNIXTIME(info.CREATETIME, '%d') time,COUNT(1) count,src.SRCIMG srcImg ");
 		sql.append(" FROM hm_crm_client_info info ");
 		sql.append(" LEFT JOIN hm_crm_source src ON src.ID=info.SOURCEID ");
 		sql.append(" WHERE info.ISDEL = 0");
@@ -959,15 +959,15 @@ public class DstgReportsSrcMonthDao {
 
  		for (Map<String, Object> map6 : listSum) {
  			Map<String, Object> row = new HashMap<>();
- 			row.put("SOURCEID", map6.get("SOURCEID"));
- 			row.put("SRCNAME", map6.get("SRCNAME"));
+ 			row.put("srcId", map6.get("srcId"));
+ 			row.put("srcName", map6.get("srcName"));
  			row.put("srcImg", map6.get("srcImg"));
  			row.put((String) map6.get("time"), map6.get("count"));
  			//合计
  			int count=Integer.valueOf(map6.get("count").toString());
  			boolean flag = false;
  			for (Map<String, Object> newmap : newmaps) {
- 				if (newmap.get("SOURCEID").equals(row.get("SOURCEID"))) {
+ 				if (newmap.get("srcId").equals(row.get("srcId"))) {
  					newmap.put((String) map6.get("time"), map6.get("count"));
  					Integer total = (Integer)newmap.get("total");
  					newmap.put("total", total + count);
@@ -1008,7 +1008,7 @@ public class DstgReportsSrcMonthDao {
 			ReportsParamSrcMonthVO reportsParamSrcMonthVO, DsInvalidVO invalidConfig) {
 		StringBuilder sql = new StringBuilder();
 		//String infoTabName = DBSplitUtil.getInfoTabName(reportsParamSrcMonthVO.getCompanyId());
-		sql.append("SELECT info.SOURCEID,src.SRCNAME,FROM_UNIXTIME(info.CREATETIME, '%d') time,COUNT(1) count,src.SRCIMG srcImg ");
+		sql.append("SELECT info.SOURCEID srcId,src.SRCNAME srcName,FROM_UNIXTIME(info.CREATETIME, '%d') time,COUNT(1) count,src.SRCIMG srcImg ");
 		sql.append(" FROM hm_crm_client_info info ");
 		sql.append(" LEFT JOIN hm_crm_source src ON src.ID=info.SOURCEID ");
 		sql.append(" WHERE info.ISDEL = 0");
@@ -1030,15 +1030,15 @@ public class DstgReportsSrcMonthDao {
 
  		for (Map<String, Object> map6 : listSum) {
  			Map<String, Object> row = new HashMap<>();
- 			row.put("SOURCEID", map6.get("SOURCEID"));
- 			row.put("SRCNAME", map6.get("SRCNAME"));
+ 			row.put("srcId", map6.get("srcId"));
+ 			row.put("srcName", map6.get("srcName"));
  			row.put("srcImg", map6.get("srcImg"));
  			row.put((String) map6.get("time"), map6.get("count"));
  			//合计
  			int count=Integer.valueOf(map6.get("count").toString());
  			boolean flag = false;
  			for (Map<String, Object> newmap : newmaps) {
- 				if (newmap.get("SOURCEID").equals(row.get("SOURCEID"))) {
+ 				if (newmap.get("srcId").equals(row.get("srcId"))) {
  					newmap.put((String) map6.get("time"), map6.get("count"));
  					Integer total = (Integer)newmap.get("total");
  					newmap.put("total", total + count);
