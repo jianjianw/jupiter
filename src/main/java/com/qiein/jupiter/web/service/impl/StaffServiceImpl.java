@@ -1115,7 +1115,7 @@ public class StaffServiceImpl implements StaffService {
      */
     @Override
     public int updateStaffWheelFlag(int companyId, int staffId, int flag) {
-        return 0;
+        return staffDao.updateStaffWheelFlag(companyId, staffId, flag);
     }
 
 
