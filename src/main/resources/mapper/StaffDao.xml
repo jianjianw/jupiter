@@ -84,6 +84,7 @@
         <result column="TODAYNUM" property="todayNum" jdbcType="INTEGER"/>
         <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
         <result column="SHOPID" property="shopId" jdbcType="INTEGER"/>
+        <result column="STATUSFLAG" property="statusFlag" jdbcType="INTEGER"/>
     </resultMap>
 
     <resultMap id="SearchMap" type="com.qiein.jupiter.web.entity.vo.SearchStaffVO">
@@ -753,7 +754,10 @@
                                (CAST(PUSHRULE AS UNSIGNED) = 11
                                 OR CAST(PUSHRULE AS UNSIGNED) = 1
                                 OR CAST(PUSHRULE AS UNSIGNED) = 12
-                                OR CAST(PUSHRULE AS UNSIGNED) = 14)
+                                OR CAST(PUSHRULE AS UNSIGNED) = 14
+                                OR CAST(PUSHRULE AS UNSIGNED) = 20
+                               )
+
                                AND COMPANYID = #{companyId}
                        ) AS source ON info.SOURCEID = source.ID
     </select>
@@ -1271,12 +1275,14 @@
             staff.WEIGHT,
             staff.TODAYNUM,
             staff.WHEELFLAG,
+            staff.STATUSFLAG,
             staff.COMPANYID
 
         FROM
             hm_pub_group grp
             LEFT JOIN hm_pub_group_staff rela ON grp.GROUPID = rela.GROUPID
             INNER JOIN hm_pub_staff staff ON rela.STAFFID = staff.ID
+            LEFT JOIN hm_pub_staff_detail det ON staff.ID = det.ID
         WHERE
             grp.COMPANYID = #{companyId}
             AND grp.PARENTID != '0'
@@ -1284,7 +1290,7 @@
             AND staff.WHEELFLAG = #{wheelFlag}
             AND staff.ISDEL = 0
             AND staff.STATUSFLAG = 1
-        ORDER BY LASTPUSHTIME
+        ORDER BY det.LASTLOGINTIME
     </select>
 
     <!--重置某种类型的轮单-->
@@ -1311,4 +1317,42 @@
                     ) rela
             )
     </update>
+
+    <!--更新员工轮单标志-->
+    <update id="updateStaffWheelFlag">
+        UPDATE hm_pub_staff
+        SET WHEELFLAG = #{flag}
+        WHERE COMPANYID = #{companyId}
+              AND ID = #{staffId}
+    </update>
+
+
+    <!--获取轮单客服列表-->
+    <select id="getWheelStaffList1" resultMap="pushMap">
+        SELECT
+            grp.GROUPID,
+            grp.GROUPNAME,
+            staff.ID,
+            staff.NICKNAME,
+            staff.LASTPUSHTIME,
+            staff.WEIGHT,
+            staff.TODAYNUM,
+            staff.WHEELFLAG,
+            staff.STATUSFLAG,
+            staff.COMPANYID
+
+        FROM
+            hm_pub_group grp
+            LEFT JOIN hm_pub_group_staff rela ON grp.GROUPID = rela.GROUPID
+            INNER JOIN hm_pub_staff staff ON rela.STAFFID = staff.ID
+            LEFT JOIN hm_pub_staff_detail det ON staff.ID = det.ID
+        WHERE
+            grp.COMPANYID = #{companyId}
+            AND grp.PARENTID != '0'
+            AND grp.GROUPTYPE = #{groupType}
+            AND staff.WHEELFLAG != 0
+            AND staff.ISDEL = 0
+            AND staff.STATUSFLAG = 1
+        ORDER BY det.LASTLOGINTIME
+    </select>
 </mapper>

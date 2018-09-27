@@ -607,4 +607,13 @@ public interface StaffDao extends BaseDao<StaffPO> {
      */
     int resetWheelStaffList(@Param("companyId") int companyId,
                             @Param("groupType") String groupType);
+
+    /**
+     * 更新员工轮单标志
+     *
+     * @return
+     */
+    int updateStaffWheelFlag(@Param("companyId") int companyId,
+                             @Param("staffId") int staffId,
+                             @Param("flag") int flag);
 }

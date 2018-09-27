@@ -434,4 +434,14 @@ public interface StaffService {
      */
     int resetWheelStaffList(int companyId, String groupType);
 
+    /**
+     * 更新轮单标志
+     *
+     * @param companyId
+     * @param staffId
+     * @param flag
+     * @return
+     */
+    int updateStaffWheelFlag(int companyId, int staffId, int flag);
+
 }

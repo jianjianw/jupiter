@@ -82,6 +82,18 @@ public class StaffPushDTO implements Serializable {
      */
     private int wheelFlag;
 
+    /**
+     * 在线标志
+     */
+    private int statusFlag;
+
+    public int getStatusFlag() {
+        return statusFlag;
+    }
+
+    public void setStatusFlag(int statusFlag) {
+        this.statusFlag = statusFlag;
+    }
 
     public static long getSerialVersionUID() {
         return serialVersionUID;

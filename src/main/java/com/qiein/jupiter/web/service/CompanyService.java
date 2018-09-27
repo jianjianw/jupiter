@@ -225,4 +225,8 @@ public interface CompanyService {
      */
     JSONObject getCompanyConfig(int companyId);
 
+    /**
+     * 定时关闭企业自动分配
+     */
+    int timingCloseAutoAllot();
 }

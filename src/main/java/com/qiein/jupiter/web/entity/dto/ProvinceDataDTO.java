@@ -6,12 +6,12 @@ package com.qiein.jupiter.web.entity.dto;
  */
 public class ProvinceDataDTO {
     private String provinceName;    //省名
-    private int dataNum;            //数据值
+    private String dataNum;            //数据值
 
     public ProvinceDataDTO() {
     }
 
-    public ProvinceDataDTO(String provinceName, int dataNum) {
+    public ProvinceDataDTO(String provinceName, String dataNum) {
         this.provinceName = provinceName;
         this.dataNum = dataNum;
     }
@@ -24,11 +24,11 @@ public class ProvinceDataDTO {
         this.provinceName = provinceName;
     }
 
-    public int getDataNum() {
+    public String getDataNum() {
         return dataNum;
     }
 
-    public void setDataNum(int dataNum) {
+    public void setDataNum(String dataNum) {
         this.dataNum = dataNum;
     }
 

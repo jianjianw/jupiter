@@ -217,6 +217,8 @@ public class ClientPushServiceImpl implements ClientPushService {
                 allotLog = addAllotLog(kzId, appointer.getStaffId(), appointer.getStaffName(), appointer.getGroupId(),
                         appointer.getGroupName(), ClientConst.ALLOT_SYSTEM_AUTO, companyId);
                 doAssignAppoint(companyId, kzId, appointer, allotLog.getId(), overTime);
+                //重置员工轮单标志为已分配
+                staffService.updateStaffWheelFlag(companyId, appointer.getStaffId(), PushRoleConst.WHEEL_FLAG_YES);
                 break;
             default:
                 break;
@@ -241,8 +243,20 @@ public class ClientPushServiceImpl implements ClientPushService {
 
         log.info("当前轮单人员列表:", JSONObject.toJSONString(wheelStaffList));
 
-        return wheelStaffList.get(0);
+        StaffPushDTO staffPushDTO = null;
+        for (StaffPushDTO pushDTO : wheelStaffList) {
+            //如果员工在线
+            if (pushDTO.getStatusFlag() == StaffStatusEnum.OnLine.getStatusId()) {
+                staffPushDTO = pushDTO;
+                break;
+            } else {
+                log.info(pushDTO.getStaffName(), "不在线，不分了");
+            }
+        }
+
+        return staffPushDTO;
     }
+
 
     /**
      * 获取指定客服，本轮次的客服

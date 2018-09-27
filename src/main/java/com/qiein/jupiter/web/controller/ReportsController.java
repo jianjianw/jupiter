@@ -498,7 +498,6 @@ public class ReportsController extends BaseController {
      */
     @GetMapping("/get_province_analysis_report")
     public ResultInfo getProvinceAnalysisReport(ProvinceAnalysisParamDTO searchKey) {
-        //TODO 给默认时间
         if (searchKey.getStart() == null) {
             searchKey.setStart(0);
         }
@@ -543,6 +542,16 @@ public class ReportsController extends BaseController {
         //查询有效客资
         if (StringUtil.isNotEmpty(kzZB) && "valid".equals(kzZB)) {
             List<Map<String, Object>> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsvalid(month, typeId, sourceId, staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+        //查询入店量
+        if (StringUtil.isNotEmpty(kzZB) && "come".equals(kzZB)) {
+            List<Map<String, Object>> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsCome(month, typeId, sourceId, staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+        //查询成交量
+        if (StringUtil.isNotEmpty(kzZB) && "success".equals(kzZB)) {
+            List<Map<String, Object>> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsSuccess(month, typeId, sourceId, staffPO.getCompanyId());
             return ResultInfoUtil.success(dstgReportsSrcMonthVO);
         }
         return ResultInfoUtil.error(9999, "查询失败");
