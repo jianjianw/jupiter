@@ -64,7 +64,7 @@ public class ClientPushTask {
                 JSONObject configJson = JSONObject.parseObject(config);
                 if (configJson.getBoolean("autoAllot") != null && !configJson.getBoolean("autoAllot")) {
                     log.info(comp.getCompanyName() + "企业关闭自动分配...");
-                    return;
+                    continue;
                 }
             }
             //超时时间设置是秒

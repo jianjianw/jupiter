@@ -205,11 +205,11 @@ public class ClientPushServiceImpl implements ClientPushService {
                 doAssignAppoint(companyId, kzId, appointer, allotLog.getId(), overTime);
                 break;
             case ChannelConstant.PUSH_RULE_GROUP_WHEEL:
-                //20 小组轮单
+                //20 全员轮单
                 if (NumUtil.isInValid(srcId)) {
                     return;
                 }
-                appointer = getGroupAvg(companyId, srcId, type, interval);
+                appointer = getGroupWheel(companyId, type);
                 if (appointer == null) {
                     return;
                 }
@@ -228,13 +228,20 @@ public class ClientPushServiceImpl implements ClientPushService {
      *
      * @return
      */
-    private StaffPushDTO getGroupWheel(int companyId, int srcId, String type, int interval) {
+    private StaffPushDTO getGroupWheel(int companyId, String type) {
         //先从队列中找到
         //获取当前可分配的小组
-        List<String> appointGroups = getGroupAvgGroup(companyId, srcId, type);
+        List<StaffPushDTO> wheelStaffList = staffService.getWheelStaffList(companyId, PushRoleConst.WHEEL_FLAG_WANT, type);
+        //如果为空,则重置接单
+        if (CollectionUtils.isEmpty(wheelStaffList)) {
+            log.info("当前没有可以轮单的人员,重置");
+            staffService.resetWheelStaffList(companyId, type);
+            return null;
+        }
 
+        log.info("当前轮单人员列表:", JSONObject.toJSONString(wheelStaffList));
 
-        return null;
+        return wheelStaffList.get(0);
     }
 
     /**
