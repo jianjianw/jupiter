@@ -104,6 +104,9 @@ public class DstgZxStyleReportsDao {
         if(StringUtil.isNotEmpty(reportsParamVO.getSourceIds())){
             sb.append(" and info.SOURCEID in ("+reportsParamVO.getSourceIds()+")");
         }
+        if(StringUtil.isNotEmpty(reportsParamVO.getCollectorId())){
+            sb.append(" and info.COLLECTORID IN(" +reportsParamVO.getCollectorId()+")");
+        }
     }
 
 

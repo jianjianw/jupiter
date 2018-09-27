@@ -215,7 +215,7 @@ public class ReportsServiceImpl implements ReportService {
     }
 
     @Override
-    public List<DstgZxStyleReportsVO> getDstgZxStyleReports(Integer start, Integer end, int companyId, String type, String zxStyleCode,String sourceIds) {
+    public List<DstgZxStyleReportsVO> getDstgZxStyleReports(Integer start, Integer end, int companyId, String type, String zxStyleCode,String sourceIds,String collectorId) {
         //封装对应的参数
         ReportsParamVO reportsParamVO = new ReportsParamVO();
         reportsParamVO.setStart(start);
@@ -224,6 +224,7 @@ public class ReportsServiceImpl implements ReportService {
         reportsParamVO.setType(type);
         reportsParamVO.setZxStyleCode(zxStyleCode);
         reportsParamVO.setSourceIds(sourceIds);
+        reportsParamVO.setCollectorId(collectorId);
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         //获取数据
         List<DstgZxStyleReportsVO> dstgZxStyleReportsVOS = zxStyleReportsDao.getDstgGoldDataReprots(reportsParamVO, invalidConfig);
@@ -465,13 +466,14 @@ public class ReportsServiceImpl implements ReportService {
     }
 
     @Override
-    public List<DstgZxStyleReportsVO> getDstgZxStyleSourceRerports(Integer start, Integer end, String zxStyleCode, String type, int companyId) {
+    public List<DstgZxStyleReportsVO> getDstgZxStyleSourceRerports(Integer start, Integer end, String zxStyleCode, String type, int companyId,String collectorId) {
         ReportsParamVO reportsParamVO = new ReportsParamVO();
         reportsParamVO.setStart(start);
         reportsParamVO.setEnd(end);
         reportsParamVO.setCompanyId(companyId);
         reportsParamVO.setZxStyleCode(zxStyleCode);
         reportsParamVO.setType(type);
+        reportsParamVO.setCollectorId(collectorId);
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         List<DstgZxStyleReportsVO> dstgGoldDataReprots = dstgZxStyleSourceReportsDao.getDstgGoldDataReprots(reportsParamVO, invalidConfig);
         return dstgGoldDataReprots;
