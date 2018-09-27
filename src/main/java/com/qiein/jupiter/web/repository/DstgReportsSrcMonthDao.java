@@ -105,50 +105,72 @@ public class DstgReportsSrcMonthDao {
      * @param end
      * @param companyId
      * */
-	public List<Map<String, Object>> getDSTGSrcMonthReportsSum(List<Map<String, Object>> dayList , String month,ReportsParamSrcMonthVO reportsParamSrcMonthVO,
+	public List<Map<String, Object>> getDSTGSrcMonthReportsSum(int firstDay , int lastDay,ReportsParamSrcMonthVO reportsParamSrcMonthVO,
 			DsInvalidVO dsInvalidVO) {
 		StringBuilder sql = new StringBuilder();
-		String infoTabName = DBSplitUtil.getInfoTabName(reportsParamSrcMonthVO.getCompanyId());
-		
-        sql.append("SELECT src.SRCNAME srcName,src.ID srcId,");
-        if(StringUtil.isEmpty(reportsParamSrcMonthVO.getTypeId()) ){
-        	sql.append("(select COUNT(info.ID) from " + infoTabName + " info where info.SOURCEID=src.ID AND info.ISDEL=0  AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m')='" + month + "') hj,  ");
-        	for (Map<String, Object> day : dayList) {
-                sql.append("(select count(info.ID) from " + infoTabName + " info where info.SOURCEID=src.ID AND info.ISDEL=0  AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d')='" + day.get("day") + "') " + day.get("dayKey") + ",");
-            }
-        }else{
-        	sql.append("(select COUNT(info.ID) from " + infoTabName + " info where info.SOURCEID=src.ID AND info.ISDEL=0 "+" AND info.TYPEID IN("+reportsParamSrcMonthVO.getTypeId()+")  " +" AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m')='" + month + "') hj,  ");
-        	for (Map<String, Object> day : dayList) {
-                sql.append("(select count(info.ID) from " + infoTabName + " info where info.SOURCEID=src.ID AND info.ISDEL=0 "+" AND info.TYPEID IN("+reportsParamSrcMonthVO.getTypeId()+")  " +" AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d')='" + day.get("day") + "') " + day.get("dayKey") + ",");
-            }
-        }
-        sql.append(" src.SRCIMG srcImg ");
-        sql.append(" FROM hm_crm_source src WHERE src.COMPANYID = ? AND TYPEID IN (1,2) ");
-        
-        if (StringUtil.isNotEmpty(reportsParamSrcMonthVO.getSourceId())) {
-            sql.append(" AND src.ID IN (" + reportsParamSrcMonthVO.getSourceId() + ")");
-        }
-        sql.append(" ORDER BY src.CHANNELID ASC,src.PRIORITY ASC");
+		//String infoTabName = DBSplitUtil.getInfoTabName(reportsParamSrcMonthVO.getCompanyId());
+		sql.append("SELECT info.SOURCEID,src.SRCNAME,FROM_UNIXTIME(info.CREATETIME, '%d') time,COUNT(1) count,src.SRCIMG srcImg ");
+		sql.append(" FROM hm_crm_client_info info ");
+		sql.append(" LEFT JOIN hm_crm_source src ON src.ID=info.SOURCEID ");
+		sql.append(" WHERE info.ISDEL = 0");
+			if(StringUtil.isNotEmpty(reportsParamSrcMonthVO.getTypeId())){
+				sql.append(" AND info.TYPEID IN("+reportsParamSrcMonthVO.getTypeId()+") ");
+			}
+		sql.append(" AND info.CREATETIME BETWEEN "+firstDay+" AND "+ lastDay);	
+		sql.append(" AND src.TYPEID IN(1,2)");
+			if (StringUtil.isNotEmpty(reportsParamSrcMonthVO.getSourceId())) {
+				sql.append(" AND src.ID IN (" + reportsParamSrcMonthVO.getSourceId() + ")");
+			}
+		sql.append(" AND info.COMPANYID=? ");
+		sql.append(" GROUP BY info.SOURCEID,time ");
+		sql.append(" ORDER BY info.SOURCEID ");
         String sqlString = sql.toString(); 
         List<Map<String, Object>> listSum = jdbcTemplate.queryForList(sqlString, new Object[]{reportsParamSrcMonthVO.getCompanyId()});
-		
+        // 最终用返回
+ 		List<Map<String, Object>> newmaps = new ArrayList<>();
+
+ 		for (Map<String, Object> map6 : listSum) {
+ 			Map<String, Object> row = new HashMap<>();
+ 			row.put("SOURCEID", map6.get("SOURCEID"));
+ 			row.put("SRCNAME", map6.get("SRCNAME"));
+ 			row.put("srcImg", map6.get("srcImg"));
+ 			row.put((String) map6.get("time"), map6.get("count"));
+ 			//合计
+ 			int count=Integer.valueOf(map6.get("count").toString());
+ 			boolean flag = false;
+ 			for (Map<String, Object> newmap : newmaps) {
+ 				if (newmap.get("SOURCEID").equals(row.get("SOURCEID"))) {
+ 					newmap.put((String) map6.get("time"), map6.get("count"));
+ 					Integer total = (Integer)newmap.get("total");
+ 					newmap.put("total", total + count);
+ 					flag = true;
+ 					break;
+ 				}
+ 			}
+ 			if (!flag) {
+ 				row.put("total",count);
+ 				newmaps.add(row);
+ 			}
+ 		}	
         //合计横向的一行
-        Map<String, Object> map1=new LinkedHashMap();
-        long Monthsum=0;
-        for (Map<String, Object> map : listSum) {
-        		Monthsum +=(long) map.get("hj");
+ 		Map<String,Object> map1=new LinkedHashMap();
+ 		int Monthsum=0;
+        for (Map<String, Object> map : newmaps) {
+        		Monthsum +=Integer.valueOf(String.valueOf(map.get("total").toString()));
     		}
         	map1.put("srcName", "合计");
-        	map1.put("hj", Monthsum);
-        for (Map<String, Object> day : dayList) {
-        	long daysum=0;
-        	for (Map<String, Object> map : listSum) {
-    			daysum +=(long) map.get(day.get("dayKey"));
-    		}
-        	map1.put((String) day.get("dayKey"), daysum);
+        	map1.put("total", Monthsum);
+ 		String[] days={"01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"};
+ 		for (String day : days) {
+ 			int daysum=0;
+ 			for (Map<String, Object> map : newmaps) {
+ 				if(map.containsKey(day)){
+ 					daysum+=Integer.valueOf(String.valueOf(map.get(day).toString()));
+ 				}
+ 			}map1.put(day, daysum);
 		}
-        listSum.add(0,map1);
-		return listSum;
+ 		newmaps.add(0,map1);
+		return newmaps;
 	}
 	
 	/**
@@ -157,51 +179,71 @@ public class DstgReportsSrcMonthDao {
      * @param end
      * @param companyId
      * */
-	public List<Map<String, Object>> getDSTGSrcMonthReportsAll(List<Map<String, Object>> dayList , String month,ReportsParamSrcMonthVO reportsParamSrcMonthVO,
+	public List<Map<String, Object>> getDSTGSrcMonthReportsAll(int firstDay , int lastDay ,ReportsParamSrcMonthVO reportsParamSrcMonthVO,
 			DsInvalidVO invalidConfig) {
 		StringBuilder sql = new StringBuilder();
-		String infoTabName = DBSplitUtil.getInfoTabName(reportsParamSrcMonthVO.getCompanyId());
-		
-        sql.append("SELECT src.SRCNAME srcName,src.ID srcId,");
-        if(StringUtil.isEmpty(reportsParamSrcMonthVO.getTypeId()) ){
-        	sql.append("(select COUNT(info.ID) from " + infoTabName + " info where info.SOURCEID=src.ID AND info.ISDEL=0 AND info.STATUSID NOT IN(0,98,99) AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m')='" + month + "') hj,  ");
-        	for (Map<String, Object> day : dayList) {
-                sql.append("(select count(info.ID) from " + infoTabName + " info where info.SOURCEID=src.ID AND info.ISDEL=0 AND info.STATUSID NOT IN(0,98,99)  AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d')='" + day.get("day") + "') " + day.get("dayKey") + ",");
-            }
-        	
-        }else{
-        	sql.append("(select COUNT(info.ID) from " + infoTabName + " info where info.SOURCEID=src.ID AND info.ISDEL=0 AND info.STATUSID NOT IN(0,98,99) "+" AND info.TYPEID IN("+reportsParamSrcMonthVO.getTypeId()+")  " +" AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m')='" + month + "') hj,  ");
-        	for (Map<String, Object> day : dayList) {
-                sql.append("(select count(info.ID) from " + infoTabName + " info where info.SOURCEID=src.ID AND info.ISDEL=0 AND info.STATUSID NOT IN(0,98,99) "+" AND info.TYPEID IN("+reportsParamSrcMonthVO.getTypeId()+")  " +" AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d')='" + day.get("day") + "') " + day.get("dayKey") + ",");
-            }
-        }
-        sql.append(" src.SRCIMG srcImg ");
-        sql.append(" FROM hm_crm_source src WHERE src.COMPANYID = ? AND TYPEID IN (1,2) ");
-        
-        if (StringUtil.isNotEmpty(reportsParamSrcMonthVO.getSourceId())) {
-            sql.append(" AND src.ID IN (" + reportsParamSrcMonthVO.getSourceId() + ")");
-        }
-        sql.append(" ORDER BY src.CHANNELID ASC,src.PRIORITY ASC");
+		sql.append("SELECT info.SOURCEID,src.SRCNAME,FROM_UNIXTIME(info.CREATETIME, '%d') time,COUNT(1) count,src.SRCIMG srcImg ");
+		sql.append(" FROM hm_crm_client_info info ");
+		sql.append(" LEFT JOIN hm_crm_source src ON src.ID=info.SOURCEID ");
+		sql.append(" WHERE info.ISDEL = 0 AND info.STATUSID NOT IN(0,98,99) ");
+			if(StringUtil.isNotEmpty(reportsParamSrcMonthVO.getTypeId())){
+				sql.append(" AND info.TYPEID IN("+reportsParamSrcMonthVO.getTypeId()+") ");
+			}
+		sql.append(" AND info.CREATETIME BETWEEN "+firstDay+" AND "+ lastDay);	
+		sql.append(" AND src.TYPEID IN(1,2)");
+			if (StringUtil.isNotEmpty(reportsParamSrcMonthVO.getSourceId())) {
+				sql.append(" AND src.ID IN (" + reportsParamSrcMonthVO.getSourceId() + ")");
+			}
+		sql.append(" AND info.COMPANYID=? ");
+		sql.append(" GROUP BY info.SOURCEID,time ");
+		sql.append(" ORDER BY info.SOURCEID ");
         String sqlString = sql.toString(); 
         List<Map<String, Object>> listAll = jdbcTemplate.queryForList(sqlString, new Object[]{reportsParamSrcMonthVO.getCompanyId()});
-        
+        // 最终用返回
+ 		List<Map<String, Object>> newmaps = new ArrayList<>();
+
+ 		for (Map<String, Object> map6 : listAll) {
+ 			Map<String, Object> row = new HashMap<>();
+ 			row.put("SOURCEID", map6.get("SOURCEID"));
+ 			row.put("SRCNAME", map6.get("SRCNAME"));
+ 			row.put("srcImg", map6.get("srcImg"));
+ 			row.put((String) map6.get("time"), map6.get("count"));
+ 			//合计
+ 			int count=Integer.valueOf(map6.get("count").toString());
+ 			boolean flag = false;
+ 			for (Map<String, Object> newmap : newmaps) {
+ 				if (newmap.get("SOURCEID").equals(row.get("SOURCEID"))) {
+ 					newmap.put((String) map6.get("time"), map6.get("count"));
+ 					Integer total = (Integer)newmap.get("total");
+ 					newmap.put("total", total + count);
+ 					flag = true;
+ 					break;
+ 				}
+ 			}
+ 			if (!flag) {
+ 				row.put("total",count);
+ 				newmaps.add(row);
+ 			}
+ 		}
         //合计横向的一行
-        Map<String, Object> map1=new LinkedHashMap();
-        long Monthsum=0;
-        for (Map<String, Object> map : listAll) {
-        		Monthsum +=(long) map.get("hj");
+        Map<String,Object> map1=new LinkedHashMap();
+ 		int Monthsum=0;
+        for (Map<String, Object> map : newmaps) {
+        		Monthsum +=Integer.valueOf(String.valueOf(map.get("total").toString()));
     		}
         	map1.put("srcName", "合计");
-        	map1.put("hj", Monthsum);
-        for (Map<String, Object> day : dayList) {
-        	long daysum=0;
-        	for (Map<String, Object> map : listAll) {
-    			daysum +=(long) map.get(day.get("dayKey"));
-    		}
-        	map1.put((String) day.get("dayKey"), daysum);
+        	map1.put("total", Monthsum);
+ 		String[] days={"01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"};
+ 		for (String day : days) {
+ 			int daysum=0;
+ 			for (Map<String, Object> map : newmaps) {
+ 				if(map.containsKey(day)){
+ 					daysum+=Integer.valueOf(String.valueOf(map.get(day).toString()));
+ 				}
+ 			}map1.put(day, daysum);
 		}
-        listAll.add(0,map1);
-		return listAll;
+ 		newmaps.add(0,map1);
+		return newmaps;
 	}
 	
 	/**
@@ -210,63 +252,74 @@ public class DstgReportsSrcMonthDao {
      * @param end
      * @param companyId
      * */
-	public List<Map<String, Object>> getDSTGSrcMonthReportsDdNum(List<Map<String, Object>> dayList , String month,ReportsParamSrcMonthVO reportsParamSrcMonthVO,
+	public List<Map<String, Object>> getDSTGSrcMonthReportsDdNum(int firstDay , int lastDay,ReportsParamSrcMonthVO reportsParamSrcMonthVO,
 			DsInvalidVO invalidConfig) {
 		StringBuilder sql = new StringBuilder();
-		String infoTabName = DBSplitUtil.getInfoTabName(reportsParamSrcMonthVO.getCompanyId());
-		
-        sql.append("SELECT src.SRCNAME srcName,src.ID srcId,");
-        sql.append("(select COUNT(info.ID) from " + infoTabName + " info where info.SOURCEID=src.ID AND info.ISDEL=0  ");
-        	
-        if(StringUtil.isNotEmpty(invalidConfig.getDsDdStatus())){
-        	//sql.append(" AND INSTR('"+invalidConfig.getDsDdStatus()+"', CONCAT(',',info.STATUSID,',')) != 0");
-    		sql.append(" AND info.STATUSID IN("+invalidConfig.getDsDdStatus()+")");
-    	}
-    	if(StringUtil.isNotEmpty(reportsParamSrcMonthVO.getTypeId())){
-    		sql.append(" AND info.TYPEID IN("+reportsParamSrcMonthVO.getTypeId()+")");
-    	}
-    	sql.append(" AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m')='" + month + "') hj,  ");
-    	//计算每天客资数
-    	for (Map<String, Object> day : dayList) {
-            sql.append("(select count(info.ID) from " + infoTabName + " info where info.SOURCEID=src.ID AND info.ISDEL=0 ");
-            if(StringUtil.isNotEmpty(invalidConfig.getDsDdStatus())){
-        		//sql.append(" AND INSTR('"+invalidConfig.getDsDdStatus()+"' , CONCAT(',',info.STATUSID,',')) != 0");
-        		sql.append(" AND info.STATUSID IN("+invalidConfig.getDsDdStatus()+")");
-        	}
-        	if(StringUtil.isNotEmpty(reportsParamSrcMonthVO.getTypeId())){
-        		sql.append(" AND info.TYPEID IN("+reportsParamSrcMonthVO.getTypeId()+")");
-        	}
-            sql.append(" AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d')='" + day.get("day") + "') " + day.get("dayKey") + ",");
-        }	
-        	
-        sql.append(" src.SRCIMG srcImg ");
-        sql.append(" FROM hm_crm_source src WHERE src.COMPANYID = ? AND TYPEID IN (1,2) ");
-        
-        if (StringUtil.isNotEmpty(reportsParamSrcMonthVO.getSourceId())) {
-            sql.append(" AND src.ID IN (" + reportsParamSrcMonthVO.getSourceId() + ")");
-        }
-        sql.append(" ORDER BY src.CHANNELID ASC,src.PRIORITY ASC");
-        String sqlString = sql.toString();
-        List<Map<String, Object>> listdd = jdbcTemplate.queryForList(sqlString, new Object[]{
-        		reportsParamSrcMonthVO.getCompanyId(),});
-        
+		sql.append("SELECT info.SOURCEID,src.SRCNAME,FROM_UNIXTIME(info.CREATETIME, '%d') time,COUNT(1) count,src.SRCIMG srcImg ");
+		sql.append(" FROM hm_crm_client_info info ");
+		sql.append(" LEFT JOIN hm_crm_source src ON src.ID=info.SOURCEID ");
+		sql.append(" WHERE info.ISDEL = 0 AND info.STATUSID NOT IN(0,98,99) ");
+			if(StringUtil.isNotEmpty(invalidConfig.getDsDdStatus())){
+				sql.append(" AND info.STATUSID IN("+invalidConfig.getDsDdStatus()+")");
+			}
+			if(StringUtil.isNotEmpty(reportsParamSrcMonthVO.getTypeId())){
+				sql.append(" AND info.TYPEID IN("+reportsParamSrcMonthVO.getTypeId()+") ");
+			}
+		sql.append(" AND info.CREATETIME BETWEEN "+firstDay+" AND "+ lastDay);	
+		sql.append(" AND src.TYPEID IN(1,2)");
+			if (StringUtil.isNotEmpty(reportsParamSrcMonthVO.getSourceId())) {
+				sql.append(" AND src.ID IN (" + reportsParamSrcMonthVO.getSourceId() + ")");
+			}
+		sql.append(" AND info.COMPANYID=? ");
+		sql.append(" GROUP BY info.SOURCEID,time ");
+		sql.append(" ORDER BY info.SOURCEID ");
+        String sqlString = sql.toString(); 
+        List<Map<String, Object>> listAll = jdbcTemplate.queryForList(sqlString, new Object[]{reportsParamSrcMonthVO.getCompanyId()});
+        // 最终用返回
+ 		List<Map<String, Object>> newmaps = new ArrayList<>();
+
+ 		for (Map<String, Object> map6 : listAll) {
+ 			Map<String, Object> row = new HashMap<>();
+ 			row.put("SOURCEID", map6.get("SOURCEID"));
+ 			row.put("SRCNAME", map6.get("SRCNAME"));
+ 			row.put("srcImg", map6.get("srcImg"));
+ 			row.put((String) map6.get("time"), map6.get("count"));
+ 			//合计
+ 			int count=Integer.valueOf(map6.get("count").toString());
+ 			boolean flag = false;
+ 			for (Map<String, Object> newmap : newmaps) {
+ 				if (newmap.get("SOURCEID").equals(row.get("SOURCEID"))) {
+ 					newmap.put((String) map6.get("time"), map6.get("count"));
+ 					Integer total = (Integer)newmap.get("total");
+ 					newmap.put("total", total + count);
+ 					flag = true;
+ 					break;
+ 				}
+ 			}
+ 			if (!flag) {
+ 				row.put("total",count);
+ 				newmaps.add(row);
+ 			}
+ 		}
         //合计横向的一行
-        Map<String, Object> map1=new LinkedHashMap();
-        long Monthsum=0;
-        for (Map<String, Object> map : listdd) {
-        		Monthsum +=(long) map.get("hj");
+ 		Map<String,Object> map1=new LinkedHashMap();
+ 		int Monthsum=0;
+        for (Map<String, Object> map : newmaps) {
+        		Monthsum +=Integer.valueOf(String.valueOf(map.get("total").toString()));
     		}
         	map1.put("srcName", "合计");
-        	map1.put("hj", Monthsum);
-        for (Map<String, Object> day : dayList) {
-        	long daysum=0;
-        	for (Map<String, Object> map : listdd) {
-    			daysum +=(long) map.get(day.get("dayKey"));
-    		}
-        	map1.put((String) day.get("dayKey"), daysum);
+        	map1.put("total", Monthsum);
+ 		String[] days={"01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"};
+ 		for (String day : days) {
+ 			int daysum=0;
+ 			for (Map<String, Object> map : newmaps) {
+ 				if(map.containsKey(day)){
+ 					daysum+=Integer.valueOf(String.valueOf(map.get(day).toString()));
+ 				}
+ 			}map1.put(day, daysum);
 		}
-        listdd.add(0,map1);
-		return listdd;
+ 		newmaps.add(0,map1);
+		return newmaps;
 	}
 	
 	/**
@@ -275,79 +328,85 @@ public class DstgReportsSrcMonthDao {
      * @param end
      * @param companyId
      * */
-	public List<Map<String, Object>> getDSTGSrcMonthReportsInvalid(List<Map<String, Object>> dayList , String month,ReportsParamSrcMonthVO reportsParamSrcMonthVO,
+	public List<Map<String, Object>> getDSTGSrcMonthReportsInvalid(int firstDay , int lastDay,ReportsParamSrcMonthVO reportsParamSrcMonthVO,
 			DsInvalidVO invalidConfig) {
 		StringBuilder sql = new StringBuilder();
-		String infoTabName = DBSplitUtil.getInfoTabName(reportsParamSrcMonthVO.getCompanyId());
 		
-        sql.append("SELECT src.SRCNAME srcName,src.ID srcId,");
-        sql.append("(select COUNT(info.ID) from " + infoTabName + " info, hm_crm_client_detail deta where info.SOURCEID=src.ID AND deta.KZID=info.KZID AND info.ISDEL=0  ");
-        //无效指标&&意向等级
-        if(StringUtil.isNotEmpty(invalidConfig.getDsInvalidStatus()) && StringUtil.isNotEmpty(invalidConfig.getDsInvalidLevel())){
-    		sql.append(" AND ( info.STATUSID  IN("+invalidConfig.getDsInvalidStatus()+")"+ "OR deta.YXLEVEL IN("+invalidConfig.getDsInvalidLevel()+"))");
-    	}
-        //只有无效指标
-        if(StringUtil.isNotEmpty(invalidConfig.getDsInvalidStatus()) && StringUtil.isEmpty(invalidConfig.getDsInvalidLevel())){
-    		sql.append(" AND info.STATUSID  IN("+invalidConfig.getDsInvalidStatus()+")");
-    	}
-        //只有意向指标
-        if(StringUtil.isEmpty(invalidConfig.getDsInvalidStatus()) && StringUtil.isNotEmpty(invalidConfig.getDsInvalidLevel())){
-    		sql.append(" AND deta.YXLEVEL IN("+invalidConfig.getDsInvalidLevel()+")");
-    	}
-        //拍摄类型
-    	if(StringUtil.isNotEmpty(reportsParamSrcMonthVO.getTypeId())){
-    		sql.append(" AND info.TYPEID IN("+reportsParamSrcMonthVO.getTypeId()+")");
-    	}
-    	sql.append(" AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m')='" + month + "') hj,  ");
-    	//计算每天客资数
-    	for (Map<String, Object> day : dayList) {
-            sql.append("(select COUNT(info.ID) from " + infoTabName + " info, hm_crm_client_detail deta where info.SOURCEID=src.ID AND deta.KZID=info.KZID AND info.ISDEL=0  ");
-          //无效指标&&意向等级
-            if(StringUtil.isNotEmpty(invalidConfig.getDsInvalidStatus()) && StringUtil.isNotEmpty(invalidConfig.getDsInvalidLevel())){
+		sql.append("SELECT info.SOURCEID,src.SRCNAME,FROM_UNIXTIME(info.CREATETIME, '%d') time,COUNT(1) count,src.SRCIMG srcImg ");
+		sql.append(" FROM hm_crm_client_info info ");
+		sql.append(" LEFT JOIN hm_crm_source src ON src.ID=info.SOURCEID ");
+		sql.append(" LEFT JOIN hm_crm_client_detail deta ON info.KZID=deta.KZID ");
+		sql.append(" WHERE info.ISDEL = 0 AND info.STATUSID NOT IN(0,98,99) ");
+			//无效指标&&意向等级
+        	if(StringUtil.isNotEmpty(invalidConfig.getDsInvalidStatus()) && StringUtil.isNotEmpty(invalidConfig.getDsInvalidLevel())){
         		sql.append(" AND ( info.STATUSID  IN("+invalidConfig.getDsInvalidStatus()+")"+ "OR deta.YXLEVEL IN("+invalidConfig.getDsInvalidLevel()+"))");
         	}
-            //只有无效指标
-            if(StringUtil.isNotEmpty(invalidConfig.getDsInvalidStatus()) && StringUtil.isEmpty(invalidConfig.getDsInvalidLevel())){
+        	//只有无效指标
+        	if(StringUtil.isNotEmpty(invalidConfig.getDsInvalidStatus()) && StringUtil.isEmpty(invalidConfig.getDsInvalidLevel())){
         		sql.append(" AND info.STATUSID  IN("+invalidConfig.getDsInvalidStatus()+")");
         	}
-            //只有意向指标
-            if(StringUtil.isEmpty(invalidConfig.getDsInvalidStatus()) && StringUtil.isNotEmpty(invalidConfig.getDsInvalidLevel())){
+        	//只有意向指标
+        	if(StringUtil.isEmpty(invalidConfig.getDsInvalidStatus()) && StringUtil.isNotEmpty(invalidConfig.getDsInvalidLevel())){
         		sql.append(" AND deta.YXLEVEL IN("+invalidConfig.getDsInvalidLevel()+")");
         	}
-        	if(StringUtil.isNotEmpty(reportsParamSrcMonthVO.getTypeId())){
-        		sql.append(" AND info.TYPEID IN("+reportsParamSrcMonthVO.getTypeId()+")");
-        	}
-            sql.append(" AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d')='" + day.get("day") + "') " + day.get("dayKey") + ",");
-        }	
-        	
-        sql.append(" src.SRCIMG srcImg ");
-        sql.append(" FROM hm_crm_source src WHERE src.COMPANYID = ? AND TYPEID IN (1,2) ");
-        
-        if (StringUtil.isNotEmpty(reportsParamSrcMonthVO.getSourceId())) {
-            sql.append(" AND src.ID IN (" + reportsParamSrcMonthVO.getSourceId() + ")");
-        }
-        sql.append(" ORDER BY src.CHANNELID ASC,src.PRIORITY ASC");
+			if(StringUtil.isNotEmpty(reportsParamSrcMonthVO.getTypeId())){
+				sql.append(" AND info.TYPEID IN("+reportsParamSrcMonthVO.getTypeId()+") ");
+			}
+		sql.append(" AND info.CREATETIME BETWEEN "+firstDay+" AND "+ lastDay);	
+		sql.append(" AND src.TYPEID IN(1,2)");
+			if (StringUtil.isNotEmpty(reportsParamSrcMonthVO.getSourceId())) {
+				sql.append(" AND src.ID IN (" + reportsParamSrcMonthVO.getSourceId() + ")");
+			}
+		sql.append(" AND info.COMPANYID=? ");
+		sql.append(" GROUP BY info.SOURCEID,time ");
+		sql.append(" ORDER BY info.SOURCEID ");
         String sqlString = sql.toString(); 
-        List<Map<String, Object>> listInvalid = jdbcTemplate.queryForList(sqlString, new Object[]{
-        		reportsParamSrcMonthVO.getCompanyId(),});
-        
+        List<Map<String, Object>> listAll = jdbcTemplate.queryForList(sqlString, new Object[]{reportsParamSrcMonthVO.getCompanyId()});
+        // 最终用返回
+ 		List<Map<String, Object>> newmaps = new ArrayList<>();
+
+ 		for (Map<String, Object> map6 : listAll) {
+ 			Map<String, Object> row = new HashMap<>();
+ 			row.put("SOURCEID", map6.get("SOURCEID"));
+ 			row.put("SRCNAME", map6.get("SRCNAME"));
+ 			row.put("srcImg", map6.get("srcImg"));
+ 			row.put((String) map6.get("time"), map6.get("count"));
+ 			//合计
+ 			int count=Integer.valueOf(map6.get("count").toString());
+ 			boolean flag = false;
+ 			for (Map<String, Object> newmap : newmaps) {
+ 				if (newmap.get("SOURCEID").equals(row.get("SOURCEID"))) {
+ 					newmap.put((String) map6.get("time"), map6.get("count"));
+ 					Integer total = (Integer)newmap.get("total");
+ 					newmap.put("total", total + count);
+ 					flag = true;
+ 					break;
+ 				}
+ 			}
+ 			if (!flag) {
+ 				row.put("total",count);
+ 				newmaps.add(row);
+ 			}
+ 		}
         //合计横向的一行
-        Map<String, Object> map1=new LinkedHashMap();
-        long Monthsum=0;
-        for (Map<String, Object> map : listInvalid) {
-        		Monthsum +=(long) map.get("hj");
+ 		Map<String,Object> map1=new LinkedHashMap();
+ 		int Monthsum=0;
+        for (Map<String, Object> map : newmaps) {
+        		Monthsum +=Integer.valueOf(String.valueOf(map.get("total").toString()));
     		}
         	map1.put("srcName", "合计");
-        	map1.put("hj", Monthsum);
-        for (Map<String, Object> day : dayList) {
-        	long daysum=0;
-        	for (Map<String, Object> map : listInvalid) {
-    			daysum +=(long) map.get(day.get("dayKey"));
-    		}
-        	map1.put((String) day.get("dayKey"), daysum);
+        	map1.put("total", Monthsum);
+ 		String[] days={"01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"};
+ 		for (String day : days) {
+ 			int daysum=0;
+ 			for (Map<String, Object> map : newmaps) {
+ 				if(map.containsKey(day)){
+ 					daysum+=Integer.valueOf(String.valueOf(map.get(day).toString()));
+ 				}
+ 			}map1.put(day, daysum);
 		}
-        listInvalid.add(0,map1);
-		return listInvalid;
+ 		newmaps.add(0,map1);
+		return newmaps;
 	}
 	
 	/**
@@ -356,83 +415,85 @@ public class DstgReportsSrcMonthDao {
      * @param end
      * @param companyId
      * */
-	public List<Map<String, Object>> getDSTGSrcMonthReportsvalid(List<Map<String, Object>> dayList , String month,ReportsParamSrcMonthVO reportsParamSrcMonthVO,
+	public List<Map<String, Object>> getDSTGSrcMonthReportsvalid(int firstDay , int lastDay,ReportsParamSrcMonthVO reportsParamSrcMonthVO,
 			DsInvalidVO invalidConfig) {
 		//构造集合对象，把指标放入
 		StringBuilder sql = new StringBuilder();
-		String infoTabName = DBSplitUtil.getInfoTabName(reportsParamSrcMonthVO.getCompanyId());
-		
-        sql.append("SELECT src.SRCNAME srcName,src.ID srcId,");
-        sql.append("(select COUNT(info.ID) from " + infoTabName + " info, hm_crm_client_detail deta where info.SOURCEID=src.ID AND info.STATUSID NOT IN(0,98,99) AND deta.KZID=info.KZID AND info.ISDEL=0  ");
-        
-        //减去无效客资状态指标
-        if(StringUtil.isNotEmpty(invalidConfig.getDsInvalidStatus()) ){
-    		sql.append("  AND info.STATUSID NOT IN("+invalidConfig.getDsInvalidStatus()+")");
-    	}
-        //减去无效意向指标
-        if(StringUtil.isNotEmpty(invalidConfig.getDsInvalidLevel())){
-    		sql.append(" AND deta.YXLEVEL NOT IN("+invalidConfig.getDsInvalidLevel()+")");
-    	}
-        //待定不计算为有效时
-        if(!(invalidConfig.getDdIsValid())){
-        	//sql.append(" AND INSTR('"+invalidConfig.getDsDdStatus()+"', CONCAT(',',info.STATUSID,',')) = 0");
-        	sql.append(" AND info.STATUSID NOT IN("+invalidConfig.getDsDdStatus()+")");
-        }
-        //拍摄类型
-    	if(StringUtil.isNotEmpty(reportsParamSrcMonthVO.getTypeId())){
-    		sql.append(" AND info.TYPEID IN("+reportsParamSrcMonthVO.getTypeId()+")");
-    	}
-    	sql.append(" AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m')='" + month + "') hj,  ");
-    	//计算每天客资数
-    	for (Map<String, Object> day : dayList) {
-            sql.append("(select COUNT(info.ID) from " + infoTabName + " info, hm_crm_client_detail deta where info.SOURCEID=src.ID AND info.STATUSID NOT IN(0,98,99) AND deta.KZID=info.KZID AND info.ISDEL=0  ");
-            //减去无效客资状态指标
-            if(StringUtil.isNotEmpty(invalidConfig.getDsInvalidStatus()) ){
+		sql.append("SELECT info.SOURCEID,src.SRCNAME,FROM_UNIXTIME(info.CREATETIME, '%d') time,COUNT(1) count,src.SRCIMG srcImg ");
+		sql.append(" FROM hm_crm_client_info info ");
+		sql.append(" LEFT JOIN hm_crm_source src ON src.ID=info.SOURCEID ");
+		sql.append(" LEFT JOIN hm_crm_client_detail deta ON info.KZID=deta.KZID ");
+		sql.append(" WHERE info.ISDEL = 0 AND info.STATUSID NOT IN(0,98,99) ");
+			//减去无效客资状态指标
+        	if(StringUtil.isNotEmpty(invalidConfig.getDsInvalidStatus()) ){
         		sql.append(" AND info.STATUSID NOT IN("+invalidConfig.getDsInvalidStatus()+")");
         	}
-            //减去无效意向指标
-            if(StringUtil.isEmpty(invalidConfig.getDsInvalidStatus()) && StringUtil.isNotEmpty(invalidConfig.getDsInvalidLevel())){
+        	//减去无效意向指标
+        	if( StringUtil.isNotEmpty(invalidConfig.getDsInvalidLevel())){
         		sql.append(" AND deta.YXLEVEL NOT IN("+invalidConfig.getDsInvalidLevel()+")");
         	}
-            //待定不计算为有效时
-            if(!(invalidConfig.getDdIsValid())){
-            	//sql.append(" AND INSTR('"+invalidConfig.getDsDdStatus()+"', CONCAT(',',info.STATUSID,',')) = 0");
-            	sql.append(" AND info.STATUSID NOT IN("+invalidConfig.getDsDdStatus()+")");
-            }
-        	if(StringUtil.isNotEmpty(reportsParamSrcMonthVO.getTypeId())){
-        		sql.append(" AND info.TYPEID IN("+reportsParamSrcMonthVO.getTypeId()+")");
+        	//待定不计算为有效时
+        	if(!(invalidConfig.getDdIsValid())){
+        		sql.append(" AND info.STATUSID NOT IN("+invalidConfig.getDsDdStatus()+")");
         	}
-            sql.append(" AND FROM_UNIXTIME(info.CREATETIME, '%Y/%m/%d')='" + day.get("day") + "') " + day.get("dayKey") + ",");
-        }	
-        	
-        sql.append(" src.SRCIMG srcImg ");
-        sql.append(" FROM hm_crm_source src WHERE src.COMPANYID = ? AND TYPEID IN (1,2) ");
-        
-        if (StringUtil.isNotEmpty(reportsParamSrcMonthVO.getSourceId())) {
-            sql.append(" AND src.ID IN (" + reportsParamSrcMonthVO.getSourceId() + ")");
-        }
-        sql.append(" ORDER BY src.CHANNELID ASC,src.PRIORITY ASC");
+			if(StringUtil.isNotEmpty(reportsParamSrcMonthVO.getTypeId())){
+				sql.append(" AND info.TYPEID IN("+reportsParamSrcMonthVO.getTypeId()+") ");
+			}
+		sql.append(" AND info.CREATETIME BETWEEN "+firstDay+" AND "+ lastDay);	
+		sql.append(" AND src.TYPEID IN(1,2)");
+			if (StringUtil.isNotEmpty(reportsParamSrcMonthVO.getSourceId())) {
+				sql.append(" AND src.ID IN (" + reportsParamSrcMonthVO.getSourceId() + ")");
+			}
+		sql.append(" AND info.COMPANYID=? ");
+		sql.append(" GROUP BY info.SOURCEID,time ");
+		sql.append(" ORDER BY info.SOURCEID ");
         String sqlString = sql.toString(); 
-        List<Map<String, Object>> listValid = jdbcTemplate.queryForList(sqlString, new Object[]{
-        		reportsParamSrcMonthVO.getCompanyId(),});
-        
+        List<Map<String, Object>> listAll = jdbcTemplate.queryForList(sqlString, new Object[]{reportsParamSrcMonthVO.getCompanyId()});
+        // 最终用返回
+ 		List<Map<String, Object>> newmaps = new ArrayList<>();
+
+ 		for (Map<String, Object> map6 : listAll) {
+ 			Map<String, Object> row = new HashMap<>();
+ 			row.put("SOURCEID", map6.get("SOURCEID"));
+ 			row.put("SRCNAME", map6.get("SRCNAME"));
+ 			row.put("srcImg", map6.get("srcImg"));
+ 			row.put((String) map6.get("time"), map6.get("count"));
+ 			//合计
+ 			int count=Integer.valueOf(map6.get("count").toString());
+ 			boolean flag = false;
+ 			for (Map<String, Object> newmap : newmaps) {
+ 				if (newmap.get("SOURCEID").equals(row.get("SOURCEID"))) {
+ 					newmap.put((String) map6.get("time"), map6.get("count"));
+ 					Integer total = (Integer)newmap.get("total");
+ 					newmap.put("total", total + count);
+ 					flag = true;
+ 					break;
+ 				}
+ 			}
+ 			if (!flag) {
+ 				row.put("total",count);
+ 				newmaps.add(row);
+ 			}
+ 		}
         //合计横向的一行
-        Map<String, Object> map1=new LinkedHashMap();
-        long Monthsum=0;
-        for (Map<String, Object> map : listValid) {
-        		Monthsum +=(long) map.get("hj");
+ 		Map<String,Object> map1=new LinkedHashMap();
+ 		int Monthsum=0;
+        for (Map<String, Object> map : newmaps) {
+        		Monthsum +=Integer.valueOf(String.valueOf(map.get("total").toString()));
     		}
         	map1.put("srcName", "合计");
-        	map1.put("hj", Monthsum);
-        for (Map<String, Object> day : dayList) {
-        	long daysum=0;
-        	for (Map<String, Object> map : listValid) {
-    			daysum +=(long) map.get(day.get("dayKey"));
-    		}
-        	map1.put((String) day.get("dayKey"), daysum);
+        	map1.put("total", Monthsum);
+ 		String[] days={"01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"};
+ 		for (String day : days) {
+ 			int daysum=0;
+ 			for (Map<String, Object> map : newmaps) {
+ 				if(map.containsKey(day)){
+ 					daysum+=Integer.valueOf(String.valueOf(map.get(day).toString()));
+ 				}
+ 			}map1.put(day, daysum);
 		}
-        listValid.add(0,map1);
-		return listValid;
+ 		newmaps.add(0,map1);
+		return newmaps;
 	}
 	
 	/**
@@ -866,6 +927,149 @@ public class DstgReportsSrcMonthDao {
 	 */
 	public double parseDouble(double result) {
 		return Double.parseDouble(String.format("%.2f", result));
+	}
+	
+	/**
+	 * 电商推广月度报表入店量--HJF
+	 */
+
+	public List<Map<String, Object>> getDSTGSrcMonthReportsCome(int firstDay, int lastDay,
+			ReportsParamSrcMonthVO reportsParamSrcMonthVO, DsInvalidVO invalidConfig) {
+		StringBuilder sql = new StringBuilder();
+		//String infoTabName = DBSplitUtil.getInfoTabName(reportsParamSrcMonthVO.getCompanyId());
+		sql.append("SELECT info.SOURCEID,src.SRCNAME,FROM_UNIXTIME(info.CREATETIME, '%d') time,COUNT(1) count,src.SRCIMG srcImg ");
+		sql.append(" FROM hm_crm_client_info info ");
+		sql.append(" LEFT JOIN hm_crm_source src ON src.ID=info.SOURCEID ");
+		sql.append(" WHERE info.ISDEL = 0");
+			if(StringUtil.isNotEmpty(reportsParamSrcMonthVO.getTypeId())){
+				sql.append(" AND info.TYPEID IN("+reportsParamSrcMonthVO.getTypeId()+") ");
+			}
+		sql.append(" AND info.COMESHOPTIME BETWEEN "+firstDay+" AND "+ lastDay);	
+		sql.append(" AND src.TYPEID IN(1,2)");
+			if (StringUtil.isNotEmpty(reportsParamSrcMonthVO.getSourceId())) {
+				sql.append(" AND src.ID IN (" + reportsParamSrcMonthVO.getSourceId() + ")");
+			}
+		sql.append(" AND info.COMPANYID=? ");
+		sql.append(" GROUP BY info.SOURCEID,time ");
+		sql.append(" ORDER BY info.SOURCEID ");
+        String sqlString = sql.toString(); 
+        List<Map<String, Object>> listSum = jdbcTemplate.queryForList(sqlString, new Object[]{reportsParamSrcMonthVO.getCompanyId()});
+        // 最终用返回
+ 		List<Map<String, Object>> newmaps = new ArrayList<>();
+
+ 		for (Map<String, Object> map6 : listSum) {
+ 			Map<String, Object> row = new HashMap<>();
+ 			row.put("SOURCEID", map6.get("SOURCEID"));
+ 			row.put("SRCNAME", map6.get("SRCNAME"));
+ 			row.put("srcImg", map6.get("srcImg"));
+ 			row.put((String) map6.get("time"), map6.get("count"));
+ 			//合计
+ 			int count=Integer.valueOf(map6.get("count").toString());
+ 			boolean flag = false;
+ 			for (Map<String, Object> newmap : newmaps) {
+ 				if (newmap.get("SOURCEID").equals(row.get("SOURCEID"))) {
+ 					newmap.put((String) map6.get("time"), map6.get("count"));
+ 					Integer total = (Integer)newmap.get("total");
+ 					newmap.put("total", total + count);
+ 					flag = true;
+ 					break;
+ 				}
+ 			}
+ 			if (!flag) {
+ 				row.put("total",count);
+ 				newmaps.add(row);
+ 			}
+ 		}	
+        //合计横向的一行
+ 		Map<String,Object> map1=new LinkedHashMap();
+ 		int Monthsum=0;
+        for (Map<String, Object> map : newmaps) {
+        		Monthsum +=Integer.valueOf(String.valueOf(map.get("total").toString()));
+    		}
+        	map1.put("srcName", "合计");
+        	map1.put("total", Monthsum);
+ 		String[] days={"01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"};
+ 		for (String day : days) {
+ 			int daysum=0;
+ 			for (Map<String, Object> map : newmaps) {
+ 				if(map.containsKey(day)){
+ 					daysum+=Integer.valueOf(String.valueOf(map.get(day).toString()));
+ 				}
+ 			}map1.put(day, daysum);
+		}
+ 		newmaps.add(0,map1);
+		return newmaps;
+	}
+	
+	/**
+	 * 电商推广月度报表成交量--HJF
+	 */
+	public List<Map<String, Object>> getDSTGSrcMonthReportsSuccess(int firstDay, int lastDay,
+			ReportsParamSrcMonthVO reportsParamSrcMonthVO, DsInvalidVO invalidConfig) {
+		StringBuilder sql = new StringBuilder();
+		//String infoTabName = DBSplitUtil.getInfoTabName(reportsParamSrcMonthVO.getCompanyId());
+		sql.append("SELECT info.SOURCEID,src.SRCNAME,FROM_UNIXTIME(info.CREATETIME, '%d') time,COUNT(1) count,src.SRCIMG srcImg ");
+		sql.append(" FROM hm_crm_client_info info ");
+		sql.append(" LEFT JOIN hm_crm_source src ON src.ID=info.SOURCEID ");
+		sql.append(" WHERE info.ISDEL = 0");
+			if(StringUtil.isNotEmpty(reportsParamSrcMonthVO.getTypeId())){
+				sql.append(" AND info.TYPEID IN("+reportsParamSrcMonthVO.getTypeId()+") ");
+			}
+		sql.append(" AND info.SUCCESSTIME BETWEEN "+firstDay+" AND "+ lastDay);	
+		sql.append(" AND src.TYPEID IN(1,2)");
+			if (StringUtil.isNotEmpty(reportsParamSrcMonthVO.getSourceId())) {
+				sql.append(" AND src.ID IN (" + reportsParamSrcMonthVO.getSourceId() + ")");
+			}
+		sql.append(" AND info.COMPANYID=? ");
+		sql.append(" GROUP BY info.SOURCEID,time ");
+		sql.append(" ORDER BY info.SOURCEID ");
+        String sqlString = sql.toString(); 
+        List<Map<String, Object>> listSum = jdbcTemplate.queryForList(sqlString, new Object[]{reportsParamSrcMonthVO.getCompanyId()});
+        // 最终用返回
+ 		List<Map<String, Object>> newmaps = new ArrayList<>();
+
+ 		for (Map<String, Object> map6 : listSum) {
+ 			Map<String, Object> row = new HashMap<>();
+ 			row.put("SOURCEID", map6.get("SOURCEID"));
+ 			row.put("SRCNAME", map6.get("SRCNAME"));
+ 			row.put("srcImg", map6.get("srcImg"));
+ 			row.put((String) map6.get("time"), map6.get("count"));
+ 			//合计
+ 			int count=Integer.valueOf(map6.get("count").toString());
+ 			boolean flag = false;
+ 			for (Map<String, Object> newmap : newmaps) {
+ 				if (newmap.get("SOURCEID").equals(row.get("SOURCEID"))) {
+ 					newmap.put((String) map6.get("time"), map6.get("count"));
+ 					Integer total = (Integer)newmap.get("total");
+ 					newmap.put("total", total + count);
+ 					flag = true;
+ 					break;
+ 				}
+ 			}
+ 			if (!flag) {
+ 				row.put("total",count);
+ 				newmaps.add(row);
+ 			}
+ 		}	
+        //合计横向的一行
+ 		Map<String,Object> map1=new LinkedHashMap();
+ 		int Monthsum=0;
+        for (Map<String, Object> map : newmaps) {
+        		Monthsum +=Integer.valueOf(String.valueOf(map.get("total").toString()));
+    		}
+        	map1.put("srcName", "合计");
+        	map1.put("total", Monthsum);
+ 		String[] days={"01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"};
+ 		for (String day : days) {
+ 			int daysum=0;
+ 			for (Map<String, Object> map : newmaps) {
+ 				if(map.containsKey(day)){
+ 					daysum+=Integer.valueOf(String.valueOf(map.get(day).toString()));
+ 				}
+ 			}map1.put(day, daysum);
+		}
+ 		newmaps.add(0,map1);
+		return newmaps;
 	}
 	
 	
