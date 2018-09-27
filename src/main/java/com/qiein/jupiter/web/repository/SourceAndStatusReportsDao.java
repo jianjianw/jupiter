@@ -130,7 +130,7 @@ public class SourceAndStatusReportsDao {
         SourceAndStatusReportsVO sourceAndStatusReportsVO1=new SourceAndStatusReportsVO();
         sourceAndStatusReportsVO1.setSrcId(0);
         sourceAndStatusReportsVO1.setSrcName("合计");
-        sourceAndStatusReportsVO1.setSrcImg("关林涛辣鸡");
+        sourceAndStatusReportsVO1.setSrcImg("");
         Map<String,Integer> map=new HashMap<>();
         for(StatusPO statusPO:statusPOS){
             int hj=0;
