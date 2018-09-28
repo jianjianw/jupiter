@@ -738,7 +738,7 @@
                     ISDEL = 0
                     AND COMPANYID = #{companyId}
                     AND APPOINTORID = #{staffId}
-                    AND CAST(STATUSID AS UNSIGNED) &lt;&gt; 5
+#                     AND CAST(STATUSID AS UNSIGNED) &lt;&gt; 5
                     AND CAST(STATUSID AS UNSIGNED) &lt;&gt; 0
                     AND CAST(STATUSID AS UNSIGNED) &lt;&gt; 98
                     AND CAST(STATUSID AS UNSIGNED) &lt;&gt; 99
