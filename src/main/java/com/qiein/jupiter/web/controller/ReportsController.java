@@ -476,7 +476,6 @@ public class ReportsController extends BaseController {
      */
     @GetMapping("/get_cities_analysis_report")
     public ResultInfo getCitiesAnalysisReport(CitiesAnalysisParamDTO searchKey) {
-        //TODO 给默认时间
         if (searchKey.getStart() == null) {
             searchKey.setStart(0);
         }

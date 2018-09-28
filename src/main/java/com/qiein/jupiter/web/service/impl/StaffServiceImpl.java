@@ -1051,7 +1051,7 @@ public class StaffServiceImpl implements StaffService {
         String msgSetByStaffId = staffDao.getMsgSetByStaffId(companyId, staffId);
         StaffMsgSetDTO staffMsgSetDTO = new StaffMsgSetDTO();
         try {
-            JSONObject.parseObject(msgSetByStaffId, StaffMsgSetDTO.class);
+            staffMsgSetDTO = JSONObject.parseObject(msgSetByStaffId, StaffMsgSetDTO.class);
         } catch (Exception e) {
             //转换失败时更新至数据库
             e.printStackTrace();

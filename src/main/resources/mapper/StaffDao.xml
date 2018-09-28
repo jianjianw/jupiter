@@ -1362,6 +1362,7 @@
         UPDATE hm_pub_staff_detail
         SET MSGSET = #{msgSet}
         WHERE COMPANYID = #{companyId}
+        AND ID = #{staffId}
     </update>
 
 
