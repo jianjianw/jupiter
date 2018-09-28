@@ -319,7 +319,7 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @param num
      * @return
      */
-    int updateTodatKzNum(@Param("companyId") int companyId, @Param("staffId") int staffId, @Param("num") int num);
+    int updateTodayKzNum(@Param("companyId") int companyId, @Param("staffId") int staffId, @Param("num") int num);
 
     /**
      * 计算是否满限
@@ -380,13 +380,7 @@ public interface StaffDao extends BaseDao<StaffPO> {
      */
     StaffPushDTO getPushDTOByCidAndUid(@Param("id") int id, @Param("companyId") int companyId, @Param("type") String type);
 
-    /**
-     * 编辑个人消息设置
-     *
-     * @param staffMsg
-     * @return
-     */
-    int editMsgSet(StaffMsg staffMsg);
+
 
     /**
      * 获取微信个人中心展示数据
@@ -623,4 +617,11 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @return
      */
     int initWheelFlag();
+
+    /**
+     * 修改员工消息配置
+     */
+    int editStaffMsgSet(@Param("companyId") int companyId,
+                        @Param("staffId") int staffId,
+                        @Param("msgSet") String msgSet);
 }

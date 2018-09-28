@@ -13,6 +13,7 @@ import com.qiein.jupiter.web.entity.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
 
 import java.lang.reflect.Field;
@@ -36,6 +37,9 @@ public class ZjsKzOfYearDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private NamedParameterJdbcOperations namedJdbc;
+
     /**
      * 获取转介绍年度报表
      *
@@ -49,8 +53,9 @@ public class ZjsKzOfYearDao {
 //        int month = 1;
         for (int i = 0; i < timeList.size(); i += 2) {
             String sql = getFinalSQL(zjsClientYearReportDTO, dsInvalidVO);
-            Object[] objs = getParam(zjsClientYearReportDTO, timeList, i, dsInvalidVO);
-            List<ZjsClientYearReportVO> now = jdbcTemplate.query(sql,
+            Map<String,Object> objs = getParam(zjsClientYearReportDTO, timeList, i, dsInvalidVO);
+            System.out.println(Arrays.asList(objs));
+            List<ZjsClientYearReportVO> now = namedJdbc.query(sql,
                     objs,
                     new RowMapper<ZjsClientYearReportVO>() {
                         @Override
@@ -98,16 +103,20 @@ public class ZjsKzOfYearDao {
             String sql = getAllTargetSQL(zjsClientYearReportDTO, dsInvalidVO).toString();
 //            System.out.println("输出sql: " + sql);
 //            System.out.println(String.valueOf((i + 2) / 2) + "月time: begin: " + timeList.get(i) + " ,end: " + timeList.get(i + 1));
-            Object[] objs = new Object[]{timeList.get(i), timeList.get(i + 1),
-                    timeList.get(i), timeList.get(i + 1), dsInvalidVO.getZjsValidStatus(),
-                    timeList.get(i), timeList.get(i + 1),
-                    timeList.get(i), timeList.get(i + 1),
-                    timeList.get(i), timeList.get(i + 1),
-                    timeList.get(i), timeList.get(i + 1),
-                    timeList.get(i), timeList.get(i + 1),
-                    timeList.get(i), timeList.get(i + 1),
-                    timeList.get(i), timeList.get(i + 1)};
-            List<RegionReportsVO> now = jdbcTemplate.query(sql, objs, new RowMapper<RegionReportsVO>() {
+            Map<String,Object> paramMap = new HashMap<>();
+            paramMap.put("start",timeList.get(i));
+            paramMap.put("end",timeList.get(i+1));
+            paramMap.put("zjsValidStatus",dsInvalidVO.getZjsValidStatus());
+//            Object[] objs = new Object[]{timeList.get(i), timeList.get(i + 1),
+//                    timeList.get(i), timeList.get(i + 1), dsInvalidVO.getZjsValidStatus(),
+//                    timeList.get(i), timeList.get(i + 1),
+//                    timeList.get(i), timeList.get(i + 1),
+//                    timeList.get(i), timeList.get(i + 1),
+//                    timeList.get(i), timeList.get(i + 1),
+//                    timeList.get(i), timeList.get(i + 1),
+//                    timeList.get(i), timeList.get(i + 1),
+//                    timeList.get(i), timeList.get(i + 1)};
+            List<RegionReportsVO> now = namedJdbc.query(sql, paramMap, new RowMapper<RegionReportsVO>() {
                 @Override
                 public RegionReportsVO mapRow(ResultSet rs, int rowNum) throws SQLException {
 //                    System.out.println(JSON.toJSONString(rs.getString(2)));
@@ -156,7 +165,7 @@ public class ZjsKzOfYearDao {
      */
     public String getFinalSQL(ZjsClientYearReportDTO zjsClientYearReportDTO, DsInvalidVO dsInvalidVO) {
         String fianlSQL = setSearchTypeAndSQL(zjsClientYearReportDTO, dsInvalidVO);
-//        System.out.println("最终输出sql： " + fianlSQL);
+        System.out.println("最终输出sql： " + fianlSQL);
         return fianlSQL;
     }
 
@@ -215,8 +224,8 @@ public class ZjsKzOfYearDao {
     private StringBuilder getValidClientSQL(ZjsClientYearReportDTO zjsClientYearReportDTO, DsInvalidVO dsInvalidVO) {
         StringBuilder sb = new StringBuilder();
         getBaseSQL(sb, zjsClientYearReportDTO)
-                .append(" AND info.CREATETIME BETWEEN ? AND ? ")
-                .append(" AND INSTR('" + dsInvalidVO.getZjsValidStatus() + "',CONCAT( ','+info.STATUSID + '', ','))>0 ")
+                .append(" AND info.CREATETIME BETWEEN :start AND :end ")
+                .append(" AND INSTR( :zjsValidStatus ,CONCAT( '\"'+info.STATUSID , '\"'))>0 ")
                 .append(" GROUP BY info.SOURCEID");
         return sb;
     }
@@ -264,7 +273,7 @@ public class ZjsKzOfYearDao {
     private StringBuilder getComeShopClientSQL(ZjsClientYearReportDTO zjsClientYearReportDTO) {
         StringBuilder sb = new StringBuilder();
         getBaseSQL(sb, zjsClientYearReportDTO);
-        sb.append(" AND (info.COMESHOPTIME BETWEEN ? AND ?) ").append("GROUP BY info.SOURCEID");
+        sb.append(" AND (info.COMESHOPTIME BETWEEN :start AND :end) ").append("GROUP BY info.SOURCEID");
         return sb;
     }
 
@@ -276,7 +285,7 @@ public class ZjsKzOfYearDao {
     private StringBuilder getSuccessClientSQL(ZjsClientYearReportDTO zjsClientYearReportDTO) {
         StringBuilder sb = new StringBuilder();
         getBaseSQL(sb, zjsClientYearReportDTO);
-        sb.append(" AND (info.SUCCESSTIME BETWEEN ? AND ?) ").append("GROUP BY info.SOURCEID");
+        sb.append(" AND (info.SUCCESSTIME BETWEEN :start AND :end) ").append("GROUP BY info.SOURCEID");
         return sb;
     }
 
@@ -288,7 +297,7 @@ public class ZjsKzOfYearDao {
     private StringBuilder getAllClientSQL(ZjsClientYearReportDTO zjsClientYearReportDTO) {
         StringBuilder sb = new StringBuilder();
         getBaseSQL(sb, zjsClientYearReportDTO);
-        sb.append(" AND info.CREATETIME BETWEEN ? AND ? ").append("GROUP BY info.SOURCEID");
+        sb.append(" AND info.CREATETIME BETWEEN :start AND :end ").append("GROUP BY info.SOURCEID");
         return sb;
     }
 
@@ -300,7 +309,7 @@ public class ZjsKzOfYearDao {
     private StringBuilder getInValidClientSQL(ZjsClientYearReportDTO zjsClientYearReportDTO, DsInvalidVO dsInvalidVO) {
         StringBuilder inValidClientSQL = new StringBuilder();
         getBaseSQL(inValidClientSQL, zjsClientYearReportDTO);
-        inValidClientSQL.append(" AND (info.CREATETIME BETWEEN ? AND ?) ");
+        inValidClientSQL.append(" AND (info.CREATETIME BETWEEN :start AND :end) ");
         if (StringUtil.isNotEmpty(dsInvalidVO.getZjsValidStatus())) {
             inValidClientSQL.append(" AND INSTR('" + dsInvalidVO.getZjsValidStatus() + "',CONCAT( ','+info.STATUSID + '', ','))=0 ");
         }
@@ -327,7 +336,7 @@ public class ZjsKzOfYearDao {
         StringBuilder filterPendingClientSQL = new StringBuilder();
         getBaseSQL(filterPendingClientSQL, zjsClientYearReportDTO);
         filterPendingClientSQL.append(" AND info.CLASSID = 1 and info.STATUSID = 98 ")
-                .append(" AND (info.CREATETIME BETWEEN ? AND ?) ");
+                .append(" AND (info.CREATETIME BETWEEN :start AND :end) ");
         filterPendingClientSQL.append("GROUP BY info.SOURCEID");
         return filterPendingClientSQL;
     }
@@ -338,7 +347,7 @@ public class ZjsKzOfYearDao {
     private StringBuilder getFilterInClientCount(ZjsClientYearReportDTO zjsClientYearReportDTO) {
         StringBuilder filterInClienSQL = new StringBuilder();
         getBaseSQL(filterInClienSQL, zjsClientYearReportDTO);
-        filterInClienSQL.append(" and info.CREATETIME BETWEEN ? AND ? ")
+        filterInClienSQL.append(" and info.CREATETIME BETWEEN :start AND :end ")
                 .append(" and info.CLASSID = 1 and info.STATUSID = 0 ");
         filterInClienSQL.append("GROUP BY info.SOURCEID");
         return filterInClienSQL;
@@ -353,7 +362,7 @@ public class ZjsKzOfYearDao {
         StringBuilder filterInValidClientSQL = new StringBuilder();
         getBaseSQL(filterInValidClientSQL, zjsClientYearReportDTO);
         filterInValidClientSQL.append(" and info.CLASSID = 6 and info.STATUSID = 99 ")
-                .append(" AND (info.CREATETIME BETWEEN ? AND ?) ").append("GROUP BY info.SOURCEID");
+                .append(" AND (info.CREATETIME BETWEEN :start AND :end) ").append("GROUP BY info.SOURCEID");
         return filterInValidClientSQL;
     }
 
@@ -365,8 +374,8 @@ public class ZjsKzOfYearDao {
     private StringBuilder getPendingClientCount(ZjsClientYearReportDTO zjsClientYearReportDTO, DsInvalidVO dsInvalidVO) {
         StringBuilder pendingClientSQL = new StringBuilder(); //"pendingClientCount"
         getBaseSQL(pendingClientSQL, zjsClientYearReportDTO);
-        pendingClientSQL.append(" AND (info.CREATETIME BETWEEN ? AND ?) ")
-                .append(" AND INSTR( ? , CONCAT(',',info.STATUSID + '',',')) != 0 ").append(" GROUP BY info.SOURCEID");
+        pendingClientSQL.append(" AND (info.CREATETIME BETWEEN :start AND :end) ")
+                .append(" AND INSTR( :zjsValidStatus , CONCAT(',',info.STATUSID + '',',')) != 0 ").append(" GROUP BY info.SOURCEID");
         return pendingClientSQL;
     }
 
@@ -375,24 +384,29 @@ public class ZjsKzOfYearDao {
      *
      * @return
      */
-    public Object[] getParam(ZjsClientYearReportDTO zjsClientYearReportDTO, List<Integer> timeList, int i, DsInvalidVO dsInvalidVO) {
-        switch (zjsClientYearReportDTO.getDataType()) {
-//            case "总客资":
-//                return new Object[]{ timeList.get(i), timeList.get(++i)};
-            case "客资量":
-                return new Object[]{timeList.get(i), timeList.get(i + 1),
-                        timeList.get(i), timeList.get(i + 1),
-                        timeList.get(i), timeList.get(i + 1),
-                        timeList.get(i), timeList.get(i + 1)};
-            case "有效量":
-                return new Object[]{timeList.get(i), timeList.get(i + 1)};
-            case "入店量":
-                return new Object[]{timeList.get(i), timeList.get(++i)};
-            case "成交量":
-                return new Object[]{timeList.get(i), timeList.get(++i)};
-            default:
-                throw new RException(ExceptionEnum.SEARCH_TYPE_IS_UNKNOW);
-        }
+    public Map<String,Object> getParam(ZjsClientYearReportDTO zjsClientYearReportDTO, List<Integer> timeList, int i, DsInvalidVO dsInvalidVO) {
+        Map<String,Object> paramMap = new HashMap<>();
+        paramMap.put("start",timeList.get(i));
+        paramMap.put("end",timeList.get(i+1));
+        paramMap.put("zjsValidStatus",dsInvalidVO.getZjsValidStatus());
+        return paramMap;
+//        switch (zjsClientYearReportDTO.getDataType()) {
+////            case "总客资":
+////                return new Object[]{ timeList.get(i), timeList.get(++i)};
+//            case "客资量":
+//                return new Object[]{timeList.get(i), timeList.get(i + 1),
+//                        timeList.get(i), timeList.get(i + 1),
+//                        timeList.get(i), timeList.get(i + 1),
+//                        timeList.get(i), timeList.get(i + 1)};
+//            case "有效量":
+//                return new Object[]{timeList.get(i), timeList.get(i + 1),dsInvalidVO.getZjsValidStatus()};
+//            case "入店量":
+//                return new Object[]{timeList.get(i), timeList.get(++i)};
+//            case "成交量":
+//                return new Object[]{timeList.get(i), timeList.get(++i)};
+//            default:
+//                throw new RException(ExceptionEnum.SEARCH_TYPE_IS_UNKNOW);
+//        }
     }
 
     /**

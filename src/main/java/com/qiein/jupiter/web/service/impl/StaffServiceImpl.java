@@ -356,17 +356,6 @@ public class StaffServiceImpl implements StaffService {
         return staffDao.getByIdAndCid(id, companyId);
     }
 
-    /**
-     * 编辑员工消息设置
-     *
-     * @param staffMsg
-     */
-    @Override
-    public void editMsgSet(StaffMsg staffMsg) {
-        if (staffDao.editMsgSet(staffMsg) < 1) {
-            throw new RException(ExceptionEnum.EDIT_FAIL);
-        }
-    }
 
     /**
      * 检查是否绑定成功，如果绑定成功返回微信公众号用户的所有信息
@@ -870,7 +859,7 @@ public class StaffServiceImpl implements StaffService {
         // 计算客服今日领取客资数
         int num = staffDao.getTodayKzNum(companyId, staffId, DBSplitUtil.getInfoTabName(companyId));
         // 修改今日领取客资数
-        int updateNum = staffDao.updateTodatKzNum(companyId, staffId, num);
+        int updateNum = staffDao.updateTodayKzNum(companyId, staffId, num);
         if (1 != updateNum) {
             throw new RException(ExceptionEnum.STAFF_EDIT_ERROR);
         }
@@ -1058,8 +1047,18 @@ public class StaffServiceImpl implements StaffService {
      * @param staffId
      * @return
      */
-    public String getMsgSetByStaffId(int companyId, int staffId) {
-        return staffDao.getMsgSetByStaffId(companyId, staffId);
+    public StaffMsgSetDTO getMsgSetByStaffId(int companyId, int staffId) {
+        String msgSetByStaffId = staffDao.getMsgSetByStaffId(companyId, staffId);
+        StaffMsgSetDTO staffMsgSetDTO = new StaffMsgSetDTO();
+        try {
+            JSONObject.parseObject(msgSetByStaffId, StaffMsgSetDTO.class);
+        } catch (Exception e) {
+            //转换失败时更新至数据库
+            e.printStackTrace();
+            staffDao.editStaffMsgSet(companyId, staffId, JSONObject.toJSONString(staffMsgSetDTO));
+        }
+
+        return staffMsgSetDTO;
     }
 
     /**
@@ -1120,6 +1119,19 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public int updateStaffWheelFlag(int companyId, int staffId, int flag) {
         return staffDao.updateStaffWheelFlag(companyId, staffId, flag);
+    }
+
+    /**
+     * 修改员工配置
+     *
+     * @param companyId
+     * @param staffId
+     * @param config
+     * @return
+     */
+    @Override
+    public int updateStaffMsgSet(int companyId, int staffId, String config) {
+        return staffDao.editStaffMsgSet(companyId, staffId, config);
     }
 
 

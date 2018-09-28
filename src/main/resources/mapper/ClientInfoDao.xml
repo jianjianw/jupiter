@@ -19,6 +19,7 @@
 
     <resultMap id="goEasyMap" type="com.qiein.jupiter.web.entity.dto.ClientGoEasyDTO">
         <id column="ID" jdbcType="INTEGER" property="id"/>
+        <result column="LETTERID" jdbcType="VARCHAR" property="letterId"/>
         <result column="KZID" jdbcType="VARCHAR" property="kzId"/>
         <result column="KZNAME" jdbcType="VARCHAR" property="kzName"/>
         <result column="KZPHONE" jdbcType="VARCHAR" property="kzPhone"/>
@@ -81,6 +82,7 @@
     <select id="getClientGoEasyDTOById" parameterType="map" resultMap="goEasyMap">
         SELECT
             info.ID,
+            info.LETTERID,
             info.KZID,
             info.KZNAME,
             info.KZPHONE,

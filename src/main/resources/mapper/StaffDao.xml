@@ -738,7 +738,7 @@
                     ISDEL = 0
                     AND COMPANYID = #{companyId}
                     AND APPOINTORID = #{staffId}
-                    AND CAST(STATUSID AS UNSIGNED) &lt;&gt; 5
+                    #                     AND CAST(STATUSID AS UNSIGNED) &lt;&gt; 5
                     AND CAST(STATUSID AS UNSIGNED) &lt;&gt; 0
                     AND CAST(STATUSID AS UNSIGNED) &lt;&gt; 98
                     AND CAST(STATUSID AS UNSIGNED) &lt;&gt; 99
@@ -763,7 +763,7 @@
     </select>
 
     <!-- 修改员工今日领取客资数 -->
-    <update id="updateTodatKzNum">
+    <update id="updateTodayKzNum">
         UPDATE hm_pub_staff
         SET TODAYNUM = #{num}
         WHERE COMPANYID = #{companyId} AND ID = #{staffId};
@@ -820,7 +820,6 @@
             sf.COMPANYID = #{companyId}
             AND sf.ISDEL = 0
             AND sf.ISLOCK = 0
-            AND sf.STATUSFLAG = 1
             AND grp.GROUPTYPE = #{type}
             AND INSTR(CONCAT(',', #{staffIds}, ','), CONCAT(',', sf.ID, ',')) != 0;
     </select>
@@ -842,7 +841,6 @@
             sf.COMPANYID = #{companyId}
             AND sf.ISDEL = 0
             AND sf.ISLOCK = 0
-            AND sf.STATUSFLAG = 1
             AND grp.GROUPTYPE = #{type}
             AND INSTR(CONCAT(',', #{staffIds}, ','), CONCAT(',', sf.ID, ',')) != 0;
     </select>
@@ -879,12 +877,6 @@
         LIMIT 0, 1
     </select>
 
-    <!--修改消息推送设置-->
-    <update id="editMsgSet" parameterType="staffMsg">
-        UPDATE hm_pub_staff_detail
-        SET MSGSET = #{msgSet}
-        WHERE ID = #{id} AND COMPANYID = #{companyId}
-    </update>
 
     <!-- 重置员工今日接单数 -->
     <update id="resetTodayNum" parameterType="map">
@@ -1363,4 +1355,14 @@
         UPDATE hm_pub_staff
         SET WHEELFLAG = 0
     </update>
+
+
+    <!--修改员工配置-->
+    <update id="editStaffMsgSet">
+        UPDATE hm_pub_staff_detail
+        SET MSGSET = #{msgSet}
+        WHERE COMPANYID = #{companyId}
+    </update>
+
+
 </mapper>

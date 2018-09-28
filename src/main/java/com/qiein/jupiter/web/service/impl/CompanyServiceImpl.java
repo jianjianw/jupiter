@@ -376,14 +376,20 @@ public class CompanyServiceImpl implements CompanyService {
      * @return
      */
     @Override
-    public JSONObject getCompanyConfig(int companyId) {
+    public CompanyConfigDTO getCompanyConfig(int companyId) {
         CompanyVO companyVO = companyDao.getVOById(companyId);
-        JSONObject json = new JSONObject();
+        CompanyConfigDTO companyConfigDTO = new CompanyConfigDTO();
         String config = companyVO.getConfig();
         if (StringUtil.isNotEmpty(config)) {
-            json = JSONObject.parseObject(config);
+            try {
+                companyConfigDTO = JSONObject.parseObject(config, CompanyConfigDTO.class);
+            } catch (Exception e) {
+                e.printStackTrace();
+                companyDao.editConfig(companyId, JSONObject.toJSONString(companyConfigDTO));
+            }
+
         }
-        return json;
+        return companyConfigDTO;
     }
 
     /**
@@ -393,6 +399,7 @@ public class CompanyServiceImpl implements CompanyService {
      */
     @Override
     public int timingExecuteConfigTask() {
+        int i = 0;
         List<CompanyPO> companyPOS = companyDao.listComp(1);
         for (CompanyPO companyPO : companyPOS) {
             String config = companyPO.getConfig();
@@ -407,11 +414,11 @@ public class CompanyServiceImpl implements CompanyService {
                 if (companyConfigDTO.isAutoOffline()) {
                     staffService.companyStaffOffLine(companyId);
                 }
-
                 companyDao.editConfig(companyId, JSONObject.toJSONString(companyConfigDTO));
             }
+            i++;
         }
-        return 0;
+        return i;
     }
 
 }
