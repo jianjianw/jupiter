@@ -472,7 +472,7 @@ public class ZjsKzOfYearDao {
                 } else {
                     hTotal.getDataMap().put(key, String.valueOf(Integer.valueOf(hTotal.getDataMap().get(key)) + Integer.valueOf(map.get(key))));
                 }
-                total += Double.valueOf(map.get(key));
+                total =Double.valueOf(total)+Double.valueOf(map.get(key));
             }
             map.put("合计", String.valueOf(total));
         }
