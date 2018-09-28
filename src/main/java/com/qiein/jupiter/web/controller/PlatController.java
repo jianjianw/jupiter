@@ -5,6 +5,7 @@ import com.qiein.jupiter.enums.QueryTimeTypeEnum;
 import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
+import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.QueryVO;
 import com.qiein.jupiter.web.service.PlatService;
@@ -27,6 +28,9 @@ public class PlatController extends BaseController {
      */
     @GetMapping("/page_search_by_key")
     public ResultInfo pageSearchByKey(String key) {
+        if (StringUtil.isEmpty(key)) {
+            return ResultInfoUtil.success();
+        }
         return ResultInfoUtil.success(platService.pageSearch(getCurrentLoginStaff().getCompanyId(), key));
     }
 
