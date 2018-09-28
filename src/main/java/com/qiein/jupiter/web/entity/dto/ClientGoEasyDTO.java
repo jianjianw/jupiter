@@ -20,6 +20,8 @@ public class ClientGoEasyDTO implements Serializable {
      */
     private int id;
 
+    private String letterId;
+
     /**
      * 客资ID
      */
@@ -326,5 +328,13 @@ public class ClientGoEasyDTO implements Serializable {
 
     public void setPromotorId(int promotorId) {
         this.promotorId = promotorId;
+    }
+
+    public String getLetterId() {
+        return letterId;
+    }
+
+    public void setLetterId(String letterId) {
+        this.letterId = letterId;
     }
 }

@@ -419,7 +419,7 @@ public class GoEasyUtil {
     public static void pushSuccessOnline(int companyId, int staffId, ClientGoEasyDTO info, NewsDao newsDao, StaffDao staffDao) {
         String head = "恭喜您，您的客户在线订单啦";
         StringBuffer sb = new StringBuffer();
-        sb.append("编号：").append(info.getId()).append("<br/>");
+        sb.append("编号：").append(info.getLetterId()).append("<br/>");
         if (StringUtil.isNotEmpty(info.getKzName())) {
             sb.append("姓名：").append(StringUtil.nullToStrTrim(info.getKzName())).append("<br/>");
         }
@@ -453,7 +453,7 @@ public class GoEasyUtil {
     public static void pushSuccessShop(int companyId, int staffId, ClientGoEasyDTO info, NewsDao newsDao, StaffDao staffDao) {
         String head = "恭喜您，您的客户在门店成功订单啦";
         StringBuffer sb = new StringBuffer();
-        sb.append("编号：").append(info.getId()).append("<br/>");
+        sb.append("编号：").append(info.getLetterId()).append("<br/>");
         if (StringUtil.isNotEmpty(info.getKzName())) {
             sb.append("姓名：").append(StringUtil.nullToStrTrim(info.getKzName())).append("<br/>");
         }
@@ -565,7 +565,7 @@ public class GoEasyUtil {
     public static void pushYyValidReject(int companyId, int staffId, ClientGoEasyDTO info, NewsDao newsDao, StaffDao staffDao) {
         String head = "您录入的客资被判为无效";
         StringBuffer sb = new StringBuffer();
-        sb.append("编号：").append(info.getId()).append("<br/>");
+        sb.append("编号：").append(info.getLetterId()).append("<br/>");
         if (StringUtil.isNotEmpty(info.getKzName())) {
             sb.append("姓名：").append(StringUtil.nullToStrTrim(info.getKzName())).append("<br/>");
         }
@@ -596,7 +596,7 @@ public class GoEasyUtil {
     public static void pushInfoComed(int companyId, int staffId, ClientGoEasyDTO info, NewsDao newsDao, StaffDao staffDao) {
         String head = "新客资来啦^_^";
         StringBuffer sb = new StringBuffer();
-        sb.append("编号：").append(info.getId()).append("<br/>");
+        sb.append("编号：").append(info.getLetterId()).append("<br/>");
         if (StringUtil.isNotEmpty(info.getKzName())) {
             sb.append("姓名：").append(StringUtil.nullToStrTrim(info.getKzName())).append("<br/>");
         }
@@ -684,7 +684,7 @@ public class GoEasyUtil {
             ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(kzArr[0],
                     DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
                     DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
-            sb.append("编号：").append(info.getId()).append("<br/>");
+            sb.append("编号：").append(info.getLetterId()).append("<br/>");
             if (StringUtil.isNotEmpty(info.getKzName())) {
                 sb.append("姓名：").append(StringUtil.nullToStrTrim(info.getKzName())).append("<br/>");
             }
@@ -749,7 +749,7 @@ public class GoEasyUtil {
         StringBuffer sb = new StringBuffer();
         if (num == 1) {
             sb.append("您好，您有1个" + type + "的客资被 " + operaName + " 删除 <br/>");
-            sb.append("编号：").append(info.getId()).append("<br/>");
+            sb.append("编号：").append(info.getLetterId()).append("<br/>");
             if (StringUtil.isNotEmpty(info.getKzName())) {
                 sb.append("姓名：").append(StringUtil.nullToStrTrim(info.getKzName())).append("<br/>");
             }
@@ -792,7 +792,7 @@ public class GoEasyUtil {
         }
         String head = "来自 " + operaName + " 的客资消息";
         StringBuffer sb = new StringBuffer();
-        sb.append("编号：").append(info.getId()).append("<br/>");
+        sb.append("编号：").append(info.getLetterId()).append("<br/>");
         if (StringUtil.isNotEmpty(info.getKzName())) {
             sb.append("姓名：").append(StringUtil.nullToStrTrim(info.getKzName())).append("<br/>");
         }
@@ -914,7 +914,7 @@ public class GoEasyUtil {
         }
         String head = "您的客资被" + StringUtil.nullToStrTrim(operaName) + "重复提报，<br/>请及时联系该客资";
         StringBuffer sb = new StringBuffer();
-        sb.append("编号：").append(info.getId()).append("<br/>");
+        sb.append("编号：").append(info.getLetterId()).append("<br/>");
         if (StringUtil.isNotEmpty(info.getKzName())) {
             sb.append("姓名：").append(StringUtil.nullToStrTrim(info.getKzName())).append("<br/>");
         }
@@ -951,7 +951,7 @@ public class GoEasyUtil {
         webSocketMsgUtil.pushReceiveClient(companyId, staffId, head, info);
         StringBuffer sb = new StringBuffer();
         sb.append(head).append("<br/>");
-        sb.append("编号：").append(info.getId()).append("<br/>");
+        sb.append("编号：").append(info.getLetterId()).append("<br/>");
         if (StringUtil.isNotEmpty(info.getKzName())) {
             sb.append("姓名：").append(StringUtil.nullToStrTrim(info.getKzName())).append("<br/>");
         }
@@ -976,7 +976,7 @@ public class GoEasyUtil {
         }
         String head = "您有一个客资被无效驳回";
         StringBuffer sb = new StringBuffer();
-        sb.append("编号：").append(info.getId()).append("<br/>");
+        sb.append("编号：").append(info.getLetterId()).append("<br/>");
         if (StringUtil.isNotEmpty(info.getKzName())) {
             sb.append("姓名：").append(StringUtil.nullToStrTrim(info.getKzName())).append("<br/>");
         }
