@@ -115,7 +115,7 @@
         <include refid="formList"/>
         from hm_crm_gold_plug_setting where companyId=#{companyId}
         <if test="formId != null and formId != ''">
-            AND FORMID = #{formId}
+            AND FORMID like concat("%",#{formId},"%") 
         </if>
         <if test="srcList.size()>0">
         AND SRCID IN (
