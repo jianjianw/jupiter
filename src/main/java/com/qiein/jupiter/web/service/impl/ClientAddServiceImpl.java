@@ -157,7 +157,7 @@ public class ClientAddServiceImpl implements ClientAddService {
 
             if (StringUtil.isNotEmpty(clientVO.getGroupId()) && NumUtil.isValid(clientVO.getAppointId())) {
                 // 推送消息
-                ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(jsInfo.getString("data"),
+                ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(JsonFmtUtil.strContentToJsonObj(addRstStr).getString("kzid"),
                         DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
                         DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
                 GoEasyUtil.pushInfoComed(staffPO.getCompanyId(), clientVO.getAppointId(), info, newsDao, staffDao);
@@ -278,7 +278,7 @@ public class ClientAddServiceImpl implements ClientAddService {
 //                    companyPO.getOvertime(), companyPO.getKzInterval(), sourcePO.getId()));
             if (StringUtil.isNotEmpty(clientVO.getGroupId()) && NumUtil.isValid(clientVO.getAppointId())) {
                 // 推送消息
-                ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(jsInfo.getString("data"),
+                ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(JsonFmtUtil.strContentToJsonObj(addRstStr).getString("kzid"),
                         DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
                         DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
                 GoEasyUtil.pushInfoComed(staffPO.getCompanyId(), clientVO.getAppointId(), info, newsDao, staffDao);
