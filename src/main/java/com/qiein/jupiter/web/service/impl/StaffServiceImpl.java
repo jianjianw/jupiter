@@ -1049,7 +1049,16 @@ public class StaffServiceImpl implements StaffService {
      */
     public StaffMsgSetDTO getMsgSetByStaffId(int companyId, int staffId) {
         String msgSetByStaffId = staffDao.getMsgSetByStaffId(companyId, staffId);
-        return JSONObject.parseObject(msgSetByStaffId, StaffMsgSetDTO.class);
+        StaffMsgSetDTO staffMsgSetDTO = new StaffMsgSetDTO();
+        try {
+            JSONObject.parseObject(msgSetByStaffId, StaffMsgSetDTO.class);
+        } catch (Exception e) {
+            //转换失败时更新至数据库
+            e.printStackTrace();
+            staffDao.editStaffMsgSet(companyId, staffId, JSONObject.toJSONString(staffMsgSetDTO));
+        }
+
+        return staffMsgSetDTO;
     }
 
     /**

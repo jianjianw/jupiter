@@ -2,7 +2,6 @@ package com.qiein.jupiter.enums;
 
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
-import com.sun.org.apache.regexp.internal.RE;
 
 /**
  * FileName: GoldDataStatusEnum
