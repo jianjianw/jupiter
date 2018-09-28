@@ -103,16 +103,20 @@ public class ZjsKzOfYearDao {
             String sql = getAllTargetSQL(zjsClientYearReportDTO, dsInvalidVO).toString();
 //            System.out.println("输出sql: " + sql);
 //            System.out.println(String.valueOf((i + 2) / 2) + "月time: begin: " + timeList.get(i) + " ,end: " + timeList.get(i + 1));
-            Object[] objs = new Object[]{timeList.get(i), timeList.get(i + 1),
-                    timeList.get(i), timeList.get(i + 1), dsInvalidVO.getZjsValidStatus(),
-                    timeList.get(i), timeList.get(i + 1),
-                    timeList.get(i), timeList.get(i + 1),
-                    timeList.get(i), timeList.get(i + 1),
-                    timeList.get(i), timeList.get(i + 1),
-                    timeList.get(i), timeList.get(i + 1),
-                    timeList.get(i), timeList.get(i + 1),
-                    timeList.get(i), timeList.get(i + 1)};
-            List<RegionReportsVO> now = jdbcTemplate.query(sql, objs, new RowMapper<RegionReportsVO>() {
+            Map<String,Object> paramMap = new HashMap<>();
+            paramMap.put("start",timeList.get(i));
+            paramMap.put("end",timeList.get(i+1));
+            paramMap.put("zjsValidStatus",dsInvalidVO.getZjsValidStatus());
+//            Object[] objs = new Object[]{timeList.get(i), timeList.get(i + 1),
+//                    timeList.get(i), timeList.get(i + 1), dsInvalidVO.getZjsValidStatus(),
+//                    timeList.get(i), timeList.get(i + 1),
+//                    timeList.get(i), timeList.get(i + 1),
+//                    timeList.get(i), timeList.get(i + 1),
+//                    timeList.get(i), timeList.get(i + 1),
+//                    timeList.get(i), timeList.get(i + 1),
+//                    timeList.get(i), timeList.get(i + 1),
+//                    timeList.get(i), timeList.get(i + 1)};
+            List<RegionReportsVO> now = namedJdbc.query(sql, paramMap, new RowMapper<RegionReportsVO>() {
                 @Override
                 public RegionReportsVO mapRow(ResultSet rs, int rowNum) throws SQLException {
 //                    System.out.println(JSON.toJSONString(rs.getString(2)));
@@ -269,7 +273,7 @@ public class ZjsKzOfYearDao {
     private StringBuilder getComeShopClientSQL(ZjsClientYearReportDTO zjsClientYearReportDTO) {
         StringBuilder sb = new StringBuilder();
         getBaseSQL(sb, zjsClientYearReportDTO);
-        sb.append(" AND (info.COMESHOPTIME BETWEEN ? AND ?) ").append("GROUP BY info.SOURCEID");
+        sb.append(" AND (info.COMESHOPTIME BETWEEN :start AND :end) ").append("GROUP BY info.SOURCEID");
         return sb;
     }
 
@@ -281,7 +285,7 @@ public class ZjsKzOfYearDao {
     private StringBuilder getSuccessClientSQL(ZjsClientYearReportDTO zjsClientYearReportDTO) {
         StringBuilder sb = new StringBuilder();
         getBaseSQL(sb, zjsClientYearReportDTO);
-        sb.append(" AND (info.SUCCESSTIME BETWEEN ? AND ?) ").append("GROUP BY info.SOURCEID");
+        sb.append(" AND (info.SUCCESSTIME BETWEEN :start AND :end) ").append("GROUP BY info.SOURCEID");
         return sb;
     }
 
@@ -293,7 +297,7 @@ public class ZjsKzOfYearDao {
     private StringBuilder getAllClientSQL(ZjsClientYearReportDTO zjsClientYearReportDTO) {
         StringBuilder sb = new StringBuilder();
         getBaseSQL(sb, zjsClientYearReportDTO);
-        sb.append(" AND info.CREATETIME BETWEEN ? AND ? ").append("GROUP BY info.SOURCEID");
+        sb.append(" AND info.CREATETIME BETWEEN :start AND :end ").append("GROUP BY info.SOURCEID");
         return sb;
     }
 
@@ -305,7 +309,7 @@ public class ZjsKzOfYearDao {
     private StringBuilder getInValidClientSQL(ZjsClientYearReportDTO zjsClientYearReportDTO, DsInvalidVO dsInvalidVO) {
         StringBuilder inValidClientSQL = new StringBuilder();
         getBaseSQL(inValidClientSQL, zjsClientYearReportDTO);
-        inValidClientSQL.append(" AND (info.CREATETIME BETWEEN ? AND ?) ");
+        inValidClientSQL.append(" AND (info.CREATETIME BETWEEN :start AND :end) ");
         if (StringUtil.isNotEmpty(dsInvalidVO.getZjsValidStatus())) {
             inValidClientSQL.append(" AND INSTR('" + dsInvalidVO.getZjsValidStatus() + "',CONCAT( ','+info.STATUSID + '', ','))=0 ");
         }
@@ -332,7 +336,7 @@ public class ZjsKzOfYearDao {
         StringBuilder filterPendingClientSQL = new StringBuilder();
         getBaseSQL(filterPendingClientSQL, zjsClientYearReportDTO);
         filterPendingClientSQL.append(" AND info.CLASSID = 1 and info.STATUSID = 98 ")
-                .append(" AND (info.CREATETIME BETWEEN ? AND ?) ");
+                .append(" AND (info.CREATETIME BETWEEN :start AND :end) ");
         filterPendingClientSQL.append("GROUP BY info.SOURCEID");
         return filterPendingClientSQL;
     }
@@ -343,7 +347,7 @@ public class ZjsKzOfYearDao {
     private StringBuilder getFilterInClientCount(ZjsClientYearReportDTO zjsClientYearReportDTO) {
         StringBuilder filterInClienSQL = new StringBuilder();
         getBaseSQL(filterInClienSQL, zjsClientYearReportDTO);
-        filterInClienSQL.append(" and info.CREATETIME BETWEEN ? AND ? ")
+        filterInClienSQL.append(" and info.CREATETIME BETWEEN :start AND :end ")
                 .append(" and info.CLASSID = 1 and info.STATUSID = 0 ");
         filterInClienSQL.append("GROUP BY info.SOURCEID");
         return filterInClienSQL;
@@ -358,7 +362,7 @@ public class ZjsKzOfYearDao {
         StringBuilder filterInValidClientSQL = new StringBuilder();
         getBaseSQL(filterInValidClientSQL, zjsClientYearReportDTO);
         filterInValidClientSQL.append(" and info.CLASSID = 6 and info.STATUSID = 99 ")
-                .append(" AND (info.CREATETIME BETWEEN ? AND ?) ").append("GROUP BY info.SOURCEID");
+                .append(" AND (info.CREATETIME BETWEEN :start AND :end) ").append("GROUP BY info.SOURCEID");
         return filterInValidClientSQL;
     }
 
@@ -370,8 +374,8 @@ public class ZjsKzOfYearDao {
     private StringBuilder getPendingClientCount(ZjsClientYearReportDTO zjsClientYearReportDTO, DsInvalidVO dsInvalidVO) {
         StringBuilder pendingClientSQL = new StringBuilder(); //"pendingClientCount"
         getBaseSQL(pendingClientSQL, zjsClientYearReportDTO);
-        pendingClientSQL.append(" AND (info.CREATETIME BETWEEN ? AND ?) ")
-                .append(" AND INSTR( ? , CONCAT(',',info.STATUSID + '',',')) != 0 ").append(" GROUP BY info.SOURCEID");
+        pendingClientSQL.append(" AND (info.CREATETIME BETWEEN :start AND :end) ")
+                .append(" AND INSTR( :zjsValidStatus , CONCAT(',',info.STATUSID + '',',')) != 0 ").append(" GROUP BY info.SOURCEID");
         return pendingClientSQL;
     }
 
