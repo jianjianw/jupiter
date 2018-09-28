@@ -319,7 +319,7 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @param num
      * @return
      */
-    int updateTodatKzNum(@Param("companyId") int companyId, @Param("staffId") int staffId, @Param("num") int num);
+    int updateTodayKzNum(@Param("companyId") int companyId, @Param("staffId") int staffId, @Param("num") int num);
 
     /**
      * 计算是否满限

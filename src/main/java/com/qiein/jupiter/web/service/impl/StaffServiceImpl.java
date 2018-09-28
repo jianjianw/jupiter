@@ -859,7 +859,7 @@ public class StaffServiceImpl implements StaffService {
         // 计算客服今日领取客资数
         int num = staffDao.getTodayKzNum(companyId, staffId, DBSplitUtil.getInfoTabName(companyId));
         // 修改今日领取客资数
-        int updateNum = staffDao.updateTodatKzNum(companyId, staffId, num);
+        int updateNum = staffDao.updateTodayKzNum(companyId, staffId, num);
         if (1 != updateNum) {
             throw new RException(ExceptionEnum.STAFF_EDIT_ERROR);
         }
