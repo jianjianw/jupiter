@@ -316,13 +316,6 @@ public interface StaffService {
     StaffPO getByIdWithoutCache(int id, int companyId);
 
     /**
-     * 编辑个人消息设置
-     *
-     * @param staffMsg
-     */
-    void editMsgSet(StaffMsg staffMsg);
-
-    /**
      * 检查是否绑定成功，如果绑定成功返回微信公众号用户的所有信息
      *
      * @param companyId
@@ -399,7 +392,7 @@ public interface StaffService {
      * @param staffId
      * @return
      */
-    String getMsgSetByStaffId(int companyId, int staffId);
+    StaffMsgSetDTO getMsgSetByStaffId(int companyId, int staffId);
 
     /**
      * 根据员工姓名获取员工id
@@ -443,5 +436,11 @@ public interface StaffService {
      * @return
      */
     int updateStaffWheelFlag(int companyId, int staffId, int flag);
+
+
+    /**
+     * 修改员工配置
+     */
+    int updateStaffMsgSet(int companyId, int staffId, String msgSet);
 
 }

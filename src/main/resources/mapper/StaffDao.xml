@@ -879,12 +879,6 @@
         LIMIT 0, 1
     </select>
 
-    <!--修改消息推送设置-->
-    <update id="editMsgSet" parameterType="staffMsg">
-        UPDATE hm_pub_staff_detail
-        SET MSGSET = #{msgSet}
-        WHERE ID = #{id} AND COMPANYID = #{companyId}
-    </update>
 
     <!-- 重置员工今日接单数 -->
     <update id="resetTodayNum" parameterType="map">
@@ -1363,4 +1357,14 @@
         UPDATE hm_pub_staff
         SET WHEELFLAG = 0
     </update>
+
+
+    <!--修改员工配置-->
+    <update id="editStaffMsgSet">
+        UPDATE hm_pub_staff_detail
+        SET MSGSET = #{msgSet}
+        WHERE COMPANYID =#{}
+    </update>
+
+
 </mapper>

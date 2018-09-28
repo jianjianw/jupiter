@@ -9,6 +9,7 @@ import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.util.CollectionUtils;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.util.TimeUtil;
+import com.qiein.jupiter.web.entity.dto.CompanyConfigDTO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.CompanyVO;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
@@ -447,5 +448,11 @@ public class AllTest {
     public void test1232131221() {
         StringBuilder sb = new StringBuilder();
         sb.append("备注：").append(StringUtil.nullToStrTrim(StringUtil.replaceAllHTML(null).substring(0, 30)));
+    }
+
+    @Test
+    public void asdadqw() {
+        CompanyConfigDTO companyConfigDTO = new CompanyConfigDTO();
+        System.out.println(JSONObject.toJSONString(companyConfigDTO));
     }
 }

@@ -10,8 +10,7 @@ import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.msg.websocket.WebSocketMsgUtil;
 import com.qiein.jupiter.util.*;
-import com.qiein.jupiter.web.entity.dto.DingBindUserDTO;
-import com.qiein.jupiter.web.entity.dto.RequestInfoDTO;
+import com.qiein.jupiter.web.entity.dto.*;
 import com.qiein.jupiter.web.entity.po.SystemLog;
 import com.qiein.jupiter.web.entity.vo.*;
 import com.qiein.jupiter.web.service.SystemLogService;
@@ -33,8 +32,6 @@ import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.http.CrmBaseApi;
-import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
-import com.qiein.jupiter.web.entity.dto.StaffPasswordDTO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.service.StaffService;
 
@@ -633,10 +630,16 @@ public class StaffController extends BaseController {
         return ResultInfoUtil.success();
     }
 
-    @PostMapping("/set_msg")
-    public ResultInfo staffMsgSet(@RequestBody StaffMsg staffMsg) {
-        staffMsg.setCompanyId(getCurrentLoginStaff().getCompanyId());
-        staffService.editMsgSet(staffMsg);
+    /**
+     * 编辑消息设置
+     *
+     * @param staffMsg
+     * @return
+     */
+    @PostMapping("/update_msg_set")
+    public ResultInfo updateMsgSet(@RequestBody StaffMsgSetDTO staffMsg) {
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        staffService.updateStaffMsgSet(currentLoginStaff.getCompanyId(), currentLoginStaff.getId(), JSONObject.toJSONString(staffMsg));
         return ResultInfoUtil.success();
     }
 
@@ -687,19 +690,17 @@ public class StaffController extends BaseController {
     @GetMapping("/get_staff_msg_set")
     public ResultInfo getStaffMsgSet() {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        String msgSet = staffService.getMsgSetByStaffId(currentLoginStaff.getCompanyId(), currentLoginStaff.getId());
-        HashMap<String, Boolean> result = new HashMap<>();
-        result.put("explode", msgSet.indexOf("/1/") != -1);
-        return ResultInfoUtil.success(result);
+        return ResultInfoUtil.success(staffService.getMsgSetByStaffId(currentLoginStaff.getCompanyId(),
+                currentLoginStaff.getId()));
     }
 
     /**
      * 获取当前员工下的客资数量
-     * */
+     */
     @GetMapping("/get_client_count_by_id")
-    public ResultInfo getClientCountById(@RequestParam("staffId") Integer staffId){
+    public ResultInfo getClientCountById(@RequestParam("staffId") Integer staffId) {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        Integer clientCount = staffService.getClientCountById(currentLoginStaff,staffId);
+        Integer clientCount = staffService.getClientCountById(currentLoginStaff, staffId);
         return ResultInfoUtil.success(clientCount);
     }
 }
