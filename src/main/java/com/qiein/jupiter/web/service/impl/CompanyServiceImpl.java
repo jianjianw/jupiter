@@ -15,6 +15,7 @@ import com.qiein.jupiter.web.entity.dto.DsinvalDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.vo.CompanyVO;
 import com.qiein.jupiter.web.service.CompanyService;
+import com.qiein.jupiter.web.service.StaffService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,10 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Autowired
     private StaffDao staffDao;
+
+    @Autowired
+    private StaffService staffService;
+
 
     /**
      * 根据Id获取
@@ -382,24 +387,30 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     /**
-     * 定时关闭企业自定义设置
+     * 定时执行企业的配置任务
      *
      * @return
      */
     @Override
-    public int timingCloseAutoAllot() {
+    public int timingExecuteConfigTask() {
         List<CompanyPO> companyPOS = companyDao.listComp(1);
         for (CompanyPO companyPO : companyPOS) {
             String config = companyPO.getConfig();
+            int companyId = companyPO.getId();
             if (StringUtil.isNotEmpty(config)) {
                 CompanyConfigDTO companyConfigDTO = JSONObject.parseObject(config, CompanyConfigDTO.class);
+                //如果企业 启用了自动关闭分配
                 if (companyConfigDTO.isAutoCloseAllot()) {
                     companyConfigDTO.setAutoAllot(false);
-                    companyDao.editConfig(companyPO.getId(), JSONObject.toJSONString(companyConfigDTO));
                 }
+                //如果企业开启自动下线
+                if (companyConfigDTO.isAutoOffline()) {
+                    staffService.companyStaffOffLine(companyId);
+                }
+
+                companyDao.editConfig(companyId, JSONObject.toJSONString(companyConfigDTO));
             }
         }
-
         return 0;
     }
 

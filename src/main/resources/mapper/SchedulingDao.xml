@@ -69,6 +69,7 @@
             hm_pub_group
         WHERE
             PARENTID = '0' AND GROUPTYPE = #{type} AND COMPANYID = #{companyId}
+        ORDER BY PRIORITY
     </select>
 
     <select id="getGroupListByDept" parameterType="map" resultType="groupsInfoVO">
@@ -78,6 +79,7 @@
             hm_pub_group
         WHERE
             PARENTID = #{deptId} AND COMPANYID = #{companyId}
+        ORDER BY PRIORITY
     </select>
 
     <select id="getDeptLineNumAndOrderNum" parameterType="Integer" resultType="groupsInfoVO">

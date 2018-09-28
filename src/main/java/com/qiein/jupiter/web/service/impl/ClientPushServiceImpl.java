@@ -237,11 +237,11 @@ public class ClientPushServiceImpl implements ClientPushService {
         //如果为空,则重置接单
         if (CollectionUtils.isEmpty(wheelStaffList)) {
             log.info("当前没有可以轮单的人员,重置");
-            staffService.resetWheelStaffList(companyId, type);
+            staffService.findWheelStaffListAndResetFlag(companyId, type);
             return null;
         }
 
-        log.info("当前轮单人员列表:", JSONObject.toJSONString(wheelStaffList));
+        log.info("当前轮单人员列表:" + JSONObject.toJSONString(wheelStaffList));
 
         StaffPushDTO staffPushDTO = null;
         for (StaffPushDTO pushDTO : wheelStaffList) {
@@ -250,7 +250,7 @@ public class ClientPushServiceImpl implements ClientPushService {
                 staffPushDTO = pushDTO;
                 break;
             } else {
-                log.info(pushDTO.getStaffName(), "不在线，不分了");
+                log.info(pushDTO.getStaffName() + "不在线，不分了");
             }
         }
 

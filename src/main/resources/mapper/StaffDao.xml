@@ -1260,7 +1260,8 @@
     <update id="companyStaffOffLine">
         UPDATE hm_pub_staff
         SET STATUSFLAG = 0
-        WHERE STATUSFLAG != 8;
+        WHERE STATUSFLAG != 8
+              AND COMPANYID = #{companyId}
     </update>
 
 
@@ -1294,7 +1295,7 @@
     </select>
 
     <!--重置某种类型的轮单-->
-    <update id="resetWheelStaffList">
+    <update id="findWheelStaffListAndResetFlag">
         UPDATE hm_pub_staff stf
         SET WHEELFLAG = 1
         WHERE
@@ -1355,4 +1356,11 @@
             AND staff.STATUSFLAG = 1
         ORDER BY det.LASTLOGINTIME
     </select>
+
+
+    <!--重置企业轮单标志-->
+    <update id="initWheelFlag">
+        UPDATE hm_pub_staff
+        SET WHEELFLAG = 0
+    </update>
 </mapper>
