@@ -18,6 +18,7 @@ import com.qiein.jupiter.web.entity.po.ClientStatusPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.StaffNumVO;
 import com.qiein.jupiter.web.service.ClientTrackService;
+import com.qiein.jupiter.web.service.StaffService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,6 +56,8 @@ public class ClientTrackServiceImpl implements ClientTrackService {
     private CompanyDao companyDao;
     @Autowired
     private ClientStatusDao clientStatusDao;
+    @Autowired
+    private StaffService staffService;
 
     /**
      * 批量删除客资
@@ -192,7 +195,9 @@ public class ClientTrackServiceImpl implements ClientTrackService {
                     ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(kzId,
                             DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
                             DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
-                    GoEasyUtil.pushReject(staffPO.getCompanyId(), info.getAppointorId(), info, newsDao, staffDao);
+                    if (staffService.getMsgSetByStaffId(info.getCompanyId(),info.getAppointorId()).isAllowWxDingMsg()){
+                        GoEasyUtil.pushReject(staffPO.getCompanyId(), info.getAppointorId(), info, newsDao, staffDao);
+                    }
                 }
             }
         }
