@@ -78,6 +78,7 @@
             hm_pub_group
         WHERE
             PARENTID = #{deptId} AND COMPANYID = #{companyId}
+        ORDER BY PRIORITY
     </select>
 
     <select id="getDeptLineNumAndOrderNum" parameterType="Integer" resultType="groupsInfoVO">
