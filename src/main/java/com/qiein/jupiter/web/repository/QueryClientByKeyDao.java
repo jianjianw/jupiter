@@ -72,6 +72,8 @@ public class QueryClientByKeyDao {
 
         sql.append("  AND ( info.ID = :key OR info.LETTERID like :key OR info.KZNAME LIKE :key OR info.KZPHONE LIKE " +
                 " :key OR info.KZWECHAT LIKE :key OR info.KZWW LIKE :key OR info.KZQQ LIKE :key )");
+
+        sql.append(" LIMIT 0,100 ");
         Map<String, Object> keyMap = new HashMap<>();
         keyMap.put("companyId", companyId);
         keyMap.put("key", key + "%");
@@ -124,6 +126,7 @@ public class QueryClientByKeyDao {
         sql.append(detailTableName);
         sql.append(" det ON info.KZID = det.KZID WHERE info.COMPANYID = :companyId AND info.ISDEL = 0 ");
         sql.append("  AND (   det.MATENAME LIKE :key OR det.MATEWECHAT LIKE :key OR det.MATEPHONE LIKE :key OR det.MATEQQ LIKE :key  )");
+        sql.append(" LIMIT 0,100 ");
         Map<String, Object> keyMap = new HashMap<>();
         keyMap.put("companyId", companyId);
         keyMap.put("key", key + "%");
