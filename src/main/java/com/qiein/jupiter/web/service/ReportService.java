@@ -57,7 +57,7 @@ public interface ReportService {
      * @param zxStyleCode
      * @return
      */
-    List<DstgZxStyleReportsVO> getDstgZxStyleReports(Integer start, Integer end, int companyId, String type, String zxStyleCode,String sourceIds);
+    List<DstgZxStyleReportsVO> getDstgZxStyleReports(Integer start, Integer end, int companyId, String type, String zxStyleCode,String sourceIds,String collectorId);
 
     /**
      * 获取无效原因客资报表
@@ -97,7 +97,7 @@ public interface ReportService {
      * @param provinceAnalysisParamDTO
      * @return
      */
-    List<ProvinceReportsVO2> getProvinceReport(ProvinceAnalysisParamDTO provinceAnalysisParamDTO);
+    Map<String,Object> getProvinceReport(ProvinceAnalysisParamDTO provinceAnalysisParamDTO);
 
     /**
      * 查询所有客资--电商月度客资汇总报表
@@ -187,7 +187,7 @@ public interface ReportService {
      * @param companyId
      * @return
      */
-    List<DstgZxStyleReportsVO> getDstgZxStyleSourceRerports(Integer start, Integer end, String zxStyleCode, String type, int companyId);
+    List<DstgZxStyleReportsVO> getDstgZxStyleSourceRerports(Integer start, Integer end, String zxStyleCode, String type, int companyId,String collectorId);
 
     /**
      * 渠道订单数据统计
@@ -265,4 +265,22 @@ public interface ReportService {
      * @return
      */
     List<DstgChannelReportsOrderBySrcVO> getDstgChannelReportsOrderBySrc(String groupId,Integer companyId,String start,String end,String sourceIds,String typeIds);
+    /**
+    * 客资各个渠道各个状态
+     */
+    SourceAndStatusReportsShowVO getSourceAndStatusReports(String appointorIds,String collectorIds,String receptorIds,String start,String end,String groupIds,String typeIds,String sourceIds,Integer companyId);
+    
+    /**
+     * 电商推广月度报表入店量量--HJF
+     * @param reportParamDTO
+     * @return
+     */
+    List<Map<String, Object>> getDSTGSrcMonthReportsCome(String month, String typeId, String sourceId, int companyId);
+	/**
+     * 电商推广月度报表成交量--HJF
+     * @param reportParamDTO
+     * @return
+     */
+	List<Map<String, Object>> getDSTGSrcMonthReportsSuccess(String month, String typeId, String sourceId,
+			int companyId);
 }

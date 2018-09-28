@@ -57,4 +57,18 @@ public class PushRoleConst {
      * */
     public static final Integer GROUP_AVG_YY_WEIGHTS_RECEIVE = 14;
 
+
+    /**
+     * 轮单不分配
+     */
+    public static final int WHEEL_FLAG_NOT=0;
+    /**
+     * 轮单要分配
+     */
+    public static final int WHEEL_FLAG_WANT=1;
+    /**
+     * 轮单已分配
+     */
+    public static final int WHEEL_FLAG_YES=2;
+
 }

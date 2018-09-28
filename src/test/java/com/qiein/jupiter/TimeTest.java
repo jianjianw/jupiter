@@ -1,5 +1,6 @@
 package com.qiein.jupiter;
 
+import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.util.TimeUtil;
 import org.junit.Test;
 
@@ -13,7 +14,7 @@ import java.util.Locale;
  */
 public class TimeTest {
     @Test
-    public void getUtcTime(){
+    public void getUtcTime() {
         //Sat Jun 24 20:45:09 CST 2017
 
         String str = "Sat Jun 24 20:45:10 CST 2017";
@@ -21,12 +22,22 @@ public class TimeTest {
         String str2 = "2017-06-24  20:45";
         String str3 = "2017-6-24  20:45";
         String str4 = "2017-06-24  8:45:09";
-        try{
+        try {
             Date date = TimeUtil.smartFormat(str4);
             System.out.println(date);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
+
+    }
+
+
+    @Test
+    public void testJSON() {
+        JSONObject json = new JSONObject();
+        json.put("allot", 1);
+        json.put("not", 2);
+        System.out.println(json.toJSONString());
 
     }
 }

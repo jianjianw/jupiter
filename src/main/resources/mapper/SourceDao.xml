@@ -427,10 +427,17 @@
     </select>
 
     <select id="findSourseByType" resultMap="baseMap">
-        select SRCIMG,SRCNAME,ID FROM hm_crm_source where companyId=#{companyId} and typeid in (${typeId})
+        SELECT
+        source.SRCIMG,
+        source.SRCNAME,
+        source.ID
+        FROM
+        hm_crm_source source
+        LEFT JOIN hm_crm_channel channel on source.CHANNELID=channel.ID  where source.companyId=#{companyId} and source.typeid in (${typeId})
         <if test="sourceIds!=null and sourceIds!=''">
-            and ID IN (${sourceIds})
+            and source.ID IN (${sourceIds})
         </if>
+        ORDER BY channel.PRIORITY,channel.TYPEID,channel.ID,source.PRIORITY,source.TYPEID,source.ID
     </select>
 
     <select id="findSourseByType1" resultMap="baseMap">

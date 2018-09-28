@@ -204,10 +204,59 @@ public class ClientPushServiceImpl implements ClientPushService {
                         appointer.getGroupName(), ClientConst.ALLOT_SYSTEM_AUTO, companyId);
                 doAssignAppoint(companyId, kzId, appointer, allotLog.getId(), overTime);
                 break;
+            case ChannelConstant.PUSH_RULE_GROUP_WHEEL:
+                //20 全员轮单
+                if (NumUtil.isInValid(srcId)) {
+                    return;
+                }
+                appointer = getGroupWheel(companyId, type);
+                if (appointer == null) {
+                    return;
+                }
+                // 生成分配日志
+                allotLog = addAllotLog(kzId, appointer.getStaffId(), appointer.getStaffName(), appointer.getGroupId(),
+                        appointer.getGroupName(), ClientConst.ALLOT_SYSTEM_AUTO, companyId);
+                doAssignAppoint(companyId, kzId, appointer, allotLog.getId(), overTime);
+                //重置员工轮单标志为已分配
+                staffService.updateStaffWheelFlag(companyId, appointer.getStaffId(), PushRoleConst.WHEEL_FLAG_YES);
+                break;
             default:
                 break;
         }
     }
+
+    /**
+     * 小组 轮单
+     *
+     * @return
+     */
+    private StaffPushDTO getGroupWheel(int companyId, String type) {
+        //先从队列中找到
+        //获取当前可分配的小组
+        List<StaffPushDTO> wheelStaffList = staffService.getWheelStaffList(companyId, PushRoleConst.WHEEL_FLAG_WANT, type);
+        //如果为空,则重置接单
+        if (CollectionUtils.isEmpty(wheelStaffList)) {
+            log.info("当前没有可以轮单的人员,重置");
+            staffService.findWheelStaffListAndResetFlag(companyId, type);
+            return null;
+        }
+
+        log.info("当前轮单人员列表:" + JSONObject.toJSONString(wheelStaffList));
+
+        StaffPushDTO staffPushDTO = null;
+        for (StaffPushDTO pushDTO : wheelStaffList) {
+            //如果员工在线
+            if (pushDTO.getStatusFlag() == StaffStatusEnum.OnLine.getStatusId()) {
+                staffPushDTO = pushDTO;
+                break;
+            } else {
+                log.info(pushDTO.getStaffName() + "不在线，不分了");
+            }
+        }
+
+        return staffPushDTO;
+    }
+
 
     /**
      * 获取指定客服，本轮次的客服

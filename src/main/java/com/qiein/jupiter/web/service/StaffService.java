@@ -9,6 +9,7 @@ import com.qiein.jupiter.web.entity.po.PermissionPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.po.StaffStatusLog;
 import com.qiein.jupiter.web.entity.vo.*;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 员工
@@ -416,9 +417,31 @@ public interface StaffService {
     Integer getClientCountById(StaffPO currentLoginStaff, Integer staffId);
 
     /**
+     * 公司员工离线
      *
      * @return
      */
-    int companyStaffOffLine();
+    int companyStaffOffLine(int companyId);
+
+    /**
+     * 获取所有的电商客服或者转介绍小组员工，按照最后登录时间排序
+     */
+    List<StaffPushDTO> getWheelStaffList(int companyId, int wheelFlag, String groupType);
+
+
+    /**
+     * 重置客服接单轮单,设置新一批的可以分配的
+     */
+    int findWheelStaffListAndResetFlag(int companyId, String groupType);
+
+    /**
+     * 更新轮单标志
+     *
+     * @param companyId
+     * @param staffId
+     * @param flag
+     * @return
+     */
+    int updateStaffWheelFlag(int companyId, int staffId, int flag);
 
 }

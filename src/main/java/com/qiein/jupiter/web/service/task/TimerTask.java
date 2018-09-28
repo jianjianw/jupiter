@@ -1,10 +1,7 @@
 package com.qiein.jupiter.web.service.task;
 
 import com.qiein.jupiter.util.TimeUtil;
-import com.qiein.jupiter.web.service.ApolloService;
-import com.qiein.jupiter.web.service.ClientPushService;
-import com.qiein.jupiter.web.service.StaffService;
-import com.qiein.jupiter.web.service.SystemLogService;
+import com.qiein.jupiter.web.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +33,9 @@ public class TimerTask {
     @Value("${spring.profiles.active}")
     private String active;
 
+    @Autowired
+    private CompanyService companyService;
+
     /**
      * 每天8-23点  2分钟执行一次
      */
@@ -62,13 +62,12 @@ public class TimerTask {
     }
 
     /**
-     * 凌晨0点下线
+     * 凌晨0点执行企业任务
      */
     @Scheduled(cron = "0 0 0 * * ?")
     public void offLine() {
-        //TODO 定时下线
-        log.info("定时让所有在线员工全部离线...");
-        staffService.companyStaffOffLine();
+        log.info("定时执行企业级任务...");
+        companyService.timingExecuteConfigTask();
     }
 
     /**

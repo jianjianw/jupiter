@@ -60,7 +60,7 @@ public class ZjsKzOfYearDao {
                             do {
                                 SourceClientDataDTO scd = new SourceClientDataDTO();
                                 scd.setSrcId(rs.getInt("srcId"));
-                                scd.setDataNum(rs.getInt("dataNum"));
+                                scd.setDataNum(rs.getString("dataNum"));
                                 scd.setSrcImg(rs.getString("srcImg"));
                                 scd.setSrcName(rs.getString("srcName"));
                                 list.add(scd);
@@ -214,9 +214,9 @@ public class ZjsKzOfYearDao {
      */
     private StringBuilder getValidClientSQL(ZjsClientYearReportDTO zjsClientYearReportDTO, DsInvalidVO dsInvalidVO) {
         StringBuilder sb = new StringBuilder();
-        getBaseSQL(sb,zjsClientYearReportDTO)
+        getBaseSQL(sb, zjsClientYearReportDTO)
                 .append(" AND info.CREATETIME BETWEEN ? AND ? ")
-                .append(" AND INSTR('"+dsInvalidVO.getZjsValidStatus()+"',CONCAT( ','+info.STATUSID + '', ','))>0 ")
+                .append(" AND INSTR('" + dsInvalidVO.getZjsValidStatus() + "',CONCAT( ','+info.STATUSID + '', ','))>0 ")
                 .append(" GROUP BY info.SOURCEID");
         return sb;
     }
@@ -301,8 +301,8 @@ public class ZjsKzOfYearDao {
         StringBuilder inValidClientSQL = new StringBuilder();
         getBaseSQL(inValidClientSQL, zjsClientYearReportDTO);
         inValidClientSQL.append(" AND (info.CREATETIME BETWEEN ? AND ?) ");
-        if (StringUtil.isNotEmpty(dsInvalidVO.getZjsValidStatus())){
-            inValidClientSQL.append(" AND INSTR('"+dsInvalidVO.getZjsValidStatus()+"',CONCAT( ','+info.STATUSID + '', ','))=0 ");
+        if (StringUtil.isNotEmpty(dsInvalidVO.getZjsValidStatus())) {
+            inValidClientSQL.append(" AND INSTR('" + dsInvalidVO.getZjsValidStatus() + "',CONCAT( ','+info.STATUSID + '', ','))=0 ");
         }
 //        if (StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidStatus()) && StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidLevel())) {
 //            inValidClientSQL.append(" and (info.STATUSID in(" + dsInvalidVO.getDsInvalidStatus() + ") or");
@@ -437,7 +437,7 @@ public class ZjsKzOfYearDao {
                     newOne.setSrcId(scd.getSrcId());
                     newOne.setSrcName(scd.getSrcName());
                     newOne.setSrcImg(scd.getSrcImg());
-                    newOne.setDataMap(new HashMap<String, Integer>());
+                    newOne.setDataMap(new HashMap<String, String>());
                     newOne.getDataMap().put(zcyr.getMonthName(), scd.getDataNum());
                     newlist.add(newOne);
                 } else {
@@ -460,27 +460,27 @@ public class ZjsKzOfYearDao {
     private static List<ZjsClientYearReportVO2> total(List<ZjsClientYearReportVO2> list) {
         ZjsClientYearReportVO2 hTotal = new ZjsClientYearReportVO2();
         hTotal.setSrcName("合计");
-        hTotal.setDataMap(new HashMap<String, Integer>());
+        hTotal.setDataMap(new HashMap<String, String>());
         list.add(0, hTotal);
         for (ZjsClientYearReportVO2 zcyr : list) {
             hTotal.setDataType(zcyr.getDataType());
-            Map<String, Integer> map = zcyr.getDataMap();
-            int total = 0;
+            Map<String, String> map = zcyr.getDataMap();
+            double total = 0;
             for (String key : map.keySet()) {
                 if (!hTotal.getDataMap().containsKey(key)) {
                     hTotal.getDataMap().put(key, map.get(key));
                 } else {
-                    hTotal.getDataMap().put(key, hTotal.getDataMap().get(key) + map.get(key));
+                    hTotal.getDataMap().put(key, String.valueOf(Integer.valueOf(hTotal.getDataMap().get(key)) + Integer.valueOf(map.get(key))));
                 }
-                total += map.get(key);
+                total +=Double.valueOf(map.get(key));
             }
-            map.put("合计", total);
+            map.put("合计", String.valueOf(total));
         }
 
         for (String key : hTotal.getDataMap().keySet()) {
             if (key.equals("合计"))
                 continue;
-            hTotal.getDataMap().put("合计", hTotal.getDataMap().get(key) + hTotal.getDataMap().get("合计"));
+            hTotal.getDataMap().put("合计", String.valueOf(Double.valueOf(hTotal.getDataMap().get(key)) + Double.valueOf(hTotal.getDataMap().get("合计"))));
         }
         return list;
     }
@@ -532,7 +532,7 @@ public class ZjsKzOfYearDao {
                 .append("(" + getPendingClientCount(zjsClientYearReportDTO, dsInvalidVO) + ") ddl ,") //待定量
                 .append("(" + getFilterPendingClientCount(zjsClientYearReportDTO) + ") sxdd ,") //筛选待定
                 .append("(" + getFilterInClientCount(zjsClientYearReportDTO) + ") sxz ,") //筛选中
-                .append("(" + getValidClientSQL(zjsClientYearReportDTO, dsInvalidVO) +")yxl ,")     //有效量
+                .append("(" + getValidClientSQL(zjsClientYearReportDTO, dsInvalidVO) + ")yxl ,")     //有效量
                 .append("(" + getInValidClientSQL(zjsClientYearReportDTO, dsInvalidVO) + ") wxl ,") //无效量
                 .append("(" + getFilterInValidClientCount(zjsClientYearReportDTO) + ") sxwxl ,")   //筛选无效量
                 .append("(" + getComeShopClientSQL(zjsClientYearReportDTO) + ") rdl ,") //入店量

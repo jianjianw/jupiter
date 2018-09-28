@@ -392,9 +392,9 @@ public class ReportsController extends BaseController {
      * 电商推广咨询信息方式报表
      */
     @GetMapping("/get_dstg_zx_style_reports")
-    public ResultInfo getDstgZxStyleReports(Integer start, Integer end, @RequestParam(value = "type", required = false) String type, @RequestParam(value = "zxStyleCode", required = false) String zxStyleCode, @RequestParam(value = "sourceIds") String sourceIds) {
+    public ResultInfo getDstgZxStyleReports(Integer start, Integer end, @RequestParam(value = "type", required = false) String type, @RequestParam(value = "zxStyleCode", required = false) String zxStyleCode, @RequestParam(value = "sourceIds") String sourceIds,@RequestParam(value="collectorId",required = false)String collectorId) {
         StaffPO staffPO = getCurrentLoginStaff();
-        List<DstgZxStyleReportsVO> dstgGoldDataReportsVO = reportService.getDstgZxStyleReports(start, end, staffPO.getCompanyId(), type, zxStyleCode, sourceIds);
+        List<DstgZxStyleReportsVO> dstgGoldDataReportsVO = reportService.getDstgZxStyleReports(start, end, staffPO.getCompanyId(), type, zxStyleCode, sourceIds,collectorId);
         return ResultInfoUtil.success(dstgGoldDataReportsVO);
     }
 
@@ -402,9 +402,9 @@ public class ReportsController extends BaseController {
      * 电商推广咨询方式来源报表
      */
     @GetMapping("/get_dstg_zx_style_source_reports")
-    public ResultInfo getDstgZxStyleSourceReports(Integer start, Integer end, String zxStyleCode, @RequestParam(value = "type", required = false) String type) {
+    public ResultInfo getDstgZxStyleSourceReports(Integer start, Integer end, String zxStyleCode, @RequestParam(value = "type", required = false) String type,@RequestParam(value="collectorId",required = false)String collectorId) {
         StaffPO staffPO = getCurrentLoginStaff();
-        List<DstgZxStyleReportsVO> dstgZxStyleReportsVOS = reportService.getDstgZxStyleSourceRerports(start, end, zxStyleCode, type, staffPO.getCompanyId());
+        List<DstgZxStyleReportsVO> dstgZxStyleReportsVOS = reportService.getDstgZxStyleSourceRerports(start, end, zxStyleCode, type, staffPO.getCompanyId(),collectorId);
         return ResultInfoUtil.success(dstgZxStyleReportsVOS);
     }
 
@@ -498,7 +498,6 @@ public class ReportsController extends BaseController {
      */
     @GetMapping("/get_province_analysis_report")
     public ResultInfo getProvinceAnalysisReport(ProvinceAnalysisParamDTO searchKey) {
-        //TODO 给默认时间
         if (searchKey.getStart() == null) {
             searchKey.setStart(0);
         }
@@ -543,6 +542,16 @@ public class ReportsController extends BaseController {
         //查询有效客资
         if (StringUtil.isNotEmpty(kzZB) && "valid".equals(kzZB)) {
             List<Map<String, Object>> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsvalid(month, typeId, sourceId, staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+        //查询入店量
+        if (StringUtil.isNotEmpty(kzZB) && "come".equals(kzZB)) {
+            List<Map<String, Object>> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsCome(month, typeId, sourceId, staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+        //查询成交量
+        if (StringUtil.isNotEmpty(kzZB) && "success".equals(kzZB)) {
+            List<Map<String, Object>> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsSuccess(month, typeId, sourceId, staffPO.getCompanyId());
             return ResultInfoUtil.success(dstgReportsSrcMonthVO);
         }
         return ResultInfoUtil.error(9999, "查询失败");
@@ -675,5 +684,12 @@ public class ReportsController extends BaseController {
     @GetMapping("/get_dstg_channel_reports_order_by_src")
     public ResultInfo getDstgChannelReportsOrderBySrc(String groupId,String start,String end,String sourceIds,String typeIds) {
         return ResultInfoUtil.success(reportService.getDstgChannelReportsOrderBySrc(groupId,getCurrentLoginStaff().getCompanyId(),start,end,sourceIds,typeIds));
+    }
+    /**
+     * 客资各个渠道各个状态
+     */
+    @GetMapping("/get_source_and_status_reports")
+    public ResultInfo getSourceAndStatusReports(String appointorIds,String collectorIds,String receptorIds,String start,String end,String groupIds,String typeIds,String sourceIds){
+        return ResultInfoUtil.success(reportService.getSourceAndStatusReports(appointorIds,collectorIds,receptorIds,start,end,groupIds,typeIds,sourceIds,getCurrentLoginStaff().getCompanyId()));
     }
 }

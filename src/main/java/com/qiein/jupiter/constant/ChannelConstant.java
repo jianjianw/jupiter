@@ -53,6 +53,8 @@ public class ChannelConstant {
     public static final int PUSH_RULE_EVERYONE_CAN_GET = 13;
     //14：小组平均
     public static final int PUSH_RULE_GROUP_AVG = 14;
+    //20：小组轮单
+    public static final int PUSH_RULE_GROUP_WHEEL = 20;
 
     //门店自然入客
     public static final String SOURCE_SHOP_NATURAL_NAME = "门店自然入客";

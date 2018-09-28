@@ -1,6 +1,8 @@
 package com.qiein.jupiter.web.service.task;
 
+import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.util.CollectionUtils;
+import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.CompanyDao;
 import com.qiein.jupiter.web.entity.dto.ClientPushDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
@@ -56,6 +58,15 @@ public class ClientPushTask {
         log.info("执行定时推送任务");
         List<CompanyPO> compList = companyDao.listComp(1);
         for (CompanyPO comp : compList) {
+            String config = comp.getConfig();
+
+            if (StringUtil.isNotEmpty(config)) {
+                JSONObject configJson = JSONObject.parseObject(config);
+                if (configJson.getBoolean("autoAllot") != null && !configJson.getBoolean("autoAllot")) {
+                    log.info(comp.getCompanyName() + "企业关闭自动分配...");
+                    continue;
+                }
+            }
             //超时时间设置是秒
             int overTime = comp.getOverTime();
             List<ClientPushDTO> infoList = pushService.getInfoListBeReadyPush(comp.getId(), overTime);

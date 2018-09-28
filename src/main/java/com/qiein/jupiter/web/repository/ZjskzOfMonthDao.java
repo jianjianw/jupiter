@@ -1101,27 +1101,55 @@ public class ZjskzOfMonthDao {
             zjsKzOfMonthShowVO.setMap(map);
             showList.add(zjsKzOfMonthShowVO);
         }
-        /**
-         Map<String,Integer> map=new HashMap<>();
+
+         Map<String,String> map=new HashMap<>();
         for(Map<String, Object> dayMap:dayList){
-            Integer hj=0;
+            double hj=0;
+            int i=0;
             for (ZjsKzOfMonthShowVO zjsKzOfMonthShowVO:showList)
             {
-                hj+=zjsKzOfMonthShowVO.getMap().get(dayMap.get("dayKey"));
+                hj+=Double.parseDouble(zjsKzOfMonthShowVO.getMap().get(dayMap.get("dayKey")));
+                if(Double.parseDouble(zjsKzOfMonthShowVO.getMap().get(dayMap.get("dayKey")))!=0){
+                    i++;
+                }
             }
-            map.put((String)dayMap.get("dayKey"),hj);
+            if(type.equals("all")||type.equals("come")||type.equals("success")||type.equals("sum")||type.equals("invalid")||type.equals("ddnum")||type.equals("valid")){
+                map.put((String)dayMap.get("dayKey"),((int)hj)+"");
+            }else if(type.equals("validrate")||type.equals("ddrate")||type.equals("allcomerate")||type.equals("validcomerate")||type.equals("rdsuccessrate")||type.equals("allsuccessrate")||type.equals("validsuccessrate")){
+                if(i==0){
+                    map.put((String)dayMap.get("dayKey"),parseDouble(hj)+"");
+                }else {
+                    map.put((String)dayMap.get("dayKey"), parseDouble(hj / i) + "");
+                }
+            }else{
+                map.put("hj",parseDouble(hj)+"");
+            }
         }
-        Integer hj=0;
+        double hj=0;
+        int i=0;
         for(String countKey:map.keySet()){
-            hj+=map.get(countKey);
+            hj+=Double.parseDouble(map.get(countKey));
+            if(Double.parseDouble(map.get(countKey))!=0){
+                i++;
+            }
         }
-        map.put("hj",hj);
+        if(type.equals("all")||type.equals("come")||type.equals("success")||type.equals("sum")||type.equals("invalid")||type.equals("ddnum")||type.equals("valid")){
+            map.put("hj",((int)hj)+"");
+        }else if(type.equals("validrate")||type.equals("ddrate")||type.equals("allcomerate")||type.equals("validcomerate")||type.equals("rdsuccessrate")||type.equals("allsuccessrate")||type.equals("validsuccessrate")){
+            if(i==0){
+                map.put("hj",parseDouble(hj)+"");
+            }else {
+                map.put("hj", parseDouble(hj / i) + "");
+            }
+        }else{
+            map.put("hj",parseDouble(hj)+"");
+        }
         ZjsKzOfMonthShowVO zjsKzOfMonthShowVO=new ZjsKzOfMonthShowVO();
         zjsKzOfMonthShowVO.setMap(map);
         zjsKzOfMonthShowVO.setSrcName("合计");
         zjsKzOfMonthShowVO.setSrcId(0);
         showList.add(0,zjsKzOfMonthShowVO);
-         **/
+
     }
 
 }

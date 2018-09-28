@@ -947,8 +947,12 @@ public class StaffServiceImpl implements StaffService {
      */
     @Override
     public void taskClockInit() {
+        //重置接单数量
         staffDao.resetTodayNum();
+        //如果员工不是停单标志就下线
         staffDao.resetOffLineWhenLimit();
+        //重置轮单标志
+        staffDao.initWheelFlag();
     }
 
     /**
@@ -1085,8 +1089,38 @@ public class StaffServiceImpl implements StaffService {
      * @return
      */
     @Override
-    public int companyStaffOffLine() {
-        return staffDao.companyStaffOffLine();
+    public int companyStaffOffLine(int companyId) {
+        return staffDao.companyStaffOffLine(companyId);
     }
+
+    /**
+     * 获取所有的电商客服或者转介绍小组员工，按照最后登录时间排序
+     */
+    @Override
+    public List<StaffPushDTO> getWheelStaffList(int companyId, int wheelFlag, String groupType) {
+        return staffDao.getWheelStaffList(companyId, wheelFlag, groupType);
+    }
+
+    /**
+     *
+     */
+    @Override
+    public int findWheelStaffListAndResetFlag(int companyId, String groupType) {
+        return staffDao.findWheelStaffListAndResetFlag(companyId, groupType);
+    }
+
+    /**
+     * 更新轮单标志
+     *
+     * @param companyId
+     * @param staffId
+     * @param flag
+     * @return
+     */
+    @Override
+    public int updateStaffWheelFlag(int companyId, int staffId, int flag) {
+        return staffDao.updateStaffWheelFlag(companyId, staffId, flag);
+    }
+
 
 }

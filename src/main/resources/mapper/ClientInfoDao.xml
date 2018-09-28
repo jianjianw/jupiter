@@ -218,7 +218,8 @@
             AND (
                     UNIX_TIMESTAMP(NOW()) - info.CREATETIME
                 ) &lt;= 2592000
-        ORDER BY info.ID ASC
+#         ORDER BY info.ID ASC
+        ORDER BY info.CREATETIME DESC
     </select>
 
     <!--根据拍摄地获取客资数量-->

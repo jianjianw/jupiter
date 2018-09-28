@@ -77,6 +77,36 @@ public class StaffPushDTO implements Serializable {
         this.diffPid = (this.weight - this.todayNum) / w;
     }
 
+    /**
+     * 轮单标志
+     */
+    private int wheelFlag;
+
+    /**
+     * 在线标志
+     */
+    private int statusFlag;
+
+    public int getStatusFlag() {
+        return statusFlag;
+    }
+
+    public void setStatusFlag(int statusFlag) {
+        this.statusFlag = statusFlag;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public int getWheelFlag() {
+        return wheelFlag;
+    }
+
+    public void setWheelFlag(int wheelFlag) {
+        this.wheelFlag = wheelFlag;
+    }
+
     public String getWillHaveKzidsStrBf() {
         return willHaveKzidsStrBf;
     }

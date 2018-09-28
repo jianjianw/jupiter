@@ -1,5 +1,7 @@
 package com.qiein.jupiter.web.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
@@ -7,11 +9,13 @@ import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.CompanyDao;
 import com.qiein.jupiter.web.dao.StaffDao;
+import com.qiein.jupiter.web.entity.dto.CompanyConfigDTO;
 import com.qiein.jupiter.web.entity.dto.CompanyZjsSetDTO;
 import com.qiein.jupiter.web.entity.dto.DsinvalDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
 import com.qiein.jupiter.web.entity.vo.CompanyVO;
 import com.qiein.jupiter.web.service.CompanyService;
+import com.qiein.jupiter.web.service.StaffService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +35,10 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Autowired
     private StaffDao staffDao;
+
+    @Autowired
+    private StaffService staffService;
+
 
     /**
      * 根据Id获取
@@ -358,6 +366,52 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public int editConfig(int companyId, String config) {
         return companyDao.editConfig(companyId, config);
+    }
+
+
+    /**
+     * 获取公司配置
+     *
+     * @param companyId
+     * @return
+     */
+    @Override
+    public JSONObject getCompanyConfig(int companyId) {
+        CompanyVO companyVO = companyDao.getVOById(companyId);
+        JSONObject json = new JSONObject();
+        String config = companyVO.getConfig();
+        if (StringUtil.isNotEmpty(config)) {
+            json = JSONObject.parseObject(config);
+        }
+        return json;
+    }
+
+    /**
+     * 定时执行企业的配置任务
+     *
+     * @return
+     */
+    @Override
+    public int timingExecuteConfigTask() {
+        List<CompanyPO> companyPOS = companyDao.listComp(1);
+        for (CompanyPO companyPO : companyPOS) {
+            String config = companyPO.getConfig();
+            int companyId = companyPO.getId();
+            if (StringUtil.isNotEmpty(config)) {
+                CompanyConfigDTO companyConfigDTO = JSONObject.parseObject(config, CompanyConfigDTO.class);
+                //如果企业 启用了自动关闭分配
+                if (companyConfigDTO.isAutoCloseAllot()) {
+                    companyConfigDTO.setAutoAllot(false);
+                }
+                //如果企业开启自动下线
+                if (companyConfigDTO.isAutoOffline()) {
+                    staffService.companyStaffOffLine(companyId);
+                }
+
+                companyDao.editConfig(companyId, JSONObject.toJSONString(companyConfigDTO));
+            }
+        }
+        return 0;
     }
 
 }

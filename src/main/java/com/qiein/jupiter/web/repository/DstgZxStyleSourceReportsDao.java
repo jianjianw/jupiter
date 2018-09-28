@@ -104,6 +104,10 @@ public class DstgZxStyleSourceReportsDao {
         if(StringUtil.isNotEmpty(reportsParamVO.getType())){
             sb.append(" and info.typeid in( "+reportsParamVO.getType()+") ");
         }
+        System.out.println(reportsParamVO.getCollectorId());
+        if(StringUtil.isNotEmpty(reportsParamVO.getCollectorId())){
+            sb.append(" and info.COLLECTORID in ("+reportsParamVO.getCollectorId()+")");
+        }
     }
 
     private StringBuilder getCommonsql(StringBuilder sb,String infoTabName,String detailTabName) {
