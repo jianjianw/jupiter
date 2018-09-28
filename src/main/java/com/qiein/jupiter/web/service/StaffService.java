@@ -421,7 +421,7 @@ public interface StaffService {
      *
      * @return
      */
-    int companyStaffOffLine();
+    int companyStaffOffLine(int companyId);
 
     /**
      * 获取所有的电商客服或者转介绍小组员工，按照最后登录时间排序
@@ -432,7 +432,7 @@ public interface StaffService {
     /**
      * 重置客服接单轮单,设置新一批的可以分配的
      */
-    int resetWheelStaffList(int companyId, String groupType);
+    int findWheelStaffListAndResetFlag(int companyId, String groupType);
 
     /**
      * 更新轮单标志

@@ -591,7 +591,7 @@ public interface StaffDao extends BaseDao<StaffPO> {
     /**
      * 员工定时下线
      */
-    int companyStaffOffLine();
+    int companyStaffOffLine(@Param("companyId") int companyId);
 
     /**
      * 获取符合轮单分配规则的客服
@@ -605,8 +605,8 @@ public interface StaffDao extends BaseDao<StaffPO> {
     /**
      * 重置某种类型的轮单
      */
-    int resetWheelStaffList(@Param("companyId") int companyId,
-                            @Param("groupType") String groupType);
+    int findWheelStaffListAndResetFlag(@Param("companyId") int companyId,
+                                       @Param("groupType") String groupType);
 
     /**
      * 更新员工轮单标志
@@ -616,4 +616,11 @@ public interface StaffDao extends BaseDao<StaffPO> {
     int updateStaffWheelFlag(@Param("companyId") int companyId,
                              @Param("staffId") int staffId,
                              @Param("flag") int flag);
+
+    /**
+     * 初始化今日轮单标志
+     *
+     * @return
+     */
+    int initWheelFlag();
 }

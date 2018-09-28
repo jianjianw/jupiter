@@ -15,6 +15,19 @@ public class CompanyConfigDTO {
      */
     private boolean autoCloseAllot;
 
+    /**
+     * 自动下线
+     */
+    private boolean autoOffline;
+
+    public boolean isAutoOffline() {
+        return autoOffline;
+    }
+
+    public void setAutoOffline(boolean autoOffline) {
+        this.autoOffline = autoOffline;
+    }
+
     public boolean isAutoCloseAllot() {
         return autoCloseAllot;
     }

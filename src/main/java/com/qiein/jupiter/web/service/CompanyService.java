@@ -226,7 +226,7 @@ public interface CompanyService {
     JSONObject getCompanyConfig(int companyId);
 
     /**
-     * 定时关闭企业自动分配
+     * 定时执行企业的配置任务
      */
-    int timingCloseAutoAllot();
+    int timingExecuteConfigTask();
 }

@@ -237,7 +237,7 @@ public class ClientPushServiceImpl implements ClientPushService {
         //如果为空,则重置接单
         if (CollectionUtils.isEmpty(wheelStaffList)) {
             log.info("当前没有可以轮单的人员,重置");
-            staffService.resetWheelStaffList(companyId, type);
+            staffService.findWheelStaffListAndResetFlag(companyId, type);
             return null;
         }
 
