@@ -13,6 +13,7 @@ import com.qiein.jupiter.web.entity.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
 
 import java.lang.reflect.Field;
@@ -36,6 +37,9 @@ public class ZjsKzOfYearDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private NamedParameterJdbcOperations namedJdbc;
+
     /**
      * 获取转介绍年度报表
      *
@@ -49,8 +53,9 @@ public class ZjsKzOfYearDao {
 //        int month = 1;
         for (int i = 0; i < timeList.size(); i += 2) {
             String sql = getFinalSQL(zjsClientYearReportDTO, dsInvalidVO);
-            Object[] objs = getParam(zjsClientYearReportDTO, timeList, i, dsInvalidVO);
-            List<ZjsClientYearReportVO> now = jdbcTemplate.query(sql,
+            Map<String,Object> objs = getParam(zjsClientYearReportDTO, timeList, i, dsInvalidVO);
+            System.out.println(Arrays.asList(objs));
+            List<ZjsClientYearReportVO> now = namedJdbc.query(sql,
                     objs,
                     new RowMapper<ZjsClientYearReportVO>() {
                         @Override
@@ -156,7 +161,7 @@ public class ZjsKzOfYearDao {
      */
     public String getFinalSQL(ZjsClientYearReportDTO zjsClientYearReportDTO, DsInvalidVO dsInvalidVO) {
         String fianlSQL = setSearchTypeAndSQL(zjsClientYearReportDTO, dsInvalidVO);
-//        System.out.println("最终输出sql： " + fianlSQL);
+        System.out.println("最终输出sql： " + fianlSQL);
         return fianlSQL;
     }
 
@@ -215,8 +220,8 @@ public class ZjsKzOfYearDao {
     private StringBuilder getValidClientSQL(ZjsClientYearReportDTO zjsClientYearReportDTO, DsInvalidVO dsInvalidVO) {
         StringBuilder sb = new StringBuilder();
         getBaseSQL(sb, zjsClientYearReportDTO)
-                .append(" AND info.CREATETIME BETWEEN ? AND ? ")
-                .append(" AND INSTR('" + dsInvalidVO.getZjsValidStatus() + "',CONCAT( ','+info.STATUSID + '', ','))>0 ")
+                .append(" AND info.CREATETIME BETWEEN :start AND :end ")
+                .append(" AND INSTR( :zjsValidStatus ,CONCAT( '\"'+info.STATUSID , '\"'))>0 ")
                 .append(" GROUP BY info.SOURCEID");
         return sb;
     }
@@ -375,24 +380,29 @@ public class ZjsKzOfYearDao {
      *
      * @return
      */
-    public Object[] getParam(ZjsClientYearReportDTO zjsClientYearReportDTO, List<Integer> timeList, int i, DsInvalidVO dsInvalidVO) {
-        switch (zjsClientYearReportDTO.getDataType()) {
-//            case "总客资":
-//                return new Object[]{ timeList.get(i), timeList.get(++i)};
-            case "客资量":
-                return new Object[]{timeList.get(i), timeList.get(i + 1),
-                        timeList.get(i), timeList.get(i + 1),
-                        timeList.get(i), timeList.get(i + 1),
-                        timeList.get(i), timeList.get(i + 1)};
-            case "有效量":
-                return new Object[]{timeList.get(i), timeList.get(i + 1)};
-            case "入店量":
-                return new Object[]{timeList.get(i), timeList.get(++i)};
-            case "成交量":
-                return new Object[]{timeList.get(i), timeList.get(++i)};
-            default:
-                throw new RException(ExceptionEnum.SEARCH_TYPE_IS_UNKNOW);
-        }
+    public Map<String,Object> getParam(ZjsClientYearReportDTO zjsClientYearReportDTO, List<Integer> timeList, int i, DsInvalidVO dsInvalidVO) {
+        Map<String,Object> paramMap = new HashMap<>();
+        paramMap.put("start",timeList.get(i));
+        paramMap.put("end",timeList.get(i+1));
+        paramMap.put("zjsValidStatus",dsInvalidVO.getZjsValidStatus());
+        return paramMap;
+//        switch (zjsClientYearReportDTO.getDataType()) {
+////            case "总客资":
+////                return new Object[]{ timeList.get(i), timeList.get(++i)};
+//            case "客资量":
+//                return new Object[]{timeList.get(i), timeList.get(i + 1),
+//                        timeList.get(i), timeList.get(i + 1),
+//                        timeList.get(i), timeList.get(i + 1),
+//                        timeList.get(i), timeList.get(i + 1)};
+//            case "有效量":
+//                return new Object[]{timeList.get(i), timeList.get(i + 1),dsInvalidVO.getZjsValidStatus()};
+//            case "入店量":
+//                return new Object[]{timeList.get(i), timeList.get(++i)};
+//            case "成交量":
+//                return new Object[]{timeList.get(i), timeList.get(++i)};
+//            default:
+//                throw new RException(ExceptionEnum.SEARCH_TYPE_IS_UNKNOW);
+//        }
     }
 
     /**
