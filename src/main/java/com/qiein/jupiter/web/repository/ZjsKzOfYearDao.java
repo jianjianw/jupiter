@@ -269,7 +269,7 @@ public class ZjsKzOfYearDao {
     private StringBuilder getComeShopClientSQL(ZjsClientYearReportDTO zjsClientYearReportDTO) {
         StringBuilder sb = new StringBuilder();
         getBaseSQL(sb, zjsClientYearReportDTO);
-        sb.append(" AND (info.COMESHOPTIME BETWEEN ? AND ?) ").append("GROUP BY info.SOURCEID");
+        sb.append(" AND (info.COMESHOPTIME BETWEEN :start AND :end) ").append("GROUP BY info.SOURCEID");
         return sb;
     }
 
@@ -281,7 +281,7 @@ public class ZjsKzOfYearDao {
     private StringBuilder getSuccessClientSQL(ZjsClientYearReportDTO zjsClientYearReportDTO) {
         StringBuilder sb = new StringBuilder();
         getBaseSQL(sb, zjsClientYearReportDTO);
-        sb.append(" AND (info.SUCCESSTIME BETWEEN ? AND ?) ").append("GROUP BY info.SOURCEID");
+        sb.append(" AND (info.SUCCESSTIME BETWEEN :start AND :end) ").append("GROUP BY info.SOURCEID");
         return sb;
     }
 
@@ -293,7 +293,7 @@ public class ZjsKzOfYearDao {
     private StringBuilder getAllClientSQL(ZjsClientYearReportDTO zjsClientYearReportDTO) {
         StringBuilder sb = new StringBuilder();
         getBaseSQL(sb, zjsClientYearReportDTO);
-        sb.append(" AND info.CREATETIME BETWEEN ? AND ? ").append("GROUP BY info.SOURCEID");
+        sb.append(" AND info.CREATETIME BETWEEN :start AND :end ").append("GROUP BY info.SOURCEID");
         return sb;
     }
 
@@ -332,7 +332,7 @@ public class ZjsKzOfYearDao {
         StringBuilder filterPendingClientSQL = new StringBuilder();
         getBaseSQL(filterPendingClientSQL, zjsClientYearReportDTO);
         filterPendingClientSQL.append(" AND info.CLASSID = 1 and info.STATUSID = 98 ")
-                .append(" AND (info.CREATETIME BETWEEN ? AND ?) ");
+                .append(" AND (info.CREATETIME BETWEEN :start AND :end) ");
         filterPendingClientSQL.append("GROUP BY info.SOURCEID");
         return filterPendingClientSQL;
     }
@@ -343,7 +343,7 @@ public class ZjsKzOfYearDao {
     private StringBuilder getFilterInClientCount(ZjsClientYearReportDTO zjsClientYearReportDTO) {
         StringBuilder filterInClienSQL = new StringBuilder();
         getBaseSQL(filterInClienSQL, zjsClientYearReportDTO);
-        filterInClienSQL.append(" and info.CREATETIME BETWEEN ? AND ? ")
+        filterInClienSQL.append(" and info.CREATETIME BETWEEN :start AND :end ")
                 .append(" and info.CLASSID = 1 and info.STATUSID = 0 ");
         filterInClienSQL.append("GROUP BY info.SOURCEID");
         return filterInClienSQL;
@@ -358,7 +358,7 @@ public class ZjsKzOfYearDao {
         StringBuilder filterInValidClientSQL = new StringBuilder();
         getBaseSQL(filterInValidClientSQL, zjsClientYearReportDTO);
         filterInValidClientSQL.append(" and info.CLASSID = 6 and info.STATUSID = 99 ")
-                .append(" AND (info.CREATETIME BETWEEN ? AND ?) ").append("GROUP BY info.SOURCEID");
+                .append(" AND (info.CREATETIME BETWEEN :start AND :end) ").append("GROUP BY info.SOURCEID");
         return filterInValidClientSQL;
     }
 
