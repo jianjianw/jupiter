@@ -472,7 +472,7 @@ public class ZjsKzOfYearDao {
                 } else {
                     hTotal.getDataMap().put(key, String.valueOf(Integer.valueOf(hTotal.getDataMap().get(key)) + Integer.valueOf(map.get(key))));
                 }
-                total =Double.valueOf(total)+Double.valueOf(map.get(key));
+                total +=Double.valueOf(map.get(key));
             }
             map.put("合计", String.valueOf(total));
         }
@@ -480,7 +480,7 @@ public class ZjsKzOfYearDao {
         for (String key : hTotal.getDataMap().keySet()) {
             if (key.equals("合计"))
                 continue;
-            hTotal.getDataMap().put("合计", hTotal.getDataMap().get(key) + hTotal.getDataMap().get("合计"));
+            hTotal.getDataMap().put("合计", String.valueOf(Double.valueOf(hTotal.getDataMap().get(key)) + Double.valueOf(hTotal.getDataMap().get("合计"))));
         }
         return list;
     }
