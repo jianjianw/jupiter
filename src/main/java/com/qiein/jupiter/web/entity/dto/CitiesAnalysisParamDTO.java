@@ -12,6 +12,7 @@ public class CitiesAnalysisParamDTO {
     private String provinceNames;                   //省份名称，多选用逗号分隔字符串
     private Integer searchClientType;               //查询的客资类型 1所有客资 2 电话客资 3 微信客资 4 qq客资 5 有电话有微信 6 无电话 7.无微信 8 只有电话 9只有微信 10 只有qq
     private Integer companyId;                      //所属公司id
+    private String srcIds;
 
     public Integer getStart() {
         return start;
@@ -67,5 +68,13 @@ public class CitiesAnalysisParamDTO {
 
     public void setCompanyId(Integer companyId) {
         this.companyId = companyId;
+    }
+
+    public String getSrcIds() {
+        return srcIds;
+    }
+
+    public void setSrcIds(String srcIds) {
+        this.srcIds = srcIds;
     }
 }
