@@ -241,7 +241,7 @@ public class ClientPushServiceImpl implements ClientPushService {
             return null;
         }
 
-        log.info("当前轮单人员列表:", JSONObject.toJSONString(wheelStaffList));
+        log.info("当前轮单人员列表:" + JSONObject.toJSONString(wheelStaffList));
 
         StaffPushDTO staffPushDTO = null;
         for (StaffPushDTO pushDTO : wheelStaffList) {
@@ -250,7 +250,7 @@ public class ClientPushServiceImpl implements ClientPushService {
                 staffPushDTO = pushDTO;
                 break;
             } else {
-                log.info(pushDTO.getStaffName(), "不在线，不分了");
+                log.info(pushDTO.getStaffName() + "不在线，不分了");
             }
         }
 
