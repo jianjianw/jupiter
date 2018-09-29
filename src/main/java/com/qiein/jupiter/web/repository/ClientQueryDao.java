@@ -725,7 +725,7 @@ public class ClientQueryDao {
                 " SELECT DISTINCT grp.PARENTID FROM hm_pub_group_staff rela " +
                 " LEFT JOIN hm_pub_group grp ON rela.GROUPID = grp.GROUPID AND grp.COMPANYID = :companyId " +
                 " LEFT JOIN hm_pub_group sp ON grp.PARENTID = sp.GROUPID AND sp.COMPANYID = :companyId " +
-                " WHERE ( rela.STAFFID = ? OR INSTR( CONCAT(',', grp.CHIEFIDS, ','), CONCAT(',', :staffId , ',') ) != 0" +
+                " WHERE ( rela.STAFFID = :staffId OR INSTR( CONCAT(',', grp.CHIEFIDS, ','), CONCAT(',', :staffId , ',') ) != 0" +
                 " OR INSTR( CONCAT(',', sp.CHIEFIDS, ','), CONCAT(',', :staffId , ',') ) != 0 ) " +
                 " AND rela.COMPANYID = :companyId AND grp.GROUPTYPE = :groupType ) AND grp.GROUPTYPE = :groupType " +
                 " AND rl.COMPANYID = :companyId AND sf.ID IS NOT NULL";
