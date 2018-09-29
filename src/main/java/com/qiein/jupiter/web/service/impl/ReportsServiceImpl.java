@@ -1252,4 +1252,174 @@ public class ReportsServiceImpl implements ReportService {
         List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsSuccess(firstDay,lastDay,reportsParamSrcMonthVO, invalidConfig);
         return dstgSrcMonthReports;
 	}
+
+	/**
+     * 电商推广月度报表有效率--HJF
+     * @param 
+     */
+	@Override
+	public List<Map<String, Object>> getDSTGSrcMonthReportsValidRate(String month, String typeId, String sourceId,
+			int companyId) {
+		//封装参数
+        ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
+        reportsParamSrcMonthVO.setTypeId(typeId);
+        reportsParamSrcMonthVO.setSourceId(sourceId);
+        reportsParamSrcMonthVO.setCompanyId(companyId);
+        //获取无效状态指标，无效意向等级，待定是否为有效量，待定指标
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
+        //获取时间时间戳
+        int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
+        int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);	
+        //获取客资数据
+        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsValidRate(firstDay,lastDay,reportsParamSrcMonthVO, invalidConfig);
+        return dstgSrcMonthReports;
+	}
+	/**
+     * 电商推广月度报表无效率--HJF
+     * @param 
+     */
+	@Override
+	public List<Map<String, Object>> getDSTGSrcMonthReportsInValidRate(String month, String typeId, String sourceId,
+			int companyId) {
+		//封装参数
+        ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
+        reportsParamSrcMonthVO.setTypeId(typeId);
+        reportsParamSrcMonthVO.setSourceId(sourceId);
+        reportsParamSrcMonthVO.setCompanyId(companyId);
+        //获取无效状态指标，无效意向等级，待定是否为有效量，待定指标
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
+        //获取时间时间戳
+        int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
+        int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);	
+        //获取客资数据
+        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsInValidRate(firstDay,lastDay,reportsParamSrcMonthVO, invalidConfig);
+        return dstgSrcMonthReports;
+	}
+	/**
+     * 电商推广月度报表待定率--HJF
+     * @param 
+     */
+	@Override
+	public List<Map<String, Object>> getDSTGSrcMonthReportsDdnumRate(String month, String typeId, String sourceId,
+			int companyId) {
+		//封装参数
+        ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
+        reportsParamSrcMonthVO.setTypeId(typeId);
+        reportsParamSrcMonthVO.setSourceId(sourceId);
+        reportsParamSrcMonthVO.setCompanyId(companyId);
+        //获取无效状态指标，无效意向等级，待定是否为有效量，待定指标
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
+        //获取时间时间戳
+        int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
+        int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);	
+        //获取客资数据
+        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsDdnumRate(firstDay,lastDay,reportsParamSrcMonthVO, invalidConfig);
+        return dstgSrcMonthReports;
+	}
+	/**
+     * 电商推广月度报表毛客资入店率--HJF
+     * @param 
+     */
+	@Override
+	public List<Map<String, Object>> getDSTGSrcMonthReportsComeRate(String month, String typeId, String sourceId,
+			int companyId) {
+		//封装参数
+        ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
+        reportsParamSrcMonthVO.setTypeId(typeId);
+        reportsParamSrcMonthVO.setSourceId(sourceId);
+        reportsParamSrcMonthVO.setCompanyId(companyId);
+        //获取无效状态指标，无效意向等级，待定是否为有效量，待定指标
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
+        //获取时间时间戳
+        int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
+        int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);	
+        //获取客资数据
+        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsComeRate(firstDay,lastDay,reportsParamSrcMonthVO, invalidConfig);
+        return dstgSrcMonthReports;
+	}
+
+	/**
+     * 电商推广月度报表有效客资入店率--HJF
+     * @param 
+     */
+	@Override
+	public List<Map<String, Object>> getDSTGSrcMonthReportsValidComeRate(String month, String typeId, String sourceId,
+			int companyId) {
+		//封装参数
+        ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
+        reportsParamSrcMonthVO.setTypeId(typeId);
+        reportsParamSrcMonthVO.setSourceId(sourceId);
+        reportsParamSrcMonthVO.setCompanyId(companyId);
+        //获取无效状态指标，无效意向等级，待定是否为有效量，待定指标
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
+        //获取时间时间戳
+        int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
+        int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);	
+        //获取客资数据
+        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsValidComeRate(firstDay,lastDay,reportsParamSrcMonthVO, invalidConfig);
+        return dstgSrcMonthReports;
+	}
+	/**
+     * 电商推广月度报表有效客资入店率--HJF
+     * @param 
+     */
+	@Override
+	public List<Map<String, Object>> getDSTGSrcMonthReportsSuccessRate(String month, String typeId, String sourceId,
+			int companyId) {
+		//封装参数
+        ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
+        reportsParamSrcMonthVO.setTypeId(typeId);
+        reportsParamSrcMonthVO.setSourceId(sourceId);
+        reportsParamSrcMonthVO.setCompanyId(companyId);
+        //获取无效状态指标，无效意向等级，待定是否为有效量，待定指标
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
+        //获取时间时间戳
+        int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
+        int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);	
+        //获取客资数据
+        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsValidSuccessRate(firstDay,lastDay,reportsParamSrcMonthVO, invalidConfig);
+        return dstgSrcMonthReports;
+	}
+	/**
+     * 电商推广月度报表毛客资成交率--HJF
+     * @param 
+     */
+	@Override
+	public List<Map<String, Object>> getDSTGSrcMonthReportsSuccessRate1(String month, String typeId, String sourceId,
+			int companyId) {
+		//封装参数
+        ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
+        reportsParamSrcMonthVO.setTypeId(typeId);
+        reportsParamSrcMonthVO.setSourceId(sourceId);
+        reportsParamSrcMonthVO.setCompanyId(companyId);
+        //获取无效状态指标，无效意向等级，待定是否为有效量，待定指标
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
+        //获取时间时间戳
+        int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
+        int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);	
+        //获取客资数据
+        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsValidSuccessRate1(firstDay,lastDay,reportsParamSrcMonthVO, invalidConfig);
+        return dstgSrcMonthReports;
+	}
+	/**
+     * 电商推广月度报表有效客资成交率--HJF
+     * @param 
+     */
+	@Override
+	public List<Map<String, Object>> getDSTGSrcMonthReportsSuccessRate2(String month, String typeId, String sourceId,
+			int companyId) {
+		//封装参数
+        ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
+        reportsParamSrcMonthVO.setTypeId(typeId);
+        reportsParamSrcMonthVO.setSourceId(sourceId);
+        reportsParamSrcMonthVO.setCompanyId(companyId);
+        //获取无效状态指标，无效意向等级，待定是否为有效量，待定指标
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
+        //获取时间时间戳
+        int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
+        int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);	
+        //获取客资数据
+        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsValidSuccessRate2(firstDay,lastDay,reportsParamSrcMonthVO, invalidConfig);
+        return dstgSrcMonthReports;
+	}
 }

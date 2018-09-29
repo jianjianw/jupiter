@@ -553,6 +553,46 @@ public class ReportsController extends BaseController {
             List<Map<String, Object>> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsSuccess(month, typeId, sourceId, staffPO.getCompanyId());
             return ResultInfoUtil.success(dstgReportsSrcMonthVO);
         }
+        //查询有效率
+        if (StringUtil.isNotEmpty(kzZB) && "validrate".equals(kzZB)) {
+            List<Map<String, Object>> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsValidRate(month, typeId, sourceId, staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+        //查询无效率
+        if (StringUtil.isNotEmpty(kzZB) && "invalidrate".equals(kzZB)) {
+            List<Map<String, Object>> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsInValidRate(month, typeId, sourceId, staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+        //查询待定率
+        if (StringUtil.isNotEmpty(kzZB) && "ddnumrate".equals(kzZB)) {
+            List<Map<String, Object>> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsDdnumRate(month, typeId, sourceId, staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+        //查询毛客资入店率
+        if (StringUtil.isNotEmpty(kzZB) && "comerate".equals(kzZB)) {
+            List<Map<String, Object>> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsComeRate(month, typeId, sourceId, staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+        //查询有效客资入店率
+        if (StringUtil.isNotEmpty(kzZB) && "validcomerate".equals(kzZB)) {
+            List<Map<String, Object>> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsValidComeRate(month, typeId, sourceId, staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+        //查询入店成交率
+        if (StringUtil.isNotEmpty(kzZB) && "successrate".equals(kzZB)) {
+            List<Map<String, Object>> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsSuccessRate(month, typeId, sourceId, staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+        //毛客资成交率
+        if (StringUtil.isNotEmpty(kzZB) && "successrate1".equals(kzZB)) {
+            List<Map<String, Object>> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsSuccessRate1(month, typeId, sourceId, staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+        //有效客资成交率
+        if (StringUtil.isNotEmpty(kzZB) && "successrate2".equals(kzZB)) {
+            List<Map<String, Object>> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsSuccessRate2(month, typeId, sourceId, staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
         return ResultInfoUtil.error(9999, "查询失败");
     }
 
