@@ -301,7 +301,7 @@ public class ClientQueryDao {
         pageVO.setData(result);
         //如果说是已订单TAB，则显示订单统计信息
         if (ClientStatusConst.KZ_CLASS_ACTION_SUCCESS.equals(vo.getAction())) {
-            pageVO.setOtherData(queryPageClientCountInfo(vo));
+            pageVO.setOtherData(getOrderCount(vo));
         }
         return pageVO;
 
