@@ -77,7 +77,7 @@ public class ClientPushTask {
                 pushClient(new ClientPushDTO(pushService, info.getPushRule(), comp.getId(), info.getKzId(), info.getSrcType(), comp.getOverTime(),
                         comp.getKzInterval(), info.getSourceId()));
             }
-            log.info("推送了客资：" + infoList.size() + " 个");
+//            log.info("推送了客资：" + infoList.size() + " 个");
         }
     }
 
