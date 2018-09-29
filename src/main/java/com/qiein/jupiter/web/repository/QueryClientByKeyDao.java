@@ -63,7 +63,8 @@ public class QueryClientByKeyDao {
                 "  SELECT info.ID,info.LETTERID, info.KZID, info.KZNAME, info.KZPHONE, info.KZWECHAT, info.KZQQ, " +
                         "info.KZWW, info.CREATETIME, info.STATUSID, info.SOURCEID, ");
 
-        sql.append(" det.APPOINTNAME, det.GROUPNAME ,det.KZID, det.MATENAME, det.MATEWECHAT, det.MATEPHONE, det.MATEQQ ");
+        sql.append(" det.APPOINTNAME, det.GROUPNAME ,det.KZID, det.MATENAME, det.MATEWECHAT, det.MATEPHONE, det.MATEQQ, ");
+        sql.append(" det.RECEPTORNAME, det.SHOPNAME ");
         sql.append(" FROM ");
         sql.append(infoTableName);
         sql.append(" info LEFT JOIN ");
@@ -97,6 +98,8 @@ public class QueryClientByKeyDao {
                 info.setSourceId(rs.getInt("SOURCEID"));
                 info.setAppointName(rs.getString("APPOINTNAME"));
                 info.setGroupName(rs.getString("GROUPNAME"));
+                info.setReceptorName(rs.getString("RECEPTORNAME"));
+                info.setShopName(rs.getString("SHOPNAME"));
                 info.setParam(getMatchShow(info));
                 clientVOList.add(info);
             }
@@ -119,7 +122,8 @@ public class QueryClientByKeyDao {
         sql.append(
                 "   SELECT det.KZID, det.MATENAME, det.MATEWECHAT, det.MATEPHONE, det.MATEQQ, info.CREATETIME," +
                         " info.STATUSID, info.SOURCEID, det.APPOINTNAME, det.GROUPNAME ,  ");
-        sql.append(" det.APPOINTNAME, det.GROUPNAME ,det.KZID, det.MATENAME, det.MATEWECHAT, det.MATEPHONE, det.MATEQQ ");
+        sql.append(" det.APPOINTNAME, det.GROUPNAME ,det.KZID, det.MATENAME, det.MATEWECHAT, det.MATEPHONE, det.MATEQQ, ");
+        sql.append(" det.RECEPTORNAME, det.SHOPNAME ");
         sql.append(" FROM ");
         sql.append(infoTableName);
         sql.append(" info LEFT JOIN ");
