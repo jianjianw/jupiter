@@ -159,6 +159,7 @@ public class DstgReportsSrcMonthDao {
         for (Map<String, Object> map : newmaps) {
         		Monthsum +=Integer.valueOf(String.valueOf(map.get("total").toString()));
     		}
+        	map1.put("srcImg", "");
         	map1.put("srcId", -1);
         	map1.put("srcName", "合计");
         	map1.put("total", Monthsum);
@@ -233,6 +234,7 @@ public class DstgReportsSrcMonthDao {
         for (Map<String, Object> map : newmaps) {
         		Monthsum +=Integer.valueOf(String.valueOf(map.get("total").toString()));
     		}
+        	map1.put("srcImg", "");
         	map1.put("srcId", -1);
         	map1.put("srcName", "合计");
         	map1.put("total", Monthsum);
@@ -310,6 +312,7 @@ public class DstgReportsSrcMonthDao {
         for (Map<String, Object> map : newmaps) {
         		Monthsum +=Integer.valueOf(String.valueOf(map.get("total").toString()));
     		}
+        	map1.put("srcImg", "");
         	map1.put("srcId", -1);
         	map1.put("srcName", "合计");
         	map1.put("total", Monthsum);
@@ -398,6 +401,7 @@ public class DstgReportsSrcMonthDao {
         for (Map<String, Object> map : newmaps) {
         		Monthsum +=Integer.valueOf(String.valueOf(map.get("total").toString()));
     		}
+        	map1.put("srcImg", "");
         	map1.put("srcId", -1);
         	map1.put("srcName", "合计");
         	map1.put("total", Monthsum);
@@ -486,6 +490,7 @@ public class DstgReportsSrcMonthDao {
         for (Map<String, Object> map : newmaps) {
         		Monthsum +=Integer.valueOf(String.valueOf(map.get("total").toString()));
     		}
+        	map1.put("srcImg", "");
         	map1.put("srcId", -1);
         	map1.put("srcName", "合计");
         	map1.put("total", Monthsum);
@@ -992,6 +997,7 @@ public class DstgReportsSrcMonthDao {
         for (Map<String, Object> map : newmaps) {
         		Monthsum +=Integer.valueOf(String.valueOf(map.get("total").toString()));
     		}
+        	map1.put("srcImg", null);
         	map1.put("srcId", -1);
         	map1.put("srcName", "合计");
         	map1.put("total", Monthsum);
@@ -1064,6 +1070,7 @@ public class DstgReportsSrcMonthDao {
         for (Map<String, Object> map : newmaps) {
         		Monthsum +=Integer.valueOf(String.valueOf(map.get("total").toString()));
     		}
+        	map1.put("srcImg", null);
         	map1.put("srcId", -1);
         	map1.put("srcName", "合计");
         	map1.put("total", Monthsum);
@@ -1397,7 +1404,7 @@ public class DstgReportsSrcMonthDao {
 		sql.append(" ORDER BY srcId ");
         String sqlString = sql.toString(); 
         List<Map<String, Object>> listAll = jdbcTemplate.queryForList(sqlString, new Object[]{reportsParamSrcMonthVO.getCompanyId()});
-     // 最终用返回
+        // 最终用返回
         List<Map<String, Object>> newmaps = new ArrayList<>();
 
   		for (Map<String, Object> map6 : listAll) {
@@ -1429,6 +1436,7 @@ public class DstgReportsSrcMonthDao {
             for (Map<String, Object> map : newmaps) {
             		Monthsum +=Double.valueOf(map.get("total").toString());
         		}
+            	map1.put("srcImg", "");
             	map1.put("srcId", -1);
             	map1.put("srcName", "合计");
             	map1.put("total", (double)Math.round(Monthsum*100)/100);
@@ -1442,6 +1450,7 @@ public class DstgReportsSrcMonthDao {
      			}map1.put(day, (double)Math.round(daysum*100)/100);
     		}
      		newmaps.add(0,map1);  
+  		
         return newmaps;
 	}
 	/**
@@ -1452,36 +1461,38 @@ public class DstgReportsSrcMonthDao {
 		//获取指标
 		List<Map<String, Object>> dstgSrcMonthReportsValidCost = getDSTGSrcMonthReportsValidCost(firstDay,lastDay,reportsParamSrcMonthVO);
 		List<Map<String, Object>> dstgSrcMonthReportsAll = getDSTGSrcMonthReportsAll(firstDay,lastDay,reportsParamSrcMonthVO,invalidConfig);
-				//最终返回用
-			      List<Map<String, Object>> newsmaps=new ArrayList<>();
-			      
-			      for (Map<String, Object> map : dstgSrcMonthReportsValidCost) {
-						Map maptemp = new HashMap();
-							for (Map<String, Object> map1 : dstgSrcMonthReportsAll) {
-								
-								if((map.get("srcId")).equals(map1.get("srcId"))){
-									map.remove("srcId");
-									map.remove("srcName");
-									map.remove("srcImg");
-									Set<String> mapkeys = map.keySet();
-									for (String mapkey : mapkeys) {
-										double a=Double.valueOf(String.valueOf(map.get(mapkey).toString()));
-										double b=Double.valueOf(String.valueOf(map1.get(mapkey).toString()));
-										if(b==0.0){
-											b=1.0;
-										}
-										double c=(double)Math.round(a/b*100)/100;
-										maptemp.put(mapkey, c);
-									}
-									maptemp.put("srcId", map1.get("srcId"));
-									maptemp.put("srcName", map1.get("srcName"));
-									maptemp.put("srcImg", map1.get("srcImg"));
-									newsmaps.add(maptemp);
-									break;
+		System.out.println(dstgSrcMonthReportsValidCost);
+		System.out.println(dstgSrcMonthReportsAll);
+		//最终返回用
+	    List<Map<String, Object>> newsmaps=new ArrayList<>();
+	      
+	      for (Map<String, Object> map : dstgSrcMonthReportsValidCost) {
+				Map maptemp = new HashMap();
+					for (Map<String, Object> map1 : dstgSrcMonthReportsAll) {
+						
+						if(map.get("srcId").equals(map1.get("srcId"))){
+							map.remove("srcId");
+							map.remove("srcName");
+							map.remove("srcImg");
+							Set<String> mapkeys = map.keySet();
+							for (String mapkey : mapkeys) {
+								double a=Double.valueOf(String.valueOf(map.get(mapkey).toString()));
+								double b=Double.valueOf(String.valueOf(map1.get(mapkey).toString()));
+								if(b==0.0){
+									b=1.0;
 								}
+								double c=(double)Math.round(a/b*100)/100;
+								maptemp.put(mapkey, c);
 							}
+							maptemp.put("srcId", map1.get("srcId"));
+							maptemp.put("srcName", map1.get("srcName"));
+							maptemp.put("srcImg", map1.get("srcImg"));
+							newsmaps.add(maptemp);
+							break;
+						}
 					}
-				return newsmaps;	
+			}
+		return newsmaps;			
 	}
 	/**
 	 * 电商推广月度报表有效客资成本--HJF
