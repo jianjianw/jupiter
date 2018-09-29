@@ -69,8 +69,11 @@ public class GroupController extends BaseController {
         RequestInfoDTO requestInfo = getRequestInfo();
         GroupPO groupPO1=groupService.getGroupById(staff.getCompanyId(),groupPO.getGroupId());
         Map<String,String> map=new HashMap<>();
-        map.put(groupPO.getGroupName(),groupPO1.getGroupName());
+        map.put(groupPO1.getGroupName(),groupPO.getGroupName());
+        map.put(groupPO1.getChiefNames(),groupPO.getChiefNames());
         groupService.update(groupPO);
+        GroupPO groupPO2=groupService.getGroupById(staff.getCompanyId(),groupPO.getGroupId());
+        map.put(groupPO1.getChiefNames(),groupPO2.getChiefNames());
         try {
             logService.addLog(new SystemLog(SysLogUtil.LOG_TYPE_GROUP, requestInfo.getIp(), requestInfo.getUrl(), staff.getId(),
                     staff.getNickName(), SysLogUtil.getEditLog(SysLogUtil.LOG_SUP_GROUP, SysLogUtil.LOG_SUP_GROUP,map),
