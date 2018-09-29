@@ -68,6 +68,7 @@ public class DstgProvinceReportsDao {
 //            }
 
             Map<String, Object> paramMap = getParamMap(provinceAnalysisParamDTO, invalidConfig, provinceName);
+
             List<ProvinceReportsVO3> queryData = namedJdbc.query(sql, paramMap, new RowMapper<ProvinceReportsVO3>() {
                 @Override
                 public ProvinceReportsVO3 mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -599,7 +600,7 @@ public class DstgProvinceReportsDao {
         StringBuilder pendingClientSQL = new StringBuilder();
         getBaseSQL(pendingClientSQL, provinceAnalysisParamDTO);
         pendingClientSQL.append(" AND (info.CREATETIME BETWEEN :start AND :end) ")
-                .append(" AND INSTR( :dsDdStatus , CONCAT(',',info.STATUSID + '',',')) > 0")
+                .append(" AND INSTR( :dsDdStatus , CONCAT('\"',info.STATUSID ,'\"')) > 0")
                 .append(PLACEHOLDER);
         return pendingClientSQL;
     }

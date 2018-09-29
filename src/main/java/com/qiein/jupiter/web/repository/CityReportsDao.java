@@ -158,7 +158,7 @@ public class CityReportsDao {
         getBaseSQL(pendingClientSQL, companyId, "pendingClientCount");
         pendingClientSQL.append(" AND INSTR(detail.ADDRESS, :address )>0 ")
                 .append(" AND (info.CREATETIME BETWEEN :start AND :end) ")
-                .append(" AND INSTR( :dsDdStatus , CONCAT(',',info.STATUSID ,',')) != 0")
+                .append(" AND INSTR( :dsDdStatus , CONCAT('\"',info.STATUSID ,'\"')) != 0")
                 .append(PLACEHOLDER);
         return pendingClientSQL;
     }
