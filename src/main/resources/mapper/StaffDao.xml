@@ -1275,7 +1275,7 @@
             hm_pub_group grp
             LEFT JOIN hm_pub_group_staff rela ON grp.GROUPID = rela.GROUPID
             INNER JOIN hm_pub_staff staff ON rela.STAFFID = staff.ID
-            LEFT JOIN hm_pub_staff_detail det ON staff.ID = det.ID
+#             LEFT JOIN hm_pub_staff_detail det ON staff.ID = det.ID
         WHERE
             grp.COMPANYID = #{companyId}
             AND grp.PARENTID != '0'
@@ -1283,7 +1283,8 @@
             AND staff.WHEELFLAG = #{wheelFlag}
             AND staff.ISDEL = 0
             AND staff.STATUSFLAG = 1
-        ORDER BY det.LASTLOGINTIME
+#         ORDER BY det.LASTLOGINTIME
+        ORDER BY staff.LASTPUSHTIME
     </select>
 
     <!--重置某种类型的轮单-->
@@ -1362,6 +1363,7 @@
         UPDATE hm_pub_staff_detail
         SET MSGSET = #{msgSet}
         WHERE COMPANYID = #{companyId}
+        AND ID = #{staffId}
     </update>
 
 

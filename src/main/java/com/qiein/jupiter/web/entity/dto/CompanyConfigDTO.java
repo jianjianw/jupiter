@@ -20,6 +20,19 @@ public class CompanyConfigDTO {
      */
     private boolean autoOffline;
 
+    /**
+     * 录入客资或者修改客资后自动关闭窗口
+     */
+    private boolean autoCloseClientDetailWindow;
+
+    public boolean isAutoCloseClientDetailWindow() {
+        return autoCloseClientDetailWindow;
+    }
+
+    public void setAutoCloseClientDetailWindow(boolean autoCloseClientDetailWindow) {
+        this.autoCloseClientDetailWindow = autoCloseClientDetailWindow;
+    }
+
     public boolean isAutoOffline() {
         return autoOffline;
     }

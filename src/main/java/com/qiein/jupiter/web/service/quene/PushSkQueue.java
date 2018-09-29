@@ -41,7 +41,7 @@ public class PushSkQueue implements CommandLineRunner {
      */
     public void offer(ClientPushDTO clientDTO) {
         this.queue.offer(clientDTO);
-        log.info("队列客资数量:" + queue.size());
+//        log.info("队列客资数量:" + queue.size());
         scheduledExecutorService.execute(new Runnable() {
             @Override
             public void run() {

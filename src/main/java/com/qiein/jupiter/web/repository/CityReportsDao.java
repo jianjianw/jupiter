@@ -9,13 +9,14 @@ import com.qiein.jupiter.web.entity.dto.CitiesAnalysisParamDTO;
 import com.qiein.jupiter.web.entity.vo.DsInvalidVO;
 import com.qiein.jupiter.web.entity.vo.RegionReportsVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +32,7 @@ public class CityReportsDao {
     private static final String PLACEHOLDER = "$Dy$UpUp$";
 
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private NamedParameterJdbcOperations namedJdbc;
 
     /**
      * 获取市域分析报表
@@ -47,18 +48,13 @@ public class CityReportsDao {
         for (String provinceNames : citiesAnalysisParamDTO.getProvinceNames().split(",")) {
 
             for (String regionName : ChinaTerritoryConst.TERRITORY_MAP.get(provinceNames).split(",")) {
-                Object[] objs = {regionName, start, end,
-                        regionName, start, end, dsInvalidVO.getDsDdStatus(),
-                        regionName, start, end,
-                        regionName, start, end,
-                        regionName, start, end,
-                        regionName, start, end,
-                        regionName, start, end,
-                        regionName, start, end,
-                        regionName, start, end,
-                        regionName, start, end,};
-                resultContent.addAll(jdbcTemplate.query(getCityReportSQL(citiesAnalysisParamDTO, dsInvalidVO, regionName),
-                        objs,
+                Map<String,Object> paramMap = new HashMap<>();
+                paramMap.put("address",regionName);
+                paramMap.put("start",start);
+                paramMap.put("end",end);
+                paramMap.put("dsDdStatus",dsInvalidVO.getDsDdStatus());
+                resultContent.addAll(namedJdbc.query(getCityReportSQL(citiesAnalysisParamDTO, dsInvalidVO, regionName),
+                        paramMap,
                         new RowMapper<RegionReportsVO>() {
                             /**
                              * 将返回的结果集转换成指定对象
@@ -145,8 +141,8 @@ public class CityReportsDao {
         StringBuilder allClientSQL = new StringBuilder();
         //获取基础sql 子句
         getBaseSQL(allClientSQL, companyId, "allClientCount");
-        allClientSQL.append(" AND INSTR(detail.ADDRESS, ? )>0 ")
-                .append(" AND info.CREATETIME BETWEEN ? AND ? ")
+        allClientSQL.append(" AND INSTR(detail.ADDRESS, :address )>0 ")
+                .append(" AND info.CREATETIME BETWEEN :start AND :end ")
                 .append(PLACEHOLDER);
         return allClientSQL;
     }
@@ -160,9 +156,9 @@ public class CityReportsDao {
     private StringBuilder getPendingClientCount(int companyId, DsInvalidVO dsInvalidVO) {
         StringBuilder pendingClientSQL = new StringBuilder();
         getBaseSQL(pendingClientSQL, companyId, "pendingClientCount");
-        pendingClientSQL.append(" AND INSTR(detail.ADDRESS, ? )>0 ")
-                .append(" AND (info.CREATETIME BETWEEN ? AND ?) ")
-                .append(" AND INSTR( ? , CONCAT(',',info.STATUSID + '',',')) != 0")
+        pendingClientSQL.append(" AND INSTR(detail.ADDRESS, :address )>0 ")
+                .append(" AND (info.CREATETIME BETWEEN :start AND :end) ")
+                .append(" AND INSTR( :dsDdStatus , CONCAT('\"',info.STATUSID ,'\"')) != 0")
                 .append(PLACEHOLDER);
         return pendingClientSQL;
     }
@@ -176,9 +172,9 @@ public class CityReportsDao {
     private StringBuilder getFilterPendingClientCount(int companyId) {
         StringBuilder filterPendingClientSQL = new StringBuilder();
         getBaseSQL(filterPendingClientSQL, companyId, "filterPendingClientCount");
-        filterPendingClientSQL.append(" AND INSTR(detail.ADDRESS, ? )>0 ")
+        filterPendingClientSQL.append(" AND INSTR(detail.ADDRESS, :address )>0 ")
                 .append(" AND info.CLASSID = 1 and info.STATUSID = 98 ")
-                .append(" AND (info.CREATETIME BETWEEN ? AND ?) ")
+                .append(" AND (info.CREATETIME BETWEEN :start AND :end) ")
                 .append(PLACEHOLDER);
         return filterPendingClientSQL;
     }
@@ -192,9 +188,9 @@ public class CityReportsDao {
     private StringBuilder getFilterInClientCount(int companyId) {
         StringBuilder filterInClientSQL = new StringBuilder();
         getBaseSQL(filterInClientSQL, companyId, "filterInClientCount");
-        filterInClientSQL.append(" AND INSTR(detail.ADDRESS, ? )>0 ")
+        filterInClientSQL.append(" AND INSTR(detail.ADDRESS, :address )>0 ")
                 .append(" and info.CLASSID = 1 and info.STATUSID = 0 ")
-                .append(" AND info.CREATETIME BETWEEN ? AND ?")
+                .append(" AND info.CREATETIME BETWEEN :start AND :end")
                 .append(PLACEHOLDER);
         return filterInClientSQL;
     }
@@ -208,8 +204,8 @@ public class CityReportsDao {
     private StringBuilder getInValidClientCount(int companyId, DsInvalidVO dsInvalidVO) {
         StringBuilder inValidClientSQL = new StringBuilder();
         getBaseSQL(inValidClientSQL, companyId, "inValidClientCount");
-        inValidClientSQL.append(" AND INSTR(detail.ADDRESS, ? )>0 ")
-                .append(" AND (info.CREATETIME BETWEEN ? AND ?) ");
+        inValidClientSQL.append(" AND INSTR(detail.ADDRESS, :address )>0 ")
+                .append(" AND (info.CREATETIME BETWEEN :start AND :end) ");
         if (StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidStatus()) && StringUtil.isNotEmpty(dsInvalidVO.getDsInvalidLevel())) {
             inValidClientSQL.append(" and (info.STATUSID in(" + dsInvalidVO.getDsInvalidStatus() + ") or");
             inValidClientSQL.append("   detail.YXLEVEL IN(" + dsInvalidVO.getDsInvalidLevel() + ") )");
@@ -233,9 +229,9 @@ public class CityReportsDao {
     private StringBuilder getFilterInValidClientCount(int companyId) {
         StringBuilder filterInValidClientSQL = new StringBuilder();
         getBaseSQL(filterInValidClientSQL, companyId, "filterInValidClientCount");
-        filterInValidClientSQL.append(" AND INSTR(detail.ADDRESS, ? )>0 ")
+        filterInValidClientSQL.append(" AND INSTR(detail.ADDRESS, :address )>0 ")
                 .append(" and info.CLASSID = 6 and info.STATUSID = 99 ")
-                .append(" AND (info.CREATETIME BETWEEN ? AND ?) ")
+                .append(" AND (info.CREATETIME BETWEEN :start AND :end) ")
                 .append(PLACEHOLDER);
 
         return filterInValidClientSQL;
@@ -250,8 +246,8 @@ public class CityReportsDao {
     private StringBuilder getComeShopClientCount(int companyId) {
         StringBuilder comeShopClientSQL = new StringBuilder();
         getBaseSQL(comeShopClientSQL, companyId, "comeShopClientCount");
-        comeShopClientSQL.append(" AND INSTR(detail.ADDRESS, ? )>0 ")
-                .append(" AND (info.COMESHOPTIME BETWEEN ? AND ?) ")
+        comeShopClientSQL.append(" AND INSTR(detail.ADDRESS, :address )>0 ")
+                .append(" AND (info.COMESHOPTIME BETWEEN :start AND :end) ")
                 .append(PLACEHOLDER);
         return comeShopClientSQL;
     }
@@ -265,8 +261,8 @@ public class CityReportsDao {
     private StringBuilder getSuccessClientCount(int companyId) {
         StringBuilder successClientSQL = new StringBuilder();
         getBaseSQL(successClientSQL, companyId, "successClientCount");
-        successClientSQL.append(" AND INSTR(detail.ADDRESS, ? )>0 ")
-                .append(" AND (info.SUCCESSTIME BETWEEN ? AND ?) ")
+        successClientSQL.append(" AND INSTR(detail.ADDRESS, :address )>0 ")
+                .append(" AND (info.SUCCESSTIME BETWEEN :start AND :end) ")
                 .append(PLACEHOLDER);
         return successClientSQL;
     }
@@ -282,8 +278,8 @@ public class CityReportsDao {
         avgAmountSQL.append("SELECT avg(detail.AMOUNT) avgAmount ")
                 .append(" FROM " + DBSplitUtil.getInfoTabName(companyId) + " info , " + DBSplitUtil.getDetailTabName(companyId) + " detail ")
                 .append(" WHERE info.KZID = detail.KZID AND info.ISDEL = 0 AND info.COMPANYID = " + companyId)
-                .append(" AND INSTR(detail.ADDRESS, ? ) > 0 ")
-                .append(" AND info.SUCCESSTIME BETWEEN ? AND ? ")
+                .append(" AND INSTR(detail.ADDRESS, :address ) > 0 ")
+                .append(" AND info.SUCCESSTIME BETWEEN :start AND :end ")
                 .append(PLACEHOLDER);
         return avgAmountSQL;
     }
@@ -299,8 +295,8 @@ public class CityReportsDao {
         amountSQL.append("SELECT SUM(detail.AMOUNT) amount ")
                 .append(" FROM " + DBSplitUtil.getInfoTabName(companyId) + " info , " + DBSplitUtil.getDetailTabName(companyId) + " detail ")
                 .append(" WHERE info.KZID = detail.KZID AND info.ISDEL = 0 AND info.COMPANYID = " + companyId)
-                .append(" AND INSTR(detail.ADDRESS, ? )>0 ")
-                .append(" AND info.SUCCESSTIME BETWEEN ? AND ? ")
+                .append(" AND INSTR(detail.ADDRESS, :address )>0 ")
+                .append(" AND info.SUCCESSTIME BETWEEN :start AND :end ")
                 .append(PLACEHOLDER);
         return amountSQL;
     }
@@ -315,6 +311,9 @@ public class CityReportsDao {
     private StringBuilder setConditionSQL(StringBuilder sb, CitiesAnalysisParamDTO searchKey) {//查询的客资类型 1所有客资 2 电话客资 3 微信客资 4 qq客资 5 有电话有微信 6 无电话 7.无微信 8 只有电话 9只有微信 10 只有qq
 
         StringBuilder condition = new StringBuilder(StringUtil.isNotEmpty(searchKey.getDicCodes()) ? " AND info.TYPEID IN (" + searchKey.getDicCodes() + ") " : "");
+        if (StringUtil.isNotEmpty(searchKey.getSrcIds())){
+            condition.append(" AND info.SOURCEID IN ("+searchKey.getSrcIds()+") ");
+        }
         switch (searchKey.getSearchClientType()) {
             case 1: //1所有客资
                 while (sb.indexOf(PLACEHOLDER) >= 0) {
