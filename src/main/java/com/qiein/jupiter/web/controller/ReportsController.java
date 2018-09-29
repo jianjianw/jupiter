@@ -593,6 +593,31 @@ public class ReportsController extends BaseController {
             List<Map<String, Object>> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsSuccessRate2(month, typeId, sourceId, staffPO.getCompanyId());
             return ResultInfoUtil.success(dstgReportsSrcMonthVO);
         }
+        //花费
+        if (StringUtil.isNotEmpty(kzZB) && "cost".equals(kzZB)) {
+            List<Map<String, Object>> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsCost(month, typeId, sourceId, staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+        //毛客资成本
+        if (StringUtil.isNotEmpty(kzZB) && "costkz".equals(kzZB)) {
+            List<Map<String, Object>> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsCostKZ(month, typeId, sourceId, staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+      //有效客资成本
+        if (StringUtil.isNotEmpty(kzZB) && "costvalidkz".equals(kzZB)) {
+            List<Map<String, Object>> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsCostValidKZ(month, typeId, sourceId, staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+      //入店成本
+        if (StringUtil.isNotEmpty(kzZB) && "costcomekz".equals(kzZB)) {
+            List<Map<String, Object>> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsCostComeKZ(month, typeId, sourceId, staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+      //成交成本
+        if (StringUtil.isNotEmpty(kzZB) && "costsuccesskz".equals(kzZB)) {
+            List<Map<String, Object>> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsCostSuccessKZ(month, typeId, sourceId, staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
         return ResultInfoUtil.error(9999, "查询失败");
     }
 

@@ -329,4 +329,32 @@ public interface ReportService {
      */
 	List<Map<String, Object>> getDSTGSrcMonthReportsSuccessRate2(String month, String typeId, String sourceId,
 			int companyId);
+	/**
+     * 电商推广月度花费--HJF
+     * @param reportParamDTO
+     */
+	List<Map<String, Object>> getDSTGSrcMonthReportsCost(String month, String typeId, String sourceId, int companyId);
+	/**
+     * 电商推广月度毛客资成本--HJF
+     * @param reportParamDTO
+     */
+	List<Map<String, Object>> getDSTGSrcMonthReportsCostKZ(String month, String typeId, String sourceId, int companyId);
+	/**
+     * 电商推广月度有效客资成本--HJF
+     * @param reportParamDTO
+     */
+	List<Map<String, Object>> getDSTGSrcMonthReportsCostValidKZ(String month, String typeId, String sourceId,
+			int companyId);
+	/**
+     * 电商推广月度入店成本--HJF
+     * @param reportParamDTO
+     */
+	List<Map<String, Object>> getDSTGSrcMonthReportsCostComeKZ(String month, String typeId, String sourceId,
+			int companyId);
+	/**
+     * 电商推广月度成交成本--HJF
+     * @param reportParamDTO
+     */
+	List<Map<String, Object>> getDSTGSrcMonthReportsCostSuccessKZ(String month, String typeId, String sourceId,
+			int companyId);
 }
