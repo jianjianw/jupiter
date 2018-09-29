@@ -268,7 +268,12 @@ public class ClientQueryDao {
 
         //ORDER
         StringBuilder orderLimitSql = new StringBuilder();
-        orderLimitSql.append(" ORDER BY info.UPDATETIME DESC, info.ID DESC ");
+
+        if (StringUtil.isNotEmpty(vo.getSortSpare())) {
+            orderLimitSql.append(" ").append(vo.getSortSpare()).append(" ");
+        } else {
+            orderLimitSql.append(" info.ID DESC ");
+        }
         //分页
         orderLimitSql.append(" limit :page , :size ");
         String querySql = baseSelect.append(fromSql).append(whereSql).append(orderLimitSql).toString();
