@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.qiein.jupiter.constant.ClientStatusConst;
 import com.qiein.jupiter.enums.QueryTimeTypeEnum;
 import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.ResultInfo;
@@ -81,6 +82,7 @@ public class PlatController extends BaseController {
     @PostMapping("/query_page_client_info")
     public ResultInfo queryPageClientInfo(@RequestBody JSONObject content) {
         QueryVO queryVO = initQueryVo(content);
+        queryVO.setClassId(ClientStatusConst.getClassByAction(queryVO.getAction()));
         return ResultInfoUtil.success(platService.queryPageClientInfo(queryVO));
     }
 
@@ -127,6 +129,8 @@ public class PlatController extends BaseController {
         queryVO.setSuperSql(content.getString("supersql"));
         return queryVO;
     }
+
+
 
 
 }

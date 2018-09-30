@@ -15,7 +15,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 //允许异步
 @EnableAsync
 //允许定时
-@EnableScheduling
+//@EnableScheduling
 public class JupiterApplication {
 
 	public static void main(String[] args) {
