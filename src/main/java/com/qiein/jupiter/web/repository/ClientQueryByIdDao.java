@@ -105,10 +105,80 @@ public class ClientQueryByIdDao {
         namedJdbc.query(sql.toString(), keyMap, new RowCallbackHandler() {
             @Override
             public void processRow(ResultSet resultSet) throws SQLException {
-                result.add(ClientQueryDao.resultToClientInfo(resultSet));
+                result.add(resultToClientInfo(resultSet));
             }
         });
         return result.get(0);
+    }
+
+
+    private  JSONObject resultToClientInfo(ResultSet rs) throws SQLException {
+        JSONObject info = new JSONObject();
+        info.put("id", rs.getInt("ID"));
+        info.put("letterid", rs.getString("LETTERID"));
+        info.put("kzid", rs.getString("KZID"));
+        info.put("typeid", rs.getInt("TYPEID"));
+        info.put("classid", rs.getInt("CLASSID"));
+        info.put("statusid", rs.getInt("STATUSID"));
+        info.put("kzname", rs.getString("KZNAME"));
+        info.put("kzphone", rs.getString("KZPHONE"));
+        info.put("kzwechat", rs.getString("KZWECHAT"));
+        info.put("kzphoneflag", rs.getString("KZPHONE_FLAG"));
+        info.put("weflag", rs.getInt("WEFLAG"));
+        info.put("kzqq", rs.getString("KZQQ"));
+        info.put("kzww", rs.getString("KZWW"));
+        info.put("sex", rs.getInt("SEX"));
+        info.put("channelid", rs.getInt("CHANNELID"));
+        info.put("sourceid", rs.getInt("SOURCEID"));
+        info.put("collectorid", rs.getInt("COLLECTORID"));
+        info.put("promotorid", rs.getInt("PROMOTORID"));
+        info.put("appointorid", rs.getInt("APPOINTORID"));
+        info.put("receptorid", rs.getInt("RECEPTORID"));
+        info.put("receivetime", rs.getInt("RECEIVETIME"));
+        info.put("shopid", rs.getInt("SHOPID"));
+        info.put("allottype", rs.getInt("ALLOTTYPE"));
+        info.put("createtime", rs.getInt("CREATETIME"));
+        info.put("tracetime", rs.getInt("TRACETIME"));
+        info.put("appointtime", rs.getInt("APPOINTTIME"));
+        info.put("comeshoptime", rs.getInt("COMESHOPTIME"));
+        info.put("successtime", rs.getInt("SUCCESSTIME"));
+        info.put("updatetime", rs.getInt("UPDATETIME"));
+        info.put("srctype", rs.getInt("SRCTYPE"));
+        info.put("groupid", rs.getString("GROUPID"));
+        info.put("collectorname", rs.getString("COLLECTORNAME"));
+        info.put("promotername", rs.getString("PROMOTERNAME"));
+        info.put("appointname", rs.getString("APPOINTNAME"));
+        info.put("receptorname", rs.getString("RECEPTORNAME"));
+        info.put("shopname", rs.getString("SHOPNAME"));
+        info.put("memo", rs.getString("MEMO"));
+        info.put("oldkzname", rs.getString("OLDKZNAME"));
+        info.put("oldkzphone", rs.getString("OLDKZPHONE"));
+        info.put("amount", rs.getInt("AMOUNT"));
+        info.put("stayamount", rs.getInt("STAYAMOUNT"));
+        info.put("talkimg", rs.getString("TALKIMG"));
+        info.put("orderimg", rs.getString("ORDERIMG"));
+        info.put("zxstyle", rs.getInt("ZXSTYLE"));
+        info.put("yxlevel", rs.getInt("YXLEVEL"));
+        info.put("ysrange", rs.getInt("YSRANGE"));
+        info.put("adaddress", rs.getString("ADADDRESS"));
+        info.put("adid", rs.getString("ADID"));
+        info.put("marrytime", rs.getInt("MARRYTIME"));
+        info.put("yptime", rs.getInt("YPTIME"));
+        info.put("matename", rs.getString("MATENAME"));
+        info.put("matephone", rs.getString("MATEPHONE"));
+        info.put("matewechat", rs.getString("MATEWECHAT"));
+        info.put("mateqq", rs.getString("MATEQQ"));
+        info.put("address", rs.getString("ADDRESS"));
+        info.put("groupname", rs.getString("GROUPNAME"));
+        info.put("paystyle", rs.getInt("PAYSTYLE"));
+        info.put("htnum", rs.getString("HTNUM"));
+        info.put("invalidlabel", rs.getString("INVALIDLABEL"));
+        info.put("filmingcode", rs.getString("FILMINGCODE"));
+        info.put("filmingarea", rs.getString("FILMINGAREA"));
+        info.put("keyword", rs.getString("KEYWORD"));
+        info.put("packagecode", rs.getString("PACKAGECODE"));
+
+        return info;
     }
 
 
