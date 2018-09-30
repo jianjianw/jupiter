@@ -130,10 +130,10 @@ public class PlatController extends BaseController {
         queryVO.setSpareSql(content.getString("sparesql"));
         queryVO.setFilterSql(content.getString("filtersql"));
         queryVO.setSuperSql(content.getString("supersql"));
+        //排序
+        queryVO.setSortSpare(content.getString("sortspare"));
         return queryVO;
     }
-
-
 
 
 }
