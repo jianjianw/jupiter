@@ -112,18 +112,21 @@ public class PlatController extends BaseController {
         queryVO.setEnd(content.getIntValue("end"));
         queryVO.setUid(currentLoginStaff.getId());
         queryVO.setCompanyId(currentLoginStaff.getCompanyId());
+
+        queryVO.setAction(content.getString("action"));
+
         //
         queryVO.setRole(content.getString("role"));
         queryVO.setChannelId(content.getString("channelid"));
         queryVO.setSourceId(content.getString("sourceid"));
         queryVO.setShopId(content.getString("shopid"));
+        queryVO.setStaffId(content.getString("staffid"));
         queryVO.setTypeId(content.getString("typeid"));
         queryVO.setYxLevel(content.getString("yxlevel"));
         queryVO.setAppointorId(content.getString("appointids"));
         //
         queryVO.setPmsLimit(content.getIntValue("pmslimit"));
         queryVO.setLinkLimit(content.getString("linklimit"));
-        queryVO.setAction(content.getString("action"));
         queryVO.setSpareSql(content.getString("sparesql"));
         queryVO.setFilterSql(content.getString("filtersql"));
         queryVO.setSuperSql(content.getString("supersql"));

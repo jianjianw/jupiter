@@ -249,7 +249,7 @@ public class ClientEditServiceImpl implements ClientEditService {
                 orderSuccessMsg.setStaffName(appoint.getNickName());
                 orderSuccessMsg.setShopName(info.getFilmingArea());
                 orderSuccessMsg.setAmount(String.valueOf(clientVO.getAmount()));
-                orderSuccessMsg.setType(OrderSuccessTypeEnum.TourShoot);
+                orderSuccessMsg.setType(OrderSuccessTypeEnum.ArrivalShop);
                 orderSuccessMsg.setSrcImg(String.valueOf(info.getSourceId()));
                 orderSuccessMsg.setHeadImg(appoint.getHeadImg());
                 webSocketMsgUtil.pushOrderSuccessMsg(orderSuccessMsg);
@@ -356,7 +356,7 @@ public class ClientEditServiceImpl implements ClientEditService {
                 orderSuccessMsg.setStaffName(appoint.getNickName());
                 orderSuccessMsg.setShopName(info.getFilmingArea());
                 orderSuccessMsg.setAmount(String.valueOf(clientVO.getAmount()));
-                orderSuccessMsg.setType(OrderSuccessTypeEnum.TourShoot);
+                orderSuccessMsg.setType(OrderSuccessTypeEnum.ArrivalShop);
                 orderSuccessMsg.setSrcImg(String.valueOf(info.getSourceId()));
                 orderSuccessMsg.setHeadImg(appoint.getHeadImg());
                 webSocketMsgUtil.pushOrderSuccessMsg(orderSuccessMsg);
