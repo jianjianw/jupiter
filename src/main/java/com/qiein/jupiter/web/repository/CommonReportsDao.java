@@ -82,8 +82,9 @@ public class CommonReportsDao {
 
                         if(null == configObj.getJSONObject(ReportsConfigConst.SHOW_SET)){
                             dsInvalidVO.setSourceShowStatus(false);
+                        }else{
+                            dsInvalidVO.setSourceShowStatus(configObj.getJSONObject(ReportsConfigConst.SHOW_SET).getBoolean(ReportsConfigConst.SOURCE_SHOW));
                         }
-                        dsInvalidVO.setSourceShowStatus(configObj.getJSONObject(ReportsConfigConst.SHOW_SET).getBoolean(ReportsConfigConst.SOURCE_SHOW));
 
                         return dsInvalidVO;
                     }
