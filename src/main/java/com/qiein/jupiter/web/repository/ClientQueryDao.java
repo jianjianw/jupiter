@@ -658,7 +658,7 @@ public class ClientQueryDao {
         String sql = "SELECT grp.SHOPID FROM hm_pub_group_staff rela " +
                 " LEFT JOIN hm_pub_group grp ON grp.GROUPID = rela.GROUPID AND grp.COMPANYID = rela.COMPANYID " +
                 "  LEFT JOIN hm_pub_shop shop ON shop.ID = grp.SHOPID AND shop.COMPANYID = grp.COMPANYID" +
-                " WHERE rela.COMPANYID = :comapnyId  AND rela.STAFFID =  :staffId  AND shop.ISSHOW = 1";
+                " WHERE rela.COMPANYID = :companyId  AND rela.STAFFID =  :staffId  AND shop.ISSHOW = 1";
         final StringBuilder shopIds = new StringBuilder();
         namedJdbc.query(sql, keyMap, new RowCallbackHandler() {
             @Override
