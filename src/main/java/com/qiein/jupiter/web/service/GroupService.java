@@ -143,4 +143,11 @@ public interface GroupService {
      * @return
      */
     String getGroupName(String groupId,Integer companyId);
+    /**
+     * 根据id获取部门信息
+     * @param id
+     * @return
+     */
+    GroupPO getGroupById(int companyId,String groupId);
+
 }

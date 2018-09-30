@@ -709,4 +709,12 @@ public class GroupServiceImpl implements GroupService {
     public String getGroupName(String groupId,Integer companyId){
         return groupDao.getGroupName(groupId,companyId);
     }
+    /**
+     * 根据id获取部门信息
+     * @param id
+     * @return
+     */
+    public GroupPO getGroupById(int companyId,String groupId){
+        return groupDao.getGroupById(companyId,groupId);
+    }
 }

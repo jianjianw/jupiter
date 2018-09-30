@@ -85,7 +85,7 @@ public class PlatController extends BaseController {
     }
 
     /**
-     * 页面查询客资
+     * 页面统计客资
      */
     @PostMapping("/query_page_client_info_count")
     public ResultInfo queryPageClientInfoCount(@RequestBody JSONObject content) {

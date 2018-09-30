@@ -1422,4 +1422,111 @@ public class ReportsServiceImpl implements ReportService {
         List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsValidSuccessRate2(firstDay,lastDay,reportsParamSrcMonthVO, invalidConfig);
         return dstgSrcMonthReports;
 	}
+	/**
+     * 电商推广月度报表花费--HJF
+     * @param 
+     */
+	@Override
+	public List<Map<String, Object>> getDSTGSrcMonthReportsCost(String month, String typeId, String sourceId,
+			int companyId) {
+		//封装参数
+        ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
+        reportsParamSrcMonthVO.setTypeId(typeId);
+        reportsParamSrcMonthVO.setSourceId(sourceId);
+        reportsParamSrcMonthVO.setCompanyId(companyId);
+        //获取无效状态指标，无效意向等级，待定是否为有效量，待定指标
+        //DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
+        //获取时间时间戳
+        int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
+        int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);	
+        //获取客资数据
+        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsValidCost(firstDay,lastDay,reportsParamSrcMonthVO);
+        return dstgSrcMonthReports;
+	}
+	/**
+     * 电商推广月度报表毛客资成本--HJF
+     * @param 
+     */
+	@Override
+	public List<Map<String, Object>> getDSTGSrcMonthReportsCostKZ(String month, String typeId, String sourceId,
+			int companyId) {
+		//封装参数
+        ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
+        reportsParamSrcMonthVO.setTypeId(typeId);
+        reportsParamSrcMonthVO.setSourceId(sourceId);
+        reportsParamSrcMonthVO.setCompanyId(companyId);
+        //获取无效状态指标，无效意向等级，待定是否为有效量，待定指标
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
+        //获取时间时间戳
+        int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
+        int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);	
+        //获取客资数据
+        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsValidCostKZ(firstDay,lastDay,reportsParamSrcMonthVO,invalidConfig);
+        return dstgSrcMonthReports;
+	}
+
+	/**
+     * 电商推广月度报表有效客资成本--HJF
+     * @param 
+     */
+	@Override
+	public List<Map<String, Object>> getDSTGSrcMonthReportsCostValidKZ(String month, String typeId, String sourceId,
+			int companyId) {
+		//封装参数
+        ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
+        reportsParamSrcMonthVO.setTypeId(typeId);
+        reportsParamSrcMonthVO.setSourceId(sourceId);
+        reportsParamSrcMonthVO.setCompanyId(companyId);
+        //获取无效状态指标，无效意向等级，待定是否为有效量，待定指标
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
+        //获取时间时间戳
+        int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
+        int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);	
+        //获取客资数据
+        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsValidCostValidKZ(firstDay,lastDay,reportsParamSrcMonthVO,invalidConfig);
+        return dstgSrcMonthReports;
+	}
+	/**
+     * 电商推广月度报表入店成本--HJF
+     * @param 
+     */
+	@Override
+	public List<Map<String, Object>> getDSTGSrcMonthReportsCostComeKZ(String month, String typeId, String sourceId,
+			int companyId) {
+		//封装参数
+        ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
+        reportsParamSrcMonthVO.setTypeId(typeId);
+        reportsParamSrcMonthVO.setSourceId(sourceId);
+        reportsParamSrcMonthVO.setCompanyId(companyId);
+        //获取无效状态指标，无效意向等级，待定是否为有效量，待定指标
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
+        //获取时间时间戳
+        int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
+        int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);	
+        //获取客资数据
+        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsValidCostComeKZ(firstDay,lastDay,reportsParamSrcMonthVO,invalidConfig);
+        return dstgSrcMonthReports;
+	}
+
+	/**
+     * 电商推广月度报表成交成本--HJF
+     * @param 
+     */
+	@Override
+	public List<Map<String, Object>> getDSTGSrcMonthReportsCostSuccessKZ(String month, String typeId, String sourceId,
+			int companyId) {
+		//封装参数
+        ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
+        reportsParamSrcMonthVO.setTypeId(typeId);
+        reportsParamSrcMonthVO.setSourceId(sourceId);
+        reportsParamSrcMonthVO.setCompanyId(companyId);
+        //获取无效状态指标，无效意向等级，待定是否为有效量，待定指标
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
+        //获取时间时间戳
+        int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
+        int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);	
+        //获取客资数据
+        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsValidCostSuccessKZ(firstDay,lastDay,reportsParamSrcMonthVO,invalidConfig);
+        return dstgSrcMonthReports;
+	}
 }

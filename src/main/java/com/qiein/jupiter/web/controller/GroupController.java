@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.qiein.jupiter.constant.RoleConstant;
@@ -27,6 +28,8 @@ import com.qiein.jupiter.web.entity.vo.GroupVO;
 import com.qiein.jupiter.web.service.GroupService;
 import com.qiein.jupiter.web.service.ShopChannelGroupService;
 import com.qiein.jupiter.web.service.SystemLogService;
+
+import java.util.Map;
 
 /**
  * group api
@@ -63,7 +66,22 @@ public class GroupController extends BaseController {
         groupPO.setCompanyId(staff.getCompanyId());
         // 参数去trim
         ObjectUtil.objectStrParamTrim(groupPO);
+        RequestInfoDTO requestInfo = getRequestInfo();
+        GroupPO groupPO1=groupService.getGroupById(staff.getCompanyId(),groupPO.getGroupId());
+        Map<String,String> map=new HashMap<>();
+        map.put(groupPO1.getGroupName(),groupPO.getGroupName());
+        map.put(groupPO1.getChiefNames(),groupPO.getChiefNames());
         groupService.update(groupPO);
+        GroupPO groupPO2=groupService.getGroupById(staff.getCompanyId(),groupPO.getGroupId());
+        map.put(groupPO1.getChiefNames(),groupPO2.getChiefNames());
+        try {
+            logService.addLog(new SystemLog(SysLogUtil.LOG_TYPE_GROUP, requestInfo.getIp(), requestInfo.getUrl(), staff.getId(),
+                    staff.getNickName(), SysLogUtil.getEditLog(SysLogUtil.LOG_SUP_GROUP, SysLogUtil.LOG_SUP_GROUP,map),
+                    staff.getCompanyId()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultInfoUtil.success(TipMsgEnum.UPDATE_SUCCESS);
+        }
         // 同步修改分配表中的客服组名
 //        ShopChannelGroupService.updateGroupNameById(groupPO.getGroupName(), groupPO.getGroupId(),
 //                groupPO.getCompanyId());

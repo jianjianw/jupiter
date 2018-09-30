@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -138,33 +139,33 @@ public class ClientQueryDao {
         info.put("id", rs.getInt("ID"));
         info.put("letterid", rs.getString("LETTERID"));
         info.put("kzid", rs.getString("KZID"));
-        info.put("typeid", rs.getInt("TYPEID"));
-        info.put("classid", rs.getInt("CLASSID"));
-        info.put("statusid", rs.getInt("STATUSID"));
+        info.put("typeid", rs.getString("TYPEID"));
+        info.put("classid", rs.getString("CLASSID"));
+        info.put("statusid", rs.getString("STATUSID"));
         info.put("kzname", rs.getString("KZNAME"));
         info.put("kzphone", rs.getString("KZPHONE"));
         info.put("kzwechat", rs.getString("KZWECHAT"));
         info.put("kzphoneflag", rs.getString("KZPHONE_FLAG"));
-        info.put("weflag", rs.getInt("WEFLAG"));
+        info.put("weflag", rs.getString("WEFLAG"));
         info.put("kzqq", rs.getString("KZQQ"));
         info.put("kzww", rs.getString("KZWW"));
-        info.put("sex", rs.getInt("SEX"));
-        info.put("channelid", rs.getInt("CHANNELID"));
-        info.put("sourceid", rs.getInt("SOURCEID"));
-        info.put("collectorid", rs.getInt("COLLECTORID"));
-        info.put("promotorid", rs.getInt("PROMOTORID"));
-        info.put("appointorid", rs.getInt("APPOINTORID"));
-        info.put("receptorid", rs.getInt("RECEPTORID"));
-        info.put("receivetime", rs.getInt("RECEIVETIME"));
-        info.put("shopid", rs.getInt("SHOPID"));
-        info.put("allottype", rs.getInt("ALLOTTYPE"));
-        info.put("createtime", rs.getInt("CREATETIME"));
-        info.put("tracetime", rs.getInt("TRACETIME"));
-        info.put("appointtime", rs.getInt("APPOINTTIME"));
-        info.put("comeshoptime", rs.getInt("COMESHOPTIME"));
-        info.put("successtime", rs.getInt("SUCCESSTIME"));
-        info.put("updatetime", rs.getInt("UPDATETIME"));
-        info.put("srctype", rs.getInt("SRCTYPE"));
+        info.put("sex", rs.getString("SEX"));
+        info.put("channelid", rs.getString("CHANNELID"));
+        info.put("sourceid", rs.getString("SOURCEID"));
+        info.put("collectorid", rs.getString("COLLECTORID"));
+        info.put("promotorid", rs.getString("PROMOTORID"));
+        info.put("appointorid", rs.getString("APPOINTORID"));
+        info.put("receptorid", rs.getString("RECEPTORID"));
+        info.put("receivetime", rs.getString("RECEIVETIME"));
+        info.put("shopid", rs.getString("SHOPID"));
+        info.put("allottype", rs.getString("ALLOTTYPE"));
+        info.put("createtime", rs.getString("CREATETIME"));
+        info.put("tracetime", rs.getString("TRACETIME"));
+        info.put("appointtime", rs.getString("APPOINTTIME"));
+        info.put("comeshoptime", rs.getString("COMESHOPTIME"));
+        info.put("successtime", rs.getString("SUCCESSTIME"));
+        info.put("updatetime", rs.getString("UPDATETIME"));
+        info.put("srctype", rs.getString("SRCTYPE"));
         info.put("groupid", rs.getString("GROUPID"));
         info.put("collectorname", rs.getString("COLLECTORNAME"));
         info.put("promotername", rs.getString("PROMOTERNAME"));
@@ -178,26 +179,26 @@ public class ClientQueryDao {
         info.put("stayamount", rs.getString("STAYAMOUNT"));
         info.put("talkimg", rs.getString("TALKIMG"));
         info.put("orderimg", rs.getString("ORDERIMG"));
-        info.put("zxstyle", rs.getInt("ZXSTYLE"));
-        info.put("yxlevel", rs.getInt("YXLEVEL"));
-        info.put("ysrange", rs.getInt("YSRANGE"));
+        info.put("zxstyle", rs.getString("ZXSTYLE"));
+        info.put("yxlevel", rs.getString("YXLEVEL"));
+        info.put("ysrange", rs.getString("YSRANGE"));
         info.put("adaddress", rs.getString("ADADDRESS"));
         info.put("adid", rs.getString("ADID"));
-        info.put("marrytime", rs.getInt("MARRYTIME"));
-        info.put("yptime", rs.getInt("YPTIME"));
+        info.put("marrytime", rs.getString("MARRYTIME"));
+        info.put("yptime", rs.getString("YPTIME"));
         info.put("matename", rs.getString("MATENAME"));
         info.put("matephone", rs.getString("MATEPHONE"));
         info.put("matewechat", rs.getString("MATEWECHAT"));
         info.put("mateqq", rs.getString("MATEQQ"));
         info.put("address", rs.getString("ADDRESS"));
         info.put("groupname", rs.getString("GROUPNAME"));
-        info.put("paystyle", rs.getInt("PAYSTYLE"));
+        info.put("paystyle", rs.getString("PAYSTYLE"));
         info.put("htnum", rs.getString("HTNUM"));
         info.put("invalidlabel", rs.getString("INVALIDLABEL"));
-        info.put("filmingcode", rs.getInt("FILMINGCODE"));
+        info.put("filmingcode", rs.getString("FILMINGCODE"));
         info.put("filmingarea", rs.getString("FILMINGAREA"));
         info.put("keyword", rs.getString("KEYWORD"));
-        info.put("packagecode", rs.getInt("PACKAGECODE"));
+        info.put("packagecode", rs.getString("PACKAGECODE"));
 
         return info;
     }
@@ -270,12 +271,14 @@ public class ClientQueryDao {
         StringBuilder orderLimitSql = new StringBuilder();
 
         if (StringUtil.isNotEmpty(vo.getSortSpare())) {
-            orderLimitSql.append(" ").append(vo.getSortSpare()).append(" ");
+            orderLimitSql.append(" ORDER BY ").append(vo.getSortSpare()).append(" ");
         } else {
-            orderLimitSql.append(" info.ID DESC ");
+            orderLimitSql.append(" ORDER BY info.ID DESC ");
         }
+
         //分页
         orderLimitSql.append(" limit :page , :size ");
+
         String querySql = baseSelect.append(fromSql).append(whereSql).append(orderLimitSql).toString();
         System.out.println(querySql);
         //执行查询
@@ -296,6 +299,10 @@ public class ClientQueryDao {
 
         //执行分页
         pageVO.setData(result);
+        //如果说是已订单TAB，则显示订单统计信息
+        if (ClientStatusConst.KZ_CLASS_ACTION_SUCCESS.equals(vo.getAction())) {
+            pageVO.setOtherData(getOrderCount(vo));
+        }
         return pageVO;
 
     }
@@ -345,6 +352,70 @@ public class ClientQueryDao {
             }
         }
         return countJson;
+
+    }
+
+
+    /**
+     * 页面底部客资 订单数据统计
+     *
+     * @param vo
+     * @return
+     */
+    public JSONObject getOrderCount(QueryVO vo) {
+        // 权限限定
+        setPmsimit(vo);
+
+        // 职工限定
+        setStaffId(vo);
+
+        int companyId = vo.getCompanyId();
+        final PlatPageVO pageVO = new PlatPageVO();
+        pageVO.setCurrentPage(vo.getCurrentPage());
+        pageVO.setPageSize(vo.getPageSize());
+        //查询参数
+        Map<String, Object> keyMap = new HashMap<>();
+        keyMap.put("companyId", companyId);
+        keyMap.put("page", vo.getCurrentPage());
+        keyMap.put("size", vo.getPageSize());
+        //select
+        StringBuilder baseSelect = new StringBuilder();
+        baseSelect.append("SELECT COUNT(1) KZNUM, SUM(det.AMOUNT) SUMAMOUNT, SUM(det.STAYAMOUNT) SUMSTAYMOUNT, AVG(det.AMOUNT) AVGAMOUNT ");
+        //from
+        StringBuilder fromSql = new StringBuilder();
+        fromSql.append(getFromSql(companyId));
+        //where
+        StringBuilder whereSql = new StringBuilder();
+        whereSql.append(" WHERE  info.COMPANYID = :companyId AND info.ISDEL = 0 ");
+        // 限制电商和转介绍查看的客资渠道类型
+        if (vo.getRole().startsWith("ds")) {
+            whereSql.append(" AND ( info.SRCTYPE = 1 OR info.SRCTYPE = 2 ) ");
+        } else if (vo.getRole().startsWith("zjs")) {
+            whereSql.append(" AND ( info.SRCTYPE = 3 OR info.SRCTYPE = 4 OR info.SRCTYPE = 5 ) ");
+        }
+        handleWhereSql(vo, keyMap, whereSql);
+
+        String querySql = baseSelect.append(fromSql).append(whereSql).toString();
+
+        //执行查询
+        final JSONObject json = new JSONObject();
+
+        namedJdbc.query(querySql, keyMap, new RowCallbackHandler() {
+            @Override
+            public void processRow(ResultSet rs) throws SQLException {
+                json.put("kznum", rs.getString("KZNUM"));
+                json.put("sumamount", NumUtil.keep2PointZero(rs.getDouble("SUMAMOUNT")));
+                json.put("sumstaymount", NumUtil.keep2PointZero(rs.getDouble("SUMSTAYMOUNT")));
+                json.put("avgamount", NumUtil.keep2PointZero(rs.getDouble("AVGAMOUNT")));
+                if (0.0 != rs.getDouble("SUMAMOUNT")) {
+                    json.put("percentage",
+                            NumUtil.keep2PointZero(rs.getDouble("SUMSTAYMOUNT") * 100 / rs.getDouble("SUMAMOUNT")) + "%");
+                } else {
+                    json.put("percentage", "-%");
+                }
+            }
+        });
+        return json;
 
     }
 
@@ -654,7 +725,7 @@ public class ClientQueryDao {
                 " SELECT DISTINCT grp.PARENTID FROM hm_pub_group_staff rela " +
                 " LEFT JOIN hm_pub_group grp ON rela.GROUPID = grp.GROUPID AND grp.COMPANYID = :companyId " +
                 " LEFT JOIN hm_pub_group sp ON grp.PARENTID = sp.GROUPID AND sp.COMPANYID = :companyId " +
-                " WHERE ( rela.STAFFID = ? OR INSTR( CONCAT(',', grp.CHIEFIDS, ','), CONCAT(',', :staffId , ',') ) != 0" +
+                " WHERE ( rela.STAFFID = :staffId OR INSTR( CONCAT(',', grp.CHIEFIDS, ','), CONCAT(',', :staffId , ',') ) != 0" +
                 " OR INSTR( CONCAT(',', sp.CHIEFIDS, ','), CONCAT(',', :staffId , ',') ) != 0 ) " +
                 " AND rela.COMPANYID = :companyId AND grp.GROUPTYPE = :groupType ) AND grp.GROUPTYPE = :groupType " +
                 " AND rl.COMPANYID = :companyId AND sf.ID IS NOT NULL";
