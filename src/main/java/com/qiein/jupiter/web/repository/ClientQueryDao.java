@@ -851,13 +851,13 @@ public class ClientQueryDao {
         if (StringUtil.isNotEmpty(vo.getSearchKey())) {
             where.append(" AND ( info.ID = '")
                     .append(vo.getSearchKey())
-                    .append("%' OR info.KZNAME LIKE '")
+                    .append(" %' OR info.KZNAME LIKE '")
                     .append(vo.getSearchKey())
-                    .append("%' OR info.KZPHONE LIKE '")
-                    .append(vo.getSearchKey()).append("%' OR info.KZWECHAT LIKE '")
-                    .append(vo.getSearchKey()).append("%' OR info.KZWW LIKE '")
-                    .append(vo.getSearchKey()).append("%' OR info.KZQQ LIKE '")
-                    .append(vo.getSearchKey()).append("%' ) ");
+                    .append(" %' OR info.KZPHONE LIKE '")
+                    .append(vo.getSearchKey()).append(" %' OR info.KZWECHAT LIKE '")
+                    .append(vo.getSearchKey()).append(" %' OR info.KZWW LIKE '")
+                    .append(vo.getSearchKey()).append(" %' OR info.KZQQ LIKE '")
+                    .append(vo.getSearchKey()).append(" %' ) ");
         }
 
 
@@ -891,9 +891,9 @@ public class ClientQueryDao {
             sb.append(Integer.valueOf(paramArr[i]));
             sb.append(" ");
             if (i != paramArr.length - 1) {
-                sb.append("OR");
+                sb.append(" OR ");
             } else {
-                sb.append(") ");
+                sb.append(" ) ");
             }
         }
         return sb.toString();

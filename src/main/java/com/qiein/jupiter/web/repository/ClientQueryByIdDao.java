@@ -192,7 +192,7 @@ public class ClientQueryByIdDao {
         int companyId = vo.getCompanyId();
         String sql = " SELECT remark.CONTENT FROM " +
                 DBSplitUtil.getRemarkTabName(companyId) +
-                "remark WHERE remark.COMPANYID = :companyId AND remark.KZID = :kzid ";
+                " remark WHERE remark.COMPANYID = :companyId AND remark.KZID = :kzid ";
         //查询参数
         Map<String, Object> keyMap = new HashMap<>();
         keyMap.put("companyId", companyId);
@@ -258,7 +258,7 @@ public class ClientQueryByIdDao {
         keyMap.put("companyId", companyId);
         keyMap.put("kzid", queryVO.getKzId());
         String sql = "  SELECT log.ALLOTTIME, log.STAFFID, log.STAFFNAME, " +
-                "sf.HEADIMG, log.GROUPID, log.GROUPNAME, log.STATUSID, log.RECEIVETIME, log.ALLOTTYPE FROM  "
+                " sf.HEADIMG, log.GROUPID, log.GROUPNAME, log.STATUSID, log.RECEIVETIME, log.ALLOTTYPE FROM  "
                 + DBSplitUtil.getAllotLogTabName(companyId) +
                 " log LEFT JOIN hm_pub_staff sf ON log.STAFFID = sf.ID AND sf.COMPANYID = :companyId" +
                 " WHERE log.COMPANYID = :companyId AND log.KZID = :kzid ORDER BY log.ID DESC ";
@@ -553,7 +553,7 @@ public class ClientQueryByIdDao {
         String sql = "SELECT DISTINCT grp.GROUPTYPE FROM hm_pub_group grp"
                 + " LEFT JOIN hm_pub_group_staff rela ON grp.GROUPID = rela.GROUPID AND rela.COMPANYID = :companyId "
                 + " WHERE grp.COMPANYID = :companyId AND ( rela.STAFFID = :staffId " +
-                "OR INSTR( CONCAT(',', grp.CHIEFIDS, ','), CONCAT(',', :staffId, ',') ) != 0 ) GROUP BY grp.GROUPTYPE";
+                " OR INSTR( CONCAT(',', grp.CHIEFIDS, ','), CONCAT(',', :staffId, ',') ) != 0 ) GROUP BY grp.GROUPTYPE";
         //查询参数
         Map<String, Object> keyMap = new HashMap<>();
         keyMap.put("companyId", companyId);
@@ -660,9 +660,9 @@ public class ClientQueryByIdDao {
         keyMap.put("staffId", staffId);
 
         String sql = "SELECT COUNT(1) FROM hm_pub_group_staff rela" +
-                "LEFT JOIN hm_pub_group grp ON rela.GROUPID = grp.GROUPID AND grp.COMPANYID = :companyId  " +
-                "WHERE ( rela.STAFFID = :staffId  OR rela.STAFFID = :collecterId ) AND rela.COMPANYID = :companyId  " +
-                "AND grp.GROUPTYPE = :type GROUP BY grp.PARENTID HAVING COUNT(1) > 1 ";
+                " LEFT JOIN hm_pub_group grp ON rela.GROUPID = grp.GROUPID AND grp.COMPANYID = :companyId  " +
+                " WHERE ( rela.STAFFID = :staffId  OR rela.STAFFID = :collecterId ) AND rela.COMPANYID = :companyId  " +
+                " AND grp.GROUPTYPE = :type GROUP BY grp.PARENTID HAVING COUNT(1) > 1 ";
 
         SqlRowSet sqlRowSet = namedJdbc.queryForRowSet(sql, keyMap);
         return sqlRowSet.next();
