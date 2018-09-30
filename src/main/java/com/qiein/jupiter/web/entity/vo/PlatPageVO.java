@@ -1,5 +1,7 @@
 package com.qiein.jupiter.web.entity.vo;
 
+import com.alibaba.fastjson.JSONObject;
+
 import java.util.List;
 
 /**
@@ -29,6 +31,20 @@ public class PlatPageVO {
      * 数据
      */
     private List data;
+
+    /**
+     * 其他数据
+     */
+    private JSONObject otherData;
+
+
+    public JSONObject getOtherData() {
+        return otherData;
+    }
+
+    public void setOtherData(JSONObject otherData) {
+        this.otherData = otherData;
+    }
 
     public int getCurrentPage() {
         return currentPage;

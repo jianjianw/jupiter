@@ -63,7 +63,8 @@ public class QueryClientByKeyDao {
                 "  SELECT info.ID,info.LETTERID, info.KZID, info.KZNAME, info.KZPHONE, info.KZWECHAT, info.KZQQ, " +
                         "info.KZWW, info.CREATETIME, info.STATUSID, info.SOURCEID, ");
 
-        sql.append(" det.APPOINTNAME, det.GROUPNAME ,det.KZID, det.MATENAME, det.MATEWECHAT, det.MATEPHONE, det.MATEQQ ");
+        sql.append(" det.APPOINTNAME, det.GROUPNAME ,det.KZID, det.MATENAME, det.MATEWECHAT, det.MATEPHONE, det.MATEQQ, ");
+        sql.append(" det.RECEPTORNAME, det.SHOPNAME ");
         sql.append(" FROM ");
         sql.append(infoTableName);
         sql.append(" info LEFT JOIN ");
@@ -72,6 +73,8 @@ public class QueryClientByKeyDao {
 
         sql.append("  AND ( info.ID = :key OR info.LETTERID like :key OR info.KZNAME LIKE :key OR info.KZPHONE LIKE " +
                 " :key OR info.KZWECHAT LIKE :key OR info.KZWW LIKE :key OR info.KZQQ LIKE :key )");
+
+        sql.append(" LIMIT 0,100 ");
         Map<String, Object> keyMap = new HashMap<>();
         keyMap.put("companyId", companyId);
         keyMap.put("key", key + "%");
@@ -95,6 +98,8 @@ public class QueryClientByKeyDao {
                 info.setSourceId(rs.getInt("SOURCEID"));
                 info.setAppointName(rs.getString("APPOINTNAME"));
                 info.setGroupName(rs.getString("GROUPNAME"));
+                info.setReceptorName(rs.getString("RECEPTORNAME"));
+                info.setShopName(rs.getString("SHOPNAME"));
                 info.setParam(getMatchShow(info));
                 clientVOList.add(info);
             }
@@ -117,13 +122,15 @@ public class QueryClientByKeyDao {
         sql.append(
                 "   SELECT det.KZID, det.MATENAME, det.MATEWECHAT, det.MATEPHONE, det.MATEQQ, info.CREATETIME," +
                         " info.STATUSID, info.SOURCEID, det.APPOINTNAME, det.GROUPNAME ,  ");
-        sql.append(" det.APPOINTNAME, det.GROUPNAME ,det.KZID, det.MATENAME, det.MATEWECHAT, det.MATEPHONE, det.MATEQQ ");
+        sql.append(" det.APPOINTNAME, det.GROUPNAME ,det.KZID, det.MATENAME, det.MATEWECHAT, det.MATEPHONE, det.MATEQQ, ");
+        sql.append(" det.RECEPTORNAME, det.SHOPNAME ");
         sql.append(" FROM ");
         sql.append(infoTableName);
         sql.append(" info LEFT JOIN ");
         sql.append(detailTableName);
         sql.append(" det ON info.KZID = det.KZID WHERE info.COMPANYID = :companyId AND info.ISDEL = 0 ");
         sql.append("  AND (   det.MATENAME LIKE :key OR det.MATEWECHAT LIKE :key OR det.MATEPHONE LIKE :key OR det.MATEQQ LIKE :key  )");
+        sql.append(" LIMIT 0,100 ");
         Map<String, Object> keyMap = new HashMap<>();
         keyMap.put("companyId", companyId);
         keyMap.put("key", key + "%");

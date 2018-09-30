@@ -120,6 +120,11 @@ public class QueryVO {
     private String superSql = "";
 
     /**
+     * 排序
+     */
+    private String sortSpare = "";
+
+    /**
      * 客资ID
      */
     private String kzId;
@@ -148,6 +153,15 @@ public class QueryVO {
      * 当前第几页
      */
     private int currentPage;
+
+
+    public String getSortSpare() {
+        return sortSpare;
+    }
+
+    public void setSortSpare(String sortSpare) {
+        this.sortSpare = sortSpare;
+    }
 
     public String getYxLevel() {
         return yxLevel;

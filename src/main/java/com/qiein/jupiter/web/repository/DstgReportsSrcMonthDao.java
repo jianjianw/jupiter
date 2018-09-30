@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -158,6 +159,8 @@ public class DstgReportsSrcMonthDao {
         for (Map<String, Object> map : newmaps) {
         		Monthsum +=Integer.valueOf(String.valueOf(map.get("total").toString()));
     		}
+        	map1.put("srcImg", "");
+        	map1.put("srcId", -1);
         	map1.put("srcName", "合计");
         	map1.put("total", Monthsum);
  		String[] days={"01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"};
@@ -231,6 +234,8 @@ public class DstgReportsSrcMonthDao {
         for (Map<String, Object> map : newmaps) {
         		Monthsum +=Integer.valueOf(String.valueOf(map.get("total").toString()));
     		}
+        	map1.put("srcImg", "");
+        	map1.put("srcId", -1);
         	map1.put("srcName", "合计");
         	map1.put("total", Monthsum);
  		String[] days={"01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"};
@@ -307,6 +312,8 @@ public class DstgReportsSrcMonthDao {
         for (Map<String, Object> map : newmaps) {
         		Monthsum +=Integer.valueOf(String.valueOf(map.get("total").toString()));
     		}
+        	map1.put("srcImg", "");
+        	map1.put("srcId", -1);
         	map1.put("srcName", "合计");
         	map1.put("total", Monthsum);
  		String[] days={"01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"};
@@ -394,6 +401,8 @@ public class DstgReportsSrcMonthDao {
         for (Map<String, Object> map : newmaps) {
         		Monthsum +=Integer.valueOf(String.valueOf(map.get("total").toString()));
     		}
+        	map1.put("srcImg", "");
+        	map1.put("srcId", -1);
         	map1.put("srcName", "合计");
         	map1.put("total", Monthsum);
  		String[] days={"01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"};
@@ -481,6 +490,8 @@ public class DstgReportsSrcMonthDao {
         for (Map<String, Object> map : newmaps) {
         		Monthsum +=Integer.valueOf(String.valueOf(map.get("total").toString()));
     		}
+        	map1.put("srcImg", "");
+        	map1.put("srcId", -1);
         	map1.put("srcName", "合计");
         	map1.put("total", Monthsum);
  		String[] days={"01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"};
@@ -986,6 +997,8 @@ public class DstgReportsSrcMonthDao {
         for (Map<String, Object> map : newmaps) {
         		Monthsum +=Integer.valueOf(String.valueOf(map.get("total").toString()));
     		}
+        	map1.put("srcImg", null);
+        	map1.put("srcId", -1);
         	map1.put("srcName", "合计");
         	map1.put("total", Monthsum);
  		String[] days={"01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"};
@@ -1057,6 +1070,8 @@ public class DstgReportsSrcMonthDao {
         for (Map<String, Object> map : newmaps) {
         		Monthsum +=Integer.valueOf(String.valueOf(map.get("total").toString()));
     		}
+        	map1.put("srcImg", null);
+        	map1.put("srcId", -1);
         	map1.put("srcName", "合计");
         	map1.put("total", Monthsum);
  		String[] days={"01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"};
@@ -1070,6 +1085,532 @@ public class DstgReportsSrcMonthDao {
 		}
  		newmaps.add(0,map1);
 		return newmaps;
+	}
+	
+	/**
+	 * 电商推广月度报表有效率--HJF
+	 */
+	public List<Map<String, Object>> getDSTGSrcMonthReportsValidRate(int firstDay, int lastDay,
+			ReportsParamSrcMonthVO reportsParamSrcMonthVO, DsInvalidVO invalidConfig) {
+		//获取指标
+		List<Map<String, Object>> dstgSrcMonthReportsvalid = getDSTGSrcMonthReportsvalid(firstDay,lastDay,reportsParamSrcMonthVO,invalidConfig);
+		List<Map<String, Object>> dstgSrcMonthReportsAll = getDSTGSrcMonthReportsAll(firstDay,lastDay,reportsParamSrcMonthVO,invalidConfig);
+		//最终返回用
+	      List<Map<String, Object>> newsmaps=new ArrayList<>();
+	      
+	      for (Map<String, Object> map : dstgSrcMonthReportsvalid) {
+				Map maptemp = new HashMap();
+					for (Map<String, Object> map1 : dstgSrcMonthReportsAll) {
+						
+						if((map.get("srcId")).equals(map1.get("srcId"))){
+							map.remove("srcId");
+							map.remove("srcName");
+							map.remove("srcImg");
+							Set<String> mapkeys = map.keySet();
+							for (String mapkey : mapkeys) {
+								double a=Integer.valueOf(String.valueOf(map.get(mapkey).toString()));
+								double b=Integer.valueOf(String.valueOf(map1.get(mapkey).toString()));
+								double c=(double)Math.round(a/b*100)/100;
+								maptemp.put(mapkey, c);
+							}
+							maptemp.put("srcId", map1.get("srcId"));
+							maptemp.put("srcName", map1.get("srcName"));
+							maptemp.put("srcImg", map1.get("srcImg"));
+							newsmaps.add(maptemp);
+							break;
+						}
+					}
+			}
+		
+		return newsmaps;
+		
+	}
+	
+	/**
+	 * 电商推广月度报表无效率--HJF
+	 */
+	public List<Map<String, Object>> getDSTGSrcMonthReportsInValidRate(int firstDay, int lastDay,
+			ReportsParamSrcMonthVO reportsParamSrcMonthVO, DsInvalidVO invalidConfig) {
+		  //获取指标
+		  List<Map<String, Object>> dstgSrcMonthReportsvalid = getDSTGSrcMonthReportsInvalid(firstDay,lastDay,reportsParamSrcMonthVO,invalidConfig);
+		  List<Map<String, Object>> dstgSrcMonthReportsAll = getDSTGSrcMonthReportsAll(firstDay,lastDay,reportsParamSrcMonthVO,invalidConfig);
+		  //最终返回用
+	      List<Map<String, Object>> newsmaps=new ArrayList<>();
+	      
+	      for (Map<String, Object> map : dstgSrcMonthReportsvalid) {
+				Map maptemp = new HashMap();
+					for (Map<String, Object> map1 : dstgSrcMonthReportsAll) {
+						
+						if((map.get("srcId")).equals(map1.get("srcId"))){
+							map.remove("srcId");
+							map.remove("srcName");
+							map.remove("srcImg");
+							Set<String> mapkeys = map.keySet();
+							for (String mapkey : mapkeys) {
+								double a=Integer.valueOf(String.valueOf(map.get(mapkey).toString()));
+								double b=Integer.valueOf(String.valueOf(map1.get(mapkey).toString()));
+								double c=(double)Math.round(a/b*100)/100;
+								maptemp.put(mapkey, c);
+							}
+							maptemp.put("srcId", map1.get("srcId"));
+							maptemp.put("srcName", map1.get("srcName"));
+							maptemp.put("srcImg", map1.get("srcImg"));
+							newsmaps.add(maptemp);
+							break;
+						}
+					}
+			}
+		
+		return newsmaps;	
+	}
+	/**
+	 * 电商推广月度报表待定率--HJF
+	 */
+	public List<Map<String, Object>> getDSTGSrcMonthReportsDdnumRate(int firstDay, int lastDay,
+			ReportsParamSrcMonthVO reportsParamSrcMonthVO, DsInvalidVO invalidConfig) {
+		//获取指标
+		  List<Map<String, Object>> dstgSrcMonthReportsvalid = getDSTGSrcMonthReportsDdNum(firstDay,lastDay,reportsParamSrcMonthVO,invalidConfig);
+		  List<Map<String, Object>> dstgSrcMonthReportsAll = getDSTGSrcMonthReportsAll(firstDay,lastDay,reportsParamSrcMonthVO,invalidConfig);
+		  //最终返回用
+	      List<Map<String, Object>> newsmaps=new ArrayList<>();
+	      
+	      for (Map<String, Object> map : dstgSrcMonthReportsvalid) {
+				Map maptemp = new HashMap();
+					for (Map<String, Object> map1 : dstgSrcMonthReportsAll) {
+						
+						if((map.get("srcId")).equals(map1.get("srcId"))){
+							map.remove("srcId");
+							map.remove("srcName");
+							map.remove("srcImg");
+							Set<String> mapkeys = map.keySet();
+							for (String mapkey : mapkeys) {
+								double a=Integer.valueOf(String.valueOf(map.get(mapkey).toString()));
+								double b=Integer.valueOf(String.valueOf(map1.get(mapkey).toString()));
+								double c=(double)Math.round(a/b*100)/100;
+								maptemp.put(mapkey, c);
+							}
+							maptemp.put("srcId", map1.get("srcId"));
+							maptemp.put("srcName", map1.get("srcName"));
+							maptemp.put("srcImg", map1.get("srcImg"));
+							newsmaps.add(maptemp);
+							break;
+						}
+					}
+			}
+		
+		return newsmaps;
+	}
+	/**
+	 * 电商推广月度报毛客资入店率--HJF
+	 */
+	public List<Map<String, Object>> getDSTGSrcMonthReportsComeRate(int firstDay, int lastDay,
+			ReportsParamSrcMonthVO reportsParamSrcMonthVO, DsInvalidVO invalidConfig) {
+		//获取指标
+		  List<Map<String, Object>> dstgSrcMonthReportsvalid = getDSTGSrcMonthReportsCome(firstDay,lastDay,reportsParamSrcMonthVO,invalidConfig);
+		  List<Map<String, Object>> dstgSrcMonthReportsAll = getDSTGSrcMonthReportsAll(firstDay,lastDay,reportsParamSrcMonthVO,invalidConfig);
+		  //最终返回用
+	      List<Map<String, Object>> newsmaps=new ArrayList<>();
+	      
+	      for (Map<String, Object> map : dstgSrcMonthReportsvalid) {
+				Map maptemp = new HashMap();
+					for (Map<String, Object> map1 : dstgSrcMonthReportsAll) {
+						if((map.get("srcId")).equals(map1.get("srcId"))){
+							map.remove("srcId");
+							map.remove("srcName");
+							map.remove("srcImg");
+							Set<String> mapkeys = map.keySet();
+							for (String mapkey : mapkeys) {
+								double a=Integer.valueOf(String.valueOf(map.get(mapkey).toString()));
+								double b=Integer.valueOf(String.valueOf(map1.get(mapkey).toString()));
+								double c=(double)Math.round(a/b*100)/100;
+								maptemp.put(mapkey, c);
+							}
+							maptemp.put("srcId", map1.get("srcId"));
+							maptemp.put("srcName", map1.get("srcName"));
+							maptemp.put("srcImg", map1.get("srcImg"));
+							newsmaps.add(maptemp);
+							break;
+						}
+					}
+			}
+		
+		return newsmaps;
+	}
+	/**
+	 * 电商推广月度报有效客资入店率--HJF
+	 */
+	public List<Map<String, Object>> getDSTGSrcMonthReportsValidComeRate(int firstDay, int lastDay,
+			ReportsParamSrcMonthVO reportsParamSrcMonthVO, DsInvalidVO invalidConfig) {
+		//获取指标
+		  List<Map<String, Object>> dstgSrcMonthReportsvalid = getDSTGSrcMonthReportsCome(firstDay,lastDay,reportsParamSrcMonthVO,invalidConfig);
+		  List<Map<String, Object>> dstgSrcMonthReportsAll = getDSTGSrcMonthReportsvalid(firstDay,lastDay,reportsParamSrcMonthVO,invalidConfig);
+		  //最终返回用
+	      List<Map<String, Object>> newsmaps=new ArrayList<>();
+	      
+	      for (Map<String, Object> map : dstgSrcMonthReportsvalid) {
+				Map maptemp = new HashMap();
+					for (Map<String, Object> map1 : dstgSrcMonthReportsAll) {
+						
+						if((map.get("srcId")).equals(map1.get("srcId"))){
+							map.remove("srcId");
+							map.remove("srcName");
+							map.remove("srcImg");
+							Set<String> mapkeys = map.keySet();
+							for (String mapkey : mapkeys) {
+								double a=Integer.valueOf(String.valueOf(map.get(mapkey).toString()));
+								double b=Integer.valueOf(String.valueOf(map1.get(mapkey).toString()));
+								double c=(double)Math.round(a/b*100)/100;
+								maptemp.put(mapkey, c);
+							}
+							maptemp.put("srcId", map1.get("srcId"));
+							maptemp.put("srcName", map1.get("srcName"));
+							maptemp.put("srcImg", map1.get("srcImg"));
+							newsmaps.add(maptemp);
+							break;
+						}
+					}
+			}
+		
+		return newsmaps;
+	}
+	/**
+	 * 电商推广月度报入店成交率--HJF
+	 */
+	public List<Map<String, Object>> getDSTGSrcMonthReportsValidSuccessRate(int firstDay, int lastDay,
+			ReportsParamSrcMonthVO reportsParamSrcMonthVO, DsInvalidVO invalidConfig) {
+		//获取指标
+		  List<Map<String, Object>> dstgSrcMonthReportsvalid = getDSTGSrcMonthReportsSuccess(firstDay,lastDay,reportsParamSrcMonthVO,invalidConfig);
+		  List<Map<String, Object>> dstgSrcMonthReportsAll = getDSTGSrcMonthReportsCome(firstDay,lastDay,reportsParamSrcMonthVO,invalidConfig);
+		  //最终返回用
+	      List<Map<String, Object>> newsmaps=new ArrayList<>();
+	      
+	      for (Map<String, Object> map : dstgSrcMonthReportsvalid) {
+				Map maptemp = new HashMap();
+					for (Map<String, Object> map1 : dstgSrcMonthReportsAll) {
+						
+						if((map.get("srcId")).equals(map1.get("srcId"))){
+							map.remove("srcId");
+							map.remove("srcName");
+							map.remove("srcImg");
+							Set<String> mapkeys = map.keySet();
+							for (String mapkey : mapkeys) {
+								double a=Integer.valueOf(String.valueOf(map.get(mapkey).toString()));
+								System.out.println(map);
+								System.out.println(map1);
+								double b=Integer.valueOf(String.valueOf(map1.get(mapkey).toString()));
+								double c=(double)Math.round(a/b*100)/100;
+								maptemp.put(mapkey, c);
+							}
+							maptemp.put("srcId", map1.get("srcId"));
+							maptemp.put("srcName", map1.get("srcName"));
+							maptemp.put("srcImg", map1.get("srcImg"));
+							newsmaps.add(maptemp);
+							break;
+						}
+					}
+			}
+		
+		return newsmaps;
+	}
+	/**
+	 * 电商推广月度报毛客资成交率--HJF
+	 */
+	public List<Map<String, Object>> getDSTGSrcMonthReportsValidSuccessRate1(int firstDay, int lastDay,
+			ReportsParamSrcMonthVO reportsParamSrcMonthVO, DsInvalidVO invalidConfig) {
+		//获取指标
+		  List<Map<String, Object>> dstgSrcMonthReportsvalid = getDSTGSrcMonthReportsSuccess(firstDay,lastDay,reportsParamSrcMonthVO,invalidConfig);
+		  List<Map<String, Object>> dstgSrcMonthReportsAll = getDSTGSrcMonthReportsAll(firstDay,lastDay,reportsParamSrcMonthVO,invalidConfig);
+		  //最终返回用
+	      List<Map<String, Object>> newsmaps=new ArrayList<>();
+	      
+	      for (Map<String, Object> map : dstgSrcMonthReportsvalid) {
+				Map maptemp = new HashMap();
+					for (Map<String, Object> map1 : dstgSrcMonthReportsAll) {
+						
+						if((map.get("srcId")).equals(map1.get("srcId"))){
+							map.remove("srcId");
+							map.remove("srcName");
+							map.remove("srcImg");
+							Set<String> mapkeys = map.keySet();
+							for (String mapkey : mapkeys) {
+								double a=Integer.valueOf(String.valueOf(map.get(mapkey).toString()));
+								double b=Integer.valueOf(String.valueOf(map1.get(mapkey).toString()));
+								double c=(double)Math.round(a/b*100)/100;
+								maptemp.put(mapkey, c);
+							}
+							maptemp.put("srcId", map1.get("srcId"));
+							maptemp.put("srcName", map1.get("srcName"));
+							maptemp.put("srcImg", map1.get("srcImg"));
+							newsmaps.add(maptemp);
+							break;
+						}
+					}
+			}
+		return newsmaps;
+	}
+	/**
+	 * 电商推广月度报表有效客资成交率--HJF
+	 */
+	public List<Map<String, Object>> getDSTGSrcMonthReportsValidSuccessRate2(int firstDay, int lastDay,
+			ReportsParamSrcMonthVO reportsParamSrcMonthVO, DsInvalidVO invalidConfig) {
+		//获取指标
+		  List<Map<String, Object>> dstgSrcMonthReportsvalid = getDSTGSrcMonthReportsSuccess(firstDay,lastDay,reportsParamSrcMonthVO,invalidConfig);
+		  List<Map<String, Object>> dstgSrcMonthReportsAll = getDSTGSrcMonthReportsvalid(firstDay,lastDay,reportsParamSrcMonthVO,invalidConfig);
+		  //最终返回用
+	      List<Map<String, Object>> newsmaps=new ArrayList<>();
+	      
+	      for (Map<String, Object> map : dstgSrcMonthReportsvalid) {
+				Map maptemp = new HashMap();
+					for (Map<String, Object> map1 : dstgSrcMonthReportsAll) {
+						
+						if((map.get("srcId")).equals(map1.get("srcId"))){
+							map.remove("srcId");
+							map.remove("srcName");
+							map.remove("srcImg");
+							Set<String> mapkeys = map.keySet();
+							for (String mapkey : mapkeys) {
+								double a=Integer.valueOf(String.valueOf(map.get(mapkey).toString()));
+								double b=Integer.valueOf(String.valueOf(map1.get(mapkey).toString()));
+								double c=(double)Math.round(a/b*100)/100;
+								maptemp.put(mapkey, c);
+							}
+							maptemp.put("srcId", map1.get("srcId"));
+							maptemp.put("srcName", map1.get("srcName"));
+							maptemp.put("srcImg", map1.get("srcImg"));
+							newsmaps.add(maptemp);
+							break;
+						}
+					}
+			}
+		return newsmaps;
+	}
+	/**
+	 * 电商推广月度报表花费--HJF
+	 */
+
+	public List<Map<String, Object>> getDSTGSrcMonthReportsValidCost(int firstDay, int lastDay,
+			ReportsParamSrcMonthVO reportsParamSrcMonthVO) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT ct.SRCID srcId,src.SRCNAME srcName,FROM_UNIXTIME(ct.COSTTIME, '%d') time,ct.COST count,src.SRCIMG srcImg ");
+		sql.append(" FROM hm_crm_cost ct ");
+		sql.append(" LEFT JOIN hm_crm_source src ON src.ID=ct.SRCID ");
+		sql.append(" WHERE  src.TYPEID IN(1,2) ");
+		sql.append(" AND ct.COSTTIME BETWEEN "+firstDay+" AND "+ lastDay);	
+			if (StringUtil.isNotEmpty(reportsParamSrcMonthVO.getSourceId())) {
+				sql.append(" AND src.ID IN (" + reportsParamSrcMonthVO.getSourceId() + ")");
+			}
+		sql.append(" AND ct.COMPANYID=? ");
+		sql.append(" GROUP BY srcId,time ");
+		sql.append(" ORDER BY srcId ");
+        String sqlString = sql.toString(); 
+        List<Map<String, Object>> listAll = jdbcTemplate.queryForList(sqlString, new Object[]{reportsParamSrcMonthVO.getCompanyId()});
+        // 最终用返回
+        List<Map<String, Object>> newmaps = new ArrayList<>();
+
+  		for (Map<String, Object> map6 : listAll) {
+  			Map<String, Object> row = new HashMap<>();
+  			row.put("srcId", map6.get("srcId"));
+  			row.put("srcName", map6.get("srcName"));
+  			row.put("srcImg", map6.get("srcImg"));
+  			row.put((String) map6.get("time"), map6.get("count"));
+  			//合计
+  			double count=Double.valueOf(String.valueOf(map6.get("count").toString()));
+  			boolean flag = false;
+  			for (Map<String, Object> newmap : newmaps) {
+  				if (newmap.get("srcId").equals(row.get("srcId"))) {
+  					newmap.put((String) map6.get("time"), map6.get("count"));
+  					Double total = (Double)newmap.get("total");
+  					newmap.put("total", total + count);
+  					flag = true;
+  					break;
+  				}
+  			}
+  			if (!flag) {
+  				row.put("total",count);
+  				newmaps.add(row);
+  			}
+  		}	
+      	//合计横向的一行
+            Map<String,Object> map1=new LinkedHashMap();
+     		Double Monthsum=0.0;
+            for (Map<String, Object> map : newmaps) {
+            		Monthsum +=Double.valueOf(map.get("total").toString());
+        		}
+            	map1.put("srcImg", "");
+            	map1.put("srcId", -1);
+            	map1.put("srcName", "合计");
+            	map1.put("total", (double)Math.round(Monthsum*100)/100);
+     		String[] days={"01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"};
+     		for (String day : days) {
+     			Double daysum=0.0;
+     			for (Map<String, Object> map : newmaps) {
+     				if(map.containsKey(day)){
+     					daysum+=Double.valueOf(String.valueOf(map.get(day).toString()));
+     				}
+     			}map1.put(day, (double)Math.round(daysum*100)/100);
+    		}
+     		newmaps.add(0,map1);  
+  		
+        return newmaps;
+	}
+	/**
+	 * 电商推广月度报表毛客资成本--HJF
+	 */
+	public List<Map<String, Object>> getDSTGSrcMonthReportsValidCostKZ(int firstDay, int lastDay,
+			ReportsParamSrcMonthVO reportsParamSrcMonthVO,DsInvalidVO invalidConfig) {
+		//获取指标
+		List<Map<String, Object>> dstgSrcMonthReportsValidCost = getDSTGSrcMonthReportsValidCost(firstDay,lastDay,reportsParamSrcMonthVO);
+		List<Map<String, Object>> dstgSrcMonthReportsAll = getDSTGSrcMonthReportsAll(firstDay,lastDay,reportsParamSrcMonthVO,invalidConfig);
+		System.out.println(dstgSrcMonthReportsValidCost);
+		System.out.println(dstgSrcMonthReportsAll);
+		//最终返回用
+	    List<Map<String, Object>> newsmaps=new ArrayList<>();
+	      
+	      for (Map<String, Object> map : dstgSrcMonthReportsValidCost) {
+				Map maptemp = new HashMap();
+					for (Map<String, Object> map1 : dstgSrcMonthReportsAll) {
+						
+						if(map.get("srcId").equals(map1.get("srcId"))){
+							map.remove("srcId");
+							map.remove("srcName");
+							map.remove("srcImg");
+							Set<String> mapkeys = map.keySet();
+							for (String mapkey : mapkeys) {
+								double a=Double.valueOf(String.valueOf(map.get(mapkey).toString()));
+								double b=Double.valueOf(String.valueOf(map1.get(mapkey).toString()));
+								if(b==0.0){
+									b=1.0;
+								}
+								double c=(double)Math.round(a/b*100)/100;
+								maptemp.put(mapkey, c);
+							}
+							maptemp.put("srcId", map1.get("srcId"));
+							maptemp.put("srcName", map1.get("srcName"));
+							maptemp.put("srcImg", map1.get("srcImg"));
+							newsmaps.add(maptemp);
+							break;
+						}
+					}
+			}
+		return newsmaps;			
+	}
+	/**
+	 * 电商推广月度报表有效客资成本--HJF
+	 */
+	public List<Map<String, Object>> getDSTGSrcMonthReportsValidCostValidKZ(int firstDay, int lastDay,
+			ReportsParamSrcMonthVO reportsParamSrcMonthVO, DsInvalidVO invalidConfig) {
+		//获取指标
+		  List<Map<String, Object>> getDSTGSrcMonthReportsValidCost = getDSTGSrcMonthReportsValidCost(firstDay,lastDay,reportsParamSrcMonthVO);
+		  List<Map<String, Object>> getDSTGSrcMonthReportsvalid = getDSTGSrcMonthReportsAll(firstDay,lastDay,reportsParamSrcMonthVO,invalidConfig);
+		  //最终返回用
+	      List<Map<String, Object>> newsmaps=new ArrayList<>();
+	      
+	      for (Map<String, Object> map : getDSTGSrcMonthReportsValidCost) {
+				Map maptemp = new HashMap();
+					for (Map<String, Object> map1 : getDSTGSrcMonthReportsvalid) {
+						
+						if((map.get("srcId")).equals(map1.get("srcId"))){
+							map.remove("srcId");
+							map.remove("srcName");
+							map.remove("srcImg");
+							Set<String> mapkeys = map.keySet();
+							for (String mapkey : mapkeys) {
+								double a=Double.valueOf(String.valueOf(map.get(mapkey).toString()));
+								double b=Double.valueOf(String.valueOf(map1.get(mapkey).toString()));
+								if(b==0.0){
+									b=1.0;
+								}
+								double c=(double)Math.round(a/b*100)/100;
+								maptemp.put(mapkey, c);
+							}
+							maptemp.put("srcId", map1.get("srcId"));
+							maptemp.put("srcName", map1.get("srcName"));
+							maptemp.put("srcImg", map1.get("srcImg"));
+							newsmaps.add(maptemp);
+							break;
+						}
+					}
+			}
+		return newsmaps;
+	}
+	/**
+	 * 电商推广月度报表入店成本--HJF
+	 */
+
+	public List<Map<String, Object>> getDSTGSrcMonthReportsValidCostComeKZ(int firstDay, int lastDay,
+			ReportsParamSrcMonthVO reportsParamSrcMonthVO, DsInvalidVO invalidConfig) {
+		//获取指标
+		  List<Map<String, Object>> getDSTGSrcMonthReportsValidCost = getDSTGSrcMonthReportsValidCost(firstDay,lastDay,reportsParamSrcMonthVO);
+		  List<Map<String, Object>> getDSTGSrcMonthReportsCome = getDSTGSrcMonthReportsAll(firstDay,lastDay,reportsParamSrcMonthVO,invalidConfig);
+		  //最终返回用
+	      List<Map<String, Object>> newsmaps=new ArrayList<>();
+	      
+	      for (Map<String, Object> map : getDSTGSrcMonthReportsValidCost) {
+				Map maptemp = new HashMap();
+					for (Map<String, Object> map1 : getDSTGSrcMonthReportsCome) {
+						
+						if((map.get("srcId")).equals(map1.get("srcId"))){
+							map.remove("srcId");
+							map.remove("srcName");
+							map.remove("srcImg");
+							Set<String> mapkeys = map.keySet();
+							for (String mapkey : mapkeys) {
+								double a=Double.valueOf(String.valueOf(map.get(mapkey).toString()));
+								double b=Double.valueOf(String.valueOf(map1.get(mapkey).toString()));
+								if(b==0.0){
+									b=1.0;
+								}
+								double c=(double)Math.round(a/b*100)/100;
+								maptemp.put(mapkey, c);
+							}
+							maptemp.put("srcId", map1.get("srcId"));
+							maptemp.put("srcName", map1.get("srcName"));
+							maptemp.put("srcImg", map1.get("srcImg"));
+							newsmaps.add(maptemp);
+							break;
+						}
+					}
+			}
+		return newsmaps;
+	}
+	/**
+	 * 电商推广月度报表成交成本--HJF
+	 */
+	public List<Map<String, Object>> getDSTGSrcMonthReportsValidCostSuccessKZ(int firstDay, int lastDay,
+			ReportsParamSrcMonthVO reportsParamSrcMonthVO, DsInvalidVO invalidConfig) {
+		//获取指标
+		  List<Map<String, Object>> getDSTGSrcMonthReportsValidCost = getDSTGSrcMonthReportsValidCost(firstDay,lastDay,reportsParamSrcMonthVO);
+		  List<Map<String, Object>> getDSTGSrcMonthReportsSuccess = getDSTGSrcMonthReportsAll(firstDay,lastDay,reportsParamSrcMonthVO,invalidConfig);
+		  //最终返回用
+	      List<Map<String, Object>> newsmaps=new ArrayList<>();
+	      
+	      for (Map<String, Object> map : getDSTGSrcMonthReportsValidCost) {
+				Map maptemp = new HashMap();
+					for (Map<String, Object> map1 : getDSTGSrcMonthReportsSuccess) {
+						
+						if((map.get("srcId")).equals(map1.get("srcId"))){
+							map.remove("srcId");
+							map.remove("srcName");
+							map.remove("srcImg");
+							Set<String> mapkeys = map.keySet();
+							for (String mapkey : mapkeys) {
+								double a=Double.valueOf(String.valueOf(map.get(mapkey).toString()));
+								double b=Double.valueOf(String.valueOf(map1.get(mapkey).toString()));
+								if(b==0.0){
+									b=1.0;
+								}
+								double c=(double)Math.round(a/b*100)/100;
+								maptemp.put(mapkey, c);
+							}
+							maptemp.put("srcId", map1.get("srcId"));
+							maptemp.put("srcName", map1.get("srcName"));
+							maptemp.put("srcImg", map1.get("srcImg"));
+							newsmaps.add(maptemp);
+							break;
+						}
+					}
+			}
+		return newsmaps;
 	}
 	
 	

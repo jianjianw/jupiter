@@ -101,7 +101,35 @@ public class SearchClientVO {
      */
     private String letterId;
 
+    /**
+     * 门市
+     */
+    private String receptorName;
 
+    /**
+     * 门店
+     */
+    private String shopName;
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public String getReceptorName() {
+        return receptorName;
+    }
+
+    public void setReceptorName(String receptorName) {
+        this.receptorName = receptorName;
+    }
+
+    public String getShopName() {
+        return shopName;
+    }
+
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
+    }
 
     public String getLetterId() {
         return letterId;

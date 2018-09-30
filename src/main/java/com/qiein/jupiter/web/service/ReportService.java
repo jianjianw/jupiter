@@ -273,14 +273,88 @@ public interface ReportService {
     /**
      * 电商推广月度报表入店量量--HJF
      * @param reportParamDTO
-     * @return
      */
     List<Map<String, Object>> getDSTGSrcMonthReportsCome(String month, String typeId, String sourceId, int companyId);
 	/**
      * 电商推广月度报表成交量--HJF
      * @param reportParamDTO
-     * @return
      */
 	List<Map<String, Object>> getDSTGSrcMonthReportsSuccess(String month, String typeId, String sourceId,
+			int companyId);
+	/**
+     * 电商推广月度报表有效客资量--HJF
+     * @param reportParamDTO
+     */
+	List<Map<String, Object>> getDSTGSrcMonthReportsValidRate(String month, String typeId, String sourceId,
+			int companyId);
+	/**
+     * 电商推广月度报表无效客资量--HJF
+     * @param reportParamDTO
+     */
+	List<Map<String, Object>> getDSTGSrcMonthReportsInValidRate(String month, String typeId, String sourceId,
+			int companyId);
+	/**
+     * 电商推广月度报表待定客资量--HJF
+     * @param reportParamDTO
+     */
+	List<Map<String, Object>> getDSTGSrcMonthReportsDdnumRate(String month, String typeId, String sourceId,
+			int companyId);
+	/**
+     * 电商推广月度报表毛客资待定率--HJF
+     * @param reportParamDTO
+     */
+	List<Map<String, Object>> getDSTGSrcMonthReportsComeRate(String month, String typeId, String sourceId,
+			int companyId);
+	/**
+     * 电商推广月度报表有效客资入店率--HJF
+     * @param reportParamDTO
+     */
+	List<Map<String, Object>> getDSTGSrcMonthReportsValidComeRate(String month, String typeId, String sourceId,
+			int companyId);
+	/**
+     * 电商推广月度报表入店成交率--HJF
+     * @param reportParamDTO
+     */
+	List<Map<String, Object>> getDSTGSrcMonthReportsSuccessRate(String month, String typeId, String sourceId,
+			int companyId);
+	/**
+     * 电商推广月度毛客资成交率--HJF
+     * @param reportParamDTO
+     */
+	List<Map<String, Object>> getDSTGSrcMonthReportsSuccessRate1(String month, String typeId, String sourceId,
+			int companyId);
+	/**
+     * 电商推广月度有效客资成交率--HJF
+     * @param reportParamDTO
+     */
+	List<Map<String, Object>> getDSTGSrcMonthReportsSuccessRate2(String month, String typeId, String sourceId,
+			int companyId);
+	/**
+     * 电商推广月度花费--HJF
+     * @param reportParamDTO
+     */
+	List<Map<String, Object>> getDSTGSrcMonthReportsCost(String month, String typeId, String sourceId, int companyId);
+	/**
+     * 电商推广月度毛客资成本--HJF
+     * @param reportParamDTO
+     */
+	List<Map<String, Object>> getDSTGSrcMonthReportsCostKZ(String month, String typeId, String sourceId, int companyId);
+	/**
+     * 电商推广月度有效客资成本--HJF
+     * @param reportParamDTO
+     */
+	List<Map<String, Object>> getDSTGSrcMonthReportsCostValidKZ(String month, String typeId, String sourceId,
+			int companyId);
+	/**
+     * 电商推广月度入店成本--HJF
+     * @param reportParamDTO
+     */
+	List<Map<String, Object>> getDSTGSrcMonthReportsCostComeKZ(String month, String typeId, String sourceId,
+			int companyId);
+	/**
+     * 电商推广月度成交成本--HJF
+     * @param reportParamDTO
+     */
+	List<Map<String, Object>> getDSTGSrcMonthReportsCostSuccessKZ(String month, String typeId, String sourceId,
 			int companyId);
 }

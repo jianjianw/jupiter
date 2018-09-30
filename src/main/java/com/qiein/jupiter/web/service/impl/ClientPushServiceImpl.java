@@ -241,7 +241,8 @@ public class ClientPushServiceImpl implements ClientPushService {
             return null;
         }
 
-        log.info("当前轮单人员列表:" + JSONObject.toJSONString(wheelStaffList));
+//        log.info("当前轮单人员列表:" + JSONObject.toJSONString(wheelStaffList));
+        log.info("当前轮单人数" + wheelStaffList.size());
 
         StaffPushDTO staffPushDTO = null;
         for (StaffPushDTO pushDTO : wheelStaffList) {

@@ -553,6 +553,71 @@ public class ReportsController extends BaseController {
             List<Map<String, Object>> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsSuccess(month, typeId, sourceId, staffPO.getCompanyId());
             return ResultInfoUtil.success(dstgReportsSrcMonthVO);
         }
+        //查询有效率
+        if (StringUtil.isNotEmpty(kzZB) && "validrate".equals(kzZB)) {
+            List<Map<String, Object>> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsValidRate(month, typeId, sourceId, staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+        //查询无效率
+        if (StringUtil.isNotEmpty(kzZB) && "invalidrate".equals(kzZB)) {
+            List<Map<String, Object>> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsInValidRate(month, typeId, sourceId, staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+        //查询待定率
+        if (StringUtil.isNotEmpty(kzZB) && "ddnumrate".equals(kzZB)) {
+            List<Map<String, Object>> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsDdnumRate(month, typeId, sourceId, staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+        //查询毛客资入店率
+        if (StringUtil.isNotEmpty(kzZB) && "comerate".equals(kzZB)) {
+            List<Map<String, Object>> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsComeRate(month, typeId, sourceId, staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+        //查询有效客资入店率
+        if (StringUtil.isNotEmpty(kzZB) && "validcomerate".equals(kzZB)) {
+            List<Map<String, Object>> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsValidComeRate(month, typeId, sourceId, staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+        //查询入店成交率
+        if (StringUtil.isNotEmpty(kzZB) && "successrate".equals(kzZB)) {
+            List<Map<String, Object>> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsSuccessRate(month, typeId, sourceId, staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+        //毛客资成交率
+        if (StringUtil.isNotEmpty(kzZB) && "successrate1".equals(kzZB)) {
+            List<Map<String, Object>> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsSuccessRate1(month, typeId, sourceId, staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+        //有效客资成交率
+        if (StringUtil.isNotEmpty(kzZB) && "successrate2".equals(kzZB)) {
+            List<Map<String, Object>> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsSuccessRate2(month, typeId, sourceId, staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+        //花费
+        if (StringUtil.isNotEmpty(kzZB) && "cost".equals(kzZB)) {
+            List<Map<String, Object>> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsCost(month, typeId, sourceId, staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+        //毛客资成本
+        if (StringUtil.isNotEmpty(kzZB) && "costkz".equals(kzZB)) {
+            List<Map<String, Object>> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsCostKZ(month, typeId, sourceId, staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+      //有效客资成本
+        if (StringUtil.isNotEmpty(kzZB) && "costvalidkz".equals(kzZB)) {
+            List<Map<String, Object>> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsCostValidKZ(month, typeId, sourceId, staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+      //入店成本
+        if (StringUtil.isNotEmpty(kzZB) && "costcomekz".equals(kzZB)) {
+            List<Map<String, Object>> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsCostComeKZ(month, typeId, sourceId, staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
+      //成交成本
+        if (StringUtil.isNotEmpty(kzZB) && "costsuccesskz".equals(kzZB)) {
+            List<Map<String, Object>> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsCostSuccessKZ(month, typeId, sourceId, staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
         return ResultInfoUtil.error(9999, "查询失败");
     }
 
