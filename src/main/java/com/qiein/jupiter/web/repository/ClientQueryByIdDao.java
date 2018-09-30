@@ -662,7 +662,7 @@ public class ClientQueryByIdDao {
         String sql = "SELECT COUNT(1) FROM hm_pub_group_staff rela" +
                 "LEFT JOIN hm_pub_group grp ON rela.GROUPID = grp.GROUPID AND grp.COMPANYID = :companyId  " +
                 "WHERE ( rela.STAFFID = :staffId  OR rela.STAFFID = :collecterId ) AND rela.COMPANYID = :companyId  " +
-                "AND grp.GROUPTYPE = ? GROUP BY grp.PARENTID HAVING COUNT(1) > 1 ";
+                "AND grp.GROUPTYPE = :type GROUP BY grp.PARENTID HAVING COUNT(1) > 1 ";
 
         SqlRowSet sqlRowSet = namedJdbc.queryForRowSet(sql, keyMap);
         return sqlRowSet.next();
