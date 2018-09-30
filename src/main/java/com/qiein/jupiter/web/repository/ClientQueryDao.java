@@ -872,7 +872,7 @@ public class ClientQueryDao {
      * @param column
      * @return
      */
-    public static String dynamixSql(String param, String spitStr, String column) {
+    private static String dynamixSql(String param, String spitStr, String column) {
 
         String[] paramArr = param.split(spitStr);
         if (paramArr.length == 0) {

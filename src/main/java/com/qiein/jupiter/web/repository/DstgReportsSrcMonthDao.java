@@ -1469,17 +1469,21 @@ public class DstgReportsSrcMonthDao {
 	      for (Map<String, Object> map : dstgSrcMonthReportsValidCost) {
 				Map maptemp = new HashMap();
 					for (Map<String, Object> map1 : dstgSrcMonthReportsAll) {
-						
-						if(map.get("srcId").equals(map1.get("srcId"))){
+						if(Integer.valueOf(map.get("srcId").toString()).equals(Integer.valueOf(map1.get("srcId").toString()))){
 							map.remove("srcId");
 							map.remove("srcName");
 							map.remove("srcImg");
 							Set<String> mapkeys = map.keySet();
 							for (String mapkey : mapkeys) {
 								double a=Double.valueOf(String.valueOf(map.get(mapkey).toString()));
-								double b=Double.valueOf(String.valueOf(map1.get(mapkey).toString()));
-								if(b==0.0){
+								double b;
+								if(StringUtil.isEmpty(String.valueOf(map1.get(mapkey)))){
 									b=1.0;
+								}else{
+									b=Double.valueOf(String.valueOf(map1.get(mapkey).toString()));
+									if(b==0.0){
+										b=1;
+									}
 								}
 								double c=(double)Math.round(a/b*100)/100;
 								maptemp.put(mapkey, c);
@@ -1509,16 +1513,21 @@ public class DstgReportsSrcMonthDao {
 				Map maptemp = new HashMap();
 					for (Map<String, Object> map1 : getDSTGSrcMonthReportsvalid) {
 						
-						if((map.get("srcId")).equals(map1.get("srcId"))){
+						if(Integer.valueOf(map.get("srcId").toString()).equals(Integer.valueOf(map1.get("srcId").toString()))){
 							map.remove("srcId");
 							map.remove("srcName");
 							map.remove("srcImg");
 							Set<String> mapkeys = map.keySet();
 							for (String mapkey : mapkeys) {
 								double a=Double.valueOf(String.valueOf(map.get(mapkey).toString()));
-								double b=Double.valueOf(String.valueOf(map1.get(mapkey).toString()));
-								if(b==0.0){
+								double b;
+								if(StringUtil.isEmpty(String.valueOf(map1.get(mapkey)))){
 									b=1.0;
+								}else{
+									b=Double.valueOf(String.valueOf(map1.get(mapkey).toString()));
+									if(b==0.0){
+										b=1;
+									}
 								}
 								double c=(double)Math.round(a/b*100)/100;
 								maptemp.put(mapkey, c);
@@ -1549,16 +1558,21 @@ public class DstgReportsSrcMonthDao {
 				Map maptemp = new HashMap();
 					for (Map<String, Object> map1 : getDSTGSrcMonthReportsCome) {
 						
-						if((map.get("srcId")).equals(map1.get("srcId"))){
+						if(Integer.valueOf(map.get("srcId").toString()).equals(Integer.valueOf(map1.get("srcId").toString()))){
 							map.remove("srcId");
 							map.remove("srcName");
 							map.remove("srcImg");
 							Set<String> mapkeys = map.keySet();
 							for (String mapkey : mapkeys) {
 								double a=Double.valueOf(String.valueOf(map.get(mapkey).toString()));
-								double b=Double.valueOf(String.valueOf(map1.get(mapkey).toString()));
-								if(b==0.0){
+								double b;
+								if(StringUtil.isEmpty(String.valueOf(map1.get(mapkey)))){
 									b=1.0;
+								}else{
+									b=Double.valueOf(String.valueOf(map1.get(mapkey).toString()));
+									if(b==0.0){
+										b=1;
+									}
 								}
 								double c=(double)Math.round(a/b*100)/100;
 								maptemp.put(mapkey, c);
@@ -1588,16 +1602,21 @@ public class DstgReportsSrcMonthDao {
 				Map maptemp = new HashMap();
 					for (Map<String, Object> map1 : getDSTGSrcMonthReportsSuccess) {
 						
-						if((map.get("srcId")).equals(map1.get("srcId"))){
+						if(Integer.valueOf(map.get("srcId").toString()).equals(Integer.valueOf(map1.get("srcId").toString()))){
 							map.remove("srcId");
 							map.remove("srcName");
 							map.remove("srcImg");
 							Set<String> mapkeys = map.keySet();
 							for (String mapkey : mapkeys) {
 								double a=Double.valueOf(String.valueOf(map.get(mapkey).toString()));
-								double b=Double.valueOf(String.valueOf(map1.get(mapkey).toString()));
-								if(b==0.0){
+								double b;
+								if(StringUtil.isEmpty(String.valueOf(map1.get(mapkey)))){
 									b=1.0;
+								}else{
+									b=Double.valueOf(String.valueOf(map1.get(mapkey).toString()));
+									if(b==0.0){
+										b=1;
+									}
 								}
 								double c=(double)Math.round(a/b*100)/100;
 								maptemp.put(mapkey, c);
