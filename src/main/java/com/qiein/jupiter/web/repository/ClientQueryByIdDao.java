@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.repository;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.util.DBSplitUtil;
@@ -269,8 +270,12 @@ public class ClientQueryByIdDao {
             @Override
             public void processRow(ResultSet resultSet) throws SQLException {
                 JSONObject log = new JSONObject();
+                JSONArray list = new JSONArray();
+                if (StringUtil.isNotEmpty(resultSet.getString("IMGLIST"))) {
+                    list = JSONArray.parseArray(resultSet.getString("IMGLIST"));
+                }
                 log.put("yymemo", resultSet.getString("YYMEMO"));
-                log.put("imglist", resultSet.getString("IMGLIST"));
+                log.put("imglist", list);
                 log.put("staffid", resultSet.getInt("STAFFID"));
                 log.put("nickname", resultSet.getString("NICKNAME"));
                 log.put("headimg", resultSet.getString("HEADIMG"));
