@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.constant.ReportsConfigConst;
 import com.qiein.jupiter.util.NumUtil;
+import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.vo.DsInvalidVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -78,6 +79,11 @@ public class CommonReportsDao {
                         dsInvalidVO.setDdIsValid(configObj.getJSONObject(ReportsConfigConst.YX_SET).getBoolean(ReportsConfigConst.DD_IS_YX));
                         dsInvalidVO.setDsDdStatus(arrToStr(dsDdStatusArr));
                         dsInvalidVO.setZjsValidStatus(arrToStr(zjsDdStatusArr));
+
+                        if(null == configObj.getJSONObject(ReportsConfigConst.SHOW_SET)){
+                            dsInvalidVO.setSourceShowStatus(false);
+                        }
+                        dsInvalidVO.setSourceShowStatus(configObj.getJSONObject(ReportsConfigConst.SHOW_SET).getBoolean(ReportsConfigConst.SOURCE_SHOW));
 
                         return dsInvalidVO;
                     }

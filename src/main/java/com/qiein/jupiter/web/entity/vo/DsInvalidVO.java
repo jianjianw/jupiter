@@ -33,6 +33,19 @@ public class DsInvalidVO implements Serializable {
      * 转介绍有效状态
      */
     private String zjsValidStatus;
+    /**
+     * 显示状态
+     * */
+    private boolean sourceShowStatus;
+
+
+    public boolean isSourceShowStatus() {
+        return sourceShowStatus;
+    }
+
+    public void setSourceShowStatus(boolean sourceShowStatus) {
+        this.sourceShowStatus = sourceShowStatus;
+    }
 
     public String getDsInvalidStatus() {
         return dsInvalidStatus;
