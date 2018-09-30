@@ -10,6 +10,9 @@
         <result column="TITLETXT" property="titleTxt" jdbcType="VARCHAR"/>
         <result column="TITLETXT_NO" property="titleTxtNo" jdbcType="VARCHAR"/>
         <result column="PRIORITY" property="priority" jdbcType="VARCHAR"/>
+        <result column="SQLCONDITION" property="sqlCondition" jdbcType="VARCHAR"/>
+        <result column="ACTIONSQL" property="actionSql" jdbcType="VARCHAR"/>
+        <result column="SHOWFLAG" property="showFlag" jdbcType="BOOLEAN"/>
         <result column="COMPANYID" property="companyId" jdbcType="INTEGER"/>
     </resultMap>
 
@@ -23,6 +26,9 @@
             TITLETXT,
             TITLETXT_NO,
             PRIORITY,
+            SHOWFLAG,
+            SQLCONDITION,
+            ACTIONSQL,
             COMPANYID
         FROM
             hm_crm_page_conf
@@ -35,8 +41,13 @@
     <!--修改页面配置-->
     <update id="updatePageConfig">
         UPDATE hm_crm_page_conf conf
-        SET conf.TITLETXT    = #{titleTxt},
-            conf.TITLETXT_NO = #{titleTxtNo}
+        SET
+            conf.MEMO         = #{memo},
+            conf.SHOWFLAG     = #{showFlag},
+            conf.ACTIONSQL    = #{actionSql},
+            conf.SQLCONDITION = #{sqlCondition},
+            conf.TITLETXT     = #{titleTxt},
+            conf.TITLETXT_NO  = #{titleTxtNo}
         WHERE conf.COMPANYID = #{companyId}
               AND conf.ID = #{id}
     </update>

@@ -35,9 +35,47 @@ public class PageConfig implements Serializable {
      */
     private int priority;
     /**
+     * 是否显示
+     */
+    private boolean showFlag;
+    /**
+     * action 对应的sql
+     */
+    private String actionSql;
+    /**
+     * SQL条件的序列化
+     */
+    private String sqlCondition;
+    /**
      * 公司ID
      */
     private int companyId;
+
+
+    public boolean isShowFlag() {
+        return showFlag;
+    }
+
+    public void setShowFlag(boolean showFlag) {
+        this.showFlag = showFlag;
+    }
+
+    public String getActionSql() {
+        return actionSql;
+    }
+
+    public void setActionSql(String actionSql) {
+        this.actionSql = actionSql;
+    }
+
+    public String getSqlCondition() {
+        return sqlCondition;
+    }
+
+    public void setSqlCondition(String sqlCondition) {
+        this.sqlCondition = sqlCondition;
+    }
+
 
     public String getTitleTxtNo() {
         return titleTxtNo;
