@@ -389,12 +389,12 @@ public class LoginServiceImpl implements LoginService {
                         menu.setSelectFlag(true);
                     }
                 }
-                return menuList;
-            }
-            // 都不是，则一一对应
-            for (MenuVO menu : menuList) {
-                if (role.equals(menu.getType())) {
-                    menu.setSelectFlag(true);
+            } else {
+                // 都不是，则一一对应
+                for (MenuVO menu : menuList) {
+                    if (role.equals(menu.getType())) {
+                        menu.setSelectFlag(true);
+                    }
                 }
             }
         }
