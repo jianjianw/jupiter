@@ -341,11 +341,13 @@ public class ClientQueryByIdDao {
             public void processRow(ResultSet resultSet) throws SQLException {
                 JSONObject log = new JSONObject();
                 JSONArray list = new JSONArray();
-                if (StringUtil.isNotEmpty(resultSet.getString("IMGLIST"))) {
-                    list = JSONArray.parseArray(resultSet.getString("IMGLIST"));
-                }
+//                System.out.println(resultSet.getString("IMGLIST"));
+//                if (StringUtil.isNotEmpty(resultSet.getString("IMGLIST"))) {
+//                    list = JSONArray.parseArray(resultSet.getString("IMGLIST"));
+//                }
+
                 log.put("yymemo", resultSet.getString("YYMEMO"));
-                log.put("imglist", list);
+                log.put("imglist", resultSet.getString("IMGLIST"));
                 log.put("staffid", resultSet.getInt("STAFFID"));
                 log.put("nickname", resultSet.getString("NICKNAME"));
                 log.put("headimg", resultSet.getString("HEADIMG"));
