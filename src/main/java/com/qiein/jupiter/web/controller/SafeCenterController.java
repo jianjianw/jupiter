@@ -195,11 +195,20 @@ public class SafeCenterController extends BaseController{
         AdminVO adminVO = JSONObject.parseObject(json.getString("data"), AdminVO.class);
         for(AdminLogPO adminLogPO:adminVO.getLogList()){
             StaffPO staff=staffService.getById(adminLogPO.getStaffId(),getCurrentLoginStaff().getCompanyId());
-            adminLogPO.setStaffName(staff.getNickName());
+            if(staff==null){
+                adminLogPO.setStaffName(CommonConstant.NULL_STR);
+            }else{
+                adminLogPO.setStaffName(staff.getNickName());
+            }
         }
         for(AdminShowVO adminShowVO:adminVO.getList()){
             StaffPO staff=staffService.getById(adminShowVO.getStaffId(),getCurrentLoginStaff().getCompanyId());
-            adminShowVO.setStaffName(staff.getNickName());
+            if(staff==null){
+                adminShowVO.setStaffName(CommonConstant.NULL_STR);
+            }else{
+                adminShowVO.setStaffName(staff.getNickName());
+            }
+
         }
         return ResultInfoUtil.success(adminVO);
     }

@@ -52,7 +52,7 @@
         (#{costId}, #{operaId}, #{operaName},UNIX_TIMESTAMP(now()), #{companyId}, #{memo})
     </insert>
     <update id="editRate">
-        update hm_crm_cost set rate=#{rate},costs=before/(1+#{rate}) where companyId=#{companyId} and srcId in (${srcIds}) and costtime between #{start} and #{end}
+        update hm_crm_cost set rate=#{rate},cost=before/(1+#{rate}) where companyId=#{companyId} and srcId in (${srcIds}) and costtime between #{start} and #{end}
     </update>
     <!-- 获取一段时间内每天的时间戳-->
     <select id="getDay" resultType="com.qiein.jupiter.web.entity.po.ForDayPO">
