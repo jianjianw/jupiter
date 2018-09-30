@@ -42,10 +42,10 @@ public class ClientQueryByIdDao {
         JSONObject info = new JSONObject();
 
         JSONObject clientDetailInfo = getClientDetailInfo(vo);
+        // 获取录入备注
+        clientDetailInfo.put("remark", getInfoRemark(vo));
         // 获取客资信息
         info.put("info", clientDetailInfo);
-        // 获取录入备注
-        info.put("remark", getInfoRemark(vo));
         // 操作日志
         info.put("kzlog", getClientLog(vo));
         // 邀约日志
@@ -68,7 +68,7 @@ public class ClientQueryByIdDao {
     /**
      * 查询客资详情
      */
-    public JSONObject getClientDetailInfo(QueryVO vo) {
+    private JSONObject getClientDetailInfo(QueryVO vo) {
         int companyId = vo.getCompanyId();
         //查询参数
         Map<String, Object> keyMap = new HashMap<>();
