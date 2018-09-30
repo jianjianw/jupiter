@@ -1481,6 +1481,9 @@ public class DstgReportsSrcMonthDao {
 									b=1.0;
 								}else{
 									b=Double.valueOf(String.valueOf(map1.get(mapkey).toString()));
+									if(b==0.0){
+										b=1;
+									}
 								}
 								double c=(double)Math.round(a/b*100)/100;
 								maptemp.put(mapkey, c);
@@ -1522,6 +1525,9 @@ public class DstgReportsSrcMonthDao {
 									b=1.0;
 								}else{
 									b=Double.valueOf(String.valueOf(map1.get(mapkey).toString()));
+									if(b==0.0){
+										b=1;
+									}
 								}
 								double c=(double)Math.round(a/b*100)/100;
 								maptemp.put(mapkey, c);
@@ -1564,6 +1570,9 @@ public class DstgReportsSrcMonthDao {
 									b=1.0;
 								}else{
 									b=Double.valueOf(String.valueOf(map1.get(mapkey).toString()));
+									if(b==0.0){
+										b=1;
+									}
 								}
 								double c=(double)Math.round(a/b*100)/100;
 								maptemp.put(mapkey, c);
@@ -1605,6 +1614,9 @@ public class DstgReportsSrcMonthDao {
 									b=1.0;
 								}else{
 									b=Double.valueOf(String.valueOf(map1.get(mapkey).toString()));
+									if(b==0.0){
+										b=1;
+									}
 								}
 								double c=(double)Math.round(a/b*100)/100;
 								maptemp.put(mapkey, c);
