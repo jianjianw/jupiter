@@ -173,7 +173,7 @@
     </select>
 
     <select id="checkForm" resultMap="goldData">
-        select id from hm_crm_gold_plug_setting where FORMID=#{formId} AND COMPANYID=#{companyId} AND POSTURL=#{postURL}
+        select id from hm_crm_gold_plug_setting where FORMID=#{formId} AND COMPANYID=#{companyId} AND POSTURL=#{postURL} and isshow=1
         <if test=" id !=null">
             and id !=#{id}
         </if>
@@ -182,7 +182,7 @@
     <select id="findForm" resultMap="goldData">
         select
         <include refid="formList"/>
-        from hm_crm_gold_plug_setting where formId=#{formId} AND COMPANYID=#{companyId} limit 0,1
+        from hm_crm_gold_plug_setting where formId=#{formId} AND isshow=1 and COMPANYID=#{companyId} limit 0,1
     </select>
 
     <!--获取金数据表单-->
