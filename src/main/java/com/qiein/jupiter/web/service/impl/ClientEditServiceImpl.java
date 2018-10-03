@@ -125,7 +125,7 @@ public class ClientEditServiceImpl implements ClientEditService {
                         clientVO.getKzQq()));
         reqContent.put("remark", clientVO.getRemark());
         reqContent.put("remarkfrom",clientVO.getRemarkFrom());
-
+        System.out.println(clientVO.getRemarkFrom());
         String addRstStr = crmBaseApi.doService(reqContent, "clientEditDscjHs");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if ("100000".equals(jsInfo.getString("code"))) {
