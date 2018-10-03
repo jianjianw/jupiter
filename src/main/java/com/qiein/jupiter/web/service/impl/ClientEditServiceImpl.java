@@ -124,6 +124,7 @@ public class ClientEditServiceImpl implements ClientEditService {
                         : MobileLocationUtil.getAddressByContactInfo(clientVO.getKzPhone(), clientVO.getKzWechat(),
                         clientVO.getKzQq()));
         reqContent.put("remark", clientVO.getRemark());
+        reqContent.put("remarkfrom",clientVO.getRemarkFrom());
 
         String addRstStr = crmBaseApi.doService(reqContent, "clientEditDscjHs");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);

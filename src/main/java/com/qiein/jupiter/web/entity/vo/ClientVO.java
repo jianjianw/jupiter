@@ -271,7 +271,18 @@ public class ClientVO implements Serializable {
      * 收款人姓名
      */
     private String receiptName;
+    /**
+     * 备注修改框
+     */
+    private String remarkFrom;
 
+    public String getRemarkFrom() {
+        return remarkFrom;
+    }
+
+    public void setRemarkFrom(String remarkFrom) {
+        this.remarkFrom = remarkFrom;
+    }
 
     public String getMateName() {
         return mateName;
