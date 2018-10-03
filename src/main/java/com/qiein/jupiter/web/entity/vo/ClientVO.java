@@ -276,11 +276,11 @@ public class ClientVO implements Serializable {
      */
     private String remarkForm;
 
-    public String getRemarkFrom() {
+    public String getRemarkForm() {
         return remarkForm;
     }
 
-    public void setRemarkFrom(String remarkForm) {
+    public void setRemarkForm(String remarkForm) {
         this.remarkForm = remarkForm;
     }
 
