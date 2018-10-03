@@ -106,18 +106,18 @@ public class QueryVO {
     /**
      * 邀约人ID
      */
-    private String appointorId = "";
+    private String appointorId = " ";
 
     /**
      * 接待人ID
      */
-    private String receptorId = "";
+    private String receptorId = " ";
 
-    private String spareSql = "";
+    private String spareSql = " ";
 
-    private String filterSql = "";
+    private String filterSql = " ";
 
-    private String superSql = "";
+    private String superSql = " ";
 
     /**
      * 排序
@@ -139,7 +139,7 @@ public class QueryVO {
     private String searchKey;
 
     private int operationAdminNo = 0;// 执行此次操作的人员编号
-    private String operationAdminName = "";// 执行此次操作的人员姓名
+    private String operationAdminName = " ";// 执行此次操作的人员姓名
     private String requestIp;// 请求IP
     /**
      * ip
@@ -184,13 +184,13 @@ public class QueryVO {
     }
 
     public void setAction(String action) {
-        if (StringUtil.isNotEmpty(action)) {
-            this.classId = ClientStatusConst.getClassByAction(action);
-            if (NumUtil.isInValid(this.classId)) {
-                // TODO 自定义action
-                this.statusId = "";
-            }
-        }
+//        if (StringUtil.isNotEmpty(action)) {
+//            this.classId = ClientStatusConst.getClassByAction(action);
+//            if (NumUtil.isInValid(this.classId)) {
+//                // TODO 自定义action
+//                this.statusId = "";
+//            }
+//        }
         this.action = action;
     }
 
@@ -211,21 +211,33 @@ public class QueryVO {
     }
 
     public void appendCollectorId(int id) {
+        if (StringUtil.isEmpty(this.collectorId)) {
+            this.collectorId = "";
+        }
         this.collectorId += CommonConstant.STR_SEPARATOR;
         this.collectorId += id;
     }
 
     public void appendPromotorId(int id) {
+        if (StringUtil.isEmpty(this.promotorId)) {
+            this.promotorId = "";
+        }
         this.promotorId += CommonConstant.STR_SEPARATOR;
         this.promotorId += id;
     }
 
     public void appendAppointorId(int id) {
+        if (StringUtil.isEmpty(this.appointorId)) {
+            this.appointorId = "";
+        }
         this.appointorId += CommonConstant.STR_SEPARATOR;
         this.appointorId += id;
     }
 
     public void appendReceptorId(int id) {
+        if (StringUtil.isEmpty(this.receptorId)) {
+            this.receptorId = "";
+        }
         this.receptorId += CommonConstant.STR_SEPARATOR;
         this.receptorId += id;
     }
@@ -462,9 +474,13 @@ public class QueryVO {
 
     public void appendSuperSql(String sql) {
         if (StringUtil.isNotEmpty(this.superSql)) {
-            sql += " AND ";
+            sql += (" AND ");
+        } else {
+            sql = "";
         }
-        this.superSql += sql;
+
+
+        this.superSql = sql;
     }
 
     public static long getSerialVersionUID() {

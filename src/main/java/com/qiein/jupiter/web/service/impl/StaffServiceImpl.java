@@ -669,6 +669,7 @@ public class StaffServiceImpl implements StaffService {
         // 3.添加小组关联
         groupStaffDao.insertGroupStaff(staffVO.getCompanyId(), staffVO.getGroupId(), staffVO.getId());
         // 4.添加权限关联
+        staffRoleDao.deleteByStaffId(staffVO.getId(), staffVO.getCompanyId());
         if (StringUtil.isNotEmpty(staffVO.getRoleIds())) {
             String[] roleArr = staffVO.getRoleIds().split(CommonConstant.STR_SEPARATOR);
             staffRoleDao.batchInsertStaffRole(staffVO.getId(), staffVO.getCompanyId(), roleArr);

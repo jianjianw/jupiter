@@ -1037,7 +1037,7 @@ public class ReportsServiceImpl implements ReportService {
                         if (dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())) {
                             newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getClientCost());
                             allClientCount += dstgSourceYearReportsVO.getAllClientCount();
-                            allCost += Double.parseDouble(dstgSourceYearReportsVO.getAllCost());
+                            allCost += Double.parseDouble(StringUtil.isEmpty(dstgSourceYearReportsVO.getAllCost())?"0.00":dstgSourceYearReportsVO.getAllCost());
                         }
                     }
                     newMap.put("合计",(allCost/allClientCount));
@@ -1527,6 +1527,71 @@ public class ReportsServiceImpl implements ReportService {
         int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);	
         //获取客资数据
         List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsValidCostSuccessKZ(firstDay,lastDay,reportsParamSrcMonthVO,invalidConfig);
+        return dstgSrcMonthReports;
+	}
+	/**
+     * 电商推广月度报表成交均价--HJF
+     * @param 
+     */
+	@Override
+	public List<Map<String, Object>> getDSTGSrcMonthReportsCostSuccessAvg(String month, String typeId, String sourceId,
+			int companyId) {
+		//封装参数
+        ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
+        reportsParamSrcMonthVO.setTypeId(typeId);
+        reportsParamSrcMonthVO.setSourceId(sourceId);
+        reportsParamSrcMonthVO.setCompanyId(companyId);
+        //获取无效状态指标，无效意向等级，待定是否为有效量，待定指标
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
+        //获取时间时间戳
+        int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
+        int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);	
+        //获取客资数据
+        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsValidCostSuccessAvg(firstDay,lastDay,reportsParamSrcMonthVO,invalidConfig);
+        return dstgSrcMonthReports;
+	}
+
+	/**
+     * 电商推广月度报表营业额--HJF
+     * @param 
+     */
+	@Override
+	public List<Map<String, Object>> getDSTGSrcMonthReportsAmount(String month, String typeId, String sourceId,
+			int companyId) {
+		//封装参数
+        ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
+        reportsParamSrcMonthVO.setTypeId(typeId);
+        reportsParamSrcMonthVO.setSourceId(sourceId);
+        reportsParamSrcMonthVO.setCompanyId(companyId);
+        //获取无效状态指标，无效意向等级，待定是否为有效量，待定指标
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
+        //获取时间时间戳
+        int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
+        int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);	
+        //获取客资数据
+        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsAmount(firstDay,lastDay,reportsParamSrcMonthVO,invalidConfig);
+        return dstgSrcMonthReports;
+	}
+
+	/**
+     * 电商推广月度报表ROI--HJF
+     * @param 
+     */
+	@Override
+	public List<Map<String, Object>> getDSTGSrcMonthReportsROI(String month, String typeId, String sourceId,
+			int companyId) {
+		//封装参数
+        ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
+        reportsParamSrcMonthVO.setTypeId(typeId);
+        reportsParamSrcMonthVO.setSourceId(sourceId);
+        reportsParamSrcMonthVO.setCompanyId(companyId);
+        //获取无效状态指标，无效意向等级，待定是否为有效量，待定指标
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
+        //获取时间时间戳
+        int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
+        int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);	
+        //获取客资数据
+        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsROI(firstDay,lastDay,reportsParamSrcMonthVO,invalidConfig);
         return dstgSrcMonthReports;
 	}
 }

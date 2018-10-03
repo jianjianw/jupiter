@@ -662,4 +662,31 @@ public class StringUtil {
         String[] split = listStr.split(",");
         return Arrays.asList(split);
     }
+
+
+
+    /**
+     * 转26进制字母，同时不足6位自动补6
+     * @param data
+     * @return
+     */
+    public static String to26Jinzhi(int data) {
+        String str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        int scale = str.length(); // 转化目标进制
+        StringBuilder s = new StringBuilder();
+        if (data == 0) {
+            return str.charAt(0) + "";
+        }
+        while (data > 0) {
+            if (data < scale) {
+                s.insert(0, str.charAt(data));
+                data = 0;
+            } else {
+                int r = data % scale;
+                s.insert(0, str.charAt(r));
+                data = (data - r) / scale;
+            }
+        }
+        return String.format("%6s", s.toString()).replace(" ", "6");
+    }
 }

@@ -658,7 +658,7 @@ public class ClientQueryDao {
         String sql = "SELECT grp.SHOPID FROM hm_pub_group_staff rela " +
                 " LEFT JOIN hm_pub_group grp ON grp.GROUPID = rela.GROUPID AND grp.COMPANYID = rela.COMPANYID " +
                 "  LEFT JOIN hm_pub_shop shop ON shop.ID = grp.SHOPID AND shop.COMPANYID = grp.COMPANYID" +
-                " WHERE rela.COMPANYID = :comapnyId  AND rela.STAFFID =  :staffId  AND shop.ISSHOW = 1";
+                " WHERE rela.COMPANYID = :companyId  AND rela.STAFFID =  :staffId  AND shop.ISSHOW = 1";
         final StringBuilder shopIds = new StringBuilder();
         namedJdbc.query(sql, keyMap, new RowCallbackHandler() {
             @Override
@@ -851,13 +851,13 @@ public class ClientQueryDao {
         if (StringUtil.isNotEmpty(vo.getSearchKey())) {
             where.append(" AND ( info.ID = '")
                     .append(vo.getSearchKey())
-                    .append("%' OR info.KZNAME LIKE '")
+                    .append(" %' OR info.KZNAME LIKE '")
                     .append(vo.getSearchKey())
-                    .append("%' OR info.KZPHONE LIKE '")
-                    .append(vo.getSearchKey()).append("%' OR info.KZWECHAT LIKE '")
-                    .append(vo.getSearchKey()).append("%' OR info.KZWW LIKE '")
-                    .append(vo.getSearchKey()).append("%' OR info.KZQQ LIKE '")
-                    .append(vo.getSearchKey()).append("%' ) ");
+                    .append(" %' OR info.KZPHONE LIKE '")
+                    .append(vo.getSearchKey()).append(" %' OR info.KZWECHAT LIKE '")
+                    .append(vo.getSearchKey()).append(" %' OR info.KZWW LIKE '")
+                    .append(vo.getSearchKey()).append(" %' OR info.KZQQ LIKE '")
+                    .append(vo.getSearchKey()).append(" %' ) ");
         }
 
 
@@ -872,7 +872,7 @@ public class ClientQueryDao {
      * @param column
      * @return
      */
-    public static String dynamixSql(String param, String spitStr, String column) {
+    private static String dynamixSql(String param, String spitStr, String column) {
 
         String[] paramArr = param.split(spitStr);
         if (paramArr.length == 0) {
@@ -891,9 +891,9 @@ public class ClientQueryDao {
             sb.append(Integer.valueOf(paramArr[i]));
             sb.append(" ");
             if (i != paramArr.length - 1) {
-                sb.append("OR");
+                sb.append(" OR ");
             } else {
-                sb.append(") ");
+                sb.append(" ) ");
             }
         }
         return sb.toString();

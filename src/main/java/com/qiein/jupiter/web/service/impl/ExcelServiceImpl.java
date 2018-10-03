@@ -336,6 +336,8 @@ public class ExcelServiceImpl implements ExcelService {
         excelDao.addExcelKzRemark(DBSplitUtil.getRemarkTabName(companyId), DBSplitUtil.getTable(TableEnum.temp, companyId), staffId,companyId);
         // 删除缓存表记录
         excelDao.deleteTempByStaffId(DBSplitUtil.getTable(TableEnum.temp, companyId), staffId,companyId);
+        //获取id
+
     }
 
     /**

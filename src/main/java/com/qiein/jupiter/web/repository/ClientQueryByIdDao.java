@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.repository;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.util.DBSplitUtil;
@@ -41,10 +42,10 @@ public class ClientQueryByIdDao {
         JSONObject info = new JSONObject();
 
         JSONObject clientDetailInfo = getClientDetailInfo(vo);
+        // 获取录入备注
+        clientDetailInfo.put("remark", getInfoRemark(vo));
         // 获取客资信息
         info.put("info", clientDetailInfo);
-        // 获取录入备注
-        info.put("remark", getInfoRemark(vo));
         // 操作日志
         info.put("kzlog", getClientLog(vo));
         // 邀约日志
@@ -67,7 +68,7 @@ public class ClientQueryByIdDao {
     /**
      * 查询客资详情
      */
-    public JSONObject getClientDetailInfo(QueryVO vo) {
+    private JSONObject getClientDetailInfo(QueryVO vo) {
         int companyId = vo.getCompanyId();
         //查询参数
         Map<String, Object> keyMap = new HashMap<>();
@@ -104,10 +105,80 @@ public class ClientQueryByIdDao {
         namedJdbc.query(sql.toString(), keyMap, new RowCallbackHandler() {
             @Override
             public void processRow(ResultSet resultSet) throws SQLException {
-                result.add(ClientQueryDao.resultToClientInfo(resultSet));
+                result.add(resultToClientInfo(resultSet));
             }
         });
         return result.get(0);
+    }
+
+
+    private  JSONObject resultToClientInfo(ResultSet rs) throws SQLException {
+        JSONObject info = new JSONObject();
+        info.put("id", rs.getInt("ID"));
+        info.put("letterid", rs.getString("LETTERID"));
+        info.put("kzid", rs.getString("KZID"));
+        info.put("typeid", rs.getInt("TYPEID"));
+        info.put("classid", rs.getInt("CLASSID"));
+        info.put("statusid", rs.getInt("STATUSID"));
+        info.put("kzname", rs.getString("KZNAME"));
+        info.put("kzphone", rs.getString("KZPHONE"));
+        info.put("kzwechat", rs.getString("KZWECHAT"));
+        info.put("kzphoneflag", rs.getString("KZPHONE_FLAG"));
+        info.put("weflag", rs.getInt("WEFLAG"));
+        info.put("kzqq", rs.getString("KZQQ"));
+        info.put("kzww", rs.getString("KZWW"));
+        info.put("sex", rs.getInt("SEX"));
+        info.put("channelid", rs.getInt("CHANNELID"));
+        info.put("sourceid", rs.getInt("SOURCEID"));
+        info.put("collectorid", rs.getInt("COLLECTORID"));
+        info.put("promotorid", rs.getInt("PROMOTORID"));
+        info.put("appointorid", rs.getInt("APPOINTORID"));
+        info.put("receptorid", rs.getInt("RECEPTORID"));
+        info.put("receivetime", rs.getInt("RECEIVETIME"));
+        info.put("shopid", rs.getInt("SHOPID"));
+        info.put("allottype", rs.getInt("ALLOTTYPE"));
+        info.put("createtime", rs.getInt("CREATETIME"));
+        info.put("tracetime", rs.getInt("TRACETIME"));
+        info.put("appointtime", rs.getInt("APPOINTTIME"));
+        info.put("comeshoptime", rs.getInt("COMESHOPTIME"));
+        info.put("successtime", rs.getInt("SUCCESSTIME"));
+        info.put("updatetime", rs.getInt("UPDATETIME"));
+        info.put("srctype", rs.getInt("SRCTYPE"));
+        info.put("groupid", rs.getString("GROUPID"));
+        info.put("collectorname", rs.getString("COLLECTORNAME"));
+        info.put("promotername", rs.getString("PROMOTERNAME"));
+        info.put("appointname", rs.getString("APPOINTNAME"));
+        info.put("receptorname", rs.getString("RECEPTORNAME"));
+        info.put("shopname", rs.getString("SHOPNAME"));
+        info.put("memo", rs.getString("MEMO"));
+        info.put("oldkzname", rs.getString("OLDKZNAME"));
+        info.put("oldkzphone", rs.getString("OLDKZPHONE"));
+        info.put("amount", rs.getInt("AMOUNT"));
+        info.put("stayamount", rs.getInt("STAYAMOUNT"));
+        info.put("talkimg", rs.getString("TALKIMG"));
+        info.put("orderimg", rs.getString("ORDERIMG"));
+        info.put("zxstyle", rs.getInt("ZXSTYLE"));
+        info.put("yxlevel", rs.getInt("YXLEVEL"));
+        info.put("ysrange", rs.getInt("YSRANGE"));
+        info.put("adaddress", rs.getString("ADADDRESS"));
+        info.put("adid", rs.getString("ADID"));
+        info.put("marrytime", rs.getInt("MARRYTIME"));
+        info.put("yptime", rs.getInt("YPTIME"));
+        info.put("matename", rs.getString("MATENAME"));
+        info.put("matephone", rs.getString("MATEPHONE"));
+        info.put("matewechat", rs.getString("MATEWECHAT"));
+        info.put("mateqq", rs.getString("MATEQQ"));
+        info.put("address", rs.getString("ADDRESS"));
+        info.put("groupname", rs.getString("GROUPNAME"));
+        info.put("paystyle", rs.getInt("PAYSTYLE"));
+        info.put("htnum", rs.getString("HTNUM"));
+        info.put("invalidlabel", rs.getString("INVALIDLABEL"));
+        info.put("filmingcode", rs.getString("FILMINGCODE"));
+        info.put("filmingarea", rs.getString("FILMINGAREA"));
+        info.put("keyword", rs.getString("KEYWORD"));
+        info.put("packagecode", rs.getString("PACKAGECODE"));
+
+        return info;
     }
 
 
@@ -121,7 +192,7 @@ public class ClientQueryByIdDao {
         int companyId = vo.getCompanyId();
         String sql = " SELECT remark.CONTENT FROM " +
                 DBSplitUtil.getRemarkTabName(companyId) +
-                "remark WHERE remark.COMPANYID = :companyId AND remark.KZID = :kzid ";
+                " remark WHERE remark.COMPANYID = :companyId AND remark.KZID = :kzid ";
         //查询参数
         Map<String, Object> keyMap = new HashMap<>();
         keyMap.put("companyId", companyId);
@@ -187,7 +258,7 @@ public class ClientQueryByIdDao {
         keyMap.put("companyId", companyId);
         keyMap.put("kzid", queryVO.getKzId());
         String sql = "  SELECT log.ALLOTTIME, log.STAFFID, log.STAFFNAME, " +
-                "sf.HEADIMG, log.GROUPID, log.GROUPNAME, log.STATUSID, log.RECEIVETIME, log.ALLOTTYPE FROM  "
+                " sf.HEADIMG, log.GROUPID, log.GROUPNAME, log.STATUSID, log.RECEIVETIME, log.ALLOTTYPE FROM  "
                 + DBSplitUtil.getAllotLogTabName(companyId) +
                 " log LEFT JOIN hm_pub_staff sf ON log.STAFFID = sf.ID AND sf.COMPANYID = :companyId" +
                 " WHERE log.COMPANYID = :companyId AND log.KZID = :kzid ORDER BY log.ID DESC ";
@@ -269,6 +340,12 @@ public class ClientQueryByIdDao {
             @Override
             public void processRow(ResultSet resultSet) throws SQLException {
                 JSONObject log = new JSONObject();
+                JSONArray list = new JSONArray();
+//                System.out.println(resultSet.getString("IMGLIST"));
+//                if (StringUtil.isNotEmpty(resultSet.getString("IMGLIST"))) {
+//                    list = JSONArray.parseArray(resultSet.getString("IMGLIST"));
+//                }
+
                 log.put("yymemo", resultSet.getString("YYMEMO"));
                 log.put("imglist", resultSet.getString("IMGLIST"));
                 log.put("staffid", resultSet.getInt("STAFFID"));
@@ -476,7 +553,7 @@ public class ClientQueryByIdDao {
         String sql = "SELECT DISTINCT grp.GROUPTYPE FROM hm_pub_group grp"
                 + " LEFT JOIN hm_pub_group_staff rela ON grp.GROUPID = rela.GROUPID AND rela.COMPANYID = :companyId "
                 + " WHERE grp.COMPANYID = :companyId AND ( rela.STAFFID = :staffId " +
-                "OR INSTR( CONCAT(',', grp.CHIEFIDS, ','), CONCAT(',', :staffId, ',') ) != 0 ) GROUP BY grp.GROUPTYPE";
+                " OR INSTR( CONCAT(',', grp.CHIEFIDS, ','), CONCAT(',', :staffId, ',') ) != 0 ) GROUP BY grp.GROUPTYPE";
         //查询参数
         Map<String, Object> keyMap = new HashMap<>();
         keyMap.put("companyId", companyId);
@@ -583,9 +660,9 @@ public class ClientQueryByIdDao {
         keyMap.put("staffId", staffId);
 
         String sql = "SELECT COUNT(1) FROM hm_pub_group_staff rela" +
-                "LEFT JOIN hm_pub_group grp ON rela.GROUPID = grp.GROUPID AND grp.COMPANYID = :companyId  " +
-                "WHERE ( rela.STAFFID = :staffId  OR rela.STAFFID = :collecterId ) AND rela.COMPANYID = :companyId  " +
-                "AND grp.GROUPTYPE = ? GROUP BY grp.PARENTID HAVING COUNT(1) > 1 ";
+                " LEFT JOIN hm_pub_group grp ON rela.GROUPID = grp.GROUPID AND grp.COMPANYID = :companyId  " +
+                " WHERE ( rela.STAFFID = :staffId  OR rela.STAFFID = :collecterId ) AND rela.COMPANYID = :companyId  " +
+                " AND grp.GROUPTYPE = :type GROUP BY grp.PARENTID HAVING COUNT(1) > 1 ";
 
         SqlRowSet sqlRowSet = namedJdbc.queryForRowSet(sql, keyMap);
         return sqlRowSet.next();
