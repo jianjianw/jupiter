@@ -305,6 +305,7 @@ public class ClientEditServiceImpl implements ClientEditService {
         reqContent.put("kzwechat", clientVO.getKzWechat());
         reqContent.put("kzqq", clientVO.getKzQq());
         reqContent.put("kzww", clientVO.getKzWw());
+        reqContent.put("remarkform",clientVO.getRemarkForm());
         // 接待结果
         if (NumUtil.isNotNull(clientVO.getYyRst())) {
             reqContent.put("yyrst", clientVO.getYyRst());
