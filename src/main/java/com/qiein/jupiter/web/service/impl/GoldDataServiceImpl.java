@@ -21,6 +21,7 @@ import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.*;
 import com.qiein.jupiter.web.entity.vo.GoldCustomerShowVO;
 import com.qiein.jupiter.web.entity.vo.GoldCustomerVO;
+import com.qiein.jupiter.web.service.ApolloService;
 import com.qiein.jupiter.web.service.GoldDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,6 +56,8 @@ public class GoldDataServiceImpl implements GoldDataService {
     private ClientLogDao clientLogDao;
     @Autowired
     private ClientBlackListDao clientBlackListDao;
+    @Autowired
+    private ApolloService apolloService;
 
     /**
      * 添加表单
@@ -62,6 +65,10 @@ public class GoldDataServiceImpl implements GoldDataService {
      * @param goldFingerPO
      */
     public void insert(GoldFingerPO goldFingerPO) {
+        //从阿波罗 获取地址
+        String crmUrlByCidFromApollo = apolloService.getCrmUrlByCidFromApollo(goldFingerPO.getCompanyId());
+        String requestURI = crmUrlByCidFromApollo + "gold_data/receive_gold_data_form";
+        goldFingerPO.setPostURL(requestURI);
         List<GoldFingerPO> list = goldDataDao.checkForm(goldFingerPO);
         if (list.size() == 0) {
             goldDataDao.insert(goldFingerPO);
@@ -76,6 +83,10 @@ public class GoldDataServiceImpl implements GoldDataService {
      * @param goldFingerPO
      */
     public void update(GoldFingerPO goldFingerPO) {
+        //从阿波罗 获取地址
+        String crmUrlByCidFromApollo = apolloService.getCrmUrlByCidFromApollo(goldFingerPO.getCompanyId());
+        String requestURI = crmUrlByCidFromApollo + "gold_data/receive_gold_data_form";
+        goldFingerPO.setPostURL(requestURI);
         List<GoldFingerPO> list = goldDataDao.checkForm(goldFingerPO);
         if (list.size() == 0) {
             goldDataDao.update(goldFingerPO);
