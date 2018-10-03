@@ -274,14 +274,14 @@ public class ClientVO implements Serializable {
     /**
      * 备注修改框
      */
-    private String remarkFrom;
+    private String remarkForm;
 
     public String getRemarkFrom() {
-        return remarkFrom;
+        return remarkForm;
     }
 
-    public void setRemarkFrom(String remarkFrom) {
-        this.remarkFrom = remarkFrom;
+    public void setRemarkFrom(String remarkForm) {
+        this.remarkForm = remarkForm;
     }
 
     public String getMateName() {
