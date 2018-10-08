@@ -1,6 +1,7 @@
 package com.qiein.jupiter.util.ding;
 
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.mzlion.easyokhttp.HttpClient;
 import com.qiein.jupiter.util.TimeUtil;
@@ -68,7 +69,7 @@ public class DingMsgSendUtil {
                     .json(sendDingMsgDTO)
                     .asString();
             if (JSONObject.parseObject(resultJsonStr).getIntValue("code") != 100000)
-                logger.error(sendDingMsgDTO.getContent() + " 》》发送失败");
+                logger.error(JSON.toJSONString(sendDingMsgDTO) + " 》》发送失败");
         } catch (Exception e) {
             e.printStackTrace();
         }
