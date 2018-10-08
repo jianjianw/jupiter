@@ -1057,6 +1057,7 @@ public class StaffServiceImpl implements StaffService {
             //转换失败时更新至数据库
             e.printStackTrace();
             staffDao.editStaffMsgSet(companyId, staffId, JSONObject.toJSONString(staffMsgSetDTO));
+            return staffMsgSetDTO;
         }
 
         return staffMsgSetDTO;

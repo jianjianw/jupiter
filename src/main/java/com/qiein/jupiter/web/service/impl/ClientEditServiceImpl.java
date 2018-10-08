@@ -257,6 +257,7 @@ public class ClientEditServiceImpl implements ClientEditService {
                 // 发送成功消息给录入人
                 GoEasyUtil.pushSuccessOnline(info.getCompanyId(), info.getCollectorId(), info, newsDao, staffDao);
                 GoEasyUtil.pushSuccessOnline(info.getCompanyId(), info.getAppointorId(), info, newsDao, staffDao);
+                //TODO 这个地方会NPE 修复一下
             } else if (ClientStatusConst.INVALID_BE_STAY == clientVO.getYyRst() && staffService.getMsgSetByStaffId(info.getCompanyId(), info.getCollectorId()).isAllowWxDingMsg()) {
                 // 如果是无效，发送警告消息给录入人
                 GoEasyUtil.pushYyValidReject(info.getCompanyId(), info.getCollectorId(), info, newsDao, staffDao);
