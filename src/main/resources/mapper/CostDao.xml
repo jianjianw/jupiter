@@ -18,6 +18,7 @@
 
     <select id="costList" resultMap="Cost">
          SELECT
+         DISTINCT
             cost.COST,
 			cost.BEFORECOST,
 			FROM_UNIXTIME(cost.COSTTIME,"%Y/%m/%d") COSTTIME,
