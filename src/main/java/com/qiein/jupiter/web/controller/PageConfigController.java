@@ -23,14 +23,16 @@ public class PageConfigController extends BaseController {
     private PageConfigService pageConfigService;
 
     /**
+     * 根据公司和当前角色获取表头配置
+     *
      * @param role
      * @return
      */
     @GetMapping("/get_by_cid_and_role")
-    public ResultInfo getPageConfigByCidAndRole(@RequestParam String role) {
+    public ResultInfo getPageConfigByCidAndRole(@RequestParam String role, @RequestParam boolean showFlag) {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         List<PageConfig> pageConfigs =
-                pageConfigService.listPageConfigByCidAndRole(currentLoginStaff.getCompanyId(), role);
+                pageConfigService.listPageConfigByCidAndRole(currentLoginStaff.getCompanyId(), role, showFlag);
         return ResultInfoUtil.success(pageConfigs);
     }
 
