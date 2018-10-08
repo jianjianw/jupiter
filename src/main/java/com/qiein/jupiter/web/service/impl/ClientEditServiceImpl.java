@@ -438,7 +438,6 @@ public class ClientEditServiceImpl implements ClientEditService {
         }
 
         // 纠错信息
-
         // 获取来源名
         SourcePO sourcePO = sourceDao.getByIdAndCid(clientVO.getSourceId(), staffPO.getCompanyId());
         if (sourcePO == null) {
