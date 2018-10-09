@@ -7,6 +7,8 @@ import com.qiein.jupiter.constant.RoleConstant;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.web.dao.PageConfigDao;
+import com.qiein.jupiter.web.entity.po.PageConfig;
 import com.qiein.jupiter.web.entity.vo.PlatPageVO;
 import com.qiein.jupiter.web.entity.vo.QueryVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,9 @@ import java.util.Map;
 public class ClientQueryDao {
     @Autowired
     private NamedParameterJdbcOperations namedJdbc;
+
+    @Autowired
+    private PageConfigDao pageConfigDao;
 
     /**
      * 查询删除客资
@@ -265,7 +270,11 @@ public class ClientQueryDao {
             whereSql.append(" AND ( info.SRCTYPE = 3 OR info.SRCTYPE = 4 OR info.SRCTYPE = 5 ) ");
         }
         handleWhereSql(vo, keyMap, whereSql);
-
+        //
+//        String actionSql = pageConfigDao.getActionSqlByCidAndRoleAndAction(companyId, vo.getRole(), vo.getAction());
+//        if (StringUtil.isNotEmpty(actionSql)) {
+//            whereSql.append(" ").append(" ");
+//        }
 
         //ORDER
         StringBuilder orderLimitSql = new StringBuilder();

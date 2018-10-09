@@ -38,7 +38,7 @@ public interface PageConfigDao {
      *
      * @return
      */
-    PageConfig getActionSqlByCidAndRoleAndAction(@Param("companyId") int cid,
-                                                 @Param("role") String role,
-                                                 @Param("action") String action);
+    String getActionSqlByCidAndRoleAndAction(@Param("companyId") int cid,
+                                             @Param("role") String role,
+                                             @Param("action") String action);
 }
