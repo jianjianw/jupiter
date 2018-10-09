@@ -76,4 +76,15 @@
     </update>
 
 
+    <!--根据公司ID 和 角色 action 获取页面配置 显示的-->
+    <select id="getActionSqlByCidAndRoleAndAction" resultMap="baseMap">
+        SELECT ACTIONSQL
+        FROM
+            hm_crm_page_conf
+        WHERE
+            COMPANYID = #{companyId}
+            AND ROLE = #{role}
+            AND ACTION = #{action}
+    </select>
+
 </mapper>

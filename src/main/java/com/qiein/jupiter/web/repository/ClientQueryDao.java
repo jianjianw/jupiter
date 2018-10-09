@@ -134,7 +134,7 @@ public class ClientQueryDao {
      *
      * @param rs
      */
-    public static JSONObject resultToClientInfo(ResultSet rs) throws SQLException {
+    private JSONObject resultToClientInfo(ResultSet rs) throws SQLException {
         JSONObject info = new JSONObject();
         info.put("id", rs.getInt("ID"));
         info.put("letterid", rs.getString("LETTERID"));
@@ -280,7 +280,6 @@ public class ClientQueryDao {
         orderLimitSql.append(" limit :page , :size ");
 
         String querySql = baseSelect.append(fromSql).append(whereSql).append(orderLimitSql).toString();
-        System.out.println(querySql);
         //执行查询
         final List<JSONObject> result = new ArrayList<>();
         namedJdbc.query(querySql, keyMap, new RowCallbackHandler() {
