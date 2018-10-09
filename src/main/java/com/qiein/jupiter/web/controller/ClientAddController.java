@@ -160,7 +160,7 @@ public class ClientAddController extends BaseController {
      * @return:
      */
     @GetMapping("/out_zjs_menu")
-    public ResultInfo OutZjsDorpDownMenu(@RequestParam("channelId") Integer channelId,
+    public ResultInfo OutZjsDorpDownMenu(@RequestParam(name = "channelId",required = false) Integer channelId,
                                          @RequestParam("companyId") Integer companyId) {
         if (companyId == null)
             throw new RException(ExceptionEnum.COMPANY_ID_NULL);

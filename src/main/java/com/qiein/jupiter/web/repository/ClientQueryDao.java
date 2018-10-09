@@ -43,7 +43,7 @@ public class ClientQueryDao {
         //查询参数
         Map<String, Object> keyMap = new HashMap<>();
         keyMap.put("companyId", companyId);
-        keyMap.put("page", vo.getCurrentPage());
+        keyMap.put("page", vo.getCurrentPage() * vo.getPageSize());
         keyMap.put("size", vo.getPageSize());
         //select
         StringBuilder baseSelect = getBaseSelect(true);
@@ -248,7 +248,7 @@ public class ClientQueryDao {
         //查询参数
         Map<String, Object> keyMap = new HashMap<>();
         keyMap.put("companyId", companyId);
-        keyMap.put("page", vo.getCurrentPage());
+        keyMap.put("page", vo.getCurrentPage() * vo.getPageSize());
         keyMap.put("size", vo.getPageSize());
         //select
         StringBuilder baseSelect = getBaseSelect(true);
@@ -376,7 +376,7 @@ public class ClientQueryDao {
         //查询参数
         Map<String, Object> keyMap = new HashMap<>();
         keyMap.put("companyId", companyId);
-        keyMap.put("page", vo.getCurrentPage());
+        keyMap.put("page", vo.getCurrentPage() * vo.getPageSize());
         keyMap.put("size", vo.getPageSize());
         //select
         StringBuilder baseSelect = new StringBuilder();

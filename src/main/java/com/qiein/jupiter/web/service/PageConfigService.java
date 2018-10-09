@@ -17,7 +17,7 @@ public interface PageConfigService {
      * @param role
      * @return
      */
-    List<PageConfig> listPageConfigByCidAndRole(int companyId, String role);
+    List<PageConfig> listPageConfigByCidAndRole(int companyId, String role, boolean showFlag);
 
     /**
      * 获取公司所有的表格过滤

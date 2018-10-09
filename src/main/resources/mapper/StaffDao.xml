@@ -1237,7 +1237,6 @@
             hm_pub_staff
         WHERE
             NICKNAME = #{name} AND COMPANYID = #{companyId}
-            AND ISDEL = 0 AND ISLOCK = 0
         LIMIT 1
     </select>
 
