@@ -173,7 +173,7 @@
     </select>
 
     <select id="checkForm" resultMap="goldData">
-        select id from hm_crm_gold_plug_setting where FORMID=#{formId} AND COMPANYID=#{companyId} AND POSTURL=#{postURL} and isshow=1
+        select id from hm_crm_gold_plug_setting where FORMID=#{formId} AND COMPANYID=#{companyId} AND POSTURL=#{postURL}
         <if test=" id !=null">
             and id !=#{id}
         </if>

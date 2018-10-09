@@ -18,6 +18,14 @@ public interface PageConfigDao {
     List<PageConfig> listPageConfigByCidAndRole(@Param("companyId") int cid, @Param("role") String role);
 
     /**
+     *根据公司ID 获取 显示的配置
+     *
+     * @param cid
+     * @return
+     */
+    List<PageConfig> listIsShowPageConfigByCidAndRole(@Param("companyId") int cid, @Param("role") String role);
+
+    /**
      * 保存页面配置
      *
      * @param pageConfig

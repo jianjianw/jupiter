@@ -53,13 +53,15 @@ public class PageConfigServiceImpl implements PageConfigService {
      * @return
      */
     @Override
-    public List<PageConfig> listPageConfigByCidAndRole(int companyId, String role) {
-        List<PageConfig> pageConfigs = pageConfigDao.listPageConfigByCidAndRole(companyId, role);
-        // 判断是否为空
-        if (CollectionUtils.isEmpty(pageConfigs)) {
-            // 取默认公司
-            pageConfigs = pageConfigDao.listPageConfigByCidAndRole(DictionaryConstant.COMMON_COMPANYID, role);
+    public List<PageConfig> listPageConfigByCidAndRole(int companyId, String role, boolean showFlag) {
+        List<PageConfig> pageConfigs;
+        //判断是否要获取显示的表头
+        if (showFlag) {
+            pageConfigs = pageConfigDao.listIsShowPageConfigByCidAndRole(companyId, role);
+        } else {
+            pageConfigs = pageConfigDao.listPageConfigByCidAndRole(companyId, role);
         }
+
         if (CollectionUtils.isNotEmpty(pageConfigs)) {
             for (PageConfig pageConfig : pageConfigs) {
                 renderTitleFilter(pageConfig);
