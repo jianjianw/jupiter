@@ -46,11 +46,11 @@
             ACTION,
             MEMO,
             TITLETXT,
-            TITLETXT_NO,
+#             TITLETXT_NO,
             PRIORITY,
-            SHOWFLAG,
-            SQLCONDITION,
-            ACTIONSQL,
+#             SHOWFLAG,
+#             SQLCONDITION,
+#             ACTIONSQL,
             COMPANYID
         FROM
             hm_crm_page_conf
@@ -76,7 +76,7 @@
     </update>
 
 
-    <!--根据公司ID 和 角色 action 获取页面配置 显示的-->
+    <!--根据公司ID 和 角色 action 获取页面配置-->
     <select id="getActionSqlByCidAndRoleAndAction" resultType="String">
         SELECT ACTIONSQL
         FROM
