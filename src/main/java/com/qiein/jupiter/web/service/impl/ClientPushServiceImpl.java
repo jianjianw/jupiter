@@ -1075,7 +1075,7 @@ public class ClientPushServiceImpl implements ClientPushService {
                     .addInfoLog(DBSplitUtil.getInfoLogTabName(companyId),
                             new ClientLogPO(
                                     kzIdsArr[i], operaId, operaName, ClientLogConst.getAllotLog(appoint.getGroupName(),
-                                    appoint.getStaffName(), operaId, operaName),
+                                    appoint.getStaffName()),
                                     ClientLogConst.INFO_LOGTYPE_ALLOT, companyId));
         }
         // 推送消息
@@ -1092,7 +1092,7 @@ public class ClientPushServiceImpl implements ClientPushService {
                     .addInfoLog(DBSplitUtil.getInfoLogTabName(companyId),
                             new ClientLogPO(
                                     kzIdsArr[i], operaId, operaName, ClientLogConst.getAllotLogMsjd(appoint.getShopName(),
-                                    appoint.getStaffName(), operaId, operaName),
+                                    appoint.getStaffName()),
                                     ClientLogConst.INFO_LOGTYPE_ALLOT, companyId));
         }
         // 推送消息
