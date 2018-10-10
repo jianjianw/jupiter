@@ -56,9 +56,15 @@ public class StaffDetailPO extends BaseEntity {
     private int companyId;
 
     /**
-     * 消息设置msgset
+     * 个人消息设置
      */
     private String msgSet;
+
+
+
+    public StaffDetailPO() {
+
+    }
 
     public String getMsgSet() {
         return msgSet;
@@ -66,10 +72,6 @@ public class StaffDetailPO extends BaseEntity {
 
     public void setMsgSet(String msgSet) {
         this.msgSet = msgSet;
-    }
-
-    public StaffDetailPO() {
-
     }
 
     /**
