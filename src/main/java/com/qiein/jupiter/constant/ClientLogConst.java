@@ -32,8 +32,8 @@ public class ClientLogConst {
     public static final int INFO_LOG_TYPE_CALL = 14;//通话
 
     public static final String INFO_LOG_AUTO_ALLOT_TEMPLATE = "系统自动分配该客资给 => ${groupName} 的  ${appointorName} ";
-    public static final String INFO_LOG_HANDLER_ALLOT_TEMPLATE = "手动分配该客资给 => ${groupName} 的  ${appointorName} ";
-    public static final String INFO_LOG_HANDLER_ALLOT_TEMPLATE_MSJD = "手动分配该客资给 => ${shopName} 的  ${appointorName} ";
+    public static final String INFO_LOG_HANDLER_ALLOT_TEMPLATE = "手动分配该客资给客服 => ${groupName} 的  ${appointorName} ";
+    public static final String INFO_LOG_HANDLER_ALLOT_TEMPLATE_MSJD = "手动分配该客资给门市 => ${shopName} 的  ${appointorName} ";
     public static final String INFO_LOG_AUTO_REVEICE_TEMPLATE = "推送客资领取消息给 => ${groupName} 的  ${appointorName} ";
     public static final String INFO_LOG_RECEIVE = "在客户端通过客资分配领取了客资";
     public static final String INFO_LOG_RECEIVE_PC = "通过客资分配领取了客资";
