@@ -853,23 +853,19 @@ public class ClientQueryDao {
 
         // 联系方式格式限定
         if (StringUtil.isNotEmpty(vo.getLinkLimit())) {
-            where.append(" AND ");
-            where.append(vo.getLinkLimit());
+            where.append(" AND ( ").append(vo.getLinkLimit()).append(" )");
         }
 
         if (StringUtil.isNotEmpty(vo.getSpareSql())) {
-            where.append(" AND ");
-            where.append(vo.getSpareSql());
+            where.append(" AND ( ").append(vo.getSpareSql()).append(" )");
         }
 
         if (StringUtil.isNotEmpty(vo.getSuperSql())) {
-            where.append(" AND ");
-            where.append(vo.getSuperSql());
+            where.append(" AND ( ").append(vo.getSuperSql()).append(" )");
         }
 
         if (StringUtil.isNotEmpty(vo.getFilterSql())) {
-            where.append(" AND ");
-            where.append(vo.getFilterSql());
+            where.append(" AND ( ").append(vo.getFilterSql()).append(" )");
         }
 
         if (StringUtil.isNotEmpty(vo.getSearchKey())) {
