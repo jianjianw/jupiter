@@ -133,11 +133,10 @@ public class StaffServiceImpl implements StaffService {
         StaffDetailPO staffDetailPO = new StaffDetailPO();
         staffDetailPO.setId(staffVO.getId());
         staffDetailPO.setCompanyId(staffVO.getCompanyId());
-//        Map<String, Object> mapmsg=new HashMap();
-//		mapmsg.put("allowOrderBullyScreen", true);
-//		mapmsg.put("allowWxDingMsg", true);
-//		String msgset=JSON.toJSONString(mapmsg);
-//        staffDetailPO.setMsgset(msgset);
+        //员工msgset
+        StaffMsgSetDTO staffMsgSetDTO = new StaffMsgSetDTO();
+        String msgset = JSON.toJSONString(staffMsgSetDTO);
+        staffDetailPO.setMsgSet(msgset);
         staffDao.insertStaffDetail(staffDetailPO);
         redisTemplate.opsForValue().set(RedisConstant.getStaffKey(staffVO.getId(), staffVO.getCompanyId()), staffVO);
         return staffVO;
