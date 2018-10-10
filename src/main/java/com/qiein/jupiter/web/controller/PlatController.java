@@ -81,7 +81,8 @@ public class PlatController extends BaseController {
      */
     @PostMapping("/query_page_client_info")
     public ResultInfo queryPageClientInfo(@RequestBody JSONObject content) {
-        QueryVO queryVO = initQueryVo(content);
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        QueryVO queryVO = initQueryVo(currentLoginStaff.getCompanyId(), currentLoginStaff.getId(), content);
         queryVO.setClassId(ClientStatusConst.getClassByAction(queryVO.getAction()));
         return ResultInfoUtil.success(platService.queryPageClientInfo(queryVO));
     }
@@ -91,7 +92,8 @@ public class PlatController extends BaseController {
      */
     @PostMapping("/query_page_client_info_count")
     public ResultInfo queryPageClientInfoCount(@RequestBody JSONObject content) {
-        QueryVO queryVO = initQueryVo(content);
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        QueryVO queryVO = initQueryVo(currentLoginStaff.getCompanyId(), currentLoginStaff.getId(), content);
         return ResultInfoUtil.success(platService.queryPageClientInfoCount(queryVO));
     }
 
@@ -101,8 +103,7 @@ public class PlatController extends BaseController {
      * @param content
      * @return
      */
-    private QueryVO initQueryVo(JSONObject content) {
-        StaffPO currentLoginStaff = getCurrentLoginStaff();
+    public static QueryVO initQueryVo(int companyId, int staffId, JSONObject content) {
 
         QueryVO queryVO = new QueryVO();
         queryVO.setCurrentPage(content.getIntValue("page") - 1);
@@ -110,9 +111,8 @@ public class PlatController extends BaseController {
         queryVO.setTimeType(QueryTimeTypeEnum.getTimeTypeById(NumUtil.valueOf(content.getString("timetype"))));
         queryVO.setStart(content.getIntValue("start"));
         queryVO.setEnd(content.getIntValue("end"));
-        queryVO.setUid(currentLoginStaff.getId());
-        queryVO.setCompanyId(currentLoginStaff.getCompanyId());
-
+        queryVO.setUid(staffId);
+        queryVO.setCompanyId(companyId);
         queryVO.setAction(content.getString("action"));
 
         //

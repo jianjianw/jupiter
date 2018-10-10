@@ -15,6 +15,8 @@ import com.qiein.jupiter.web.dao.*;
 import com.qiein.jupiter.web.entity.dto.ClientExcelNewsDTO;
 import com.qiein.jupiter.web.entity.dto.ClientSortCountDTO;
 import com.qiein.jupiter.web.entity.po.DictionaryPO;
+import com.qiein.jupiter.web.entity.vo.PlatPageVO;
+import com.qiein.jupiter.web.entity.vo.QueryVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,6 +73,9 @@ public class ExcelServiceImpl implements ExcelService {
     @Autowired
     private ClientLogDao clientLogDao;
 
+    @Autowired
+    private PlatServiceImpl platService;
+
     /**
      * 导入客资
      *
@@ -86,11 +91,11 @@ public class ExcelServiceImpl implements ExcelService {
         // 表头行数,默认1
         params.setHeadRows(1);
         List<ClientExcelNewsDTO> clientList = null;
-        try{
-            clientList  = ExcelImportUtil.importExcel(file.getInputStream(), ClientExcelNewsDTO.class,
+        try {
+            clientList = ExcelImportUtil.importExcel(file.getInputStream(), ClientExcelNewsDTO.class,
                     params);
-        }catch (Exception e){
-            throw new RException(e.getMessage(),e);
+        } catch (Exception e) {
+            throw new RException(e.getMessage(), e);
         }
 
 
@@ -99,73 +104,73 @@ public class ExcelServiceImpl implements ExcelService {
         }
         Integer index = 2;
         for (ClientExcelNewsDTO clientExcelDTO : clientList) {
-            if(StringUtil.isNotEmpty(clientExcelDTO.getKzName()) && clientExcelDTO.getKzName().length() > 16){
-                throw new RException("第"+index+"行"+ExceptionEnum.KZ_NAME_LENGTH_TOO_LONG.getMsg(),ExceptionEnum.KZ_NAME_LENGTH_TOO_LONG.getCode());
+            if (StringUtil.isNotEmpty(clientExcelDTO.getKzName()) && clientExcelDTO.getKzName().length() > 16) {
+                throw new RException("第" + index + "行" + ExceptionEnum.KZ_NAME_LENGTH_TOO_LONG.getMsg(), ExceptionEnum.KZ_NAME_LENGTH_TOO_LONG.getCode());
             }
-            if(StringUtil.isNotEmpty(clientExcelDTO.getKzPhone()) &&  clientExcelDTO.getKzPhone().length() > 12){
-                throw new RException("第"+index+"行"+ExceptionEnum.KZ_PHONE_LENGTH_TOO_LONG.getMsg(),ExceptionEnum.KZ_PHONE_LENGTH_TOO_LONG.getCode());
+            if (StringUtil.isNotEmpty(clientExcelDTO.getKzPhone()) && clientExcelDTO.getKzPhone().length() > 12) {
+                throw new RException("第" + index + "行" + ExceptionEnum.KZ_PHONE_LENGTH_TOO_LONG.getMsg(), ExceptionEnum.KZ_PHONE_LENGTH_TOO_LONG.getCode());
             }
-            if(StringUtil.isNotEmpty(clientExcelDTO.getKzWechat()) && clientExcelDTO.getKzWechat().length() > 32){
-                throw new RException("第"+index+"行"+ExceptionEnum.KZ_WECHAT_LENGTH_TOO_LONG.getMsg(),ExceptionEnum.KZ_WECHAT_LENGTH_TOO_LONG.getCode());
+            if (StringUtil.isNotEmpty(clientExcelDTO.getKzWechat()) && clientExcelDTO.getKzWechat().length() > 32) {
+                throw new RException("第" + index + "行" + ExceptionEnum.KZ_WECHAT_LENGTH_TOO_LONG.getMsg(), ExceptionEnum.KZ_WECHAT_LENGTH_TOO_LONG.getCode());
             }
-            if(StringUtil.isNotEmpty(clientExcelDTO.getKzQq()) && clientExcelDTO.getKzQq().length() > 16){
-                throw new RException("第"+index+"行"+ExceptionEnum.KZ_WECHAT_LENGTH_TOO_LONG.getMsg(),ExceptionEnum.KZ_WECHAT_LENGTH_TOO_LONG.getCode());
+            if (StringUtil.isNotEmpty(clientExcelDTO.getKzQq()) && clientExcelDTO.getKzQq().length() > 16) {
+                throw new RException("第" + index + "行" + ExceptionEnum.KZ_WECHAT_LENGTH_TOO_LONG.getMsg(), ExceptionEnum.KZ_WECHAT_LENGTH_TOO_LONG.getCode());
             }
-            if(StringUtil.isNotEmpty(clientExcelDTO.getCollectorName()) && clientExcelDTO.getCollectorName().length() > 16){
-                throw new RException("第"+index+"行"+ExceptionEnum.COLLECTOR_NAME_LENGTH_TOO_LONG.getMsg(),ExceptionEnum.COLLECTOR_NAME_LENGTH_TOO_LONG.getCode());
+            if (StringUtil.isNotEmpty(clientExcelDTO.getCollectorName()) && clientExcelDTO.getCollectorName().length() > 16) {
+                throw new RException("第" + index + "行" + ExceptionEnum.COLLECTOR_NAME_LENGTH_TOO_LONG.getMsg(), ExceptionEnum.COLLECTOR_NAME_LENGTH_TOO_LONG.getCode());
             }
-            if(StringUtil.isNotEmpty(clientExcelDTO.getAppointName()) && clientExcelDTO.getAppointName().length() > 16){
-                throw new RException("第"+index+"行"+ExceptionEnum.APPOINT_NAME_LENGTH_TOO_LONG.getMsg(),ExceptionEnum.APPOINT_NAME_LENGTH_TOO_LONG.getCode());
+            if (StringUtil.isNotEmpty(clientExcelDTO.getAppointName()) && clientExcelDTO.getAppointName().length() > 16) {
+                throw new RException("第" + index + "行" + ExceptionEnum.APPOINT_NAME_LENGTH_TOO_LONG.getMsg(), ExceptionEnum.APPOINT_NAME_LENGTH_TOO_LONG.getCode());
             }
-            if(StringUtil.isNotEmpty(clientExcelDTO.getShopName()) &&  clientExcelDTO.getShopName().length() > 16){
-                throw new RException("第"+index+"行"+ExceptionEnum.SHOP_NAME_LENGTH_TOO_LONG.getMsg(),ExceptionEnum.SHOP_NAME_LENGTH_TOO_LONG.getCode());
+            if (StringUtil.isNotEmpty(clientExcelDTO.getShopName()) && clientExcelDTO.getShopName().length() > 16) {
+                throw new RException("第" + index + "行" + ExceptionEnum.SHOP_NAME_LENGTH_TOO_LONG.getMsg(), ExceptionEnum.SHOP_NAME_LENGTH_TOO_LONG.getCode());
             }
-            if(StringUtil.isNotEmpty(clientExcelDTO.getRemark()) && clientExcelDTO.getRemark().length()>1024){
-                throw new RException("第"+index+"行"+ExceptionEnum.MEMO_LENGTH_TOO_LONG.getMsg(),ExceptionEnum.MEMO_LENGTH_TOO_LONG.getCode());
+            if (StringUtil.isNotEmpty(clientExcelDTO.getRemark()) && clientExcelDTO.getRemark().length() > 1024) {
+                throw new RException("第" + index + "行" + ExceptionEnum.MEMO_LENGTH_TOO_LONG.getMsg(), ExceptionEnum.MEMO_LENGTH_TOO_LONG.getCode());
             }
-            if(StringUtil.isNotEmpty(clientExcelDTO.getOldKzName()) && clientExcelDTO.getOldKzName().length()>32){
-                throw new RException("第"+index+"行"+ExceptionEnum.OLD_KZ_NAME_LENGTH_TOO_LONG.getMsg(),ExceptionEnum.OLD_KZ_NAME_LENGTH_TOO_LONG.getCode());
+            if (StringUtil.isNotEmpty(clientExcelDTO.getOldKzName()) && clientExcelDTO.getOldKzName().length() > 32) {
+                throw new RException("第" + index + "行" + ExceptionEnum.OLD_KZ_NAME_LENGTH_TOO_LONG.getMsg(), ExceptionEnum.OLD_KZ_NAME_LENGTH_TOO_LONG.getCode());
             }
-            if(StringUtil.isNotEmpty(clientExcelDTO.getOldKzPhone()) && clientExcelDTO.getOldKzPhone().length()>32){
-                throw new RException("第"+index+"行"+ExceptionEnum.OLD_KZ_PHONE_LENGTH_TOO_LONG.getMsg(),ExceptionEnum.OLD_KZ_PHONE_LENGTH_TOO_LONG.getCode());
+            if (StringUtil.isNotEmpty(clientExcelDTO.getOldKzPhone()) && clientExcelDTO.getOldKzPhone().length() > 32) {
+                throw new RException("第" + index + "行" + ExceptionEnum.OLD_KZ_PHONE_LENGTH_TOO_LONG.getMsg(), ExceptionEnum.OLD_KZ_PHONE_LENGTH_TOO_LONG.getCode());
             }
             ObjectUtil.objectStrParamTrim(clientExcelDTO);
             //此处进行特殊换行符处理
             //TODO 封装到工具类中
             String kzPhone = StringUtil.nullToStrTrim(clientExcelDTO.getKzPhone()).replace("/r", "").replace("/n", "");
             clientExcelDTO.setStatusName(clientExcelDTO.getClassName());
-            clientExcelDTO.setKzPhone(StringUtil.isEmpty(kzPhone)?null:kzPhone);
+            clientExcelDTO.setKzPhone(StringUtil.isEmpty(kzPhone) ? null : kzPhone);
             clientExcelDTO.setRemark(StringUtil.isEmpty(clientExcelDTO.getRemark())
                     ? CommonConstant.EXCEL_DEFAULT_REMARK
                     : CommonConstant.RICH_TEXT_PREFIX + clientExcelDTO.getRemark() + CommonConstant.RICH_TEXT_SUFFIX);
             clientExcelDTO.setCompanyId(currentLoginStaff.getCompanyId());
             clientExcelDTO.setKzId(StringUtil.getRandom());
             clientExcelDTO.setOperaId(currentLoginStaff.getId());
-            if(StringUtil.isEmpty(clientExcelDTO.getTypeName())){
+            if (StringUtil.isEmpty(clientExcelDTO.getTypeName())) {
                 clientExcelDTO.setTypeName(CommonConstant.EXCEL_DEFAULT_PHOTO_TYPE_NAME);
             }
-            if(StringUtil.isEmpty(clientExcelDTO.getSex())){
+            if (StringUtil.isEmpty(clientExcelDTO.getSex())) {
                 clientExcelDTO.setSex(CommonConstant.DEFAULT_STRING_ZERO);
             }
             //时间校验
-            try{
+            try {
                 clientExcelDTO.setCreateTime(clientExcelDTO.getTime() == null ? 0 : TimeUtil.smartFormat(clientExcelDTO.getTime()).getTime() / 1000);
-            }catch (Exception e){
+            } catch (Exception e) {
                 throw new RException(ExceptionEnum.TIME_ERROR);
             }
-            try{
+            try {
                 clientExcelDTO.setSuccessTime(clientExcelDTO.getSuccessTimeDate() == null ? 0 : TimeUtil.smartFormat(clientExcelDTO.getSuccessTimeDate()).getTime() / 1000);
-            }catch (Exception e){
+            } catch (Exception e) {
                 throw new RException(ExceptionEnum.SUCCESS_TIME_ERROR);
             }
-            try{
+            try {
                 clientExcelDTO.setAppointTime(clientExcelDTO.getAppointTimeDate() == null ? 0 : TimeUtil.smartFormat(clientExcelDTO.getAppointTimeDate()).getTime() / 1000);
-            }catch (Exception e){
+            } catch (Exception e) {
                 throw new RException(ExceptionEnum.APPOINT_TIME_ERROR);
             }
-            try{
+            try {
                 clientExcelDTO.setComeShopTime(clientExcelDTO.getComeShopTimeDate() == null ? 0 : TimeUtil.smartFormat(clientExcelDTO.getComeShopTimeDate()).getTime() / 1000);
-            }catch (Exception e){
+            } catch (Exception e) {
                 throw new RException(ExceptionEnum.COME_SHOP_TIME_ERROR);
             }
             clientExcelDTO.setMarryTime(CommonConstant.DEFAULT_ZERO);
@@ -174,10 +179,10 @@ public class ExcelServiceImpl implements ExcelService {
             clientExcelDTO.setYsRange(CommonConstant.DEFAULT_ZERO);
             clientExcelDTO.setZxStyle(CommonConstant.DEFAULT_ZERO);
             try {
-                if(StringUtil.isNotEmpty(clientExcelDTO.getAmountStr()) ){
+                if (StringUtil.isNotEmpty(clientExcelDTO.getAmountStr())) {
                     clientExcelDTO.setAmount(Integer.valueOf(clientExcelDTO.getAmountStr()));
                 }
-                if( StringUtil.isNotEmpty(clientExcelDTO.getStayaMountStr())){
+                if (StringUtil.isNotEmpty(clientExcelDTO.getStayaMountStr())) {
                     clientExcelDTO.setStayaMount(Integer.valueOf(clientExcelDTO.getStayaMountStr()));
                 }
             } catch (NumberFormatException e) {
@@ -187,7 +192,7 @@ public class ExcelServiceImpl implements ExcelService {
         }
         // 1.删除员工客资缓存记录
         excelDao.deleteTempByStaffId(DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()),
-                currentLoginStaff.getId(),currentLoginStaff.getCompanyId());
+                currentLoginStaff.getId(), currentLoginStaff.getCompanyId());
 
         /*-- 新增客资信息 --*/
         int back = excelDao.insertExcelClientInfo(clientList,
@@ -212,11 +217,11 @@ public class ExcelServiceImpl implements ExcelService {
 
         //设置状态id
         excelDao.updateStatusIdAndClassId(DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()),
-                currentLoginStaff.getId(),currentLoginStaff.getCompanyId());
+                currentLoginStaff.getId(), currentLoginStaff.getCompanyId());
 
         // 设置来源ID,和来源类型
         excelDao.updateSrcIdAndType(DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()),
-                currentLoginStaff.getId(),currentLoginStaff.getCompanyId());
+                currentLoginStaff.getId(), currentLoginStaff.getCompanyId());
 
 
         // 更新最后跟进时间为当前系统时间
@@ -241,26 +246,26 @@ public class ExcelServiceImpl implements ExcelService {
 
         // 更新门店ID
         excelDao.updateShopId(DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()),
-                currentLoginStaff.getId(),currentLoginStaff.getCompanyId());
+                currentLoginStaff.getId(), currentLoginStaff.getCompanyId());
 
         // 更新邀约小组ID
         excelDao.updateGroupId(DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()),
-                currentLoginStaff.getId(),currentLoginStaff.getCompanyId());
+                currentLoginStaff.getId(), currentLoginStaff.getCompanyId());
 
         // 更新门市ID
         excelDao.updateReceptorId(DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()),
-                currentLoginStaff.getId(),currentLoginStaff.getCompanyId());
+                currentLoginStaff.getId(), currentLoginStaff.getCompanyId());
 
         //设置来源和渠道
         excelDao.updateSrcAndChannel(DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()),
-                currentLoginStaff.getId(),currentLoginStaff.getCompanyId());
+                currentLoginStaff.getId(), currentLoginStaff.getCompanyId());
 
         //设置意向等级，预算范围，结婚时间，预拍时间的Code
-        excelDao.updateZxStyleDictionaryCode(DBSplitUtil.getTable(TableEnum.temp,currentLoginStaff.getCompanyId()), currentLoginStaff.getId(),currentLoginStaff.getCompanyId(), DictionaryConstant.ZX_STYLE);
-        excelDao.updateYxLevelDictionaryCode(DBSplitUtil.getTable(TableEnum.temp,currentLoginStaff.getCompanyId()), currentLoginStaff.getId(),currentLoginStaff.getCompanyId(), DictionaryConstant.YX_RANK);
-        excelDao.updateYsRangeDictionaryCode(DBSplitUtil.getTable(TableEnum.temp,currentLoginStaff.getCompanyId()), currentLoginStaff.getId(),currentLoginStaff.getCompanyId(), DictionaryConstant.YS_RANGE);
-        excelDao.updateYpTimeDictionaryCode(DBSplitUtil.getTable(TableEnum.temp,currentLoginStaff.getCompanyId()), currentLoginStaff.getId(),currentLoginStaff.getCompanyId(), DictionaryConstant.YP_TIME);
-        excelDao.updateMarryTimeDictionaryCode(DBSplitUtil.getTable(TableEnum.temp,currentLoginStaff.getCompanyId()), currentLoginStaff.getId(),currentLoginStaff.getCompanyId(), DictionaryConstant.MARRY_TIME);
+        excelDao.updateZxStyleDictionaryCode(DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()), currentLoginStaff.getId(), currentLoginStaff.getCompanyId(), DictionaryConstant.ZX_STYLE);
+        excelDao.updateYxLevelDictionaryCode(DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()), currentLoginStaff.getId(), currentLoginStaff.getCompanyId(), DictionaryConstant.YX_RANK);
+        excelDao.updateYsRangeDictionaryCode(DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()), currentLoginStaff.getId(), currentLoginStaff.getCompanyId(), DictionaryConstant.YS_RANGE);
+        excelDao.updateYpTimeDictionaryCode(DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()), currentLoginStaff.getId(), currentLoginStaff.getCompanyId(), DictionaryConstant.YP_TIME);
+        excelDao.updateMarryTimeDictionaryCode(DBSplitUtil.getTable(TableEnum.temp, currentLoginStaff.getCompanyId()), currentLoginStaff.getId(), currentLoginStaff.getCompanyId(), DictionaryConstant.MARRY_TIME);
     }
 
 
@@ -273,7 +278,7 @@ public class ExcelServiceImpl implements ExcelService {
         List<ClientExcelNewsDTO> rights = new LinkedList<>();
         List<ClientExcelNewsDTO> all = excelDao.getAllRecordByStaffId(DBSplitUtil.getTable(TableEnum.temp, companyId), staffId);
         List<ClientExcelNewsDTO> dbRepeats = excelDao.getRepeatRecord(DBSplitUtil.getTable(TableEnum.temp, companyId),
-                DBSplitUtil.getTable(TableEnum.info, companyId), staffId,companyId);
+                DBSplitUtil.getTable(TableEnum.info, companyId), staffId, companyId);
         String repeatIds = "";
         if (CollectionUtils.isNotEmpty(dbRepeats)) {
             for (ClientExcelNewsDTO info : dbRepeats) {
@@ -324,18 +329,18 @@ public class ExcelServiceImpl implements ExcelService {
      * @param staffId   gaoxiaoli
      */
     @Transactional(rollbackFor = Exception.class)
-    public void tempKzMoveToInfo(int companyId, int staffId,String nickName) {
+    public void tempKzMoveToInfo(int companyId, int staffId, String nickName) {
         //TODO 程序来做校验 去除重复客资
         //添加客资日志
-        excelDao.batchAddInfoLog(DBSplitUtil.getInfoLogTabName(companyId),DBSplitUtil.getTable(TableEnum.temp, companyId),DBSplitUtil.getTable(TableEnum.info, companyId),staffId,nickName, ClientLogConst.INFO_LOGTYPE_ADD,ClientLogConst.INFO_LOG_EXCEL_IMPORT,companyId);
+        excelDao.batchAddInfoLog(DBSplitUtil.getInfoLogTabName(companyId), DBSplitUtil.getTable(TableEnum.temp, companyId), DBSplitUtil.getTable(TableEnum.info, companyId), staffId, nickName, ClientLogConst.INFO_LOGTYPE_ADD, ClientLogConst.INFO_LOG_EXCEL_IMPORT, companyId);
         //添加客资基本表
-        excelDao.insertBaseInfoByStaffId(DBSplitUtil.getInfoTabName(companyId), DBSplitUtil.getTable(TableEnum.temp, companyId), DBSplitUtil.getTable(TableEnum.info, companyId), staffId,companyId);
+        excelDao.insertBaseInfoByStaffId(DBSplitUtil.getInfoTabName(companyId), DBSplitUtil.getTable(TableEnum.temp, companyId), DBSplitUtil.getTable(TableEnum.info, companyId), staffId, companyId);
         //添加客资详情表
-        excelDao.insertDetailInfoByStaffId(DBSplitUtil.getDetailTabName(companyId), DBSplitUtil.getTable(TableEnum.temp, companyId), DBSplitUtil.getTable(TableEnum.info, companyId), staffId,companyId);
+        excelDao.insertDetailInfoByStaffId(DBSplitUtil.getDetailTabName(companyId), DBSplitUtil.getTable(TableEnum.temp, companyId), DBSplitUtil.getTable(TableEnum.info, companyId), staffId, companyId);
         //添加备注
-        excelDao.addExcelKzRemark(DBSplitUtil.getRemarkTabName(companyId), DBSplitUtil.getTable(TableEnum.temp, companyId), staffId,companyId);
+        excelDao.addExcelKzRemark(DBSplitUtil.getRemarkTabName(companyId), DBSplitUtil.getTable(TableEnum.temp, companyId), staffId, companyId);
         // 删除缓存表记录
-        excelDao.deleteTempByStaffId(DBSplitUtil.getTable(TableEnum.temp, companyId), staffId,companyId);
+        excelDao.deleteTempByStaffId(DBSplitUtil.getTable(TableEnum.temp, companyId), staffId, companyId);
         //获取id
 
     }
@@ -369,15 +374,15 @@ public class ExcelServiceImpl implements ExcelService {
         if (StringUtil.isNotEmpty(info.getSourceName())) {
             //设置来源ID，来源类型,渠道ID,渠道名称
             excelDao.updateSrcAndChannel(DBSplitUtil.getTable(TableEnum.temp, companyId),
-                    info.getOperaId(),companyId);
+                    info.getOperaId(), companyId);
         }
         if (StringUtil.isNotEmpty(info.getStatusName())) {
             // 设置状态ID和classId
-            excelDao.updateStatusIdAndClassId(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId(),companyId);
+            excelDao.updateStatusIdAndClassId(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId(), companyId);
         }
         if (StringUtil.isNotEmpty(info.getShopName())) {
             // 更新门店ID
-            excelDao.updateShopId(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId(),companyId);
+            excelDao.updateShopId(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId(), companyId);
         }
         if (StringUtil.isNotEmpty(info.getCollectorName())) {
             // 更新提报人ID
@@ -387,25 +392,25 @@ public class ExcelServiceImpl implements ExcelService {
             // 更新邀约员ID
             excelDao.updateAppointId(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId());
         }
-        if(StringUtil.isNotEmpty(info.getYsRangeStr())){
+        if (StringUtil.isNotEmpty(info.getYsRangeStr())) {
             //更新预算范围
-            excelDao.updateYsRangeDictionaryCode(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId(),companyId,DictionaryConstant.YS_RANGE);
+            excelDao.updateYsRangeDictionaryCode(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId(), companyId, DictionaryConstant.YS_RANGE);
         }
-        if(StringUtil.isNotEmpty(info.getYpTimeStr())){
+        if (StringUtil.isNotEmpty(info.getYpTimeStr())) {
             //更新预拍时间
-            excelDao.updateYpTimeDictionaryCode(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId(),companyId,DictionaryConstant.YP_TIME);
+            excelDao.updateYpTimeDictionaryCode(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId(), companyId, DictionaryConstant.YP_TIME);
         }
-        if(StringUtil.isNotEmpty(info.getMarryTimeStr())){
+        if (StringUtil.isNotEmpty(info.getMarryTimeStr())) {
             //更新结婚时间
-            excelDao.updateMarryTimeDictionaryCode(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId(),companyId,DictionaryConstant.MARRY_TIME);
+            excelDao.updateMarryTimeDictionaryCode(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId(), companyId, DictionaryConstant.MARRY_TIME);
         }
-        if(StringUtil.isNotEmpty(info.getYxLevelStr())){
+        if (StringUtil.isNotEmpty(info.getYxLevelStr())) {
             //更新意向等级
-            excelDao.updateYxLevelDictionaryCode(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId(),companyId,DictionaryConstant.YX_RANK);
+            excelDao.updateYxLevelDictionaryCode(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId(), companyId, DictionaryConstant.YX_RANK);
         }
-        if(StringUtil.isNotEmpty(info.getZxStyleStr())){
+        if (StringUtil.isNotEmpty(info.getZxStyleStr())) {
             //更新咨询方式
-            excelDao.updateZxStyleDictionaryCode(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId(),companyId,DictionaryConstant.ZX_STYLE);
+            excelDao.updateZxStyleDictionaryCode(DBSplitUtil.getTable(TableEnum.temp, companyId), info.getOperaId(), companyId, DictionaryConstant.ZX_STYLE);
         }
     }
 
@@ -416,7 +421,7 @@ public class ExcelServiceImpl implements ExcelService {
      * @param operaId
      */
     public void deleteTempByStaffId(int companyId, int operaId) {
-        excelDao.deleteTempByStaffId((DBSplitUtil.getTable(TableEnum.temp, companyId)), operaId,companyId);
+        excelDao.deleteTempByStaffId((DBSplitUtil.getTable(TableEnum.temp, companyId)), operaId, companyId);
     }
 
     /**
@@ -431,7 +436,10 @@ public class ExcelServiceImpl implements ExcelService {
         reqContent.put("cid", staffPO.getCompanyId());
         reqContent.put("uid", clientExportDTO.getUid());
         reqContent.put("sig", clientExportDTO.getSig());
+
+        QueryVO queryVO = new QueryVO();
         reqContent.put("action", clientExportDTO.getAction());
+        queryVO.setAction(clientExportDTO.getAction());
         reqContent.put("role", clientExportDTO.getRole());
         reqContent.put("timetype", clientExportDTO.getTimeType());
         reqContent.put("start", clientExportDTO.getStart());
@@ -463,11 +471,29 @@ public class ExcelServiceImpl implements ExcelService {
         }
     }
 
+
+    /**
+     * 导出客资 (新版)
+     *
+     * @param staffPO
+     * @return
+     */
+    public List<ClientExportVO> export(StaffPO staffPO, QueryVO queryVO) {
+        CompanyVO companyVO = companyDao.getVOById(staffPO.getCompanyId());
+        PlatPageVO pageVO = platService.queryPageClientInfo(queryVO);
+        JSONArray jsArr = new JSONArray();
+        jsArr.addAll(pageVO.getData());
+        List<ClientExportVO> clientList = JsonFmtUtil.jsonArrToClientExportVO(jsArr, staffPO,
+                sourceService, statusService, channelService, dictionaryService, companyVO, permissionDao);
+        return clientList;
+
+    }
+
     @Override
     public ClientSortCountDTO getMultipleKzStatusCount(StaffPO staffPO) {
         //错误个数
         ClientSortCountDTO clientSortCount = excelDao.getMultipleKzStatusCount(DBSplitUtil.getTable(TableEnum.temp, staffPO.getCompanyId()),
-                DBSplitUtil.getTable(TableEnum.info, staffPO.getCompanyId()), staffPO.getId(),staffPO.getCompanyId());
+                DBSplitUtil.getTable(TableEnum.info, staffPO.getCompanyId()), staffPO.getId(), staffPO.getCompanyId());
         return clientSortCount;
     }
 
@@ -478,19 +504,19 @@ public class ExcelServiceImpl implements ExcelService {
             case 1:
                 //错误客资
                 PageHelper.startPage(page, pageSize);
-                clientExcelNewsDTOS = excelDao.getExcelErrorClient(DBSplitUtil.getTable(TableEnum.temp, staffPO.getCompanyId()), staffPO.getId(),staffPO.getCompanyId());
+                clientExcelNewsDTOS = excelDao.getExcelErrorClient(DBSplitUtil.getTable(TableEnum.temp, staffPO.getCompanyId()), staffPO.getId(), staffPO.getCompanyId());
                 break;
             case 2:
                 //正常客资
                 PageHelper.startPage(page, pageSize);
                 clientExcelNewsDTOS = excelDao.getExcelSuccessClient(DBSplitUtil.getTable(TableEnum.temp, staffPO.getCompanyId()),
-                        DBSplitUtil.getTable(TableEnum.info, staffPO.getCompanyId()), staffPO.getId(),staffPO.getCompanyId());
+                        DBSplitUtil.getTable(TableEnum.info, staffPO.getCompanyId()), staffPO.getId(), staffPO.getCompanyId());
                 break;
             case 3:
                 //重复客资
                 PageHelper.startPage(page, pageSize);
                 clientExcelNewsDTOS = excelDao.getRepeatRecord(DBSplitUtil.getTable(TableEnum.temp, staffPO.getCompanyId()),
-                        DBSplitUtil.getTable(TableEnum.info, staffPO.getCompanyId()), staffPO.getId(),staffPO.getCompanyId());
+                        DBSplitUtil.getTable(TableEnum.info, staffPO.getCompanyId()), staffPO.getId(), staffPO.getCompanyId());
                 break;
             default:
                 break;
