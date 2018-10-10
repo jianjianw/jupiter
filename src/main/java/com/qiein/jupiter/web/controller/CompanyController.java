@@ -12,12 +12,15 @@ import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.dto.DsinvalDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
+import com.qiein.jupiter.web.entity.po.Datav;
+import com.qiein.jupiter.web.entity.po.DatavPermissionPo;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.service.CompanyService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -330,6 +333,28 @@ public class CompanyController extends BaseController {
     @GetMapping("/get_config")
     public ResultInfo getCompanyConfig() {
         return ResultInfoUtil.success(companyService.getCompanyConfig(getCurrentLoginStaff().getCompanyId()));
+    }
+    
+    /**
+     * 获取权限
+     */
+    @GetMapping("/get_permission")
+    public ResultInfo getPermission(String phone,int companyId) {
+    	List<DatavPermissionPo> permission = companyService.getPermission(phone,companyId);
+    	for (DatavPermissionPo datavPermissionPo : permission) {
+			if("201".equals(datavPermissionPo.getPermissionId())){
+				return ResultInfoUtil.success(true);
+			}
+		}
+        return ResultInfoUtil.error(9999, "该账户没有大屏权限");
+    }
+    /**
+     * 获取大屏数据
+     */
+    @GetMapping("/get_datav")
+    public ResultInfo getDatav(int companyId) {
+    	List<Datav> datav = companyService.getDatav(companyId);
+        return ResultInfoUtil.success(datav);
     }
 
 }
