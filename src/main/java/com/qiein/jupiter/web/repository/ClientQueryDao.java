@@ -7,6 +7,8 @@ import com.qiein.jupiter.constant.RoleConstant;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.web.dao.PageConfigDao;
+import com.qiein.jupiter.web.entity.po.PageConfig;
 import com.qiein.jupiter.web.entity.vo.PlatPageVO;
 import com.qiein.jupiter.web.entity.vo.QueryVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,9 @@ import java.util.Map;
 public class ClientQueryDao {
     @Autowired
     private NamedParameterJdbcOperations namedJdbc;
+
+    @Autowired
+    private PageConfigDao pageConfigDao;
 
     /**
      * 查询删除客资
@@ -134,7 +139,7 @@ public class ClientQueryDao {
      *
      * @param rs
      */
-    public static JSONObject resultToClientInfo(ResultSet rs) throws SQLException {
+    private JSONObject resultToClientInfo(ResultSet rs) throws SQLException {
         JSONObject info = new JSONObject();
         info.put("id", rs.getInt("ID"));
         info.put("letterid", rs.getString("LETTERID"));
@@ -217,7 +222,7 @@ public class ClientQueryDao {
                 .append("info.KZQQ, info.KZWW, info.SEX, info.CHANNELID, info.SOURCEID, info.COLLECTORID,")
                 .append("  info.PROMOTORID, info.APPOINTORID,info.RECEPTORID,info.SHOPID, info.ALLOTTYPE,")
                 .append(" info.CREATETIME, info.RECEIVETIME, info.TRACETIME, info.APPOINTTIME, ")
-                .append(" .info.COMESHOPTIME, info.SUCCESSTIME, info.UPDATETIME,info.GROUPID, ")
+                .append(" info.COMESHOPTIME, info.SUCCESSTIME, info.UPDATETIME,info.GROUPID, ")
 
                 .append("  det.COLLECTORNAME,det.PROMOTERNAME,det.APPOINTNAME,det.RECEPTORNAME,det.SHOPNAME,")
                 .append(" det.PACKAGECODE,det.MEMO,det.FILMINGCODE,det.FILMINGAREA, ")
@@ -264,8 +269,15 @@ public class ClientQueryDao {
         } else if (vo.getRole().startsWith("zjs")) {
             whereSql.append(" AND ( info.SRCTYPE = 3 OR info.SRCTYPE = 4 OR info.SRCTYPE = 5 ) ");
         }
+
+        //处理where 语句拼接
         handleWhereSql(vo, keyMap, whereSql);
 
+        //处理动态action 语句
+        String actionSql = pageConfigDao.getActionSqlByCidAndRoleAndAction(companyId, vo.getRole(), vo.getAction());
+        if (StringUtil.isNotEmpty(actionSql)) {
+            whereSql.append(" AND ( ").append(actionSql).append(" ) ");
+        }
 
         //ORDER
         StringBuilder orderLimitSql = new StringBuilder();
@@ -280,7 +292,8 @@ public class ClientQueryDao {
         orderLimitSql.append(" limit :page , :size ");
 
         String querySql = baseSelect.append(fromSql).append(whereSql).append(orderLimitSql).toString();
-        System.out.println(querySql);
+
+//        System.out.println(querySql);
         //执行查询
         final List<JSONObject> result = new ArrayList<>();
         namedJdbc.query(querySql, keyMap, new RowCallbackHandler() {
@@ -313,7 +326,7 @@ public class ClientQueryDao {
     public JSONObject queryPageClientCountInfo(QueryVO vo) {
         JSONObject countJson = new JSONObject();
         int companyId = vo.getCompanyId();
-        List<String> actionList = getActionList(vo);
+        List<PageConfig> actionList = getActionList(vo);
         // 权限限定
         setPmsimit(vo);
 
@@ -342,14 +355,22 @@ public class ClientQueryDao {
 
         int countAll = namedJdbc.queryForObject(countSql, keyMap, Integer.class);
         countJson.put(ClientStatusConst.KZ_CLASS_ACTION_ALL, countAll);
-        for (String action : actionList) {
-            if (ClientStatusConst.actionDefault.contains(action)) {
-                keyMap.put("action", ClientStatusConst.getClassByAction(action));
-                int count = namedJdbc.queryForObject(countSql + " AND info.CLASSID = :action ", keyMap, Integer.class);
-                countJson.put(action, count);
-            } else {
-                // 自定义action
+        //遍历所有action
+        for (PageConfig pageConfig : actionList) {
+            String actionName = pageConfig.getAction();
+            StringBuilder customSql = new StringBuilder();
+            //如果action sql 不为空则拼接
+            if (StringUtil.isNotEmpty(pageConfig.getActionSql())) {
+                customSql.append(" AND ( ").append(pageConfig.getActionSql()).append(" )");
             }
+            //如果是默认的几个，加上classid的限制
+            if (ClientStatusConst.actionDefault.contains(actionName)) {
+                keyMap.put("action", ClientStatusConst.getClassByAction(actionName));
+                customSql.append(" AND info.CLASSID = :action ");
+            }
+            //统计
+            int count = namedJdbc.queryForObject(countSql + customSql.toString(), keyMap, Integer.class);
+            countJson.put(actionName, count);
         }
         return countJson;
 
@@ -426,10 +447,10 @@ public class ClientQueryDao {
      * @param vo
      * @return
      */
-    private List<String> getActionList(QueryVO vo) {
+    private List<PageConfig> getActionList(QueryVO vo) {
 
-        String sql = "SELECT cf.ACTION FROM hm_crm_page_conf cf" +
-                " WHERE cf.COMPANYID = :companyId AND cf.ROLE = :role ORDER BY cf.PRIORITY ASC";
+        String sql = "SELECT cf.ACTION,cf.ACTIONSQL FROM hm_crm_page_conf cf" +
+                " WHERE cf.COMPANYID = :companyId AND cf.ROLE = :role AND cf.SHOWFLAG = 1 ORDER BY cf.PRIORITY ASC";
 
 
         //查询参数
@@ -438,12 +459,15 @@ public class ClientQueryDao {
         keyMap.put("role", vo.getRole());
 
 
-        final List<String> actionList = new ArrayList<>();
+        final List<PageConfig> actionList = new ArrayList<>();
 
         namedJdbc.query(sql, keyMap, new RowCallbackHandler() {
             @Override
             public void processRow(ResultSet rs) throws SQLException {
-                actionList.add(rs.getString("ACTION"));
+                PageConfig pageConfig = new PageConfig();
+                pageConfig.setAction(rs.getString("ACTION"));
+                pageConfig.setActionSql(rs.getString("ACTIONSQL"));
+                actionList.add(pageConfig);
             }
         });
 

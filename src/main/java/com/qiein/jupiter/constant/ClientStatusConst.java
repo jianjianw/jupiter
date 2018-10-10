@@ -159,21 +159,24 @@ public class ClientStatusConst {
             case KZ_CLASS_ACTION_INVALID:
                 classId = KZ_CLASS_INVALID;
                 break;
-            case KZ_CLASS_ACTION_CUSTOM1:
-                classId = KZ_CLASS_CUSTOM1;
-                break;
-            case KZ_CLASS_ACTION_CUSTOM2:
-                classId = KZ_CLASS_CUSTOM2;
-                break;
-            case KZ_CLASS_ACTION_CUSTOM3:
-                classId = KZ_CLASS_CUSTOM3;
-                break;
+//            case KZ_CLASS_ACTION_CUSTOM1:
+//                classId = KZ_CLASS_CUSTOM1;
+//                break;
+//            case KZ_CLASS_ACTION_CUSTOM2:
+//                classId = KZ_CLASS_CUSTOM2;
+//                break;
+//            case KZ_CLASS_ACTION_CUSTOM3:
+//                classId = KZ_CLASS_CUSTOM3;
+//                break;
             default:
                 break;
         }
         return classId;
     }
 
+    /**
+     * 默认的几个
+     */
     public static final List<String> actionDefault = new ArrayList<>(
-            Arrays.asList("new", "trace", "order", "come", "success", "invalid", "custom1", "custom2", "custom3"));
+            Arrays.asList("new", "trace", "order", "come", "success", "invalid"));
 }

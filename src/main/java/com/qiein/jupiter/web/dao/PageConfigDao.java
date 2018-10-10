@@ -18,7 +18,7 @@ public interface PageConfigDao {
     List<PageConfig> listPageConfigByCidAndRole(@Param("companyId") int cid, @Param("role") String role);
 
     /**
-     *根据公司ID 获取 显示的配置
+     * 根据公司ID 获取 显示的配置
      *
      * @param cid
      * @return
@@ -32,4 +32,13 @@ public interface PageConfigDao {
      * @return
      */
     int updatePageConfig(PageConfig pageConfig);
+
+    /**
+     * 根据role和 action 获取对应SQL
+     *
+     * @return
+     */
+    String getActionSqlByCidAndRoleAndAction(@Param("companyId") int cid,
+                                             @Param("role") String role,
+                                             @Param("action") String action);
 }
