@@ -419,7 +419,7 @@
         (ID, WECHATNAME, WECHATIMG, LASTLOGINTIME, WECHATOPENID, CREATETIME, COMPANYID,MSGSET)
         VALUES (
             #{id}, #{weChatName}, #{weChatImg}, #{lastLoginTime},
-            #{weChatOpenId}, UNIX_TIMESTAMP(now()), #{companyId},#{msgset}
+            #{weChatOpenId}, UNIX_TIMESTAMP(now()), #{companyId},#{msgSet}
         )
     </insert>
 
