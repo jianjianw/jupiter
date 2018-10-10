@@ -10,6 +10,7 @@ import com.qiein.jupiter.util.CollectionUtils;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.util.TimeUtil;
 import com.qiein.jupiter.web.entity.dto.CompanyConfigDTO;
+import com.qiein.jupiter.web.entity.dto.StaffMsgSetDTO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.CompanyVO;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
@@ -454,5 +455,9 @@ public class AllTest {
     public void asdadqw() {
         CompanyConfigDTO companyConfigDTO = new CompanyConfigDTO();
         System.out.println(JSONObject.toJSONString(companyConfigDTO));
+
+        StaffMsgSetDTO staffMsgSetDTO = new StaffMsgSetDTO();
+        String msgset = JSON.toJSONString(staffMsgSetDTO);
+        System.out.println(msgset);
     }
 }

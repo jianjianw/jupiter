@@ -135,6 +135,8 @@ public class StaffServiceImpl implements StaffService {
         staffDetailPO.setCompanyId(staffVO.getCompanyId());
         //员工msgset
         StaffMsgSetDTO staffMsgSetDTO = new StaffMsgSetDTO();
+        staffMsgSetDTO.setAllowOrderBullyScreen(true);
+        staffMsgSetDTO.setAllowWxDingMsg(true);
         String msgset = JSON.toJSONString(staffMsgSetDTO);
         staffDetailPO.setMsgSet(msgset);
         staffDao.insertStaffDetail(staffDetailPO);
