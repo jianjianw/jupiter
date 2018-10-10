@@ -6,11 +6,12 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 
 import com.alibaba.fastjson.JSONObject;
+import com.qiein.jupiter.util.retrofitUtil.RetorfitUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.alibaba.druid.util.StringUtils;
-import com.github.pagehelper.util.StringUtil;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
@@ -20,6 +21,8 @@ import com.qiein.jupiter.web.entity.dto.VerifyParamDTO;
  * http工具类
  */
 public class HttpUtil {
+
+    private static final Logger log = LoggerFactory.getLogger(RetorfitUtil.class);
 
     /**
      * 从request中获取参数
@@ -56,6 +59,7 @@ public class HttpUtil {
             verifyParamDTO.setCid(Integer.valueOf(cid));
             verifyParamDTO.setUid(Integer.valueOf(uid));
         } catch (NumberFormatException ignored) {
+            log.error("转换失败时的" + cid + "-" + uid);
             ignored.printStackTrace();
             throw new RException(ExceptionEnum.TOKEN_VERIFY_FAIL);
         }
