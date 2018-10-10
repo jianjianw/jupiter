@@ -386,6 +386,7 @@ public class CompanyServiceImpl implements CompanyService {
             } catch (Exception e) {
                 e.printStackTrace();
                 companyDao.editConfig(companyId, JSONObject.toJSONString(companyConfigDTO));
+                return companyConfigDTO;
             }
 
         }
@@ -408,7 +409,8 @@ public class CompanyServiceImpl implements CompanyService {
                 CompanyConfigDTO companyConfigDTO = JSONObject.parseObject(config, CompanyConfigDTO.class);
                 //如果企业 启用了自动关闭分配
                 if (companyConfigDTO.isAutoCloseAllot()) {
-                    companyConfigDTO.setAutoAllot(false);
+                    companyConfigDTO.setAutoAllotDs(false);
+                    companyConfigDTO.setAutoAllotZjs(false);
                 }
                 //如果企业开启自动下线
                 if (companyConfigDTO.isAutoOffline()) {

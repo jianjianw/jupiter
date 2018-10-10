@@ -1,11 +1,15 @@
 package com.qiein.jupiter.web.service.task;
 
 import com.alibaba.fastjson.JSONObject;
+import com.qiein.jupiter.enums.CompanyEnum;
+import com.qiein.jupiter.enums.SourceTypeEnum;
 import com.qiein.jupiter.util.CollectionUtils;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.CompanyDao;
 import com.qiein.jupiter.web.entity.dto.ClientPushDTO;
+import com.qiein.jupiter.web.entity.dto.CompanyConfigDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
+import com.qiein.jupiter.web.service.CompanyService;
 import com.qiein.jupiter.web.service.impl.ClientPushServiceImpl;
 import com.qiein.jupiter.web.service.quene.PushQueue;
 import com.qiein.jupiter.web.service.quene.PushSkQueue;
@@ -33,10 +37,16 @@ public class ClientPushTask {
 
     @Autowired
     private ClientPushServiceImpl pushService;
+
+    @Autowired
+    private CompanyService companyService;
+
     @Autowired
     private CompanyDao companyDao;
+
     @Autowired
     private PushQueue lpPushQueue;
+
     @Autowired
     private PushSkQueue pushSkQueue;
 
@@ -47,26 +57,18 @@ public class ClientPushTask {
     public void taskPushLp() {
         //如果是测试环境，就不再推送
         if (active.equals("dev")) {
-            log.info("测试环境，暂不推送...");
+//            log.info("测试环境，暂不推送...");
             return;
         }
         //先判断下队列是否为空,只有队列为空，才去数据库找客资推送
         if (!lpPushQueue.isEmpty()) {
-            log.info("客资队列不为空，暂不推送...");
+//            log.info("客资队列不为空，暂不推送...");
             return;
         }
-        log.info("执行定时推送任务");
-        List<CompanyPO> compList = companyDao.listComp(1);
+        List<CompanyPO> compList = companyDao.listComp(CompanyEnum.WeddingDress.getId());
         for (CompanyPO comp : compList) {
-            String config = comp.getConfig();
+            CompanyConfigDTO companyConfig = companyService.getCompanyConfig(comp.getId());
 
-            if (StringUtil.isNotEmpty(config)) {
-                JSONObject configJson = JSONObject.parseObject(config);
-                if (configJson.getBoolean("autoAllot") != null && !configJson.getBoolean("autoAllot")) {
-                    log.info(comp.getCompanyName() + "企业关闭自动分配...");
-                    continue;
-                }
-            }
             //超时时间设置是秒
             int overTime = comp.getOverTime();
             List<ClientPushDTO> infoList = pushService.getInfoListBeReadyPush(comp.getId(), overTime);
@@ -74,11 +76,26 @@ public class ClientPushTask {
                 continue;
             }
             for (ClientPushDTO info : infoList) {
+                int srcType = info.getSrcType();
+                //如果当前客资是电商或者电商转介绍，则判断是否开启分配
+                if (srcType == SourceTypeEnum.CDS.getTypeId() || srcType == SourceTypeEnum.DSZJS.getTypeId()) {
+                    if (!companyConfig.isAutoAllotDs()) {
+                        log.info(comp.getCompanyName() + "企业关闭电商自动分配...");
+                        continue;
+                    }
+                } else {
+                    if (!companyConfig.isAutoAllotZjs()) {
+                        log.info(comp.getCompanyName() + "企业关闭转介绍自动分配...");
+                        continue;
+                    }
+                }
+                //分配
                 pushClient(new ClientPushDTO(pushService, info.getPushRule(), comp.getId(), info.getKzId(), info.getSrcType(), comp.getOverTime(),
                         comp.getKzInterval(), info.getSourceId()));
             }
 //            log.info("推送了客资：" + infoList.size() + " 个");
         }
+
     }
 
 

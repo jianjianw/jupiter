@@ -7,9 +7,13 @@ package com.qiein.jupiter.web.entity.dto;
  */
 public class CompanyConfigDTO {
     /**
-     * 自动分配
+     * 自动分配(电商)
      */
-    private boolean autoAllot;
+    private boolean autoAllotDs;
+    /**
+     * 自动分配(转介绍)
+     */
+    private boolean autoAllotZjs;
     /**
      * 自动关闭自动分配
      */
@@ -49,11 +53,19 @@ public class CompanyConfigDTO {
         this.autoCloseAllot = autoCloseAllot;
     }
 
-    public boolean isAutoAllot() {
-        return autoAllot;
+    public boolean isAutoAllotDs() {
+        return autoAllotDs;
     }
 
-    public void setAutoAllot(boolean autoAllot) {
-        this.autoAllot = autoAllot;
+    public void setAutoAllotDs(boolean autoAllotDs) {
+        this.autoAllotDs = autoAllotDs;
+    }
+
+    public boolean isAutoAllotZjs() {
+        return autoAllotZjs;
+    }
+
+    public void setAutoAllotZjs(boolean autoAllotZjs) {
+        this.autoAllotZjs = autoAllotZjs;
     }
 }
