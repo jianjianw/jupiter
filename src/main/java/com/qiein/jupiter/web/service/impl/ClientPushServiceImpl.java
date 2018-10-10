@@ -1074,7 +1074,7 @@ public class ClientPushServiceImpl implements ClientPushService {
             clientLogDao
                     .addInfoLog(DBSplitUtil.getInfoLogTabName(companyId),
                             new ClientLogPO(
-                                    kzIdsArr[i], ClientLogConst.getAllotLog(appoint.getGroupName(),
+                                    kzIdsArr[i], operaId, operaName, ClientLogConst.getAllotLog(appoint.getGroupName(),
                                     appoint.getStaffName(), operaId, operaName),
                                     ClientLogConst.INFO_LOGTYPE_ALLOT, companyId));
         }
