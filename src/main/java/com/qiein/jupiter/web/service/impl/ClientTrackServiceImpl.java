@@ -277,7 +277,7 @@ public class ClientTrackServiceImpl implements ClientTrackService {
                     .addInfoLog(DBSplitUtil.getInfoLogTabName(companyId),
                             new ClientLogPO(
                                     kzIdsArr[i], ClientLogConst.getAllotLog(appoint.getGroupName(),
-                                    appoint.getStaffName(), operaId, operaName),
+                                    appoint.getStaffName()),
                                     ClientLogConst.INFO_LOGTYPE_ALLOT, companyId));
         }
 

@@ -3,6 +3,8 @@ package com.qiein.jupiter.web.dao;
 import com.qiein.jupiter.web.entity.dto.CompanyZjsSetDTO;
 import com.qiein.jupiter.web.entity.dto.DsinvalDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
+import com.qiein.jupiter.web.entity.po.Datav;
+import com.qiein.jupiter.web.entity.po.DatavPermissionPo;
 import com.qiein.jupiter.web.entity.vo.CompanyVO;
 
 import java.util.List;
@@ -204,4 +206,12 @@ public interface CompanyDao extends BaseDao<CompanyPO> {
      * 修改配置
      */
     int editConfig(@Param("companyId") int companyId, @Param("config") String config);
+    /**
+     * 获取权限
+     */
+	List<DatavPermissionPo> getPermission(@Param("phone") String phone, @Param("companyId") int companyId);
+	/**
+     * 获取datav数据
+     */
+	List<Datav> getDatav(@Param("companyId") int companyId);
 }

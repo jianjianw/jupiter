@@ -72,6 +72,7 @@
         <result column="LASTLOGINIP" property="lastLoginIp" jdbcType="VARCHAR"/>
         <result column="WECHATOPENID" property="weChatOpenId" jdbcType="VARCHAR"/>
         <result column="CREATETIME" property="createTime" jdbcType="INTEGER"/>
+        <result column="MSGSET" property="msgset" jdbcType="VARCHAR"/>
     </resultMap>
 
     <resultMap id="pushMap" type="com.qiein.jupiter.web.entity.dto.StaffPushDTO">
@@ -415,10 +416,10 @@
     <!--插入员工详细信息-->
     <insert id="insertStaffDetail" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO hm_pub_staff_detail
-        (ID, WECHATNAME, WECHATIMG, LASTLOGINTIME, WECHATOPENID, CREATETIME, COMPANYID)
+        (ID, WECHATNAME, WECHATIMG, LASTLOGINTIME, WECHATOPENID, CREATETIME, COMPANYID,MSGSET)
         VALUES (
             #{id}, #{weChatName}, #{weChatImg}, #{lastLoginTime},
-            #{weChatOpenId}, UNIX_TIMESTAMP(now()), #{companyId}
+            #{weChatOpenId}, UNIX_TIMESTAMP(now()), #{companyId},#{msgset}
         )
     </insert>
 

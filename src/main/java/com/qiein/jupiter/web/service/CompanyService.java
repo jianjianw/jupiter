@@ -5,6 +5,8 @@ import com.qiein.jupiter.web.entity.dto.CompanyConfigDTO;
 import com.qiein.jupiter.web.entity.dto.CompanyZjsSetDTO;
 import com.qiein.jupiter.web.entity.dto.DsinvalDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
+import com.qiein.jupiter.web.entity.po.Datav;
+import com.qiein.jupiter.web.entity.po.DatavPermissionPo;
 import com.qiein.jupiter.web.entity.vo.CompanyVO;
 
 import java.util.List;
@@ -230,4 +232,8 @@ public interface CompanyService {
      * 定时执行企业的配置任务
      */
     int timingExecuteConfigTask();
+
+	List<DatavPermissionPo> getPermission(String phone, int companyId);
+
+	List<Datav> getDatav(int companyId);
 }

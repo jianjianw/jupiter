@@ -50,6 +50,19 @@
         <result column="CONFIG" property="config" jdbcType="VARCHAR"/>
     </resultMap>
 
+	<resultMap id="DataPerssionMap" type="com.qiein.jupiter.web.entity.po.DatavPermissionPo">
+        <id column="PERMISSIONID" property="permissionId" />
+        <result column="ROLEID" property="roleId" />
+        <result column="NAME" property="name" />
+        <result column="PERMISSIONNAME" property="permissionName" />
+    </resultMap>
+    
+    <resultMap id="DatavMap" type="com.qiein.jupiter.web.entity.po.Datav">
+        <id column="ID" property="Id" />
+        <result column="IMG" property="img" />
+        <result column="URL" property="url" />
+        <result column="NAME" property="name" />
+    </resultMap>
     <sql id="baseColumn">
         ID, COMPANYNAME, TYPEID, LOGO, CORPID, CONFIG, IPLIMIT,
         SSOLIMIT, OVERTIME, LIMITDEFAULT, KZINTERVAL, ISDEL, ONLYAPP, ISLOCK,
@@ -363,4 +376,30 @@
         SET CONFIG = #{config}
         WHERE ID = #{companyId}
     </update>
+    
+    <!--查询权限-->
+    <select id="getPermission"  resultMap="DataPerssionMap">
+       SELECT
+		st.NICKNAME NAME,sr.ROLEID ROLEID,p.ID PERMISSIONID,p.PERMISSIONNAME PERMISSIONNAME
+	   FROM
+		hm_pub_staff st
+	   LEFT JOIN hm_pub_staff_role sr ON sr.STAFFID=st.ID
+	   LEFT JOIN hm_pub_role_permission  rp ON sr.ROLEID=rp.ROLEID
+	   LEFT JOIN hm_pub_permission p ON p.ID=rp.PERMISSIONID
+	  WHERE
+		st.PHONE = #{phone}
+	  AND st.COMPANYID = #{companyId}
+	  AND st.ISDEL =0
+	  AND p.ID IS NOT NULL
+    </select>
+    
+    <!--大屏数据-->
+    <select id="getDatav"  resultMap="DatavMap">
+      SELECT
+		ID,IMG,URL,NAME
+	  FROM
+		hm_pub_datav dt
+	  WHERE
+		dt.COMPANYID = #{companyId}
+    </select>
 </mapper>
