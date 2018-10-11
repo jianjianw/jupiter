@@ -122,7 +122,26 @@ public class StaffController extends BaseController {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         // 设置cid
         staffVO.setCompanyId(currentLoginStaff.getCompanyId());
+        List<SearchStaffVO> staffOld = staffService.getGroupById(staffVO.getId()+CommonConstant.NULL_STR, currentLoginStaff.getCompanyId());
         staffService.update(staffVO);
+        List<SearchStaffVO> staffNew = staffService.getGroupById(staffVO.getId()+CommonConstant.NULL_STR,currentLoginStaff.getCompanyId());
+        Map<String, String> map = new HashMap<>();
+        String old = CommonConstant.NULL_STR;
+        for (SearchStaffVO staff : staffOld) {
+            old += staff.getNickName() + " " + staff.getGroupName() + CommonConstant.STR_SEPARATOR;
+        }
+        map.put(old, staffNew.get(0).getGroupName());
+        RequestInfoDTO requestInfo = getRequestInfo();
+        try {
+            // 日志记录
+            logService.addLog(new SystemLog(SysLogUtil.LOG_TYPE_STAFF, requestInfo.getIp(), requestInfo.getUrl(), currentLoginStaff.getId(),
+                    currentLoginStaff.getNickName(), SysLogUtil.getEditLog(SysLogUtil.LOG_SUP_STAFF, SysLogUtil.LOG_SUP_STAFF, map),
+                    currentLoginStaff.getCompanyId()));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
+        }
         return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
     }
 
