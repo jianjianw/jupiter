@@ -160,7 +160,7 @@ public class ClientLogConst {
      */
     public static final String getCashDeleteLog(CashLogPO cashLogPO,String staffName){
         StringBuilder sb=new StringBuilder();
-        sb.append(staffName+"删除了"+cashLogPO.getOperaName()+"的收款记录:"+cashLogPO.getAmount());
+        sb.append(staffName+" 删除了编号为："+cashLogPO.getId()+ " 的 "+cashLogPO.getStaffName()+" 的收款记录:"+cashLogPO.getAmount());
         return sb.toString();
     }
 }
