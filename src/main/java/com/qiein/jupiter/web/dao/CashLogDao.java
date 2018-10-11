@@ -54,4 +54,10 @@ public interface CashLogDao extends BaseDao<CashLogDao> {
      */
     int getClientReceivedAmount(@Param("companyId") int companyId, @Param("table") String table, @Param("kzId") String kzId);
 
+    /**
+     * 删除付款记录
+     * @param id
+     */
+    void deleteCashLog(@Param("id")Integer id);
+
 }

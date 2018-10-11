@@ -28,4 +28,10 @@ public interface CashService {
      * @return
      */
     List<CashLogVO> findCashLog(String kzId, String table);
+
+    /**
+     * 删除付款记录
+     * @param id
+     */
+    void deleteCashLog(Integer id,String kzId,Integer companyId);
 }

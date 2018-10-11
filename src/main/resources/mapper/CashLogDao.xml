@@ -82,4 +82,8 @@
         WHERE log.COMPANYID = #{companyId}
               AND log.KZID = #{kzId}
     </select>
+
+    <delete id="deleteCashLog">
+        delete from hm_crm_cash_log where id=#{id}
+    </delete>
 </mapper>

@@ -63,4 +63,16 @@ public class CashController extends BaseController {
     public ResultInfo findCashLog(@RequestParam String kzId){
         return  ResultInfoUtil.success(cashService.findCashLog(kzId, DBSplitUtil.getTable(TableEnum.cash_log,getCurrentLoginStaff().getCompanyId())));
     }
+
+    /**
+     * 删除付款记录
+     * @param id
+     * @param kzId
+     * @return
+     */
+    @GetMapping("/delete_cash_log")
+    public ResultInfo deleteCashLog(@RequestParam Integer id,@RequestParam String kzId){
+        cashService.deleteCashLog(id,kzId,getCurrentLoginStaff().getCompanyId());
+        return ResultInfoUtil.success(TipMsgEnum.DELETE_SUCCESS);
+    }
 }

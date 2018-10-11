@@ -98,5 +98,16 @@ public class CashServiceImpl implements CashService {
     public List<CashLogVO> findCashLog(String kzId, String table) {
         return cashLogDao.findCashLog(kzId, table);
     }
+    /**
+     * 删除付款记录
+     * @param id
+     */
+    public void deleteCashLog(Integer id,String kzId,Integer companyId){
+        cashLogDao.deleteCashLog(id);
+        String detailTableName = DBSplitUtil.getDetailTabName(companyId);
+        String cashTableName = DBSplitUtil.getCashTabName(companyId);
+        clientInfoDao.editStayAmount(detailTableName, cashTableName,
+                kzId, companyId);
+    }
 
 }
