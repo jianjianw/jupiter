@@ -345,7 +345,7 @@ public class GoEasyUtil {
      * @param msg
      */
     public static void pushFlashMsgForInfo(int companyId, int barStaffId, int senderId, String senderName,
-                                           String kzName, String kzPhone, int id, String kzId, String kzChannel, String kzSource, String kzMemo, String msg, String createTime) {
+                                           String kzName, String kzPhone, String id, String kzId, String kzChannel, String kzSource, String kzMemo, String msg, String createTime) {
         JSONObject contentJson = new JSONObject();
         contentJson.put("senderId", senderId);
         contentJson.put("senderName", senderName);
@@ -830,7 +830,9 @@ public class GoEasyUtil {
         sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("<br/>");
         sb.append("录入时间：" + TimeUtil.intMillisToTimeStr(info.getCreateTime()) + "<br/>");
         sb.append("消息：" + msg + "<br/>");
-        pushFlashMsgForInfo(companyId, staffId, operaId, operaName, StringUtil.nullToStrTrim(info.getKzName()), StringUtil.nullToStrTrim(info.getKzPhone()), info.getId(),
+        pushFlashMsgForInfo(companyId, staffId, operaId, operaName, StringUtil.nullToStrTrim(info.getKzName()),
+                StringUtil.nullToStrTrim(StringUtil.isNotEmpty(info.getKzPhone()) ? info.getKzPhone() : StringUtil.isNotEmpty(info.getKzWechat()) ? info.getKzWechat() : info.getKzQq()),
+                info.getLetterId(),
                 info.getKzId(), StringUtil.nullToStrTrim(info.getChannelName()), StringUtil.nullToStrTrim(info.getSourceName()), StringUtil.nullToStrTrim(info.getMemo()), msg, TimeUtil.intMillisToTimeStr(info.getCreateTime()));
         newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_FLASH, head, sb.toString().replaceAll("<br/>", "；"), info.getKzId(), staffId, companyId));
     }
