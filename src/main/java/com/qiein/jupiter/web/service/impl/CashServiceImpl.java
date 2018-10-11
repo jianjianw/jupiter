@@ -102,10 +102,17 @@ public class CashServiceImpl implements CashService {
      * 删除付款记录
      * @param id
      */
-    public void deleteCashLog(Integer id,String kzId,Integer companyId){
-        cashLogDao.deleteCashLog(id);
+    public void deleteCashLog(Integer id,String kzId,Integer companyId,Integer staffId,String staffName){
         String detailTableName = DBSplitUtil.getDetailTabName(companyId);
         String cashTableName = DBSplitUtil.getCashTabName(companyId);
+        String infoLogTableName = DBSplitUtil.getInfoLogTabName(companyId);
+        CashLogPO oldCash = cashLogDao.getCashLogById(cashTableName, id, companyId);
+        cashLogDao.deleteCashLog(id);
+        //添加修改日志
+        clientLogDao.addInfoLog(infoLogTableName, new
+                ClientLogPO(kzId, staffId,
+                staffName, ClientLogConst.getCashDeleteLog(oldCash,staffName),
+                ClientLogConst.INFO_LOGTYPE_CASH, companyId));
         clientInfoDao.editStayAmount(detailTableName, cashTableName,
                 kzId, companyId);
     }

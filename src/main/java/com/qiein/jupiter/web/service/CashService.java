@@ -33,5 +33,5 @@ public interface CashService {
      * 删除付款记录
      * @param id
      */
-    void deleteCashLog(Integer id,String kzId,Integer companyId);
+    void deleteCashLog(Integer id,String kzId,Integer companyId,Integer staffId,String staffName);
 }

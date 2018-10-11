@@ -72,7 +72,7 @@ public class CashController extends BaseController {
      */
     @GetMapping("/delete_cash_log")
     public ResultInfo deleteCashLog(@RequestParam Integer id,@RequestParam String kzId){
-        cashService.deleteCashLog(id,kzId,getCurrentLoginStaff().getCompanyId());
+        cashService.deleteCashLog(id,kzId,getCurrentLoginStaff().getCompanyId(),getCurrentLoginStaff().getId(),getCurrentLoginStaff().getNickName());
         return ResultInfoUtil.success(TipMsgEnum.DELETE_SUCCESS);
     }
 }

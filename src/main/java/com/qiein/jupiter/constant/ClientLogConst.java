@@ -155,4 +155,12 @@ public class ClientLogConst {
         return sb.toString();
     }
 
+    /**
+     * 删除收款日志
+     */
+    public static final String getCashDeleteLog(CashLogPO cashLogPO,String staffName){
+        StringBuilder sb=new StringBuilder();
+        sb.append(staffName+"删除了"+cashLogPO.getOperaName()+"的收款记录:"+cashLogPO.getAmount());
+        return sb.toString();
+    }
 }
