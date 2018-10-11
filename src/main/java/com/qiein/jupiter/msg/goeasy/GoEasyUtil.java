@@ -429,6 +429,12 @@ public class GoEasyUtil {
         if (StringUtil.isNotEmpty(info.getKzWechat())) {
             sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWechat())).append("<br/>");
         }
+        if (StringUtil.isNotEmpty(info.getKzQq())) {
+            sb.append("QQ：").append(StringUtil.nullToStrTrim(info.getKzQq())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzWw())) {
+            sb.append("旺旺：").append(StringUtil.nullToStrTrim(info.getKzWw())).append("<br/>");
+        }
         sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("<br/>");
         sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("<br/>");
         sb.append("客服：").append(StringUtil.nullToStrTrim(info.getAppointName())).append("<br/>");
@@ -462,6 +468,12 @@ public class GoEasyUtil {
         }
         if (StringUtil.isNotEmpty(info.getKzWechat())) {
             sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWechat())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzQq())) {
+            sb.append("QQ：").append(StringUtil.nullToStrTrim(info.getKzQq())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzWw())) {
+            sb.append("旺旺：").append(StringUtil.nullToStrTrim(info.getKzWw())).append("<br/>");
         }
         sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("<br/>");
         sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("<br/>");
@@ -574,6 +586,12 @@ public class GoEasyUtil {
         }
         if (StringUtil.isNotEmpty(info.getKzWechat())) {
             sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWechat())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzQq())) {
+            sb.append("QQ：").append(StringUtil.nullToStrTrim(info.getKzQq())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzWw())) {
+            sb.append("旺旺：").append(StringUtil.nullToStrTrim(info.getKzWw())).append("<br/>");
         }
         sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("<br/>");
         sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("<br/>");
@@ -883,6 +901,7 @@ public class GoEasyUtil {
         if (StringUtil.isNotEmpty(info.getKzQq())) {
             sb.append("QQ：").append(StringUtil.nullToStrTrim(info.getKzQq())).append("<br/>");
         }
+
         sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("<br/>");
         sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSrcName())).append("<br/>");
 
@@ -927,6 +946,9 @@ public class GoEasyUtil {
         if (StringUtil.isNotEmpty(info.getKzQq())) {
             sb.append("QQ：").append(StringUtil.nullToStrTrim(info.getKzQq())).append("<br/>");
         }
+        if (StringUtil.isNotEmpty(info.getKzWw())) {
+            sb.append("旺旺：").append(StringUtil.nullToStrTrim(info.getKzWw())).append("<br/>");
+        }
         sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("<br/>");
         sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("<br/>");
 
@@ -960,6 +982,9 @@ public class GoEasyUtil {
         }
         if (StringUtil.isNotEmpty(info.getKzWechat())) {
             sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWechat())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzWw())) {
+            sb.append("旺旺：").append(StringUtil.nullToStrTrim(info.getKzWw())).append("<br/>");
         }
         sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("<br/>");
         sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("<br/>");
@@ -999,6 +1024,39 @@ public class GoEasyUtil {
         newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_COMMON, head, sb.toString().replaceAll("<br/>", "；"),
                 info.getKzId(), toStaffId, companyId));
         DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), companyId, toStaffId, staffDao);
+    }
+
+    /**
+     * 进店未定
+     *
+     * @param companyId
+     * @param staffId
+     * @param info
+     * @param newsDao
+     */
+    public static void pushComeNotSuccess(int companyId, int staffId, ClientGoEasyDTO info, NewsDao newsDao, StaffDao staffDao) {
+        String head = "您的客资进店未定";
+        StringBuffer sb = new StringBuffer();
+        sb.append("编号：").append(info.getLetterId()).append("<br/>");
+        if (StringUtil.isNotEmpty(info.getKzName())) {
+            sb.append("姓名：").append(StringUtil.nullToStrTrim(info.getKzName())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzPhone())) {
+            sb.append("电话：").append(StringUtil.nullToStrTrim(info.getKzPhone())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzWechat())) {
+            sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWechat())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzWw())) {
+            sb.append("旺旺：").append(StringUtil.nullToStrTrim(info.getKzWw())).append("<br/>");
+        }
+        sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("<br/>");
+        sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("<br/>");
+        String msg = sb.toString();
+        pushWarn(companyId, staffId, head, msg);
+        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_WARN, head, msg.replaceAll("<br/>", "；"), info.getKzId(),
+                staffId, companyId));
+        DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), companyId, staffId, staffDao);
     }
 
 }

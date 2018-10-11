@@ -87,9 +87,9 @@ public class JsonFmtUtil {
                 }
             }
         }
-        List<ClientExportVO> clientList = new ArrayList<ClientExportVO>();
+        List<ClientExportVO> clientList = new ArrayList<>();
         for (int i = jsArr.size() - 1; i >= 0; i--) {
-            JSONObject info = (JSONObject) jsArr.getJSONObject(i).get("info");
+            JSONObject info = jsArr.getJSONObject(i);
             ClientExportVO vo = new ClientExportVO();
             vo.setId(info.getIntValue("id"));
             vo.setGroupName(info.getString("groupname"));

@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.entity.vo;
 
 import com.alibaba.fastjson.JSONObject;
+import org.apache.poi.ss.formula.functions.T;
 
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class PlatPageVO {
     /**
      * 数据
      */
-    private List data;
+    private List<?> data;
 
     /**
      * 其他数据
@@ -78,11 +79,11 @@ public class PlatPageVO {
         this.totalPage = totalPage;
     }
 
-    public List getData() {
+    public List<?> getData() {
         return data;
     }
 
-    public void setData(List data) {
+    public void setData(List<?> data) {
         this.data = data;
     }
 }

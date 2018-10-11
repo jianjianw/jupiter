@@ -124,7 +124,7 @@ public class ClientEditServiceImpl implements ClientEditService {
                         : MobileLocationUtil.getAddressByContactInfo(clientVO.getKzPhone(), clientVO.getKzWechat(),
                         clientVO.getKzQq()));
         reqContent.put("remark", clientVO.getRemark());
-        reqContent.put("remarkform",clientVO.getRemarkForm());
+        reqContent.put("remarkform", clientVO.getRemarkForm());
         System.out.println(clientVO.getRemarkForm());
         String addRstStr = crmBaseApi.doService(reqContent, "clientEditDscjHs");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
@@ -306,7 +306,7 @@ public class ClientEditServiceImpl implements ClientEditService {
         reqContent.put("kzwechat", clientVO.getKzWechat());
         reqContent.put("kzqq", clientVO.getKzQq());
         reqContent.put("kzww", clientVO.getKzWw());
-        reqContent.put("remarkform",clientVO.getRemarkForm());
+        reqContent.put("remarkform", clientVO.getRemarkForm());
         // 接待结果
         if (NumUtil.isNotNull(clientVO.getYyRst())) {
             reqContent.put("yyrst", clientVO.getYyRst());
@@ -366,6 +366,9 @@ public class ClientEditServiceImpl implements ClientEditService {
                 // 发送成功消息给录入人，邀约人
                 GoEasyUtil.pushSuccessShop(info.getCompanyId(), info.getAppointorId(), info, newsDao, staffDao);
                 GoEasyUtil.pushSuccessShop(info.getCompanyId(), info.getCollectorId(), info, newsDao, staffDao);
+            } else if (ClientStatusConst.BE_RUN_OFF == clientVO.getYyRst()) {
+                //进店未定,发送消息给客服
+                GoEasyUtil.pushComeNotSuccess(info.getCompanyId(), info.getAppointorId(), info, newsDao, staffDao);
             }
         } else if ("130019".equals(jsInfo.getString("code"))) {
             //重复客资，给邀约推送消息

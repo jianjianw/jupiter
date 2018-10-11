@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -132,6 +133,12 @@ public class StaffServiceImpl implements StaffService {
         StaffDetailPO staffDetailPO = new StaffDetailPO();
         staffDetailPO.setId(staffVO.getId());
         staffDetailPO.setCompanyId(staffVO.getCompanyId());
+        //员工msgset
+        StaffMsgSetDTO staffMsgSetDTO = new StaffMsgSetDTO();
+        staffMsgSetDTO.setAllowOrderBullyScreen(true);
+        staffMsgSetDTO.setAllowWxDingMsg(true);
+        String msgset = JSON.toJSONString(staffMsgSetDTO);
+        staffDetailPO.setMsgSet(msgset);
         staffDao.insertStaffDetail(staffDetailPO);
         redisTemplate.opsForValue().set(RedisConstant.getStaffKey(staffVO.getId(), staffVO.getCompanyId()), staffVO);
         return staffVO;

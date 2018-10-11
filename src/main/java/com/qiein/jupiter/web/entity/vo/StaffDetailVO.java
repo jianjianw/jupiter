@@ -75,6 +75,7 @@ public class StaffDetailVO extends StaffPO {
      */
     private String msgSet;
 
+
     public String getMsgSet() {
         return msgSet;
     }

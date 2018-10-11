@@ -55,8 +55,23 @@ public class StaffDetailPO extends BaseEntity {
      */
     private int companyId;
 
+    /**
+     * 个人消息设置
+     */
+    private String msgSet;
+
+
+
     public StaffDetailPO() {
 
+    }
+
+    public String getMsgSet() {
+        return msgSet;
+    }
+
+    public void setMsgSet(String msgSet) {
+        this.msgSet = msgSet;
     }
 
     /**

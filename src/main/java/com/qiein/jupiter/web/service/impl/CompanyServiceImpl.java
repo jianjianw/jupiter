@@ -13,6 +13,8 @@ import com.qiein.jupiter.web.entity.dto.CompanyConfigDTO;
 import com.qiein.jupiter.web.entity.dto.CompanyZjsSetDTO;
 import com.qiein.jupiter.web.entity.dto.DsinvalDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
+import com.qiein.jupiter.web.entity.po.Datav;
+import com.qiein.jupiter.web.entity.po.DatavPermissionPo;
 import com.qiein.jupiter.web.entity.vo.CompanyVO;
 import com.qiein.jupiter.web.service.CompanyService;
 import com.qiein.jupiter.web.service.StaffService;
@@ -386,6 +388,7 @@ public class CompanyServiceImpl implements CompanyService {
             } catch (Exception e) {
                 e.printStackTrace();
                 companyDao.editConfig(companyId, JSONObject.toJSONString(companyConfigDTO));
+                return companyConfigDTO;
             }
 
         }
@@ -408,7 +411,8 @@ public class CompanyServiceImpl implements CompanyService {
                 CompanyConfigDTO companyConfigDTO = JSONObject.parseObject(config, CompanyConfigDTO.class);
                 //如果企业 启用了自动关闭分配
                 if (companyConfigDTO.isAutoCloseAllot()) {
-                    companyConfigDTO.setAutoAllot(false);
+                    companyConfigDTO.setAutoAllotDs(false);
+                    companyConfigDTO.setAutoAllotZjs(false);
                 }
                 //如果企业开启自动下线
                 if (companyConfigDTO.isAutoOffline()) {
@@ -420,5 +424,23 @@ public class CompanyServiceImpl implements CompanyService {
         }
         return i;
     }
+    /**
+     * 获取权限
+     * @param companyId
+     */
+	@Override
+	public List<DatavPermissionPo> getPermission(String phone, int companyId) {
+		List<DatavPermissionPo> permission = companyDao.getPermission(phone,companyId);
+		return permission;
+	}
+	/**
+     *获取大屏数据
+     * @param companyId
+     */
+	@Override
+	public List<Datav> getDatav(int companyId) {
+		List<Datav> datav = companyDao.getDatav(companyId);
+		return datav;
+	}
 
 }
