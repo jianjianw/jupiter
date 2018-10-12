@@ -158,6 +158,10 @@ public class ClientVO implements Serializable {
      */
     private int yyRst;
     /**
+     * 无效原因编码
+     */
+    private int invalidCode;
+    /**
      * 无效原因
      */
     private String invalidLabel;
@@ -794,5 +798,13 @@ public class ClientVO implements Serializable {
 
     public void setTrackMemo(String trackMemo) {
         this.trackMemo = trackMemo;
+    }
+
+    public int getInvalidCode() {
+        return invalidCode;
+    }
+
+    public void setInvalidCode(int invalidCode) {
+        this.invalidCode = invalidCode;
     }
 }
