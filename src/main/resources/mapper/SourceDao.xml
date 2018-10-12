@@ -452,7 +452,7 @@
         WHERE
         info.CREATETIME BETWEEN #{startTime}
         AND #{endTime}
-        AND detail.INVALIDLABEL IS NOT NULL
+        AND detail.INVALIDCODE IS NOT NULL
         AND src.SRCNAME is not null
         and info.COMPANYID=#{companyId}
         and src.typeid in (${typeId})
