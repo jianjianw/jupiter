@@ -54,12 +54,12 @@ public class InvalidReasonReportsDao {
         StringBuilder sql=new StringBuilder();
         sql.append("SELECT src.ID id,");
         sql.append(" COUNT(detail.INVALIDLABEL) count,");
-        sql.append(" CONCAT('invalid_reason',detail.INVALIDLABEL) statusKey");
+        sql.append(" CONCAT('invalid_reason',detail.INVALIDCODE) statusKey");
         sql.append(" FROM hm_crm_source src");
         sql.append(" LEFT JOIN "+tableInfo+" info ON info.SOURCEID = src.ID");
         sql.append(" LEFT JOIN "+tableDetail+" detail ON detail.KZID = info.KZID");
         sql.append(" WHERE info.CREATETIME BETWEEN ? AND ?");
-        sql.append(" AND detail.INVALIDLABEL IS NOT NULL");
+        sql.append(" AND detail.INVALIDCODE IS NOT NULL");
         sql.append(" and src.companyid=? and src.typeid in (1,2)");
         if(StringUtil.isNotEmpty(typeIds)){
             sql.append(" AND info.TYPEID IN ("+typeIds+")");

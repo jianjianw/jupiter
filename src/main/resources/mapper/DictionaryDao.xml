@@ -271,7 +271,7 @@
     <select id="getInvaildReasons"  resultMap="baseMap">
         SELECT
         DICNAME,
-        CONCAT(DICTYPE, DICNAME) DICTYPE
+        CONCAT(DICTYPE, DICCODE) DICTYPE
         FROM
         hm_crm_dictionary
         WHERE
