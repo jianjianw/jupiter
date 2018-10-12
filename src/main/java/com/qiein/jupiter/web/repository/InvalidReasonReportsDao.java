@@ -53,7 +53,7 @@ public class InvalidReasonReportsDao {
         }
         StringBuilder sql=new StringBuilder();
         sql.append("SELECT src.ID id,");
-        sql.append(" COUNT(detail.INVALIDLABEL) count,");
+        sql.append(" COUNT(detail.INVALIDCODE) count,");
         sql.append(" CONCAT('invalid_reason',detail.INVALIDCODE) statusKey");
         sql.append(" FROM hm_crm_source src");
         sql.append(" LEFT JOIN "+tableInfo+" info ON info.SOURCEID = src.ID");
@@ -81,12 +81,12 @@ public class InvalidReasonReportsDao {
             }
         }
         StringBuilder hjsql=new StringBuilder();
-        hjsql.append("SELECT COUNT(detail.INVALIDLABEL) count,");
-        hjsql.append(" CONCAT('invalid_reason',detail.INVALIDLABEL) statusKey");
+        hjsql.append("SELECT COUNT(detail.INVALIDCODE) count,");
+        hjsql.append(" CONCAT('invalid_reason',detail.INVALIDCODE) statusKey");
         hjsql.append(" FROM "+tableInfo+" info");
         hjsql.append(" LEFT JOIN "+tableDetail+" detail ON detail.KZID = info.KZID");
         hjsql.append(" WHERE info.CREATETIME BETWEEN ? AND ?");
-        hjsql.append(" AND detail.INVALIDLABEL IS NOT NULL");
+        hjsql.append(" AND detail.INVALIDCODE IS NOT NULL");
         hjsql.append(" and info.companyid=?");
         if(StringUtil.isNotEmpty(typeIds)){
             hjsql.append(" AND info.TYPEID IN ("+typeIds+")");
@@ -94,11 +94,11 @@ public class InvalidReasonReportsDao {
         if(StringUtil.isNotEmpty(sourceIds)){
             hjsql.append(" AND info.SOURCEID IN ("+sourceIds+")");
         }
-        hjsql.append(" GROUP BY detail.INVALIDLABEL ");
+        hjsql.append(" GROUP BY detail.INVALIDCODE ");
         List<Map<String, Object>> invalidalbelHj = jdbcTemplate.queryForList(hjsql.toString(), new Object[]{startTime,endTime,companyId});
         for(Map<String, Object> map:invalidalbelHj){
             for(DictionaryPO dictionaryPO:list){
-                if(dictionaryPO.getDicName().equals((String)map.get("statusKey"))){
+                if(dictionaryPO.getDicType().equals((String)map.get("statusKey"))){
                     invalidReasonReportsShowVOS.get(0).getMap().put((String)map.get("statusKey"),Integer.parseInt(Long.toString((Long) (map.get("count")))));
                 }
             }
