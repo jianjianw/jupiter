@@ -73,7 +73,7 @@ public class InvalidReasonReportsDao {
             for(InvalidReasonReportsShowVO invalidReasonReportsShowVO:invalidReasonReportsShowVOS){
                 if(invalidReasonReportsShowVO.getSrcId()==Integer.parseInt(Long.toString((Long) (map.get("id"))))){
                     for(DictionaryPO dictionaryPO:list){
-                        if(dictionaryPO.getDicName().equals((String)map.get("statusKey"))){
+                        if(dictionaryPO.getDicType().equals((String)map.get("statusKey"))){
                             invalidReasonReportsShowVO.getMap().put((String)map.get("statusKey"),Integer.parseInt(Long.toString((Long) (map.get("count")))));
                         }
                     }
