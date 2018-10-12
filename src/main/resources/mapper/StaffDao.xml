@@ -1019,7 +1019,7 @@
         AND info.STATUSID != 98
         AND info.STATUSID != 99
         AND info.ISDEL = 0
-#         AND info.SOURCEID = #{sourceId}
+        AND info.SOURCEID = #{sourceId}
         AND info.APPOINTORID IN
         <foreach collection="staffOnlineList" item="staff" index="index" open="(" separator="," close=")">
             #{staff.staffId}
