@@ -921,8 +921,7 @@ public class GoEasyUtil {
             return;
         }
         StringBuffer sb = new StringBuffer();
-        sb.append("主管分配给您" + kzIdsArr.length + "个新的客资");
-        String head = sb.toString();
+        String head = "主管分配给您" + kzIdsArr.length + "个新的客资";
         if (kzIdsArr.length == 1) {
             ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(kzIdsArr[0],
                     DBSplitUtil.getInfoTabName(companyId),
