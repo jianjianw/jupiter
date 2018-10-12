@@ -192,6 +192,7 @@ public class ClientEditServiceImpl implements ClientEditService {
             // 无效,或者流失
             if (ClientStatusConst.INVALID_BE_STAY == clientVO.getYyRst()
                     || ClientStatusConst.COME_SHOP_FAIL == clientVO.getYyRst()) {
+                reqContent.put("invalidcode", clientVO.getInvalidCode());
                 reqContent.put("invalidlabel", clientVO.getInvalidLabel());
                 reqContent.put("invalidmemo", StringUtil.nullToStrTrim(clientVO.getInvalidMemo()));
             }
