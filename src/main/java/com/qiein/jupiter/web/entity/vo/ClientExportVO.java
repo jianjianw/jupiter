@@ -34,7 +34,7 @@ public class ClientExportVO implements Serializable {
     /**
      * 预约时间
      * */
-    @Excel(name="预约时间",width= 10 ,height = 6)
+    @Excel(name="预约时间",width= 20 ,height = 6)
     private String appointTime;
 
     /**
