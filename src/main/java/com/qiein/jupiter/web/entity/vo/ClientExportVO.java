@@ -31,6 +31,11 @@ public class ClientExportVO implements Serializable {
      */
     @Excel(name = "领取周期", width = 10, height = 6)
     private String receivePeriod;
+    /**
+     * 预约时间
+     * */
+    @Excel(name="预约时间",width= 10 ,height = 6)
+    private String appointTime;
 
     /**
      * 进店时间
@@ -501,5 +506,13 @@ public class ClientExportVO implements Serializable {
 
     public void setKzName(String kzName) {
         this.kzName = kzName;
+    }
+
+    public String getAppointTime() {
+        return appointTime;
+    }
+
+    public void setAppointTime(String appointTime) {
+        this.appointTime = appointTime;
     }
 }
