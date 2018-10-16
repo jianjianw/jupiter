@@ -517,9 +517,7 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @return
      */
     StaffPushDTO getAvgDssxStaff(@Param("companyId") int companyId, @Param("interval") int interval,
-                                 @Param("role") String role, @Param("infoTab") String infoTab
-//            , @Param("sourceId") int sourceId
-    );
+                                 @Param("role") String role, @Param("infoTab") String infoTab);
 
     /**
      * 根据ids批量查找员工
