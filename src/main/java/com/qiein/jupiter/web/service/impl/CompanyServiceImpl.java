@@ -424,23 +424,27 @@ public class CompanyServiceImpl implements CompanyService {
         }
         return i;
     }
+
     /**
      * 获取权限
+     *
      * @param companyId
      */
-	@Override
-	public List<DatavPermissionPo> getPermission(String phone, int companyId) {
-		List<DatavPermissionPo> permission = companyDao.getPermission(phone,companyId);
-		return permission;
-	}
-	/**
-     *获取大屏数据
+    @Override
+    public List<DatavPermissionPo> getPermission(String phone, int companyId) {
+        List<DatavPermissionPo> permission = companyDao.getPermission(phone, companyId);
+        return permission;
+    }
+
+    /**
+     * 获取大屏数据
+     *
      * @param companyId
      */
-	@Override
-	public List<Datav> getDatav(int companyId) {
-		List<Datav> datav = companyDao.getDatav(companyId);
-		return datav;
-	}
+    @Override
+    public List<Datav> getDatav(int companyId) {
+        List<Datav> datav = companyDao.getDatav(companyId);
+        return datav;
+    }
 
 }
