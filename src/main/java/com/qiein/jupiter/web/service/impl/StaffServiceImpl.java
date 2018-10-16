@@ -1131,7 +1131,7 @@ public class StaffServiceImpl implements StaffService {
     }
 
     /**
-     * 修改员工配置
+     * 修改员工消息配置
      *
      * @param companyId
      * @param staffId
@@ -1141,6 +1141,20 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public int updateStaffMsgSet(int companyId, int staffId, String config) {
         return staffDao.editStaffMsgSet(companyId, staffId, config);
+    }
+
+    /**
+     * 修改员工通用设置
+     *
+     * @param companyId
+     * @param staffId
+     * @param settings
+     * @return
+     */
+    @Override
+    public int updateSettings(int companyId, int staffId, String settings) {
+        StaffSettingsDTO staffSettingsDTO = JSONObject.parseObject(settings, StaffSettingsDTO.class);
+        return staffDao.updateSettings(companyId, staffId, JSONObject.toJSONString(staffSettingsDTO));
     }
 
 

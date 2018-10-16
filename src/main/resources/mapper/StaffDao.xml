@@ -72,6 +72,7 @@
         <result column="LASTLOGINIP" property="lastLoginIp" jdbcType="VARCHAR"/>
         <result column="WECHATOPENID" property="weChatOpenId" jdbcType="VARCHAR"/>
         <result column="CREATETIME" property="createTime" jdbcType="INTEGER"/>
+        <result column="SETTINGS" property="settings" jdbcType="VARCHAR"/>
         <result column="MSGSET" property="msgSet" jdbcType="VARCHAR"/>
     </resultMap>
 
@@ -416,10 +417,10 @@
     <!--插入员工详细信息-->
     <insert id="insertStaffDetail" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO hm_pub_staff_detail
-        (ID, WECHATNAME, WECHATIMG, LASTLOGINTIME, WECHATOPENID, CREATETIME, COMPANYID,MSGSET)
+        (ID, WECHATNAME, WECHATIMG, LASTLOGINTIME, WECHATOPENID, CREATETIME, COMPANYID, MSGSET)
         VALUES (
             #{id}, #{weChatName}, #{weChatImg}, #{lastLoginTime},
-            #{weChatOpenId}, UNIX_TIMESTAMP(now()), #{companyId},#{msgSet}
+            #{weChatOpenId}, UNIX_TIMESTAMP(now()), #{companyId}, #{msgSet}
         )
     </insert>
 
@@ -472,6 +473,7 @@
             staff.LASTPUSHTIME,
             staff.LIMITCHANNELIDS,
             staff.LIMITSHOPIDS,
+            staff.SETTINGS,
             detail.WECHATNAME,
             detail.WECHATIMG,
             detail.LASTLOGINTIME,
@@ -1274,7 +1276,7 @@
             hm_pub_group grp
             LEFT JOIN hm_pub_group_staff rela ON grp.GROUPID = rela.GROUPID
             INNER JOIN hm_pub_staff staff ON rela.STAFFID = staff.ID
-#             LEFT JOIN hm_pub_staff_detail det ON staff.ID = det.ID
+        #             LEFT JOIN hm_pub_staff_detail det ON staff.ID = det.ID
         WHERE
             grp.COMPANYID = #{companyId}
             AND grp.PARENTID != '0'
@@ -1282,7 +1284,7 @@
             AND staff.WHEELFLAG = #{wheelFlag}
             AND staff.ISDEL = 0
             AND staff.STATUSFLAG = 1
-#         ORDER BY det.LASTLOGINTIME
+        #         ORDER BY det.LASTLOGINTIME
         ORDER BY staff.LASTPUSHTIME
     </select>
 
@@ -1357,10 +1359,19 @@
     </update>
 
 
-    <!--修改员工配置-->
+    <!--修改员工消息配置-->
     <update id="editStaffMsgSet">
         UPDATE hm_pub_staff_detail
         SET MSGSET = #{msgSet}
+        WHERE COMPANYID = #{companyId}
+              AND ID = #{staffId}
+    </update>
+
+
+    <!--修改员工通用配置-->
+    <update id="updateSettings">
+        UPDATE hm_pub_staff
+        SET SETTINGS = #{settings}
         WHERE COMPANYID = #{companyId}
         AND ID = #{staffId}
     </update>

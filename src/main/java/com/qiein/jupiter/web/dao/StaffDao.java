@@ -381,7 +381,6 @@ public interface StaffDao extends BaseDao<StaffPO> {
     StaffPushDTO getPushDTOByCidAndUid(@Param("id") int id, @Param("companyId") int companyId, @Param("type") String type);
 
 
-
     /**
      * 获取微信个人中心展示数据
      *
@@ -622,4 +621,9 @@ public interface StaffDao extends BaseDao<StaffPO> {
     int editStaffMsgSet(@Param("companyId") int companyId,
                         @Param("staffId") int staffId,
                         @Param("msgSet") String msgSet);
+
+
+    int updateSettings(@Param("companyId") int companyId,
+                       @Param("staffId") int staffId,
+                       @Param("settings") String settings);
 }

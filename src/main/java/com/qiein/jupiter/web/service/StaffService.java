@@ -439,8 +439,13 @@ public interface StaffService {
 
 
     /**
-     * 修改员工配置
+     * 修改员工消息配置
      */
     int updateStaffMsgSet(int companyId, int staffId, String msgSet);
+
+    /**
+     * 修改员工通用配置
+     */
+    int updateSettings(int companyId, int staffId, String settings);
 
 }
