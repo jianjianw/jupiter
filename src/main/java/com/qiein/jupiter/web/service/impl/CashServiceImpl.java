@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.service.impl;
 
 import com.qiein.jupiter.constant.ClientLogConst;
+import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.enums.TableEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
@@ -74,6 +75,7 @@ public class CashServiceImpl implements CashService {
         String cashTableName = DBSplitUtil.getCashTabName(companyId);
         String infoTableName = DBSplitUtil.getInfoTabName(companyId);
         String detailTableName = DBSplitUtil.getDetailTabName(companyId);
+        cashLogPO.setTypeId(CommonConstant.CASH_TYPE_TAIL);
         //添加收款记录
         cashLogDao.addCahsLog(cashTableName, cashLogPO);
         //修改已收金额

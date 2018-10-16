@@ -63,6 +63,10 @@ public class CashLogPO extends BaseEntity {
      * 企业ID
      */
     private int companyId;
+    /**
+     * 收款类型，1：首付；2：尾款
+     */
+    private int typeId;
 
     @Override
     public int getId() {
@@ -160,5 +164,13 @@ public class CashLogPO extends BaseEntity {
 
     public void setPayStyleName(String payStyleName) {
         this.payStyleName = payStyleName;
+    }
+
+    public int getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(int typeId) {
+        this.typeId = typeId;
     }
 }
