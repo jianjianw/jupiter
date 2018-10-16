@@ -21,6 +21,7 @@ public class SysLogUtil {
     public static final int LOG_TYPE_ROLE = 6;
     public static final int LOG_TYPE_DIC=9;
     public static final int LOG_TYPE_STAFF = 10;
+    public static final int LOG_TYPE_COMPANY_CONFIG = 11;
     public static final String LOG_SUP_LOGIN = "登录";
     public static final String LOG_SUP_GROUP = "部门";
     public static final String LOG_SUP_CLIENT = "客资";
@@ -35,6 +36,7 @@ public class SysLogUtil {
     public static final String LOG_SUP_RUN_OFF_REASON="流失原因";
     public static final String LOG_SUP_DIC="字典";
     public static final String LOG_SUP_COMMON_TYPE="咨询类型";
+    public static final String LOG_SUP_COMPANY_CONFIG = "公司配置";
 
     public static final String SYS_LOG_PREFIX_ADD = "新增了";
     public static final String SYS_LOG_PREFIX_EDIT = "修改了";

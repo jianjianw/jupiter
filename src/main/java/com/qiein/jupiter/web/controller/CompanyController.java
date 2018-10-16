@@ -6,16 +6,13 @@ import com.qiein.jupiter.constant.ClientZjsMenuConst;
 import com.qiein.jupiter.constant.CompanyConst;
 import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
-import com.qiein.jupiter.util.NumUtil;
-import com.qiein.jupiter.util.ResultInfo;
-import com.qiein.jupiter.util.ResultInfoUtil;
-import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.entity.dto.DsinvalDTO;
-import com.qiein.jupiter.web.entity.po.CompanyPO;
-import com.qiein.jupiter.web.entity.po.Datav;
-import com.qiein.jupiter.web.entity.po.DatavPermissionPo;
-import com.qiein.jupiter.web.entity.po.StaffPO;
+import com.qiein.jupiter.web.entity.dto.RequestInfoDTO;
+import com.qiein.jupiter.web.entity.po.*;
 import com.qiein.jupiter.web.service.CompanyService;
+import com.qiein.jupiter.web.service.SystemLogService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -32,6 +29,9 @@ public class CompanyController extends BaseController {
 
     @Resource
     private CompanyService companyService;
+
+    @Autowired
+    private SystemLogService logService;
 
     /**
      * 编辑企业信息
@@ -323,7 +323,24 @@ public class CompanyController extends BaseController {
      */
     @GetMapping("/edit_config")
     public ResultInfo editConfig(String config) {
+        // 获取当前登录用户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
         companyService.editConfig(getCurrentLoginStaff().getCompanyId(), config);
+        //添加日志
+        RequestInfoDTO requestInfo = getRequestInfo();
+        try {
+            Map<String, String> editMap = new HashMap<>();
+            editMap.put(companyService.getCompanyVO(currentLoginStaff.getCompanyId()).getConfig(), config);
+            SystemLog log = new SystemLog(SysLogUtil.LOG_TYPE_COMPANY_CONFIG, requestInfo.getIp(),
+                    requestInfo.getUrl(), currentLoginStaff.getId(),
+                    currentLoginStaff.getNickName(), SysLogUtil.getEditLog(SysLogUtil.LOG_SUP_COMPANY_CONFIG,
+                    config, editMap),
+                    currentLoginStaff.getCompanyId());
+            logService.addLog(log);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
+        }
         return ResultInfoUtil.success();
     }
 
@@ -334,26 +351,27 @@ public class CompanyController extends BaseController {
     public ResultInfo getCompanyConfig() {
         return ResultInfoUtil.success(companyService.getCompanyConfig(getCurrentLoginStaff().getCompanyId()));
     }
-    
+
     /**
      * 获取权限
      */
     @GetMapping("/get_permission")
-    public ResultInfo getPermission(String phone,int companyId) {
-    	List<DatavPermissionPo> permission = companyService.getPermission(phone,companyId);
-    	for (DatavPermissionPo datavPermissionPo : permission) {
-			if("201".equals(datavPermissionPo.getPermissionId())){
-				return ResultInfoUtil.success(true);
-			}
-		}
+    public ResultInfo getPermission(String phone, int companyId) {
+        List<DatavPermissionPo> permission = companyService.getPermission(phone, companyId);
+        for (DatavPermissionPo datavPermissionPo : permission) {
+            if ("201".equals(datavPermissionPo.getPermissionId())) {
+                return ResultInfoUtil.success(true);
+            }
+        }
         return ResultInfoUtil.error(9999, "该账户没有大屏权限");
     }
+
     /**
      * 获取大屏数据
      */
     @GetMapping("/get_datav")
     public ResultInfo getDatav(int companyId) {
-    	List<Datav> datav = companyService.getDatav(companyId);
+        List<Datav> datav = companyService.getDatav(companyId);
         return ResultInfoUtil.success(datav);
     }
 
