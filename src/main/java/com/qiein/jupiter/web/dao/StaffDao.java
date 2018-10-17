@@ -410,9 +410,7 @@ public interface StaffDao extends BaseDao<StaffPO> {
      */
     List<String> getGroupAvgGroupList(@Param("companyId") Integer companyId,
                                       @Param("sourceId") int sourceId,
-                                      @Param("role") String role,
-                                      @Param("start") int start,
-                                      @Param("end") int end);
+                                      @Param("role") String role);
 
     /**
      * 获取小组平均，可以领取的客服集合

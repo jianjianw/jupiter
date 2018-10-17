@@ -39,7 +39,7 @@ public class TimeUtilTest {
         Calendar calendar1 = Calendar.getInstance();
         //设置昨天
         calendar1.setTime(new Date());
-        calendar1.set(Calendar.HOUR_OF_DAY, 0);
+        calendar1.set(Calendar.HOUR, 0);
         calendar1.set(Calendar.MINUTE, 0);
         calendar1.set(Calendar.SECOND, 0);
         System.out.println(calendar1.getTime());

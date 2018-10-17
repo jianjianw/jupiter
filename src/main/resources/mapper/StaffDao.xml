@@ -969,8 +969,8 @@
                           WHERE
                               info.COMPANYID = #{companyId}
                               AND info.ISDEL = 0
-                              AND info.RECEIVETIME BETWEEN #{start}
-                              AND #{end}
+                              AND info.RECEIVETIME BETWEEN UNIX_TIMESTAMP(CURDATE()) AND
+                              UNIX_TIMESTAMP(date_format(NOW(), '%Y-%m-%d 23:59:59'))
                               AND info.STATUSID != 0
                               AND info.STATUSID != 98
                               AND info.STATUSID != 99
@@ -1282,7 +1282,7 @@
             AND staff.WHEELFLAG > 0
             AND staff.ISDEL = 0
             AND staff.STATUSFLAG = 1
-#                 ORDER BY det.LASTLOGINTIME
+        #                 ORDER BY det.LASTLOGINTIME
         ORDER BY staff.LASTPUSHTIME
     </select>
 
