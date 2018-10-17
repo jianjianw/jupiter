@@ -1594,4 +1594,14 @@ public class ReportsServiceImpl implements ReportService {
         List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsROI(firstDay,lastDay,reportsParamSrcMonthVO,invalidConfig);
         return dstgSrcMonthReports;
 	}
+
+    /**
+     * 电商推广订单周期统计
+     * @param queryVO
+     * @return
+     */
+    @Override
+    public JSONObject getDstgOrderCycleCount(QueryVO queryVO) {
+        return null;
+    }
 }
