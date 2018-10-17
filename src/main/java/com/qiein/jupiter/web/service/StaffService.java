@@ -448,4 +448,9 @@ public interface StaffService {
      */
     int updateSettings(int companyId, int staffId, String settings);
 
+    /**
+     * 重新计算公司每个人今日接单数目
+     */
+    int updateCompanyTodayNum(int companyId);
+
 }

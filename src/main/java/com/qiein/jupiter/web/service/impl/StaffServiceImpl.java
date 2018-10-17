@@ -1163,5 +1163,13 @@ public class StaffServiceImpl implements StaffService {
         return staffDao.updateSettings(companyId, staffId, JSONObject.toJSONString(staffSettingsDTO));
     }
 
+    /**
+     * 重新计算公司每个人今日接单数目
+     */
+    @Override
+    public int updateCompanyTodayNum(int companyId) {
+        return staffDao.updateCompanyTodayNum(companyId);
+    }
+
 
 }
