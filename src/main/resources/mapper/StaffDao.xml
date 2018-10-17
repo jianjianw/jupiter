@@ -1400,6 +1400,6 @@
                               info.APPOINTORID
                       ) a ON sf.COMPANYID = a.COMPANYID
                              AND sf.ID = APPOINTORID
-        SET sf.TODAYNUM = a.num
+        SET sf.TODAYNUM =IFNULL( a.num, 0)
     </update>
 </mapper>
