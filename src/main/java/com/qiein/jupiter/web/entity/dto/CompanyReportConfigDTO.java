@@ -12,15 +12,15 @@ public class CompanyReportConfigDTO {
 
     private Map<String,Boolean> yeSet = new HashMap<>();
 
-    private Map<String,Integer[]> wxSet = new HashMap<>();
+    private Map<String,String[]> wxSet = new HashMap<>();
 
-    private Map<String,Integer[]> dsddSet = new HashMap<>();
+    private Map<String,String[]> dsddSet = new HashMap<>();
 
-    private Map<String,Integer[]> zjsValidSet = new HashMap<>();
+    private Map<String,String[]> zjsValidSet = new HashMap<>();
 
-    private Map<String,Integer[]> zjsddSet = new HashMap<>();
+    private Map<String,String[]> zjsddSet = new HashMap<>();
 
-    private Map<String,String> showSet = new HashMap<>();
+    private Map<String,Boolean> showSet = new HashMap<>();
 
 
     public Map<String, Boolean> getYeSet() {
@@ -31,43 +31,43 @@ public class CompanyReportConfigDTO {
         this.yeSet = yeSet;
     }
 
-    public Map<String, Integer[]> getWxSet() {
+    public Map<String, String[]> getWxSet() {
         return wxSet;
     }
 
-    public void setWxSet(Map<String, Integer[]> wxSet) {
+    public void setWxSet(Map<String, String[]> wxSet) {
         this.wxSet = wxSet;
     }
 
-    public Map<String, Integer[]> getDsddSet() {
+    public Map<String, String[]> getDsddSet() {
         return dsddSet;
     }
 
-    public void setDsddSet(Map<String, Integer[]> dsddSet) {
+    public void setDsddSet(Map<String, String[]> dsddSet) {
         this.dsddSet = dsddSet;
     }
 
-    public Map<String, Integer[]> getZjsValidSet() {
+    public Map<String, String[]> getZjsValidSet() {
         return zjsValidSet;
     }
 
-    public void setZjsValidSet(Map<String, Integer[]> zjsValidSet) {
+    public void setZjsValidSet(Map<String, String[]> zjsValidSet) {
         this.zjsValidSet = zjsValidSet;
     }
 
-    public Map<String, Integer[]> getZjsddSet() {
+    public Map<String, String[]> getZjsddSet() {
         return zjsddSet;
     }
 
-    public void setZjsddSet(Map<String, Integer[]> zjsddSet) {
+    public void setZjsddSet(Map<String, String[]> zjsddSet) {
         this.zjsddSet = zjsddSet;
     }
 
-    public Map<String, String> getShowSet() {
+    public Map<String, Boolean> getShowSet() {
         return showSet;
     }
 
-    public void setShowSet(Map<String, String> showSet) {
+    public void setShowSet(Map<String, Boolean> showSet) {
         this.showSet = showSet;
     }
 }
