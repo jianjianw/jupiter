@@ -410,7 +410,7 @@ public class DstgGoldDataReportsDao {
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
         sb = getCommonsql(sb, infoTabName, detailTabName);
         sb.append(" and info.SUCCESSTIME BETWEEN ? AND ?");
-        sb.append(" and info.status in (9,30)");
+        sb.append(" and info.statusid in (9,30)");
         addConditionByType(reportsParamVO.getType(),sb);
         sb.append(" group by detail.adid");
         sb.append(" ) info_detail_bak  group by info_detail_bak.adid ");
@@ -446,7 +446,7 @@ public class DstgGoldDataReportsDao {
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
         sb = getCommonsql(sb, infoTabName, detailTabName);
         sb.append(" and info.SUCCESSTIME BETWEEN ? AND ?");
-        sb.append(" and info.status in (40)");
+        sb.append(" and info.statusid in (40)");
         addConditionByType(reportsParamVO.getType(),sb);
         sb.append(" group by detail.adid");
         sb.append(" ) info_detail_bak  group by info_detail_bak.adid ");

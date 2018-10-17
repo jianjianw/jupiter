@@ -462,7 +462,7 @@ public class DstgZxStyleReportsDao {
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
         sb = getCommonsql(sb, infoTabName, detailTabName);
         addConditionByTypeAndZxCodeStyle(reportsParamVO,sb);
-        sb.append(" and info.status in (9,30)");
+        sb.append(" and info.statusid in (9,30)");
         sb.append(" and info.SUCCESSTIME BETWEEN ? AND ?");
         sb.append(" group by detail.ZXSTYLE");
 
@@ -499,7 +499,7 @@ public class DstgZxStyleReportsDao {
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
         sb = getCommonsql(sb, infoTabName, detailTabName);
         addConditionByTypeAndZxCodeStyle(reportsParamVO,sb);
-        sb.append(" and info.status in (40)");
+        sb.append(" and info.statusid in (40)");
         sb.append(" and info.SUCCESSTIME BETWEEN ? AND ?");
         sb.append(" group by detail.ZXSTYLE");
 
