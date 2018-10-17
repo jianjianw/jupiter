@@ -582,7 +582,7 @@ public class DstgZxStyleReportsDao {
         StringBuilder sb = new StringBuilder();
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
-        sb.append(" select  cast(ifnull(ZXSTYLE,0) as SIGNED )  as zx_code,ifnull(dictionary.DICNAME,'其他') as zx_style,sum(detail.AMOUNT) as sum_amount ");
+        sb.append(" select  cast(ifnull(ZXSTYLE,0) as SIGNED )  as zx_code,ifnull(dictionary.DICNAME,'其他') as zx_style,ifnull(sum(detail.AMOUNT),0) as sum_amount ");
         sb.append(" from");
         sb.append(infoTabName + " info ");
         sb.append(" left join "+detailTabName+" detail on info.kzid = detail.kzid");
