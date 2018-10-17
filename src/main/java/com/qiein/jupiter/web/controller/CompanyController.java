@@ -375,4 +375,12 @@ public class CompanyController extends BaseController {
         return ResultInfoUtil.success(datav);
     }
 
+    /**
+     * 获取公司报表配置
+     */
+    @GetMapping("/get_reportConfig")
+    public ResultInfo getCompanyReportConfig(int companyId) {
+        return ResultInfoUtil.success(companyService.getCompanyReportConfig(companyId));
+    }
+
 }

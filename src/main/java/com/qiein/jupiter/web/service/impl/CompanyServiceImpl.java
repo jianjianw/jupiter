@@ -10,6 +10,7 @@ import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.CompanyDao;
 import com.qiein.jupiter.web.dao.StaffDao;
 import com.qiein.jupiter.web.entity.dto.CompanyConfigDTO;
+import com.qiein.jupiter.web.entity.dto.CompanyReportConfigDTO;
 import com.qiein.jupiter.web.entity.dto.CompanyZjsSetDTO;
 import com.qiein.jupiter.web.entity.dto.DsinvalDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
@@ -445,6 +446,24 @@ public class CompanyServiceImpl implements CompanyService {
     public List<Datav> getDatav(int companyId) {
         List<Datav> datav = companyDao.getDatav(companyId);
         return datav;
+    }
+
+    @Override
+    public CompanyReportConfigDTO getCompanyReportConfig(int companyId) {
+
+        CompanyVO companyVO = companyDao.getReportConfigById(companyId);
+        CompanyReportConfigDTO companyReportConfigDTO = new CompanyReportConfigDTO();
+        String reportsConfig = companyVO.getReportsConfig();
+        if (StringUtil.isNotEmpty(reportsConfig)) {
+            try {
+                companyReportConfigDTO = JSONObject.parseObject(reportsConfig, CompanyReportConfigDTO.class);
+            } catch (Exception e) {
+                companyDao.editConfig(companyId, JSONObject.toJSONString(companyReportConfigDTO));
+                return companyReportConfigDTO;
+            }
+
+        }
+        return companyReportConfigDTO;
     }
 
 }
