@@ -77,12 +77,16 @@ public class DstgOrderCycleCountDao {
                 int cycDay = jsonObject.getIntValue("cyc");
                 if (cycDay == 0) {
                     String desc = "当天";
-                    stack.add(desc);
+                    if(!stack.contains(desc)){
+                        stack.add(desc);
+                    }
                     row.put(desc, jsonObject.getIntValue("count"));
                 } else {
                     String desc = cycDay + "天";
                     row.put(desc, jsonObject.getIntValue("count"));
-                    stack.add(desc);
+                    if(!stack.contains(desc)){
+                        stack.add(desc);
+                    }
                 }
             }
             rowsData.add(row);
