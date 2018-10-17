@@ -378,7 +378,7 @@ public class CompanyController extends BaseController {
     /**
      * 获取公司报表配置
      */
-    @GetMapping("/get_reportConfig")
+    @GetMapping("/get_report_config")
     public ResultInfo getCompanyReportConfig(int companyId) {
         return ResultInfoUtil.success(companyService.getCompanyReportConfig(companyId));
     }
