@@ -67,10 +67,10 @@ public class DstgOrderCycleCountDao {
             }
         });
         Set<String> cycleDaySet = new LinkedHashSet<>();
-        List<JSONObject> rowsData = new ArrayList<>();
+        List<Map<String, Object>> rowsData = new ArrayList<>();
         //  遍历
         for (Integer srcId : rMap.keySet()) {
-            JSONObject row = new JSONObject();
+            Map<String, Object> row = new LinkedHashMap<>();
             List<JSONObject> srcList = rMap.get(srcId);
             row.put("渠道", srcList.get(0).getString("srcName"));
             for (JSONObject jsonObject : srcList) {
