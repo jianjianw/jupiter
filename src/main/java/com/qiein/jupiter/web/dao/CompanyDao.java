@@ -215,6 +215,10 @@ public interface CompanyDao extends BaseDao<CompanyPO> {
      */
 	List<Datav> getDatav(@Param("companyId") int companyId);
 
-
+    /**
+     * 获取公司报表配置
+     * @param companyId
+     * @return
+     */
     CompanyVO getReportConfigById(@Param("companyId") int companyId);
 }
