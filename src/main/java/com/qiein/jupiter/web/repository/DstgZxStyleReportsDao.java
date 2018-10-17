@@ -48,6 +48,10 @@ public class DstgZxStyleReportsDao {
         getComeShopClientCount(reportsParamVO, DstgZxStyleReportsVOS);
         //成交量
         getSuccessClientCount(reportsParamVO, DstgZxStyleReportsVOS);
+        //入店成交量
+        getComeShopSuccessClientCount(reportsParamVO, DstgZxStyleReportsVOS);
+        //在线成交量
+        getOnLineSuccessClientCount(reportsParamVO, DstgZxStyleReportsVOS);
         //成交均价
         getAvgAmount(reportsParamVO, DstgZxStyleReportsVOS);
         //成交总价
@@ -449,6 +453,81 @@ public class DstgZxStyleReportsDao {
         }
     }
 
+    /**
+     * 入店成交量
+     * */
+    private void getComeShopSuccessClientCount(ReportsParamVO reportsParamVO, List<DstgZxStyleReportsVO> DstgZxStyleReportsVOS){
+        StringBuilder sb = new StringBuilder();
+        String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
+        String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
+        sb = getCommonsql(sb, infoTabName, detailTabName);
+        addConditionByTypeAndZxCodeStyle(reportsParamVO,sb);
+        sb.append(" and info.status in (9,30)");
+        sb.append(" and info.SUCCESSTIME BETWEEN ? AND ?");
+        sb.append(" group by detail.ZXSTYLE");
+
+        List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
+                new Object[]{reportsParamVO.getCompanyId(),reportsParamVO.getCompanyId(),
+                        reportsParamVO.getStart(),
+                        reportsParamVO.getEnd()});
+
+        // 处理数据
+        List<DstgZxStyleReportsVO> dstgGoldDataReportsBak = new LinkedList<>();
+        for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
+            DstgZxStyleReportsVO DstgZxStyleReportsVO = new DstgZxStyleReportsVO();
+            DstgZxStyleReportsVO.setZxStyle((String) dstgGoldDataReport.get("zx_style"));
+            DstgZxStyleReportsVO.setZxStyleCode(String.valueOf(dstgGoldDataReport.get("zx_code").toString()));
+            DstgZxStyleReportsVO.setComeShopSuccessClientCount(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("client_count"))));
+            dstgGoldDataReportsBak.add(DstgZxStyleReportsVO);
+        }
+
+        for (DstgZxStyleReportsVO DstgZxStyleReportsVO : DstgZxStyleReportsVOS) {
+            for (DstgZxStyleReportsVO dstgGoldDataReport : dstgGoldDataReportsBak) {
+                if (DstgZxStyleReportsVO.getZxStyleCode().equalsIgnoreCase(dstgGoldDataReport.getZxStyleCode())) {
+                    DstgZxStyleReportsVO.setComeShopSuccessClientCount(dstgGoldDataReport.getComeShopSuccessClientCount());
+                    break;
+                }
+            }
+        }
+    }
+    /**
+     * 入店成交量
+     * */
+    private void getOnLineSuccessClientCount(ReportsParamVO reportsParamVO, List<DstgZxStyleReportsVO> DstgZxStyleReportsVOS){
+        StringBuilder sb = new StringBuilder();
+        String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
+        String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
+        sb = getCommonsql(sb, infoTabName, detailTabName);
+        addConditionByTypeAndZxCodeStyle(reportsParamVO,sb);
+        sb.append(" and info.status in (40)");
+        sb.append(" and info.SUCCESSTIME BETWEEN ? AND ?");
+        sb.append(" group by detail.ZXSTYLE");
+
+        List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
+                new Object[]{reportsParamVO.getCompanyId(),reportsParamVO.getCompanyId(),
+                        reportsParamVO.getStart(),
+                        reportsParamVO.getEnd()});
+
+        // 处理数据
+        List<DstgZxStyleReportsVO> dstgGoldDataReportsBak = new LinkedList<>();
+        for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
+            DstgZxStyleReportsVO DstgZxStyleReportsVO = new DstgZxStyleReportsVO();
+            DstgZxStyleReportsVO.setZxStyle((String) dstgGoldDataReport.get("zx_style"));
+            DstgZxStyleReportsVO.setZxStyleCode(String.valueOf(dstgGoldDataReport.get("zx_code").toString()));
+            DstgZxStyleReportsVO.setOnLineSuccessClientCount(Integer.parseInt(Long.toString((Long) dstgGoldDataReport.get("client_count"))));
+            dstgGoldDataReportsBak.add(DstgZxStyleReportsVO);
+        }
+
+        for (DstgZxStyleReportsVO DstgZxStyleReportsVO : DstgZxStyleReportsVOS) {
+            for (DstgZxStyleReportsVO dstgGoldDataReport : dstgGoldDataReportsBak) {
+                if (DstgZxStyleReportsVO.getZxStyleCode().equalsIgnoreCase(dstgGoldDataReport.getZxStyleCode())) {
+                    DstgZxStyleReportsVO.setOnLineSuccessClientCount(dstgGoldDataReport.getOnLineSuccessClientCount());
+                    break;
+                }
+            }
+        }
+    }
+
 
     /**
      * 成交均价
@@ -595,6 +674,8 @@ public class DstgZxStyleReportsDao {
             dstgReportsTotal.setInValidClientCount(dstgReportsVO.getInValidClientCount() + dstgReportsTotal.getInValidClientCount());
             dstgReportsTotal.setComeShopClientCount(dstgReportsVO.getComeShopClientCount() + dstgReportsTotal.getComeShopClientCount());
             dstgReportsTotal.setSuccessClientCount(dstgReportsVO.getSuccessClientCount() + dstgReportsTotal.getSuccessClientCount());
+            dstgReportsTotal.setOnLineSuccessClientCount(dstgReportsVO.getOnLineSuccessClientCount() + dstgReportsTotal.getOnLineSuccessClientCount());
+            dstgReportsTotal.setComeShopSuccessClientCount(dstgReportsVO.getComeShopSuccessClientCount() + dstgReportsTotal.getComeShopSuccessClientCount());
             dstgReportsTotal.setAmount(dstgReportsVO.getAmount() + dstgReportsTotal.getAmount());
         }
         //客资量(总客资-筛选待定-筛选中-筛选无效)

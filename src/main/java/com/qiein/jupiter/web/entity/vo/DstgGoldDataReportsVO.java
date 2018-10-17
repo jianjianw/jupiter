@@ -57,6 +57,14 @@ public class DstgGoldDataReportsVO {
     private int comeShopClientCount;
 
     /**
+     * 入店成交量
+     */
+    private int comeShopSuccessClientCount;
+    /**
+     * 在线成交量
+     */
+    private int onLineSuccessClientCount;
+    /**
      * 成交量
      * */
     private int successClientCount;
@@ -111,6 +119,21 @@ public class DstgGoldDataReportsVO {
      * */
     private double amount;
 
+    public int getComeShopSuccessClientCount() {
+        return comeShopSuccessClientCount;
+    }
+
+    public void setComeShopSuccessClientCount(int comeShopSuccessClientCount) {
+        this.comeShopSuccessClientCount = comeShopSuccessClientCount;
+    }
+
+    public int getOnLineSuccessClientCount() {
+        return onLineSuccessClientCount;
+    }
+
+    public void setOnLineSuccessClientCount(int onLineSuccessClientCount) {
+        this.onLineSuccessClientCount = onLineSuccessClientCount;
+    }
 
     public String getAdId() {
         return adId;
