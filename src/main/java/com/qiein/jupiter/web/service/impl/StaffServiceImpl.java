@@ -769,13 +769,19 @@ public class StaffServiceImpl implements StaffService {
         // 验证公司属性
         CompanyVO company = companyDao.getVOById(companyId);
         if (!company.isUnableSelfLine()) {
-            if (staffNow.getStatusFlag() == StaffStatusEnum.OnLine.getStatusId()) {
-                // 更新为下线状态，新增日志
-                staffNow.setStatusFlag(StaffStatusEnum.OffLine.getStatusId());
-                staffDao.updateStatusFlag(staffNow);
+            CompanyConfigDTO companyConfigDTO = JSONObject.parseObject(company.getConfig(), CompanyConfigDTO.class);
+            //判断是否下线不改变状态
+            if (!companyConfigDTO.isLoginLogoutNotChangeStatus()) {
+                if (staffNow.getStatusFlag() == StaffStatusEnum.OnLine.getStatusId()) {
+                    // 更新为下线状态，新增日志
+                    staffNow.setStatusFlag(StaffStatusEnum.OffLine.getStatusId());
+                    staffDao.updateStatusFlag(staffNow);
+                }
+                staffStatusLogDao.insert(
+                        new StaffStatusLog(staffId, StaffStatusEnum.OffLine.getStatusId(),
+                                staffId, staffName, companyId, "退出了"));
             }
-            staffStatusLogDao.insert(
-                    new StaffStatusLog(staffId, StaffStatusEnum.OffLine.getStatusId(), staffId, staffName, companyId, ""));
+
         }
     }
 

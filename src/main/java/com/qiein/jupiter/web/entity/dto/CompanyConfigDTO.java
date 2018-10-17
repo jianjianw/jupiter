@@ -29,6 +29,11 @@ public class CompanyConfigDTO {
      */
     private boolean autoCloseClientDetailWindow;
 
+    /**
+     * 登录退出不改变状态
+     */
+    private boolean loginLogoutNotChangeStatus;
+
     public boolean isAutoCloseClientDetailWindow() {
         return autoCloseClientDetailWindow;
     }
@@ -67,5 +72,14 @@ public class CompanyConfigDTO {
 
     public void setAutoAllotZjs(boolean autoAllotZjs) {
         this.autoAllotZjs = autoAllotZjs;
+    }
+
+
+    public boolean isLoginLogoutNotChangeStatus() {
+        return loginLogoutNotChangeStatus;
+    }
+
+    public void setLoginLogoutNotChangeStatus(boolean loginLogoutNotChangeStatus) {
+        this.loginLogoutNotChangeStatus = loginLogoutNotChangeStatus;
     }
 }

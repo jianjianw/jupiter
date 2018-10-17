@@ -12,6 +12,7 @@ import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.util.ding.DingAuthUtil;
 import com.qiein.jupiter.util.wechat.WeChatAuthUtil;
 import com.qiein.jupiter.web.dao.*;
+import com.qiein.jupiter.web.entity.dto.CompanyConfigDTO;
 import com.qiein.jupiter.web.entity.dto.DingAuthDTO;
 import com.qiein.jupiter.web.entity.dto.PageDictDTO;
 import com.qiein.jupiter.web.entity.dto.WeChatAuthDTO;
@@ -252,17 +253,21 @@ public class LoginServiceImpl implements LoginService {
         staffDao.updateStaffLoginInfo(staffDetailPO);
         //只有当企业允许员工上下线
         if (!company.isUnableSelfLine()) {
-            // 如果当前员工为下线状态，则更新他为上线状态
-            if (staff.getStatusFlag() == StaffStatusEnum.OffLine.getStatusId()) {
-                StaffPO staffPO1 = new StaffPO();
-                staffPO1.setId(staff.getId());
-                staffPO1.setCompanyId(staff.getCompanyId());
-                staffPO1.setStatusFlag(StaffStatusEnum.OnLine.getStatusId());
-                staffDao.updateStatusFlag(staffPO1);
+            CompanyConfigDTO companyConfigDTO = JSONObject.parseObject(company.getConfig(), CompanyConfigDTO.class);
+            //判断是否上线不改变状态
+            if (!companyConfigDTO.isLoginLogoutNotChangeStatus()) {
+                // 如果当前员工为下线状态，则更新他为上线状态
+                if (staff.getStatusFlag() == StaffStatusEnum.OffLine.getStatusId()) {
+                    StaffPO staffPO1 = new StaffPO();
+                    staffPO1.setId(staff.getId());
+                    staffPO1.setCompanyId(staff.getCompanyId());
+                    staffPO1.setStatusFlag(StaffStatusEnum.OnLine.getStatusId());
+                    staffDao.updateStatusFlag(staffPO1);
+                }
+                // 新增上线日志
+                staffStatusLogDao.insert(new StaffStatusLog(staff.getId(), StaffStatusEnum.OnLine.getStatusId(), staff.getId(),
+                        staff.getNickName(), staff.getCompanyId(), "登录了"));
             }
-            // 新增上线日志
-            staffStatusLogDao.insert(new StaffStatusLog(staff.getId(), StaffStatusEnum.OnLine.getStatusId(), staff.getId(),
-                    staff.getNickName(), staff.getCompanyId(), ""));
         }
         return staff;
     }
