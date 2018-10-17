@@ -545,6 +545,7 @@ public class DstgZxStyleReportsDao {
         sb.append("  info.isdel = 0");
         sb.append(" and (info.srctype = 1 or info.srctype = 2)");
         sb.append(" and info.companyid = ?");
+        sb.append(" and avg(detail.AMOUNT)  is not null");
         addConditionByTypeAndZxCodeStyle(reportsParamVO,sb);
         sb.append(" and info.SUCCESSTIME BETWEEN ? AND ?");
         sb.append(" group by detail.ZXSTYLE");
