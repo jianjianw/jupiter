@@ -536,7 +536,7 @@ public class DstgZxStyleReportsDao {
         StringBuilder sb = new StringBuilder();
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
-        sb.append(" select  cast(ifnull(ZXSTYLE,0) as SIGNED)  as zx_code,ifnull(dictionary.DICNAME,'其他') as zx_style,avg(detail.AMOUNT) as avg_amount ");
+        sb.append(" select  cast(ifnull(ZXSTYLE,0) as SIGNED)  as zx_code,ifnull(dictionary.DICNAME,'其他') as zx_style,ifnull(avg(detail.AMOUNT),0) as avg_amount ");
         sb.append(" from");
         sb.append(infoTabName + " info ");
         sb.append(" left join "+detailTabName+" detail on info.kzid = detail.kzid");
@@ -545,7 +545,6 @@ public class DstgZxStyleReportsDao {
         sb.append("  info.isdel = 0");
         sb.append(" and (info.srctype = 1 or info.srctype = 2)");
         sb.append(" and info.companyid = ?");
-        sb.append(" and avg(detail.AMOUNT)  is not null");
         addConditionByTypeAndZxCodeStyle(reportsParamVO,sb);
         sb.append(" and info.SUCCESSTIME BETWEEN ? AND ?");
         sb.append(" group by detail.ZXSTYLE");
