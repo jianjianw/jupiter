@@ -327,6 +327,7 @@ public class ClientPushServiceImpl implements ClientPushService {
         Map<String, Integer> todayTimeInterval = TimeUtil.getTodayTimeInterval();
         List<String> groupIdList = staffDao.getGroupAvgGroupList(companyId, srcId, type,
                 todayTimeInterval.get("start"), todayTimeInterval.get("end"));
+        log.info("time:" + JSONObject.toJSONString(todayTimeInterval));
         log.info("可以领取的小组：" + JSONObject.toJSONString(groupIdList));
         //2.获取从当前时间往前退一个小时内，所有指定小组的领取情况
         List<String> appointGroups = staffDao.getGroupAvgReceive(DBSplitUtil.getInfoTabName(companyId), companyId, srcId, calcRange, groupIdList);

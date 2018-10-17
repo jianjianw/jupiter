@@ -969,14 +969,12 @@
                           WHERE
                               info.COMPANYID = #{companyId}
                               AND info.ISDEL = 0
-
                               AND info.RECEIVETIME BETWEEN #{start}
                               AND #{end}
-
                               AND info.STATUSID != 0
                               AND info.STATUSID != 98
                               AND info.STATUSID != 99
-                              AND info.ISDEL = 0
+
                       ) info ON info.GROUPID = rela.GROUPID
 
         GROUP BY rela.GROUPID
