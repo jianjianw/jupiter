@@ -66,7 +66,7 @@ public class DstgOrderCycleCountDao {
 
             }
         });
-        Set<String> cycleDaySet = new LinkedHashSet<>();
+        Set<String> stack = new LinkedHashSet<>();
         List<Map<String, Object>> rowsData = new ArrayList<>();
         //  遍历
         for (Integer srcId : rMap.keySet()) {
@@ -77,23 +77,23 @@ public class DstgOrderCycleCountDao {
                 int cycDay = jsonObject.getIntValue("cyc");
                 if (cycDay == 0) {
                     String desc = "当天";
-                    cycleDaySet.add(desc);
+                    stack.add(desc);
                     row.put(desc, jsonObject.getIntValue("count"));
                 } else {
                     String desc = cycDay + "天";
                     row.put(desc, jsonObject.getIntValue("count"));
-                    cycleDaySet.add(desc);
+                    stack.add(desc);
                 }
             }
             rowsData.add(row);
         }
-        Set<String> stack = new LinkedHashSet<>();
-        stack.add("渠道");
-        stack.addAll(cycleDaySet);
+        Set<String> columns = new LinkedHashSet<>();
+        columns.add("渠道");
+        columns.addAll(stack);
 
         //前端需要的
         json.put("stack", stack);
-        json.put("columns", cycleDaySet);
+        json.put("columns", columns);
         json.put("rows", rowsData);
 
         return json;
