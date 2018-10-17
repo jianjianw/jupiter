@@ -37,11 +37,11 @@
     <!-- 新增客资日志 -->
     <insert id="addCahsLog" parameterType="map">
         INSERT INTO ${logTabName} (
-            KZID, PAYSTYLE, AMOUNT, STAFFID, STAFFNAME, PAYMENTTIME, OPERAID, OPERANAME, CREATETIME, COMPANYID
+            KZID, PAYSTYLE, AMOUNT, STAFFID, STAFFNAME, PAYMENTTIME, OPERAID, OPERANAME, CREATETIME, COMPANYID, TYPEID
         )
         VALUES
             (#{log.kzId}, #{log.payStyle}, #{log.amount}, #{log.staffId}, #{log.staffName}, #{log.paymentTime},
-             #{log.operaId}, #{log.operaName}, UNIX_TIMESTAMP(NOW()), #{log.companyId}
+             #{log.operaId}, #{log.operaName}, UNIX_TIMESTAMP(NOW()), #{log.companyId}, #{log.typeId}
             )
     </insert>
 

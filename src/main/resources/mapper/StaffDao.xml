@@ -72,6 +72,7 @@
         <result column="LASTLOGINIP" property="lastLoginIp" jdbcType="VARCHAR"/>
         <result column="WECHATOPENID" property="weChatOpenId" jdbcType="VARCHAR"/>
         <result column="CREATETIME" property="createTime" jdbcType="INTEGER"/>
+        <result column="SETTINGS" property="settings" jdbcType="VARCHAR"/>
         <result column="MSGSET" property="msgSet" jdbcType="VARCHAR"/>
     </resultMap>
 
@@ -416,10 +417,10 @@
     <!--插入员工详细信息-->
     <insert id="insertStaffDetail" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO hm_pub_staff_detail
-        (ID, WECHATNAME, WECHATIMG, LASTLOGINTIME, WECHATOPENID, CREATETIME, COMPANYID,MSGSET)
+        (ID, WECHATNAME, WECHATIMG, LASTLOGINTIME, WECHATOPENID, CREATETIME, COMPANYID, MSGSET)
         VALUES (
             #{id}, #{weChatName}, #{weChatImg}, #{lastLoginTime},
-            #{weChatOpenId}, UNIX_TIMESTAMP(now()), #{companyId},#{msgSet}
+            #{weChatOpenId}, UNIX_TIMESTAMP(now()), #{companyId}, #{msgSet}
         )
     </insert>
 
@@ -472,6 +473,7 @@
             staff.LASTPUSHTIME,
             staff.LIMITCHANNELIDS,
             staff.LIMITSHOPIDS,
+            staff.SETTINGS,
             detail.WECHATNAME,
             detail.WECHATIMG,
             detail.LASTLOGINTIME,
@@ -967,14 +969,12 @@
                           WHERE
                               info.COMPANYID = #{companyId}
                               AND info.ISDEL = 0
-
-                              AND info.RECEIVETIME BETWEEN #{start}
-                              AND #{end}
-
+                              AND info.RECEIVETIME BETWEEN UNIX_TIMESTAMP(CURDATE()) AND
+                              UNIX_TIMESTAMP(date_format(NOW(), '%Y-%m-%d 23:59:59'))
                               AND info.STATUSID != 0
                               AND info.STATUSID != 98
                               AND info.STATUSID != 99
-                              AND info.ISDEL = 0
+
                       ) info ON info.GROUPID = rela.GROUPID
 
         GROUP BY rela.GROUPID
@@ -1151,10 +1151,9 @@
             AND sf.ISLOCK = 0
             AND sf.STATUSFLAG = 1
             AND (UNIX_TIMESTAMP(NOW()) - sf.LASTPUSHTIME) &gt; #{interval}
-        --             AND INSTR(CONCAT(',', sf.LIMITCHANNELIDS, ','), CONCAT(',', #{sourceId}, ',')) = 0
         GROUP BY sf.ID
         ORDER BY count(info.KZID) ASC, sf.LASTPUSHTIME ASC
-        LIMIT 0, 1;
+        LIMIT 0, 1
     </select>
 
     <select id="getByIds" parameterType="java.lang.Integer" resultMap="baseMap">
@@ -1275,22 +1274,22 @@
             hm_pub_group grp
             LEFT JOIN hm_pub_group_staff rela ON grp.GROUPID = rela.GROUPID
             INNER JOIN hm_pub_staff staff ON rela.STAFFID = staff.ID
-#             LEFT JOIN hm_pub_staff_detail det ON staff.ID = det.ID
+        #             LEFT JOIN hm_pub_staff_detail det ON staff.ID = det.ID
         WHERE
             grp.COMPANYID = #{companyId}
             AND grp.PARENTID != '0'
             AND grp.GROUPTYPE = #{groupType}
-            AND staff.WHEELFLAG = #{wheelFlag}
+            AND staff.WHEELFLAG > 0
             AND staff.ISDEL = 0
             AND staff.STATUSFLAG = 1
-#         ORDER BY det.LASTLOGINTIME
+        #                 ORDER BY det.LASTLOGINTIME
         ORDER BY staff.LASTPUSHTIME
     </select>
 
     <!--重置某种类型的轮单-->
     <update id="findWheelStaffListAndResetFlag">
         UPDATE hm_pub_staff stf
-        SET WHEELFLAG = 1
+        SET WHEELFLAG = stf.WEIGHT
         WHERE
             stf.ID IN (
                 SELECT rela.ID
@@ -1315,11 +1314,11 @@
     <!--更新员工轮单标志-->
     <update id="updateStaffWheelFlag">
         UPDATE hm_pub_staff
-        SET WHEELFLAG = #{flag}
+        SET WHEELFLAG = WHEELFLAG - 1
         WHERE COMPANYID = #{companyId}
               AND ID = #{staffId}
+              AND WHEELFLAG > 0
     </update>
-
 
     <!--获取轮单客服列表-->
     <select id="getWheelStaffList1" resultMap="pushMap">
@@ -1358,12 +1357,21 @@
     </update>
 
 
-    <!--修改员工配置-->
+    <!--修改员工消息配置-->
     <update id="editStaffMsgSet">
         UPDATE hm_pub_staff_detail
         SET MSGSET = #{msgSet}
         WHERE COMPANYID = #{companyId}
-        AND ID = #{staffId}
+              AND ID = #{staffId}
+    </update>
+
+
+    <!--修改员工通用配置-->
+    <update id="updateSettings">
+        UPDATE hm_pub_staff
+        SET SETTINGS = #{settings}
+        WHERE COMPANYID = #{companyId}
+              AND ID = #{staffId}
     </update>
 
 

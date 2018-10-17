@@ -130,6 +130,7 @@ public class JsonFmtUtil {
             vo.setSuccessTime(TimeUtil.intMillisToTimeStr(info.getIntValue("successtime")));
             vo.setSuccessPeriod(getSuccessPeriod(info.getIntValue("createtime"), info.getIntValue("successtime")));
             vo.setAppointName(info.getString("appointname"));
+            vo.setAppointTime(TimeUtil.intMillisToTimeStr(info.getIntValue("appointtime")));
             vo.setSourceName(sourceMap.get(info.getString("sourceid")) == null ? "" : sourceMap.get(info.getString("sourceid")).getSrcName());
             vo.setStatusName(statusMap.get(info.getString("statusid")) == null ? "" : statusMap.get(info.getString("statusid")).getStatusName());
             vo.setChannelName(channelMap.get(info.getString("channelid")) == null ? "" : channelMap.get(info.getString("channelid")).getChannelName());

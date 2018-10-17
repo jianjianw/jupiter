@@ -381,7 +381,6 @@ public interface StaffDao extends BaseDao<StaffPO> {
     StaffPushDTO getPushDTOByCidAndUid(@Param("id") int id, @Param("companyId") int companyId, @Param("type") String type);
 
 
-
     /**
      * 获取微信个人中心展示数据
      *
@@ -411,9 +410,7 @@ public interface StaffDao extends BaseDao<StaffPO> {
      */
     List<String> getGroupAvgGroupList(@Param("companyId") Integer companyId,
                                       @Param("sourceId") int sourceId,
-                                      @Param("role") String role,
-                                      @Param("start") int start,
-                                      @Param("end") int end);
+                                      @Param("role") String role);
 
     /**
      * 获取小组平均，可以领取的客服集合
@@ -517,9 +514,7 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @return
      */
     StaffPushDTO getAvgDssxStaff(@Param("companyId") int companyId, @Param("interval") int interval,
-                                 @Param("role") String role, @Param("infoTab") String infoTab
-//            , @Param("sourceId") int sourceId
-    );
+                                 @Param("role") String role, @Param("infoTab") String infoTab);
 
     /**
      * 根据ids批量查找员工
@@ -624,4 +619,9 @@ public interface StaffDao extends BaseDao<StaffPO> {
     int editStaffMsgSet(@Param("companyId") int companyId,
                         @Param("staffId") int staffId,
                         @Param("msgSet") String msgSet);
+
+
+    int updateSettings(@Param("companyId") int companyId,
+                       @Param("staffId") int staffId,
+                       @Param("settings") String settings);
 }

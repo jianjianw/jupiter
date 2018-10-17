@@ -122,9 +122,9 @@ public class StaffController extends BaseController {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         // 设置cid
         staffVO.setCompanyId(currentLoginStaff.getCompanyId());
-        List<SearchStaffVO> staffOld = staffService.getGroupById(staffVO.getId()+CommonConstant.NULL_STR, currentLoginStaff.getCompanyId());
+        List<SearchStaffVO> staffOld = staffService.getGroupById(staffVO.getId() + CommonConstant.NULL_STR, currentLoginStaff.getCompanyId());
         staffService.update(staffVO);
-        List<SearchStaffVO> staffNew = staffService.getGroupById(staffVO.getId()+CommonConstant.NULL_STR,currentLoginStaff.getCompanyId());
+        List<SearchStaffVO> staffNew = staffService.getGroupById(staffVO.getId() + CommonConstant.NULL_STR, currentLoginStaff.getCompanyId());
         Map<String, String> map = new HashMap<>();
         String old = CommonConstant.NULL_STR;
         for (SearchStaffVO staff : staffOld) {
@@ -702,7 +702,7 @@ public class StaffController extends BaseController {
     }
 
     /**
-     * 根据关键字搜索员工
+     * 获取员工消息设置
      *
      * @return
      */
@@ -721,5 +721,16 @@ public class StaffController extends BaseController {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         Integer clientCount = staffService.getClientCountById(currentLoginStaff, staffId);
         return ResultInfoUtil.success(clientCount);
+    }
+
+
+    /**
+     * 修改员工个人设置
+     */
+    @GetMapping("/update_staff_settings")
+    public ResultInfo updateStaffSettings(@RequestParam("settings") String settings) {
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        staffService.updateSettings(currentLoginStaff.getCompanyId(), currentLoginStaff.getId(), settings);
+        return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
 }

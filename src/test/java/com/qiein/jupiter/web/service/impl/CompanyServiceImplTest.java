@@ -13,28 +13,33 @@ import com.qiein.jupiter.web.service.CompanyService;
 @SpringBootTest
 public class CompanyServiceImplTest {
 
-	@Autowired
-	private CompanyService companyService;
+    @Autowired
+    private CompanyService companyService;
 
-	@Test
-	public void getById() {
-		CompanyPO companyPO = companyService.getById(1);
-		System.out.println(companyPO);
-	}
+    @Test
+    public void getById() {
+        CompanyPO companyPO = companyService.getById(1);
+        System.out.println(companyPO);
+    }
 
-	@Test
-	public void findList() {
-	}
+    @Test
+    public void findList() {
+    }
 
-	@Test
-	public void deleteFlag() {
-	}
+    @Test
+    public void deleteFlag() {
+    }
 
-	@Test
-	public void insert() {
-	}
+    @Test
+    public void insert() {
+    }
 
-	@Test
-	public void update() {
-	}
+    @Test
+    public void update() {
+    }
+
+    @Test
+    public void timingExecuteConfigTaskTest() {
+        companyService.timingExecuteConfigTask();
+    }
 }

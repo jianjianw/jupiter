@@ -52,6 +52,7 @@ public class PlatServiceImpl implements PlatService {
     @Override
     public JSONObject getClientInfoByKzid(QueryVO queryVO) {
         return clientQueryByIdDao.getClientByKzid(queryVO);
+
     }
 
     /**
@@ -98,6 +99,17 @@ public class PlatServiceImpl implements PlatService {
     @Override
     public JSONObject queryPageClientInfoCount(QueryVO queryVO) {
         return clientQueryDao.queryPageClientCountInfo(queryVO);
+    }
+
+    /**
+     * 查询客资的邀约记录
+     *
+     * @param queryVO
+     * @return
+     */
+    @Override
+    public List<JSONObject> getAppointLogByKzId(QueryVO queryVO) {
+        return clientQueryByIdDao.getAppointLog(queryVO);
     }
 
 

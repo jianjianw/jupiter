@@ -51,4 +51,12 @@ public interface PlatService {
      * @return
      */
     JSONObject queryPageClientInfoCount(QueryVO queryVO);
+
+    /**
+     * 查询客资的邀约记录
+     *
+     * @param queryVO
+     * @return
+     */
+    List<JSONObject> getAppointLogByKzId(QueryVO queryVO);
 }

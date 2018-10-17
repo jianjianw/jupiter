@@ -228,14 +228,19 @@ public class CommonConstant {
     /**
      * 电商渠道
      */
-    public final static String DsSrc="1,2";
+    public final static String DsSrc = "1,2";
     /**
      * 转介绍渠道
      */
-    public final static String ZjsSrc="3,4,5";
+    public final static String ZjsSrc = "3,4,5";
     /**
      * 草莓卷图标48px
      */
     public static final String CMJ_LOGO_IMG48 = "https://crm-jupiter.oss-cn-hangzhou.aliyuncs.com/img%2Flogo48.png";
+
+    /**
+     * 收款类型：2：尾款
+     */
+    public static final int CASH_TYPE_TAIL = 2;
 
 }

@@ -136,4 +136,17 @@ public class PlatController extends BaseController {
     }
 
 
+    /**
+     * 查询客资的邀约记录
+     */
+    @GetMapping("/get_dsyy_log_by_kzid")
+    public ResultInfo getDsyyLogByKzid(String kzid) {
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        QueryVO queryVO = new QueryVO();
+        queryVO.setKzId(kzid);
+        queryVO.setUid(currentLoginStaff.getId());
+        queryVO.setCompanyId(currentLoginStaff.getCompanyId());
+        return ResultInfoUtil.success(platService.getAppointLogByKzId(queryVO));
+    }
+
 }

@@ -324,9 +324,9 @@ public class ClientPushServiceImpl implements ClientPushService {
             calcRange = CommonConstant.ALLOT_RANGE_DEFAULT;
         }
         //1.获取可以领取的小组集合
-        Map<String, Integer> todayTimeInterval = TimeUtil.getTodayTimeInterval();
-        List<String> groupIdList = staffDao.getGroupAvgGroupList(companyId, srcId, type,
-                todayTimeInterval.get("start"), todayTimeInterval.get("end"));
+//        Map<String, Integer> todayTimeInterval = TimeUtil.getTodayTimeInterval();
+        List<String> groupIdList = staffDao.getGroupAvgGroupList(companyId, srcId, type);
+//        log.info("time:" + JSONObject.toJSONString(todayTimeInterval));
         log.info("可以领取的小组：" + JSONObject.toJSONString(groupIdList));
         //2.获取从当前时间往前退一个小时内，所有指定小组的领取情况
         List<String> appointGroups = staffDao.getGroupAvgReceive(DBSplitUtil.getInfoTabName(companyId), companyId, srcId, calcRange, groupIdList);
@@ -1079,7 +1079,7 @@ public class ClientPushServiceImpl implements ClientPushService {
                                     ClientLogConst.INFO_LOGTYPE_ALLOT, companyId));
         }
         // 推送消息
-        GoEasyUtil.pushAllotMsg(companyId, appoint.getStaffId(), kzIdsArr, newsDao, staffDao);
+        GoEasyUtil.pushAllotMsg(companyId, appoint.getStaffId(), kzIdsArr, newsDao, staffDao, clientInfoDao);
     }
 
     private void pushMsjd(int companyId, String kzIds, StaffPushDTO appoint, int operaId, String operaName) {
@@ -1096,7 +1096,7 @@ public class ClientPushServiceImpl implements ClientPushService {
                                     ClientLogConst.INFO_LOGTYPE_ALLOT, companyId));
         }
         // 推送消息
-        GoEasyUtil.pushAllotMsg(companyId, appoint.getStaffId(), kzIdsArr, newsDao, staffDao);
+        GoEasyUtil.pushAllotMsg(companyId, appoint.getStaffId(), kzIdsArr, newsDao, staffDao, clientInfoDao);
     }
 
     public static String arrToStr(String[] arr) {
