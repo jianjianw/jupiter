@@ -61,7 +61,7 @@ public class DstgOrderCycleCountDao {
                 rJson.put("srcId", resultSet.getInt("ID"));
                 rJson.put("cyc", resultSet.getInt("cyc"));
                 rJson.put("count", resultSet.getInt("COUNT"));
-
+                System.out.println(rJson);
                 //如果为空，则新增 一个类型
                 if (rMap.get(srcId) == null) {
                     rMap.put(srcId, new ArrayList<JSONObject>());
