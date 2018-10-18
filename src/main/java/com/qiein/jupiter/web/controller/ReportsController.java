@@ -781,7 +781,7 @@ public class ReportsController extends BaseController {
      * 电商推广订单周期统计
      */
     @PostMapping("/get_dstg_order_cycle_count")
-    public ResultInfo getDstgOrderCycleCount(QueryVO queryVO) {
+    public ResultInfo getDstgOrderCycleCount(@RequestBody QueryVO queryVO) {
         queryVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
         return ResultInfoUtil.success(reportService.getDstgOrderCycleCount(queryVO));
     }
