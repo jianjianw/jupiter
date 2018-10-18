@@ -52,6 +52,7 @@ public class DstgOrderCycleCountDao {
                 "  cyc";
         final Map<Integer, List<JSONObject>> rMap = new HashMap<>();
 
+        System.out.println(sql);
 
         namedJdbc.query(sql, conditionMap, new RowCallbackHandler() {
             @Override
