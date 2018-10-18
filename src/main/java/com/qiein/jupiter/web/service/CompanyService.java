@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.web.entity.dto.CompanyConfigDTO;
+import com.qiein.jupiter.web.entity.dto.CompanyReportConfigDTO;
 import com.qiein.jupiter.web.entity.dto.CompanyZjsSetDTO;
 import com.qiein.jupiter.web.entity.dto.DsinvalDTO;
 import com.qiein.jupiter.web.entity.po.CompanyPO;
@@ -236,4 +237,9 @@ public interface CompanyService {
 	List<DatavPermissionPo> getPermission(String phone, int companyId);
 
 	List<Datav> getDatav(int companyId);
+
+    /**
+     * 获取公司报表配置
+     */
+    CompanyReportConfigDTO getCompanyReportConfig(int companyId);
 }

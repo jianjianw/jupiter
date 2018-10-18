@@ -402,4 +402,16 @@
 	  WHERE
 		dt.COMPANYID = #{companyId}
     </select>
+
+    <!--获取企业报表配置信息 -->
+    <select id="getReportConfigById" parameterType="map" resultMap="VOMap">
+        SELECT
+            comp.ID,
+            comp.REPORTSCONFIG
+        FROM
+            hm_pub_company comp
+        WHERE
+            comp.ID = #{companyId}
+            AND comp.ISDEL = 0;
+    </select>
 </mapper>

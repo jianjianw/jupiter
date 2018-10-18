@@ -38,6 +38,8 @@ public class KeyWordReportsDao {
         getFilterInValidClientCount(startTime, endTime, keyWordReportsVOS, typeIds,keyWord,tableInfo, tableDetail,companyId);
         getFilterInValidClientCount(startTime, endTime, keyWordReportsVOS, typeIds,keyWord, tableInfo, tableDetail,companyId);
         getInValidClientCount(startTime, endTime, keyWordReportsVOS, typeIds,keyWord, tableInfo, tableDetail, dsInvalidVO,companyId);
+        getComeShopSuccessClientCount(startTime, endTime, keyWordReportsVOS, typeIds,keyWord, tableInfo, tableDetail,companyId);
+        getOnLineSuccessClientCount(startTime, endTime, keyWordReportsVOS, typeIds,keyWord, tableInfo, tableDetail,companyId);
         getAvgAmount(startTime, endTime, keyWordReportsVOS, typeIds,keyWord, tableInfo, tableDetail,companyId);
         getAmount(startTime, endTime, keyWordReportsVOS, typeIds,keyWord, tableInfo, tableDetail,companyId);
         computerRate(keyWordReportsVOS, dsInvalidVO);
@@ -143,7 +145,62 @@ public class KeyWordReportsDao {
         }
 
     }
+    /**
+     * 入店成交量
+     */
+    private void getComeShopSuccessClientCount(String startTime, String endTime, List<KeyWordReportsVO> keyWordReportsVOS, String typeIds, String keyWord,String tableInfo, String tableDetail,Integer companyId) {
+        StringBuilder sql = new StringBuilder();
+        getBaseSql(sql,typeIds, tableInfo, tableDetail,companyId);
+        sql.append(" and info.statusid in (9,30)");
+        sql.append(" and info.SuccessTime between ? and ?");
+        sql.append(" GROUP BY detail.keyword  ");
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{keyWord,startTime, endTime});
+        List<KeyWordReportsVO> keyWordReportsBak = new LinkedList<>();
+        for (Map<String, Object> map : list) {
+            KeyWordReportsVO keyWordReportsVO = new KeyWordReportsVO();
+            keyWordReportsVO.setComeShopSuccessClientCount(Integer.parseInt(Long.toString((Long) (map.get("count")))));
+            keyWordReportsVO.setKeyWord((String) map.get("keyWord"));
+            keyWordReportsBak.add(keyWordReportsVO);
+        }
+        for (KeyWordReportsVO keyWordReportsVO : keyWordReportsVOS) {
+            for (KeyWordReportsVO keyWordReportsVO1 : keyWordReportsBak) {
+                if (keyWordReportsVO.getKeyWord().equalsIgnoreCase(keyWordReportsVO1.getKeyWord()) ) {
+                    keyWordReportsVO.setComeShopSuccessClientCount(keyWordReportsVO1.getComeShopSuccessClientCount());
+                    break;
+                }
 
+            }
+        }
+
+    }
+    /**
+     * 入店成交量
+     */
+    private void getOnLineSuccessClientCount(String startTime, String endTime, List<KeyWordReportsVO> keyWordReportsVOS, String typeIds, String keyWord,String tableInfo, String tableDetail,Integer companyId) {
+        StringBuilder sql = new StringBuilder();
+        getBaseSql(sql,typeIds, tableInfo, tableDetail,companyId);
+        sql.append(" and info.statusid in (40)");
+        sql.append(" and info.SuccessTime between ? and ?");
+        sql.append(" GROUP BY detail.keyword  ");
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{keyWord,startTime, endTime});
+        List<KeyWordReportsVO> keyWordReportsBak = new LinkedList<>();
+        for (Map<String, Object> map : list) {
+            KeyWordReportsVO keyWordReportsVO = new KeyWordReportsVO();
+            keyWordReportsVO.setOnLineSuccessClientCount(Integer.parseInt(Long.toString((Long) (map.get("count")))));
+            keyWordReportsVO.setKeyWord((String) map.get("keyWord"));
+            keyWordReportsBak.add(keyWordReportsVO);
+        }
+        for (KeyWordReportsVO keyWordReportsVO : keyWordReportsVOS) {
+            for (KeyWordReportsVO keyWordReportsVO1 : keyWordReportsBak) {
+                if (keyWordReportsVO.getKeyWord().equalsIgnoreCase(keyWordReportsVO1.getKeyWord()) ) {
+                    keyWordReportsVO.setOnLineSuccessClientCount(keyWordReportsVO1.getOnLineSuccessClientCount());
+                    break;
+                }
+
+            }
+        }
+
+    }
     /**
      * 筛选待定
      */
@@ -395,6 +452,8 @@ public class KeyWordReportsDao {
             oldKzReportsTotal.setInValidClientCount(oldKzReportsVO.getInValidClientCount() + oldKzReportsTotal.getInValidClientCount());
             oldKzReportsTotal.setComeShopClientCount(oldKzReportsVO.getComeShopClientCount() + oldKzReportsTotal.getComeShopClientCount());
             oldKzReportsTotal.setSuccessClientCount(oldKzReportsVO.getSuccessClientCount() + oldKzReportsTotal.getSuccessClientCount());
+            oldKzReportsTotal.setOnLineSuccessClientCount(oldKzReportsVO.getOnLineSuccessClientCount() + oldKzReportsTotal.getOnLineSuccessClientCount());
+            oldKzReportsTotal.setComeShopSuccessClientCount(oldKzReportsVO.getComeShopSuccessClientCount() + oldKzReportsTotal.getComeShopSuccessClientCount());
             oldKzReportsTotal.setAmount(oldKzReportsVO.getAmount() + oldKzReportsTotal.getAmount());
         }
         //客资量(总客资-筛选待定-筛选中-筛选无效)

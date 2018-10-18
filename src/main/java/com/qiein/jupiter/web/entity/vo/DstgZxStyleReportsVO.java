@@ -64,6 +64,14 @@ public class DstgZxStyleReportsVO {
      * 成交量
      */
     private int successClientCount;
+    /**
+     * 入店成交量
+     */
+    private int comeShopSuccessClientCount;
+    /**
+     * 在线成交量
+     */
+    private int onLineSuccessClientCount;
 
     /**
      * 有效率 (有效量 / 客资量)
@@ -115,6 +123,21 @@ public class DstgZxStyleReportsVO {
      */
     private double amount;
 
+    public int getComeShopSuccessClientCount() {
+        return comeShopSuccessClientCount;
+    }
+
+    public void setComeShopSuccessClientCount(int comeShopSuccessClientCount) {
+        this.comeShopSuccessClientCount = comeShopSuccessClientCount;
+    }
+
+    public int getOnLineSuccessClientCount() {
+        return onLineSuccessClientCount;
+    }
+
+    public void setOnLineSuccessClientCount(int onLineSuccessClientCount) {
+        this.onLineSuccessClientCount = onLineSuccessClientCount;
+    }
 
     public String getZxStyleCode() {
         return zxStyleCode;

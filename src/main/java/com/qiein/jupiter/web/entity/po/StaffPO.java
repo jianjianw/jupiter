@@ -103,6 +103,19 @@ public class StaffPO extends BaseEntity {
      */
     private boolean whiteFlag;
 
+    /**
+     * 个人设置
+     */
+    private String settings;
+
+    public String getSettings() {
+        return settings;
+    }
+
+    public void setSettings(String settings) {
+        this.settings = settings;
+    }
+
     public int getHeartTime() {
         return heartTime;
     }

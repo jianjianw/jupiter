@@ -1295,9 +1295,12 @@ public class DstgReportsSrcMonthDao {
 							Set<String> mapkeys = map.keySet();
 							for (String mapkey : mapkeys) {
 								double a=Integer.valueOf(String.valueOf(map.get(mapkey).toString()));
-								System.out.println(map);
-								System.out.println(map1);
-								double b=Integer.valueOf(String.valueOf(map1.get(mapkey).toString()));
+								double b=1.0;
+								if(map1.get(mapkey)==null || "0".equals(String.valueOf(map1.get(mapkey).toString()))){
+									b=1.0;
+								}else{
+									b=Integer.valueOf(String.valueOf(map1.get(mapkey).toString()));
+								}
 								double c=(double)Math.round(a/b*100)/100;
 								maptemp.put(mapkey, c);
 							}
