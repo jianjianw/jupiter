@@ -35,6 +35,18 @@ public class ReportsConditionVO {
      * String typeLimit
      * */
     private String typeLimit;
+    /**
+     * 是否开启录入时间以及其他时间筛选开关
+     */
+    private boolean isCreate;
+
+    public boolean getIsCreate() {
+        return isCreate;
+    }
+
+    public void setIsCreate(boolean isCreate) {
+        this.isCreate = isCreate;
+    }
 
     public String getTypeLimit() {
         return typeLimit;
