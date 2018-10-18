@@ -106,6 +106,9 @@ public class ReportsServiceImpl implements ReportService {
     @Autowired
     private ClientStatusDao clientStatusDao;
 
+    @Autowired
+    private DstgOrderCycleCountDao dstgOrderCycleCountDao;
+
 
 
     /**
