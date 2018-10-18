@@ -1026,7 +1026,7 @@
         </foreach>
         GROUP BY info.APPOINTORID
     </select>
-
+<!--#         AND info.SOURCEID = #{sourceId}-->
     <!-- 获取小组平均,小组领取客资情况-->
     <select id="getGroupAvgReceive" parameterType="map" resultType="java.lang.String">
         SELECT
@@ -1040,7 +1040,6 @@
         AND info.STATUSID != 98
         AND info.STATUSID != 99
         AND info.ISDEL = 0
-        AND info.SOURCEID = #{sourceId}
         AND info.GROUPID IN
         <foreach collection="groupIdList" item="groupId" index="index" open="(" separator="," close=")">
             #{groupId}
@@ -1400,6 +1399,6 @@
                               info.APPOINTORID
                       ) a ON sf.COMPANYID = a.COMPANYID
                              AND sf.ID = APPOINTORID
-        SET sf.TODAYNUM =IFNULL( a.num, 0)
+        SET sf.TODAYNUM = IFNULL(a.num, 0)
     </update>
 </mapper>

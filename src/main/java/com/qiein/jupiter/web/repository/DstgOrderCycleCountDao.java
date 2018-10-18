@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.repository;
 
 import com.alibaba.fastjson.JSONObject;
+import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.vo.QueryVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowCallbackHandler;
@@ -28,6 +29,7 @@ public class DstgOrderCycleCountDao {
         conditionMap.put("companyId", companyId);
         conditionMap.put("start", vo.getStart());
         conditionMap.put("end", vo.getEnd());
+        conditionMap.put("sourceId", vo.getSourceId());
 
         String sql = "SELECT" +
                 "  src.SRCNAME,src.ID," +
@@ -41,8 +43,11 @@ public class DstgOrderCycleCountDao {
                 "  AND info.ISDEL = 0 " +
                 "  AND info.CREATETIME BETWEEN :start " +
                 "  AND :end " +
-                "  AND info.SUCCESSTIME >= info.CREATETIME AND info.SRCTYPE = 1 " +
-                " GROUP BY" +
+                "  AND info.SUCCESSTIME >= info.CREATETIME AND info.SRCTYPE = 1 ";
+        if (StringUtil.isNotEmpty(vo.getSourceId())) {
+            sql += " AND info.SOURCEID in (:sourceId) ";
+        }
+        sql += " GROUP BY" +
                 "  info.SOURCEID," +
                 "  cyc";
         final Map<Integer, List<JSONObject>> rMap = new HashMap<>();
@@ -66,7 +71,8 @@ public class DstgOrderCycleCountDao {
 
             }
         });
-        Set<String> stack = new LinkedHashSet<>();
+        //TODO stack排序
+        Set<Integer> stack = new LinkedHashSet<>();
         List<Map<String, Object>> rowsData = new ArrayList<>();
         //  遍历
         for (Integer srcId : rMap.keySet()) {
@@ -77,26 +83,32 @@ public class DstgOrderCycleCountDao {
                 int cycDay = jsonObject.getIntValue("cyc");
                 if (cycDay == 0) {
                     String desc = "当天";
-                    if(!stack.contains(desc)){
-                        stack.add(desc);
-                    }
                     row.put(desc, jsonObject.getIntValue("count"));
                 } else {
-                    String desc = cycDay + "天";
-                    row.put(desc, jsonObject.getIntValue("count"));
-                    if(!stack.contains(desc)){
-                        stack.add(desc);
+                    row.put(cycDay + "天", jsonObject.getIntValue("count"));
+                    if (!stack.contains(cycDay)) {
+                        stack.add(cycDay);
                     }
                 }
             }
             rowsData.add(row);
         }
-        Set<String> columns = new LinkedHashSet<>();
+        //排序
+        List<Integer> sortStackList = new ArrayList<>(stack);
+        Collections.sort(sortStackList);
+        //重新整合
+        List<String> stackList = new ArrayList<>();
+        stackList.add(0, "当天");
+        for (Integer cycDay : sortStackList) {
+            stackList.add(cycDay + "天");
+        }
+
+        List<String> columns = new ArrayList<>();
         columns.add("渠道");
-        columns.addAll(stack);
+        columns.addAll(stackList);
 
         //前端需要的
-        json.put("stack", stack);
+        json.put("stack", stackList);
         json.put("columns", columns);
         json.put("rows", rowsData);
 
