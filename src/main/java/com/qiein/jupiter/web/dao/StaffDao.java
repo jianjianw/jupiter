@@ -624,4 +624,15 @@ public interface StaffDao extends BaseDao<StaffPO> {
     int updateSettings(@Param("companyId") int companyId,
                        @Param("staffId") int staffId,
                        @Param("settings") String settings);
+
+    /**
+     * 批量删除回收站员工删除(物理删除)
+     */
+    void batchDeleteTrackStaff(@Param("companyId") int companyId,@Param("staffIds") String[] staffIds);
+
+    void deleteTrackStaff( @Param("companyId") int companyId,@Param("staffId") int staffId);
+
+    public List<StaffPO> getTrackStaffByIds(@Param("list") List<Integer> list, @Param("companyId") Integer companyId);
+
+
 }

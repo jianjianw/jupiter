@@ -23,6 +23,7 @@ import com.qiein.jupiter.web.entity.po.*;
 import com.qiein.jupiter.web.entity.vo.*;
 import com.qiein.jupiter.web.service.IpWhiteService;
 import com.qiein.jupiter.web.service.StaffService;
+import com.qiein.jupiter.web.service.SystemLogService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,6 +82,10 @@ public class StaffServiceImpl implements StaffService {
 
     @Autowired
     private WebSocketMsgUtil webSocketMsgUtil;
+
+
+    @Autowired
+    private SystemLogService systemLogService;
 
 
     /**
@@ -1161,6 +1166,26 @@ public class StaffServiceImpl implements StaffService {
     public int updateSettings(int companyId, int staffId, String settings) {
         StaffSettingsDTO staffSettingsDTO = JSONObject.parseObject(settings, StaffSettingsDTO.class);
         return staffDao.updateSettings(companyId, staffId, JSONObject.toJSONString(staffSettingsDTO));
+    }
+
+    @Override
+    public void batchDeleteTrackStaff(int companyId,String[] staffIds) {
+        staffDao.batchDeleteTrackStaff(companyId, staffIds);
+    }
+
+    @Override
+    public void deleteTrackStaff(int companyId,int staffId) {
+        staffDao.deleteTrackStaff(companyId,staffId);
+    }
+
+    @Override
+    public List<StaffPO> getTrackStaffByIds(String ids, Integer companyId) {
+        String[] idlist = ids.split(CommonConstant.STR_SEPARATOR);
+        List<Integer> list = new ArrayList<>();
+        for (String id : idlist) {
+            list.add(Integer.parseInt(id));
+        }
+        return staffDao.getTrackStaffByIds(list, companyId);
     }
 
 

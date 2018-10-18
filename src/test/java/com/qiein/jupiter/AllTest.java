@@ -460,4 +460,14 @@ public class AllTest {
         String msgset = JSON.toJSONString(staffMsgSetDTO);
         System.out.println(msgset);
     }
+
+    @Test
+    public void test01() {
+
+        String str = "qwe123";
+        String[] split = str.split(",");
+        for (int i = 0; i <split.length ; i++) {
+            System.out.println(split[i]);
+        }
+    }
 }

@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
+import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.web.entity.dto.*;
 import com.qiein.jupiter.web.entity.vo.DstgYearReportsVO;
 import com.qiein.jupiter.web.entity.vo.*;
@@ -373,4 +374,9 @@ public interface ReportService {
      * @param reportParamDTO
      */
 	List<Map<String, Object>> getDSTGSrcMonthReportsROI(String month, String typeId, String sourceId, int companyId);
+
+    /**
+     * 转介绍报表详情，按客服汇总
+     * */
+    public Map<String,Object> getZjsDetailReportByStaff(ReportParamDTO reportParamDTO);
 }

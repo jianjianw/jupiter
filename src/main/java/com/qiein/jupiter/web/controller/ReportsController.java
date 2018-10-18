@@ -776,4 +776,16 @@ public class ReportsController extends BaseController {
     public ResultInfo getSourceAndStatusReports(String appointorIds, String collectorIds, String receptorIds, String start, String end, String groupIds, String typeIds, String sourceIds) {
         return ResultInfoUtil.success(reportService.getSourceAndStatusReports(appointorIds, collectorIds, receptorIds, start, end, groupIds, typeIds, sourceIds, getCurrentLoginStaff().getCompanyId()));
     }
+
+    /**
+     * 转介绍报表详情，按客服汇总
+     * */
+    @GetMapping("/get_zjs_detail_report_by_staff")
+    public ResultInfo getZjsDetailReportByStaff(ReportParamDTO reportParamDTO){
+        reportParamDTO.setStaffId(getCurrentLoginStaff().getId());
+        reportParamDTO.setCompanyId(getCurrentLoginStaff().getCompanyId());
+        reportService.getZjsDetailReportByStaff(reportParamDTO);
+
+        return null;
+    }
 }
