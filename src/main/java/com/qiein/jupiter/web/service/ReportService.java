@@ -379,4 +379,9 @@ public interface ReportService {
      * 转介绍报表详情，按客服汇总
      * */
     public Map<String,Object> getZjsDetailReportByStaff(ReportParamDTO reportParamDTO);
+
+    /**
+     * 电商推广订单周期统计
+     */
+    JSONObject getDstgOrderCycleCount(QueryVO queryVO);
 }

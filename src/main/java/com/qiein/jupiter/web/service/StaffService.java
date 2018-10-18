@@ -449,6 +449,11 @@ public interface StaffService {
     int updateSettings(int companyId, int staffId, String settings);
 
     /**
+     * 重新计算公司每个人今日接单数目
+     */
+    int updateCompanyTodayNum(int companyId);
+
+    /**
      * 批量删除回收站员工删除(物理删除)
      */
     void batchDeleteTrackStaff(int companyId,String[] staffIds);

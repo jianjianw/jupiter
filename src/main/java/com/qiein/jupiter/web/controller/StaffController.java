@@ -795,4 +795,12 @@ public class StaffController extends BaseController {
         }
         return ResultInfoUtil.success();
     }
+
+    /**
+     * 重新计算公司今日接单数目
+     */
+    @GetMapping("/update_company_today_num")
+    public ResultInfo updateCompanyTodayNum() {
+        return ResultInfoUtil.success(staffService.updateCompanyTodayNum(getCurrentLoginStaff().getCompanyId()));
+    }
 }

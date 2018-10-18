@@ -7,7 +7,10 @@ import com.qiein.jupiter.constant.ClientLogConst;
 import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.constant.RoleConstant;
 import com.qiein.jupiter.enums.TableEnum;
-import com.qiein.jupiter.util.*;
+import com.qiein.jupiter.util.CollectionUtils;
+import com.qiein.jupiter.util.DBSplitUtil;
+import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.util.TimeUtil;
 import com.qiein.jupiter.web.dao.*;
 import com.qiein.jupiter.web.entity.dto.*;
 import com.qiein.jupiter.web.entity.po.*;
@@ -1598,4 +1601,15 @@ public class ReportsServiceImpl implements ReportService {
     }
 
 
+
+    /**
+     * 电商推广订单周期统计
+     *
+     * @param queryVO
+     * @return
+     */
+    @Override
+    public JSONObject getDstgOrderCycleCount(QueryVO queryVO) {
+        return dstgOrderCycleCountDao.getCount(queryVO);
+    }
 }

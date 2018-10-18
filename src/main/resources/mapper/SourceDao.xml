@@ -16,8 +16,8 @@
         <result column="ISFILTER" jdbcType="BOOLEAN" property="isFilter"/>
         <result column="ISSHOW" jdbcType="BOOLEAN" property="isShow"/>
         <result column="PUSHRULE" jdbcType="INTEGER" property="pushRule"/>
-        <result column="LINKIDS" jdbcType="VARCHAR" property="linkIds"></result>
-        <result column="NICKNAMES" jdbcType="VARCHAR" property="nickNames"></result>
+        <result column="LINKIDS" jdbcType="VARCHAR" property="linkIds"/>
+        <result column="NICKNAMES" jdbcType="VARCHAR" property="nickNames"/>
     </resultMap>
 
     <resultMap id="channelMap" type="com.qiein.jupiter.web.entity.vo.ChannelVO">
@@ -155,7 +155,7 @@
             <if test="sv.isShow != null">
                 ISSHOW = #{sv.isShow},
             </if>
-            <if test="pushRule != null">
+            <if test="sv.pushRule != null">
                 PUSHRULE = #{sv.pushRule}
             </if>
         </set>

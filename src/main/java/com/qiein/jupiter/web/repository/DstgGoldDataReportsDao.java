@@ -195,7 +195,43 @@ public class DstgGoldDataReportsDao {
         }
 
     }
+    /**
+     * 获取已加微信数量
+     */
+    private void getWechatIsFlag(ReportsParamVO reportsParamVO, List<DstgGoldDataReportsVO> dstgGoldDataReportsVOS){
+        StringBuilder sb = new StringBuilder();
+        String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
+        String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
+        sb = getCommonsql(sb, infoTabName, detailTabName);
+        sb.append(" and info.CREATETIME BETWEEN ? AND ?");
+        sb.append(" and info.WEFLAG=1");
+        addConditionByType(reportsParamVO.getType(),sb);
+        sb.append(" group by detail.adid");
+        sb.append(" ) info_detail_bak  group by info_detail_bak.adid ");
+        List<Map<String, Object>> dstgGoldDataReports = jdbcTemplate.queryForList(sb.toString(),
+                new Object[]{reportsParamVO.getCompanyId(),
+                        reportsParamVO.getStart(),
+                        reportsParamVO.getEnd()});
 
+
+        // 处理数据
+        List<DstgGoldDataReportsVO> dstgGoldDataReportsBak = new LinkedList<>();
+        for (Map<String, Object> dstgGoldDataReport : dstgGoldDataReports) {
+            DstgGoldDataReportsVO dstgGoldDataReportsVO = new DstgGoldDataReportsVO();
+            dstgGoldDataReportsVO.setAdId((String) dstgGoldDataReport.get("adid"));
+            dstgGoldDataReportsVO.setWechatFlagCount(Integer.parseInt( String.valueOf(dstgGoldDataReport.get("client_count").toString())));
+            dstgGoldDataReportsBak.add(dstgGoldDataReportsVO);
+        }
+
+        for (DstgGoldDataReportsVO dstgGoldDataReportsVO : dstgGoldDataReportsVOS) {
+            for (DstgGoldDataReportsVO dstgGoldDataReport : dstgGoldDataReportsBak) {
+                if (dstgGoldDataReportsVO.getAdId().equalsIgnoreCase(dstgGoldDataReport.getAdId())) {
+                    dstgGoldDataReportsVO.setWechatFlagCount(dstgGoldDataReport.getWechatFlagCount());
+                    break;
+                }
+            }
+        }
+    }
     /**
      * 获取筛选待定
      * */
@@ -410,7 +446,7 @@ public class DstgGoldDataReportsDao {
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
         sb = getCommonsql(sb, infoTabName, detailTabName);
         sb.append(" and info.SUCCESSTIME BETWEEN ? AND ?");
-        sb.append(" and info.status in (9,30)");
+        sb.append(" and info.statusid in (9,30)");
         addConditionByType(reportsParamVO.getType(),sb);
         sb.append(" group by detail.adid");
         sb.append(" ) info_detail_bak  group by info_detail_bak.adid ");
@@ -446,7 +482,7 @@ public class DstgGoldDataReportsDao {
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
         sb = getCommonsql(sb, infoTabName, detailTabName);
         sb.append(" and info.SUCCESSTIME BETWEEN ? AND ?");
-        sb.append(" and info.status in (40)");
+        sb.append(" and info.statusid in (40)");
         addConditionByType(reportsParamVO.getType(),sb);
         sb.append(" group by detail.adid");
         sb.append(" ) info_detail_bak  group by info_detail_bak.adid ");
@@ -662,6 +698,7 @@ public class DstgGoldDataReportsDao {
             dstgReportsTotal.setPendingClientCount(dstgReportsVO.getPendingClientCount() + dstgReportsTotal.getPendingClientCount());
             dstgReportsTotal.setInValidClientCount(dstgReportsVO.getInValidClientCount() + dstgReportsTotal.getInValidClientCount());
             dstgReportsTotal.setComeShopClientCount(dstgReportsVO.getComeShopClientCount() + dstgReportsTotal.getComeShopClientCount());
+            dstgReportsTotal.setWechatFlagCount(dstgReportsVO.getWechatFlagCount()+dstgReportsTotal.getWechatFlagCount());
             dstgReportsTotal.setSuccessClientCount(dstgReportsVO.getSuccessClientCount() + dstgReportsTotal.getSuccessClientCount());
             dstgReportsTotal.setOnLineSuccessClientCount(dstgReportsVO.getOnLineSuccessClientCount() + dstgReportsTotal.getOnLineSuccessClientCount());
             dstgReportsTotal.setComeShopSuccessClientCount(dstgReportsVO.getComeShopSuccessClientCount() + dstgReportsTotal.getComeShopSuccessClientCount());

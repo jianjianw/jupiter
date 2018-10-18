@@ -49,7 +49,10 @@ public class DstgGoldDataReportsVO {
      * 筛选无效
      * */
     private int filterInValidClientCount;
-
+    /**
+     * 已加微信数量
+     */
+    private int wechatFlagCount;
 
     /**
      * 入店量
@@ -118,6 +121,14 @@ public class DstgGoldDataReportsVO {
      * 营业额
      * */
     private double amount;
+
+    public int getWechatFlagCount() {
+        return wechatFlagCount;
+    }
+
+    public void setWechatFlagCount(int wechatFlagCount) {
+        this.wechatFlagCount = wechatFlagCount;
+    }
 
     public int getComeShopSuccessClientCount() {
         return comeShopSuccessClientCount;

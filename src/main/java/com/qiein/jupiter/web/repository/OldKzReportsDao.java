@@ -31,6 +31,8 @@ public class OldKzReportsDao {
         getPendingClientCount(startTime, endTime, oldKzReportsVOS, kzNameOrPhone, tableInfo, tableDetail, dsInvalidVO, companyId);
         getComeShopClient(startTime, endTime, oldKzReportsVOS, kzNameOrPhone, tableInfo, tableDetail, companyId);
         getSuccessClient(startTime, endTime, oldKzReportsVOS, kzNameOrPhone, tableInfo, tableDetail, companyId);
+        getComeShopSuccessClientCount(startTime, endTime, oldKzReportsVOS, kzNameOrPhone, tableInfo, tableDetail, companyId);
+        getOnLineSuccessClientCount(startTime, endTime, oldKzReportsVOS, kzNameOrPhone, tableInfo, tableDetail, companyId);
         getFilterWaitClientCount(startTime, endTime, oldKzReportsVOS, kzNameOrPhone, tableInfo, tableDetail, companyId);
         getFilterInValidClientCount(startTime, endTime, oldKzReportsVOS, kzNameOrPhone, tableInfo, tableDetail, companyId);
         getFilterInClientCount(startTime, endTime, oldKzReportsVOS, kzNameOrPhone, tableInfo, tableDetail, companyId);
@@ -158,6 +160,78 @@ public class OldKzReportsDao {
                 }else{
                     if( oldKzReportsVO.getOldKzName().equalsIgnoreCase(oldKzReportsVO1.getOldKzName())){
                         oldKzReportsVO.setSuccessClientCount(oldKzReportsVO1.getSuccessClientCount());
+                        break;
+                    }
+                }
+
+            }
+        }
+
+    }
+    /**
+     * 入店成交量
+     */
+    private void getComeShopSuccessClientCount(String startTime, String endTime, List<OldKzReportsVO> oldKzReportsVOS, String kzNameOrPhone, String tableInfo, String tableDetail,Integer companyId) {
+        StringBuilder sql = new StringBuilder();
+        getBaseSql(sql, tableInfo, tableDetail,companyId);
+        sql.append(" and info.statusid in (9,30)");
+        sql.append(" and info.SuccessTime between ? and ?");
+        sql.append(" GROUP BY detail.OLDKZPHONE,detail.oldkzname  ");
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{kzNameOrPhone, kzNameOrPhone,startTime, endTime});
+        List<OldKzReportsVO> oldKzReportsBak = new LinkedList<>();
+        for (Map<String, Object> map : list) {
+            OldKzReportsVO oldKzReportsVO = new OldKzReportsVO();
+            oldKzReportsVO.setComeShopSuccessClientCount(Integer.parseInt(Long.toString((Long) (map.get("count")))));
+            oldKzReportsVO.setOldKzName((String) map.get("oldKzName"));
+            oldKzReportsVO.setOldKzPhone((String) map.get("oldKzPhone"));
+            oldKzReportsBak.add(oldKzReportsVO);
+        }
+        for (OldKzReportsVO oldKzReportsVO : oldKzReportsVOS) {
+            for (OldKzReportsVO oldKzReportsVO1 : oldKzReportsBak) {
+                if(StringUtil.isNotEmpty(oldKzReportsVO1.getOldKzPhone())&&StringUtil.isNotEmpty(oldKzReportsVO.getOldKzPhone())){
+                    if (oldKzReportsVO.getOldKzPhone().equalsIgnoreCase(oldKzReportsVO1.getOldKzPhone())&&oldKzReportsVO.getOldKzName().equalsIgnoreCase(oldKzReportsVO1.getOldKzName()) ) {
+                        oldKzReportsVO.setComeShopSuccessClientCount(oldKzReportsVO1.getComeShopSuccessClientCount());
+                        break;
+                    }
+                }else{
+                    if( oldKzReportsVO.getOldKzName().equalsIgnoreCase(oldKzReportsVO1.getOldKzName())){
+                        oldKzReportsVO.setComeShopSuccessClientCount(oldKzReportsVO1.getComeShopSuccessClientCount());
+                        break;
+                    }
+                }
+
+            }
+        }
+
+    }
+    /**
+     * 在线成交量
+     */
+    private void getOnLineSuccessClientCount(String startTime, String endTime, List<OldKzReportsVO> oldKzReportsVOS, String kzNameOrPhone, String tableInfo, String tableDetail,Integer companyId) {
+        StringBuilder sql = new StringBuilder();
+        getBaseSql(sql, tableInfo, tableDetail,companyId);
+        sql.append(" and info.statusid in (40)");
+        sql.append(" and info.SuccessTime between ? and ?");
+        sql.append(" GROUP BY detail.OLDKZPHONE,detail.oldkzname  ");
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{kzNameOrPhone, kzNameOrPhone,startTime, endTime});
+        List<OldKzReportsVO> oldKzReportsBak = new LinkedList<>();
+        for (Map<String, Object> map : list) {
+            OldKzReportsVO oldKzReportsVO = new OldKzReportsVO();
+            oldKzReportsVO.setOnLineSuccessClientCount(Integer.parseInt(Long.toString((Long) (map.get("count")))));
+            oldKzReportsVO.setOldKzName((String) map.get("oldKzName"));
+            oldKzReportsVO.setOldKzPhone((String) map.get("oldKzPhone"));
+            oldKzReportsBak.add(oldKzReportsVO);
+        }
+        for (OldKzReportsVO oldKzReportsVO : oldKzReportsVOS) {
+            for (OldKzReportsVO oldKzReportsVO1 : oldKzReportsBak) {
+                if(StringUtil.isNotEmpty(oldKzReportsVO1.getOldKzPhone())&&StringUtil.isNotEmpty(oldKzReportsVO.getOldKzPhone())){
+                    if (oldKzReportsVO.getOldKzPhone().equalsIgnoreCase(oldKzReportsVO1.getOldKzPhone())&&oldKzReportsVO.getOldKzName().equalsIgnoreCase(oldKzReportsVO1.getOldKzName()) ) {
+                        oldKzReportsVO.setOnLineSuccessClientCount(oldKzReportsVO1.getOnLineSuccessClientCount());
+                        break;
+                    }
+                }else{
+                    if( oldKzReportsVO.getOldKzName().equalsIgnoreCase(oldKzReportsVO1.getOldKzName())){
+                        oldKzReportsVO.setOnLineSuccessClientCount(oldKzReportsVO1.getOnLineSuccessClientCount());
                         break;
                     }
                 }
@@ -454,6 +528,8 @@ public class OldKzReportsDao {
             oldKzReportsTotal.setInValidClientCount(oldKzReportsVO.getInValidClientCount() + oldKzReportsTotal.getInValidClientCount());
             oldKzReportsTotal.setComeShopClientCount(oldKzReportsVO.getComeShopClientCount() + oldKzReportsTotal.getComeShopClientCount());
             oldKzReportsTotal.setSuccessClientCount(oldKzReportsVO.getSuccessClientCount() + oldKzReportsTotal.getSuccessClientCount());
+            oldKzReportsTotal.setOnLineSuccessClientCount(oldKzReportsVO.getOnLineSuccessClientCount() + oldKzReportsTotal.getOnLineSuccessClientCount());
+            oldKzReportsTotal.setComeShopSuccessClientCount(oldKzReportsVO.getComeShopSuccessClientCount() + oldKzReportsTotal.getComeShopSuccessClientCount());
             oldKzReportsTotal.setAmount(oldKzReportsVO.getAmount() + oldKzReportsTotal.getAmount());
         }
         //客资量(总客资-筛选待定-筛选中-筛选无效)

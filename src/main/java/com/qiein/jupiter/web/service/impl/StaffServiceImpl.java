@@ -84,10 +84,6 @@ public class StaffServiceImpl implements StaffService {
     private WebSocketMsgUtil webSocketMsgUtil;
 
 
-    @Autowired
-    private SystemLogService systemLogService;
-
-
     /**
      * 员工新增
      *
@@ -1166,6 +1162,14 @@ public class StaffServiceImpl implements StaffService {
     public int updateSettings(int companyId, int staffId, String settings) {
         StaffSettingsDTO staffSettingsDTO = JSONObject.parseObject(settings, StaffSettingsDTO.class);
         return staffDao.updateSettings(companyId, staffId, JSONObject.toJSONString(staffSettingsDTO));
+    }
+
+    /**
+     * 重新计算公司每个人今日接单数目
+     */
+    @Override
+    public int updateCompanyTodayNum(int companyId) {
+        return staffDao.updateCompanyTodayNum(companyId);
     }
 
     @Override

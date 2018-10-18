@@ -38,6 +38,8 @@ public class KeyWordReportsDao {
         getFilterInValidClientCount(startTime, endTime, keyWordReportsVOS, typeIds,keyWord,tableInfo, tableDetail,companyId);
         getFilterInValidClientCount(startTime, endTime, keyWordReportsVOS, typeIds,keyWord, tableInfo, tableDetail,companyId);
         getInValidClientCount(startTime, endTime, keyWordReportsVOS, typeIds,keyWord, tableInfo, tableDetail, dsInvalidVO,companyId);
+        getComeShopSuccessClientCount(startTime, endTime, keyWordReportsVOS, typeIds,keyWord, tableInfo, tableDetail,companyId);
+        getOnLineSuccessClientCount(startTime, endTime, keyWordReportsVOS, typeIds,keyWord, tableInfo, tableDetail,companyId);
         getAvgAmount(startTime, endTime, keyWordReportsVOS, typeIds,keyWord, tableInfo, tableDetail,companyId);
         getAmount(startTime, endTime, keyWordReportsVOS, typeIds,keyWord, tableInfo, tableDetail,companyId);
         computerRate(keyWordReportsVOS, dsInvalidVO);
@@ -149,7 +151,7 @@ public class KeyWordReportsDao {
     private void getComeShopSuccessClientCount(String startTime, String endTime, List<KeyWordReportsVO> keyWordReportsVOS, String typeIds, String keyWord,String tableInfo, String tableDetail,Integer companyId) {
         StringBuilder sql = new StringBuilder();
         getBaseSql(sql,typeIds, tableInfo, tableDetail,companyId);
-        sql.append(" and info.status in (9,30)");
+        sql.append(" and info.statusid in (9,30)");
         sql.append(" and info.SuccessTime between ? and ?");
         sql.append(" GROUP BY detail.keyword  ");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{keyWord,startTime, endTime});
@@ -177,7 +179,7 @@ public class KeyWordReportsDao {
     private void getOnLineSuccessClientCount(String startTime, String endTime, List<KeyWordReportsVO> keyWordReportsVOS, String typeIds, String keyWord,String tableInfo, String tableDetail,Integer companyId) {
         StringBuilder sql = new StringBuilder();
         getBaseSql(sql,typeIds, tableInfo, tableDetail,companyId);
-        sql.append(" and info.status in (40)");
+        sql.append(" and info.statusid in (40)");
         sql.append(" and info.SuccessTime between ? and ?");
         sql.append(" GROUP BY detail.keyword  ");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql.toString(), new Object[]{keyWord,startTime, endTime});
