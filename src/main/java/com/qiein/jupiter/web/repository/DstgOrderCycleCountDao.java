@@ -73,7 +73,6 @@ public class DstgOrderCycleCountDao {
             }
         });
 
-        System.out.println(JSONObject.toJSONString(rMap));
         //TODO stack排序
         Set<Integer> stack = new LinkedHashSet<>();
         List<Map<String, Object>> rowsData = new ArrayList<>();
