@@ -52,9 +52,6 @@ public class DstgOrderCycleCountDao {
                 "  cyc";
         final Map<Integer, List<JSONObject>> rMap = new HashMap<>();
 
-        System.out.println(JSONObject.toJSONString(conditionMap));
-        System.out.println(sql);
-
         namedJdbc.query(sql, conditionMap, new RowCallbackHandler() {
             @Override
             public void processRow(ResultSet resultSet) throws SQLException {
@@ -73,6 +70,8 @@ public class DstgOrderCycleCountDao {
 
             }
         });
+
+        System.out.println(JSONObject.toJSONString(rMap));
         //TODO stack排序
         Set<Integer> stack = new LinkedHashSet<>();
         List<Map<String, Object>> rowsData = new ArrayList<>();
