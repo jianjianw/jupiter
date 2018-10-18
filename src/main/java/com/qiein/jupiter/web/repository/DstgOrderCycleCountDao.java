@@ -78,23 +78,27 @@ public class DstgOrderCycleCountDao {
                 int cycDay = jsonObject.getIntValue("cyc");
                 if (cycDay == 0) {
                     String desc = "当天";
-                    if(!stack.contains(desc)){
-                        stack.add(desc);
-                    }
+////                    if (!stack.contains(desc)) {
+////                        stack.add(desc);
+////                    }
                     row.put(desc, jsonObject.getIntValue("count"));
                 } else {
                     String desc = cycDay + "天";
                     row.put(desc, jsonObject.getIntValue("count"));
-                    if(!stack.contains(desc)){
+                    if (!stack.contains(desc)) {
                         stack.add(desc);
                     }
                 }
             }
             rowsData.add(row);
         }
-        Set<String> columns = new LinkedHashSet<>();
+        //排序
+        List<String> stackList = new ArrayList<>(stack);
+        Collections.sort(stackList);
+        stackList.add(0, "当天");
+        List<String> columns = new ArrayList<>();
         columns.add("渠道");
-        columns.addAll(stack);
+        columns.addAll(stackList);
 
         //前端需要的
         json.put("stack", stack);
