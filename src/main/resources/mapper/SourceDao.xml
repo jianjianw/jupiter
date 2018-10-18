@@ -155,7 +155,7 @@
             <if test="sv.isShow != null">
                 ISSHOW = #{sv.isShow},
             </if>
-            <if test="pushRule != null">
+            <if test="sv.pushRule != null">
                 PUSHRULE = #{sv.pushRule}
             </if>
         </set>
