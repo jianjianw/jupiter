@@ -83,7 +83,7 @@ public class SourceServiceImpl implements SourceService {
             if (StringUtil.isNotEmpty(sourceVO.getLinkIds())) {
                 sourceStaffDao.deleteBySourceId(sourceVO.getId(), sourceVO.getCompanyId());
 //                sourceStaffDao.insertBySourceId(sourceVO.getId(), sourceVO.getCompanyId(), Arrays.asList(sourceVO.getLinkIds().split(CommonConstant.STR_SEPARATOR)), SourceStaffConst.RELATYPE_STAFF);
-                for(String linkId: Arrays.asList(sourceVO.getLinkIds().split(CommonConstant.STR_SEPARATOR))){
+                for (String linkId : Arrays.asList(sourceVO.getLinkIds().split(CommonConstant.STR_SEPARATOR))) {
                     sourceStaffDao.insertBySourceId(sourceVO.getId(), sourceVO.getCompanyId(), linkId, SourceStaffConst.RELATYPE_STAFF);
                 }
             }
@@ -92,7 +92,7 @@ public class SourceServiceImpl implements SourceService {
             if (StringUtil.isNotEmpty(sourceVO.getLinkIds())) {
                 sourceStaffDao.deleteBySourceId(sourceVO.getId(), sourceVO.getCompanyId());
 //                sourceStaffDao.insertBySourceId(sourceVO.getId(), sourceVO.getCompanyId(), Arrays.asList(sourceVO.getLinkIds().split(CommonConstant.STR_SEPARATOR)), SourceStaffConst.RELATYPE_GROUP);
-                for(String linkId: Arrays.asList(sourceVO.getLinkIds().split(CommonConstant.STR_SEPARATOR))){
+                for (String linkId : Arrays.asList(sourceVO.getLinkIds().split(CommonConstant.STR_SEPARATOR))) {
                     sourceStaffDao.insertBySourceId(sourceVO.getId(), sourceVO.getCompanyId(), linkId, SourceStaffConst.RELATYPE_GROUP);
                 }
             }
@@ -192,6 +192,7 @@ public class SourceServiceImpl implements SourceService {
             sourceDictVO.setSrcImg(sourcePO.getSrcImg());
             sourceDictVO.setSrcName(sourcePO.getSrcName());
             sourceDictVO.setShowFlag(sourcePO.getIsShow());
+            sourceDictVO.setPushRule(sourcePO.getPushRule());
             //Id
             pageDictMap.put(String.valueOf(sourcePO.getId()), sourceDictVO);
         }
@@ -200,6 +201,7 @@ public class SourceServiceImpl implements SourceService {
 
     /**
      * 获取员工的来源列表
+     *
      * @param companyId
      * @param staffId
      * @return

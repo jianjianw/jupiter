@@ -25,6 +25,20 @@ public class SourceDictVO implements Serializable {
      */
     private boolean showFlag;
 
+    /**
+     * 分配规则
+     */
+    private int pushRule;
+
+
+    public int getPushRule() {
+        return pushRule;
+    }
+
+    public void setPushRule(int pushRule) {
+        this.pushRule = pushRule;
+    }
+
     public boolean isShowFlag() {
         return showFlag;
     }
