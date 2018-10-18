@@ -620,8 +620,23 @@ public interface StaffDao extends BaseDao<StaffPO> {
                         @Param("staffId") int staffId,
                         @Param("msgSet") String msgSet);
 
-
+    /**
+     * 更新员工设置
+     *
+     * @param companyId
+     * @param staffId
+     * @param settings
+     * @return
+     */
     int updateSettings(@Param("companyId") int companyId,
                        @Param("staffId") int staffId,
                        @Param("settings") String settings);
+
+    /**
+     * 更新公司今日接单数目
+     *
+     * @param companyId
+     * @return
+     */
+    int updateCompanyTodayNum(@Param("companyId") int companyId);
 }

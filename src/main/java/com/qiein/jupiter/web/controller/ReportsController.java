@@ -776,4 +776,20 @@ public class ReportsController extends BaseController {
     public ResultInfo getSourceAndStatusReports(String appointorIds, String collectorIds, String receptorIds, String start, String end, String groupIds, String typeIds, String sourceIds) {
         return ResultInfoUtil.success(reportService.getSourceAndStatusReports(appointorIds, collectorIds, receptorIds, start, end, groupIds, typeIds, sourceIds, getCurrentLoginStaff().getCompanyId()));
     }
+
+    /**
+     * 电商推广订单周期统计
+     *
+     * @param start
+     * @param end
+     * @return
+     */
+    @GetMapping("/get_dstg_order_cycle_count")
+    public ResultInfo getDstgOrderCycleCount(int start, int end) {
+        QueryVO queryVO = new QueryVO();
+        queryVO.setStart(start);
+        queryVO.setEnd(end);
+        queryVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
+        return ResultInfoUtil.success(reportService.getDstgOrderCycleCount(queryVO));
+    }
 }

@@ -1374,5 +1374,32 @@
               AND ID = #{staffId}
     </update>
 
-
+    <!--更新公司今日接单数目-->
+    <update id="updateCompanyTodayNum">
+        UPDATE hm_pub_staff sf
+            LEFT JOIN (
+                          SELECT
+                              COUNT(1) AS num,
+                              info.APPOINTORID,
+                              info.COMPANYID
+                          FROM
+                              hm_crm_client_info info
+                              INNER JOIN hm_crm_source src ON src.COMPANYID = info.COMPANYID
+                                                              AND src.id = info.SOURCEID
+                          WHERE
+                              info.ISDEL = 0
+                              AND CAST(STATUSID AS UNSIGNED) &lt;&gt; 0
+                              AND CAST(STATUSID AS UNSIGNED) &lt;&gt; 98
+                              AND CAST(STATUSID AS UNSIGNED) &lt;&gt; 99
+                              AND CAST(STATUSID AS UNSIGNED) &lt;&gt; 999
+                              AND info.RECEIVETIME &gt;= UNIX_TIMESTAMP(CAST(SYSDATE() AS DATE))
+                              AND info.RECEIVETIME &lt;= UNIX_TIMESTAMP(CAST(SYSDATE() AS DATE)) + 86399
+                              AND src.PUSHRULE IN (11, 1, 12, 14, 20)
+                              AND info.COMPANYID = #{companyId}
+                          GROUP BY
+                              info.APPOINTORID
+                      ) a ON sf.COMPANYID = a.COMPANYID
+                             AND sf.ID = APPOINTORID
+        SET sf.TODAYNUM =IFNULL( a.num, 0)
+    </update>
 </mapper>
