@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.repository;
 
 import com.alibaba.fastjson.JSONObject;
+import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.vo.QueryVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowCallbackHandler;
@@ -28,6 +29,7 @@ public class DstgOrderCycleCountDao {
         conditionMap.put("companyId", companyId);
         conditionMap.put("start", vo.getStart());
         conditionMap.put("end", vo.getEnd());
+        conditionMap.put("sourceId", vo.getSourceId());
 
         String sql = "SELECT" +
                 "  src.SRCNAME,src.ID," +
@@ -41,8 +43,11 @@ public class DstgOrderCycleCountDao {
                 "  AND info.ISDEL = 0 " +
                 "  AND info.CREATETIME BETWEEN :start " +
                 "  AND :end " +
-                "  AND info.SUCCESSTIME >= info.CREATETIME AND info.SRCTYPE = 1 " +
-                " GROUP BY" +
+                "  AND info.SUCCESSTIME >= info.CREATETIME AND info.SRCTYPE = 1 ";
+        if (StringUtil.isNotEmpty(vo.getSourceId())) {
+            sql += " AND info.SOURCEID in (:sourceId) ";
+        }
+        sql += " GROUP BY" +
                 "  info.SOURCEID," +
                 "  cyc";
         final Map<Integer, List<JSONObject>> rMap = new HashMap<>();

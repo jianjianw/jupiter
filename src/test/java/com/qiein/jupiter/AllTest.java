@@ -460,4 +460,19 @@ public class AllTest {
         String msgset = JSON.toJSONString(staffMsgSetDTO);
         System.out.println(msgset);
     }
+
+    @Test
+    public void testlIst13(){
+        Set<Integer> stack = new LinkedHashSet<>();
+        stack.add(10);
+        stack.add(1);
+        stack.add(2);
+        stack.add(11);
+        stack.add(12);
+        stack.add(13);
+
+        List<Integer> stackList = new ArrayList<>(stack);
+        Collections.sort(stackList);
+        System.out.println(stackList);
+    }
 }
