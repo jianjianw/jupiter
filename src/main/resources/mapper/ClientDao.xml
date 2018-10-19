@@ -68,19 +68,19 @@
     <!-- 客资被转移时统计被转移人的客资数 -->
     <select id="getOnwerInfoNumByIds" parameterType="map" resultMap="staffMap">
         SELECT
-            ${type}  ID,
-            COUNT(1) NUM,
-            KZID
+        ${type} ID,
+        COUNT(1) NUM,
+        KZID
         FROM
-            ${tabName} info
+        ${tabName} info
         WHERE
-            info.COMPANYID = #{companyId}
-            AND info.ISDEL = 0
-            AND ${type} IS NOT NULL
-            AND info.KZID IN
-            <foreach collection="kzIdArr" item="kzId" index="index" open="(" separator="," close=")">
-                #{kzId}
-            </foreach>
+        info.COMPANYID = #{companyId}
+        AND info.ISDEL = 0
+        AND ${type} IS NOT NULL
+        AND info.KZID IN
+        <foreach collection="kzIdArr" item="kzId" index="index" open="(" separator="," close=")">
+            #{kzId}
+        </foreach>
         GROUP BY ${type}
     </select>
 
@@ -88,18 +88,61 @@
         SELECT  ID FROM ${tableName} WHERE KZID=#{kzId} and COMPANYID=#{companyId}
     </select>
 
-    <select id = "getKzNumBySourceId" resultType="Integer">
+    <select id="getKzNumBySourceId" resultType="Integer">
         select count(1) from ${tableName} info where info.SOURCEID = #{sourceId} and info.COMPANYID = #{companyId}
     </select>
 
     <!--修改客资渠道ID-->
-    <update id = "updateKzChannelId">
+    <update id="updateKzChannelId">
         update ${infoTabName} info set info.channelId = #{channelId} where info.sourceId = #{sourceId} and info.companyId = #{companyId}
     </update>
 
     <!--修改客资详情表中的Memo字段-->
-    <update id = "updateDetailMemo">
+    <update id="updateDetailMemo">
         update ${detailTabName} detail set memo = #{content},INVALIDLABEL = #{label},INVALIDMEMO = #{reason} where detail.kzid = #{kzId} and detail.companyId = #{companyId}
+    </update>
+    <!--修改客资的客服小组名称-->
+    <update id="updateGroupName" parameterType="map">
+        UPDATE ${detailTabName} det
+        LEFT  JOIN ${infoTabName} info ON det.KZID = info.KZID AND  det.COMPANYID = info.COMPANYID
+        SET GROUPNAME = #{groupName}
+        WHERE det.COMPANYID = #{companyId}
+        AND info.GROUPID = #{groupId}
+    </update>
+    <!--修改录入人姓名-->
+    <update id="updateCollectorName" parameterType="map">
+        UPDATE  ${detailTabName} det
+        LEFT JOIN ${infoTabName} info ON det.COMPANYID = info.COMPANYID AND info.KZID = det.KZID
+        SET det.COLLECTORNAME = #{nickName}
+        WHERE info.COMPANYID = #{companyId}
+        AND info.COLLECTORID = #{staffId}
+    </update>
+
+    <!--修改筛选人姓名-->
+    <update id="updateCollectorName" parameterType="map">
+        UPDATE  ${detailTabName} det
+        LEFT JOIN ${infoTabName} info ON det.COMPANYID = info.COMPANYID AND info.KZID = det.KZID
+        SET det.PROMOTERNAME = #{nickName}
+        WHERE info.COMPANYID = #{companyId}
+        AND info.PROMOTORID = #{staffId}
+    </update>
+
+    <!--修改邀约人姓名-->
+    <update id="updateAppointorName" parameterType="map">
+        UPDATE  ${detailTabName} det
+        LEFT JOIN ${infoTabName} info ON det.COMPANYID = info.COMPANYID AND info.KZID = det.KZID
+        SET det.APPOINTNAME = #{nickName}
+        WHERE info.COMPANYID = #{companyId}
+        AND info.APPOINTORID = #{staffId}
+    </update>
+
+    <!--修改门市接待姓名-->
+    <update id="updateReceptorName" parameterType="map">
+        UPDATE  ${detailTabName} det
+        LEFT JOIN ${infoTabName} info ON det.COMPANYID = info.COMPANYID AND info.KZID = det.KZID
+        SET det.RECEPTORNAME = #{nickName}
+        WHERE info.COMPANYID = #{companyId}
+        AND info.RECEPTORID = #{staffId}
     </update>
 
 </mapper>
