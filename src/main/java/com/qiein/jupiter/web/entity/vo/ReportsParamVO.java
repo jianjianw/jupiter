@@ -54,6 +54,18 @@ public class ReportsParamVO {
      * */
     private String collectorId;
 
+    /**
+     * 门店id
+     */
+    private String shopIds;
+
+    public String getShopIds() {
+        return shopIds;
+    }
+
+    public void setShopIds(String shopIds) {
+        this.shopIds = shopIds;
+    }
 
     public String getCollectorId() {
         return collectorId;

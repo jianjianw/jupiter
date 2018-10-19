@@ -388,4 +388,8 @@ public interface ReportService {
      * 电商推广订单周期统计
      */
     JSONObject getDstgOrderCycleCount(QueryVO queryVO);
+    /**
+     * 销售中心报表
+     */
+    List<SalesCenterReportsVO> getSalesCenterReports(ReportsParamVO reportsParamVO);
 }

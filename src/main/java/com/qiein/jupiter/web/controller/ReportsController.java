@@ -786,4 +786,12 @@ public class ReportsController extends BaseController {
         queryVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
         return ResultInfoUtil.success(reportService.getDstgOrderCycleCount(queryVO));
     }
+    /**
+     * 销售中心报表
+     */
+    @PostMapping("/get_safes_center_reports")
+    public ResultInfo getSalesCenterReports(ReportsParamVO reportsParamVO){
+        reportsParamVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
+        return ResultInfoUtil.success(reportService.getSalesCenterReports(reportsParamVO));
+    }
 }
