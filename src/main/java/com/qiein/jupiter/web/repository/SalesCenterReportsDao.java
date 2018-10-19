@@ -55,15 +55,17 @@ public class SalesCenterReportsDao {
      */
     private void getAllShop(ReportsParamVO reportsParamVO, List<SalesCenterReportsVO> salesCenterReportsVOS) {
         StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT shop.id id,shop.shopname shopName,");
+        sb.append(" SELECT grp.shopid id,shop.SHOPNAME shopName,");
         sb.append(" ifnull(sum(detail.TOTALSUCCESSCOUNTTARGET),0) totalSuccessCountTarget,");
         sb.append(" ifnull(sum(detail.SHOPCALLONSUCCESSCOUNTTARGET),0) shopCallOnSuccessCountTarget,");
         sb.append(" ifnull(sum(detail.SHOPCALLONVALIDCOUNTTARGET),0) shopCallOnValidCountTarget");
-        sb.append(" FROM hm_pub_shop shop");
-        sb.append(" LEFT JOIN hm_crm_shop_detail detail ON shop.id = detail.shopid AND shop.companyid = detail.companyid and detail.CREATETIME between ? and ?");
-        sb.append(" WHERE shop.ISSHOW = 1 AND shop.TYPEID = 1");
-        sb.append(" and shop.id in ("+reportsParamVO.getShopIds()+")");
-        sb.append(" and shop.companyid=?");
+        sb.append(" FROM hm_pub_group grp");
+        sb.append(" LEFT JOIN hm_pub_shop shop ON grp.COMPANYID = shop.COMPANYID AND grp.SHOPID = shop.ID");
+        sb.append(" left join hm_crm_shop_detail detail on shop.id=detail.shopid and shop.companyid= detail.companyid  and detail.CREATETIME between ? and ?");
+        sb.append(" WHERE grp.GROUPTYPE = 'msjd' AND grp.companyid = ? AND grp.SHOPID IS NOT NULL");
+        if(StringUtil.isNotEmpty(reportsParamVO.getShopIds())){
+            sb.append(" and shop.id in ("+reportsParamVO.getShopIds()+")");
+        }
         sb.append(" GROUP BY shop.id");
         List<Map<String, Object>> salesCenterReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getStart(), reportsParamVO.getEnd(), reportsParamVO.getCompanyId()});
@@ -82,11 +84,11 @@ public class SalesCenterReportsDao {
      * 获取基础sql
      */
     private void getBaseSql(StringBuilder sb, ReportsParamVO reportsParamVO, boolean lazy, boolean isCreate) {
-        sb.append(" SELECT info.SHOPID shopId,count(1) count FROM hm_crm_client_info info");
-        sb.append(" WHERE info.COMPANYID = ? AND info.ISDEL = 0 AND info.SHOPID IS NOT NULL");
-        if (StringUtil.isNotEmpty(reportsParamVO.getShopIds())) {
-            sb.append(" and info.shopid in (" + reportsParamVO.getShopIds() + ")");
-        }
+        sb.append(" SELECT count(1) count,grp.SHOPID shopId FROM hm_crm_client_info info");
+        sb.append(" LEFT JOIN hm_pub_group_staff staff ON staff.COMPANYID = info.COMPANYID AND staff.STAFFID = info.COLLECTORID");
+        sb.append(" LEFT JOIN hm_pub_group grp ON grp.groupid = staff.GROUPID AND grp.COMPANYID = staff.COMPANYID");
+        sb.append(" LEFT JOIN hm_pub_shop shop on shop.ID=grp.SHOPID and shop.COMPANYID=grp.COMPANYID");
+        sb.append(" where grp.GROUPTYPE='msjd' and grp.companyid= ? ");
         if (StringUtil.isNotEmpty(reportsParamVO.getType())) {
             sb.append(" and info.typeid in (" + reportsParamVO.getType() + ")");
         }
@@ -107,7 +109,7 @@ public class SalesCenterReportsDao {
     private void getSuccessClientCount(ReportsParamVO reportsParamVO, List<SalesCenterReportsVO> salesCenterReportsVOS) {
         StringBuilder sb = new StringBuilder();
         getBaseSql(sb, reportsParamVO, false, false);
-        sb.append(" group by info.shopid");
+        sb.append(" group by grp.SHOPID");
         List<Map<String, Object>> salesCenterReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(), reportsParamVO.getStart(), reportsParamVO.getEnd(), ClientStatusConst.IS_SUCCESS});
         List<SalesCenterReportsVO> salesCenterReportsVOSBak = new ArrayList<>();
@@ -132,7 +134,7 @@ public class SalesCenterReportsDao {
     private void getShopCallOnSuccessClientCount(ReportsParamVO reportsParamVO, List<SalesCenterReportsVO> salesCenterReportsVOS) {
         StringBuilder sb = new StringBuilder();
         getBaseSql(sb, reportsParamVO, true, false);
-        sb.append(" group by info.shopid");
+        sb.append(" group by grp.SHOPID");
         List<Map<String, Object>> salesCenterReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(), reportsParamVO.getStart(), reportsParamVO.getEnd(), ClientStatusConst.IS_SUCCESS});
         List<SalesCenterReportsVO> salesCenterReportsVOSBak = new ArrayList<>();
@@ -157,7 +159,7 @@ public class SalesCenterReportsDao {
     private void getAllClientCount(ReportsParamVO reportsParamVO, List<SalesCenterReportsVO> salesCenterReportsVOS) {
         StringBuilder sb = new StringBuilder();
         getBaseSql(sb, reportsParamVO, true, true);
-        sb.append(" group by info.shopid");
+        sb.append(" group by grp.SHOPID");
         List<Map<String, Object>> salesCenterReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(), reportsParamVO.getStart(), reportsParamVO.getEnd()});
         List<SalesCenterReportsVO> salesCenterReportsVOSBak = new ArrayList<>();
@@ -183,7 +185,7 @@ public class SalesCenterReportsDao {
         StringBuilder sb = new StringBuilder();
         getBaseSql(sb, reportsParamVO, true, true);
         sb.append(" and INSTR( '" + dsInvalidVO.getDsDdStatus() + "', CONCAT(',',info.STATUSID + '',',')) != 0");
-        sb.append(" group by info.shopid");
+        sb.append(" group by grp.SHOPID");
         List<Map<String, Object>> salesCenterReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(), reportsParamVO.getStart(), reportsParamVO.getEnd()});
         List<SalesCenterReportsVO> salesCenterReportsVOSBak = new ArrayList<>();
@@ -209,7 +211,7 @@ public class SalesCenterReportsDao {
         StringBuilder sb = new StringBuilder();
         getBaseSql(sb, reportsParamVO, true, true);
         sb.append("   and info.STATUSID = 98 ");
-        sb.append(" group by info.shopid");
+        sb.append(" group by grp.SHOPID");
         List<Map<String, Object>> salesCenterReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(), reportsParamVO.getStart(), reportsParamVO.getEnd()});
         List<SalesCenterReportsVO> salesCenterReportsVOSBak = new ArrayList<>();
@@ -235,7 +237,7 @@ public class SalesCenterReportsDao {
         StringBuilder sb = new StringBuilder();
         getBaseSql(sb, reportsParamVO, true, true);
         sb.append("   and info.STATUSID = 99 ");
-        sb.append(" group by info.shopid");
+        sb.append(" group by grp.SHOPID");
         List<Map<String, Object>> salesCenterReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(), reportsParamVO.getStart(), reportsParamVO.getEnd()});
         List<SalesCenterReportsVO> salesCenterReportsVOSBak = new ArrayList<>();
@@ -261,7 +263,7 @@ public class SalesCenterReportsDao {
         StringBuilder sb = new StringBuilder();
         getBaseSql(sb, reportsParamVO, true, true);
         sb.append("   and info.STATUSID = 0 ");
-        sb.append(" group by info.shopid");
+        sb.append(" group by grp.SHOPID");
         List<Map<String, Object>> salesCenterReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(), reportsParamVO.getStart(), reportsParamVO.getEnd()});
         List<SalesCenterReportsVO> salesCenterReportsVOSBak = new ArrayList<>();
@@ -287,7 +289,7 @@ public class SalesCenterReportsDao {
         StringBuilder sb = new StringBuilder();
         getBaseSql(sb, reportsParamVO, true, true);
         sb.append(" AND INSTR('" + dsInvalidVO.getZjsValidStatus() + "',CONCAT( ','+info.STATUSID + '', ','))>0 ");
-        sb.append(" group by info.shopid");
+        sb.append(" group by grp.SHOPID");
         List<Map<String, Object>> salesCenterReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(), reportsParamVO.getStart(), reportsParamVO.getEnd()});
         List<SalesCenterReportsVO> salesCenterReportsVOSBak = new ArrayList<>();
