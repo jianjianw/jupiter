@@ -16,3 +16,4 @@ COMMENT '收款类型  1：首款  2：补款'
 ###  10/19 增加   报表设置  、录入指定客服权限
 INSERT INTO  hm_pub_permission (`ID`, `PERMISSIONNAME`, `TYPEID`) VALUES (202, '报表设置', 1);
 INSERT INTO  hm_pub_permission (`ID`, `PERMISSIONNAME`, `TYPEID`) VALUES (203, '录入指定客服', 1);
+INSERT INTO  hm_pub_permission (`ID`, `PERMISSIONNAME`, `TYPEID`) VALUES (204, '修改客资联系方式', 1);
