@@ -33,26 +33,26 @@ public class ClientExportVO implements Serializable {
     private String receivePeriod;
     /**
      * 预约时间
-     * */
-    @Excel(name="预约时间",width= 20 ,height = 6)
+     */
+    @Excel(name = "预约时间", width = 20, height = 6)
     private String appointTime;
 
     /**
      * 进店时间
-     * */
-    @Excel(name="进店时间",width= 10 ,height = 6)
+     */
+    @Excel(name = "进店时间", width = 10, height = 6)
     private String comeShopTime;
 
     /**
      * 拍摄类型
-     * */
-    @Excel(name="拍摄类型",width = 10,height = 6)
+     */
+    @Excel(name = "拍摄类型", width = 10, height = 6)
     private String shootType;
 
     /**
      * 门市
-     * */
-    @Excel(name="门市",width = 20,height = 6)
+     */
+    @Excel(name = "门市", width = 20, height = 6)
     private String receptorName;
 
     /**
@@ -67,7 +67,7 @@ public class ClientExportVO implements Serializable {
     private String kzName;
     /**
      * 性别
-     * */
+     */
     @Excel(name = "性别", width = 10, height = 6)
     private String kzSex;
     /**
@@ -117,6 +117,9 @@ public class ClientExportVO implements Serializable {
      */
     @Excel(name = "客服", width = 20, height = 6)
     private String appointName;
+
+    @Excel(name = "咨询方式", width = 10, height = 6)
+    private String zxStyle;
     /**
      * 意向等级
      */
@@ -182,8 +185,8 @@ public class ClientExportVO implements Serializable {
     private String invalidLabel;
     /**
      * 无效备注
-     * */
-    @Excel(name="无效备注",width=20,height = 6)
+     */
+    @Excel(name = "无效备注", width = 20, height = 6)
     private String invalidMemo;
     /**
      * 销售备注
@@ -192,23 +195,23 @@ public class ClientExportVO implements Serializable {
     private String memo;
     /**
      * 广告id
-     * */
-    @Excel(name ="广告id",width = 20,height = 6)
+     */
+    @Excel(name = "广告id", width = 20, height = 6)
     private String adId;
     /**
      * 筛客名称
-     * */
-    @Excel(name="筛客名称",width = 20,height = 6)
+     */
+    @Excel(name = "筛客名称", width = 20, height = 6)
     private String promoterName;
     /**
      * 老客姓名
-     * */
-    @Excel(name="老客姓名",width = 20,height = 6)
+     */
+    @Excel(name = "老客姓名", width = 20, height = 6)
     private String oldKzName;
     /**
      * 老客电话
-     * */
-    @Excel(name="老客电话",width = 20,height = 6)
+     */
+    @Excel(name = "老客电话", width = 20, height = 6)
     private String oldKzPhone;
 
 
@@ -514,5 +517,13 @@ public class ClientExportVO implements Serializable {
 
     public void setAppointTime(String appointTime) {
         this.appointTime = appointTime;
+    }
+
+    public String getZxStyle() {
+        return zxStyle;
+    }
+
+    public void setZxStyle(String zxStyle) {
+        this.zxStyle = zxStyle;
     }
 }

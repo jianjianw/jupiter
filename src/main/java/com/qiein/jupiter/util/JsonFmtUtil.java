@@ -142,6 +142,7 @@ public class JsonFmtUtil {
             vo.setPromoterName(info.getString("promotername"));
             vo.setOldKzName(info.getString("oldkzname"));
             vo.setOldKzPhone(info.getString("oldkzphone"));
+            vo.setZxStyle(getDicNameByCode(info.getIntValue("zxstyle"), DictionaryConstant.ZX_STYLE, dicMap));
             //TODO excel 最大单元格长度
             if (info.getString("invalidmemo") != null && info.getString("invalidmemo").length() >= 32000) {
                 vo.setInvalidMemo(info.getString("invalidmemo").substring(0, 32000));
