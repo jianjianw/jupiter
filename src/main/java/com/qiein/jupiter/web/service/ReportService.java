@@ -376,9 +376,9 @@ public interface ReportService {
 	List<Map<String, Object>> getDSTGSrcMonthReportsROI(String month, String typeId, String sourceId, int companyId);
 
     /**
-     * 转介绍报表详情，按客服汇总
+     * 转介绍报表详情，按客服组汇总
      * */
-    public Map<String,Object> getZjsDetailReportByStaff(ReportParamDTO reportParamDTO);
+    public Map<String,Object> getZjsDetailReportByGroup(ReportParamDTO reportParamDTO);
 
     /**
      * 电商推广订单周期统计

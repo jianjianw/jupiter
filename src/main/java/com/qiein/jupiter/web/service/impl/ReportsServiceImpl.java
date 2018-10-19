@@ -1599,7 +1599,7 @@ public class ReportsServiceImpl implements ReportService {
 	}
 
     @Override
-    public Map<String,Object> getZjsDetailReportByStaff(ReportParamDTO reportParamDTO) {
+    public Map<String,Object> getZjsDetailReportByGroup(ReportParamDTO reportParamDTO) {
         return null;
     }
 
