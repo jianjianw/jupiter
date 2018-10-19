@@ -18,6 +18,7 @@ import com.qiein.jupiter.web.entity.vo.ClientVO;
 import com.qiein.jupiter.web.entity.vo.PlatAddClientInfoVO;
 import com.qiein.jupiter.web.entity.vo.ShopVO;
 import com.qiein.jupiter.web.repository.CheckClientRepeatDao;
+import com.qiein.jupiter.web.repository.ClientAddDao;
 import com.qiein.jupiter.web.service.ClientAddService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,7 +54,8 @@ public class ClientAddServiceImpl implements ClientAddService {
     private ClientBlackListDao clientBlackListDao;
     @Autowired
     private WebSocketMsgUtil webSocketMsgUtil;
-
+    @Autowired
+    private ClientAddDao clientAddDao;
     @Autowired
     private CheckClientRepeatDao checkClientRepeatDao;
 
@@ -668,9 +670,8 @@ public class ClientAddServiceImpl implements ClientAddService {
         checkBlackList(clientVO.getCompanyId(), clientVO);
         //查重
         checkClientRepeatDao.check(clientVO);
-
-
-
+        //新增
+        clientAddDao.addDingClientInfo(clientVO);
     }
 
 }
