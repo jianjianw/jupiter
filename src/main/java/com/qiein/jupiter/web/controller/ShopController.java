@@ -168,6 +168,7 @@ public class ShopController extends BaseController {
     /**
      * 修改门店报表 目标
      */
+    @GetMapping("/edit_target")
     public ResultInfo editTarget(@RequestBody ShopTargetDTO shopTargetDTO){
         shopTargetDTO.setCompanyId(getCurrentLoginStaff().getCompanyId());
         shopService.editTarget(shopTargetDTO);
