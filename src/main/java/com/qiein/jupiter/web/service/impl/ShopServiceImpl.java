@@ -6,6 +6,7 @@ import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.web.dao.ClientInfoDao;
 import com.qiein.jupiter.web.dao.ShopDao;
+import com.qiein.jupiter.web.entity.dto.ShopTargetDTO;
 import com.qiein.jupiter.web.entity.po.ShopPO;
 import com.qiein.jupiter.web.entity.vo.ShopDictVO;
 import com.qiein.jupiter.web.entity.vo.ShopVO;
@@ -185,5 +186,16 @@ public class ShopServiceImpl implements ShopService {
      */
     public List<ShopVO> getShopAndStaffList(int companyId) {
         return shopDao.getShopAndStaffList(companyId);
+    }
+    /**
+     *  修改门店报表 目标
+     */
+    public void editTarget(ShopTargetDTO shopTargetDTO){
+        List<ShopTargetDTO> checkList=shopDao.findShopTarget(shopTargetDTO.getCompanyId(),shopTargetDTO.getTime(),shopTargetDTO.getShopId());
+        //校验是否存在该日期内的数据
+        if(checkList.size()==0){
+            shopDao.insertTarget(shopTargetDTO);
+        }
+        shopDao.editTarget(shopTargetDTO);
     }
 }

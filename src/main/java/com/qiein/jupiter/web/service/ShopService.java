@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.service;
 
+import com.qiein.jupiter.web.entity.dto.ShopTargetDTO;
 import com.qiein.jupiter.web.entity.po.ShopPO;
 import com.qiein.jupiter.web.entity.vo.ShopDictVO;
 import com.qiein.jupiter.web.entity.vo.ShopVO;
@@ -108,4 +109,8 @@ public interface ShopService {
      * @return
      */
     List<ShopVO> getShopAndStaffList(int companyId);
+    /**
+     *  修改门店报表 目标
+     */
+    void editTarget(ShopTargetDTO shopTargetDTO);
 }

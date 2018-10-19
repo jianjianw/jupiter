@@ -814,8 +814,12 @@ public class ReportsController extends BaseController {
      * 销售中心报表
      */
     @PostMapping("/get_safes_center_reports")
-    public ResultInfo getSalesCenterReports(ReportsParamVO reportsParamVO){
+    public ResultInfo getSalesCenterReports(@RequestBody ReportsParamVO reportsParamVO){
         reportsParamVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
         return ResultInfoUtil.success(reportService.getSalesCenterReports(reportsParamVO));
     }
+
+
+
+
 }
