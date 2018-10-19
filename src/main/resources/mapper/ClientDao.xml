@@ -119,7 +119,7 @@
     </update>
 
     <!--修改筛选人姓名-->
-    <update id="updateCollectorName" parameterType="map">
+    <update id="updatePromoterName" parameterType="map">
         UPDATE  ${detailTabName} det
         LEFT JOIN ${infoTabName} info ON det.COMPANYID = info.COMPANYID AND info.KZID = det.KZID
         SET det.PROMOTERNAME = #{nickName}
