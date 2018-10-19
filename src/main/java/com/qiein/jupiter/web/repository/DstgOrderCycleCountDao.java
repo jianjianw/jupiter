@@ -1,6 +1,7 @@
 package com.qiein.jupiter.web.repository;
 
 import com.alibaba.fastjson.JSONObject;
+import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.vo.QueryVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class DstgOrderCycleCountDao {
         conditionMap.put("companyId", companyId);
         conditionMap.put("start", vo.getStart());
         conditionMap.put("end", vo.getEnd());
-        conditionMap.put("sourceId", vo.getSourceId());
+
 
         String sql = "SELECT" +
                 "  src.SRCNAME,src.ID," +
@@ -46,12 +47,13 @@ public class DstgOrderCycleCountDao {
                 "  AND info.SUCCESSTIME >= info.CREATETIME AND info.SRCTYPE = 1 ";
         if (StringUtil.isNotEmpty(vo.getSourceId())) {
             sql += " AND info.SOURCEID in (:sourceId) ";
+            String[] split = vo.getSourceId().split(CommonConstant.STR_SEPARATOR);
+            conditionMap.put("sourceId", new ArrayList<>(Arrays.asList(split)));
         }
         sql += " GROUP BY" +
                 "  info.SOURCEID," +
                 "  cyc";
         final Map<Integer, List<JSONObject>> rMap = new HashMap<>();
-
 
         namedJdbc.query(sql, conditionMap, new RowCallbackHandler() {
             @Override
@@ -62,7 +64,6 @@ public class DstgOrderCycleCountDao {
                 rJson.put("srcId", resultSet.getInt("ID"));
                 rJson.put("cyc", resultSet.getInt("cyc"));
                 rJson.put("count", resultSet.getInt("COUNT"));
-
                 //如果为空，则新增 一个类型
                 if (rMap.get(srcId) == null) {
                     rMap.put(srcId, new ArrayList<JSONObject>());
@@ -71,7 +72,7 @@ public class DstgOrderCycleCountDao {
 
             }
         });
-        //TODO stack排序
+
         Set<Integer> stack = new LinkedHashSet<>();
         List<Map<String, Object>> rowsData = new ArrayList<>();
         //  遍历

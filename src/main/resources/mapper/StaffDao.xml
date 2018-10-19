@@ -1026,7 +1026,7 @@
         </foreach>
         GROUP BY info.APPOINTORID
     </select>
-<!--#         AND info.SOURCEID = #{sourceId}-->
+
     <!-- 获取小组平均,小组领取客资情况-->
     <select id="getGroupAvgReceive" parameterType="map" resultType="java.lang.String">
         SELECT
@@ -1040,6 +1040,7 @@
         AND info.STATUSID != 98
         AND info.STATUSID != 99
         AND info.ISDEL = 0
+        AND info.SOURCEID = #{sourceId}
         AND info.GROUPID IN
         <foreach collection="groupIdList" item="groupId" index="index" open="(" separator="," close=")">
             #{groupId}
@@ -1401,4 +1402,39 @@
                              AND sf.ID = APPOINTORID
         SET sf.TODAYNUM = IFNULL(a.num, 0)
     </update>
+
+
+    <delete id="batchDeleteTrackStaff" parameterType="map">
+
+        DELETE staff,detail
+            FROM  hm_pub_staff staff inner join hm_pub_staff_detail detail
+              on staff.id = detail.id
+                WHERE staff.COMPANYID = #{companyId}
+                     AND staff.ISDEL = 1
+                     AND staff.ID IN
+                    <foreach collection="staffIds" item="id" index="index" open="(" separator="," close=")">
+                        #{id}
+                    </foreach>
+    </delete>
+
+    <delete id="deleteTrackStaff" parameterType="map">
+        DELETE staff,detail
+        FROM  hm_pub_staff staff inner join hm_pub_staff_detail detail
+        on staff.id = detail.id
+        WHERE staff.COMPANYID = #{companyId}
+        AND staff.ID = #{staffId}
+        AND staff.ISDEL = 1
+
+    </delete>
+
+    <select id="getTrackStaffByIds" parameterType="java.lang.Integer" resultMap="baseMap">
+        SELECT
+        <include refid="baseColumn"/>
+        FROM hm_pub_staff
+        WHERE ISDEL = 1 AND ID IN
+        <foreach collection="list" item="id" index="index" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
 </mapper>

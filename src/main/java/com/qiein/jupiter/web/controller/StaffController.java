@@ -13,6 +13,7 @@ import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.entity.dto.*;
 import com.qiein.jupiter.web.entity.po.SystemLog;
 import com.qiein.jupiter.web.entity.vo.*;
+import com.qiein.jupiter.web.service.ClientService;
 import com.qiein.jupiter.web.service.SystemLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -732,6 +733,67 @@ public class StaffController extends BaseController {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         staffService.updateSettings(currentLoginStaff.getCompanyId(), currentLoginStaff.getId(), settings);
         return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
+    }
+
+    /**
+     * 批量删除回收站的员工（物理删除）
+     * @return
+     */
+    @GetMapping("/batch_delete_track_staff")
+    public ResultInfo batchDeleteTrackStaff(@NotEmptyStr @RequestParam("staffId") String ids) {
+        // 获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+
+        //先查回收站的员工，为了记录日志
+        StringBuilder staffName = new StringBuilder(CommonConstant.NULL_STR);
+        List<StaffPO> staff = staffService.getTrackStaffByIds(ids, currentLoginStaff.getCompanyId());
+        for(int i=0;i<staff.size();i++) {
+            if(i==staff.size()-1) {
+                staffName.append(staff.get(i).getNickName());
+            }else{
+                staffName.append(staff.get(i).getNickName()).append(",");
+            }
+        }
+
+        //删除员工
+        String[] staffIds = ids.split(",");
+        staffService.batchDeleteTrackStaff(currentLoginStaff.getCompanyId(),staffIds);
+        RequestInfoDTO requestInfo = getRequestInfo();
+        try {
+            // 日志记录
+            SystemLog systemLog = new SystemLog(SysLogUtil.LOG_TYPE_STAFF, requestInfo.getIp(), requestInfo.getUrl(), currentLoginStaff.getId(),
+                    currentLoginStaff.getNickName(), SysLogUtil.getPhysicalRemoveLog(SysLogUtil.LOG_SUP_STAFF, staffName.toString()),
+                    currentLoginStaff.getCompanyId());
+            logService.addLog(systemLog);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultInfoUtil.success();
+        }
+        return ResultInfoUtil.success();
+    }
+
+    @GetMapping("/delete_track_staff")
+    public ResultInfo deleteTrackStaff(@RequestParam("staffId") int staffId) {
+        // 获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+
+        //先查回收站的员工，为了记录日志
+        List<StaffPO> staff = staffService.getTrackStaffByIds(String.valueOf(staffId), currentLoginStaff.getCompanyId());
+        StaffPO staffPO = staff.get(0);
+        staffService.deleteTrackStaff(currentLoginStaff.getCompanyId(),staffId);
+        RequestInfoDTO requestInfo = getRequestInfo();
+        try {
+            // 日志记录
+            logService.addLog(new SystemLog(SysLogUtil.LOG_TYPE_STAFF, requestInfo.getIp(), requestInfo.getUrl(), currentLoginStaff.getId(),
+                    currentLoginStaff.getNickName(), SysLogUtil.getPhysicalRemoveLog(SysLogUtil.LOG_SUP_STAFF, staffPO.getNickName()),
+                    currentLoginStaff.getCompanyId()));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultInfoUtil.success();
+        }
+        return ResultInfoUtil.success();
     }
 
     /**

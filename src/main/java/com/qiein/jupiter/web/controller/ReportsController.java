@@ -54,7 +54,7 @@ public class ReportsController extends BaseController {
         reqContent.put("end", reportsConditionVO.getEnd());
         reqContent.put("companyid", currentLoginStaff.getCompanyId());
         reqContent.put("typelimit", reportsConditionVO.getTypeLimit());
-        reqContent.put("isCreate",reportsConditionVO.getIsCreate());
+        reqContent.put("iscreate",reportsConditionVO.getIsCreate());
         if (StringUtil.isNotEmpty(reportsConditionVO.getSourceId())) {
             reqContent.put("sourceid", reportsConditionVO.getSourceId());
         }
@@ -785,6 +785,30 @@ public class ReportsController extends BaseController {
     public ResultInfo getDstgOrderCycleCount(@RequestBody QueryVO queryVO) {
         queryVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
         return ResultInfoUtil.success(reportService.getDstgOrderCycleCount(queryVO));
+    }
+
+    /**
+     * 转介绍报表详情，按客服组汇总
+     * */
+    @GetMapping("/get_zjs_detail_report_by_group")
+    public ResultInfo getZjsDetailReportByGroup(ReportParamDTO reportParamDTO){
+        reportParamDTO.setStaffId(getCurrentLoginStaff().getId());
+        reportParamDTO.setCompanyId(getCurrentLoginStaff().getCompanyId());
+        reportService.getZjsDetailReportByGroup(reportParamDTO);
+
+        return null;
+    }
+
+    /**
+     * 转介绍报表详情，按客服（邀约员）汇总
+     * */
+    @GetMapping("/get_zjs_detail_report_by_appointor")
+    public ResultInfo getZjsDetailReportByAppointor(ReportParamDTO reportParamDTO){
+        reportParamDTO.setStaffId(getCurrentLoginStaff().getId());
+        reportParamDTO.setCompanyId(getCurrentLoginStaff().getCompanyId());
+        reportService.getZjsDetailReportByGroup(reportParamDTO);
+
+        return null;
     }
     /**
      * 销售中心报表

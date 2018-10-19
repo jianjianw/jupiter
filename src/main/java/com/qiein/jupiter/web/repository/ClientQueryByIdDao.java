@@ -294,7 +294,7 @@ public class ClientQueryByIdDao {
         keyMap.put("kzid", queryVO.getKzId());
         String sql = " SELECT log.ID, log.PAYSTYLE, log.AMOUNT, log.STAFFID, log.STAFFNAME," +
                 " FROM_UNIXTIME(log.PAYMENTTIME, '%Y/%m/%d %H:%i') AS PAYMENTTIME, log.OPERAID, " +
-                "log.OPERANAME, FROM_UNIXTIME(log.CREATETIME, '%Y/%m/%d %H:%i') AS CREATETIME, log.COMPANYID, log.STATUS FROM " +
+                "log.OPERANAME, FROM_UNIXTIME(log.CREATETIME, '%Y/%m/%d %H:%i') AS CREATETIME, log.COMPANYID, log.STATUS, log.TYPEID FROM " +
                 DBSplitUtil.getCashTabName(companyId) +
                 " log WHERE log.COMPANYID = :companyId AND log.KZID = :kzid AND log.STATUS = 1 ORDER BY log.ID DESC";
         //执行查询
@@ -314,6 +314,7 @@ public class ClientQueryByIdDao {
                 log.put("createtime", resultSet.getString("CREATETIME"));
                 log.put("companyid", resultSet.getInt("COMPANYID"));
                 log.put("status", resultSet.getInt("STATUS"));
+                log.put("typeid", resultSet.getInt("TYPEID"));
                 logs.add(log);
             }
         });

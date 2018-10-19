@@ -23,6 +23,7 @@ import com.qiein.jupiter.web.entity.po.*;
 import com.qiein.jupiter.web.entity.vo.*;
 import com.qiein.jupiter.web.service.IpWhiteService;
 import com.qiein.jupiter.web.service.StaffService;
+import com.qiein.jupiter.web.service.SystemLogService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -1169,6 +1170,26 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public int updateCompanyTodayNum(int companyId) {
         return staffDao.updateCompanyTodayNum(companyId);
+    }
+
+    @Override
+    public void batchDeleteTrackStaff(int companyId,String[] staffIds) {
+        staffDao.batchDeleteTrackStaff(companyId, staffIds);
+    }
+
+    @Override
+    public void deleteTrackStaff(int companyId,int staffId) {
+        staffDao.deleteTrackStaff(companyId,staffId);
+    }
+
+    @Override
+    public List<StaffPO> getTrackStaffByIds(String ids, Integer companyId) {
+        String[] idlist = ids.split(CommonConstant.STR_SEPARATOR);
+        List<Integer> list = new ArrayList<>();
+        for (String id : idlist) {
+            list.add(Integer.parseInt(id));
+        }
+        return staffDao.getTrackStaffByIds(list, companyId);
     }
 
 

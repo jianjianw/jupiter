@@ -462,6 +462,16 @@ public class AllTest {
     }
 
     @Test
+    public void test01() {
+
+        String str = "qwe123";
+        String[] split = str.split(",");
+        for (int i = 0; i <split.length ; i++) {
+            System.out.println(split[i]);
+        }
+    }
+
+    @Test
     public void testlIst13(){
         Set<Integer> stack = new LinkedHashSet<>();
         stack.add(10);
