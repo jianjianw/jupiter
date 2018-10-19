@@ -82,6 +82,8 @@ public class StaffServiceImpl implements StaffService {
 
     @Autowired
     private WebSocketMsgUtil webSocketMsgUtil;
+    @Autowired
+    private ClientDao clientDao;
 
 
     /**
@@ -329,6 +331,15 @@ public class StaffServiceImpl implements StaffService {
             String[] roleArr = staffVO.getRoleIds().split(CommonConstant.STR_SEPARATOR);
             staffRoleDao.batchInsertStaffRole(staffVO.getId(), staffVO.getCompanyId(), roleArr);
         }
+        //6.如果名字修改，同步客资的相关名字
+        clientDao.updateCollectorName(DBSplitUtil.getInfoTabName(staffVO.getCompanyId()), DBSplitUtil.getDetailTabName(staffVO.getCompanyId()),
+                staffVO.getCompanyId(), staffVO.getNickName(), staffVO.getId());
+        clientDao.updatePromoterName(DBSplitUtil.getInfoTabName(staffVO.getCompanyId()), DBSplitUtil.getDetailTabName(staffVO.getCompanyId()),
+                staffVO.getCompanyId(), staffVO.getNickName(), staffVO.getId());
+        clientDao.updateAppointorName(DBSplitUtil.getInfoTabName(staffVO.getCompanyId()), DBSplitUtil.getDetailTabName(staffVO.getCompanyId()),
+                staffVO.getCompanyId(), staffVO.getNickName(), staffVO.getId());
+        clientDao.updateReceptorName(DBSplitUtil.getInfoTabName(staffVO.getCompanyId()), DBSplitUtil.getDetailTabName(staffVO.getCompanyId()),
+                staffVO.getCompanyId(), staffVO.getNickName(), staffVO.getId());
         //TODO 员工编辑日志
 
         // 6.清缓存
@@ -1173,13 +1184,13 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
-    public void batchDeleteTrackStaff(int companyId,String[] staffIds) {
+    public void batchDeleteTrackStaff(int companyId, String[] staffIds) {
         staffDao.batchDeleteTrackStaff(companyId, staffIds);
     }
 
     @Override
-    public void deleteTrackStaff(int companyId,int staffId) {
-        staffDao.deleteTrackStaff(companyId,staffId);
+    public void deleteTrackStaff(int companyId, int staffId) {
+        staffDao.deleteTrackStaff(companyId, staffId);
     }
 
     @Override

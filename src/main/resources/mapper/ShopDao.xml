@@ -177,4 +177,24 @@
         AND sf.ISLOCK = 0
         ORDER BY shop.ID
     </select>
+
+    <select id="findShopTarget" resultType="com.qiein.jupiter.web.entity.dto.ShopTargetDTO">
+        select shopId from hm_crm_shop_detail where companyid=#{companyId} and FROM_UNIXTIME(CREATETIME, '%Y/%m/%d')=FROM_UNIXTIME(#{time}, '%Y/%m/%d') and shopid=#{shopId}
+    </select>
+    <update id="editTarget">
+        update hm_crm_shop_detail set
+        <if test="totalSuccessCountTarget !=null and totalSuccessCountTarget!=''">
+        TOTALSUCCESSCOUNTTARGET=#{totalSuccessCountTarget},
+        </if>
+        <if test="shopCallOnSuccessCountTarget !=null and shopCallOnSuccessCountTarget!=''">
+        SHOPCALLONSUCCESSCOUNTTARGET=#{shopCallOnSuccessCountTarget},
+        </if>
+        <if test="shopCallOnValidCountTarget !=null and shopCallOnValidCountTarget!=''">
+        SHOPCALLONVALIDCOUNTTARGET=#{shopCallOnValidCountTarget}
+        </if>
+        where companyid=#{companyId} and FROM_UNIXTIME(CREATETIME, '%Y/%m/%d')=FROM_UNIXTIME(#{time}, '%Y/%m/%d') and shopid=#{shopId}
+    </update>
+    <insert id="insertTarget">
+        insert into hm_crm_shop_detail(shopid,companyid,createtime) values(#{shopId},#{companyId},#{time})
+    </insert>
 </mapper>

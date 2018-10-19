@@ -53,7 +53,8 @@
         STAFFID=#{staffId},
         STAFFNAME=#{staffName},
         PAYSTYLE=#{payStyle},
-        PAYMENTTIME=#{paymentTime}
+        PAYMENTTIME=#{paymentTime},
+        TYPEID = #{typeId}
         WHERE ID = #{id}
               AND COMPANYID = #{companyId}
     </update>

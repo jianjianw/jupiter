@@ -243,4 +243,10 @@ public class CommonConstant {
      */
     public static final int CASH_TYPE_TAIL = 2;
 
+    /**
+     * 二维码
+     */
+    public static final String WECHAT_QRCODE = "二维码";
+
+
 }

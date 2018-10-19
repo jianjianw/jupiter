@@ -54,6 +54,7 @@ public class ReportsController extends BaseController {
         reqContent.put("end", reportsConditionVO.getEnd());
         reqContent.put("companyid", currentLoginStaff.getCompanyId());
         reqContent.put("typelimit", reportsConditionVO.getTypeLimit());
+        reqContent.put("iscreate",reportsConditionVO.getIsCreate());
         if (StringUtil.isNotEmpty(reportsConditionVO.getSourceId())) {
             reqContent.put("sourceid", reportsConditionVO.getSourceId());
         }
@@ -807,4 +808,16 @@ public class ReportsController extends BaseController {
 
         return null;
     }
+    /**
+     * 销售中心报表
+     */
+    @PostMapping("/get_safes_center_reports")
+    public ResultInfo getSalesCenterReports(@RequestBody ReportsParamVO reportsParamVO){
+        reportsParamVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
+        return ResultInfoUtil.success(reportService.getSalesCenterReports(reportsParamVO));
+    }
+
+
+
+
 }
