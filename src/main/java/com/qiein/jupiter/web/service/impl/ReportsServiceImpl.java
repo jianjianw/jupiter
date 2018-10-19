@@ -111,6 +111,9 @@ public class ReportsServiceImpl implements ReportService {
     @Autowired
     private SalesCenterReportsDao salesCenterReportsDao;
 
+    @Autowired
+    private ZjsDetailReportDao zjsDetailReportDao;
+
 
 
     /**
@@ -1601,8 +1604,10 @@ public class ReportsServiceImpl implements ReportService {
 	}
 
     @Override
-    public Map<String,Object> getZjsDetailReportByGroup(ReportParamDTO reportParamDTO) {
-        return null;
+    public List<ZjsClientDetailReportVO> getZjsDetailReportByGroup(ReportsParamVO reportsParamVO) {
+
+        zjsDetailReportDao.getZjsDetailReportByGroup(reportsParamVO);
+	    return null;
     }
 
 

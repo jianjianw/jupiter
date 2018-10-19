@@ -6,6 +6,9 @@ public class ZjsClientDetailReportVO implements Serializable {
 
     private static final long serialVersionUID = 1655993717406513184L;
 
+    //可以存放客服id 和 客服组id
+    private String id;
+
     //毛客资数 = 总客资 - （筛选中，筛选无效，筛选待定）
     private int clientSourceCount;
 
@@ -73,6 +76,13 @@ public class ZjsClientDetailReportVO implements Serializable {
     //均价
     private double avgAmount;
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public int getClientSourceCount() {
         return clientSourceCount;

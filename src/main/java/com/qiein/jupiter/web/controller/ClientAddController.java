@@ -160,7 +160,7 @@ public class ClientAddController extends BaseController {
      * @return:
      */
     @GetMapping("/out_zjs_menu")
-    public ResultInfo OutZjsDorpDownMenu(@RequestParam(name = "channelId",required = false) Integer channelId,
+    public ResultInfo OutZjsDorpDownMenu(@RequestParam(name = "channelId", required = false) Integer channelId,
                                          @RequestParam("companyId") Integer companyId) {
         if (companyId == null)
             throw new RException(ExceptionEnum.COMPANY_ID_NULL);
@@ -253,5 +253,23 @@ public class ClientAddController extends BaseController {
     public void pushRepeatMsg(@RequestParam("kzId") String kzId) {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         clientAddService.pushRepeatMsg(kzId, currentLoginStaff);
+    }
+
+
+    /**
+     * 录入钉钉客资
+     *
+     * @return
+     */
+    @PostMapping("/add_ding_client_info")
+    public ResultInfo addDingClientInfo(@RequestBody ClientVO clientVO) {
+        if (StringUtil.isAllEmpty(clientVO.getKzPhone(), clientVO.getKzWechat(), clientVO.getKzQq(),
+                clientVO.getKzWw())) {
+            throw new RException(ExceptionEnum.KZ_CONTACT_INFORMATION);
+        }
+        // 获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        clientAddService.addMsClient(clientVO, currentLoginStaff);
+        return ResultInfoUtil.success(TipMsgEnum.ENTERING_SUNCCESS);
     }
 }

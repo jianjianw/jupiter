@@ -378,7 +378,7 @@ public interface ReportService {
     /**
      * 转介绍报表详情，按客服组汇总
      * */
-    public Map<String,Object> getZjsDetailReportByGroup(ReportParamDTO reportParamDTO);
+    public List<ZjsClientDetailReportVO> getZjsDetailReportByGroup(ReportsParamVO reportsParamVO);
 
     /**
      * 电商推广订单周期统计

@@ -14,7 +14,7 @@ import com.qiein.jupiter.web.dao.NewsDao;
 import com.qiein.jupiter.web.dao.StaffDao;
 import com.qiein.jupiter.web.entity.dto.ClientGoEasyDTO;
 import com.qiein.jupiter.web.entity.dto.RepeatDTO;
-import com.qiein.jupiter.web.entity.vo.PlatAddClientInfoVO;
+import com.qiein.jupiter.web.entity.vo.ClientVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
@@ -22,7 +22,10 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 客资查重
@@ -41,17 +44,18 @@ public class CheckClientRepeatDao {
     private NewsDao newsDao;
 
 
-    public void check(int companyId, PlatAddClientInfoVO clientInfoVO) {
-        if (CommonConstant.WECHAT_QRCODE.equals(clientInfoVO.getKzWechat()) ||
-                CommonConstant.WECHAT_QRCODE.equals(clientInfoVO.getKzPhone()) ||
-                CommonConstant.WECHAT_QRCODE.equals(clientInfoVO.getKzQq()) ||
-                CommonConstant.WECHAT_QRCODE.equals(clientInfoVO.getKzWw()) ||
-                CommonConstant.WECHAT_QRCODE.equals(clientInfoVO.getMatePhone()) ||
-                CommonConstant.WECHAT_QRCODE.equals(clientInfoVO.getMateQq()) ||
-                CommonConstant.WECHAT_QRCODE.equals(clientInfoVO.getMateWechat())) {
+    public void check(ClientVO clientVO) {
+        int companyId = clientVO.getCompanyId();
+        if (CommonConstant.WECHAT_QRCODE.equals(clientVO.getKzWechat()) ||
+                CommonConstant.WECHAT_QRCODE.equals(clientVO.getKzPhone()) ||
+                CommonConstant.WECHAT_QRCODE.equals(clientVO.getKzQq()) ||
+                CommonConstant.WECHAT_QRCODE.equals(clientVO.getKzWw()) ||
+                CommonConstant.WECHAT_QRCODE.equals(clientVO.getMatePhone()) ||
+                CommonConstant.WECHAT_QRCODE.equals(clientVO.getMateQq()) ||
+                CommonConstant.WECHAT_QRCODE.equals(clientVO.getMateWeChat())) {
             return;
         }
-        Set<String> infoSet = getLinkHashSet(clientInfoVO);
+        Set<String> infoSet = getLinkHashSet(clientVO);
         //客资没有任何联系方式
         if (infoSet.isEmpty()) {
             return;
@@ -59,26 +63,26 @@ public class CheckClientRepeatDao {
         //获取公司的重复设置
         RepeatDTO companyRepeatSet = getCompanyRepeatSet(companyId);
         //info表查重
-        checkClientInfo(companyId, clientInfoVO, companyRepeatSet);
+        checkClientInfo(clientVO, companyRepeatSet);
         //detail查重
-        checkClientDetail(companyId, clientInfoVO, companyRepeatSet);
+        checkClientDetail(clientVO, companyRepeatSet);
     }
 
 
     /**
      * 检查Info表
      */
-    private void checkClientInfo(int companyId, PlatAddClientInfoVO clientInfoVO, RepeatDTO repeatDTO) {
-        String kzPhone = clientInfoVO.getKzPhone();
-        String kzWeChat = clientInfoVO.getKzWechat();
-        String kzQQ = clientInfoVO.getKzQq();
-        String kzWW = clientInfoVO.getKzWw();
-        String matePhone = clientInfoVO.getMatePhone();
-        String mateQQ = clientInfoVO.getMateQq();
-        String mateWeChat = clientInfoVO.getMateWechat();
+    private void checkClientInfo(ClientVO clientVO, RepeatDTO repeatDTO) {
+        String kzPhone = clientVO.getKzPhone();
+        String kzWeChat = clientVO.getKzWechat();
+        String kzQQ = clientVO.getKzQq();
+        String kzWW = clientVO.getKzWw();
+        String matePhone = clientVO.getMatePhone();
+        String mateQQ = clientVO.getMateQq();
+        String mateWeChat = clientVO.getMateWeChat();
 
         Map<String, Object> keyMap = new HashMap<>();
-        keyMap.put("companyId", companyId);
+        keyMap.put("companyId", clientVO.getCompanyId());
         keyMap.put("kzPhone", kzPhone);
         keyMap.put("kzWeChat", kzWeChat);
         keyMap.put("kzQQ", kzQQ);
@@ -91,7 +95,7 @@ public class CheckClientRepeatDao {
         sql.append(" SELECT COUNT(1) NUM, info.KZID FROM hm_crm_client_info info" +
                 " WHERE info.ISDEL =0 AND  info.COMPANYID = :companyId ");
         sql.append(" AND ( ");
-        Set<String> infoSet = getLinkHashSet(clientInfoVO);
+        Set<String> infoSet = getLinkHashSet(clientVO);
 
         StringBuilder whereSql = new StringBuilder();
         for (String linkStr : infoSet) {
@@ -107,27 +111,27 @@ public class CheckClientRepeatDao {
         sql.append(" ) ");
 
         //追加重复配置
-        appendRepeatConfig(clientInfoVO, repeatDTO, keyMap, sql);
+        appendRepeatConfig(clientVO, repeatDTO, keyMap, sql);
         //查询
         Map<String, Object> resultMap = namedJdbc.queryForMap(sql.toString(), keyMap);
         //校验结果
-        checkResult(companyId, clientInfoVO, resultMap);
+        checkResult(clientVO, resultMap);
     }
 
     /**
      * 检查detail表
      */
-    private void checkClientDetail(int companyId, PlatAddClientInfoVO clientInfoVO, RepeatDTO repeatDTO) {
+    private void checkClientDetail(ClientVO clientInfoVO, RepeatDTO repeatDTO) {
         String kzPhone = clientInfoVO.getKzPhone();
         String kzWeChat = clientInfoVO.getKzWechat();
         String kzQQ = clientInfoVO.getKzQq();
         String kzWW = clientInfoVO.getKzWw();
         String matePhone = clientInfoVO.getMatePhone();
         String mateQQ = clientInfoVO.getMateQq();
-        String mateWeChat = clientInfoVO.getMateWechat();
+        String mateWeChat = clientInfoVO.getMateWeChat();
 
         Map<String, Object> keyMap = new HashMap<>();
-        keyMap.put("companyId", companyId);
+        keyMap.put("companyId", clientInfoVO.getCompanyId());
         keyMap.put("kzPhone", kzPhone);
         keyMap.put("kzWeChat", kzWeChat);
         keyMap.put("kzQQ", kzQQ);
@@ -158,23 +162,22 @@ public class CheckClientRepeatDao {
         //查询
         Map<String, Object> resultMap = namedJdbc.queryForMap(sql.toString(), keyMap);
         //校验结果
-        checkResult(companyId, clientInfoVO, resultMap);
+        checkResult(clientInfoVO, resultMap);
     }
 
     /**
      * 获取联系方式的HASHSET
      *
-     * @param clientInfoVO
      * @return
      */
-    private Set<String> getLinkHashSet(PlatAddClientInfoVO clientInfoVO) {
-        String kzPhone = clientInfoVO.getKzPhone();
-        String kzWeChat = clientInfoVO.getKzWechat();
-        String kzQQ = clientInfoVO.getKzQq();
-        String kzWW = clientInfoVO.getKzWw();
-        String matePhone = clientInfoVO.getMatePhone();
-        String mateQQ = clientInfoVO.getMateQq();
-        String mateWeChat = clientInfoVO.getMateWechat();
+    private Set<String> getLinkHashSet(ClientVO clientVO) {
+        String kzPhone = clientVO.getKzPhone();
+        String kzWeChat = clientVO.getKzWechat();
+        String kzQQ = clientVO.getKzQq();
+        String kzWW = clientVO.getKzWw();
+        String matePhone = clientVO.getMatePhone();
+        String mateQQ = clientVO.getMateQq();
+        String mateWeChat = clientVO.getMateWeChat();
 
         Set<String> infoSet = new HashSet<>();
         if (StringUtil.isNotEmpty(kzPhone)) {
@@ -205,7 +208,7 @@ public class CheckClientRepeatDao {
     /**
      * 检查重复设置追加字段
      */
-    private void appendRepeatConfig(PlatAddClientInfoVO clientInfoVO, RepeatDTO repeatDTO, Map<String, Object> keyMap, StringBuilder sql) {
+    private void appendRepeatConfig(ClientVO clientInfoVO, RepeatDTO repeatDTO, Map<String, Object> keyMap, StringBuilder sql) {
         //校验重复时间
         if (StringUtil.isNotEmpty(repeatDTO.getTimeTypeIgnore()) && NumUtil.isValid(repeatDTO.getDayIgnore())) {
             keyMap.put("dayIgnore", repeatDTO.getDayIgnore() * 24 * 60 * 60);
@@ -243,16 +246,13 @@ public class CheckClientRepeatDao {
 
     /**
      * 校验检查结果
-     *
-     * @param companyId
-     * @param clientInfoVO
-     * @param resultMap
      */
-    private void checkResult(int companyId, PlatAddClientInfoVO clientInfoVO, Map<String, Object> resultMap) {
+    private void checkResult(ClientVO clientInfoVO, Map<String, Object> resultMap) {
+        int companyId = clientInfoVO.getCompanyId();
         if ((long) resultMap.get("NUM") != 0) {
             String kzId = (String) resultMap.get("KZID");
             //添加日志
-            addRepeatLog(companyId, kzId, clientInfoVO);
+            addRepeatLog(kzId, clientInfoVO);
             //发送消息
             //重复客资，给邀约推送消息
             ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(kzId,
@@ -272,7 +272,7 @@ public class CheckClientRepeatDao {
     /**
      * 新增重复日志
      */
-    private void addRepeatLog(int companyId, String kzId, PlatAddClientInfoVO clientInfoVO) {
+    private void addRepeatLog(String kzId, ClientVO clientInfoVO) {
         String operatorName = clientInfoVO.getOperaName();
         StringBuilder desc = new StringBuilder();
         desc.append("尝试重复录入被拦截：重复信息 -  ");
@@ -295,8 +295,8 @@ public class CheckClientRepeatDao {
         if (StringUtil.isNotEmpty(clientInfoVO.getKzWw())) {
             desc.append("旺旺：").append(clientInfoVO.getKzWw()).append("；");
         }
-        if (StringUtil.isNotEmpty(clientInfoVO.getMateWechat())) {
-            desc.append("配偶微信：").append(clientInfoVO.getMateWechat()).append("；");
+        if (StringUtil.isNotEmpty(clientInfoVO.getMateWeChat())) {
+            desc.append("配偶微信：").append(clientInfoVO.getMateWeChat()).append("；");
         }
         if (StringUtil.isNotEmpty(clientInfoVO.getMatePhone())) {
             desc.append("配偶手机：").append(clientInfoVO.getMatePhone()).append("；");
@@ -307,7 +307,7 @@ public class CheckClientRepeatDao {
         desc.append("提报人：").append(operatorName).append("；");
 
         Map<String, Object> keyMap = new HashMap<>();
-        keyMap.put("companyId", companyId);
+        keyMap.put("companyId", clientInfoVO.getCompanyId());
         keyMap.put("kzId", kzId);
         keyMap.put("operatorId", clientInfoVO.getOperaId());
         keyMap.put("operatorName", operatorName);
