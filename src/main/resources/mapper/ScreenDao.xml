@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiein.jupiter.web.dao.ScreenDao">
+
+    <resultMap id="baseMap" type="com.qiein.jupiter.web.entity.vo.ScreenVO">
+        <id column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="total" property="total" jdbcType="INTEGER"/>
+        <result column="value" property="value" jdbcType="INTEGER"/>
+    </resultMap>
+   
+    <!--今日电商总客资  -->
+    <select id="getDayKZTotal"  resultMap="baseMap">
+        SELECT
+			COUNT(1) value
+		FROM
+			hm_crm_client_info info
+		LEFT JOIN hm_crm_source source ON info.SOURCEID = source.ID AND source.COMPANYID = 1
+		WHERE info.COMPANYID = 1
+			AND info.ISDEL = 0
+			AND source.TYPEID IN(1,2)
+			AND info.STATUSID != 0
+			AND info.STATUSID != 99
+			AND info.STATUSID != 98
+			AND info.CREATETIME BETWEEN UNIX_TIMESTAMP(CONCAT(CURDATE(),' 00:00:00')) AND UNIX_TIMESTAMP(CONCAT(CURDATE(),' 23:59:59') )
+	</select>
+	
+	<!--电商本月总客资  -->
+	<select id="getMonthKZTotal"  resultMap="baseMap">
+        SELECT
+			COUNT(1) value
+		FROM
+			hm_crm_client_info info
+		LEFT JOIN hm_crm_source source ON info.SOURCEID = source.ID AND source.COMPANYID = 1
+		WHERE info.COMPANYID = 1
+			AND info.ISDEL = 0
+			AND source.TYPEID IN(1,2)
+			AND info.STATUSID != 0
+			AND info.STATUSID != 99
+			AND info.STATUSID != 98
+			AND info.CREATETIME BETWEEN  UNIX_TIMESTAMP(CONCAT(LEFT(CURDATE(),7),'-01 00:00:00')) AND UNIX_TIMESTAMP(CONCAT(LAST_DAY(CURDATE()),' 23:59:59'))
+	</select>
+	
+	<!--网销今日待联系新客资  -->
+	<select id="getDdNum"  resultMap="baseMap">
+        SELECT
+			COUNT(1) value
+		FROM
+			hm_crm_client_info info
+		LEFT JOIN hm_crm_source source ON info.SOURCEID = source.ID AND source.COMPANYID = 1
+		WHERE info.COMPANYID = 1
+			AND info.ISDEL = 0
+			AND source.TYPEID IN(1,2)
+			AND info.STATUSID != 0
+			AND info.STATUSID != 99
+			AND info.STATUSID != 98
+			AND (info.STATUSID = 1 OR info.STATUSID = 12 OR info.STATUSID = 6)
+			AND info.CREATETIME BETWEEN  UNIX_TIMESTAMP(CONCAT(CURDATE(),' 00:00:00')) AND UNIX_TIMESTAMP(CONCAT(CURDATE(),' 23:59:59'))
+	</select>
+    
+    <!--网销今日在线数  -->
+	<select id="getWXFlag"  resultMap="baseMap">
+        SELECT
+			COUNT(1) value
+		FROM
+			hm_pub_group grp
+		LEFT JOIN hm_pub_group_staff rela ON grp.GROUPID = rela.GROUPID AND rela.COMPANYID = 1
+		LEFT JOIN hm_pub_staff sf ON rela.STAFFID = sf.ID AND sf.COMPANYID = 1
+		WHERE
+			grp.COMPANYID = 1
+			AND grp.GROUPTYPE = 'dsyy'
+			AND sf.ISDEL = 0
+			AND sf.ISLOCK = 0
+			AND sf.STATUSFLAG = 1
+	</select>
+	
+	 <!--今日网销各组客资量  -->
+	<select id="getWXKzNum"  resultMap="baseMap">
+        SELECT
+			grp.GROUPNAME name,
+			COUNT(1) total
+		FROM
+		hm_crm_client_info info
+		LEFT JOIN hm_crm_source src ON info.SOURCEID = src.ID AND info.COMPANYID = src.COMPANYID
+		LEFT JOIN hm_pub_group_staff rela ON info.APPOINTORID = rela.STAFFID AND info.COMPANYID = rela.COMPANYID
+		LEFT JOIN hm_pub_group grp ON rela.GROUPID = grp.GROUPID AND rela.COMPANYID = grp.COMPANYID
+		WHERE
+			info.COMPANYID = 1
+			AND info.ISDEL = 0
+			AND src.TYPEID IN(1,2)
+			AND info.CREATETIME BETWEEN  UNIX_TIMESTAMP(CONCAT(CURDATE(),' 00:00:00'))  AND  UNIX_TIMESTAMP(CONCAT(CURDATE(),' 23:59:59'))
+			AND grp.GROUPTYPE = 'dsyy'
+		GROUP BY
+			grp.GROUPID
+		ORDER BY grp.PRIORITY ASC
+	</select>
+	
+	<!--今日网销各组进店量  -->
+	<select id="getWXKzComeNum"  resultMap="baseMap">
+        SELECT
+			grp.GROUPNAME name,
+			COUNT(1) total
+		FROM
+			hm_crm_client_info info
+		LEFT JOIN hm_crm_source src ON info.SOURCEID = src.ID AND info.COMPANYID = src.COMPANYID
+		LEFT JOIN hm_pub_group_staff rela ON info.APPOINTORID = rela.STAFFID AND info.COMPANYID = rela.COMPANYID
+		LEFT JOIN hm_pub_group grp ON rela.GROUPID = grp.GROUPID AND rela.COMPANYID = grp.COMPANYID
+		WHERE
+			info.COMPANYID = 1
+			AND info.ISDEL = 0
+			AND src.TYPEID IN(1,2)
+			AND info.COMESHOPTIME BETWEEN UNIX_TIMESTAMP(CONCAT(CURDATE(),' 00:00:00')) AND  UNIX_TIMESTAMP(CONCAT(CURDATE(),' 23:59:59'))
+			AND grp.GROUPTYPE = 'dsyy'
+		GROUP BY
+			grp.GROUPID
+		ORDER BY grp.PRIORITY ASC
+	</select>
+	
+	<!--本月网销各组客资量  -->
+	<select id="getWXGroupKzNumMonth"  resultMap="baseMap">
+        SELECT
+			grp.GROUPNAME name,
+			COUNT(1) total
+		FROM
+			hm_crm_client_info info
+		LEFT JOIN hm_crm_source src ON info.SOURCEID = src.ID AND info.COMPANYID = src.COMPANYID
+		LEFT JOIN hm_pub_group_staff rela ON info.APPOINTORID = rela.STAFFID AND info.COMPANYID = rela.COMPANYID
+		LEFT JOIN hm_pub_group grp ON rela.GROUPID = grp.GROUPID AND rela.COMPANYID = grp.COMPANYID
+		WHERE
+			info.COMPANYID = 1
+			AND info.ISDEL = 0
+			AND src.TYPEID IN(1,2)
+			AND info.CREATETIME BETWEEN UNIX_TIMESTAMP(CONCAT(concat(date_format(LAST_DAY(now()),'%Y-%m-'),'01'),' 00:00:00')) AND UNIX_TIMESTAMP(CONCAT(LAST_DAY(now()),' 23:59:59'))
+			AND grp.GROUPTYPE = 'dsyy'
+	   GROUP BY
+			grp.GROUPID
+	   ORDER BY grp.PRIORITY ASC 
+	</select>
+	
+	<!--本周网销各组进店量  -->
+	<select id="getWXGroupKzComeNumWeek"  resultMap="baseMap">
+       SELECT
+			grp.GROUPNAME name,
+			COUNT(1) total
+		FROM
+			hm_crm_client_info info
+		LEFT JOIN hm_crm_source src ON info.SOURCEID = src.ID AND info.COMPANYID = src.COMPANYID
+		LEFT JOIN hm_pub_group_staff rela ON info.APPOINTORID = rela.STAFFID AND info.COMPANYID = rela.COMPANYID
+		LEFT JOIN hm_pub_group grp ON rela.GROUPID = grp.GROUPID AND rela.COMPANYID = grp.COMPANYID
+		WHERE
+			info.COMPANYID = 1
+			AND info.ISDEL = 0
+			AND src.TYPEID IN(1,2)
+			AND info.COMESHOPTIME BETWEEN UNIX_TIMESTAMP(date_sub(curdate(),INTERVAL WEEKDAY(curdate()) DAY)) AND UNIX_TIMESTAMP(date_sub(curdate(),INTERVAL WEEKDAY(curdate()) - 6 DAY))
+			AND grp.GROUPTYPE = 'dsyy'
+		GROUP BY
+			grp.GROUPID
+		ORDER BY grp.PRIORITY ASC
+	</select>
+	
+	<!--本月网销各组进店量  -->
+	<select id="getWXGroupKzComeNumMonth"  resultMap="baseMap">
+       SELECT
+			grp.GROUPNAME name,
+			COUNT(1) total
+		FROM
+			hm_crm_client_info info
+		LEFT JOIN hm_crm_source src ON info.SOURCEID = src.ID AND info.COMPANYID = src.COMPANYID
+		LEFT JOIN hm_pub_group_staff rela ON info.APPOINTORID = rela.STAFFID AND info.COMPANYID = rela.COMPANYID
+		LEFT JOIN hm_pub_group grp ON rela.GROUPID = grp.GROUPID AND rela.COMPANYID = grp.COMPANYID
+		WHERE
+			info.COMPANYID = 1
+		AND info.ISDEL = 0
+		AND src.TYPEID IN(1,2)
+		AND info.COMESHOPTIME BETWEEN UNIX_TIMESTAMP(CONCAT(concat(date_format(LAST_DAY(now()),'%Y-%m-'),'01'),' 00:00:00')) AND UNIX_TIMESTAMP(CONCAT(LAST_DAY(now()),' 23:59:59'))
+		AND grp.GROUPTYPE = 'dsyy'
+		GROUP BY
+			grp.GROUPID
+		ORDER BY grp.PRIORITY ASC
+	</select>
+</mapper>
