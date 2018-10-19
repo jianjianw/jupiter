@@ -98,14 +98,18 @@ public class CheckClientRepeatDao {
         Set<String> infoSet = getLinkHashSet(clientVO);
 
         StringBuilder whereSql = new StringBuilder();
+        int index = 0;
         for (String linkStr : infoSet) {
             if (StringUtil.isNotEmpty(whereSql.toString())) {
                 whereSql.append(" OR ");
             }
-            whereSql.append(" info.KZPHONE = ").append(linkStr)
-                    .append(" OR info.KZWECHAT = ").append(linkStr)
-                    .append(" OR info.KZQQ = ").append(linkStr)
-                    .append(" OR info.KZWW = ").append(linkStr);
+            index++;
+            String key = "keyWord" + index;
+            keyMap.put(key, linkStr);
+            whereSql.append(" info.KZPHONE = :").append(key)
+                    .append(" OR info.KZWECHAT = :").append(key)
+                    .append(" OR info.KZQQ = :").append(key)
+                    .append(" OR info.KZWW = :").append(key);
         }
         sql.append(whereSql);
         sql.append(" ) ");
@@ -146,13 +150,17 @@ public class CheckClientRepeatDao {
         sql.append(" AND ( ");
         Set<String> infoSet = getLinkHashSet(clientInfoVO);
         StringBuilder whereSql = new StringBuilder();
+        int index = 0;
         for (String linkStr : infoSet) {
             if (StringUtil.isNotEmpty(whereSql.toString())) {
                 whereSql.append(" OR ");
             }
-            whereSql.append(" det.MATEPHONE = ").append(linkStr)
-                    .append(" OR det.MATEWECHAT = ").append(linkStr)
-                    .append(" OR det.MATEQQ = ").append(linkStr);
+            index++;
+            String key = "keyWord" + index;
+            keyMap.put(key, linkStr);
+            whereSql.append(" det.MATEPHONE = :").append(key)
+                    .append(" OR det.MATEWECHAT = :").append(key)
+                    .append(" OR det.MATEQQ = :").append(key);
         }
         sql.append(whereSql);
         sql.append(" ) ");
