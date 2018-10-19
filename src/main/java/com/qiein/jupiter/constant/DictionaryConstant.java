@@ -60,4 +60,12 @@ public class DictionaryConstant {
      * 套系名称
      */
     public final static String TX_NAME = "tx_name";
+
+    /**
+     * 意向等级  A B C
+     */
+    public final static String YX_LEVEL_A = "A";
+    public final static String YX_LEVEL_B = "B";
+    public final static String YX_LEVEL_C = "C";
+    public final static String YX_LEVEL_D = "D";
 }
