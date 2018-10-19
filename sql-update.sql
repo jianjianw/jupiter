@@ -7,3 +7,10 @@ COMMENT '报表配置'
 
 ###9.14
 client info 表新增 LETTERID  短字母编号
+
+
+
+###  10/19
+增加   报表设置  、录入指定客服权限
+INSERT INTO  hm_pub_permission (`ID`, `PERMISSIONNAME`, `TYPEID`) VALUES (202, '报表设置', 1);
+INSERT INTO  hm_pub_permission (`ID`, `PERMISSIONNAME`, `TYPEID`) VALUES (203, '录入指定客服', 1);
