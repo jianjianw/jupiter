@@ -290,6 +290,14 @@ public class GroupServiceImpl implements GroupService {
         // 判断是否需要设置主管姓名
         checkSetChiefsName(groupPO);
         groupDao.update(groupPO);
+        //如果修改邀约小组名称，同步把客资的客服组名称修改
+        if ((RoleConstant.DSYY.equals(old.getGroupType()) || RoleConstant.ZJSYY.equals(old.getGroupType()))
+                && !CommonConstant.DEFAULT_STRING_ZERO.equalsIgnoreCase(groupPO.getParentId())
+                && !old.getGroupName().equals(groupPO.getGroupName())
+                ) {
+            clientDao.updateGroupName(DBSplitUtil.getInfoTabName(groupPO.getCompanyId()), DBSplitUtil.getDetailTabName(groupPO.getCompanyId()),
+                    groupPO.getCompanyId(), groupPO.getGroupName(), groupPO.getGroupId());
+        }
         // 把下属的组的类别也更新
         groupDao.batchUpdateGroupType(groupPO.getGroupType(), groupPO.getGroupId(), groupPO.getCompanyId());
         //节点不存在
@@ -302,7 +310,7 @@ public class GroupServiceImpl implements GroupService {
                 channelPO.setChannelName(groupPO.getGroupName());
                 channelPO.setShowFlag(true);
                 channelDao.update(channelPO);
-                sourceDao.updateChannelName(channelPO.getId(),channelPO.getChannelName(),groupPO.getCompanyId());
+                sourceDao.updateChannelName(channelPO.getId(), channelPO.getChannelName(), groupPO.getCompanyId());
             }
         } else {
             ChannelPO channelPO = channelDao.getChannelByGroupParentId(groupPO.getParentId(), old.getCompanyId());
@@ -422,7 +430,7 @@ public class GroupServiceImpl implements GroupService {
         groupPO.setGroupId(groupPO.getParentId() + CommonConstant.ROD_SEPARATOR + groupPO.getId());
         groupDao.update(groupPO);
 
-        if( !(RoleConstant.DSYY.equalsIgnoreCase(groupPO.getGroupType()) || RoleConstant.DSSX.equalsIgnoreCase(groupPO.getGroupType()) || RoleConstant.DSCJ.equalsIgnoreCase(groupPO.getGroupType()))){
+        if (!(RoleConstant.DSYY.equalsIgnoreCase(groupPO.getGroupType()) || RoleConstant.DSSX.equalsIgnoreCase(groupPO.getGroupType()) || RoleConstant.DSCJ.equalsIgnoreCase(groupPO.getGroupType()))) {
             //同步转介绍渠道小组
             ChannelPO channelPO = channelDao.getChannelByGroupName(groupPO.getGroupName(), groupPO.getCompanyId());
             //渠道不存在
@@ -468,16 +476,16 @@ public class GroupServiceImpl implements GroupService {
                         //渠道存在
                         //FIXME review code
                         //TODO 增加迁移功能
-                        SourcePO source = sourceDao.getSourceByNameAndType(groupPO.getGroupName(),groupPO.getCompanyId(),ChannelConstant.STAFF_ZJS);
+                        SourcePO source = sourceDao.getSourceByNameAndType(groupPO.getGroupName(), groupPO.getCompanyId(), ChannelConstant.STAFF_ZJS);
                         //判断来源时候需要迁移
-                        if(source != null  &&  !(source.getChannelId().equals(channelPO.getId()))){
+                        if (source != null && !(source.getChannelId().equals(channelPO.getId()))) {
                             //迁移客资到新的渠道
-                            clientDao.updateKzChannelId(DBSplitUtil.getInfoTabName(channelPO.getCompanyId()),channelPO.getId(),source.getId(),channelPO.getCompanyId());
+                            clientDao.updateKzChannelId(DBSplitUtil.getInfoTabName(channelPO.getCompanyId()), channelPO.getId(), source.getId(), channelPO.getCompanyId());
                             //迁移来源到新的渠道
                             source.setChannelId(channelPO.getId());
                             source.setIsShow(true);
                             sourceDao.update(source);
-                        }else{
+                        } else {
                             SourcePO sourcePO = sourceDao.getSourceBySrcname(groupPO.getGroupName(), groupPO.getCompanyId(), channelPO.getId());
                             if (!channelPO.getShowFlag()) {
                                 channelPO.setShowFlag(true);
@@ -701,20 +709,24 @@ public class GroupServiceImpl implements GroupService {
         groupDao.updatePriority(fId, fPriority, companyId);
         groupDao.updatePriority(sId, sPriority, companyId);
     }
+
     /**
      * 获取小组名称
+     *
      * @param groupId
      * @return
      */
-    public String getGroupName(String groupId,Integer companyId){
-        return groupDao.getGroupName(groupId,companyId);
+    public String getGroupName(String groupId, Integer companyId) {
+        return groupDao.getGroupName(groupId, companyId);
     }
+
     /**
      * 根据id获取部门信息
+     *
      * @param id
      * @return
      */
-    public GroupPO getGroupById(int companyId,String groupId){
-        return groupDao.getGroupById(companyId,groupId);
+    public GroupPO getGroupById(int companyId, String groupId) {
+        return groupDao.getGroupById(companyId, groupId);
     }
 }

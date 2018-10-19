@@ -108,6 +108,8 @@ public class ReportsServiceImpl implements ReportService {
 
     @Autowired
     private DstgOrderCycleCountDao dstgOrderCycleCountDao;
+    @Autowired
+    private SalesCenterReportsDao salesCenterReportsDao;
 
 
 
@@ -1599,7 +1601,7 @@ public class ReportsServiceImpl implements ReportService {
 	}
 
     @Override
-    public Map<String,Object> getZjsDetailReportByStaff(ReportParamDTO reportParamDTO) {
+    public Map<String,Object> getZjsDetailReportByGroup(ReportParamDTO reportParamDTO) {
         return null;
     }
 
@@ -1614,5 +1616,12 @@ public class ReportsServiceImpl implements ReportService {
     @Override
     public JSONObject getDstgOrderCycleCount(QueryVO queryVO) {
         return dstgOrderCycleCountDao.getCount(queryVO);
+    }
+    /**
+     * 销售中心报表
+     */
+    public List<SalesCenterReportsVO> getSalesCenterReports(ReportsParamVO reportsParamVO){
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(reportsParamVO.getCompanyId());
+        return salesCenterReportsDao.getSalesCenterReports(reportsParamVO,invalidConfig);
     }
 }

@@ -12,6 +12,7 @@ public class CashLogVO {
     private String staffName;
     private String paymentTime;
     private int status;
+    private int typeId;
 
     public int getStatus() {
         return status;
@@ -75,5 +76,13 @@ public class CashLogVO {
 
     public void setPaymentTime(String paymentTime) {
         this.paymentTime = paymentTime;
+    }
+
+    public int getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(int typeId) {
+        this.typeId = typeId;
     }
 }

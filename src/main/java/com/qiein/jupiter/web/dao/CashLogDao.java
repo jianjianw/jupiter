@@ -26,7 +26,8 @@ public interface CashLogDao extends BaseDao<CashLogDao> {
     /**
      * 修改付款记录的状态
      */
-    void editAmount(@Param("table") String table, @Param("amount") int amount, @Param("id") int id, @Param("companyId") int companyId,@Param("staffId")int staffId,@Param("staffName")String staffName,@Param("payStyle")Integer payStyle,@Param("paymentTime")Integer paymentTime);
+    void editAmount(@Param("table") String table, @Param("amount") int amount, @Param("id") int id, @Param("companyId") int companyId, @Param("staffId") int staffId,
+                    @Param("staffName") String staffName, @Param("payStyle") Integer payStyle, @Param("paymentTime") Integer paymentTime, @Param("typeId") int typeId);
 
     /**
      * 付款记录查询页面
@@ -56,8 +57,9 @@ public interface CashLogDao extends BaseDao<CashLogDao> {
 
     /**
      * 删除付款记录
+     *
      * @param id
      */
-    void deleteCashLog(@Param("id")Integer id);
+    void deleteCashLog(@Param("id") Integer id);
 
 }

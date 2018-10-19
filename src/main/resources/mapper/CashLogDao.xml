@@ -21,9 +21,10 @@
         <result column="STAFFID" jdbcType="INTEGER" property="staffId"/>
         <result column="STAFFNAME" jdbcType="VARCHAR" property="staffName"/>
         <result column="PAYMENTTIME" jdbcType="VARCHAR" property="paymentTime"/>
+        <result column="TYPEID" jdbcType="INTEGER" property="typeId"/>
     </resultMap>
     <sql id="list">
-        ID, KZID, PAYSTYLE, AMOUNT, STAFFID, STAFFNAME, FROM_UNIXTIME(PAYMENTTIME, '%Y/%m/%d %H:%i') PAYMENTTIME, STATUS
+        ID, KZID, PAYSTYLE, AMOUNT, STAFFID, STAFFNAME, FROM_UNIXTIME(PAYMENTTIME, '%Y/%m/%d %H:%i') PAYMENTTIME, STATUS, TYPEID
     </sql>
 
     <select id="findCashLog" resultMap="baseMap">
@@ -52,7 +53,8 @@
         STAFFID=#{staffId},
         STAFFNAME=#{staffName},
         PAYSTYLE=#{payStyle},
-        PAYMENTTIME=#{paymentTime}
+        PAYMENTTIME=#{paymentTime},
+        TYPEID = #{typeId}
         WHERE ID = #{id}
               AND COMPANYID = #{companyId}
     </update>
