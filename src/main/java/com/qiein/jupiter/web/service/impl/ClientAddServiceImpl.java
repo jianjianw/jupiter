@@ -15,7 +15,9 @@ import com.qiein.jupiter.web.dao.*;
 import com.qiein.jupiter.web.entity.dto.ClientGoEasyDTO;
 import com.qiein.jupiter.web.entity.po.*;
 import com.qiein.jupiter.web.entity.vo.ClientVO;
+import com.qiein.jupiter.web.entity.vo.PlatAddClientInfoVO;
 import com.qiein.jupiter.web.entity.vo.ShopVO;
+import com.qiein.jupiter.web.repository.CheckClientRepeatDao;
 import com.qiein.jupiter.web.service.ClientAddService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,6 +54,9 @@ public class ClientAddServiceImpl implements ClientAddService {
     @Autowired
     private WebSocketMsgUtil webSocketMsgUtil;
 
+    @Autowired
+    private CheckClientRepeatDao checkClientRepeatDao;
+
     /**
      * 添加电商客资
      *
@@ -59,18 +64,10 @@ public class ClientAddServiceImpl implements ClientAddService {
      * @param staffPO
      */
     public void addDsClient(ClientVO clientVO, StaffPO staffPO) {
-        Map<String, Object> reqContent = new HashMap<String, Object>();
-        List<BlackListPO> list = clientBlackListDao.checkBlackList(staffPO.getCompanyId(), clientVO.getKzPhone(), clientVO.getKzWw(), clientVO.getKzQq(), clientVO.getKzWechat());
-        if (!list.isEmpty()) {
-            String ids = CommonConstant.NULL_STR;
-            for (BlackListPO blackListPO : list) {
-                ids += blackListPO.getId() + CommonConstant.STR_SEPARATOR;
-            }
-            ids = ids.substring(0, ids.lastIndexOf(CommonConstant.STR_SEPARATOR));
-            clientBlackListDao.addCount(ids);
-            throw new RException(ExceptionEnum.KZ_IN_BLACK_LIST);
+        //查询黑名单客资
+        checkBlackList(staffPO.getCompanyId(), clientVO);
 
-        }
+        Map<String, Object> reqContent = new HashMap<>();
         reqContent.put("companyid", staffPO.getCompanyId());
         reqContent.put("collectorid", staffPO.getId());
         reqContent.put("collectorname", staffPO.getNickName());
@@ -187,18 +184,11 @@ public class ClientAddServiceImpl implements ClientAddService {
      * @param staffPO
      */
     public void addZjsClient(ClientVO clientVO, StaffPO staffPO) {
-        Map<String, Object> reqContent = new HashMap<String, Object>();
-        List<BlackListPO> list = clientBlackListDao.checkBlackList(staffPO.getCompanyId(), clientVO.getKzPhone(), clientVO.getKzWw(), clientVO.getKzQq(), clientVO.getKzWechat());
-        if (!list.isEmpty()) {
-            String ids = CommonConstant.NULL_STR;
-            for (BlackListPO blackListPO : list) {
-                ids += blackListPO.getId() + CommonConstant.STR_SEPARATOR;
-            }
-            ids = ids.substring(0, ids.lastIndexOf(CommonConstant.STR_SEPARATOR));
-            clientBlackListDao.addCount(ids);
-            throw new RException(ExceptionEnum.KZ_IN_BLACK_LIST);
 
-        }
+        //查询黑名单客资
+        checkBlackList(staffPO.getCompanyId(), clientVO);
+
+        Map<String, Object> reqContent = new HashMap<>();
         reqContent.put("companyid", staffPO.getCompanyId());
         if (NumUtil.isValid(clientVO.getCollectorId())) {
             StaffPO collector = staffDao.getById(clientVO.getCollectorId());
@@ -346,18 +336,11 @@ public class ClientAddServiceImpl implements ClientAddService {
      * @param staffPO
      */
     public void addMsClient(ClientVO clientVO, StaffPO staffPO) {
-        Map<String, Object> reqContent = new HashMap<String, Object>();
-        List<BlackListPO> list = clientBlackListDao.checkBlackList(staffPO.getCompanyId(), clientVO.getKzPhone(), clientVO.getKzWw(), clientVO.getKzQq(), clientVO.getKzWechat());
-        if (!list.isEmpty()) {
-            String ids = CommonConstant.NULL_STR;
-            for (BlackListPO blackListPO : list) {
-                ids += blackListPO.getId() + CommonConstant.STR_SEPARATOR;
-            }
-            ids = ids.substring(0, ids.lastIndexOf(CommonConstant.STR_SEPARATOR));
-            clientBlackListDao.addCount(ids);
-            throw new RException(ExceptionEnum.KZ_IN_BLACK_LIST);
 
-        }
+        //查询黑名单客资
+        checkBlackList(staffPO.getCompanyId(), clientVO);
+
+        Map<String, Object> reqContent = new HashMap<String, Object>();
         reqContent.put("companyid", staffPO.getCompanyId());
         reqContent.put("collectorid", staffPO.getId());
         reqContent.put("collectorname", staffPO.getNickName());
@@ -653,6 +636,41 @@ public class ClientAddServiceImpl implements ClientAddService {
         GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getAppointorId(), info, staffPO.getNickName(), newsDao, staffDao);
         GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getCollectorId(), info, staffPO.getNickName(), newsDao, staffDao);
         GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getPromotorId(), info, staffPO.getNickName(), newsDao, staffDao);
+    }
+
+    /**
+     * 查询黑名单客资
+     *
+     * @param companyId
+     * @param clientVO
+     */
+    private void checkBlackList(int companyId, ClientVO clientVO) {
+        List<BlackListPO> list = clientBlackListDao.checkBlackList(companyId, clientVO.getKzPhone(), clientVO.getKzWw(), clientVO.getKzQq(), clientVO.getKzWechat());
+        if (!list.isEmpty()) {
+            String ids = CommonConstant.NULL_STR;
+            for (BlackListPO blackListPO : list) {
+                ids += blackListPO.getId() + CommonConstant.STR_SEPARATOR;
+            }
+            ids = ids.substring(0, ids.lastIndexOf(CommonConstant.STR_SEPARATOR));
+            clientBlackListDao.addCount(ids);
+            throw new RException(ExceptionEnum.KZ_IN_BLACK_LIST);
+        }
+    }
+
+    /**
+     * 钉钉端录入客资
+     *
+     * @param clientVO
+     */
+    @Override
+    public void addDingClientInfo(ClientVO clientVO) {
+        //查询黑名单客资
+        checkBlackList(clientVO.getCompanyId(), clientVO);
+        //查重
+        checkClientRepeatDao.check(clientVO);
+
+
+
     }
 
 }
