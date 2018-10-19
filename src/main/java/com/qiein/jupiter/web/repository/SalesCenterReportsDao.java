@@ -108,8 +108,13 @@ public class SalesCenterReportsDao {
      */
     private void getSuccessClientCount(ReportsParamVO reportsParamVO, List<SalesCenterReportsVO> salesCenterReportsVOS) {
         StringBuilder sb = new StringBuilder();
-        getBaseSql(sb, reportsParamVO, false, false);
-        sb.append(" group by grp.SHOPID");
+        sb.append(" SELECT count(1),SHOPID");
+        sb.append(" FROM hm_crm_client_info info");
+        sb.append(" LEFT JOIN hm_pub_shop shop ON shop.id = info.shopid");
+        sb.append(" WHERE shop.id IN (SELECT shopid FROM hm_pub_group grp WHERE grp.grouptype = 'msjd')");
+        sb.append(" and info.companyid=? and info.successtime between ? and ?");
+        sb.append(" AND INSTR( ?, CONCAT(',',info.STATUSID + '',',')) != 0");
+        sb.append(" GROUP BY info.shopid");
         List<Map<String, Object>> salesCenterReports = jdbcTemplate.queryForList(sb.toString(),
                 new Object[]{reportsParamVO.getCompanyId(), reportsParamVO.getStart(), reportsParamVO.getEnd(), ClientStatusConst.IS_SUCCESS});
         List<SalesCenterReportsVO> salesCenterReportsVOSBak = new ArrayList<>();
