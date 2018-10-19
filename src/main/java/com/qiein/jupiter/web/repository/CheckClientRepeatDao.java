@@ -146,6 +146,7 @@ public class CheckClientRepeatDao {
 
         StringBuilder sql = new StringBuilder();
         sql.append(" SELECT COUNT(1) NUM, info.KZID FROM hm_crm_client_info info" +
+                " LEFT JOIN hm_crm_client_detail det ON info.KZID = det.KZID AND info.COMPANYID = det.COMPANYID " +
                 " WHERE info.ISDEL =0 AND  info.COMPANYID = :companyId ");
         sql.append(" AND ( ");
         Set<String> infoSet = getLinkHashSet(clientInfoVO);
