@@ -110,6 +110,7 @@ public class ReportsServiceImpl implements ReportService {
     private DstgOrderCycleCountDao dstgOrderCycleCountDao;
 
 
+
     /**
      * 修改联系方式日志
      *
@@ -191,7 +192,7 @@ public class ReportsServiceImpl implements ReportService {
      * @param companyId
      */
     @Override
-    public PageInfo getDstgAdReports(Integer start, Integer end, Integer companyId, String type, Integer page) {
+    public PageInfo getDstgAdReports(Integer start, Integer end, Integer companyId, String type,Integer page) {
         //封装对应的参数
         ReportsParamVO reportsParamVO = new ReportsParamVO();
         reportsParamVO.setStart(start);
@@ -206,12 +207,12 @@ public class ReportsServiceImpl implements ReportService {
         //逻辑分页
         List<DstgGoldDataReportsVO> dstgGoldDataReportsVOS = new LinkedList<>();
         int index = 0;
-        if (page * pageSize > dstgGoldDataReprots.size()) {
-            for (index = pageSize * (page - 1); index < dstgGoldDataReprots.size(); index++) {
+        if( page * pageSize > dstgGoldDataReprots.size() ){
+            for( index = pageSize*(page-1) ;index <dstgGoldDataReprots.size();index++ ){
                 dstgGoldDataReportsVOS.add(dstgGoldDataReprots.get(index));
             }
-        } else {
-            for (index = pageSize * (page - 1); index < page * pageSize; index++) {
+        }else{
+            for( index = pageSize*(page-1) ;index <page * pageSize;index++ ){
                 dstgGoldDataReportsVOS.add(dstgGoldDataReprots.get(index));
             }
         }
@@ -221,7 +222,7 @@ public class ReportsServiceImpl implements ReportService {
     }
 
     @Override
-    public List<DstgZxStyleReportsVO> getDstgZxStyleReports(Integer start, Integer end, int companyId, String type, String zxStyleCode, String sourceIds, String collectorId) {
+    public List<DstgZxStyleReportsVO> getDstgZxStyleReports(Integer start, Integer end, int companyId, String type, String zxStyleCode,String sourceIds,String collectorId) {
         //封装对应的参数
         ReportsParamVO reportsParamVO = new ReportsParamVO();
         reportsParamVO.setStart(start);
@@ -249,9 +250,9 @@ public class ReportsServiceImpl implements ReportService {
         DictionaryPO dictionaryPO = new DictionaryPO();
         dictionaryPO.setDicType("hj");
         dictionaryPO.setDicName("合计");
-        List<DictionaryPO> DicList = dictionaryDao.getInvaildReasons(companyId, "invalid_reason");
-        List<SourcePO> sourcePOS = sourceDao.findSourseByType1(companyId, CommonConstant.DsSrc, sourceIds, startTime, endTime);
-        invalidReasonReportsVO.setInvalidReasonKz(invalidReasonReportsDao.getInvalidReasonReports(sourcePOS, DicList, DBSplitUtil.getTable(TableEnum.info, companyId), DBSplitUtil.getTable(TableEnum.detail, companyId), companyId, sourceIds, startTime, endTime, typeIds));
+        List<DictionaryPO> DicList = dictionaryDao.getInvaildReasons(companyId,"invalid_reason");
+        List<SourcePO> sourcePOS = sourceDao.findSourseByType1(companyId, CommonConstant.DsSrc,sourceIds,startTime,endTime);
+        invalidReasonReportsVO.setInvalidReasonKz(invalidReasonReportsDao.getInvalidReasonReports(sourcePOS,DicList, DBSplitUtil.getTable(TableEnum.info, companyId), DBSplitUtil.getTable(TableEnum.detail, companyId), companyId, sourceIds, startTime, endTime, typeIds));
         list.add(dictionaryPO);
         list.addAll(DicList);
         invalidReasonReportsVO.setInvalidReasons(list);
@@ -263,7 +264,7 @@ public class ReportsServiceImpl implements ReportService {
      */
     public List<ZjsKzOfMonthShowVO> ZjskzOfMonth(Integer companyId, String month, String typeIds, String sourceIds, String type) {
         List<Map<String, Object>> newList = zjskzOfMonthDao.getDayOfMonth(Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[0]), Integer.parseInt(month.split(CommonConstant.ROD_SEPARATOR)[1]), DBSplitUtil.getTable(TableEnum.info, companyId));
-        List<SourcePO> sourcePOS = sourceDao.findSourseByType(companyId, CommonConstant.ZjsSrc, sourceIds);
+        List<SourcePO> sourcePOS = sourceDao.findSourseByType(companyId, CommonConstant.ZjsSrc,sourceIds);
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         return zjskzOfMonthDao.getzjskzOfMonth(sourcePOS, newList, month.replace(CommonConstant.ROD_SEPARATOR, CommonConstant.FILE_SEPARATOR), companyId, DBSplitUtil.getTable(TableEnum.info, companyId), sourceIds, typeIds, invalidConfig, type);
     }
@@ -278,11 +279,11 @@ public class ReportsServiceImpl implements ReportService {
     }
 
     @Override
-    public Map<String, Object> getProvinceReport(ProvinceAnalysisParamDTO provinceAnalysisParamDTO) {
+    public Map<String,Object> getProvinceReport(ProvinceAnalysisParamDTO provinceAnalysisParamDTO) {
         //获取公司自定义的无效设置 TODO 其实部分数据是不用调这个借口
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(provinceAnalysisParamDTO.getCompanyId());
 //        List<ProvinceReportsVO2> provinceReport = provinceReportsDao.provinceReport(provinceAnalysisParamDTO, invalidConfig);
-        Map<String, Object> provinceReport = provinceReportsDao.getDstgProvinceReports(provinceAnalysisParamDTO, invalidConfig);
+        Map<String,Object> provinceReport = provinceReportsDao.getDstgProvinceReports(provinceAnalysisParamDTO, invalidConfig);
         return provinceReport;
     }
 
@@ -334,7 +335,7 @@ public class ReportsServiceImpl implements ReportService {
      * @return
      */
     @Override
-    public List<Map<String, Object>> getDSTGSrcMonthReportsSum(String month, String typeId, String sourceId, int companyId) {
+    public List<Map<String, Object>> getDSTGSrcMonthReportsSum(String month, String typeId,String sourceId, int companyId) {
         //封装参数
         ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
         reportsParamSrcMonthVO.setTypeId(typeId);
@@ -344,9 +345,9 @@ public class ReportsServiceImpl implements ReportService {
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         //获取时间时间戳
         int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
-        int lastDay = TimeUtil.getMonthEndTimeStampByDate(month);
+        int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);
         //获取客资数据
-        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsSum(firstDay, lastDay, reportsParamSrcMonthVO, invalidConfig);
+        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsSum(firstDay,lastDay,reportsParamSrcMonthVO, invalidConfig);
         return dstgSrcMonthReports;
     }
 
@@ -357,8 +358,8 @@ public class ReportsServiceImpl implements ReportService {
      * @return
      */
     @Override
-    public List<Map<String, Object>> getDSTGSrcMonthReportsAll(String month, String typeId, String sourceId, int companyId) {
-        //封装参数
+    public List<Map<String, Object>> getDSTGSrcMonthReportsAll(String month, String typeId,String sourceId, int companyId) {
+    	//封装参数
         ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
         reportsParamSrcMonthVO.setTypeId(typeId);
         reportsParamSrcMonthVO.setSourceId(sourceId);
@@ -367,9 +368,9 @@ public class ReportsServiceImpl implements ReportService {
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         //获取时间时间戳
         int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
-        int lastDay = TimeUtil.getMonthEndTimeStampByDate(month);
+        int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);
         //获取客资数据
-        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsAll(firstDay, lastDay, reportsParamSrcMonthVO, invalidConfig);
+        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsAll(firstDay,lastDay,reportsParamSrcMonthVO, invalidConfig);
         return dstgSrcMonthReports;
     }
 
@@ -380,20 +381,20 @@ public class ReportsServiceImpl implements ReportService {
      * @return
      */
     @Override
-    public List<Map<String, Object>> getDSTGSrcMonthReportsDdNum(String month, String typeId, String sourceId, int companyId) {
-        //封装参数
-        ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
-
-        reportsParamSrcMonthVO.setTypeId(typeId);
-        reportsParamSrcMonthVO.setSourceId(sourceId);
-        reportsParamSrcMonthVO.setCompanyId(companyId);
-        //获取无效状态指标，无效意向等级，待定是否为有效量，待定指标
-        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
-        //获取时间时间戳
-        int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
-        int lastDay = TimeUtil.getMonthEndTimeStampByDate(month);
+    public List<Map<String, Object>> getDSTGSrcMonthReportsDdNum(String month, String typeId,String sourceId, int companyId){
+    		//封装参数
+            ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
+            
+            reportsParamSrcMonthVO.setTypeId(typeId);
+            reportsParamSrcMonthVO.setSourceId(sourceId);
+            reportsParamSrcMonthVO.setCompanyId(companyId);
+            //获取无效状态指标，无效意向等级，待定是否为有效量，待定指标
+            DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
+          //获取时间时间戳
+            int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
+            int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);
         //获取客资数据
-        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsDdNum(firstDay, lastDay, reportsParamSrcMonthVO, invalidConfig);
+        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsDdNum(firstDay,lastDay,reportsParamSrcMonthVO, invalidConfig);
         return dstgSrcMonthReports;
     }
 
@@ -404,8 +405,8 @@ public class ReportsServiceImpl implements ReportService {
      * @return
      */
     @Override
-    public List<Map<String, Object>> getDSTGSrcMonthReportsInvalid(String month, String typeId, String sourceId, int companyId) {
-        //封装参数
+    public List<Map<String, Object>> getDSTGSrcMonthReportsInvalid(String month, String typeId,String sourceId, int companyId){
+    	//封装参数
         ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
         reportsParamSrcMonthVO.setTypeId(typeId);
         reportsParamSrcMonthVO.setSourceId(sourceId);
@@ -414,9 +415,9 @@ public class ReportsServiceImpl implements ReportService {
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         //获取时间时间戳
         int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
-        int lastDay = TimeUtil.getMonthEndTimeStampByDate(month);
+        int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);	
         //获取客资数据
-        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsInvalid(firstDay, lastDay, reportsParamSrcMonthVO, invalidConfig);
+        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsInvalid(firstDay,lastDay,reportsParamSrcMonthVO, invalidConfig);
         return dstgSrcMonthReports;
     }
 
@@ -427,7 +428,7 @@ public class ReportsServiceImpl implements ReportService {
      * @return
      */
     @Override
-    public List<Map<String, Object>> getDSTGSrcMonthReportsvalid(String month, String typeId, String sourceId, int companyId) {
+    public List<Map<String, Object>> getDSTGSrcMonthReportsvalid(String month, String typeId,String sourceId, int companyId) {
         //封装参数
         ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
         reportsParamSrcMonthVO.setTypeId(typeId);
@@ -437,9 +438,9 @@ public class ReportsServiceImpl implements ReportService {
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         //获取时间时间戳
         int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
-        int lastDay = TimeUtil.getMonthEndTimeStampByDate(month);
+        int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);	
         //获取客资数据
-        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsvalid(firstDay, lastDay, reportsParamSrcMonthVO, invalidConfig);
+        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsvalid(firstDay,lastDay,reportsParamSrcMonthVO, invalidConfig);
         return dstgSrcMonthReports;
     }
 
@@ -457,7 +458,7 @@ public class ReportsServiceImpl implements ReportService {
     }
 
     @Override
-    public List<DstgZxStyleReportsVO> getDstgZxStyleSourceRerports(Integer start, Integer end, String zxStyleCode, String type, int companyId, String collectorId) {
+    public List<DstgZxStyleReportsVO> getDstgZxStyleSourceRerports(Integer start, Integer end, String zxStyleCode, String type, int companyId,String collectorId) {
         ReportsParamVO reportsParamVO = new ReportsParamVO();
         reportsParamVO.setStart(start);
         reportsParamVO.setEnd(end);
@@ -500,6 +501,7 @@ public class ReportsServiceImpl implements ReportService {
     }
 
     /**
+     *
      * @param startTime
      * @param endTime
      * @param keyWord
@@ -608,14 +610,13 @@ public class ReportsServiceImpl implements ReportService {
 
     /**
      * 个人简报
-     *
      * @param reportParamDTO
      * @return
      */
     @Override
-    public Map<String, RegionReportsVO> getPersonalPresentation(ReportParamDTO reportParamDTO) {
+    public Map<String,RegionReportsVO> getPersonalPresentation(ReportParamDTO reportParamDTO) {
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(reportParamDTO.getCompanyId());
-        return personalPresentationDao.getPersonalPresentation(reportParamDTO, invalidConfig);
+        return personalPresentationDao.getPersonalPresentation(reportParamDTO,invalidConfig);
     }
 
     @Override
@@ -645,15 +646,15 @@ public class ReportsServiceImpl implements ReportService {
     private void computerClientCountTotal(List<DstgYearReportsVO> dstgYearReportsVOS) {
         for (DstgYearReportsVO dstgYearReports : dstgYearReportsVOS) {
             Map<String, Object> mapList = dstgYearReports.getMapList();
-            Map<String, Object> newsMapList = new HashMap<>();
+            Map<String,Object> newsMapList = new HashMap<>();
             for (Map.Entry<String, Object> keys : mapList.entrySet()) {
-                Integer kzNum = (Integer) newsMapList.get("合计");
-                if (kzNum == null) {
+                Integer kzNum = (Integer)newsMapList.get("合计");
+                if(kzNum == null){
                     kzNum = 0;
                 }
-                newsMapList.put(keys.getKey(), keys.getValue());
+                newsMapList.put(keys.getKey(),keys.getValue());
                 Integer value = Integer.parseInt(keys.getValue().toString());
-                newsMapList.put("合计", (kzNum + value));
+                newsMapList.put("合计",  (kzNum+value));
             }
             dstgYearReports.setMapList(newsMapList);
         }
@@ -662,19 +663,20 @@ public class ReportsServiceImpl implements ReportService {
     private void computerClientRateTotal(List<DstgYearReportsVO> dstgYearReportsVOS) {
         for (DstgYearReportsVO dstgYearReports : dstgYearReportsVOS) {
             Map<String, Object> mapList = dstgYearReports.getMapList();
-            Map<String, Object> newsMapList = new HashMap<>();
+            Map<String,Object> newsMapList = new HashMap<>();
             for (Map.Entry<String, Object> keys : mapList.entrySet()) {
-                Double kzNum = (Double) newsMapList.get("合计");
-                if (kzNum == null) {
+                Double kzNum = (Double)newsMapList.get("合计");
+                if(kzNum == null){
                     kzNum = 0.00;
                 }
-                newsMapList.put(keys.getKey(), keys.getValue());
+                newsMapList.put(keys.getKey(),keys.getValue());
                 Double value = Double.parseDouble(keys.getValue().toString());
-                newsMapList.put("合计", (kzNum + value));
+                newsMapList.put("合计",  (kzNum+value));
             }
             dstgYearReports.setMapList(newsMapList);
         }
     }
+
 
 
     private void getDataByConditionType(String conditionType, List<DstgSourceYearReportsVO> dstgYearsClientReports, List<DstgYearReportsVO> dstgYearReportsVOS) {
@@ -823,10 +825,10 @@ public class ReportsServiceImpl implements ReportService {
                             validClientCount += dstgSourceYearReportsVO.getValidClientCount();
                         }
                     }
-                    if (clientCount == 0) {
-                        newMap.put("合计", 0);
-                    } else {
-                        newMap.put("合计", (validClientCount / clientCount) * 100);
+                    if(clientCount == 0){
+                        newMap.put("合计",0);
+                    }else{
+                        newMap.put("合计",(validClientCount/clientCount)*100);
                     }
                     dstgYearReportsVO.setMapList(newMap);
                 }
@@ -848,10 +850,10 @@ public class ReportsServiceImpl implements ReportService {
                             inValidClientCount += dstgSourceYearReportsVO.getInValidClientCount();
                         }
                     }
-                    if (clientCount == 0) {
-                        newMap.put("合计", 0);
-                    } else {
-                        newMap.put("合计", (inValidClientCount / clientCount) * 100);
+                    if(clientCount == 0){
+                        newMap.put("合计",0);
+                    }else{
+                        newMap.put("合计",(inValidClientCount/clientCount)*100);
                     }
                     dstgYearReportsVO.setMapList(newMap);
                 }
@@ -873,10 +875,10 @@ public class ReportsServiceImpl implements ReportService {
                             pendingClientCount += dstgSourceYearReportsVO.getPendingClientCount();
                         }
                     }
-                    if (clientCount == 0) {
-                        newMap.put("合计", 0);
-                    } else {
-                        newMap.put("合计", (pendingClientCount / clientCount) * 100);
+                    if(clientCount == 0){
+                        newMap.put("合计",0);
+                    }else{
+                        newMap.put("合计",(pendingClientCount/clientCount)*100);
                     }
                     dstgYearReportsVO.setMapList(newMap);
                 }
@@ -898,10 +900,10 @@ public class ReportsServiceImpl implements ReportService {
                             comeShopClientCount += dstgSourceYearReportsVO.getComeShopClientCount();
                         }
                     }
-                    if (clientCount == 0) {
-                        newMap.put("合计", 0);
-                    } else {
-                        newMap.put("合计", (comeShopClientCount / clientCount) * 100);
+                    if(clientCount == 0){
+                        newMap.put("合计",0);
+                    }else{
+                        newMap.put("合计",(comeShopClientCount/clientCount)*100);
                     }
                     dstgYearReportsVO.setMapList(newMap);
                 }
@@ -923,10 +925,10 @@ public class ReportsServiceImpl implements ReportService {
                             comeShopClientCount += dstgSourceYearReportsVO.getComeShopClientCount();
                         }
                     }
-                    if (validClientCount == 0) {
-                        newMap.put("合计", 0);
-                    } else {
-                        newMap.put("合计", (comeShopClientCount / validClientCount) * 100);
+                    if(validClientCount == 0){
+                        newMap.put("合计",0);
+                    }else{
+                        newMap.put("合计",(comeShopClientCount/validClientCount)*100);
                     }
                     dstgYearReportsVO.setMapList(newMap);
                 }
@@ -948,10 +950,10 @@ public class ReportsServiceImpl implements ReportService {
                             successClientCount += dstgSourceYearReportsVO.getSuccessClientCount();
                         }
                     }
-                    if (comeShopClientCount == 0) {
-                        newMap.put("合计", 0);
-                    } else {
-                        newMap.put("合计", (successClientCount / comeShopClientCount) * 100);
+                    if(comeShopClientCount == 0){
+                        newMap.put("合计",0);
+                    }else{
+                        newMap.put("合计",(successClientCount/comeShopClientCount)*100);
                     }
                     dstgYearReportsVO.setMapList(newMap);
                 }
@@ -973,10 +975,10 @@ public class ReportsServiceImpl implements ReportService {
                             successClientCount += dstgSourceYearReportsVO.getSuccessClientCount();
                         }
                     }
-                    if (clientCount == 0) {
-                        newMap.put("合计", 0);
-                    } else {
-                        newMap.put("合计", (successClientCount / clientCount) * 100);
+                    if(clientCount == 0){
+                        newMap.put("合计",0);
+                    }else{
+                        newMap.put("合计",(successClientCount/clientCount)*100);
                     }
                     dstgYearReportsVO.setMapList(newMap);
                 }
@@ -998,10 +1000,10 @@ public class ReportsServiceImpl implements ReportService {
                             successClientCount += dstgSourceYearReportsVO.getSuccessClientCount();
                         }
                     }
-                    if (validClientCount == 0) {
-                        newMap.put("合计", 0);
-                    } else {
-                        newMap.put("合计", (successClientCount / validClientCount) * 100);
+                    if(validClientCount == 0){
+                        newMap.put("合计",0);
+                    }else{
+                        newMap.put("合计",(successClientCount/validClientCount)*100);
                     }
                     dstgYearReportsVO.setMapList(newMap);
                 }
@@ -1038,10 +1040,10 @@ public class ReportsServiceImpl implements ReportService {
                         if (dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())) {
                             newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getClientCost());
                             allClientCount += dstgSourceYearReportsVO.getAllClientCount();
-                            allCost += Double.parseDouble(StringUtil.isEmpty(dstgSourceYearReportsVO.getAllCost()) ? "0.00" : dstgSourceYearReportsVO.getAllCost());
+                            allCost += Double.parseDouble(StringUtil.isEmpty(dstgSourceYearReportsVO.getAllCost())?"0.00":dstgSourceYearReportsVO.getAllCost());
                         }
                     }
-                    newMap.put("合计", (allCost / allClientCount));
+                    newMap.put("合计",(allCost/allClientCount));
                     dstgYearReportsVO.setMapList(newMap);
                 }
                 break;
@@ -1059,13 +1061,13 @@ public class ReportsServiceImpl implements ReportService {
                         if (dstgYearReportsVO.getSourceId().equals(dstgSourceYearReportsVO.getSourceId())) {
                             newMap.put("month" + dstgSourceYearReportsVO.getMonth(), dstgSourceYearReportsVO.getValidClientCost());
                             validClientCount += dstgSourceYearReportsVO.getValidClientCount();
-                            allCost += Double.parseDouble(StringUtil.isEmpty(dstgSourceYearReportsVO.getAllCost()) ? "0.00" : dstgSourceYearReportsVO.getAllCost());
+                            allCost += Double.parseDouble(StringUtil.isEmpty(dstgSourceYearReportsVO.getAllCost())?"0.00":dstgSourceYearReportsVO.getAllCost());
                         }
                     }
-                    if (validClientCount == 0) {
-                        newMap.put("合计", 0);
-                    } else {
-                        newMap.put("合计", (allCost / validClientCount) * 100);
+                    if(validClientCount == 0){
+                        newMap.put("合计",0);
+                    }else{
+                        newMap.put("合计",(allCost/validClientCount)*100);
                     }
                     dstgYearReportsVO.setMapList(newMap);
                 }
@@ -1087,10 +1089,10 @@ public class ReportsServiceImpl implements ReportService {
                             allCost += Double.parseDouble(dstgSourceYearReportsVO.getAllCost());
                         }
                     }
-                    if (comeShopClientCount == 0) {
-                        newMap.put("合计", 0);
-                    } else {
-                        newMap.put("合计", (allCost / comeShopClientCount) * 100);
+                    if(comeShopClientCount == 0){
+                        newMap.put("合计",0);
+                    }else{
+                        newMap.put("合计",(allCost/comeShopClientCount)*100);
                     }
                     dstgYearReportsVO.setMapList(newMap);
                 }
@@ -1112,10 +1114,10 @@ public class ReportsServiceImpl implements ReportService {
                             allCost += Double.parseDouble(dstgSourceYearReportsVO.getAllCost());
                         }
                     }
-                    if (successClientCount == 0) {
-                        newMap.put("合计", 0);
-                    } else {
-                        newMap.put("合计", (allCost / successClientCount) * 100);
+                    if(successClientCount == 0){
+                        newMap.put("合计",0);
+                    }else{
+                        newMap.put("合计",(allCost/successClientCount)*100);
                     }
                     dstgYearReportsVO.setMapList(newMap);
                 }
@@ -1171,10 +1173,10 @@ public class ReportsServiceImpl implements ReportService {
                             amount += dstgSourceYearReportsVO.getAmount();
                         }
                     }
-                    if (amount == 0) {
-                        newMap.put("合计", 0);
-                    } else {
-                        newMap.put("合计", (allCost / amount) * 100);
+                    if(amount == 0){
+                        newMap.put("合计",0);
+                    }else{
+                        newMap.put("合计",(allCost/amount)*100);
                     }
                     dstgYearReportsVO.setMapList(newMap);
                 }
@@ -1183,45 +1185,41 @@ public class ReportsServiceImpl implements ReportService {
                 break;
         }
     }
-
     /**
      * 推广渠道报表根据 小组id的详情报表
-     *
      * @param groupId
      * @param companyId
      * @return
      */
-    public List<DstgChannelReportsOrderBySrcVO> getDstgChannelReportsOrderBySrc(String groupId, Integer companyId, String start, String end, String sourceIds, String typeIds) {
+    public List<DstgChannelReportsOrderBySrcVO> getDstgChannelReportsOrderBySrc(String groupId,Integer companyId,String start,String end,String sourceIds,String typeIds){
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
-        return dstgChannelReportsOrderBySrcDao.getDstgChannelReportsOrderBySrc(groupId, companyId, start, end, sourceIds, typeIds, invalidConfig);
+        return dstgChannelReportsOrderBySrcDao.getDstgChannelReportsOrderBySrc(groupId,companyId,start,end,sourceIds,typeIds,invalidConfig);
     }
-
     /**
      * 客资各个渠道各个状态
      */
-    public SourceAndStatusReportsShowVO getSourceAndStatusReports(String appointorIds, String collectorIds, String receptorIds, String start, String end, String groupIds, String typeIds, String sourceIds, Integer companyId) {
-        List<StatusPO> statusPOS = clientStatusDao.getCompanyStatusList(companyId);
-        List<SourcePO> sourcePOS = sourceDao.findSourseByType(companyId, CommonConstant.DsSrc, "");
-        SourceAndStatusReportsShowVO sourceAndStatusReportsShowVO = new SourceAndStatusReportsShowVO();
-        sourceAndStatusReportsShowVO.setList(sourceAndStatusReportsDao.getSourceAndStatusReports(appointorIds, collectorIds, receptorIds, start, end, groupIds, typeIds, sourceIds, companyId, statusPOS, sourcePOS));
-        StatusPO statusPO = new StatusPO();
-        statusPO.setStatusId(-1);
-        statusPO.setStatusName("合计");
-        sourceAndStatusReportsShowVO.setStatusPO(statusPOS);
-        return sourceAndStatusReportsShowVO;
+    public SourceAndStatusReportsShowVO getSourceAndStatusReports(String appointorIds,String collectorIds,String receptorIds,String start,String end,String groupIds,String typeIds,String sourceIds,Integer companyId){
+            List<StatusPO> statusPOS=clientStatusDao.getCompanyStatusList(companyId);
+            List<SourcePO> sourcePOS=sourceDao.findSourseByType(companyId, CommonConstant.DsSrc,"");
+            SourceAndStatusReportsShowVO sourceAndStatusReportsShowVO=new SourceAndStatusReportsShowVO();
+            sourceAndStatusReportsShowVO.setList(sourceAndStatusReportsDao.getSourceAndStatusReports(appointorIds,collectorIds,receptorIds,start,end,groupIds,typeIds,sourceIds,companyId,statusPOS,sourcePOS));
+            StatusPO statusPO=new StatusPO();
+            statusPO.setStatusId(-1);
+            statusPO.setStatusName("合计");
+            sourceAndStatusReportsShowVO.setStatusPO(statusPOS);
+            return sourceAndStatusReportsShowVO;
     }
-
+    
     /**
      * 电商推广月度报表入店量--HJF
-     *
-     * @param
+     * @param 
      */
 
 
-    @Override
-    public List<Map<String, Object>> getDSTGSrcMonthReportsCome(String month, String typeId, String sourceId,
-                                                                int companyId) {
-        //封装参数
+	@Override
+	public List<Map<String, Object>> getDSTGSrcMonthReportsCome(String month, String typeId, String sourceId,
+			int companyId) {
+		//封装参数
         ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
         reportsParamSrcMonthVO.setTypeId(typeId);
         reportsParamSrcMonthVO.setSourceId(sourceId);
@@ -1230,21 +1228,20 @@ public class ReportsServiceImpl implements ReportService {
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         //获取时间时间戳
         int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
-        int lastDay = TimeUtil.getMonthEndTimeStampByDate(month);
+        int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);	
         //获取客资数据
-        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsCome(firstDay, lastDay, reportsParamSrcMonthVO, invalidConfig);
+        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsCome(firstDay,lastDay,reportsParamSrcMonthVO, invalidConfig);
         return dstgSrcMonthReports;
-    }
+	}
 
-    /**
+	/**
      * 电商推广月度报表成交量量--HJF
-     *
-     * @param
+     * @param 
      */
-    @Override
-    public List<Map<String, Object>> getDSTGSrcMonthReportsSuccess(String month, String typeId, String sourceId,
-                                                                   int companyId) {
-        //封装参数
+	@Override
+	public List<Map<String, Object>> getDSTGSrcMonthReportsSuccess(String month, String typeId, String sourceId,
+			int companyId) {
+		//封装参数
         ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
         reportsParamSrcMonthVO.setTypeId(typeId);
         reportsParamSrcMonthVO.setSourceId(sourceId);
@@ -1253,21 +1250,20 @@ public class ReportsServiceImpl implements ReportService {
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         //获取时间时间戳
         int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
-        int lastDay = TimeUtil.getMonthEndTimeStampByDate(month);
+        int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);	
         //获取客资数据
-        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsSuccess(firstDay, lastDay, reportsParamSrcMonthVO, invalidConfig);
+        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsSuccess(firstDay,lastDay,reportsParamSrcMonthVO, invalidConfig);
         return dstgSrcMonthReports;
-    }
+	}
 
-    /**
+	/**
      * 电商推广月度报表有效率--HJF
-     *
-     * @param
+     * @param 
      */
-    @Override
-    public List<Map<String, Object>> getDSTGSrcMonthReportsValidRate(String month, String typeId, String sourceId,
-                                                                     int companyId) {
-        //封装参数
+	@Override
+	public List<Map<String, Object>> getDSTGSrcMonthReportsValidRate(String month, String typeId, String sourceId,
+			int companyId) {
+		//封装参数
         ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
         reportsParamSrcMonthVO.setTypeId(typeId);
         reportsParamSrcMonthVO.setSourceId(sourceId);
@@ -1276,21 +1272,19 @@ public class ReportsServiceImpl implements ReportService {
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         //获取时间时间戳
         int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
-        int lastDay = TimeUtil.getMonthEndTimeStampByDate(month);
+        int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);	
         //获取客资数据
-        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsValidRate(firstDay, lastDay, reportsParamSrcMonthVO, invalidConfig);
+        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsValidRate(firstDay,lastDay,reportsParamSrcMonthVO, invalidConfig);
         return dstgSrcMonthReports;
-    }
-
-    /**
+	}
+	/**
      * 电商推广月度报表无效率--HJF
-     *
-     * @param
+     * @param 
      */
-    @Override
-    public List<Map<String, Object>> getDSTGSrcMonthReportsInValidRate(String month, String typeId, String sourceId,
-                                                                       int companyId) {
-        //封装参数
+	@Override
+	public List<Map<String, Object>> getDSTGSrcMonthReportsInValidRate(String month, String typeId, String sourceId,
+			int companyId) {
+		//封装参数
         ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
         reportsParamSrcMonthVO.setTypeId(typeId);
         reportsParamSrcMonthVO.setSourceId(sourceId);
@@ -1299,21 +1293,19 @@ public class ReportsServiceImpl implements ReportService {
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         //获取时间时间戳
         int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
-        int lastDay = TimeUtil.getMonthEndTimeStampByDate(month);
+        int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);	
         //获取客资数据
-        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsInValidRate(firstDay, lastDay, reportsParamSrcMonthVO, invalidConfig);
+        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsInValidRate(firstDay,lastDay,reportsParamSrcMonthVO, invalidConfig);
         return dstgSrcMonthReports;
-    }
-
-    /**
+	}
+	/**
      * 电商推广月度报表待定率--HJF
-     *
-     * @param
+     * @param 
      */
-    @Override
-    public List<Map<String, Object>> getDSTGSrcMonthReportsDdnumRate(String month, String typeId, String sourceId,
-                                                                     int companyId) {
-        //封装参数
+	@Override
+	public List<Map<String, Object>> getDSTGSrcMonthReportsDdnumRate(String month, String typeId, String sourceId,
+			int companyId) {
+		//封装参数
         ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
         reportsParamSrcMonthVO.setTypeId(typeId);
         reportsParamSrcMonthVO.setSourceId(sourceId);
@@ -1322,21 +1314,19 @@ public class ReportsServiceImpl implements ReportService {
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         //获取时间时间戳
         int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
-        int lastDay = TimeUtil.getMonthEndTimeStampByDate(month);
+        int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);	
         //获取客资数据
-        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsDdnumRate(firstDay, lastDay, reportsParamSrcMonthVO, invalidConfig);
+        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsDdnumRate(firstDay,lastDay,reportsParamSrcMonthVO, invalidConfig);
         return dstgSrcMonthReports;
-    }
-
-    /**
+	}
+	/**
      * 电商推广月度报表毛客资入店率--HJF
-     *
-     * @param
+     * @param 
      */
-    @Override
-    public List<Map<String, Object>> getDSTGSrcMonthReportsComeRate(String month, String typeId, String sourceId,
-                                                                    int companyId) {
-        //封装参数
+	@Override
+	public List<Map<String, Object>> getDSTGSrcMonthReportsComeRate(String month, String typeId, String sourceId,
+			int companyId) {
+		//封装参数
         ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
         reportsParamSrcMonthVO.setTypeId(typeId);
         reportsParamSrcMonthVO.setSourceId(sourceId);
@@ -1345,21 +1335,20 @@ public class ReportsServiceImpl implements ReportService {
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         //获取时间时间戳
         int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
-        int lastDay = TimeUtil.getMonthEndTimeStampByDate(month);
+        int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);	
         //获取客资数据
-        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsComeRate(firstDay, lastDay, reportsParamSrcMonthVO, invalidConfig);
+        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsComeRate(firstDay,lastDay,reportsParamSrcMonthVO, invalidConfig);
         return dstgSrcMonthReports;
-    }
+	}
 
-    /**
+	/**
      * 电商推广月度报表有效客资入店率--HJF
-     *
-     * @param
+     * @param 
      */
-    @Override
-    public List<Map<String, Object>> getDSTGSrcMonthReportsValidComeRate(String month, String typeId, String sourceId,
-                                                                         int companyId) {
-        //封装参数
+	@Override
+	public List<Map<String, Object>> getDSTGSrcMonthReportsValidComeRate(String month, String typeId, String sourceId,
+			int companyId) {
+		//封装参数
         ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
         reportsParamSrcMonthVO.setTypeId(typeId);
         reportsParamSrcMonthVO.setSourceId(sourceId);
@@ -1368,21 +1357,19 @@ public class ReportsServiceImpl implements ReportService {
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         //获取时间时间戳
         int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
-        int lastDay = TimeUtil.getMonthEndTimeStampByDate(month);
+        int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);	
         //获取客资数据
-        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsValidComeRate(firstDay, lastDay, reportsParamSrcMonthVO, invalidConfig);
+        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsValidComeRate(firstDay,lastDay,reportsParamSrcMonthVO, invalidConfig);
         return dstgSrcMonthReports;
-    }
-
-    /**
+	}
+	/**
      * 电商推广月度报表有效客资入店率--HJF
-     *
-     * @param
+     * @param 
      */
-    @Override
-    public List<Map<String, Object>> getDSTGSrcMonthReportsSuccessRate(String month, String typeId, String sourceId,
-                                                                       int companyId) {
-        //封装参数
+	@Override
+	public List<Map<String, Object>> getDSTGSrcMonthReportsSuccessRate(String month, String typeId, String sourceId,
+			int companyId) {
+		//封装参数
         ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
         reportsParamSrcMonthVO.setTypeId(typeId);
         reportsParamSrcMonthVO.setSourceId(sourceId);
@@ -1391,21 +1378,19 @@ public class ReportsServiceImpl implements ReportService {
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         //获取时间时间戳
         int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
-        int lastDay = TimeUtil.getMonthEndTimeStampByDate(month);
+        int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);	
         //获取客资数据
-        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsValidSuccessRate(firstDay, lastDay, reportsParamSrcMonthVO, invalidConfig);
+        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsValidSuccessRate(firstDay,lastDay,reportsParamSrcMonthVO, invalidConfig);
         return dstgSrcMonthReports;
-    }
-
-    /**
+	}
+	/**
      * 电商推广月度报表毛客资成交率--HJF
-     *
-     * @param
+     * @param 
      */
-    @Override
-    public List<Map<String, Object>> getDSTGSrcMonthReportsSuccessRate1(String month, String typeId, String sourceId,
-                                                                        int companyId) {
-        //封装参数
+	@Override
+	public List<Map<String, Object>> getDSTGSrcMonthReportsSuccessRate1(String month, String typeId, String sourceId,
+			int companyId) {
+		//封装参数
         ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
         reportsParamSrcMonthVO.setTypeId(typeId);
         reportsParamSrcMonthVO.setSourceId(sourceId);
@@ -1414,21 +1399,19 @@ public class ReportsServiceImpl implements ReportService {
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         //获取时间时间戳
         int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
-        int lastDay = TimeUtil.getMonthEndTimeStampByDate(month);
+        int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);	
         //获取客资数据
-        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsValidSuccessRate1(firstDay, lastDay, reportsParamSrcMonthVO, invalidConfig);
+        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsValidSuccessRate1(firstDay,lastDay,reportsParamSrcMonthVO, invalidConfig);
         return dstgSrcMonthReports;
-    }
-
-    /**
+	}
+	/**
      * 电商推广月度报表有效客资成交率--HJF
-     *
-     * @param
+     * @param 
      */
-    @Override
-    public List<Map<String, Object>> getDSTGSrcMonthReportsSuccessRate2(String month, String typeId, String sourceId,
-                                                                        int companyId) {
-        //封装参数
+	@Override
+	public List<Map<String, Object>> getDSTGSrcMonthReportsSuccessRate2(String month, String typeId, String sourceId,
+			int companyId) {
+		//封装参数
         ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
         reportsParamSrcMonthVO.setTypeId(typeId);
         reportsParamSrcMonthVO.setSourceId(sourceId);
@@ -1437,21 +1420,19 @@ public class ReportsServiceImpl implements ReportService {
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         //获取时间时间戳
         int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
-        int lastDay = TimeUtil.getMonthEndTimeStampByDate(month);
+        int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);	
         //获取客资数据
-        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsValidSuccessRate2(firstDay, lastDay, reportsParamSrcMonthVO, invalidConfig);
+        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsValidSuccessRate2(firstDay,lastDay,reportsParamSrcMonthVO, invalidConfig);
         return dstgSrcMonthReports;
-    }
-
-    /**
+	}
+	/**
      * 电商推广月度报表花费--HJF
-     *
-     * @param
+     * @param 
      */
-    @Override
-    public List<Map<String, Object>> getDSTGSrcMonthReportsCost(String month, String typeId, String sourceId,
-                                                                int companyId) {
-        //封装参数
+	@Override
+	public List<Map<String, Object>> getDSTGSrcMonthReportsCost(String month, String typeId, String sourceId,
+			int companyId) {
+		//封装参数
         ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
         reportsParamSrcMonthVO.setTypeId(typeId);
         reportsParamSrcMonthVO.setSourceId(sourceId);
@@ -1460,21 +1441,19 @@ public class ReportsServiceImpl implements ReportService {
         //DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         //获取时间时间戳
         int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
-        int lastDay = TimeUtil.getMonthEndTimeStampByDate(month);
+        int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);	
         //获取客资数据
-        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsValidCost(firstDay, lastDay, reportsParamSrcMonthVO);
+        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsValidCost(firstDay,lastDay,reportsParamSrcMonthVO);
         return dstgSrcMonthReports;
-    }
-
-    /**
+	}
+	/**
      * 电商推广月度报表毛客资成本--HJF
-     *
-     * @param
+     * @param 
      */
-    @Override
-    public List<Map<String, Object>> getDSTGSrcMonthReportsCostKZ(String month, String typeId, String sourceId,
-                                                                  int companyId) {
-        //封装参数
+	@Override
+	public List<Map<String, Object>> getDSTGSrcMonthReportsCostKZ(String month, String typeId, String sourceId,
+			int companyId) {
+		//封装参数
         ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
         reportsParamSrcMonthVO.setTypeId(typeId);
         reportsParamSrcMonthVO.setSourceId(sourceId);
@@ -1483,21 +1462,20 @@ public class ReportsServiceImpl implements ReportService {
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         //获取时间时间戳
         int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
-        int lastDay = TimeUtil.getMonthEndTimeStampByDate(month);
+        int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);	
         //获取客资数据
-        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsValidCostKZ(firstDay, lastDay, reportsParamSrcMonthVO, invalidConfig);
+        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsValidCostKZ(firstDay,lastDay,reportsParamSrcMonthVO,invalidConfig);
         return dstgSrcMonthReports;
-    }
+	}
 
-    /**
+	/**
      * 电商推广月度报表有效客资成本--HJF
-     *
-     * @param
+     * @param 
      */
-    @Override
-    public List<Map<String, Object>> getDSTGSrcMonthReportsCostValidKZ(String month, String typeId, String sourceId,
-                                                                       int companyId) {
-        //封装参数
+	@Override
+	public List<Map<String, Object>> getDSTGSrcMonthReportsCostValidKZ(String month, String typeId, String sourceId,
+			int companyId) {
+		//封装参数
         ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
         reportsParamSrcMonthVO.setTypeId(typeId);
         reportsParamSrcMonthVO.setSourceId(sourceId);
@@ -1506,21 +1484,19 @@ public class ReportsServiceImpl implements ReportService {
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         //获取时间时间戳
         int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
-        int lastDay = TimeUtil.getMonthEndTimeStampByDate(month);
+        int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);	
         //获取客资数据
-        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsValidCostValidKZ(firstDay, lastDay, reportsParamSrcMonthVO, invalidConfig);
+        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsValidCostValidKZ(firstDay,lastDay,reportsParamSrcMonthVO,invalidConfig);
         return dstgSrcMonthReports;
-    }
-
-    /**
+	}
+	/**
      * 电商推广月度报表入店成本--HJF
-     *
-     * @param
+     * @param 
      */
-    @Override
-    public List<Map<String, Object>> getDSTGSrcMonthReportsCostComeKZ(String month, String typeId, String sourceId,
-                                                                      int companyId) {
-        //封装参数
+	@Override
+	public List<Map<String, Object>> getDSTGSrcMonthReportsCostComeKZ(String month, String typeId, String sourceId,
+			int companyId) {
+		//封装参数
         ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
         reportsParamSrcMonthVO.setTypeId(typeId);
         reportsParamSrcMonthVO.setSourceId(sourceId);
@@ -1529,21 +1505,20 @@ public class ReportsServiceImpl implements ReportService {
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         //获取时间时间戳
         int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
-        int lastDay = TimeUtil.getMonthEndTimeStampByDate(month);
+        int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);	
         //获取客资数据
-        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsValidCostComeKZ(firstDay, lastDay, reportsParamSrcMonthVO, invalidConfig);
+        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsValidCostComeKZ(firstDay,lastDay,reportsParamSrcMonthVO,invalidConfig);
         return dstgSrcMonthReports;
-    }
+	}
 
-    /**
+	/**
      * 电商推广月度报表成交成本--HJF
-     *
-     * @param
+     * @param 
      */
-    @Override
-    public List<Map<String, Object>> getDSTGSrcMonthReportsCostSuccessKZ(String month, String typeId, String sourceId,
-                                                                         int companyId) {
-        //封装参数
+	@Override
+	public List<Map<String, Object>> getDSTGSrcMonthReportsCostSuccessKZ(String month, String typeId, String sourceId,
+			int companyId) {
+		//封装参数
         ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
         reportsParamSrcMonthVO.setTypeId(typeId);
         reportsParamSrcMonthVO.setSourceId(sourceId);
@@ -1552,21 +1527,19 @@ public class ReportsServiceImpl implements ReportService {
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         //获取时间时间戳
         int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
-        int lastDay = TimeUtil.getMonthEndTimeStampByDate(month);
+        int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);	
         //获取客资数据
-        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsValidCostSuccessKZ(firstDay, lastDay, reportsParamSrcMonthVO, invalidConfig);
+        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsValidCostSuccessKZ(firstDay,lastDay,reportsParamSrcMonthVO,invalidConfig);
         return dstgSrcMonthReports;
-    }
-
-    /**
+	}
+	/**
      * 电商推广月度报表成交均价--HJF
-     *
-     * @param
+     * @param 
      */
-    @Override
-    public List<Map<String, Object>> getDSTGSrcMonthReportsCostSuccessAvg(String month, String typeId, String sourceId,
-                                                                          int companyId) {
-        //封装参数
+	@Override
+	public List<Map<String, Object>> getDSTGSrcMonthReportsCostSuccessAvg(String month, String typeId, String sourceId,
+			int companyId) {
+		//封装参数
         ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
         reportsParamSrcMonthVO.setTypeId(typeId);
         reportsParamSrcMonthVO.setSourceId(sourceId);
@@ -1575,21 +1548,20 @@ public class ReportsServiceImpl implements ReportService {
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         //获取时间时间戳
         int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
-        int lastDay = TimeUtil.getMonthEndTimeStampByDate(month);
+        int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);	
         //获取客资数据
-        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsValidCostSuccessAvg(firstDay, lastDay, reportsParamSrcMonthVO, invalidConfig);
+        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsValidCostSuccessAvg(firstDay,lastDay,reportsParamSrcMonthVO,invalidConfig);
         return dstgSrcMonthReports;
-    }
+	}
 
-    /**
+	/**
      * 电商推广月度报表营业额--HJF
-     *
-     * @param
+     * @param 
      */
-    @Override
-    public List<Map<String, Object>> getDSTGSrcMonthReportsAmount(String month, String typeId, String sourceId,
-                                                                  int companyId) {
-        //封装参数
+	@Override
+	public List<Map<String, Object>> getDSTGSrcMonthReportsAmount(String month, String typeId, String sourceId,
+			int companyId) {
+		//封装参数
         ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
         reportsParamSrcMonthVO.setTypeId(typeId);
         reportsParamSrcMonthVO.setSourceId(sourceId);
@@ -1598,34 +1570,40 @@ public class ReportsServiceImpl implements ReportService {
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
         //获取时间时间戳
         int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
-        int lastDay = TimeUtil.getMonthEndTimeStampByDate(month);
+        int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);	
         //获取客资数据
-        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsAmount(firstDay, lastDay, reportsParamSrcMonthVO, invalidConfig);
+        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsAmount(firstDay,lastDay,reportsParamSrcMonthVO,invalidConfig);
         return dstgSrcMonthReports;
+	}
+
+	/**
+     * 电商推广月度报表ROI--HJF
+     * @param 
+     */
+	@Override
+	public List<Map<String, Object>> getDSTGSrcMonthReportsROI(String month, String typeId, String sourceId,
+			int companyId) {
+		//封装参数
+        ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
+        reportsParamSrcMonthVO.setTypeId(typeId);
+        reportsParamSrcMonthVO.setSourceId(sourceId);
+        reportsParamSrcMonthVO.setCompanyId(companyId);
+        //获取无效状态指标，无效意向等级，待定是否为有效量，待定指标
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
+        //获取时间时间戳
+        int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
+        int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);	
+        //获取客资数据
+        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsROI(firstDay,lastDay,reportsParamSrcMonthVO,invalidConfig);
+        return dstgSrcMonthReports;
+	}
+
+    @Override
+    public Map<String,Object> getZjsDetailReportByStaff(ReportParamDTO reportParamDTO) {
+        return null;
     }
 
-    /**
-     * 电商推广月度报表ROI--HJF
-     *
-     * @param
-     */
-    @Override
-    public List<Map<String, Object>> getDSTGSrcMonthReportsROI(String month, String typeId, String sourceId,
-                                                               int companyId) {
-        //封装参数
-        ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
-        reportsParamSrcMonthVO.setTypeId(typeId);
-        reportsParamSrcMonthVO.setSourceId(sourceId);
-        reportsParamSrcMonthVO.setCompanyId(companyId);
-        //获取无效状态指标，无效意向等级，待定是否为有效量，待定指标
-        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
-        //获取时间时间戳
-        int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
-        int lastDay = TimeUtil.getMonthEndTimeStampByDate(month);
-        //获取客资数据
-        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsROI(firstDay, lastDay, reportsParamSrcMonthVO, invalidConfig);
-        return dstgSrcMonthReports;
-    }
+
 
     /**
      * 电商推广订单周期统计

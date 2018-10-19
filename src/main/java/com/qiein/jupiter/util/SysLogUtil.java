@@ -45,7 +45,7 @@ public class SysLogUtil {
     public static final String SYS_LOG_PREFIX_IMPORT = "导入了";
     public static final String SYS_LOG_PREFIX_EXPORT = "导出了";
     public static final String SYS_LOG_PREFIX_RE="移出";
-
+    public static final String SYS_LOG_PREFIX_PHYSICAL_REMOVE = "物理删除了";
     public static String getAddLog(String supName, String... params) {
 
         if (StringUtil.haveEmpty(supName)) {
@@ -87,6 +87,12 @@ public class SysLogUtil {
             throw new RException(ExceptionEnum.UNKNOW_ERROR);
         }
         return getLog(SYS_LOG_PREFIX_REMOVE, supName, params);
+    }
+    public static String getPhysicalRemoveLog(String supName, String... params) {
+        if (StringUtil.haveEmpty(supName)) {
+            throw new RException(ExceptionEnum.UNKNOW_ERROR);
+        }
+        return getLog(SYS_LOG_PREFIX_PHYSICAL_REMOVE, supName, params);
     }
 
     public static String getLog(String prefix, String supName, String... params) {

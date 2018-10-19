@@ -779,17 +779,22 @@ public class ReportsController extends BaseController {
 
     /**
      * 电商推广订单周期统计
-     *
-     * @param start
-     * @param end
-     * @return
      */
-    @GetMapping("/get_dstg_order_cycle_count")
-    public ResultInfo getDstgOrderCycleCount(int start, int end) {
-        QueryVO queryVO = new QueryVO();
-        queryVO.setStart(start);
-        queryVO.setEnd(end);
+    @PostMapping("/get_dstg_order_cycle_count")
+    public ResultInfo getDstgOrderCycleCount(@RequestBody QueryVO queryVO) {
         queryVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
         return ResultInfoUtil.success(reportService.getDstgOrderCycleCount(queryVO));
+    }
+
+    /**
+     * 转介绍报表详情，按客服汇总
+     * */
+    @GetMapping("/get_zjs_detail_report_by_staff")
+    public ResultInfo getZjsDetailReportByStaff(ReportParamDTO reportParamDTO){
+        reportParamDTO.setStaffId(getCurrentLoginStaff().getId());
+        reportParamDTO.setCompanyId(getCurrentLoginStaff().getCompanyId());
+        reportService.getZjsDetailReportByStaff(reportParamDTO);
+
+        return null;
     }
 }

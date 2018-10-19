@@ -453,4 +453,21 @@ public interface StaffService {
      */
     int updateCompanyTodayNum(int companyId);
 
+    /**
+     * 批量删除回收站员工删除(物理删除)
+     */
+    void batchDeleteTrackStaff(int companyId,String[] staffIds);
+    /**
+     * 删除回收站员工删除(物理删除)
+     */
+    void deleteTrackStaff(int companyId,int staffId);
+
+    /**
+     * 根据ids批量查找回收站（已删除）的员工
+     * @param ids
+     * @param companyId
+     * @return
+     */
+    List<StaffPO> getTrackStaffByIds(String ids, Integer companyId);
+
 }
