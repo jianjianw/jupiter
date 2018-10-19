@@ -62,6 +62,7 @@ public class SalesCenterReportsDao {
         sb.append(" FROM hm_pub_shop shop");
         sb.append(" LEFT JOIN hm_crm_shop_detail detail ON shop.id = detail.shopid AND shop.companyid = detail.companyid and detail.CREATETIME between ? and ?");
         sb.append(" WHERE shop.ISSHOW = 1 AND shop.TYPEID = 1");
+        sb.append(" and shop.id in ("+reportsParamVO.getShopIds()+")");
         sb.append(" and shop.companyid=?");
         sb.append(" GROUP BY shop.id");
         List<Map<String, Object>> salesCenterReports = jdbcTemplate.queryForList(sb.toString(),
