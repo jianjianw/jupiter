@@ -16,8 +16,8 @@
 			COUNT(1) value
 		FROM
 			hm_crm_client_info info
-		LEFT JOIN hm_crm_source source ON info.SOURCEID = source.ID AND source.COMPANYID = 1
-		WHERE info.COMPANYID = 1
+		LEFT JOIN hm_crm_source source ON info.SOURCEID = source.ID AND source.COMPANYID = #{companyId}
+		WHERE info.COMPANYID = #{companyId}
 			AND info.ISDEL = 0
 			AND source.TYPEID IN(1,2)
 			AND info.STATUSID != 0
@@ -32,8 +32,8 @@
 			COUNT(1) value
 		FROM
 			hm_crm_client_info info
-		LEFT JOIN hm_crm_source source ON info.SOURCEID = source.ID AND source.COMPANYID = 1
-		WHERE info.COMPANYID = 1
+		LEFT JOIN hm_crm_source source ON info.SOURCEID = source.ID AND source.COMPANYID = #{companyId}
+		WHERE info.COMPANYID = #{companyId}
 			AND info.ISDEL = 0
 			AND source.TYPEID IN(1,2)
 			AND info.STATUSID != 0
@@ -48,8 +48,8 @@
 			COUNT(1) value
 		FROM
 			hm_crm_client_info info
-		LEFT JOIN hm_crm_source source ON info.SOURCEID = source.ID AND source.COMPANYID = 1
-		WHERE info.COMPANYID = 1
+		LEFT JOIN hm_crm_source source ON info.SOURCEID = source.ID AND source.COMPANYID = #{companyId}
+		WHERE info.COMPANYID = #{companyId}
 			AND info.ISDEL = 0
 			AND source.TYPEID IN(1,2)
 			AND info.STATUSID != 0
@@ -65,10 +65,10 @@
 			COUNT(1) value
 		FROM
 			hm_pub_group grp
-		LEFT JOIN hm_pub_group_staff rela ON grp.GROUPID = rela.GROUPID AND rela.COMPANYID = 1
-		LEFT JOIN hm_pub_staff sf ON rela.STAFFID = sf.ID AND sf.COMPANYID = 1
+		LEFT JOIN hm_pub_group_staff rela ON grp.GROUPID = rela.GROUPID AND rela.COMPANYID = #{companyId}
+		LEFT JOIN hm_pub_staff sf ON rela.STAFFID = sf.ID AND sf.COMPANYID = #{companyId}
 		WHERE
-			grp.COMPANYID = 1
+			grp.COMPANYID = #{companyId}
 			AND grp.GROUPTYPE = 'dsyy'
 			AND sf.ISDEL = 0
 			AND sf.ISLOCK = 0
@@ -86,7 +86,7 @@
 		LEFT JOIN hm_pub_group_staff rela ON info.APPOINTORID = rela.STAFFID AND info.COMPANYID = rela.COMPANYID
 		LEFT JOIN hm_pub_group grp ON rela.GROUPID = grp.GROUPID AND rela.COMPANYID = grp.COMPANYID
 		WHERE
-			info.COMPANYID = 1
+			info.COMPANYID = #{companyId}
 			AND info.ISDEL = 0
 			AND src.TYPEID IN(1,2)
 			AND info.CREATETIME BETWEEN  UNIX_TIMESTAMP(CONCAT(CURDATE(),' 00:00:00'))  AND  UNIX_TIMESTAMP(CONCAT(CURDATE(),' 23:59:59'))
@@ -107,7 +107,7 @@
 		LEFT JOIN hm_pub_group_staff rela ON info.APPOINTORID = rela.STAFFID AND info.COMPANYID = rela.COMPANYID
 		LEFT JOIN hm_pub_group grp ON rela.GROUPID = grp.GROUPID AND rela.COMPANYID = grp.COMPANYID
 		WHERE
-			info.COMPANYID = 1
+			info.COMPANYID = #{companyId}
 			AND info.ISDEL = 0
 			AND src.TYPEID IN(1,2)
 			AND info.COMESHOPTIME BETWEEN UNIX_TIMESTAMP(CONCAT(CURDATE(),' 00:00:00')) AND  UNIX_TIMESTAMP(CONCAT(CURDATE(),' 23:59:59'))
@@ -128,7 +128,7 @@
 		LEFT JOIN hm_pub_group_staff rela ON info.APPOINTORID = rela.STAFFID AND info.COMPANYID = rela.COMPANYID
 		LEFT JOIN hm_pub_group grp ON rela.GROUPID = grp.GROUPID AND rela.COMPANYID = grp.COMPANYID
 		WHERE
-			info.COMPANYID = 1
+			info.COMPANYID = #{companyId}
 			AND info.ISDEL = 0
 			AND src.TYPEID IN(1,2)
 			AND info.CREATETIME BETWEEN UNIX_TIMESTAMP(CONCAT(concat(date_format(LAST_DAY(now()),'%Y-%m-'),'01'),' 00:00:00')) AND UNIX_TIMESTAMP(CONCAT(LAST_DAY(now()),' 23:59:59'))
@@ -149,7 +149,7 @@
 		LEFT JOIN hm_pub_group_staff rela ON info.APPOINTORID = rela.STAFFID AND info.COMPANYID = rela.COMPANYID
 		LEFT JOIN hm_pub_group grp ON rela.GROUPID = grp.GROUPID AND rela.COMPANYID = grp.COMPANYID
 		WHERE
-			info.COMPANYID = 1
+			info.COMPANYID = #{companyId}
 			AND info.ISDEL = 0
 			AND src.TYPEID IN(1,2)
 			AND info.COMESHOPTIME BETWEEN UNIX_TIMESTAMP(date_sub(curdate(),INTERVAL WEEKDAY(curdate()) DAY)) AND UNIX_TIMESTAMP(date_sub(curdate(),INTERVAL WEEKDAY(curdate()) - 6 DAY))
@@ -170,7 +170,7 @@
 		LEFT JOIN hm_pub_group_staff rela ON info.APPOINTORID = rela.STAFFID AND info.COMPANYID = rela.COMPANYID
 		LEFT JOIN hm_pub_group grp ON rela.GROUPID = grp.GROUPID AND rela.COMPANYID = grp.COMPANYID
 		WHERE
-			info.COMPANYID = 1
+			info.COMPANYID = #{companyId}
 		AND info.ISDEL = 0
 		AND src.TYPEID IN(1,2)
 		AND info.COMESHOPTIME BETWEEN UNIX_TIMESTAMP(CONCAT(concat(date_format(LAST_DAY(now()),'%Y-%m-'),'01'),' 00:00:00')) AND UNIX_TIMESTAMP(CONCAT(LAST_DAY(now()),' 23:59:59'))
@@ -186,9 +186,10 @@
 			COUNT(1) value
 		FROM
 			hm_crm_client_info info
-		LEFT JOIN hm_crm_source src ON info.SOURCEID = src.ID AND src.COMPANYID = 1
+		LEFT JOIN hm_crm_source src ON info.SOURCEID = src.ID AND src.COMPANYID = #{companyId}
 		WHERE 
-			info.COMPANYID = 1 AND info.ISDEL = 0
+			info.COMPANYID = #{companyId}
+			AND info.ISDEL = 0
 			AND info.CREATETIME BETWEEN  UNIX_TIMESTAMP(CONCAT(CURDATE(),' 00:00:00')) AND UNIX_TIMESTAMP(CONCAT(CURDATE(),' 23:59:59'))
 			AND src.TYPEID IN(1,2)
 			AND info.STATUSID != 0 AND info.STATUSID != 99 AND info.STATUSID != 98
@@ -201,9 +202,9 @@
 			COUNT(1) value
 	   FROM
 			hm_crm_client_info info
-	   LEFT JOIN hm_crm_source src ON info.SOURCEID = src.ID AND src.COMPANYID = 1
+	   LEFT JOIN hm_crm_source src ON info.SOURCEID = src.ID AND src.COMPANYID = #{companyId}
 	   WHERE 
-			info.COMPANYID = 1
+			info.COMPANYID = #{companyId}
 			AND info.ISDEL = 0
 			AND INSTR(',9,10,30,31,32,33,34,35,36,40,41,',CONCAT(',',info.STATUSID,',')) != 0
 			AND info.COMESHOPTIME BETWEEN  UNIX_TIMESTAMP(CONCAT(CURDATE(),' 00:00:00'))
@@ -217,9 +218,9 @@
 			COUNT(1) value
 		FROM
 			hm_crm_client_info info
-		LEFT JOIN hm_crm_source src ON info.SOURCEID = src.ID AND src.COMPANYID = 1
+		LEFT JOIN hm_crm_source src ON info.SOURCEID = src.ID AND src.COMPANYID = #{companyId}
 		WHERE 
-			info.COMPANYID = 1
+			info.COMPANYID = #{companyId}
 			AND info.ISDEL = 0
 			AND INSTR(',9,30,31,32,40,41,',CONCAT(',',info.STATUSID,',')) != 0
 			AND info.SUCCESSTIME BETWEEN  UNIX_TIMESTAMP(CONCAT(CURDATE(),' 00:00:00')) AND UNIX_TIMESTAMP(CONCAT(CURDATE(),' 23:59:59'))
@@ -233,13 +234,13 @@
         FROM ((SELECT SUM(cost.COST) hj FROM
 				hm_crm_cost cost
 			WHERE
-				cost.COMPANYID = 1
+				cost.COMPANYID = #{companyId}
 				AND cost.COSTTIME BETWEEN  UNIX_TIMESTAMP(CONCAT(CURDATE(),' 00:00:00')) AND UNIX_TIMESTAMP(CONCAT(CURDATE(),' 23:59:59')))hf,
 			(SELECT COUNT(1) num FROM
 				hm_crm_client_info info
-			LEFT JOIN hm_crm_source src ON info.SOURCEID = src.ID AND src.COMPANYID = 1
+			LEFT JOIN hm_crm_source src ON info.SOURCEID = src.ID AND src.COMPANYID = #{companyId}
 			WHERE 
-  			info.COMPANYID = 1
+  			info.COMPANYID = #{companyId}
   			AND info.ISDEL = 0
 			AND info.CREATETIME BETWEEN UNIX_TIMESTAMP(CONCAT(CURDATE(),' 00:00:00')) AND UNIX_TIMESTAMP(CONCAT(CURDATE(),' 23:59:59'))
 			AND info.STATUSID != 0 AND info.STATUSID != 99
@@ -256,9 +257,9 @@
   			src.SRCNAME name,COUNT(1) total
 		FROM
   			hm_crm_client_info info
-		LEFT JOIN hm_crm_source src ON info.SOURCEID = src.ID AND src.COMPANYID = 1
+		LEFT JOIN hm_crm_source src ON info.SOURCEID = src.ID AND src.COMPANYID = #{companyId}
 		WHERE 
-  			info.COMPANYID = 1 
+  			info.COMPANYID = #{companyId} 
   			AND info.ISDEL = 0
 			AND info.CREATETIME BETWEEN  UNIX_TIMESTAMP(CONCAT(CURDATE(),' 00:00:00')) AND UNIX_TIMESTAMP(CONCAT(CURDATE(),' 23:59:59'))
 			AND info.STATUSID != 0 AND info.STATUSID != 99
@@ -278,9 +279,10 @@
   			src.SRCNAME name,COUNT(1) total
 		FROM
   			hm_crm_client_info info
-		LEFT JOIN hm_crm_source src ON info.SOURCEID = src.ID AND src.COMPANYID = 1
+		LEFT JOIN hm_crm_source src ON info.SOURCEID = src.ID AND src.COMPANYID = #{companyId}
 		WHERE 
-  			info.COMPANYID = 1 AND info.ISDEL = 0
+  			info.COMPANYID = #{companyId} 
+  			AND info.ISDEL = 0
 			AND info.CREATETIME BETWEEN UNIX_TIMESTAMP(CONCAT(CURDATE(),' 00:00:00')) AND UNIX_TIMESTAMP(CONCAT(CURDATE(),' 23:59:59'))
 			AND info.STATUSID != 0 AND info.STATUSID != 99
 			AND src.TYPEID IN(1,2)
@@ -297,9 +299,9 @@
   				src.SRCNAME x,COUNT(1) y,src.ID
 				FROM
   			hm_crm_client_info info
-			LEFT JOIN hm_crm_source src ON info.SOURCEID = src.ID AND src.COMPANYID = 1
+			LEFT JOIN hm_crm_source src ON info.SOURCEID = src.ID AND src.COMPANYID = #{companyId}
 		WHERE 
-  			info.COMPANYID = 1 AND info.ISDEL = 0
+  			info.COMPANYID = #{companyId} AND info.ISDEL = 0
 		AND info.CREATETIME BETWEEN  UNIX_TIMESTAMP(CONCAT(CURDATE(),' 00:00:00')) AND UNIX_TIMESTAMP(CONCAT(CURDATE(),' 23:59:59'))
 		AND info.STATUSID != 0 AND info.STATUSID != 99
 		AND src.TYPEID IN(1,2)
@@ -313,9 +315,10 @@
   		src.SRCNAME x,COUNT(1) y,src.ID
 	FROM
   		hm_crm_client_info info
-	LEFT JOIN hm_crm_source src ON info.SOURCEID = src.ID AND src.COMPANYID = 1
+	LEFT JOIN hm_crm_source src ON info.SOURCEID = src.ID AND src.COMPANYID = #{companyId}
 	WHERE 
-  		info.COMPANYID = 1 AND info.ISDEL = 0
+  		info.COMPANYID = #{companyId} 
+  		AND info.ISDEL = 0
 		AND info.CREATETIME BETWEEN  UNIX_TIMESTAMP(CONCAT(CURDATE(),' 00:00:00')) AND UNIX_TIMESTAMP(CONCAT(CURDATE(),' 23:59:59'))
 		AND info.STATUSID != 0 AND info.STATUSID != 99 AND info.STATUSID != 98
 		AND src.TYPEID IN(1,2)

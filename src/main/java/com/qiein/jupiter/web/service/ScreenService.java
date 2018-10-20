@@ -6,35 +6,35 @@ import com.qiein.jupiter.web.entity.vo.ScreenVO;
 
 public interface ScreenService {
    
-	List<ScreenVO> getDayKZTotal();
+	List<ScreenVO> getDayKZTotal(String companyId);
 
-	List<ScreenVO> getMonthKZTotal();
+	List<ScreenVO> getMonthKZTotal(String companyId);
 
-	List<ScreenVO> getDdNum();
+	List<ScreenVO> getDdNum(String companyId);
 
-	List<ScreenVO> getWXFlag();
+	List<ScreenVO> getWXFlag(String companyId);
 
-	List<ScreenVO> getWXKzNum();
+	List<ScreenVO> getWXKzNum(String companyId);
 
-	List<ScreenVO> getWXKzComeNum();
+	List<ScreenVO> getWXKzComeNum(String companyId);
 
-	List<ScreenVO> getWXGroupKzNumMonth();
+	List<ScreenVO> getWXGroupKzNumMonth(String companyId);
 
-	List<ScreenVO> WXGroupKzComeNumWeek();
+	List<ScreenVO> WXGroupKzComeNumWeek(String companyId);
 
-	List<ScreenVO> WXGroupKzComeNumMonth();
+	List<ScreenVO> WXGroupKzComeNumMonth(String companyId);
 
-	List<ScreenVO> getDayValidKZ();
+	List<ScreenVO> getDayValidKZ(String companyId);
 
-	List<ScreenVO> getDayComeKZ();
+	List<ScreenVO> getDayComeKZ(String companyId);
 
-	List<ScreenVO> getDaySuccessKZ();
+	List<ScreenVO> getDaySuccessKZ(String companyId);
 
-	List<ScreenVO> getDayValidKZcost();
+	List<ScreenVO> getDayValidKZcost(String companyId);
 
-	List<ScreenVO> getDaySrcValidKZ();
+	List<ScreenVO> getDaySrcValidKZ(String companyId);
 
-	List<ScreenVO> getDaySrcKZ();
+	List<ScreenVO> getDaySrcKZ(String companyId);
 
-	List<ScreenVO> getDaySrcKZValideRate();
+	List<ScreenVO> getDaySrcKZValideRate(String companyId);
 }

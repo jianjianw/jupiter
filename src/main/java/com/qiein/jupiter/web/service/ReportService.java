@@ -397,4 +397,7 @@ public interface ReportService {
      * 专业中心报表
      */
     List<ProfessionalCenterVO> getProfessionalCenterVO(ReportsParamVO reportsParamVO);
+
+	List<Map<String, Object>> getDSTGSrcMonthReportsAppointment(String month, String typeId, String sourceId,
+			int companyId);
 }
