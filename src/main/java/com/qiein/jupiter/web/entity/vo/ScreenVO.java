@@ -22,6 +22,18 @@ public class ScreenVO extends BaseEntity {
      * 单个合计
      */
     private int value;
+    /**
+     * 有效率
+     */
+    private double rate;
+
+	public double getRate() {
+		return rate;
+	}
+
+	public void setRate(double rate) {
+		this.rate = rate;
+	}
 
 	public String getName() {
 		return name;
@@ -50,6 +62,4 @@ public class ScreenVO extends BaseEntity {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-    
-
 }

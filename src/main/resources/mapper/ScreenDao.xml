@@ -3,10 +3,11 @@
 <mapper namespace="com.qiein.jupiter.web.dao.ScreenDao">
 
     <resultMap id="baseMap" type="com.qiein.jupiter.web.entity.vo.ScreenVO">
-        <id column="ID" property="id" jdbcType="BIGINT"/>
+        <id column="ID" property="id" jdbcType="BIGINT"/> 
         <result column="name" property="name" jdbcType="VARCHAR"/>
         <result column="total" property="total" jdbcType="INTEGER"/>
         <result column="value" property="value" jdbcType="INTEGER"/>
+        <result column="rate" property="rate" jdbcType="DOUBLE"/>
     </resultMap>
    
     <!--今日电商总客资  -->
@@ -177,5 +178,151 @@
 		GROUP BY
 			grp.GROUPID
 		ORDER BY grp.PRIORITY ASC
+	</select>
+	
+	<!--今日电商有效客资  -->
+	<select id="getDayValidKZ"  resultMap="baseMap">
+       SELECT
+			COUNT(1) value
+		FROM
+			hm_crm_client_info info
+		LEFT JOIN hm_crm_source src ON info.SOURCEID = src.ID AND src.COMPANYID = 1
+		WHERE 
+			info.COMPANYID = 1 AND info.ISDEL = 0
+			AND info.CREATETIME BETWEEN  UNIX_TIMESTAMP(CONCAT(CURDATE(),' 00:00:00')) AND UNIX_TIMESTAMP(CONCAT(CURDATE(),' 23:59:59'))
+			AND src.TYPEID IN(1,2)
+			AND info.STATUSID != 0 AND info.STATUSID != 99 AND info.STATUSID != 98
+			AND info.STATUSID != 4 AND info.STATUSID != 5;
+	</select>
+	
+	<!--今日电商入店量  -->
+	<select id="getDayComeKZ"  resultMap="baseMap">
+       SELECT
+			COUNT(1) value
+	   FROM
+			hm_crm_client_info info
+	   LEFT JOIN hm_crm_source src ON info.SOURCEID = src.ID AND src.COMPANYID = 1
+	   WHERE 
+			info.COMPANYID = 1
+			AND info.ISDEL = 0
+			AND INSTR(',9,10,30,31,32,33,34,35,36,40,41,',CONCAT(',',info.STATUSID,',')) != 0
+			AND info.COMESHOPTIME BETWEEN  UNIX_TIMESTAMP(CONCAT(CURDATE(),' 00:00:00'))
+			AND UNIX_TIMESTAMP(CONCAT(CURDATE(),' 23:59:59'))
+			AND src.TYPEID 	IN(1,2);
+	</select>
+	
+	<!--今日电商订单量  -->
+	<select id="getDaySuccessKZ"  resultMap="baseMap">
+        SELECT
+			COUNT(1) value
+		FROM
+			hm_crm_client_info info
+		LEFT JOIN hm_crm_source src ON info.SOURCEID = src.ID AND src.COMPANYID = 1
+		WHERE 
+			info.COMPANYID = 1
+			AND info.ISDEL = 0
+			AND INSTR(',9,30,31,32,40,41,',CONCAT(',',info.STATUSID,',')) != 0
+			AND info.SUCCESSTIME BETWEEN  UNIX_TIMESTAMP(CONCAT(CURDATE(),' 00:00:00')) AND UNIX_TIMESTAMP(CONCAT(CURDATE(),' 23:59:59'))
+			AND src.TYPEID IN(1,2);
+	</select>
+	
+	<!--今日有效客资成本  -->
+	<select id="getDayValidKZcost"  resultMap="baseMap">
+        SELECT 
+        	FORMAT(hf.hj/kz.num,2) value 
+        FROM ((SELECT SUM(cost.COST) hj FROM
+				hm_crm_cost cost
+			WHERE
+				cost.COMPANYID = 1
+				AND cost.COSTTIME BETWEEN  UNIX_TIMESTAMP(CONCAT(CURDATE(),' 00:00:00')) AND UNIX_TIMESTAMP(CONCAT(CURDATE(),' 23:59:59')))hf,
+			(SELECT COUNT(1) num FROM
+				hm_crm_client_info info
+			LEFT JOIN hm_crm_source src ON info.SOURCEID = src.ID AND src.COMPANYID = 1
+			WHERE 
+  			info.COMPANYID = 1
+  			AND info.ISDEL = 0
+			AND info.CREATETIME BETWEEN UNIX_TIMESTAMP(CONCAT(CURDATE(),' 00:00:00')) AND UNIX_TIMESTAMP(CONCAT(CURDATE(),' 23:59:59'))
+			AND info.STATUSID != 0 AND info.STATUSID != 99
+			AND src.TYPEID IN(1,2)
+			AND info.STATUSID != 0 AND info.STATUSID != 99 AND info.STATUSID != 98
+			AND info.STATUSID != 4 AND info.STATUSID != 5
+			AND info.STATUSID != 1 AND info.STATUSID != 12 AND info.STATUSID != 6
+			AND info.STATUSID != 17)kz)
+	</select>
+	
+	<!--今日各渠道客资有效量  -->
+	<select id="getDaySrcValidKZ"  resultMap="baseMap">
+        SELECT
+  			src.SRCNAME name,COUNT(1) total
+		FROM
+  			hm_crm_client_info info
+		LEFT JOIN hm_crm_source src ON info.SOURCEID = src.ID AND src.COMPANYID = 1
+		WHERE 
+  			info.COMPANYID = 1 
+  			AND info.ISDEL = 0
+			AND info.CREATETIME BETWEEN  UNIX_TIMESTAMP(CONCAT(CURDATE(),' 00:00:00')) AND UNIX_TIMESTAMP(CONCAT(CURDATE(),' 23:59:59'))
+			AND info.STATUSID != 0 AND info.STATUSID != 99
+			AND src.TYPEID IN(1,2)
+			AND info.STATUSID != 0 AND info.STATUSID != 99 AND info.STATUSID != 98
+			AND info.STATUSID != 4 AND info.STATUSID != 5
+			AND info.STATUSID != 1 AND info.STATUSID != 12 AND info.STATUSID != 6
+			AND info.STATUSID != 17
+		GROUP BY info.SOURCEID 
+		ORDER BY COUNT(1) DESC
+		limit 10;
+	</select>
+	
+	<!--今日各渠道客资量  -->
+	<select id="getDaySrcKZ"  resultMap="baseMap">
+        SELECT
+  			src.SRCNAME name,COUNT(1) total
+		FROM
+  			hm_crm_client_info info
+		LEFT JOIN hm_crm_source src ON info.SOURCEID = src.ID AND src.COMPANYID = 1
+		WHERE 
+  			info.COMPANYID = 1 AND info.ISDEL = 0
+			AND info.CREATETIME BETWEEN UNIX_TIMESTAMP(CONCAT(CURDATE(),' 00:00:00')) AND UNIX_TIMESTAMP(CONCAT(CURDATE(),' 23:59:59'))
+			AND info.STATUSID != 0 AND info.STATUSID != 99
+			AND src.TYPEID IN(1,2)
+			GROUP BY info.SOURCEID 
+			ORDER BY COUNT(1) DESC
+			limit 10;
+	</select>
+	
+	<!--今日各渠道客资有效率  -->
+	<select id="getDaySrcKZValideRate"  resultMap="baseMap">
+        SELECT 
+        	yxl.x name,FORMAT(yxl.y/zkz.y,2) rate 
+        FROM ((SELECT
+  				src.SRCNAME x,COUNT(1) y,src.ID
+				FROM
+  			hm_crm_client_info info
+			LEFT JOIN hm_crm_source src ON info.SOURCEID = src.ID AND src.COMPANYID = 1
+		WHERE 
+  			info.COMPANYID = 1 AND info.ISDEL = 0
+		AND info.CREATETIME BETWEEN  UNIX_TIMESTAMP(CONCAT(CURDATE(),' 00:00:00')) AND UNIX_TIMESTAMP(CONCAT(CURDATE(),' 23:59:59'))
+		AND info.STATUSID != 0 AND info.STATUSID != 99
+		AND src.TYPEID IN(1,2)
+		AND info.STATUSID != 0 AND info.STATUSID != 99 AND info.STATUSID != 98
+		AND info.STATUSID != 4 AND info.STATUSID != 5
+		AND info.STATUSID != 1 AND info.STATUSID != 12
+		AND info.STATUSID != 6 AND info.STATUSID != 17
+		GROUP BY info.SOURCEID 
+		ORDER BY COUNT(1) DESC)yxl,
+	(SELECT
+  		src.SRCNAME x,COUNT(1) y,src.ID
+	FROM
+  		hm_crm_client_info info
+	LEFT JOIN hm_crm_source src ON info.SOURCEID = src.ID AND src.COMPANYID = 1
+	WHERE 
+  		info.COMPANYID = 1 AND info.ISDEL = 0
+		AND info.CREATETIME BETWEEN  UNIX_TIMESTAMP(CONCAT(CURDATE(),' 00:00:00')) AND UNIX_TIMESTAMP(CONCAT(CURDATE(),' 23:59:59'))
+		AND info.STATUSID != 0 AND info.STATUSID != 99 AND info.STATUSID != 98
+		AND src.TYPEID IN(1,2)
+	GROUP BY info.SOURCEID 
+	ORDER BY COUNT(1) DESC)zkz) 
+	WHERE 
+		yxl.ID=zkz.ID 
+	ORDER BY FORMAT(yxl.y/zkz.y,2) LIMIT 10
 	</select>
 </mapper>

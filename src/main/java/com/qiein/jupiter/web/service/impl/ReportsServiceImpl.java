@@ -1637,7 +1637,7 @@ public class ReportsServiceImpl implements ReportService {
         return zjsGroupDetailReport;
     }
     /**
-     * 销售中心报表
+     * 专业中心报表
      */
     public List<ProfessionalCenterVO> getProfessionalCenterVO(ReportsParamVO reportsParamVO){
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(reportsParamVO.getCompanyId());
