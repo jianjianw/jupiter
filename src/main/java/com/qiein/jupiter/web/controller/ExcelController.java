@@ -64,7 +64,7 @@ public class ExcelController extends BaseController {
                     currentLoginStaff.getCompanyId());
             logService.addLog(log);
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
         return ResultInfoUtil.success(TipMsgEnum.IMPORT_SUCCESS);
     }
