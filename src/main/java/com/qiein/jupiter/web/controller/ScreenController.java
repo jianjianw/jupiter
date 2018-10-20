@@ -36,25 +36,25 @@ public class ScreenController extends BaseController {
     public ResultInfo getDSTGDatav(@RequestParam("companyId") String companyId) {
     	
     	Map<String, Object> map=new LinkedHashMap<String, Object>();
-        if ("1".equals(companyId)) {
+        if ("1".equals(companyId) || "3".equals(companyId)) {
         	//今日电商总客资
-            List<ScreenVO> dayKZTotal = screenService.getDayKZTotal();
+            List<ScreenVO> dayKZTotal = screenService.getDayKZTotal(companyId);
             //电商本月总客资
-            List<ScreenVO> monthKZTotal=screenService.getMonthKZTotal();
+            List<ScreenVO> monthKZTotal=screenService.getMonthKZTotal(companyId);
             //网销今日待联系新客资
-            List<ScreenVO> ddNum=screenService.getDdNum();
+            List<ScreenVO> ddNum=screenService.getDdNum(companyId);
             //网销今日在线数
-            List<ScreenVO> wXFlag=screenService.getWXFlag();
+            List<ScreenVO> wXFlag=screenService.getWXFlag(companyId);
             //今日网销各组客资量
-            List<ScreenVO> wXGroupKzNum=screenService.getWXKzNum();
+            List<ScreenVO> wXGroupKzNum=screenService.getWXKzNum(companyId);
             //今日网销各组进店量
-            List<ScreenVO> wXGroupKzComeNum=screenService.getWXKzComeNum();
+            List<ScreenVO> wXGroupKzComeNum=screenService.getWXKzComeNum(companyId);
             //本月网销各组客资量
-            List<ScreenVO> wXGroupKzNumMonth=screenService.getWXGroupKzNumMonth();
+            List<ScreenVO> wXGroupKzNumMonth=screenService.getWXGroupKzNumMonth(companyId);
             //本周网销各组进店量
-            List<ScreenVO> wXGroupKzComeNumWeek=screenService.WXGroupKzComeNumWeek();
+            List<ScreenVO> wXGroupKzComeNumWeek=screenService.WXGroupKzComeNumWeek(companyId);
             //本月网销各组进店量
-            List<ScreenVO> wXGroupKzComeNumMonth=screenService.WXGroupKzComeNumMonth();
+            List<ScreenVO> wXGroupKzComeNumMonth=screenService.WXGroupKzComeNumMonth(companyId);
             
             map.put("dayKZTotal", dayKZTotal);
             map.put("monthKZTotal", monthKZTotal);
@@ -78,23 +78,23 @@ public class ScreenController extends BaseController {
     public ResultInfo getWXDatav(@RequestParam("companyId") String companyId) {
         
     	Map<String, Object> map=new LinkedHashMap<String, Object>();
-        if ("1".equals(companyId)) {
+        if ("1".equals(companyId) || "3".equals(companyId)) {
         	//今日电商总客资
-            List<ScreenVO> dayKZTotal = screenService.getDayKZTotal();
+            List<ScreenVO> dayKZTotal = screenService.getDayKZTotal(companyId);
             //今日电商有效客资
-            List<ScreenVO> dayValidKZ = screenService.getDayValidKZ();
+            List<ScreenVO> dayValidKZ = screenService.getDayValidKZ(companyId);
             //今日电商入店量
-            List<ScreenVO> dayComeKZ = screenService.getDayComeKZ();
+            List<ScreenVO> dayComeKZ = screenService.getDayComeKZ(companyId);
             //今日电商订单量
-            List<ScreenVO> daySuccessKZ = screenService.getDaySuccessKZ();
+            List<ScreenVO> daySuccessKZ = screenService.getDaySuccessKZ(companyId);
             //今日有效客资成本
-            List<ScreenVO> dayValidKZcost = screenService.getDayValidKZcost();
+            List<ScreenVO> dayValidKZcost = screenService.getDayValidKZcost(companyId);
             //今日各渠道客资有效量
-            List<ScreenVO> daySrcValidKZ = screenService.getDaySrcValidKZ();
+            List<ScreenVO> daySrcValidKZ = screenService.getDaySrcValidKZ(companyId);
             //今日各渠道客资量
-            List<ScreenVO> daySrcKZ = screenService.getDaySrcKZ();
+            List<ScreenVO> daySrcKZ = screenService.getDaySrcKZ(companyId);
             //今日各渠道客资有效率
-            List<ScreenVO> daySrcKZValideRate = screenService.getDaySrcKZValideRate();
+            List<ScreenVO> daySrcKZValideRate = screenService.getDaySrcKZValideRate(companyId);
             
             map.put("dayKZTotal", dayKZTotal);
             map.put("dayValidKZ", dayValidKZ);
