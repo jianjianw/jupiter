@@ -21,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 报表
@@ -112,7 +111,7 @@ public class ReportsServiceImpl implements ReportService {
     private SalesCenterReportsDao salesCenterReportsDao;
 
     @Autowired
-    private ZjsDetailReportDao zjsDetailReportDao;
+    private ZjsGroupReportDao zjsGroupReportDao;
 
 
 
@@ -1604,8 +1603,8 @@ public class ReportsServiceImpl implements ReportService {
 	}
 
     @Override
-    public List<ZjsClientDetailReportVO> getZjsDetailReportByGroup(ReportsParamVO reportsParamVO) {
-        List<ZjsClientDetailReportVO> reportVOS = zjsDetailReportDao.getZjsDetailReportByGroup(reportsParamVO);
+    public List<ZjsClientDetailReportVO> getZjsGroupReport(ReportsParamVO reportsParamVO) {
+        List<ZjsClientDetailReportVO> reportVOS = zjsGroupReportDao.getZjsGroupReport(reportsParamVO);
         return reportVOS;
     }
 

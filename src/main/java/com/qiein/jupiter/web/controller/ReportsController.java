@@ -790,21 +790,20 @@ public class ReportsController extends BaseController {
     /**
      * 转介绍报表详情，按客服组汇总
      * */
-    @GetMapping("/get_zjs_detail_report_by_group")
-    public ResultInfo getZjsDetailReportByGroup(ReportsParamVO reportsParamVO){
+    @GetMapping("/get_zjs_group_report")
+    public ResultInfo getZjsGroupReport(ReportsParamVO reportsParamVO){
         reportsParamVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
-        List<ZjsClientDetailReportVO> reportVOS = reportService.getZjsDetailReportByGroup(reportsParamVO);
+        List<ZjsClientDetailReportVO> reportVOS = reportService.getZjsGroupReport(reportsParamVO);
         return ResultInfoUtil.success(reportVOS);
     }
 
     /**
      * 转介绍报表详情，按客服（邀约员）汇总
      * */
-    @GetMapping("/get_zjs_detail_report_by_appointor")
+    @GetMapping("/get_zjs_group_detail_report")
     public ResultInfo getZjsDetailReportByAppointor(ReportsParamVO reportsParamVO){
         reportsParamVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
-        reportService.getZjsDetailReportByGroup(reportsParamVO);
-
+        reportService.getZjsGroupReport(reportsParamVO);
         return null;
     }
     /**

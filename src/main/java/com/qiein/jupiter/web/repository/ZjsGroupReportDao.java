@@ -1,10 +1,8 @@
 package com.qiein.jupiter.web.repository;
 
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+
 import com.qiein.jupiter.constant.DictionaryConstant;
-import com.qiein.jupiter.constant.ReportsConfigConst;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.vo.DsInvalidVO;
@@ -17,12 +15,11 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 @Repository
-public class ZjsDetailReportDao {
+public class ZjsGroupReportDao {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -33,10 +30,8 @@ public class ZjsDetailReportDao {
      * 转介绍报表详情，按客服组汇总
      *
      */
-    public List<ZjsClientDetailReportVO> getZjsDetailReportByGroup(ReportsParamVO reportsParamVO){
+    public List<ZjsClientDetailReportVO> getZjsGroupReport(ReportsParamVO reportsParamVO){
         List<ZjsClientDetailReportVO> reportVOS = new ArrayList<ZjsClientDetailReportVO>();
-
-
 
         //获取毛客资
         getTotalClientCount(reportsParamVO,reportVOS);
@@ -65,14 +60,8 @@ public class ZjsDetailReportDao {
         //获取有效客资数（等于A类客资+B类客资）
         getValidClientCount(reportVOS);
 
-        //无效数  总客资 - 有效量
+        //无效数  查询有效客资数的其余客资
         getInvalidClientSourceCount(reportsParamVO,reportVOS);
-
-
-
-
-
-
 
         //获取总进店数
         getTotalInShopCount(reportsParamVO,reportVOS);
@@ -529,7 +518,7 @@ public class ZjsDetailReportDao {
         sb.append("from ").append(infoTabName).append("info ");
         sb.append("where info.SRCTYPE in (3, 4, 5) ");
         sb.append("and info.companyId = ? ");
-        sb.append("and info.SUCCESSTIME BETWEEN ? AND ? ");
+        sb.append("and info.CREATETIME BETWEEN ? AND ? ");
         sb.append("and info.ISDEL = 0 ");
         sb.append("and info.GROUPID is not null ");
         if (StringUtil.isNotEmpty(invalidConfig.getZjsValidStatus())) {
