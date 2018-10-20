@@ -506,25 +506,25 @@ public class ZjsGroupDetailReportDao {
 
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(reportsParamVO.getCompanyId());
         StringBuilder sb = new StringBuilder();
-        sb.append("select info.GROUPID groupId, count(info.KZID) invalidCount  ");
+        sb.append("select info.APPOINTORID kfId, count(info.KZID) invalidCount  ");
         sb.append("from ").append(infoTabName).append("info ");
         sb.append("where info.SRCTYPE in (3, 4, 5) ");
         sb.append("and info.companyId = ? ");
         sb.append("and info.CREATETIME BETWEEN ? AND ? ");
         sb.append("and info.ISDEL = 0 ");
-        sb.append("and info.GROUPID is not null ");
+        sb.append("and info.GROUPID = ? ");
         if (StringUtil.isNotEmpty(invalidConfig.getZjsValidStatus())) {
             sb.append(" AND INSTR('" + invalidConfig.getZjsValidStatus() + "',CONCAT( '\"',info.STATUSID,'\"'))=0 ");//找不到返回0
         }
-        sb.append("group by info.GROUPID ");
+        sb.append("group by APPOINTORID kfId ");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), reportsParamVO.getCompanyId(),
                 reportsParamVO.getStart(), reportsParamVO.getEnd(),reportsParamVO.getGroupId());
 
         for (Map<String, Object> map : list) {
-            String groupId = (String) map.get("groupId");
+            String kfId = (String) map.get("kfId");
             for(ZjsClientDetailReportVO reportVO : reportVOS ){
                 String id = reportVO.getId();
-                if(StringUtils.equals(id,groupId)){
+                if(StringUtils.equals(id,kfId)){
                     Long invalidCount = (Long) map.get("invalidCount");
                     reportVO.setInvalidClientSourceCount(invalidCount.intValue());//无效量
                 }

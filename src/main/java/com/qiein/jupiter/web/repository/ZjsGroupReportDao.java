@@ -523,6 +523,7 @@ public class ZjsGroupReportDao {
         if (StringUtil.isNotEmpty(invalidConfig.getZjsValidStatus())) {
             sb.append(" AND INSTR('" + invalidConfig.getZjsValidStatus() + "',CONCAT( '\"',info.STATUSID,'\"'))=0 ");//找不到返回0
         }
+        sb.append("group by info.GROUPID ");
 
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), reportsParamVO.getCompanyId(),
                 reportsParamVO.getStart(), reportsParamVO.getEnd());
