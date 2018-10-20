@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.controller;
 
 import com.qiein.jupiter.constant.ClientZjsMenuConst;
 import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.enums.AddTypeEnum;
 import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
 import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.entity.dto.ClientGoEasyDTO;
@@ -66,6 +67,13 @@ public class ClientAddController extends BaseController {
         }
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
+        clientVO.setOperaId(currentLoginStaff.getId());
+        clientVO.setOperaName(currentLoginStaff.getNickName());
+        clientVO.setCollectorId(currentLoginStaff.getId());
+        clientVO.setCollectorName(currentLoginStaff.getNickName());
+        clientVO.setCompanyId(currentLoginStaff.getCompanyId());
+        //什么录入的
+        clientVO.setAddType(isPc() ? 1 : 2);
         clientAddService.addDsClient(clientVO, currentLoginStaff);
         return ResultInfoUtil.success(TipMsgEnum.ENTERING_SUNCCESS);
     }
@@ -83,6 +91,9 @@ public class ClientAddController extends BaseController {
         }
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
+        clientVO.setOperaId(currentLoginStaff.getId());
+        clientVO.setOperaName(currentLoginStaff.getNickName());
+        clientVO.setCompanyId(currentLoginStaff.getCompanyId());
         //转介绍录入时，判断自定义的字段是否为空
         String zjsFields = companyService.getZjsRequiredField(currentLoginStaff.getCompanyId());
         zjsFilter(clientVO, zjsFields);
@@ -160,7 +171,7 @@ public class ClientAddController extends BaseController {
      * @return:
      */
     @GetMapping("/out_zjs_menu")
-    public ResultInfo OutZjsDorpDownMenu(@RequestParam(name = "channelId",required = false) Integer channelId,
+    public ResultInfo OutZjsDorpDownMenu(@RequestParam(name = "channelId", required = false) Integer channelId,
                                          @RequestParam("companyId") Integer companyId) {
         if (companyId == null)
             throw new RException(ExceptionEnum.COMPANY_ID_NULL);
@@ -253,5 +264,28 @@ public class ClientAddController extends BaseController {
     public void pushRepeatMsg(@RequestParam("kzId") String kzId) {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         clientAddService.pushRepeatMsg(kzId, currentLoginStaff);
+    }
+
+
+    /**
+     * 录入钉钉客资
+     *
+     * @return
+     */
+    @PostMapping("/add_ding_client_info")
+    public ResultInfo addDingClientInfo(@RequestBody ClientVO clientVO) {
+        if (StringUtil.isAllEmpty(clientVO.getKzPhone(), clientVO.getKzWechat(), clientVO.getKzQq(),
+                clientVO.getKzWw())) {
+            throw new RException(ExceptionEnum.KZ_CONTACT_INFORMATION);
+        }
+        // 获取当前登录账户
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        clientVO.setOperaId(currentLoginStaff.getId());
+        clientVO.setOperaName(currentLoginStaff.getNickName());
+        clientVO.setCompanyId(currentLoginStaff.getCompanyId());
+        //手机端录入
+        clientVO.setAddType(AddTypeEnum.MOBILE.getTypeId());
+        clientAddService.addDingClientInfo(clientVO);
+        return ResultInfoUtil.success(TipMsgEnum.ENTERING_SUNCCESS);
     }
 }

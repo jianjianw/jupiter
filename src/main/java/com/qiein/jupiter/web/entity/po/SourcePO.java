@@ -65,13 +65,13 @@ public class SourcePO extends BaseEntity {
      * 是否开启筛选
      */
     // @NotEmpty(message = "{Source.isFilter.null}")
-    private Boolean isFilter;
+    private Boolean filterFlag;
 
     /**
      * 是否启用
      */
     // @NotEmpty(message = "{Source.isShow.null}")
-    private Boolean isShow;
+    private Boolean showFlag;
     /**
      * 推送规则
      */
@@ -79,12 +79,12 @@ public class SourcePO extends BaseEntity {
 
     /**
      * 邀约id
-     * */
+     */
     private String linkIds;
 
     /**
      * 名称
-     * */
+     */
     private String nickNames;
 
     /**
@@ -95,14 +95,34 @@ public class SourcePO extends BaseEntity {
     }
 
     public SourcePO(String srcName, Integer typeId, Integer channelId, String channelName, Integer companyId,
-                    Boolean isShow, boolean isFilter) {
+                    Boolean showFlag, boolean filterFlag) {
         this.srcName = srcName;
         this.typeId = typeId;
         this.channelId = channelId;
         this.channelName = channelName;
         this.companyId = companyId;
-        this.isShow = isShow;
-        this.isFilter = isFilter;
+        this.showFlag = showFlag;
+        this.filterFlag = filterFlag;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public Boolean getFilterFlag() {
+        return filterFlag;
+    }
+
+    public void setFilterFlag(Boolean filterFlag) {
+        this.filterFlag = filterFlag;
+    }
+
+    public Boolean getShowFlag() {
+        return showFlag;
+    }
+
+    public void setShowFlag(Boolean showFlag) {
+        this.showFlag = showFlag;
     }
 
     public String getNickNames() {
@@ -118,22 +138,6 @@ public class SourcePO extends BaseEntity {
         return srcName;
     }
 
-
-    public Boolean getFilter() {
-        return isFilter;
-    }
-
-    public void setFilter(Boolean filter) {
-        isFilter = filter;
-    }
-
-    public Boolean getShow() {
-        return isShow;
-    }
-
-    public void setShow(Boolean show) {
-        isShow = show;
-    }
 
     public String getLinkIds() {
         return linkIds;
@@ -209,22 +213,6 @@ public class SourcePO extends BaseEntity {
 
     public void setPriority(Integer priority) {
         this.priority = priority;
-    }
-
-    public Boolean getIsFilter() {
-        return isFilter;
-    }
-
-    public void setIsFilter(Boolean filter) {
-        isFilter = filter;
-    }
-
-    public Boolean getIsShow() {
-        return isShow;
-    }
-
-    public void setIsShow(Boolean show) {
-        isShow = show;
     }
 
     public Integer getPushRule() {

@@ -21,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 报表
@@ -32,8 +31,6 @@ public class ReportsServiceImpl implements ReportService {
     private CityReportsDao cityReportsDao;
 
     @Autowired
-//    private ProvinceReportsDao provinceReportsDao;
-//    private DsProvinceReportsDao provinceReportsDao;
     private DstgProvinceReportsDao provinceReportsDao;
 
     @Autowired
@@ -110,6 +107,14 @@ public class ReportsServiceImpl implements ReportService {
     private DstgOrderCycleCountDao dstgOrderCycleCountDao;
     @Autowired
     private SalesCenterReportsDao salesCenterReportsDao;
+
+
+    @Autowired
+    private ProfessionalCenterDao professionalCenterDao;
+    @Autowired
+    private ZjsGroupReportDao zjsGroupReportDao;
+    @Autowired
+    private ZjsGroupDetailReportDao zjsGroupDetailReportDao;
 
 
 
@@ -1601,8 +1606,9 @@ public class ReportsServiceImpl implements ReportService {
 	}
 
     @Override
-    public Map<String,Object> getZjsDetailReportByGroup(ReportParamDTO reportParamDTO) {
-        return null;
+    public List<ZjsClientDetailReportVO> getZjsGroupReport(ReportsParamVO reportsParamVO) {
+        List<ZjsClientDetailReportVO> reportVOS = zjsGroupReportDao.getZjsGroupReport(reportsParamVO);
+        return reportVOS;
     }
 
 
@@ -1623,5 +1629,18 @@ public class ReportsServiceImpl implements ReportService {
     public List<SalesCenterReportsVO> getSalesCenterReports(ReportsParamVO reportsParamVO){
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(reportsParamVO.getCompanyId());
         return salesCenterReportsDao.getSalesCenterReports(reportsParamVO,invalidConfig);
+    }
+
+    @Override
+    public List<ZjsClientDetailReportVO> getZjsGroupDetailReport(ReportsParamVO reportsParamVO) {
+        List<ZjsClientDetailReportVO> zjsGroupDetailReport = zjsGroupDetailReportDao.getZjsGroupDetailReport(reportsParamVO);
+        return zjsGroupDetailReport;
+    }
+    /**
+     * 销售中心报表
+     */
+    public List<ProfessionalCenterVO> getProfessionalCenterVO(ReportsParamVO reportsParamVO){
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(reportsParamVO.getCompanyId());
+        return professionalCenterDao.getProfessionalCenterVO(reportsParamVO,invalidConfig);
     }
 }

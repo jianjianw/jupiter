@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.dao;
 
+import com.qiein.jupiter.web.entity.dto.ShopTargetDTO;
 import com.qiein.jupiter.web.entity.po.ShopPO;
 import com.qiein.jupiter.web.entity.vo.ShopVO;
 import org.apache.ibatis.annotations.Param;
@@ -97,4 +98,22 @@ public interface ShopDao extends BaseDao<ShopPO> {
      * @return
      */
     List<ShopVO> getShopAndStaffList(@Param("companyId") int companyId);
+
+    /**
+     * 校验是否存在该日期内该门市的目标
+     * @param companyId
+     * @param time
+     * @return
+     */
+    List<ShopTargetDTO> findShopTarget(@Param("companyId")int companyId,@Param("time")int time,@Param("shopId")int shopId,@Param("type")int type);
+
+    /**
+     * 修改门市目标
+     * @param shopTargetDTO
+     */
+    void editTarget(ShopTargetDTO shopTargetDTO);
+    /**
+     * 增加门市目标
+     */
+    void insertTarget(ShopTargetDTO shopTargetDTO);
 }

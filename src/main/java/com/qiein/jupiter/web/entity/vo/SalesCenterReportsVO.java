@@ -8,7 +8,7 @@ public class SalesCenterReportsVO {
     /**
      * 门店id
      */
-    private Integer shopId;
+    private int shopId;
     /**
      * 门店名称
      */
@@ -16,15 +16,15 @@ public class SalesCenterReportsVO {
     /**
      * 总成交量目标
      */
-    private Integer totalSuccessCountTarget;
+    private int totalSuccessCountTarget;
     /**
      * 门店指名客资成交量目标
      */
-    private Integer shopCallOnSuccessCountTarget;
+    private int shopCallOnSuccessCountTarget;
     /**
      * 门店指名有效客资量目标
      */
-    private double shopCallOnValidCountTarget;
+    private int shopCallOnValidCountTarget;
     /**
      * 有效客资挖客率目标
      */
@@ -32,19 +32,19 @@ public class SalesCenterReportsVO {
     /**
      * 成交量
      */
-    private Integer successClientCount;
+    private int successClientCount;
     /**
      * 门市指名成交量
      */
-    private Integer shopCallOnSuccessClientCount;
+    private int shopCallOnSuccessClientCount;
     /**
      * 总客资
      */
-    private Integer allClientCount;
+    private int allClientCount;
     /**
      * 毛客资量
      */
-    private Integer clientCount;
+    private int clientCount;
     /**
      * 有效量
      */
@@ -94,11 +94,11 @@ public class SalesCenterReportsVO {
      */
     private double validCountWkRate;
 
-    public Integer getShopId() {
+    public int getShopId() {
         return shopId;
     }
 
-    public void setShopId(Integer shopId) {
+    public void setShopId(int shopId) {
         this.shopId = shopId;
     }
 
@@ -110,27 +110,27 @@ public class SalesCenterReportsVO {
         this.shopName = shopName;
     }
 
-    public Integer getTotalSuccessCountTarget() {
+    public int getTotalSuccessCountTarget() {
         return totalSuccessCountTarget;
     }
 
-    public void setTotalSuccessCountTarget(Integer totalSuccessCountTarget) {
+    public void setTotalSuccessCountTarget(int totalSuccessCountTarget) {
         this.totalSuccessCountTarget = totalSuccessCountTarget;
     }
 
-    public Integer getShopCallOnSuccessCountTarget() {
+    public int getShopCallOnSuccessCountTarget() {
         return shopCallOnSuccessCountTarget;
     }
 
-    public void setShopCallOnSuccessCountTarget(Integer shopCallOnSuccessCountTarget) {
+    public void setShopCallOnSuccessCountTarget(int shopCallOnSuccessCountTarget) {
         this.shopCallOnSuccessCountTarget = shopCallOnSuccessCountTarget;
     }
 
-    public double getShopCallOnValidCountTarget() {
+    public int getShopCallOnValidCountTarget() {
         return shopCallOnValidCountTarget;
     }
 
-    public void setShopCallOnValidCountTarget(double shopCallOnValidCountTarget) {
+    public void setShopCallOnValidCountTarget(int shopCallOnValidCountTarget) {
         this.shopCallOnValidCountTarget = shopCallOnValidCountTarget;
     }
 
@@ -142,35 +142,35 @@ public class SalesCenterReportsVO {
         this.validCountWkRateTarget = validCountWkRateTarget;
     }
 
-    public Integer getSuccessClientCount() {
+    public int getSuccessClientCount() {
         return successClientCount;
     }
 
-    public void setSuccessClientCount(Integer successClientCount) {
+    public void setSuccessClientCount(int successClientCount) {
         this.successClientCount = successClientCount;
     }
 
-    public Integer getShopCallOnSuccessClientCount() {
+    public int getShopCallOnSuccessClientCount() {
         return shopCallOnSuccessClientCount;
     }
 
-    public void setShopCallOnSuccessClientCount(Integer shopCallOnSuccessClientCount) {
+    public void setShopCallOnSuccessClientCount(int shopCallOnSuccessClientCount) {
         this.shopCallOnSuccessClientCount = shopCallOnSuccessClientCount;
     }
 
-    public Integer getAllClientCount() {
+    public int getAllClientCount() {
         return allClientCount;
     }
 
-    public void setAllClientCount(Integer allClientCount) {
+    public void setAllClientCount(int allClientCount) {
         this.allClientCount = allClientCount;
     }
 
-    public Integer getClientCount() {
+    public int getClientCount() {
         return clientCount;
     }
 
-    public void setClientCount(Integer clientCount) {
+    public void setClientCount(int clientCount) {
         this.clientCount = clientCount;
     }
 

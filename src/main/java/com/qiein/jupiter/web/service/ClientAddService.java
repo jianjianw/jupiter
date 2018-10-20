@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.ClientVO;
+import com.qiein.jupiter.web.entity.vo.PlatAddClientInfoVO;
 
 public interface ClientAddService {
 
@@ -55,7 +56,7 @@ public interface ClientAddService {
      * @param list
      */
     JSONObject batchAddDsClient(String list, int channelId, int sourceId, int shopId, int typeId, StaffPO staffPO,
-                                String adId, String adAddress, String groupId, int appointId, int zxStyle, int yxLevel, int ysRange, int marryTime,String address);
+                                String adId, String adAddress, String groupId, int appointId, int zxStyle, int yxLevel, int ysRange, int marryTime, String address);
 
     /**
      * 发送重复录入消息
@@ -64,6 +65,12 @@ public interface ClientAddService {
      * @param staffPO
      */
     void pushRepeatMsg(String kzId, StaffPO staffPO);
+
+
+    /**
+     * 手机端录入客资
+     */
+    void addDingClientInfo(ClientVO clientVO);
 
 
 }

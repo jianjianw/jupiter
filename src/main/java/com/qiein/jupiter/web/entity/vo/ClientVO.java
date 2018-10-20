@@ -104,6 +104,15 @@ public class ClientVO implements Serializable {
      */
     private String collectorName;
     /**
+     * 筛客人ID
+     */
+    private int promotorId;
+
+    /**
+     * 筛客人名称
+     */
+    private String promoterName;
+    /**
      * 渠道名称
      */
     private String channelName;
@@ -279,6 +288,128 @@ public class ClientVO implements Serializable {
      * 备注修改框
      */
     private String remarkForm;
+
+    /**
+     * 操作人ID
+     */
+    private int operaId;
+    /**
+     * 操作人姓名
+     */
+    private String operaName;
+
+    /**
+     * 分配规则
+     */
+    private int allotType;
+    /**
+     * 渠道类型
+     */
+    private int srcType;
+    /**
+     * 客资大类
+     */
+    private int classId;
+    /**
+     * 是否筛选
+     */
+    private boolean filterFlag;
+    /**
+     * 附件图片地址
+     */
+    private String talkImg;
+
+    /**
+     * 什么录入的
+     */
+    private int addType;
+
+
+    public int getAddType() {
+        return addType;
+    }
+
+    public void setAddType(int addType) {
+        this.addType = addType;
+    }
+
+    public int getPromotorId() {
+        return promotorId;
+    }
+
+    public void setPromotorId(int promotorId) {
+        this.promotorId = promotorId;
+    }
+
+    public String getPromoterName() {
+        return promoterName;
+    }
+
+    public void setPromoterName(String promoterName) {
+        this.promoterName = promoterName;
+    }
+
+    public String getTalkImg() {
+        return talkImg;
+    }
+
+    public void setTalkImg(String talkImg) {
+        this.talkImg = talkImg;
+    }
+
+
+    public int getClassId() {
+        return classId;
+    }
+
+
+    public boolean isFilterFlag() {
+        return filterFlag;
+    }
+
+    public void setFilterFlag(boolean filterFlag) {
+        this.filterFlag = filterFlag;
+    }
+
+    public void setClassId(int classId) {
+        this.classId = classId;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public int getSrcType() {
+        return srcType;
+    }
+
+    public void setSrcType(int srcType) {
+        this.srcType = srcType;
+    }
+
+    public int getOperaId() {
+        return operaId;
+    }
+
+    public int getAllotType() {
+        return allotType;
+    }
+
+    public void setAllotType(int allotType) {
+        this.allotType = allotType;
+    }
+
+    public void setOperaId(int operaId) {
+        this.operaId = operaId;
+    }
+
+    public String getOperaName() {
+        return operaName;
+    }
+
+    public void setOperaName(String operaName) {
+        this.operaName = operaName;
+    }
 
     public String getRemarkForm() {
         return remarkForm;

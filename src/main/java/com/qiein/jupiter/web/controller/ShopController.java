@@ -7,6 +7,7 @@ import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
+import com.qiein.jupiter.web.entity.dto.ShopTargetDTO;
 import com.qiein.jupiter.web.entity.po.ShopPO;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.service.ShopService;
@@ -162,5 +163,15 @@ public class ShopController extends BaseController {
     public ResultInfo getShopStaffList() {
         StaffPO staffPO = getCurrentLoginStaff();
         return ResultInfoUtil.success(shopService.getShopAndStaffList(staffPO.getCompanyId()));
+    }
+
+    /**
+     * 修改门店报表 目标
+     */
+    @PostMapping("/edit_target")
+    public ResultInfo editTarget(@RequestBody ShopTargetDTO shopTargetDTO){
+        shopTargetDTO.setCompanyId(getCurrentLoginStaff().getCompanyId());
+        shopService.editTarget(shopTargetDTO);
+        return ResultInfoUtil.success(TipMsgEnum.EDIT_SUCCESS);
     }
 }

@@ -54,7 +54,7 @@ public class ReportsController extends BaseController {
         reqContent.put("end", reportsConditionVO.getEnd());
         reqContent.put("companyid", currentLoginStaff.getCompanyId());
         reqContent.put("typelimit", reportsConditionVO.getTypeLimit());
-        reqContent.put("iscreate",reportsConditionVO.getIsCreate());
+        reqContent.put("iscreate", reportsConditionVO.getIsCreate());
         if (StringUtil.isNotEmpty(reportsConditionVO.getSourceId())) {
             reqContent.put("sourceid", reportsConditionVO.getSourceId());
         }
@@ -790,32 +790,39 @@ public class ReportsController extends BaseController {
     /**
      * 转介绍报表详情，按客服组汇总
      * */
-    @GetMapping("/get_zjs_detail_report_by_group")
-    public ResultInfo getZjsDetailReportByGroup(ReportParamDTO reportParamDTO){
-        reportParamDTO.setStaffId(getCurrentLoginStaff().getId());
-        reportParamDTO.setCompanyId(getCurrentLoginStaff().getCompanyId());
-        reportService.getZjsDetailReportByGroup(reportParamDTO);
-
-        return null;
+    @GetMapping("/get_zjs_group_report")
+    public ResultInfo getZjsGroupReport(ReportsParamVO reportsParamVO){
+        reportsParamVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
+        List<ZjsClientDetailReportVO> reportVOS = reportService.getZjsGroupReport(reportsParamVO);
+        return ResultInfoUtil.success(reportVOS);
     }
 
     /**
      * 转介绍报表详情，按客服（邀约员）汇总
      * */
-    @GetMapping("/get_zjs_detail_report_by_appointor")
-    public ResultInfo getZjsDetailReportByAppointor(ReportParamDTO reportParamDTO){
-        reportParamDTO.setStaffId(getCurrentLoginStaff().getId());
-        reportParamDTO.setCompanyId(getCurrentLoginStaff().getCompanyId());
-        reportService.getZjsDetailReportByGroup(reportParamDTO);
-
-        return null;
+    @GetMapping("/get_zjs_group_detail_report")
+    public ResultInfo getZjsGroupDetailReport(ReportsParamVO reportsParamVO){
+        reportsParamVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
+        List<ZjsClientDetailReportVO> reportVOS = reportService.getZjsGroupDetailReport(reportsParamVO);
+        return ResultInfoUtil.success(reportVOS);
     }
     /**
      * 销售中心报表
      */
     @PostMapping("/get_safes_center_reports")
-    public ResultInfo getSalesCenterReports(ReportsParamVO reportsParamVO){
+    public ResultInfo getSalesCenterReports(@RequestBody ReportsParamVO reportsParamVO) {
         reportsParamVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
         return ResultInfoUtil.success(reportService.getSalesCenterReports(reportsParamVO));
     }
+
+    /**
+     * 销售中心报表
+     */
+    @PostMapping("/get_professional_center_reports")
+    public ResultInfo getProfessionalCenterVO(@RequestBody ReportsParamVO reportsParamVO) {
+        reportsParamVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
+        return ResultInfoUtil.success(reportService.getProfessionalCenterVO(reportsParamVO));
+    }
+
+
 }
