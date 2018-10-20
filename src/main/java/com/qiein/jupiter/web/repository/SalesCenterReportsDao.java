@@ -55,20 +55,20 @@ public class SalesCenterReportsDao {
      */
     private void getAllShop(ReportsParamVO reportsParamVO, List<SalesCenterReportsVO> salesCenterReportsVOS) {
         StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT grp.shopid id,shop.SHOPNAME shopName,");
+        sb.append(" SELECT shop.id id,shop.SHOPNAME shopName,");
         sb.append(" ifnull(sum(detail.TOTALSUCCESSCOUNTTARGET),0) totalSuccessCountTarget,");
         sb.append(" ifnull(sum(detail.SHOPCALLONSUCCESSCOUNTTARGET),0) shopCallOnSuccessCountTarget,");
         sb.append(" ifnull(sum(detail.SHOPCALLONVALIDCOUNTTARGET),0) shopCallOnValidCountTarget");
-        sb.append(" FROM hm_pub_group grp");
+        sb.append(" from (select DISTINCT grp.shopid id,shop.shopname shopName,grp.companyid companyid from hm_pub_group grp");
         sb.append(" LEFT JOIN hm_pub_shop shop ON grp.COMPANYID = shop.COMPANYID AND grp.SHOPID = shop.ID");
+        sb.append(" WHERE grp.GROUPTYPE = 'msjd' AND grp.companyid =? AND grp.SHOPID IS NOT NULL) shop ");
         sb.append(" left join hm_crm_shop_detail detail on shop.id=detail.shopid and shop.companyid= detail.companyid  and detail.CREATETIME between ? and ?");
-        sb.append(" WHERE grp.GROUPTYPE = 'msjd' AND grp.companyid = ? AND grp.SHOPID IS NOT NULL");
         if(StringUtil.isNotEmpty(reportsParamVO.getShopIds())){
             sb.append(" and shop.id in ("+reportsParamVO.getShopIds()+")");
         }
         sb.append(" GROUP BY shop.id");
         List<Map<String, Object>> salesCenterReports = jdbcTemplate.queryForList(sb.toString(),
-                new Object[]{reportsParamVO.getStart(), reportsParamVO.getEnd(), reportsParamVO.getCompanyId()});
+                new Object[]{reportsParamVO.getCompanyId(),reportsParamVO.getStart(), reportsParamVO.getEnd() });
         for (Map<String, Object> map : salesCenterReports) {
             SalesCenterReportsVO salesCenterReportsVO = new SalesCenterReportsVO();
             salesCenterReportsVO.setShopId(Integer.parseInt(String.valueOf(map.get("id").toString())));
