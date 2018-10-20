@@ -9,6 +9,9 @@ public class ZjsClientDetailReportVO implements Serializable {
     //可以存放客服id 和 客服组id
     private String id;
 
+    //可以存放客服名 和 客服组名
+    private String name;
+
     //毛客资数 = 总客资 - （筛选中，筛选无效，筛选待定）
     private int clientSourceCount;
 
@@ -82,6 +85,14 @@ public class ZjsClientDetailReportVO implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getClientSourceCount() {

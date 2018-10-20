@@ -1,20 +1,11 @@
 package com.qiein.jupiter.web.service;
 
-import com.alibaba.fastjson.JSONObject;
-import com.github.pagehelper.PageInfo;
-import com.qiein.jupiter.web.entity.dto.*;
-import com.qiein.jupiter.web.entity.vo.*;
-
 import java.util.List;
-import java.util.Map;
+
+import com.qiein.jupiter.web.entity.vo.ScreenVO;
 
 public interface ScreenService {
    
-    
-	/**
-     * 电商推广月度ROI--HJF
-     * @param reportParamDTO
-     */
 	List<ScreenVO> getDayKZTotal();
 
 	List<ScreenVO> getMonthKZTotal();
@@ -32,4 +23,18 @@ public interface ScreenService {
 	List<ScreenVO> WXGroupKzComeNumWeek();
 
 	List<ScreenVO> WXGroupKzComeNumMonth();
+
+	List<ScreenVO> getDayValidKZ();
+
+	List<ScreenVO> getDayComeKZ();
+
+	List<ScreenVO> getDaySuccessKZ();
+
+	List<ScreenVO> getDayValidKZcost();
+
+	List<ScreenVO> getDaySrcValidKZ();
+
+	List<ScreenVO> getDaySrcKZ();
+
+	List<ScreenVO> getDaySrcKZValideRate();
 }
