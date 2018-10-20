@@ -49,7 +49,8 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
                 .excludePathPatterns("/safe_center/not_token_site_list")
                 .excludePathPatterns("/safe_center/check_computer")
                 //金夫人大屏显示
-                .excludePathPatterns("/screen/get_dstg_datav");
+                .excludePathPatterns("/screen/get_dstg_datav")
+        		.excludePathPatterns("/screen/get_dsyy_datav");
 //                .excludePathPatterns("/wechat/**");
     }
 
