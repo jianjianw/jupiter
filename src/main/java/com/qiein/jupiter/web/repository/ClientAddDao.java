@@ -222,7 +222,7 @@ public class ClientAddDao {
             // 录入时已经指定了邀约客服
             clientVO.setStatusId(ClientStatusConst.BE_HAVE_MAKE_ORDER);
             clientVO.setAllotType(ClientConst.ALLOT_WHILE_COLLECT);
-        } else if (StringUtil.isNotEmpty(clientVO.getFilterFlag()) && Boolean.parseBoolean(clientVO.getFilterFlag())) {
+        } else if (clientVO.isFilterFlag()) {
             //筛选
             clientVO.setStatusId(ClientStatusConst.BE_WAIT_FILTER);
             clientVO.setAllotType(ClientConst.ALLOT_SYSTEM_AUTO);

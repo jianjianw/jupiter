@@ -313,7 +313,7 @@ public class ClientVO implements Serializable {
     /**
      * 是否筛选
      */
-    private String filterFlag;
+    private boolean filterFlag;
     /**
      * 附件图片地址
      */
@@ -357,16 +357,18 @@ public class ClientVO implements Serializable {
         this.talkImg = talkImg;
     }
 
-    public String getFilterFlag() {
-        return filterFlag;
-    }
-
-    public void setFilterFlag(String filterFlag) {
-        this.filterFlag = filterFlag;
-    }
 
     public int getClassId() {
         return classId;
+    }
+
+
+    public boolean isFilterFlag() {
+        return filterFlag;
+    }
+
+    public void setFilterFlag(boolean filterFlag) {
+        this.filterFlag = filterFlag;
     }
 
     public void setClassId(int classId) {

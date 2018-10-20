@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.controller;
 
 import com.qiein.jupiter.constant.ClientZjsMenuConst;
 import com.qiein.jupiter.constant.CommonConstant;
+import com.qiein.jupiter.enums.AddTypeEnum;
 import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
 import com.qiein.jupiter.util.*;
 import com.qiein.jupiter.web.entity.dto.ClientGoEasyDTO;
@@ -90,6 +91,9 @@ public class ClientAddController extends BaseController {
         }
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
+        clientVO.setOperaId(currentLoginStaff.getId());
+        clientVO.setOperaName(currentLoginStaff.getNickName());
+        clientVO.setCompanyId(currentLoginStaff.getCompanyId());
         //转介绍录入时，判断自定义的字段是否为空
         String zjsFields = companyService.getZjsRequiredField(currentLoginStaff.getCompanyId());
         zjsFilter(clientVO, zjsFields);
@@ -279,6 +283,8 @@ public class ClientAddController extends BaseController {
         clientVO.setOperaId(currentLoginStaff.getId());
         clientVO.setOperaName(currentLoginStaff.getNickName());
         clientVO.setCompanyId(currentLoginStaff.getCompanyId());
+        //手机端录入
+        clientVO.setAddType(AddTypeEnum.MOBILE.getTypeId());
         clientAddService.addDingClientInfo(clientVO);
         return ResultInfoUtil.success(TipMsgEnum.ENTERING_SUNCCESS);
     }

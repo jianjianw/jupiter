@@ -320,7 +320,7 @@ public class GroupServiceImpl implements GroupService {
                     sourcePO.setSrcName(groupPO.getGroupName());
                     sourcePO.setChannelId(channelPO.getId());
                     sourcePO.setCompanyId(channelPO.getCompanyId());
-                    sourcePO.setIsShow(true);
+                    sourcePO.setShowFlag(true);
                     sourceDao.update(sourcePO);
                 }
             }
@@ -381,13 +381,13 @@ public class GroupServiceImpl implements GroupService {
                         //如果没有客资就删除
                         Integer kzNum = clientDao.getKzNumBySourceId(DBSplitUtil.getTable(TableEnum.info, sourcePO.getCompanyId()), sourcePO.getId(), sourcePO.getCompanyId());
                         if (kzNum > 0) {
-                            sourcePO.setIsShow(false);
+                            sourcePO.setShowFlag(false);
                             sourceDao.update(sourcePO);
                         } else {
                             sourceDao.deleteByIdAndCid(sourcePO.getId(), sourcePO.getCompanyId());
                         }
                     } else {
-                        sourcePO.setIsShow(false);
+                        sourcePO.setShowFlag(false);
                         sourceDao.update(sourcePO);
                     }
                 }
@@ -469,8 +469,8 @@ public class GroupServiceImpl implements GroupService {
                         sourcePO.setChannelId(channelPO.getId());
                         sourcePO.setChannelName(channelPO.getChannelName());
                         sourcePO.setPushRule(CommonConstant.DEFAULT_ZERO);
-                        sourcePO.setIsShow(true);
-                        sourcePO.setIsFilter(false);
+                        sourcePO.setShowFlag(true);
+                        sourcePO.setFilterFlag(false);
                         sourceDao.insert(sourcePO);
                     } else {
                         //渠道存在
@@ -483,7 +483,7 @@ public class GroupServiceImpl implements GroupService {
                             clientDao.updateKzChannelId(DBSplitUtil.getInfoTabName(channelPO.getCompanyId()), channelPO.getId(), source.getId(), channelPO.getCompanyId());
                             //迁移来源到新的渠道
                             source.setChannelId(channelPO.getId());
-                            source.setIsShow(true);
+                            source.setShowFlag(true);
                             sourceDao.update(source);
                         } else {
                             SourcePO sourcePO = sourceDao.getSourceBySrcname(groupPO.getGroupName(), groupPO.getCompanyId(), channelPO.getId());
@@ -502,13 +502,13 @@ public class GroupServiceImpl implements GroupService {
                                 sourcePO.setBrandId(channelPO.getBrandId());
                                 sourcePO.setBrandName(channelPO.getBrandName());
                                 sourcePO.setPushRule(CommonConstant.DEFAULT_ZERO);
-                                sourcePO.setIsShow(channelPO.getShowFlag());
-                                sourcePO.setIsFilter(false);
+                                sourcePO.setShowFlag(channelPO.getShowFlag());
+                                sourcePO.setFilterFlag(false);
                                 sourceDao.insert(sourcePO);
                             } else {
                                 //来源存在
-                                if (!sourcePO.getIsShow()) {
-                                    sourcePO.setIsShow(true);
+                                if (!sourcePO.getShowFlag()) {
+                                    sourcePO.setShowFlag(true);
                                     sourceDao.update(sourcePO);
                                 }
                             }
@@ -723,7 +723,6 @@ public class GroupServiceImpl implements GroupService {
     /**
      * 根据id获取部门信息
      *
-     * @param id
      * @return
      */
     public GroupPO getGroupById(int companyId, String groupId) {

@@ -68,7 +68,9 @@ public class ClientAddServiceImpl implements ClientAddService {
     public void addDsClient(ClientVO clientVO, StaffPO staffPO) {
         //查重
         checkClientRepeatDao.check(clientVO);
-
+        //查询黑名单客资
+        checkBlackList(staffPO.getCompanyId(), clientVO);
+        //新增
         addDsClientInfo(clientVO);
 //        //查询黑名单客资
 //        checkBlackList(staffPO.getCompanyId(), clientVO);
@@ -185,8 +187,6 @@ public class ClientAddServiceImpl implements ClientAddService {
 
     private void addDsClientInfo(ClientVO clientVO) {
         int companyId = clientVO.getCompanyId();
-        //查询黑名单客资
-        checkBlackList(companyId, clientVO);
 
         // 获取渠道名
         ChannelPO channelPO = channelDao.getShowChannelById(companyId, clientVO.getChannelId());
@@ -199,6 +199,8 @@ public class ClientAddServiceImpl implements ClientAddService {
         if (sourcePO == null) {
             throw new RException(ExceptionEnum.SOURCE_NOT_FOUND);
         }
+        clientVO.setSrcType(sourcePO.getTypeId());
+        clientVO.setFilterFlag(sourcePO.getFilterFlag());
         clientVO.setSourceName(sourcePO.getSrcName());
         if (NumUtil.isValid(clientVO.getShopId())) {
             // 获取拍摄地名
@@ -252,113 +254,127 @@ public class ClientAddServiceImpl implements ClientAddService {
      * @param staffPO
      */
     public void addZjsClient(ClientVO clientVO, StaffPO staffPO) {
-
+        //查重
+        checkClientRepeatDao.check(clientVO);
         //查询黑名单客资
         checkBlackList(staffPO.getCompanyId(), clientVO);
-
-        Map<String, Object> reqContent = new HashMap<>();
-        reqContent.put("companyid", staffPO.getCompanyId());
+        //新增
         if (NumUtil.isValid(clientVO.getCollectorId())) {
             StaffPO collector = staffDao.getById(clientVO.getCollectorId());
             if (collector == null) {
                 throw new RException(ExceptionEnum.COLLECTOR_NOT_FOUND);
             }
-            reqContent.put("collectorid", clientVO.getCollectorId());
-            reqContent.put("collectorname", collector.getNickName());
+            clientVO.setCollectorId(collector.getId());
+            clientVO.setCollectorName(collector.getNickName());
         } else {
-            reqContent.put("collectorid", staffPO.getId());
-            reqContent.put("collectorname", staffPO.getNickName());
+            clientVO.setCollectorId(clientVO.getOperaId());
+            clientVO.setCollectorName(clientVO.getOperaName());
         }
-        reqContent.put("operaid", staffPO.getId());
-        reqContent.put("operaname", staffPO.getNickName());
-        // 获取渠道名
-        ChannelPO channelPO = channelDao.getShowChannelById(staffPO.getCompanyId(), clientVO.getChannelId());
-        if (channelPO == null) {
-            throw new RException(ExceptionEnum.CHANNEL_NOT_FOUND);
-        }
-        reqContent.put("channelname", channelPO.getChannelName());
-        // 获取来源名
-        SourcePO sourcePO = sourceDao.getShowSourceById(staffPO.getCompanyId(), clientVO.getSourceId());
-        if (sourcePO == null) {
-            throw new RException(ExceptionEnum.SOURCE_NOT_FOUND);
-        }
-        reqContent.put("sourcename", sourcePO.getSrcName());
-        // 获取邀约客服名称
-        if (NumUtil.isNotNull(clientVO.getAppointId())) {
-            StaffPO appoint = staffDao.getById(clientVO.getAppointId());
-            if (appoint == null) {
-                throw new RException(ExceptionEnum.APPOINT_NOT_FOUND);
-            }
-            reqContent.put("appointid", clientVO.getAppointId());
-            reqContent.put("appointname", appoint.getNickName());
-        }
-        // 获取邀约客服组名称
-        if (StringUtil.isNotEmpty(clientVO.getGroupId())) {
-            GroupPO groupPO = groupDao.getGroupById(sourcePO.getCompanyId(), clientVO.getGroupId());
-            if (groupPO == null) {
-                throw new RException(ExceptionEnum.APPOINT_GROUP_NOT_FOUND);
-            }
-            reqContent.put("groupid", clientVO.getGroupId());
-            reqContent.put("groupname", groupPO.getGroupName());
-        }
-
-        reqContent.put("sex", clientVO.getSex());
-        reqContent.put("kzname", clientVO.getKzName());
-        reqContent.put("kzphone", clientVO.getKzPhone());
-        reqContent.put("kzwechat", clientVO.getKzWechat());
-        reqContent.put("kzqq", clientVO.getKzQq());
-        reqContent.put("kzww", clientVO.getKzWw());
-        reqContent.put("channelid", clientVO.getChannelId());
-        reqContent.put("sourceid", clientVO.getSourceId());
-        reqContent.put("srctype", sourcePO.getTypeId());
-        reqContent.put("isfilter", sourcePO.getIsFilter());
-        reqContent.put("typeid", clientVO.getTypeId());
-        reqContent.put("address",
-                StringUtil.isNotEmpty(clientVO.getAddress()) ? clientVO.getAddress()
-                        : MobileLocationUtil.getAddressByContactInfo(clientVO.getKzPhone(), clientVO.getKzWechat(),
-                        clientVO.getKzQq()));
-        reqContent.put("remark", clientVO.getRemark());
-        reqContent.put("matephone", clientVO.getMatePhone());
-        reqContent.put("matename", clientVO.getMateName());
-        reqContent.put("matewechat", clientVO.getMateWeChat());
-        reqContent.put("mateqq", clientVO.getMateQq());
-        reqContent.put("marrytime", clientVO.getMarryTime());
-        reqContent.put("yptime", clientVO.getYpTime());
-        reqContent.put("oldkzname", clientVO.getOldKzName());
-        reqContent.put("oldkzphone", clientVO.getOldKzPhone());
-        reqContent.put("adaddress", clientVO.getAdAddress());
-        reqContent.put("adid", clientVO.getAdId());
-
-        String addRstStr = crmBaseApi.doService(reqContent, "addZjsClientInfoPcHs");
-        JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
-        if ("100000".equals(jsInfo.getString("code"))) {
-//            CompanyPO companyPO = companyDao.getById(staffPO.getCompanyId());
-//            tpm.pushInfo(new ClientPushDTO(pushService, sourcePO.getPushRule(), staffPO.getCompanyId(),
-//                    JsonFmtUtil.strContentToJsonObj(addRstStr).getString("kzid"), sourcePO.getTypeId(),
-//                    companyPO.getOvertime(), companyPO.getKzInterval(), sourcePO.getId()));
-            if (StringUtil.isNotEmpty(clientVO.getGroupId()) && NumUtil.isValid(clientVO.getAppointId())) {
-                // 推送消息
-                ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(JsonFmtUtil.strContentToJsonObj(addRstStr).getString("kzid"),
-                        DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
-                        DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
-                GoEasyUtil.pushInfoComed(staffPO.getCompanyId(), clientVO.getAppointId(), info, newsDao, staffDao);
-                GoEasyUtil.pushInfoRefresh(staffPO.getCompanyId(), clientVO.getAppointId(), webSocketMsgUtil);
-            }
-        } else if ("130019".equals(jsInfo.getString("code"))) {
-            //重复客资，给邀约推送消息
-            ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(jsInfo.getString("data"),
-                    DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
-                    DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
-            if (info == null) {
-                throw new RException("存在重复客资");
-            }
-            GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getAppointorId(), info, staffPO.getNickName(), newsDao, staffDao);
-            GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getCollectorId(), info, staffPO.getNickName(), newsDao, staffDao);
-            GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getPromotorId(), info, staffPO.getNickName(), newsDao, staffDao);
-            throw new RException("存在重复客资");
-        } else {
-            throw new RException(jsInfo.getString("msg"));
-        }
+        //新增
+        addDsClientInfo(clientVO);
+//        Map<String, Object> reqContent = new HashMap<>();
+//        reqContent.put("companyid", staffPO.getCompanyId());
+//        if (NumUtil.isValid(clientVO.getCollectorId())) {
+//            StaffPO collector = staffDao.getById(clientVO.getCollectorId());
+//            if (collector == null) {
+//                throw new RException(ExceptionEnum.COLLECTOR_NOT_FOUND);
+//            }
+//            reqContent.put("collectorid", clientVO.getCollectorId());
+//            reqContent.put("collectorname", collector.getNickName());
+//        } else {
+//            reqContent.put("collectorid", staffPO.getId());
+//            reqContent.put("collectorname", staffPO.getNickName());
+//        }
+//        reqContent.put("operaid", staffPO.getId());
+//        reqContent.put("operaname", staffPO.getNickName());
+//        // 获取渠道名
+//        ChannelPO channelPO = channelDao.getShowChannelById(staffPO.getCompanyId(), clientVO.getChannelId());
+//        if (channelPO == null) {
+//            throw new RException(ExceptionEnum.CHANNEL_NOT_FOUND);
+//        }
+//        reqContent.put("channelname", channelPO.getChannelName());
+//        // 获取来源名
+//        SourcePO sourcePO = sourceDao.getShowSourceById(staffPO.getCompanyId(), clientVO.getSourceId());
+//        if (sourcePO == null) {
+//            throw new RException(ExceptionEnum.SOURCE_NOT_FOUND);
+//        }
+//        reqContent.put("sourcename", sourcePO.getSrcName());
+//        // 获取邀约客服名称
+//        if (NumUtil.isNotNull(clientVO.getAppointId())) {
+//            StaffPO appoint = staffDao.getById(clientVO.getAppointId());
+//            if (appoint == null) {
+//                throw new RException(ExceptionEnum.APPOINT_NOT_FOUND);
+//            }
+//            reqContent.put("appointid", clientVO.getAppointId());
+//            reqContent.put("appointname", appoint.getNickName());
+//        }
+//        // 获取邀约客服组名称
+//        if (StringUtil.isNotEmpty(clientVO.getGroupId())) {
+//            GroupPO groupPO = groupDao.getGroupById(sourcePO.getCompanyId(), clientVO.getGroupId());
+//            if (groupPO == null) {
+//                throw new RException(ExceptionEnum.APPOINT_GROUP_NOT_FOUND);
+//            }
+//            reqContent.put("groupid", clientVO.getGroupId());
+//            reqContent.put("groupname", groupPO.getGroupName());
+//        }
+//
+//        reqContent.put("sex", clientVO.getSex());
+//        reqContent.put("kzname", clientVO.getKzName());
+//        reqContent.put("kzphone", clientVO.getKzPhone());
+//        reqContent.put("kzwechat", clientVO.getKzWechat());
+//        reqContent.put("kzqq", clientVO.getKzQq());
+//        reqContent.put("kzww", clientVO.getKzWw());
+//        reqContent.put("channelid", clientVO.getChannelId());
+//        reqContent.put("sourceid", clientVO.getSourceId());
+//        reqContent.put("srctype", sourcePO.getTypeId());
+//        reqContent.put("isfilter", sourcePO.getIsFilter());
+//        reqContent.put("typeid", clientVO.getTypeId());
+//        reqContent.put("address",
+//                StringUtil.isNotEmpty(clientVO.getAddress()) ? clientVO.getAddress()
+//                        : MobileLocationUtil.getAddressByContactInfo(clientVO.getKzPhone(), clientVO.getKzWechat(),
+//                        clientVO.getKzQq()));
+//        reqContent.put("remark", clientVO.getRemark());
+//        reqContent.put("matephone", clientVO.getMatePhone());
+//        reqContent.put("matename", clientVO.getMateName());
+//        reqContent.put("matewechat", clientVO.getMateWeChat());
+//        reqContent.put("mateqq", clientVO.getMateQq());
+//        reqContent.put("marrytime", clientVO.getMarryTime());
+//        reqContent.put("yptime", clientVO.getYpTime());
+//        reqContent.put("oldkzname", clientVO.getOldKzName());
+//        reqContent.put("oldkzphone", clientVO.getOldKzPhone());
+//        reqContent.put("adaddress", clientVO.getAdAddress());
+//        reqContent.put("adid", clientVO.getAdId());
+//
+//        String addRstStr = crmBaseApi.doService(reqContent, "addZjsClientInfoPcHs");
+//        JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
+//        if ("100000".equals(jsInfo.getString("code"))) {
+////            CompanyPO companyPO = companyDao.getById(staffPO.getCompanyId());
+////            tpm.pushInfo(new ClientPushDTO(pushService, sourcePO.getPushRule(), staffPO.getCompanyId(),
+////                    JsonFmtUtil.strContentToJsonObj(addRstStr).getString("kzid"), sourcePO.getTypeId(),
+////                    companyPO.getOvertime(), companyPO.getKzInterval(), sourcePO.getId()));
+//            if (StringUtil.isNotEmpty(clientVO.getGroupId()) && NumUtil.isValid(clientVO.getAppointId())) {
+//                // 推送消息
+//                ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(JsonFmtUtil.strContentToJsonObj(addRstStr).getString("kzid"),
+//                        DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
+//                        DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
+//                GoEasyUtil.pushInfoComed(staffPO.getCompanyId(), clientVO.getAppointId(), info, newsDao, staffDao);
+//                GoEasyUtil.pushInfoRefresh(staffPO.getCompanyId(), clientVO.getAppointId(), webSocketMsgUtil);
+//            }
+//        } else if ("130019".equals(jsInfo.getString("code"))) {
+//            //重复客资，给邀约推送消息
+//            ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(jsInfo.getString("data"),
+//                    DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
+//                    DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
+//            if (info == null) {
+//                throw new RException("存在重复客资");
+//            }
+//            GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getAppointorId(), info, staffPO.getNickName(), newsDao, staffDao);
+//            GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getCollectorId(), info, staffPO.getNickName(), newsDao, staffDao);
+//            GoEasyUtil.pushRepeatClient(staffPO.getCompanyId(), info.getPromotorId(), info, staffPO.getNickName(), newsDao, staffDao);
+//            throw new RException("存在重复客资");
+//        } else {
+//            throw new RException(jsInfo.getString("msg"));
+//        }
     }
 
     /**
@@ -381,14 +397,14 @@ public class ClientAddServiceImpl implements ClientAddService {
         }
 //        ChannelPO channelPO = channelDao.getShowChannelById(clientVO.getCompanyId(), clientVO.getChannelId());
         SourcePO sourcePO = sourceDao.getByIdAndCid(clientVO.getSourceId(), clientVO.getCompanyId());
-        if (sourcePO == null || !sourcePO.getIsShow())
+        if (sourcePO == null || !sourcePO.getShowFlag())
             throw new RException(ExceptionEnum.CHANNEL_NOT_FOUND);
         if (StringUtil.isNotEmpty(clientVO.getCollectorName()))
             reqContent.put("operaName", clientVO.getCollectorName());
         if (clientVO.getCollectorId() == 0)
             reqContent.put("operaId", clientVO.getCollectorId());
         reqContent.put("srctype", sourcePO.getTypeId());
-        reqContent.put("isfilter", sourcePO.getIsFilter());
+        reqContent.put("isfilter", sourcePO.getFilterFlag());
         String resultJsonStr = crmBaseApi.doService(reqContent, "addDingClientInfo");
         JSONObject resultJson = JSONObject.parseObject(resultJsonStr).getJSONObject("response").getJSONObject("info");
 //        System.out.println("接口平台返回： " + resultJson);
