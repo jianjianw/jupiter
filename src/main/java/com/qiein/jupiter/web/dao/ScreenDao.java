@@ -2,6 +2,8 @@ package com.qiein.jupiter.web.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.qiein.jupiter.web.entity.vo.ScreenVO;
 
 /**
@@ -13,21 +15,35 @@ public interface ScreenDao extends BaseDao<ScreenVO> {
      * @param companyId
      * @return
      */
-    List<ScreenVO> getDayKZTotal();
+    List<ScreenVO> getDayKZTotal(@Param("companyId") String companyId);
 
-	List<ScreenVO> getMonthKZTotal();
+	List<ScreenVO> getMonthKZTotal(@Param("companyId") String companyId);
 
-	List<ScreenVO> getDdNum();
+	List<ScreenVO> getDdNum(@Param("companyId") String companyId);
 
-	List<ScreenVO> getWXFlag();
+	List<ScreenVO> getWXFlag(@Param("companyId") String companyId);
 
-	List<ScreenVO> getWXKzNum();
+	List<ScreenVO> getWXKzNum(@Param("companyId") String companyId);
 
-	List<ScreenVO> getWXKzComeNum();
+	List<ScreenVO> getWXKzComeNum(@Param("companyId") String companyId);
 
-	List<ScreenVO> getWXGroupKzNumMonth();
+	List<ScreenVO> getWXGroupKzNumMonth(@Param("companyId") String companyId);
 
-	List<ScreenVO> getWXGroupKzComeNumWeek();
+	List<ScreenVO> getWXGroupKzComeNumWeek(@Param("companyId") String companyId);
 
-	List<ScreenVO> getWXGroupKzComeNumMonth();
+	List<ScreenVO> getWXGroupKzComeNumMonth(@Param("companyId") String companyId);
+
+	List<ScreenVO> getDayValidKZ(@Param("companyId") String companyId);
+
+	List<ScreenVO> getDayComeKZ(@Param("companyId") String companyId);
+
+	List<ScreenVO> getDaySuccessKZ(@Param("companyId") String companyId);
+
+	List<ScreenVO> getDayValidKZcost(@Param("companyId") String companyId);
+
+	List<ScreenVO> getDaySrcValidKZ(@Param("companyId") String companyId);
+
+	List<ScreenVO> getDaySrcKZ(@Param("companyId") String companyId);
+
+	List<ScreenVO> getDaySrcKZValideRate(@Param("companyId") String companyId);
 }

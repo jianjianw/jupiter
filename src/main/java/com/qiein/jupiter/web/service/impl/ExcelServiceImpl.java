@@ -104,6 +104,9 @@ public class ExcelServiceImpl implements ExcelService {
         }
         Integer index = 2;
         for (ClientExcelNewsDTO clientExcelDTO : clientList) {
+            //去掉空格
+            ObjectUtil.objectStrParamTrim(clientExcelDTO);
+
             if (StringUtil.isNotEmpty(clientExcelDTO.getKzName()) && clientExcelDTO.getKzName().length() > 16) {
                 throw new RException("第" + index + "行" + ExceptionEnum.KZ_NAME_LENGTH_TOO_LONG.getMsg(), ExceptionEnum.KZ_NAME_LENGTH_TOO_LONG.getCode());
             }

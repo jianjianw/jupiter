@@ -65,13 +65,13 @@ public class SourcePO extends BaseEntity {
      * 是否开启筛选
      */
     // @NotEmpty(message = "{Source.isFilter.null}")
-    private Boolean filterFlag;
+    private Boolean isFilter;
 
     /**
      * 是否启用
      */
     // @NotEmpty(message = "{Source.isShow.null}")
-    private Boolean showFlag;
+    private Boolean isShow;
     /**
      * 推送规则
      */
@@ -95,34 +95,34 @@ public class SourcePO extends BaseEntity {
     }
 
     public SourcePO(String srcName, Integer typeId, Integer channelId, String channelName, Integer companyId,
-                    Boolean showFlag, boolean filterFlag) {
+                    Boolean isShow, boolean isFilter) {
         this.srcName = srcName;
         this.typeId = typeId;
         this.channelId = channelId;
         this.channelName = channelName;
         this.companyId = companyId;
-        this.showFlag = showFlag;
-        this.filterFlag = filterFlag;
+        this.isShow = isShow;
+        this.isFilter = isFilter;
     }
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
 
-    public Boolean getFilterFlag() {
-        return filterFlag;
+    public Boolean getIsFilter() {
+        return isFilter;
     }
 
-    public void setFilterFlag(Boolean filterFlag) {
-        this.filterFlag = filterFlag;
+    public void setIsFilter(Boolean filter) {
+        isFilter = filter;
     }
 
-    public Boolean getShowFlag() {
-        return showFlag;
+    public Boolean getIsShow() {
+        return isShow;
     }
 
-    public void setShowFlag(Boolean showFlag) {
-        this.showFlag = showFlag;
+    public void setIsShow(Boolean show) {
+        isShow = show;
     }
 
     public String getNickNames() {

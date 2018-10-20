@@ -1637,10 +1637,32 @@ public class ReportsServiceImpl implements ReportService {
         return zjsGroupDetailReport;
     }
     /**
-     * 销售中心报表
+     * 专业中心报表
      */
     public List<ProfessionalCenterVO> getProfessionalCenterVO(ReportsParamVO reportsParamVO){
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(reportsParamVO.getCompanyId());
         return professionalCenterDao.getProfessionalCenterVO(reportsParamVO,invalidConfig);
     }
+
+    /**
+     * 电商推广月度报表预约量--HJF
+     * @param 
+     */
+	@Override
+	public List<Map<String, Object>> getDSTGSrcMonthReportsAppointment(String month, String typeId, String sourceId,
+			int companyId) {
+		//封装参数
+        ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
+        reportsParamSrcMonthVO.setTypeId(typeId);
+        reportsParamSrcMonthVO.setSourceId(sourceId);
+        reportsParamSrcMonthVO.setCompanyId(companyId);
+        //获取无效状态指标，无效意向等级，待定是否为有效量，待定指标
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
+        //获取时间时间戳
+        int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
+        int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);	
+        //获取客资数据
+        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsAppointment(firstDay,lastDay,reportsParamSrcMonthVO,invalidConfig);
+        return dstgSrcMonthReports;
+	}
 }

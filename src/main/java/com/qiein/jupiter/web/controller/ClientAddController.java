@@ -205,6 +205,9 @@ public class ClientAddController extends BaseController {
         }
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
+        clientVO.setOperaId(currentLoginStaff.getId());
+        clientVO.setOperaName(currentLoginStaff.getNickName());
+        clientVO.setCompanyId(currentLoginStaff.getCompanyId());
         clientAddService.addMsClient(clientVO, currentLoginStaff);
         return ResultInfoUtil.success(TipMsgEnum.ENTERING_SUNCCESS);
     }

@@ -440,9 +440,9 @@
         WHERE
          temp.COMPANYID = #{companyId}
         AND temp.OPERAID = #{staffId}
-        AND ((temp.kzphone in (select kzphone from ${tabName} info where info.isdel = 0 and info.kzid is not null) or temp.kzwechat in (select kzphone from ${tabName} info where info.isdel = 0 and info.kzid is not null) or temp.kzqq in (select kzphone from ${tabName} info where info.isdel = 0 and info.kzid is not null))
-        or temp.kzwechat in (select kzwechat from ${tabName} info where info.isdel = 0 and info.kzid is not null) or temp.kzwechat in(select kzwechat from ${tabName} info where info.isdel = 0 and info.kzid is not null) or temp.kzwechat in (select kzwechat from ${tabName} info where info.isdel = 0 and info.kzid is not null)
-        or temp.kzwechat in (select kzqq from ${tabName} info where info.isdel = 0 and info.kzid is not null) or temp.kzwechat in(select kzqq from ${tabName} info where info.isdel = 0 and info.kzid is not null) or temp.kzwechat in (select kzqq from ${tabName} info where info.isdel = 0 and info.kzid is not null))
+        AND ((temp.kzphone in (select kzphone from ${tabName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} ) or temp.kzwechat in (select kzphone from ${tabName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} ) or temp.kzqq in (select kzphone from ${tabName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} ))
+        or temp.kzwechat in (select kzwechat from ${tabName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} ) or temp.kzwechat in(select kzwechat from ${tabName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} ) or temp.kzwechat in (select kzwechat from ${tabName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} )
+        or temp.kzwechat in (select kzqq from ${tabName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} ) or temp.kzwechat in(select kzqq from ${tabName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} ) or temp.kzwechat in (select kzqq from ${tabName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} ))
         union
         SELECT
         <include refid="Base_Column_News_List"/>
@@ -709,9 +709,9 @@
         WHERE
          temp.COMPANYID = #{companyId}
         AND temp.OPERAID = #{staffId}
-        AND ((temp.kzphone in (select kzphone from ${tableName} info where info.isdel = 0 and info.kzid is not null) or temp.kzwechat in (select kzphone from ${tableName} info where info.isdel = 0 and info.kzid is not null) or temp.kzqq in (select kzphone from ${tableName} info where info.isdel = 0 and info.kzid is not null))
-        or temp.kzwechat in (select kzwechat from ${tableName} info where info.isdel = 0 and info.kzid is not null) or temp.kzwechat in(select kzwechat from ${tableName} info where info.isdel = 0 and info.kzid is not null) or temp.kzwechat in (select kzwechat from ${tableName} info where info.isdel = 0 and info.kzid is not null)
-        or temp.kzwechat in (select kzqq from ${tableName} info where info.isdel = 0 and info.kzid is not null) or temp.kzwechat in(select kzqq from ${tableName} info where info.isdel = 0 and info.kzid is not null) or temp.kzwechat in (select kzqq from ${tableName} info where info.isdel = 0 and info.kzid is not null))
+        AND ((temp.kzphone in (select kzphone from ${tableName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} ) or temp.kzwechat in (select kzphone from ${tableName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} ) or temp.kzqq in (select kzphone from ${tableName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} ))
+        or temp.kzwechat in (select kzwechat from ${tableName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} ) or temp.kzwechat in(select kzwechat from ${tableName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} ) or temp.kzwechat in (select kzwechat from ${tableName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} )
+        or temp.kzwechat in (select kzqq from ${tableName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} ) or temp.kzwechat in(select kzqq from ${tableName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} ) or temp.kzwechat in (select kzqq from ${tableName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} ))
         union
         SELECT
         <include refid="Base_Column_News_List"/>
@@ -779,9 +779,9 @@
         WHERE
          temp.COMPANYID = #{companyId}
         AND temp.OPERAID = #{staffId}
-        AND ((temp.kzphone in (select kzphone from ${tableName} info where info.isdel = 0 and info.kzid is not null) or temp.kzwechat in (select kzphone from ${tableName} info where info.isdel = 0 and info.kzid is not null) or temp.kzqq in (select kzphone from ${tableName} info where info.isdel = 0 and info.kzid is not null))
-        or temp.kzwechat in (select kzwechat from ${tableName} info where info.isdel = 0 and info.kzid is not null) or temp.kzwechat in(select kzwechat from ${tableName} info where info.isdel = 0 and info.kzid is not null) or temp.kzwechat in (select kzwechat from ${tableName} info where info.isdel = 0 and info.kzid is not null)
-        or temp.kzwechat in (select kzqq from ${tableName} info where info.isdel = 0 and info.kzid is not null) or temp.kzwechat in(select kzqq from ${tableName} info where info.isdel = 0 and info.kzid is not null) or temp.kzwechat in (select kzqq from ${tableName} info where info.isdel = 0 and info.kzid is not null))
+        AND ((temp.kzphone in (select kzphone from ${tableName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} ) or temp.kzwechat in (select kzphone from ${tableName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} ) or temp.kzqq in (select kzphone from ${tableName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} ))
+        or temp.kzwechat in (select kzwechat from ${tableName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} ) or temp.kzwechat in(select kzwechat from ${tableName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} ) or temp.kzwechat in (select kzwechat from ${tableName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} )
+        or temp.kzwechat in (select kzqq from ${tableName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} ) or temp.kzwechat in(select kzqq from ${tableName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} ) or temp.kzwechat in (select kzqq from ${tableName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} ))
         union
         SELECT
         <include refid="Base_Column_News_List"/>
@@ -870,9 +870,9 @@
         WHERE
         temp.COMPANYID = #{companyId}
         AND temp.OPERAID = #{staffId}
-        AND ((temp.kzphone in (select kzphone from ${tableName} info where info.isdel = 0 and info.kzid is not null) or temp.kzwechat in (select kzphone from ${tableName} info where info.isdel = 0 and info.kzid is not null) or temp.kzqq in (select kzphone from ${tableName} info where info.isdel = 0 and info.kzid is not null))
-        or temp.kzwechat in (select kzwechat from ${tableName} info where info.isdel = 0 and info.kzid is not null) or temp.kzwechat in(select kzwechat from ${tableName} info where info.isdel = 0 and info.kzid is not null) or temp.kzwechat in (select kzwechat from ${tableName} info where info.isdel = 0 and info.kzid is not null)
-        or temp.kzwechat in (select kzqq from ${tableName} info where info.isdel = 0 and info.kzid is not null) or temp.kzwechat in(select kzqq from ${tableName} info where info.isdel = 0 and info.kzid is not null) or temp.kzwechat in (select kzqq from ${tableName} info where info.isdel = 0 and info.kzid is not null))
+        AND ((temp.kzphone in (select kzphone from ${tableName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} ) or temp.kzwechat in (select kzphone from ${tableName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} ) or temp.kzqq in (select kzphone from ${tableName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} ))
+        or temp.kzwechat in (select kzwechat from ${tableName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} ) or temp.kzwechat in(select kzwechat from ${tableName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} ) or temp.kzwechat in (select kzwechat from ${tableName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} )
+        or temp.kzwechat in (select kzqq from ${tableName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} ) or temp.kzwechat in(select kzqq from ${tableName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} ) or temp.kzwechat in (select kzqq from ${tableName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} ))
         union
         SELECT
         <include refid="Base_Column_News_List"/>
@@ -951,9 +951,9 @@
         WHERE
          temp.COMPANYID = #{companyId}
         AND temp.OPERAID = #{staffId}
-        AND ((temp.kzphone in (select kzphone from ${tableName} info where info.isdel = 0 and info.kzid is not null) or temp.kzwechat in (select kzphone from ${tableName} info where info.isdel = 0 and info.kzid is not null) or temp.kzqq in (select kzphone from ${tableName} info where info.isdel = 0 and info.kzid is not null))
-        or temp.kzwechat in (select kzwechat from ${tableName} info where info.isdel = 0 and info.kzid is not null) or temp.kzwechat in(select kzwechat from ${tableName} info where info.isdel = 0 and info.kzid is not null) or temp.kzwechat in (select kzwechat from ${tableName} info where info.isdel = 0 and info.kzid is not null)
-        or temp.kzwechat in (select kzqq from ${tableName} info where info.isdel = 0 and info.kzid is not null) or temp.kzwechat in(select kzqq from ${tableName} info where info.isdel = 0 and info.kzid is not null) or temp.kzwechat in (select kzqq from ${tableName} info where info.isdel = 0 and info.kzid is not null))
+        AND ((temp.kzphone in (select kzphone from ${tableName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} ) or temp.kzwechat in (select kzphone from ${tableName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} ) or temp.kzqq in (select kzphone from ${tableName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} ))
+        or temp.kzwechat in (select kzwechat from ${tableName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} ) or temp.kzwechat in(select kzwechat from ${tableName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} ) or temp.kzwechat in (select kzwechat from ${tableName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} )
+        or temp.kzwechat in (select kzqq from ${tableName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} ) or temp.kzwechat in(select kzqq from ${tableName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} ) or temp.kzwechat in (select kzqq from ${tableName} info where info.isdel = 0 and info.kzid is not null AND info.COMPANYID = #{companyId} ))
         union
         SELECT
         <include refid="Base_Column_News_List"/>

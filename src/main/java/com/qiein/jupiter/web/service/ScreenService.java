@@ -1,35 +1,40 @@
 package com.qiein.jupiter.web.service;
 
-import com.alibaba.fastjson.JSONObject;
-import com.github.pagehelper.PageInfo;
-import com.qiein.jupiter.web.entity.dto.*;
-import com.qiein.jupiter.web.entity.vo.*;
-
 import java.util.List;
-import java.util.Map;
+
+import com.qiein.jupiter.web.entity.vo.ScreenVO;
 
 public interface ScreenService {
    
-    
-	/**
-     * 电商推广月度ROI--HJF
-     * @param reportParamDTO
-     */
-	List<ScreenVO> getDayKZTotal();
+	List<ScreenVO> getDayKZTotal(String companyId);
 
-	List<ScreenVO> getMonthKZTotal();
+	List<ScreenVO> getMonthKZTotal(String companyId);
 
-	List<ScreenVO> getDdNum();
+	List<ScreenVO> getDdNum(String companyId);
 
-	List<ScreenVO> getWXFlag();
+	List<ScreenVO> getWXFlag(String companyId);
 
-	List<ScreenVO> getWXKzNum();
+	List<ScreenVO> getWXKzNum(String companyId);
 
-	List<ScreenVO> getWXKzComeNum();
+	List<ScreenVO> getWXKzComeNum(String companyId);
 
-	List<ScreenVO> getWXGroupKzNumMonth();
+	List<ScreenVO> getWXGroupKzNumMonth(String companyId);
 
-	List<ScreenVO> WXGroupKzComeNumWeek();
+	List<ScreenVO> WXGroupKzComeNumWeek(String companyId);
 
-	List<ScreenVO> WXGroupKzComeNumMonth();
+	List<ScreenVO> WXGroupKzComeNumMonth(String companyId);
+
+	List<ScreenVO> getDayValidKZ(String companyId);
+
+	List<ScreenVO> getDayComeKZ(String companyId);
+
+	List<ScreenVO> getDaySuccessKZ(String companyId);
+
+	List<ScreenVO> getDayValidKZcost(String companyId);
+
+	List<ScreenVO> getDaySrcValidKZ(String companyId);
+
+	List<ScreenVO> getDaySrcKZ(String companyId);
+
+	List<ScreenVO> getDaySrcKZValideRate(String companyId);
 }
