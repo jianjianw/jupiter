@@ -1,32 +1,14 @@
 package com.qiein.jupiter.web.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.qiein.jupiter.constant.ClientLogConst;
-import com.qiein.jupiter.constant.CommonConstant;
-import com.qiein.jupiter.constant.RoleConstant;
-import com.qiein.jupiter.enums.TableEnum;
-import com.qiein.jupiter.util.CollectionUtils;
-import com.qiein.jupiter.util.DBSplitUtil;
-import com.qiein.jupiter.util.StringUtil;
-import com.qiein.jupiter.util.TimeUtil;
-import com.qiein.jupiter.web.dao.*;
-import com.qiein.jupiter.web.entity.dto.*;
-import com.qiein.jupiter.web.entity.po.*;
-import com.qiein.jupiter.web.entity.vo.*;
-import com.qiein.jupiter.web.repository.*;
-import com.qiein.jupiter.web.service.ReportService;
-import com.qiein.jupiter.web.service.ScreenService;
-
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.*;
-import java.util.concurrent.TimeUnit;
+import com.qiein.jupiter.web.dao.ScreenDao;
+import com.qiein.jupiter.web.entity.vo.ScreenVO;
+import com.qiein.jupiter.web.service.ScreenService;
 
 /**
- * 报表
+ * 金夫人大屏
  */
 @Service
 public class ScreenServiceImpl implements ScreenService {
@@ -86,6 +68,48 @@ public class ScreenServiceImpl implements ScreenService {
 	public List<ScreenVO> WXGroupKzComeNumMonth() {
 		List<ScreenVO> wXGroupKzComeNumMonth = screenDao.getWXGroupKzComeNumMonth();
 		return wXGroupKzComeNumMonth;
+	}
+
+	@Override
+	public List<ScreenVO> getDayValidKZ() {
+		List<ScreenVO> dayValidKZ = screenDao.getDayValidKZ();
+		return dayValidKZ;
+	}
+
+	@Override
+	public List<ScreenVO> getDayComeKZ() {
+		List<ScreenVO> dayComeKZ = screenDao.getDayComeKZ();
+		return dayComeKZ;
+	}
+
+	@Override
+	public List<ScreenVO> getDaySuccessKZ() {
+		List<ScreenVO> daySuccessKZ = screenDao.getDaySuccessKZ();
+		return daySuccessKZ;
+	}
+
+	@Override
+	public List<ScreenVO> getDayValidKZcost() {
+		List<ScreenVO> dayValidKZcost = screenDao.getDayValidKZcost();
+		return dayValidKZcost;
+	}
+
+	@Override
+	public List<ScreenVO> getDaySrcValidKZ() {
+		List<ScreenVO> daySrcValidKZ = screenDao.getDaySrcValidKZ();
+		return daySrcValidKZ;
+	}
+
+	@Override
+	public List<ScreenVO> getDaySrcKZ() {
+		List<ScreenVO> daySrcKZ = screenDao.getDaySrcKZ();
+		return daySrcKZ;
+	}
+
+	@Override
+	public List<ScreenVO> getDaySrcKZValideRate() {
+		List<ScreenVO> daySrcKZValideRate = screenDao.getDaySrcKZValideRate();
+		return daySrcKZValideRate;
 	}
 
 	

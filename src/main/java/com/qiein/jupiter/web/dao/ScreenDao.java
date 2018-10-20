@@ -30,4 +30,18 @@ public interface ScreenDao extends BaseDao<ScreenVO> {
 	List<ScreenVO> getWXGroupKzComeNumWeek();
 
 	List<ScreenVO> getWXGroupKzComeNumMonth();
+
+	List<ScreenVO> getDayValidKZ();
+
+	List<ScreenVO> getDayComeKZ();
+
+	List<ScreenVO> getDaySuccessKZ();
+
+	List<ScreenVO> getDayValidKZcost();
+
+	List<ScreenVO> getDaySrcValidKZ();
+
+	List<ScreenVO> getDaySrcKZ();
+
+	List<ScreenVO> getDaySrcKZValideRate();
 }
