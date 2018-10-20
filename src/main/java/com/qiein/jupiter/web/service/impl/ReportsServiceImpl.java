@@ -21,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 报表
@@ -111,10 +110,14 @@ public class ReportsServiceImpl implements ReportService {
     @Autowired
     private SalesCenterReportsDao salesCenterReportsDao;
 
-    @Autowired
-    private ZjsDetailReportDao zjsDetailReportDao;
+
     @Autowired
     private ProfessionalCenterDao professionalCenterDao;
+    @Autowired
+    private ZjsGroupReportDao zjsGroupReportDao;
+    @Autowired
+    private ZjsGroupDetailReportDao zjsGroupDetailReportDao;
+
 
 
     /**
@@ -1605,10 +1608,9 @@ public class ReportsServiceImpl implements ReportService {
 	}
 
     @Override
-    public List<ZjsClientDetailReportVO> getZjsDetailReportByGroup(ReportsParamVO reportsParamVO) {
-
-        zjsDetailReportDao.getZjsDetailReportByGroup(reportsParamVO);
-	    return null;
+    public List<ZjsClientDetailReportVO> getZjsGroupReport(ReportsParamVO reportsParamVO) {
+        List<ZjsClientDetailReportVO> reportVOS = zjsGroupReportDao.getZjsGroupReport(reportsParamVO);
+        return reportVOS;
     }
 
 
@@ -1629,6 +1631,12 @@ public class ReportsServiceImpl implements ReportService {
     public List<SalesCenterReportsVO> getSalesCenterReports(ReportsParamVO reportsParamVO){
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(reportsParamVO.getCompanyId());
         return salesCenterReportsDao.getSalesCenterReports(reportsParamVO,invalidConfig);
+    }
+
+    @Override
+    public List<ZjsClientDetailReportVO> getZjsGroupDetailReport(ReportsParamVO reportsParamVO) {
+        List<ZjsClientDetailReportVO> zjsGroupDetailReport = zjsGroupDetailReportDao.getZjsGroupDetailReport(reportsParamVO);
+        return zjsGroupDetailReport;
     }
     /**
      * 销售中心报表
