@@ -31,8 +31,6 @@ public class ReportsServiceImpl implements ReportService {
     private CityReportsDao cityReportsDao;
 
     @Autowired
-//    private ProvinceReportsDao provinceReportsDao;
-//    private DsProvinceReportsDao provinceReportsDao;
     private DstgProvinceReportsDao provinceReportsDao;
 
     @Autowired
