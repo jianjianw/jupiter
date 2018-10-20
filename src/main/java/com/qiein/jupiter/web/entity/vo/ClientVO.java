@@ -324,6 +324,19 @@ public class ClientVO implements Serializable {
      */
     private int addType;
 
+    /**
+     * 订单图片
+     */
+    private String orderImg;
+
+
+    public String getOrderImg() {
+        return orderImg;
+    }
+
+    public void setOrderImg(String orderImg) {
+        this.orderImg = orderImg;
+    }
 
     public int getAddType() {
         return addType;
