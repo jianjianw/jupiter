@@ -202,7 +202,7 @@
             ,TOTALSHOOTING=#{totalShooting}
         </if>
         where companyid=#{companyId} and FROM_UNIXTIME(CREATETIME, '%Y/%m/%d')=FROM_UNIXTIME(#{time}, '%Y/%m/%d') and
-        shopid=#{shopId} and type=#{taype}
+        shopid=#{shopId} and type=#{type}
     </update>
     <insert id="insertTarget">
         insert into hm_crm_shop_detail(shopid,companyid,createtime,type) values(#{shopId},#{companyId},#{time},#{type})
