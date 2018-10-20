@@ -376,7 +376,7 @@ public interface ReportService {
 	List<Map<String, Object>> getDSTGSrcMonthReportsROI(String month, String typeId, String sourceId, int companyId);
 
     /**
-     * 转介绍报表详情，按客服组汇总
+     * 转介绍报表，按客服组汇总
      * */
     public List<ZjsClientDetailReportVO> getZjsGroupReport(ReportsParamVO reportsParamVO);
 
@@ -388,4 +388,9 @@ public interface ReportService {
      * 销售中心报表
      */
     List<SalesCenterReportsVO> getSalesCenterReports(ReportsParamVO reportsParamVO);
+
+    /**
+     * 转介绍报表详情，按客服组内的员工汇总
+     * */
+    public List<ZjsClientDetailReportVO> getZjsGroupDetailReport(ReportsParamVO reportsParamVO);
 }

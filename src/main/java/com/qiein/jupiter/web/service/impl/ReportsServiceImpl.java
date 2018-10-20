@@ -112,6 +112,8 @@ public class ReportsServiceImpl implements ReportService {
 
     @Autowired
     private ZjsGroupReportDao zjsGroupReportDao;
+    @Autowired
+    private ZjsGroupDetailReportDao zjsGroupDetailReportDao;
 
 
 
@@ -1626,5 +1628,11 @@ public class ReportsServiceImpl implements ReportService {
     public List<SalesCenterReportsVO> getSalesCenterReports(ReportsParamVO reportsParamVO){
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(reportsParamVO.getCompanyId());
         return salesCenterReportsDao.getSalesCenterReports(reportsParamVO,invalidConfig);
+    }
+
+    @Override
+    public List<ZjsClientDetailReportVO> getZjsGroupDetailReport(ReportsParamVO reportsParamVO) {
+        List<ZjsClientDetailReportVO> zjsGroupDetailReport = zjsGroupDetailReportDao.getZjsGroupDetailReport(reportsParamVO);
+        return zjsGroupDetailReport;
     }
 }

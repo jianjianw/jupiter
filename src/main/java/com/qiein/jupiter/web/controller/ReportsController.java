@@ -801,10 +801,10 @@ public class ReportsController extends BaseController {
      * 转介绍报表详情，按客服（邀约员）汇总
      * */
     @GetMapping("/get_zjs_group_detail_report")
-    public ResultInfo getZjsDetailReportByAppointor(ReportsParamVO reportsParamVO){
+    public ResultInfo getZjsGroupDetailReport(ReportsParamVO reportsParamVO){
         reportsParamVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
-        reportService.getZjsGroupReport(reportsParamVO);
-        return null;
+        List<ZjsClientDetailReportVO> reportVOS = reportService.getZjsGroupDetailReport(reportsParamVO);
+        return ResultInfoUtil.success(reportVOS);
     }
     /**
      * 销售中心报表
