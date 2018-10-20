@@ -1605,9 +1605,8 @@ public class ReportsServiceImpl implements ReportService {
 
     @Override
     public List<ZjsClientDetailReportVO> getZjsDetailReportByGroup(ReportsParamVO reportsParamVO) {
-
-        zjsDetailReportDao.getZjsDetailReportByGroup(reportsParamVO);
-	    return null;
+        List<ZjsClientDetailReportVO> reportVOS = zjsDetailReportDao.getZjsDetailReportByGroup(reportsParamVO);
+        return reportVOS;
     }
 
 

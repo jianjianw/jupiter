@@ -793,9 +793,8 @@ public class ReportsController extends BaseController {
     @GetMapping("/get_zjs_detail_report_by_group")
     public ResultInfo getZjsDetailReportByGroup(ReportsParamVO reportsParamVO){
         reportsParamVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
-        reportService.getZjsDetailReportByGroup(reportsParamVO);
-
-        return null;
+        List<ZjsClientDetailReportVO> reportVOS = reportService.getZjsDetailReportByGroup(reportsParamVO);
+        return ResultInfoUtil.success(reportVOS);
     }
 
     /**

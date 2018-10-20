@@ -1,8 +1,13 @@
 package com.qiein.jupiter.web.repository;
 
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.constant.DictionaryConstant;
+import com.qiein.jupiter.constant.ReportsConfigConst;
 import com.qiein.jupiter.util.DBSplitUtil;
+import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.web.entity.vo.DsInvalidVO;
 import com.qiein.jupiter.web.entity.vo.ReportsParamVO;
 import com.qiein.jupiter.web.entity.vo.ZjsClientDetailReportVO;
 import org.apache.commons.lang3.StringUtils;
@@ -12,6 +17,7 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -20,43 +26,52 @@ public class ZjsDetailReportDao {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private CommonReportsDao commonReportsDao;
 
     /**
      * 转介绍报表详情，按客服组汇总
      *
      */
-    public Map<String,Object> getZjsDetailReportByGroup(ReportsParamVO reportsParamVO){
+    public List<ZjsClientDetailReportVO> getZjsDetailReportByGroup(ReportsParamVO reportsParamVO){
         List<ZjsClientDetailReportVO> reportVOS = new ArrayList<ZjsClientDetailReportVO>();
 
 
 
-        //封装毛客资
+        //获取毛客资
         getTotalClientCount(reportsParamVO,reportVOS);
 
-        //封装A类客资数
+        //获取A类客资数
         getClientSourceLevelACount(reportsParamVO,reportVOS,DictionaryConstant.YX_LEVEL_A);
-        //封装A类客资进店数
+        //获取A类客资进店数
         getClientSourceLevelAInShopCount(reportsParamVO,reportVOS,DictionaryConstant.YX_LEVEL_A);
-        //计算A类客资转化率
+        //获取A类客资转化率
 
-        //封装B类客资数
+        //获取B类客资数
         getClientSourceLevelACount(reportsParamVO,reportVOS,DictionaryConstant.YX_LEVEL_B);
-        //封装B类客资进店数
+        //获取B类客资进店数
         getClientSourceLevelAInShopCount(reportsParamVO,reportVOS,DictionaryConstant.YX_LEVEL_B);
         //计算B类客资转化率
 
-        //封装C类客资数
+        //获取C类客资数
         getClientSourceLevelACount(reportsParamVO,reportVOS,DictionaryConstant.YX_LEVEL_C);
-        //封装C类客资进店数
+        //获取C类客资进店数
         getClientSourceLevelAInShopCount(reportsParamVO,reportVOS,DictionaryConstant.YX_LEVEL_C);
-        //计算C类客资转化率
+        //获取C类客资转化率
 
-        //封装D类客资数
+        //获取D类客资数
         getClientSourceLevelACount(reportsParamVO,reportVOS,DictionaryConstant.YX_LEVEL_D);
 
-        //计算有效客资数（等于A类客资+B类客资）
+        //获取有效客资数（等于A类客资+B类客资）
         getValidClientCount(reportVOS);
-        //无效数（先放一放）
+
+        //无效数  总客资 - 有效量
+        getInvalidClientSourceCount(reportsParamVO,reportVOS);
+
+
+
+
+
 
 
         //获取总进店数
@@ -66,61 +81,31 @@ public class ZjsDetailReportDao {
         //总成交率
         getTotalSuccessRate(reportVOS);
 
-
         //毛客资进店率（总进店/毛客资数）
         getClientInShopRate(reportVOS);
         //有效客资进店率（总进店/ 有效客资）
         getValidClientInShopRate(reportVOS);
 
-        /*
-        *  sb.append("select gp.groupid,gp.GROUPNAME,IFNULL(count(info.GROUPID),0) as group_count from "+DBSplit.getInfoTabName(vo.getCompanyId())+" info ");
-        sb.append(" left join");
-        sb.append(" hm_pub_group gp on gp.GROUPID = info.GroupId ");
-        sb.append(" where gp.GROUPTYPE  = 'dsyy' and gp.COMPANYID = ? and info.ISDEL = 0");
-        sb.append(" and info.COMESHOPTIME BETWEEN ? AND ? and DAYOFWEEK(from_unixtime(info.COMESHOPTIME)) IN(1,7)");
-        sb.append("  and (info.srctype = 1 or info.srctype = 2)");
-        * */
-
         //周末进店数
         getWeekendInShopCount(reportsParamVO,reportVOS);
+        //非周末进店数 and 非周末进店占比
+        getUnWeekendInShopCount(reportsParamVO,reportVOS);
 
+        //周末成交数
+        getWeekendSuccessCount(reportsParamVO,reportVOS);
+        //非周末成交数  and  周末成交率  and  非周末成交率
+        unWeekendSuccessCount(reportsParamVO,reportVOS);
 
-
-
-        //总金额，均价
+        //总金额 and 均价
         getAmount(reportsParamVO,reportVOS);
 
-
-
-
-
-
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        //获取筛选待定98
-       // getFilterWaitClientCount();
-        //获取筛选中 0
-        //获取筛选无效 99
-        //jdbcTemplate.queryForList(sql);
         System.out.println();
-        return null;
+        return reportVOS;
 
     }
+
+
+
 
     // 获取毛客资
     private void getTotalClientCount(ReportsParamVO reportsParamVO,List<ZjsClientDetailReportVO> reportVOS ){
@@ -442,8 +427,8 @@ public class ZjsDetailReportDao {
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         StringBuilder sb = new StringBuilder();
 
-        sb.append("select info.GROUPID ,count(info.KZID) ");
-        sb.append("from ").append(infoTabName);
+        sb.append("select info.GROUPID groupId ,count(info.KZID) weekendCount ");
+        sb.append("from ").append(infoTabName).append("info ");
         sb.append("where info.SRCTYPE in(3, 4, 5) and info.companyId = ? ");
         sb.append("and info.COMESHOPTIME BETWEEN ? AND ? ");
         sb.append("and DAYOFWEEK(from_unixtime(info.COMESHOPTIME)) IN (1,7) ");
@@ -452,29 +437,150 @@ public class ZjsDetailReportDao {
 
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), reportsParamVO.getCompanyId(),
                 reportsParamVO.getStart(), reportsParamVO.getEnd());
+        for (Map<String, Object> map:list){
+            String groupId = (String)map.get("groupId");
+            for(ZjsClientDetailReportVO reportVO :reportVOS ){
+                String id = reportVO.getId();
+                if(StringUtils.equals(id,groupId)){
+                    Long weekendCount = (Long)map.get("weekendCount");
+                    reportVO.setWeekendInShopCount(weekendCount.intValue());//周末进店数
+                }
+            }
+        }
+    }
+
+    //非周末进店数  +  非周末进店占比
+    private void getUnWeekendInShopCount(ReportsParamVO reportsParamVO, List<ZjsClientDetailReportVO> reportVOS) {
+        for(ZjsClientDetailReportVO reportVO : reportVOS){
+            int totalInShopCount = reportVO.getTotalInShopCount();
+            int weekendInShopCount = reportVO.getWeekendInShopCount();
+            reportVO.setUnWeekendInShopCount(totalInShopCount-weekendInShopCount);
+
+            //非周末进店占比
+            if(totalInShopCount == 0){
+                reportVO.setUnWeekendInShopRate(0);
+            }else{
+                reportVO.setUnWeekendInShopRate(reportVO.getUnWeekendInShopCount()/totalInShopCount);
+            }
+
+
+        }
+    }
+
+    //周末成交数
+    private void getWeekendSuccessCount(ReportsParamVO reportsParamVO, List<ZjsClientDetailReportVO> reportVOS) {
+
+        String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("select info.GROUPID groupId ,count(info.KZID) weekendCount ");
+        sb.append("from ").append(infoTabName).append("info ");
+        sb.append("where info.SRCTYPE in(3, 4, 5) and info.companyId = ? ");
+        sb.append("and info.SUCCESSTIME BETWEEN ? AND ? ");
+        sb.append("and DAYOFWEEK(from_unixtime(info.SUCCESSTIME)) IN (1,7) ");
+        sb.append("and info.ISDEL = 0 and info.GROUPID is not null ");
+        sb.append("group by info.GROUPID ");
+
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), reportsParamVO.getCompanyId(),
+                reportsParamVO.getStart(), reportsParamVO.getEnd());
+        for (Map<String, Object> map:list){
+            String groupId = (String)map.get("groupId");
+            for(ZjsClientDetailReportVO reportVO :reportVOS ){
+                String id = reportVO.getId();
+                if(StringUtils.equals(id,groupId)){
+                    Long weekendCount = (Long)map.get("weekendCount");
+                    reportVO.setWeekendSuccessCount(weekendCount.intValue());
+                }
+            }
+        }
+    }
+
+    //非周末成交数
+    private void unWeekendSuccessCount(ReportsParamVO reportsParamVO, List<ZjsClientDetailReportVO> reportVOS) {
+
+        for(ZjsClientDetailReportVO reportVO : reportVOS){
+            int totalSuccessCount = reportVO.getTotalSuccessCount();
+            int weekendSuccessCount = reportVO.getWeekendSuccessCount();
+            //非周末成交数
+            reportVO.setUnWeekendSuccessCount(totalSuccessCount - weekendSuccessCount);
+
+          if(totalSuccessCount == 0){
+              reportVO.setWeekendSuccessRate(0);
+              reportVO.setUnWeekendInShopRate(0);
+          } else{
+              //周末成交率
+              reportVO.setWeekendSuccessRate(weekendSuccessCount/totalSuccessCount);
+              //非周末成交率
+              reportVO.setUnWeekendInShopRate(reportVO.getUnWeekendSuccessCount()/totalSuccessCount);
+          }
+        }
+
+    }
+
+
+    private void getInvalidClientSourceCount(ReportsParamVO reportsParamVO, List<ZjsClientDetailReportVO> reportVOS) {
+
+
+        String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
+
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(reportsParamVO.getCompanyId());
+        StringBuilder sb = new StringBuilder();
+        sb.append("select info.GROUPID groupId, count(info.KZID) invalidCount  ");
+        sb.append("from ").append(infoTabName).append("info ");
+        sb.append("where info.SRCTYPE in (3, 4, 5) ");
+        sb.append("and info.companyId = ? ");
+        sb.append("and info.SUCCESSTIME BETWEEN ? AND ? ");
+        sb.append("and info.ISDEL = 0 ");
+        sb.append("and info.GROUPID is not null ");
+        if (StringUtil.isNotEmpty(invalidConfig.getZjsValidStatus())) {
+            sb.append(" AND INSTR('" + invalidConfig.getZjsValidStatus() + "',CONCAT( '\"',info.STATUSID,'\"'))=0 ");//找不到返回0
+        }
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), reportsParamVO.getCompanyId(),
+                reportsParamVO.getStart(), reportsParamVO.getEnd());
+
+        for (Map<String, Object> map : list) {
+            String groupId = (String) map.get("groupId");
+            for(ZjsClientDetailReportVO reportVO : reportVOS ){
+                String id = reportVO.getId();
+                if(StringUtils.equals(id,groupId)){
+                    Long invalidCount = (Long) map.get("invalidCount");
+                    reportVO.setInvalidClientSourceCount(invalidCount.intValue());//无效量
+                }
+            }
+
+        }
 
 
 
+    }
+
+    private void getTotalClientCount(){
+
+    }
 
 
 
+    private void getReportConfig(ReportsParamVO reportsParamVO) {
 
+        /*//读取报表配置
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT comp.REPORTSCONFIG reportConfig FROM hm_pub_company comp WHERE comp.ID = ? AND comp.ISDEL = 0 ");
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), reportsParamVO.getCompanyId());
 
+        if(list != null){
+            Map<String, Object> map = list.get(0);
+            String reportConfig = (String)map.get("reportConfig");
+            JSONObject configObj = JSONObject.parseObject(reportConfig);
+            JSONArray jsonArray = configObj.getJSONObject(ReportsConfigConst.ZJS_VALID_SET).getJSONArray(ReportsConfigConst.WX_CLASS);
+            //无效状态
+            String zjsValidStatus = null;
+            if(!jsonArray.isEmpty()){
+                zjsValidStatus = jsonArray.toString().substring(1, jsonArray.toString().length() - 1);
+            }
 
-
-
-
-
-        /*sb.append("select gp.groupid,gp.GROUPNAME,IFNULL(count(info.GROUPID),0) as group_count from "++" info ");
-        sb.append(" left join");
-        sb.append(" hm_pub_group gp on gp.GROUPID = info.GroupId ");
-        sb.append(" where gp.GROUPTYPE  = 'dsyy' and gp.COMPANYID = ? and info.ISDEL = 0");
-        sb.append(" and info.COMESHOPTIME BETWEEN ? AND ? and DAYOFWEEK(from_unixtime(info.COMESHOPTIME)) IN(1,7)");
-        sb.append("  and (info.srctype = 1 or info.srctype = 2)");
-//        sb.append(" AND INSTR( ?, CONCAT(',',info.STATUSID + '',',')) != 0");
-        //添加条件筛选
-        addCondition(vo, sb);
-        sb.append(" group by gp.groupid");*/
+        }*/
+        //这种方式yekeyi
+        //String name = (String) jdbcTemplate.queryForObject(sb.toString(),new Object[]{reportsParamVO.getCompanyId()},String.class);
 
     }
 
