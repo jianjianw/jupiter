@@ -108,7 +108,7 @@ public class SalesCenterReportsDao {
      */
     private void getSuccessClientCount(ReportsParamVO reportsParamVO, List<SalesCenterReportsVO> salesCenterReportsVOS) {
         StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT count(1),SHOPID");
+        sb.append(" SELECT count(1) count,SHOPID shopId");
         sb.append(" FROM hm_crm_client_info info");
         sb.append(" LEFT JOIN hm_pub_shop shop ON shop.id = info.shopid");
         sb.append(" WHERE shop.id IN (SELECT shopid FROM hm_pub_group grp WHERE grp.grouptype = 'msjd')");
