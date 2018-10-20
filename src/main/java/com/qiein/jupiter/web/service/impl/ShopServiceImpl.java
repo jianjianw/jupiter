@@ -191,7 +191,7 @@ public class ShopServiceImpl implements ShopService {
      *  修改门店报表 目标
      */
     public void editTarget(ShopTargetDTO shopTargetDTO){
-        List<ShopTargetDTO> checkList=shopDao.findShopTarget(shopTargetDTO.getCompanyId(),shopTargetDTO.getTime(),shopTargetDTO.getShopId());
+        List<ShopTargetDTO> checkList=shopDao.findShopTarget(shopTargetDTO.getCompanyId(),shopTargetDTO.getTime(),shopTargetDTO.getShopId(),shopTargetDTO.getType());
         //校验是否存在该日期内的数据
         if(checkList.size()==0){
             shopDao.insertTarget(shopTargetDTO);

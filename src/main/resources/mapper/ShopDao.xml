@@ -77,7 +77,7 @@
     </update>
 
     <!--编辑拍摄地开关-->
-    <update id="editShopShowFlag" parameterType="map" >
+    <update id="editShopShowFlag" parameterType="map">
         UPDATE hm_pub_shop
         SET ISSHOW = #{showFlag}
         WHERE COMPANYID = #{companyId}
@@ -87,7 +87,7 @@
     <!--修改排序-->
     <update id="updatePriority" parameterType="Integer">
         UPDATE
-          hm_pub_shop
+        hm_pub_shop
         <set>
             <if test="priority != null and priority !=''">
                 PRIORITY = #{priority}
@@ -95,7 +95,7 @@
         </set>
         WHERE
         ID = #{id}
-        AND  COMPANYID = #{companyId}
+        AND COMPANYID = #{companyId}
     </update>
 
     <!--删除拍摄地-->
@@ -137,12 +137,12 @@
         SELECT
         GROUP_CONCAT(shop.SHOPNAME)
         FROM
-          hm_pub_shop shop
+        hm_pub_shop shop
         WHERE
-          COMPANYID = #{companyId} AND
-          ID IN
+        COMPANYID = #{companyId} AND
+        ID IN
         <foreach collection="ids" item="id" index="index" open="(" separator="," close=")">
-          #{id}
+            #{id}
         </foreach>
     </select>
 
@@ -179,7 +179,7 @@
     </select>
 
     <select id="findShopTarget" resultType="com.qiein.jupiter.web.entity.dto.ShopTargetDTO">
-        select shopId from hm_crm_shop_detail where companyid=#{companyId} and FROM_UNIXTIME(CREATETIME, '%Y/%m/%d')=FROM_UNIXTIME(#{time}, '%Y/%m/%d') and shopid=#{shopId}
+        select shopId from hm_crm_shop_detail where companyid=#{companyId} and FROM_UNIXTIME(CREATETIME, '%Y/%m/%d')=FROM_UNIXTIME(#{time}, '%Y/%m/%d') and shopid=#{shopId} and type=#{type}
     </select>
     <update id="editTarget">
         update hm_crm_shop_detail set shopid=#{shopId}
@@ -192,9 +192,19 @@
         <if test="shopCallOnValidCountTarget !=null and shopCallOnValidCountTarget!=''">
             ,SHOPCALLONVALIDCOUNTTARGET=#{shopCallOnValidCountTarget}
         </if>
-        where companyid=#{companyId} and FROM_UNIXTIME(CREATETIME, '%Y/%m/%d')=FROM_UNIXTIME(#{time}, '%Y/%m/%d') and shopid=#{shopId}
+        <if test="totalShootingTarget !=null and totalShootingTarget!=''">
+            ,TOTALSHOOTINGTARGET=#{totalShootingTarget}
+        </if>
+        <if test="validCountTarget !=null and validCountTarget!=''">
+            ,VALIDCOUNTTARGET=#{validCountTarget}
+        </if>
+        <if test="totalShooting !=null and totalShooting!=''">
+            ,TOTALSHOOTING=#{totalShooting}
+        </if>
+        where companyid=#{companyId} and FROM_UNIXTIME(CREATETIME, '%Y/%m/%d')=FROM_UNIXTIME(#{time}, '%Y/%m/%d') and
+        shopid=#{shopId} and type=#{taype}
     </update>
     <insert id="insertTarget">
-        insert into hm_crm_shop_detail(shopid,companyid,createtime) values(#{shopId},#{companyId},#{time})
+        insert into hm_crm_shop_detail(shopid,companyid,createtime,type) values(#{shopId},#{companyId},#{time},#{type})
     </insert>
 </mapper>

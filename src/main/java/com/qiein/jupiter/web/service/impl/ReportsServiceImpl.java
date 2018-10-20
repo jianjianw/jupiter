@@ -31,8 +31,6 @@ public class ReportsServiceImpl implements ReportService {
     private CityReportsDao cityReportsDao;
 
     @Autowired
-//    private ProvinceReportsDao provinceReportsDao;
-//    private DsProvinceReportsDao provinceReportsDao;
     private DstgProvinceReportsDao provinceReportsDao;
 
     @Autowired
@@ -110,6 +108,9 @@ public class ReportsServiceImpl implements ReportService {
     @Autowired
     private SalesCenterReportsDao salesCenterReportsDao;
 
+
+    @Autowired
+    private ProfessionalCenterDao professionalCenterDao;
     @Autowired
     private ZjsGroupReportDao zjsGroupReportDao;
     @Autowired
@@ -1634,5 +1635,12 @@ public class ReportsServiceImpl implements ReportService {
     public List<ZjsClientDetailReportVO> getZjsGroupDetailReport(ReportsParamVO reportsParamVO) {
         List<ZjsClientDetailReportVO> zjsGroupDetailReport = zjsGroupDetailReportDao.getZjsGroupDetailReport(reportsParamVO);
         return zjsGroupDetailReport;
+    }
+    /**
+     * 销售中心报表
+     */
+    public List<ProfessionalCenterVO> getProfessionalCenterVO(ReportsParamVO reportsParamVO){
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(reportsParamVO.getCompanyId());
+        return professionalCenterDao.getProfessionalCenterVO(reportsParamVO,invalidConfig);
     }
 }

@@ -62,7 +62,7 @@ public class SalesCenterReportsDao {
         sb.append(" from (select DISTINCT grp.shopid id,shop.shopname shopName,grp.companyid companyid from hm_pub_group grp");
         sb.append(" LEFT JOIN hm_pub_shop shop ON grp.COMPANYID = shop.COMPANYID AND grp.SHOPID = shop.ID");
         sb.append(" WHERE grp.GROUPTYPE = 'msjd' AND grp.companyid =? AND grp.SHOPID IS NOT NULL) shop ");
-        sb.append(" left join hm_crm_shop_detail detail on shop.id=detail.shopid and shop.companyid= detail.companyid  and detail.CREATETIME between ? and ?");
+        sb.append(" left join hm_crm_shop_detail detail on shop.id=detail.shopid and shop.companyid= detail.companyid  and detail.CREATETIME between ? and ? and detail.type=1");
         if(StringUtil.isNotEmpty(reportsParamVO.getShopIds())){
             sb.append(" and shop.id in ("+reportsParamVO.getShopIds()+")");
         }

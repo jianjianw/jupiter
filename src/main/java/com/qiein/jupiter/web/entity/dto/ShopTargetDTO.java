@@ -25,6 +25,56 @@ public class ShopTargetDTO {
      * 门店指名有效客资量目标
      */
     private String shopCallOnValidCountTarget;
+    /**
+     * 总拍摄目标
+     */
+    private String totalShootingTarget;
+    /**
+     * 有效客资量目标
+     */
+    private String validCountTarget;
+    /**
+     * 总拍摄量
+     */
+    private String totalShooting;
+
+
+    /**
+     * 类型
+     */
+    private int type;
+
+    public String getTotalShootingTarget() {
+        return totalShootingTarget;
+    }
+
+    public void setTotalShootingTarget(String totalShootingTarget) {
+        this.totalShootingTarget = totalShootingTarget;
+    }
+
+    public String getValidCountTarget() {
+        return validCountTarget;
+    }
+
+    public void setValidCountTarget(String validCountTarget) {
+        this.validCountTarget = validCountTarget;
+    }
+
+    public String getTotalShooting() {
+        return totalShooting;
+    }
+
+    public void setTotalShooting(String totalShooting) {
+        this.totalShooting = totalShooting;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
 
     public int getCompanyId() {
         return companyId;

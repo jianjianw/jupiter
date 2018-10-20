@@ -393,4 +393,8 @@ public interface ReportService {
      * 转介绍报表详情，按客服组内的员工汇总
      * */
     public List<ZjsClientDetailReportVO> getZjsGroupDetailReport(ReportsParamVO reportsParamVO);
+    /**
+     * 专业中心报表
+     */
+    List<ProfessionalCenterVO> getProfessionalCenterVO(ReportsParamVO reportsParamVO);
 }
