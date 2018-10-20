@@ -1,5 +1,6 @@
 package com.qiein.jupiter.web.repository;
 
+import com.qiein.jupiter.web.entity.vo.ClientVO;
 import com.qiein.jupiter.web.entity.vo.PlatAddClientInfoVO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,12 +22,12 @@ public class CheckClientRepeatDaoTest {
 
     @Test
     public void check() {
-        PlatAddClientInfoVO clientInfoVO = new PlatAddClientInfoVO();
-
+        ClientVO clientInfoVO = new ClientVO();
+        clientInfoVO.setCompanyId(2);
         clientInfoVO.setKzWechat("13213256555");
 
         clientInfoVO.setKzPhone("18699763304");
         clientInfoVO.setOperaName("涛涛");
-        repeatDao.check(2, clientInfoVO);
+        repeatDao.check(clientInfoVO);
     }
 }

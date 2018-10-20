@@ -182,15 +182,15 @@
         select shopId from hm_crm_shop_detail where companyid=#{companyId} and FROM_UNIXTIME(CREATETIME, '%Y/%m/%d')=FROM_UNIXTIME(#{time}, '%Y/%m/%d') and shopid=#{shopId}
     </select>
     <update id="editTarget">
-        update hm_crm_shop_detail set
+        update hm_crm_shop_detail set shopid=#{shopId}
         <if test="totalSuccessCountTarget !=null and totalSuccessCountTarget!=''">
-        TOTALSUCCESSCOUNTTARGET=#{totalSuccessCountTarget},
+            ,TOTALSUCCESSCOUNTTARGET=#{totalSuccessCountTarget}
         </if>
         <if test="shopCallOnSuccessCountTarget !=null and shopCallOnSuccessCountTarget!=''">
-        SHOPCALLONSUCCESSCOUNTTARGET=#{shopCallOnSuccessCountTarget},
+            ,SHOPCALLONSUCCESSCOUNTTARGET=#{shopCallOnSuccessCountTarget}
         </if>
         <if test="shopCallOnValidCountTarget !=null and shopCallOnValidCountTarget!=''">
-        SHOPCALLONVALIDCOUNTTARGET=#{shopCallOnValidCountTarget}
+            ,SHOPCALLONVALIDCOUNTTARGET=#{shopCallOnValidCountTarget}
         </if>
         where companyid=#{companyId} and FROM_UNIXTIME(CREATETIME, '%Y/%m/%d')=FROM_UNIXTIME(#{time}, '%Y/%m/%d') and shopid=#{shopId}
     </update>
