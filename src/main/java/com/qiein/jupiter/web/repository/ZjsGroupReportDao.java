@@ -239,7 +239,6 @@ public class ZjsGroupReportDao {
         int inShopCount;
         int count;
         for (ZjsClientDetailReportVO reportVO: reportVOS) {
-
             switch (dicName) {
                 case DictionaryConstant.YX_LEVEL_A:
                     inShopCount = reportVO.getClientSourceLevelAInShopCount();
@@ -247,7 +246,7 @@ public class ZjsGroupReportDao {
                     if(count == 0){
                         reportVO.setClientSourceLevelARate(0);
                     }else {
-                        reportVO.setClientSourceLevelARate(inShopCount/count);
+                        reportVO.setClientSourceLevelARate(inShopCount/count*100);
                     }
                     break;
                 case DictionaryConstant.YX_LEVEL_B:
@@ -256,7 +255,7 @@ public class ZjsGroupReportDao {
                     if(count == 0){
                         reportVO.setClientSourceLevelBRate(0);
                     }else {
-                        reportVO.setClientSourceLevelBRate(inShopCount/count);
+                        reportVO.setClientSourceLevelBRate(inShopCount/count*100);
                     }
                     break;
                 case DictionaryConstant.YX_LEVEL_C:
@@ -265,7 +264,7 @@ public class ZjsGroupReportDao {
                     if(count == 0){
                         reportVO.setClientSourceLevelCRate(0);
                     }else {
-                        reportVO.setClientSourceLevelCRate(inShopCount/count);
+                        reportVO.setClientSourceLevelCRate(inShopCount/count*100);
                     }
                     break;
                 default:
@@ -347,7 +346,7 @@ public class ZjsGroupReportDao {
             if(totalInShopCount == 0){
                 reportVO.setTotalSuccessRate(0);
             }else{
-                reportVO.setTotalSuccessRate(totalSuccessCount/totalInShopCount);//总成交率
+                reportVO.setTotalSuccessRate(totalSuccessCount/totalInShopCount*100);//总成交率
             }
         }
     }
@@ -360,7 +359,7 @@ public class ZjsGroupReportDao {
             if(clientSourceCount == 0){
                 reportVO.setClientInShopRate(0);
             }else{
-                reportVO.setClientInShopRate(totalInShopCount/clientSourceCount);
+                reportVO.setClientInShopRate(totalInShopCount/clientSourceCount*100);
             }
         }
 
@@ -375,7 +374,7 @@ public class ZjsGroupReportDao {
             if(validClientSourceCount == 0){
                 reportVO.setValidClientInShopRate(0);
             }else{
-                reportVO.setValidClientInShopRate(totalInShopCount/validClientSourceCount);
+                reportVO.setValidClientInShopRate(totalInShopCount/validClientSourceCount*100);
             }
         }
     }
@@ -498,9 +497,9 @@ public class ZjsGroupReportDao {
               reportVO.setUnWeekendInShopRate(0);
           } else{
               //周末成交率
-              reportVO.setWeekendSuccessRate(weekendSuccessCount/totalSuccessCount);
+              reportVO.setWeekendSuccessRate(weekendSuccessCount/totalSuccessCount*100);
               //非周末成交率
-              reportVO.setUnWeekendInShopRate(reportVO.getUnWeekendSuccessCount()/totalSuccessCount);
+              reportVO.setUnWeekendInShopRate(reportVO.getUnWeekendSuccessCount()/totalSuccessCount*100);
           }
         }
 
