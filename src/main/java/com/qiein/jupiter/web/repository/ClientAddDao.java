@@ -37,7 +37,7 @@ public class ClientAddDao {
      *
      * @return
      */
-    public String addPcDsClientInfo() {
+    public String addPcDsClientInfo(ClientVO clientVO) {
         return null;
     }
 
@@ -84,7 +84,7 @@ public class ClientAddDao {
      * 钉钉手机录入客资
      */
     @Transactional
-    public String addDingClientInfo(ClientVO clientVO) {
+    public ClientVO addClientInfo(ClientVO clientVO) {
         clientVO.setKzId(StringUtil.getRandom());
         //预处理
         initClientInfo(clientVO);
@@ -97,8 +97,8 @@ public class ClientAddDao {
         //新增备注
         doAddRemark(clientVO);
         //新增日志
-        doAddClientLog(AddTypeEnum.MOBILE.getTypeId(), clientVO);
-        return clientVO.getKzId();
+        doAddClientLog(clientVO);
+        return clientVO;
     }
 
 
@@ -162,17 +162,14 @@ public class ClientAddDao {
 
     /**
      * 新增客资日志
-     *
-     * @param addType  新增的类型 手机等
-     * @param clientVO
      */
-    private void doAddClientLog(int addType, ClientVO clientVO) {
+    private void doAddClientLog(ClientVO clientVO) {
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("companyId", clientVO.getCompanyId());
         paramMap.put("kzId", clientVO.getKzId());
         paramMap.put("operatorId", clientVO.getOperaId());
         paramMap.put("operatorName", clientVO.getOperaName());
-        paramMap.put("memo", getInfoAddLog(addType, clientVO));
+        paramMap.put("memo", getInfoAddLog(clientVO));
         paramMap.put("logType", ClientLogConst.INFO_LOGTYPE_ADD);
         String sql = " INSERT INTO hm_crm_client_log  ( KZID, OPERAID, OPERANAME, MEMO, OPERATIME, LOGTYPE, COMPANYID )" +
                 " VALUES ( :kzId, :operatorId, :operatorName, :memo, UNIX_TIMESTAMP(NOW()), :logType, :companyId ) ";
@@ -198,9 +195,9 @@ public class ClientAddDao {
     /**
      * 获取客资录入时的描述
      */
-    private String getInfoAddLog(int method, ClientVO clientVO) {
+    private String getInfoAddLog(ClientVO clientVO) {
         StringBuilder log = new StringBuilder();
-        log.append("在").append(AddTypeEnum.getTypeNameById(method));
+        log.append("在").append(AddTypeEnum.getTypeNameById(clientVO.getAddType()));
         log.append(" 通过 ");
         log.append(StringUtil.nullToStrTrim(clientVO.getChannelName()));
         log.append(" 渠道，");

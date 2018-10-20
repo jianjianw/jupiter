@@ -319,6 +319,19 @@ public class ClientVO implements Serializable {
      */
     private String talkImg;
 
+    /**
+     * 什么录入的
+     */
+    private int addType;
+
+
+    public int getAddType() {
+        return addType;
+    }
+
+    public void setAddType(int addType) {
+        this.addType = addType;
+    }
 
     public int getPromotorId() {
         return promotorId;

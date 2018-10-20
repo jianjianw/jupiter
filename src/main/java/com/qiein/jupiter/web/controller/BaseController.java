@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Enumeration;
 
 /**
  * 基础Controller
@@ -69,6 +70,25 @@ public class BaseController {
             throw new RException(ExceptionEnum.CAN_NOT_FIND_USER_FROM_REQ);
         }
         return attribute;
+    }
+
+    /**
+     * 判断请求是否PC
+     */
+    public boolean isPc() {
+        boolean isPc = true;
+        String s1 = request.getHeader("user-agent");
+        if (s1.contains("Android")) {
+//            System.out.println("Android移动客户端");
+            isPc = false;
+        } else if (s1.contains("iPhone")) {
+//            System.out.println("iPhone移动客户端");
+            isPc = false;
+        } else if (s1.contains("iPad")) {
+//            System.out.println("iPad客户端");
+            isPc = false;
+        }
+        return isPc;
     }
 
     /**
