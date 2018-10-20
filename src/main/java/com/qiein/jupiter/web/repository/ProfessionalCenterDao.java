@@ -122,10 +122,10 @@ public class ProfessionalCenterDao {
     private void getPendingClientCount(ReportsParamVO reportsParamVO, List<ProfessionalCenterVO> salesCenterReportsVOS, DsInvalidVO dsInvalidVO) {
         StringBuilder sb = new StringBuilder();
         getBaseSql(sb,reportsParamVO,true);
-        sb.append(" and INSTR( '" + dsInvalidVO.getDsDdStatus() + "', CONCAT(',',info.STATUSID + '',',')) != 0");
+        sb.append(" AND INSTR( ?  , CONCAT(',',info.STATUSID + '',',')) != 0");
         sb.append(" GROUP BY info.SOURCEID");
         List<Map<String, Object>> salesCenterReports = jdbcTemplate.queryForList(sb.toString(),
-                new Object[]{reportsParamVO.getCompanyId(), reportsParamVO.getStart(), reportsParamVO.getEnd()});
+                new Object[]{reportsParamVO.getCompanyId(), reportsParamVO.getStart(), reportsParamVO.getEnd(),dsInvalidVO.getZjsValidStatus()});
         List<ProfessionalCenterVO> salesCenterReportsVOSBak = new ArrayList<>();
         for (Map<String, Object> map : salesCenterReports) {
             ProfessionalCenterVO salesCenterReportsVO = new ProfessionalCenterVO();
@@ -181,7 +181,7 @@ public class ProfessionalCenterDao {
         List<ProfessionalCenterVO> salesCenterReportsVOSBak = new ArrayList<>();
         for (Map<String, Object> map : salesCenterReports) {
             ProfessionalCenterVO salesCenterReportsVO = new ProfessionalCenterVO();
-            salesCenterReportsVO.setSrcId(Integer.parseInt(String.valueOf(map.get("shopId").toString())));
+            salesCenterReportsVO.setSrcId(Integer.parseInt(String.valueOf(map.get("srcId").toString())));
             salesCenterReportsVO.setFilterInValidClientCount(Integer.parseInt(String.valueOf(map.get("count").toString())));
             salesCenterReportsVOSBak.add(salesCenterReportsVO);
         }
@@ -207,7 +207,7 @@ public class ProfessionalCenterDao {
         List<ProfessionalCenterVO> salesCenterReportsVOSBak = new ArrayList<>();
         for (Map<String, Object> map : salesCenterReports) {
             ProfessionalCenterVO salesCenterReportsVO = new ProfessionalCenterVO();
-            salesCenterReportsVO.setSrcId(Integer.parseInt(String.valueOf(map.get("shopId").toString())));
+            salesCenterReportsVO.setSrcId(Integer.parseInt(String.valueOf(map.get("srcId").toString())));
             salesCenterReportsVO.setFilterInClientCount(Integer.parseInt(String.valueOf(map.get("count").toString())));
             salesCenterReportsVOSBak.add(salesCenterReportsVO);
         }
@@ -226,14 +226,15 @@ public class ProfessionalCenterDao {
     private void getValidClientCount(ReportsParamVO reportsParamVO, List<ProfessionalCenterVO> salesCenterReportsVOS, DsInvalidVO dsInvalidVO) {
         StringBuilder sb = new StringBuilder();
         getBaseSql(sb,reportsParamVO,true);
-        sb.append(" AND INSTR('" + dsInvalidVO.getZjsValidStatus() + "',CONCAT( ','+info.STATUSID + '', ','))>0 ");
+        sb.append(" AND INSTR( ? ,CONCAT( '\"'+info.STATUSID , '\"'))>0");
+
         sb.append(" GROUP BY info.SOURCEID");
         List<Map<String, Object>> salesCenterReports = jdbcTemplate.queryForList(sb.toString(),
-                new Object[]{reportsParamVO.getCompanyId(), reportsParamVO.getStart(), reportsParamVO.getEnd()});
+                new Object[]{reportsParamVO.getCompanyId(), reportsParamVO.getStart(), reportsParamVO.getEnd(),dsInvalidVO.getZjsValidStatus()});
         List<ProfessionalCenterVO> salesCenterReportsVOSBak = new ArrayList<>();
         for (Map<String, Object> map : salesCenterReports) {
             ProfessionalCenterVO salesCenterReportsVO = new ProfessionalCenterVO();
-            salesCenterReportsVO.setSrcId(Integer.parseInt(String.valueOf(map.get("shopId").toString())));
+            salesCenterReportsVO.setSrcId(Integer.parseInt(String.valueOf(map.get("srcId").toString())));
             salesCenterReportsVO.setValidClientCount(Integer.parseInt(String.valueOf(map.get("count").toString())));
             salesCenterReportsVOSBak.add(salesCenterReportsVO);
         }
@@ -257,7 +258,7 @@ public class ProfessionalCenterDao {
         List<ProfessionalCenterVO> salesCenterReportsVOSBak = new ArrayList<>();
         for (Map<String, Object> map : salesCenterReports) {
             ProfessionalCenterVO salesCenterReportsVO = new ProfessionalCenterVO();
-            salesCenterReportsVO.setSrcId(Integer.parseInt(String.valueOf(map.get("shopId").toString())));
+            salesCenterReportsVO.setSrcId(Integer.parseInt(String.valueOf(map.get("srcId").toString())));
             salesCenterReportsVO.setSuccessClientCount(Integer.parseInt(String.valueOf(map.get("count").toString())));
             salesCenterReportsVOSBak.add(salesCenterReportsVO);
         }

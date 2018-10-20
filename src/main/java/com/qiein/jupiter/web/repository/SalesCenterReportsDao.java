@@ -189,10 +189,10 @@ public class SalesCenterReportsDao {
     private void getPendingClientCount(ReportsParamVO reportsParamVO, List<SalesCenterReportsVO> salesCenterReportsVOS, DsInvalidVO dsInvalidVO) {
         StringBuilder sb = new StringBuilder();
         getBaseSql(sb, reportsParamVO, true, true);
-        sb.append(" and INSTR( '" + dsInvalidVO.getDsDdStatus() + "', CONCAT(',',info.STATUSID + '',',')) != 0");
+        sb.append(" AND INSTR( ?  , CONCAT(',',info.STATUSID + '',',')) != 0");
         sb.append(" group by grp.SHOPID");
         List<Map<String, Object>> salesCenterReports = jdbcTemplate.queryForList(sb.toString(),
-                new Object[]{reportsParamVO.getCompanyId(), reportsParamVO.getStart(), reportsParamVO.getEnd()});
+                new Object[]{reportsParamVO.getCompanyId(), reportsParamVO.getStart(), reportsParamVO.getEnd(),dsInvalidVO.getZjsValidStatus()});
         List<SalesCenterReportsVO> salesCenterReportsVOSBak = new ArrayList<>();
         for (Map<String, Object> map : salesCenterReports) {
             SalesCenterReportsVO salesCenterReportsVO = new SalesCenterReportsVO();
@@ -293,10 +293,10 @@ public class SalesCenterReportsDao {
     private void getValidClientCount(ReportsParamVO reportsParamVO, List<SalesCenterReportsVO> salesCenterReportsVOS, DsInvalidVO dsInvalidVO) {
         StringBuilder sb = new StringBuilder();
         getBaseSql(sb, reportsParamVO, true, true);
-        sb.append(" AND INSTR('" + dsInvalidVO.getZjsValidStatus() + "',CONCAT( ','+info.STATUSID + '', ','))>0 ");
+        sb.append(" AND INSTR( ? ,CONCAT( '\"'+info.STATUSID , '\"'))>0");
         sb.append(" group by grp.SHOPID");
         List<Map<String, Object>> salesCenterReports = jdbcTemplate.queryForList(sb.toString(),
-                new Object[]{reportsParamVO.getCompanyId(), reportsParamVO.getStart(), reportsParamVO.getEnd()});
+                new Object[]{reportsParamVO.getCompanyId(), reportsParamVO.getStart(), reportsParamVO.getEnd(),dsInvalidVO.getZjsValidStatus()});
         List<SalesCenterReportsVO> salesCenterReportsVOSBak = new ArrayList<>();
         for (Map<String, Object> map : salesCenterReports) {
             SalesCenterReportsVO salesCenterReportsVO = new SalesCenterReportsVO();
