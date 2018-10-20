@@ -388,4 +388,8 @@ public interface ReportService {
      * 销售中心报表
      */
     List<SalesCenterReportsVO> getSalesCenterReports(ReportsParamVO reportsParamVO);
+    /**
+     * 专业中心报表
+     */
+    List<ProfessionalCenterVO> getProfessionalCenterVO(ReportsParamVO reportsParamVO);
 }

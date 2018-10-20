@@ -105,7 +105,7 @@ public interface ShopDao extends BaseDao<ShopPO> {
      * @param time
      * @return
      */
-    List<ShopTargetDTO> findShopTarget(@Param("companyId")int companyId,@Param("time")int time,@Param("shopId")int shopId);
+    List<ShopTargetDTO> findShopTarget(@Param("companyId")int companyId,@Param("time")int time,@Param("shopId")int shopId,@Param("type")int type);
 
     /**
      * 修改门市目标

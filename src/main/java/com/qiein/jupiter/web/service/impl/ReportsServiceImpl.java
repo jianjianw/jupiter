@@ -113,7 +113,8 @@ public class ReportsServiceImpl implements ReportService {
 
     @Autowired
     private ZjsDetailReportDao zjsDetailReportDao;
-
+    @Autowired
+    private ProfessionalCenterDao professionalCenterDao;
 
 
     /**
@@ -1628,5 +1629,12 @@ public class ReportsServiceImpl implements ReportService {
     public List<SalesCenterReportsVO> getSalesCenterReports(ReportsParamVO reportsParamVO){
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(reportsParamVO.getCompanyId());
         return salesCenterReportsDao.getSalesCenterReports(reportsParamVO,invalidConfig);
+    }
+    /**
+     * 销售中心报表
+     */
+    public List<ProfessionalCenterVO> getProfessionalCenterVO(ReportsParamVO reportsParamVO){
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(reportsParamVO.getCompanyId());
+        return professionalCenterDao.getProfessionalCenterVO(reportsParamVO,invalidConfig);
     }
 }
