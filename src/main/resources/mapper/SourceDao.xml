@@ -13,8 +13,8 @@
         <result column="BRANDNAME" jdbcType="VARCHAR" property="brandName"/>
         <result column="COMPANYID" jdbcType="INTEGER" property="companyId"/>
         <result column="PRIORITY" jdbcType="INTEGER" property="priority"/>
-        <result column="ISFILTER" jdbcType="BOOLEAN" property="filterFlag"/>
-        <result column="ISSHOW" jdbcType="BOOLEAN" property="showFlag"/>
+        <result column="ISFILTER" jdbcType="BOOLEAN" property="isFilter"/>
+        <result column="ISSHOW" jdbcType="BOOLEAN" property="isShow"/>
         <result column="PUSHRULE" jdbcType="INTEGER" property="pushRule"/>
         <result column="LINKIDS" jdbcType="VARCHAR" property="linkIds"/>
         <result column="NICKNAMES" jdbcType="VARCHAR" property="nickNames"/>

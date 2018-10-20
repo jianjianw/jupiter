@@ -109,15 +109,17 @@
             dic.DICTYPE = #{dicType}
             AND dic.COMPANYID = #{companyId}
     </select>
+
     <!--获取最大顺序-->
     <select id="getMaxPriority" parameterType="map" resultType="java.lang.Integer">
         SELECT IFNULL(MAX(dic.PRIORITY), 0)
         FROM
-        hm_crm_dictionary dic
+            hm_crm_dictionary dic
         WHERE
-        dic.DICTYPE = #{dicType}
-        AND dic.COMPANYID = #{companyId}
+            dic.DICTYPE = #{dicType}
+            AND dic.COMPANYID = #{companyId}
     </select>
+
     <!--新增字典记录-->
     <insert id="createDict" parameterType="dictionaryPO">
         INSERT INTO
@@ -212,7 +214,8 @@
         WHERE
         COMPANYID = #{companyId} AND DICTYPE = #{dicType} AND
         DICCODE IN
-        <foreach collection="dicCodes" item="dicCode" index="index" open="(" separator="," close=")">#{dicCode}
+        <foreach collection="dicCodes" item="dicCode" index="index" open="(" separator="," close=")">
+            #{dicCode}
         </foreach>
     </select>
 
@@ -267,17 +270,35 @@
         dic.COMPANYID = #{companyId}
         AND dic.ID = #{id}
     </select>
+
     <!--根据公司id和type获取-->
-    <select id="getInvaildReasons"  resultMap="baseMap">
+    <select id="getInvaildReasons" resultMap="baseMap">
         SELECT
-        DICNAME,
-        CONCAT(DICTYPE, DICCODE) DICTYPE
+            DICNAME,
+            CONCAT(DICTYPE, DICCODE) DICTYPE
         FROM
-        hm_crm_dictionary
+            hm_crm_dictionary
         WHERE
-        COMPANYID = #{companyId} AND DICTYPE = #{dicType}
+            COMPANYID = #{companyId} AND DICTYPE = #{dicType}
     </select>
+
     <select id="getByIds" resultMap="baseMap">
-        select <include refid="baseColumn"/> from hm_crm_dictionary dic where id in(${ids})
+        select
+        <include refid="baseColumn"/>
+        from hm_crm_dictionary dic where id in(${ids})
     </select>
+
+    <!--根据CODE和TYPE 获取字典数据-->
+    <select id="getByCodeAndTypeAndCid" resultMap="baseMap">
+        SELECT
+        <include refid="baseColumn"/>
+        FROM
+        hm_crm_dictionary dic
+        WHERE
+        dic.COMPANYID = #{companyId}
+        AND dic.DICTYPE = #{dicType}
+        AND dic.DICCODE = #{dicCode}
+    </select>
+
+
 </mapper>
