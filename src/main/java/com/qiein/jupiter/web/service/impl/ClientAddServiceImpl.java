@@ -232,8 +232,6 @@ public class ClientAddServiceImpl implements ClientAddService {
         clientVO.setAddress(StringUtil.isNotEmpty(clientVO.getAddress()) ? clientVO.getAddress()
                 : MobileLocationUtil.getAddressByContactInfo(clientVO.getKzPhone(), clientVO.getKzWechat(),
                 clientVO.getKzQq()));
-        //类型
-        clientVO.setSrcType(clientVO.getTypeId());
 
         //录入
         clientAddDao.addClientInfo(clientVO);

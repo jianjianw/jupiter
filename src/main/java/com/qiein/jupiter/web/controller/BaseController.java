@@ -82,7 +82,7 @@ public class BaseController {
         if (s1.contains("Android")) {
 //            System.out.println("Android移动客户端");
             isPc = false;
-        } else if (s1.contains("iPhone")) {
+        } else if (s1.contains("iPhone")||s1.contains("Apple")) {
 //            System.out.println("iPhone移动客户端");
             isPc = false;
         } else if (s1.contains("iPad")) {
