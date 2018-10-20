@@ -75,7 +75,7 @@ public class BaseController {
     /**
      * 判断请求是否PC
      */
-    private boolean isPc() {
+    boolean isPc() {
         boolean isPc = true;
         String s1 = request.getHeader("user-agent");
         System.out.println("-------" + s1);
