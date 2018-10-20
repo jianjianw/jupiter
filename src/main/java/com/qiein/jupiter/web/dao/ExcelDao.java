@@ -16,7 +16,7 @@ public interface ExcelDao {
     /**
      * 删除员工客资缓存记录
      **/
-    void deleteTempByStaffId(@Param("tempName") String tempName, @Param("operaId") int operaId,@Param("companyId")Integer companyId);
+    void deleteTempByStaffId(@Param("tempName") String tempName, @Param("operaId") int operaId, @Param("companyId") Integer companyId);
 
     /**
      * 批量写入客资临时缓存表
@@ -57,7 +57,7 @@ public interface ExcelDao {
     /**
      * 设置来源ID,和来源类型
      */
-    void updateSrcIdAndType(@Param("tempName") String tempName, @Param("staffId") Integer staffId,@Param("companyId")Integer companyId);
+    void updateSrcIdAndType(@Param("tempName") String tempName, @Param("staffId") Integer staffId, @Param("companyId") Integer companyId);
 
     /**
      * 设置渠道和来源信息
@@ -65,7 +65,7 @@ public interface ExcelDao {
      * @param tempName
      * @param staffId
      */
-    void updateSrcAndChannel(@Param("tempName") String tempName, @Param("staffId") Integer staffId,@Param("companyId")Integer companyId);
+    void updateSrcAndChannel(@Param("tempName") String tempName, @Param("staffId") Integer staffId, @Param("companyId") Integer companyId);
 
     /**
      * 设置渠道ID
@@ -103,12 +103,12 @@ public interface ExcelDao {
     /**
      * 更新拍摄地ID
      */
-    void updateShopId(@Param("tempName") String tempName, @Param("staffId") Integer staffId,@Param("companyId")Integer companyId);
+    void updateShopId(@Param("tempName") String tempName, @Param("staffId") Integer staffId, @Param("companyId") Integer companyId);
 
     /**
      * 更新邀约小组ID
      **/
-    void updateGroupId(@Param("tempName") String tempName, @Param("staffId") Integer staffId,@Param("companyId")Integer companyId);
+    void updateGroupId(@Param("tempName") String tempName, @Param("staffId") Integer staffId, @Param("companyId") Integer companyId);
 
     /**
      * 更新门市id
@@ -118,7 +118,7 @@ public interface ExcelDao {
      */
     void updateReceptorId(@Param(value = "tempName") String tempName,
                           @Param(value = "staffId") int staffId,
-                            @Param("companyId")Integer companyId);
+                          @Param("companyId") Integer companyId);
 
     /**
      * 获取所有的记录
@@ -130,7 +130,7 @@ public interface ExcelDao {
      * 获取与info表重复的记录
      **/
     List<ClientExcelNewsDTO> getRepeatRecord(@Param("tempName") String tempName, @Param("tableName") String tableName,
-                                             @Param("staffId") int staffId,@Param("companyId")Integer companyId);
+                                             @Param("staffId") int staffId, @Param("companyId") Integer companyId);
 
     /**
      * 获取Excel重复的记录
@@ -140,12 +140,12 @@ public interface ExcelDao {
     /**
      * 添加客资基础信息ByStaffId
      */
-    void insertBaseInfoByStaffId(@Param("tabName") String tabName, @Param("tempName") String tempName, @Param("tableName") String tableName, @Param("staffId") Integer staffId,@Param("companyId")Integer companyId);
+    void insertBaseInfoByStaffId(@Param("tabName") String tabName, @Param("tempName") String tempName, @Param("tableName") String tableName, @Param("staffId") Integer staffId, @Param("companyId") Integer companyId);
 
     /**
      * 添加客资详细信息 ByStaffId
      */
-    void insertDetailInfoByStaffId(@Param("tabName") String tabName, @Param("tempName") String tempName, @Param("tableName") String tableName, @Param("staffId") Integer staffId,@Param("companyId")Integer companyId);
+    void insertDetailInfoByStaffId(@Param("tabName") String tabName, @Param("tempName") String tempName, @Param("tableName") String tableName, @Param("staffId") Integer staffId, @Param("companyId") Integer companyId);
 
     /**
      * 插入客资备注表
@@ -154,7 +154,7 @@ public interface ExcelDao {
      * @param tempName
      * @param staffId
      */
-    void addExcelKzRemark(@Param("tabName") String tabName, @Param("tempName") String tempName, @Param("staffId") Integer staffId,@Param("companyId")Integer companyId);
+    void addExcelKzRemark(@Param("tabName") String tabName, @Param("tempName") String tempName, @Param("staffId") Integer staffId, @Param("companyId") Integer companyId);
 
     /**
      * 批量删除员工客资缓存记录
@@ -180,7 +180,7 @@ public interface ExcelDao {
      * @param tempName
      * @param operaId
      */
-    void updateStatusIdAndClassId(@Param("tempName") String tempName, @Param("operaId") int operaId,@Param("companyId")Integer companyId);
+    void updateStatusIdAndClassId(@Param("tempName") String tempName, @Param("operaId") int operaId, @Param("companyId") Integer companyId);
 
     /**
      * 获取错误客资
@@ -189,7 +189,7 @@ public interface ExcelDao {
      * @param staffId
      * @return
      */
-    List<ClientExcelNewsDTO> getExcelErrorClient(@Param("tempName") String tempName, @Param("staffId") int staffId,@Param("companyId")Integer companyId);
+    List<ClientExcelNewsDTO> getExcelErrorClient(@Param("tempName") String tempName, @Param("staffId") int staffId, @Param("companyId") Integer companyId);
 
 
     /**
@@ -200,14 +200,14 @@ public interface ExcelDao {
      * @return
      */
     List<ClientExcelNewsDTO> getExcelSuccessClient(@Param("tempName") String tempName, @Param("tableName") String tableName,
-                                                   @Param("staffId") int staffId,@Param("companyId")Integer companyId);
+                                                   @Param("staffId") int staffId, @Param("companyId") Integer companyId);
 
 
     /**
      * 获取可知数量
      */
     ClientSortCountDTO getMultipleKzStatusCount(@Param("tempName") String tempName, @Param("tableName") String tableName,
-                                                @Param("staffId") int staffId,@Param("companyId")int companyId);
+                                                @Param("staffId") int staffId, @Param("companyId") int companyId);
 
     /**
      * 更新咨询方式的字典编码
@@ -216,7 +216,7 @@ public interface ExcelDao {
      * @param staffId
      * @param dictionaryType
      */
-    void updateZxStyleDictionaryCode(@Param("tempName") String tempName, @Param("staffId") Integer staffId,@Param("companyId")Integer companyId, @Param(value = "dictionaryType") String dictionaryType);
+    void updateZxStyleDictionaryCode(@Param("tempName") String tempName, @Param("staffId") Integer staffId, @Param("companyId") Integer companyId, @Param(value = "dictionaryType") String dictionaryType);
 
 
     /**
@@ -226,7 +226,7 @@ public interface ExcelDao {
      * @param staffId
      * @param dictionaryType
      */
-    void updateYxLevelDictionaryCode(@Param("tempName") String tempName, @Param("staffId") Integer staffId,@Param("companyId")Integer companyId, @Param(value = "dictionaryType") String dictionaryType);
+    void updateYxLevelDictionaryCode(@Param("tempName") String tempName, @Param("staffId") Integer staffId, @Param("companyId") Integer companyId, @Param(value = "dictionaryType") String dictionaryType);
 
     /**
      * 更新预算范围的字典编码
@@ -235,7 +235,7 @@ public interface ExcelDao {
      * @param staffId
      * @param dictionaryType
      */
-    void updateYsRangeDictionaryCode(@Param("tempName") String tempName, @Param("staffId") Integer staffId,@Param("companyId")Integer companyId, @Param(value = "dictionaryType") String dictionaryType);
+    void updateYsRangeDictionaryCode(@Param("tempName") String tempName, @Param("staffId") Integer staffId, @Param("companyId") Integer companyId, @Param(value = "dictionaryType") String dictionaryType);
 
 
     /**
@@ -245,23 +245,34 @@ public interface ExcelDao {
      * @param staffId
      * @param dictionaryType
      */
-    void updateYpTimeDictionaryCode(@Param("tempName") String tempName, @Param("staffId") Integer staffId,@Param("companyId")Integer companyId, @Param(value = "dictionaryType") String dictionaryType);
+    void updateYpTimeDictionaryCode(@Param("tempName") String tempName, @Param("staffId") Integer staffId, @Param("companyId") Integer companyId, @Param(value = "dictionaryType") String dictionaryType);
 
 
     /**
      * 更新结婚时间的字典编码
+     *
      * @param tempName
      * @param staffId
      * @param dictionaryType
-     * */
-    void updateMarryTimeDictionaryCode(@Param("tempName") String tempName, @Param("staffId") Integer staffId,@Param("companyId")Integer companyId, @Param(value = "dictionaryType") String dictionaryType);
+     */
+    void updateMarryTimeDictionaryCode(@Param("tempName") String tempName, @Param("staffId") Integer staffId, @Param("companyId") Integer companyId, @Param(value = "dictionaryType") String dictionaryType);
 
     /**
      * 批量添加客资日志
+     *
      * @param infoLogTabName
      * @param staffId
      * @param nickName
      * @param logType
-     * */
-    void batchAddInfoLog(@Param("logTabName") String infoLogTabName,@Param(value="tempName") String tempName,@Param(value="tableName")String tabName,@Param("staffId") int staffId,@Param(value="nickName")String nickName,@Param(value="logType") Integer logType,@Param(value="memo")String memo,@Param("companyId")Integer companyId);
+     */
+    void batchAddInfoLog(@Param("logTabName") String infoLogTabName, @Param(value = "tempName") String tempName, @Param(value = "tableName") String tabName, @Param("staffId") int staffId, @Param(value = "nickName") String nickName, @Param(value = "logType") Integer logType, @Param(value = "memo") String memo, @Param("companyId") Integer companyId);
+
+    /**
+     * 导入客资，订单状态的客资添加收款记录
+     *
+     * @param infoLogTabName
+     * @param tempName
+     * @param companyId
+     */
+    void addSuccessKzCahsLog(@Param("logTabName") String infoLogTabName, @Param(value = "tempName") String tempName, @Param("companyId") Integer companyId);
 }

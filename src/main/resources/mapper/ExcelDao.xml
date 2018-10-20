@@ -997,4 +997,16 @@
         where temp.OPERAID = #{staffId} and b.KZID is null and c.kzid is null
         )
     </insert>
+
+    <!-- 新增导入客资，订单状态的收款记录 -->
+    <insert id="addSuccessKzCahsLog" parameterType="map">
+        INSERT INTO ${logTabName} (
+            KZID, PAYSTYLE, AMOUNT, STAFFID, STAFFNAME, PAYMENTTIME, OPERAID, OPERANAME, CREATETIME, COMPANYID, TYPEID
+        )
+        SELECT temp.KZID, 0, temp.STAYAMOUNT, temp.RECEPTORID, temp.RECEPTORNAME, temp.SUCCESSTIME, 0,'', UNIX_TIMESTAMP(NOW()), temp.COMPANYID, 1
+
+        FROM ${tempName} temp
+        WHERE  temp.COMPANYID = #{companyId}
+        AND temp.CLASSID = 5
+    </insert>
 </mapper>

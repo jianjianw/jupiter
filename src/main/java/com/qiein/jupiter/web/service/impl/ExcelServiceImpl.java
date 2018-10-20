@@ -104,8 +104,6 @@ public class ExcelServiceImpl implements ExcelService {
         }
         Integer index = 2;
         for (ClientExcelNewsDTO clientExcelDTO : clientList) {
-            //去掉空格
-            ObjectUtil.objectStrParamTrim(clientExcelDTO);
 
             if (StringUtil.isNotEmpty(clientExcelDTO.getKzName()) && clientExcelDTO.getKzName().length() > 16) {
                 throw new RException("第" + index + "行" + ExceptionEnum.KZ_NAME_LENGTH_TOO_LONG.getMsg(), ExceptionEnum.KZ_NAME_LENGTH_TOO_LONG.getCode());
@@ -342,6 +340,8 @@ public class ExcelServiceImpl implements ExcelService {
         excelDao.insertDetailInfoByStaffId(DBSplitUtil.getDetailTabName(companyId), DBSplitUtil.getTable(TableEnum.temp, companyId), DBSplitUtil.getTable(TableEnum.info, companyId), staffId, companyId);
         //添加备注
         excelDao.addExcelKzRemark(DBSplitUtil.getRemarkTabName(companyId), DBSplitUtil.getTable(TableEnum.temp, companyId), staffId, companyId);
+        //添加收款记录
+        excelDao.addSuccessKzCahsLog(DBSplitUtil.getCashTabName(companyId), DBSplitUtil.getTable(TableEnum.temp, companyId), companyId);
         // 删除缓存表记录
         excelDao.deleteTempByStaffId(DBSplitUtil.getTable(TableEnum.temp, companyId), staffId, companyId);
         //获取id
