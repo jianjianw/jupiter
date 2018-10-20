@@ -36,6 +36,6 @@ public class ClientAddDaoTest {
         clientVO.setSourceId(65);
         clientVO.setTypeId(1);
         clientVO.setZxStyle(1);
-        clientAddDao.addDingClientInfo(clientVO);
+        clientAddDao.addClientInfo(clientVO);
     }
 }
