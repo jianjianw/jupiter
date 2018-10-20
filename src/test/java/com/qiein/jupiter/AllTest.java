@@ -464,11 +464,28 @@ public class AllTest {
     @Test
     public void test01() {
 
-        String str = "qwe123";
+       /* String str = "qwe123";
         String[] split = str.split(",");
         for (int i = 0; i <split.length ; i++) {
             System.out.println(split[i]);
-        }
+        }*/
+
+        /*Calendar calendar = Calendar.getInstance();
+        calendar.set(2018,0,1);
+        long millis = calendar.getTimeInMillis();//1514736000
+        System.out.println(millis);*/
+
+        Calendar calendar = Calendar.getInstance();
+        Date date = calendar.getTime();
+        long time1 = date.getTime();
+        System.out.println(time1);
+        calendar.setTimeInMillis(1514736000*1000);
+        Date time = calendar.getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String format = sdf.format(time);
+        System.out.println(format);
+
+
     }
 
     @Test
