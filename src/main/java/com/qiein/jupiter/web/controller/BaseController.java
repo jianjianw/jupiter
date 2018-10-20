@@ -75,9 +75,10 @@ public class BaseController {
     /**
      * 判断请求是否PC
      */
-    public boolean isPc() {
+    private boolean isPc() {
         boolean isPc = true;
         String s1 = request.getHeader("user-agent");
+        System.out.println("-------" + s1);
         if (s1.contains("Android")) {
 //            System.out.println("Android移动客户端");
             isPc = false;
