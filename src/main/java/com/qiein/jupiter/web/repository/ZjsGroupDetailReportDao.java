@@ -546,7 +546,7 @@ public class ZjsGroupDetailReportDao {
 
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), reportsParamVO.getCompanyId(), reportsParamVO.getGroupId());
         for (Map<String, Object> map : list) {
-            String kfId = (String)map.get("kfId");
+            String kfId = String.valueOf((Long)map.get("kfId"));
             for(ZjsClientDetailReportVO reportVO : reportVOS ){
                 String id = reportVO.getId();
                 if(StringUtils.equals(id,kfId)){
