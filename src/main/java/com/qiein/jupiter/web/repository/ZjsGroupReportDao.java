@@ -448,7 +448,7 @@ public class ZjsGroupReportDao {
             if(totalInShopCount == 0){
                 reportVO.setUnWeekendInShopRate(0);
             }else{
-                reportVO.setUnWeekendInShopRate(reportVO.getUnWeekendInShopCount()/totalInShopCount);
+                reportVO.setUnWeekendInShopRate(reportVO.getUnWeekendInShopCount()/totalInShopCount*100);
             }
 
 
@@ -523,6 +523,7 @@ public class ZjsGroupReportDao {
         if (StringUtil.isNotEmpty(invalidConfig.getZjsValidStatus())) {
             sb.append(" AND INSTR('" + invalidConfig.getZjsValidStatus() + "',CONCAT( '\"',info.STATUSID,'\"'))=0 ");//找不到返回0
         }
+
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), reportsParamVO.getCompanyId(),
                 reportsParamVO.getStart(), reportsParamVO.getEnd());
 
