@@ -73,11 +73,11 @@ public class ZjsGroupDetailReportDao {
         getWeekendSuccessCount(reportsParamVO,reportVOS);
         //非周末成交数  and  周末成交率  and  非周末成交率
         unWeekendSuccessCount(reportsParamVO,reportVOS);
-
         //总金额 and 均价
         getAmount(reportsParamVO,reportVOS);
+        //客服组内员工的名称
+        getGroupAppointorName(reportsParamVO,reportVOS);
 
-        System.out.println();
         return reportVOS;
     }
 
@@ -102,7 +102,7 @@ public class ZjsGroupDetailReportDao {
         for (Map<String, Object> map:list) {
             reportVO = new ZjsClientDetailReportVO();
             Long totalCount = (Long) map.get("totalCount");
-            reportVO.setId((String)map.get("kfId"));
+            reportVO.setId(String.valueOf((Long) map.get("kfId")));
             Long filterWaitCount = (Long) map.get("filterWaitCount");
             Long filterInCount = (Long) map.get("filterInCount");
             Long filterInvalidCount = (Long) map.get("filterInvalidCount");
@@ -136,7 +136,7 @@ public class ZjsGroupDetailReportDao {
                 reportsParamVO.getStart(), reportsParamVO.getEnd(),reportsParamVO.getGroupId());
 
         for (Map<String, Object> map:list) {
-            String kfId = (String)map.get("kfId");
+            String kfId = String.valueOf((Long)map.get("kfId"));
             for (ZjsClientDetailReportVO reportVo :reportVOS){
                 String id = reportVo.getId();
                 if(StringUtils.equals(id,kfId)){
@@ -190,7 +190,7 @@ public class ZjsGroupDetailReportDao {
 
 
         for (Map<String, Object> map:list) {
-            String kfId = (String)map.get("kfId");
+            String kfId = String.valueOf((Long)map.get("kfId"));
 
             for (ZjsClientDetailReportVO reportVo :reportVOS){
                 String id = reportVo.getId();
@@ -287,7 +287,7 @@ public class ZjsGroupDetailReportDao {
                 reportsParamVO.getStart(), reportsParamVO.getEnd(),reportsParamVO.getGroupId());
 
         for (Map<String, Object> map : list ) {
-            String kfId = (String)map.get("kfId");
+            String kfId = String.valueOf((Long)map.get("kfId"));
 
             for (ZjsClientDetailReportVO reportVO : reportVOS) {
                 String id = reportVO.getId();
@@ -314,7 +314,7 @@ public class ZjsGroupDetailReportDao {
                 reportsParamVO.getStart(), reportsParamVO.getEnd(),reportsParamVO.getGroupId());
 
         for (Map<String, Object> map : list ) {
-            String kfId = (String)map.get("kfId");
+            String kfId = String.valueOf((Long)map.get("kfId"));
 
             for (ZjsClientDetailReportVO reportVO : reportVOS) {
                 String id = reportVO.getId();
@@ -386,7 +386,7 @@ public class ZjsGroupDetailReportDao {
                 reportsParamVO.getStart(), reportsParamVO.getEnd(),reportsParamVO.getGroupId());
 
         for (Map<String, Object> map : list ) {
-            String kfId = (String)map.get("kfId");
+            String kfId = String.valueOf((Long)map.get("kfId"));
 
             for (ZjsClientDetailReportVO reportVO : reportVOS) {
                 String id = reportVO.getId();
@@ -418,7 +418,7 @@ public class ZjsGroupDetailReportDao {
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), reportsParamVO.getCompanyId(),
                 reportsParamVO.getStart(), reportsParamVO.getEnd(),reportsParamVO.getGroupId());
         for (Map<String, Object> map:list){
-            String kfId = (String)map.get("kfId");
+            String kfId = String.valueOf((Long)map.get("kfId"));
             for(ZjsClientDetailReportVO reportVO :reportVOS ){
                 String id = reportVO.getId();
                 if(StringUtils.equals(id,kfId)){
@@ -516,12 +516,12 @@ public class ZjsGroupDetailReportDao {
         if (StringUtil.isNotEmpty(invalidConfig.getZjsValidStatus())) {
             sb.append(" AND INSTR('" + invalidConfig.getZjsValidStatus() + "',CONCAT( '\"',info.STATUSID,'\"'))=0 ");//找不到返回0
         }
-        sb.append("group by APPOINTORID kfId ");
+        sb.append("group by APPOINTORID ");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), reportsParamVO.getCompanyId(),
                 reportsParamVO.getStart(), reportsParamVO.getEnd(),reportsParamVO.getGroupId());
 
         for (Map<String, Object> map : list) {
-            String kfId = (String) map.get("kfId");
+            String kfId = String.valueOf((Long)map.get("kfId"));
             for(ZjsClientDetailReportVO reportVO : reportVOS ){
                 String id = reportVO.getId();
                 if(StringUtils.equals(id,kfId)){
@@ -531,8 +531,47 @@ public class ZjsGroupDetailReportDao {
             }
 
         }
+    }
 
 
+    //获取客服组内客服的名称
+    private void getGroupAppointorName(ReportsParamVO reportsParamVO, List<ZjsClientDetailReportVO> reportVOS) {
+
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("select staff.ID kfId,staff.NICKNAME name from hm_pub_group_staff groupStaff ");
+        sb.append("inner join hm_pub_staff staff on groupStaff.STAFFID = staff.ID ");
+        sb.append("where groupStaff.COMPANYID = ? ");
+        sb.append("and groupStaff.GROUPID = ? ");
+
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), reportsParamVO.getCompanyId(), reportsParamVO.getGroupId());
+        for (Map<String, Object> map : list) {
+            String kfId = (String)map.get("kfId");
+            for(ZjsClientDetailReportVO reportVO : reportVOS ){
+                String id = reportVO.getId();
+                if(StringUtils.equals(id,kfId)){
+                    reportVO.setName((String) map.get("name"));
+                }
+            }
+
+        }
+
+
+        /*StringBuilder sb  = new StringBuilder();
+        sb.append("select GROUPID groupId,GROUPNAME name from (hm_pub_staff staff ");
+        sb.append("inner join hm_pub_group group on staff.id = group.id) ");
+        sb.append("inner join hm_pub_group_staff")
+        sb.append("COMPANYID = ? ");
+        sb.append("and ");
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), reportsParamVO.getCompanyId());
+        for(Map<String, Object> map : list){
+            String groupId = (String)map.get("groupId");
+            for(ZjsClientDetailReportVO reportVO : reportVOS){
+                if(StringUtils.equals(reportVO.getId(),groupId)){
+                    reportVO.setName((String) map.get("name"));
+                }
+            }
+        }*/
 
     }
 

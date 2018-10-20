@@ -87,13 +87,13 @@ public class ZjsGroupReportDao {
 
         //总金额 and 均价
         getAmount(reportsParamVO,reportVOS);
+        //获取客服组名称
+        getGroupNane(reportsParamVO,reportVOS);
 
-        System.out.println();
+
         return reportVOS;
 
     }
-
-
 
 
     // 获取毛客资
@@ -540,15 +540,26 @@ public class ZjsGroupReportDao {
 
         }
 
-
-
-    }
-
-    private void getTotalClientCount(){
-
     }
 
 
+    //获取客服组名称
+    private void getGroupNane(ReportsParamVO reportsParamVO, List<ZjsClientDetailReportVO> reportVOS) {
+
+        StringBuilder sb  = new StringBuilder();
+        sb.append("select GROUPID groupId,GROUPNAME name from hm_pub_group where ");
+        sb.append("COMPANYID = ? ");
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), reportsParamVO.getCompanyId());
+        for(Map<String, Object> map : list){
+            String groupId = (String)map.get("groupId");
+            for(ZjsClientDetailReportVO reportVO : reportVOS){
+                if(StringUtils.equals(reportVO.getId(),groupId)){
+                    reportVO.setName((String) map.get("name"));
+                }
+            }
+        }
+
+    }
 
     private void getReportConfig(ReportsParamVO reportsParamVO) {
 
