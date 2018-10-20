@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.qiein.jupiter.http.HttpClient;
-import com.qiein.jupiter.util.OkHttpUtil;
 import com.qiein.jupiter.util.ResultInfo;
 import com.qiein.jupiter.util.ResultInfoUtil;
 import com.qiein.jupiter.web.entity.vo.ScreenVO;
@@ -19,10 +17,10 @@ import com.qiein.jupiter.web.service.ScreenService;
 
 /**
  * 大屏
- * FileName: ReportsController
+ * FileName: ScreenController
  *
  * @author: Hjf
- * @Date: 2018-6-30 17:23
+ * @Date: 2018-10-20 17:23
  */
 @RestController
 @RequestMapping("/screen")
