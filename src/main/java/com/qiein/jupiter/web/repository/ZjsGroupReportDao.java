@@ -14,9 +14,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 public class ZjsGroupReportDao {
@@ -32,6 +30,26 @@ public class ZjsGroupReportDao {
      */
     public List<ZjsClientDetailReportVO> getZjsGroupReport(ReportsParamVO reportsParamVO){
         List<ZjsClientDetailReportVO> reportVOS = new ArrayList<ZjsClientDetailReportVO>();
+
+
+
+        //查询表头（意向登记）
+        Map<String, String> tableHead = getTableHead(reportsParamVO);
+        //可以根据查出来的意向等级动态的显示
+       /* Set<String> sets = tableHead.keySet();
+        for (int i = 0; i < tableHead.size(); i++) {
+            for (String string: sets) {
+                String s = tableHead.get(string);
+
+            }
+        }*/
+        /*Set<Map.Entry<String, String>> entries = tableHead.entrySet();
+        Iterator<Map.Entry<String, String>> iterator = entries.iterator();
+        while (iterator.hasNext()){
+            Map.Entry<String, String> next = iterator.next();
+            String key = next.getKey();
+            String value = next.getValue();
+        }*/
 
         //获取毛客资
         getTotalClientCount(reportsParamVO,reportVOS);
@@ -93,6 +111,27 @@ public class ZjsGroupReportDao {
 
         return reportVOS;
 
+    }
+
+    private Map<String,String> getTableHead(ReportsParamVO reportsParamVO) {
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("select dic.DICCODE code ,dic.DICNAME name from (hm_crm_client_info info inner join hm_crm_client_detail detail ");
+        sb.append("on info.KZID = detail.KZID) ");
+        sb.append("inner join hm_crm_dictionary dic on dic.diccode = detail.yxlevel ");
+        sb.append("where dic.dictype = 'yx_level' and dic.companyID = ? ");
+
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), reportsParamVO.getCompanyId());//得到公司的的所有意向等级
+
+        Map<String,String> tableHeads = new HashMap<>();
+        for (Map<String, Object> map : list) {
+            String code = (String) map.get("code");
+            String name = (String) map.get("name");
+            tableHeads.put(code,name);
+
+
+        }
+        return tableHeads;
     }
 
 
