@@ -42,27 +42,31 @@ public class ZjsGroupDetailReportDaoTest {
         getTotalInShopCount(reportsParamVO,reportVOS);
         //总成交数
         getTotalSuccessCount(reportsParamVO,reportVOS);
-        //总成交率
+        /*//总成交率
         getTotalSuccessRate(reportVOS);
 
         //毛客资进店率（总进店/毛客资数）
         getClientInShopRate(reportVOS);
         //有效客资进店率（总进店/ 有效客资）
-        getValidClientInShopRate(reportVOS);
+        getValidClientInShopRate(reportVOS);*/
 
         //周末进店数
         getWeekendInShopCount(reportsParamVO,reportVOS);
         //非周末进店数 and 非周末进店占比
-        getUnWeekendInShopCount(reportsParamVO,reportVOS);
+        //getUnWeekendInShopCount(reportsParamVO,reportVOS);
 
         //周末成交数
         getWeekendSuccessCount(reportsParamVO,reportVOS);
         //非周末成交数  and  周末成交率  and  非周末成交率
-        unWeekendSuccessCount(reportsParamVO,reportVOS);
+       //unWeekendSuccessCount(reportsParamVO,reportVOS);
         //总金额 and 均价
         getAmount(reportsParamVO,reportVOS);
         //客服组内员工的名称
         getGroupAppointorName(reportsParamVO,reportVOS);
+
+        //计算转换率
+        computerRate(reportVOS);
+
 
 
         //查询表头（意向登记）
@@ -369,48 +373,6 @@ public class ZjsGroupDetailReportDaoTest {
 
     }
 
-    //总成交率（总成交/总进店）
-    private void getTotalSuccessRate(List<ZjsClientDetailReportVO> reportVOS) {
-
-        for (ZjsClientDetailReportVO reportVO : reportVOS) {
-            int totalSuccessCount = reportVO.getTotalSuccessCount();//总成交
-            int totalInShopCount = reportVO.getTotalInShopCount();//总进店
-            if(totalInShopCount == 0){
-                reportVO.setTotalSuccessRate(0);
-            }else{
-                reportVO.setTotalSuccessRate(totalSuccessCount/totalInShopCount*100);//总成交率
-            }
-        }
-    }
-    //毛客资进店率（总进店/毛客资数）
-    private void getClientInShopRate(List<ZjsClientDetailReportVO> reportVOS) {
-
-        for (ZjsClientDetailReportVO reportVO:reportVOS) {
-            int totalInShopCount = reportVO.getTotalInShopCount();//总进店
-            int clientSourceCount = reportVO.getClientSourceCount();//毛客资数
-            if(clientSourceCount == 0){
-                reportVO.setClientInShopRate(0);
-            }else{
-                reportVO.setClientInShopRate(totalInShopCount/clientSourceCount*100);
-            }
-        }
-
-    }
-
-
-    //有效客资进店率（总进店/ 有效客资）
-    private void getValidClientInShopRate(List<ZjsClientDetailReportVO> reportVOS) {
-        for (ZjsClientDetailReportVO reportVO : reportVOS ) {
-            int totalInShopCount = reportVO.getTotalInShopCount();
-            int validClientSourceCount = reportVO.getValidClientSourceCount();
-            if(validClientSourceCount == 0){
-                reportVO.setValidClientInShopRate(0);
-            }else{
-                reportVO.setValidClientInShopRate(totalInShopCount/validClientSourceCount*100);
-            }
-        }
-    }
-
     //总金额 ，均价
     private void getAmount(ReportsParamVO reportsParamVO, List<ZjsClientDetailReportVO> reportVOS) {
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
@@ -471,24 +433,6 @@ public class ZjsGroupDetailReportDaoTest {
         }
     }
 
-    //非周末进店数  +  非周末进店占比
-    private void getUnWeekendInShopCount(ReportsParamVO reportsParamVO, List<ZjsClientDetailReportVO> reportVOS) {
-        for(ZjsClientDetailReportVO reportVO : reportVOS){
-            int totalInShopCount = reportVO.getTotalInShopCount();
-            int weekendInShopCount = reportVO.getWeekendInShopCount();
-            reportVO.setUnWeekendInShopCount(totalInShopCount-weekendInShopCount);
-
-            //非周末进店占比
-            if(totalInShopCount == 0){
-                reportVO.setUnWeekendInShopRate(0);
-            }else{
-                reportVO.setUnWeekendInShopRate(reportVO.getUnWeekendInShopCount()/totalInShopCount*100);
-            }
-
-
-        }
-    }
-
     //周末成交数
     private void getWeekendSuccessCount(ReportsParamVO reportsParamVO, List<ZjsClientDetailReportVO> reportVOS) {
 
@@ -517,29 +461,6 @@ public class ZjsGroupDetailReportDaoTest {
             }
         }
     }
-
-    //非周末成交数
-    private void unWeekendSuccessCount(ReportsParamVO reportsParamVO, List<ZjsClientDetailReportVO> reportVOS) {
-
-        for(ZjsClientDetailReportVO reportVO : reportVOS){
-            int totalSuccessCount = reportVO.getTotalSuccessCount();
-            int weekendSuccessCount = reportVO.getWeekendSuccessCount();
-            //非周末成交数
-            reportVO.setUnWeekendSuccessCount(totalSuccessCount - weekendSuccessCount);
-
-            if(totalSuccessCount == 0){
-                reportVO.setWeekendSuccessRate(0);
-                reportVO.setUnWeekendInShopRate(0);
-            } else{
-                //周末成交率
-                reportVO.setWeekendSuccessRate(weekendSuccessCount/totalSuccessCount*100);
-                //非周末成交率
-                reportVO.setUnWeekendInShopRate(reportVO.getUnWeekendSuccessCount()/totalSuccessCount*100);
-            }
-        }
-
-    }
-
 
     private void getInvalidClientSourceCount(ReportsParamVO reportsParamVO, List<ZjsClientDetailReportVO> reportVOS) {
 
@@ -599,6 +520,69 @@ public class ZjsGroupDetailReportDaoTest {
         }
 
     }
+
+    private void computerRate(List<ZjsClientDetailReportVO> reportVOS) {
+
+        for (ZjsClientDetailReportVO reportVO : reportVOS){
+
+            //总成交率（总成交/总进店）
+            int totalSuccessCount = reportVO.getTotalSuccessCount();//总成交
+            int totalInShopCount = reportVO.getTotalInShopCount();//总进店
+            if(totalInShopCount == 0){
+                reportVO.setTotalSuccessRate(0);
+            }else{
+                reportVO.setTotalSuccessRate(totalSuccessCount/totalInShopCount*100);//总成交率
+            }
+
+            //毛客资进店率（总进店/毛客资数）
+            int clientSourceCount = reportVO.getClientSourceCount();//毛客资数
+            if(clientSourceCount == 0){
+                reportVO.setClientInShopRate(0);
+            }else{
+                reportVO.setClientInShopRate(totalInShopCount/clientSourceCount*100);
+            }
+
+            //有效客资进店率（总进店/ 有效客资）
+            int validClientSourceCount = reportVO.getValidClientSourceCount();//有效客资
+            if(validClientSourceCount == 0){
+                reportVO.setValidClientInShopRate(0);
+            }else{
+                reportVO.setValidClientInShopRate(totalInShopCount/validClientSourceCount*100);
+            }
+
+
+            //非周末进店数
+            int weekendInShopCount = reportVO.getWeekendInShopCount();
+            reportVO.setUnWeekendInShopCount(totalInShopCount-weekendInShopCount);//总进店-非周末进店数
+
+            //非周末进店占比
+            if(totalInShopCount == 0){
+                reportVO.setUnWeekendInShopRate(0);
+            }else{
+                reportVO.setUnWeekendInShopRate(reportVO.getUnWeekendInShopCount()/totalInShopCount*100);
+            }
+
+
+
+            int weekendSuccessCount = reportVO.getWeekendSuccessCount();
+            //非周末成交数
+            reportVO.setUnWeekendSuccessCount(totalSuccessCount - weekendSuccessCount);//总成交 - 周末成交
+
+
+
+            if(totalSuccessCount == 0){
+                reportVO.setWeekendSuccessRate(0);
+                reportVO.setUnWeekendInShopRate(0);
+            } else{
+                //周末成交率
+                reportVO.setWeekendSuccessRate(weekendSuccessCount/totalSuccessCount*100);
+                //非周末成交率
+                reportVO.setUnWeekendInShopRate(reportVO.getUnWeekendSuccessCount()/totalSuccessCount*100);
+            }
+
+        }
+    }
+
 
 
     /**
