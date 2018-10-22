@@ -35,35 +35,8 @@ public class ZjsGroupReportDaoTest {
     public List<Object> getZjsGroupReport(ReportsParamVO reportsParamVO){
         List<ZjsClientDetailReportVO> reportVOS = new ArrayList<ZjsClientDetailReportVO>();
 
-
-
-
         //获取毛客资
         getTotalClientCount(reportsParamVO,reportVOS);
-
-      /*  //获取A类客资数
-        getClientSourceLevelACount(reportsParamVO,reportVOS,DictionaryConstant.YX_LEVEL_A);
-        //获取A类客资进店数
-        getClientSourceLevelAInShopCount(reportsParamVO,reportVOS,DictionaryConstant.YX_LEVEL_A);
-        //获取A类客资转化率
-
-        //获取B类客资数
-        getClientSourceLevelACount(reportsParamVO,reportVOS,DictionaryConstant.YX_LEVEL_B);
-        //获取B类客资进店数
-        getClientSourceLevelAInShopCount(reportsParamVO,reportVOS,DictionaryConstant.YX_LEVEL_B);
-        //计算B类客资转化率
-
-        //获取C类客资数
-        getClientSourceLevelACount(reportsParamVO,reportVOS,DictionaryConstant.YX_LEVEL_C);
-        //获取C类客资进店数
-        getClientSourceLevelAInShopCount(reportsParamVO,reportVOS,DictionaryConstant.YX_LEVEL_C);
-        //获取C类客资转化率
-
-        //获取D类客资数
-        getClientSourceLevelACount(reportsParamVO,reportVOS,DictionaryConstant.YX_LEVEL_D);*/
-
-        //获取有效客资数（等于A类客资+B类客资）
-        //getValidClientCount(reportVOS);
 
         //无效数  查询有效客资数的其余客资
         getInvalidClientSourceCount(reportsParamVO,reportVOS);
@@ -105,9 +78,12 @@ public class ZjsGroupReportDaoTest {
         for(Map.Entry<String, String> set : entries ){
             String code = set.getKey();
             String name = set.getValue();
+            //意向等级
             getClientSourceLevelCount(reportsParamVO,dynamicBeans,code,name);
             getClientSourceLevelInShopCount(reportsParamVO,dynamicBeans,code,name);
         }
+        //计算有效客资  a+b
+        getValidClientCount(dynamicBeans,tableHead);
 
         return dynamicBeans;
 
@@ -146,7 +122,7 @@ public class ZjsGroupReportDaoTest {
         sb.append("on info.KZID = detail.KZID) ");
         sb.append("inner join hm_crm_dictionary dic on dic.diccode = detail.yxlevel ");
         sb.append("where dic.dictype = 'yx_level' and dic.companyID = ? ");
-        sb.append("and dic.DICCODE != 0 ");
+        sb.append("and dic.DICCODE != 0 order by dic.DICCODE asc");
 
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), reportsParamVO.getCompanyId());//得到公司的的所有意向等级
 
@@ -297,61 +273,49 @@ public class ZjsGroupReportDaoTest {
                 if(count == 0){
                     methodRate.invoke(obj, 0D);
                 }else{
-                    methodRate.invoke(obj, rate);
+                    methodRate.invoke(obj, rate);//进店转化率
                 }
-
 
             }
         } catch (Exception e) {
             logger.error(e.getMessage(),e);
         }
 
-       /* int inShopCount;
-        int count;
-        for (ZjsClientDetailReportVO reportVO: reportVOS) {
-            switch (dicName) {
-                case DictionaryConstant.YX_LEVEL_A:
-                    inShopCount = reportVO.getClientSourceLevelAInShopCount();
-                    count = reportVO.getClientSourceLevelACount();
-                    if(count == 0){
-                        reportVO.setClientSourceLevelARate(0);
-                    }else {
-                        reportVO.setClientSourceLevelARate(inShopCount/count*100);
-                    }
-                    break;
-                case DictionaryConstant.YX_LEVEL_B:
-                    inShopCount = reportVO.getClientSourceLevelBInShopCount();
-                    count = reportVO.getClientSourceLevelBCount();
-                    if(count == 0){
-                        reportVO.setClientSourceLevelBRate(0);
-                    }else {
-                        reportVO.setClientSourceLevelBRate(inShopCount/count*100);
-                    }
-                    break;
-                case DictionaryConstant.YX_LEVEL_C:
-                    inShopCount = reportVO.getClientSourceLevelAInShopCount();
-                    count = reportVO.getClientSourceLevelACount();
-                    if(count == 0){
-                        reportVO.setClientSourceLevelCRate(0);
-                    }else {
-                        reportVO.setClientSourceLevelCRate(inShopCount/count*100);
-                    }
-                    break;
-                default:
-                    break;
-            }
-
-        }*/
     }
 
-    /*//计算有效客资数（A类客资+B 类客资）
-    private void getValidClientCount(List<ZjsClientDetailReportVO> reportVOS) {
-        for (ZjsClientDetailReportVO reportVO:reportVOS) {
-            int levelACount = reportVO.getClientSourceLevelACount();
-            int levelBCount = reportVO.getClientSourceLevelBCount();
-            reportVO.setValidClientSourceCount(levelACount+levelBCount);
+    //计算有效客资数（A类客资+B 类客资）  获取前两个值
+    private void getValidClientCount(List<Object> dynamicBeans,Map<String, String> tableHead) {
+
+        Set<String> set = tableHead.keySet();
+        Object[] objects = set.toArray();
+        String key0 = (String)objects[0];
+        String key1 = (String)objects[1];
+
+        StringBuilder sb = new StringBuilder();
+        String a = sb.append("get").append("Level").append(tableHead.get(key0)).append(key0).append("Count").toString();
+        sb.setLength(0);
+        String b = sb.append("get").append("Level").append(tableHead.get(key1)).append(key1).append("Count").toString();
+        sb.setLength(0);
+
+        try {
+            for(Object obj : dynamicBeans){
+                Class<?> clazz = obj.getClass();
+                Method methodCountA = clazz.getDeclaredMethod(a);
+                Integer countA = (Integer)methodCountA.invoke(obj);
+
+                Method methodCountB = clazz.getDeclaredMethod(b);
+                Integer countB = (Integer)methodCountB.invoke(obj);
+                //setValidClientSourceCount
+                Method validClientSourceCount = clazz.getDeclaredMethod("setValidClientSourceCount", int.class);
+                validClientSourceCount.invoke(obj,(countA+countB));//有效客资数（a+b） 等级一 + 等级二
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    }*/
+    }
+
+
+
 
     //获取总进店数
     private void getTotalInShopCount(ReportsParamVO reportsParamVO, List<ZjsClientDetailReportVO> reportVOS) {
