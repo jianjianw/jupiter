@@ -26,7 +26,6 @@ public class ZjsGroupDetailReportDao {
 
     public List<ZjsClientDetailReportVO> getZjsGroupDetailReport(ReportsParamVO reportsParamVO){
         List<ZjsClientDetailReportVO> reportVOS = new ArrayList<ZjsClientDetailReportVO>();
-/*
         //获取毛客资
         getTotalClientCount(reportsParamVO,reportVOS);
         //获取A类客资数
@@ -76,7 +75,7 @@ public class ZjsGroupDetailReportDao {
         //总金额 and 均价
         getAmount(reportsParamVO,reportVOS);
         //客服组内员工的名称
-        getGroupAppointorName(reportsParamVO,reportVOS);*/
+        getGroupAppointorName(reportsParamVO,reportVOS);
 
         return reportVOS;
     }
@@ -113,7 +112,7 @@ public class ZjsGroupDetailReportDao {
         System.out.println();
     }
 
-   /* //获取等级客资数(A,B,C,D)
+    //获取等级客资数(A,B,C,D)
     private void getClientSourceLevelACount(ReportsParamVO reportsParamVO,List<ZjsClientDetailReportVO> reportVOS,String dicName ){
 
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
@@ -166,8 +165,8 @@ public class ZjsGroupDetailReportDao {
         }
         System.out.println();
 
-    }*/
-  /*  //封装客资进店数 和 客资转化率(A,B,C)
+    }
+    //封装客资进店数 和 客资转化率(A,B,C)
     private void getClientSourceLevelAInShopCount(ReportsParamVO reportsParamVO,List<ZjsClientDetailReportVO> reportVOS, String dicName){
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
@@ -261,8 +260,7 @@ public class ZjsGroupDetailReportDao {
 
         }
     }
-*/
- /*   //计算有效客资数（A类客资+B 类客资）
+    //计算有效客资数（A类客资+B 类客资）
     private void getValidClientCount(List<ZjsClientDetailReportVO> reportVOS) {
         for (ZjsClientDetailReportVO reportVO:reportVOS) {
             int levelACount = reportVO.getClientSourceLevelACount();
@@ -270,7 +268,7 @@ public class ZjsGroupDetailReportDao {
             reportVO.setValidClientSourceCount(levelACount+levelBCount);
         }
     }
-*/
+
     //获取总进店数
     private void getTotalInShopCount(ReportsParamVO reportsParamVO, List<ZjsClientDetailReportVO> reportVOS) {
 
@@ -546,37 +544,16 @@ public class ZjsGroupDetailReportDao {
 
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), reportsParamVO.getCompanyId(), reportsParamVO.getGroupId());
         for (Map<String, Object> map : list) {
-            String kfId = String.valueOf((Long)map.get("kfId"));
-            for(ZjsClientDetailReportVO reportVO : reportVOS ){
+            String kfId = String.valueOf((Long) map.get("kfId"));
+            for (ZjsClientDetailReportVO reportVO : reportVOS) {
                 String id = reportVO.getId();
-                if(StringUtils.equals(id,kfId)){
+                if (StringUtils.equals(id, kfId)) {
                     reportVO.setName((String) map.get("name"));
                 }
             }
 
         }
 
-
-        /*StringBuilder sb  = new StringBuilder();
-        sb.append("select GROUPID groupId,GROUPNAME name from (hm_pub_staff staff ");
-        sb.append("inner join hm_pub_group group on staff.id = group.id) ");
-        sb.append("inner join hm_pub_group_staff")
-        sb.append("COMPANYID = ? ");
-        sb.append("and ");
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), reportsParamVO.getCompanyId());
-        for(Map<String, Object> map : list){
-            String groupId = (String)map.get("groupId");
-            for(ZjsClientDetailReportVO reportVO : reportVOS){
-                if(StringUtils.equals(reportVO.getId(),groupId)){
-                    reportVO.setName((String) map.get("name"));
-                }
-            }
-        }*/
-
     }
-
-
-
-
 
 }

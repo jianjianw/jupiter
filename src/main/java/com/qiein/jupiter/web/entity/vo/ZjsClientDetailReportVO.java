@@ -15,7 +15,7 @@ public class ZjsClientDetailReportVO implements Serializable {
     //毛客资数 = 总客资 - （筛选中，筛选无效，筛选待定）
     private int clientSourceCount;
 
-   /* //A类客资数   yx_level  123   对应abc
+    //A类客资数   yx_level  123   对应abc
     private int clientSourceLevelACount;
     //A类客资数进店数
     private int clientSourceLevelAInShopCount;
@@ -38,7 +38,7 @@ public class ZjsClientDetailReportVO implements Serializable {
     private double clientSourceLevelCRate;
 
     //D类客资数
-    private int clientSourceLevelDCount;*/
+    private int clientSourceLevelDCount;
     //有效客资数
     private int validClientSourceCount;
     //无效数
@@ -103,7 +103,7 @@ public class ZjsClientDetailReportVO implements Serializable {
         this.clientSourceCount = clientSourceCount;
     }
 
- /*   public int getClientSourceLevelACount() {
+    public int getClientSourceLevelACount() {
         return clientSourceLevelACount;
     }
 
@@ -181,7 +181,7 @@ public class ZjsClientDetailReportVO implements Serializable {
 
     public void setClientSourceLevelDCount(int clientSourceLevelDCount) {
         this.clientSourceLevelDCount = clientSourceLevelDCount;
-    }*/
+    }
 
     public int getValidClientSourceCount() {
         return validClientSourceCount;

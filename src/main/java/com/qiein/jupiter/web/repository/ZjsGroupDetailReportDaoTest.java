@@ -25,28 +25,8 @@ public class ZjsGroupDetailReportDaoTest {
 
     public List<ZjsClientDetailReportVO> getZjsGroupDetailReport(ReportsParamVO reportsParamVO){
         List<ZjsClientDetailReportVO> reportVOS = new ArrayList<ZjsClientDetailReportVO>();
-/*
         //获取毛客资
         getTotalClientCount(reportsParamVO,reportVOS);
-        //获取A类客资数
-        getClientSourceLevelACount(reportsParamVO, reportVOS, DictionaryConstant.YX_LEVEL_A);
-        //获取A类客资进店数  and  获取A类客资转化率
-        getClientSourceLevelAInShopCount(reportsParamVO,reportVOS,DictionaryConstant.YX_LEVEL_A);
-
-        //获取B类客资数
-        getClientSourceLevelACount(reportsParamVO,reportVOS,DictionaryConstant.YX_LEVEL_B);
-        //获取B类客资进店数 and 计算B类客资转化率
-        getClientSourceLevelAInShopCount(reportsParamVO,reportVOS,DictionaryConstant.YX_LEVEL_B);
-
-        //获取C类客资数
-        getClientSourceLevelACount(reportsParamVO,reportVOS,DictionaryConstant.YX_LEVEL_C);
-        //获取C类客资进店数 and 获取C类客资转化率
-        getClientSourceLevelAInShopCount(reportsParamVO,reportVOS,DictionaryConstant.YX_LEVEL_C);
-
-        //获取D类客资数
-        getClientSourceLevelACount(reportsParamVO,reportVOS,DictionaryConstant.YX_LEVEL_D);
-        //获取有效客资数（等于A类客资+B类客资）
-        getValidClientCount(reportVOS);
 
         //无效数  查询有效客资数的其余客资
         getInvalidClientSourceCount(reportsParamVO,reportVOS);
@@ -75,7 +55,7 @@ public class ZjsGroupDetailReportDaoTest {
         //总金额 and 均价
         getAmount(reportsParamVO,reportVOS);
         //客服组内员工的名称
-        getGroupAppointorName(reportsParamVO,reportVOS);*/
+        getGroupAppointorName(reportsParamVO,reportVOS);
 
         return reportVOS;
     }
@@ -112,15 +92,6 @@ public class ZjsGroupDetailReportDaoTest {
         System.out.println();
     }
 
- /*   //计算有效客资数（A类客资+B 类客资）
-    private void getValidClientCount(List<ZjsClientDetailReportVO> reportVOS) {
-        for (ZjsClientDetailReportVO reportVO:reportVOS) {
-            int levelACount = reportVO.getClientSourceLevelACount();
-            int levelBCount = reportVO.getClientSourceLevelBCount();
-            reportVO.setValidClientSourceCount(levelACount+levelBCount);
-        }
-    }
-*/
     //获取总进店数
     private void getTotalInShopCount(ReportsParamVO reportsParamVO, List<ZjsClientDetailReportVO> reportVOS) {
 
@@ -405,23 +376,6 @@ public class ZjsGroupDetailReportDaoTest {
             }
 
         }
-
-
-        /*StringBuilder sb  = new StringBuilder();
-        sb.append("select GROUPID groupId,GROUPNAME name from (hm_pub_staff staff ");
-        sb.append("inner join hm_pub_group group on staff.id = group.id) ");
-        sb.append("inner join hm_pub_group_staff")
-        sb.append("COMPANYID = ? ");
-        sb.append("and ");
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), reportsParamVO.getCompanyId());
-        for(Map<String, Object> map : list){
-            String groupId = (String)map.get("groupId");
-            for(ZjsClientDetailReportVO reportVO : reportVOS){
-                if(StringUtils.equals(reportVO.getId(),groupId)){
-                    reportVO.setName((String) map.get("name"));
-                }
-            }
-        }*/
 
     }
 
