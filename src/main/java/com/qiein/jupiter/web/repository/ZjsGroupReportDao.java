@@ -76,7 +76,7 @@ public class ZjsGroupReportDao {
         getClientSourceLevelACount(reportsParamVO,reportVOS,DictionaryConstant.YX_LEVEL_D);
 
         //获取有效客资数（等于A类客资+B类客资）
-        getValidClientCount(reportVOS);
+        //getValidClientCount(reportVOS);
 
         //无效数  查询有效客资数的其余客资
         getInvalidClientSourceCount(reportsParamVO,reportVOS);
@@ -187,7 +187,7 @@ public class ZjsGroupReportDao {
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), reportsParamVO.getCompanyId(),
                 reportsParamVO.getStart(), reportsParamVO.getEnd());
 
-        for (Map<String, Object> map:list) {
+       /* for (Map<String, Object> map:list) {
             String groupId = (String)map.get("groupId");
             for (ZjsClientDetailReportVO reportVo :reportVOS){
                 String id = reportVo.getId();
@@ -215,7 +215,7 @@ public class ZjsGroupReportDao {
                     }
                 }
             }
-        }
+        }*/
         System.out.println();
 
     }
@@ -240,7 +240,7 @@ public class ZjsGroupReportDao {
                 reportsParamVO.getStart(), reportsParamVO.getEnd());
 
 
-        for (Map<String, Object> map:list) {
+       /* for (Map<String, Object> map:list) {
             String groupId = (String)map.get("groupId");
 
             for (ZjsClientDetailReportVO reportVo :reportVOS){
@@ -267,13 +267,13 @@ public class ZjsGroupReportDao {
                     reportVo.setClientSourceLevelAInShopCount(levelCount.intValue());
                 }
             }
-        }
+        }*/
         //计算客资转化率
-        convertRate(reportVOS,dicName);
+       // convertRate(reportVOS,dicName);
     }
 
 
-    //计算客资转化率（进店/客资）
+  /*  //计算客资转化率（进店/客资）
     private void convertRate(List<ZjsClientDetailReportVO> reportVOS,String dicName){
         int inShopCount;
         int count;
@@ -311,16 +311,16 @@ public class ZjsGroupReportDao {
             }
 
         }
-    }
+    }*/
 
-    //计算有效客资数（A类客资+B 类客资）
+  /*  //计算有效客资数（A类客资+B 类客资）
     private void getValidClientCount(List<ZjsClientDetailReportVO> reportVOS) {
         for (ZjsClientDetailReportVO reportVO:reportVOS) {
             int levelACount = reportVO.getClientSourceLevelACount();
             int levelBCount = reportVO.getClientSourceLevelBCount();
             reportVO.setValidClientSourceCount(levelACount+levelBCount);
         }
-    }
+    }*/
 
     //获取总进店数
     private void getTotalInShopCount(ReportsParamVO reportsParamVO, List<ZjsClientDetailReportVO> reportVOS) {
