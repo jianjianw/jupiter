@@ -1,22 +1,27 @@
 package com.qiein.jupiter.web.repository;
 
+import com.qiein.jupiter.constant.DictionaryConstant;
 import com.qiein.jupiter.util.DBSplitUtil;
+import com.qiein.jupiter.util.DynamicBeanUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.vo.DsInvalidVO;
 import com.qiein.jupiter.web.entity.vo.ReportsParamVO;
 import com.qiein.jupiter.web.entity.vo.ZjsClientDetailReportVO;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 public class ZjsGroupDetailReportDaoTest {
+
+    private static Logger logger = LoggerFactory.getLogger(ZjsGroupReportDaoTest.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -24,6 +29,8 @@ public class ZjsGroupDetailReportDaoTest {
     private CommonReportsDao commonReportsDao;
 
     public List<ZjsClientDetailReportVO> getZjsGroupDetailReport(ReportsParamVO reportsParamVO){
+
+
         List<ZjsClientDetailReportVO> reportVOS = new ArrayList<ZjsClientDetailReportVO>();
         //获取毛客资
         getTotalClientCount(reportsParamVO,reportVOS);
@@ -57,7 +64,221 @@ public class ZjsGroupDetailReportDaoTest {
         //客服组内员工的名称
         getGroupAppointorName(reportsParamVO,reportVOS);
 
+
+        //查询表头（意向登记）
+        Map<String, String> tableHead = getTableHead(reportsParamVO);
+        //创建动态对象
+        List<Object> dynamicBeans = getDynamicBeans(reportVOS, tableHead);
+
+        //获取客户意向等级客资数  封装书籍到dynamicBeans
+        Set<Map.Entry<String, String>> entries = tableHead.entrySet();
+        for(Map.Entry<String, String> set : entries ){
+            String code = set.getKey();
+            String name = set.getValue();
+            //意向等级
+            getClientSourceLevelCount(reportsParamVO,dynamicBeans,code,name);
+            getClientSourceLevelInShopCount(reportsParamVO,dynamicBeans,code,name);
+        }
+        //计算有效客资  a+b
+        getValidClientCount(dynamicBeans,tableHead);
+
         return reportVOS;
+    }
+
+    //获取客户意向等级
+    private Map<String,String> getTableHead(ReportsParamVO reportsParamVO) {
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("select dic.DICCODE code ,dic.DICNAME name from (hm_crm_client_info info inner join hm_crm_client_detail detail ");
+        sb.append("on info.KZID = detail.KZID) ");
+        sb.append("inner join hm_crm_dictionary dic on dic.diccode = detail.yxlevel ");
+        sb.append("where dic.dictype = 'yx_level' and dic.companyID = ? ");
+        sb.append("and dic.DICCODE != 0 order by dic.DICCODE asc");
+
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), reportsParamVO.getCompanyId());//得到公司的的所有意向等级
+
+        Map<String,String> tableHeads = new HashMap<>();
+        for (Map<String, Object> map : list) {
+            String code = String.valueOf((Integer) map.get("code"));
+            String name = (String) map.get("name");
+            tableHeads.put(code,name);
+        }
+        return tableHeads;
+    }
+
+    //创建动态bean
+    private List<Object> getDynamicBeans(List<ZjsClientDetailReportVO> reportVOS,Map<String, String> tableHead){
+
+        Map<String,Object> propertyMap = new HashMap<>();
+
+        Set<Map.Entry<String, String>> entries = tableHead.entrySet();
+        for (Map.Entry<String, String> set : entries) {
+            StringBuilder sb = new StringBuilder();
+            String code = set.getKey();//code
+            String name = set.getValue();//name
+            String prefix = sb.append("level").append(name).append(code).toString();
+            propertyMap.put(prefix+"Count",0);//客资数
+            propertyMap.put(prefix+"InShopCount",0);//进店数
+            propertyMap.put(prefix+"Rate",0D);//转换率
+        }
+
+        List<Object> dynamicBeans = new ArrayList<Object>();
+        //创建动态bean
+        Object dynamicBean;
+        for (ZjsClientDetailReportVO reportVO : reportVOS) {
+            dynamicBean = DynamicBeanUtil.getDynamicBean(reportVO, propertyMap);
+            dynamicBeans.add(dynamicBean);
+        }
+        return dynamicBeans;
+    }
+
+    //获取等级客资数(A,B,C,D)
+    private void getClientSourceLevelCount(ReportsParamVO reportsParamVO,List<Object> dynamicBeans,String dicCode,String dicName ){
+
+        String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
+        String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("select info.APPOINTORID kfId, count(info.KZID)  totalCount, ");
+        sb.append("count(case when info.STATUSID = 98 then info.KZID else NULL end) filterWaitCount, ");
+        sb.append("count(case when info.STATUSID = 0 then info.KZID else NULL end) filterInCount, ");
+        sb.append("count(case when info.STATUSID = 99 then info.KZID else NULL end) filterInvalidCount ");
+        sb.append("from (").append(infoTabName).append("info inner join ").append(detailTabName).append("detail on info.KZID = detail.KZID ) ");
+        sb.append("inner join hm_crm_dictionary dic on detail.YXLEVEL = dic.DICCODE ");
+        sb.append("where info.SRCTYPE in(3, 4, 5) and dic.COMPANYID = ? and dic.DICTYPE = 'yx_level' and dic.DICCODE = '"+dicCode+"' ");
+        sb.append("and info.CREATETIME BETWEEN ? AND ? ");
+        sb.append("and info.ISDEL = 0 ");
+        sb.append("and info.GROUPID = ? ");
+        sb.append("group by info.APPOINTORID ");
+
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), reportsParamVO.getCompanyId(),
+                reportsParamVO.getStart(), reportsParamVO.getEnd(),reportsParamVO.getGroupId());
+
+        //封装参数到dynamicBeans
+        getDynamicBeanMethod(list,dynamicBeans,dicCode,dicName,"Count");
+
+
+    }
+
+    //封装客资意向等级数据
+    public void getDynamicBeanMethod(List<Map<String, Object>> list,List<Object> dynamicBeans,String dicCode,String dicName,String type){
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("set").append("Level").append(dicName).append(dicCode).append(type);//count or inshopCount
+        try {
+            for(Object obj : dynamicBeans){
+                Class<?> clazz = obj.getClass();
+                String id = null;
+                Method method = clazz.getDeclaredMethod("getId");
+                id = (String)method.invoke(obj);
+
+                for (Map<String, Object> map: list) {
+                    String kfId = (String)map.get("kfId");
+                    if(StringUtils.equals(id,kfId)){
+                        Long totalCount = (Long)map.get("totalCount");
+                        Long filterWaitCount = (Long) map.get("filterWaitCount");
+                        Long filterInCount = (Long) map.get("filterInCount");
+                        Long filterInvalidCount = (Long) map.get("filterInvalidCount");
+                        Long levelCount = totalCount - filterWaitCount - filterInCount - filterInvalidCount;//等级客资数
+                        Method declaredMethod = clazz.getDeclaredMethod(sb.toString(), Integer.class);
+                        declaredMethod.invoke(obj,levelCount.intValue());
+                        break;
+                    };
+                }
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage(),e);
+        }
+
+    };
+    //封装客资进店数 和 客资转化率(A,B,C)
+    private void getClientSourceLevelInShopCount(ReportsParamVO reportsParamVO,List<Object> dynamicBeans, String dicCode,String dicName){
+        String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
+        String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("select info.APPOINTORID kfId, count(info.KZID)  totalCount, ");
+        sb.append("count(case when info.STATUSID = 98 then info.KZID else NULL end) filterWaitCount, ");
+        sb.append("count(case when info.STATUSID = 0 then info.KZID else NULL end) filterInCount, ");
+        sb.append("count(case when info.STATUSID = 99 then info.KZID else NULL end) filterInvalidCount ");
+        sb.append("from (").append(infoTabName).append("info inner join ").append(detailTabName).append("detail on info.KZID = detail.KZID ) ");
+        sb.append("inner join hm_crm_dictionary dic on detail.YXLEVEL = dic.DICCODE ");
+        sb.append("where info.SRCTYPE in(3, 4, 5) and dic.COMPANYID = ? and dic.DICTYPE = 'yx_level' and dic.DICCODE = '"+dicCode+"' ");
+        sb.append("and info.COMESHOPTIME BETWEEN ? AND ? ");
+        sb.append("and info.ISDEL = 0 ");
+        sb.append("and info.GROUPID  = ? ");
+        sb.append("group by info.APPOINTORID ");
+
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), reportsParamVO.getCompanyId(),
+                reportsParamVO.getStart(), reportsParamVO.getEnd(),reportsParamVO.getGroupId());
+
+        //封装参数到dynamicBeans
+        getDynamicBeanMethod(list,dynamicBeans,dicCode,dicName,"InShopCount");
+        //计算客资转化率
+        convertClientRate(dynamicBeans,dicCode,dicName);
+    }
+
+
+    //计算客资转化率（进店/客资）
+    private void convertClientRate(List<Object> dynamicBeans,String dicCode,String dicName){
+        StringBuilder sb = new StringBuilder();
+        String prefix = sb.append("get").append("Level").append(dicName).append(dicCode).toString();
+        try {
+            for(Object obj : dynamicBeans){
+
+                Class<?> clazz = obj.getClass();
+                Method methodCount = clazz.getDeclaredMethod(prefix+"Count");
+                Integer count = (Integer)methodCount.invoke(obj);
+
+                Method methodInShopCount = clazz.getDeclaredMethod(prefix+"InShopCount");
+                Integer inShopCount = (Integer)methodInShopCount.invoke(obj);
+
+                double rate = parseDouble(count / (double)inShopCount * 100);
+                sb.setLength(0);
+                sb.append("set").append("Level").append(dicName).append(dicCode).append("Rate");
+                Method methodRate = clazz.getDeclaredMethod(sb.toString(), Double.class);
+                if(count == 0){
+                    methodRate.invoke(obj, 0D);
+                }else{
+                    methodRate.invoke(obj, rate);//进店转化率
+                }
+
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage(),e);
+        }
+
+    }
+
+    //计算有效客资数（A类客资+B 类客资）  获取前两个值
+    private void getValidClientCount(List<Object> dynamicBeans,Map<String, String> tableHead) {
+
+        Set<String> set = tableHead.keySet();
+        Object[] objects = set.toArray();
+        String key0 = (String)objects[0];
+        String key1 = (String)objects[1];
+
+        StringBuilder sb = new StringBuilder();
+        String a = sb.append("get").append("Level").append(tableHead.get(key0)).append(key0).append("Count").toString();
+        sb.setLength(0);
+        String b = sb.append("get").append("Level").append(tableHead.get(key1)).append(key1).append("Count").toString();
+        sb.setLength(0);
+
+        try {
+            for(Object obj : dynamicBeans){
+                Class<?> clazz = obj.getClass();
+                Method methodCountA = clazz.getDeclaredMethod(a);
+                Integer countA = (Integer)methodCountA.invoke(obj);
+
+                Method methodCountB = clazz.getDeclaredMethod(b);
+                Integer countB = (Integer)methodCountB.invoke(obj);
+                //setValidClientSourceCount
+                Method validClientSourceCount = clazz.getDeclaredMethod("setValidClientSourceCount", int.class);
+                validClientSourceCount.invoke(obj,(countA+countB));//有效客资数（a+b） 等级一 + 等级二
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // 获取毛客资
@@ -377,6 +598,14 @@ public class ZjsGroupDetailReportDaoTest {
 
         }
 
+    }
+
+
+    /**
+     * 只保留2位小数
+     */
+    public double parseDouble(double result) {
+        return Double.parseDouble(String.format("%.2f", result));
     }
 
 
