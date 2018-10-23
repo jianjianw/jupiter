@@ -44,6 +44,7 @@ public class ClientTrackController extends BaseController {
         if (StringUtil.isEmpty(kzIds)) {
             throw new RException(ExceptionEnum.KZ_ID_IS_NULL);
         }
+        String reason = StringUtil.nullToStrTrim(jsonObject.getString("reason"));
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         clientTrackService.batchDeleteKzList(kzIds, currentLoginStaff);

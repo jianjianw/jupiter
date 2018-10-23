@@ -65,12 +65,13 @@ public class ClientTrackServiceImpl implements ClientTrackService {
      * @param kzIds
      * @param staffPO
      */
-    public void batchDeleteKzList(String kzIds, StaffPO staffPO) {
+    public void batchDeleteKzList(String kzIds, StaffPO staffPO, String reason) {
         Map<String, Object> reqContent = new HashMap<>();
         reqContent.put("companyid", staffPO.getCompanyId());
         reqContent.put("operaid", staffPO.getId());
         reqContent.put("operaname", staffPO.getNickName());
         reqContent.put("kzids", kzIds);
+        reqContent.put("reason", reason);
 
         //获取推广人员集合
         //TODO  优化
