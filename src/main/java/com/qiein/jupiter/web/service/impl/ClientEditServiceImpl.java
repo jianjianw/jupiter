@@ -262,6 +262,8 @@ public class ClientEditServiceImpl implements ClientEditService {
             } else if (ClientStatusConst.INVALID_BE_STAY == clientVO.getYyRst() && staffService.getMsgSetByStaffId(info.getCompanyId(), info.getCollectorId()).isAllowWxDingMsg()) {
                 // 如果是无效，发送警告消息给录入人
                 GoEasyUtil.pushYyValidReject(info.getCompanyId(), info.getCollectorId(), info, newsDao, staffDao);
+            } else if (ClientStatusConst.BE_COMFIRM == clientVO.getYyRst()) {
+                GoEasyUtil.pushAppointShop(info.getCompanyId(), info.getCollectorId(), info, newsDao, staffDao);
             }
         } else if ("130019".equals(jsInfo.getString("code"))) {
             //重复客资，给邀约推送消息

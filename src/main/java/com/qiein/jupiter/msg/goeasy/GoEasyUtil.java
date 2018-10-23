@@ -1087,4 +1087,38 @@ public class GoEasyUtil {
         DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), companyId, staffId, staffDao);
     }
 
+    /**
+     * 预约到店
+     *
+     * @param companyId
+     * @param staffId
+     * @param info
+     * @param newsDao
+     */
+    public static void pushAppointShop(int companyId, int staffId, ClientGoEasyDTO info, NewsDao newsDao, StaffDao staffDao) {
+        String head = "您的客资预约到店了";
+        StringBuffer sb = new StringBuffer();
+        sb.append("编号：").append(info.getLetterId()).append("<br/>");
+        if (StringUtil.isNotEmpty(info.getKzName())) {
+            sb.append("姓名：").append(StringUtil.nullToStrTrim(info.getKzName())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzPhone())) {
+            sb.append("电话：").append(StringUtil.nullToStrTrim(info.getKzPhone())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzWechat())) {
+            sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWechat())).append("<br/>");
+        }
+        if (StringUtil.isNotEmpty(info.getKzWw())) {
+            sb.append("旺旺：").append(StringUtil.nullToStrTrim(info.getKzWw())).append("<br/>");
+        }
+        sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("<br/>");
+        sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("<br/>");
+        sb.append("门店：").append(StringUtil.nullToStrTrim(info.getShopName())).append("<br/>");
+        String msg = sb.toString();
+        pushCommon(companyId, staffId, head, msg);
+        newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_WARN, head, msg.replaceAll("<br/>", "；"), info.getKzId(),
+                staffId, companyId));
+        DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), companyId, staffId, staffDao);
+    }
+
 }

@@ -616,6 +616,8 @@ public class ClientAddServiceImpl implements ClientAddService {
         for (int i = 0; i < jsonArr.size(); i++) {
             ClientVO clientVO = new ClientVO();
             clientVO.setCompanyId(staffPO.getCompanyId());
+            clientVO.setCollectorId(staffPO.getId());
+            clientVO.setCollectorName(staffPO.getNickName());
             clientVO.setChannelId(channelId);
             clientVO.setSourceId(sourceId);
             clientVO.setShopId(shopId);
