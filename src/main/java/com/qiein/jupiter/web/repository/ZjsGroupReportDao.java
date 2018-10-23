@@ -128,9 +128,6 @@ public class ZjsGroupReportDao {
         } catch (Exception e) {
             logger.error(e.getMessage(),e);
         }
-
-
-        return;
     }
 
 
@@ -267,7 +264,7 @@ public class ZjsGroupReportDao {
         //计算客资转化率
         convertClientRate(dynamicBeans,dicCode,dicName);
 
-        //计算进店数的总合计
+        //计算进店数的总合计  和  转化率的总合计
         computerDynamicTotal(dynamicBeans,dicCode,dicName,"InShopCount");
 
     }
