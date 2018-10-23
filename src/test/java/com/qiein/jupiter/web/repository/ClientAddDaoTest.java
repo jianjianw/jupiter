@@ -22,7 +22,7 @@ public class ClientAddDaoTest {
 
     @Test
     public void stesae() {
-        clientAddDao.addPcZjsClientInfo();
+//        clientAddDao.addPcZjsClientInfo();
 //        clientAddDao.addGoldDataClientInfo();
     }
 
