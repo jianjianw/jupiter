@@ -28,7 +28,7 @@ public class ZjsGroupDetailReportDaoTest {
     @Autowired
     private CommonReportsDao commonReportsDao;
 
-    public List<ZjsClientDetailReportVO> getZjsGroupDetailReport(ReportsParamVO reportsParamVO){
+    public List<Object> getZjsGroupDetailReport(ReportsParamVO reportsParamVO){
 
 
         List<ZjsClientDetailReportVO> reportVOS = new ArrayList<ZjsClientDetailReportVO>();
@@ -86,7 +86,7 @@ public class ZjsGroupDetailReportDaoTest {
         //计算有效客资  a+b
         getValidClientCount(dynamicBeans,tableHead);
 
-        return reportVOS;
+        return dynamicBeans;
     }
 
     //获取客户意向等级

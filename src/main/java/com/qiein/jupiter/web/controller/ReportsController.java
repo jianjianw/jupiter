@@ -809,7 +809,7 @@ public class ReportsController extends BaseController {
     @GetMapping("/get_zjs_group_detail_report")
     public ResultInfo getZjsGroupDetailReport(ReportsParamVO reportsParamVO){
         reportsParamVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
-        List<ZjsClientDetailReportVO> reportVOS = reportService.getZjsGroupDetailReport(reportsParamVO);
+        List<Object> reportVOS = reportService.getZjsGroupDetailReport(reportsParamVO);
         return ResultInfoUtil.success(reportVOS);
     }
     /**

@@ -115,8 +115,11 @@ public class ReportsServiceImpl implements ReportService {
     private ZjsGroupReportDao zjsGroupReportDao;
     @Autowired
     private ZjsGroupDetailReportDao zjsGroupDetailReportDao;
+
     @Autowired
     private ZjsGroupReportDaoTest zjsGroupReportDaoTest;
+    @Autowired
+    private ZjsGroupDetailReportDaoTest zjsGroupDetailReportDaoTest;
 
 
 
@@ -1635,8 +1638,9 @@ public class ReportsServiceImpl implements ReportService {
     }
 
     @Override
-    public List<ZjsClientDetailReportVO> getZjsGroupDetailReport(ReportsParamVO reportsParamVO) {
-        List<ZjsClientDetailReportVO> zjsGroupDetailReport = zjsGroupDetailReportDao.getZjsGroupDetailReport(reportsParamVO);
+    public List<Object> getZjsGroupDetailReport(ReportsParamVO reportsParamVO) {
+        //List<ZjsClientDetailReportVO> zjsGroupDetailReport = zjsGroupDetailReportDao.getZjsGroupDetailReport(reportsParamVO);
+        List<Object> zjsGroupDetailReport = zjsGroupDetailReportDaoTest.getZjsGroupDetailReport(reportsParamVO);
         return zjsGroupDetailReport;
     }
     /**
