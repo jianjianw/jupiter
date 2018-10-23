@@ -385,7 +385,7 @@ public class ZjsGroupReportDaoTest {
             if(totalInShopCount == 0){
                 reportVO.setTotalSuccessRate(0);
             }else{
-                reportVO.setTotalSuccessRate(totalSuccessCount/totalInShopCount*100);//总成交率
+                reportVO.setTotalSuccessRate(parseDouble((totalSuccessCount/(double)totalInShopCount) * 100));//总成交率
             }
 
             //毛客资进店率（总进店/毛客资数）
@@ -393,7 +393,7 @@ public class ZjsGroupReportDaoTest {
             if(clientSourceCount == 0){
                 reportVO.setClientInShopRate(0);
             }else{
-                reportVO.setClientInShopRate(totalInShopCount/clientSourceCount*100);
+                reportVO.setClientInShopRate(parseDouble((totalInShopCount/(double)clientSourceCount) * 100));
             }
 
             //有效客资进店率（总进店/ 有效客资）
@@ -401,7 +401,7 @@ public class ZjsGroupReportDaoTest {
             if(validClientSourceCount == 0){
                 reportVO.setValidClientInShopRate(0);
             }else{
-                reportVO.setValidClientInShopRate(totalInShopCount/validClientSourceCount*100);
+                reportVO.setValidClientInShopRate(parseDouble((totalInShopCount/(double)validClientSourceCount) * 100));
             }
 
 
@@ -413,7 +413,7 @@ public class ZjsGroupReportDaoTest {
             if(totalInShopCount == 0){
                 reportVO.setUnWeekendInShopRate(0);
             }else{
-                reportVO.setUnWeekendInShopRate(reportVO.getUnWeekendInShopCount()/totalInShopCount*100);
+                reportVO.setUnWeekendInShopRate(parseDouble((reportVO.getUnWeekendInShopCount()/(double)totalInShopCount) * 100));
             }
 
 
@@ -429,9 +429,9 @@ public class ZjsGroupReportDaoTest {
                 reportVO.setUnWeekendInShopRate(0);
             } else{
                 //周末成交率
-                reportVO.setWeekendSuccessRate(weekendSuccessCount/totalSuccessCount*100);
+                reportVO.setWeekendSuccessRate(parseDouble((weekendSuccessCount/(double)totalSuccessCount)*100));
                 //非周末成交率
-                reportVO.setUnWeekendInShopRate(reportVO.getUnWeekendSuccessCount()/totalSuccessCount*100);
+                reportVO.setUnWeekendInShopRate(reportVO.getUnWeekendSuccessCount()/(double)totalSuccessCount*100);
             }
 
         }
