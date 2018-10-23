@@ -57,7 +57,7 @@ public class ProfessionalCenterDao {
         sb.append(" IFNULL(sum(detail.VALIDCOUNTTARGET), 0) validCountTarget,");
         sb.append(" IFNULL(sum(detail.TOTALSHOOTING), 0) totalShooting");
         sb.append(" FROM hm_crm_source src");
-        sb.append(" LEFT JOIN hm_crm_shop_detail detail ON detail.COMPANYID = src.COMPANYID AND detail.type = 2 AND (FROM_UNIXTIME(detail.CREATETIME, '%Y/%m')=FROM_UNIXTIME(#{start},'%Y/%m') or FROM_UNIXTIME(detail.CREATETIME, '%Y/%m')=FROM_UNIXTIME(#{end},'%Y/%m')) AND detail.SHOPID = src.ID");
+        sb.append(" LEFT JOIN hm_crm_shop_detail detail ON detail.COMPANYID = src.COMPANYID AND detail.type = 2 AND (FROM_UNIXTIME(detail.CREATETIME, '%Y/%m')=FROM_UNIXTIME(?,'%Y/%m') or FROM_UNIXTIME(detail.CREATETIME, '%Y/%m')=FROM_UNIXTIME(?,'%Y/%m')) AND detail.SHOPID = src.ID");
         sb.append(" WHERE src.CHANNELID = 114  and src.COMPANYID=?");
         if(StringUtil.isNotEmpty(reportsParamVO.getSourceIds())){
             sb.append(" and src.id in ("+reportsParamVO.getSourceIds()+")");

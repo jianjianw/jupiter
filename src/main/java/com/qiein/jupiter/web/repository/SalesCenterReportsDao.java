@@ -28,9 +28,9 @@ public class SalesCenterReportsDao {
         //获取所有门店信息包括目标
         getAllShop(reportsParamVO, salesCenterReportsVOS);
         //获取总成交量
-        getSuccessClientCount(reportsParamVO, salesCenterReportsVOS);
+        //getSuccessClientCount(reportsParamVO, salesCenterReportsVOS);
         //门店指定成交量
-        //getShopCallOnSuccessClientCount(reportsParamVO, salesCenterReportsVOS);
+        getShopCallOnSuccessClientCount(reportsParamVO, salesCenterReportsVOS);
         //总客资
         getAllClientCount(reportsParamVO, salesCenterReportsVOS);
         //门市指名待定量
@@ -58,12 +58,12 @@ public class SalesCenterReportsDao {
         sb.append(" SELECT shop.id id,shop.SHOPNAME shopName,");
         sb.append(" ifnull(sum(detail.TOTALSUCCESSCOUNTTARGET),0) totalSuccessCountTarget,");
         sb.append(" ifnull(sum(detail.SHOPCALLONSUCCESSCOUNTTARGET),0) shopCallOnSuccessCountTarget,");
-        sb.append(" ifnull(sum(detail.SHOPCALLONVALIDCOUNTTARGET),0) shopCallOnValidCountTarget");
-        sb.append(" ifnull(sum(detail.SHOPCALLONSUCCESSCOUNT),0) shopCallOnSuccessClientCount");
+        sb.append(" ifnull(sum(detail.SHOPCALLONVALIDCOUNTTARGET),0) shopCallOnValidCountTarget,");
+        sb.append(" ifnull(sum(detail.TOTALSUCCESSCOUNT),0) successClientCount");
         sb.append(" from (select DISTINCT grp.shopid id,shop.shopname shopName,grp.companyid companyid from hm_pub_group grp");
         sb.append(" LEFT JOIN hm_pub_shop shop ON grp.COMPANYID = shop.COMPANYID AND grp.SHOPID = shop.ID");
         sb.append(" WHERE grp.GROUPTYPE = 'msjd' AND grp.companyid =? AND grp.SHOPID IS NOT NULL) shop ");
-        sb.append(" left join hm_crm_shop_detail detail on shop.id=detail.shopid and shop.companyid= detail.companyid  and (FROM_UNIXTIME(detail.CREATETIME, '%Y/%m')=FROM_UNIXTIME(#{start},'%Y/%m') or FROM_UNIXTIME(detail.CREATETIME, '%Y/%m')=FROM_UNIXTIME(#{end},'%Y/%m')) and detail.type=1");
+        sb.append(" left join hm_crm_shop_detail detail on shop.id=detail.shopid and shop.companyid= detail.companyid  and (FROM_UNIXTIME(detail.CREATETIME, '%Y/%m')=FROM_UNIXTIME(?,'%Y/%m') or FROM_UNIXTIME(detail.CREATETIME, '%Y/%m')=FROM_UNIXTIME(?,'%Y/%m')) and detail.type=1");
         if(StringUtil.isNotEmpty(reportsParamVO.getShopIds())){
             sb.append(" and shop.id in ("+reportsParamVO.getShopIds()+")");
         }
@@ -77,7 +77,7 @@ public class SalesCenterReportsDao {
             salesCenterReportsVO.setTotalSuccessCountTarget(Integer.parseInt(String.valueOf(map.get("totalSuccessCountTarget").toString())));
             salesCenterReportsVO.setShopCallOnSuccessCountTarget(Integer.parseInt(String.valueOf(map.get("shopCallOnSuccessCountTarget").toString())));
             salesCenterReportsVO.setShopCallOnValidCountTarget(Integer.parseInt(String.valueOf(map.get("shopCallOnValidCountTarget").toString())));
-            salesCenterReportsVO.setShopCallOnSuccessClientCount(Integer.parseInt(String.valueOf(map.get("shopCallOnSuccessClientCount").toString())));
+            salesCenterReportsVO.setSuccessClientCount(Integer.parseInt(String.valueOf(map.get("successClientCount").toString())));
             salesCenterReportsVOS.add(salesCenterReportsVO);
         }
     }

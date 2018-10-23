@@ -201,8 +201,8 @@
         <if test="totalShooting !=null and totalShooting!=''">
             ,TOTALSHOOTING=#{totalShooting}
         </if>
-        <if test="shopCallOnSuccessClientCount !=null and shopCallOnSuccessClientCount!=''">
-          ,SHOPCALLONSUCCESSCOUNT=#{shopCallOnSuccessClientCount}
+        <if test="successClientCount !=null and successClientCount!=''">
+          ,TOTALSUCCESSCOUNT=#{successClientCount}
         </if>
         where companyid=#{companyId} and FROM_UNIXTIME(CREATETIME, '%Y/%m')=FROM_UNIXTIME(#{time}, '%Y/%m') and
         shopid=#{shopId} and type=#{type}
