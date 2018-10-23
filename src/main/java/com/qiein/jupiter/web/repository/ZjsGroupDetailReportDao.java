@@ -70,6 +70,11 @@ public class ZjsGroupDetailReportDao {
             getClientSourceLevelCount(reportsParamVO,dynamicBeans,code,name);
             getClientSourceLevelInShopCount(reportsParamVO,dynamicBeans,code,name);
         }
+
+        //封装表头返回
+        List<String> dynamicTableHead =  getDynamicTableHead(tableHead);
+
+
         return dynamicBeans;
     }
 
@@ -717,6 +722,25 @@ public class ZjsGroupDetailReportDao {
         total.setAmount(amount);
         total.setAvgAmount(avgAmount);
         reportVOS.add(total);
+    }
+
+
+    private List<String> getDynamicTableHead(Map<String, String> tableHead) {
+
+        StringBuilder sb = null;
+        List<String> dynamicTableHead = new ArrayList<>();
+        Set<Map.Entry<String, String>> entries = tableHead.entrySet();
+        for(Map.Entry<String, String> set : entries ){
+            String code = set.getKey();
+            String name = set.getValue();
+            sb = new StringBuilder();
+            String prefix = sb.append("level").append(name).append(code).toString();
+            dynamicTableHead.add(prefix+"Count");//客资数
+            dynamicTableHead.add(prefix+"InShopCount");//进店数
+            dynamicTableHead.add(prefix+"Rate");//转换率
+        }
+        return dynamicTableHead;
+
     }
 
     /**
