@@ -280,7 +280,7 @@ public class SourceOrderDataReportsDao {
         allReportsVO.setSrcType(-1);
         allReportsVO.setSrcName(CommonConstant.totalAll);
         //总销售均价
-        allReportsVO.setSaleAvg(NumUtil.keep2Point(allReportsVO.getTxTotalAmount() / allReportsVO.getOrderAmount()));
+        allReportsVO.setSaleAvg(NumUtil.keep2Point((double)allReportsVO.getTxTotalAmount() / allReportsVO.getOrderAmount()));
 
         reportsList.add(0, allReportsVO);
     }
