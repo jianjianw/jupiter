@@ -125,6 +125,9 @@ public class ClientTrackServiceImpl implements ClientTrackService {
             return null;
         }
         String[] kzIdArr = kzIds.split(CommonConstant.STR_SEPARATOR);
+        if (kzIdArr == null || kzIdArr.length == 0) {
+            return null;
+        }
         return clientDao.getOnwerInfoNumByIds(DBSplitUtil.getInfoTabName(companyId), kzIdArr, " info." + type + " ", companyId);
     }
 
@@ -195,7 +198,7 @@ public class ClientTrackServiceImpl implements ClientTrackService {
                     ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(kzId,
                             DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
                             DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
-                    if (staffService.getMsgSetByStaffId(info.getCompanyId(),info.getAppointorId()).isAllowWxDingMsg()){
+                    if (staffService.getMsgSetByStaffId(info.getCompanyId(), info.getAppointorId()).isAllowWxDingMsg()) {
                         GoEasyUtil.pushReject(staffPO.getCompanyId(), info.getAppointorId(), info, newsDao, staffDao);
                     }
                 }
