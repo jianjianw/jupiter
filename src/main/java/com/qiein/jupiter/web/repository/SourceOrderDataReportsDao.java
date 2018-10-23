@@ -254,7 +254,6 @@ public class SourceOrderDataReportsDao {
         int orderAll = 0;
         int txAll = 0;
         int zysAll = 0;
-        double saleAvgAll = 0.0;
         int costAll = 0;
         double roiAll = 0.0;
         for (SourceOrderDataReportsVO reportsVO : reportsList) {
@@ -264,8 +263,6 @@ public class SourceOrderDataReportsDao {
             txAll += reportsVO.getTxTotalAmount();
             //总已收
             zysAll += reportsVO.getTotalYsAmount();
-            //总销售均价
-            saleAvgAll += Double.valueOf(reportsVO.getSaleAvg());
             //总花费
             costAll += reportsVO.getTotalSpend();
             //roi
@@ -278,11 +275,13 @@ public class SourceOrderDataReportsDao {
         allReportsVO.setOrderAmount(orderAll);
         allReportsVO.setTxTotalAmount(txAll);
         allReportsVO.setTotalYsAmount(zysAll);
-        allReportsVO.setSaleAvg(String.valueOf(saleAvgAll));
         allReportsVO.setTotalSpend(costAll);
         allReportsVO.setRoi(String.valueOf(roiAll));
         allReportsVO.setSrcType(-1);
         allReportsVO.setSrcName(CommonConstant.totalAll);
+        //总销售均价
+        allReportsVO.setSaleAvg(NumUtil.keep2Point(allReportsVO.getTxTotalAmount() / allReportsVO.getOrderAmount()));
+
         reportsList.add(0, allReportsVO);
     }
 
