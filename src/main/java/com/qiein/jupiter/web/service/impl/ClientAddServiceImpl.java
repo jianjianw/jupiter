@@ -586,7 +586,8 @@ public class ClientAddServiceImpl implements ClientAddService {
      * @param list
      */
     public JSONObject batchAddDsClient(String list, int channelId, int sourceId, int shopId, int typeId,
-                                       StaffPO staffPO, String adId, String adAddress, String groupId, int appointId, int zxStyle, int yxLevel, int ysRange, int marryTime, String address) {
+                                       StaffPO staffPO, String adId, String adAddress, String groupId, int appointId,
+                                       int zxStyle, int yxLevel, int ysRange, int marryTime, String address) {
         // 获取邀约客服名称
         String appointName = "";
         if (NumUtil.isValid(appointId)) {
@@ -614,6 +615,7 @@ public class ClientAddServiceImpl implements ClientAddService {
         JSONArray rep = new JSONArray();
         for (int i = 0; i < jsonArr.size(); i++) {
             ClientVO clientVO = new ClientVO();
+            clientVO.setCompanyId(staffPO.getCompanyId());
             clientVO.setChannelId(channelId);
             clientVO.setSourceId(sourceId);
             clientVO.setShopId(shopId);
@@ -666,6 +668,7 @@ public class ClientAddServiceImpl implements ClientAddService {
             sb.append("</p>");
             clientVO.setRemark(sb.toString());
             try {
+                //添加电商客资
                 addDsClient(clientVO, staffPO);
                 successCount++;
             } catch (RException e) {
