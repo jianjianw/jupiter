@@ -15,7 +15,7 @@ public class ClientExportVO implements Serializable {
      * 客资编号
      */
     @Excel(name = "编号", width = 10, height = 6)
-    private int id;
+    private String letterId;
     /**
      * 录入时间接收格式
      */
@@ -287,12 +287,12 @@ public class ClientExportVO implements Serializable {
         this.kzSex = kzSex;
     }
 
-    public int getId() {
-        return id;
+    public String getLetterId() {
+        return letterId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setLetterId(String letterId) {
+        this.letterId = letterId;
     }
 
     public String getGroupName() {
