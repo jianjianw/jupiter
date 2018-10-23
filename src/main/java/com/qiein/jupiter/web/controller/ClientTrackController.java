@@ -47,7 +47,7 @@ public class ClientTrackController extends BaseController {
         String reason = StringUtil.nullToStrTrim(jsonObject.getString("reason"));
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        clientTrackService.batchDeleteKzList(kzIds, currentLoginStaff);
+        clientTrackService.batchDeleteKzList(kzIds, currentLoginStaff, reason);
         return ResultInfoUtil.success(TipMsgEnum.DELETE_SUCCESS);
     }
 
