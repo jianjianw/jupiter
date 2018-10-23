@@ -78,7 +78,7 @@ public class ClientTrackServiceImpl implements ClientTrackService {
         List<StaffNumVO> onwerCollector = getOnwerStaffList("COLLECTORID", staffPO.getCompanyId(), kzIds);
         List<StaffNumVO> appoints = getOnwerStaffList("APPOINTORID", staffPO.getCompanyId(), kzIds);
 
-        String addRstStr = crmBaseApi.doService(reqContent, "clientBatchDeleteLp");
+        String addRstStr = crmBaseApi.doService(reqContent, "clientBatchDeleteHs");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if ("100000".equals(jsInfo.getString("code"))) {
             //给录入人推送消息
