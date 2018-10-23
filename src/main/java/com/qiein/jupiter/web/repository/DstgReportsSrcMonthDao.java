@@ -1832,7 +1832,7 @@ public class DstgReportsSrcMonthDao {
 			if(StringUtil.isNotEmpty(reportsParamSrcMonthVO.getTypeId())){
 				sql.append(" AND info.TYPEID IN("+reportsParamSrcMonthVO.getTypeId()+") ");
 			}
-		sql.append(" AND info.CREATETIME BETWEEN "+firstDay+" AND "+ lastDay);	
+		sql.append(" AND info.APPOINTTIME BETWEEN "+firstDay+" AND "+ lastDay);	
 		sql.append(" AND src.TYPEID IN(1,2)");
 			if (StringUtil.isNotEmpty(reportsParamSrcMonthVO.getSourceId())) {
 				sql.append(" AND src.ID IN (" + reportsParamSrcMonthVO.getSourceId() + ")");
