@@ -271,8 +271,8 @@ public class CheckClientRepeatDao {
                 throw new RException("存在重复客资");
             }
             GoEasyUtil.pushRepeatClient(companyId, info.getAppointorId(), info, clientInfoVO.getOperaName(), newsDao, staffDao);
-            GoEasyUtil.pushRepeatClient(companyId, info.getCollectorId(), info, clientInfoVO.getOperaName(), newsDao, staffDao);
-            GoEasyUtil.pushRepeatClient(companyId, info.getPromotorId(), info, clientInfoVO.getOperaName(), newsDao, staffDao);
+//            GoEasyUtil.pushRepeatClient(companyId, info.getCollectorId(), info, clientInfoVO.getOperaName(), newsDao, staffDao);
+//            GoEasyUtil.pushRepeatClient(companyId, info.getPromotorId(), info, clientInfoVO.getOperaName(), newsDao, staffDao);
             throw new RException("存在重复客资");
         }
     }

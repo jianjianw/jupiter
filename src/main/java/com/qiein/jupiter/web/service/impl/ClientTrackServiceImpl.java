@@ -65,19 +65,20 @@ public class ClientTrackServiceImpl implements ClientTrackService {
      * @param kzIds
      * @param staffPO
      */
-    public void batchDeleteKzList(String kzIds, StaffPO staffPO) {
+    public void batchDeleteKzList(String kzIds, StaffPO staffPO, String reason) {
         Map<String, Object> reqContent = new HashMap<>();
         reqContent.put("companyid", staffPO.getCompanyId());
         reqContent.put("operaid", staffPO.getId());
         reqContent.put("operaname", staffPO.getNickName());
         reqContent.put("kzids", kzIds);
+        reqContent.put("reason", reason);
 
         //获取推广人员集合
         //TODO  优化
         List<StaffNumVO> onwerCollector = getOnwerStaffList("COLLECTORID", staffPO.getCompanyId(), kzIds);
         List<StaffNumVO> appoints = getOnwerStaffList("APPOINTORID", staffPO.getCompanyId(), kzIds);
 
-        String addRstStr = crmBaseApi.doService(reqContent, "clientBatchDeleteLp");
+        String addRstStr = crmBaseApi.doService(reqContent, "clientBatchDeleteHs");
         JSONObject jsInfo = JsonFmtUtil.strInfoToJsonObj(addRstStr);
         if ("100000".equals(jsInfo.getString("code"))) {
             //给录入人推送消息
@@ -125,6 +126,9 @@ public class ClientTrackServiceImpl implements ClientTrackService {
             return null;
         }
         String[] kzIdArr = kzIds.split(CommonConstant.STR_SEPARATOR);
+        if (kzIdArr == null || kzIdArr.length == 0) {
+            return null;
+        }
         return clientDao.getOnwerInfoNumByIds(DBSplitUtil.getInfoTabName(companyId), kzIdArr, " info." + type + " ", companyId);
     }
 
@@ -195,7 +199,7 @@ public class ClientTrackServiceImpl implements ClientTrackService {
                     ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(kzId,
                             DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
                             DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
-                    if (staffService.getMsgSetByStaffId(info.getCompanyId(),info.getAppointorId()).isAllowWxDingMsg()){
+                    if (staffService.getMsgSetByStaffId(info.getCompanyId(), info.getAppointorId()).isAllowWxDingMsg()) {
                         GoEasyUtil.pushReject(staffPO.getCompanyId(), info.getAppointorId(), info, newsDao, staffDao);
                     }
                 }

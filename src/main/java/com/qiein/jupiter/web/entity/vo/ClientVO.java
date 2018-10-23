@@ -12,7 +12,7 @@ public class ClientVO implements Serializable {
     /**
      * 主键ID
      */
-    private int id;
+    private Integer id;
     /**
      * 客资ID
      */
@@ -20,7 +20,7 @@ public class ClientVO implements Serializable {
     /**
      * 性别（0-未知，1-男，2-女）
      */
-    private int sex;
+    private Integer sex;
     /**
      * 客资姓名
      */
@@ -44,25 +44,25 @@ public class ClientVO implements Serializable {
     /**
      * 客资咨询方式
      */
-    private int zxStyle;
+    private Integer zxStyle;
     /**
      * 拍摄地
      */
-    private int shopId;
+    private Integer shopId;
     /**
      * 渠道ID
      */
     @Id(message = "{client.channelId.null}")
-    private int channelId;
+    private Integer channelId;
     /**
      * 来源ID
      */
     @Id(message = "{client.sourceId.null}")
-    private int sourceId;
+    private Integer sourceId;
     /**
      * 拍摄类型ID
      */
-    private int typeId;
+    private Integer typeId;
     /**
      * 广告着陆页
      */
@@ -86,7 +86,7 @@ public class ClientVO implements Serializable {
     /**
      * 邀约客服ID
      */
-    private int appointId;
+    private Integer appointId;
     /**
      * 邀约客服小组ID
      */
@@ -94,11 +94,11 @@ public class ClientVO implements Serializable {
     /**
      * 企业ID
      */
-    private int companyId;
+    private Integer companyId;
     /**
      * 推广人ID
      */
-    private int collectorId;
+    private Integer collectorId;
     /**
      * 推广人姓名
      */
@@ -106,7 +106,7 @@ public class ClientVO implements Serializable {
     /**
      * 筛客人ID
      */
-    private int promotorId;
+    private Integer promotorId;
 
     /**
      * 筛客人名称
@@ -148,28 +148,28 @@ public class ClientVO implements Serializable {
     /**
      * 意向等级
      */
-    private int yxLevel;
+    private Integer yxLevel;
 
     /**
      * 预算范围
      */
-    private int ysRange;
+    private Integer ysRange;
     /**
      * 婚期时间
      */
-    private int marryTime;
+    private Integer marryTime;
     /**
      * 预拍时间
      */
-    private int ypTime;
+    private Integer ypTime;
     /**
      * 邀约结果
      */
-    private int yyRst;
+    private Integer yyRst;
     /**
      * 无效原因编码
      */
-    private int invalidCode;
+    private Integer invalidCode;
     /**
      * 无效原因
      */
@@ -185,27 +185,27 @@ public class ClientVO implements Serializable {
     /**
      * 下次追踪时间
      */
-    private int trackTime;
+    private Integer trackTime;
     /**
      * 消息提醒
      */
-    private int warnStyle;
+    private Integer warnStyle;
     /**
      * 成交套系金额
      */
-    private int amount;
+    private Integer amount;
     /**
      * 已收金额
      */
-    private int stayAmount;
+    private Integer stayAmount;
     /**
      * 本次收款金额
      */
-    private int payAmount;
+    private Integer payAmount;
     /**
      * 支付方式
      */
-    private int payStyle;
+    private Integer payStyle;
     /**
      * 合同编号
      */
@@ -213,24 +213,24 @@ public class ClientVO implements Serializable {
     /**
      * 订单时间
      */
-    private int successTime;
+    private Integer successTime;
 
     /**
      * 最终拍摄地ID
      */
-    private int filmingCode;
+    private Integer filmingCode;
     /**
      * 状态ID
      */
-    private int statusId;
+    private Integer statusId;
     /**
      * 领单时间
      */
-    private int receiveTime;
+    private Integer receiveTime;
     /**
      * 套系名称编码
      */
-    private int packageCode;
+    private Integer packageCode;
     /**
      * 配偶姓名
      */
@@ -250,12 +250,12 @@ public class ClientVO implements Serializable {
     /**
      * 预约时间
      */
-    private int appointTime;
+    private Integer appointTime;
 
     /**
      * 门市接待人ID
      */
-    private int receptorId;
+    private Integer receptorId;
     /**
      * 门市接待人姓名
      */
@@ -263,7 +263,7 @@ public class ClientVO implements Serializable {
     /**
      * 到店时间
      */
-    private int comeShopTime;
+    private Integer comeShopTime;
     /**
      * 老客姓名
      */
@@ -275,11 +275,11 @@ public class ClientVO implements Serializable {
     /**
      * 收款时间
      */
-    private int payTime;
+    private Integer payTime;
     /**
      * 收款人ID
      */
-    private int receiptId;
+    private Integer receiptId;
     /**
      * 收款人姓名
      */
@@ -292,7 +292,7 @@ public class ClientVO implements Serializable {
     /**
      * 操作人ID
      */
-    private int operaId;
+    private Integer operaId;
     /**
      * 操作人姓名
      */
@@ -301,15 +301,15 @@ public class ClientVO implements Serializable {
     /**
      * 分配规则
      */
-    private int allotType;
+    private Integer allotType;
     /**
      * 渠道类型
      */
-    private int srcType;
+    private Integer srcType;
     /**
      * 客资大类
      */
-    private int classId;
+    private Integer classId;
     /**
      * 是否筛选
      */
@@ -322,7 +322,7 @@ public class ClientVO implements Serializable {
     /**
      * 什么录入的
      */
-    private int addType;
+    private Integer addType;
 
     /**
      * 订单图片
@@ -330,145 +330,31 @@ public class ClientVO implements Serializable {
     private String orderImg;
 
 
-    public String getOrderImg() {
-        return orderImg;
-    }
-
-    public void setOrderImg(String orderImg) {
-        this.orderImg = orderImg;
-    }
-
-    public int getAddType() {
-        return addType;
-    }
-
-    public void setAddType(int addType) {
-        this.addType = addType;
-    }
-
-    public int getPromotorId() {
-        return promotorId;
-    }
-
-    public void setPromotorId(int promotorId) {
-        this.promotorId = promotorId;
-    }
-
-    public String getPromoterName() {
-        return promoterName;
-    }
-
-    public void setPromoterName(String promoterName) {
-        this.promoterName = promoterName;
-    }
-
-    public String getTalkImg() {
-        return talkImg;
-    }
-
-    public void setTalkImg(String talkImg) {
-        this.talkImg = talkImg;
-    }
-
-
-    public int getClassId() {
-        return classId;
-    }
-
-
-    public boolean isFilterFlag() {
-        return filterFlag;
-    }
-
-    public void setFilterFlag(boolean filterFlag) {
-        this.filterFlag = filterFlag;
-    }
-
-    public void setClassId(int classId) {
-        this.classId = classId;
-    }
-
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
 
-    public int getSrcType() {
-        return srcType;
+    public Integer getId() {
+        return id;
     }
 
-    public void setSrcType(int srcType) {
-        this.srcType = srcType;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public int getOperaId() {
-        return operaId;
+    public String getKzId() {
+        return kzId;
     }
 
-    public int getAllotType() {
-        return allotType;
+    public void setKzId(String kzId) {
+        this.kzId = kzId;
     }
 
-    public void setAllotType(int allotType) {
-        this.allotType = allotType;
-    }
-
-    public void setOperaId(int operaId) {
-        this.operaId = operaId;
-    }
-
-    public String getOperaName() {
-        return operaName;
-    }
-
-    public void setOperaName(String operaName) {
-        this.operaName = operaName;
-    }
-
-    public String getRemarkForm() {
-        return remarkForm;
-    }
-
-    public void setRemarkForm(String remarkForm) {
-        this.remarkForm = remarkForm;
-    }
-
-    public String getMateName() {
-        return mateName;
-    }
-
-    public void setMateName(String mateName) {
-        this.mateName = mateName;
-    }
-
-    public String getMatePhone() {
-        return matePhone;
-    }
-
-    public void setMatePhone(String matePhone) {
-        this.matePhone = matePhone;
-    }
-
-    public String getMateWeChat() {
-        return mateWeChat;
-    }
-
-    public void setMateWeChat(String mateWeChat) {
-        this.mateWeChat = mateWeChat;
-    }
-
-    public String getMateQq() {
-        return mateQq;
-    }
-
-    public void setMateQq(String mateQq) {
-        this.mateQq = mateQq;
-    }
-
-    public int getSex() {
+    public Integer getSex() {
         return sex;
     }
 
-    public void setSex(int sex) {
+    public void setSex(Integer sex) {
         this.sex = sex;
     }
 
@@ -512,43 +398,43 @@ public class ClientVO implements Serializable {
         this.kzQq = kzQq;
     }
 
-    public int getZxStyle() {
+    public Integer getZxStyle() {
         return zxStyle;
     }
 
-    public void setZxStyle(int zxStyle) {
+    public void setZxStyle(Integer zxStyle) {
         this.zxStyle = zxStyle;
     }
 
-    public int getShopId() {
+    public Integer getShopId() {
         return shopId;
     }
 
-    public void setShopId(int shopId) {
+    public void setShopId(Integer shopId) {
         this.shopId = shopId;
     }
 
-    public int getChannelId() {
+    public Integer getChannelId() {
         return channelId;
     }
 
-    public void setChannelId(int channelId) {
+    public void setChannelId(Integer channelId) {
         this.channelId = channelId;
     }
 
-    public int getSourceId() {
+    public Integer getSourceId() {
         return sourceId;
     }
 
-    public void setSourceId(int sourceId) {
+    public void setSourceId(Integer sourceId) {
         this.sourceId = sourceId;
     }
 
-    public int getTypeId() {
+    public Integer getTypeId() {
         return typeId;
     }
 
-    public void setTypeId(int typeId) {
+    public void setTypeId(Integer typeId) {
         this.typeId = typeId;
     }
 
@@ -592,11 +478,11 @@ public class ClientVO implements Serializable {
         this.remark = remark;
     }
 
-    public int getAppointId() {
+    public Integer getAppointId() {
         return appointId;
     }
 
-    public void setAppointId(int appointId) {
+    public void setAppointId(Integer appointId) {
         this.appointId = appointId;
     }
 
@@ -608,19 +494,19 @@ public class ClientVO implements Serializable {
         this.groupId = groupId;
     }
 
-    public int getCompanyId() {
+    public Integer getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(int companyId) {
+    public void setCompanyId(Integer companyId) {
         this.companyId = companyId;
     }
 
-    public int getCollectorId() {
+    public Integer getCollectorId() {
         return collectorId;
     }
 
-    public void setCollectorId(int collectorId) {
+    public void setCollectorId(Integer collectorId) {
         this.collectorId = collectorId;
     }
 
@@ -630,6 +516,22 @@ public class ClientVO implements Serializable {
 
     public void setCollectorName(String collectorName) {
         this.collectorName = collectorName;
+    }
+
+    public Integer getPromotorId() {
+        return promotorId;
+    }
+
+    public void setPromotorId(Integer promotorId) {
+        this.promotorId = promotorId;
+    }
+
+    public String getPromoterName() {
+        return promoterName;
+    }
+
+    public void setPromoterName(String promoterName) {
+        this.promoterName = promoterName;
     }
 
     public String getChannelName() {
@@ -672,14 +574,6 @@ public class ClientVO implements Serializable {
         this.groupName = groupName;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getCreateTime() {
         return createTime;
     }
@@ -704,52 +598,52 @@ public class ClientVO implements Serializable {
         this.memo = memo;
     }
 
-    public String getKzId() {
-        return kzId;
-    }
-
-    public void setKzId(String kzId) {
-        this.kzId = kzId;
-    }
-
-    public int getYxLevel() {
+    public Integer getYxLevel() {
         return yxLevel;
     }
 
-    public void setYxLevel(int yxLevel) {
+    public void setYxLevel(Integer yxLevel) {
         this.yxLevel = yxLevel;
     }
 
-    public int getYsRange() {
+    public Integer getYsRange() {
         return ysRange;
     }
 
-    public void setYsRange(int ysRange) {
+    public void setYsRange(Integer ysRange) {
         this.ysRange = ysRange;
     }
 
-    public int getMarryTime() {
+    public Integer getMarryTime() {
         return marryTime;
     }
 
-    public void setMarryTime(int marryTime) {
+    public void setMarryTime(Integer marryTime) {
         this.marryTime = marryTime;
     }
 
-    public int getYpTime() {
+    public Integer getYpTime() {
         return ypTime;
     }
 
-    public void setYpTime(int ypTime) {
+    public void setYpTime(Integer ypTime) {
         this.ypTime = ypTime;
     }
 
-    public int getYyRst() {
+    public Integer getYyRst() {
         return yyRst;
     }
 
-    public void setYyRst(int yyRst) {
+    public void setYyRst(Integer yyRst) {
         this.yyRst = yyRst;
+    }
+
+    public Integer getInvalidCode() {
+        return invalidCode;
+    }
+
+    public void setInvalidCode(Integer invalidCode) {
+        this.invalidCode = invalidCode;
     }
 
     public String getInvalidLabel() {
@@ -768,43 +662,59 @@ public class ClientVO implements Serializable {
         this.invalidMemo = invalidMemo;
     }
 
-    public int getTrackTime() {
+    public String getTrackMemo() {
+        return trackMemo;
+    }
+
+    public void setTrackMemo(String trackMemo) {
+        this.trackMemo = trackMemo;
+    }
+
+    public Integer getTrackTime() {
         return trackTime;
     }
 
-    public void setTrackTime(int trackTime) {
+    public void setTrackTime(Integer trackTime) {
         this.trackTime = trackTime;
     }
 
-    public int getWarnStyle() {
+    public Integer getWarnStyle() {
         return warnStyle;
     }
 
-    public void setWarnStyle(int warnStyle) {
+    public void setWarnStyle(Integer warnStyle) {
         this.warnStyle = warnStyle;
     }
 
-    public int getAmount() {
+    public Integer getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(Integer amount) {
         this.amount = amount;
     }
 
-    public int getStayAmount() {
+    public Integer getStayAmount() {
         return stayAmount;
     }
 
-    public void setStayAmount(int stayAmount) {
+    public void setStayAmount(Integer stayAmount) {
         this.stayAmount = stayAmount;
     }
 
-    public int getPayStyle() {
+    public Integer getPayAmount() {
+        return payAmount;
+    }
+
+    public void setPayAmount(Integer payAmount) {
+        this.payAmount = payAmount;
+    }
+
+    public Integer getPayStyle() {
         return payStyle;
     }
 
-    public void setPayStyle(int payStyle) {
+    public void setPayStyle(Integer payStyle) {
         this.payStyle = payStyle;
     }
 
@@ -816,59 +726,91 @@ public class ClientVO implements Serializable {
         this.htNum = htNum;
     }
 
-    public int getSuccessTime() {
+    public Integer getSuccessTime() {
         return successTime;
     }
 
-    public void setSuccessTime(int successTime) {
+    public void setSuccessTime(Integer successTime) {
         this.successTime = successTime;
     }
 
-    public int getFilmingCode() {
+    public Integer getFilmingCode() {
         return filmingCode;
     }
 
-    public void setFilmingCode(int filmingCode) {
+    public void setFilmingCode(Integer filmingCode) {
         this.filmingCode = filmingCode;
     }
 
-    public int getStatusId() {
+    public Integer getStatusId() {
         return statusId;
     }
 
-    public void setStatusId(int statusId) {
+    public void setStatusId(Integer statusId) {
         this.statusId = statusId;
     }
 
-    public int getReceiveTime() {
+    public Integer getReceiveTime() {
         return receiveTime;
     }
 
-    public void setReceiveTime(int receiveTime) {
+    public void setReceiveTime(Integer receiveTime) {
         this.receiveTime = receiveTime;
     }
 
-    public int getPackageCode() {
+    public Integer getPackageCode() {
         return packageCode;
     }
 
-    public void setPackageCode(int packageCode) {
+    public void setPackageCode(Integer packageCode) {
         this.packageCode = packageCode;
     }
 
-    public int getAppointTime() {
+    public String getMateName() {
+        return mateName;
+    }
+
+    public void setMateName(String mateName) {
+        this.mateName = mateName;
+    }
+
+    public String getMatePhone() {
+        return matePhone;
+    }
+
+    public void setMatePhone(String matePhone) {
+        this.matePhone = matePhone;
+    }
+
+    public String getMateWeChat() {
+        return mateWeChat;
+    }
+
+    public void setMateWeChat(String mateWeChat) {
+        this.mateWeChat = mateWeChat;
+    }
+
+    public String getMateQq() {
+        return mateQq;
+    }
+
+    public void setMateQq(String mateQq) {
+        this.mateQq = mateQq;
+    }
+
+    public Integer getAppointTime() {
         return appointTime;
     }
 
-    public void setAppointTime(int appointTime) {
+    public void setAppointTime(Integer appointTime) {
         this.appointTime = appointTime;
     }
 
-    public int getReceptorId() {
+    public Integer getReceptorId() {
         return receptorId;
     }
 
-    public void setReceptorId(int receptorId) {
+    public void setReceptorId(Integer receptorId) {
         this.receptorId = receptorId;
     }
 
@@ -880,11 +822,11 @@ public class ClientVO implements Serializable {
         this.receptorName = receptorName;
     }
 
-    public int getComeShopTime() {
+    public Integer getComeShopTime() {
         return comeShopTime;
     }
 
-    public void setComeShopTime(int comeShopTime) {
+    public void setComeShopTime(Integer comeShopTime) {
         this.comeShopTime = comeShopTime;
     }
 
@@ -904,19 +846,19 @@ public class ClientVO implements Serializable {
         this.oldKzPhone = oldKzPhone;
     }
 
-    public int getPayTime() {
+    public Integer getPayTime() {
         return payTime;
     }
 
-    public void setPayTime(int payTime) {
+    public void setPayTime(Integer payTime) {
         this.payTime = payTime;
     }
 
-    public int getReceiptId() {
+    public Integer getReceiptId() {
         return receiptId;
     }
 
-    public void setReceiptId(int receiptId) {
+    public void setReceiptId(Integer receiptId) {
         this.receiptId = receiptId;
     }
 
@@ -928,27 +870,83 @@ public class ClientVO implements Serializable {
         this.receiptName = receiptName;
     }
 
-    public int getPayAmount() {
-        return payAmount;
+    public String getRemarkForm() {
+        return remarkForm;
     }
 
-    public void setPayAmount(int payAmount) {
-        this.payAmount = payAmount;
+    public void setRemarkForm(String remarkForm) {
+        this.remarkForm = remarkForm;
     }
 
-    public String getTrackMemo() {
-        return trackMemo;
+    public Integer getOperaId() {
+        return operaId;
     }
 
-    public void setTrackMemo(String trackMemo) {
-        this.trackMemo = trackMemo;
+    public void setOperaId(Integer operaId) {
+        this.operaId = operaId;
     }
 
-    public int getInvalidCode() {
-        return invalidCode;
+    public String getOperaName() {
+        return operaName;
     }
 
-    public void setInvalidCode(int invalidCode) {
-        this.invalidCode = invalidCode;
+    public void setOperaName(String operaName) {
+        this.operaName = operaName;
+    }
+
+    public Integer getAllotType() {
+        return allotType;
+    }
+
+    public void setAllotType(Integer allotType) {
+        this.allotType = allotType;
+    }
+
+    public Integer getSrcType() {
+        return srcType;
+    }
+
+    public void setSrcType(Integer srcType) {
+        this.srcType = srcType;
+    }
+
+    public Integer getClassId() {
+        return classId;
+    }
+
+    public void setClassId(Integer classId) {
+        this.classId = classId;
+    }
+
+    public boolean isFilterFlag() {
+        return filterFlag;
+    }
+
+    public void setFilterFlag(boolean filterFlag) {
+        this.filterFlag = filterFlag;
+    }
+
+    public String getTalkImg() {
+        return talkImg;
+    }
+
+    public void setTalkImg(String talkImg) {
+        this.talkImg = talkImg;
+    }
+
+    public Integer getAddType() {
+        return addType;
+    }
+
+    public void setAddType(Integer addType) {
+        this.addType = addType;
+    }
+
+    public String getOrderImg() {
+        return orderImg;
+    }
+
+    public void setOrderImg(String orderImg) {
+        this.orderImg = orderImg;
     }
 }
