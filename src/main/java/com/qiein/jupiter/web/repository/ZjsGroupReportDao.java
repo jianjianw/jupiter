@@ -68,17 +68,70 @@ public class ZjsGroupReportDao {
         for(Map.Entry<String, String> set : entries ){
             String code = set.getKey();
             String name = set.getValue();
-            //意向等级
+            //意向等级毛客资
             getClientSourceLevelCount(reportsParamVO,dynamicBeans,code,name);
+            //进店数
             getClientSourceLevelInShopCount(reportsParamVO,dynamicBeans,code,name);
         }
-
 
         return dynamicBeans;
 
     }
 
+    //设置动态类的总合计（毛客资和进店数）type: Count or InShopCount
+    private void computerDynamicTotal(List<Object> dynamicBeans, String dicCode, String dicName,String type) {
 
+        StringBuilder sb = new StringBuilder();
+        String suffix = sb.append("Level").append(dicName).append(dicCode).append(type).toString();
+        Object totalObject = null;//总计对象
+        Integer totalClient = 0;
+        try {
+            for(Object obj : dynamicBeans){
+                Class<?> clazz = obj.getClass();
+                Method getName = clazz.getDeclaredMethod("getName");
+                String name = (String) getName.invoke(obj);
+                if(StringUtils.equals("总计",name)){
+                    totalObject = obj;
+                    continue;
+                }
+                Method declaredMethod = clazz.getDeclaredMethod("get"+suffix);
+                Integer invoke = (Integer)declaredMethod.invoke(obj);
+                totalClient += invoke;
+            }
+            //总计
+            Class<?> clazz = totalObject.getClass();
+            Method setMethod = clazz.getDeclaredMethod("set" + suffix,Integer.class);
+            //设置毛客资总合计 or  进店数的总合计
+            setMethod.invoke(totalObject,totalClient);
+
+
+            //计算转换率的总合计
+            if(StringUtils.equals(type,"InShopCount")){//毛客资 和 进店数都封装完毕
+                StringBuilder stringBuilder = new StringBuilder();
+                StringBuilder level = stringBuilder.append("Level").append(dicName).append(dicCode);
+                //毛客资
+                Method clientMethod = clazz.getDeclaredMethod("get"+level+"Count");
+                Integer client = (Integer)clientMethod.invoke(totalObject);
+
+                //进店数
+                Method inShopMethod = clazz.getDeclaredMethod("get"+level+"InShopCount");
+                Integer inShopCount = (Integer)inShopMethod.invoke(totalObject);
+
+                //  进店/客资  总转化率
+                double rate = inShopCount / (double) client;
+                rate = parseDouble(((Double.isNaN(rate) || Double.isInfinite(rate)) ? 0.0 : rate) * 100);
+
+                Method declaredMethod = clazz.getDeclaredMethod("set" + level + "Rate",Double.class);
+                declaredMethod.invoke(totalObject,rate);//封装总转化率
+
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage(),e);
+        }
+
+
+        return;
+    }
 
 
     //创建动态bean
@@ -183,10 +236,13 @@ public class ZjsGroupReportDao {
         //封装参数到dynamicBeans
         getDynamicBeanMethod(list,dynamicBeans,dicCode,dicName,"Count");
 
+        //计算客资数的总合计
+        computerDynamicTotal(dynamicBeans,dicCode,dicName,"Count");
+
 
     }
 
-    //封装客资进店数 和 客资转化率(A,B,C)
+    //封装客资进店数 和 客资转化率
     private void getClientSourceLevelInShopCount(ReportsParamVO reportsParamVO,List<Object> dynamicBeans,String dicCode,String dicName){
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
@@ -208,9 +264,12 @@ public class ZjsGroupReportDao {
 
         //封装参数到dynamicBeans
         getDynamicBeanMethod(list,dynamicBeans,dicCode,dicName,"InShopCount");
-
         //计算客资转化率
         convertClientRate(dynamicBeans,dicCode,dicName);
+
+        //计算进店数的总合计
+        computerDynamicTotal(dynamicBeans,dicCode,dicName,"InShopCount");
+
     }
 
     //封装客资意向等级数据
@@ -258,7 +317,9 @@ public class ZjsGroupReportDao {
                 Method methodInShopCount = clazz.getDeclaredMethod(prefix+"InShopCount");
                 Integer inShopCount = (Integer)methodInShopCount.invoke(obj);
 
-                double rate = parseDouble(count / (double)inShopCount * 100);
+                double rate = count / (double) inShopCount;//进店转化率
+                rate = parseDouble(((Double.isNaN(rate) || Double.isInfinite(rate)) ? 0.0 : rate) * 100);
+
                 sb.setLength(0);
                 sb.append("set").append("Level").append(dicName).append(dicCode).append("Rate");
                 Method methodRate = clazz.getDeclaredMethod(sb.toString(), Double.class);
