@@ -67,12 +67,12 @@ public class ZjsClientDetailReportVO implements Serializable {
     //非周末成交数
     private int unWeekendSuccessCount;
     //非周末进店占比
-    private int unWeekendInShopRate;
+    private double unWeekendInShopRate;
 
     //周末成交率
-    private int weekendSuccessRate;
+    private double weekendSuccessRate;
     //非周末成交率
-    private int unWeekendSuccessRate;
+    private double unWeekendSuccessRate;
 
     //营业额
     private double amount;
@@ -271,27 +271,27 @@ public class ZjsClientDetailReportVO implements Serializable {
         this.unWeekendSuccessCount = unWeekendSuccessCount;
     }
 
-    public int getUnWeekendInShopRate() {
+    public double getUnWeekendInShopRate() {
         return unWeekendInShopRate;
     }
 
-    public void setUnWeekendInShopRate(int unWeekendInShopRate) {
+    public void setUnWeekendInShopRate(double unWeekendInShopRate) {
         this.unWeekendInShopRate = unWeekendInShopRate;
     }
 
-    public int getWeekendSuccessRate() {
+    public double getWeekendSuccessRate() {
         return weekendSuccessRate;
     }
 
-    public void setWeekendSuccessRate(int weekendSuccessRate) {
+    public void setWeekendSuccessRate(double weekendSuccessRate) {
         this.weekendSuccessRate = weekendSuccessRate;
     }
 
-    public int getUnWeekendSuccessRate() {
+    public double getUnWeekendSuccessRate() {
         return unWeekendSuccessRate;
     }
 
-    public void setUnWeekendSuccessRate(int unWeekendSuccessRate) {
+    public void setUnWeekendSuccessRate(double unWeekendSuccessRate) {
         this.unWeekendSuccessRate = unWeekendSuccessRate;
     }
 

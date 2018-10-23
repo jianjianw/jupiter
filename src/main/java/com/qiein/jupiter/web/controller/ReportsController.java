@@ -637,6 +637,12 @@ public class ReportsController extends BaseController {
             List<Map<String, Object>> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsROI(month, typeId, sourceId, staffPO.getCompanyId());
             return ResultInfoUtil.success(dstgReportsSrcMonthVO);
         }
+        
+        // 预约量
+        if (StringUtil.isNotEmpty(kzZB) && "appointment".equals(kzZB)) {
+            List<Map<String, Object>> dstgReportsSrcMonthVO = reportService.getDSTGSrcMonthReportsAppointment(month, typeId, sourceId, staffPO.getCompanyId());
+            return ResultInfoUtil.success(dstgReportsSrcMonthVO);
+        }
         return ResultInfoUtil.error(9999, "查询失败");
     }
 
@@ -793,7 +799,7 @@ public class ReportsController extends BaseController {
     @GetMapping("/get_zjs_group_report")
     public ResultInfo getZjsGroupReport(ReportsParamVO reportsParamVO){
         reportsParamVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
-        List<ZjsClientDetailReportVO> reportVOS = reportService.getZjsGroupReport(reportsParamVO);
+        List<Object> reportVOS = reportService.getZjsGroupReport(reportsParamVO);
         return ResultInfoUtil.success(reportVOS);
     }
 
@@ -803,7 +809,7 @@ public class ReportsController extends BaseController {
     @GetMapping("/get_zjs_group_detail_report")
     public ResultInfo getZjsGroupDetailReport(ReportsParamVO reportsParamVO){
         reportsParamVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
-        List<ZjsClientDetailReportVO> reportVOS = reportService.getZjsGroupDetailReport(reportsParamVO);
+        List<Object> reportVOS = reportService.getZjsGroupDetailReport(reportsParamVO);
         return ResultInfoUtil.success(reportVOS);
     }
     /**

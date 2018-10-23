@@ -3,11 +3,17 @@ package com.qiein.jupiter.web.repository;
 import com.qiein.jupiter.constant.ClientConst;
 import com.qiein.jupiter.constant.ClientLogConst;
 import com.qiein.jupiter.constant.ClientStatusConst;
+import com.qiein.jupiter.constant.DictionaryConstant;
 import com.qiein.jupiter.enums.AddTypeEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.CollectionUtils;
 import com.qiein.jupiter.util.NumUtil;
 import com.qiein.jupiter.util.StringUtil;
+import com.qiein.jupiter.util.TimeUtil;
+import com.qiein.jupiter.web.dao.ClientStatusDao;
+import com.qiein.jupiter.web.dao.DictionaryDao;
+import com.qiein.jupiter.web.entity.po.ClientStatusPO;
+import com.qiein.jupiter.web.entity.po.DictionaryPO;
 import com.qiein.jupiter.web.entity.vo.ClientVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -31,6 +37,12 @@ public class ClientAddDao {
 
     @Autowired
     private NamedParameterJdbcOperations namedJdbc;
+
+    @Autowired
+    private DictionaryDao dictionaryDao;
+
+    @Autowired
+    private ClientStatusDao clientStatusDao;
 
     /**
      * Pc端录入 电商客资
@@ -76,7 +88,10 @@ public class ClientAddDao {
      * 录入门市客资
      */
     public void addPcMdClientInfo() {
-
+//        if (ClientStatusConst.BE_SUCCESS == ao.getStatusId() && IntegerUtils.isValid(ao.getPayamount())) {
+//            // 添加收款记录
+//            addCashLog(ao);
+//        }
     }
 
 
@@ -109,16 +124,28 @@ public class ClientAddDao {
         StringBuilder sql = new StringBuilder();
         sql.append(" INSERT INTO hm_crm_client_info ");
         sql.append("  ( KZID, TYPEID, CLASSID, STATUSID, KZNAME, KZPHONE, KZWECHAT, KZQQ, KZWW, SEX,  ");
-        sql.append(" CHANNELID, SOURCEID, COLLECTORID, APPOINTORID, PROMOTORID, SHOPID, ALLOTTYPE, COMPANYID, SRCTYPE, GROUPID, CREATETIME ");
+        sql.append(" CHANNELID, SOURCEID, COLLECTORID, APPOINTORID, PROMOTORID, RECEPTORID, SHOPID, ALLOTTYPE, " +
+                "COMPANYID, SRCTYPE, GROUPID, CREATETIME , COMESHOPTIME, ACTUALTIME ");
         sql.append(" ");
         if (ClientStatusConst.BE_HAVE_MAKE_ORDER == clientVO.getStatusId()) {
             sql.append(" , RECEIVETIME ");
         }
+        if (ClientStatusConst.BE_SUCCESS == clientVO.getStatusId()) {
+            sql.append(" , SUCCESSTIME ");
+        } else if (ClientStatusConst.BE_RUN_OFF == clientVO.getStatusId()) {
+            sql.append("  , APPOINTTIME ");
+        }
         sql.append(" , UPDATETIME ) ");
         sql.append(" VALUES( :kzId, :typeId, :classId, :statusId, :kzName, :kzPhone, :kzWechat, :kzQq, :kzWw ,:sex ,");
-        sql.append(" :channelId , :sourceId, :collectorId , :appointId, :promotorId, :shopId, :allotType, :companyId, :srcType, :groupId, UNIX_TIMESTAMP(NOW())");
+        sql.append(" :channelId , :sourceId, :collectorId , :appointId, :promotorId, :receptorId, :shopId, :allotType," +
+                " :companyId, :srcType, :groupId, UNIX_TIMESTAMP(NOW()),:comeShopTime,:comeShopTime");
         if (ClientStatusConst.BE_HAVE_MAKE_ORDER == clientVO.getStatusId()) {
             sql.append(" , UNIX_TIMESTAMP(NOW()) ");
+        }
+        if (ClientStatusConst.BE_SUCCESS == clientVO.getStatusId()) {
+            sql.append(" , :successTime ");
+        } else if (ClientStatusConst.BE_RUN_OFF == clientVO.getStatusId()) {
+            sql.append(" ,:appointTime  ");
         }
         sql.append(" , UNIX_TIMESTAMP(NOW()) ) ");
 
@@ -128,18 +155,19 @@ public class ClientAddDao {
         return generatedKeyHolder.getKey().intValue();
     }
 
+
     /**
      * 新增客资详情
      */
     private void doAddClientDetail(ClientVO clientVO) {
         StringBuilder sql = new StringBuilder();
         sql.append(" INSERT INTO hm_crm_client_detail ");
-        sql.append(" ( KZID, COLLECTORNAME, PROMOTERNAME, APPOINTNAME, SHOPNAME, MEMO, TALKIMG, ZXSTYLE, ADADDRESS,  ");
+        sql.append(" ( KZID, COLLECTORNAME, PROMOTERNAME, APPOINTNAME, SHOPNAME, MEMO, TALKIMG, ORDERIMG, ZXSTYLE, ADADDRESS,  ");
         sql.append(" ADID, ADDRESS, GROUPNAME, KEYWORD, COMPANYID, CREATETIME , MATENAME, MATEPHONE, MATEWECHAT, MATEQQ,");
-        sql.append(" MARRYTIME, YPTIME, OLDKZNAME, OLDKZPHONE, YSRANGE , YXLEVEL  ) ");
-        sql.append(" VALUES ( :kzId, :collectorName, :promoterName, :appointName, :shopName, :memo, :talkImg, :zxStyle, :adAddress,");
+        sql.append(" MARRYTIME, YPTIME, OLDKZNAME, OLDKZPHONE, YSRANGE , YXLEVEL , AMOUNT, STAYAMOUNT, PAYSTYLE, HTNUM ,INVALIDLABEL ) ");
+        sql.append(" VALUES ( :kzId, :collectorName, :promoterName, :appointName, :shopName, :memo, :talkImg,:orderImg, :zxStyle, :adAddress,");
         sql.append(" :adId, :address, :groupName, :keyWord, :companyId, UNIX_TIMESTAMP(NOW()), :mateName, :matePhone, :mateWeChat, :mateQq,");
-        sql.append(" :marryTime, :ypTime, :oldKzName, :oldKzPhone, :ysRange, yxLevel  ) ");
+        sql.append(" :marryTime, :ypTime, :oldKzName, :oldKzPhone, :ysRange, :yxLevel,:amount,:stayAmount,:payStyle,:htNum,:invalidLabel ) ");
 
         SqlParameterSource sqlParameterSource = new BeanPropertySqlParameterSource(clientVO);
         namedJdbc.update(sql.toString(), sqlParameterSource, new GeneratedKeyHolder());
@@ -174,6 +202,10 @@ public class ClientAddDao {
         String sql = " INSERT INTO hm_crm_client_log  ( KZID, OPERAID, OPERANAME, MEMO, OPERATIME, LOGTYPE, COMPANYID )" +
                 " VALUES ( :kzId, :operatorId, :operatorName, :memo, UNIX_TIMESTAMP(NOW()), :logType, :companyId ) ";
         namedJdbc.update(sql, paramMap);
+
+    }
+
+    private void doAddCashLog() {
 
     }
 
@@ -213,6 +245,95 @@ public class ClientAddDao {
         return log.toString();
     }
 
+    /**
+     * 新增邀约日志
+     */
+    private void doSavaInviteLog(ClientVO clientVO) {
+        String memo = StringUtil.replaceAllHTML(clientVO.getMemo());
+        String jdMemo;
+        ClientStatusPO clientStatusByStatusId = clientStatusDao.getClientStatusByStatusId(clientVO.getStatusId(), clientVO.getCompanyId());
+        //获取字典数据
+        DictionaryPO byCodeAndTypeAndCid = dictionaryDao.getByCodeAndTypeAndCid(clientVO.getCompanyId(), clientVO.getPayStyle(), DictionaryConstant.PAY_STYLE);
+        String statusName = clientStatusByStatusId.getStatusName();
+        if (ClientStatusConst.BE_RUN_OFF == clientVO.getYyRst() || ClientStatusConst.BACK_RUN_OFF == clientVO.getYyRst()) {
+            // 流失
+            jdMemo = "客资-";
+            jdMemo += statusName;
+            jdMemo += ",流失原因:";
+            jdMemo += clientVO.getInvalidLabel();
+            jdMemo += ";接待门店：";
+            jdMemo += clientVO.getShopName();
+            jdMemo += ";接待门市：";
+            jdMemo += clientVO.getReceptorName();
+            jdMemo += ";到店时间：";
+            jdMemo += TimeUtil.intMillisToTimeStr(clientVO.getComeShopTime());
+            if (NumUtil.isValid(clientVO.getAppointTime())) {
+                jdMemo += ";下次预约时间：";
+                jdMemo += TimeUtil.intMillisToTimeStr(clientVO.getAppointTime());
+            }
+            if (StringUtil.isNotEmpty(memo)) {
+                jdMemo += ";追踪备注:";
+                jdMemo += memo;
+            }
+        } else if (ClientStatusConst.BE_SUCCESS == clientVO.getYyRst()
+                || ClientStatusConst.BACK_SHOP_SUCCESS == clientVO.getYyRst()) {
+            // 成交
+            jdMemo = "客资-";
+            jdMemo += statusName;
+            jdMemo += ";接待门店：";
+            jdMemo += clientVO.getShopName();
+            jdMemo += ";接待门市：";
+            jdMemo += clientVO.getReceptorName();
+            jdMemo += ";订单时间：";
+            jdMemo += TimeUtil.intMillisToTimeStr(clientVO.getSuccessTime());
+            jdMemo += ";付款方式：";
+            jdMemo += byCodeAndTypeAndCid.getDicName();
+            jdMemo += ";合同编号：";
+            jdMemo += clientVO.getHtNum();
+            jdMemo += ";套系金额：";
+            jdMemo += clientVO.getAmount();
+            jdMemo += ";已收金额：";
+            jdMemo += clientVO.getStayAmount();
+            if (StringUtil.isNotEmpty(memo)) {
+                jdMemo += ";追踪备注:";
+                jdMemo += memo;
+            }
+        } else if (ClientStatusConst.BE_SUCCESS_STAY == clientVO.getYyRst()
+                || ClientStatusConst.BACK_SUCCESS_SHOP_STAY == clientVO.getYyRst()) {
+            // 保留
+            jdMemo = "客资-";
+            jdMemo += statusName;
+            jdMemo += ";接待门店：";
+            jdMemo += clientVO.getShopName();
+            jdMemo += ";接待门市：";
+            jdMemo += clientVO.getReceptorName();
+            jdMemo += ";接待时间：";
+            jdMemo += TimeUtil.intMillisToTimeStr(clientVO.getComeShopTime());
+            jdMemo += ";合同编号：";
+            jdMemo += clientVO.getHtNum();
+            jdMemo += ";套系金额：";
+            jdMemo += clientVO.getAmount();
+            jdMemo += ";保留金：";
+            jdMemo += clientVO.getStayAmount();
+            if (StringUtil.isNotEmpty(memo)) {
+                jdMemo += ";追踪备注:";
+                jdMemo += memo;
+            }
+        } else {
+            jdMemo = memo;
+        }
+        if (StringUtil.isEmpty(jdMemo) && StringUtil.isEmpty(StringUtil.getImgStrs(clientVO.getMemo()))) {
+            return;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(" INSERT INTO hm_crm_shop_meet_log ");
+        sb.append(" ( KZID, ARRIVETIME, RSTCODE, QTMEMO, AMOUNT, RECEPTERID, OPERAID, CREATETIME, SHOPID, COMPANYID ) "
+                + " VALUES  ( ?, ?, ?, ?, ?, ?, ?, UNIX_TIMESTAMP(NOW()), ?, ? ) ");
+
+
+    }
+
 
     /**
      * 预处理客资信息
@@ -239,6 +360,27 @@ public class ClientAddDao {
         List<String> imgList = StringUtil.getImgLists(clientVO.getRemark());
         if (CollectionUtils.isNotEmpty(imgList)) {
             clientVO.setTalkImg(imgList.get(0));
+        }
+    }
+
+
+    /**
+     * 进店客资预处理
+     */
+    private void initClientInfoComeShop(ClientVO clientVO) {
+        clientVO.setAllotType(ClientConst.ALLOT_SYSTEM_AUTO);
+        /*-- 获取客资分类ID --*/
+        ClientStatusPO clientStatusByStatusId = clientStatusDao.getClientStatusByStatusId(clientVO.getStatusId(), clientVO.getCompanyId());
+        Integer classId = clientStatusByStatusId.getClassId();
+        clientVO.setClassId(classId);
+        clientVO.setMemo(StringUtil.subStr(StringUtil.replaceAllHTML(clientVO.getRemark()), 255));
+        List<String> imgList = StringUtil.getImgLists(clientVO.getRemark());
+        if (CollectionUtils.isNotEmpty(imgList)) {
+            clientVO.setOrderImg(imgList.get(0));
+        }
+        if (ClientStatusConst.BE_SUCCESS == clientVO.getStatusId()) {
+            clientVO.setComeShopTime(clientVO.getSuccessTime());
+            clientVO.setPayTime(clientVO.getSuccessTime());
         }
     }
 

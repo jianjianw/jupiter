@@ -91,7 +91,7 @@ public class JsonFmtUtil {
         for (int i = jsArr.size() - 1; i >= 0; i--) {
             JSONObject info = jsArr.getJSONObject(i);
             ClientExportVO vo = new ClientExportVO();
-            vo.setId(info.getIntValue("id"));
+            vo.setLetterId(info.getString("letterid"));
             vo.setGroupName(info.getString("groupname"));
             vo.setCreateTime(TimeUtil.intMillisToTimeStr(info.getIntValue("createtime")));
             vo.setReceiveTime(TimeUtil.intMillisToTimeStr(info.getIntValue("receivetime")));

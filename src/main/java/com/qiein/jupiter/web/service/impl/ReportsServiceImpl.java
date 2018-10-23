@@ -116,6 +116,11 @@ public class ReportsServiceImpl implements ReportService {
     @Autowired
     private ZjsGroupDetailReportDao zjsGroupDetailReportDao;
 
+    @Autowired
+    private ZjsGroupReportDaoTest zjsGroupReportDaoTest;
+    @Autowired
+    private ZjsGroupDetailReportDaoTest zjsGroupDetailReportDaoTest;
+
 
 
     /**
@@ -1606,8 +1611,9 @@ public class ReportsServiceImpl implements ReportService {
 	}
 
     @Override
-    public List<ZjsClientDetailReportVO> getZjsGroupReport(ReportsParamVO reportsParamVO) {
-        List<ZjsClientDetailReportVO> reportVOS = zjsGroupReportDao.getZjsGroupReport(reportsParamVO);
+    public List<Object> getZjsGroupReport(ReportsParamVO reportsParamVO) {
+        //List<ZjsClientDetailReportVO> reportVOS = zjsGroupReportDao.getZjsGroupReport(reportsParamVO);
+        List<Object> reportVOS = zjsGroupReportDaoTest.getZjsGroupReport(reportsParamVO);
         return reportVOS;
     }
 
@@ -1632,8 +1638,9 @@ public class ReportsServiceImpl implements ReportService {
     }
 
     @Override
-    public List<ZjsClientDetailReportVO> getZjsGroupDetailReport(ReportsParamVO reportsParamVO) {
-        List<ZjsClientDetailReportVO> zjsGroupDetailReport = zjsGroupDetailReportDao.getZjsGroupDetailReport(reportsParamVO);
+    public List<Object> getZjsGroupDetailReport(ReportsParamVO reportsParamVO) {
+        //List<ZjsClientDetailReportVO> zjsGroupDetailReport = zjsGroupDetailReportDao.getZjsGroupDetailReport(reportsParamVO);
+        List<Object> zjsGroupDetailReport = zjsGroupDetailReportDaoTest.getZjsGroupDetailReport(reportsParamVO);
         return zjsGroupDetailReport;
     }
     /**
@@ -1643,4 +1650,26 @@ public class ReportsServiceImpl implements ReportService {
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(reportsParamVO.getCompanyId());
         return professionalCenterDao.getProfessionalCenterVO(reportsParamVO,invalidConfig);
     }
+
+    /**
+     * 电商推广月度报表预约量--HJF
+     * @param 
+     */
+	@Override
+	public List<Map<String, Object>> getDSTGSrcMonthReportsAppointment(String month, String typeId, String sourceId,
+			int companyId) {
+		//封装参数
+        ReportsParamSrcMonthVO reportsParamSrcMonthVO = new ReportsParamSrcMonthVO();
+        reportsParamSrcMonthVO.setTypeId(typeId);
+        reportsParamSrcMonthVO.setSourceId(sourceId);
+        reportsParamSrcMonthVO.setCompanyId(companyId);
+        //获取无效状态指标，无效意向等级，待定是否为有效量，待定指标
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(companyId);
+        //获取时间时间戳
+        int firstDay = TimeUtil.getMonthStartTimeStampByDate(month);
+        int lastDay=TimeUtil.getMonthEndTimeStampByDate(month);	
+        //获取客资数据
+        List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsAppointment(firstDay,lastDay,reportsParamSrcMonthVO,invalidConfig);
+        return dstgSrcMonthReports;
+	}
 }

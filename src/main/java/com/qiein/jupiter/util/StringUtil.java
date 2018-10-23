@@ -689,4 +689,50 @@ public class StringUtil {
         }
         return String.format("%6s", s.toString()).replace(" ", "6");
     }
+
+
+
+    /**
+     * 获取富文本里的图片地址,字符串拼接结果
+     *
+     * @param str
+     * @return
+     */
+    public static String getImgStrs(String str) {
+        String url = "";
+        if (StringUtil.isEmpty(str)) {
+            return null;
+        }
+        String img = "";
+        while (true) {
+            // 1.如果是截图
+            int i = str.indexOf("src=\"http://qieinoa");
+            int b = str.indexOf("png");
+            if (i > 0 && b > 0) {
+                img = str.substring(i + 5, b + 3);
+                url += img + "$";
+                str = str.replace("src=\"" + img + "\"", "");
+                continue;
+            }
+            // 2.如果是黏贴图
+            i = str.indexOf("src=\"http");
+            if (i > 0) {
+                str = str.substring(i + 5, str.length());
+                b = str.indexOf(">");
+                if (b > 0) {
+                    img = str.substring(0, b - 1);
+                    url += img + "$";
+                    str = str.replace(img + "\"", "");
+                } else {
+                    break;
+                }
+            } else {
+                break;
+            }
+        }
+        if (url.endsWith("$")) {
+            url = url.substring(0, url.length() - 1);
+        }
+        return url;
+    }
 }

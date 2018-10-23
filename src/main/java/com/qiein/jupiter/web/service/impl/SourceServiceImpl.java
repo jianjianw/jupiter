@@ -191,7 +191,7 @@ public class SourceServiceImpl implements SourceService {
             sourceDictVO.setId(sourcePO.getId());
             sourceDictVO.setSrcImg(sourcePO.getSrcImg());
             sourceDictVO.setSrcName(sourcePO.getSrcName());
-            sourceDictVO.setShowFlag(sourcePO.getShowFlag());
+            sourceDictVO.setShowFlag(sourcePO.getIsShow());
             sourceDictVO.setPushRule(sourcePO.getPushRule());
             //Id
             pageDictMap.put(String.valueOf(sourcePO.getId()), sourceDictVO);
