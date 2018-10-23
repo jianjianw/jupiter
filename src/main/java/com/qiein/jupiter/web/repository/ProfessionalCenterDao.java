@@ -109,7 +109,7 @@ public class ProfessionalCenterDao {
         }
         for (ProfessionalCenterVO salesCenterReportsVO : salesCenterReportsVOS) {
             for (ProfessionalCenterVO salesCenterReportsVO1 : salesCenterReportsVOSBak) {
-                if (salesCenterReportsVO.getSrcId()==(salesCenterReportsVO1.getSrcId())) {
+                if (salesCenterReportsVO.getSrcId().equals(salesCenterReportsVO1.getSrcId())) {
                     salesCenterReportsVO.setAllClientCount(salesCenterReportsVO1.getAllClientCount());
                 }
             }
@@ -135,7 +135,7 @@ public class ProfessionalCenterDao {
         }
         for (ProfessionalCenterVO salesCenterReportsVO : salesCenterReportsVOS) {
             for (ProfessionalCenterVO salesCenterReportsVO1 : salesCenterReportsVOSBak) {
-                if (salesCenterReportsVO.getSrcId()==(salesCenterReportsVO1.getSrcId())) {
+                if (salesCenterReportsVO.getSrcId().equals(salesCenterReportsVO1.getSrcId())) {
                     salesCenterReportsVO.setPendingClientCount(salesCenterReportsVO1.getPendingClientCount());
                 }
             }
@@ -161,7 +161,7 @@ public class ProfessionalCenterDao {
         }
         for (ProfessionalCenterVO salesCenterReportsVO : salesCenterReportsVOS) {
             for (ProfessionalCenterVO salesCenterReportsVO1 : salesCenterReportsVOSBak) {
-                if (salesCenterReportsVO.getSrcId()==(salesCenterReportsVO1.getSrcId())) {
+                if (salesCenterReportsVO.getSrcId().equals(salesCenterReportsVO1.getSrcId())) {
                     salesCenterReportsVO.setFilterPendingClientCount(salesCenterReportsVO1.getFilterPendingClientCount());
                 }
             }
@@ -187,7 +187,7 @@ public class ProfessionalCenterDao {
         }
         for (ProfessionalCenterVO salesCenterReportsVO : salesCenterReportsVOS) {
             for (ProfessionalCenterVO salesCenterReportsVO1 : salesCenterReportsVOSBak) {
-                if (salesCenterReportsVO.getSrcId()==(salesCenterReportsVO1.getSrcId())) {
+                if (salesCenterReportsVO.getSrcId().equals(salesCenterReportsVO1.getSrcId())) {
                     salesCenterReportsVO.setFilterInValidClientCount(salesCenterReportsVO1.getFilterInValidClientCount());
                 }
             }
@@ -213,7 +213,7 @@ public class ProfessionalCenterDao {
         }
         for (ProfessionalCenterVO salesCenterReportsVO : salesCenterReportsVOS) {
             for (ProfessionalCenterVO salesCenterReportsVO1 : salesCenterReportsVOSBak) {
-                if (salesCenterReportsVO.getSrcId()==(salesCenterReportsVO1.getSrcId())) {
+                if (salesCenterReportsVO.getSrcId().equals(salesCenterReportsVO1.getSrcId())) {
                     salesCenterReportsVO.setFilterInClientCount(salesCenterReportsVO1.getFilterInClientCount());
                 }
             }
@@ -240,7 +240,7 @@ public class ProfessionalCenterDao {
         }
         for (ProfessionalCenterVO salesCenterReportsVO : salesCenterReportsVOS) {
             for (ProfessionalCenterVO salesCenterReportsVO1 : salesCenterReportsVOSBak) {
-                if (salesCenterReportsVO.getSrcId()==(salesCenterReportsVO1.getSrcId())) {
+                if (salesCenterReportsVO.getSrcId().equals(salesCenterReportsVO1.getSrcId())) {
                     salesCenterReportsVO.setValidClientCount(salesCenterReportsVO1.getValidClientCount());
                 }
             }
@@ -264,7 +264,7 @@ public class ProfessionalCenterDao {
         }
         for (ProfessionalCenterVO salesCenterReportsVO : salesCenterReportsVOS) {
             for (ProfessionalCenterVO salesCenterReportsVO1 : salesCenterReportsVOSBak) {
-                if (salesCenterReportsVO.getSrcId()==(salesCenterReportsVO1.getSrcId())) {
+                if (salesCenterReportsVO.getSrcId().equals(salesCenterReportsVO1.getSrcId())) {
                     salesCenterReportsVO.setSuccessClientCount(salesCenterReportsVO1.getSuccessClientCount());
                 }
             }
