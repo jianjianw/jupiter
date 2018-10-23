@@ -5,6 +5,7 @@ import com.qiein.jupiter.constant.ClientLogConst;
 import com.qiein.jupiter.constant.ClientStatusConst;
 import com.qiein.jupiter.constant.DictionaryConstant;
 import com.qiein.jupiter.enums.AddTypeEnum;
+import com.qiein.jupiter.enums.TableEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.CollectionUtils;
 import com.qiein.jupiter.util.NumUtil;
@@ -45,30 +46,6 @@ public class ClientAddDao {
     private ClientStatusDao clientStatusDao;
 
     /**
-     * Pc端录入 电商客资
-     *
-     * @return
-     */
-    public String addPcDsClientInfo(ClientVO clientVO) {
-        return null;
-    }
-
-    /**
-     * PC端录入转介绍客资
-     */
-    @Transactional
-    public void addPcZjsClientInfo() {
-        Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("nickName", "小明1");
-        paramMap.put("userName", "小明1");
-        paramMap.put("phone", 123123123);
-
-        namedJdbc.update("INSERT INTO  test (NICKNAME,PHONE,USERNAME ) VALUES ( :nickName,:phone,:userName)", paramMap);
-        addGoldDataClientInfo();
-
-    }
-
-    /**
      * 金数据客资录入
      */
 //    @Transactional
@@ -87,16 +64,32 @@ public class ClientAddDao {
     /**
      * 录入门市客资
      */
-    public void addPcMdClientInfo() {
-//        if (ClientStatusConst.BE_SUCCESS == ao.getStatusId() && IntegerUtils.isValid(ao.getPayamount())) {
-//            // 添加收款记录
-//            addCashLog(ao);
-//        }
+    @Transactional
+    public ClientVO addPcMdClientInfo(ClientVO clientVO) {
+        clientVO.setKzId(StringUtil.getRandom());
+        //预处理
+        initClientInfoComeShop(clientVO);
+        //新增客资信息
+        int id = doAddClintInfo(clientVO);
+        //更新letterId
+        updateLetterId(id, clientVO.getCompanyId());
+        //新增客资详情
+        doAddClientDetail(clientVO);
+        //新增备注
+        doAddRemark(clientVO);
+        if (ClientStatusConst.BE_SUCCESS == clientVO.getStatusId() && NumUtil.isValid(clientVO.getPayAmount())) {
+            // 添加收款记录
+            addCashLog(clientVO);
+        }
+        //新增日志
+        doAddClientLog(clientVO, getInfoAddLog(clientVO));
+        doAddClientLog(clientVO,doSavaInviteLog(clientVO));
+        return clientVO;
     }
 
 
     /**
-     * 钉钉手机录入客资
+     * 手机录入客资
      */
     @Transactional
     public ClientVO addClientInfo(ClientVO clientVO) {
@@ -112,7 +105,7 @@ public class ClientAddDao {
         //新增备注
         doAddRemark(clientVO);
         //新增日志
-        doAddClientLog(clientVO);
+        doAddClientLog(clientVO, getInfoAddLog(clientVO));
         return clientVO;
     }
 
@@ -191,21 +184,17 @@ public class ClientAddDao {
     /**
      * 新增客资日志
      */
-    private void doAddClientLog(ClientVO clientVO) {
+    private void doAddClientLog(ClientVO clientVO, String memo) {
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("companyId", clientVO.getCompanyId());
         paramMap.put("kzId", clientVO.getKzId());
         paramMap.put("operatorId", clientVO.getOperaId());
         paramMap.put("operatorName", clientVO.getOperaName());
-        paramMap.put("memo", getInfoAddLog(clientVO));
+        paramMap.put("memo", memo);
         paramMap.put("logType", ClientLogConst.INFO_LOGTYPE_ADD);
         String sql = " INSERT INTO hm_crm_client_log  ( KZID, OPERAID, OPERANAME, MEMO, OPERATIME, LOGTYPE, COMPANYID )" +
                 " VALUES ( :kzId, :operatorId, :operatorName, :memo, UNIX_TIMESTAMP(NOW()), :logType, :companyId ) ";
         namedJdbc.update(sql, paramMap);
-
-    }
-
-    private void doAddCashLog() {
 
     }
 
@@ -229,7 +218,7 @@ public class ClientAddDao {
      */
     private String getInfoAddLog(ClientVO clientVO) {
         StringBuilder log = new StringBuilder();
-        log.append("在").append(AddTypeEnum.getTypeNameById(clientVO.getAddType()));
+        log.append("在").append(AddTypeEnum.getTypeNameById(clientVO.getAddType() == null ? 1 : clientVO.getAddType()));
         log.append(" 通过 ");
         log.append(StringUtil.nullToStrTrim(clientVO.getChannelName()));
         log.append(" 渠道，");
@@ -248,12 +237,12 @@ public class ClientAddDao {
     /**
      * 新增邀约日志
      */
-    private void doSavaInviteLog(ClientVO clientVO) {
+    private String doSavaInviteLog(ClientVO clientVO) {
         String memo = StringUtil.replaceAllHTML(clientVO.getMemo());
         String jdMemo;
         ClientStatusPO clientStatusByStatusId = clientStatusDao.getClientStatusByStatusId(clientVO.getStatusId(), clientVO.getCompanyId());
         //获取字典数据
-        DictionaryPO byCodeAndTypeAndCid = dictionaryDao.getByCodeAndTypeAndCid(clientVO.getCompanyId(), clientVO.getPayStyle(), DictionaryConstant.PAY_STYLE);
+
         String statusName = clientStatusByStatusId.getStatusName();
         if (ClientStatusConst.BE_RUN_OFF == clientVO.getYyRst() || ClientStatusConst.BACK_RUN_OFF == clientVO.getYyRst()) {
             // 流失
@@ -287,13 +276,13 @@ public class ClientAddDao {
             jdMemo += ";订单时间：";
             jdMemo += TimeUtil.intMillisToTimeStr(clientVO.getSuccessTime());
             jdMemo += ";付款方式：";
-            jdMemo += byCodeAndTypeAndCid.getDicName();
+            jdMemo += dictionaryDao.getByCodeAndTypeAndCid(clientVO.getCompanyId(), clientVO.getPayStyle(), DictionaryConstant.PAY_STYLE).getDicName();
             jdMemo += ";合同编号：";
             jdMemo += clientVO.getHtNum();
             jdMemo += ";套系金额：";
             jdMemo += clientVO.getAmount();
             jdMemo += ";已收金额：";
-            jdMemo += clientVO.getStayAmount();
+            jdMemo += clientVO.getPayAmount();
             if (StringUtil.isNotEmpty(memo)) {
                 jdMemo += ";追踪备注:";
                 jdMemo += memo;
@@ -314,7 +303,7 @@ public class ClientAddDao {
             jdMemo += ";套系金额：";
             jdMemo += clientVO.getAmount();
             jdMemo += ";保留金：";
-            jdMemo += clientVO.getStayAmount();
+            jdMemo += clientVO.getPayAmount();
             if (StringUtil.isNotEmpty(memo)) {
                 jdMemo += ";追踪备注:";
                 jdMemo += memo;
@@ -323,15 +312,26 @@ public class ClientAddDao {
             jdMemo = memo;
         }
         if (StringUtil.isEmpty(jdMemo) && StringUtil.isEmpty(StringUtil.getImgStrs(clientVO.getMemo()))) {
-            return;
+            return "";
         }
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(" INSERT INTO hm_crm_shop_meet_log ");
-        sb.append(" ( KZID, ARRIVETIME, RSTCODE, QTMEMO, AMOUNT, RECEPTERID, OPERAID, CREATETIME, SHOPID, COMPANYID ) "
-                + " VALUES  ( ?, ?, ?, ?, ?, ?, ?, UNIX_TIMESTAMP(NOW()), ?, ? ) ");
-
-
+        return jdMemo;
+//        Map<String, Object> paramMap = new HashMap<>();
+//        paramMap.put("kzId", clientVO.getKzId());
+//        paramMap.put("comeShopTime", clientVO.getComeShopTime());
+//        paramMap.put("yyRst", clientVO.getYyRst());
+//        paramMap.put("jdMemo", jdMemo);
+//        paramMap.put("amount", clientVO.getAmount());
+//        paramMap.put("receptorId", clientVO.getReceptorId());
+//        paramMap.put("operaId", clientVO.getOperaId());
+//        paramMap.put("shopId", clientVO.getShopId());
+//        paramMap.put("companyId", clientVO.getCompanyId());
+//
+//        String sql = " INSERT INTO hm_crm_shop_meet_log " +
+//                " ( KZID, ARRIVETIME, RSTCODE, QTMEMO, AMOUNT, RECEPTERID, OPERAID, CREATETIME, SHOPID, COMPANYID ) "
+//                + " VALUES  ( :kzId, :comeShopTime, :yyRst, :jdMemo,:amount, :receptorId, :operaId,  " +
+//                "UNIX_TIMESTAMP(NOW()), :shopId, :companyId) ";
+//
+//        namedJdbc.update(sql, paramMap);
     }
 
 
@@ -382,6 +382,24 @@ public class ClientAddDao {
             clientVO.setComeShopTime(clientVO.getSuccessTime());
             clientVO.setPayTime(clientVO.getSuccessTime());
         }
+    }
+
+
+    /**
+     * 添加收款记录 ,修改已收金额
+     */
+    private void addCashLog(ClientVO clientVO) {
+        String sql = " INSERT INTO hm_crm_cash_log" +
+                " ( KZID, PAYSTYLE, AMOUNT, STAFFID, STAFFNAME, PAYMENTTIME, OPERAID, OPERANAME, CREATETIME, COMPANYID, STATUS ) "
+                + "VALUES ( :kzId, :payStyle, :payAmount, :receiptId, :receiptName, :payTime, :operaId, :operaName, " +
+                "UNIX_TIMESTAMP(NOW()),  :companyId, 1 ) ";
+        namedJdbc.update(sql, new BeanPropertySqlParameterSource(clientVO));
+
+        String sql1 = "UPDATE hm_crm_client_detail SET  STAYAMOUNT = ( SELECT IFNULL( SUM( AMOUNT ), 0 ) FROM" +
+                " hm_crm_cash_log  WHERE KZID = :kzId AND COMPANYID = :companyId AND STATUS = 1 )" +
+                "  WHERE KZID = :kzId AND COMPANYID =:companyId ";
+        namedJdbc.update(sql1, new BeanPropertySqlParameterSource(clientVO));
+
     }
 
 
