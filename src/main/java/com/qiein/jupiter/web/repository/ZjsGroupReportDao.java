@@ -90,7 +90,7 @@ public class ZjsGroupReportDao {
                 Class<?> clazz = obj.getClass();
                 Method getName = clazz.getDeclaredMethod("getName");
                 String name = (String) getName.invoke(obj);
-                if(StringUtils.equals("总计",name)){
+                if(StringUtils.equals("总合计",name)){
                     totalObject = obj;
                     continue;
                 }
@@ -679,7 +679,7 @@ public class ZjsGroupReportDao {
         //均价
         double avgAmount = 0;
         ZjsClientDetailReportVO total = new ZjsClientDetailReportVO();
-        total.setName("合计");
+        total.setName("总合计");
         for (ZjsClientDetailReportVO reportVO : reportVOS) {
             clientSourceCount += reportVO.getClientSourceCount();
             validClientSourceCount += reportVO.getValidClientSourceCount();
