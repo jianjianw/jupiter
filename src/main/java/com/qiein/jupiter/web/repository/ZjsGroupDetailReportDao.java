@@ -33,36 +33,22 @@ public class ZjsGroupDetailReportDao {
         List<ZjsClientDetailReportVO> reportVOS = new ArrayList<ZjsClientDetailReportVO>();
         //获取毛客资
         getTotalClientCount(reportsParamVO,reportVOS);
-
+        //计算有效客资
+        getValidClientCount(reportsParamVO,reportVOS);
         //无效数  查询有效客资数的其余客资
         getInvalidClientSourceCount(reportsParamVO,reportVOS);
-
         //获取总进店数
         getTotalInShopCount(reportsParamVO,reportVOS);
         //总成交数
         getTotalSuccessCount(reportsParamVO,reportVOS);
-        /*//总成交率
-        getTotalSuccessRate(reportVOS);
-
-        //毛客资进店率（总进店/毛客资数）
-        getClientInShopRate(reportVOS);
-        //有效客资进店率（总进店/ 有效客资）
-        getValidClientInShopRate(reportVOS);*/
-
         //周末进店数
         getWeekendInShopCount(reportsParamVO,reportVOS);
-        //非周末进店数 and 非周末进店占比
-        //getUnWeekendInShopCount(reportsParamVO,reportVOS);
-
         //周末成交数
         getWeekendSuccessCount(reportsParamVO,reportVOS);
-        //非周末成交数  and  周末成交率  and  非周末成交率
-       //unWeekendSuccessCount(reportsParamVO,reportVOS);
         //总金额 and 均价
         getAmount(reportsParamVO,reportVOS);
         //客服组内员工的名称
         getGroupAppointorName(reportsParamVO,reportVOS);
-
         //计算转换率
         computerRate(reportVOS);
 
@@ -82,9 +68,6 @@ public class ZjsGroupDetailReportDao {
             getClientSourceLevelCount(reportsParamVO,dynamicBeans,code,name);
             getClientSourceLevelInShopCount(reportsParamVO,dynamicBeans,code,name);
         }
-        //计算有效客资  a+b
-        getValidClientCount(dynamicBeans,tableHead);
-
         return dynamicBeans;
     }
 
@@ -253,37 +236,6 @@ public class ZjsGroupDetailReportDao {
 
     }
 
-    //计算有效客资数（A类客资+B 类客资）  获取前两个值
-    private void getValidClientCount(List<Object> dynamicBeans,Map<String, String> tableHead) {
-
-        Set<String> set = tableHead.keySet();
-        Object[] objects = set.toArray();
-        String key0 = (String)objects[0];
-        String key1 = (String)objects[1];
-
-        StringBuilder sb = new StringBuilder();
-        String a = sb.append("get").append("Level").append(tableHead.get(key0)).append(key0).append("Count").toString();
-        sb.setLength(0);
-        String b = sb.append("get").append("Level").append(tableHead.get(key1)).append(key1).append("Count").toString();
-        sb.setLength(0);
-
-        try {
-            for(Object obj : dynamicBeans){
-                Class<?> clazz = obj.getClass();
-                Method methodCountA = clazz.getDeclaredMethod(a);
-                Integer countA = (Integer)methodCountA.invoke(obj);
-
-                Method methodCountB = clazz.getDeclaredMethod(b);
-                Integer countB = (Integer)methodCountB.invoke(obj);
-                //setValidClientSourceCount
-                Method validClientSourceCount = clazz.getDeclaredMethod("setValidClientSourceCount", int.class);
-                validClientSourceCount.invoke(obj,(countA+countB));//有效客资数（a+b） 等级一 + 等级二
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     // 获取毛客资
     private void getTotalClientCount(ReportsParamVO reportsParamVO,List<ZjsClientDetailReportVO> reportVOS ){
 
@@ -314,6 +266,41 @@ public class ZjsGroupDetailReportDao {
             reportVOS.add(reportVO);
         }
         System.out.println();
+    }
+
+    //计算有效客资数
+    private void getValidClientCount(ReportsParamVO reportsParamVO,List<ZjsClientDetailReportVO> reportVOS) {
+
+        String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
+
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(reportsParamVO.getCompanyId());
+        StringBuilder sb = new StringBuilder();
+        sb.append("select info.APPOINTORID kfId, count(info.KZID) validCount  ");
+        sb.append("from ").append(infoTabName).append("info ");
+        sb.append("where info.SRCTYPE in (3, 4, 5) ");
+        sb.append("and info.companyId = ? ");
+        sb.append("and info.CREATETIME BETWEEN ? AND ? ");
+        sb.append("and info.ISDEL = 0 ");
+        sb.append("and info.GROUPID is not null ");
+        if (StringUtil.isNotEmpty(invalidConfig.getZjsValidStatus())) {
+            sb.append(" AND INSTR('" + invalidConfig.getZjsValidStatus() + "',CONCAT( '\"',info.STATUSID,'\"'))>0 ");//找到返回索引> 0 因为从一开始
+        }
+        sb.append("group by info.APPOINTORID ");
+
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), reportsParamVO.getCompanyId(),
+                reportsParamVO.getStart(), reportsParamVO.getEnd());
+
+        for (Map<String, Object> map : list) {
+            String groupId = (String) map.get("groupId");
+            for(ZjsClientDetailReportVO reportVO : reportVOS ){
+                String id = reportVO.getId();
+                if(StringUtils.equals(id,groupId)){
+                    Long validCount = (Long) map.get("validCount");
+                    reportVO.setValidClientSourceCount(validCount.intValue());//有效量
+                }
+            }
+
+        }
     }
 
     //获取总进店数

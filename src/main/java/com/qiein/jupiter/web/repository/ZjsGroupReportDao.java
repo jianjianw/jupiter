@@ -37,6 +37,8 @@ public class ZjsGroupReportDao {
 
         //获取毛客资
         getTotalClientCount(reportsParamVO,reportVOS);
+        //计算有效客资
+        getValidClientCount(reportsParamVO,reportVOS);
         //无效数  查询有效客资数的其余客资
         getInvalidClientSourceCount(reportsParamVO,reportVOS);
         //获取总进店数
@@ -70,10 +72,6 @@ public class ZjsGroupReportDao {
             getClientSourceLevelCount(reportsParamVO,dynamicBeans,code,name);
             getClientSourceLevelInShopCount(reportsParamVO,dynamicBeans,code,name);
         }
-        //计算有效客资  a+b
-        getValidClientCount(dynamicBeans,tableHead);
-
-
 
 
         return dynamicBeans;
@@ -277,34 +275,38 @@ public class ZjsGroupReportDao {
 
     }
 
-    //计算有效客资数（A类客资+B 类客资）  获取前两个值
-    private void getValidClientCount(List<Object> dynamicBeans,Map<String, String> tableHead) {
+    //计算有效客资数
+    private void getValidClientCount(ReportsParamVO reportsParamVO,List<ZjsClientDetailReportVO> reportVOS) {
 
-        Set<String> set = tableHead.keySet();
-        Object[] objects = set.toArray();
-        String key0 = (String)objects[0];
-        String key1 = (String)objects[1];
+        String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
 
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(reportsParamVO.getCompanyId());
         StringBuilder sb = new StringBuilder();
-        String a = sb.append("get").append("Level").append(tableHead.get(key0)).append(key0).append("Count").toString();
-        sb.setLength(0);
-        String b = sb.append("get").append("Level").append(tableHead.get(key1)).append(key1).append("Count").toString();
-        sb.setLength(0);
+        sb.append("select info.GROUPID groupId, count(info.KZID) validCount  ");
+        sb.append("from ").append(infoTabName).append("info ");
+        sb.append("where info.SRCTYPE in (3, 4, 5) ");
+        sb.append("and info.companyId = ? ");
+        sb.append("and info.CREATETIME BETWEEN ? AND ? ");
+        sb.append("and info.ISDEL = 0 ");
+        sb.append("and info.GROUPID is not null ");
+        if (StringUtil.isNotEmpty(invalidConfig.getZjsValidStatus())) {
+            sb.append(" AND INSTR('" + invalidConfig.getZjsValidStatus() + "',CONCAT( '\"',info.STATUSID,'\"'))>0 ");//找到返回索引> 0 因为从一开始
+        }
+        sb.append("group by info.GROUPID ");
 
-        try {
-            for(Object obj : dynamicBeans){
-                Class<?> clazz = obj.getClass();
-                Method methodCountA = clazz.getDeclaredMethod(a);
-                Integer countA = (Integer)methodCountA.invoke(obj);
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), reportsParamVO.getCompanyId(),
+                reportsParamVO.getStart(), reportsParamVO.getEnd());
 
-                Method methodCountB = clazz.getDeclaredMethod(b);
-                Integer countB = (Integer)methodCountB.invoke(obj);
-                //setValidClientSourceCount
-                Method validClientSourceCount = clazz.getDeclaredMethod("setValidClientSourceCount", int.class);
-                validClientSourceCount.invoke(obj,(countA+countB));//有效客资数（a+b） 等级一 + 等级二
+        for (Map<String, Object> map : list) {
+            String groupId = (String) map.get("groupId");
+            for(ZjsClientDetailReportVO reportVO : reportVOS ){
+                String id = reportVO.getId();
+                if(StringUtils.equals(id,groupId)){
+                    Long validCount = (Long) map.get("validCount");
+                    reportVO.setValidClientSourceCount(validCount.intValue());//有效量
+                }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+
         }
     }
 
@@ -619,7 +621,7 @@ public class ZjsGroupReportDao {
         total.setName("合计");
         for (ZjsClientDetailReportVO reportVO : reportVOS) {
             clientSourceCount += reportVO.getClientSourceCount();
-            validClientSourceCount += reportVO.getValidClientSourceCount();//这个字段是在动态类中赋值
+            validClientSourceCount += reportVO.getValidClientSourceCount();
             invalidClientSourceCount += reportVO.getInvalidClientSourceCount();
             totalInShopCount += reportVO.getTotalInShopCount();
             totalSuccessCount += reportVO.getTotalSuccessCount();
@@ -638,7 +640,7 @@ public class ZjsGroupReportDao {
         clientInShopRate = parseDouble(parseDouble(((Double.isNaN(rate) || Double.isInfinite(rate)) ? 0.0 : rate) * 100));
 
         rate = totalInShopCount / (double) validClientSourceCount;
-        validClientInShopRate = parseDouble(parseDouble(((Double.isNaN(rate) || Double.isInfinite(rate)) ? 0.0 : rate) * 100)); //这个字段的值是在动态类中赋值的
+        validClientInShopRate = parseDouble(parseDouble(((Double.isNaN(rate) || Double.isInfinite(rate)) ? 0.0 : rate) * 100));
 
         rate = unWeekendSuccessCount / (double) totalInShopCount;
         unWeekendInShopRate = parseDouble(parseDouble(((Double.isNaN(rate) || Double.isInfinite(rate)) ? 0.0 : rate) * 100));
