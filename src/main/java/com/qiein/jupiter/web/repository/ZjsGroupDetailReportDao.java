@@ -6,6 +6,7 @@ import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.vo.DsInvalidVO;
 import com.qiein.jupiter.web.entity.vo.ReportsParamVO;
 import com.qiein.jupiter.web.entity.vo.ZjsClientDetailReportVO;
+import com.qiein.jupiter.web.entity.vo.ZjsClientDynamicReportVO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,8 +28,9 @@ public class ZjsGroupDetailReportDao {
     @Autowired
     private CommonReportsDao commonReportsDao;
 
-    public List<Object> getZjsGroupDetailReport(ReportsParamVO reportsParamVO){
+    public ZjsClientDynamicReportVO getZjsGroupDetailReport(ReportsParamVO reportsParamVO){
 
+        ZjsClientDynamicReportVO zjsClientDynamicReportVO = new ZjsClientDynamicReportVO();
 
         List<ZjsClientDetailReportVO> reportVOS = new ArrayList<ZjsClientDetailReportVO>();
         //获取毛客资
@@ -73,9 +75,11 @@ public class ZjsGroupDetailReportDao {
 
         //封装表头返回
         List<String> dynamicTableHead =  getDynamicTableHead(tableHead);
+        zjsClientDynamicReportVO.setDynamicTableHead(dynamicTableHead);
+        zjsClientDynamicReportVO.setDynamicData(dynamicBeans);
 
 
-        return dynamicBeans;
+        return zjsClientDynamicReportVO;
     }
 
 
