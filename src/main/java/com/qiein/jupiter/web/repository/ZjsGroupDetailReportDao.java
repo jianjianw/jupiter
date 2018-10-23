@@ -6,6 +6,7 @@ import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.vo.DsInvalidVO;
 import com.qiein.jupiter.web.entity.vo.ReportsParamVO;
 import com.qiein.jupiter.web.entity.vo.ZjsClientDetailReportVO;
+import com.qiein.jupiter.web.entity.vo.ZjsClientDynamicReportVO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,8 +28,9 @@ public class ZjsGroupDetailReportDao {
     @Autowired
     private CommonReportsDao commonReportsDao;
 
-    public List<Object> getZjsGroupDetailReport(ReportsParamVO reportsParamVO){
+    public ZjsClientDynamicReportVO getZjsGroupDetailReport(ReportsParamVO reportsParamVO){
 
+        ZjsClientDynamicReportVO zjsClientDynamicReportVO = new ZjsClientDynamicReportVO();
 
         List<ZjsClientDetailReportVO> reportVOS = new ArrayList<ZjsClientDetailReportVO>();
         //获取毛客资
@@ -51,6 +53,8 @@ public class ZjsGroupDetailReportDao {
         getGroupAppointorName(reportsParamVO,reportVOS);
         //计算转换率
         computerRate(reportVOS);
+        //总合计  (固定列的总合计)
+        computerTotal(reportVOS);
 
 
 
@@ -68,7 +72,67 @@ public class ZjsGroupDetailReportDao {
             getClientSourceLevelCount(reportsParamVO,dynamicBeans,code,name);
             getClientSourceLevelInShopCount(reportsParamVO,dynamicBeans,code,name);
         }
-        return dynamicBeans;
+
+        //封装表头返回
+        List<String> dynamicTableHead =  getDynamicTableHead(tableHead);
+        zjsClientDynamicReportVO.setDynamicTableHead(dynamicTableHead);
+        zjsClientDynamicReportVO.setDynamicData(dynamicBeans);
+
+
+        return zjsClientDynamicReportVO;
+    }
+
+
+    //设置动态类的总合计（毛客资和进店数）type: Count or InShopCount
+    private void computerDynamicTotal(List<Object> dynamicBeans, String dicCode, String dicName,String type) {
+
+        StringBuilder sb = new StringBuilder();
+        String suffix = sb.append("Level").append(dicName).append(dicCode).append(type).toString();
+        Object totalObject = null;//总计对象
+        Integer totalClient = 0;
+        try {
+            for(Object obj : dynamicBeans){
+                Class<?> clazz = obj.getClass();
+                Method getName = clazz.getDeclaredMethod("getName");
+                String name = (String) getName.invoke(obj);
+                if(StringUtils.equals("总合计",name)){
+                    totalObject = obj;
+                    continue;
+                }
+                Method declaredMethod = clazz.getDeclaredMethod("get"+suffix);
+                Integer invoke = (Integer)declaredMethod.invoke(obj);
+                totalClient += invoke;
+            }
+            //总计
+            Class<?> clazz = totalObject.getClass();
+            Method setMethod = clazz.getDeclaredMethod("set" + suffix,Integer.class);
+            //设置毛客资总合计 or  进店数的总合计
+            setMethod.invoke(totalObject,totalClient);
+
+
+            //计算转换率的总合计
+            if(StringUtils.equals(type,"InShopCount")){//毛客资 和 进店数都封装完毕
+                StringBuilder stringBuilder = new StringBuilder();
+                StringBuilder level = stringBuilder.append("Level").append(dicName).append(dicCode);
+                //毛客资
+                Method clientMethod = clazz.getDeclaredMethod("get"+level+"Count");
+                Integer client = (Integer)clientMethod.invoke(totalObject);
+
+                //进店数
+                Method inShopMethod = clazz.getDeclaredMethod("get"+level+"InShopCount");
+                Integer inShopCount = (Integer)inShopMethod.invoke(totalObject);
+
+                //  进店/客资  总转化率
+                double rate = inShopCount / (double) client;
+                rate = parseDouble(((Double.isNaN(rate) || Double.isInfinite(rate)) ? 0.0 : rate) * 100);
+
+                Method declaredMethod = clazz.getDeclaredMethod("set" + level + "Rate",Double.class);
+                declaredMethod.invoke(totalObject,rate);//封装总转化率
+
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage(),e);
+        }
     }
 
     //获取客户意向等级
@@ -143,6 +207,9 @@ public class ZjsGroupDetailReportDao {
         //封装参数到dynamicBeans
         getDynamicBeanMethod(list,dynamicBeans,dicCode,dicName,"Count");
 
+        //计算客资数的总合计
+        computerDynamicTotal(dynamicBeans,dicCode,dicName,"Count");
+
 
     }
 
@@ -202,6 +269,9 @@ public class ZjsGroupDetailReportDao {
         getDynamicBeanMethod(list,dynamicBeans,dicCode,dicName,"InShopCount");
         //计算客资转化率
         convertClientRate(dynamicBeans,dicCode,dicName);
+
+        //计算进店数的总合计 和  转化率的总合计
+        computerDynamicTotal(dynamicBeans,dicCode,dicName,"InShopCount");
     }
 
 
@@ -569,7 +639,113 @@ public class ZjsGroupDetailReportDao {
         }
     }
 
+    //计算总合计
+    private void computerTotal(List<ZjsClientDetailReportVO> reportVOS) {
+        //毛客资数
+        int clientSourceCount = 0;
+        //有效客资数
+        int validClientSourceCount = 0;
+        //无效数
+        int invalidClientSourceCount = 0;
+        //总进店数
+        int totalInShopCount = 0;
+        //总成交数
+        int totalSuccessCount = 0;
+        //总成交率
+        double totalSuccessRate = 0d;
+        //毛客资进店率
+        double clientInShopRate = 0d;
+        //有效客资进店率
+        double validClientInShopRate = 0d;
+        //周末进店数
+        int weekendInShopCount = 0;
+        //非周末进店数
+        int unWeekendInShopCount = 0;
+        //周末成交数
+        int weekendSuccessCount = 0;
+        //非周末成交数
+        int unWeekendSuccessCount = 0;
+        //非周末进店占比
+        double unWeekendInShopRate = 0d;
+        //周末成交率
+        double weekendSuccessRate = 0d;
+        //非周末成交率
+        double unWeekendSuccessRate = 0d;
+        //营业额
+        double amount = 0;
+        //均价
+        double avgAmount = 0;
+        ZjsClientDetailReportVO total = new ZjsClientDetailReportVO();
+        total.setName("总合计");
+        for (ZjsClientDetailReportVO reportVO : reportVOS) {
+            clientSourceCount += reportVO.getClientSourceCount();
+            validClientSourceCount += reportVO.getValidClientSourceCount();
+            invalidClientSourceCount += reportVO.getInvalidClientSourceCount();
+            totalInShopCount += reportVO.getTotalInShopCount();
+            totalSuccessCount += reportVO.getTotalSuccessCount();
+            weekendInShopCount += reportVO.getWeekendInShopCount();
+            unWeekendInShopCount += reportVO.getUnWeekendInShopCount();
+            weekendSuccessCount += reportVO.getWeekendSuccessCount();
+            unWeekendSuccessCount += reportVO.getUnWeekendSuccessCount();
+            amount += reportVO.getAmount();
+            avgAmount += reportVO.getAvgAmount();
+        }
 
+        double rate = totalSuccessCount / (double) totalInShopCount;
+        totalSuccessRate = parseDouble(parseDouble(((Double.isNaN(rate) || Double.isInfinite(rate)) ? 0.0 : rate) * 100));
+
+        rate = totalInShopCount / (double) clientSourceCount;
+        clientInShopRate = parseDouble(parseDouble(((Double.isNaN(rate) || Double.isInfinite(rate)) ? 0.0 : rate) * 100));
+
+        rate = totalInShopCount / (double) validClientSourceCount;
+        validClientInShopRate = parseDouble(parseDouble(((Double.isNaN(rate) || Double.isInfinite(rate)) ? 0.0 : rate) * 100));
+
+        rate = unWeekendSuccessCount / (double) totalInShopCount;
+        unWeekendInShopRate = parseDouble(parseDouble(((Double.isNaN(rate) || Double.isInfinite(rate)) ? 0.0 : rate) * 100));
+
+        rate = weekendSuccessCount / (double) totalSuccessCount;
+        weekendSuccessRate = parseDouble(parseDouble(((Double.isNaN(rate) || Double.isInfinite(rate)) ? 0.0 : rate) * 100));
+        rate = unWeekendSuccessCount / (double) totalSuccessCount;
+        unWeekendSuccessRate = parseDouble(parseDouble(((Double.isNaN(rate) || Double.isInfinite(rate)) ? 0.0 : rate) * 100));
+
+        total.setClientSourceCount(clientSourceCount);
+        total.setValidClientSourceCount(validClientSourceCount);
+        total.setInvalidClientSourceCount(invalidClientSourceCount);
+        total.setTotalInShopCount(totalInShopCount);
+        total.setTotalSuccessCount(totalSuccessCount);
+        total.setTotalSuccessRate(totalSuccessRate);
+        total.setClientInShopRate(clientInShopRate);
+        total.setValidClientInShopRate(validClientInShopRate);
+        total.setWeekendInShopCount(weekendInShopCount);
+        total.setUnWeekendInShopCount(unWeekendInShopCount);
+        total.setWeekendSuccessCount(weekendSuccessCount);
+        total.setUnWeekendSuccessCount(unWeekendSuccessCount);
+        total.setUnWeekendInShopRate(unWeekendInShopRate);
+        total.setWeekendSuccessRate(weekendSuccessRate);
+        total.setUnWeekendSuccessRate(unWeekendSuccessRate);
+        total.setAmount(amount);
+        total.setAvgAmount(avgAmount);
+        reportVOS.add(total);
+    }
+
+
+    private List<String> getDynamicTableHead(Map<String, String> tableHead) {
+
+        StringBuilder sb = null;
+        List<String> dynamicTableHead = new ArrayList<>();
+        Set<Map.Entry<String, String>> entries = tableHead.entrySet();
+        for(Map.Entry<String, String> set : entries ){
+            String code = set.getKey();
+            String name = set.getValue();
+            sb = new StringBuilder();
+            String prefix = sb.append("level").append(name).append(code).toString();
+            dynamicTableHead.add(prefix+"Count");//客资数
+            dynamicTableHead.add(prefix+"InShopCount");//进店数
+            dynamicTableHead.add(prefix+"Rate");//转换率
+        }
+        return dynamicTableHead;
+
+    }
 
     /**
      * 只保留2位小数

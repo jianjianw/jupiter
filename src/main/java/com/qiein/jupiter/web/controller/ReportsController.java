@@ -799,8 +799,8 @@ public class ReportsController extends BaseController {
     @GetMapping("/get_zjs_group_report")
     public ResultInfo getZjsGroupReport(ReportsParamVO reportsParamVO){
         reportsParamVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
-        List<Object> reportVOS = reportService.getZjsGroupReport(reportsParamVO);
-        return ResultInfoUtil.success(reportVOS);
+        ZjsClientDynamicReportVO zjsGroupReport = reportService.getZjsGroupReport(reportsParamVO);
+        return ResultInfoUtil.success(zjsGroupReport);
     }
 
     /**
@@ -809,8 +809,8 @@ public class ReportsController extends BaseController {
     @GetMapping("/get_zjs_group_detail_report")
     public ResultInfo getZjsGroupDetailReport(ReportsParamVO reportsParamVO){
         reportsParamVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
-        List<Object> reportVOS = reportService.getZjsGroupDetailReport(reportsParamVO);
-        return ResultInfoUtil.success(reportVOS);
+        ZjsClientDynamicReportVO zjsGroupDetailReport = reportService.getZjsGroupDetailReport(reportsParamVO);
+        return ResultInfoUtil.success(zjsGroupDetailReport);
     }
     /**
      * 销售中心报表
@@ -822,7 +822,7 @@ public class ReportsController extends BaseController {
     }
 
     /**
-     * 销售中心报表
+     * 专业中心报表
      */
     @PostMapping("/get_professional_center_reports")
     public ResultInfo getProfessionalCenterVO(@RequestBody ReportsParamVO reportsParamVO) {

@@ -378,7 +378,7 @@ public interface ReportService {
     /**
      * 转介绍报表，按客服组汇总
      * */
-    public List<Object> getZjsGroupReport(ReportsParamVO reportsParamVO);
+    public ZjsClientDynamicReportVO getZjsGroupReport(ReportsParamVO reportsParamVO);
 
     /**
      * 电商推广订单周期统计
@@ -392,7 +392,7 @@ public interface ReportService {
     /**
      * 转介绍报表详情，按客服组内的员工汇总
      * */
-    public List<Object> getZjsGroupDetailReport(ReportsParamVO reportsParamVO);
+    public ZjsClientDynamicReportVO getZjsGroupDetailReport(ReportsParamVO reportsParamVO);
     /**
      * 专业中心报表
      */
