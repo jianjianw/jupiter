@@ -37,12 +37,22 @@ public class ShopTargetDTO {
      * 总拍摄量
      */
     private String totalShooting;
+    private String successClientCount;
 
 
     /**
      * 类型
      */
     private int type;
+
+
+    public String getSuccessClientCount() {
+        return successClientCount;
+    }
+
+    public void setSuccessClientCount(String successClientCount) {
+        this.successClientCount = successClientCount;
+    }
 
     public String getTotalShootingTarget() {
         return totalShootingTarget;

@@ -822,7 +822,7 @@ public class ReportsController extends BaseController {
     }
 
     /**
-     * 销售中心报表
+     * 专业中心报表
      */
     @PostMapping("/get_professional_center_reports")
     public ResultInfo getProfessionalCenterVO(@RequestBody ReportsParamVO reportsParamVO) {

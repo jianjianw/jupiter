@@ -179,7 +179,7 @@
     </select>
 
     <select id="findShopTarget" resultType="com.qiein.jupiter.web.entity.dto.ShopTargetDTO">
-        select shopId from hm_crm_shop_detail where companyid=#{companyId} and FROM_UNIXTIME(CREATETIME, '%Y/%m/%d')=FROM_UNIXTIME(#{time}, '%Y/%m/%d') and shopid=#{shopId} and type=#{type}
+        select shopId from hm_crm_shop_detail where companyid=#{companyId} and FROM_UNIXTIME(CREATETIME, '%Y/%m')=FROM_UNIXTIME(#{time}, '%Y/%m') and shopid=#{shopId} and type=#{type}
     </select>
     <update id="editTarget">
         update hm_crm_shop_detail set shopid=#{shopId}
@@ -201,7 +201,10 @@
         <if test="totalShooting !=null and totalShooting!=''">
             ,TOTALSHOOTING=#{totalShooting}
         </if>
-        where companyid=#{companyId} and FROM_UNIXTIME(CREATETIME, '%Y/%m/%d')=FROM_UNIXTIME(#{time}, '%Y/%m/%d') and
+        <if test="successClientCount !=null and successClientCount!=''">
+          ,TOTALSUCCESSCOUNT=#{successClientCount}
+        </if>
+        where companyid=#{companyId} and FROM_UNIXTIME(CREATETIME, '%Y/%m')=FROM_UNIXTIME(#{time}, '%Y/%m') and
         shopid=#{shopId} and type=#{type}
     </update>
     <insert id="insertTarget">
