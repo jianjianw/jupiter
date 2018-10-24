@@ -35,6 +35,11 @@ public class ZjsGroupDetailReportDao {
         List<ZjsClientDetailReportVO> reportVOS = new ArrayList<ZjsClientDetailReportVO>();
         //获取毛客资
         getTotalClientCount(reportsParamVO,reportVOS);
+
+        if(reportVOS.size() == 0){
+            return zjsClientDynamicReportVO;
+        }
+
         //计算有效客资
         getValidClientCount(reportsParamVO,reportVOS);
         //无效数  查询有效客资数的其余客资
@@ -69,12 +74,12 @@ public class ZjsGroupDetailReportDao {
             String code = set.getKey();
             String name = set.getValue();
             //意向等级
-            getClientSourceLevelCount(reportsParamVO,dynamicBeans,code,name);
-            getClientSourceLevelInShopCount(reportsParamVO,dynamicBeans,code,name);
+            getClientSourceLevelCount(reportsParamVO,dynamicBeans,code);
+            getClientSourceLevelInShopCount(reportsParamVO,dynamicBeans,code);
         }
 
         //封装表头返回
-        List<String> dynamicTableHead =  getDynamicTableHead(tableHead);
+        Map<String,String> dynamicTableHead =  getDynamicTableHead(tableHead);
         zjsClientDynamicReportVO.setDynamicTableHead(dynamicTableHead);
         zjsClientDynamicReportVO.setDynamicData(dynamicBeans);
 
@@ -84,10 +89,10 @@ public class ZjsGroupDetailReportDao {
 
 
     //设置动态类的总合计（毛客资和进店数）type: Count or InShopCount
-    private void computerDynamicTotal(List<Object> dynamicBeans, String dicCode, String dicName,String type) {
+    private void computerDynamicTotal(List<Object> dynamicBeans, String dicCode,String type) {
 
         StringBuilder sb = new StringBuilder();
-        String suffix = sb.append("Level").append(dicName).append(dicCode).append(type).toString();
+        String suffix = sb.append("Level").append(dicCode).append(type).toString();
         Object totalObject = null;//总计对象
         Integer totalClient = 0;
         try {
@@ -113,7 +118,7 @@ public class ZjsGroupDetailReportDao {
             //计算转换率的总合计
             if(StringUtils.equals(type,"InShopCount")){//毛客资 和 进店数都封装完毕
                 StringBuilder stringBuilder = new StringBuilder();
-                StringBuilder level = stringBuilder.append("Level").append(dicName).append(dicCode);
+                StringBuilder level = stringBuilder.append("Level").append(dicCode);
                 //毛客资
                 Method clientMethod = clazz.getDeclaredMethod("get"+level+"Count");
                 Integer client = (Integer)clientMethod.invoke(totalObject);
@@ -165,8 +170,8 @@ public class ZjsGroupDetailReportDao {
         for (Map.Entry<String, String> set : entries) {
             StringBuilder sb = new StringBuilder();
             String code = set.getKey();//code
-            String name = set.getValue();//name
-            String prefix = sb.append("level").append(name).append(code).toString();
+            //String name = set.getValue();//name   可能会出现汉字
+            String prefix = sb.append("level").append(code).toString();
             propertyMap.put(prefix+"Count",0);//客资数
             propertyMap.put(prefix+"InShopCount",0);//进店数
             propertyMap.put(prefix+"Rate",0D);//转换率
@@ -183,7 +188,7 @@ public class ZjsGroupDetailReportDao {
     }
 
     //获取等级客资数(A,B,C,D)
-    private void getClientSourceLevelCount(ReportsParamVO reportsParamVO,List<Object> dynamicBeans,String dicCode,String dicName ){
+    private void getClientSourceLevelCount(ReportsParamVO reportsParamVO,List<Object> dynamicBeans,String dicCode){
 
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
@@ -205,19 +210,19 @@ public class ZjsGroupDetailReportDao {
                 reportsParamVO.getStart(), reportsParamVO.getEnd(),reportsParamVO.getGroupId());
 
         //封装参数到dynamicBeans
-        getDynamicBeanMethod(list,dynamicBeans,dicCode,dicName,"Count");
+        getDynamicBeanMethod(list,dynamicBeans,dicCode,"Count");
 
         //计算客资数的总合计
-        computerDynamicTotal(dynamicBeans,dicCode,dicName,"Count");
+        computerDynamicTotal(dynamicBeans,dicCode,"Count");
 
 
     }
 
     //封装客资意向等级数据
-    public void getDynamicBeanMethod(List<Map<String, Object>> list,List<Object> dynamicBeans,String dicCode,String dicName,String type){
+    public void getDynamicBeanMethod(List<Map<String, Object>> list,List<Object> dynamicBeans,String dicCode,String type){
 
         StringBuilder sb = new StringBuilder();
-        sb.append("set").append("Level").append(dicName).append(dicCode).append(type);//count or inshopCount
+        sb.append("set").append("Level").append(dicCode).append(type);//count or inshopCount
         try {
             for(Object obj : dynamicBeans){
                 Class<?> clazz = obj.getClass();
@@ -245,7 +250,7 @@ public class ZjsGroupDetailReportDao {
 
     };
     //封装客资进店数 和 客资转化率(A,B,C)
-    private void getClientSourceLevelInShopCount(ReportsParamVO reportsParamVO,List<Object> dynamicBeans, String dicCode,String dicName){
+    private void getClientSourceLevelInShopCount(ReportsParamVO reportsParamVO,List<Object> dynamicBeans, String dicCode){
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
         StringBuilder sb = new StringBuilder();
@@ -266,19 +271,19 @@ public class ZjsGroupDetailReportDao {
                 reportsParamVO.getStart(), reportsParamVO.getEnd(),reportsParamVO.getGroupId());
 
         //封装参数到dynamicBeans
-        getDynamicBeanMethod(list,dynamicBeans,dicCode,dicName,"InShopCount");
+        getDynamicBeanMethod(list,dynamicBeans,dicCode,"InShopCount");
         //计算客资转化率
-        convertClientRate(dynamicBeans,dicCode,dicName);
+        convertClientRate(dynamicBeans,dicCode);
 
         //计算进店数的总合计 和  转化率的总合计
-        computerDynamicTotal(dynamicBeans,dicCode,dicName,"InShopCount");
+        computerDynamicTotal(dynamicBeans,dicCode,"InShopCount");
     }
 
 
     //计算客资转化率（进店/客资）
-    private void convertClientRate(List<Object> dynamicBeans,String dicCode,String dicName){
+    private void convertClientRate(List<Object> dynamicBeans,String dicCode){
         StringBuilder sb = new StringBuilder();
-        String prefix = sb.append("get").append("Level").append(dicName).append(dicCode).toString();
+        String prefix = sb.append("get").append("Level").append(dicCode).toString();
         try {
             for(Object obj : dynamicBeans){
 
@@ -291,7 +296,7 @@ public class ZjsGroupDetailReportDao {
 
                 double rate = parseDouble(count / (double)inShopCount * 100);
                 sb.setLength(0);
-                sb.append("set").append("Level").append(dicName).append(dicCode).append("Rate");
+                sb.append("set").append("Level").append(dicCode).append("Rate");
                 Method methodRate = clazz.getDeclaredMethod(sb.toString(), Double.class);
                 if(count == 0){
                     methodRate.invoke(obj, 0D);
@@ -729,19 +734,19 @@ public class ZjsGroupDetailReportDao {
     }
 
 
-    private List<String> getDynamicTableHead(Map<String, String> tableHead) {
+    private Map<String,String> getDynamicTableHead(Map<String, String> tableHead) {
 
         StringBuilder sb = null;
-        List<String> dynamicTableHead = new ArrayList<>();
+        Map<String,String> dynamicTableHead = new HashMap<String,String>();
         Set<Map.Entry<String, String>> entries = tableHead.entrySet();
         for(Map.Entry<String, String> set : entries ){
             String code = set.getKey();
             String name = set.getValue();
             sb = new StringBuilder();
-            String prefix = sb.append("level").append(name).append(code).toString();
-            dynamicTableHead.add(prefix+"Count");//客资数
-            dynamicTableHead.add(prefix+"InShopCount");//进店数
-            dynamicTableHead.add(prefix+"Rate");//转换率
+            String tableKey = sb.append("level").append(code).toString();
+            dynamicTableHead.put(tableKey+"Count",name+"类客资");//客资数
+            dynamicTableHead.put(tableKey+"InShopCount",name+"类进店数");//进店数
+            dynamicTableHead.put(tableKey+"Rate",name +"类客资转化率");//转换率
         }
         return dynamicTableHead;
 
