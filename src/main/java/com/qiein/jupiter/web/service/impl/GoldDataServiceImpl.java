@@ -340,6 +340,7 @@ public class GoldDataServiceImpl implements GoldDataService {
             e.printStackTrace();
             goldTempPO.setStatusId(GoldDataConst.REPEATED_SCREEN);
             goldTempDao.update(goldTempPO);
+            return;
         }
         //新增客资
         try {
