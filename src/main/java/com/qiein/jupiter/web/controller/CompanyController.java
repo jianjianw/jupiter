@@ -303,7 +303,7 @@ public class CompanyController extends BaseController {
      * @param reportsConfig
      * @return
      */
-    @GetMapping("/edit_reports_config")
+    @PostMapping("/edit_reports_config")
     public ResultInfo editReportsConfig(String reportsConfig) {
         companyService.editReportsConfig(getCurrentLoginStaff().getCompanyId(), reportsConfig);
         return ResultInfoUtil.success();
