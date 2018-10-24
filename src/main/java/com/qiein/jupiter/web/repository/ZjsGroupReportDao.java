@@ -197,9 +197,10 @@ public class ZjsGroupReportDao {
         sb.append("count(case when STATUSID = 0 then KZID else NULL end) filterInCount, ");
         sb.append("count(case when STATUSID = 99 then KZID else NULL end) filterInvalidCount ");
         sb.append("from ").append(infoTabName);
-        sb.append("where SRCTYPE in(3, 4, 5) and COMPANYID = ? ");
+        sb.append("where COMPANYID = ? ");
         sb.append("and CREATETIME BETWEEN ? AND ? ");
         sb.append("and ISDEL = 0 and GROUPID is not null ");
+        sb.append("and SRCTYPE in(3, 4, 5) ");
         sb.append("group by GROUPID ");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), reportsParamVO.getCompanyId(),
                 reportsParamVO.getStart(), reportsParamVO.getEnd());
@@ -231,9 +232,10 @@ public class ZjsGroupReportDao {
         sb.append("count(case when info.STATUSID = 99 then info.KZID else NULL end) filterInvalidCount ");
         sb.append("from (").append(infoTabName).append("info inner join ").append(detailTabName).append("detail on info.KZID = detail.KZID ) ");
         sb.append("inner join hm_crm_dictionary dic on detail.YXLEVEL = dic.DICCODE ");
-        sb.append("where info.SRCTYPE in(3, 4, 5) and dic.COMPANYID = ? and dic.DICTYPE = 'yx_level' and dic.DICCODE = '"+dicCode+"' ");
+        sb.append("where dic.COMPANYID = ? and dic.DICTYPE = 'yx_level' and dic.DICCODE = '"+dicCode+"' ");
         sb.append("and info.CREATETIME BETWEEN ? AND ? ");
         sb.append("and info.ISDEL = 0 and info.GROUPID is not null ");
+        sb.append("and info.SRCTYPE in(3, 4, 5) ");
         sb.append("group by info.GROUPID ");
 
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), reportsParamVO.getCompanyId(),
@@ -260,9 +262,10 @@ public class ZjsGroupReportDao {
         sb.append("count(case when info.STATUSID = 99 then info.KZID else NULL end) filterInvalidCount ");
         sb.append("from (").append(infoTabName).append("info inner join ").append(detailTabName).append("detail on info.KZID = detail.KZID ) ");
         sb.append("inner join hm_crm_dictionary dic on detail.YXLEVEL = dic.DICCODE ");
-        sb.append("where info.SRCTYPE in(3, 4, 5) and dic.COMPANYID = ? and dic.DICTYPE = 'yx_level' and dic.DICCODE = '"+dicCode+"' ");
+        sb.append("where dic.COMPANYID = ? and dic.DICTYPE = 'yx_level' and dic.DICCODE = '"+dicCode+"' ");
         sb.append("and info.COMESHOPTIME BETWEEN ? AND ? ");
         sb.append("and info.ISDEL = 0 and info.GROUPID is not null ");
+        sb.append("and info.SRCTYPE in(3, 4, 5) ");
         sb.append("group by info.GROUPID ");
 
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), reportsParamVO.getCompanyId(),
@@ -351,14 +354,14 @@ public class ZjsGroupReportDao {
         StringBuilder sb = new StringBuilder();
         sb.append("select info.GROUPID groupId, count(info.KZID) validCount  ");
         sb.append("from ").append(infoTabName).append("info ");
-        sb.append("where info.SRCTYPE in (3, 4, 5) ");
-        sb.append("and info.companyId = ? ");
+        sb.append("where info.companyId = ? ");
         sb.append("and info.CREATETIME BETWEEN ? AND ? ");
         sb.append("and info.ISDEL = 0 ");
         sb.append("and info.GROUPID is not null ");
         if (StringUtil.isNotEmpty(invalidConfig.getZjsValidStatus())) {
             sb.append(" AND INSTR('" + invalidConfig.getZjsValidStatus() + "',CONCAT( '\"',info.STATUSID,'\"'))>0 ");//找到返回索引> 0 因为从一开始
         }
+        sb.append("and info.SRCTYPE in (3, 4, 5) ");
         sb.append("group by info.GROUPID ");
 
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), reportsParamVO.getCompanyId(),
@@ -387,9 +390,10 @@ public class ZjsGroupReportDao {
         StringBuilder sb = new StringBuilder();
         sb.append("select GROUPID groupId,count(KZID) totalCount ");
         sb.append("from ").append(infoTabName);
-        sb.append("where SRCTYPE in(3, 4, 5) and companyId = ? ");
+        sb.append("where companyId = ? ");
         sb.append("and COMESHOPTIME BETWEEN ? AND ? ");
         sb.append("and ISDEL = 0 and GROUPID is not null ");
+        sb.append("and SRCTYPE in(3, 4, 5) ");
         sb.append("group by GROUPID ");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), reportsParamVO.getCompanyId(),
                 reportsParamVO.getStart(), reportsParamVO.getEnd());
@@ -413,9 +417,10 @@ public class ZjsGroupReportDao {
         StringBuilder sb = new StringBuilder();
         sb.append("select GROUPID groupId,count(KZID) totalCount ");
         sb.append("from ").append(infoTabName);
-        sb.append("where SRCTYPE in(3, 4, 5) and companyId = ? ");
+        sb.append("where companyId = ? ");
         sb.append("and SUCCESSTIME BETWEEN ? AND ? ");//总成交数
         sb.append("and ISDEL = 0 and GROUPID is not null ");
+        sb.append("and SRCTYPE in(3, 4, 5) ");
         sb.append("group by GROUPID ");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), reportsParamVO.getCompanyId(),
                 reportsParamVO.getStart(), reportsParamVO.getEnd());
@@ -513,9 +518,10 @@ public class ZjsGroupReportDao {
         sb.append("select info.GROUPID groupId,sum(detail.amount) totalAmount,avg(detail.amount) avgAmount ");
         sb.append("from ").append(infoTabName).append("info inner join ").append(detailTabName).append("detail ");
         sb.append("on info.KZID = detail.KZID ");
-        sb.append("where info.SRCTYPE in(3, 4, 5) and info.companyId = ? ");
+        sb.append("where info.companyId = ? ");
         sb.append("and info.SUCCESSTIME BETWEEN ? AND ? ");
         sb.append("and info.ISDEL = 0 and info.GROUPID is not null ");
+        sb.append("and info.SRCTYPE in(3, 4, 5) ");
         sb.append("group by info.GROUPID ");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), reportsParamVO.getCompanyId(),
                 reportsParamVO.getStart(), reportsParamVO.getEnd());
@@ -543,10 +549,11 @@ public class ZjsGroupReportDao {
 
         sb.append("select info.GROUPID groupId ,count(info.KZID) weekendCount ");
         sb.append("from ").append(infoTabName).append("info ");
-        sb.append("where info.SRCTYPE in(3, 4, 5) and info.companyId = ? ");
+        sb.append("where info.companyId = ? ");
         sb.append("and info.COMESHOPTIME BETWEEN ? AND ? ");
         sb.append("and DAYOFWEEK(from_unixtime(info.COMESHOPTIME)) IN (1,7) ");
         sb.append("and info.ISDEL = 0 and info.GROUPID is not null ");
+        sb.append("and info.SRCTYPE in(3, 4, 5) ");
         sb.append("group by info.GROUPID ");
 
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), reportsParamVO.getCompanyId(),
@@ -571,10 +578,11 @@ public class ZjsGroupReportDao {
 
         sb.append("select info.GROUPID groupId ,count(info.KZID) weekendCount ");
         sb.append("from ").append(infoTabName).append("info ");
-        sb.append("where info.SRCTYPE in(3, 4, 5) and info.companyId = ? ");
+        sb.append("where info.companyId = ? ");
         sb.append("and info.SUCCESSTIME BETWEEN ? AND ? ");
         sb.append("and DAYOFWEEK(from_unixtime(info.SUCCESSTIME)) IN (1,7) ");
         sb.append("and info.ISDEL = 0 and info.GROUPID is not null ");
+        sb.append("and info.SRCTYPE in(3, 4, 5) ");
         sb.append("group by info.GROUPID ");
 
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), reportsParamVO.getCompanyId(),
@@ -602,14 +610,14 @@ public class ZjsGroupReportDao {
         StringBuilder sb = new StringBuilder();
         sb.append("select info.GROUPID groupId, count(info.KZID) invalidCount  ");
         sb.append("from ").append(infoTabName).append("info ");
-        sb.append("where info.SRCTYPE in (3, 4, 5) ");
-        sb.append("and info.companyId = ? ");
+        sb.append("where info.companyId = ? ");
         sb.append("and info.CREATETIME BETWEEN ? AND ? ");
         sb.append("and info.ISDEL = 0 ");
         sb.append("and info.GROUPID is not null ");
         if (StringUtil.isNotEmpty(invalidConfig.getZjsValidStatus())) {
             sb.append(" AND INSTR('" + invalidConfig.getZjsValidStatus() + "',CONCAT( '\"',info.STATUSID,'\"'))=0 ");//找不到返回0
         }
+        sb.append("and info.SRCTYPE in (3, 4, 5)");
         sb.append("group by info.GROUPID ");
 
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), reportsParamVO.getCompanyId(),
