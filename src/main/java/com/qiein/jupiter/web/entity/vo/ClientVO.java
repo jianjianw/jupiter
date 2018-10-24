@@ -328,6 +328,10 @@ public class ClientVO implements Serializable {
      * 订单图片
      */
     private String orderImg;
+    /**
+     * 客资日志
+     */
+    private String log;
 
 
     public static long getSerialVersionUID() {
@@ -340,6 +344,15 @@ public class ClientVO implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+
+    public String getLog() {
+        return log;
+    }
+
+    public void setLog(String log) {
+        this.log = log;
     }
 
     public String getKzId() {

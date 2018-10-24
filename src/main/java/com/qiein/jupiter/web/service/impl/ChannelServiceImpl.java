@@ -93,23 +93,23 @@ public class ChannelServiceImpl implements ChannelService {
                 throw new RException(ExceptionEnum.YYID_NOT_EXISTS);
             }
             sourceStaffDao.deleteByChannelId(channelPO.getId(), channelPO.getCompanyId());
-            for(String linkId: Arrays.asList(channelPO.getLinkIds().split(CommonConstant.STR_SEPARATOR))){
+            for (String linkId : Arrays.asList(channelPO.getLinkIds().split(CommonConstant.STR_SEPARATOR))) {
                 sourceStaffDao.insertByChannelId(channelPO.getId(), channelPO.getCompanyId(), linkId, SourceStaffConst.RELATYPE_GROUP);
             }
             //更新所有来源的pushRole
             sourceDao.updatePushRuleByChannelId(channelPO.getId(), channelPO.getCompanyId(), channelPO.getPushRule());
-        }else if(PushRoleConst.GROUP_AVG_YY_WEIGHTS_RECEIVE.equals(channelPO.getPushRule())){
-            if(StringUtil.isEmpty(channelPO.getLinkIds())){
+        } else if (PushRoleConst.GROUP_AVG_YY_WEIGHTS_RECEIVE.equals(channelPO.getPushRule())) {
+            if (StringUtil.isEmpty(channelPO.getLinkIds())) {
                 throw new RException(ExceptionEnum.YYID_NOT_EXISTS);
             }
             sourceStaffDao.deleteByChannelId(channelPO.getId(), channelPO.getCompanyId());
-            for(String linkId: Arrays.asList(channelPO.getLinkIds().split(CommonConstant.STR_SEPARATOR))){
+            for (String linkId : Arrays.asList(channelPO.getLinkIds().split(CommonConstant.STR_SEPARATOR))) {
                 sourceStaffDao.insertByChannelId(channelPO.getId(), channelPO.getCompanyId(), linkId, SourceStaffConst.RELATYPE_GROUP);
             }
             sourceDao.updatePushRuleByChannelId(channelPO.getId(), channelPO.getCompanyId(), channelPO.getPushRule());
-        } else if(null != channelPO.getPushRule()){
+        } else if (null != channelPO.getPushRule()) {
             sourceStaffDao.deleteByChannelId(channelPO.getId(), channelPO.getCompanyId());
-            sourceDao.updatePushRuleByChannelId(channelPO.getId(),channelPO.getCompanyId(),channelPO.getPushRule());
+            sourceDao.updatePushRuleByChannelId(channelPO.getId(), channelPO.getCompanyId(), channelPO.getPushRule());
         }
 
         channelDao.update(channelPO);
@@ -160,13 +160,16 @@ public class ChannelServiceImpl implements ChannelService {
     public List<ChannelPO> getChannelList(List<Integer> typeIds, Integer companyId) {
         return channelDao.getChannelListByTypeIds(companyId, typeIds);
     }
+
     /**
      * 根据id查找
+     *
      * @return
      */
-    public ChannelPO findById(Integer id){
+    public ChannelPO findById(Integer id) {
         return channelDao.findById(id);
     }
+
     /**
      * 根据渠道细分类型获取渠道 1:纯电商，2:电商转介绍，3:员工转介绍，4:指名转介绍，5:外部转介绍，6:自然入客，7:门店外展
      *
@@ -197,8 +200,8 @@ public class ChannelServiceImpl implements ChannelService {
      * @param role
      * @return
      */
-    public List<ChannelVO> getAllChannelSourceListByType(Integer companyId, String role){
-        if (StringUtil.isEmpty(role)){
+    public List<ChannelVO> getAllChannelSourceListByType(Integer companyId, String role) {
+        if (StringUtil.isEmpty(role)) {
             role = RoleConstant.GLZX;
         }
         return channelDao.getAllSourceListByType(companyId, RoleChannelEnum.getTypeListByRole(role));
