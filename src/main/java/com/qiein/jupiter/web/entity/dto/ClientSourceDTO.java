@@ -2,9 +2,9 @@ package com.qiein.jupiter.web.entity.dto;
 
 public class ClientSourceDTO {
 
-    private int OldSrcId;
+    private int oldSrcId;
     private int NewSrcId;
-    private String OldSrcName;
+    private String oldSrcName;
     private String NewSrcName;
     private int companyId;
 
@@ -16,13 +16,6 @@ public class ClientSourceDTO {
         this.companyId = companyId;
     }
 
-    public int getOldSrcId() {
-        return OldSrcId;
-    }
-
-    public void setOldSrcId(int oldSrcId) {
-        OldSrcId = oldSrcId;
-    }
 
     public int getNewSrcId() {
         return NewSrcId;
@@ -32,12 +25,20 @@ public class ClientSourceDTO {
         NewSrcId = newSrcId;
     }
 
+    public int getOldSrcId() {
+        return oldSrcId;
+    }
+
+    public void setOldSrcId(int oldSrcId) {
+        this.oldSrcId = oldSrcId;
+    }
+
     public String getOldSrcName() {
-        return OldSrcName;
+        return oldSrcName;
     }
 
     public void setOldSrcName(String oldSrcName) {
-        OldSrcName = oldSrcName;
+        this.oldSrcName = oldSrcName;
     }
 
     public String getNewSrcName() {
