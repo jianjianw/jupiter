@@ -156,6 +156,7 @@ public class ExcelServiceImpl implements ExcelService {
             //时间校验
             try {
                 clientExcelDTO.setCreateTime(clientExcelDTO.getTime() == null ? 0 : TimeUtil.smartFormat(clientExcelDTO.getTime()).getTime() / 1000);
+                System.out.println("sj :" + clientExcelDTO.getCreateTime());
             } catch (Exception e) {
                 throw new RException(ExceptionEnum.TIME_ERROR);
             }
