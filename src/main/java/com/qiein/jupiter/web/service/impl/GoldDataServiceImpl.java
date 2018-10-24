@@ -486,6 +486,8 @@ public class GoldDataServiceImpl implements GoldDataService {
             e.printStackTrace();
             goldTempPO.setStatusId(GoldDataConst.REPEATED_SCREEN);
             goldTempDao.update(goldTempPO);
+            //重复录入时返回
+            return;
         }
         //新增客资
         try {
