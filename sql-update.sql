@@ -58,3 +58,4 @@ INSERT INTO hm_pub_permission(`ID`, `PERMISSIONNAME`, `TYPEID`) VALUES (227, '�
 INSERT INTO hm_pub_permission(`ID`, `PERMISSIONNAME`, `TYPEID`) VALUES (228, '财务-月度订单统计', 1);
 INSERT INTO hm_pub_permission(`ID`, `PERMISSIONNAME`, `TYPEID`) VALUES (229, '其他-联系方式修改', 1);
 INSERT INTO hm_pub_permission(`ID`, `PERMISSIONNAME`, `TYPEID`) VALUES (230, '其他-微信扫码记录', 1);
+INSERT INTO hm_pub_permission(`ID`, `PERMISSIONNAME`, `TYPEID`) VALUES (233, '转介绍-意向统计', 1);
