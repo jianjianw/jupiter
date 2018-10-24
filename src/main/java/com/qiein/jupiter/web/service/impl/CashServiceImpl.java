@@ -7,6 +7,7 @@ import com.qiein.jupiter.exception.ExceptionEnum;
 import com.qiein.jupiter.exception.RException;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.NumUtil;
+import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.CashLogDao;
 import com.qiein.jupiter.web.dao.ClientInfoDao;
 import com.qiein.jupiter.web.dao.ClientLogDao;
@@ -47,10 +48,13 @@ public class CashServiceImpl implements CashService {
         cashLogDao.editAmount(cashTableName, cashLogPO.getAmount(), cashLogPO.getId(), companyId, cashLogPO.getStaffId(),
                 cashLogPO.getStaffName(), cashLogPO.getPayStyle(), cashLogPO.getPaymentTime(), cashLogPO.getTypeId());
         //添加修改日志
-        clientLogDao.addInfoLog(infoLogTableName, new
-                ClientLogPO(kzId, cashLogPO.getOperaId(),
-                cashLogPO.getOperaName(), ClientLogConst.getCashEditLog(cashLogPO, oldCash),
-                ClientLogConst.INFO_LOGTYPE_CASH, companyId));
+        String msg = ClientLogConst.getCashEditLog(cashLogPO, oldCash);
+        if (StringUtil.isNotEmpty(msg)) {
+            clientLogDao.addInfoLog(infoLogTableName, new
+                    ClientLogPO(kzId, cashLogPO.getOperaId(),
+                    cashLogPO.getOperaName(), msg,
+                    ClientLogConst.INFO_LOGTYPE_CASH, companyId));
+        }
         //修改已收金额
         clientInfoDao.editStayAmount(detailTableName, cashTableName,
                 kzId, cashLogPO.getCompanyId());

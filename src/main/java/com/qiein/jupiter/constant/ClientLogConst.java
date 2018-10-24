@@ -139,7 +139,7 @@ public class ClientLogConst {
             return "";
         }
         StringBuilder sb = new StringBuilder();
-        sb.append(newCash.getOperaName() + " 修改了编号为 " + newCash.getId() + " 的收款记录");
+        String title = newCash.getOperaName() + " 修改了编号为 " + newCash.getId() + " 的收款记录";
         if (oldCash.getAmount() != newCash.getAmount()) {
             sb.append("，收款金额由 " + oldCash.getAmount() + " 改为：" + newCash.getAmount());
         }
@@ -152,7 +152,10 @@ public class ClientLogConst {
         if (StringUtil.isNotEmpty(newCash.getStaffName()) && StringUtil.isNotEmpty(oldCash.getStaffName()) && !newCash.getStaffName().equals(oldCash.getStaffName())) {
             sb.append("，收款人由 " + oldCash.getStaffName() + " 改为：" + newCash.getStaffName());
         }
-        return sb.toString();
+        if (StringUtil.isEmpty(sb.toString())) {
+            title = "";
+        }
+        return title + sb.toString();
     }
 
     /**
