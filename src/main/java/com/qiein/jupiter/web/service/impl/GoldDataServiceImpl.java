@@ -482,23 +482,22 @@ public class GoldDataServiceImpl implements GoldDataService {
         //查重
         try {
             checkClientRepeatDao.check(clientVO);
+            //新增客资
+            try {
+                clientAddDao.addClientInfo(clientVO);
+            } catch (Exception e) {
+                e.printStackTrace();
+                goldTempPO.setStatusId(GoldDataConst.IN_FAIL);
+                goldTempDao.update(goldTempPO);
+            }
+            goldTempPO.setStatusId(GoldDataConst.IN_SUCCESS);
+            goldTempDao.update(goldTempPO);
         } catch (RException e) {
             e.printStackTrace();
             goldTempPO.setStatusId(GoldDataConst.REPEATED_SCREEN);
             goldTempDao.update(goldTempPO);
             //重复录入时返回
-            return;
         }
-        //新增客资
-        try {
-            clientAddDao.addClientInfo(clientVO);
-        } catch (Exception e) {
-            e.printStackTrace();
-            goldTempPO.setStatusId(GoldDataConst.IN_FAIL);
-            goldTempDao.update(goldTempPO);
-        }
-        goldTempPO.setStatusId(GoldDataConst.IN_SUCCESS);
-        goldTempDao.update(goldTempPO);
 
 //        if ("100000".equals(jsInfo.getString("code"))) {
 //            goldTempPO.setStatusId(GoldDataConst.IN_SUCCESS);
