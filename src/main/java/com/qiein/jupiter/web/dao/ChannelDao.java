@@ -31,11 +31,14 @@ public interface ChannelDao extends BaseDao<ChannelPO> {
      * @return
      */
     List<ChannelPO> getChannelListByTypeIds(@Param("companyId") Integer companyId, @Param("typeIds") List<Integer> typeIds);
+
     /**
      * 根据id查找
+     *
      * @return
      */
     ChannelPO findById(@Param("id") Integer id);
+
     /**
      * 根据批量渠道名称获取渠道名称列表
      *
@@ -155,9 +158,10 @@ public interface ChannelDao extends BaseDao<ChannelPO> {
 
     /**
      * 获取企业所有启用渠道及来源列表
+     *
      * @param companyId
      * @param channelId
      * @return
      */
-    List<ChannelVO> getAllShowChannelSourceList(@Param("companyId") int companyId,@Param("channelId") Integer channelId);
+    List<ChannelVO> getAllShowChannelSourceList(@Param("companyId") int companyId, @Param("channelId") Integer channelId);
 }
