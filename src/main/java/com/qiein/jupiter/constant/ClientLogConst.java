@@ -167,7 +167,7 @@ public class ClientLogConst {
      */
     public static final String getCashAddLog(CashLogPO cashLogPO) {
         StringBuilder sb = new StringBuilder();
-        sb.append(cashLogPO.getOperaName() + " 添加了收款记录，");
+        sb.append(cashLogPO.getOperaName() + " 添加了收款记录");
         sb.append("，收款金额: " + cashLogPO.getAmount());
         sb.append("，收款方式： " + cashLogPO.getPayStyleName());
         sb.append("，收款时间： " + TimeUtil.intMillisToTimeStr(cashLogPO.getPaymentTime()));
