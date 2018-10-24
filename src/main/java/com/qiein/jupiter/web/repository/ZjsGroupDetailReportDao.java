@@ -737,7 +737,7 @@ public class ZjsGroupDetailReportDao {
     private Map<String,String> getDynamicTableHead(Map<String, String> tableHead) {
 
         StringBuilder sb = null;
-        Map<String,String> dynamicTableHead = new HashMap<String,String>();
+        Map<String,String> dynamicTableHead = new TreeMap<>();
         Set<Map.Entry<String, String>> entries = tableHead.entrySet();
         for(Map.Entry<String, String> set : entries ){
             String code = set.getKey();
