@@ -90,6 +90,11 @@ public class CashServiceImpl implements CashService {
         if (info.getStayAmount() > info.getAmount()) {
             throw new RException(ExceptionEnum.AMOUNT_ERROR);
         }
+        //添加修改日志
+        clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(companyId), new
+                ClientLogPO(kzId, cashLogPO.getOperaId(),
+                cashLogPO.getOperaName(), ClientLogConst.getCashAddLog(cashLogPO),
+                ClientLogConst.INFO_LOGTYPE_CASH, companyId));
         //查询已收金额
         return info.getStayAmount();
     }
