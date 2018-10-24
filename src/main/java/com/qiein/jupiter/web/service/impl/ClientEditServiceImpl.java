@@ -240,30 +240,32 @@ public class ClientEditServiceImpl implements ClientEditService {
             ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(clientVO.getKzId(),
                     DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
                     DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
-            if (ClientStatusConst.ONLINE_SUCCESS == clientVO.getYyRst()) {
-                // 成功订单爆彩
-                StaffDetailVO appoint = staffDao.getStaffDetailVO(info.getAppointorId(), staffPO.getCompanyId());
-                if (appoint == null) {
-                    return;
+            if (NumUtil.isValid(clientVO.getYyRst())) {
+                if (ClientStatusConst.ONLINE_SUCCESS == clientVO.getYyRst()) {
+                    // 成功订单爆彩
+                    StaffDetailVO appoint = staffDao.getStaffDetailVO(info.getAppointorId(), staffPO.getCompanyId());
+                    if (appoint == null) {
+                        return;
+                    }
+                    OrderSuccessMsg orderSuccessMsg = new OrderSuccessMsg();
+                    orderSuccessMsg.setCompanyId(staffPO.getCompanyId());
+                    orderSuccessMsg.setStaffName(appoint.getNickName());
+                    orderSuccessMsg.setShopName(info.getFilmingArea());
+                    orderSuccessMsg.setAmount(String.valueOf(clientVO.getAmount()));
+                    orderSuccessMsg.setType(OrderSuccessTypeEnum.ArrivalShop);
+                    orderSuccessMsg.setSrcImg(String.valueOf(info.getSourceId()));
+                    orderSuccessMsg.setHeadImg(appoint.getHeadImg());
+                    webSocketMsgUtil.pushOrderSuccessMsg(orderSuccessMsg);
+                    // 发送成功消息给录入人
+                    GoEasyUtil.pushSuccessOnline(info.getCompanyId(), info.getCollectorId(), info, newsDao, staffDao);
+                    GoEasyUtil.pushSuccessOnline(info.getCompanyId(), info.getAppointorId(), info, newsDao, staffDao);
+                    //TODO 这个地方会NPE 修复一下
+                } else if (ClientStatusConst.INVALID_BE_STAY == clientVO.getYyRst() && staffService.getMsgSetByStaffId(info.getCompanyId(), info.getCollectorId()).isAllowWxDingMsg()) {
+                    // 如果是无效，发送警告消息给录入人
+                    GoEasyUtil.pushYyValidReject(info.getCompanyId(), info.getCollectorId(), info, newsDao, staffDao);
+                } else if (ClientStatusConst.BE_COMFIRM == clientVO.getYyRst()) {
+                    GoEasyUtil.pushAppointShop(info.getCompanyId(), info.getCollectorId(), info, newsDao, staffDao);
                 }
-                OrderSuccessMsg orderSuccessMsg = new OrderSuccessMsg();
-                orderSuccessMsg.setCompanyId(staffPO.getCompanyId());
-                orderSuccessMsg.setStaffName(appoint.getNickName());
-                orderSuccessMsg.setShopName(info.getFilmingArea());
-                orderSuccessMsg.setAmount(String.valueOf(clientVO.getAmount()));
-                orderSuccessMsg.setType(OrderSuccessTypeEnum.ArrivalShop);
-                orderSuccessMsg.setSrcImg(String.valueOf(info.getSourceId()));
-                orderSuccessMsg.setHeadImg(appoint.getHeadImg());
-                webSocketMsgUtil.pushOrderSuccessMsg(orderSuccessMsg);
-                // 发送成功消息给录入人
-                GoEasyUtil.pushSuccessOnline(info.getCompanyId(), info.getCollectorId(), info, newsDao, staffDao);
-                GoEasyUtil.pushSuccessOnline(info.getCompanyId(), info.getAppointorId(), info, newsDao, staffDao);
-                //TODO 这个地方会NPE 修复一下
-            } else if (ClientStatusConst.INVALID_BE_STAY == clientVO.getYyRst() && staffService.getMsgSetByStaffId(info.getCompanyId(), info.getCollectorId()).isAllowWxDingMsg()) {
-                // 如果是无效，发送警告消息给录入人
-                GoEasyUtil.pushYyValidReject(info.getCompanyId(), info.getCollectorId(), info, newsDao, staffDao);
-            } else if (ClientStatusConst.BE_COMFIRM == clientVO.getYyRst()) {
-                GoEasyUtil.pushAppointShop(info.getCompanyId(), info.getCollectorId(), info, newsDao, staffDao);
             }
         } else if ("130019".equals(jsInfo.getString("code"))) {
             //重复客资，给邀约推送消息
