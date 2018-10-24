@@ -187,7 +187,7 @@ public class ClientEditServiceImpl implements ClientEditService {
         reqContent.put("kzqq", clientVO.getKzQq());
         reqContent.put("kzww", clientVO.getKzWw());
         // 邀约结果
-        if (NumUtil.isNotNull(clientVO.getYyRst())) {
+        if (NumUtil.isValid(clientVO.getYyRst())) {
             reqContent.put("yyrst", clientVO.getYyRst());
             // 无效,或者流失
             if (ClientStatusConst.INVALID_BE_STAY == clientVO.getYyRst()
@@ -311,7 +311,7 @@ public class ClientEditServiceImpl implements ClientEditService {
         reqContent.put("kzww", clientVO.getKzWw());
         reqContent.put("remarkform", clientVO.getRemarkForm());
         // 接待结果
-        if (NumUtil.isNotNull(clientVO.getYyRst())) {
+        if (NumUtil.isValid(clientVO.getYyRst())) {
             reqContent.put("yyrst", clientVO.getYyRst());
             ShopVO shopVO = shopDao.getShowShopById(staffPO.getCompanyId(), clientVO.getShopId());
             if (shopVO == null) {
@@ -351,27 +351,29 @@ public class ClientEditServiceImpl implements ClientEditService {
             ClientGoEasyDTO info = clientInfoDao.getClientGoEasyDTOById(clientVO.getKzId(),
                     DBSplitUtil.getInfoTabName(staffPO.getCompanyId()),
                     DBSplitUtil.getDetailTabName(staffPO.getCompanyId()));
-            if (ClientStatusConst.BE_SUCCESS == clientVO.getYyRst()) {
-                // 成功订单爆彩
-                StaffDetailVO appoint = staffDao.getStaffDetailVO(info.getAppointorId(), staffPO.getCompanyId());
-                if (appoint == null) {
-                    return;
+            if (NumUtil.isValid(clientVO.getYyRst())) {
+                if (ClientStatusConst.BE_SUCCESS == clientVO.getYyRst()) {
+                    // 成功订单爆彩
+                    StaffDetailVO appoint = staffDao.getStaffDetailVO(info.getAppointorId(), staffPO.getCompanyId());
+                    if (appoint == null) {
+                        return;
+                    }
+                    OrderSuccessMsg orderSuccessMsg = new OrderSuccessMsg();
+                    orderSuccessMsg.setCompanyId(staffPO.getCompanyId());
+                    orderSuccessMsg.setStaffName(appoint.getNickName());
+                    orderSuccessMsg.setShopName(info.getFilmingArea());
+                    orderSuccessMsg.setAmount(String.valueOf(clientVO.getAmount()));
+                    orderSuccessMsg.setType(OrderSuccessTypeEnum.ArrivalShop);
+                    orderSuccessMsg.setSrcImg(String.valueOf(info.getSourceId()));
+                    orderSuccessMsg.setHeadImg(appoint.getHeadImg());
+                    webSocketMsgUtil.pushOrderSuccessMsg(orderSuccessMsg);
+                    // 发送成功消息给录入人，邀约人
+                    GoEasyUtil.pushSuccessShop(info.getCompanyId(), info.getAppointorId(), info, newsDao, staffDao);
+                    GoEasyUtil.pushSuccessShop(info.getCompanyId(), info.getCollectorId(), info, newsDao, staffDao);
+                } else if (ClientStatusConst.BE_RUN_OFF == clientVO.getYyRst()) {
+                    //进店未定,发送消息给客服
+                    GoEasyUtil.pushComeNotSuccess(info.getCompanyId(), info.getAppointorId(), info, newsDao, staffDao);
                 }
-                OrderSuccessMsg orderSuccessMsg = new OrderSuccessMsg();
-                orderSuccessMsg.setCompanyId(staffPO.getCompanyId());
-                orderSuccessMsg.setStaffName(appoint.getNickName());
-                orderSuccessMsg.setShopName(info.getFilmingArea());
-                orderSuccessMsg.setAmount(String.valueOf(clientVO.getAmount()));
-                orderSuccessMsg.setType(OrderSuccessTypeEnum.ArrivalShop);
-                orderSuccessMsg.setSrcImg(String.valueOf(info.getSourceId()));
-                orderSuccessMsg.setHeadImg(appoint.getHeadImg());
-                webSocketMsgUtil.pushOrderSuccessMsg(orderSuccessMsg);
-                // 发送成功消息给录入人，邀约人
-                GoEasyUtil.pushSuccessShop(info.getCompanyId(), info.getAppointorId(), info, newsDao, staffDao);
-                GoEasyUtil.pushSuccessShop(info.getCompanyId(), info.getCollectorId(), info, newsDao, staffDao);
-            } else if (ClientStatusConst.BE_RUN_OFF == clientVO.getYyRst()) {
-                //进店未定,发送消息给客服
-                GoEasyUtil.pushComeNotSuccess(info.getCompanyId(), info.getAppointorId(), info, newsDao, staffDao);
             }
         } else if ("130019".equals(jsInfo.getString("code"))) {
             //重复客资，给邀约推送消息
@@ -465,7 +467,7 @@ public class ClientEditServiceImpl implements ClientEditService {
         reqContent.put("appointtime", clientVO.getAppointTime());
         reqContent.put("comeshoptime", clientVO.getComeShopTime());
 
-        if (NumUtil.isNotNull(clientVO.getFilmingCode())) {
+        if (NumUtil.isValid(clientVO.getFilmingCode())) {
             // 获取最终拍摄地名
             ShopVO shop = shopDao.getShowShopById(staffPO.getCompanyId(), clientVO.getFilmingCode());
             if (shop == null) {
