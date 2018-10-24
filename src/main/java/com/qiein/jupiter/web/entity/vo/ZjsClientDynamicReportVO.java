@@ -3,21 +3,22 @@ package com.qiein.jupiter.web.entity.vo;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 public class ZjsClientDynamicReportVO implements Serializable {
 
     private static final long serialVersionUID = 8580261613557433027L;
 
-    private List<String> dynamicTableHead;
+    private Map<String,String> dynamicTableHead;
 
     private List<Object> dynamicData;
 
 
-    public List<String> getDynamicTableHead() {
+    public Map<String, String> getDynamicTableHead() {
         return dynamicTableHead;
     }
 
-    public void setDynamicTableHead(List<String> dynamicTableHead) {
+    public void setDynamicTableHead(Map<String, String> dynamicTableHead) {
         this.dynamicTableHead = dynamicTableHead;
     }
 
