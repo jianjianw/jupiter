@@ -734,7 +734,7 @@ public class ZjsGroupReportDao {
         total.setUnWeekendSuccessRate(unWeekendSuccessRate);
         total.setAmount(amount);
         total.setAvgAmount(avgAmount);
-        reportVOS.add(total);
+        reportVOS.add(0,total);
     }
 
     private Map<String,String> getDynamicTableHead(Map<String, String> tableHead) {

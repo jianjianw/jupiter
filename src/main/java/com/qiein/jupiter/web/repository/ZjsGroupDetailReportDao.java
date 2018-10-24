@@ -729,8 +729,7 @@ public class ZjsGroupDetailReportDao {
         total.setWeekendSuccessRate(weekendSuccessRate);
         total.setUnWeekendSuccessRate(unWeekendSuccessRate);
         total.setAmount(amount);
-        total.setAvgAmount(avgAmount);
-        reportVOS.add(total);
+        reportVOS.add(0,total);
     }
 
 
