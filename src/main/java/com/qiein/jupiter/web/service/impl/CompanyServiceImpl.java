@@ -448,6 +448,12 @@ public class CompanyServiceImpl implements CompanyService {
         return datav;
     }
 
+    /**
+     * 获取公司报表设置
+     *
+     * @param companyId
+     * @return
+     */
     @Override
     public CompanyReportConfigDTO getCompanyReportConfig(int companyId) {
 
