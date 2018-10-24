@@ -3,6 +3,7 @@ package com.qiein.jupiter.web.dao;
 
 import com.qiein.jupiter.web.entity.dto.ClientGoEasyDTO;
 import com.qiein.jupiter.web.entity.dto.ClientLogDTO;
+import com.qiein.jupiter.web.entity.dto.ClientSourceDTO;
 import com.qiein.jupiter.web.entity.po.EditClientPhonePO;
 import com.qiein.jupiter.web.entity.po.RepateKzLogPO;
 import com.qiein.jupiter.web.entity.po.WechatScanPO;
@@ -304,4 +305,9 @@ public interface ClientInfoDao extends BaseDao<ClientInfoDao> {
      * @param kzId
      */
     void updateLastPushTime(@Param("companyId") int companyId, @Param("infoTabName") String infoTabName, @Param("kzId") String kzId);
+    /**
+     * 渠道转移客资
+     * @param clientSourceDTO
+     */
+    void changeClientSource(ClientSourceDTO clientSourceDTO);
 }

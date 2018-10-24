@@ -472,5 +472,7 @@
             KZID = #{kzId}
             AND COMPANYID = #{companyId}
     </update>
-
+    <update id="changeClientSource">
+        update hm_crm_client_info info left join hm_crm_source src on  src.id=info.sourceid  set info.SOURCEID=#{newSrcId},info.CHANNELID=src.channelId,info.srctype=src.typeid   where info.SOURCEID=#{oldSrcId} and info.companyid=#{companyId}
+    </update>
 </mapper>

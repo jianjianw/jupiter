@@ -2,6 +2,7 @@ package com.qiein.jupiter.web.service;
 
 import com.github.pagehelper.PageInfo;
 import com.qiein.jupiter.web.entity.dto.ClientLogDTO;
+import com.qiein.jupiter.web.entity.dto.ClientSourceDTO;
 import com.qiein.jupiter.web.entity.dto.QueryMapDTO;
 import com.qiein.jupiter.web.entity.po.CashLogPO;
 import com.qiein.jupiter.web.entity.po.EditClientPhonePO;
@@ -60,6 +61,12 @@ public interface ClientEditService {
      * @param memo
      */
     void editFastMemo(String kzId, String memo, StaffPO staffPO);
+
+    /**
+     * 渠道转移客资
+     * @param clientSourceDTO
+     */
+    void changeClientSource(ClientSourceDTO clientSourceDTO);
 
 
 }

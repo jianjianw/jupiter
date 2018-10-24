@@ -47,4 +47,5 @@ public interface ClientLogDao extends BaseDao<ClientLogDao> {
      */
     int addInvitationLog(@Param("tabName") String tabName, @Param("kzId") String kzId, @Param("yyMemo") String yyMemo,
                          @Param("staffId") int staffId, @Param("companyId") int companyId);
+
 }

@@ -559,6 +559,12 @@ public class ClientEditServiceImpl implements ClientEditService {
         //添加邀约记录
         clientLogDao.addInvitationLog(DBSplitUtil.getInvitaLogTabName(staffPO.getCompanyId()), kzId, memo, staffPO.getId(), staffPO.getCompanyId());
     }
-
+    /**
+     * 渠道转移客资
+     * @param clientSourceDTO
+     */
+    public void changeClientSource(ClientSourceDTO clientSourceDTO){
+        clientInfoDao.changeClientSource(clientSourceDTO);
+    }
 
 }

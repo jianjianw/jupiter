@@ -3,17 +3,18 @@ package com.qiein.jupiter.web.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.aop.validate.annotation.NotEmptyStr;
 import com.qiein.jupiter.constant.ClientStatusConst;
-import com.qiein.jupiter.util.NumUtil;
+import com.qiein.jupiter.util.*;
+import com.qiein.jupiter.web.entity.dto.ClientSourceDTO;
+import com.qiein.jupiter.web.entity.dto.RequestInfoDTO;
 import com.qiein.jupiter.web.entity.po.CashLogPO;
+import com.qiein.jupiter.web.entity.po.SystemLog;
+import com.qiein.jupiter.web.service.SystemLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.qiein.jupiter.enums.TipMsgEnum;
 import com.qiein.jupiter.exception.ExceptionEnum;
-import com.qiein.jupiter.util.ResultInfo;
-import com.qiein.jupiter.util.ResultInfoUtil;
-import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.entity.po.StaffPO;
 import com.qiein.jupiter.web.entity.vo.ClientVO;
 import com.qiein.jupiter.web.service.ClientEditService;
@@ -27,6 +28,9 @@ public class ClientEditController extends BaseController {
 
     @Autowired
     private ClientEditService clientEditService;
+
+    @Autowired
+    private SystemLogService logService;
 
     /**
      * 推广编辑客资
@@ -158,6 +162,30 @@ public class ClientEditController extends BaseController {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         clientEditService.editFastMemo(kzId, memo, currentLoginStaff);
         return ResultInfoUtil.success(TipMsgEnum.SAVE_SUCCESS);
+    }
+
+    /**
+     * 渠道转移客资
+     *
+     * @param clientSourceDTO
+     */
+    @PostMapping("/change_client_source")
+    public ResultInfo changeClientSource(ClientSourceDTO clientSourceDTO) {
+        clientSourceDTO.setCompanyId(getCurrentLoginStaff().getCompanyId());
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        clientEditService.changeClientSource(clientSourceDTO);
+        try {
+            // 日志记录
+            RequestInfoDTO requestInfo = getRequestInfo();
+            logService.addLog(new SystemLog(SysLogUtil.LOG_TYPE_CLIENT, requestInfo.getIp(), requestInfo.getUrl(), currentLoginStaff.getId(),
+                    currentLoginStaff.getNickName(), currentLoginStaff.getNickName()+"将 "+clientSourceDTO.getOldSrcName()+" 客资转移到了 "+clientSourceDTO.getNewSrcName(),
+                    currentLoginStaff.getCompanyId()));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultInfoUtil.success(TipMsgEnum.TRANSFER_SUCCESS);
+        }
+        return ResultInfoUtil.success(TipMsgEnum.TRANSFER_SUCCESS);
     }
 
 }
