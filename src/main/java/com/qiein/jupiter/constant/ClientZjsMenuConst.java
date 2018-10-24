@@ -50,5 +50,6 @@ public class ClientZjsMenuConst {
         LK_ZJS_MENU.put("ypTime","预拍时间");
         LK_ZJS_MENU.put("oldKzName","老客姓名");
         LK_ZJS_MENU.put("oldKzPhone","老客电话");
+        LK_ZJS_MENU.put("appointId","转介绍客服");
     }
 }
