@@ -170,8 +170,8 @@ public class ZjsGroupDetailReportDao {
         for (Map.Entry<String, String> set : entries) {
             StringBuilder sb = new StringBuilder();
             String code = set.getKey();//code
-            String name = set.getValue();//name
-            String prefix = sb.append("level").append(name).append(code).toString();
+            //String name = set.getValue();//name   可能会出现汉字
+            String prefix = sb.append("level").append(code).toString();
             propertyMap.put(prefix+"Count",0);//客资数
             propertyMap.put(prefix+"InShopCount",0);//进店数
             propertyMap.put(prefix+"Rate",0D);//转换率
