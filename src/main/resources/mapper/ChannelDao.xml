@@ -230,7 +230,7 @@
                  open="(" separator="," close=")">
             #{typeId}
         </foreach>
-        ORDER BY  TYPEID, ISSHOW DESC,PRIORITY , TYPEID, ID
+        ORDER BY  ISSHOW DESC,TYPEID, PRIORITY , TYPEID, ID
     </select>
 
     <select id="findById" resultMap="baseMap">
@@ -366,7 +366,7 @@
         <foreach collection="typeList" item="typeId" index="index" open="(" close=")" separator=",">
             #{typeId}
         </foreach>
-        ORDER BY channel.TYPEID, channel.ISSHOW DESC, channel.PRIORITY, channel.ID, src.ISSHOW DESC, src.PRIORITY, src.ID
+        ORDER BY  channel.ISSHOW DESC, channel.TYPEID, channel.PRIORITY, channel.ID, src.ISSHOW DESC, src.PRIORITY, src.ID
     </select>
 
     <!--根据ID获取显示可用的渠道-->
