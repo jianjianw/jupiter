@@ -1,6 +1,10 @@
 package com.qiein.jupiter.util.wechat;
 
+import com.alibaba.fastjson.JSONObject;
+
 import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * 推送模版的信息
@@ -55,7 +59,7 @@ public class WeChatPushMsgDTO {
     /**
      * 模板数据
      */
-    private HashMap<String,Object> data = new HashMap<>();
+    private Map<String,Object> data;
 
     /**
      *  推送新客资的有参构造器
@@ -68,6 +72,7 @@ public class WeChatPushMsgDTO {
      * @param time      发送时间
      */
     public WeChatPushMsgDTO(Integer cid,String cName, Integer uid, String url, String kzName, String kzPhone, String time,String kzId ,String logId) {
+        this.data = new HashMap<>();
         this.cid = cid;
         this.uid = uid;
         this.url = url;
@@ -89,6 +94,40 @@ public class WeChatPushMsgDTO {
         this.data.put("keyword2",h2);
         this.data.put("keyword3",h3);
         this.data.put("remark",remark);
+    }
+
+    /**
+     * 发送自定义普通客资消息
+     * @param firstText
+     * @param remarkText
+     * @param cid
+     * @param cName
+     * @param uid
+     * @param kzName
+     * @param time
+     */
+    public WeChatPushMsgDTO(String firstText,String remarkText,Integer cid ,String cName,Integer uid,String kzName, String kzPhone,String time){
+        this.data= new TreeMap<>();
+        this.cid=cid;
+        this.uid=uid;
+        Map<String,Object> first = new TreeMap<>();
+        first.put("value",firstText);
+        Map<String,Object> remark = new TreeMap<>();
+        remark.put("value",remarkText+"\r\n客资消息来自"+cName);
+
+        Map<String,Object> h1 = new TreeMap<>();
+        h1.put("value",kzName);
+        Map<String,Object> h2 = new TreeMap<>();
+        h2.put("value",kzPhone);
+        Map<String,Object> h3 = new TreeMap<>();
+        h3.put("value",time);
+
+        data.put("first",first);
+        data.put("keyword1",h1);
+        data.put("keyword2",h2);
+        data.put("keyword3",h3);
+        data.put("remark",remark);
+
     }
 
     public WeChatPushMsgDTO() {
@@ -127,11 +166,11 @@ public class WeChatPushMsgDTO {
         this.url = url;
     }
 
-    public HashMap<String, Object> getData() {
+    public Map<String, Object> getData() {
         return data;
     }
 
-    public void setData(HashMap<String, Object> data) {
+    public void setData(Map<String, Object> data) {
         this.data = data;
     }
 

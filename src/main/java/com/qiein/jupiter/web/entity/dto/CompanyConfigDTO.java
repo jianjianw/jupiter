@@ -34,6 +34,11 @@ public class CompanyConfigDTO {
      */
     private boolean loginLogoutNotChangeStatus;
 
+    /**
+     * 电商客服界面默认的时间
+     */
+    private String dsyyDefaultTime;
+
     public boolean isAutoCloseClientDetailWindow() {
         return autoCloseClientDetailWindow;
     }
@@ -81,5 +86,13 @@ public class CompanyConfigDTO {
 
     public void setLoginLogoutNotChangeStatus(boolean loginLogoutNotChangeStatus) {
         this.loginLogoutNotChangeStatus = loginLogoutNotChangeStatus;
+    }
+
+    public String getDsyyDefaultTime() {
+        return dsyyDefaultTime;
+    }
+
+    public void setDsyyDefaultTime(String dsyyDefaultTime) {
+        this.dsyyDefaultTime = dsyyDefaultTime;
     }
 }
