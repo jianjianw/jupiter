@@ -146,6 +146,7 @@ public enum ExceptionEnum {
     IS_NOT_KZ_PHONE_OR_WECHAT(1415, "请输入正确的客资手机号或微信"),
     AMOUNT_ERROR(1416, "收款总价不能大于套系金额"),
     KZ_CONTACT_WAY_WRITE_ONE(1417,"请填写至少一个联系方式"),
+    ALREADY_SK(1418,"该客资已筛选，无法二次筛选"),
     //OSS对象存储
     OSS_UPLOAD_TYPE_ERROR(1501, "上传类型错误"),
     OSS_UPLOAD_SIZE_ERROR(1502, "图片大小超过3M"),
