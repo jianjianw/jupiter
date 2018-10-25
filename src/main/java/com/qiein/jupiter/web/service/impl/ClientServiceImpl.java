@@ -10,6 +10,7 @@ import com.qiein.jupiter.msg.goeasy.GoEasyUtil;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.StringUtil;
 import com.qiein.jupiter.web.dao.*;
+import com.qiein.jupiter.web.entity.dto.ClientPushDTO;
 import com.qiein.jupiter.web.entity.po.ClientLogPO;
 import com.qiein.jupiter.web.entity.po.ClientRemarkPO;
 import com.qiein.jupiter.web.entity.po.ClientStatusPO;
@@ -128,6 +129,11 @@ public class ClientServiceImpl implements ClientService {
         if (null == clientStatusVoteVO) {
             throw new RException(ExceptionEnum.UNKNOW_ERROR);
         }
+        ClientPushDTO info = clientInfoDao.getClientPushDTOById(clientStatusVoteVO.getKzId(), DBSplitUtil.getInfoTabName(clientStatusVoteVO.getCompanyId()),
+                DBSplitUtil.getDetailTabName(clientStatusVoteVO.getCompanyId()));
+        if (info.getStatusId() != ClientStatusConst.BE_WAIT_FILTER && info.getStatusId() != ClientStatusConst.BE_WAIT_WAITING) {
+            throw new RException(ExceptionEnum.ALREADY_SK);
+        }
         //有效或待定，增加到备注表中
         Integer type = clientStatusVoteVO.getType();
 //        String tabName = DBSplitUtil.getRemarkTabName(clientStatusVoteVO.getCompanyId());
@@ -181,7 +187,7 @@ public class ClientServiceImpl implements ClientService {
                 clientStatusVoteVO.setContent(clientStatusVoteVO.getContent());
                 memo = clientStatusVoteVO.getContent();
             }
-            clientDao.updateDetailMemo(DBSplitUtil.getDetailTabName(clientStatusVoteVO.getCompanyId()), clientStatusVoteVO.getKzId(), clientStatusVoteVO.getCompanyId(), memo,clientStatusVoteVO.getContent(),clientStatusVoteVO.getReason());
+            clientDao.updateDetailMemo(DBSplitUtil.getDetailTabName(clientStatusVoteVO.getCompanyId()), clientStatusVoteVO.getKzId(), clientStatusVoteVO.getCompanyId(), memo, clientStatusVoteVO.getContent(), clientStatusVoteVO.getReason());
         }
         //插入日志
         int addLogNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(clientStatusVoteVO.getCompanyId()),

@@ -1185,7 +1185,7 @@ public class ClientPushServiceImpl implements ClientPushService {
 
         // 客资日志记录
         updateRstNum = clientLogDao.addInfoLog(DBSplitUtil.getInfoLogTabName(companyId),
-                new ClientLogPO(kzId, ClientLogConst.getAutoAllotLog(staff.getGroupName(), staff.getStaffName()),
+                new ClientLogPO(kzId, ClientLogConst.getAutoAllotLogSk(staff.getGroupName(), staff.getStaffName()),
                         ClientLogConst.INFO_LOGTYPE_ALLOT, companyId));
         if (1 != updateRstNum) {
             throw new RException(ExceptionEnum.LOG_ERROR);
