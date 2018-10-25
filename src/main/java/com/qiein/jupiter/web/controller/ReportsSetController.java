@@ -50,7 +50,7 @@ public class ReportsSetController extends BaseController {
     @GetMapping("/get_r1_show_title_set")
     public ResultInfo getR1ShowTitleSet() {
         int companyId = getCurrentLoginStaff().getCompanyId();
-        return ResultInfoUtil.success(reportsSetService.getDefineSet(companyId));
+        return ResultInfoUtil.success(reportsSetService.getR1ShowTitleSet(companyId));
     }
 
     /**
