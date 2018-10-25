@@ -31,6 +31,7 @@ public class ClientLogConst {
     public static final int INFO_LOGTYPE_CASH = 13;// 客资收款收款记录
     public static final int INFO_LOG_TYPE_CALL = 14;//通话
 
+    public static final String INFO_LOG_AUTO_ALLOT_TEMPLATE_SK = "系统自动分配该客资给筛选人： => ${groupName} 的  ${appointorName} ";
     public static final String INFO_LOG_AUTO_ALLOT_TEMPLATE = "系统自动分配该客资给 => ${groupName} 的  ${appointorName} ";
     public static final String INFO_LOG_HANDLER_ALLOT_TEMPLATE = "手动分配该客资给客服 => ${groupName} 的  ${appointorName} ";
     public static final String INFO_LOG_HANDLER_ALLOT_TEMPLATE_MSJD = "手动分配该客资给门市 => ${shopName} 的  ${appointorName} ";
@@ -67,6 +68,25 @@ public class ClientLogConst {
                 appointorName);
     }
 
+    /**
+     * 生成客资自动分配日志，分配给筛选人
+     *
+     * @param groupName
+     * @param appointorName
+     * @return
+     */
+    public static final String getAutoAllotLogSk(String groupName, String appointorName) {
+
+        if (StringUtil.isEmpty(groupName)) {
+            groupName = "-";
+        }
+        if (StringUtil.isEmpty(appointorName)) {
+            appointorName = "-";
+        }
+
+        return INFO_LOG_AUTO_ALLOT_TEMPLATE_SK.replace("${groupName}", groupName).replace("${appointorName}",
+                appointorName);
+    }
     /**
      * 手动分配日志
      *
