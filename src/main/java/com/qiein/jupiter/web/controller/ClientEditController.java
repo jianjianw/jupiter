@@ -170,7 +170,7 @@ public class ClientEditController extends BaseController {
      * @param clientSourceDTO
      */
     @PostMapping("/change_client_source")
-    public ResultInfo changeClientSource(ClientSourceDTO clientSourceDTO) {
+    public ResultInfo changeClientSource(@RequestBody ClientSourceDTO clientSourceDTO) {
         clientSourceDTO.setCompanyId(getCurrentLoginStaff().getCompanyId());
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         clientEditService.changeClientSource(clientSourceDTO);
