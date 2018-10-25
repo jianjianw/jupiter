@@ -32,7 +32,7 @@ public class CommonReportsDao {
         if (NumUtil.isInValid(companyId)) {
             return null;
         }
-        sb.append(" SELECT comp.REPORTSCONFIG  FROM hm_pub_company comp WHERE comp.ID = ? AND comp.ISDEL = 0 ");
+        sb.append(" SELECT rpset.DEFINESET FROM hm_crm_reports_set rpset WHERE rpset.COMPANYID =? ");
 //        sb.append(" SELECT comp.DSINVALIDSTATUS, comp.DSINVALIDLEVEL, comp.DDISVALID, comp.DSDDSTATUS ,comp.ZJSVALIDSTATUS FROM hm_pub_company comp WHERE comp.ID = ? AND comp.ISDEL = 0 ");
         DsInvalidVO dsInvalidVO = jdbcTemplate.queryForObject(sb.toString(),
                 new Object[]{companyId},
@@ -40,7 +40,7 @@ public class CommonReportsDao {
                     @Override
                     public DsInvalidVO mapRow(ResultSet rs, int i) throws SQLException {
                         DsInvalidVO dsInvalidVO = new DsInvalidVO();
-                        JSONObject configObj = JSONObject.parseObject(rs.getString("REPORTSCONFIG"));
+                        JSONObject configObj = JSONObject.parseObject(rs.getString("DEFINESET"));
                         //筛选无效的意向等级
                         JSONArray yxLevelArr = configObj.getJSONObject(ReportsConfigConst.WX_SET).getJSONArray(ReportsConfigConst.DZZ_YXDJ);
                         //筛选无效状态
