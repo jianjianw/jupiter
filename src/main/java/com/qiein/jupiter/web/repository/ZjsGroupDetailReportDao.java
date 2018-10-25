@@ -712,7 +712,7 @@ public class ZjsGroupDetailReportDao {
         rate = totalInShopCount / (double) validClientSourceCount;
         validClientInShopRate = parseDouble(parseDouble(((Double.isNaN(rate) || Double.isInfinite(rate)) ? 0.0 : rate) * 100));
 
-        rate = unWeekendSuccessCount / (double) totalInShopCount;
+        rate = unWeekendInShopCount / (double) totalInShopCount;
         unWeekendInShopRate = parseDouble(parseDouble(((Double.isNaN(rate) || Double.isInfinite(rate)) ? 0.0 : rate) * 100));
 
         rate = weekendSuccessCount / (double) totalSuccessCount;
