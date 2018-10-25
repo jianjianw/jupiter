@@ -171,8 +171,8 @@ public class ClientEditController extends BaseController {
      */
     @PostMapping("/change_client_source")
     public ResultInfo changeClientSource(ClientSourceDTO clientSourceDTO) {
-        clientSourceDTO.setCompanyId(getCurrentLoginStaff().getCompanyId());
         StaffPO currentLoginStaff = getCurrentLoginStaff();
+        clientSourceDTO.setCompanyId(currentLoginStaff.getCompanyId());
         clientEditService.changeClientSource(clientSourceDTO);
         try {
             // 日志记录
@@ -183,7 +183,6 @@ public class ClientEditController extends BaseController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            return ResultInfoUtil.success(TipMsgEnum.TRANSFER_SUCCESS);
         }
         return ResultInfoUtil.success(TipMsgEnum.TRANSFER_SUCCESS);
     }
