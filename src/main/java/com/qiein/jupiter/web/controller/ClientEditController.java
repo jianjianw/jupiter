@@ -173,6 +173,7 @@ public class ClientEditController extends BaseController {
     public ResultInfo changeClientSource(@RequestBody ClientSourceDTO clientSourceDTO) {
         clientSourceDTO.setCompanyId(getCurrentLoginStaff().getCompanyId());
         StaffPO currentLoginStaff = getCurrentLoginStaff();
+        clientSourceDTO.setCompanyId(currentLoginStaff.getCompanyId());
         clientEditService.changeClientSource(clientSourceDTO);
         try {
             // 日志记录
