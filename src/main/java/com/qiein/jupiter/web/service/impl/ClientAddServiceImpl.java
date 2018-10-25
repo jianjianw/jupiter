@@ -585,9 +585,9 @@ public class ClientAddServiceImpl implements ClientAddService {
      *
      * @param list
      */
-    public JSONObject batchAddDsClient(String list, int channelId, int sourceId, int shopId, int typeId,
-                                       StaffPO staffPO, String adId, String adAddress, String groupId, int appointId,
-                                       int zxStyle, int yxLevel, int ysRange, int marryTime, String address) {
+    public JSONObject batchAddDsClient(String list, Integer channelId, Integer sourceId, Integer shopId, Integer typeId, StaffPO staffPO,
+                                       String adId, String adAddress, String groupId, Integer appointId, Integer zxStyle, Integer yxLevel,
+                                       Integer ysRange, Integer marryTime, String address) {
         // 获取邀约客服名称
         String appointName = "";
         if (NumUtil.isValid(appointId)) {

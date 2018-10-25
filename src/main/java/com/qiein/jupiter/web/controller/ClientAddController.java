@@ -224,16 +224,16 @@ public class ClientAddController extends BaseController {
         if (StringUtil.isEmpty(list)) {
             throw new RException(ExceptionEnum.INFO_IS_NULL);
         }
-        int sourceId = jsonObject.getIntValue("sourceId");
+        Integer sourceId = jsonObject.getInteger("sourceId");
         if (NumUtil.isNull(sourceId)) {
             throw new RException(ExceptionEnum.SOURCE_ID_NULL);
         }
-        int channelId = jsonObject.getIntValue("channelId");
+        Integer channelId = jsonObject.getInteger("channelId");
         if (NumUtil.isNull(channelId)) {
             throw new RException(ExceptionEnum.CHANNEL_ID_NULL);
         }
-        int shopId = jsonObject.getIntValue("shopId");
-        int typeId = jsonObject.getIntValue("typeId");
+        Integer shopId = jsonObject.getInteger("shopId");
+        Integer typeId = jsonObject.getInteger("typeId");
         if (NumUtil.isNull(typeId)) {
             throw new RException(ExceptionEnum.TYPEID_IS_NULL);
         }
@@ -241,12 +241,12 @@ public class ClientAddController extends BaseController {
         String adAddress = StringUtil.nullToStrTrim(jsonObject.getString("adAddress"));
         String groupId = StringUtil.nullToStrTrim(jsonObject.getString("groupId"));
         String address = StringUtil.nullToStrTrim(jsonObject.getString("address"));
-        int yxLevel = jsonObject.getIntValue("yxLevel");
-        int ysRange = jsonObject.getIntValue("ysRange");
-        int marryTime = jsonObject.getIntValue("marryTime");
+        Integer yxLevel = jsonObject.getInteger("yxLevel");
+        Integer ysRange = jsonObject.getInteger("ysRange");
+        Integer marryTime = jsonObject.getInteger("marryTime");
 
-        int appointId = jsonObject.getIntValue("appointId");
-        int zxStyle = jsonObject.getIntValue("zxStyle");
+        Integer appointId = jsonObject.getInteger("appointId");
+        Integer zxStyle = jsonObject.getInteger("zxStyle");
         // 获取当前登录账户
         StaffPO currentLoginStaff = getCurrentLoginStaff();
         JSONObject result = clientAddService.batchAddDsClient(list, channelId, sourceId, shopId, typeId, currentLoginStaff, adId,
