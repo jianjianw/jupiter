@@ -946,7 +946,7 @@ public class GoEasyUtil {
             sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("<br/><br/>");
             pushSuccess(companyId, staffId, head, sb.toString());
             newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_SUCCESS, head, sb.toString().replaceAll("<br/>", "；"), info.getKzId(), staffId, companyId));
-            DingMsgSendUtil.sendDingMsg(head, companyId, staffId, staffDao);
+            DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), companyId, staffId, staffDao);
         } else {
             pushSuccess(companyId, staffId, head, sb.toString());
             newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_SUCCESS, head, null, "", staffId, companyId));
