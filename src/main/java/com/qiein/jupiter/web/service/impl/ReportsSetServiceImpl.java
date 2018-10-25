@@ -2,9 +2,13 @@ package com.qiein.jupiter.web.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.web.dao.ReportsSetDao;
+import com.qiein.jupiter.web.entity.vo.AnalyzeVO;
+import com.qiein.jupiter.web.repository.ZjsEntryStaffReportDao;
 import com.qiein.jupiter.web.service.ReportsSetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
 
 /**
  * 报表设置
@@ -63,4 +67,7 @@ public class ReportsSetServiceImpl implements ReportsSetService {
     public int updateR1ShowTitleSet(int companyId, JSONObject set) {
         return reportsSetDao.updateR1ShowTitleSet(companyId, set.toString());
     }
+
+
+
 }
