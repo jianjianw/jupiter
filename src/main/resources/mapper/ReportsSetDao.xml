@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiein.jupiter.web.dao.ReportsSetDao">
+
+
+    <!-- 获取报表定义-->
+    <select id="getDefineSet" resultType="String">
+        SELECT DEFINESET
+        FROM hm_crm_reports_set
+        WHERE COMPANYID = #{companyId}
+    </select>
+
+
+    <!--修改报表定义-->
+    <update id="updateDefineSet">
+        UPDATE hm_crm_reports_set
+        SET DEFINESET = #{set}
+        WHERE COMPANYID = #{companyId}
+    </update>
+
+    <!--获取电商推广 来源数据统计 表头-->
+    <select id="getR1ShowTitleSet" resultType="String">
+        SELECT R1SHOWTITLESET
+        FROM hm_crm_reports_set
+        WHERE COMPANYID = #{companyId}
+    </select>
+
+
+    <!--修改电商推广 来源数据统计 表头-->
+    <update id="updateR1ShowTitleSet">
+        UPDATE hm_crm_reports_set
+        SET R1SHOWTITLESET = #{set}
+        WHERE COMPANYID = #{companyId}
+    </update>
+
+</mapper>

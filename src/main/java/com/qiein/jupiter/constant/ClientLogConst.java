@@ -139,7 +139,7 @@ public class ClientLogConst {
             return "";
         }
         StringBuilder sb = new StringBuilder();
-        sb.append(newCash.getOperaName() + " 修改了编号为 " + newCash.getId() + " 的收款记录");
+        String title = newCash.getOperaName() + " 修改了编号为 " + newCash.getId() + " 的收款记录";
         if (oldCash.getAmount() != newCash.getAmount()) {
             sb.append("，收款金额由 " + oldCash.getAmount() + " 改为：" + newCash.getAmount());
         }
@@ -152,15 +152,35 @@ public class ClientLogConst {
         if (StringUtil.isNotEmpty(newCash.getStaffName()) && StringUtil.isNotEmpty(oldCash.getStaffName()) && !newCash.getStaffName().equals(oldCash.getStaffName())) {
             sb.append("，收款人由 " + oldCash.getStaffName() + " 改为：" + newCash.getStaffName());
         }
+        if (StringUtil.isEmpty(sb.toString())) {
+            title = "";
+        }
+        return title + sb.toString();
+    }
+
+    /**
+     * 添加收款日志
+     *
+     * @param newCash
+     * @param oldCash
+     * @return
+     */
+    public static final String getCashAddLog(CashLogPO cashLogPO) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(cashLogPO.getOperaName() + " 添加了收款记录");
+        sb.append("，收款金额: " + cashLogPO.getAmount());
+        sb.append("，收款方式： " + cashLogPO.getPayStyleName());
+        sb.append("，收款时间： " + TimeUtil.intMillisToTimeStr(cashLogPO.getPaymentTime()));
+        sb.append("，收款人： " + cashLogPO.getStaffName());
         return sb.toString();
     }
 
     /**
      * 删除收款日志
      */
-    public static final String getCashDeleteLog(CashLogPO cashLogPO,String staffName){
-        StringBuilder sb=new StringBuilder();
-        sb.append(staffName+" 删除了编号为："+cashLogPO.getId()+ " 的 "+cashLogPO.getStaffName()+" 的收款记录:"+cashLogPO.getAmount());
+    public static final String getCashDeleteLog(CashLogPO cashLogPO, String staffName) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(staffName + " 删除了编号为：" + cashLogPO.getId() + " 的 " + cashLogPO.getStaffName() + " 的收款记录:" + cashLogPO.getAmount());
         return sb.toString();
     }
 }

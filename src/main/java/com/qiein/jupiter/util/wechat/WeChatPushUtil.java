@@ -31,6 +31,8 @@ public class WeChatPushUtil {
     private final static String APP_ID = "wxcfb9db7577fca934";   //"wx67a4a7028f12a820"
     //APPSECRET
     private final static String APP_SECRET = "c00e1dc5cf3c7c305ccf9e0b9dd6158e";    //"f1643abe4865080db153a0d181719005"
+    //换行
+    private final static String NEW_LINE = "\r\n";
     //阿波罗地址
     public static String APOLLO_URL;
 
@@ -86,10 +88,6 @@ public class WeChatPushUtil {
         }
         System.out.println("AccessToken: "+resJsonObj.getString("data"));
         return resJsonObj.getString("data");
-    }
-
-    public static void main(String[] args) {
-        System.out.println(getAccessToken());
     }
 
     /**
@@ -170,7 +168,7 @@ public class WeChatPushUtil {
      * 推送新客资模版消息
      * @param weChatPushMsgDTO
      */
-    public static void pushMsg(WeChatPushMsgDTO weChatPushMsgDTO){
+    public static void pushNewClientMsg(WeChatPushMsgDTO weChatPushMsgDTO){
         String contentStr = JSONObject.toJSONString(weChatPushMsgDTO);
         //TODO 之后放进配置类中
         String url = APOLLO_URL+"/wechat/push_new_client";
@@ -179,10 +177,27 @@ public class WeChatPushUtil {
                 .execute();
     }
 
-//    // 新客资消息推送 DEMO
-//    public static void main(String[] args) {
-//        WeChatPushMsgDTO weChatPushMsgDTO = new WeChatPushMsgDTO(1,"唯一旅拍",12,"http://longzhu.com/","吴亦凡","12345678900","2018年6月8日 21:46");
-//        pushMsg(weChatPushMsgDTO);
-//    }
+    /**
+     * 推送普通客资信息
+     * @param weChatPushMsgDTO
+     */
+    public static void pushMsg(WeChatPushMsgDTO weChatPushMsgDTO){
+        String contentStr = JSON.toJSONString(weChatPushMsgDTO);
+        String url = "http://apollo.qiein.com/wechat/push_client_msg";
+        HttpClient.textBody(url)
+                .json(contentStr)
+                .execute();
+    }
+
+
+
+
+    // 新客资消息推送 DEMO
+    public static void main(String[] args) {
+        String firstText = "客资变更通知";
+        String remarkText = "状态： 待领取"+NEW_LINE+"配偶: 丧偶"+NEW_LINE+"咨询类型： 婚纱照";
+        WeChatPushMsgDTO weChatPushMsgDTO = new WeChatPushMsgDTO(firstText,remarkText,5001,"中国有嘻哈",30191,"猪猪","15888888888","2018年6月8日 21:46");
+        pushMsg(weChatPushMsgDTO);
+    }
 
     }

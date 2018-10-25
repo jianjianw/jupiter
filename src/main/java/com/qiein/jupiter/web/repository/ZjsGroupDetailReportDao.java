@@ -204,6 +204,7 @@ public class ZjsGroupDetailReportDao {
         sb.append("and info.CREATETIME BETWEEN ? AND ? ");
         sb.append("and info.ISDEL = 0 ");
         sb.append("and info.GROUPID = ? ");
+        sb.append("and info.APPOINTORID is not null ");
         sb.append("and info.SRCTYPE in(3, 4, 5) ");
         sb.append("group by info.APPOINTORID ");
 
@@ -227,12 +228,11 @@ public class ZjsGroupDetailReportDao {
         try {
             for(Object obj : dynamicBeans){
                 Class<?> clazz = obj.getClass();
-                String id = null;
                 Method method = clazz.getDeclaredMethod("getId");
-                id = (String)method.invoke(obj);
+                String id = (String)method.invoke(obj);
 
                 for (Map<String, Object> map: list) {
-                    String kfId = (String)map.get("kfId");
+                    String kfId = String.valueOf((Long)map.get("kfId"));
                     if(StringUtils.equals(id,kfId)){
                         Long totalCount = (Long)map.get("totalCount");
                         Long filterWaitCount = (Long) map.get("filterWaitCount");
@@ -266,6 +266,7 @@ public class ZjsGroupDetailReportDao {
         sb.append("and info.COMESHOPTIME BETWEEN ? AND ? ");
         sb.append("and info.ISDEL = 0 ");
         sb.append("and info.GROUPID  = ? ");
+        sb.append("and info.APPOINTORID is not null ");
         sb.append("and info.SRCTYPE in(3, 4, 5) ");
         sb.append("group by info.APPOINTORID ");
 
@@ -327,6 +328,7 @@ public class ZjsGroupDetailReportDao {
         sb.append("and CREATETIME BETWEEN ? AND ? ");
         sb.append("and ISDEL = 0 ");
         sb.append("and GROUPID = ? ");
+        sb.append("and APPOINTORID is not null ");
         sb.append("and SRCTYPE in(3, 4, 5) ");
         sb.append("group by APPOINTORID ");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), reportsParamVO.getCompanyId(),
@@ -362,6 +364,7 @@ public class ZjsGroupDetailReportDao {
         if (StringUtil.isNotEmpty(invalidConfig.getZjsValidStatus())) {
             sb.append(" AND INSTR('" + invalidConfig.getZjsValidStatus() + "',CONCAT( '\"',info.STATUSID,'\"'))>0 ");//找到返回索引> 0 因为从一开始
         }
+        sb.append("and info.APPOINTORID is not null ");
         sb.append("and info.SRCTYPE in (3, 4, 5) ");
         sb.append("group by info.APPOINTORID ");
 
@@ -392,6 +395,7 @@ public class ZjsGroupDetailReportDao {
         sb.append("and COMESHOPTIME BETWEEN ? AND ? ");
         sb.append("and ISDEL = 0 ");
         sb.append("and GROUPID = ? ");
+        sb.append("and APPOINTORID is not null ");
         sb.append("and SRCTYPE in(3, 4, 5) ");
         sb.append("group by APPOINTORID ");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), reportsParamVO.getCompanyId(),
@@ -420,6 +424,7 @@ public class ZjsGroupDetailReportDao {
         sb.append("and SUCCESSTIME BETWEEN ? AND ? ");//总成交数
         sb.append("and ISDEL = 0 ");
         sb.append("and GROUPID = ? ");
+        sb.append("and APPOINTORID is not null ");
         sb.append("and SRCTYPE in(3, 4, 5) ");
         sb.append("group by APPOINTORID ");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), reportsParamVO.getCompanyId(),
@@ -451,6 +456,7 @@ public class ZjsGroupDetailReportDao {
         sb.append("and info.SUCCESSTIME BETWEEN ? AND ? ");
         sb.append("and info.ISDEL = 0 ");
         sb.append("and info.GROUPID = ? ");
+        sb.append("and info.APPOINTORID is not null ");
         sb.append("and info.SRCTYPE in(3, 4, 5) ");
         sb.append("group by info.APPOINTORID ");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), reportsParamVO.getCompanyId(),
@@ -484,6 +490,7 @@ public class ZjsGroupDetailReportDao {
         sb.append("and DAYOFWEEK(from_unixtime(info.COMESHOPTIME)) IN (1,7) ");
         sb.append("and info.ISDEL = 0 ");
         sb.append("and info.GROUPID = ? ");
+        sb.append("and info.APPOINTORID is not null ");
         sb.append("and info.SRCTYPE in(3, 4, 5) ");
         sb.append("group by info.APPOINTORID ");
 
@@ -514,6 +521,7 @@ public class ZjsGroupDetailReportDao {
         sb.append("and DAYOFWEEK(from_unixtime(info.SUCCESSTIME)) IN (1,7) ");
         sb.append("and info.ISDEL = 0 ");
         sb.append("and info.GROUPID = ? ");
+        sb.append("and info.APPOINTORID is not null ");
         sb.append("and info.SRCTYPE in(3, 4, 5) ");
         sb.append("group by info.APPOINTORID ");
 
@@ -547,6 +555,7 @@ public class ZjsGroupDetailReportDao {
         if (StringUtil.isNotEmpty(invalidConfig.getZjsValidStatus())) {
             sb.append(" AND INSTR('" + invalidConfig.getZjsValidStatus() + "',CONCAT( '\"',info.STATUSID,'\"'))=0 ");//找不到返回0
         }
+        sb.append("and info.APPOINTORID is not null ");
         sb.append("and info.SRCTYPE in (3, 4, 5) ");
         sb.append("group by APPOINTORID ");
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), reportsParamVO.getCompanyId(),
@@ -713,7 +722,7 @@ public class ZjsGroupDetailReportDao {
         rate = totalInShopCount / (double) validClientSourceCount;
         validClientInShopRate = parseDouble(parseDouble(((Double.isNaN(rate) || Double.isInfinite(rate)) ? 0.0 : rate) * 100));
 
-        rate = unWeekendSuccessCount / (double) totalInShopCount;
+        rate = unWeekendInShopCount / (double) totalInShopCount;
         unWeekendInShopRate = parseDouble(parseDouble(((Double.isNaN(rate) || Double.isInfinite(rate)) ? 0.0 : rate) * 100));
 
         rate = weekendSuccessCount / (double) totalSuccessCount;
@@ -737,6 +746,7 @@ public class ZjsGroupDetailReportDao {
         total.setWeekendSuccessRate(weekendSuccessRate);
         total.setUnWeekendSuccessRate(unWeekendSuccessRate);
         total.setAmount(amount);
+        total.setAvgAmount(avgAmount);
         reportVOS.add(0,total);
     }
 
@@ -744,7 +754,7 @@ public class ZjsGroupDetailReportDao {
     private Map<String,String> getDynamicTableHead(Map<String, String> tableHead) {
 
         StringBuilder sb = null;
-        Map<String,String> dynamicTableHead = new TreeMap<>();
+        Map<String,String> dynamicTableHead = new LinkedHashMap<>();
         Set<Map.Entry<String, String>> entries = tableHead.entrySet();
         for(Map.Entry<String, String> set : entries ){
             String code = set.getKey();

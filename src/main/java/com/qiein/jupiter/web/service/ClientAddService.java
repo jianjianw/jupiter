@@ -55,8 +55,9 @@ public interface ClientAddService {
      *
      * @param list
      */
-    JSONObject batchAddDsClient(String list, int channelId, int sourceId, int shopId, int typeId, StaffPO staffPO,
-                                String adId, String adAddress, String groupId, int appointId, int zxStyle, int yxLevel, int ysRange, int marryTime, String address);
+    JSONObject batchAddDsClient(String list, Integer channelId, Integer sourceId, Integer shopId, Integer typeId, StaffPO staffPO,
+                                String adId, String adAddress, String groupId, Integer appointId, Integer zxStyle, Integer yxLevel,
+                                Integer ysRange, Integer marryTime, String address);
 
     /**
      * 发送重复录入消息

@@ -234,12 +234,12 @@ public interface CompanyService {
      */
     int timingExecuteConfigTask();
 
-	List<DatavPermissionPo> getPermission(String phone, int companyId);
+    List<DatavPermissionPo> getPermission(String phone, int companyId);
 
-	List<Datav> getDatav(int companyId);
+    List<Datav> getDatav(int companyId);
 
     /**
      * 获取公司报表配置
      */
-    CompanyReportConfigDTO getCompanyReportConfig(int companyId);
+    JSONObject getCompanyReportConfig(int companyId);
 }
