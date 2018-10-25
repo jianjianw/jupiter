@@ -131,7 +131,7 @@ public class ClientServiceImpl implements ClientService {
         }
         ClientPushDTO info = clientInfoDao.getClientPushDTOById(clientStatusVoteVO.getKzId(), DBSplitUtil.getInfoTabName(clientStatusVoteVO.getCompanyId()),
                 DBSplitUtil.getDetailTabName(clientStatusVoteVO.getCompanyId()));
-        if (info.getStatusId() != ClientStatusConst.BE_WAIT_FILTER || info.getStatusId() != ClientStatusConst.BE_WAIT_WAITING) {
+        if (info.getStatusId() != ClientStatusConst.BE_WAIT_FILTER && info.getStatusId() != ClientStatusConst.BE_WAIT_WAITING) {
             throw new RException(ExceptionEnum.ALREADY_SK);
         }
         //有效或待定，增加到备注表中
