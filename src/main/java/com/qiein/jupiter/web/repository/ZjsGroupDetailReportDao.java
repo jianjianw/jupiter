@@ -227,12 +227,11 @@ public class ZjsGroupDetailReportDao {
         try {
             for(Object obj : dynamicBeans){
                 Class<?> clazz = obj.getClass();
-                String id = null;
                 Method method = clazz.getDeclaredMethod("getId");
-                id = (String)method.invoke(obj);
+                String id = (String)method.invoke(obj);
 
                 for (Map<String, Object> map: list) {
-                    String kfId = (String)map.get("kfId");
+                    String kfId = String.valueOf((Long)map.get("kfId"));
                     if(StringUtils.equals(id,kfId)){
                         Long totalCount = (Long)map.get("totalCount");
                         Long filterWaitCount = (Long) map.get("filterWaitCount");

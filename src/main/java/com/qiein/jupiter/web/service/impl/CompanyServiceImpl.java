@@ -448,22 +448,30 @@ public class CompanyServiceImpl implements CompanyService {
         return datav;
     }
 
+    /**
+     * 获取公司报表设置
+     *
+     * @param companyId
+     * @return
+     */
     @Override
-    public CompanyReportConfigDTO getCompanyReportConfig(int companyId) {
+    public JSONObject getCompanyReportConfig(int companyId) {
 
         CompanyVO companyVO = companyDao.getReportConfigById(companyId);
-        CompanyReportConfigDTO companyReportConfigDTO = new CompanyReportConfigDTO();
+//        CompanyReportConfigDTO companyReportConfigDTO = new CompanyReportConfigDTO();
+        JSONObject json = new JSONObject();
         String reportsConfig = companyVO.getReportsConfig();
         if (StringUtil.isNotEmpty(reportsConfig)) {
             try {
-                companyReportConfigDTO = JSONObject.parseObject(reportsConfig, CompanyReportConfigDTO.class);
+                json = JSONObject.parseObject(reportsConfig);
             } catch (Exception e) {
-                companyDao.editConfig(companyId, JSONObject.toJSONString(companyReportConfigDTO));
-                return companyReportConfigDTO;
+//                companyDao.editConfig(companyId, JSONObject.toJSONString(companyReportConfigDTO));
+//                return companyReportConfigDTO;
+                e.printStackTrace();
             }
 
         }
-        return companyReportConfigDTO;
+        return json;
     }
 
 }
