@@ -75,9 +75,9 @@ public class ZjsGroupReportDao {
             String code = set.getKey();
             String name = set.getValue();
             //意向等级毛客资
-            getClientSourceLevelCount(reportsParamVO,dynamicBeans,code,name);
+            getClientSourceLevelCount(reportsParamVO,dynamicBeans,code);
             //进店数
-            getClientSourceLevelInShopCount(reportsParamVO,dynamicBeans,code,name);
+            getClientSourceLevelInShopCount(reportsParamVO,dynamicBeans,code);
         }
         //封装表头返回
         Map<String,String> dynamicTableHead =  getDynamicTableHead(tableHead);
@@ -220,7 +220,7 @@ public class ZjsGroupReportDao {
     }
 
     //获取等级客资数(A,B,C,D)
-    private void getClientSourceLevelCount(ReportsParamVO reportsParamVO,List<Object> dynamicBeans,String dicCode,String dicName ){
+    private void getClientSourceLevelCount(ReportsParamVO reportsParamVO,List<Object> dynamicBeans,String dicCode){
 
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
@@ -251,7 +251,7 @@ public class ZjsGroupReportDao {
     }
 
     //封装客资进店数 和 客资转化率
-    private void getClientSourceLevelInShopCount(ReportsParamVO reportsParamVO,List<Object> dynamicBeans,String dicCode,String dicName){
+    private void getClientSourceLevelInShopCount(ReportsParamVO reportsParamVO,List<Object> dynamicBeans,String dicCode){
         String infoTabName = DBSplitUtil.getInfoTabName(reportsParamVO.getCompanyId());
         String detailTabName = DBSplitUtil.getDetailTabName(reportsParamVO.getCompanyId());
         StringBuilder sb = new StringBuilder();
@@ -716,7 +716,7 @@ public class ZjsGroupReportDao {
         rate = totalInShopCount / (double) validClientSourceCount;
         validClientInShopRate = parseDouble(parseDouble(((Double.isNaN(rate) || Double.isInfinite(rate)) ? 0.0 : rate) * 100));
 
-        rate = unWeekendSuccessCount / (double) totalInShopCount;
+        rate = unWeekendInShopCount / (double) totalInShopCount;
         unWeekendInShopRate = parseDouble(parseDouble(((Double.isNaN(rate) || Double.isInfinite(rate)) ? 0.0 : rate) * 100));
 
         rate = weekendSuccessCount / (double) totalSuccessCount;
@@ -747,7 +747,7 @@ public class ZjsGroupReportDao {
     private Map<String,String> getDynamicTableHead(Map<String, String> tableHead) {
 
         StringBuilder sb = null;
-        Map<String,String> dynamicTableHead = new TreeMap<>();
+        Map<String,String> dynamicTableHead = new LinkedHashMap<>();
         Set<Map.Entry<String, String>> entries = tableHead.entrySet();
         for(Map.Entry<String, String> set : entries ){
             String code = set.getKey();
@@ -758,8 +758,6 @@ public class ZjsGroupReportDao {
             dynamicTableHead.put(tableKey+"InShopCount",name+"类进店数");//进店数
             dynamicTableHead.put(tableKey+"Rate",name +"类客资转化率");//转换率
         }
-
-        //
 
         return dynamicTableHead;
 

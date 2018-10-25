@@ -59,3 +59,21 @@ INSERT INTO hm_pub_permission(`ID`, `PERMISSIONNAME`, `TYPEID`) VALUES (228, '�
 INSERT INTO hm_pub_permission(`ID`, `PERMISSIONNAME`, `TYPEID`) VALUES (229, '其他-联系方式修改', 1);
 INSERT INTO hm_pub_permission(`ID`, `PERMISSIONNAME`, `TYPEID`) VALUES (230, '其他-微信扫码记录', 1);
 INSERT INTO hm_pub_permission(`ID`, `PERMISSIONNAME`, `TYPEID`) VALUES (233, '转介绍-意向统计', 1);
+
+
+###10.25 新增报表设置表 hm_crm_reports_set
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for hm_crm_reports_set
+-- ----------------------------
+DROP TABLE IF EXISTS `hm_crm_reports_set`;
+CREATE TABLE `hm_crm_reports_set`  (
+  `COMPANYID` int(11) NOT NULL,
+  `DEFINESET` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '定义设置',
+  `R1SHOWTITLESET` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '电商推广来源数据统计的表头设置',
+  PRIMARY KEY (`COMPANYID`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+SET FOREIGN_KEY_CHECKS = 1;

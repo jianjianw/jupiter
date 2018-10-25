@@ -115,6 +115,10 @@ public class ReportsServiceImpl implements ReportService {
     private ZjsGroupReportDao zjsGroupReportDao;
     @Autowired
     private ZjsGroupDetailReportDao zjsGroupDetailReportDao;
+    @Autowired
+    private DsyyGroupReportsDao dsyyGroupReportsDao;
+    @Autowired
+    private DsyyGroupDetailReportsDao dsyyGroupDetailReportsDao;
 
 
 
@@ -160,6 +164,26 @@ public class ReportsServiceImpl implements ReportService {
         clientLogDTO.setLogType(ClientLogConst.INFO_LOGTYPE_SCAN_WECAHT);
         List<WechatScanPO> list = clientInfoDao.wechatScanCodeLog(clientLogDTO);
         return new PageInfo<>(list);
+    }
+    /**
+     * 电商邀约报表
+     * @param reportsParamVO
+     * @return
+     */
+    public List<DsyyReportsVO> getDsyyGroupReports(ReportsParamVO reportsParamVO){
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(reportsParamVO.getCompanyId());
+        return dsyyGroupReportsDao.getDsyyGroupReports(reportsParamVO,invalidConfig);
+
+    }
+    /**
+     * 电商邀约报表-客服详情
+     * @param reportsParamVO
+     * @return
+     */
+    public List<DsyyReportsVO> getDsyyGroupDetailReports(ReportsParamVO reportsParamVO){
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(reportsParamVO.getCompanyId());
+        return dsyyGroupDetailReportsDao.getDsyyGroupDetailReports(reportsParamVO,invalidConfig);
+
     }
 
     /**
