@@ -30,6 +30,20 @@ public interface ReportService {
     PageInfo wechatScanCodeLog(QueryMapDTO queryMapDTO, ClientLogDTO clientLogDTO);
 
     /**
+     * 电商邀约报表
+     * @param reportsParamVO
+     * @return
+     */
+    List<DsyyReportsVO> getDsyyGroupReports(ReportsParamVO reportsParamVO);
+    /**
+     * 电商邀约报表 客服详情
+     * @param reportsParamVO
+     * @return
+     */
+    List<DsyyReportsVO> getDsyyGroupDetailReports(ReportsParamVO reportsParamVO);
+
+
+    /**
      * 重复客资记录
      *
      * @param queryMapDTO

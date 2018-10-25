@@ -12,6 +12,7 @@ import com.qiein.jupiter.web.entity.vo.*;
 import com.qiein.jupiter.web.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
@@ -82,24 +83,14 @@ public class ReportsController extends BaseController {
     @RequestMapping("get_dsyy_group_reports")
     public ResultInfo getDsyyGroupReports(@RequestParam("start") Integer start, @RequestParam("end") Integer end,
                                           @RequestParam(value = "typeId", required = false) String typeId, @RequestParam(value = "groupIds", required = false) String groupIds, @RequestParam(value = "sourceIds", required = false) String sourceIds) {
-        if (NumUtil.isInValid(start) || NumUtil.isInValid(end)) {
-            return ResultInfoUtil.error(ExceptionEnum.START_TIME_OR_END_TIME_IS_NULL);
-        }
-        StaffPO currentLoginStaff = getCurrentLoginStaff();
-        Map<String, Object> reqContent = new HashMap<>();
-
-        reqContent.put("start", start);
-        reqContent.put("end", end);
-        reqContent.put("companyid", currentLoginStaff.getCompanyId());
-        reqContent.put("typeId", typeId);
-        reqContent.put("groupId", groupIds);
-        reqContent.put("sourceIds", sourceIds);
-        String json = crmBaseApi.doService(reqContent, "dsyyGroupReports");
-
-        if (StringUtil.isEmpty(json) || !"100000".equalsIgnoreCase(JSONObject.parseObject(json).getJSONObject("response").getJSONObject("info").getString("code"))) {
-            return ResultInfoUtil.error(ExceptionEnum.UNKNOW_ERROR);
-        }
-        return ResultInfoUtil.success(JSONObject.parseObject(json).getJSONObject("response").getJSONObject("content").getJSONArray("data"));
+        ReportsParamVO reportsParamVO=new ReportsParamVO();
+        reportsParamVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
+        reportsParamVO.setStart(start);
+        reportsParamVO.setEnd(end);
+        reportsParamVO.setType(typeId);
+        reportsParamVO.setSourceIds(sourceIds);
+        reportsParamVO.setGroupId(groupIds);
+        return ResultInfoUtil.success(reportService.getDsyyGroupReports(reportsParamVO));
     }
 
     /**
@@ -107,22 +98,13 @@ public class ReportsController extends BaseController {
      */
     @RequestMapping("get_dsyy_group_detail_reports")
     public ResultInfo getDsyyGroupDetailReports(@RequestParam("start") Integer start, @RequestParam("end") Integer end, @RequestParam(value = "groupId", required = false) String groupId) {
-        if (NumUtil.isInValid(start) || NumUtil.isInValid(end)) {
-            return ResultInfoUtil.error(ExceptionEnum.START_TIME_OR_END_TIME_IS_NULL);
-        }
-        StaffPO currentLoginStaff = getCurrentLoginStaff();
-        Map<String, Object> reqContent = new HashMap<>();
 
-        reqContent.put("start", start);
-        reqContent.put("end", end);
-        reqContent.put("groupid", groupId);
-        reqContent.put("companyid", currentLoginStaff.getCompanyId());
-        String json = crmBaseApi.doService(reqContent, "dsyyGroupDetailReports");
-
-        if (StringUtil.isEmpty(json) || !"100000".equalsIgnoreCase(JSONObject.parseObject(json).getJSONObject("response").getJSONObject("info").getString("code"))) {
-            return ResultInfoUtil.error(ExceptionEnum.UNKNOW_ERROR);
-        }
-        return ResultInfoUtil.success(JSONObject.parseObject(json).getJSONObject("response").getJSONObject("content").getJSONArray("data"));
+        ReportsParamVO reportsParamVO=new ReportsParamVO();
+        reportsParamVO.setGroupId(groupId);
+        reportsParamVO.setStart(start);
+        reportsParamVO.setEnd(end);
+        reportsParamVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
+        return ResultInfoUtil.success(reportService.getDsyyGroupDetailReports(reportsParamVO));
     }
 
     /**
