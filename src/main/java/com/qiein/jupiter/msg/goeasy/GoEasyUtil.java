@@ -466,7 +466,7 @@ public class GoEasyUtil {
         String remarkText = sb.toString();
         String companyName = staffDao.getCompanyNameByStaffId(staffId);
 
-        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(firstText,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
+        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(firstText,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date())));
     }
 
 
@@ -531,7 +531,7 @@ public class GoEasyUtil {
         String remarkText = sb.toString();
         String companyName = staffDao.getCompanyNameByStaffId(staffId);
 
-        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(firstText,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
+        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(firstText,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date())));
     }
 
     /**
@@ -598,7 +598,7 @@ public class GoEasyUtil {
         String remarkText = sb.toString();
         String companyName = staffDao.getCompanyNameByStaffId(staffId);
 
-        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(firstText,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
+        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(firstText,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date())));
     }
 
     /**
@@ -637,7 +637,7 @@ public class GoEasyUtil {
         String remarkText = sb.toString();
         String companyName = staffDao.getCompanyNameByStaffId(staffId);
 
-        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(firstText,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
+        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(firstText,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date())));
     }
 
     /**
@@ -696,7 +696,7 @@ public class GoEasyUtil {
 
         String companyName = staffDao.getCompanyNameByStaffId(staffId);
 
-        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(firstText,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
+        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(firstText,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date())));
     }
 
     /**
@@ -763,7 +763,7 @@ public class GoEasyUtil {
 
         String companyName = staffDao.getCompanyNameByStaffId(staffId);
 
-        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(firstText,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
+        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(firstText,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date())));
 
     }
 
@@ -785,7 +785,7 @@ public class GoEasyUtil {
 
         String companyName = staffDao.getCompanyNameByStaffId(staffId);
 
-        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(firstText,remarkText,companyId,companyName,staffId,"","",new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
+        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(firstText,remarkText,companyId,companyName,staffId,"","",new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date())));
     }
 
     /**
@@ -812,7 +812,7 @@ public class GoEasyUtil {
 
         String companyName = staffDao.getCompanyNameByStaffId(staffId);
 
-        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(firstText,remarkText,companyId,companyName,staffId,"","",new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
+        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(firstText,remarkText,companyId,companyName,staffId,"","",new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date())));
     }
 
     /**
@@ -879,14 +879,14 @@ public class GoEasyUtil {
 
             String companyName = staffDao.getCompanyNameByStaffId(staffPO.getId());
 
-            WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(head,remarkText,staffPO.getCompanyId(),companyName,staffPO.getId(),StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
+            WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(head,remarkText,staffPO.getCompanyId(),companyName,staffPO.getId(),StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date())));
         } else {
             pushCommon(staffPO.getCompanyId(), toStaffId, head, "");
             newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_COMMON, head, "", null, toStaffId, staffPO.getCompanyId()));
             DingMsgSendUtil.sendDingMsg(head, staffPO.getCompanyId(), toStaffId, staffDao);
 
             String companyName = staffDao.getCompanyNameByStaffId(staffPO.getId());
-            WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(head,"",staffPO.getCompanyId(),companyName,staffPO.getId(),"多个客资","多个客资",new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
+            WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(head,"",staffPO.getCompanyId(),companyName,staffPO.getId(),"多个客资","多个客资",new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date())));
         }
     }
 
@@ -963,7 +963,7 @@ public class GoEasyUtil {
 
             String companyName = staffDao.getCompanyNameByStaffId(staffId);
 
-            WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(firstText,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
+            WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(firstText,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date())));
 
         } else {
             sb.append("您好，您有" + num + "个" + type + "的客资被 " + operaName + " 删除 ");
@@ -971,7 +971,7 @@ public class GoEasyUtil {
 
             //微信消息发送
             String firstText = "删除提醒\r\n您好，您有" + num + "个" + type + "的客资被 " + operaName + " 删除 ";
-            WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(firstText,"",companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
+            WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(firstText,"",companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date())));
         }
         pushWarn(companyId, staffId, head, sb.toString());
         newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_WARN, head, sb.toString().replaceAll("<br/>", "；"), null, staffId, companyId));
@@ -1077,7 +1077,7 @@ public class GoEasyUtil {
 
         String companyName = staffDao.getCompanyNameByStaffId(staffId);
 
-        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(firstText,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
+        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(firstText,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date())));
 
     }
 
@@ -1129,7 +1129,7 @@ public class GoEasyUtil {
 
         String companyName = staffDao.getCompanyNameByStaffId(staffId);
 
-        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(firstText,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
+        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(firstText,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date())));
 
     }
 
@@ -1187,7 +1187,7 @@ public class GoEasyUtil {
 
             String companyName = staffDao.getCompanyNameByStaffId(staffId);
 
-            WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(head,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
+            WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(head,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date())));
 
         } else {
             pushSuccess(companyId, staffId, head, sb.toString());
@@ -1195,7 +1195,7 @@ public class GoEasyUtil {
             DingMsgSendUtil.sendDingMsg(head, companyId, staffId, staffDao);
 
             String companyName = staffDao.getCompanyNameByStaffId(staffId);
-            WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(head,"",companyId,companyName,staffId,"多个客资","多个客资",new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
+            WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(head,"",companyId,companyName,staffId,"多个客资","多个客资",new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date())));
 
         }
     }
@@ -1248,7 +1248,7 @@ public class GoEasyUtil {
         String remarkText = sb.toString();
 
         String companyName = staffDao.getCompanyNameByStaffId(staffId);
-        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(head,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
+        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(head,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date())));
 
     }
 
@@ -1300,7 +1300,7 @@ public class GoEasyUtil {
 
         String companyName = staffDao.getCompanyNameByStaffId(staffId);
 
-        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(head,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
+        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(head,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date())));
 
     }
 
@@ -1355,7 +1355,7 @@ public class GoEasyUtil {
 
         String companyName = staffDao.getCompanyNameByStaffId(toStaffId);
 
-        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(head,remarkText,companyId,companyName,toStaffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
+        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(head,remarkText,companyId,companyName,toStaffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date())));
 
     }
 
@@ -1406,7 +1406,7 @@ public class GoEasyUtil {
 
         String companyName = staffDao.getCompanyNameByStaffId(staffId);
 
-        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(head,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
+        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(head,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date())));
 
     }
 
@@ -1459,7 +1459,7 @@ public class GoEasyUtil {
 
         String companyName = staffDao.getCompanyNameByStaffId(staffId);
 
-        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(head,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
+        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(head,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date())));
 
     }
 
