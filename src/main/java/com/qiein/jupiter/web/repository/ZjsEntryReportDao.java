@@ -16,9 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-
-import javax.sql.RowSet;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -122,7 +119,7 @@ public class ZjsEntryReportDao {
         ZjsSourceVO zjsSourceVO = null;
         for(Map<String,Object> map : list){
             zjsSourceVO = new ZjsSourceVO();
-            zjsSourceVO.setSourceId((int)map.get("ID"));
+            zjsSourceVO.setSourceId(((Long)map.get("ID")).intValue());
             zjsSourceVO.setSourceName((String) map.get("SRCNAME"));
             zjsSourceVO.setCompanyId(vo.getCompanyId());
             zjsSourceVO.setSourceImg((String) map.get("SRCIMG"));
