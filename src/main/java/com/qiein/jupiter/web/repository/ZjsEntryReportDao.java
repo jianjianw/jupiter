@@ -159,8 +159,8 @@ public class ZjsEntryReportDao {
         ZjsNumVO zjsNumVO = null;
         for(Map<String,Object> map : list){
             zjsNumVO = new ZjsNumVO();
-            zjsNumVO.setSourceId((int)map.get("SOURCEID"));
-            zjsNumVO.setNumAll((int)map.get("NUMALL"));
+            zjsNumVO.setSourceId(((Long)map.get("SOURCEID")).intValue());
+            zjsNumVO.setNumAll(((Long)map.get("NUMALL")).intValue());
             rstList.add(zjsNumVO);
         }
         // 毛客资归类到渠道
@@ -235,8 +235,8 @@ public class ZjsEntryReportDao {
         ZjsNumVO zjsNumVO = null;
         for(Map<String,Object> map : list){
             zjsNumVO = new ZjsNumVO();
-            zjsNumVO.setSourceId((int) map.get("SOURCEID"));
-            zjsNumVO.setKzNum((int) map.get("KZNUM"));
+            zjsNumVO.setSourceId(((Long) map.get("SOURCEID")).intValue());
+            zjsNumVO.setKzNum(((Long) map.get("KZNUM")).intValue());
             rstList.add(zjsNumVO);
         }
         // 毛客资归类到渠道
@@ -298,8 +298,8 @@ public class ZjsEntryReportDao {
         ZjsNumVO zjsNumVO = null;
         for(Map<String,Object> map : list){
             zjsNumVO = new ZjsNumVO();
-            zjsNumVO.setSourceId((int)map.get("SOURCEID"));
-            zjsNumVO.setYxNum((int)map.get("YXNUM"));
+            zjsNumVO.setSourceId(((Long)map.get("SOURCEID")).intValue());
+            zjsNumVO.setYxNum(((Long)map.get("YXNUM")).intValue());
             rstList.add(zjsNumVO);
 
         }
@@ -362,8 +362,8 @@ public class ZjsEntryReportDao {
         ZjsNumVO zjsNumVO = null;
         for(Map<String,Object> map : list){
             zjsNumVO = new ZjsNumVO();
-            zjsNumVO.setSourceId((int)map.get("SOURCEID"));
-            zjsNumVO.setDdNum((int)map.get("DDNUM"));
+            zjsNumVO.setSourceId(((Long)map.get("SOURCEID")).intValue());
+            zjsNumVO.setDdNum(((Long)map.get("DDNUM")).intValue());
             rstList.add(zjsNumVO);
         }
         // 毛客资归类到渠道
@@ -414,8 +414,8 @@ public class ZjsEntryReportDao {
         ZjsNumVO zjsNumVO = null;
         for (Map<String,Object> map : list ){
             zjsNumVO = new ZjsNumVO();
-            zjsNumVO.setSourceId((int)map.get("SOURCEID"));
-            zjsNumVO.setRdNum((int)map.get("RDNUM"));
+            zjsNumVO.setSourceId(((Long)map.get("SOURCEID")).intValue());
+            zjsNumVO.setRdNum(((Long)map.get("RDNUM")).intValue());
             rstList.add(zjsNumVO);
 
         }
@@ -466,8 +466,8 @@ public class ZjsEntryReportDao {
         ZjsNumVO zjsNumVO = null;
         for(Map<String,Object> map : list ){
             zjsNumVO = new ZjsNumVO();
-            zjsNumVO.setSourceId((int)map.get("SOURCEID"));
-            zjsNumVO.setCjNum((int)map.get("CJNUM"));
+            zjsNumVO.setSourceId(((Long)map.get("SOURCEID")).intValue());
+            zjsNumVO.setCjNum(((Long)map.get("CJNUM")).intValue());
             zjsNumVO.setYyAmount((Double)map.get("YY"));
             zjsNumVO.setJjAmount((Double)map.get("JJ"));
             rstList.add(zjsNumVO);
@@ -520,8 +520,8 @@ public class ZjsEntryReportDao {
         ZjsNumVO zjsNumVO = null;
         for(Map<String,Object> map : list){
             zjsNumVO = new ZjsNumVO();
-            zjsNumVO.setSourceId((int)map.get("SOURCEID"));
-            zjsNumVO.setRdCjNum((int)map.get("CJNUM"));
+            zjsNumVO.setSourceId(((Long)map.get("SOURCEID")).intValue());
+            zjsNumVO.setRdCjNum(((Long)map.get("CJNUM")).intValue());
             rstList.add(zjsNumVO);
         }
         // 毛客资归类到渠道
@@ -570,8 +570,8 @@ public class ZjsEntryReportDao {
         ZjsNumVO zjsNumVO = null;
         for(Map<String,Object> map : list ){
             zjsNumVO = new ZjsNumVO();
-            zjsNumVO.setSourceId((int)map.get("SOURCEID"));
-            zjsNumVO.setZxCjNum((int)map.get("CJNUM"));
+            zjsNumVO.setSourceId(((Long)map.get("SOURCEID")).intValue());
+            zjsNumVO.setZxCjNum(((Long)map.get("CJNUM")).intValue());
             rstList.add(zjsNumVO);
         }
         // 毛客资归类到渠道
@@ -612,8 +612,8 @@ public class ZjsEntryReportDao {
         ZjsNumVO zjsNumVO = null;
         for(Map<String,Object> map : list){
             zjsNumVO = new ZjsNumVO();
-            zjsNumVO.setSourceId((int)map.get("SOURCEID"));
-            zjsNumVO.setAddWechatNum((int)map.get("NUM"));
+            zjsNumVO.setSourceId(((Long)map.get("SOURCEID")).intValue());
+            zjsNumVO.setAddWechatNum(((Long)map.get("NUM")).intValue());
             rstList.add(zjsNumVO);
         }
         // 毛客资归类到渠道
