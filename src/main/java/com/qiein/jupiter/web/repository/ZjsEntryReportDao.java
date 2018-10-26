@@ -14,6 +14,7 @@ import com.qiein.jupiter.web.entity.vo.ZjsSourceVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 
 import javax.sql.RowSet;
@@ -26,6 +27,7 @@ import java.util.Map;
 /**
  * 转介绍提报统计
  */
+@Repository
 public class ZjsEntryReportDao {
 
 
