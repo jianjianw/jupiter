@@ -93,7 +93,7 @@ public class ReportsController extends BaseController {
         reqContent.put("groupId",groupIds );
         reqContent.put("sourceIds", sourceIds);
         //请求juplat接口
-        String json = crmBaseApi.doService(reqContent, "dstgSourceReports");
+        String json = crmBaseApi.doService(reqContent, "dsyyGroupReports");
 
         if (StringUtil.isEmpty(json) || !"100000".equalsIgnoreCase(JSONObject.parseObject(json).getJSONObject("response").getJSONObject("info").getString("code"))) {
             return ResultInfoUtil.error(ExceptionEnum.UNKNOW_ERROR);
