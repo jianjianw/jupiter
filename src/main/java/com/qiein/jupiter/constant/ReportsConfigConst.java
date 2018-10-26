@@ -24,6 +24,7 @@ public class ReportsConfigConst {
     public static final String ZJS_VALID_SET = "zjsValidSet";//转介绍设置
     public static final String SHOW_SET = "showSet"; //显示设置
     public static final String SOURCE_SHOW = "sourceShow";//来源显示
+    public static final String ZJS_DD_SET = "zjsddSet";//转介绍待定自定义
 
 
 

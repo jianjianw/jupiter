@@ -121,6 +121,8 @@ public class ReportsServiceImpl implements ReportService {
     private DsyyGroupDetailReportsDao dsyyGroupDetailReportsDao;
     @Autowired
     private ZjsEntryStaffReportDao zjsEntryStaffReportDao;
+    @Autowired
+    private ZjsEntryReportDao zjsEntryReportDao;
 
 
 
@@ -1697,6 +1699,11 @@ public class ReportsServiceImpl implements ReportService {
     @Override
     public HashMap<String, Object> getZjsEntryStaff(AnalyzeVO vo) {
         return zjsEntryStaffReportDao.getZjsEntryStaff(vo);
+    }
+
+    @Override
+    public HashMap<String, Object> getZjsEntry(AnalyzeVO vo) {
+        return zjsEntryReportDao.getZjsEntry(vo);
     }
 
 }

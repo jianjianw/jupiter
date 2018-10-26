@@ -418,7 +418,11 @@ public interface ReportService {
 
     /**
      * 转介绍提报统计--全员转介绍提报
-     *
      */
     HashMap<String, Object> getZjsEntryStaff(AnalyzeVO vo);
+
+    /*
+    *  转介绍提报统计
+    * */
+    HashMap<String, Object> getZjsEntry(AnalyzeVO vo);
 }
