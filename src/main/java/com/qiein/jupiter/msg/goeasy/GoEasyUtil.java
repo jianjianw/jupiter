@@ -946,20 +946,20 @@ public class GoEasyUtil {
 
             //微信消息推送
             String firstText = "删除提醒\r\n您好，您有1个" + type + "的客资被 " + operaName + " 删除";
-            sb = new StringBuffer();
-            sb.append("编号：").append(info.getLetterId()).append("\r\n");
+            StringBuffer dsb = new StringBuffer();
+            dsb.append("编号：").append(info.getLetterId()).append("\r\n");
             if (StringUtil.isNotEmpty(info.getKzWechat())) {
-                sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWechat())).append("\r\n");
+                dsb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWechat())).append("\r\n");
             }
             if (StringUtil.isNotEmpty(info.getKzQq())) {
-                sb.append("QQ：").append(StringUtil.nullToStrTrim(info.getKzQq())).append("\r\n");
+                dsb.append("QQ：").append(StringUtil.nullToStrTrim(info.getKzQq())).append("\r\n");
             }
             if (StringUtil.isNotEmpty(info.getKzWw())) {
-                sb.append("旺旺：").append(StringUtil.nullToStrTrim(info.getKzWw())).append("\r\n");
+                dsb.append("旺旺：").append(StringUtil.nullToStrTrim(info.getKzWw())).append("\r\n");
             }
-            sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("\r\n");
-            sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("\r\n");
-            String remarkText = sb.toString();
+            dsb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("\r\n");
+            dsb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("\r\n");
+            String remarkText = dsb.toString();
 
             String companyName = staffDao.getCompanyNameByStaffId(staffId);
 
