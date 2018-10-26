@@ -971,7 +971,7 @@ public class GoEasyUtil {
 
             //微信消息发送
             String firstText = "删除提醒\r\n您好，您有" + num + "个" + type + "的客资被 " + operaName + " 删除 ";
-            WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(firstText,"",companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date())));
+            WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(firstText,"",companyId,companyName,staffId,"多个客资","多个客资",new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date())));
         }
         pushWarn(companyId, staffId, head, sb.toString());
         newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_WARN, head, sb.toString().replaceAll("<br/>", "；"), null, staffId, companyId));
