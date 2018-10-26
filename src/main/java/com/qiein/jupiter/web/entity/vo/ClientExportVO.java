@@ -12,6 +12,11 @@ import cn.afterturn.easypoi.excel.annotation.Excel;
 public class ClientExportVO implements Serializable {
     private static final long serialVersionUID = 1288139895464503208L;
     /**
+     * 主键ID
+     */
+    @Excel(name = "ID", width = 10, height = 6)
+    private int id;
+    /**
      * 客资编号
      */
     @Excel(name = "编号", width = 10, height = 6)
@@ -525,5 +530,13 @@ public class ClientExportVO implements Serializable {
 
     public void setZxStyle(String zxStyle) {
         this.zxStyle = zxStyle;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
