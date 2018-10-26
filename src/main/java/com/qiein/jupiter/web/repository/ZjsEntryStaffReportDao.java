@@ -93,12 +93,13 @@ public class ZjsEntryStaffReportDao {
             fieldList.add(CommonConstant.STR_SEPARATOR + vo.getStaffId() + CommonConstant.STR_SEPARATOR);
         }
         sb.append(" GROUP BY info.COLLECTORID ");
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(),fieldList);
+        Object[] objects = fieldList.toArray();
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(),objects);
         List<ZjsSourceVO> srcList = new LinkedList<>();
         ZjsSourceVO zjsSourceVO = null;
         for(Map<String, Object> map : list){
             zjsSourceVO = new ZjsSourceVO();
-            zjsSourceVO.setStaffId((int)map.get("COLLECTORID"));
+            zjsSourceVO.setStaffId(((Long)map.get("COLLECTORID")).intValue());
             zjsSourceVO.setNickName((String)map.get("COLLECTORNAME"));
             zjsSourceVO.setCompanyId(vo.getCompanyId());
             zjsSourceVO.setZjsNumVO(new ZjsNumVO());
@@ -235,7 +236,8 @@ public class ZjsEntryStaffReportDao {
             fieldList.add(CommonConstant.STR_SEPARATOR + vo.getStaffId() + CommonConstant.STR_SEPARATOR);
         }
         sb.append(" GROUP BY info.COLLECTORID ");
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), fieldList);
+        Object[] objects = fieldList.toArray();
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), objects);
 
         List<ZjsNumVO> rstList = new LinkedList<>();
         ZjsNumVO zjsNumVO = null;
@@ -287,8 +289,8 @@ public class ZjsEntryStaffReportDao {
             fieldList.add(CommonConstant.STR_SEPARATOR + vo.getStaffId() + CommonConstant.STR_SEPARATOR);
         }
         sb.append(" GROUP BY info.COLLECTORID ");
-
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), fieldList);
+        Object[] objects = fieldList.toArray();
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), objects);
         List<ZjsNumVO> rstList = new LinkedList<>();
         ZjsNumVO zjsNumVO = null;
         for(Map<String,Object> map : list){
@@ -349,7 +351,8 @@ public class ZjsEntryStaffReportDao {
             fieldList.add(CommonConstant.STR_SEPARATOR + vo.getStaffId() + CommonConstant.STR_SEPARATOR);
         }
         sb.append(" GROUP BY info.COLLECTORID ");
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), fieldList);
+        Object[] objects = fieldList.toArray();
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), objects);
         List<ZjsNumVO> rstList = new LinkedList<>();
         ZjsNumVO zjsNumVO = null;
         for (Map<String, Object> map : list) {
@@ -398,9 +401,8 @@ public class ZjsEntryStaffReportDao {
             fieldList.add(CommonConstant.STR_SEPARATOR + vo.getStaffId() + CommonConstant.STR_SEPARATOR);
         }
         sb.append(" GROUP BY info.COLLECTORID ");
-
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), fieldList);
-
+        Object[] objects = fieldList.toArray();
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), objects);
         List<ZjsNumVO> rstList = new LinkedList<>();
         ZjsNumVO zjsNumVO = null;
         for(Map<String,Object> map : list ){
@@ -451,8 +453,8 @@ public class ZjsEntryStaffReportDao {
             fieldList.add(CommonConstant.STR_SEPARATOR + vo.getStaffId() + CommonConstant.STR_SEPARATOR);
         }
         sb.append(" GROUP BY info.COLLECTORID ");
-
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), fieldList);
+        Object[] objects = fieldList.toArray();
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), objects);
         List<ZjsNumVO> rstList = new LinkedList<>();
         for(Map<String,Object> map : list){
             ZjsNumVO zjsNumVO = null;
@@ -499,7 +501,8 @@ public class ZjsEntryStaffReportDao {
             fieldList.add(CommonConstant.STR_SEPARATOR + vo.getStaffId() + CommonConstant.STR_SEPARATOR);
         }
         sb.append(" GROUP BY info.COLLECTORID ");
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), fieldList);
+        Object[] objects = fieldList.toArray();
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), objects);
         List<ZjsNumVO> rstList = new LinkedList<>();
         ZjsNumVO zjsNumVO = null;
         for(Map<String,Object> map : list ){
@@ -541,7 +544,8 @@ public class ZjsEntryStaffReportDao {
             fieldList.add(CommonConstant.STR_SEPARATOR + vo.getStaffId() + CommonConstant.STR_SEPARATOR);
         }
         sb.append(" GROUP BY info.COLLECTORID ");
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), fieldList);
+        Object[] objects = fieldList.toArray();
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), objects);
         List<ZjsNumVO> rstList = new LinkedList<>();
         ZjsNumVO zjsNumVO = null;
         for(Map<String,Object> map : list){
