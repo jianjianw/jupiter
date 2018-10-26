@@ -1,6 +1,9 @@
 package com.qiein.jupiter.web.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.qiein.jupiter.web.entity.vo.AnalyzeVO;
+
+import java.util.HashMap;
 
 /**
  * @Author: shiTao
@@ -30,4 +33,5 @@ public interface ReportsSetService {
      * 修改电商推广 来源数据统计 表头
      */
     int updateR1ShowTitleSet(int companyId, JSONObject set);
+
 }

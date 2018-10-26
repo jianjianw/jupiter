@@ -83,14 +83,34 @@ public class ReportsController extends BaseController {
     @RequestMapping("get_dsyy_group_reports")
     public ResultInfo getDsyyGroupReports(@RequestParam("start") Integer start, @RequestParam("end") Integer end,
                                           @RequestParam(value = "typeId", required = false) String typeId, @RequestParam(value = "groupIds", required = false) String groupIds, @RequestParam(value = "sourceIds", required = false) String sourceIds) {
-        ReportsParamVO reportsParamVO=new ReportsParamVO();
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        Map<String, Object> reqContent = new HashMap<>();
+        //todo param
+        reqContent.put("start",start);
+        reqContent.put("end", end);
+        reqContent.put("companyid", currentLoginStaff.getCompanyId());
+        reqContent.put("typeId", typeId);
+        reqContent.put("groupId",groupIds );
+        reqContent.put("sourceIds", sourceIds);
+        //请求juplat接口
+        String json = crmBaseApi.doService(reqContent, "dsyyGroupReports");
+
+        if (StringUtil.isEmpty(json) || !"100000".equalsIgnoreCase(JSONObject.parseObject(json).getJSONObject("response").getJSONObject("info").getString("code"))) {
+            return ResultInfoUtil.error(ExceptionEnum.UNKNOW_ERROR);
+        }
+        return ResultInfoUtil.success(JSONObject.parseObject(json).getJSONObject("response").getJSONObject("content").getJSONArray("data"));
+
+        /**
+
+         * ReportsParamVO reportsParamVO=new ReportsParamVO();
         reportsParamVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
         reportsParamVO.setStart(start);
         reportsParamVO.setEnd(end);
         reportsParamVO.setType(typeId);
         reportsParamVO.setSourceIds(sourceIds);
         reportsParamVO.setGroupId(groupIds);
-        return ResultInfoUtil.success(reportService.getDsyyGroupReports(reportsParamVO));
+        return ResultInfoUtil.success(reportService.getDsyyGroupReports(reportsParamVO));*/
+
     }
 
     /**
@@ -98,13 +118,28 @@ public class ReportsController extends BaseController {
      */
     @RequestMapping("get_dsyy_group_detail_reports")
     public ResultInfo getDsyyGroupDetailReports(@RequestParam("start") Integer start, @RequestParam("end") Integer end, @RequestParam(value = "groupId", required = false) String groupId) {
+        if (NumUtil.isInValid(start) || NumUtil.isInValid(end)) {
+            return ResultInfoUtil.error(ExceptionEnum.START_TIME_OR_END_TIME_IS_NULL);
+        }
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        Map<String, Object> reqContent = new HashMap<>();
 
-        ReportsParamVO reportsParamVO=new ReportsParamVO();
-        reportsParamVO.setGroupId(groupId);
-        reportsParamVO.setStart(start);
-        reportsParamVO.setEnd(end);
-        reportsParamVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
-        return ResultInfoUtil.success(reportService.getDsyyGroupDetailReports(reportsParamVO));
+        reqContent.put("start", start);
+        reqContent.put("end", end);
+        reqContent.put("groupid", groupId);
+        reqContent.put("companyid", currentLoginStaff.getCompanyId());
+        String json = crmBaseApi.doService(reqContent, "dsyyGroupDetailReports");
+
+        if (StringUtil.isEmpty(json) || !"100000".equalsIgnoreCase(JSONObject.parseObject(json).getJSONObject("response").getJSONObject("info").getString("code"))) {
+            return ResultInfoUtil.error(ExceptionEnum.UNKNOW_ERROR);
+        }
+        return ResultInfoUtil.success(JSONObject.parseObject(json).getJSONObject("response").getJSONObject("content").getJSONArray("data"));
+        //ReportsParamVO reportsParamVO=new ReportsParamVO();
+        //reportsParamVO.setGroupId(groupId);
+        //reportsParamVO.setStart(start);
+        //reportsParamVO.setEnd(end);
+        //reportsParamVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
+        //return ResultInfoUtil.success(reportService.getDsyyGroupDetailReports(reportsParamVO));
     }
 
     /**
@@ -276,16 +311,22 @@ public class ReportsController extends BaseController {
     @GetMapping("/get_zjs_staff_entry_reports")
     public ResultInfo getZjsStaffEntryReports(@RequestParam("start") int start, @RequestParam("end") int end, String staffIds) {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        Map<String, Object> reqContent = new HashMap<>();
+       /* Map<String, Object> reqContent = new HashMap<>();
         reqContent.put("start", start);
         reqContent.put("end", end);
         reqContent.put("companyid", currentLoginStaff.getCompanyId());
         reqContent.put("staffids", staffIds);
         //请求juplat接口
-        String json = crmBaseApi.doService(reqContent, "zjsEntryStaffReports");
-
-        HashMap<String, Object> result = new HashMap<>();
-        result.put("analysis", JsonFmtUtil.strContentToJsonObj(json).get("analysis"));
+        String json = crmBaseApi.doService(reqContent, "zjsEntryStaffReports");*/
+        //调用service
+        AnalyzeVO vo = new AnalyzeVO();
+        vo.setCompanyId(currentLoginStaff.getCompanyId());
+        vo.setStart(start);
+        vo.setEnd(end);
+        vo.setStaffId(staffIds);
+        HashMap<String, Object> result = reportService.getZjsEntryStaff(vo);
+        /*HashMap<String, Object> result = new HashMap<>();
+        result.put("analysis", JsonFmtUtil.strContentToJsonObj(json).get("analysis"));*/
         return ResultInfoUtil.success(result);
     }
 

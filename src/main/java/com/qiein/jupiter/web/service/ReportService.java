@@ -7,6 +7,7 @@ import com.qiein.jupiter.web.entity.dto.*;
 import com.qiein.jupiter.web.entity.vo.DstgYearReportsVO;
 import com.qiein.jupiter.web.entity.vo.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -414,4 +415,10 @@ public interface ReportService {
 
 	List<Map<String, Object>> getDSTGSrcMonthReportsAppointment(String month, String typeId, String sourceId,
 			int companyId);
+
+    /**
+     * 转介绍提报统计--全员转介绍提报
+     *
+     */
+    HashMap<String, Object> getZjsEntryStaff(AnalyzeVO vo);
 }

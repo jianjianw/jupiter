@@ -119,6 +119,8 @@ public class ReportsServiceImpl implements ReportService {
     private DsyyGroupReportsDao dsyyGroupReportsDao;
     @Autowired
     private DsyyGroupDetailReportsDao dsyyGroupDetailReportsDao;
+    @Autowired
+    private ZjsEntryStaffReportDao zjsEntryStaffReportDao;
 
 
 
@@ -1689,4 +1691,12 @@ public class ReportsServiceImpl implements ReportService {
         List<Map<String, Object>> dstgSrcMonthReports = dstgReportsSrcMonthDao.getDSTGSrcMonthReportsAppointment(firstDay,lastDay,reportsParamSrcMonthVO,invalidConfig);
         return dstgSrcMonthReports;
 	}
+    /**
+     * 转介绍提报统计--全员转介绍提报
+     */
+    @Override
+    public HashMap<String, Object> getZjsEntryStaff(AnalyzeVO vo) {
+        return zjsEntryStaffReportDao.getZjsEntryStaff(vo);
+    }
+
 }

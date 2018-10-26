@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.security.SecureRandom;
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -777,6 +778,20 @@ public class StringUtil {
             url = url.substring(0, url.length() - 1);
         }
         return url;
+    }
+
+    public static String decimalFormat(Double num) {
+
+        DecimalFormat decimalFormat = new DecimalFormat("#0.00");
+
+        return decimalFormat.format(num);
+    }
+
+    public static double decimalFormatDouble(Double num) {
+
+        DecimalFormat decimalFormat = new DecimalFormat("#0.00");
+
+        return Double.parseDouble(decimalFormat.format(num));
     }
 
 }
