@@ -1437,4 +1437,16 @@
         </foreach>
     </select>
 
+
+    <select id="getCompanyNameByStaffId" parameterType="java.lang.Integer" resultType="String">
+        SELECT
+        comp.COMPANYNAME
+        FROM
+        hm_pub_staff staff
+        INNER JOIN
+        hm_pub_company comp ON staff.COMPANYID = comp.ID
+        WHERE
+        staff.ID = #{staffId}
+    </select>
+
 </mapper>

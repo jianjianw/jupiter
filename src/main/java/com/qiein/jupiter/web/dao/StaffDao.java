@@ -650,4 +650,11 @@ public interface StaffDao extends BaseDao<StaffPO> {
      * @return
      */
     int updateCompanyTodayNum(@Param("companyId") int companyId);
+
+    /**
+     * 根据员工id获取公司名称
+     * @param staffId
+     * @return
+     */
+    String getCompanyNameByStaffId(@Param("staffId") int staffId);
 }

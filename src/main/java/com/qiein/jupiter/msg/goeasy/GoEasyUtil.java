@@ -445,6 +445,28 @@ public class GoEasyUtil {
         newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_SUCCESS, head, msg.replaceAll("<br/>", "；"), info.getKzId(),
                 staffId, companyId));
         DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), companyId, staffId, staffDao);
+
+        String firstText = "恭喜您，您的客户在线订单啦";
+        sb = new StringBuffer();
+        sb.append("编号：").append(info.getLetterId()).append("\r\n");
+        if (StringUtil.isNotEmpty(info.getKzWechat())) {
+            sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWechat())).append("\r\n");
+        }
+        if (StringUtil.isNotEmpty(info.getKzQq())) {
+            sb.append("QQ：").append(StringUtil.nullToStrTrim(info.getKzQq())).append("\r\n");
+        }
+        if (StringUtil.isNotEmpty(info.getKzWw())) {
+            sb.append("旺旺：").append(StringUtil.nullToStrTrim(info.getKzWw())).append("\r\n");
+        }
+        sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("\r\n");
+        sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("\r\n");
+        sb.append("客服：").append(StringUtil.nullToStrTrim(info.getAppointName())).append("\r\n");
+        sb.append("成交套系： ¥").append(info.getAmount()).append("\r\n");
+        sb.append("订单时间：").append(TimeUtil.intMillisToTimeStr(info.getSuccessTime()));
+        String remarkText = sb.toString();
+        String companyName = staffDao.getCompanyNameByStaffId(staffId);
+
+        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(firstText,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
     }
 
 
@@ -486,6 +508,30 @@ public class GoEasyUtil {
         newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_SUCCESS, head, msg.replaceAll("<br/>", "；"), info.getKzId(),
                 staffId, companyId));
         DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), companyId, staffId, staffDao);
+
+        //微信消息推送
+        String firstText = "恭喜您，您的客户在门店成功订单啦";
+        sb = new StringBuffer();
+        sb.append("编号：").append(info.getLetterId()).append("\r\n");
+        if (StringUtil.isNotEmpty(info.getKzWechat())) {
+            sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWechat())).append("\r\n");
+        }
+        if (StringUtil.isNotEmpty(info.getKzQq())) {
+            sb.append("QQ：").append(StringUtil.nullToStrTrim(info.getKzQq())).append("\r\n");
+        }
+        if (StringUtil.isNotEmpty(info.getKzWw())) {
+            sb.append("旺旺：").append(StringUtil.nullToStrTrim(info.getKzWw())).append("\r\n");
+        }
+        sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("\r\n");
+        sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("\r\n");
+        sb.append("接待门店：").append(StringUtil.nullToStrTrim(info.getShopName())).append("\r\n");
+        sb.append("接待门市：").append(StringUtil.nullToStrTrim(info.getReceptorName())).append("\r\n");
+        sb.append("成交套系： ¥").append(info.getAmount()).append("\r\n");
+        sb.append("订单时间：").append(TimeUtil.intMillisToTimeStr(info.getSuccessTime()));
+        String remarkText = sb.toString();
+        String companyName = staffDao.getCompanyNameByStaffId(staffId);
+
+        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(firstText,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
     }
 
     /**
@@ -537,6 +583,22 @@ public class GoEasyUtil {
         String msg = sb.toString();
         pushSuccess(companyId, staffId, header, msg);
         DingMsgSendUtil.sendDingMsg(header + "<br/>" + sb.toString(), companyId, staffId, staffDao);
+
+        //微信消息推送
+        String firstText = "恭喜您，您的客户在 "+StringUtil.nullToStrTrim(shopName)+" 订单啦";
+        sb = new StringBuffer();
+
+            sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWeChat())).append("\r\n");
+
+        sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("\r\n");
+        sb.append("接待门店：").append(StringUtil.nullToStrTrim(shopName)).append("\r\n");
+        sb.append("接待门市：").append(StringUtil.nullToStrTrim(receptorName)).append("\r\n");
+        sb.append("成交套系： ¥").append(amount).append("\r\n");
+        sb.append("订单时间：").append(StringUtil.nullToStrTrim(successTime));
+        String remarkText = sb.toString();
+        String companyName = staffDao.getCompanyNameByStaffId(staffId);
+
+        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(firstText,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
     }
 
     /**
@@ -564,6 +626,18 @@ public class GoEasyUtil {
         String msg = sb.toString();
         pushWarn(companyId, staffId, header, msg);
         DingMsgSendUtil.sendDingMsg(header + "<br/>" + sb.toString(), companyId, staffId, staffDao);
+
+        //微信消息推送
+        String firstText = "无效待审批 - "+invalidReason;
+        sb = new StringBuffer();
+
+        sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWeChat())).append("\r\n");
+
+        sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("\r\n");
+        String remarkText = sb.toString();
+        String companyName = staffDao.getCompanyNameByStaffId(staffId);
+
+        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(firstText,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
     }
 
     /**
@@ -601,6 +675,28 @@ public class GoEasyUtil {
         newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_WARN, head, msg.replaceAll("<br/>", "；"), info.getKzId(),
                 staffId, companyId));
         DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), companyId, staffId, staffDao);
+
+        //微信消息推送
+        String firstText = "您录入的客资被判为无效";
+        sb = new StringBuffer();
+        sb.append("编号：").append(info.getLetterId()).append("\r\n");
+        if (StringUtil.isNotEmpty(info.getKzWechat())) {
+            sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWechat())).append("\r\n");
+        }
+        if (StringUtil.isNotEmpty(info.getKzQq())) {
+            sb.append("QQ：").append(StringUtil.nullToStrTrim(info.getKzQq())).append("\r\n");
+        }
+        if (StringUtil.isNotEmpty(info.getKzWw())) {
+            sb.append("旺旺：").append(StringUtil.nullToStrTrim(info.getKzWw())).append("\r\n");
+        }
+        sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("\r\n");
+        sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("\r\n");
+        sb.append("无效原因：").append(StringUtil.nullToStrTrim(info.getInvalidLabel()));
+        String remarkText = sb.toString();
+
+        String companyName = staffDao.getCompanyNameByStaffId(staffId);
+
+        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(firstText,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
     }
 
     /**
@@ -646,6 +742,29 @@ public class GoEasyUtil {
                 staffId, companyId));
 
         DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), companyId, staffId, staffDao);
+
+        //微信消息推送
+        String firstText = "新客资来啦^_^";
+        sb = new StringBuffer();
+        sb.append("编号：").append(info.getLetterId()).append("\r\n");
+        if (StringUtil.isNotEmpty(info.getKzWechat())) {
+            sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWechat())).append("\r\n");
+        }
+        if (StringUtil.isNotEmpty(info.getKzQq())) {
+            sb.append("QQ：").append(StringUtil.nullToStrTrim(info.getKzQq())).append("\r\n");
+        }
+        if (StringUtil.isNotEmpty(info.getKzWw())) {
+            sb.append("旺旺：").append(StringUtil.nullToStrTrim(info.getKzWw())).append("\r\n");
+        }
+        sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("\r\n");
+        sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("\r\n");
+        sb.append("无效原因：").append(StringUtil.nullToStrTrim(info.getInvalidLabel()));
+        String remarkText = sb.toString();
+
+        String companyName = staffDao.getCompanyNameByStaffId(staffId);
+
+        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(firstText,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
+
     }
 
     /**
@@ -659,6 +778,14 @@ public class GoEasyUtil {
     public static void pushWarnTimer(int companyId, int staffId, String kzId, String msg, StaffDao staffDao) {
         pushCommon(companyId, staffId, MessageConts.TO_BE_TRACKED_HEAD, msg);
         DingMsgSendUtil.sendDingMsg(MessageConts.TO_BE_TRACKED_HEAD + "\n" + msg, companyId, staffId, staffDao);
+
+        //微信消息推送
+        String firstText = "推送定时提醒消息";
+        String remarkText = MessageConts.TO_BE_TRACKED_HEAD + "\r\n" + msg;
+
+        String companyName = staffDao.getCompanyNameByStaffId(staffId);
+
+        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(firstText,remarkText,companyId,companyName,staffId,"","",new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
     }
 
     /**
@@ -678,6 +805,14 @@ public class GoEasyUtil {
         pushWarn(companyId, staffId, head, msg);
         newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_WARN, head, msg, kzId, staffId, companyId));
         DingMsgSendUtil.sendDingMsg(head + "\n" + msg, companyId, staffId, staffDao);
+
+        //微信消息推送
+        String firstText = "推广备注被修改";
+        String remarkText = head + "\n" + msg;
+
+        String companyName = staffDao.getCompanyNameByStaffId(staffId);
+
+        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(firstText,remarkText,companyId,companyName,staffId,"","",new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
     }
 
     /**
@@ -725,10 +860,33 @@ public class GoEasyUtil {
             newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_COMMON, head, sb.toString().replaceAll("<br/>", "；"),
                     info.getKzId(), toStaffId, staffPO.getCompanyId()));
             DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), staffPO.getCompanyId(), toStaffId, staffDao);
+
+            //微信消息推送
+            sb = new StringBuffer();
+            sb.append("编号：").append(info.getLetterId()).append("\r\n");
+            if (StringUtil.isNotEmpty(info.getKzWechat())) {
+                sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWechat())).append("\r\n");
+            }
+            if (StringUtil.isNotEmpty(info.getKzQq())) {
+                sb.append("QQ：").append(StringUtil.nullToStrTrim(info.getKzQq())).append("\r\n");
+            }
+            if (StringUtil.isNotEmpty(info.getKzWw())) {
+                sb.append("旺旺：").append(StringUtil.nullToStrTrim(info.getKzWw())).append("\r\n");
+            }
+            sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("\r\n");
+            sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("\r\n");
+            String remarkText = sb.toString();
+
+            String companyName = staffDao.getCompanyNameByStaffId(staffPO.getId());
+
+            WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(head,remarkText,staffPO.getCompanyId(),companyName,staffPO.getId(),StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
         } else {
             pushCommon(staffPO.getCompanyId(), toStaffId, head, "");
             newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_COMMON, head, "", null, toStaffId, staffPO.getCompanyId()));
             DingMsgSendUtil.sendDingMsg(head, staffPO.getCompanyId(), toStaffId, staffDao);
+
+            String companyName = staffDao.getCompanyNameByStaffId(staffPO.getId());
+            WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(head,"",staffPO.getCompanyId(),companyName,staffPO.getId(),"多个客资","多个客资",new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
         }
     }
 
@@ -785,8 +943,35 @@ public class GoEasyUtil {
             }
             sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("<br/>");
             sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("<br/><br/>");
+
+            //微信消息推送
+            String firstText = "删除提醒\r\n您好，您有1个" + type + "的客资被 " + operaName + " 删除";
+            sb = new StringBuffer();
+            sb.append("编号：").append(info.getLetterId()).append("\r\n");
+            if (StringUtil.isNotEmpty(info.getKzWechat())) {
+                sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWechat())).append("\r\n");
+            }
+            if (StringUtil.isNotEmpty(info.getKzQq())) {
+                sb.append("QQ：").append(StringUtil.nullToStrTrim(info.getKzQq())).append("\r\n");
+            }
+            if (StringUtil.isNotEmpty(info.getKzWw())) {
+                sb.append("旺旺：").append(StringUtil.nullToStrTrim(info.getKzWw())).append("\r\n");
+            }
+            sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("\r\n");
+            sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("\r\n");
+            String remarkText = sb.toString();
+
+            String companyName = staffDao.getCompanyNameByStaffId(staffId);
+
+            WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(firstText,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
+
         } else {
             sb.append("您好，您有" + num + "个" + type + "的客资被 " + operaName + " 删除 ");
+            String companyName = staffDao.getCompanyNameByStaffId(staffId);
+
+            //微信消息发送
+            String firstText = "删除提醒\r\n您好，您有" + num + "个" + type + "的客资被 " + operaName + " 删除 ";
+            WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(firstText,"",companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
         }
         pushWarn(companyId, staffId, head, sb.toString());
         newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_WARN, head, sb.toString().replaceAll("<br/>", "；"), null, staffId, companyId));
@@ -876,6 +1061,24 @@ public class GoEasyUtil {
         pushWarn(companyId, staffId, head, msg);
         newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_WARN, head, sb.toString().replaceAll("<br/>", "；"), info.getKzId(), staffId, companyId));
         DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), companyId, staffId, staffDao);
+
+        //微信消息推送
+        String firstText = "无效待审批\r\n无效原因："+invalidReason;
+        sb = new StringBuffer();
+        if (StringUtil.isNotEmpty(info.getKzWeChat())) {
+            sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWeChat())).append("\r\n");
+        }
+        if (StringUtil.isNotEmpty(info.getKzQq())) {
+            sb.append("QQ：").append(StringUtil.nullToStrTrim(info.getKzQq())).append("\r\n");
+        }
+        sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("\r\n");
+        sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSrcName())).append("\r\n");
+        String remarkText = sb.toString();
+
+        String companyName = staffDao.getCompanyNameByStaffId(staffId);
+
+        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(firstText,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
+
     }
 
 
@@ -910,6 +1113,24 @@ public class GoEasyUtil {
         pushSuccess(companyId, staffId, head, sb.toString());
         newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_SUCCESS, head, sb.toString().replaceAll("<br/>", "；"), info.getKzId(), staffId, companyId));
         DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), companyId, staffId, staffDao);
+
+        //微信消息推送
+        String firstText = "金数据客资录入成功";
+        sb.delete(0,sb.length());
+        if (StringUtil.isNotEmpty(info.getKzWeChat())) {
+            sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWeChat())).append("\r\n");
+        }
+        if (StringUtil.isNotEmpty(info.getKzQq())) {
+            sb.append("QQ：").append(StringUtil.nullToStrTrim(info.getKzQq())).append("\r\n");
+        }
+        sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("\r\n");
+        sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSrcName())).append("\r\n");
+        String remarkText = sb.toString();
+
+        String companyName = staffDao.getCompanyNameByStaffId(staffId);
+
+        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(firstText,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
+
     }
 
 
@@ -947,10 +1168,35 @@ public class GoEasyUtil {
             pushSuccess(companyId, staffId, head, sb.toString());
             newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_SUCCESS, head, sb.toString().replaceAll("<br/>", "；"), info.getKzId(), staffId, companyId));
             DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), companyId, staffId, staffDao);
+
+			//微信消息推送
+            sb = new StringBuffer();
+            sb.append("编号：").append(info.getLetterId()).append("\r\n");
+            if (StringUtil.isNotEmpty(info.getKzWechat())) {
+                sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWechat())).append("\r\n");
+            }
+            if (StringUtil.isNotEmpty(info.getKzQq())) {
+                sb.append("QQ：").append(StringUtil.nullToStrTrim(info.getKzQq())).append("\r\n");
+            }
+            if (StringUtil.isNotEmpty(info.getKzWw())) {
+                sb.append("旺旺：").append(StringUtil.nullToStrTrim(info.getKzWw())).append("\r\n");
+            }
+            sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("\r\n");
+            sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("\r\n");
+            String remarkText = sb.toString();
+
+            String companyName = staffDao.getCompanyNameByStaffId(staffId);
+
+            WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(head,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
+
         } else {
             pushSuccess(companyId, staffId, head, sb.toString());
             newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_SUCCESS, head, null, "", staffId, companyId));
             DingMsgSendUtil.sendDingMsg(head, companyId, staffId, staffDao);
+
+            String companyName = staffDao.getCompanyNameByStaffId(staffId);
+            WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(head,"",companyId,companyName,staffId,"多个客资","多个客资",new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
+
         }
     }
 
@@ -984,6 +1230,26 @@ public class GoEasyUtil {
         pushWarn(companyId, staffId, head, msg);
         newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_WARN, head, sb.toString().replaceAll("<br/>", "；"), info.getKzId(), staffId, companyId));
         DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), companyId, staffId, staffDao);
+
+        //微信消息推送
+        sb = new StringBuffer();
+        sb.append("编号：").append(info.getLetterId()).append("\r\n");
+        if (StringUtil.isNotEmpty(info.getKzWechat())) {
+            sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWechat())).append("\r\n");
+        }
+        if (StringUtil.isNotEmpty(info.getKzQq())) {
+            sb.append("QQ：").append(StringUtil.nullToStrTrim(info.getKzQq())).append("\r\n");
+        }
+        if (StringUtil.isNotEmpty(info.getKzWw())) {
+            sb.append("旺旺：").append(StringUtil.nullToStrTrim(info.getKzWw())).append("\r\n");
+        }
+        sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("\r\n");
+        sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("\r\n");
+        String remarkText = sb.toString();
+
+        String companyName = staffDao.getCompanyNameByStaffId(staffId);
+        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(head,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
+
     }
 
     /*-- 客资领取消息 --*/
@@ -1018,6 +1284,24 @@ public class GoEasyUtil {
         sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("<br/>");
         DingMsgSendUtil.sendDingMsg(sb.toString(), companyId, staffId, staffDao);
         newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_RECEIVE, head, null, info.getKzId(), staffId, companyId));
+
+        //微信消息推送
+        sb = new StringBuffer();
+        sb.append("编号：").append(info.getLetterId()).append("\r\n");
+        if (StringUtil.isNotEmpty(info.getKzWechat())) {
+            sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWechat())).append("\r\n");
+        }
+        if (StringUtil.isNotEmpty(info.getKzWw())) {
+            sb.append("旺旺：").append(StringUtil.nullToStrTrim(info.getKzWw())).append("\r\n");
+        }
+        sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("\r\n");
+        sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("\r\n");
+        String remarkText = sb.toString();
+
+        String companyName = staffDao.getCompanyNameByStaffId(staffId);
+
+        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(head,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
+
     }
 
     /**
@@ -1052,6 +1336,27 @@ public class GoEasyUtil {
         newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_COMMON, head, sb.toString().replaceAll("<br/>", "；"),
                 info.getKzId(), toStaffId, companyId));
         DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), companyId, toStaffId, staffDao);
+
+        //微信消息推送
+        sb = new StringBuffer();
+        sb.append("编号：").append(info.getLetterId()).append("\r\n");
+        if (StringUtil.isNotEmpty(info.getKzWechat())) {
+            sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWechat())).append("\r\n");
+        }
+        if (StringUtil.isNotEmpty(info.getKzQq())) {
+            sb.append("QQ：").append(StringUtil.nullToStrTrim(info.getKzQq())).append("\r\n");
+        }
+        if (StringUtil.isNotEmpty(info.getKzWw())) {
+            sb.append("旺旺：").append(StringUtil.nullToStrTrim(info.getKzWw())).append("\r\n");
+        }
+        sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("\r\n");
+        sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("\r\n");
+        String remarkText = sb.toString();
+
+        String companyName = staffDao.getCompanyNameByStaffId(toStaffId);
+
+        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(head,remarkText,companyId,companyName,toStaffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
+
     }
 
     /**
@@ -1085,6 +1390,24 @@ public class GoEasyUtil {
         newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_WARN, head, msg.replaceAll("<br/>", "；"), info.getKzId(),
                 staffId, companyId));
         DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), companyId, staffId, staffDao);
+
+        //微信消息推送
+        sb = new StringBuffer();
+        sb.append("编号：").append(info.getLetterId()).append("\r\n");
+        if (StringUtil.isNotEmpty(info.getKzWechat())) {
+            sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWechat())).append("\r\n");
+        }
+        if (StringUtil.isNotEmpty(info.getKzWw())) {
+            sb.append("旺旺：").append(StringUtil.nullToStrTrim(info.getKzWw())).append("\r\n");
+        }
+        sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("\r\n");
+        sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("\r\n");
+        String remarkText = sb.toString();
+
+        String companyName = staffDao.getCompanyNameByStaffId(staffId);
+
+        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(head,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
+
     }
 
     /**
@@ -1119,6 +1442,25 @@ public class GoEasyUtil {
         newsDao.insert(new NewsPO(MessageConts.MSG_TYPE_WARN, head, msg.replaceAll("<br/>", "；"), info.getKzId(),
                 staffId, companyId));
         DingMsgSendUtil.sendDingMsg(head + "<br/>" + sb.toString(), companyId, staffId, staffDao);
+
+        //微信消息推送
+        sb = new StringBuffer();
+        sb.append("编号：").append(info.getLetterId()).append("\r\n");
+        if (StringUtil.isNotEmpty(info.getKzWechat())) {
+            sb.append("微信：").append(StringUtil.nullToStrTrim(info.getKzWechat())).append("\r\n");
+        }
+        if (StringUtil.isNotEmpty(info.getKzWw())) {
+            sb.append("旺旺：").append(StringUtil.nullToStrTrim(info.getKzWw())).append("\r\n");
+        }
+        sb.append("渠道：").append(StringUtil.nullToStrTrim(info.getChannelName())).append("\r\n");
+        sb.append("来源：").append(StringUtil.nullToStrTrim(info.getSourceName())).append("\r\n");
+        sb.append("门店：").append(StringUtil.nullToStrTrim(info.getShopName())).append("\r\n");
+        String remarkText = sb.toString();
+
+        String companyName = staffDao.getCompanyNameByStaffId(staffId);
+
+        WeChatPushUtil.pushMsg(new WeChatPushMsgDTO(head,remarkText,companyId,companyName,staffId,StringUtil.nullToStrTrim(info.getKzName()),StringUtil.nullToStrTrim(info.getKzPhone()),new SimpleDateFormat("yyyy/MM/DD HH:mm:ss").format(new Date())));
+
     }
 
 }

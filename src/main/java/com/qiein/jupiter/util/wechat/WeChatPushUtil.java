@@ -183,7 +183,7 @@ public class WeChatPushUtil {
      */
     public static void pushMsg(WeChatPushMsgDTO weChatPushMsgDTO){
         String contentStr = JSON.toJSONString(weChatPushMsgDTO);
-        String url = "http://apollo.qiein.com/wechat/push_client_msg";
+        String url = APOLLO_URL+"/wechat/push_client_msg";
         HttpClient.textBody(url)
                 .json(contentStr)
                 .execute();
@@ -196,7 +196,7 @@ public class WeChatPushUtil {
     public static void main(String[] args) {
         String firstText = "客资变更通知";
         String remarkText = "状态： 待领取"+NEW_LINE+"配偶: 丧偶"+NEW_LINE+"咨询类型： 婚纱照";
-        WeChatPushMsgDTO weChatPushMsgDTO = new WeChatPushMsgDTO(firstText,remarkText,5001,"中国有嘻哈",30191,"猪猪","15888888888","2018年6月8日 21:46");
+        WeChatPushMsgDTO weChatPushMsgDTO = new WeChatPushMsgDTO(firstText,remarkText,5001,"函木婚纱",30191,"猪猪","15888888888","2018年6月8日 21:46");
         pushMsg(weChatPushMsgDTO);
     }
 
