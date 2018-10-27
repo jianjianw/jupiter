@@ -25,7 +25,7 @@ import java.util.Map;
  * 转介绍来源统计--详情
  */
 @Repository
-public class ZjsEntryReportsDetailDao{
+public class ZjsEntryReportDetailDao {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -166,9 +166,13 @@ public class ZjsEntryReportsDetailDao{
         if (NumUtil.isInValid(companyId)) {
             return null;
         }
+        String config = "";
         StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT comp.REPORTSCONFIG  FROM hm_pub_company comp WHERE comp.ID = ? AND comp.ISDEL = 0 ");
-        String config = jdbcTemplate.queryForObject(sb.toString(), new Object[]{companyId}, String.class);
+        sb.append(" SELECT rpset.DEFINESET FROM hm_crm_reports_set rpset WHERE rpset.COMPANYID =? ");
+        config = jdbcTemplate.queryForObject(sb.toString(), new Object[]{companyId}, String.class);
+        if(StringUtils.isEmpty(config)){
+            return JSONObject.parseObject(config);
+        }
         return JSONObject.parseObject(config);
     }
 

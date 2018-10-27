@@ -124,7 +124,7 @@ public class ReportsServiceImpl implements ReportService {
     @Autowired
     private ZjsEntryReportDao zjsEntryReportDao;
     @Autowired
-    private ZjsEntryReportsDetailDao zjsEntryReportsDetailDao;
+    private ZjsEntryReportDetailDao zjsEntryReportDetailDao;
 
 
 
@@ -1710,7 +1710,7 @@ public class ReportsServiceImpl implements ReportService {
 
     @Override
     public List<ZjsSourceVO> getZjsEntryDetail(AnalyzeVO vo) {
-        return zjsEntryReportsDetailDao.getZjsEntryDetail(vo);
+        return zjsEntryReportDetailDao.getZjsEntryDetail(vo);
     }
 
 }

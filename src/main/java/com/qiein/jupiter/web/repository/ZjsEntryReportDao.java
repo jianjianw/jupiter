@@ -178,6 +178,7 @@ public class ZjsEntryReportDao {
 
     /**
      * 获取无效指标定义规则
+     *
      * @param companyId
      * @return
      */
@@ -187,14 +188,10 @@ public class ZjsEntryReportDao {
         }
         String config = "";
         StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT comp.REPORTSCONFIG  FROM hm_pub_company comp WHERE comp.ID = ? AND comp.ISDEL = 0 ");
-        LinkedList<Object> fieldList = new LinkedList<>();
-        fieldList.add(companyId);
-        Object[] objects = fieldList.toArray();
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), objects);
-        if(list != null && list.size()>0){
-            Map<String, Object> map = list.get(0);
-            config = (String) map.get("REPORTSCONFIG");
+        sb.append(" SELECT rpset.DEFINESET FROM hm_crm_reports_set rpset WHERE rpset.COMPANYID =? ");
+        config = jdbcTemplate.queryForObject(sb.toString(), new Object[]{companyId}, String.class);
+        if(StringUtils.isEmpty(config)){
+            return JSONObject.parseObject(config);
         }
         return JSONObject.parseObject(config);
     }
