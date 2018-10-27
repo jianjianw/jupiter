@@ -264,7 +264,10 @@ public class ClientEditServiceImpl implements ClientEditService {
                     // 如果是无效，发送警告消息给录入人
                     GoEasyUtil.pushYyValidReject(info.getCompanyId(), info.getCollectorId(), info, newsDao, staffDao);
                 } else if (ClientStatusConst.BE_COMFIRM == clientVO.getYyRst()) {
-                    GoEasyUtil.pushAppointShop(info.getCompanyId(), info.getCollectorId(), info, newsDao, staffDao);
+                    //TODO 金夫人不要，你懂得
+                    if(clientVO.getCompanyId()!=3){
+                        GoEasyUtil.pushAppointShop(info.getCompanyId(), info.getCollectorId(), info, newsDao, staffDao);
+                    }
                 }
             }
         } else if ("130019".equals(jsInfo.getString("code"))) {
