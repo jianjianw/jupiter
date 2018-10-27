@@ -161,8 +161,24 @@ public class ReportsServiceImpl implements ReportService {
         return new PageInfo<>(list);
 
     }
-
-
+    /**
+     * 电商推广 来源统计
+     * @param reportsConditionVO
+     * @return
+     */
+    public List<DstgReportsVO> getDstgSourceReports(ReportsConditionVO reportsConditionVO){
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(reportsConditionVO.getCompanyId());
+        return dstgSourceReportsDao.getDstgSourceReports(reportsConditionVO,invalidConfig);
+    }
+    /**
+     * 电商推广 推广客资统计
+     * @param reportsConditionVO
+     * @return
+     */
+    public  List<DscjClientInfoCountVO> getDscjTgClientInfoReports(AnalyzeVO vo){
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(vo.getCompanyId());
+        return dscjCountReportsDao.getDscjTgClientInfoReports(vo,invalidConfig);
+    }
     /**
      * 微信扫码日志
      *
@@ -188,6 +204,17 @@ public class ReportsServiceImpl implements ReportService {
         DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(reportsParamVO.getCompanyId());
         return dsyyGroupReportsDao.getDsyyGroupReports(reportsParamVO,invalidConfig);
 
+    }
+
+
+    /**
+     * 电商邀约报表来源详情
+     * @param reportsParamVO
+     * @return
+     */
+    public List<DsyyReportsVO> getDsyyGroupSourceReports(ReportsParamVO reportsParamVO){
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(reportsParamVO.getCompanyId());
+        return  dsyyGroupSourceReportsDao.getDsyyGroupSourceReports(reportsParamVO,invalidConfig);
     }
     /**
      * 电商邀约报表-客服详情
