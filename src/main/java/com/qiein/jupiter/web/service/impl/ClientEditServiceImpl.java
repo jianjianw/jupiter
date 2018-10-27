@@ -265,7 +265,7 @@ public class ClientEditServiceImpl implements ClientEditService {
                     GoEasyUtil.pushYyValidReject(info.getCompanyId(), info.getCollectorId(), info, newsDao, staffDao);
                 } else if (ClientStatusConst.BE_COMFIRM == clientVO.getYyRst()) {
                     //TODO 金夫人不要，你懂得
-                    if(clientVO.getCompanyId()!=3){
+                    if(staffPO.getCompanyId()!=3){
                         GoEasyUtil.pushAppointShop(info.getCompanyId(), info.getCollectorId(), info, newsDao, staffDao);
                     }
                 }
