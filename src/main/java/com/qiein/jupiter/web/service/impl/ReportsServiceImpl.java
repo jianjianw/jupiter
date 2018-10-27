@@ -120,9 +120,15 @@ public class ReportsServiceImpl implements ReportService {
     @Autowired
     private DsyyGroupDetailReportsDao dsyyGroupDetailReportsDao;
     @Autowired
+    private DsyyGroupSourceReportsDao dsyyGroupSourceReportsDao;
+    @Autowired
     private ZjsEntryStaffReportDao zjsEntryStaffReportDao;
     @Autowired
     private ZjsEntryReportDao zjsEntryReportDao;
+    @Autowired
+    private DscjCountReportsDao dscjCountReportsDao;
+    @Autowired
+    private DstgSourceReportsDao dstgSourceReportsDao;
 
 
 
@@ -189,7 +195,33 @@ public class ReportsServiceImpl implements ReportService {
         return dsyyGroupDetailReportsDao.getDsyyGroupDetailReports(reportsParamVO,invalidConfig);
 
     }
+    /**
+     * 电商邀约报表-客服详情
+     * @param reportsParamVO
+     * @return
+     */
+    public List<DsyyReportsVO> getDsyyGroupSourceReports(ReportsParamVO reportsParamVO){
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(reportsParamVO.getCompanyId());
+        return dsyyGroupSourceReportsDao.getDsyyGroupSourceReports(reportsParamVO,invalidConfig);
 
+    }
+    /**
+     * 电商推广 推广客资统计
+     * @return
+     */
+    public List<DscjClientInfoCountVO> getDscjTgClientInfoReports(AnalyzeVO vo){
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(vo.getCompanyId());
+        return dscjCountReportsDao.getDscjTgClientInfoReports(vo,invalidConfig);
+    }
+    /**
+     * 电商推广 来源数据统计
+     * @param reportsConditionVO
+     * @return
+     */
+    public List<DstgReportsVO> getDstgSourceReports(ReportsConditionVO reportsConditionVO){
+        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(reportsConditionVO.getCompanyId());
+        return dstgSourceReportsDao.getDstgSourceReports(reportsConditionVO,invalidConfig);
+    }
     /**
      * 重复客资记录
      *

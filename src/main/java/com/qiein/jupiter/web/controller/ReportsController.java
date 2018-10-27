@@ -42,39 +42,41 @@ public class ReportsController extends BaseController {
      */
     @RequestMapping("/getDstgSourceReports")
     public ResultInfo getDstgSourceReports(@RequestBody ReportsConditionVO reportsConditionVO) {
-        if (null == reportsConditionVO) {
-            return ResultInfoUtil.error(ExceptionEnum.UNKNOW_ERROR);
-        }
-        if (NumUtil.isInValid(reportsConditionVO.getStart()) || NumUtil.isInValid(reportsConditionVO.getEnd())) {
-            return ResultInfoUtil.error(ExceptionEnum.START_TIME_OR_END_TIME_IS_NULL);
-        }
-        StaffPO currentLoginStaff = getCurrentLoginStaff();
-        Map<String, Object> reqContent = new HashMap<>();
-        //todo param
-        reqContent.put("start", reportsConditionVO.getStart());
-        reqContent.put("end", reportsConditionVO.getEnd());
-        reqContent.put("companyid", currentLoginStaff.getCompanyId());
-        reqContent.put("typelimit", reportsConditionVO.getTypeLimit());
-        reqContent.put("iscreate", reportsConditionVO.getIsCreate());
-        if (StringUtil.isNotEmpty(reportsConditionVO.getSourceId())) {
-            reqContent.put("sourceid", reportsConditionVO.getSourceId());
-        }
-        if (NumUtil.isValid(reportsConditionVO.getPhoneLimit())) {
-            reqContent.put("phonelimit", reportsConditionVO.getPhoneLimit());
-        }
-        if (NumUtil.isValid(reportsConditionVO.getSparelimit())) {
-            reqContent.put("sparelimit", reportsConditionVO.getSparelimit());
-        }
-        if (StringUtil.isNotEmpty(reportsConditionVO.getTypeId())) {
-            reqContent.put("phototype", reportsConditionVO.getTypeId());
-        }
-        //请求juplat接口
-        String json = crmBaseApi.doService(reqContent, "dstgSourceReports");
-
-        if (StringUtil.isEmpty(json) || !"100000".equalsIgnoreCase(JSONObject.parseObject(json).getJSONObject("response").getJSONObject("info").getString("code"))) {
-            return ResultInfoUtil.error(ExceptionEnum.UNKNOW_ERROR);
-        }
-        return ResultInfoUtil.success(JSONObject.parseObject(json).getJSONObject("response").getJSONObject("content").getJSONArray("data"));
+//        if (null == reportsConditionVO) {
+//            return ResultInfoUtil.error(ExceptionEnum.UNKNOW_ERROR);
+//        }
+//        if (NumUtil.isInValid(reportsConditionVO.getStart()) || NumUtil.isInValid(reportsConditionVO.getEnd())) {
+//            return ResultInfoUtil.error(ExceptionEnum.START_TIME_OR_END_TIME_IS_NULL);
+//        }
+//        StaffPO currentLoginStaff = getCurrentLoginStaff();
+//        Map<String, Object> reqContent = new HashMap<>();
+//        //todo param
+//        reqContent.put("start", reportsConditionVO.getStart());
+//        reqContent.put("end", reportsConditionVO.getEnd());
+//        reqContent.put("companyid", currentLoginStaff.getCompanyId());
+//        reqContent.put("typelimit", reportsConditionVO.getTypeLimit());
+//        reqContent.put("iscreate", reportsConditionVO.getIsCreate());
+//        if (StringUtil.isNotEmpty(reportsConditionVO.getSourceId())) {
+//            reqContent.put("sourceid", reportsConditionVO.getSourceId());
+//        }
+//        if (NumUtil.isValid(reportsConditionVO.getPhoneLimit())) {
+//            reqContent.put("phonelimit", reportsConditionVO.getPhoneLimit());
+//        }
+//        if (NumUtil.isValid(reportsConditionVO.getSparelimit())) {
+//            reqContent.put("sparelimit", reportsConditionVO.getSparelimit());
+//        }
+//        if (StringUtil.isNotEmpty(reportsConditionVO.getTypeId())) {
+//            reqContent.put("phototype", reportsConditionVO.getTypeId());
+//        }
+//        //请求juplat接口
+//        String json = crmBaseApi.doService(reqContent, "dstgSourceReports");
+//
+//        if (StringUtil.isEmpty(json) || !"100000".equalsIgnoreCase(JSONObject.parseObject(json).getJSONObject("response").getJSONObject("info").getString("code"))) {
+//            return ResultInfoUtil.error(ExceptionEnum.UNKNOW_ERROR);
+//        }
+//        return ResultInfoUtil.success(JSONObject.parseObject(json).getJSONObject("response").getJSONObject("content").getJSONArray("data"));
+        reportsConditionVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
+        return ResultInfoUtil.success(reportService.getDstgSourceReports(reportsConditionVO));
     }
 
     /**
@@ -83,33 +85,33 @@ public class ReportsController extends BaseController {
     @RequestMapping("get_dsyy_group_reports")
     public ResultInfo getDsyyGroupReports(@RequestParam("start") Integer start, @RequestParam("end") Integer end,
                                           @RequestParam(value = "typeId", required = false) String typeId, @RequestParam(value = "groupIds", required = false) String groupIds, @RequestParam(value = "sourceIds", required = false) String sourceIds) {
-        StaffPO currentLoginStaff = getCurrentLoginStaff();
-        Map<String, Object> reqContent = new HashMap<>();
-        //todo param
-        reqContent.put("start",start);
-        reqContent.put("end", end);
-        reqContent.put("companyid", currentLoginStaff.getCompanyId());
-        reqContent.put("typeId", typeId);
-        reqContent.put("groupId",groupIds );
-        reqContent.put("sourceIds", sourceIds);
-        //请求juplat接口
-        String json = crmBaseApi.doService(reqContent, "dsyyGroupReports");
+//        StaffPO currentLoginStaff = getCurrentLoginStaff();
+//        Map<String, Object> reqContent = new HashMap<>();
+//        //todo param
+//        reqContent.put("start",start);
+//        reqContent.put("end", end);
+//        reqContent.put("companyid", currentLoginStaff.getCompanyId());
+//        reqContent.put("typeId", typeId);
+//        reqContent.put("groupId",groupIds );
+//        reqContent.put("sourceIds", sourceIds);
+//        //请求juplat接口
+//        String json = crmBaseApi.doService(reqContent, "dsyyGroupReports");
+//
+//        if (StringUtil.isEmpty(json) || !"100000".equalsIgnoreCase(JSONObject.parseObject(json).getJSONObject("response").getJSONObject("info").getString("code"))) {
+//            return ResultInfoUtil.error(ExceptionEnum.UNKNOW_ERROR);
+//        }
+//        return ResultInfoUtil.success(JSONObject.parseObject(json).getJSONObject("response").getJSONObject("content").getJSONArray("data"));
 
-        if (StringUtil.isEmpty(json) || !"100000".equalsIgnoreCase(JSONObject.parseObject(json).getJSONObject("response").getJSONObject("info").getString("code"))) {
-            return ResultInfoUtil.error(ExceptionEnum.UNKNOW_ERROR);
-        }
-        return ResultInfoUtil.success(JSONObject.parseObject(json).getJSONObject("response").getJSONObject("content").getJSONArray("data"));
 
-        /**
 
-         * ReportsParamVO reportsParamVO=new ReportsParamVO();
+        ReportsParamVO reportsParamVO=new ReportsParamVO();
         reportsParamVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
         reportsParamVO.setStart(start);
         reportsParamVO.setEnd(end);
         reportsParamVO.setType(typeId);
         reportsParamVO.setSourceIds(sourceIds);
         reportsParamVO.setGroupId(groupIds);
-        return ResultInfoUtil.success(reportService.getDsyyGroupReports(reportsParamVO));*/
+        return ResultInfoUtil.success(reportService.getDsyyGroupReports(reportsParamVO));
 
     }
 
@@ -118,28 +120,28 @@ public class ReportsController extends BaseController {
      */
     @RequestMapping("get_dsyy_group_detail_reports")
     public ResultInfo getDsyyGroupDetailReports(@RequestParam("start") Integer start, @RequestParam("end") Integer end, @RequestParam(value = "groupId", required = false) String groupId) {
-        if (NumUtil.isInValid(start) || NumUtil.isInValid(end)) {
-            return ResultInfoUtil.error(ExceptionEnum.START_TIME_OR_END_TIME_IS_NULL);
-        }
-        StaffPO currentLoginStaff = getCurrentLoginStaff();
-        Map<String, Object> reqContent = new HashMap<>();
-
-        reqContent.put("start", start);
-        reqContent.put("end", end);
-        reqContent.put("groupid", groupId);
-        reqContent.put("companyid", currentLoginStaff.getCompanyId());
-        String json = crmBaseApi.doService(reqContent, "dsyyGroupDetailReports");
-
-        if (StringUtil.isEmpty(json) || !"100000".equalsIgnoreCase(JSONObject.parseObject(json).getJSONObject("response").getJSONObject("info").getString("code"))) {
-            return ResultInfoUtil.error(ExceptionEnum.UNKNOW_ERROR);
-        }
-        return ResultInfoUtil.success(JSONObject.parseObject(json).getJSONObject("response").getJSONObject("content").getJSONArray("data"));
-        //ReportsParamVO reportsParamVO=new ReportsParamVO();
-        //reportsParamVO.setGroupId(groupId);
-        //reportsParamVO.setStart(start);
-        //reportsParamVO.setEnd(end);
-        //reportsParamVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
-        //return ResultInfoUtil.success(reportService.getDsyyGroupDetailReports(reportsParamVO));
+//        if (NumUtil.isInValid(start) || NumUtil.isInValid(end)) {
+//            return ResultInfoUtil.error(ExceptionEnum.START_TIME_OR_END_TIME_IS_NULL);
+//        }
+//        StaffPO currentLoginStaff = getCurrentLoginStaff();
+//        Map<String, Object> reqContent = new HashMap<>();
+//
+//        reqContent.put("start", start);
+//        reqContent.put("end", end);
+//        reqContent.put("groupid", groupId);
+//        reqContent.put("companyid", currentLoginStaff.getCompanyId());
+//        String json = crmBaseApi.doService(reqContent, "dsyyGroupDetailReports");
+//
+//        if (StringUtil.isEmpty(json) || !"100000".equalsIgnoreCase(JSONObject.parseObject(json).getJSONObject("response").getJSONObject("info").getString("code"))) {
+//            return ResultInfoUtil.error(ExceptionEnum.UNKNOW_ERROR);
+//        }
+//        return ResultInfoUtil.success(JSONObject.parseObject(json).getJSONObject("response").getJSONObject("content").getJSONArray("data"));
+        ReportsParamVO reportsParamVO=new ReportsParamVO();
+        reportsParamVO.setGroupId(groupId);
+        reportsParamVO.setStart(start);
+        reportsParamVO.setEnd(end);
+        reportsParamVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
+        return ResultInfoUtil.success(reportService.getDsyyGroupDetailReports(reportsParamVO));
     }
 
     /**
@@ -147,22 +149,29 @@ public class ReportsController extends BaseController {
      */
     @RequestMapping("get_dsyy_group_source_reports")
     public ResultInfo getDsyyGroupSourceReports(@RequestParam("start") Integer start, @RequestParam("end") Integer end, @RequestParam(value = "groupId", required = false) String groupId) {
-        if (NumUtil.isInValid(start) || NumUtil.isInValid(end)) {
-            return ResultInfoUtil.error(ExceptionEnum.START_TIME_OR_END_TIME_IS_NULL);
-        }
-        StaffPO currentLoginStaff = getCurrentLoginStaff();
-        Map<String, Object> reqContent = new HashMap<>();
+//        if (NumUtil.isInValid(start) || NumUtil.isInValid(end)) {
+//            return ResultInfoUtil.error(ExceptionEnum.START_TIME_OR_END_TIME_IS_NULL);
+//        }
+//        StaffPO currentLoginStaff = getCurrentLoginStaff();
+//        Map<String, Object> reqContent = new HashMap<>();
+//
+//        reqContent.put("start", start);
+//        reqContent.put("end", end);
+//        reqContent.put("groupid", groupId);
+//        reqContent.put("companyid", currentLoginStaff.getCompanyId());
+//        String json = crmBaseApi.doService(reqContent, "dsyyGroupSourceReports");
+//
+//        if (StringUtil.isEmpty(json) || !"100000".equalsIgnoreCase(JSONObject.parseObject(json).getJSONObject("response").getJSONObject("info").getString("code"))) {
+//            return ResultInfoUtil.error(ExceptionEnum.UNKNOW_ERROR);
+//        }
+//        return ResultInfoUtil.success(JSONObject.parseObject(json).getJSONObject("response").getJSONObject("content").getJSONArray("data"));
 
-        reqContent.put("start", start);
-        reqContent.put("end", end);
-        reqContent.put("groupid", groupId);
-        reqContent.put("companyid", currentLoginStaff.getCompanyId());
-        String json = crmBaseApi.doService(reqContent, "dsyyGroupSourceReports");
-
-        if (StringUtil.isEmpty(json) || !"100000".equalsIgnoreCase(JSONObject.parseObject(json).getJSONObject("response").getJSONObject("info").getString("code"))) {
-            return ResultInfoUtil.error(ExceptionEnum.UNKNOW_ERROR);
-        }
-        return ResultInfoUtil.success(JSONObject.parseObject(json).getJSONObject("response").getJSONObject("content").getJSONArray("data"));
+        ReportsParamVO reportsParamVO=new ReportsParamVO();
+        reportsParamVO.setCompanyId(getCurrentLoginStaff().getCompanyId());
+        reportsParamVO.setStart(start);
+        reportsParamVO.setEnd(end);
+        reportsParamVO.setGroupId(groupId);
+        return ResultInfoUtil.success(reportService.getDsyyGroupSourceReports(reportsParamVO));
     }
 
     /**
@@ -337,16 +346,24 @@ public class ReportsController extends BaseController {
      */
     @GetMapping("/get_dscj_tg_client_info_reports")
     public ResultInfo getDscjTgClientInfoReports(int start, int end, String typeIds, String sourceIds) {
-        StaffPO currentLoginStaff = getCurrentLoginStaff();
-        Map<String, Object> reqContent = new HashMap<>();
-        reqContent.put("start", start);
-        reqContent.put("end", end);
-        reqContent.put("companyid", currentLoginStaff.getCompanyId());
-        reqContent.put("sourceids", sourceIds);
-        reqContent.put("typeids", typeIds);
-        //请求juplat接口
-        String json = crmBaseApi.doService(reqContent, "dscjCountReports");
-        return ResultInfoUtil.success(JsonFmtUtil.strContentToJsonObj(json).get("analysis"));
+//        StaffPO currentLoginStaff = getCurrentLoginStaff();
+//        Map<String, Object> reqContent = new HashMap<>();
+//        reqContent.put("start", start);
+//        reqContent.put("end", end);
+//        reqContent.put("companyid", currentLoginStaff.getCompanyId());
+//        reqContent.put("sourceids", sourceIds);
+//        reqContent.put("typeids", typeIds);
+//        //请求juplat接口
+//        String json = crmBaseApi.doService(reqContent, "dscjCountReports");
+//        return ResultInfoUtil.success(JsonFmtUtil.strContentToJsonObj(json).get("analysis"));
+        AnalyzeVO vo=new AnalyzeVO();
+        vo.setStart(start);
+        vo.setEnd(end);
+        vo.setPhotoTypes(typeIds);
+        vo.setSourceIds(sourceIds);
+        vo.setCompanyId(getCurrentLoginStaff().getCompanyId());
+        return ResultInfoUtil.success(reportService.getDscjTgClientInfoReports(vo));
+
     }
 
     /**

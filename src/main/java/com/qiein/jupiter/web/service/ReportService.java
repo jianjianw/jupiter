@@ -42,8 +42,26 @@ public interface ReportService {
      * @return
      */
     List<DsyyReportsVO> getDsyyGroupDetailReports(ReportsParamVO reportsParamVO);
+    /**
+     * 电商邀约报表来源详情
+     * @param reportsParamVO
+     * @return
+     */
+    List<DsyyReportsVO> getDsyyGroupSourceReports(ReportsParamVO reportsParamVO);
 
+    /**
+     * 电商推广 推广客资统计
+     * @param reportsConditionVO
+     * @return
+     */
+    List<DscjClientInfoCountVO> getDscjTgClientInfoReports(AnalyzeVO vo);
 
+    /**
+     * 电商推广 来源统计
+     * @param reportsConditionVO
+     * @return
+     */
+    List<DstgReportsVO> getDstgSourceReports(ReportsConditionVO reportsConditionVO);
     /**
      * 重复客资记录
      *

@@ -1,5 +1,7 @@
 package com.qiein.jupiter.web.entity.vo;
 
+import java.util.List;
+
 /**
  * FileName: ReportsConditionVO
  *
@@ -36,9 +38,35 @@ public class ReportsConditionVO {
      * */
     private String typeLimit;
     /**
+     * 公司id
+     */
+    private int companyId;
+    /**
      * 是否开启录入时间以及其他时间筛选开关
      */
     private boolean isCreate;
+
+    /**
+     * 推广员工
+     * @return
+     */
+    private List<Integer> staffList;
+
+    public List<Integer> getStaffList() {
+        return staffList;
+    }
+
+    public void setStaffList(List<Integer> staffList) {
+        this.staffList = staffList;
+    }
+
+    public int getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(int companyId) {
+        this.companyId = companyId;
+    }
 
     public boolean getIsCreate() {
         return isCreate;
