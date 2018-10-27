@@ -166,14 +166,16 @@ public class ZjsEntryReportDetailDao {
         if (NumUtil.isInValid(companyId)) {
             return null;
         }
-        String config = "";
         StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT rpset.DEFINESET FROM hm_crm_reports_set rpset WHERE rpset.COMPANYID =? ");
-        config = jdbcTemplate.queryForObject(sb.toString(), new Object[]{companyId}, String.class);
+        sb.append("  SELECT rpset.DEFINESET FROM hm_crm_reports_set rpset WHERE rpset.COMPANYID =? ");
+
+        String config = jdbcTemplate.queryForObject(sb.toString(), new Object[]{companyId}, String.class);
+
         if(StringUtils.isEmpty(config)){
+            return JSONObject.parseObject("");
+        }else{
             return JSONObject.parseObject(config);
         }
-        return JSONObject.parseObject(config);
     }
 
 
