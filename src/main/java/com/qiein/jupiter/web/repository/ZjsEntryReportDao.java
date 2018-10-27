@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -468,8 +469,8 @@ public class ZjsEntryReportDao {
             zjsNumVO = new ZjsNumVO();
             zjsNumVO.setSourceId(((Long)map.get("SOURCEID")).intValue());
             zjsNumVO.setCjNum(((Long)map.get("CJNUM")).intValue());
-            zjsNumVO.setYyAmount((Double)map.get("YY"));
-            zjsNumVO.setJjAmount((Double)map.get("JJ"));
+            zjsNumVO.setYyAmount(((BigDecimal)map.get("YY")).doubleValue());
+            zjsNumVO.setJjAmount(((BigDecimal)map.get("JJ")).doubleValue());
             rstList.add(zjsNumVO);
         }
         // 毛客资归类到渠道
