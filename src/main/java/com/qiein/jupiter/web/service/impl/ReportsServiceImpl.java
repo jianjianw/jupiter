@@ -129,6 +129,10 @@ public class ReportsServiceImpl implements ReportService {
     private DscjCountReportsDao dscjCountReportsDao;
     @Autowired
     private DstgSourceReportsDao dstgSourceReportsDao;
+    @Autowired
+    private ZjsEntryReportDetailDao zjsEntryReportDetailDao;
+    @Autowired
+    private DstgChannelReportDao dstgChannelReportDao;
 
 
 
@@ -195,33 +199,7 @@ public class ReportsServiceImpl implements ReportService {
         return dsyyGroupDetailReportsDao.getDsyyGroupDetailReports(reportsParamVO,invalidConfig);
 
     }
-    /**
-     * 电商邀约报表-客服详情
-     * @param reportsParamVO
-     * @return
-     */
-    public List<DsyyReportsVO> getDsyyGroupSourceReports(ReportsParamVO reportsParamVO){
-        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(reportsParamVO.getCompanyId());
-        return dsyyGroupSourceReportsDao.getDsyyGroupSourceReports(reportsParamVO,invalidConfig);
 
-    }
-    /**
-     * 电商推广 推广客资统计
-     * @return
-     */
-    public List<DscjClientInfoCountVO> getDscjTgClientInfoReports(AnalyzeVO vo){
-        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(vo.getCompanyId());
-        return dscjCountReportsDao.getDscjTgClientInfoReports(vo,invalidConfig);
-    }
-    /**
-     * 电商推广 来源数据统计
-     * @param reportsConditionVO
-     * @return
-     */
-    public List<DstgReportsVO> getDstgSourceReports(ReportsConditionVO reportsConditionVO){
-        DsInvalidVO invalidConfig = commonReportsDao.getInvalidConfig(reportsConditionVO.getCompanyId());
-        return dstgSourceReportsDao.getDstgSourceReports(reportsConditionVO,invalidConfig);
-    }
     /**
      * 重复客资记录
      *
@@ -1736,6 +1714,16 @@ public class ReportsServiceImpl implements ReportService {
     @Override
     public HashMap<String, Object> getZjsEntry(AnalyzeVO vo) {
         return zjsEntryReportDao.getZjsEntry(vo);
+    }
+
+    @Override
+    public List<ZjsSourceVO> getZjsEntryDetail(AnalyzeVO vo) {
+        return zjsEntryReportDetailDao.getZjsEntryDetail(vo);
+    }
+
+    @Override
+    public List<ChannelVO>  getDstgChannelReport(AnalyzeVO vo) {
+        return dstgChannelReportDao.getDstgChannelReport(vo);
     }
 
 }

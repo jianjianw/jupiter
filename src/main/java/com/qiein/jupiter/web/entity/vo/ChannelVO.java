@@ -25,6 +25,24 @@ public class ChannelVO implements Serializable {
      */
     private LinkedList<SrcListVO> srcList;
 
+    private int companyId;// 企业ID
+    private String channelImg;// 图标
+    private NumVO numVO;//每行数据
+
+
+    public ChannelVO() {
+    }
+
+    public ChannelVO(String type, int companyId) {
+        if ("total".equalsIgnoreCase(type)) {
+            this.channelId = -1;
+            this.channelName = "合计";
+            this.channelImg = "";
+            this.companyId = companyId;
+            this.numVO = new NumVO(type);
+        }
+    }
+
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -60,5 +78,29 @@ public class ChannelVO implements Serializable {
 
     public void setSrcList(LinkedList<SrcListVO> srcList) {
         this.srcList = srcList;
+    }
+
+    public int getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(int companyId) {
+        this.companyId = companyId;
+    }
+
+    public String getChannelImg() {
+        return channelImg;
+    }
+
+    public void setChannelImg(String channelImg) {
+        this.channelImg = channelImg;
+    }
+
+    public NumVO getNumVO() {
+        return numVO;
+    }
+
+    public void setNumVO(NumVO numVO) {
+        this.numVO = numVO;
     }
 }

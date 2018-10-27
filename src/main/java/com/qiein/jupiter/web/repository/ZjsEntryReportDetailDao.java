@@ -3,7 +3,6 @@ package com.qiein.jupiter.web.repository;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.qiein.jupiter.constant.ClientStatusConst;
-import com.qiein.jupiter.constant.CommonConstant;
 import com.qiein.jupiter.constant.ReportsConfigConst;
 import com.qiein.jupiter.util.DBSplitUtil;
 import com.qiein.jupiter.util.NumUtil;
@@ -23,151 +22,132 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 转介绍提报统计
+ * 转介绍来源统计--详情
  */
 @Repository
-public class ZjsEntryReportDao {
-
+public class ZjsEntryReportDetailDao {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    public List<ZjsSourceVO> getZjsEntryDetail(AnalyzeVO vo){
 
-    public HashMap<String, Object> getZjsEntry(AnalyzeVO vo){
-        
+
+
         HashMap<String, Object> rst = new HashMap<String, Object>();
+
+        // 获取转介绍来源集合,总客资数量
+        List<ZjsSourceVO> staffList = getZjsStaffList(vo);
 
         // 获取报表配置
         JSONObject config = getRepertsConfig(vo.getCompanyId());
-        // 获取转介绍来源集合,总客资数量
-        List<ZjsSourceVO> srcList = getZjsSourceList(vo, config);
         //获取总客资量
-        getNumAll(vo, srcList);
+        getNumAll(vo, staffList);
         // 获取渠道客资量并归类到渠道
-        getKzNumList(vo, srcList);
-        // 获取渠道无效客资量并归类到渠道
-        getYxNumList(vo, srcList, config);
+        getKzNumList(vo, staffList);
+        // 获取渠道有效量并归类到渠道
+        getYxNumList(vo, staffList, config);
         // 待定量
-        getDdNumList(vo, srcList, config);
+        getDdNumList(vo, staffList, config);
         // 获取渠道入店客资量并归类到渠道
-        getRdNumList(vo, srcList);
+        getRdNumList(vo, staffList);
         // 获取渠道成交客资量并归类到渠道,成交营业额和成交均价
-        getCjNumList(vo, srcList);
-        getRdCjNumList(vo, srcList);
-        getzxCjNumList(vo, srcList);
+        getCjNumList(vo, staffList);
         // 已加微信
-        getAddWechatNum(vo, srcList);
+        getAddWechatNum(vo, staffList);
         // 计算渠道合计
-        getSrcTotal(vo, srcList);
+        getSrcTotal(vo, staffList);
         // 计算率和成本
-        getRateAndCost(srcList);
-
-        rst.put("analysis", srcList);
-        return rst;
+        getRateAndCost(staffList);
+        return staffList;
     }
 
     /**
      * 获取转介绍来源集合
-     *
+     * @param vo
+     * @return
      */
-    public List<ZjsSourceVO> getZjsSourceList(AnalyzeVO vo, JSONObject config)  {
-        //获取报表配置
-        boolean soureShow = config.getJSONObject(ReportsConfigConst.SHOW_SET).getBoolean(ReportsConfigConst.SOURCE_SHOW);
-        StringBuilder sb = null;
+    public List<ZjsSourceVO> getZjsStaffList(AnalyzeVO vo)  {
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(" SELECT sf.ID, sf.NICKNAME  FROM ");
+        sb.append(DBSplitUtil.getInfoTabName(vo.getCompanyId()));
+        sb.append(" info LEFT JOIN hm_pub_staff sf ON sf.COMPANYID = info.COMPANYID AND info.COLLECTORID = sf.ID ");
+        sb.append(" WHERE  info.SRCTYPE IN (3,4,5) AND info.COMPANYID = ? ");
+        sb.append(" AND ( ( info.CREATETIME >= ? AND info.CREATETIME <= ? )  OR (info.COMESHOPTIME >= ? AND info.COMESHOPTIME <= ? )  OR (info.SUCCESSTIME >= ? AND info.SUCCESSTIME <= ? ) ) ");
         LinkedList<Object> fieldList = new LinkedList<>();
-        if (soureShow) {
-            //显示全部渠道
-            sb = new StringBuilder();
-            sb.append(" SELECT src.ID, src.SRCNAME, src.SRCIMG, src.COMPANYID  ");
-            sb.append(" FROM hm_crm_source src LEFT JOIN hm_crm_channel c ON c.COMPANYID = src.COMPANYID AND src.CHANNELID = c.ID  ");
-            sb.append(" WHERE src.TYPEID IN ( 3, 4, 5 ) AND src.COMPANYID = ?  ");
-            fieldList.add(vo.getCompanyId());
 
-            if (StringUtils.isNotEmpty(vo.getSourceIds())) {
-                sb.append(" AND INSTR( ? ,CONCAT(',',src.ID+'',',')) ");
-                fieldList.add(CommonConstant.STR_SEPARATOR + vo.getSourceIds() + CommonConstant.STR_SEPARATOR);
-            }
-            sb.append(" ORDER BY c.TYPEID ASC, c.ISSHOW DESC, c.PRIORITY ASC, src.ISSHOW DESC, src.PRIORITY ASC ");
+        fieldList.add(vo.getCompanyId());
+        fieldList.add(vo.getStart());
+        fieldList.add(vo.getEnd());
+        fieldList.add(vo.getStart());
+        fieldList.add(vo.getEnd());
+        fieldList.add(vo.getStart());
+        fieldList.add(vo.getEnd());
 
-        } else {
-
-            sb = new StringBuilder();
-            sb.append(" SELECT src.ID, src.SRCNAME, src.SRCIMG, info.COMPANYID FROM ");
-            sb.append(DBSplitUtil.getInfoTabName(vo.getCompanyId()));
-            sb.append(" info LEFT JOIN hm_crm_source src ON info.COMPANYID = src.COMPANYID AND info.SOURCEID = src.ID ");
-            sb.append(" WHERE src.TYPEID IN ( 3, 4, 5 ) AND info.COMPANYID = ? ");
-            sb.append(" AND (( info.CREATETIME >= ? AND info.CREATETIME <= ? ) OR  ( info.COMESHOPTIME >= ? AND info.COMESHOPTIME <= ? ) OR ( info.SUCCESSTIME >= ? AND info.SUCCESSTIME <= ? ) ) ");
-
-            fieldList.add(vo.getCompanyId());
-            fieldList.add(vo.getStart());
-            fieldList.add(vo.getEnd());
-            fieldList.add(vo.getStart());
-            fieldList.add(vo.getEnd());
-            fieldList.add(vo.getStart());
-            fieldList.add(vo.getEnd());
-
-            if (StringUtils.isNotEmpty(vo.getSourceIds())) {
-                sb.append(" AND INSTR( ? ,CONCAT(',',src.ID+'',',')) ");
-                fieldList.add(CommonConstant.STR_SEPARATOR + vo.getSourceIds() + CommonConstant.STR_SEPARATOR);
-            }
-            sb.append(" GROUP BY info.SOURCEID ");
-            sb.append(" ORDER BY src.PRIORITY, src.ID ");
+        if (NumUtil.isValid(vo.getSourceId())) {
+            sb.append(" AND info.SOURCEID = ?  ");
+            fieldList.add(vo.getSourceId());
         }
+        sb.append(" GROUP BY sf.ID ");
         Object[] objects = fieldList.toArray();
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), objects);
 
-        List<ZjsSourceVO> srcList = new LinkedList<>();
+        List<ZjsSourceVO> staffList = new LinkedList<>();
         ZjsSourceVO zjsSourceVO = null;
-        for(Map<String,Object> map : list){
+        for(Map<String, Object> map : list){
             zjsSourceVO = new ZjsSourceVO();
-            zjsSourceVO.setSourceId(((Long)map.get("ID")).intValue());
-            zjsSourceVO.setSourceName((String) map.get("SRCNAME"));
+            zjsSourceVO.setStaffId(((Long)map.get("ID")).intValue());
+            zjsSourceVO.setNickName((String)map.get("NICKNAME"));
             zjsSourceVO.setCompanyId(vo.getCompanyId());
-            zjsSourceVO.setSourceImg((String) map.get("SRCIMG"));
             zjsSourceVO.setZjsNumVO(new ZjsNumVO());
-            srcList.add(zjsSourceVO);
+            staffList.add(zjsSourceVO);
         }
-        return srcList;
+
+        return staffList;
     }
 
     /**
      * 获取总客资量
      *
+     * @param vo
+     * @return
+     * @
      */
-    public void getNumAll(AnalyzeVO vo, List<ZjsSourceVO> srcList)  {
+    public void getNumAll(AnalyzeVO vo, List<ZjsSourceVO> staffList)  {
 
         StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT info.SOURCEID, COUNT( 1 ) NUMALL FROM ");
+        sb.append(" SELECT info.COLLECTORID, COUNT( 1 ) NUMALL FROM ");
         sb.append(DBSplitUtil.getInfoTabName(vo.getCompanyId()));
         sb.append(" info WHERE info.ISDEL = 0  AND info.SRCTYPE IN ( 3, 4, 5 ) ");
         sb.append(" AND info.CREATETIME >= ? AND info.CREATETIME <= ?  AND info.COMPANYID = ? ");
 
         LinkedList<Object> fieldList = new LinkedList<>();
+
         fieldList.add(vo.getStart());
         fieldList.add(vo.getEnd());
         fieldList.add(vo.getCompanyId());
 
-        if (StringUtils.isNotEmpty(vo.getSourceIds())) {
-            sb.append(" AND INSTR( ? ,CONCAT(',',info.SOURCEID+'',',')) ");
-            fieldList.add(CommonConstant.STR_SEPARATOR + vo.getSourceIds() + CommonConstant.STR_SEPARATOR);
+        if (NumUtil.isValid(vo.getSourceId())) {
+            sb.append(" AND info.SOURCEID = ?  ");
+            fieldList.add(vo.getSourceId());
         }
-        sb.append(" GROUP BY info.SOURCEID ");
-
+        sb.append(" GROUP BY info.COLLECTORID ");
         Object[] objects = fieldList.toArray();
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), objects);
-
         List<ZjsNumVO> rstList = new LinkedList<>();
         ZjsNumVO zjsNumVO = null;
         for(Map<String,Object> map : list){
             zjsNumVO = new ZjsNumVO();
-            zjsNumVO.setSourceId(((Long)map.get("SOURCEID")).intValue());
+            zjsNumVO.setStaffId(((Long)map.get("COLLECTORID")).intValue());
             zjsNumVO.setNumAll(((Long)map.get("NUMALL")).intValue());
             rstList.add(zjsNumVO);
         }
+
         // 毛客资归类到渠道
-        for (ZjsSourceVO sourceVO : srcList) {
+        for (ZjsSourceVO sourceVO : staffList) {
             for (ZjsNumVO kzNum : rstList) {
-                if (sourceVO.getSourceId() == kzNum.getSourceId()) {
+                if (sourceVO.getStaffId() == kzNum.getStaffId()) {
                     sourceVO.getZjsNumVO().setNumAll(kzNum.getNumAll());
                     break;
                 }
@@ -203,46 +183,48 @@ public class ZjsEntryReportDao {
      * 统计电商毛客资数量并归类到渠道
      *
      * @param vo
-     * @param srcList
+     * @param staffList
      * @return
+     * @
      */
-    public void getKzNumList(AnalyzeVO vo, List<ZjsSourceVO> srcList)  {
+    public void getKzNumList(AnalyzeVO vo, List<ZjsSourceVO> staffList)  {
 
         StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT info.SOURCEID , COUNT( 1 ) KZNUM FROM ");
+        sb.append(" SELECT info.COLLECTORID , COUNT( 1 ) KZNUM FROM ");
         sb.append(DBSplitUtil.getInfoTabName(vo.getCompanyId()));
         sb.append(" info WHERE info.ISDEL = 0  AND info.SRCTYPE IN ( 3, 4, 5 ) ");
         sb.append(" AND info.CREATETIME >= ? AND info.CREATETIME <= ?  AND info.COMPANYID = ? ");
         sb.append(" AND info.STATUSID != ?  AND info.STATUSID != ?  AND info.STATUSID != ? ");
         LinkedList<Object> fieldList = new LinkedList<>();
+
         fieldList.add(vo.getStart());
         fieldList.add(vo.getEnd());
         fieldList.add(vo.getCompanyId());
         fieldList.add(ClientStatusConst.BE_FILTER_INVALID);
         fieldList.add(ClientStatusConst.BE_WAIT_FILTER);
         fieldList.add(ClientStatusConst.BE_WAIT_WAITING);
-        if (StringUtils.isNotEmpty(vo.getSourceIds())) {
-            sb.append(" AND INSTR( ? ,CONCAT(',',info.SOURCEID+'',',')) ");
-            fieldList.add(CommonConstant.STR_SEPARATOR + vo.getSourceIds() + CommonConstant.STR_SEPARATOR);
+        if (NumUtil.isValid(vo.getSourceId())) {
+            sb.append(" AND info.SOURCEID = ?  ");
+            fieldList.add(vo.getSourceId());
         }
-        sb.append(" GROUP BY info.SOURCEID ");
+        sb.append(" GROUP BY info.COLLECTORID ");
 
         Object[] objects = fieldList.toArray();
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), objects);
-
 
         List<ZjsNumVO> rstList = new LinkedList<>();
         ZjsNumVO zjsNumVO = null;
         for(Map<String,Object> map : list){
             zjsNumVO = new ZjsNumVO();
-            zjsNumVO.setSourceId(((Long) map.get("SOURCEID")).intValue());
-            zjsNumVO.setKzNum(((Long) map.get("KZNUM")).intValue());
+            zjsNumVO.setStaffId(((Long)map.get("COLLECTORID")).intValue());
+            zjsNumVO.setKzNum(((Long)map.get("KZNUM")).intValue());
             rstList.add(zjsNumVO);
         }
+
         // 毛客资归类到渠道
-        for (ZjsSourceVO sourceVO : srcList) {
+        for (ZjsSourceVO sourceVO : staffList) {
             for (ZjsNumVO kzNum : rstList) {
-                if (sourceVO.getSourceId() == kzNum.getSourceId()) {
+                if (sourceVO.getStaffId() == kzNum.getStaffId()) {
                     sourceVO.getZjsNumVO().setKzNum(kzNum.getKzNum());
                     sourceVO.getZjsNumVO().setWxNum(kzNum.getKzNum());
                     break;
@@ -255,10 +237,11 @@ public class ZjsEntryReportDao {
      * 统计转介绍有效客资
      *
      * @param vo
-     * @param srcList
+     * @param staffList
+     * @return
+     * @
      */
-    public void getYxNumList(AnalyzeVO vo, List<ZjsSourceVO> srcList, JSONObject config)
-             {
+    public void getYxNumList(AnalyzeVO vo, List<ZjsSourceVO> staffList, JSONObject config) {
         JSONArray xkzArr = config.getJSONObject(ReportsConfigConst.ZJS_VALID_SET).getJSONArray(ReportsConfigConst.XKZ_CLASS);
         JSONArray yyyArr = config.getJSONObject(ReportsConfigConst.ZJS_VALID_SET).getJSONArray(ReportsConfigConst.YYY_CLASS);
         JSONArray dzzArr = config.getJSONObject(ReportsConfigConst.ZJS_VALID_SET).getJSONArray(ReportsConfigConst.DZZ_CLASS);
@@ -276,37 +259,35 @@ public class ZjsEntryReportDao {
             return;
         }
         StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT info.SOURCEID , COUNT( 1 ) YXNUM FROM ");
+        sb.append(" SELECT info.COLLECTORID , COUNT( 1 ) YXNUM FROM ");
         sb.append(DBSplitUtil.getInfoTabName(vo.getCompanyId()));
         sb.append(" info WHERE info.ISDEL = 0  AND info.SRCTYPE IN ( 3, 4, 5 ) ");
         sb.append(" AND info.CREATETIME >= ? AND info.CREATETIME <= ?  AND info.COMPANYID = ? ");
         LinkedList<Object> fieldList = new LinkedList<>();
-
         fieldList.add(vo.getStart());
         fieldList.add(vo.getEnd());
         fieldList.add(vo.getCompanyId());
         getWhereCondition(sb, "info.STATUSID", param);
-        if (StringUtils.isNotEmpty(vo.getSourceIds())) {
-            sb.append(" AND INSTR( ? ,CONCAT(',',info.SOURCEID+'',',')) ");
-            fieldList.add(CommonConstant.STR_SEPARATOR + vo.getSourceIds() + CommonConstant.STR_SEPARATOR);
+        if (NumUtil.isValid(vo.getSourceId())) {
+            sb.append(" AND info.SOURCEID = ?  ");
+            fieldList.add(vo.getSourceId());
         }
-        sb.append(" GROUP BY info.SOURCEID ");
-
+        sb.append(" GROUP BY info.COLLECTORID ");
         Object[] objects = fieldList.toArray();
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), objects);
         List<ZjsNumVO> rstList = new LinkedList<>();
         ZjsNumVO zjsNumVO = null;
-        for(Map<String,Object> map : list){
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), objects);
+        for (Map<String, Object> map : list) {
             zjsNumVO = new ZjsNumVO();
-            zjsNumVO.setSourceId(((Long)map.get("SOURCEID")).intValue());
-            zjsNumVO.setYxNum(((Long)map.get("YXNUM")).intValue());
+            zjsNumVO.setStaffId(((Long) map.get("COLLECTORID")).intValue());
+            zjsNumVO.setYxNum(((Long) map.get("YXNUM")).intValue());
             rstList.add(zjsNumVO);
-
         }
+
         // 毛客资归类到渠道
-        for (ZjsSourceVO sourceVO : srcList) {
+        for (ZjsSourceVO sourceVO : staffList) {
             for (ZjsNumVO yxNum : rstList) {
-                if (sourceVO.getSourceId() == yxNum.getSourceId()) {
+                if (sourceVO.getStaffId() == yxNum.getStaffId()) {
                     sourceVO.getZjsNumVO().setYxNum(yxNum.getYxNum());
                     sourceVO.getZjsNumVO().setWxNum(sourceVO.getZjsNumVO().getWxNum() - yxNum.getYxNum());
                     break;
@@ -315,15 +296,11 @@ public class ZjsEntryReportDao {
         }
     }
 
-
     /**
      * 获取待定量，有效 = 客资量- 无效量 - 待定量
      *
-     * @param vo
-     * @param srcList
-     * @return
      */
-    public void getDdNumList(AnalyzeVO vo, List<ZjsSourceVO> srcList, JSONObject config)  {
+    public void getDdNumList(AnalyzeVO vo, List<ZjsSourceVO> staffList, JSONObject config)  {
         JSONArray xkzArr = config.getJSONObject(ReportsConfigConst.ZJS_DD_SET).getJSONArray(ReportsConfigConst.XKZ_CLASS);
         JSONArray yyyArr = config.getJSONObject(ReportsConfigConst.ZJS_DD_SET).getJSONArray(ReportsConfigConst.YYY_CLASS);
         JSONArray dzzArr = config.getJSONObject(ReportsConfigConst.ZJS_DD_SET).getJSONArray(ReportsConfigConst.DZZ_CLASS);
@@ -341,35 +318,35 @@ public class ZjsEntryReportDao {
             return;
         }
         StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT info.SOURCEID , COUNT( 1 ) DDNUM FROM ");
+        sb.append(" SELECT info.COLLECTORID , COUNT( 1 ) DDNUM FROM ");
         sb.append(DBSplitUtil.getInfoTabName(vo.getCompanyId()));
         sb.append(" info WHERE info.ISDEL = 0  AND info.SRCTYPE IN ( 3, 4, 5 )  ");
         sb.append(" AND info.CREATETIME >= ? AND info.CREATETIME <= ?  AND info.COMPANYID = ? ");
         LinkedList<Object> fieldList = new LinkedList<>();
+
         fieldList.add(vo.getStart());
         fieldList.add(vo.getEnd());
         fieldList.add(vo.getCompanyId());
         getWhereCondition(sb, "info.STATUSID", param);
-        if (StringUtils.isNotEmpty(vo.getSourceIds())) {
-            sb.append(" AND INSTR( ? ,CONCAT(',',info.SOURCEID+'',',')) ");
-            fieldList.add(CommonConstant.STR_SEPARATOR + vo.getSourceIds() + CommonConstant.STR_SEPARATOR);
+        if (NumUtil.isValid(vo.getSourceId())) {
+            sb.append(" AND info.SOURCEID = ?  ");
+            fieldList.add(vo.getSourceId());
         }
-        sb.append(" GROUP BY info.SOURCEID ");
-
+        sb.append(" GROUP BY info.COLLECTORID ");
         Object[] objects = fieldList.toArray();
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), objects);
         List<ZjsNumVO> rstList = new LinkedList<>();
         ZjsNumVO zjsNumVO = null;
-        for(Map<String,Object> map : list){
+        for(Map<String, Object> map : list){
             zjsNumVO = new ZjsNumVO();
-            zjsNumVO.setSourceId(((Long)map.get("SOURCEID")).intValue());
+            zjsNumVO.setStaffId(((Long) map.get("COLLECTORID")).intValue());
             zjsNumVO.setDdNum(((Long)map.get("DDNUM")).intValue());
             rstList.add(zjsNumVO);
         }
         // 毛客资归类到渠道
-        for (ZjsSourceVO sourceVO : srcList) {
+        for (ZjsSourceVO sourceVO : staffList) {
             for (ZjsNumVO ddNum : rstList) {
-                if (sourceVO.getSourceId() == ddNum.getSourceId()) {
+                if (sourceVO.getStaffId() == ddNum.getStaffId()) {
                     sourceVO.getZjsNumVO().setDdNum(ddNum.getDdNum());
                     sourceVO.getZjsNumVO().setWxNum(sourceVO.getZjsNumVO().getWxNum() - ddNum.getDdNum());
                     if (config.getJSONObject(ReportsConfigConst.YX_SET).getBoolean(ReportsConfigConst.DD_IS_YX)) {
@@ -386,43 +363,44 @@ public class ZjsEntryReportDao {
      * 统计电商入店客资数量并归类到渠道
      *
      * @param vo
-     * @param srcList
+     * @param staffList
      * @return
+     * @
      */
-    public void getRdNumList(AnalyzeVO vo, List<ZjsSourceVO> srcList)  {
+    public void getRdNumList(AnalyzeVO vo, List<ZjsSourceVO> staffList)  {
 
         StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT info.SOURCEID , COUNT( 1 ) RDNUM FROM ");
+        sb.append(" SELECT info.COLLECTORID , COUNT( 1 ) RDNUM FROM ");
         sb.append(DBSplitUtil.getInfoTabName(vo.getCompanyId()));
         sb.append(" info WHERE info.ISDEL = 0  AND info.SRCTYPE IN ( 3, 4, 5 ) ");
         sb.append(" AND info.COMESHOPTIME >= ? AND info.COMESHOPTIME <= ?  AND info.COMPANYID = ? ");
 //        sb.append(" AND INSTR( ?, CONCAT(',',info.STATUSID + '',',')) != 0");
-        LinkedList<Object> fieldList  = new LinkedList<>();
+        LinkedList fieldList = new LinkedList();
         fieldList.add(vo.getStart());
         fieldList.add(vo.getEnd());
         fieldList.add(vo.getCompanyId());
 //        fieldList.add(ClientStatusConst.IS_COME_SHOP);
 
-        if (StringUtils.isNotEmpty(vo.getSourceIds())) {
-            sb.append(" AND INSTR( ? ,CONCAT(',',info.SOURCEID+'',',')) ");
-            fieldList.add(CommonConstant.STR_SEPARATOR + vo.getSourceIds() + CommonConstant.STR_SEPARATOR);
+        if (NumUtil.isValid(vo.getSourceId())) {
+            sb.append(" AND info.SOURCEID = ?  ");
+            fieldList.add(vo.getSourceId());
         }
-        sb.append(" GROUP BY info.SOURCEID ");
+
+        sb.append(" GROUP BY info.COLLECTORID ");
         Object[] objects = fieldList.toArray();
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), objects);
         List<ZjsNumVO> rstList = new LinkedList<>();
         ZjsNumVO zjsNumVO = null;
-        for (Map<String,Object> map : list ){
+        for(Map<String,Object> map : list){
             zjsNumVO = new ZjsNumVO();
-            zjsNumVO.setSourceId(((Long)map.get("SOURCEID")).intValue());
+            zjsNumVO.setStaffId(((Long)map.get("COLLECTORID")).intValue());
             zjsNumVO.setRdNum(((Long)map.get("RDNUM")).intValue());
             rstList.add(zjsNumVO);
-
         }
         // 毛客资归类到渠道
-        for (ZjsSourceVO sourceVO : srcList) {
+        for (ZjsSourceVO sourceVO : staffList) {
             for (ZjsNumVO rdNum : rstList) {
-                if (sourceVO.getSourceId() == rdNum.getSourceId()) {
+                if (sourceVO.getStaffId() == rdNum.getStaffId()) {
                     sourceVO.getZjsNumVO().setRdNum(rdNum.getRdNum());
                     break;
                 }
@@ -435,14 +413,14 @@ public class ZjsEntryReportDao {
      * 统计电商成交客资数量并归类到渠道
      *
      * @param vo
-     * @param srcList
+     * @param staffList
      * @return
      * @
      */
-    public void getCjNumList(AnalyzeVO vo, List<ZjsSourceVO> srcList)  {
+    public void getCjNumList(AnalyzeVO vo, List<ZjsSourceVO> staffList)  {
 
         StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT info.SOURCEID , COUNT( 1 ) CJNUM, SUM(det.AMOUNT) YY, SUM(det.STAYAMOUNT) YS, AVG(det.AMOUNT) JJ FROM ");
+        sb.append(" SELECT info.COLLECTORID , COUNT( 1 ) CJNUM, SUM(det.AMOUNT) YY, SUM(det.STAYAMOUNT) YS, AVG(det.AMOUNT) JJ FROM ");
         sb.append(DBSplitUtil.getInfoTabName(vo.getCompanyId()));
         sb.append(" info INNER JOIN ");
         sb.append(DBSplitUtil.getDetailTabName(vo.getCompanyId()));
@@ -455,27 +433,29 @@ public class ZjsEntryReportDao {
         fieldList.add(vo.getEnd());
         fieldList.add(vo.getCompanyId());
         fieldList.add(ClientStatusConst.IS_SUCCESS);
-        if (StringUtils.isNotEmpty(vo.getSourceIds())) {
-            sb.append(" AND INSTR( ? ,CONCAT(',',info.SOURCEID+'',',')) ");
-            fieldList.add(CommonConstant.STR_SEPARATOR + vo.getSourceIds() + CommonConstant.STR_SEPARATOR);
+        if (NumUtil.isValid(vo.getSourceId())) {
+            sb.append(" AND info.SOURCEID = ?  ");
+            fieldList.add(vo.getSourceId());
         }
-        sb.append(" GROUP BY info.SOURCEID ");
+        sb.append(" GROUP BY info.COLLECTORID ");
+
         Object[] objects = fieldList.toArray();
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), objects);
         List<ZjsNumVO> rstList = new LinkedList<>();
         ZjsNumVO zjsNumVO = null;
         for(Map<String,Object> map : list ){
             zjsNumVO = new ZjsNumVO();
-            zjsNumVO.setSourceId(((Long)map.get("SOURCEID")).intValue());
+            zjsNumVO.setStaffId(((Long)map.get("COLLECTORID")).intValue());
             zjsNumVO.setCjNum(((Long)map.get("CJNUM")).intValue());
             zjsNumVO.setYyAmount(((BigDecimal)map.get("YY")).doubleValue());
             zjsNumVO.setJjAmount(((BigDecimal)map.get("JJ")).doubleValue());
             rstList.add(zjsNumVO);
         }
+
         // 毛客资归类到渠道
-        for (ZjsSourceVO sourceVO : srcList) {
+        for (ZjsSourceVO sourceVO : staffList) {
             for (ZjsNumVO cjNum : rstList) {
-                if (sourceVO.getSourceId() == cjNum.getSourceId()) {
+                if (sourceVO.getStaffId() == cjNum.getStaffId()) {
                     sourceVO.getZjsNumVO().setCjNum(cjNum.getCjNum());
                     sourceVO.getZjsNumVO().setYyAmount(cjNum.getYyAmount());
                     sourceVO.getZjsNumVO().setJjAmount(cjNum.getJjAmount());
@@ -484,114 +464,15 @@ public class ZjsEntryReportDao {
             }
         }
     }
-    /**
-     * 统计电商成交客资数量并归类到渠道
-     *
-     * @param vo
-     * @param srcList
-     * @return
-     * @
-     */
-    public void getRdCjNumList(AnalyzeVO vo, List<ZjsSourceVO> srcList)  {
 
-        StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT info.SOURCEID , COUNT( 1 ) CJNUM, SUM(det.AMOUNT) YY, SUM(det.STAYAMOUNT) YS, AVG(det.AMOUNT) JJ FROM ");
-        sb.append(DBSplitUtil.getInfoTabName(vo.getCompanyId()));
-        sb.append(" info INNER JOIN ");
-        sb.append(DBSplitUtil.getDetailTabName(vo.getCompanyId()));
-        sb.append(" det ON det.KZID = info.KZID AND det.COMPANYID = info.COMPANYID ");
-        sb.append(" WHERE info.ISDEL = 0  AND info.SRCTYPE IN ( 3, 4, 5 ) ");
-        sb.append(" AND info.SUCCESSTIME >= ? AND info.SUCCESSTIME <= ?  AND info.COMPANYID = ? ");
-        sb.append(" AND INSTR( ?, CONCAT(',',info.STATUSID + '',',')) != 0");
-        sb.append(" and info.statusid in (9,30)");
-        LinkedList fieldList = new LinkedList();
-        fieldList.add(vo.getStart());
-        fieldList.add(vo.getEnd());
-        fieldList.add(vo.getCompanyId());
-        fieldList.add(ClientStatusConst.IS_SUCCESS);
-        if (StringUtils.isNotEmpty(vo.getSourceIds())) {
-            sb.append(" AND INSTR( ? ,CONCAT(',',info.SOURCEID+'',',')) ");
-            fieldList.add(CommonConstant.STR_SEPARATOR + vo.getSourceIds() + CommonConstant.STR_SEPARATOR);
-        }
-        sb.append(" GROUP BY info.SOURCEID ");
-        Object[] objects = fieldList.toArray();
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(),objects);
-        List<ZjsNumVO> rstList = new LinkedList<>();
-        ZjsNumVO zjsNumVO = null;
-        for(Map<String,Object> map : list){
-            zjsNumVO = new ZjsNumVO();
-            zjsNumVO.setSourceId(((Long)map.get("SOURCEID")).intValue());
-            zjsNumVO.setRdCjNum(((Long)map.get("CJNUM")).intValue());
-            rstList.add(zjsNumVO);
-        }
-        // 毛客资归类到渠道
-        for (ZjsSourceVO sourceVO : srcList) {
-            for (ZjsNumVO cjNum : rstList) {
-                if (sourceVO.getSourceId() == cjNum.getSourceId()) {
-                    sourceVO.getZjsNumVO().setRdCjNum(cjNum.getRdCjNum());
-                    break;
-                }
-            }
-        }
-    }
-    /**
-     * 统计电商成交客资数量并归类到渠道
-     *
-     * @param vo
-     * @param srcList
-     * @return
-     * @
-     */
-    public void getzxCjNumList(AnalyzeVO vo, List<ZjsSourceVO> srcList)  {
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT info.SOURCEID , COUNT( 1 ) CJNUM, SUM(det.AMOUNT) YY, SUM(det.STAYAMOUNT) YS, AVG(det.AMOUNT) JJ FROM ");
-        sb.append(DBSplitUtil.getInfoTabName(vo.getCompanyId()));
-        sb.append(" info INNER JOIN ");
-        sb.append(DBSplitUtil.getDetailTabName(vo.getCompanyId()));
-        sb.append(" det ON det.KZID = info.KZID AND det.COMPANYID = info.COMPANYID ");
-        sb.append(" WHERE info.ISDEL = 0  AND info.SRCTYPE IN ( 3, 4, 5 ) ");
-        sb.append(" AND info.SUCCESSTIME >= ? AND info.SUCCESSTIME <= ?  AND info.COMPANYID = ? ");
-        sb.append(" AND INSTR( ?, CONCAT(',',info.STATUSID + '',',')) != 0");
-        sb.append(" and info.statusid in (40)");
-        LinkedList<Object> fieldList = new LinkedList<>();
-        fieldList.add(vo.getStart());
-        fieldList.add(vo.getEnd());
-        fieldList.add(vo.getCompanyId());
-        fieldList.add(ClientStatusConst.IS_SUCCESS);
-        if (StringUtils.isNotEmpty(vo.getSourceIds())) {
-            sb.append(" AND INSTR( ? ,CONCAT(',',info.SOURCEID+'',',')) ");
-            fieldList.add(CommonConstant.STR_SEPARATOR + vo.getSourceIds() + CommonConstant.STR_SEPARATOR);
-        }
-        sb.append(" GROUP BY info.SOURCEID ");
-        Object[] objects = fieldList.toArray();
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), objects);
-        List<ZjsNumVO> rstList = new LinkedList<>();
-        ZjsNumVO zjsNumVO = null;
-        for(Map<String,Object> map : list ){
-            zjsNumVO = new ZjsNumVO();
-            zjsNumVO.setSourceId(((Long)map.get("SOURCEID")).intValue());
-            zjsNumVO.setZxCjNum(((Long)map.get("CJNUM")).intValue());
-            rstList.add(zjsNumVO);
-        }
-        // 毛客资归类到渠道
-        for (ZjsSourceVO sourceVO : srcList) {
-            for (ZjsNumVO cjNum : rstList) {
-                if (sourceVO.getSourceId() == cjNum.getSourceId()) {
-                    sourceVO.getZjsNumVO().setZxCjNum(cjNum.getZxCjNum());
-                    break;
-                }
-            }
-        }
-    }
     /**
      * 统计已加微信
      *
      */
-    public void getAddWechatNum(AnalyzeVO vo, List<ZjsSourceVO> srcList)  {
+    public void getAddWechatNum(AnalyzeVO vo, List<ZjsSourceVO> staffList)  {
 
         StringBuilder sb = new StringBuilder();
-        sb.append(" SELECT info.SOURCEID , COUNT( 1 ) NUM FROM ");
+        sb.append(" SELECT info.COLLECTORID , COUNT( 1 ) NUM FROM ");
         sb.append(DBSplitUtil.getInfoTabName(vo.getCompanyId()));
         sb.append(" info WHERE info.ISDEL = 0  AND info.SRCTYPE IN ( 3, 4, 5 ) ");
         sb.append(" AND info.CREATETIME >= ? AND info.CREATETIME <= ?  AND info.COMPANYID = ? ");
@@ -600,26 +481,26 @@ public class ZjsEntryReportDao {
         fieldList.add(vo.getStart());
         fieldList.add(vo.getEnd());
         fieldList.add(vo.getCompanyId());
-        if (StringUtils.isNotEmpty(vo.getSourceIds())) {
-            sb.append(" AND INSTR( ? ,CONCAT(',',info.SOURCEID+'',',')) ");
-            fieldList.add(CommonConstant.STR_SEPARATOR + vo.getSourceIds() + CommonConstant.STR_SEPARATOR);
+        if (NumUtil.isValid(vo.getSourceId())) {
+            sb.append(" AND info.SOURCEID = ?  ");
+            fieldList.add(vo.getSourceId());
         }
-        sb.append(" GROUP BY info.SOURCEID ");
-
+        sb.append(" GROUP BY info.COLLECTORID ");
         Object[] objects = fieldList.toArray();
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sb.toString(), objects);
         List<ZjsNumVO> rstList = new LinkedList<>();
         ZjsNumVO zjsNumVO = null;
         for(Map<String,Object> map : list){
             zjsNumVO = new ZjsNumVO();
-            zjsNumVO.setSourceId(((Long)map.get("SOURCEID")).intValue());
+            zjsNumVO.setStaffId(((Long)map.get("COLLECTORID")).intValue());
             zjsNumVO.setAddWechatNum(((Long)map.get("NUM")).intValue());
             rstList.add(zjsNumVO);
         }
+
         // 毛客资归类到渠道
-        for (ZjsSourceVO sourceVO : srcList) {
+        for (ZjsSourceVO sourceVO : staffList) {
             for (ZjsNumVO num : rstList) {
-                if (sourceVO.getSourceId() == num.getSourceId()) {
+                if (sourceVO.getStaffId() == num.getStaffId()) {
                     sourceVO.getZjsNumVO().setAddWechatNum(num.getAddWechatNum());
                     break;
                 }
@@ -632,9 +513,10 @@ public class ZjsEntryReportDao {
      * 计算渠道合计
      *
      * @param vo
-     * @param srcList
+     * @param staffList
+     * @return
      */
-    private List<ZjsSourceVO> getSrcTotal(AnalyzeVO vo, List<ZjsSourceVO> srcList) {
+    private List<ZjsSourceVO> getSrcTotal(AnalyzeVO vo, List<ZjsSourceVO> staffList) {
         ZjsSourceVO channelTotal = new ZjsSourceVO("total", vo.getCompanyId());
         ZjsNumVO numTotal = new ZjsNumVO("total");
         int numAll = 0;
@@ -642,13 +524,11 @@ public class ZjsEntryReportDao {
         int yxNum = 0;
         int rdNum = 0;
         int cjNum = 0;
-        double yyAmount = 0.0;
         int wxNum = 0;
         int ddNum = 0;
-        int rdCjNum=0;
-        int zxCjNum=0;
         int addWechatNum = 0;
-        for (ZjsSourceVO sourceVO : srcList) {
+        double yyAmount = 0.0;
+        for (ZjsSourceVO sourceVO : staffList) {
             numAll += sourceVO.getZjsNumVO().getNumAll();
             kzNum += sourceVO.getZjsNumVO().getKzNum();
             yxNum += sourceVO.getZjsNumVO().getYxNum();
@@ -656,8 +536,6 @@ public class ZjsEntryReportDao {
             cjNum += sourceVO.getZjsNumVO().getCjNum();
             wxNum += sourceVO.getZjsNumVO().getWxNum();
             ddNum += sourceVO.getZjsNumVO().getDdNum();
-            rdCjNum+=sourceVO.getZjsNumVO().getRdCjNum();
-            zxCjNum+=sourceVO.getZjsNumVO().getZxCjNum();
             addWechatNum += sourceVO.getZjsNumVO().getAddWechatNum();
             yyAmount += Double.valueOf(sourceVO.getZjsNumVO().getYyAmount());
         }
@@ -670,17 +548,15 @@ public class ZjsEntryReportDao {
         numTotal.setWxNum(wxNum);
         numTotal.setDdNum(ddNum);
         numTotal.setAddWechatNum(addWechatNum);
-        numTotal.setZxCjNum(zxCjNum);
-        numTotal.setRdCjNum(rdCjNum);
         channelTotal.setZjsNumVO(numTotal);
-        srcList.add(0, channelTotal);
-        return srcList;
+        staffList.add(0, channelTotal);
+        return staffList;
     }
 
     // 计算率和成本
-    private void getRateAndCost(List<ZjsSourceVO> srcList) {
+    private void getRateAndCost(List<ZjsSourceVO> staffList) {
 
-        for (ZjsSourceVO sourceVO : srcList) {
+        for (ZjsSourceVO sourceVO : staffList) {
             // 有效率
             if (sourceVO.getZjsNumVO().getKzNum() != 0) {
                 sourceVO.getZjsNumVO().setYxRate(StringUtil.decimalFormat(sourceVO.getZjsNumVO().getYxNum() / Double.valueOf(sourceVO.getZjsNumVO().getKzNum()) * 100));
@@ -726,10 +602,10 @@ public class ZjsEntryReportDao {
             }
         }
     }
-
     /**
      * 数组转换成where条件
      *
+     * @param sb
      */
     public void getWhereCondition(StringBuilder sb, String colum, JSONArray paramArr) {
         sb.append(" AND ( ");
@@ -747,4 +623,5 @@ public class ZjsEntryReportDao {
         }
         sb.append(" ) ");
     }
+
 }
