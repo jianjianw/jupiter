@@ -208,7 +208,7 @@ public class ReportsController extends BaseController {
     @RequestMapping("/get_dstg_channel_reports")
     public ResultInfo getDstgChannelReports(@RequestParam("start") int start, @RequestParam("end") int end, String channelIds, String typeLimit) {
         StaffPO currentLoginStaff = getCurrentLoginStaff();
-        Map<String, Object> reqContent = new HashMap<>();
+      /*  Map<String, Object> reqContent = new HashMap<>();
         reqContent.put("start", start);
         reqContent.put("end", end);
         reqContent.put("channelids", channelIds);
@@ -216,7 +216,19 @@ public class ReportsController extends BaseController {
         reqContent.put("typelimit", typeLimit);
         //请求juplat接口
         String json = crmBaseApi.doService(reqContent, "dstgchannelreports");
-        return ResultInfoUtil.success(JsonFmtUtil.strContentToJsonObj(json).get("analysis"));
+        return ResultInfoUtil.success(JsonFmtUtil.strContentToJsonObj(json).get("analysis"));*/
+
+        AnalyzeVO vo  = new AnalyzeVO();
+        vo.setCompanyId(currentLoginStaff.getCompanyId());
+        vo.setStart(start);
+        vo.setEnd(end);
+        vo.setChannelIds(channelIds);
+        if(typeLimit != null){
+            vo.setTypeLimt(Integer.valueOf(typeLimit));
+        }
+
+        List<ChannelVO> result = reportService.getDstgChannelReport(vo);
+        return ResultInfoUtil.success(result);
     }
 
 

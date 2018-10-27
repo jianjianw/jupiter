@@ -30,6 +30,20 @@ public class ChannelVO implements Serializable {
     private NumVO numVO;//每行数据
 
 
+    public ChannelVO() {
+    }
+
+    public ChannelVO(String type, int companyId) {
+        if ("total".equalsIgnoreCase(type)) {
+            this.channelId = -1;
+            this.channelName = "合计";
+            this.channelImg = "";
+            this.companyId = companyId;
+            this.numVO = new NumVO(type);
+        }
+    }
+
+
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }

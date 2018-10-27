@@ -39,6 +39,8 @@ public class NumVO implements Serializable {
     private double haveAmount;// 已收金额
     private String roi;// ROI
     private int msNum;//本月录入，本月成交的客资量
+    private int rdCjNum;//到店成交量
+    private int zxCjNum;//在线成交量
 
     public NumVO() {
         this.yxRate = "0.00";
@@ -323,5 +325,21 @@ public class NumVO implements Serializable {
 
     public void setMsNum(int msNum) {
         this.msNum = msNum;
+    }
+
+    public int getRdCjNum() {
+        return rdCjNum;
+    }
+
+    public void setRdCjNum(int rdCjNum) {
+        this.rdCjNum = rdCjNum;
+    }
+
+    public int getZxCjNum() {
+        return zxCjNum;
+    }
+
+    public void setZxCjNum(int zxCjNum) {
+        this.zxCjNum = zxCjNum;
     }
 }

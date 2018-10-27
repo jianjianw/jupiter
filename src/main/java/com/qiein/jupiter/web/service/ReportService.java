@@ -430,4 +430,9 @@ public interface ReportService {
      * 转介绍来源统计--详情
      */
     List<ZjsSourceVO> getZjsEntryDetail(AnalyzeVO vo);
+
+    /**
+     * 电商推广渠道统计
+     */
+    List<ChannelVO> getDstgChannelReport(AnalyzeVO vo);
 }
