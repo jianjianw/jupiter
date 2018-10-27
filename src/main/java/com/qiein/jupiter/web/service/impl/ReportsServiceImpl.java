@@ -123,6 +123,8 @@ public class ReportsServiceImpl implements ReportService {
     private ZjsEntryStaffReportDao zjsEntryStaffReportDao;
     @Autowired
     private ZjsEntryReportDao zjsEntryReportDao;
+    @Autowired
+    private ZjsEntryReportsDetailDao zjsEntryReportsDetailDao;
 
 
 
@@ -1704,6 +1706,11 @@ public class ReportsServiceImpl implements ReportService {
     @Override
     public HashMap<String, Object> getZjsEntry(AnalyzeVO vo) {
         return zjsEntryReportDao.getZjsEntry(vo);
+    }
+
+    @Override
+    public List<ZjsSourceVO> getZjsEntryDetail(AnalyzeVO vo) {
+        return zjsEntryReportsDetailDao.getZjsEntryDetail(vo);
     }
 
 }

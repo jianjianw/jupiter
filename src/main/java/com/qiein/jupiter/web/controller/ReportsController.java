@@ -250,8 +250,14 @@ public class ReportsController extends BaseController {
         reqContent.put("companyid", currentLoginStaff.getCompanyId());
         reqContent.put("sourceid", sourceId);
         //请求juplat接口
-        String json = crmBaseApi.doService(reqContent, "zjsentryreportsDetail");
-        return ResultInfoUtil.success(JsonFmtUtil.strContentToJsonObj(json).get("analysis"));
+        //String json = crmBaseApi.doService(reqContent, "zjsentryreportsDetail");
+        AnalyzeVO vo = new AnalyzeVO();
+        vo.setStart(start);
+        vo.setEnd(end);
+        vo.setCompanyId(currentLoginStaff.getCompanyId());
+        vo.setSourceId(sourceId);
+        List<ZjsSourceVO> result = reportService.getZjsEntryDetail(vo);
+        return ResultInfoUtil.success(result);
     }
 
 

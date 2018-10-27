@@ -425,4 +425,9 @@ public interface ReportService {
     *  转介绍提报统计
     * */
     HashMap<String, Object> getZjsEntry(AnalyzeVO vo);
+
+    /**
+     * 转介绍来源统计--详情
+     */
+    List<ZjsSourceVO> getZjsEntryDetail(AnalyzeVO vo);
 }
