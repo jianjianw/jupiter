@@ -117,7 +117,7 @@ public class DstgSourceReportsDao {
 
     public static void getCollectorLimitSql(StringBuilder sb, ReportsConditionVO reportsConditionVO) {
         List<Integer> staffList = reportsConditionVO.getStaffList();
-        if (staffList.size()==0 ) {
+        if (CollectionUtils.isEmpty(staffList)) {
             return;
         }
         if(Integer.parseInt(reportsConditionVO.getTypeLimit()) ==1){
