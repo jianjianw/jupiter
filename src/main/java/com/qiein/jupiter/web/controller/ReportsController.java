@@ -246,7 +246,7 @@ public class ReportsController extends BaseController {
      */
     @GetMapping("/get_zjs_source_reports")
     public ResultInfo getZjsSourceReports(@RequestParam("start") int start, @RequestParam("end") int end, String sourceIds) {
-        StaffPO currentLoginStaff = getCurrentLoginStaff();
+       /* StaffPO currentLoginStaff = getCurrentLoginStaff();
         Map<String, Object> reqContent = new HashMap<>();
         AnalyzeVO vo = new AnalyzeVO();
         vo.setCompanyId(currentLoginStaff.getCompanyId());
@@ -256,7 +256,17 @@ public class ReportsController extends BaseController {
         //请求juplat接口
         HashMap<String, Object> zjsEntry = reportService.getZjsEntry(vo);
         //String json = crmBaseApi.doService(reqContent, "zjsentryreports");
-        return ResultInfoUtil.success(zjsEntry.get("analysis"));
+        return ResultInfoUtil.success(zjsEntry.get("analysis"));*/
+
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        Map<String, Object> reqContent = new HashMap<>();
+        reqContent.put("start", start);
+        reqContent.put("end", end);
+        reqContent.put("companyid", currentLoginStaff.getCompanyId());
+        reqContent.put("sourceids", sourceIds);
+        //请求juplat接口
+        String json = crmBaseApi.doService(reqContent, "zjsentryreports");
+        return ResultInfoUtil.success(JsonFmtUtil.strContentToJsonObj(json).get("analysis"));
     }
 
     /**
@@ -264,7 +274,7 @@ public class ReportsController extends BaseController {
      */
     @GetMapping("/get_zjs_source_reports_detail")
     public ResultInfo getZjsSourceReportsDetail(@RequestParam("start") int start, @RequestParam("end") int end, int sourceId) {
-        StaffPO currentLoginStaff = getCurrentLoginStaff();
+      /*  StaffPO currentLoginStaff = getCurrentLoginStaff();
         Map<String, Object> reqContent = new HashMap<>();
         reqContent.put("start", start);
         reqContent.put("end", end);
@@ -278,7 +288,17 @@ public class ReportsController extends BaseController {
         vo.setCompanyId(currentLoginStaff.getCompanyId());
         vo.setSourceId(sourceId);
         List<ZjsSourceVO> result = reportService.getZjsEntryDetail(vo);
-        return ResultInfoUtil.success(result);
+        return ResultInfoUtil.success(result);*/
+
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        Map<String, Object> reqContent = new HashMap<>();
+        reqContent.put("start", start);
+        reqContent.put("end", end);
+        reqContent.put("companyid", currentLoginStaff.getCompanyId());
+        reqContent.put("sourceid", sourceId);
+        //请求juplat接口
+        String json = crmBaseApi.doService(reqContent, "zjsentryreportsDetail");
+        return ResultInfoUtil.success(JsonFmtUtil.strContentToJsonObj(json).get("analysis"));
     }
 
 
