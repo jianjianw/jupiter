@@ -122,7 +122,7 @@ public class ReportsServiceImpl implements ReportService {
     @Autowired
     private DsyyGroupSourceReportsDao dsyyGroupSourceReportsDao;
     @Autowired
-    private ZjsEntryStaffReportDao zjsEntryStaffReportDao;
+    private ZjsEntryStaffReportDao zjsEntryStaffReportDao
     @Autowired
     private ZjsEntryReportDao zjsEntryReportDao;
     @Autowired
