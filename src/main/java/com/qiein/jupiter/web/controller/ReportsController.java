@@ -359,14 +359,14 @@ public class ReportsController extends BaseController {
      */
     @GetMapping("/get_zjs_staff_entry_reports")
     public ResultInfo getZjsStaffEntryReports(@RequestParam("start") int start, @RequestParam("end") int end, String staffIds) {
-        StaffPO currentLoginStaff = getCurrentLoginStaff();
-       /* Map<String, Object> reqContent = new HashMap<>();
+       /* StaffPO currentLoginStaff = getCurrentLoginStaff();
+       *//* Map<String, Object> reqContent = new HashMap<>();
         reqContent.put("start", start);
         reqContent.put("end", end);
         reqContent.put("companyid", currentLoginStaff.getCompanyId());
         reqContent.put("staffids", staffIds);
         //请求juplat接口
-        String json = crmBaseApi.doService(reqContent, "zjsEntryStaffReports");*/
+        String json = crmBaseApi.doService(reqContent, "zjsEntryStaffReports");*//*
         //调用service
         AnalyzeVO vo = new AnalyzeVO();
         vo.setCompanyId(currentLoginStaff.getCompanyId());
@@ -374,9 +374,24 @@ public class ReportsController extends BaseController {
         vo.setEnd(end);
         vo.setStaffId(staffIds);
         HashMap<String, Object> result = reportService.getZjsEntryStaff(vo);
-        /*HashMap<String, Object> result = new HashMap<>();
-        result.put("analysis", JsonFmtUtil.strContentToJsonObj(json).get("analysis"));*/
+        *//*HashMap<String, Object> result = new HashMap<>();
+        result.put("analysis", JsonFmtUtil.strContentToJsonObj(json).get("analysis"));*//*
+        return ResultInfoUtil.success(result);*/
+
+
+        StaffPO currentLoginStaff = getCurrentLoginStaff();
+        Map<String, Object> reqContent = new HashMap<>();
+        reqContent.put("start", start);
+        reqContent.put("end", end);
+        reqContent.put("companyid", currentLoginStaff.getCompanyId());
+        reqContent.put("staffids", staffIds);
+        //请求juplat接口
+        String json = crmBaseApi.doService(reqContent, "zjsEntryStaffReports");
+
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("analysis", JsonFmtUtil.strContentToJsonObj(json).get("analysis"));
         return ResultInfoUtil.success(result);
+
     }
 
     /**
